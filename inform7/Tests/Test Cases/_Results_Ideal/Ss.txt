@@ -1,0 +1,10 @@
+   Place
+  (num = 3s)
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150901 / Inform 7 build 6M55 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  
+> >   Place
+> Are you sure you want to quit? 

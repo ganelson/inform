@@ -1,0 +1,22 @@
+   Funky Ignition Lounge
+  The Best Till Last
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Funky Ignition Lounge
+  This is where all evenings end.
+  
+  You can see a stick of gelignite, a solid magnesium footstool, a vetiver candle and a vodka bottle here.
+  
+> >   Funky Ignition Lounge
+  (Testing.)
+  
+  >[1] burn all with lighter
+  lighter: Best not.
+  stick of gelignite: Best not.
+  solid magnesium footstool: Best not.
+  vodka bottle: Best not.
+  inexpensive firework: It ignites gloriously! You take a few hasty steps back in order to avoid burning yourself, and not a moment too soon. Red and green sparks fly out of the tube, and there's a whistling noise punctuated by several loud cracks.
+  vetiver candle: It burns right down, expensively but gothically.
+  
+> >

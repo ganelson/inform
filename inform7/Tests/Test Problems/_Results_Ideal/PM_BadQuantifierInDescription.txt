@@ -1,0 +1,15 @@
+Inform 7 build 6M53 has started.
+I've now read your source text, which is 35 words long.
+I've also read Standard Rules by Graham Nelson, which is 42477 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadQuantifierInDescription
+  >--> In 'foo three rooms' (source text, line 8) you wrote the description
+    'three rooms' in the context of a value, but descriptions used that way are
+    not allowed to talk about quantities. For example, it's okay to write 'an
+    even number' as a description value, but not 'three numbers' or 'most
+    numbers'.
+    I was trying to match this phrase:
+      foo (three rooms - description of rooms) 
+    I recognised:
+    three rooms = a description of rooms
+Inform 7 has finished: 73 centiseconds used.

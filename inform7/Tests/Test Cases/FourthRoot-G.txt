@@ -1,0 +1,10 @@
+Foo is a room.
+
+Equation - Stefan-Boltzmann Law
+	P = T^4
+where P is a real number and T is a real number.
+
+When play begins:
+	let P be 2.0;
+	let T be given by the Stefan-Boltzmann Law;
+	say "[T] vs. [2.0 to the power 0.25]."

@@ -1,0 +1,5 @@
+Home is a room.
+
+Foo is a number that varies.
+
+Foo is never 5. Foo is always 16. Foo is seldom 1. Foo is 16.

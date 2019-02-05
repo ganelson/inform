@@ -1,0 +1,11 @@
+The dome is a room.
+
+The chap is a man in the dome.
+The fruit is in the dome. The fruit scone is in the dome.
+The fruit is edible. The fruit scone is edible.
+
+Understand "notify [an edible thing] of [someone]" as giving it to.
+
+Does the player mean giving a fruit scone to the chap: it is likely.
+
+Test me with "notify fruit of chap".

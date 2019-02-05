@@ -1,0 +1,162 @@
+4B91 (10 November 2006)
+
+(Windows only) Images now appear in the game tab when running a Glulx game,
+	rather than the place holder "[Image n]" text. (This brings the Windows
+	application into line with the OS X one.)
+(Windows only) The right-click menu for the source tab now includes a sub-menu
+	to change the size of the text.
+(Windows only) Ctrl-Delete and Ctrl-Backspace in the source tab no longer
+	confuse the undo logic.
+(Windows only) The cursor arrow keys now work in the game tab.
+(Windows only) The toolbar should no longer appear corrupted on 24-bit displays.
+(Windows only) When running Glulx games in the game tab, the
+	stylehint_Proportional flag is now respected.
+(Windows only) When running Glulx games in the game tab, glk_window_clear()
+	now works.
+On both the Mac OS X and Windows applications, documentation searches now
+	cover the examples as well as the main text, and search results are
+	more clearly displayed.
+The Glulx story file format is fully supported by Inform for textual works,
+	and we have therefore documented it as a choice available for designers:
+	see section 2.13, now retitled "Limits and the Settings panel".
+The commonest source of problems with Glulx to date has been to do with
+	screen effects such as coloured text and menus, and in particular to
+	do with the extension "Basic Screen Effects", which works only for the
+	Z-machine formats. Because of this, and because we expect that people
+	will want to write other extensions providing unusual effects, two
+	new features have been added:
+- An extension can describe itself, in its top line declaration, to
+	be for a limited range of story file formats. This is displayed in
+	the "Installed Extensions" documentation chapter, and an attempt to
+	use an extension with a story file format which does not match will
+	produce an explanatory problem message.
+- Individual headings can specify that they contain material to be
+	used only with certain story file formats. This allows extensions, in
+	particular, to provide different implementations of the same idea -
+	for instance, a Glulx version and a Z-machine version - so that the
+	user will get the same behaviour whatever the current project Settings.
+	See the new section 21.6: "Extensions and story file formats".
+The use of illustrations is now officially supported. This was implemented
+	in 3Z95 but documented only in the change log; for this build a new
+	chapter on illustrations, Chapter 19, has now been added to the
+	documentation.
+The "Release along with an existing story file" option has been improved,
+	and is now fully documented for the first time: see the new section
+	20.15, "Republishing existing works of IF". This enables Inform 6
+	users, or those with old games compiled using Informs 1 to 6, to
+	repackage them with cover art and bibliographic data for modern
+	interpreters such as Zoom, Spatterlight or Windows Frotz.
+"When play ends" rules are now run when play ends "in victory"; previously,
+    they were run on every other outcome but not this one. This is a change
+    in the design rather than a bug fix, so it may cause existing source
+    text to change its behaviour: if you are using "when play ends" rules
+    in a work in progress, you may want to test to see if victory is still
+    presented as you would wish it.
+If a scene is created with a name such as "Grand Finale", one can now
+	write rules for "When the Grand Finale begins: ...", etc., equivalently
+	to "When Grand Finale begins: ...". (This is in effect a bug fix, since
+	the same text would previously have created a spurious rule called
+	'Grand Finale begins' which was never invoked, rather mysteriously.)
+The syntax "otherwise if" (or "else if") is now allowed. This divides up
+	an "if ... begin; ...; end if", for instance as follows:
+		if the player is in the Garden
+		begin;
+			say "The wind rustles the long grass.";
+		otherwise if the player is in the Gazebo;
+			say "The wind catches at the canvas roof of the Gazebo.";
+		end if.
+	There can be any number of "otherwise if"s within an "if... end if".
+	(Note the lack of a "begin" at the end of each "otherwise if" - the "if"
+	is all one block of phrases.)
+	This new syntax is somewhat experimental, so will be documented in the
+	next build rather than this one.
+Problem messages have been added for use of '[if ...]' inside an existing
+	'[if ...]', and for '[otherwise]' or '[end if]' used with no matching
+	'[if ...]'.
+Extensions:
+	Basic Screen Effects revised to compile correctly under both Glulx and
+	Z-machine; documentation updated; version number advanced to 3. (Thanks
+	to Eric Eve for his contributions.)
+	Plurality revised to include additional management for pronoun behavior
+	(providing wrappers for Inform 6's MANUAL PRONOUNS constant and the
+	PronounNotice() routine), and to print "you" when the item described is
+	the player, in it/them phrases; documentation updated; version number
+	advanced to 2.
+	Punctuation Removal revised to indicate that it is for the Z-machine only.
+Examples:
+	"Garibaldi" altered to reflect that colored lettering can be used only
+	under the Z-machine.
+	"Scooby" reworded slightly to avoid a conflict with the new "otherwise if".
+The limit on the size of a single I6 code inclusion, previously 10K, has
+	been substantially raised (to 200K): this for the benefit of one or
+	two complex extensions needing to incorporate very long hand-coded
+	I6 routines.
+Problem message added for actions applying to two non-object values at once,
+	and bug fixed which (sometimes) caused this to generate a spurious
+	problem message on the wrong action.
+Problem message added for "...an X with L", where L is a literal value
+	such as a number, rather than the previous internal error.
+Problem message added for "X is a value that varies", which doesn't say
+	what kind of value it is, rather than the previous internal error.
+Problem message added for relations created between kinds of value with
+	an infinite range, in those cases where this is forbidden because
+	the run-time storage needed would be impracticable.
+Problem message added for compiled descriptions which contain local variables
+	(which will no longer exist when these descriptions need to be used:
+	this resulted in enigmatic "subtype of oversized local" internal errors).
+Problem message added for calling a variable simply "variable", as in
+	"The favourite son is a variable."
+Bug fixed in which I7 could sometimes crash on being asked to place rule A
+	after or before rule B in rulebook R, when B is not in fact in R: an
+	explanatory problem message has been added to respond to this.
+Bug fixed in which a room could not be called simply "Void".
+Bug fixed in which boxed quotations would sometimes produce array lookup
+	errors. (A bug introduced only in 3V01: apologies.)
+Bug fixed in which text containing an "[if ...]" and then an "[otherwise]"
+	but no "[end if]" and finally a substitution containing an ambiguity
+	not soluble at compile time would sometimes generate I6 code missing
+	a label definition, causing I6 to reject the output of I7.
+Bug fixed in which number variables initialised to negative numbers would
+	be created with the wrong value.
+Bug fixed in which attempts to match a snippet against a non-topic would
+	crash the virtual machine: they now produce a new run-time problem.
+Bug fixed in which reaching inside rules affected removing differently from
+	taking.
+Bug fixed in which RELATIONS testing command gives incorrect output for
+	some object-to-value relationships.
+Bug fixed in which actions applying to two values, and using the word "with"
+	in their names, were not always possible to categorise as named actions.
+Bug fixed whereby "(with nouns reversed)" did not work when applied to actions
+	whose names consisted of a single word.
+Bug fixed to do with "P of the X of Y", e.g., "price of the bag of sweets",
+	being misread.
+Bug fixed whereby "let Name be Value" would sometimes create Name with the
+	wrong kind of value (e.g. a time instead of an object) in cases where
+	the Value part was susceptible to multiple interpretations.
+Bug fixed causing a value consisting of the lone word "entry" to cause an
+	internal error.
+Bug fixed whereby setting a description for generic player-characters would
+	cause I6 to fail to compile I7's output.
+Bug fixed whereby a test scenario specifying that the player must be "in the
+	Holding Cell", etc., would crash due to misreading "holding" as the
+	start of a requirement about what is being held; also, if a capital H is
+	used for Holding, then this ambiguity no longer arises.
+Bug fixed in which the problem message for an object whose name is purely
+	textual would be followed by a spurious internal error.
+Bug fixed in which a wrongly phrased condition followed by a "try ..."
+	would sometimes produce an internal error as well as the intended
+	problem message.
+Bug fixed in which an "accidental clash of names" problem would similarly
+	sometimes cause an internal error as well.
+Bug fixed in which, once again, a problem reported in a "let X be Y" phrase
+	might also lead to a bogus internal error later.
+Bug fixed in which 'Definition:' at the end of the source, with no definition,
+	would crash Inform.
+Bug fixed in which a nameless new phrase, defined by just 'To:', would
+	cause an internal error.
+Bug fixed causing a close quotation mark to be omitted when quoting an
+	incorrect "Understand..." sentence in certain problem messages.
+Bug fixed in which definitions wrongly referring to properties would cause
+	the right problem message to be reported, but on the wrong sentence.
+Bug fixed in which I6 library (as included in 3Z95) failed to compile for
+	purely I6 projects.

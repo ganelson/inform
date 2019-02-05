@@ -1,0 +1,5 @@
+A thing can be fuzzy.
+
+Empty Room is a room.
+
+The teddy bear is in Empty Room. It has fuzzy.

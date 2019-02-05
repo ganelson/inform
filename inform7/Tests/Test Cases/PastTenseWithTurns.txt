@@ -1,0 +1,21 @@
+Home is a room.
+
+McWiggy is a man in the Home. A person can be happy or upset. McWiggy is 
+happy.
+
+The hat is in the Home. The hat is wearable.
+
+Instead of touching McWiggy:
+	now McWiggy is upset;
+	say "Whoops, now he's upset."
+
+Every turn when McWiggy has been upset for two turns: 
+	say "He's been upset for two turns! He explodes!"
+		
+Before doing something when the hat has been worn:
+	say "You've worn the hat at some point."
+		
+Before doing something when the hat has been worn for three turns:
+	say "You've worn the hat for exactly three turns."
+
+Test me with "wear hat / touch mcwiggy / z / z / z / z"  

@@ -1,0 +1,76 @@
+   Resort
+  Slouching
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Resort
+  Clark is standing nearby.
+  
+  You can also see a banana hammock (empty) and a stone bench here.
+  
+> >   Resort
+  (Testing.)
+  
+  >[1] sit on bench
+  You are now seated on the stone bench.
+  
+  >[2] stand on bench
+  You are now standing on the stone bench.
+  
+  >[3] get up
+  You get off the stone bench.
+  
+  Resort
+  Clark is standing nearby.
+  
+  You can also see a banana hammock (empty) and a stone bench here.
+  
+  >[4] lie on hammock
+  You are now reclining in the banana hammock.
+  
+  >[5] sit up
+  You are now seated in the banana hammock.
+  
+  >[6] g
+  You are already seated.
+  
+  >[7] clark, sit on bench
+  Clark is now seated on the stone bench.
+  
+  >[8] look
+  Resort (in the banana hammock)
+  Clark is seated on the stone bench.
+  
+  >[9] clark, lie down
+  Clark is now reclining on the stone bench.
+  
+  >[10] g
+  Clark is already reclining.
+  
+  >[11] look
+  Resort (in the banana hammock)
+  Clark is reclining on the stone bench.
+  
+  >[12] clark, get up
+  Clark gets off the stone bench.
+  
+  >[13] look
+  Resort (in the banana hammock)
+  Clark is standing nearby.
+  
+  You can also see a stone bench here.
+  
+  >[14] clark, lie down
+  Clark is now reclining.
+  
+  >[15] look
+  Resort (in the banana hammock)
+  Clark is reclining nearby.
+  
+  You can also see a stone bench here.
+  
+  >[16] enter bench
+  (getting out of the banana hammock)
+  You get onto the stone bench.
+  
+> >

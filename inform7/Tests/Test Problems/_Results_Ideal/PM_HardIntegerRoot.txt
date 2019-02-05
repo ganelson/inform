@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindRequiresGlulx
+  >--> You wrote 'let x be given by x^4 = 17 where x is a number' (source text, line 4),
+    but with the settings for this project as they are, I'm unable to make use
+    of a real number. (Try changing to Glulx on the Settings panel; that should
+    fix it.)
+Problem__ PM_HardIntegerRoot
+  >--> In 'let x be given by x^4 = 17 where x is a number' (source text, line 4),
+    you asked me to solve the equation 'x^4 = 17', but that would have involved
+    taking a tricky root of a whole number. Using real numbers that would be
+    easy, but with whole numbers I'm unable to get there.
+Inform 7 has finished: 43 centiseconds used.

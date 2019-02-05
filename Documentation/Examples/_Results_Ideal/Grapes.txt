@@ -1,0 +1,29 @@
+   Darkness
+  Peeled
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Darkness
+  (Testing.)
+  
+  >[1] feel floor
+  You try feeling your way around and reach a bearskin rug.
+  
+  >[2] feel rug
+  You grope for the bearskin rug...
+  
+  It feels furry!
+  
+  >[3] eat rug
+  That's plainly inedible.
+  
+  >[4] examine rug
+  It is pitch dark, and you can't see a thing.
+  
+  >[5] get grape
+  You can't see any such thing.
+  
+> >

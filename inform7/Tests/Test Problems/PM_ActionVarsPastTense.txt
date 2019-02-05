@@ -1,0 +1,4 @@
+Wharf is a room.
+
+When play begins:
+	if the noun was in the Wharf, say "Hi."

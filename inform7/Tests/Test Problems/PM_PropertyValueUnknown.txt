@@ -1,0 +1,4 @@
+Foo is a room.
+A room has a number called blor.
+
+Zog is a person with blor CHEESE.

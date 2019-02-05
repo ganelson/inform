@@ -1,0 +1,19 @@
+Inform 7 build 6L99 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ActionTooSpecific
+  >--> You wrote 'try examining the player in the NI School for Typing' (source
+    text, line 4), but 'examining the player in the NI School for Typing'
+    imposes too many restrictions on the action to be carried out, by saying
+    something about the circumstances which you can't guarantee will be true.
+    Sometimes this problem appears because I've misread text like 'in ...' as
+    a clause saying that the action takes place in a particular room, when in
+    fact it was part of the name of one of the items involved. If that's the
+    problem, try using 'let' to create a simpler name for it, and then rewrite
+    the 'try' to use that simpler name - the ambiguity should then vanish.
+    I was trying to match this phrase:
+      try (examining the player in the ni school for typing - action) 
+    I recognised:
+    examining the player in the ni school for typing = a described action
+Inform 7 has finished: 50 centiseconds used.

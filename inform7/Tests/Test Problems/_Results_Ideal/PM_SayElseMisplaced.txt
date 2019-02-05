@@ -1,0 +1,11 @@
+Inform 7 build 6M38 has started.
+I've now read your source text, which is 73 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SayElseMisplaced
+  >--> In the line '"A delicious ice cream cone[if the [...] ], sadly lacking a
+    cherry[end if]."' (source text, line 7), I was expecting that 'else if'
+    would be something to 'say', but unexpectedly I found an 'otherwise' (or
+    'else'). That would be fine inside an '[if ...]' part of the text, but
+    doesn't make sense on its own.
+Inform 7 has finished: 99 centiseconds used.

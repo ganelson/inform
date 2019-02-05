@@ -1,0 +1,104 @@
+3T38 (10 July 2006)
+
+(Windows only) Boxed quotations are now correctly displayed in the game tab.
+(Windows only) Extensions can be created, opened and edited within the
+	application.
+(Windows only) If an error occurs in an extension, clicking on the link in the
+	problem report opens that extension.
+(Windows only) The file dialog for installing extensions now allows multiple
+	files to be selected at once.
+(Windows only) Undo and redo in the source tab now works correctly with Unicode
+	characters.
+(Windows only) Added a "Trim skein" button to the skein tab, which removes all
+	unlocked skein knots.
+The "means" and "means that" syntaxes are being withdrawn. These were always
+	rather crude word-substitution devices: to quote the documentation,
+	"now deprecated... may be withdrawn". In this release, the Standard Rules
+	no longer use the syntaxes even internally, and this prevents a number
+	of slightly odd side-effects related to the words "above" and "below".
+	In the next release, the ability to use the "means" and "means that"
+	syntaxes will be removed altogether.
+Two new relations are built in to Inform to handle doors and locks; the
+	verbal forms "to be through D" and "to unlock D" express these. This
+	mimics syntax previously achieved using "means that", but works in a
+	much tidier way, and is more flexible: for instance, "things which
+	unlock the Great Gate" is now a legal description.
+Type-checking extended further into the descriptions D used in constructions
+	such as "total P of D" or "a random D", and into complicated descriptions
+	given as part of the conditions for rules to apply. (For instance,
+	"Instead of taking a container in 100" - clearly absurd, as how can
+	a container be inside a number? - now produces a problem message.)
+Examples:
+	"Uptempo" given a better "fast time rule".
+	In some 21 of the examples, the syntax "-- has a property called --" has
+		been rewritten to be more specific about what kind of value is involved.
+		(For instance, to say "-- has some text called --" if the property
+		will hold text.) This is better style, and allows Inform to check
+		usage more carefully.
+Unnecessary Inform 6 general parsing routines are no longer compiled for
+	kinds of value which are not ever parsed: under some circumstances
+	this can save a significant amount of space at run-time.
+Problem message added for grammar token trying to understand a kind of
+	value which cannot be parsed, such as 'rule' or 'scene'.
+Improved problem messages for property declarations, and allowed property
+	declarations to create properties whose values have to objects of a given
+	kind.
+Improved problem message for when "Understand the command..." goes bad.
+Improved problem message for incorrect usage of "... condition" names.
+Added problem message if a verb is defined with two present plurals (as
+	this can't be right, and usually means that someone has tried to define
+	the past tense using "they" rather than "he", "she" or "it").
+Added problem message for an attempt to "change O to A", where O is an object
+	and A is an adjective the truth of which can be tested, but not changed
+	(e.g. "change O to visible").
+Added problem message for creating a kind of value containing "of". (This
+	never worked, due to all kinds of grammatical ambiguities, but used to
+	fail with an inexplicable problem message: now it fails with an apology.)
+Extended the range of what can be negated using "now", so that, e.g.,
+	"now Elizabeth does not love anyone" is now allowed. (An obvious feature
+	whose absence was reported as a bug, but technically it's new.)
+Removed spurious problem message claiming that certain "after" rules would
+	have no effect.
+Fixed bug whereby arbitrary text could, under some circumstances, match the
+	"[number]" token of grammar.
+Fixed bug under which rules applying to actions done for the Nth time
+	might fail to apply if these actions had been interrupted by other
+	actions earlier in the same turn (e.g., to implicitly take something
+	before moving on to do something with it).
+Fixed bug whereby specifying that one of the named built-in rules belongs
+	to another rulebook (i.e., as well as its usual one) would result in
+	one of the two rulebooks being a partial duplicate of the other.
+Fixed bug causing "item described" (and the thing implicitly meant by a
+	bare property name) in a text with substitutions to refer to the
+	wrong thing, when this text is being printed from within another text
+	with substitutions.
+Fixed bug in which tests such as "if not visited" sometimes lost the
+	sense of the "not" and instead tested "if visited".
+Fixed bug whereby route-finding and counting steps through reciprocal
+	various-to-various relations would sometimes give incorrect results if
+	the relation had been changed from its initial state at run-time.
+Fixed bug by which "everything" was not always equivalent to "every thing",
+	and similarly for "everyone", "everybody" and "everywhere".
+Fixed bug to do with parsing times of day around midnight and midday.
+Fixed obscure bug to do with editing the player's command. (Well, in fact
+	Jesse McGrew fixed it.)
+Fixed bug in which a property is being declared as possible but whose name
+	coincides with a participle of one of the containment verbs. (E.g.,
+	"A weapon can be worn.")
+Fixed bug whereby a rule about "doing something" (unspecified) to some
+	specific kind of noun would result in run-time errors if the current
+	action did not take a noun, e.g., when looking.
+Fixed bug whereby setting the printed plural name of a kind might lead
+	to a failure to compile through Inform 6 (due to a duplicated "plural"
+	property).
+Fixed two unrelated bugs to do with apostrophes inside commands leading
+	to grammar declarations which failed to compile through Inform 6.
+Fixed bug causing spurious problem messages with garbled text: this
+	affected the examples "Table Foosball" and "Air Conditioning is Standard".
+	(We believe the bug only manifested itself under Mac OS X running on an
+	Intel processor.)
+Fixed bug causing scene begin/end conditions to go wrong if they tried to
+	use the "location of X" phrase.
+Fixed bug causing problems with scene begin/end conditions to be reported
+	at the wrong sentence of the source text.
+Spurious newline after "That noun did not make sense in this context." removed.

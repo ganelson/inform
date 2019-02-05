@@ -1,0 +1,46 @@
+* Understanding any, understanding rooms
+(FIND command; One of Those Mornings)
+A FIND command that allows the player to find a lost object anywhere
+
+Suppose that, contrary to the usual rules of interactive fiction, we want to allow the player to discover the locations of things he hasn't actually seen yet:
+
+	{*}"One of Those Mornings"
+
+	Understand "find [any thing]" as finding.
+
+	Finding is an action applying to one visible thing. 
+
+	Carry out finding: 
+		if the player is carrying the noun:
+			say "You're holding [the noun]!";
+		otherwise:
+			say "You left [the noun] [if the noun is on a supporter]on[otherwise]in[end if] [the holder of the noun]."
+
+The holder of the noun can be a room, a supporter, or a container: the phrase is not picky. We would want to be a little more careful if it were ever possible for an item to have been "removed from play" in our game, since then the holder could be nothing, and that would have odd results. In this particular example, though, that will not arise.
+
+And that's it, as far as the find command goes. The rest is local color.
+
+	{**}The Exhibition Room is a room. It contains a closed locked lockable transparent openable container called the display case. The display case contains a priceless pearl. The display case is scenery. The description of the Exhibition Room is "By far the finest thing in the room is a priceless pearl in a glass display case. It should of course be yours[if key is not visible], if only you can remember where you hid the key[end if]."
+	
+	The silver key unlocks the display case.
+	
+	A jade vase, a teak chest, a bronze teakettle, and a child's burial casket are openable closed containers in the Exhibition Room.
+
+	After taking the pearl: 
+		say "The pearl rolls into your hand, gleaming in the oblique light; your fortune is made.";
+		end the story finally.
+	
+If we want to have the key found in different places when the game is replayed:
+
+	{**}When play begins:  
+		let the space be a random container which is not the display case;
+		move the silver key to the space.
+		
+	Every turn:
+		say "Your watch ticks with maddening loudness."
+		
+	The time of day is 1:02 AM. 
+	
+	At 1:08 AM: say "The security guard arrives to find you fumbling about with keys. Curses."; end the story.
+	
+	Test me with "find pearl / find teakettle / get teakettle / find teakettle / find key".

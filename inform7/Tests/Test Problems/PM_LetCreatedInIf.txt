@@ -1,0 +1,47 @@
+Home is a room.
+
+Every turn:
+	if Home is lighted, let rude comment be "It was lighted!";
+	otherwise let rude comment be "It was dark!";
+
+When play begins:
+	say "Test A.";
+	if zero is one:
+		let spong be the list of things;
+	let spong be the list of things;
+	say "[spong]."
+
+When play begins:
+	say "Test B.";
+	if zero is one:
+		let spong be the list of things;
+	otherwise:
+		let spong be the list of things;
+		say "[spong]."
+
+When play begins:
+	say "Test C.";
+	if zero is one:
+		let spong be the list of things;
+	otherwise if one is one:
+		let spong be the list of things;
+		say "[spong].";
+	otherwise:
+		let spong be the list of things;
+		say "[spong]."
+
+When play begins:
+	say "Test D.";
+	let spong be the list of things;
+	if zero is one:
+		say "You'll never read this.";
+	say "[spong]."
+
+When play begins:
+	say "Test E.";
+	repeat with X running from 1 to 3:
+		if X is:
+			-- 1: let spong be the list of things;
+			-- otherwise: let spong be the list of things;
+		let spong be the list of things;
+		say "[spong]."

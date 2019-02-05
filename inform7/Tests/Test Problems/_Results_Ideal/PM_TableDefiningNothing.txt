@@ -1,0 +1,20 @@
+Inform 7.10.1 build 6M92 has started.
+I've now read your source text, which is 32 words long.
+I've also read Standard Rules by Graham Nelson, which is 42662 words long.
+I've also read English Language by Graham Nelson, which is 2297 words long.
+Problem__ PM_NameWithText
+  >--> You wrote 'Some ships are defined by Table 1' (source text, line 1)
+    (which asserts that 'b "v"' (source text, line 7) is/are 'Some ships' (source
+    text, line 1)): but this seems to give something a name which contains
+    double-quoted text, which is not allowed. If you do need quotes in a name,
+    one option would be to write something like 'In the Saloon is 'Black'
+    Jacques Bernoulli.'; but this problem message is often caused by an
+    accident in punctuation, in which case you never intended to create an
+    object - you thought that the text ended a sentence because it finished
+    with sentence-ending punctuation, when in fact it didn't, so that I read
+    the next words as following on.
+Problem__ PM_TableDefiningNothing
+  >--> In row 2 of 'Table 1 - Vessels' (source text, line 4), the entry 'b "v"'
+    (source text, line 7) seems not to have defined a thing there, so perhaps
+    the first column did not consist of new names?
+Inform 7 has finished: 36 centiseconds used.

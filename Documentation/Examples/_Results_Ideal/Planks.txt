@@ -1,0 +1,63 @@
+   East Jungle
+  One Short Plank
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  East Jungle
+  A precarious plank bridge extends west across the chasm.
+  
+  You can also see a feather here.
+  
+> >   East Jungle
+  (Testing.)
+  
+  >[1] w
+  You step gingerly across the plank, grateful that you're not burdened.
+  
+  West Jungle
+  A precarious plank bridge extends east across the chasm.
+  
+  You can also see a gigantic stone ball here.
+  
+  >[2] e
+  You step gingerly across the plank, grateful that you're not burdened.
+  
+  East Jungle
+  A precarious plank bridge extends west across the chasm.
+  
+  You can also see a feather here.
+  
+  >[3] w
+  You step gingerly across the plank, grateful that you're not burdened.
+  
+  West Jungle
+  A precarious plank bridge extends east across the chasm.
+  
+  You can also see a gigantic stone ball here.
+  
+  >[4] push ball e
+  Surely you jest.
+  
+  >[5] e
+  You step gingerly across the plank, grateful that you're not burdened.
+  
+  East Jungle
+  A precarious plank bridge extends west across the chasm.
+  
+  You can also see a feather here.
+  
+  >[6] get feather
+  Taken.
+  
+  >[7] w
+  You step gingerly across the plank, which bows under your weight. But your meagre possessions are the straw which breaks the camel's back!
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

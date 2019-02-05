@@ -1,0 +1,5294 @@
+   Sound Stage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150831 / Inform 7 build 6M54 (I6/v6.33 lib 6/12N) SD
+  
+  Sound Stage
+  Clark is here, carrying the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (closed) (in which are a lion, a bone and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+> >   Sound Stage
+  ** actions
+  Actions listing on.
+  
+> >   Sound Stage
+  ** put all in bag
+  [inserting the small key into the frilly bag]
+  small key: Done.
+  [inserting the small key into the frilly bag - succeeded]
+  [inserting the tent into the frilly bag]
+  tent: Done.
+  [inserting the tent into the frilly bag - succeeded]
+  [inserting Variety Magazine into the frilly bag]
+  Variety Magazine: Done.
+  [inserting Variety Magazine into the frilly bag - succeeded]
+  [inserting the clipboard into the frilly bag]
+  clipboard: Done.
+  [inserting the clipboard into the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** take inventory
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a clipboard
+      Variety Magazine
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** clark, take inventory
+  [asking Clark Gable to try taking inventory]
+  [(1) Clark Gable taking inventory]
+  Clark Gable looks through his possessions.
+  [(1) Clark Gable taking inventory - succeeded]
+  
+  [asking Clark Gable to try taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a clipboard
+      Variety Magazine
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** clark, i
+  [asking Clark Gable to try taking inventory]
+  [(1) Clark Gable taking inventory]
+  Clark Gable looks through his possessions.
+  [(1) Clark Gable taking inventory - succeeded]
+  
+  [asking Clark Gable to try taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** take me
+  [taking yourself]
+  You are always self-possessed.
+  [taking yourself - failed the can't take yourself rule]
+  
+> >   Sound Stage
+  ** clark, take clark
+  (Clark Gable)
+  [asking Clark Gable to try taking Clark Gable]
+  [(1) Clark Gable taking Clark Gable]
+  [(1) Clark Gable taking Clark Gable - failed the can't take yourself rule]
+  
+  "I'm always self-possessed," Clark remarks. You've heard that line before, but it sounds so much more convincing from him.
+  
+  [asking Clark Gable to try taking Clark Gable - succeeded]
+  
+> >   Sound Stage
+  ** take clark
+  (Clark Gable)
+  [taking Clark Gable]
+  I don't suppose Clark Gable would care for that.
+  [taking Clark Gable - failed the can't take other people rule]
+  
+> >   Sound Stage
+  ** clark, take
+  What do you want Clark Gable to take?
+  
+> >   Sound Stage
+  ** me
+  [asking Clark Gable to try taking yourself]
+  [(1) Clark Gable taking yourself]
+  [(1) Clark Gable taking yourself - failed the can't take other people rule]
+  
+  "I don't think it would be appreciated if I tried to do that to yourself," he rumbles.
+  
+  [asking Clark Gable to try taking yourself - succeeded]
+  
+> >   Sound Stage
+  ** take steering wheel
+  [taking the steering wheel]
+  That seems to be a part of the automobile.
+  [taking the steering wheel - failed the can't take component parts rule]
+  
+> >   Sound Stage
+  ** clark, take steering wheel
+  [asking Clark Gable to try taking the steering wheel]
+  [(1) Clark Gable taking the steering wheel]
+  [(1) Clark Gable taking the steering wheel - failed the can't take component parts rule]
+  
+  "I don't want to rip the steering wheel out," Clark remarks.
+  
+  [asking Clark Gable to try taking the steering wheel - succeeded]
+  
+> >   Sound Stage
+  ** take stick
+  [taking the swagger stick]
+  That seems to belong to Clark Gable.
+  [taking the swagger stick - failed the can't take people's possessions rule]
+  
+> >   Sound Stage
+  ** clark, take variety
+  [asking Clark Gable to try taking Variety Magazine]
+  [(1) Clark Gable taking Variety Magazine]
+  [(1) Clark Gable taking Variety Magazine - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [asking Clark Gable to try taking Variety Magazine - succeeded]
+  
+> >   Sound Stage
+  ** open cage
+  [opening the cage]
+  You open the cage.
+  [opening the cage - succeeded]
+  
+> >   Sound Stage
+  ** enter cage
+  [entering the cage]
+  You get into the cage.
+  
+  In the cage you can see a lion, a bone and a seat.
+  
+  [entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** take cage
+  [taking the cage]
+  You would have to get out of the cage first.
+  [taking the cage - failed the can't take what you're inside rule]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  You get out of the cage.
+  
+  Sound Stage
+  Clark is here, carrying the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion, a bone and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, enter cage
+  [asking Clark Gable to try entering the cage]
+  [(1) Clark Gable entering the cage]
+  Clark Gable gets into the cage.
+  
+  [(1) Clark Gable entering the cage - succeeded]
+  
+  [asking Clark Gable to try entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, take cage
+  [asking Clark Gable to try taking the cage]
+  [(1) Clark Gable taking the cage]
+  [(1) Clark Gable taking the cage - failed the can't take what you're inside rule]
+  
+  "Do you see where I am, babe?" Clark demands.
+  
+  [asking Clark Gable to try taking the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  Clark Gable gets out of the cage.
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** get on dais
+  [entering the dais]
+  You get onto the dais.
+  
+  On the dais you can see a folding chair, a canvas deckchair and a rubber mat.
+  
+  [entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** get dais
+  [taking the dais]
+  You would have to get off the dais first.
+  [taking the dais - failed the can't take what you're inside rule]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  [(1) getting off the dais]
+  You get off the dais.
+  
+  Sound Stage
+  Clark is here, carrying the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion, a bone and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) getting off the dais - succeeded]
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, get on dais
+  [asking Clark Gable to try entering the dais]
+  [(1) Clark Gable entering the dais]
+  Clark Gable gets onto the dais.
+  
+  [(1) Clark Gable entering the dais - succeeded]
+  
+  [asking Clark Gable to try entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, get dais
+  [asking Clark Gable to try taking the dais]
+  [(1) Clark Gable taking the dais]
+  [(1) Clark Gable taking the dais - failed the can't take what you're inside rule]
+  
+  "Do you see where I am, babe?" Clark demands.
+  
+  [asking Clark Gable to try taking the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(2) Clark Gable getting off the dais]
+  Clark Gable gets off the dais.
+  
+  [(2) Clark Gable getting off the dais - succeeded]
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** take variety
+  [taking Variety Magazine]
+  Taken.
+  [taking Variety Magazine - succeeded]
+  
+> >   Sound Stage
+  ** clark, take stick
+  [asking Clark Gable to try taking the swagger stick]
+  [(1) Clark Gable taking the swagger stick]
+  [(1) Clark Gable taking the swagger stick - failed the can't take what's already taken rule]
+  
+  "Check," says Clark.
+  
+  [asking Clark Gable to try taking the swagger stick - succeeded]
+  
+> >   Sound Stage
+  ** take the microphon
+  [taking the boom microphone]
+  That's hardly portable.
+  [taking the boom microphone - failed the can't take scenery rule]
+  
+> >   Sound Stage
+  ** take the microphone
+  [taking the boom microphone]
+  That's hardly portable.
+  [taking the boom microphone - failed the can't take scenery rule]
+  
+> >   Sound Stage
+  ** clark, take the microphone
+  [asking Clark Gable to try taking the boom microphone]
+  [(1) Clark Gable taking the boom microphone]
+  [(1) Clark Gable taking the boom microphone - failed the can't take scenery rule]
+  
+  "I'm not the stunt man, darling," he says with a wry twinkle.
+  
+  [asking Clark Gable to try taking the boom microphone - succeeded]
+  
+> >   Sound Stage
+  ** take the door
+  [taking the stage door]
+  That's fixed in place.
+  [taking the stage door - failed the can't take what's fixed in place rule]
+  
+> >   Sound Stage
+  ** clark, take the door
+  [asking Clark Gable to try taking the stage door]
+  [(1) Clark Gable taking the stage door]
+  [(1) Clark Gable taking the stage door - failed the can't take what's fixed in place rule]
+  
+  "I'm not the stunt man, darling," he says with a wry twinkle.
+  
+  [asking Clark Gable to try taking the stage door - succeeded]
+  
+> >   Sound Stage
+  ** take the bone
+  [taking the bone]
+  (putting Variety Magazine into the frilly bag to make room)
+  [(1) inserting Variety Magazine into the frilly bag - silently]
+  [(1) inserting Variety Magazine into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the bone - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a bone
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** take the bone
+  [taking the bone]
+  You already have that.
+  [taking the bone - failed the can't take what's already taken rule]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a bone
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** drop bone
+  [dropping the bone]
+  Dropped.
+  [dropping the bone - succeeded]
+  
+> >   Sound Stage
+  ** clark, take the bone
+  [asking Clark Gable to try taking the bone]
+  [(1) Clark Gable taking the bone]
+  Clark Gable picks up the bone.
+  [(1) Clark Gable taking the bone - succeeded]
+  
+  [asking Clark Gable to try taking the bone - succeeded]
+  
+> >   Sound Stage
+  ** x clark
+  (Clark Gable)
+  [examining Clark Gable]
+  You see nothing special about Clark Gable.
+  
+  [examining Clark Gable - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** close cage
+  [closing the cage]
+  You close the cage.
+  [closing the cage - succeeded]
+  
+> >   Sound Stage
+  ** take all from cage
+  The cage isn't open.
+  
+> >   Sound Stage
+  ** clark, take all from cage
+  [asking Clark Gable to try removing the lion from the cage]
+  lion: [(1) Clark Gable removing the lion from the cage]
+  [(1) Clark Gable removing the lion from the cage - failed the basic accessibility rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the lion from the cage - succeeded]
+  [asking Clark Gable to try removing the seat from the cage]
+  seat: [(1) Clark Gable removing the seat from the cage]
+  [(1) Clark Gable removing the seat from the cage - failed the basic accessibility rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the seat from the cage - succeeded]
+  [asking Clark Gable to try removing the chains from the cage]
+  chains: [(1) Clark Gable removing the chains from the cage]
+  [(1) Clark Gable removing the chains from the cage - failed the basic accessibility rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the chains from the cage - succeeded]
+  
+> >   Sound Stage
+  ** take bone from cage
+  You can't see any such thing.
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** clark, take bone from cage
+  [answering Clark Gable that "take bone from cage"]
+  There is no reply.
+  [answering Clark Gable that "take bone from cage" - succeeded]
+  
+> >   Sound Stage
+  ** get all from clark
+  (Clark Gable)
+  [removing the bone from Clark Gable]
+  bone: That seems to belong to Clark Gable.
+  [removing the bone from Clark Gable - failed the can't remove from people rule]
+  [removing the swagger stick from Clark Gable]
+  swagger stick: That seems to belong to Clark Gable.
+  [removing the swagger stick from Clark Gable - failed the can't remove from people rule]
+  [removing the briefcase from Clark Gable]
+  briefcase: That seems to belong to Clark Gable.
+  [removing the briefcase from Clark Gable - failed the can't remove from people rule]
+  [removing the tray from Clark Gable]
+  tray: That seems to belong to Clark Gable.
+  [removing the tray from Clark Gable - failed the can't remove from people rule]
+  
+> >   Sound Stage
+  ** clark, get all from me
+  [asking Clark Gable to try removing the frilly bag from yourself]
+  frilly bag: [(1) Clark Gable removing the frilly bag from yourself]
+  [(1) Clark Gable removing the frilly bag from yourself - failed the can't remove from people rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the frilly bag from yourself - succeeded]
+  
+> >   Sound Stage
+  ** get on dais
+  [entering the dais]
+  You get onto the dais.
+  
+  On the dais you can see a folding chair, a canvas deckchair and a rubber mat.
+  
+  [entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** get all from dais
+  There are none at all available!
+  
+> >   Sound Stage
+  ** clark, get on dais
+  [asking Clark Gable to try entering the dais]
+  [(1) Clark Gable entering the dais]
+  Clark Gable gets onto the dais.
+  
+  [(1) Clark Gable entering the dais - succeeded]
+  
+  [asking Clark Gable to try entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from dais
+  [asking Clark Gable to try removing the folding chair from the dais]
+  folding chair: [(1) Clark Gable removing the folding chair from the dais]
+  [(2) Clark Gable taking the folding chair]
+  [(2) Clark Gable taking the folding chair - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the folding chair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the folding chair from the dais - succeeded]
+  [asking Clark Gable to try removing the canvas deckchair from the dais]
+  canvas deckchair: [(1) Clark Gable removing the canvas deckchair from the dais]
+  [(2) Clark Gable taking the canvas deckchair]
+  [(2) Clark Gable taking the canvas deckchair - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the canvas deckchair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the canvas deckchair from the dais - succeeded]
+  [asking Clark Gable to try removing the rubber mat from the dais]
+  rubber mat: [(1) Clark Gable removing the rubber mat from the dais]
+  [(2) Clark Gable taking the rubber mat]
+  [(2) Clark Gable taking the rubber mat - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the rubber mat from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the rubber mat from the dais - succeeded]
+  [asking Clark Gable to try removing Clark Gable from the dais]
+  Clark Gable: [(1) Clark Gable removing Clark Gable from the dais]
+  [(2) Clark Gable taking Clark Gable]
+  [(2) Clark Gable taking Clark Gable - failed the can't take yourself rule]
+  [(1) Clark Gable removing Clark Gable from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing Clark Gable from the dais - succeeded]
+  
+> >   Sound Stage
+  ** take all from dais
+  There are none at all available!
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(2) Clark Gable getting off the dais]
+  Clark Gable gets off the dais.
+  
+  [(2) Clark Gable getting off the dais - succeeded]
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from dais
+  [asking Clark Gable to try removing the folding chair from the dais]
+  folding chair: [(1) Clark Gable removing the folding chair from the dais]
+  [(2) Clark Gable taking the folding chair]
+  [(2) Clark Gable taking the folding chair - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the folding chair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the folding chair from the dais - succeeded]
+  [asking Clark Gable to try removing the canvas deckchair from the dais]
+  canvas deckchair: [(1) Clark Gable removing the canvas deckchair from the dais]
+  [(2) Clark Gable taking the canvas deckchair]
+  [(2) Clark Gable taking the canvas deckchair - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the canvas deckchair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the canvas deckchair from the dais - succeeded]
+  [asking Clark Gable to try removing the rubber mat from the dais]
+  rubber mat: [(1) Clark Gable removing the rubber mat from the dais]
+  [(2) Clark Gable taking the rubber mat]
+  [(2) Clark Gable taking the rubber mat - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the rubber mat from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the rubber mat from the dais - succeeded]
+  
+> >   Sound Stage
+  ** get out
+  [exiting]
+  [(1) getting off the dais]
+  You get off the dais.
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (closed) (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) getting off the dais - succeeded]
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from automobile
+  [answering Clark Gable that "get all from automobile"]
+  There is no reply.
+  [answering Clark Gable that "get all from automobile" - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from bag
+  [asking Clark Gable to try removing Variety Magazine from the frilly bag]
+  Variety Magazine: [(1) Clark Gable removing Variety Magazine from the frilly bag]
+  [(2) Clark Gable taking Variety Magazine]
+  [(2) Clark Gable taking Variety Magazine - failed the can't take people's possessions rule]
+  [(1) Clark Gable removing Variety Magazine from the frilly bag - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing Variety Magazine from the frilly bag - succeeded]
+  [asking Clark Gable to try removing the clipboard from the frilly bag]
+  clipboard: [(1) Clark Gable removing the clipboard from the frilly bag]
+  [(2) Clark Gable taking the clipboard]
+  [(2) Clark Gable taking the clipboard - failed the can't take people's possessions rule]
+  [(1) Clark Gable removing the clipboard from the frilly bag - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the clipboard from the frilly bag - succeeded]
+  [asking Clark Gable to try removing the tent from the frilly bag]
+  tent: [(1) Clark Gable removing the tent from the frilly bag]
+  [(2) Clark Gable taking the tent]
+  [(2) Clark Gable taking the tent - failed the can't take people's possessions rule]
+  [(1) Clark Gable removing the tent from the frilly bag - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the tent from the frilly bag - succeeded]
+  [asking Clark Gable to try removing the small key from the frilly bag]
+  small key: [(1) Clark Gable removing the small key from the frilly bag]
+  [(2) Clark Gable taking the small key]
+  [(2) Clark Gable taking the small key - failed the can't take people's possessions rule]
+  [(1) Clark Gable removing the small key from the frilly bag - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the small key from the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** get all from briefcase
+  [removing the signed contract from the briefcase]
+  [(1) taking the signed contract]
+  That seems to belong to Clark Gable.
+  [(1) taking the signed contract - failed the can't take people's possessions rule]
+  
+  [removing the signed contract from the briefcase - failed the convert remove to take rule]
+  
+> >   Sound Stage
+  ** get cage
+  [taking the cage]
+  That's fixed in place.
+  [taking the cage - failed the can't take what's fixed in place rule]
+  
+> >   Sound Stage
+  ** get on chair
+  [entering the folding chair]
+  (getting onto the dais)
+  [(1) entering the dais - silently]
+  [(1) entering the dais - silently - succeeded]
+  
+  [(1) entering the folding chair]
+  You get onto the folding chair.
+  
+  [(1) entering the folding chair - succeeded]
+  
+  [entering the folding chair - succeeded]
+  
+> >   Sound Stage
+  ** get dais
+  [taking the dais]
+  You would have to get off the dais first.
+  [taking the dais - failed the can't take what you're inside rule]
+  
+> >   Sound Stage
+  ** get all from dais
+  There are none at all available!
+  
+> >   Sound Stage
+  ** get out
+  [exiting]
+  [(1) getting off the folding chair]
+  You get off the folding chair.
+  
+  Sound Stage (on the dais)
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (closed) (in which are a lion and a seat), a foam boulder and an automobile (empty) here.
+  
+  On the dais you can see a folding chair, a canvas deckchair and a rubber mat.
+  
+  [(1) getting off the folding chair - succeeded]
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [exiting]
+  [(1) getting off the dais]
+  You get off the dais.
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (closed) (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) getting off the dais - succeeded]
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, get on chair
+  [asking Clark Gable to try entering the folding chair]
+  [(1) Clark Gable entering the folding chair]
+  [(2) Clark Gable entering the dais - silently]
+  [(2) Clark Gable entering the dais - silently - succeeded]
+  
+  [(2) Clark Gable entering the folding chair]
+  Clark Gable gets onto the folding chair.
+  
+  [(2) Clark Gable entering the folding chair - succeeded]
+  
+  [(1) Clark Gable entering the folding chair - succeeded]
+  
+  [asking Clark Gable to try entering the folding chair - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  You can see a stage door, a cage (closed) (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair (on which is Clark Gable), a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from dais
+  [asking Clark Gable to try removing the folding chair from the dais]
+  folding chair: [(1) Clark Gable removing the folding chair from the dais]
+  [(2) Clark Gable taking the folding chair]
+  [(2) Clark Gable taking the folding chair - failed the can't take what you're inside rule]
+  [(1) Clark Gable removing the folding chair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the folding chair from the dais - succeeded]
+  [asking Clark Gable to try removing the canvas deckchair from the dais]
+  canvas deckchair: [(1) Clark Gable removing the canvas deckchair from the dais]
+  [(2) Clark Gable taking the canvas deckchair]
+  [(2) Clark Gable taking the canvas deckchair - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the canvas deckchair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the canvas deckchair from the dais - succeeded]
+  [asking Clark Gable to try removing the rubber mat from the dais]
+  rubber mat: [(1) Clark Gable removing the rubber mat from the dais]
+  [(2) Clark Gable taking the rubber mat]
+  [(2) Clark Gable taking the rubber mat - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the rubber mat from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the rubber mat from the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from clark
+  [answering Clark Gable that "get all from clark"]
+  There is no reply.
+  [answering Clark Gable that "get all from clark" - succeeded]
+  
+> >   Sound Stage
+  ** get all from me
+  You seem to belong to yourself.
+  
+> >   Sound Stage
+  ** get all from cage
+  The cage isn't open.
+  
+> >   Sound Stage
+  ** open cage
+  [opening the cage]
+  You open the cage.
+  [opening the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from cage
+  [asking Clark Gable to try removing the lion from the cage]
+  lion: [(1) Clark Gable removing the lion from the cage]
+  [(2) Clark Gable taking the lion]
+  [(2) Clark Gable taking the lion - failed the can't take other people rule]
+  [(1) Clark Gable removing the lion from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the lion from the cage - succeeded]
+  [asking Clark Gable to try removing the seat from the cage]
+  seat: [(1) Clark Gable removing the seat from the cage]
+  [(2) Clark Gable taking the seat]
+  [(2) Clark Gable taking the seat - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the seat from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the seat from the cage - succeeded]
+  [asking Clark Gable to try removing the chains from the cage]
+  chains: [(1) Clark Gable removing the chains from the cage]
+  [(2) Clark Gable taking the chains]
+  [(2) Clark Gable taking the chains - failed the can't take scenery rule]
+  [(1) Clark Gable removing the chains from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the chains from the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from dais
+  [asking Clark Gable to try removing the folding chair from the dais]
+  folding chair: [(1) Clark Gable removing the folding chair from the dais]
+  [(2) Clark Gable taking the folding chair]
+  [(2) Clark Gable taking the folding chair - failed the can't take what you're inside rule]
+  [(1) Clark Gable removing the folding chair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the folding chair from the dais - succeeded]
+  [asking Clark Gable to try removing the canvas deckchair from the dais]
+  canvas deckchair: [(1) Clark Gable removing the canvas deckchair from the dais]
+  [(2) Clark Gable taking the canvas deckchair]
+  [(2) Clark Gable taking the canvas deckchair - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the canvas deckchair from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the canvas deckchair from the dais - succeeded]
+  [asking Clark Gable to try removing the rubber mat from the dais]
+  rubber mat: [(1) Clark Gable removing the rubber mat from the dais]
+  [(2) Clark Gable taking the rubber mat]
+  [(2) Clark Gable taking the rubber mat - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the rubber mat from the dais - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the rubber mat from the dais - succeeded]
+  
+> >   Sound Stage
+  ** get all from dais
+  There are none at all available!
+  
+> >   Sound Stage
+  ** get all from cage
+  There are none at all available!
+  
+> >   Sound Stage
+  ** drop me
+  [dropping yourself]
+  You lack the dexterity.
+  [dropping yourself - failed the can't drop yourself rule]
+  
+> >   Sound Stage
+  ** clark, drop clark
+  (Clark Gable's hand)
+  [asking Clark Gable to try dropping Clark Gable's hand]
+  [(1) Clark Gable dropping Clark Gable's hand]
+  [(1) Clark Gable dropping Clark Gable's hand - failed the can't drop body parts rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try dropping Clark Gable's hand - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a sparkly scarf (being worn)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  You can see a stage door, a cage (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair (on which is Clark Gable), a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, drop boulder
+  [asking Clark Gable to try dropping the foam boulder]
+  [(1) Clark Gable dropping the foam boulder]
+  [(1) Clark Gable dropping the foam boulder - failed the can't drop what's not held rule]
+  
+  "Not under my control, the foam boulder," replies Clark.
+  
+  [asking Clark Gable to try dropping the foam boulder - succeeded]
+  
+> >   Sound Stage
+  ** drop bould
+  You can't see any such thing.
+  
+> >   Sound Stage
+  ** drop boulder
+  [dropping the foam boulder]
+  The foam boulder is already here.
+  [dropping the foam boulder - failed the can't drop what's already dropped rule]
+  
+> >   Sound Stage
+  ** drop scarf
+  [dropping the sparkly scarf]
+  (first taking the sparkly scarf off)
+  [(1) taking off the sparkly scarf - silently]
+  [(1) taking off the sparkly scarf - silently - succeeded]
+  
+  Dropped.
+  [dropping the sparkly scarf - succeeded]
+  
+> >   Sound Stage
+  ** get scarf
+  [taking the sparkly scarf]
+  Taken.
+  [taking the sparkly scarf - succeeded]
+  
+> >   Sound Stage
+  ** clark, drop hat
+  [answering Clark Gable that "drop hat"]
+  There is no reply.
+  [answering Clark Gable that "drop hat" - succeeded]
+  
+> >   Sound Stage
+  ** clark, drop fedora
+  [asking Clark Gable to try dropping the fedora]
+  [(1) Clark Gable dropping the fedora]
+  [(2) Clark Gable taking off the fedora - silently]
+  [(2) Clark Gable taking off the fedora - silently - succeeded]
+  
+  [(1) Clark Gable dropping the fedora - failed the can't drop if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try dropping the fedora - succeeded]
+  
+> >   Sound Stage
+  ** clark, get fedora
+  [asking Clark Gable to try taking the fedora]
+  [(1) Clark Gable taking the fedora]
+  [(1) Clark Gable taking the fedora - failed the can't take what's already taken rule]
+  
+  "Check check," says Clark.
+  
+  [asking Clark Gable to try taking the fedora - succeeded]
+  
+> >   Sound Stage
+  ** drop dress
+  [dropping the slinky dress]
+  (first taking the slinky dress off)
+  [(1) taking off the slinky dress - silently]
+  Rowr! Not that kind of movie, babe.
+  [(1) taking off the slinky dress - silently - failed]
+  
+  [dropping the slinky dress - failed the can't drop clothes being worn rule]
+  
+> >   Sound Stage
+  ** clark, drop pants
+  [asking Clark Gable to try dropping the pair of pants]
+  [(1) Clark Gable dropping the pair of pants]
+  [(2) Clark Gable taking off the pair of pants - silently]
+  [(2) Clark Gable taking off the pair of pants - silently - ended without result]
+  
+  [(1) Clark Gable dropping the pair of pants - failed the can't drop clothes being worn rule]
+  
+  Clark allows his mustache to quirk at the suggestion.
+  
+  [asking Clark Gable to try dropping the pair of pants - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a sparkly scarf
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** put scarf on dais
+  [putting the sparkly scarf on the dais]
+  You put the sparkly scarf on the dais.
+  [putting the sparkly scarf on the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, put the fedora on the dais
+  [asking Clark Gable to try putting the fedora on the dais]
+  [(1) Clark Gable putting the fedora on the dais]
+  Clark Gable puts the fedora on the dais.
+  [(1) Clark Gable putting the fedora on the dais - succeeded]
+  
+  [asking Clark Gable to try putting the fedora on the dais - succeeded]
+  
+> >   Sound Stage
+  ** get scarf
+  [taking the sparkly scarf]
+  Taken.
+  [taking the sparkly scarf - succeeded]
+  
+> >   Sound Stage
+  ** clark, get fedora
+  [asking Clark Gable to try taking the fedora]
+  [(1) Clark Gable taking the fedora]
+  Clark Gable picks up the fedora.
+  [(1) Clark Gable taking the fedora - succeeded]
+  
+  [asking Clark Gable to try taking the fedora - succeeded]
+  
+> >   Sound Stage
+  ** clark, put fedora on floor
+  [answering Clark Gable that "put fedora on floor"]
+  There is no reply.
+  [answering Clark Gable that "put fedora on floor" - succeeded]
+  
+> >   Sound Stage
+  ** clark, put fedora on dais
+  [asking Clark Gable to try putting the fedora on the dais]
+  [(1) Clark Gable putting the fedora on the dais]
+  Clark Gable puts the fedora on the dais.
+  [(1) Clark Gable putting the fedora on the dais - succeeded]
+  
+  [asking Clark Gable to try putting the fedora on the dais - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [asking Clark Gable to try putting the fedora on the dais]
+  [(1) Clark Gable putting the fedora on the dais]
+  (Clark Gable first taking the fedora)
+  [(2) Clark Gable taking the fedora - silently]
+  [(2) Clark Gable taking the fedora - silently - succeeded]
+  
+  Clark Gable puts the fedora on the dais.
+  [(1) Clark Gable putting the fedora on the dais - succeeded]
+  
+  [asking Clark Gable to try putting the fedora on the dais - succeeded]
+  
+> >   Sound Stage
+  ** put scarf on dais
+  [putting the sparkly scarf on the dais]
+  You put the sparkly scarf on the dais.
+  [putting the sparkly scarf on the dais - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [putting the sparkly scarf on the dais]
+  (first taking the sparkly scarf)
+  [(1) taking the sparkly scarf - silently]
+  [(1) taking the sparkly scarf - silently - succeeded]
+  
+  You put the sparkly scarf on the dais.
+  [putting the sparkly scarf on the dais - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** put variety on variety
+  [putting Variety Magazine on Variety Magazine]
+  (first taking Variety Magazine)
+  [(1) taking Variety Magazine - silently]
+  [(1) taking Variety Magazine - silently - succeeded]
+  
+  You can't put something on top of itself.
+  [putting Variety Magazine on Variety Magazine - failed the can't put something on itself rule]
+  
+> >   Sound Stage
+  ** put bag on bag
+  [putting the frilly bag on the frilly bag]
+  You can't put something on top of itself.
+  [putting the frilly bag on the frilly bag - failed the can't put something on itself rule]
+  
+> >   Sound Stage
+  ** clark, put briefcase on briefcase
+  [asking Clark Gable to try putting the briefcase on the briefcase]
+  [(1) Clark Gable putting the briefcase on the briefcase]
+  [(1) Clark Gable putting the briefcase on the briefcase - failed the can't put something on itself rule]
+  
+  "I lack the dexterity," says Clark. Oh, he's so modest.
+  
+  [asking Clark Gable to try putting the briefcase on the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** clark, put briefcase on cage
+  [asking Clark Gable to try putting the briefcase on the cage]
+  [(1) Clark Gable putting the briefcase on the cage]
+  [(1) Clark Gable putting the briefcase on the cage - failed the can't put onto what's not a supporter rule]
+  
+  "The cage won't support a thing," says Clark reprovingly.
+  
+  [asking Clark Gable to try putting the briefcase on the cage - succeeded]
+  
+> >   Sound Stage
+  ** put bag on cage
+  [putting the frilly bag on the cage]
+  Putting things on the cage would achieve nothing.
+  [putting the frilly bag on the cage - failed the can't put onto what's not a supporter rule]
+  
+> >   Sound Stage
+  ** clark, get the fedora
+  [asking Clark Gable to try taking the fedora]
+  [(1) Clark Gable taking the fedora]
+  Clark Gable picks up the fedora.
+  [(1) Clark Gable taking the fedora - succeeded]
+  
+  [asking Clark Gable to try taking the fedora - succeeded]
+  
+> >   Sound Stage
+  ** get scarf
+  [taking the sparkly scarf]
+  (putting Variety Magazine into the frilly bag to make room)
+  [(1) inserting Variety Magazine into the frilly bag - silently]
+  [(1) inserting Variety Magazine into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the sparkly scarf - succeeded]
+  
+> >   Sound Stage
+  ** put dress on dais
+  [putting the slinky dress on the dais]
+  (first taking it off)
+  [(1) taking off the slinky dress - silently]
+  Rowr! Not that kind of movie, babe.
+  [(1) taking off the slinky dress - silently - failed]
+  
+  [putting the slinky dress on the dais - failed the can't put clothes being worn rule]
+  
+> >   Sound Stage
+  ** clark, put pants on dais
+  [asking Clark Gable to try putting the pair of pants on the dais]
+  [(1) Clark Gable putting the pair of pants on the dais]
+  [(2) Clark Gable taking off the pair of pants - silently]
+  [(2) Clark Gable taking off the pair of pants - silently - ended without result]
+  
+  [(1) Clark Gable putting the pair of pants on the dais - failed the can't put clothes being worn rule]
+  
+  Clark wiggles his eyebrows at you.
+  
+  [asking Clark Gable to try putting the pair of pants on the dais - succeeded]
+  
+> >   Sound Stage
+  ** put all on chair
+  [putting the sparkly scarf on the folding chair]
+  sparkly scarf: There is no more room on the folding chair.
+  [putting the sparkly scarf on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  [putting the frilly bag on the folding chair]
+  frilly bag: There is no more room on the folding chair.
+  [putting the frilly bag on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  
+> >   Sound Stage
+  ** clark, put all on chair
+  [asking Clark Gable to try putting the fedora on the folding chair]
+  fedora: [(1) Clark Gable putting the fedora on the folding chair]
+  [(2) Clark Gable dropping the fedora]
+  [(2) Clark Gable dropping the fedora - failed the can't drop if this exceeds carrying capacity rule]
+  [(1) Clark Gable putting the fedora on the folding chair - failed the convert put to drop where possible rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the fedora on the folding chair - succeeded]
+  [asking Clark Gable to try putting the bone on the folding chair]
+  bone: [(1) Clark Gable putting the bone on the folding chair]
+  [(2) Clark Gable dropping the bone]
+  [(2) Clark Gable dropping the bone - failed the can't drop if this exceeds carrying capacity rule]
+  [(1) Clark Gable putting the bone on the folding chair - failed the convert put to drop where possible rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the bone on the folding chair - succeeded]
+  [asking Clark Gable to try putting the swagger stick on the folding chair]
+  swagger stick: [(1) Clark Gable putting the swagger stick on the folding chair]
+  [(2) Clark Gable dropping the swagger stick]
+  [(2) Clark Gable dropping the swagger stick - failed the can't drop if this exceeds carrying capacity rule]
+  [(1) Clark Gable putting the swagger stick on the folding chair - failed the convert put to drop where possible rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the swagger stick on the folding chair - succeeded]
+  [asking Clark Gable to try putting the briefcase on the folding chair]
+  briefcase: [(1) Clark Gable putting the briefcase on the folding chair]
+  [(2) Clark Gable dropping the briefcase]
+  [(2) Clark Gable dropping the briefcase - failed the can't drop if this exceeds carrying capacity rule]
+  [(1) Clark Gable putting the briefcase on the folding chair - failed the convert put to drop where possible rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the briefcase on the folding chair - succeeded]
+  [asking Clark Gable to try putting the tray on the folding chair]
+  tray: [(1) Clark Gable putting the tray on the folding chair]
+  [(2) Clark Gable dropping the tray]
+  [(2) Clark Gable dropping the tray - failed the can't drop if this exceeds carrying capacity rule]
+  [(1) Clark Gable putting the tray on the folding chair - failed the convert put to drop where possible rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the tray on the folding chair - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  You can see a stage door, a cage (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are a folding chair (on which is Clark Gable), a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, get up
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(2) Clark Gable getting off the folding chair]
+  Clark Gable gets off the folding chair.
+  
+  [(2) Clark Gable getting off the folding chair - succeeded]
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, take all from chair
+  [answering Clark Gable that "take all from chair"]
+  There is no reply.
+  [answering Clark Gable that "take all from chair" - succeeded]
+  
+> >   Sound Stage
+  ** clark, put all on chair
+  [asking Clark Gable to try putting the fedora on the folding chair]
+  fedora: [(1) Clark Gable putting the fedora on the folding chair]
+  Clark Gable puts the fedora on the folding chair.
+  [(1) Clark Gable putting the fedora on the folding chair - succeeded]
+  [asking Clark Gable to try putting the fedora on the folding chair - succeeded]
+  [asking Clark Gable to try putting the bone on the folding chair]
+  bone: [(1) Clark Gable putting the bone on the folding chair]
+  [(1) Clark Gable putting the bone on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the bone on the folding chair - succeeded]
+  [asking Clark Gable to try putting the swagger stick on the folding chair]
+  swagger stick: [(1) Clark Gable putting the swagger stick on the folding chair]
+  [(1) Clark Gable putting the swagger stick on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the swagger stick on the folding chair - succeeded]
+  [asking Clark Gable to try putting the briefcase on the folding chair]
+  briefcase: [(1) Clark Gable putting the briefcase on the folding chair]
+  [(1) Clark Gable putting the briefcase on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the briefcase on the folding chair - succeeded]
+  [asking Clark Gable to try putting the tray on the folding chair]
+  tray: [(1) Clark Gable putting the tray on the folding chair]
+  [(1) Clark Gable putting the tray on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try putting the tray on the folding chair - succeeded]
+  
+> >   Sound Stage
+  ** get in chair
+  [entering the folding chair]
+  There is no more room on the folding chair.
+  [entering the folding chair - failed the can't enter if this exceeds carrying capacity rule]
+  
+> >   Sound Stage
+  ** put all on chair
+  [putting the sparkly scarf on the folding chair]
+  sparkly scarf: There is no more room on the folding chair.
+  [putting the sparkly scarf on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  [putting the frilly bag on the folding chair]
+  frilly bag: There is no more room on the folding chair.
+  [putting the frilly bag on the folding chair - failed the can't put if this exceeds carrying capacity rule]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  You can see a stage door, a cage (in which are a lion and a seat), a foam boulder, an automobile (empty) and a dais (on which are Clark Gable, a folding chair (on which is a fedora), a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** take all
+  [taking the foam boulder]
+  foam boulder: (putting the sparkly scarf into the frilly bag to make room)
+  [(1) inserting the sparkly scarf into the frilly bag - silently]
+  [(1) inserting the sparkly scarf into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the foam boulder - succeeded]
+  [taking the bone]
+  bone: That seems to belong to Clark Gable.
+  [taking the bone - failed the can't take people's possessions rule]
+  [taking the swagger stick]
+  swagger stick: That seems to belong to Clark Gable.
+  [taking the swagger stick - failed the can't take people's possessions rule]
+  [taking the briefcase]
+  briefcase: That seems to belong to Clark Gable.
+  [taking the briefcase - failed the can't take people's possessions rule]
+  [taking the signed contract]
+  signed contract: That seems to belong to Clark Gable.
+  [taking the signed contract - failed the can't take people's possessions rule]
+  [taking the tray]
+  tray: That seems to belong to Clark Gable.
+  [taking the tray - failed the can't take people's possessions rule]
+  [taking the fedora]
+  fedora: (putting the foam boulder into the frilly bag to make room)
+  [(1) inserting the foam boulder into the frilly bag - silently]
+  [(1) inserting the foam boulder into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the fedora - succeeded]
+  
+> >   Sound Stage
+  ** get up
+  [exiting]
+  But you aren't in anything at the moment.
+  [exiting - failed the can't exit when not inside anything rule]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a fedora
+    a frilly bag (open)
+      a foam boulder
+      a sparkly scarf
+      Variety Magazine
+      a clipboard
+      a tent
+      a small key
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** get in cage
+  [entering the cage]
+  You get into the cage.
+  
+  In the cage you can see a lion and a seat.
+  
+  [entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** put all in cage
+  [inserting the fedora into the cage]
+  fedora: [(1) dropping the fedora]
+  Dropped.
+  [(1) dropping the fedora - succeeded]
+  [inserting the fedora into the cage - succeeded]
+  [inserting the frilly bag into the cage]
+  frilly bag: [(1) dropping the frilly bag]
+  Dropped.
+  [(1) dropping the frilly bag - succeeded]
+  [inserting the frilly bag into the cage - succeeded]
+  
+> >   Sound Stage
+  ** take all
+  [taking the frilly bag]
+  frilly bag: Taken.
+  [taking the frilly bag - succeeded]
+  [taking the foam boulder]
+  foam boulder: Taken.
+  [taking the foam boulder - succeeded]
+  [taking the sparkly scarf]
+  sparkly scarf: (putting the foam boulder into the frilly bag to make room)
+  [(1) inserting the foam boulder into the frilly bag - silently]
+  [(1) inserting the foam boulder into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the sparkly scarf - succeeded]
+  [taking Variety Magazine]
+  Variety Magazine: (putting the sparkly scarf into the frilly bag to make room)
+  [(1) inserting the sparkly scarf into the frilly bag - silently]
+  [(1) inserting the sparkly scarf into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking Variety Magazine - succeeded]
+  [taking the clipboard]
+  clipboard: (putting Variety Magazine into the frilly bag to make room)
+  [(1) inserting Variety Magazine into the frilly bag - silently]
+  [(1) inserting Variety Magazine into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the clipboard - succeeded]
+  [taking the tent]
+  tent: (putting the clipboard into the frilly bag to make room)
+  [(1) inserting the clipboard into the frilly bag - silently]
+  [(1) inserting the clipboard into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the tent - succeeded]
+  [taking the small key]
+  small key: (putting the tent into the frilly bag to make room)
+  [(1) inserting the tent into the frilly bag - silently]
+  [(1) inserting the tent into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the small key - succeeded]
+  [taking the fedora]
+  fedora: (putting the small key into the frilly bag to make room)
+  [(1) inserting the small key into the frilly bag - silently]
+  [(1) inserting the small key into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the fedora - succeeded]
+  [taking the bone]
+  bone: That seems to belong to Clark Gable.
+  [taking the bone - failed the can't take people's possessions rule]
+  [taking the swagger stick]
+  swagger stick: That seems to belong to Clark Gable.
+  [taking the swagger stick - failed the can't take people's possessions rule]
+  [taking the briefcase]
+  briefcase: That seems to belong to Clark Gable.
+  [taking the briefcase - failed the can't take people's possessions rule]
+  [taking the signed contract]
+  signed contract: That seems to belong to Clark Gable.
+  [taking the signed contract - failed the can't take people's possessions rule]
+  [taking the tray]
+  tray: That seems to belong to Clark Gable.
+  [taking the tray - failed the can't take people's possessions rule]
+  
+> >   Sound Stage
+  ** get out
+  [exiting]
+  You get out of the cage.
+  
+  Sound Stage
+  You can see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are Clark Gable, a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, get in cage
+  [asking Clark Gable to try entering the cage]
+  [(1) Clark Gable entering the cage]
+  [(2) Clark Gable exiting - silently]
+  [(3) Clark Gable getting off the dais - silently]
+  [(3) Clark Gable getting off the dais - silently - succeeded]
+  [(2) Clark Gable exiting - silently - succeeded]
+  
+  Clark Gable gets into the cage.
+  
+  [(1) Clark Gable entering the cage - succeeded]
+  
+  [asking Clark Gable to try entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, put all in cage
+  [asking Clark Gable to try inserting the bone into the cage]
+  bone: [(1) Clark Gable inserting the bone into the cage]
+  [(2) Clark Gable dropping the bone]
+  Clark Gable puts down the bone.
+  [(2) Clark Gable dropping the bone - succeeded]
+  [(1) Clark Gable inserting the bone into the cage - succeeded]
+  [asking Clark Gable to try inserting the bone into the cage - succeeded]
+  [asking Clark Gable to try inserting the swagger stick into the cage]
+  swagger stick: [(1) Clark Gable inserting the swagger stick into the cage]
+  [(2) Clark Gable dropping the swagger stick]
+  Clark Gable puts down the swagger stick.
+  [(2) Clark Gable dropping the swagger stick - succeeded]
+  [(1) Clark Gable inserting the swagger stick into the cage - succeeded]
+  [asking Clark Gable to try inserting the swagger stick into the cage - succeeded]
+  [asking Clark Gable to try inserting the briefcase into the cage]
+  briefcase: [(1) Clark Gable inserting the briefcase into the cage]
+  [(2) Clark Gable dropping the briefcase]
+  Clark Gable puts down the briefcase.
+  [(2) Clark Gable dropping the briefcase - succeeded]
+  [(1) Clark Gable inserting the briefcase into the cage - succeeded]
+  [asking Clark Gable to try inserting the briefcase into the cage - succeeded]
+  [asking Clark Gable to try inserting the tray into the cage]
+  tray: [(1) Clark Gable inserting the tray into the cage]
+  [(2) Clark Gable dropping the tray]
+  Clark Gable puts down the tray.
+  [(2) Clark Gable dropping the tray - succeeded]
+  [(1) Clark Gable inserting the tray into the cage - succeeded]
+  [asking Clark Gable to try inserting the tray into the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, take all from cage
+  [asking Clark Gable to try removing the tray from the cage]
+  tray: [(1) Clark Gable removing the tray from the cage]
+  [(2) Clark Gable taking the tray]
+  Clark Gable picks up the tray.
+  [(2) Clark Gable taking the tray - succeeded]
+  [(1) Clark Gable removing the tray from the cage - succeeded]
+  [asking Clark Gable to try removing the tray from the cage - succeeded]
+  [asking Clark Gable to try removing the briefcase from the cage]
+  briefcase: [(1) Clark Gable removing the briefcase from the cage]
+  [(2) Clark Gable taking the briefcase]
+  Clark Gable picks up the briefcase.
+  [(2) Clark Gable taking the briefcase - succeeded]
+  [(1) Clark Gable removing the briefcase from the cage - succeeded]
+  [asking Clark Gable to try removing the briefcase from the cage - succeeded]
+  [asking Clark Gable to try removing the swagger stick from the cage]
+  swagger stick: [(1) Clark Gable removing the swagger stick from the cage]
+  [(2) Clark Gable taking the swagger stick]
+  Clark Gable picks up the swagger stick.
+  [(2) Clark Gable taking the swagger stick - succeeded]
+  [(1) Clark Gable removing the swagger stick from the cage - succeeded]
+  [asking Clark Gable to try removing the swagger stick from the cage - succeeded]
+  [asking Clark Gable to try removing the bone from the cage]
+  bone: [(1) Clark Gable removing the bone from the cage]
+  [(2) Clark Gable taking the bone]
+  Clark Gable picks up the bone.
+  [(2) Clark Gable taking the bone - succeeded]
+  [(1) Clark Gable removing the bone from the cage - succeeded]
+  [asking Clark Gable to try removing the bone from the cage - succeeded]
+  [asking Clark Gable to try removing the lion from the cage]
+  lion: [(1) Clark Gable removing the lion from the cage]
+  [(2) Clark Gable taking the lion]
+  [(2) Clark Gable taking the lion - failed the can't take other people rule]
+  [(1) Clark Gable removing the lion from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the lion from the cage - succeeded]
+  [asking Clark Gable to try removing the seat from the cage]
+  seat: [(1) Clark Gable removing the seat from the cage]
+  [(2) Clark Gable taking the seat]
+  [(2) Clark Gable taking the seat - failed the can't take what's fixed in place rule]
+  [(1) Clark Gable removing the seat from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the seat from the cage - succeeded]
+  [asking Clark Gable to try removing Clark Gable from the cage]
+  Clark Gable: [(1) Clark Gable removing Clark Gable from the cage]
+  [(2) Clark Gable taking Clark Gable]
+  [(2) Clark Gable taking Clark Gable - failed the can't take yourself rule]
+  [(1) Clark Gable removing Clark Gable from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing Clark Gable from the cage - succeeded]
+  [asking Clark Gable to try removing the chains from the cage]
+  chains: [(1) Clark Gable removing the chains from the cage]
+  [(2) Clark Gable taking the chains]
+  [(2) Clark Gable taking the chains - failed the can't take scenery rule]
+  [(1) Clark Gable removing the chains from the cage - failed the convert remove to take rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try removing the chains from the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  Clark Gable gets out of the cage.
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, put cage in briefcase
+  [asking Clark Gable to try inserting the cage into the briefcase]
+  [(1) Clark Gable inserting the cage into the briefcase]
+  (Clark Gable first taking the cage)
+  [(2) Clark Gable taking the cage - silently]
+  [(2) Clark Gable taking the cage - silently - failed the can't take what's fixed in place rule]
+  
+  [(1) Clark Gable inserting the cage into the briefcase - failed the can't insert what's not held rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try inserting the cage into the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** put cage in briefcase
+  [inserting the cage into the briefcase]
+  (first taking the cage)
+  [(1) taking the cage - silently]
+  That's fixed in place.
+  [(1) taking the cage - silently - failed the can't take what's fixed in place rule]
+  
+  [inserting the cage into the briefcase - failed the can't insert what's not held rule]
+  
+> >   Sound Stage
+  ** put bag in bag
+  [inserting the frilly bag into the frilly bag]
+  You can't put something inside itself.
+  [inserting the frilly bag into the frilly bag - failed the can't insert something into itself rule]
+  
+> >   Sound Stage
+  ** clark, put briefcase in briefcase
+  [asking Clark Gable to try inserting the briefcase into the briefcase]
+  [(1) Clark Gable inserting the briefcase into the briefcase]
+  [(1) Clark Gable inserting the briefcase into the briefcase - failed the can't insert something into itself rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try inserting the briefcase into the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** put strap in bag
+  [inserting the strap into the frilly bag]
+  (first taking the strap)
+  [(1) taking the strap - silently]
+  That seems to be a part of the frilly bag.
+  [(1) taking the strap - silently - failed the can't take component parts rule]
+  
+  [inserting the strap into the frilly bag - failed the can't insert what's not held rule]
+  
+> >   Sound Stage
+  ** put my hand in the bag
+  [inserting your hand into the frilly bag]
+  (first taking your hand)
+  [(1) taking your hand - silently]
+  That seems to be a part of yourself.
+  [(1) taking your hand - silently - failed the can't take component parts rule]
+  
+  [inserting your hand into the frilly bag - failed the can't insert what's not held rule]
+  
+> >   Sound Stage
+  ** close bag
+  [closing the frilly bag]
+  You close the frilly bag.
+  [closing the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** clark, close briefcase
+  [asking Clark Gable to try closing the briefcase]
+  [(1) Clark Gable closing the briefcase]
+  Clark Gable closes the briefcase.
+  [(1) Clark Gable closing the briefcase - succeeded]
+  
+  [asking Clark Gable to try closing the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** put scarf in bag
+  You can't see any such thing.
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a fedora
+    a frilly bag (closed)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** put fedora in bag
+  [inserting the fedora into the frilly bag]
+  The frilly bag is closed.
+  [inserting the fedora into the frilly bag - failed the can't insert into closed containers rule]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a fedora
+    a frilly bag (closed)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, put bone in briefcase
+  [asking Clark Gable to try inserting the bone into the briefcase]
+  [(1) Clark Gable inserting the bone into the briefcase]
+  [(1) Clark Gable inserting the bone into the briefcase - failed the can't insert into closed containers rule]
+  
+  Clark frowns. "I can't reach through things -- unless you were planning a special effect?"
+  
+  [asking Clark Gable to try inserting the bone into the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** put fedora into dais
+  [inserting the fedora into the dais]
+  That can't contain things.
+  [inserting the fedora into the dais - failed the can't insert into what's not a container rule]
+  
+> >   Sound Stage
+  ** clark, put bone into dais
+  [asking Clark Gable to try inserting the bone into the dais]
+  [(1) Clark Gable inserting the bone into the dais]
+  [(1) Clark Gable inserting the bone into the dais - failed the can't insert into what's not a container rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try inserting the bone into the dais - succeeded]
+  
+> >   Sound Stage
+  ** open bag
+  [opening the frilly bag]
+  You open the frilly bag, revealing a small key, a tent, a clipboard, Variety Magazine, a sparkly scarf and a foam boulder.
+  [opening the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** clark, open briefcase
+  [asking Clark Gable to try opening the briefcase]
+  [(1) Clark Gable opening the briefcase]
+  Clark Gable opens the briefcase.
+  [(1) Clark Gable opening the briefcase - succeeded]
+  
+  [asking Clark Gable to try opening the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** put scarf into briefcase
+  [inserting the sparkly scarf into the briefcase]
+  (first taking the sparkly scarf)
+  [(1) taking the sparkly scarf - silently]
+  (putting the fedora into the frilly bag to make room)
+  [(2) inserting the fedora into the frilly bag - silently]
+  [(2) inserting the fedora into the frilly bag - silently - succeeded]
+  
+  [(1) taking the sparkly scarf - silently - succeeded]
+  
+  You put the sparkly scarf into the briefcase.
+  [inserting the sparkly scarf into the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** take scarf
+  [taking the sparkly scarf]
+  That seems to belong to Clark Gable.
+  [taking the sparkly scarf - failed the can't take people's possessions rule]
+  
+> >   Sound Stage
+  ** put scarf into briefcase
+  [inserting the sparkly scarf into the briefcase]
+  (first taking the sparkly scarf)
+  [(1) taking the sparkly scarf - silently]
+  That seems to belong to Clark Gable.
+  [(1) taking the sparkly scarf - silently - failed the can't take people's possessions rule]
+  
+  [inserting the sparkly scarf into the briefcase - failed the can't insert what's not held rule]
+  
+> >   Sound Stage
+  ** undo
+  Sound Stage
+  [Previous turn undone.]
+  
+> >   Sound Stage
+  ** clark, put pants into briefcase
+  [asking Clark Gable to try inserting the pair of pants into the briefcase]
+  [(1) Clark Gable inserting the pair of pants into the briefcase]
+  [(2) Clark Gable taking off the pair of pants - silently]
+  [(2) Clark Gable taking off the pair of pants - silently - ended without result]
+  
+  [(1) Clark Gable inserting the pair of pants into the briefcase - failed the can't insert clothes being worn rule]
+  
+  "That kind of thing isn't in my contract, sweetie," says Clark. "If you're interested you'll have to ask off-camera."
+  
+  [asking Clark Gable to try inserting the pair of pants into the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** put dress into bag
+  [inserting the slinky dress into the frilly bag]
+  (first taking it off)
+  [(1) taking off the slinky dress - silently]
+  Rowr! Not that kind of movie, babe.
+  [(1) taking off the slinky dress - silently - failed]
+  
+  [inserting the slinky dress into the frilly bag - failed the can't insert clothes being worn rule]
+  
+> >   Sound Stage
+  ** open trunk
+  [opening the trunk]
+  You open the trunk.
+  [opening the trunk - succeeded]
+  
+> >   Sound Stage
+  ** put all in trunk
+  [inserting the frilly bag into the trunk]
+  frilly bag: Done.
+  [inserting the frilly bag into the trunk - succeeded]
+  
+> >   Sound Stage
+  ** get all from trunk
+  (the frilly bag from the trunk)
+  [removing the frilly bag from the trunk]
+  [(1) taking the frilly bag]
+  Taken.
+  [(1) taking the frilly bag - succeeded]
+  
+  [removing the frilly bag from the trunk - succeeded]
+  
+> >   Sound Stage
+  ** clark, put all in trunk
+  [asking Clark Gable to try inserting the bone into the trunk]
+  bone: [(1) Clark Gable inserting the bone into the trunk]
+  Clark Gable puts the bone into the trunk.
+  [(1) Clark Gable inserting the bone into the trunk - succeeded]
+  [asking Clark Gable to try inserting the bone into the trunk - succeeded]
+  [asking Clark Gable to try inserting the swagger stick into the trunk]
+  swagger stick: [(1) Clark Gable inserting the swagger stick into the trunk]
+  [(1) Clark Gable inserting the swagger stick into the trunk - failed the can't insert if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try inserting the swagger stick into the trunk - succeeded]
+  [asking Clark Gable to try inserting the briefcase into the trunk]
+  briefcase: [(1) Clark Gable inserting the briefcase into the trunk]
+  [(1) Clark Gable inserting the briefcase into the trunk - failed the can't insert if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try inserting the briefcase into the trunk - succeeded]
+  [asking Clark Gable to try inserting the tray into the trunk]
+  tray: [(1) Clark Gable inserting the tray into the trunk]
+  [(1) Clark Gable inserting the tray into the trunk - failed the can't insert if this exceeds carrying capacity rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try inserting the tray into the trunk - succeeded]
+  
+> >   Sound Stage
+  ** clark, get all from trunk
+  [asking Clark Gable to try removing the bone from the trunk]
+  [(1) Clark Gable removing the bone from the trunk]
+  [(2) Clark Gable taking the bone]
+  Clark Gable picks up the bone.
+  [(2) Clark Gable taking the bone - succeeded]
+  
+  [(1) Clark Gable removing the bone from the trunk - succeeded]
+  
+  [asking Clark Gable to try removing the bone from the trunk - succeeded]
+  
+> >   Sound Stage
+  ** wait
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, wait
+  [asking Clark Gable to try waiting]
+  [(1) Clark Gable waiting]
+  Clark Gable waits.
+  [(1) Clark Gable waiting - succeeded]
+  
+  [asking Clark Gable to try waiting - succeeded]
+  
+> >   Sound Stage
+  ** get in vehicle
+  You can't see any such thing.
+  
+> >   Sound Stage
+  ** get in automobile
+  [entering the automobile]
+  You get into the automobile.
+  
+  [entering the automobile - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  You get out of the automobile.
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** w
+  [going west]
+  (first opening the stage door)
+  [(1) opening the stage door - silently]
+  It seems to be locked.
+  [(1) opening the stage door - silently - failed the can't open what's locked rule]
+  
+  [going west - failed the can't go through closed doors rule]
+  
+> >   Sound Stage
+  ** get on chair
+  [entering the folding chair]
+  (getting onto the dais)
+  [(1) entering the dais - silently]
+  [(1) entering the dais - silently - succeeded]
+  
+  [(1) entering the folding chair]
+  You get onto the folding chair.
+  
+  [(1) entering the folding chair - succeeded]
+  
+  [entering the folding chair - succeeded]
+  
+> >   Sound Stage
+  ** w
+  [going west]
+  (first getting off the folding chair)
+  [(1) exiting - silently]
+  [(2) getting off the folding chair - silently]
+  [(2) getting off the folding chair - silently - succeeded]
+  [(1) exiting - silently - succeeded]
+  
+  You would have to get off the dais first.
+  [going west - failed the can't travel in what's not a vehicle rule]
+  
+> >   Sound Stage
+  ** get up
+  [exiting]
+  [(1) getting off the dais]
+  You get off the dais.
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) getting off the dais - succeeded]
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  But you aren't in anything at the moment.
+  [exiting - failed the can't exit when not inside anything rule]
+  
+> >   Sound Stage
+  ** clark, get on chair
+  [asking Clark Gable to try entering the folding chair]
+  [(1) Clark Gable entering the folding chair]
+  [(2) Clark Gable entering the dais - silently]
+  [(2) Clark Gable entering the dais - silently - succeeded]
+  
+  [(2) Clark Gable entering the folding chair]
+  Clark Gable gets onto the folding chair.
+  
+  [(2) Clark Gable entering the folding chair - succeeded]
+  
+  [(1) Clark Gable entering the folding chair - succeeded]
+  
+  [asking Clark Gable to try entering the folding chair - succeeded]
+  
+> >   Sound Stage
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  [(2) Clark Gable exiting - silently]
+  [(3) Clark Gable getting off the folding chair - silently]
+  [(3) Clark Gable getting off the folding chair - silently - succeeded]
+  [(2) Clark Gable exiting - silently - succeeded]
+  
+  [(1) Clark Gable going west - failed the can't travel in what's not a vehicle rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(2) Clark Gable getting off the dais]
+  Clark Gable gets off the dais.
+  
+  [(2) Clark Gable getting off the dais - succeeded]
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(1) Clark Gable exiting - failed the can't exit when not inside anything rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** n
+  [going north]
+  You can't go that way.
+  [going north - failed the can't go that way rule]
+  
+> >   Sound Stage
+  ** clark, n
+  [asking Clark Gable to try going north]
+  [(1) Clark Gable going north]
+  [(1) Clark Gable going north - failed the can't go that way rule]
+  
+  "Look," says Clark. "If you want a stage magician, hire one."
+  
+  [asking Clark Gable to try going north - succeeded]
+  
+> >   Sound Stage
+  ** w
+  [going west]
+  (first opening the stage door)
+  [(1) opening the stage door - silently]
+  It seems to be locked.
+  [(1) opening the stage door - silently - failed the can't open what's locked rule]
+  
+  [going west - failed the can't go through closed doors rule]
+  
+> >   Sound Stage
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  [(2) Clark Gable opening the stage door - silently]
+  [(2) Clark Gable opening the stage door - silently - failed the can't open what's locked rule]
+  
+  [(1) Clark Gable going west - failed the can't go through closed doors rule]
+  
+  Clark just groans.
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  It seems to be locked.
+  [opening the stage door - failed the can't open what's locked rule]
+  
+> >   Sound Stage
+  ** unlock door
+  What do you want to unlock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [unlocking the stage door with the small key]
+  (first taking the small key)
+  [(1) taking the small key - silently]
+  [(1) taking the small key - silently - succeeded]
+  
+  You unlock the stage door.
+  [unlocking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  You open the stage door.
+  [opening the stage door - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  You can see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Sound Stage
+  ** e
+  [going east]
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [going east - succeeded]
+  
+> >   Sound Stage
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  Clark Gable goes west.
+  [(1) Clark Gable going west - succeeded]
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Lot
+  ** clark, e
+  [asking Clark Gable to try going east]
+  [(1) Clark Gable going east]
+  Clark Gable goes east.
+  [(1) Clark Gable going east - succeeded]
+  
+  [asking Clark Gable to try going east - succeeded]
+  
+> >   Sound Stage
+  ** e
+  [going east]
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [going east - succeeded]
+  
+> >   Sound Stage
+  ** get in automobile
+  [entering the automobile]
+  You get into the automobile.
+  
+  [entering the automobile - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot (in the automobile)
+  You can see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Sound Stage
+  ** e
+  [going east]
+  
+  Sound Stage (in the automobile)
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [going east - succeeded]
+  
+> >   Sound Stage
+  ** clark, get in automobile
+  [asking Clark Gable to try entering the automobile]
+  [(1) Clark Gable entering the automobile]
+  Clark Gable gets into the automobile.
+  
+  [(1) Clark Gable entering the automobile - succeeded]
+  
+  [asking Clark Gable to try entering the automobile - succeeded]
+  
+> >   Sound Stage
+  ** get out
+  [exiting]
+  You get out of the automobile.
+  
+  Sound Stage
+  You can see a stage door, an automobile (in which is Clark Gable), a cage (in which are a lion and a seat) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  Clark Gable goes west in the automobile.
+  [(1) Clark Gable going west - succeeded]
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  You can see a stage door, an automobile (in which is Clark Gable) and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Lot
+  ** get in automobile
+  [entering the automobile]
+  You get into the automobile.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [entering the automobile - succeeded]
+  
+> >   Sound Stage
+  ** e
+  [going east]
+  
+  Sound Stage (in the automobile)
+  You can see a stage door, a cage (in which are a lion and a seat) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [going east - succeeded]
+  
+> >   Lot
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  Clark Gable goes west in the automobile, taking you along.
+  
+  [(2) looking]
+  Lot (in the automobile)
+  You can see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [(2) looking - succeeded]
+  
+  [(1) Clark Gable going west - succeeded]
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot (in the automobile)
+  You can see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** e
+  [going east]
+  
+  Sound Stage (in the automobile)
+  You can see a stage door, a cage (in which are a lion and a seat) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [going east - succeeded]
+  
+> >   Lot
+  ** clark, push cage w
+  [asking Clark Gable to try pushing the cage to west]
+  [(1) Clark Gable pushing the cage to west]
+  [(2) Clark Gable going west]
+  Clark Gable goes west in the automobile, pushing the cage in front, taking you along.
+  
+  [(3) looking]
+  Lot (in the automobile)
+  You can see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  Clark is here, carrying the cage, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [(3) looking - succeeded]
+  
+  [(2) Clark Gable going west - succeeded]
+  
+  [(1) Clark Gable pushing the cage to west - succeeded]
+  
+  [asking Clark Gable to try pushing the cage to west - succeeded]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot (in the automobile)
+  You can see a cage (in which are a lion and a seat), a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** push cage e
+  [pushing the cage to east]
+  [(1) going east]
+  
+  Sound Stage (in the automobile)
+  You can see a stage door and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  [(1) going east - succeeded]
+  
+  [pushing the cage to east - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  Clark Gable gets out of the automobile.
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  You get out of the automobile.
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a cage (in which are a lion and a seat), a stage door, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, push cage e
+  [asking Clark Gable to try pushing the cage to east]
+  [(1) Clark Gable pushing the cage to east]
+  [(2) Clark Gable going east]
+  [(2) Clark Gable going east - failed the can't go that way rule]
+  
+  [(1) Clark Gable pushing the cage to east - failed the standard pushing in directions rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try pushing the cage to east - succeeded]
+  
+> >   Sound Stage
+  ** clark, push cage w
+  [asking Clark Gable to try pushing the cage to west]
+  [(1) Clark Gable pushing the cage to west]
+  [(2) Clark Gable going west]
+  Clark Gable goes west, pushing the cage away.
+  [(2) Clark Gable going west - succeeded]
+  
+  [(1) Clark Gable pushing the cage to west - succeeded]
+  
+  [asking Clark Gable to try pushing the cage to west - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat) and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Sound Stage
+  ** push cage e
+  [pushing the cage to east]
+  [(1) going east]
+  
+  Sound Stage
+  You can see a stage door, an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) going east - succeeded]
+  
+  [pushing the cage to east - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Lot
+  ** clark, e
+  [asking Clark Gable to try going east]
+  [(1) Clark Gable going east]
+  Clark Gable goes east.
+  [(1) Clark Gable going east - succeeded]
+  
+  [asking Clark Gable to try going east - succeeded]
+  
+> >   Sound Stage
+  ** e
+  [going east]
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [going east - succeeded]
+  
+> >   Sound Stage
+  ** clark, go through door
+  [asking Clark Gable to try entering the stage door]
+  [(1) Clark Gable entering the stage door]
+  [(2) Clark Gable going the stage door]
+  Clark Gable goes through the stage door.
+  [(2) Clark Gable going the stage door - succeeded]
+  
+  [(1) Clark Gable entering the stage door - succeeded]
+  
+  [asking Clark Gable to try entering the stage door - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  You can see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** enter door
+  [entering the stage door]
+  [(1) going the stage door]
+  
+  Lot
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [(1) going the stage door - succeeded]
+  
+  [entering the stage door - succeeded]
+  
+> >   Lot
+  ** clark, enter door
+  [asking Clark Gable to try entering the stage door]
+  [(1) Clark Gable entering the stage door]
+  [(2) Clark Gable going the stage door]
+  Clark Gable goes through the stage door.
+  [(2) Clark Gable going the stage door - succeeded]
+  
+  [(1) Clark Gable entering the stage door - succeeded]
+  
+  [asking Clark Gable to try entering the stage door - succeeded]
+  
+> >   Sound Stage
+  ** enter door
+  [entering the stage door]
+  [(1) going the stage door]
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) going the stage door - succeeded]
+  
+  [entering the stage door - succeeded]
+  
+> >   Sound Stage
+  ** clark, enter west
+  [asking Clark Gable to try entering west]
+  [(1) Clark Gable entering west]
+  [(1) Clark Gable entering west - failed the basic accessibility rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try entering west - succeeded]
+  
+> >   Sound Stage
+  ** clark, enter east
+  [asking Clark Gable to try entering east]
+  [(1) Clark Gable entering east]
+  [(1) Clark Gable entering east - failed the basic accessibility rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try entering east - succeeded]
+  
+> >   Sound Stage
+  ** enter west
+  [entering west]
+  You must name something more substantial.
+  [entering west - failed the basic accessibility rule]
+  
+> >   Sound Stage
+  ** clark, west
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  Clark Gable goes west.
+  [(1) Clark Gable going west - succeeded]
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Lot
+  ** clark, e
+  [asking Clark Gable to try going east]
+  [(1) Clark Gable going east]
+  Clark Gable goes east.
+  [(1) Clark Gable going east - succeeded]
+  
+  [asking Clark Gable to try going east - succeeded]
+  
+> >   Sound Stage
+  ** east
+  [going east]
+  
+  Sound Stage
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [going east - succeeded]
+  
+> >   Sound Stage
+  ** get on dais
+  [entering the dais]
+  You get onto the dais.
+  
+  On the dais you can see a folding chair, a canvas deckchair and a rubber mat.
+  
+  [entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [entering the dais]
+  But you're already on the dais.
+  [entering the dais - failed the can't enter what's already entered rule]
+  
+> >   Sound Stage
+  ** clark, get on dais
+  [asking Clark Gable to try entering the dais]
+  [(1) Clark Gable entering the dais]
+  Clark Gable gets onto the dais.
+  
+  [(1) Clark Gable entering the dais - succeeded]
+  
+  [asking Clark Gable to try entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [asking Clark Gable to try entering the dais]
+  [(1) Clark Gable entering the dais]
+  [(1) Clark Gable entering the dais - failed the can't enter what's already entered rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try entering the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, get in mat
+  [asking Clark Gable to try entering the rubber mat]
+  [(1) Clark Gable entering the rubber mat]
+  [(1) Clark Gable entering the rubber mat - failed the can't enter what's not enterable rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try entering the rubber mat - succeeded]
+  
+> >   Sound Stage
+  ** get on mat
+  [entering the rubber mat]
+  That's not something you can enter.
+  [entering the rubber mat - failed the can't enter what's not enterable rule]
+  
+> >   Sound Stage
+  ** close cage
+  [closing the cage]
+  You close the cage.
+  [closing the cage - succeeded]
+  
+> >   Sound Stage
+  ** get in cage
+  [entering the cage]
+  You can't get into the closed cage.
+  [entering the cage - failed the can't enter closed containers rule]
+  
+> >   Sound Stage
+  ** clark, get in cage
+  [asking Clark Gable to try entering the cage]
+  [(1) Clark Gable entering the cage]
+  [(1) Clark Gable entering the cage - failed the can't enter closed containers rule]
+  
+  Clark says drily, "Is this in the script, or are we doing improvisation now?"
+  
+  [asking Clark Gable to try entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a small key
+    a frilly bag (open)
+      a fedora
+      a tent
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** get in bag
+  [entering the frilly bag]
+  That's not something you can enter.
+  [entering the frilly bag - failed the can't enter what's not enterable rule]
+  
+> >   Sound Stage
+  ** get in tent
+  [entering the tent]
+  You can only get into something free-standing.
+  [entering the tent - failed the can't enter something carried rule]
+  
+> >   Sound Stage
+  ** drop tent
+  [dropping the tent]
+  You haven't got that.
+  [dropping the tent - failed the can't drop what's not held rule]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage (on the dais)
+  You can see a stage door, a cage (closed) (in which are a lion and a seat) and an automobile (empty) here.
+  
+  Clark is here, carrying the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  On the dais you can also see a folding chair, a canvas deckchair and a rubber mat.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a small key
+    a frilly bag (open)
+      a fedora
+      a tent
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** get tent
+  [taking the tent]
+  (putting the small key into the frilly bag to make room)
+  [(1) inserting the small key into the frilly bag - silently]
+  [(1) inserting the small key into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the tent - succeeded]
+  
+> >   Sound Stage
+  ** drop it
+  [dropping the tent]
+  Dropped.
+  [dropping the tent - succeeded]
+  
+> >   Sound Stage
+  ** clark, get tent
+  [asking Clark Gable to try taking the tent]
+  [(1) Clark Gable taking the tent]
+  Clark Gable picks up the tent.
+  [(1) Clark Gable taking the tent - succeeded]
+  
+  [asking Clark Gable to try taking the tent - succeeded]
+  
+> >   Sound Stage
+  ** clark, enter tent
+  [asking Clark Gable to try entering the tent]
+  [(1) Clark Gable entering the tent]
+  [(1) Clark Gable entering the tent - failed the can't enter something carried rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try entering the tent - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage (on the dais)
+  You can see a stage door, a cage (closed) (in which are a lion and a seat) and an automobile (empty) here.
+  
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  On the dais you can also see a folding chair, a canvas deckchair and a rubber mat.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  [(1) getting off the dais]
+  You get off the dais.
+  
+  Sound Stage
+  You can see a stage door, a cage (closed) (in which are a lion and a seat), an automobile (empty) and a dais (on which are Clark Gable, a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [(1) getting off the dais - succeeded]
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, get off
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(2) Clark Gable getting off the dais]
+  Clark Gable gets off the dais.
+  
+  [(2) Clark Gable getting off the dais - succeeded]
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** get folding chair
+  [taking the folding chair]
+  That's fixed in place.
+  [taking the folding chair - failed the can't take what's fixed in place rule]
+  
+> >   Sound Stage
+  ** x cage
+  [examining the cage]
+  In the cage are a lion and a seat.
+  
+  [examining the cage - succeeded]
+  
+> >   Sound Stage
+  ** close cage
+  [closing the cage]
+  That's already closed.
+  [closing the cage - failed the can't close what's already closed rule]
+  
+> >   Sound Stage
+  ** get in seat
+  [entering the seat]
+  The cage isn't open.
+  [entering the seat - failed the basic accessibility rule]
+  
+> >   Sound Stage
+  ** clark, get in seat
+  [asking Clark Gable to try entering the seat]
+  [(1) Clark Gable entering the seat]
+  [(1) Clark Gable entering the seat - failed the basic accessibility rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try entering the seat - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(1) Clark Gable exiting - failed the can't exit when not inside anything rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  But you aren't in anything at the moment.
+  [exiting - failed the can't exit when not inside anything rule]
+  
+> >   Sound Stage
+  ** open cage
+  [opening the cage]
+  You open the cage.
+  [opening the cage - succeeded]
+  
+> >   Sound Stage
+  ** get in cage
+  [entering the cage]
+  You get into the cage.
+  
+  In the cage you can see a lion and a seat.
+  
+  [entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, get in cage
+  [asking Clark Gable to try entering the cage]
+  [(1) Clark Gable entering the cage]
+  Clark Gable gets into the cage.
+  
+  [(1) Clark Gable entering the cage - succeeded]
+  
+  [asking Clark Gable to try entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** close cage
+  [closing the cage]
+  You close the cage.
+  [closing the cage - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  You can't get out of the closed cage.
+  [exiting - failed the can't exit closed containers rule]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  [(1) Clark Gable exiting - failed the can't exit closed containers rule]
+  
+  Clark makes a helpless gesture about his ability to move himself, or parts of himself, through solid objects.
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** open cage
+  [opening the cage]
+  You open the cage.
+  [opening the cage - succeeded]
+  
+> >   Sound Stage
+  ** out
+  [exiting]
+  You get out of the cage.
+  
+  Sound Stage
+  You can see a stage door, a cage (in which are Clark Gable, a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  Clark Gable gets out of the cage.
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, a cage (in which are a lion and a seat), an automobile (empty) and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, look
+  [asking Clark Gable to try looking]
+  [(1) Clark Gable looking]
+  Clark Gable looks around.
+  [(1) Clark Gable looking - succeeded]
+  
+  [asking Clark Gable to try looking - succeeded]
+  
+> >   Sound Stage
+  ** x seat
+  [examining the seat]
+  You see nothing special about the seat.
+  
+  [examining the seat - succeeded]
+  
+> >   Sound Stage
+  ** x bag
+  [examining the frilly bag]
+  In the frilly bag are a small key, a fedora, a clipboard, Variety Magazine and a foam boulder.
+  
+  [examining the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** x clipboard
+  [examining the clipboard]
+  You see nothing special about the clipboard.
+  
+  [examining the clipboard - succeeded]
+  
+> >   Sound Stage
+  ** x ignition
+  [examining the ignition]
+  The ignition is currently switched off.
+  
+  [examining the ignition - succeeded]
+  
+> >   Sound Stage
+  ** clark, x me
+  [asking Clark Gable to try examining yourself]
+  [(1) Clark Gable examining yourself]
+  Clark Gable looks closely at yourself.
+  [(1) Clark Gable examining yourself - succeeded]
+  
+  [asking Clark Gable to try examining yourself - succeeded]
+  
+> >   Sound Stage
+  ** clark, x clipboard
+  [asking Clark Gable to try examining the clipboard]
+  [(1) Clark Gable examining the clipboard]
+  Clark Gable looks closely at the clipboard.
+  [(1) Clark Gable examining the clipboard - succeeded]
+  
+  [asking Clark Gable to try examining the clipboard - succeeded]
+  
+> >   Sound Stage
+  ** clark, x ignition
+  [asking Clark Gable to try examining the ignition]
+  [(1) Clark Gable examining the ignition]
+  Clark Gable looks closely at the ignition.
+  [(1) Clark Gable examining the ignition - succeeded]
+  
+  [asking Clark Gable to try examining the ignition - succeeded]
+  
+> >   Sound Stage
+  ** clark, x bag
+  [asking Clark Gable to try examining the frilly bag]
+  [(1) Clark Gable examining the frilly bag]
+  Clark Gable looks closely at the frilly bag.
+  [(1) Clark Gable examining the frilly bag - succeeded]
+  
+  [asking Clark Gable to try examining the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** look under dais
+  [looking under the dais]
+  You find nothing of interest.
+  
+  [looking under the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, look under dais
+  [asking Clark Gable to try looking under the dais]
+  [(1) Clark Gable looking under the dais]
+  Clark Gable looks under the dais.
+  [(1) Clark Gable looking under the dais - succeeded]
+  
+  [asking Clark Gable to try looking under the dais - succeeded]
+  
+> >   Sound Stage
+  ** search bag
+  [searching the frilly bag]
+  In the frilly bag are a small key, a fedora, a clipboard, Variety Magazine and a foam boulder.
+  
+  [searching the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** clark, search bag
+  [asking Clark Gable to try searching the frilly bag]
+  [(1) Clark Gable searching the frilly bag]
+  Clark Gable searches the frilly bag.
+  [(1) Clark Gable searching the frilly bag - succeeded]
+  
+  [asking Clark Gable to try searching the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** search dais
+  [searching the dais]
+  On the dais are a folding chair, a canvas deckchair and a rubber mat.
+  
+  [searching the dais - succeeded]
+  
+> >   Sound Stage
+  ** clark, search dais
+  [asking Clark Gable to try searching the dais]
+  [(1) Clark Gable searching the dais]
+  Clark Gable searches the dais.
+  [(1) Clark Gable searching the dais - succeeded]
+  
+  [asking Clark Gable to try searching the dais - succeeded]
+  
+> >   Sound Stage
+  ** search bone
+  [searching the bone]
+  You find nothing of interest.
+  [searching the bone - failed the can't search unless container or supporter rule]
+  
+> >   Sound Stage
+  ** clark, search bone
+  [asking Clark Gable to try searching the bone]
+  [(1) Clark Gable searching the bone]
+  [(1) Clark Gable searching the bone - failed the can't search unless container or supporter rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try searching the bone - succeeded]
+  
+> >   Sound Stage
+  ** close bag
+  [closing the frilly bag]
+  You close the frilly bag.
+  [closing the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** search bag
+  [searching the frilly bag]
+  You can't see inside, since the frilly bag is closed.
+  [searching the frilly bag - failed the can't search closed opaque containers rule]
+  
+> >   Sound Stage
+  ** clark, search bag
+  [asking Clark Gable to try searching the frilly bag]
+  [(1) Clark Gable searching the frilly bag]
+  [(1) Clark Gable searching the frilly bag - failed the can't search closed opaque containers rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try searching the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** look up lawsuit in contract
+  [consulting the signed contract about "lawsuit"]
+  You discover nothing of interest in the signed contract.
+  [consulting the signed contract about "lawsuit" - succeeded]
+  
+> >   Sound Stage
+  ** clark, look up lawsuit in contract
+  [asking Clark Gable to try consulting the signed contract about "lawsuit"]
+  [(1) Clark Gable consulting the signed contract about "lawsuit"]
+  Clark Gable looks at the signed contract.
+  [(1) Clark Gable consulting the signed contract about "lawsuit" - succeeded]
+  
+  [asking Clark Gable to try consulting the signed contract about "lawsuit" - succeeded]
+  
+> >   Sound Stage
+  ** get in cage
+  [entering the cage]
+  You get into the cage.
+  
+  In the cage you can see a lion and a seat.
+  
+  [entering the cage - succeeded]
+  
+> >   Sound Stage
+  ** clark, get in automobile
+  [asking Clark Gable to try entering the automobile]
+  [(1) Clark Gable entering the automobile]
+  Clark Gable gets into the automobile.
+  
+  [(1) Clark Gable entering the automobile - succeeded]
+  
+  [asking Clark Gable to try entering the automobile - succeeded]
+  
+> >   Lot
+  ** clark, push cage w
+  [asking Clark Gable to try pushing the cage to west]
+  [(1) Clark Gable pushing the cage to west]
+  [(2) Clark Gable going west]
+  Clark Gable goes west in the automobile, pushing the cage in front, and you along too.
+  [(2) Clark Gable going west - succeeded]
+  
+  [(2) looking]
+  Lot (in the cage)
+  You can see a stage door, an automobile (in which is Clark Gable) and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  In the cage you can see a lion and a seat.
+  
+  [(2) looking - succeeded]
+  
+  [(1) Clark Gable pushing the cage to west - succeeded]
+  
+  [asking Clark Gable to try pushing the cage to west - succeeded]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot (in the cage)
+  You can see a stage door, an automobile (in which is Clark Gable) and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  In the cage you can see a lion and a seat.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** clark, get out of automobile
+  [answering Clark Gable that "get out of automobile"]
+  There is no reply.
+  [answering Clark Gable that "get out of automobile" - succeeded]
+  
+> >   Lot
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  Clark Gable gets out of the automobile.
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Sound Stage
+  ** clark, push cage e
+  [asking Clark Gable to try pushing the cage to east]
+  [(1) Clark Gable pushing the cage to east]
+  [(2) Clark Gable going east]
+  Clark Gable goes east, pushing the cage in front, and you along too.
+  [(2) Clark Gable going east - succeeded]
+  
+  [(2) looking]
+  Sound Stage (in the cage)
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  In the cage you can see a lion and a seat.
+  
+  [(2) looking - succeeded]
+  
+  [(1) Clark Gable pushing the cage to east - succeeded]
+  
+  [asking Clark Gable to try pushing the cage to east - succeeded]
+  
+> >   Sound Stage
+  ** look
+  [looking]
+  Sound Stage (in the cage)
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  In the cage you can see a lion and a seat.
+  
+  [looking - succeeded]
+  
+> >   Sound Stage
+  ** clark, lock the cage
+  What do you want Clark Gable to lock the cage with?
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (closed)
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** clark, lock the cage with the briefcase
+  [asking Clark Gable to try locking the cage with the briefcase]
+  [(1) Clark Gable locking the cage with the briefcase]
+  [(1) Clark Gable locking the cage with the briefcase - failed the can't lock without a lock rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try locking the cage with the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** lock cage with bag
+  [locking the cage with the frilly bag]
+  That doesn't seem to be something you can lock.
+  [locking the cage with the frilly bag - failed the can't lock without a lock rule]
+  
+> >   Sound Stage
+  ** open bag
+  [opening the frilly bag]
+  You open the frilly bag, revealing a small key, a fedora, a clipboard, Variety Magazine and a foam boulder.
+  [opening the frilly bag - succeeded]
+  
+> >   Sound Stage
+  ** get key
+  [taking the small key]
+  Taken.
+  [taking the small key - succeeded]
+  
+> >   Sound Stage
+  ** lock door
+  What do you want to lock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [locking the stage door with the small key]
+  First you would have to close the stage door.
+  [locking the stage door with the small key - failed the can't lock what's open rule]
+  
+> >   Sound Stage
+  ** close door
+  [closing the stage door]
+  You close the stage door.
+  [closing the stage door - succeeded]
+  
+> >   Sound Stage
+  ** lock it
+  What do you want to lock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [locking the stage door with the small key]
+  You lock the stage door.
+  [locking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [locking the stage door with the small key]
+  That's locked at the moment.
+  [locking the stage door with the small key - failed the can't lock what's already locked rule]
+  
+> >   Sound Stage
+  ** clark, lock door
+  What do you want Clark Gable to lock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [asking Clark Gable to try locking the stage door with the small key]
+  (Clark Gable first taking the small key)
+  [(1) asking Clark Gable to try taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the small key - silently - succeeded]
+  
+  [asking Clark Gable to try locking the stage door with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** unlock door
+  What do you want to unlock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [unlocking the stage door with the small key]
+  You unlock the stage door.
+  [unlocking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  You open the stage door.
+  [opening the stage door - succeeded]
+  
+> >   Sound Stage
+  ** lock door
+  What do you want to lock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [locking the stage door with the small key]
+  First you would have to close the stage door.
+  [locking the stage door with the small key - failed the can't lock what's open rule]
+  
+> >   Sound Stage
+  ** clark, lock the door with the key
+  [asking Clark Gable to try locking the stage door with the small key]
+  (Clark Gable first taking the small key)
+  [(1) asking Clark Gable to try taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the small key - silently - succeeded]
+  
+  [asking Clark Gable to try locking the stage door with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** close door
+  [closing the stage door]
+  You close the stage door.
+  [closing the stage door - succeeded]
+  
+> >   Sound Stage
+  ** lock the door with the bag
+  [locking the stage door with the frilly bag]
+  That doesn't seem to fit the lock.
+  [locking the stage door with the frilly bag - failed the can't lock without the correct key rule]
+  
+> >   Sound Stage
+  ** clark, lock the door with the briefcase
+  [asking Clark Gable to try locking the stage door with the briefcase]
+  [(1) Clark Gable locking the stage door with the briefcase]
+  [(1) Clark Gable locking the stage door with the briefcase - failed the can't lock without the correct key rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try locking the stage door with the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** lock the door
+  What do you want to lock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [locking the stage door with the small key]
+  You lock the stage door.
+  [locking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** unlock door with key
+  [unlocking the stage door with the small key]
+  You unlock the stage door.
+  [unlocking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** give key to clark
+  (Clark Gable)
+  [giving the small key to Clark Gable]
+  You give the small key to Clark Gable.
+  [giving the small key to Clark Gable - succeeded]
+  
+> >   Sound Stage
+  ** undo
+  Sound Stage
+  [Previous turn undone.]
+  
+> >   Sound Stage
+  ** drop key
+  [dropping the small key]
+  Dropped.
+  [dropping the small key - succeeded]
+  
+> >   Sound Stage
+  ** clark, take key
+  [asking Clark Gable to try taking the small key]
+  [(1) Clark Gable taking the small key]
+  Clark Gable picks up the small key.
+  [(1) Clark Gable taking the small key - succeeded]
+  
+  [asking Clark Gable to try taking the small key - succeeded]
+  
+> >   Sound Stage
+  ** clark, lock the door
+  What do you want Clark Gable to lock the stage door with?
+  
+> >   Sound Stage
+  ** key
+  [asking Clark Gable to try locking the stage door with the small key]
+  [(1) Clark Gable locking the stage door with the small key]
+  Clark Gable locks the stage door.
+  [(1) Clark Gable locking the stage door with the small key - succeeded]
+  
+  [asking Clark Gable to try locking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  It seems to be locked.
+  [opening the stage door - failed the can't open what's locked rule]
+  
+> >   Sound Stage
+  ** unlock cage
+  What do you want to unlock the cage with?
+  
+> >   Sound Stage
+  ** key
+  [unlocking the cage with the small key]
+  (first taking the small key)
+  [(1) taking the small key - silently]
+  That seems to belong to Clark Gable.
+  [(1) taking the small key - silently - failed the can't take people's possessions rule]
+  
+  [unlocking the cage with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a fedora
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Sound Stage
+  ** clark, drop the key
+  [asking Clark Gable to try dropping the small key]
+  [(1) Clark Gable dropping the small key]
+  Clark Gable puts down the small key.
+  [(1) Clark Gable dropping the small key - succeeded]
+  
+  [asking Clark Gable to try dropping the small key - succeeded]
+  
+> >   Sound Stage
+  ** get key
+  [taking the small key]
+  Taken.
+  [taking the small key - succeeded]
+  
+> >   Sound Stage
+  ** unlock cage with key
+  [unlocking the cage with the small key]
+  That doesn't seem to be something you can unlock.
+  [unlocking the cage with the small key - failed the can't unlock without a lock rule]
+  
+> >   Sound Stage
+  ** clark, unlock cage with key
+  [asking Clark Gable to try unlocking the cage with the small key]
+  (Clark Gable first taking the small key)
+  [(1) asking Clark Gable to try taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the small key - silently - succeeded]
+  
+  [asking Clark Gable to try unlocking the cage with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** unlock door with key
+  [unlocking the stage door with the small key]
+  You unlock the stage door.
+  [unlocking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** g
+  [unlocking the stage door with the small key]
+  That's unlocked at the moment.
+  [unlocking the stage door with the small key - failed the can't unlock what's already unlocked rule]
+  
+> >   Sound Stage
+  ** clark, unlock door with key
+  [asking Clark Gable to try unlocking the stage door with the small key]
+  (Clark Gable first taking the small key)
+  [(1) asking Clark Gable to try taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the small key - silently - succeeded]
+  
+  [asking Clark Gable to try unlocking the stage door with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** lock door with key
+  [locking the stage door with the small key]
+  You lock the stage door.
+  [locking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** unlock door with bag
+  [unlocking the stage door with the frilly bag]
+  That doesn't seem to fit the lock.
+  [unlocking the stage door with the frilly bag - failed the can't unlock without the correct key rule]
+  
+> >   Sound Stage
+  ** clark, unlock door with briefcase
+  [asking Clark Gable to try unlocking the stage door with the briefcase]
+  [(1) Clark Gable unlocking the stage door with the briefcase]
+  [(1) Clark Gable unlocking the stage door with the briefcase - failed the can't unlock without the correct key rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try unlocking the stage door with the briefcase - succeeded]
+  
+> >   Sound Stage
+  ** unlock door with key
+  [unlocking the stage door with the small key]
+  You unlock the stage door.
+  [unlocking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** lock door with key
+  [locking the stage door with the small key]
+  You lock the stage door.
+  [locking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** clark, unlock door with key
+  [asking Clark Gable to try unlocking the stage door with the small key]
+  (Clark Gable first taking the small key)
+  [(1) asking Clark Gable to try taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the small key - silently - succeeded]
+  
+  [asking Clark Gable to try unlocking the stage door with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** clark, lock door with key
+  [asking Clark Gable to try locking the stage door with the small key]
+  (Clark Gable first taking the small key)
+  [(1) asking Clark Gable to try taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently]
+  [(2) Clark Gable taking the small key - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the small key - silently - succeeded]
+  
+  [asking Clark Gable to try locking the stage door with the small key - failed the carrying requirements rule]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  It seems to be locked.
+  [opening the stage door - failed the can't open what's locked rule]
+  
+> >   Sound Stage
+  ** clark, turn on door
+  [asking Clark Gable to try switching on the stage door]
+  [(1) Clark Gable switching on the stage door]
+  [(1) Clark Gable switching on the stage door - failed the can't switch on unless switchable rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try switching on the stage door - succeeded]
+  
+> >   Sound Stage
+  ** turn on door
+  [switching on the stage door]
+  It isn't something you can switch.
+  [switching on the stage door - failed the can't switch on unless switchable rule]
+  
+> >   Sound Stage
+  ** clark, turn on ignition
+  [answering Clark Gable that "turn on ignition"]
+  There is no reply.
+  [answering Clark Gable that "turn on ignition" - succeeded]
+  
+> >   Sound Stage
+  ** clark, switch on ignition
+  [answering Clark Gable that "switch on ignition"]
+  There is no reply.
+  [answering Clark Gable that "switch on ignition" - succeeded]
+  
+> >   Sound Stage
+  ** x ignition
+  You can't see any such thing.
+  
+> >   Sound Stage
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  [(2) Clark Gable opening the stage door - silently]
+  [(2) Clark Gable opening the stage door - silently - failed the can't open what's locked rule]
+  
+  [(1) Clark Gable going west - failed the can't go through closed doors rule]
+  
+  Clark makes a helpless gesture about his ability to move himself, or parts of himself, through solid objects.
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Sound Stage
+  ** w
+  [going west]
+  You would have to get out of the cage first.
+  [going west - failed the can't travel in what's not a vehicle rule]
+  
+> >   Sound Stage
+  ** get out
+  [exiting]
+  You get out of the cage.
+  
+  Sound Stage
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a cage (in which are a lion and a seat), a stage door and a dais (on which are a folding chair, a canvas deckchair and a rubber mat) here.
+  
+  [exiting - succeeded]
+  
+> >   Sound Stage
+  ** w
+  [going west]
+  (first opening the stage door)
+  [(1) opening the stage door - silently]
+  It seems to be locked.
+  [(1) opening the stage door - silently - failed the can't open what's locked rule]
+  
+  [going west - failed the can't go through closed doors rule]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  It seems to be locked.
+  [opening the stage door - failed the can't open what's locked rule]
+  
+> >   Sound Stage
+  ** unlock the door with the key
+  [unlocking the stage door with the small key]
+  You unlock the stage door.
+  [unlocking the stage door with the small key - succeeded]
+  
+> >   Sound Stage
+  ** open door
+  [opening the stage door]
+  You open the stage door.
+  [opening the stage door - succeeded]
+  
+> >   Sound Stage
+  ** clark, w
+  [asking Clark Gable to try going west]
+  [(1) Clark Gable going west]
+  Clark Gable goes west.
+  [(1) Clark Gable going west - succeeded]
+  
+  [asking Clark Gable to try going west - succeeded]
+  
+> >   Lot
+  ** w
+  [going west]
+  
+  Lot
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, an automobile (empty) and a dumpster (in which are a flashlight and a candy bracelet) here.
+  
+  [going west - succeeded]
+  
+> >   Lot
+  ** clark, turn on ignition
+  [asking Clark Gable to try switching on the ignition]
+  [(1) Clark Gable switching on the ignition]
+  Clark Gable switches the ignition on.
+  [(1) Clark Gable switching on the ignition - succeeded]
+  
+  [asking Clark Gable to try switching on the ignition - succeeded]
+  
+> >   Lot
+  ** g
+  [asking Clark Gable to try switching on the ignition]
+  [(1) Clark Gable switching on the ignition]
+  [(1) Clark Gable switching on the ignition - failed the can't switch on what's already on rule]
+  
+  "I have anticipated your every demand."
+  
+  [asking Clark Gable to try switching on the ignition - succeeded]
+  
+> >   Lot
+  ** turn on ignition
+  [switching on the ignition]
+  That's already on.
+  [switching on the ignition - failed the can't switch on what's already on rule]
+  
+> >   Lot
+  ** turn it off
+  [switching off the ignition]
+  You switch the ignition off.
+  [switching off the ignition - succeeded]
+  
+> >   Lot
+  ** clark, turn off ignition
+  [asking Clark Gable to try switching off the ignition]
+  [(1) Clark Gable switching off the ignition]
+  [(1) Clark Gable switching off the ignition - failed the can't switch off what's already off rule]
+  
+  "We've been through this part of the script already," Clark remarks, with just a hint of creeping tedium.
+  
+  [asking Clark Gable to try switching off the ignition - succeeded]
+  
+> >   Lot
+  ** clark, turn off door
+  [asking Clark Gable to try switching off the stage door]
+  [(1) Clark Gable switching off the stage door]
+  [(1) Clark Gable switching off the stage door - failed the can't switch off unless switchable rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try switching off the stage door - succeeded]
+  
+> >   Lot
+  ** turn off ignition
+  [switching off the ignition]
+  That's already off.
+  [switching off the ignition - failed the can't switch off what's already off rule]
+  
+> >   Lot
+  ** urn on ignition
+  That's not a verb I recognise.
+  
+> >   Lot
+  ** turn on ignition
+  [switching on the ignition]
+  You switch the ignition on.
+  [switching on the ignition - succeeded]
+  
+> >   Lot
+  ** clark, turn on ignition
+  [asking Clark Gable to try switching on the ignition]
+  [(1) Clark Gable switching on the ignition]
+  [(1) Clark Gable switching on the ignition - failed the can't switch on what's already on rule]
+  
+  "Right right, already taken care of..."
+  
+  [asking Clark Gable to try switching on the ignition - succeeded]
+  
+> >   Lot
+  ** clark, turn off ignition
+  [asking Clark Gable to try switching off the ignition]
+  [(1) Clark Gable switching off the ignition]
+  Clark Gable switches the ignition off.
+  [(1) Clark Gable switching off the ignition - succeeded]
+  
+  [asking Clark Gable to try switching off the ignition - succeeded]
+  
+> >   Lot
+  ** open automobile
+  [opening the automobile]
+  It isn't something you can open.
+  [opening the automobile - failed the can't open unless openable rule]
+  
+> >   Lot
+  ** clark, open automobile
+  [asking Clark Gable to try opening the automobile]
+  [(1) Clark Gable opening the automobile]
+  [(1) Clark Gable opening the automobile - failed the can't open unless openable rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try opening the automobile - succeeded]
+  
+> >   Lot
+  ** open door
+  [opening the stage door]
+  That's already open.
+  [opening the stage door - failed the can't open what's already open rule]
+  
+> >   Lot
+  ** clark, open door
+  [asking Clark Gable to try opening the stage door]
+  [(1) Clark Gable opening the stage door]
+  [(1) Clark Gable opening the stage door - failed the can't open what's already open rule]
+  
+  "I'm a believer in rehearsal," Clark says, sounding more bored than ever, "but we really have got all this done already."
+  
+  [asking Clark Gable to try opening the stage door - succeeded]
+  
+> >   Lot
+  ** close door
+  [closing the stage door]
+  You close the stage door.
+  [closing the stage door - succeeded]
+  
+> >   Lot
+  ** lock door
+  What do you want to lock the stage door with?
+  
+> >   Lot
+  ** key
+  [locking the stage door with the small key]
+  You lock the stage door.
+  [locking the stage door with the small key - succeeded]
+  
+> >   Lot
+  ** open door
+  [opening the stage door]
+  It seems to be locked.
+  [opening the stage door - failed the can't open what's locked rule]
+  
+> >   Lot
+  ** clark, open door
+  [asking Clark Gable to try opening the stage door]
+  [(1) Clark Gable opening the stage door]
+  [(1) Clark Gable opening the stage door - failed the can't open what's locked rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try opening the stage door - succeeded]
+  
+> >   Lot
+  ** open dumpster
+  [opening the dumpster]
+  That's already open.
+  [opening the dumpster - failed the can't open what's already open rule]
+  
+> >   Lot
+  ** clark, open dumpster
+  [asking Clark Gable to try opening the dumpster]
+  [(1) Clark Gable opening the dumpster]
+  [(1) Clark Gable opening the dumpster - failed the can't open what's already open rule]
+  
+  "Already done."
+  
+  [asking Clark Gable to try opening the dumpster - succeeded]
+  
+> >   Lot
+  ** get in dumpster
+  [entering the dumpster]
+  You get into the dumpster.
+  
+  In the dumpster you can see a flashlight and a candy bracelet.
+  
+  [entering the dumpster - succeeded]
+  
+> >   Lot
+  ** clark, get in dumpster
+  [asking Clark Gable to try entering the dumpster]
+  [(1) Clark Gable entering the dumpster]
+  Clark Gable gets into the dumpster.
+  
+  [(1) Clark Gable entering the dumpster - succeeded]
+  
+  [asking Clark Gable to try entering the dumpster - succeeded]
+  
+> >   Darkness
+  ** close dumpster
+  [closing the dumpster]
+  You close the dumpster.
+  [closing the dumpster - succeeded]
+  
+  It is now pitch dark in here!
+  
+> >   Darkness
+  ** clark, close dumpster
+  You seem to want to talk to someone, but I can't see whom.
+  
+> >   Darkness
+  ** clark, open dumpster
+  You seem to want to talk to someone, but I can't see whom.
+  
+> >   Lot
+  ** open dumpster
+  [opening the dumpster]
+  You open the dumpster.
+  [opening the dumpster - succeeded]
+  
+  [looking]
+  Lot (in the dumpster)
+  You can see a stage door and an automobile (empty) here.
+  
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  In the dumpster you can also see a flashlight and a candy bracelet.
+  
+  [looking - succeeded]
+  
+> >   Darkness
+  ** clark, close the dumpster
+  [asking Clark Gable to try closing the dumpster]
+  [(1) Clark Gable closing the dumpster]
+  The dumpster closes.
+  [(1) Clark Gable closing the dumpster - succeeded]
+  
+  [asking Clark Gable to try closing the dumpster - succeeded]
+  
+  It is now pitch dark in here!
+  
+> >   Darkness
+  ** clark, open the dumpster
+  You seem to want to talk to someone, but I can't see whom.
+  
+> >   Lot
+  ** open dumpster
+  [opening the dumpster]
+  You open the dumpster.
+  [opening the dumpster - succeeded]
+  
+  [looking]
+  Lot (in the dumpster)
+  You can see a stage door and an automobile (empty) here.
+  
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  In the dumpster you can also see a flashlight and a candy bracelet.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** get flashlight
+  [taking the flashlight]
+  (putting the small key into the frilly bag to make room)
+  [(1) inserting the small key into the frilly bag - silently]
+  [(1) inserting the small key into the frilly bag - silently - succeeded]
+  
+  Taken.
+  [taking the flashlight - succeeded]
+  
+> >   Lot
+  ** turn on flashlight
+  [switching on the flashlight]
+  You switch the flashlight on.
+  [switching on the flashlight - succeeded]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a flashlight (providing light)
+    a frilly bag (open)
+      a small key
+      a fedora
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   The dumpster
+  ** clark, close dumpster
+  [asking Clark Gable to try closing the dumpster]
+  [(1) Clark Gable closing the dumpster]
+  Clark Gable closes the dumpster.
+  [(1) Clark Gable closing the dumpster - succeeded]
+  
+  [asking Clark Gable to try closing the dumpster - succeeded]
+  
+> >   The dumpster
+  ** g
+  [asking Clark Gable to try closing the dumpster]
+  [(1) Clark Gable closing the dumpster]
+  [(1) Clark Gable closing the dumpster - failed the can't close what's already closed rule]
+  
+  "Already done."
+  
+  [asking Clark Gable to try closing the dumpster - succeeded]
+  
+> >   Lot
+  ** clark, open dumpster
+  [asking Clark Gable to try opening the dumpster]
+  [(1) Clark Gable opening the dumpster]
+  Clark Gable opens the dumpster.
+  [(1) Clark Gable opening the dumpster - succeeded]
+  
+  [asking Clark Gable to try opening the dumpster - succeeded]
+  
+> >   The dumpster
+  ** close dumpster
+  [closing the dumpster]
+  You close the dumpster.
+  [closing the dumpster - succeeded]
+  
+> >   Lot
+  ** open dumpster
+  [opening the dumpster]
+  You open the dumpster.
+  [opening the dumpster - succeeded]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot (in the dumpster)
+  You can see a stage door and an automobile (empty) here.
+  
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  In the dumpster you can also see a candy bracelet.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** clark, out
+  [asking Clark Gable to try exiting]
+  [(1) Clark Gable exiting]
+  Clark Gable gets out of the dumpster.
+  
+  [(1) Clark Gable exiting - succeeded]
+  
+  [asking Clark Gable to try exiting - succeeded]
+  
+> >   Lot
+  ** out
+  [exiting]
+  You get out of the dumpster.
+  
+  Lot
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, an automobile (empty) and a dumpster (in which is a candy bracelet) here.
+  
+  [exiting - succeeded]
+  
+> >   Lot
+  ** clark, close automobile
+  [asking Clark Gable to try closing the automobile]
+  [(1) Clark Gable closing the automobile]
+  [(1) Clark Gable closing the automobile - failed the can't close unless openable rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try closing the automobile - succeeded]
+  
+> >   Lot
+  ** close automobile
+  [closing the automobile]
+  It isn't something you can close.
+  [closing the automobile - failed the can't close unless openable rule]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a flashlight (providing light)
+    a frilly bag (open)
+      a small key
+      a fedora
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** wear flashlight
+  [wearing the flashlight]
+  You can't wear that!
+  [wearing the flashlight - failed the can't wear what's not clothing rule]
+  
+> >   Lot
+  ** wear clark
+  (Clark Gable)
+  [wearing Clark Gable]
+  (first taking Clark Gable)
+  [(1) taking Clark Gable - silently]
+  I don't suppose Clark Gable would care for that.
+  [(1) taking Clark Gable - silently - failed the can't take other people rule]
+  
+  [wearing Clark Gable - failed the carrying requirements rule]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a flashlight (providing light)
+    a frilly bag (open)
+      a small key
+      a fedora
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, an automobile (empty) and a dumpster (in which is a candy bracelet) here.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** wear door
+  [wearing the stage door]
+  (first taking the stage door)
+  [(1) taking the stage door - silently]
+  That's fixed in place.
+  [(1) taking the stage door - silently - failed the can't take what's fixed in place rule]
+  
+  [wearing the stage door - failed the carrying requirements rule]
+  
+> >   Lot
+  ** clark, wear bone
+  [asking Clark Gable to try wearing the bone]
+  [(1) Clark Gable wearing the bone]
+  [(1) Clark Gable wearing the bone - failed the can't wear what's not clothing rule]
+  
+  "Costuming just gets stranger every year," says Clark. "In short: no."
+  
+  [asking Clark Gable to try wearing the bone - succeeded]
+  
+> >   Lot
+  ** clark, wear door
+  [asking Clark Gable to try wearing the stage door]
+  (Clark Gable first taking the stage door)
+  [(1) asking Clark Gable to try taking the stage door - silently]
+  [(2) Clark Gable taking the stage door - silently]
+  [(2) Clark Gable taking the stage door - silently - failed the can't take what's fixed in place rule]
+  
+  "I'm not the stunt man, darling," he says with a wry twinkle.
+  
+  [(1) asking Clark Gable to try taking the stage door - silently - succeeded]
+  
+  [asking Clark Gable to try wearing the stage door - failed the carrying requirements rule]
+  
+> >   Lot
+  ** clark, wear pants
+  [asking Clark Gable to try wearing the pair of pants]
+  [(1) Clark Gable wearing the pair of pants]
+  [(1) Clark Gable wearing the pair of pants - failed the can't wear what's already worn rule]
+  
+  "Already done."
+  
+  [asking Clark Gable to try wearing the pair of pants - succeeded]
+  
+> >   Lot
+  ** wear dress
+  [wearing the slinky dress]
+  You're already wearing that!
+  [wearing the slinky dress - failed the can't wear what's already worn rule]
+  
+> >   Lot
+  ** take off scarf
+  [taking off the sparkly scarf]
+  You aren't wearing the sparkly scarf.
+  [taking off the sparkly scarf - failed the can't take off what's not worn rule]
+  
+> >   Lot
+  ** clark, take off fedora
+  [asking Clark Gable to try taking off the fedora]
+  [(1) Clark Gable taking off the fedora]
+  [(1) Clark Gable taking off the fedora - failed the can't take off what's not worn rule]
+  
+  "Already done."
+  
+  [asking Clark Gable to try taking off the fedora - succeeded]
+  
+> >   Lot
+  ** clark, wear fedora
+  [asking Clark Gable to try wearing the fedora]
+  (Clark Gable first taking the fedora)
+  [(1) asking Clark Gable to try taking the fedora - silently]
+  [(2) Clark Gable taking the fedora - silently]
+  [(2) Clark Gable taking the fedora - silently - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [(1) asking Clark Gable to try taking the fedora - silently - succeeded]
+  
+  [asking Clark Gable to try wearing the fedora - failed the carrying requirements rule]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, an automobile (empty) and a dumpster (in which is a candy bracelet) here.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** clark, take fedora
+  [asking Clark Gable to try taking the fedora]
+  [(1) Clark Gable taking the fedora]
+  [(1) Clark Gable taking the fedora - failed the can't take people's possessions rule]
+  
+  "I don't cotton to acting like a thief," Clark replies. "It ain't proper."
+  
+  [asking Clark Gable to try taking the fedora - succeeded]
+  
+> >   Lot
+  ** drop fedora
+  [dropping the fedora]
+  You haven't got that.
+  [dropping the fedora - failed the can't drop what's not held rule]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a flashlight (providing light)
+    a frilly bag (open)
+      a small key
+      a fedora
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** get fedora
+  [taking the fedora]
+  You're carrying too many things already.
+  [taking the fedora - failed the can't exceed carrying capacity rule]
+  
+> >   Lot
+  ** put all in bag
+  [inserting the flashlight into the frilly bag]
+  flashlight: Done.
+  [inserting the flashlight into the frilly bag - succeeded]
+  
+> >   Lot
+  ** get fedora
+  [taking the fedora]
+  Taken.
+  [taking the fedora - succeeded]
+  
+> >   Lot
+  ** drop it
+  [dropping the fedora]
+  Dropped.
+  [dropping the fedora - succeeded]
+  
+> >   Lot
+  ** clark, get fedora
+  [asking Clark Gable to try taking the fedora]
+  [(1) Clark Gable taking the fedora]
+  Clark Gable picks up the fedora.
+  [(1) Clark Gable taking the fedora - succeeded]
+  
+  [asking Clark Gable to try taking the fedora - succeeded]
+  
+> >   Lot
+  ** clark, wear fedora
+  [asking Clark Gable to try wearing the fedora]
+  [(1) Clark Gable wearing the fedora]
+  Clark Gable puts on the fedora.
+  [(1) Clark Gable wearing the fedora - succeeded]
+  
+  [asking Clark Gable to try wearing the fedora - succeeded]
+  
+> >   Lot
+  ** wear scarf
+  [wearing the sparkly scarf]
+  (first taking the sparkly scarf)
+  [(1) taking the sparkly scarf - silently]
+  That seems to belong to Clark Gable.
+  [(1) taking the sparkly scarf - silently - failed the can't take people's possessions rule]
+  
+  [wearing the sparkly scarf - failed the carrying requirements rule]
+  
+> >   Lot
+  ** clark, eat fedora
+  [asking Clark Gable to try eating the fedora]
+  [(1) Clark Gable eating the fedora]
+  [(1) Clark Gable eating the fedora - failed the can't eat unless edible rule]
+  
+  "What're you trying to do, poison me?"
+  
+  [asking Clark Gable to try eating the fedora - succeeded]
+  
+> >   Lot
+  ** eat scarf
+  [eating the sparkly scarf]
+  That's plainly inedible.
+  [eating the sparkly scarf - failed the can't eat unless edible rule]
+  
+> >   Lot
+  ** get bracelet
+  [taking the candy bracelet]
+  Taken.
+  [taking the candy bracelet - succeeded]
+  
+> >   Lot
+  ** wear it
+  [wearing the candy bracelet]
+  You put on the candy bracelet.
+  [wearing the candy bracelet - succeeded]
+  
+> >   Lot
+  ** eat it
+  [eating the candy bracelet]
+  (first taking the candy bracelet off)
+  [(1) taking off the candy bracelet]
+  You take off the candy bracelet.
+  [(1) taking off the candy bracelet - succeeded]
+  
+  You eat the candy bracelet. Not bad.
+  [eating the candy bracelet - succeeded]
+  
+> >   Lot
+  ** undo
+  Lot
+  [Previous turn undone.]
+  
+> >   Lot
+  ** give bracelet to clark
+  (Clark Gable)
+  [giving the candy bracelet to Clark Gable]
+  (first taking the candy bracelet off)
+  [(1) taking off the candy bracelet - silently]
+  [(1) taking off the candy bracelet - silently - succeeded]
+  
+  You give the candy bracelet to Clark Gable.
+  [giving the candy bracelet to Clark Gable - succeeded]
+  
+> >   Lot
+  ** drop bracelet
+  [dropping the candy bracelet]
+  You haven't got that.
+  [dropping the candy bracelet - failed the can't drop what's not held rule]
+  
+> >   Lot
+  ** clark, take bracelet
+  [asking Clark Gable to try taking the candy bracelet]
+  [(1) Clark Gable taking the candy bracelet]
+  [(1) Clark Gable taking the candy bracelet - failed the can't take what's already taken rule]
+  
+  "Already done."
+  
+  [asking Clark Gable to try taking the candy bracelet - succeeded]
+  
+> >   Lot
+  ** clark, wear bracelet
+  [asking Clark Gable to try wearing the candy bracelet]
+  [(1) Clark Gable wearing the candy bracelet]
+  Clark Gable puts on the candy bracelet.
+  [(1) Clark Gable wearing the candy bracelet - succeeded]
+  
+  [asking Clark Gable to try wearing the candy bracelet - succeeded]
+  
+> >   Lot
+  ** clark, eat bracelet
+  [asking Clark Gable to try eating the candy bracelet]
+  [(1) Clark Gable eating the candy bracelet]
+  [(2) Clark Gable taking off the candy bracelet]
+  Clark Gable takes off the candy bracelet.
+  [(2) Clark Gable taking off the candy bracelet - succeeded]
+  
+  Clark Gable eats the candy bracelet.
+  [(1) Clark Gable eating the candy bracelet - succeeded]
+  
+  [asking Clark Gable to try eating the candy bracelet - succeeded]
+  
+> >   Lot
+  ** undo
+  Lot
+  [Previous turn undone.]
+  
+> >   Lot
+  ** eat dress
+  [eating the slinky dress]
+  That's plainly inedible.
+  [eating the slinky dress - failed the can't eat unless edible rule]
+  
+> >   Lot
+  ** eat underwear
+  [eating the chocolate underwear]
+  Clark Gable might not appreciate that.
+  [eating the chocolate underwear - failed the can't eat other people's food rule]
+  
+> >   Lot
+  ** clark, eat underwear
+  [asking Clark Gable to try eating the chocolate underwear]
+  [(1) Clark Gable eating the chocolate underwear]
+  [(2) Clark Gable taking off the chocolate underwear]
+  [(2) Clark Gable taking off the chocolate underwear - ended without result]
+  
+  [(1) Clark Gable eating the chocolate underwear - failed the can't eat clothing without removing it first rule]
+  
+  "I'd feel so... bare," Clark says, with a sidelong look at you.
+  
+  [asking Clark Gable to try eating the chocolate underwear - succeeded]
+  
+> >   Lot
+  ** eat choker
+  [eating the licorice choker]
+  (first taking the licorice choker off)
+  [(1) taking off the licorice choker]
+  No, it looks charming.
+  [(1) taking off the licorice choker - failed]
+  
+  [eating the licorice choker - failed the can't eat clothing without removing it first rule]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** x clark
+  (Clark Gable)
+  [examining Clark Gable]
+  You see nothing special about Clark Gable.
+  
+  [examining Clark Gable - succeeded]
+  
+> >   Lot
+  ** clark, i
+  [asking Clark Gable to try taking inventory]
+  [(1) Clark Gable taking inventory]
+  Clark Gable looks through his possessions.
+  [(1) Clark Gable taking inventory - succeeded]
+  
+  [asking Clark Gable to try taking inventory - succeeded]
+  
+> >   Lot
+  ** search clark
+  (Clark Gable)
+  [searching Clark Gable]
+  You find nothing of interest.
+  [searching Clark Gable - failed the can't search unless container or supporter rule]
+  
+> >   Lot
+  ** drop scarf
+  [dropping the sparkly scarf]
+  You haven't got that.
+  [dropping the sparkly scarf - failed the can't drop what's not held rule]
+  
+> >   Lot
+  ** clark, take the scarf
+  [asking Clark Gable to try taking the sparkly scarf]
+  [(1) Clark Gable taking the sparkly scarf]
+  Clark Gable picks up the sparkly scarf.
+  [(1) Clark Gable taking the sparkly scarf - succeeded]
+  
+  [asking Clark Gable to try taking the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, give the scarf to me
+  [asking Clark Gable to try giving the sparkly scarf to yourself]
+  [(1) Clark Gable giving the sparkly scarf to yourself]
+  Clark Gable gives the sparkly scarf to you.
+  [(1) Clark Gable giving the sparkly scarf to yourself - succeeded]
+  
+  [asking Clark Gable to try giving the sparkly scarf to yourself - succeeded]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a sparkly scarf
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** show scarf to clark
+  (Clark Gable)
+  [showing the sparkly scarf to Clark Gable]
+  Clark Gable is unimpressed.
+  [showing the sparkly scarf to Clark Gable - failed the block showing rule]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the candy bracelet, the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, an automobile (empty) and a dumpster (empty) here.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** clark, show me the bone
+  [asking Clark Gable to try showing the bone to yourself]
+  [(1) Clark Gable showing the bone to yourself]
+  [(1) Clark Gable showing the bone to yourself - failed the block showing rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try showing the bone to yourself - succeeded]
+  
+> >   Lot
+  ** clark, wake up
+  [asking Clark Gable to try waking up]
+  [(1) Clark Gable waking up]
+  [(1) Clark Gable waking up - failed the block waking up rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try waking up - succeeded]
+  
+> >   Lot
+  ** wake up
+  [waking up]
+  The dreadful truth is, this is not a dream.
+  [waking up - failed the block waking up rule]
+  
+> >   Lot
+  ** clark, wake me
+  [asking Clark Gable to try waking yourself]
+  [(1) Clark Gable waking yourself]
+  [(1) Clark Gable waking yourself - failed the block waking rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try waking yourself - succeeded]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a sparkly scarf
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** throw scarf at clark
+  (Clark Gable)
+  [throwing the sparkly scarf at Clark Gable]
+  You lack the nerve when it comes to the crucial moment.
+  [throwing the sparkly scarf at Clark Gable - failed the block throwing at rule]
+  
+> >   Lot
+  ** clark, throw bone at me
+  [asking Clark Gable to try throwing the bone at yourself]
+  [(1) Clark Gable throwing the bone at yourself]
+  [(1) Clark Gable throwing the bone at yourself - failed the block throwing at rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try throwing the bone at yourself - succeeded]
+  
+> >   Lot
+  ** clark, attack me
+  [asking Clark Gable to try attacking yourself]
+  [(1) Clark Gable attacking yourself]
+  [(1) Clark Gable attacking yourself - failed the block attacking rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try attacking yourself - succeeded]
+  
+> >   Lot
+  ** attack clark
+  (Clark Gable)
+  [attacking Clark Gable]
+  Violence isn't the answer to this one.
+  [attacking Clark Gable - failed the block attacking rule]
+  
+> >   Lot
+  ** clark, kiss me
+  [asking Clark Gable to try kissing yourself]
+  [(1) Clark Gable kissing yourself]
+  [(1) Clark Gable kissing yourself - failed the block kissing rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try kissing yourself - succeeded]
+  
+> >   Lot
+  ** kiss clark
+  (Clark Gable)
+  [kissing Clark Gable]
+  Clark Gable might not like that.
+  [kissing Clark Gable - failed the block kissing rule]
+  
+> >   Lot
+  ** say hi to clark
+  (Clark Gable)
+  [answering Clark Gable that "hi"]
+  There is no reply.
+  [answering Clark Gable that "hi" - succeeded]
+  
+> >   Lot
+  ** clark, say hi to me
+  [asking Clark Gable to try answering yourself that "hi"]
+  [(1) Clark Gable answering yourself that "hi"]
+  [(1) Clark Gable answering yourself that "hi" - succeeded]
+  
+  [asking Clark Gable to try answering yourself that "hi" - succeeded]
+  
+> >   Lot
+  ** ask clark about true love
+  (Clark Gable about that)
+  [asking Clark Gable about "true love"]
+  There is no reply.
+  [asking Clark Gable about "true love" - succeeded]
+  
+> >   Lot
+  ** clark, ask me about our future together
+  [asking Clark Gable to try asking yourself about "our future together"]
+  [(1) Clark Gable asking yourself about "our future together"]
+  [(1) Clark Gable asking yourself about "our future together" - succeeded]
+  
+  [asking Clark Gable to try asking yourself about "our future together" - succeeded]
+  
+> >   Lot
+  ** tell clark about my love for him
+  (Clark Gable about that)
+  [telling Clark Gable about "my love for him"]
+  This provokes no reaction.
+  [telling Clark Gable about "my love for him" - succeeded]
+  
+> >   Lot
+  ** clark, tell me about your boundless affection for short brunettes
+  [asking Clark Gable about "your boundless affection for short brunettes"]
+  There is no reply.
+  [asking Clark Gable about "your boundless affection for short brunettes" - succeeded]
+  
+> >   Lot
+  ** clark, you suck.
+  [answering Clark Gable that "you suck ."]
+  There is no reply.
+  [answering Clark Gable that "you suck ." - succeeded]
+  
+> >   Lot
+  ** ask clark for the bone
+  (Clark Gable for the bone)
+  [asking Clark Gable for the bone]
+  [(1) asking Clark Gable to try giving the bone to yourself]
+  [(2) Clark Gable giving the bone to yourself]
+  [(2) Clark Gable giving the bone to yourself - failed the can't exceed carrying capacity when giving rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [(1) asking Clark Gable to try giving the bone to yourself - succeeded]
+  
+  [asking Clark Gable for the bone - succeeded]
+  
+> >   Lot
+  ** clark, give me the bone
+  [asking Clark Gable to try giving the bone to yourself]
+  [(1) Clark Gable giving the bone to yourself]
+  [(1) Clark Gable giving the bone to yourself - failed the can't exceed carrying capacity when giving rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try giving the bone to yourself - succeeded]
+  
+> >   Lot
+  ** give the bone to clark
+  (Clark Gable)
+  [giving the bone to Clark Gable]
+  (first taking the bone)
+  [(1) taking the bone - silently]
+  That seems to belong to Clark Gable.
+  [(1) taking the bone - silently - failed the can't take people's possessions rule]
+  
+  [giving the bone to Clark Gable - failed the carrying requirements rule]
+  
+> >   Lot
+  ** clark, ask me for the bone
+  [asking Clark Gable to try asking yourself for the bone]
+  [(1) Clark Gable asking yourself for the bone]
+  [(2) giving the bone to Clark Gable]
+  (first taking the bone)
+  [(3) taking the bone - silently]
+  That seems to belong to Clark Gable.
+  [(3) taking the bone - silently - failed the can't take people's possessions rule]
+  
+  [(2) giving the bone to Clark Gable - failed the carrying requirements rule]
+  
+  [(1) Clark Gable asking yourself for the bone - failed the translate asking for to giving rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try asking yourself for the bone - succeeded]
+  
+> >   Lot
+  ** touch clark
+  (Clark Gable)
+  [touching Clark Gable]
+  Clark Gable might not like that.
+  [touching Clark Gable - succeeded]
+  
+> >   Lot
+  ** clark, touch me
+  [asking Clark Gable to try touching yourself]
+  [(1) Clark Gable touching yourself]
+  Clark Gable touches you.
+  [(1) Clark Gable touching yourself - succeeded]
+  
+  [asking Clark Gable to try touching yourself - succeeded]
+  
+> >   Lot
+  ** clark, you're a dreadful cold fish
+  [answering Clark Gable that "you're a dreadful cold fish"]
+  There is no reply.
+  [answering Clark Gable that "you're a dreadful cold fish" - succeeded]
+  
+> >   Lot
+  ** wave
+  [waving hands]
+  You wave.
+  [waving hands - succeeded]
+  
+> >   Lot
+  ** clark, wave
+  [asking Clark Gable to try waving hands]
+  [(1) Clark Gable waving hands]
+  Clark Gable waves.
+  [(1) Clark Gable waving hands - succeeded]
+  
+  [asking Clark Gable to try waving hands - succeeded]
+  
+> >   Lot
+  ** wave scarf
+  [waving the sparkly scarf]
+  You wave the sparkly scarf.
+  [waving the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, wave the bone
+  [asking Clark Gable to try waving the bone]
+  [(1) Clark Gable waving the bone]
+  Clark Gable waves the bone.
+  [(1) Clark Gable waving the bone - succeeded]
+  
+  [asking Clark Gable to try waving the bone - succeeded]
+  
+> >   Lot
+  ** pull clark
+  (Clark Gable)
+  [pulling Clark Gable]
+  Clark Gable might not like that.
+  [pulling Clark Gable - failed the can't pull people rule]
+  
+> >   Lot
+  ** clark, pull me
+  [asking Clark Gable to try pulling yourself]
+  [(1) Clark Gable pulling yourself]
+  [(1) Clark Gable pulling yourself - failed the can't pull people rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try pulling yourself - succeeded]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a sparkly scarf
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** look
+  [looking]
+  Lot
+  Clark is here, carrying the tent, the bone, the swagger stick, the briefcase and the tray and wearing the candy bracelet, the fedora, the pair of pants and the chocolate underwear.
+  
+  You can also see a stage door, an automobile (empty) and a dumpster (empty) here.
+  
+  [looking - succeeded]
+  
+> >   Lot
+  ** clark, pull the automobile
+  [asking Clark Gable to try pulling the automobile]
+  [(1) Clark Gable pulling the automobile]
+  [(1) Clark Gable pulling the automobile - failed the can't pull what's fixed in place rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try pulling the automobile - succeeded]
+  
+> >   Lot
+  ** pull the automobile
+  [pulling the automobile]
+  It is fixed in place.
+  [pulling the automobile - failed the can't pull what's fixed in place rule]
+  
+> >   Lot
+  ** clark, pull the door
+  [asking Clark Gable to try pulling the stage door]
+  [(1) Clark Gable pulling the stage door]
+  [(1) Clark Gable pulling the stage door - failed the can't pull what's fixed in place rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try pulling the stage door - succeeded]
+  
+> >   Lot
+  ** pull the door
+  [pulling the stage door]
+  It is fixed in place.
+  [pulling the stage door - failed the can't pull what's fixed in place rule]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a sparkly scarf
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** drop the scarf
+  [dropping the sparkly scarf]
+  Dropped.
+  [dropping the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, pull the scarf
+  [asking Clark Gable to try pulling the sparkly scarf]
+  [(1) Clark Gable pulling the sparkly scarf]
+  Clark Gable pulls the sparkly scarf.
+  [(1) Clark Gable pulling the sparkly scarf - succeeded]
+  
+  [asking Clark Gable to try pulling the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** pull scarf
+  [pulling the sparkly scarf]
+  Nothing obvious happens.
+  [pulling the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** push scarf
+  [pushing the sparkly scarf]
+  Nothing obvious happens.
+  [pushing the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, push the scarf
+  [asking Clark Gable to try pushing the sparkly scarf]
+  [(1) Clark Gable pushing the sparkly scarf]
+  Clark Gable pushes the sparkly scarf.
+  [(1) Clark Gable pushing the sparkly scarf - succeeded]
+  
+  [asking Clark Gable to try pushing the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, push me
+  [asking Clark Gable to try pushing yourself]
+  [(1) Clark Gable pushing yourself]
+  [(1) Clark Gable pushing yourself - failed the can't push people rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try pushing yourself - succeeded]
+  
+> >   Lot
+  ** turn scarf
+  [turning the sparkly scarf]
+  Nothing obvious happens.
+  [turning the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, turn scarf
+  [asking Clark Gable to try turning the sparkly scarf]
+  [(1) Clark Gable turning the sparkly scarf]
+  Clark Gable turns the sparkly scarf.
+  [(1) Clark Gable turning the sparkly scarf - succeeded]
+  
+  [asking Clark Gable to try turning the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** turn clark
+  (Clark Gable)
+  [turning Clark Gable]
+  Clark Gable might not like that.
+  [turning Clark Gable - failed the can't turn people rule]
+  
+> >   Lot
+  ** clark, turn me
+  [asking Clark Gable to try turning yourself]
+  [(1) Clark Gable turning yourself]
+  [(1) Clark Gable turning yourself - failed the can't turn people rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try turning yourself - succeeded]
+  
+> >   Lot
+  ** clark, turn clark
+  (Clark Gable)
+  [asking Clark Gable to try turning Clark Gable]
+  [(1) Clark Gable turning Clark Gable]
+  [(1) Clark Gable turning Clark Gable - failed the can't turn people rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try turning Clark Gable - succeeded]
+  
+> >   Lot
+  ** squeeze clark
+  (Clark Gable)
+  [squeezing Clark Gable]
+  Clark Gable might not like that.
+  [squeezing Clark Gable - failed the innuendo about squeezing people rule]
+  
+> >   Lot
+  ** clark, squeeze me
+  [asking Clark Gable to try squeezing yourself]
+  [(1) Clark Gable squeezing yourself]
+  [(1) Clark Gable squeezing yourself - failed the innuendo about squeezing people rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try squeezing yourself - succeeded]
+  
+> >   Lot
+  ** yes
+  [saying yes]
+  That was a rhetorical question.
+  [saying yes - failed the block saying yes rule]
+  
+> >   Lot
+  ** clark, yes
+  [asking Clark Gable to try saying yes]
+  [(1) Clark Gable saying yes]
+  [(1) Clark Gable saying yes - failed the block saying yes rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try saying yes - succeeded]
+  
+> >   Lot
+  ** no
+  [saying no]
+  That was a rhetorical question.
+  [saying no - failed the block saying no rule]
+  
+> >   Lot
+  ** clark, no
+  [asking Clark Gable to try saying no]
+  [(1) Clark Gable saying no]
+  [(1) Clark Gable saying no - failed the block saying no rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try saying no - succeeded]
+  
+> >   Lot
+  ** sorry
+  [saying sorry]
+  Oh, don't apologise.
+  [saying sorry - failed the block saying sorry rule]
+  
+> >   Lot
+  ** clark, sorry
+  [asking Clark Gable to try saying sorry]
+  [(1) Clark Gable saying sorry]
+  [(1) Clark Gable saying sorry - failed the block saying sorry rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try saying sorry - succeeded]
+  
+> >   Lot
+  ** burn scarf
+  [burning the sparkly scarf]
+  This dangerous act would achieve little.
+  [burning the sparkly scarf - failed the block burning rule]
+  
+> >   Lot
+  ** burn clark
+  (Clark Gable)
+  [burning Clark Gable]
+  This dangerous act would achieve little.
+  [burning Clark Gable - failed the block burning rule]
+  
+> >   Lot
+  ** clark, burn the scarf
+  [asking Clark Gable to try burning the sparkly scarf]
+  [(1) Clark Gable burning the sparkly scarf]
+  [(1) Clark Gable burning the sparkly scarf - failed the block burning rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try burning the sparkly scarf - succeeded]
+  
+> >   Lot
+  ** clark, burn me
+  [asking Clark Gable to try burning yourself]
+  [(1) Clark Gable burning yourself]
+  [(1) Clark Gable burning yourself - failed the block burning rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try burning yourself - succeeded]
+  
+> >   Lot
+  ** wake up
+  [waking up]
+  The dreadful truth is, this is not a dream.
+  [waking up - failed the block waking up rule]
+  
+> >   Lot
+  ** clark, wake up
+  [asking Clark Gable to try waking up]
+  [(1) Clark Gable waking up]
+  [(1) Clark Gable waking up - failed the block waking up rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try waking up - succeeded]
+  
+> >   Lot
+  ** think
+  [thinking]
+  What a good idea.
+  [thinking - failed the block thinking rule]
+  
+> >   Lot
+  ** clark, think
+  [asking Clark Gable to try thinking]
+  [(1) Clark Gable thinking]
+  [(1) Clark Gable thinking - failed the block thinking rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try thinking - succeeded]
+  
+> >   Lot
+  ** smell clark
+  (Clark Gable)
+  [smelling Clark Gable]
+  You smell nothing unexpected.
+  [smelling Clark Gable - succeeded]
+  
+> >   Lot
+  ** clark, smell me
+  [asking Clark Gable to try smelling yourself]
+  [(1) Clark Gable smelling yourself]
+  Clark Gable sniffs.
+  [(1) Clark Gable smelling yourself - succeeded]
+  
+  [asking Clark Gable to try smelling yourself - succeeded]
+  
+> >   Lot
+  ** listen
+  [listening to the Lot]
+  You hear nothing unexpected.
+  [listening to the Lot - succeeded]
+  
+> >   Lot
+  ** clark, listen
+  [asking Clark Gable to try listening to the Lot]
+  [(1) Clark Gable listening to the Lot]
+  Clark Gable listens.
+  [(1) Clark Gable listening to the Lot - succeeded]
+  
+  [asking Clark Gable to try listening to the Lot - succeeded]
+  
+> >   Lot
+  ** [hm]
+  That's not a verb I recognise.
+  
+> >   Lot
+  ** clark, listen to me
+  [asking Clark Gable to try listening to yourself]
+  [(1) Clark Gable listening to yourself]
+  Clark Gable listens.
+  [(1) Clark Gable listening to yourself - succeeded]
+  
+  [asking Clark Gable to try listening to yourself - succeeded]
+  
+> >   Lot
+  ** taste clark
+  (Clark Gable)
+  [tasting Clark Gable]
+  You taste nothing unexpected.
+  [tasting Clark Gable - succeeded]
+  
+> >   Lot
+  ** clark, taste me
+  [asking Clark Gable to try tasting yourself]
+  [(1) Clark Gable tasting yourself]
+  Clark Gable tastes yourself.
+  [(1) Clark Gable tasting yourself - succeeded]
+  
+  [asking Clark Gable to try tasting yourself - succeeded]
+  
+> >   Lot
+  ** cut clark
+  (Clark Gable)
+  [cutting Clark Gable]
+  Cutting him up would achieve little.
+  [cutting Clark Gable - failed the block cutting rule]
+  
+> >   Lot
+  ** clark, cut me
+  [asking Clark Gable to try cutting yourself]
+  [(1) Clark Gable cutting yourself]
+  [(1) Clark Gable cutting yourself - failed the block cutting rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try cutting yourself - succeeded]
+  
+> >   Lot
+  ** jump
+  [jumping]
+  You jump on the spot.
+  [jumping - succeeded]
+  
+> >   Lot
+  ** clark, jump
+  [asking Clark Gable to try jumping]
+  [(1) Clark Gable jumping]
+  Clark Gable jumps on the spot.
+  [(1) Clark Gable jumping - succeeded]
+  
+  [asking Clark Gable to try jumping - succeeded]
+  
+> >   Lot
+  ** tie scarf to clark
+  (Clark Gable)
+  [tying the sparkly scarf to Clark Gable]
+  You would achieve nothing by this.
+  [tying the sparkly scarf to Clark Gable - failed the block tying rule]
+  
+> >   Lot
+  ** clark, tie scarf to me
+  [asking Clark Gable to try tying the sparkly scarf to yourself]
+  [(1) Clark Gable tying the sparkly scarf to yourself]
+  [(1) Clark Gable tying the sparkly scarf to yourself - failed the block tying rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try tying the sparkly scarf to yourself - succeeded]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** drink choker
+  [drinking the licorice choker]
+  There's nothing suitable to drink here.
+  [drinking the licorice choker - failed the block drinking rule]
+  
+> >   Lot
+  ** clark, drink choker
+  [asking Clark Gable to try drinking the licorice choker]
+  [(1) Clark Gable drinking the licorice choker]
+  [(1) Clark Gable drinking the licorice choker - failed the block drinking rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try drinking the licorice choker - succeeded]
+  
+> >   Lot
+  ** swing clark
+  (Clark Gable)
+  [swinging Clark Gable]
+  There's nothing sensible to swing here.
+  [swinging Clark Gable - failed the block swinging rule]
+  
+> >   Lot
+  ** clark, swing me
+  [asking Clark Gable to try swinging yourself]
+  [(1) Clark Gable swinging yourself]
+  [(1) Clark Gable swinging yourself - failed the block swinging rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try swinging yourself - succeeded]
+  
+> >   Lot
+  ** blow
+  That's not a verb I recognise.
+  
+> >   Lot
+  ** scarf
+  That's not a verb I recognise.
+  
+> >   Lot
+  ** rub clark
+  (Clark Gable)
+  [rubbing Clark Gable]
+  Clark Gable might not like that.
+  [rubbing Clark Gable - failed the can't rub another person rule]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** clark, rub me
+  [asking Clark Gable to try rubbing yourself]
+  [(1) Clark Gable rubbing yourself]
+  [(1) Clark Gable rubbing yourself - failed the can't rub another person rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try rubbing yourself - succeeded]
+  
+> >   Lot
+  ** i
+  [taking inventory]
+  You are carrying:
+    a frilly bag (open)
+      a flashlight (providing light)
+      a small key
+      a clipboard
+      Variety Magazine
+      a foam boulder
+    a slinky dress (being worn)
+    a licorice choker (being worn)
+  
+  [taking inventory - succeeded]
+  
+> >   Lot
+  ** set bag to 1
+  [setting the frilly bag to "1"]
+  No, you can't set that to anything.
+  [setting the frilly bag to "1" - failed the block setting it to rule]
+  
+> >   Lot
+  ** clark, set bag to 1
+  [asking Clark Gable to try setting the frilly bag to "1"]
+  [(1) Clark Gable setting the frilly bag to "1"]
+  [(1) Clark Gable setting the frilly bag to "1" - failed the block setting it to rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try setting the frilly bag to "1" - succeeded]
+  
+> >   Lot
+  ** clark, buy me
+  [asking Clark Gable to try buying yourself]
+  [(1) Clark Gable buying yourself]
+  [(1) Clark Gable buying yourself - failed the block buying rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try buying yourself - succeeded]
+  
+> >   Lot
+  ** buy clark
+  (Clark Gable)
+  [buying Clark Gable]
+  Nothing is on sale.
+  [buying Clark Gable - failed the block buying rule]
+  
+> >   Lot
+  ** climb dumpster
+  [climbing the dumpster]
+  Little is to be achieved by that.
+  [climbing the dumpster - failed the block climbing rule]
+  
+> >   Lot
+  ** clark, climb dumpster
+  [asking Clark Gable to try climbing the dumpster]
+  [(1) Clark Gable climbing the dumpster]
+  [(1) Clark Gable climbing the dumpster - failed the block climbing rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try climbing the dumpster - succeeded]
+  
+> >   Lot
+  ** sleep
+  [sleeping]
+  You aren't feeling especially drowsy.
+  [sleeping - failed the block sleeping rule]
+  
+> >   Lot
+  ** clark, sleep
+  [asking Clark Gable to try sleeping]
+  [(1) Clark Gable sleeping]
+  [(1) Clark Gable sleeping - failed the block sleeping rule]
+  
+  "I don't think that's in the script," says Clark dubiously.
+  [asking Clark Gable to try sleeping - succeeded]
+  
+> >   Lot
+  ** clark, save
+  [asking Clark Gable to try saving the game]
+  [That command asks to do something outside of play, so it can only make sense from you to me. Clark Gable cannot be asked to do this.]
+  [asking Clark Gable to try saving the game - failed]
+  
+> >   Lot
+  ** [awesome
+  That's not a verb I recognise.
+  
+> >   Lot
+  ** clark, restore
+  [asking Clark Gable to try restoring the game]
+  [That command asks to do something outside of play, so it can only make sense from you to me. Clark Gable cannot be asked to do this.]
+  [asking Clark Gable to try restoring the game - failed]
+  
+> >   Lot
+  ** clark, undo
+  [answering Clark Gable that "undo"]
+  There is no reply.
+  [answering Clark Gable that "undo" - succeeded]
+  
+> >   Lot
+  ** clark, undo pants
+  [answering Clark Gable that "undo pants"]
+  There is no reply.
+  [answering Clark Gable that "undo pants" - succeeded]
+  
+> >   Lot
+  **
+  I beg your pardon?
+  
+> >

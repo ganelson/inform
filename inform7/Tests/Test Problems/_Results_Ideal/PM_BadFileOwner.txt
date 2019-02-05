@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadFileOwner
+  >--> You wrote 'The file of Boundaries (owned by 100) is called "milnor"' (source
+    text, line 3): but the owner of this file is wrongly specified, since it is
+    not one of the three possibilities - (1) Specify nothing: making the file
+    belong to this project. (2) Specify only that it belongs to someone,
+    without saying whom: 'The File of Wisdom (owned by another project) is
+    called "wisdom".' (3) Specify that it belongs to a project with a given
+    double-quoted IFID: 'The File of Wisdom (owned by project
+    "4122DDA8-A153-46BC-8F57-42220F9D8795") is called "wisdom".'
+Inform 7 has finished: 13 centiseconds used.

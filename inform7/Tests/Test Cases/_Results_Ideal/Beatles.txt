@@ -1,0 +1,15 @@
+   room
+  "whoIsIt" = thing: John
+  Paul gets silly.
+  John gets going.
+  Ringo gets walks.
+  George gets sideways.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150830 / Inform 7 build 6M53 (I6/v6.33 lib 6/12N) SD
+  
+  room
+  
+> >   room
+> Are you sure you want to quit? 

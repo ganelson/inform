@@ -1,0 +1,6 @@
+The Temple is a room.
+
+A person that is not an animal can be talkative.
+A person that is an animal can be tamed. [This one is allowed.]
+A room that is not dark can be semi-dark.
+A room that is dark can be dangerous. [This is caught by C8QualifiedCanBe first.]

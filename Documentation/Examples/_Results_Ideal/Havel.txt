@@ -1,0 +1,35 @@
+   T: 48   F: 2   C: 4                                                                                                                                                                                                    9:00 am
+  Here you are in the first class cabin, but no matter how fancy the seats are, you can still get bored circling over Zurich for three hours on end. To kill time, you and the other passengers are playing a trivia game, and the final topic is your specialty: revolutions.
+  
+  Questionable Revolutions
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  First Class Cabin
+  You can see Dr Tweedy, Ms Finch and Ms Clarion here.
+  
+> >   T: 49   F: 3   C: 4                                                                                                                                                                                                    9:07 am
+  (Testing.)
+  
+  >[1] dr tweedy, where was the velvet revolution located
+  "Czechoslovakia," replies Dr Tweedy promptly.
+  
+  >[2] ms finch, when was the rose revolution
+  "1959?" guesses Ms Finch, with an air of diffidence.
+  
+  >[3] ms finch, what was the rose revolution
+  "A revolution in which President Eduard Shevardnadze was interrupted by protesters in the middle of his speech, and forced to flee."
+  
+  >[4] ms clarion, when was the spanish revolution
+  "I think 1934. About then. Close, anyway," replies Ms Clarion.
+  
+  >[5] g
+  "I think 1932. About then. Close, anyway," replies Ms Clarion.
+  
+  >[6] g
+  "I think 1932. About then. Close, anyway," replies Ms Clarion.
+  
+  >[7] ms finch, when was the spanish revolution
+  "1955?" guesses Ms Finch, with an air of diffidence.
+  
+> >

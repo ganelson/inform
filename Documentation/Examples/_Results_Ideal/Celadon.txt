@@ -1,0 +1,45 @@
+   Tea Room
+  Celadon
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Tea Room
+  
+> >   Tea Room
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a black lacquer tray
+      a celadon teapot
+      a napkin
+  
+  >[2] drop teapot
+  (first taking the celadon teapot from the black lacquer tray)
+  Dropped.
+  
+  >[3] i
+  You are carrying:
+    a black lacquer tray
+      a napkin
+  
+  >[4] look
+  Tea Room
+  You can see a celadon teapot here.
+  
+  >[5] drop teapot
+  The celadon teapot is already here.
+  
+  >[6] drop napkin
+  (first taking the napkin from the black lacquer tray)
+  It seems to be stuck to the tray, possibly by an underlying wad of gum.
+  
+  >[7] i
+  You are carrying:
+    a black lacquer tray
+      a napkin
+  
+  >[8] drop tray
+  Dropped.
+  
+> >

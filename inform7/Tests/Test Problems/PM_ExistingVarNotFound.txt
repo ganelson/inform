@@ -1,0 +1,5 @@
+Home is a room.
+
+To disregard (act - an existing variable): (- {act}; -).
+
+When play begins: disregard waiting.

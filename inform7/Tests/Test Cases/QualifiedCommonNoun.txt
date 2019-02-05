@@ -1,0 +1,13 @@
+A colour is a kind of value. The colours are green, red and blue.
+
+A tile is a kind of thing. A tile has a colour.
+
+World is a room.
+
+In World is a red tile.
+World contains a tile.
+World contains a blue tile.
+
+When play begins:
+	repeat with T running through tiles in the World:
+		say "[T] is of colour [colour of T]."

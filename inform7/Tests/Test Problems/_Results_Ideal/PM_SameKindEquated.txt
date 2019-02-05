@@ -1,0 +1,18 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SameKindEquated
+  >--> The sentence 'The dark door is a door' (source text, line 3) seems to be
+    telling me that two descriptions, both forms of door, are the same. That's
+    a little puzzling - like saying that 'An open container is a container.'
+    Sometimes this happens because I've read too much into a name - for
+    instance, 'A dark room is a room' makes me read 'dark room' as 'dark' (an
+    adjective I know) plus 'room', but maybe the writer actually meant a
+    photographer's workshop. If you need to call something by a name which
+    confuses me, one way is to use 'called': for instance, 'West is a room
+    called the dark room.' Another way is to call it something else here, and
+    set the 'printed name' property to what you want the player to see - for
+    instance, 'The photo lab is a room. The printed name of the photo lab is
+    "dark room".'
+Inform 7 has finished: 17 centiseconds used.

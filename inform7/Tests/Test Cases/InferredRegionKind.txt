@@ -1,0 +1,33 @@
+A crowd is a kind of people. It is usually plural-named and undescribed.
+It has a region called territory.
+
+Region 1 is a region. Region 2 is a region in Region 1.
+
+QR is a region that varies. QR is Region 1.
+
+WR is initially Region 1.
+
+A room called Room 1 is in Region 2.
+
+Crowd 1 is here. It is a crowd. The territory of Crowd 1 is Region 2.
+
+Crowd 2 is here. It is a crowd. The territory of Crowd 2 is Region 1.
+
+A room called Room 2 is in Region 2 and north of Room 1.
+
+Every turn:
+	let R be Region 1;
+	showme R;
+	say "R is [R]...";
+	if the location is in Region 1 :
+		say "Check (1a).";
+	if the location is in R:
+		say "Check (1b).";
+	if the location is in the territory of Crowd 2:
+		say "Check (1c).";
+	if the location is in QR:
+		say "Check (1d).";
+	if the location is in WR:
+		say "Check (1e).";
+
+Test me with "showme / n / showme".

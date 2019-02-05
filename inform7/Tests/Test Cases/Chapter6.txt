@@ -1,0 +1,278 @@
+"Chapter 6: Return of the Fussy Table" by Emily Short.
+
+Chapter 6
+
+Use command line echoing. Use scoring.
+
+The Kitchen is a room. "A quiet homelike room heated by a ferocious Aga."
+
+The Dining Room is north of the Kitchen. "A room of handsome proportions, with an octagonal dining table on a fine parquet floor. The original set of chairs has been taken away, leaving only a red velvet dining chair and a blue suede armchair."
+
+The fussy table is a supporter in the Dining Room. It is scenery.
+
+The description is "It's hypochondriac: the result of a sojourn in a superior antique shop, where it picked up the scent of almond oil, words like provenance, and a secretive shame about being resurfaced.
+
+Chairs don't get along with it.
+
+In its mellowest moods, after a really good dusting, it will mention, casually, a cabinet it once knew, which was twelve feet tall, came from the Winter Palace, and had an asking price of $350K."
+
+A chair is a kind of supporter with carrying capacity 1. A chair is enterable.
+
+After entering a chair when the player is wearing a spiky thing (called the clog):
+	say "You sit on [the noun], lifting [the list of spiky things worn by the player] so that the parquet is no longer affronted."
+
+The blue suede armchair and the red velvet dining chair are chairs in the Dining Room. The description of the blue suede is "Quiet, mellow, and with a lingering aroma of clove cigarettes, and possibly something less legal. It doesn't sit up straight, and doesn't let anyone else do so either." The red velvet has the description "In temperament, in bearing, in everything it is the opposite of the blue suede chair. It is concerned for its duty all the time, has a rigidly straight back, and pokes diners in the spine when it suspects them of overdoing things. 
+
+Once, in the middle of a luncheon, it groaned audibly when the doctor's wife took a second piece of cake; but the slice was already on her plate, poor dear, and she couldn't put it back, however mortified she might be."
+
+The carrying capacity of the player is 2. 
+
+Section 3 - Sources of adjectives
+
+A thing can be drippy or dry.
+
+Before printing the name of a drippy thing: say "drippy ".
+
+Before printing the name of a cold thing: say "cold ".
+
+Before printing the name of a scalding thing: say "scalding ".
+
+Heat is a kind of value. The heats are luke-warm, cold, and scalding. Everything has a heat. 
+
+The platter is a scalding portable supporter. It is carried by Alison. It has carrying capacity 1.
+
+The glass of ice water is a cold, drippy thing. It is on the table.
+
+A thing can be spiky or smooth. The cleated left shoe is a wearable spiky thing. It is worn by the player. The cleated right shoe is a wearable spiky thing. It is worn.
+
+Instead of examining a drippy thing:
+	say "Pretty drippy.".
+	
+The ceramic tile is a cold portable supporter in the Dining Room. It has carrying capacity 1.
+
+After putting a cold thing on a scalding thing:
+	say "[The noun] meets [the second noun]; both shriek in pain. But the necessary heat transfer occurs.";
+	now the heat of the noun is luke-warm;
+	now the heat of the second noun is luke-warm.
+	
+After putting a scalding thing on a cold thing:
+	say "[The noun] meets [the second noun]; both shriek in pain. But the necessary heat transfer occurs.";
+	now the heat of the noun is luke-warm;
+	now the heat of the second noun is luke-warm.
+
+Section 4 - Defining new adjectives
+
+Definition: a supporter is occupied if something is on it.
+
+Definition: something is contented if it is not concerned.
+
+Definition: a chair is concerned if something drippy is on it or something scalding is on it or something cold is on it or something spiky is on it.
+
+Definition: the table is concerned if something drippy is on it or something scalding is on it or something spiky is on it.
+
+Definition: the ceramic tile is concerned if something spiky is on it.
+
+Definition: a room is concerned if something drippy is in it or something scalding is in it or something spiky is in it or someone which is in it is wearing a spiky thing.
+
+Section 5 - Which and who
+
+An every turn rule:
+	if something (called the offending item) on the table is drippy,
+		say "'Help! Get me a coaster!' screams the table[if the table is visible], its veneer squirming under [the offending item][otherwise] from the Dining Room[end if].";
+	if something (called the offending item) on the red chair is drippy,
+		say "'Oh dear,' murmurs the red chair, as [the offending item] drips into its velvety seat. 'Oh dear, I will have a damp spot. This is so very -- what will people think?'";
+	if something (called the offending item) on the visible armchair is drippy,
+		say "[The offending item] visibly begins degrading the suede where it sits. The armchair is tactfully silent.";
+	if a drippy thing (called the offending item) is in the location and the player is in the Dining Room,
+		say "'Cripes,' says the parquet. 'No one mind me at all. Just leave that [offending item] right here. You know I'm the most valuable thing in the room?'"
+
+
+An every turn rule when the player is in the dining room:
+	if a cold dry thing (called the offending item) is on the table,
+		say "The table shivers under [the offending item].";
+
+An every turn rule when the player is in the dining room:
+	if something (called the offending item) on the table is scalding,
+		say "'Hey!' protests the table, practically smoking at [the offending item]. 'Heard of a trivet?'";
+	if something (called the offending item) on the armchair is scalding,
+		say "The armchair doesn't complain about [the offending item]; it just begins, quietly, to give off warm sweet clouds of blue steam, as though its inner opium-nature had been released.";
+	if something (called the offending item) in the Dining Room is scalding,
+		say "'Yes indeed,' [if the location is the Dining Room]says[otherwise]bellows[end if] the parquet. 'That [offending item] won't leave any sort of mark what-so-ever.'"
+
+An every turn rule when the player is in the dining room:
+	if something (called the offending item) on the table is spiky,
+		say "The table holds very very very still lest [the offending item] mar its finish. But its resentment is palpable.";
+	if something (called the offending item) on the velvet chair is spiky,
+		say "[The offending item] stabs the velvet of the red velvet chair, which draws itself up even more sharply in a pose of dutiful martyrdom.";
+	if something (called the offending item) which is spiky is on the ceramic tile,
+		say "'[The offending item] itches!' cries the ceramic tile.";
+	if something (called the offending item) in the location is spiky,
+		say "'[The offending item] should not be on a parquet floor,' sings the parquet floor sadly.";
+	if someone (called the offending person) in the location is wearing something spiky and the location is the Dining Room,
+		say "The parquet floor mutters about the things people wear to walk on parquet floors these days."
+
+An every turn rule when the player is in the dining room: 
+	if the table supports something which supports a drippy thing (called the offending item),
+		say "'[The offending item] could still theoretically dribble down here,' says the table nonchalantly. 'It's possible.'";
+	if the velvet chair supports a concerned thing (called the friend),
+		say "'[The friend] seems a little worried,' remarks the velvet chair helpfully."
+
+Section 6 - To be able to see and touch
+[(Something sort of wistful-sounding about this section heading.)]
+
+An every turn rule:
+	if the concerned table can see a supporter (called the object of envy) which is not concerned, say "The table looks jealously at [the object of envy]. 'Some people have such an easy life.'"; 
+	
+An every turn rule:
+	if someone (called the shouter) who is not visible can see a supporter (called the empty item) which is not occupied, say "[The shouter] hollers, 'Perhaps I should put something on this [empty item].'". 
+	
+
+An every turn rule:
+	if someone (called the shouter) who is in the Kitchen cannot be touched by the player, say "You can hear [the shouter] moving around in the Kitchen."  
+	
+An every turn rule:
+	if exactly one visible thing (called the worried object) is concerned, say "[The worried object] seems especially worried just now."; 
+	
+An every turn rule:
+	if a touchable thing (called the dangerous object) is scalding and the dangerous object is not carried by a person, say "You almost burn yourself on [the dangerous object] by accident."; 
+	
+An every turn rule:
+	if something (called the threatening heat source) which can be touched by the cold glass of ice water is scalding, say "The glass of ice water looks nervously at [the threatening heat source].";
+	
+An every turn rule:
+	if something (called the threatening spike source)  which can be seen by the velvet chair is spiky, say "[The threatening spike source] growls at the velvet chair, which winces and whimpers.";
+
+Section 7 - Adjacent rooms
+
+Instead of going to an adjacent room when the player is in the Dining Room:
+	say "'You're not leaving!?' whimpers the table at once."
+
+Alison is a woman in the Kitchen. The kettle is a scalding thing carried by Alison. 
+
+The Attic is above the Kitchen. The sinister door is north of the Attic and south of the Garret. The sinister door is a door. It is openable, lockable and locked. The player carries a skeleton key. The skeleton key unlocks the sinister door.
+
+The Living Room is west of the Dining Room and northwest of the Kitchen.
+
+The dachsund puppy is an animal in the Attic. Understand "Oscar" as the dachsund.
+
+Every turn when the puppy is not in the location:
+	let space be the holder of the puppy;
+	let the best direction be the best route from space to the location, using doors;
+	if the best direction is not a direction
+	begin;
+		say "You can hear the puppy whining pathetically in the distance.";
+	otherwise;
+		let next step be the room the best direction from space;
+		move puppy to the next step;
+		if the puppy is visible, say "Your puppy bounds joyously into the room, coming [best direction] from [the space]!";
+	end if.
+	
+The Spirit of Furniture Past is a man in the Garret. 
+
+Every turn when the Spirit is not in the location:
+	let space be the holder of the Spirit;
+	let the best direction be the best route from space to the location, using even locked doors;
+	if the best direction is not a direction
+	begin;
+		say "Something wails spookily in the distance.";
+	otherwise;
+		let x be the number of moves from the location to the space;
+		if x is -1, say "The house shudders ominously as something passes through the walls.";
+		let next step be the room the best direction from space;
+		move Spirit to the next step;
+		if the Spirit is visible
+		begin;
+			say "The Spirit of Furniture Past drifts [best direction] into the room from [the space] to haunt you.";
+		otherwise;
+			let x be the number of moves from the next step to the location;
+			if x > 0,
+				say "Something moans [x in words] room[s] away.";
+		end if;
+	end if.
+	
+Understand "teleport to [any room]" as teleporting to.
+
+Teleporting to is an action applying to one thing.
+
+Carry out teleporting to:
+	move the player to the noun.
+
+
+Section 8 - All, each and every
+
+
+An every turn rule:
+	if platter is carried by Alison and the player is in the Dining Room and almost all of the supporters are not concerned
+	begin;
+		let the next victim be the red velvet chair;
+		move the platter to the next victim;
+		say "Humming to herself, Alison brings in a hot platter and sets it down smack on [the next victim], then goes back out.";
+	end if;
+
+An every turn rule:
+	if kettle is carried by Alison and the player is in the Dining Room and at least three fixed in place supporters are contented
+	begin;
+		let the next victim be the fussy table;
+		move the kettle to the next victim;
+		say "Just then the kettle boils in the kitchen. Whistling chirpily, Alison brings it in and sets it down smack on [the next victim], then goes back out.";
+	end if;
+
+An every turn rule:
+	if some of the things are concerned, say "You sense some resentment from [the list of concerned things].";
+	
+An every turn rule:
+	if almost all of the supporters are concerned, 
+		say "'I hope everything is going well,' bellows Alison from the other room.";
+	
+An every turn rule:
+	now score is 5 - the number of concerned things;
+	if the location is concerned, decrease the score by 1;
+	if all of the supporters are concerned and the location is concerned, end the story saying "You have died";
+	if none of the supporters are concerned and the location is not concerned, end the story saying "You have won".
+
+Section 9 - Counting while comparing
+
+A plate is a kind of supporter. A plate is portable. Ten plates are in the Kitchen.
+
+A cookie is a kind of thing. 15 cookies are carried by Alison.
+
+ A cookie called a chocolate chip cookie is carried by Alison. A cookie called an oatmeal cookie is carried by Alison. A cookie called a manhole cover is carried by Alison. A cookie called a sugar drop is carried by Alison.
+
+A hat is a kind of thing. A hat is wearable. Two hats are worn by Alison.
+
+An earring is a kind of thing. An earring is wearable. Alison wears five earrings.
+
+The stove is a supporter in the Kitchen. A pot is a kind of container. Three pots are supported by the stove.
+
+Every turn:
+	if the player is in the Kitchen and fewer than two plates are occupied
+	begin;
+		let the snack be a random cookie carried by Alison;
+		[let the destination be a random plate which is not occupied;]
+		let the destination be a random empty plate;
+		move the snack to the destination;
+		say "Alison puts a cookie on one of the plates.";
+		rule succeeds;
+	end if;
+
+Definition: a plate is full if it supports a cookie. Definition: a plate is empty if it is not full.
+
+Every turn:	
+	if the player is in the Kitchen and exactly two plates are occupied
+	begin;
+		say "Alison beams happily on the plate arrangement.";
+	end if;
+
+Every turn:
+	if the player is in the Kitchen and at most three plates are occupied
+	begin;
+		say "Alison says, 'I do so love having enough plates to go around.'";
+	end if;
+
+Every turn:
+	if the player is in the Kitchen and three plates are not occupied and Alison is carrying a cookie (called the snack)
+	begin;
+		let the destination be a random plate which is not occupied;
+		move the snack to the destination; 
+		say "Alison puts a cookie on a plate.";
+	end if;

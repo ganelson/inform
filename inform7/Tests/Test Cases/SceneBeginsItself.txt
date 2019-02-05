@@ -1,0 +1,7 @@
+Home is a room.
+
+Repetition is a recurring scene. Repetition begins when play begins. Repetition
+ends when the time since Repetition began is 3 minutes. Repetition begins when
+Repetition ends. 
+
+Test me with "scenes / z / z / z / z / scenes".

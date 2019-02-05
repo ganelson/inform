@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindOfInstance
+  >--> You wrote 'A Renaissance portrait is a kind of Mona Lisa' (source text, line 3):
+    but kinds can only be made from other kinds, so 'a kind of container' is
+    allowed but 'a kind of Mona Lisa' (where Mona Lisa is a specific thing
+    you've already made), wouldn't be allowed. There is only one Mona Lisa.
+Inform 7 has finished: 16 centiseconds used.

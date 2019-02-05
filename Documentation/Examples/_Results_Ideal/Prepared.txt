@@ -1,0 +1,53 @@
+   Tent
+  Being Prepared
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Tent
+  A dome made of two flexible rods and a lot of bright green ripstop nylon. It bills itself as a one-man tent, but you'd call it a two-dwarf tent: there is no way to arrange yourself on its square floor so that you can stretch out completely.
+  
+  Your hoodie is balled up in the corner.
+  
+> >   Tent
+  (Testing.)
+  
+  >[1] x hoodie
+  Both elbows are stained from yesterday's entrenching project.
+  
+  The hoodie's pocket contains a Swiss army knife and a folded map.
+  
+  >[2] get hoodie
+  Taken.
+  
+  >[3] get knife
+  Taken.
+  
+  >[4] get map
+  Taken.
+  
+  >[5] i
+  You are carrying:
+    a folded map
+    a Swiss army knife
+    a hoodie
+    a whistle (being worn)
+  
+  >[6] put hoodie in pocket
+  You can't put something inside itself.
+  
+  >[7] put whistle in pocket
+  (first taking it off)
+  You put the whistle into the hoodie's pocket.
+  
+  >[8] put map in pocket
+  You put the folded map into the hoodie's pocket.
+  
+  >[9] put knife in pocket
+  There is no more room in the hoodie's pocket.
+  
+  >[10] i
+  You are carrying:
+    a Swiss army knife
+    a hoodie
+  
+> >

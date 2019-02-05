@@ -1,0 +1,27 @@
+   Country Lane
+  Noisemaking
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Country Lane
+  You can see a black crow here.
+  
+> >   Open Field
+  (Testing.)
+  
+  >[1] sing
+  You hum a little ditty.
+  
+  The crow, startled, flies off to Village Center.
+  
+  >[2] g
+  You hum a little ditty.
+  
+  >[3] n
+  
+  Open Field
+  
+  >[4] hit drum
+  THWACK!
+  
+> >

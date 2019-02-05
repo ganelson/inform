@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+    <!--
+	*, *:before, *:after {
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	.headingboxFailed {
+		position: relative;
+		height: 56px;
+		padding: 0px;
+		white-space:nowrap;
+		background: #f69Ca6;  /* red */
+		font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+		-webkit-font-smoothing: antialiased;
+	}
+	.headingboxSucceeded {
+		position: relative;
+		height: 56px;
+		padding: 0px;
+		white-space:nowrap;
+		background: #E6FFE6;  /* green */
+		font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+		-webkit-font-smoothing: antialiased;
+	}
+	.headingtext {
+		position: absolute;
+		top: -4px;
+		left: -1px;
+		width: 100%;
+		color: #000000;
+		padding: 14px 10px 0px 10px;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.headingrubric {
+		position: absolute;
+		top: 36px;
+		width: 100%;
+		color: #000000;
+		padding: 0px 10px 0px 10px;
+		font-size: 11px;
+		font-weight: bold;
+	}
+    -->
+</style>
+</head>
+<body><font [FONTTAG]>
+<table cellspacing="3" border="0" width="100%">
+<tr id="surround0"><td style="width:100%">
+<div class="headingbox[CBLORBSTATUS]">
+	<div class="headingtext">Report on Release: [CBLORBSTATUS]</div>
+	<div class="headingrubric">Produced by [GENERATOR] at [TIMESTAMP] on [DATESTAMP]</div>
+</div></td>
+</tr></table>
+<p>
+<center><table cellpadding=10 cellspacing=10><tr><td valign="center" halign="left" border="0"><img src='[*CBLORBSTATUSIMAGE]' height=180 width=180 border=0></td><td valign="center" halign="left" border="0">
+<table cellpadding=0 cellspacing=0>
+	<tr>
+		<td valign="center" halign="left" border="0"><a href='[JAVASCRIPTPRELUDE]openFile("[*MATERIALSFOLDERPATHFILE]")'><img src='inform:/doc_images/folder.png' border=0></a>&nbsp;<font  [FONTTAG]>[MATERIALSFOLDER]</font></td>
+	</tr>
+	<tr>
+		<td valign="top" halign="left" border="0"><a href='[JAVASCRIPTPRELUDE]openFile("[*MATERIALSFOLDERPATHFILE]/Release")'><img src='inform:/doc_images/folder2.png' border=0></a>&nbsp;<font  [FONTTAG]>Release</font></td>
+	</tr>
+	<tr>
+		<td valign="top" halign="left" border="0"><img src='inform:/doc_images/folder3.png' border=0>&nbsp;<font [FONTTAG]><a href='[JAVASCRIPTPRELUDE]openFile("[*MATERIALSFOLDERPATHFILE]/Release/[*STORYFILE]")'><img src='[*CBLORBSTATUSIMAGE]' height=16 width=16 border=0></a>&nbsp;[STORYFILE]</font></td>
+	</tr>
+</table></td></tr></table></center>
+<p>
+[CBLORBSTATUSTEXT]
+<p>
+</html>

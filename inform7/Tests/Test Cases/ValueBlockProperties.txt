@@ -1,0 +1,11 @@
+Laboratory is a room.
+
+Colour is a kind of value. The colours are grey and blue.
+
+A colour has an text called warcry.
+
+The warcry of grey is "huzzah". The warcry of blue is "rebel yell".
+
+When play begins:
+	repeat with C running through colours:
+		say "[C] says [warcry of C]."

@@ -1,0 +1,5 @@
+{basics}
+
+Tests/Test Cases/_Console_Actual/
+Tests/Test Cases/_Scan_Actual/
+Tests/Test Cases/_Tree_Actual/

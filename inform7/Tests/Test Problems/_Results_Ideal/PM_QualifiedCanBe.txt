@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_QualifiedCanBe
+  >--> You wrote 'A portable thing can be stashable or unstashable or variably
+    stashable' (source text, line 3): but only a room, a thing or a kind can
+    have such adjectives applied to it, and qualifications cannot be used. It
+    makes no sense to say 'An open door can be rickety or sturdy' because the
+    door still has to have the property even at times when it is not open: we
+    must instead just say 'A door can be rickety or sturdy'.
+Inform 7 has finished: 17 centiseconds used.

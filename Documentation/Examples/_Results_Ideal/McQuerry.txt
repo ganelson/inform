@@ -1,0 +1,36 @@
+   McQuerry Dining Hall
+  Fate Steps In
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  McQuerry Dining Hall
+  Lise is at the nearest table, not apparently paying any attention to you.
+  
+  There's a carton of milk beside you, which you set down for a moment -- but you do want it.
+  
+> >   McQuerry Dining Hall
+  (Testing.)
+  
+  >[1] get milk
+  You've got both hands full with this tray.
+  
+  Lise, still deep in thought, absently puts the napkin on the table.
+  
+  >[2] put tray on table
+  You put the tray on the table.
+  
+  Just at that moment, a large blond man-thing in a red jacket walks more or less through you, and you come into violent contact with the table, knocking the tray and the napkin onto the floor.
+  
+  >[3] get milk
+  Taken.
+  
+  Lise chooses this moment to lick her fingers -- it's not gross, it's natural, you decide -- stand up, and head for the door. Unfortunately, her path crosses directly over the overdone chicken. There is a vaudevillesque moment where you try to warn or catch her; the next moment she's on the floor, looking shocked and also in quite a lot of pain. "I'm not sure," she says to you steadily but with unfocused gaze, "but I think I might have broken my tailbone."
+  
+  
+  
+      *** Well, she's paying attention to you now ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

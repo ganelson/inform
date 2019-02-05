@@ -1,0 +1,9 @@
+Inform 7.10.1 build 6P93 has started.
+I've now read your source text, which is 64 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_TableEntryGeneric
+  >--> In row 1 of 'Table of Machiavelli' (source text, line 13), the entry
+    'object' (source text, line 15) is the name of a kind of value, so it can't
+    be the name of a new object.
+Inform 7 has finished: 45 centiseconds used.

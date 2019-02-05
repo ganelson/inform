@@ -1,0 +1,14 @@
+Equation - sinitude
+	x = sin(y)
+where x is a real number and y is a real number.
+
+When play begins:
+	let y be 2;
+	let x be given by sinitude;
+	say "x is [x].";
+	now x is the real square root of 2;
+	say "x is [x].";
+	now x is the sine of 2;
+	say "x is [x].";
+
+Frog is a room.

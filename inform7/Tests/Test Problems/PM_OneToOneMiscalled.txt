@@ -1,0 +1,20 @@
+"Testcase" by Andrew Plotkin
+
+The Kitchen is a room.
+
+A trigger is a kind of thing. A remote is a kind of thing.
+
+Transmission relates one remote to one trigger (called the target). The
+verb to notify (it notifies, they notify, it notified, it is notified,
+it is notifying) implies the transmission relation.
+
+The verb to be aimed at implies the transmission relation.
+
+The squeaker and the squawker are remotes in the Kitchen.
+The bell and the whistle are triggers in the Kitchen.
+
+The squeaker notifies the bell. The squawker notifies the whistle.
+
+Before taking a remote (called item):
+	Let zog be the target of the noun;
+	Say "The [item] notifies [zog]."

@@ -1,0 +1,24 @@
+   Stanford
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stanford
+  The sober status display reads "false".
+  
+> >   Stanford
+  (Testing.)
+  
+  >[1] judge true
+  A bell pings, and the status display reads true.
+  
+  >[2] judge false
+  A bell pings, and the status display reads false.
+  
+  >[3] judge yeah
+  A bell pings, and the status display reads true.
+  
+  >[4] judge maybe
+  I didn't understand that sentence.
+  
+> >

@@ -1,0 +1,6 @@
+Home is a room.
+
+The primes are a list of numbers which vary.
+The primes are {2, 3, 5, 7, 11}.
+
+When play begins: say "Today's prime is [entry -35 of the primes]."

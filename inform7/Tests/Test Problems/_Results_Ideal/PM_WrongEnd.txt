@@ -1,0 +1,9 @@
+Inform 7 build 6L47 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42616 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_WrongEnd
+  >--> You wrote 'end while' (source text, line 7), but the end I was expecting
+    next was 'end if', finishing the block you began with 'if in darkness
+    begin' (source text, line 4).
+Inform 7 has finished: 17 centiseconds used.

@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 52 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MixedExistingConstants
+  >--> In 'An arthropod can be aggressive, skittish, frisky, or calm' (source
+    text, line 7), one of the values you supply as a possibility is
+    'aggressive', but this already has a meaning (as an insect condition). This
+    might be okay if every other possibility was also an insect condition, but
+    'frisky' isn't.
+Inform 7 has finished: 17 centiseconds used.

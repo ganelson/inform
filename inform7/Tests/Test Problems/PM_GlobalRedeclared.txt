@@ -1,0 +1,2 @@
+The tally is a number that varies.
+The tally is a text that varies.

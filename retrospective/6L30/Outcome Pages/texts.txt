@@ -1,0 +1,328 @@
+# First, the run-time problem message pages.
+
+model = rtp.html
+
+--> P1 - Backdrop movements are limited
+You tried to move a backdrop to a specific place or item. Backdrops can, in principle, begin play in any combination of the rooms, and most backdrops never move at all - they are like a fixed painted backcloth in a stage set. If they do move, the restriction is that they can only move to single regions, and that restriction seems to have been broken here.
+
+--> P2 - Doors cannot be moved in play
+The ability to change map connections during play is quite constrained, and although the "change ... exit of ... to ..." phrase exists, it should only be used as a last resort. (Better to apply rules which cause the map not to be followed than to actually alter the map, is the idea.) In particular, doors must not be disturbed at all, and here you tried to change an exit which led through a door: this is not allowed.
+
+--> P3 - Unable to change map connection
+The ability to change map connections during play is quite constrained, and although the "change ... exit of ... to ..." phrase exists, it should only be used as a last resort. (Better to apply rules which cause the map not to be followed than to actually alter the map, is the idea.) In principle any exit which does not lead to a door can be changed, but here there seems not to have been exit to change.
+
+--> P4 - Only people can play
+Although Inform allows us to change the identity of the protagonist - the person through which the simulated world is seen and acted upon - only things of the kind "person" can be protagonists. Here, you seem to have tried to change the player to something which is not a "person".
+
+--> P5 - Relations cannot be used outside their defined roles
+When a relation is defined, it has to say which objects are allowed to be related: for instance, "Propinquity relates various rooms to various rooms" indicates that both of the objects involved in the relation must be rooms. It would make no sense to declare that a container and a person now satisfy the relation, and the attempt would be rejected by a run-time problem like this one. 
+<p>
+More is true: it is not even allowed to test the relation for objects which do not meet its qualifications. So if we define the adjective "homely" to refer to any room which satisfies the propinquity relation with a special room called "Home Base", say, then we are allowed to "say the list of homely rooms" but not to "say the list of homely things".
+
+--> P6 - Too many procedural rules
+When a procedural rule changes the behaviour of the standing rulebooks, the story file has to make a note of the change. If enough rules act at once, it runs out of space in which to keep these notes: that seems to have happened here. The situation is simply too complicated.
+
+--> P7 - Too many rulebooks
+There is no limit to the number of rulebooks which can exist in a given work, and there are typically several hundred. However, only 20 can be active at any given moment.
+<p>
+Rulebooks typically pile up when the rules governing one action call for another action to take place first, since action-processing is the most intensive use for rulebooks. If the limit is hit, this is usually a symptom of a circularity mistake - where an action is directly or indirectly duplicating itself. For instance, "Before going north, try going north." has this effect.
+
+--> P8 - Too many timed events at once
+Timed events can be set off with phrases such as "Krakatoa explodes at 11:12 PM". Each such decision requires the story file to make a note of what will be required, and eventually the space for these notes runs out. The limit is set so that twice as many appointments can be pending at once as there are events, so if all else fails, you can make more space by creating more events.
+
+--> P9 - Non-existent property
+This run-time problem is not often seen, and is probably a symptom of something more peculiar having happened - if there have been earlier run-time problems in the same run, fix those first.
+<p>
+You appear to have tried to read or write a property. Properties are identified internally by a code number, but the code number you tried to use is one that does not seem to exist.
+
+--> P10 - Non-existent property
+Not everything has every property. For instance, a "room" cannot have the property "carrying capacity": it would not mean anything. Generally speaking, the properties available to something are specified by its kind. If we say that "A room has a number called maximum population." then the property "maximum population" is available to any room. This applies to either/or properties as well: you might say that a room is not "transparent", but Inform takes the firm line that we cannot even ask, because it is meaningless for a room to be either "transparent" or "opaque".
+<p>
+So, anyway, here it seems that you have tried to access a property for something not allowed to have it.
+
+--> P11 - Never-set property
+It sometimes happens that - although something could in principle have a given property - in fact it doesn't. That makes it impossible to use.
+<p>
+For instance, although every "thing" is allowed to have a "description" property, it will only be given one if the source text says so explicitly. That makes writing "the description of the noun" (say) a little chancy, because it assumes the noun will be a thing which has a description - which might not always be true. If you would like to make sure everything does have a description property, you can always write a sentence like "The description of a thing is usually 'Dull.'."
+
+--> P12 - Too many activities at once
+There is no limit to the number of activities in a work - in most works there are around two dozen built-in activities and perhaps one or two others - but only 25 can be simultaneously going on. In practice this is a generous limit and the most likely cause of breaking it is circularity mistake - where an activity is directly or indirectly duplicating itself.
+
+--> P13 - Can't abandon activity
+Activities normally start, work through their business and end automatically, and for those activities this problem should never be seen. But it is possible to control their mechanism manually, so to speak, with phrases like "begin the analysing activity with the pitchblende" and "end the analysing activity with the pitchblende". A further mechanism exists to abandon an activity partway. That seems to have been tried on an activity which was not, in fact, going on - a rare problem, but which probably arises because of a mistake in running an activity manually.
+
+--> P14 - Can't end activity
+Activities normally start, work through their business and end automatically, and for those activities this problem should never be seen. But it is possible to control their mechanism manually, so to speak, with phrases like "begin the analysing activity with the pitchblende" and "end the analysing activity with the pitchblende".
+<p>
+Here an "end" seems to have been forced on an activity which was not, in fact, going on - this probably arises because of a mistake in running an activity manually.
+
+--> P15 - Can't move nothing
+This problem occurs if a phrase tries to move something which does not exist.
+<p>
+The most likely way for this to occur is if a plausible name has been given to what is, most of the time, indeed a genuine thing - but not always. For instance, if we say "let the heroine be the tallest woman in the Amphitheatre", supposing that we have defined "tall" and made such a place, then we might expect that "move the heroine to the Arena" would always work. In fact it would fail if there were no women in the Amphitheatre at the time we tried to set "heroine", and this is the problem message which would appear.
+
+--> P16 - Can't remove nothing
+This problem occurs if a phrase tries to remove something from play which does not exist.
+<p>
+The most likely way for this to occur is if a plausible name has been given to what is, most of the time, indeed a genuine thing - but not always. For instance, if we say "let the heroine be the tallest woman in the Amphitheatre", supposing that we have defined "tall" and made such a place, then we might expect that "remove the heroine from play" would always work. In fact it would fail if there were no women in the Amphitheatre at the time we tried to set "heroine", and this is the problem message which would appear.
+
+--> P17 - Can't divide by zero
+A number cannot be divided by 0: similarly, we cannot take the remainder after dividing something by 0.
+
+--> P18 - Tried to access property for bad value
+When values are defined using a table, the columns of that table become properties. For instance, if the table defines colours and there is a column called "wavelength", it then becomes legal to talk about "the wavelength of blue" (supposing that "blue" is one of colours defined).
+<p>
+Here, an attempt has been made to read or write such a property for something which cannot possibly be a qualifying value - for instance, "the wavelength of -21" would be such a case, though many such mistakes are rejected at translation time rather than now.
+
+--> P19 - Only backdrops can be moved to regions
+Regions combine a number of rooms under a single name. That means that to be moved to a region would mean being inside all of those rooms simultaneously, and only objects of the kind "backdrop" are allowed to be multiply-present like this. (If you already knew this, then the problem is probably that you forgot to make it a backdrop.)
+
+--> P20 - Attempt to look up a non-existent column in the table
+Suppose there are two tables, the "Table of Fruits" and the "Table of Fowls", and suppose that the former has a column called "seeds". Inform will (mostly) translate a request to talk about the "seeds entry" in a row of the "Table of Fowls", but such a request can't make sense: the other table has the "seeds" column but this one doesn't. This problem will be detected at run-time, and this is the message which then appears.
+
+--> P21 - Attempt to look up a non-existent correspondence in table
+This problem is probably the one most often seen when dealing with tables, and is usually a symptom that one has forgotten to worry about an unlikely case. It happens when, for instance, we look up "the fruit corresponding to a seed count of 10 in the Table of Fruits" but the value 10 never occurs in any row of that table, so that there is no such fruit. If we don't know for certain that this won't happen, we can always check by testing "if there is a fruit corresponding to a seed count of 10 in the Table of Fruits".
+
+--> P22 - Attempt to look up a non-existent row in table
+This is a straightforward problem: you tried to look up a row which didn't exist. For instance, if there are three rows, then an attempt to look up an entry on row 4 will produce this problem. (What may be a little less straightforward is that the problem doesn't show itself when you choose a row, only when you make use of it.)
+
+--> P23 - Attempt to look up a non-existent entry in table 
+Inform allows us to create tables with blank entries, having no value at all: sometimes these are written "--", but sometimes they are literally left blank in the original source text. We are not allowed to read such an entry, and this is the problem which turns up if we do. (Whereas we <i>are</i> allowed to write to it, making it no longer blank if we do.)
+
+--> P24 - Attempt to blank out a row from a non-existent table
+This is one of the most difficult run-time problems to achieve, so perhaps congratulations are in order. I think you must have set up some sort of indirect code to operate on arbitrary tables, then got that wrong so that it tried to act on an illegal value for the identity of the table (the value is printed in numerical form in the message opposite), then tried to blank out one of its rows.
+
+--> P25 - Attempt to choose a blank row in a table with none left
+Inform allows us to create tables with one or more blank rows to be filled in during the course of play. In any given table the number of blank rows can go down (if we write to an entry on a blank row, it is no longer blank) or up (if we blank out an existing non-blank row), but it will certainly be limited. So if we go on trying to choose blank rows and filling them in, we will eventually run out. This is the run-time problem which announces that.
+<p>
+In particular, of course, you would see this message if you tried to choose a blank row in a table which never had any blank rows to start with.
+
+--> P26 - Attempt to choose a random row in an entirely blank table
+Inform allows us to create tables with one or more blank rows to be filled in during the course of play. Blank rows effectively don't exist when it comes to reading information, so the choice of a random row always excludes them. As a result it will fail if every row in the table is blank, and that is what has happened here.
+<p>
+Typically this happens if you have, say, a table containing details of some randomised events which can happen in the course of play: when you want one to happen, you choose a random row and act on what's in it; to make sure the same event will never happen again, you blank that row out. If you have 10 different events, but call upon this process 11 times, then on the 11th time the table will be entirely blank and this problem will turn up. You can guard against this with a test such as "if the number of filled rows in the Table of Incidents is not 0, ..."
+
+--> P27 - Attempt to sort a table whose ordering must remain fixed
+Most tables can be sorted freely, but those which are used to define a kind of value cannot. This is because they are used internally to store the properties belonging to those values, and in such a way that if the rows were rearranged, the properties would also be rearranged - and chaos would ensue. So, such tables are protected from sorting by this run-time problem message.
+
+--> P28 - Attempt to test "in ..." for a non-room or region
+The special condition "in R" can only be used if R is a room or a region, and it tests whether the current location of play is that room (or in that region). So it makes no sense for R to be some other kind of thing. This mistake tends to occur because the author assumes that something else is implicitly meant rather than the current location - for instance, one might write "if in player, ..." thinking that this meant some item currently under discussion: in which case the current run-time problem will occur with "yourself" as the thing which isn't a rule or region.
+
+--> P29 - Attempt to match against a non-topic
+The tests 'matches' and 'does not match' can only be used when a snippet is compared with a topic. Topics look like text, being written in double-quotes, but in fact Inform stores them completely differently, and it's important not to mix them up. For instance, if double-quoted text appears in a table column called 'topic', then it'll be a topic: otherwise it will just be plain text.
+
+--> P30 - Attempt to find routes through an implicit relation
+Finding the best route through a relation, or counting the number of steps from one thing to another in the sense of a given relation, is not allowed for relations which are hard-wired into the spatial structure used by Inform (things such as containment or support), or for relations defined explicitly by conditions. It's only allowed for relations created in your own source text and which you can set and unset at will.
+
+--> P31 - Attempt to use a property of nothing
+The special value "nothing" is used to mean no object at all, and sometimes appears where an object might be expected if it was impossible to find a genuine object, or no genuine object was specified.
+<p>
+"Nothing" is not an object in its own right, and so it makes no sense to look at its properties.
+
+--> P32 - Wrong kind of thing in decide on
+When we write a phrase 'To decide which K is ...', where K is a kind such as "door" or "room", say, any use of 'decide on X' inside the definition of that phrase must result in X being the appropriate kind of thing. Here, X turned out to be an object, but an object of the wrong kind.
+
+--> P33 - Can't decide on nothing
+When we write a phrase 'To decide which K is ...', where K is a kind such as "door" or "room", say, any use of 'decide on X' inside the definition of that phrase must result in X being the appropriate kind of thing. Here, X turned out to be "nothing", which is not an object at all. While this can be used for something of kind "object", it otherwise can't be used.
+
+--> P34 - Attempt to save a table to a file whose data is unstable
+Some of what is stored in tables is solid information whose meaning never changes: the number 342, for instance, means the same to everyone. Unfortunately, other information is stored in a way which depends entirely on the current location of certain structures in memory: for instance, a rule is internally referred to by its memory location. This location changes every time the game is translated, and so it is not possible to pass it from one copy to another, or from one project to another. The only tables which Inform allows us to save into files are those only containing safe data: numbers, units, times of day and kinds of value with named alternatives. Text, in particular, is not allowed, and nor are scenes, rules or rulebooks.
+
+--> P35 - File being read has too many rows or columns to fit into table
+The contents of tables can be saved into disc files and subsequently loaded in again, perhaps on a different run, or even into the same table but in a different project. Here, I tried to load in such a file, but it contained more rows or columns than the total number available in the table which was supposed to hold it.
+
+--> P36 - File being read is not a previously saved table
+The contents of tables can be saved into disc files and subsequently loaded in again, perhaps on a different run, or even into the same table but in a different project. Here, I tried to load in such a file, but it turned out not to be that sort of file at all - it had not previously been saved from a table.
+
+--> P37 - Low level error
+This indicates that some low-level error has occurred in the template layer, a body of Inform 6 code used to provide run-time support for Inform 7 story files. Errors like this really shouldn't happen, but might occur if you are hacking with the template layer, or if there is a bug in Inform. If you don't seem to be doing anything you shouldn't, please report this to the authors of Inform as a possible bug.
+
+--> P38 - Attempt to ignore the turn sequence rules
+Using a procedural rule to ignore the turn sequence rulebook would cause the story file to hang, that is, to remain indefinitely in an unresponsive state. (This wasn't always true: until February 2008, the turn sequence rules did not include command parsing and action generation, so that a form of play could continue even without the turn sequence rulebook. Now, however, more delicate control is needed to achieve such effects: usually putting new rules into the turn sequence rulebook at strategic points to end it early.)
+
+--> P39 - Attempt to say a snippet value which is currently invalid
+A snippet is a fragment of the player's current command, but it does not record the actual text: instead, it notes only the word numbers. (Thus in TAKE ME TO THE RIVER, a snippet would be words 2 to 4 rather than the text "ME TO THE".) Snippets go out of date as soon as a new command has come along, so shouldn't be kept in longer-term storage. At any rate, the one you've just tried to say goes outside the range of the current command, so it can't be right.
+
+--> P40 - Attempt to splice a snippet value which is currently invalid
+A snippet is a fragment of the player's current command, but it does not record the actual text: instead, it notes only the word numbers. (Thus in TAKE ME TO THE RIVER, a snippet would be words 2 to 4 rather than the text "ME TO THE".) Snippets go out of date as soon as a new command has come along, so shouldn't be kept in longer-term storage. At any rate, the one you've just tried to splice with fresh text goes outside the range of the current command, so it can't be right.
+
+--> P41 - Attempt to match a snippet value which is currently invalid
+A snippet is a fragment of the player's current command, but it does not record the actual text: instead, it notes only the word numbers. (Thus in TAKE ME TO THE RIVER, a snippet would be words 2 to 4 rather than the text "ME TO THE".) Snippets go out of date as soon as a new command has come along, so shouldn't be kept in longer-term storage. At any rate, the one you've just tried to match against goes outside the range of the current command, so it can't be right.
+
+--> P42 - The list-writer has run out of memory
+The list-writer is the mechanism which prints lists of objects, for instance from the text substitution "[list of open doors]" or as part of a room description. It has enough memory to cope with lists holding every object there is, plus a little more besides, but if you try to print a list where every term for some reason lists substantial further lists as part of its own text, it's possible to overwhelm the list-writer. That seems to have happened here: sorry.
+
+--> P43 - Attempt to remove the player from play
+The player must always be at least indirectly in one of the rooms, so cannot be removed from play and into limbo.
+
+--> P44 - Attempt to remove a door from play
+Doors are part of the fixed geography of the model world, and are tied in to the map, so it is illegal to remove them from play. (Of course rules can be used to simulate the absence of a door, or to change its behaviour almost completely.)
+
+--> P45 - Attempt to change the player to a person off-stage
+The player must always be on-stage, more or less by definition, so cannot be changed to someone who is currently off-stage.
+
+--> P46 - The memory stack is exhausted
+The memory stack is used to store action, activity and rulebook variables, and now it has been exhausted. This must be because too complicated a combination of rulebooks (and actions) are all active at once: the story file is simply trying to do too much.
+
+--> P47 - Phrase applied to an incompatible kind of value
+When Inform is given one or more definitions for a phrase, and it is not clear in advance that these definitions apply to a particular situation, it has to check this during play. If it turns out that none of the available definitions can apply, this run-time problem is generated.
+<p>
+For instance, suppose the source defines: "To greet (M - a man): ..." and also "To greet (W - a woman): ...", and also says: "Before kissing someone (called the partner), greet the partner." And suppose the player then does something which the author didn't expect, by typing KISS FELIX, where Felix is a cat (an object of kind "person", but neither a "man" nor a "woman"). Inform is then unable to apply "greet" correctly because neither definition can be applied to Felix's kind.
+
+--> P48 - Error handling external file
+Interactive fiction is generally handled by a virtual machine, a special computer provided in software which operates in its own closed little world. The Z-machine family of virtual machines does not provide access to external files at all; the Glulx VM does, but of course many things can go wrong. Perhaps a given file cannot be found, or perhaps the VM attempts to write to a file held open by another application, or perhaps the host computer runs out of disc space.
+
+--> P49 - Memory allocation proved impossible
+Memory is constantly being allocated and deallocated, as needed, to store indexed text, lists and other values which can stretch to contain large amounts of data. If you see this problem, then the story file has needed more memory at once than was available.<p>For projects running the Z-machine, there is only a predetermined amount of memory that can be used; you can raise this with the "Use dynamic memory allocation of at least N" option, but only until there's no more space in the Z-machine, which doesn't take long. On Glulx the situation is better: if version of Glulx from around 2007 or later is used, then memory can be dynamically grown during play - this happens automatically - and even if not, the "dynamic memory allocation" setting can be made very large indeed if needed.
+
+--> P50 - Attempt to use list item which does not exist
+This is fairly self-explanatory. The problem might occur if we tried to insert something after item 10 in a list which only contains six items, for instance, or to remove the value 230 from a list of numbers which does not contain 230 anywhere.
+
+--> P51 - Syntax error in regular expression
+Regular expressions are concise, usually finely-honed texts which use a special notation to specify what to search for when looking through other text. The notation is quite a difficult one to learn, and it's very easy even for experts to make mistakes by writing something which does not make sense - that is, to write a regular expression which is meaningless, and so can't be searched for. That's what seems to have happened here.
+
+--> P52 - This interpreter does not support Unicode
+You probably won't see this text, because the Inform user interfaces contain copies of the glulxe, the Glulx interpreter, which do indeed support Unicode. Anyway, the story file wants to use Unicode characters or manipulate indexed text, but can't because Unicode isn't available on what must be an out of date copy of the glulxe/glk interpreter.
+
+--> P53 - Only backdrops can be moved to multiple places
+Most objects can only be in one room at a time. The only exceptions are two-sided doors (which are never allowed to move), and backdrops. A backdrop can be moved to occupy all rooms matching a given description, but nothing else can.
+
+--> P54 - Only things can be moved
+Most everyday items in an Inform work are "things" - which includes people, containers, vehicles and so on. Those can all move around, at least in theory. The other kinds of object - such as "room", "region" and "direction" - do not represent portable items, and so can't be moved. An attempt to move them with a line like "now the Mirror Room is in Versailles" will cause this problem message.
+
+--> P55 - The scene hasn't started, so you can't ask when it did
+Suppose there is a scene called "Second Stage". Asking for "the time when Second Stage began" or "the time since Second Stage began" only makes sense if Second Stage has happened (or is happening now). This problem turns up if you ask such questions about a scene which hasn't happened. It's easy to test for this: for instance, "if Second Stage has happened and the time since Second Stage began is more than five minutes..."
+
+--> P56 - The scene hasn't ended, so you can't ask when it did
+Suppose there is a scene called "Second Stage". Asking for "the time when Second Stage ended" or "the time since Second Stage ended" only makes sense if Second Stage has taken place. It's easy to test for this: for instance, "if Second Stage has ended and the time since Second Stage ended is more than five minutes..."
+
+--> P57 - You can't take the square root of a negative number
+Inform's "square root of..." phrase can only take the square root of 0 or a positive number. Although mathematicians are able to invent imaginary numbers, making sense out of square roots of negative numbers, Inform doesn't do this. There just isn't an Inform "number" which squares to give -1, so it cannot possibly produce a result of "the square root of -1".
+
+--> P58 - Attempt to repeat through a table in a tricky column order
+It's very convenient to use 'repeat through T in C order', where C is a column in the table T, but this isn't very efficient - it runs quite slowly, in fact, especially if the table has many rows. The problem isn't usually too bad, if the data stored in the column is simple (numbers, for instance), but it becomes chronic if there are indexed texts, lists or other exotica there.
+<p>
+The secret is to sort the table first, which is much more efficient, and then repeat through it. For example, instead of "repeat through the Table of Responses in customised quip order", first "sort the Table of Responses in customised quip order" and then just "repeat through the Table of Responses".
+
+--> P59 - You can't implicitly repeat through the values of this kind
+With some kinds of value, like scenes, you can easily repeat through all possibilities at run-time: there are only a small number of them, and their values are easy to work out and put into a sensible order. With others, either there are too many (this is why repeating through numbers or texts can't be done) or they have no sensible order (this is why repeating through rules can't be done). You can see which kinds can be repeated through on the Kinds index page.
+<p>
+Inform tries to catch this mistake when translating the source text if possible, but sometimes it isn't possible, and this problem message is the result.
+
+--> P60 - Attempt to set a variable to the wrong kind of object
+Suppose we write "The favourite place is a room that varies.", and then during play "now the favourite place is X", where X is some value. If Inform can tell in advance that X can't be a room, it will produce a Problem message and refuse to translate the source. But sometimes it can't tell in advance, because Inform only knows that X will be an object - which might or might not be a room. When that happens, it has to check at run-time (now!) to make sure. That's the check which has just failed for a variable of yours.
+
+--> P61 - Attempt to move the player off-stage
+The player always has to be inside some room, though sometimes indirectly so - for example, it's okay for the player to be on a table inside a room, or in a box on that table. But it's not okay (for example) to write "now the player is on the oak table" and then "now the oak table is nowhere".
+
+--> P62 - Tried to change a relation for objects with the wrong kinds
+For example, if you defined "Application relates various devices to one thing. The verb to be applied to implies the application relation.", and then wrote "now Peter is applied to the spoon", you might see this problem because Peter is a man and not a device. If you wrote "now the sonic screwdriver is applied to the Dalek Base", you might see this because the Dalek Base is a room and not a thing.
+
+--> P63 - Tried to make the player part of something
+The player is not allowed to be joined to other physical objects by being "part of" them, so it's not legal to try something like "now the player is part of the Oak Tree" or "now the player is the branch" (if the branch is indeed a person which is part of the Oak Tree).
+
+--> P64 - This use of '[text]' is too complicated
+The '[text]' token in Inform's grammar for 'Understand' has limitations. It has to be followed by a fixed wording, or be at the end of the line, in order to match. If you're seeing this as a run-time problem, you've probably done something cunningly indirect, but you've run into the problem all the same.
+
+--> P65 - Attempt to access an entry from a non-existent table
+At present, no table row is selected, so it makes no sense to talk about any of its entries.
+
+# And now the pages which the application shows in response to various
+# contingencies.
+
+--> Error0 - Failed
+The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
+<p>
+This seems to be an unusual case, because the failure code is not one which has ever been observed in Inform's testing process, so it is difficult to give advice. Still, further details may be visible on the console output in the Console tab.
+<p>
+The best option now is probably to reword whatever was last changed and to try again. Subsequent attempts will not be affected by the failure of this one, so there is nothing to be gained by restarting the application or the computer. A failed run should never damage the source text, so your work cannot be lost.
+<p>
+If you think it likely that the Inform 7 compiler is at fault, please check that you have the currently distributed build of the system: if you have, please consider taking the time to fill out a bug report at the Inform bug tracker (www.inform7.com/bugs). If you think the fault may be due to a problem in an extension you're using, then please contact the extension's author directly.
+
+model = failed.html
+
+--> Error2 - Failed
+The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
+<p>
+When a program like the I7 compiler fails, it typically returns an error number: this time, the number was 2, so I7 probably stopped because of a fatal file-system error.
+<p>
+It is very unlikely that your computer is at fault. More likely causes are:
+<p>
+<UL TYPE=SQUARE><LI>disc space running out on the volume holding the project;</LI>
+<LI>trying to run a project from a read-only volume, such as a burned CD or DVD;</LI>
+<LI>trying to run a project which belongs to another user, whose files you have no permission to alter.</UL>
+</LI></UL>
+<p>
+However, if you think it more likely that the Inform 7 compiler is at fault, please check that you have the currently distributed build of the system: if you have, please consider taking the time to fill out a bug report at the Inform bug tracker (www.inform7.com/bugs).
+
+--> Error10 - Failed
+The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
+<p>
+When a program like the I7 compiler fails, it typically returns an error number: this time, the number was 10, and that probably indicates that the compiler failed to manage its data structures properly. Perhaps you created a complicated situation on which it has not been fully tested.
+<p>
+The best option now is probably to reword whatever was last changed and to try again. Subsequent attempts will not be affected by the failure of this one, so there is nothing to be gained by restarting the application or the computer. A failed run should never damage the source text, so your work cannot be lost.
+<p>
+If you think it likely that the Inform 7 compiler is at fault, please check that you have the currently distributed build of the system: if you have, please consider taking the time to fill out a bug report at the Inform bug tracker (www.inform7.com/bugs). If you think the fault may be due to a problem in an extension you're using, then please contact the extension's author directly.
+
+--> Error11 - Failed
+The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
+<p>
+When a program like the I7 compiler fails, it typically returns an error number: this time, the number was 11, and that probably indicates that the compiler failed to manage its data structures properly. Perhaps you created a complicated situation on which it has not been fully tested.
+<p>
+The best option now is probably to reword whatever was last changed and to try again. Subsequent attempts will not be affected by the failure of this one, so there is nothing to be gained by restarting the application or the computer. A failed run should never damage the source text, so your work cannot be lost.
+<p>
+If you think it likely that the Inform 7 compiler is at fault, please check that you have the currently distributed build of the system: if you have, please consider taking the time to fill out a bug report at the Inform bug tracker (www.inform7.com/bugs). If you think the fault may be due to a problem in an extension you're using, then please contact the extension's author directly.
+
+--> ErrorI6 - Failed
+The application ran your source text through the Inform 7 compiler, as usual, and it found no problems translating the source. Something must have gone wrong all the same, because the second stage of the process - using the Inform 6 compiler to turn this translated source into a viable story file - turned up errors. This should not happen. The errors are written out on the Console tab, but will only make sense to experienced Inform 6 users (if even to them).
+<p>
+The best option now is probably to reword whatever was last changed and to try again. Subsequent attempts will not be affected by the failure of this one, so there is nothing to be gained by restarting the application or the computer. A failed run should never damage the source text, so your work cannot be lost.
+<p>
+If you are using Inform 6 inclusions, these are the most likely culprits. You might be using these without realising it if you are including an extension which contains Inform 6 inclusions in order to work its magic: so if the problem only seems to occur when a particular extension is in use, then that is probably what is at fault, and you should contact the extension's author directly.
+<p>
+If not, then most likely the Inform 7 compiler is at fault. Please check that you have the currently distributed build of the system: if you have, please consider taking the time to fill out a bug report at the Inform bug tracker (www.inform7.com/bugs).
+
+--> ErrorI6MemorySetting - Inform 6 ran out of memory
+The application ran your source text through the Inform 7 compiler, as usual, and it found no problems translating the source as far as a sort of intermediate-level code - a program for Inform 6, which would ordinarily then be used to make the final working IF.
+<p>
+Unfortunately, the program must have been too demanding for Inform 6 to handle, because it reported that one of its memory settings had been broken. These are upper limits, usually on the number of things of a particular sort which can be created, or on the amount of memory available for a given purpose.
+<p>
+To get around this, look at the actual output produced by Inform 6 to see which memory setting was broken. For instance, suppose it said:
+<p>
+<blockquote>The memory setting MAX_PROP_TABLE_SIZE (which is 30000 at present) has been exceeded.</blockquote>
+<p>
+You then need to amend your Inform 7 source text to take account of this, by adding a sentence like the following:
+<p>
+<blockquote>Use MAX_PROP_TABLE_SIZE of 50000.</blockquote>
+<p>
+With sentences like this, you can make Inform 6 raise its limits until there's no longer any problem: see Chapter 2 of the documentation.
+
+--> ErrorI6Readable - Out of Readable Memory
+The application ran your source text through the Inform 7 compiler, as usual, and it found no problems translating the source. This process results in what's called a "story file", which is a program for a small virtual computer. Unfortunately, the story file for this source text broke a fundamental limit in this virtual computer: the maximum space available for &quot;readable memory&quot;, which really means the space available in which to store tables, rulebooks, things, rooms and dictionary words.
+<p>
+Inform can produce story files for several different virtual computers, and the one used by the current project can be selected using the Settings panel. If you are currently using the "Z-machine" format, try switching the project to "Glulx" format (you can make this change at the Settings panel), and limits like this will probably not bother you again. Although Z-machine story files used to be much more widely playable than Glulx ones, these days Glulx interpreters are widely available, so it's probably not worth making big sacrifices to stay within the Z-machine memory size.
+
+--> ErrorI6TooBig - Ran Out of Space
+The application ran your source text through the Inform 7 compiler, as usual, and it found no problems translating the source. This process results in what's called a "story file", which is a program for a small virtual computer. Unfortunately, the story file for this source text was too big for that virtual machine: there's just too much of it.
+<p>
+Inform can produce story files for several different virtual computers, and the one used by the current project can be selected using the Settings panel. If you are currently using the "Z-machine" format, try switching the project to "Glulx" format (you can make this change at the Settings panel), and limits like this will probably not bother you again. Although Z-machine story files used to be much more widely playable than Glulx ones, these days Glulx interpreters are widely available, so it's probably not worth making big sacrifices to stay within the Z-machine memory size.
+
+# And finally the pages showing the result of cblorb, on a Release run.
+
+model = released.html
+
+--> ErrorCblorb - Failed
+The application ran your source text through the Inform 7 compiler, as usual, and then manufactured the final story file using Inform 6: all of this worked fine. However, the &quot;cblorb&quot; packaging tool then failed to make the actual release of the data out of your project. Its errors are written out on the Console tab.
+<p>
+<center><img src='inform:/cblorb_failed.png' border=0></center>
+<p>
+This almost never happens in normal usage, and is almost certainly the result of a &quot;Release along with...&quot; sentence in the source having asked to do something impossible. For instance, an attempt to release along with cover art will fail if there's no cover art provided, or it has the wrong filename or is in the wrong place. So the best thing to do is probably to look carefully at any Release instructions in the source, and check them against the documentation.
+
+--> GoodCblorb - Succeeded
+The source text was successfully translated to produce the story file, and the &quot;cblorb&quot; packaging tool was then used to wrap it up into a Blorb archive, the standard run-time format produced by Inform.
+<p>
+<center><img src='inform:/cblorb_succeeded.png' border=0></center>
+<p>
+In the same way that books in many different languages nevertheless have the same kind of binding, the Blorb wrapper can contain story files of several different story file formats (for instance, versions of Glulx or the Z-machine): see Chapter 2 of the Inform documentation.
+<p>
+Many modern interpreters can play Blorbed story files, but a few older ones cannot; besides, you might need a raw story file for use on a small portable device with very little memory. If you do need to avoid Blorbing, go to the Settings panel for the project and untick the &quot;Create a Blorb archive for release&quot; box, then release again. The result will be just a bare story file, and none of the advanced release options (solutions, website, cover art, etc.) will be possible. The bibliographic data will also be lost.

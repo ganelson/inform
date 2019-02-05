@@ -1,0 +1,40 @@
+Outside House and Outside First Presbyterian are rooms.
+
+Jeeves is a man in Outside House. The description of Jeeves is "He'll
+get you where you want to go, until that leg heals."
+
+Driving to is an action applying to one topic.  Understand "drive to
+[text]" or "drive [text]" as driving to.
+
+Table of Driving
+topic		location
+"home"		Outside House
+"church"	Outside First Presbyterian
+
+Check Jeeves trying driving to:
+	if the topic understood is not a topic listed in the Table of Driving begin;
+		say "'Trouble is, I don't know where that is, miss,' says Jeeves, apologetically." instead;
+	otherwise;
+		if location entry is the location of the player,
+			say "Jeeves says, quizzically, 'We're already here, miss.'" instead;
+	end if;
+
+Carry out Jeeves trying driving to:
+	if the topic understood is a topic listed in the Table of Driving begin;
+		say "'Miss, we're here, at [location entry],' says Jeeves.";
+		move the player to location entry;
+		move Jeeves to location entry;
+	end if.
+
+Carry out driving to:
+	if the topic understood is a topic listed in the Table of Driving begin;
+		say "'Miss, we're here, at [location entry],' says Jeeves.";
+		move the player to location entry;
+		move Jeeves to location entry;
+	end if.
+
+Persuasion rule for asking Jeeves to try driving to:
+	say "'I'd be happy to, miss,' Jeeves says, ducking his head respectfully.";
+	persuasion succeeds.
+
+Test me with "jeeves, drive to church"

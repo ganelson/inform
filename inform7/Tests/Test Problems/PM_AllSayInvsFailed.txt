@@ -1,0 +1,14 @@
+White Chamber is a room. Guy is a man in White Chamber.
+
+Understand "hypnotise me" as selfhypnotising. Selfhypnotising is an action
+applying to nothing.
+
+Carry out selfhypnotising:
+	repeat through the Table of Memories begin;
+		say topic entry;
+	end repeat.
+
+Table of Memories
+topic	memory
+"Hans"	"Hans showed you the triangle of glass a few days ago."
+with 5 blank rows

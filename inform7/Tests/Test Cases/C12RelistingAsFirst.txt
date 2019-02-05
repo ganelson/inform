@@ -1,0 +1,12 @@
+The Lounge is a room.
+
+The pre-jump rule is listed first in the before rules.
+
+
+Before jumping (this is the pre-jump rule):
+	say "You're about to jump!"
+
+Before jumping in the Lounge (this is the lounge-jump rule):
+	say "You're about to jump in the Lounge."
+
+Test me with "jump".

@@ -1,0 +1,29 @@
+   Plaza View
+  Vitrine
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Plaza View
+  Your uncle's apartment, on loan to you for viewing the parade and celebrations today. This would be more of a sacrifice on his part if he weren't currently yachting around Corfu.
+  
+  A vast smart window overlooks the park.
+  
+> >   Plaza View
+  (Testing.)
+  
+  >[1] look through window
+  Isn't it lovely out there?
+  
+  >[2] switch window
+  You switch the smart window on.
+  
+  >[3] look through window
+  The window is currently darkened.
+  
+  >[4] look
+  Plaza View
+  Your uncle's apartment, on loan to you for viewing the parade and celebrations today. This would be more of a sacrifice on his part if he weren't currently yachting around Corfu.
+  
+  A vast smart window has turned to a sheet of hazy blue.
+  
+> >

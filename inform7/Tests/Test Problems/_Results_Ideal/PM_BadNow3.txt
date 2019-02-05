@@ -1,0 +1,10 @@
+Inform 7 build 6L63 has started.
+I've now read your source text, which is 35 words long.
+I've also read Standard Rules by Graham Nelson, which is 42518 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadNow3
+  >--> You wrote 'now by brute force' (source text, line 4), but 'by brute
+    force' isn't the sort of condition which can be made to be true, in the way
+    that 'the ball is on the table' can be made true with a straightforward
+    movement of one object (the ball).
+Inform 7 has finished: 64 centiseconds used.

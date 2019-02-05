@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+To admire (X - a room):
+	decide on 1.

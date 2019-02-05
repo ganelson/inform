@@ -1,0 +1,42 @@
+   Cheez Factory
+  XYZZY
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cheez Factory
+  All around you are squares of pressed orange polymer, or possibly cheez. Your only hope is the magic word your uncle taught you: XYZZY.
+  
+> >   Paradise
+  (Testing.)
+  
+  >[1] x squares
+  You see nothing special about the squares of pressed orange polymer. Nothing special at all.
+  
+  >[2] x amulet
+  A heavy gold ring on a chain. If heated in an ordinary house fire, it glows with the words, "Moses Supposes His Toeses Are Roses."
+  
+  >[3] x cheese
+  You can't see any such thing.
+  
+  >[4] xyzzy
+  You are unable to articulate the second "z" separately from the first, and the spell fails in a disdainful puff. Must be Parisian magic.
+  
+  >[5] wear amulet
+  You put on the amulet of elocution.
+  
+  >[6] xyzzy
+  Under the influence of the Amulet of Elocution, you pronounce this as Xhi-zee. And lo, from nowhere, a plate of cheese appears!
+  
+  >[7] x ooze
+  Definitely genuinely cheese.
+  
+  >[8] smell ooze
+  It smells like socks. This is going to be wonderful.
+  
+  >[9] eat ooze
+  You are transported...
+  
+  Paradise
+  Well, it might just be one of the posh upper rings of purgatory, if you're entirely honest with yourself.
+  
+> >

@@ -1,0 +1,4 @@
+The Garage is a room.
+
+A game is a kind of a thing.
+A game has a text called "BUG: game has no title".

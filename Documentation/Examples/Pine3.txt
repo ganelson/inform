@@ -1,0 +1,167 @@
+*** Multiple beginnings and repeats
+(Pine: 3. Flashback scenes described to the Princess--Flashback scenes, simple)
+Pine: Allowing the player to visit aspects of the past in memory and describe these events to the princess, as a break from the marriage-proposal scene. 
+
+	{*}"Pine"
+	
+	Part 1 - The Set-up
+
+This is mostly a repeat of what we have already seen, but for the sake of producing a playable scenario, we include it. The new material appears at Part 2.
+
+	{**}A person can be asleep or awake. A person can be active or passive.
+
+	The Spinning Tower is a room. "A remote corner of the old castle, reserved for spinning and weaving tasks."
+
+	Sleeping Beauty is an asleep woman in the Spinning Tower. "[if asleep]Sleeping Beauty lies here, oblivious to your presence[otherwise]Sleeping Beauty stands beside you, looking [attitude][end if]." The description is "She is even more magnificent than the rumors suggested." Understand "woman" or "girl" or "princess" or "lady" as Sleeping Beauty.
+
+	Discovery is a scene. Discovery begins when play begins. Discovery ends when Sleeping Beauty is awake. Marriage Proposal is a scene. Marriage Proposal begins when Discovery ends.
+
+	When Discovery ends: say "Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken."; now Beauty is passive.
+
+	Instead of waking an awake person: say "Redundant."
+
+	Instead of waking an asleep person: say "Yes, but how?"
+
+	Instead of attacking an asleep person:
+	now the noun is awake;
+		say "[The noun] sits bolt upright. 'Hey! Ow!' So much for that true love's kiss nonsense."
+
+	Instead of kissing an asleep person:
+		now the noun is awake;
+		say "[The noun] slowly stirs to wakefulness!"
+
+	Instead of throwing water at an asleep person:
+		now the second noun is awake;
+		now the noun is nowhere;
+		say "You pour out [the noun] on [the second noun].
+
+	[The second noun] wakes, shuddering. 'Agh! I had a terrible dream about drowning and then-- Hey!'"
+
+	The player carries a jug of water. Understand "pour [something] on [something]" or "splash [something] at/on [something]" as throwing it at.
+
+	Table of Conversation
+	topic	reply	quip
+	"dream/dreams/nightmare/nightmares/sleep"	"'Sleep well?' you ask solicitously.
+
+	'Not really,' she replies, edging away from you. So much for that angle."	"'Ghastly nightmares,' she remarks. You nod politely."
+	"marriage/love/wedding/boyfriend/beau/lover"	"'So,' you say. 'This is a little weird since we just met, but, um. Would you like to get married?'
+
+	She looks at you nervously. 'Do I have to?'"	"'I, er,' she says. 'I hope I'm not supposed to marry you or something.'"
+	"marriage/love/wedding/boyfriend/beau/lover"	"'I was told I was going to marry you and inherit the kingdom,' you say, apologetically. 'Would that be very bad?' This could be awkward, considering your family circumstances -- you did promise your mother that everything would be better, after this --
+
+	'Oh, it's not you -- I'm seeing someone,' she says, smiling quickly.
+
+	You try to think how to point out that it's been a hundred years since she last saw her boyfriend."	"'Do you think I could go look for someone? I'm seeing him, you see, and I think I've been... sick... for a while, so he might be worried.'
+
+	You try to think how to point out that it's been a hundred years since she last saw her boyfriend. And try not to think how awkward things would be in your family if she refuses to marry you."
+	"marriage/love/wedding/boyfriend/beau/lover"	"'You've been up here for a hundred years,' you say. An unpleasant thought occurs to you. 'Was your young man in the castle somewhere?'
+
+	She shakes her head mutely."	"She goes to the window and looks out at the now-fading thicket of briar. 'That took a while to grow,' she observes. 'I've been up here longer than I thought.'
+
+	You shrug, uncomfortable."
+
+	Instead of asking an awake beauty about a topic listed in the Table of Conversation:
+		now Beauty is passive;
+		say "[reply entry][paragraph break]";
+		blank out the whole row.
+
+	Instead of telling an awake beauty about something: try asking the noun about it.
+
+	Instead of asking an asleep person about something:
+		say "[The noun] snores."
+
+	Marriage Proposal ends when the number of filled rows in the Table of Conversation is 0.
+
+	Every turn during Marriage Proposal:
+		if Beauty is active and Beauty is visible:
+			repeat through Table of Conversation:
+				say "[quip entry][paragraph break]";
+				blank out the whole row;
+				make no decision.
+
+	Every turn: now Beauty is active.
+
+	When Marriage Proposal ends: end the story saying "This is going to take some explaining."
+
+So far we haven't much of a chance to affect matters and make them better. Suppose we'd like to add an element to the conversation where we're allowed to tell Beauty about past events -- and explore them a bit; and if the first retelling doesn't go quite as planned, we're allowed to revisit these scenes to hit them with a bit more emphasis.
+	
+	{**}Part 2 - Flashbacks
+
+	Instead of asking an awake beauty about a topic listed in the Table of Flashback Material:
+		now Beauty is passive;
+		say "[reply entry][paragraph break]".
+
+	A fact is a kind of thing. The family circumstances is a fact. A fact can be known or unknown. A fact can be current or past.
+
+Once known, a fact remains known permanently -- this could be useful if we wanted to make some rules about how Beauty acts when she knows different information. By contrast, a fact is only "current" if it is the last thing discussed. Since a player can mention a fact over and over, he can make it "current" again and again, and thus reactivate the flashback.
+
+	{**}Table of Flashback Material
+	topic	reply
+	"poor/poverty/family/money/mother/circumstances" or "family circumstances" or "my family/mother"	"[if family circumstances is unknown]'I wish you'd give some thought to marrying me. You see,' you say, your jaw tensing. 'I wouldn't ask if it weren't for my [family circumstances]...'[otherwise]'I don't think you fully understand the [family circumstances],' you say.[end if]"
+	
+	 After printing the name of a fact (called target): now the target is current; now the target is known.
+	 
+This "After printing the name..." rule will be explained later in the chapter on activities; for now, it is enough to know that whenever family circumstances is mentioned in the table of flashback material, this rule will automatically be called. Now the terms under which the flashback happens:
+
+	{**}Poverty flashback is a recurring scene. Poverty flashback begins when family circumstances is current. When poverty flashback begins: strip the player; move the player to the Woodcutter's Shack.
+
+Note the "recurring" here: we want the player to be able to revisit this scene as needed.
+
+	{**}The Woodcutter's Shack is a room. "Your family lives in a shack in the forest. There are holes in the roof, and in the winter the snow comes in -- rain, too, for that matter. The walls aren't very well-boarded, and don't keep out the wind, and even though you live in the middle of dense woods, you can never gather enough fuel to keep this place fully heated. And then there's the stench. Pigs wander freely in and out, and your three youngest brothers play on the floor." 
+
+	Pigs are an animal in the shack. The pigs are scenery. The description is "They really are very grubby, dirty animals, but what's worse than that, the value of pigs has declined a lot over the last few decades. This is hard to explain to someone who has been out of touch with the world for a while, but keeping pigs for meat is a dubious prospect when there's less and less for them to forage on." Instead of smelling the pigs: say "They smell the way animals do, when they live among their own refuse."; increase the pity of Beauty by 2.
+
+	The brothers are a man. The description of brothers is "Hans, Franz, and Lukas. Twins and then the baby. So young, and growing up fatherless; and soon to be orphaned entirely, if your mother's health does not improve." Understand "brother" or "twin" or "twins" or "baby" or "franz" or "hans" or "lukas" as the brothers.
+
+	The untidy bed is scenery in the Shack. Mother is a woman on the untidy bed. The description of mother is "She is wasting away of a slow disease, her skin stretched tautly over bone. She hasn't been the same since your father left." On the bed is a folded letter. 
+
+	The description of the letter is "Many times read over and creased, the letter explains how your father has gone away with a wealthy countess and will not return. Your mother was not able to read it herself, of course, and had to have it explained to her by the parish priest. Now she keeps it by the bed and crumples it in her fits of delirium."
+
+	Instead of kissing or touching Mother for the first time:
+		say "You place a gentle kiss on her feverish brow. She looks up at you, her oldest -- yes, never mind that bit -- with a look of sincere trust and admiration. 
+	
+	'You'll find a way through this for us,' she says, squeezing your fingers. 'I know you will.'"; increase the pity of Beauty by 3.
+
+	Instead of kissing Mother: say "You have no more heart-rending memories of affection to recount; that one incident will have to serve, for rhetorical purposes."
+
+	Instead of waiting in the Shack: say "The wind blows sharply through the walls."
+
+	Instead of attacking someone in the Shack:
+		say "Though sometimes the conditions of your life make you grouchy and impatient, you would never dream of striking a member of your own family. But from time to time you do feel the temptation."
+
+	Beauty has a number called pity. After examining something in the Woodcutter's Shack, increment the pity of Beauty. After examining mother, increase the pity of Beauty by 2. After examining the letter, increase the pity of Beauty by 3.
+
+	Poverty flashback ends when waiting or the time since poverty flashback began is five minutes. 
+
+	When Poverty flashback ends: 
+		now family circumstances is past;
+		say "...you finish describing the miserable circumstances of your home life, and allow your attention to return to the present.";
+		restore the player;
+		now Beauty is passive; 
+		if Beauty is sympathetic, say "'Oh dear!' she says. 'What a dreadful life!' She wrings her hands. 'No wonder you are eager to improve your lot...! But --' Her brow clears, a new thought occurring. 'You needn't marry me, you know! We could arrange it differently! I am certain that my father would give you a large reward, instead, and then I would not be separated from my current boyfriend!'";
+		otherwise say "She makes a disgusted face, but she doesn't seem nearly so heart-wrung as you had hoped to make her. Tough audience, these modern princesses."
+	
+	Definition: Beauty is sympathetic if the pity of Beauty is greater than 4.
+	
+	To say attitude:
+		if Beauty is sympathetic, say "distressed on your behalf";
+		otherwise say "a little confused".
+
+And the following is the same as in the Space Patrol example as well: we need a systematic way to remove the player's possessions, then put everything back when the flashback is over:
+
+	{**}Saved location is a room that varies. Locker is a container. Wardrobe is a container.
+
+	To strip the player: 
+		 now every thing carried by the player is in the locker; 
+		now every thing worn by the player is in the wardrobe; 
+		now saved location is location.
+
+	To restore the player: 
+		now every thing carried by the player is in the location; 
+		now every thing in the locker is carried by the player; 
+		now every thing in the wardrobe is worn by the player; 
+		move the player to saved location.
+		
+	Test me with "x beauty / wake beauty / pour water on beauty / ask beauty about sleep / tell beauty about poverty / smell pigs / x mother / x letter / kiss mother / ask beauty about marriage / z / z".
+		
+Because we haven't changed the endings of the "Marriage Proposal" scene, there is still only one way for this scenario to work out; but at least now the player has the opportunity to alter Beauty's attitude a bit (or not) before the game is done.

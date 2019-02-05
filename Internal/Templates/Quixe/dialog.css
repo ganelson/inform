@@ -1,0 +1,92 @@
+/* Dialog toolkit default stylesheet
+ * Designed by Andrew Plotkin <erkyrath@eblong.com>
+ * <http://eblong.com/zarf/glk/glkote.html>
+ * 
+ * This CSS stylesheet is in the public domain. Do whatever you want
+ * with it.
+ */
+
+/* dialog_screen is a translucent rectangle that greys out the entire root
+   element (the game beneath the dialog box).
+*/
+#dialog_screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #808080;
+  opacity: 0.5;
+}
+
+/* dialog_frame is an invisible pane that fills the root element. It exists
+   so that the dialog can easily be centered in it.
+*/
+#dialog_frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* dialog is the dialog div itself. It is displayed near the top of
+   dialog_frame. The auto margins keep it horizontally centered.
+*/
+#dialog {
+  position: relative;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  background: white;
+  border: 4px solid #AAA;
+  -webkit-box-shadow: 1px 1px 15px #222;
+  -moz-box-shadow: 1px 1px 15px #222;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+
+#dialog .DiaCaption {
+  margin: 16px;
+}
+
+#dialog .DiaInput {
+  margin: 16px;
+}
+
+#dialog input {
+  width: 100%;
+}
+
+#dialog .DiaBody {
+  margin: 16px;
+  clear: both;
+}
+
+#dialog select {
+  width: 100%;
+}
+
+#dialog button {
+  margin-left: 8px;
+}
+
+#dialog .DiaButtons {
+  margin: 16px;
+  text-align: right;
+}
+
+#dialog .DiaButtonsFloat {
+  margin-left: 16px;
+  margin-right: 16px;
+  float: right;
+}
+
+#dialog .DiaDisplayText {
+  height: 200px;
+  padding: 4px 8px;
+  overflow: scroll;   /* vertical scrollbar is mandatory */
+  overflow-x: hidden; /* but horizontal scrollbar is forbidden */
+  font-size: 14px;
+  white-space: pre-wrap;
+  background: #FED;
+}
+
+/* End of Dialog default stylesheet. */

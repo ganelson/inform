@@ -1,0 +1,680 @@
+   Chapel
+  The Abolition of Love
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Chapel
+  You can see Elizabeth, Wickham, Darcy, Mr Bennett, Mrs Bennett and Georgiana here.
+  
+> >   Chapel
+  (Testing.)
+  
+  >[1] test acquaintance
+  (Testing.)
+  
+  >[2] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Impressing relates one person to various people:
+    Elizabeth  >=>  Darcy
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[3] introduce darcy to elizabeth
+  You introduce Darcy to Elizabeth. Now Darcy is acquainted with Elizabeth, and Elizabeth is acquainted with Darcy.
+  
+  >[4] introduce darcy to wickham
+  You introduce Darcy to Wickham. Now Darcy is acquainted with Elizabeth and Wickham, and Wickham is acquainted with Darcy.
+  
+  >[5] announce mr bennett
+  You announce Mr Bennett to the whole assembled company.
+  
+  >[6] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Impressing relates one person to various people:
+    Elizabeth  >=>  Darcy
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Darcy  <=>  Wickham
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Wickham
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[7] ostracise wickham
+  You cause everyone present to forget and pretend not to be acquainted at all with Wickham.
+  
+  >[8] introduce georgiana to wickham
+  You introduce Georgiana to Wickham. Now Georgiana is acquainted with Wickham and Mr Bennett, and Wickham is acquainted with Georgiana.
+  
+  >[9] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Impressing relates one person to various people:
+    Elizabeth  >=>  Darcy
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[10] test impression
+  (Testing.)
+  
+  >[11] commend georgiana to elizabeth
+  Elizabeth takes a very decided interest in Georgiana.
+  
+  >[12] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Impressing relates one person to various people:
+    Elizabeth  >=>  Darcy
+    Georgiana  >=>  Elizabeth
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[13] celebrate mrs bennett
+  You, Elizabeth, Wickham, Darcy, Mr Bennett, Mrs Bennett and Georgiana take a very decided interest in Mrs Bennett.
+  
+  >[14] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Impressing relates one person to various people:
+    Mrs Bennett  >=>  yourself
+    Mrs Bennett  >=>  Elizabeth
+    Mrs Bennett  >=>  Wickham
+    Mrs Bennett  >=>  Darcy
+    Mrs Bennett  >=>  Mr Bennett
+    Mrs Bennett  >=>  Mrs Bennett
+    Mrs Bennett  >=>  Georgiana
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[15] traduce mrs bennett to darcy
+  Darcy, hearing your story, decides not to be at all impressed with Mrs Bennett.
+  
+  >[16] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Impressing relates one person to various people:
+    Mrs Bennett  >=>  yourself
+    Mrs Bennett  >=>  Elizabeth
+    Mrs Bennett  >=>  Wickham
+    Mrs Bennett  >=>  Mr Bennett
+    Mrs Bennett  >=>  Mrs Bennett
+    Mrs Bennett  >=>  Georgiana
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[17] slander mrs bennett
+  Now Mrs Bennett impresses nothing.
+  
+  >[18] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[19] test notice
+  (Testing.)
+  
+  >[20] draw the attention of darcy to elizabeth
+  Darcy glances thoughtfully in the direction of Elizabeth.
+  
+  >[21] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+    Darcy  >=>  Elizabeth
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+   Chapel
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[22] draw attention to mr bennett
+  You quickly cause everyone to attend to Mr Bennett.
+  
+  >[23] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    You  >=>  Mr Bennett
+    Elizabeth  >=>  Mr Bennett
+    Wickham  >=>  Mr Bennett
+    Darcy  >=>  Mr Bennett
+    Mr Bennett  >=>  Mr Bennett
+    Mrs Bennett  >=>  Mr Bennett
+    Georgiana  >=>  Mr Bennett
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[24] distract darcy from mr bennett
+  You distract Darcy from Mr Bennett.
+  
+  >[25] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Noticing relates various people to one person:
+    You  >=>  Mr Bennett
+    Elizabeth  >=>  Mr Bennett
+    Wickham  >=>  Mr Bennett
+    Mr Bennett  >=>  Mr Bennett
+    Mrs Bennett  >=>  Mr Bennett
+    Georgiana  >=>  Mr Bennett
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[26] outshine mr bennett
+  You quickly distract everyone from Mr Bennett.
+  
+  >[27] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[28] test love
+  (Testing.)
+  
+  >[29] embitter elizabeth toward darcy
+  Elizabeth sees Darcy in a different light and no longer feels any affection.
+  
+  >[30] relations
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[31] infatuate elizabeth with wickham
+  Now Elizabeth loves Wickham.
+  
+  >[32] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Mr Bennett and Mrs Bennett }
+    { Darcy and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[33] test alliance
+  (Testing.)
+  
+  >[34] make mr bennett adopt georgiana
+  Now Georgiana is related to Elizabeth, Darcy, Mr Bennett, Mrs Bennett and Georgiana.
+  
+  >[35] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett, Mrs Bennett and Georgiana }
+    and yourself and Wickham in single-member groups
+  
+  >[36] make mrs bennett disown georgiana
+  Now Georgiana is related to Georgiana, and Mrs Bennett is related to Elizabeth, Darcy, Mr Bennett and Mrs Bennett.
+  
+  >[37] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[38] test fancying
+  (Testing.)
+  
+  >[39] admire elizabeth
+  You find you rather fancy Elizabeth.
+  
+  >[40] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    You  >=>  Elizabeth
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[41] loathe elizabeth
+  You take Elizabeth in disgust.
+  
+  >[42] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+   Chapel
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[43] flatter elizabeth
+  You draw down universal admiration for Elizabeth by casting him or her in a flattering light.
+  
+  >[44] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    You  >=>  Elizabeth
+    Elizabeth  >=>  Elizabeth
+    Elizabeth  >=>  Darcy
+    Wickham  >=>  Elizabeth
+    Darcy  >=>  Elizabeth
+    Mr Bennett  >=>  Elizabeth
+    Mrs Bennett  >=>  Elizabeth
+    Georgiana  >=>  Elizabeth
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[45] unflatter elizabeth
+  Elizabeth gives everyone a universal disgust.
+  
+  >[46] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[47] cause chaos
+  Now everyone fancies everyone else, which is quite an inconvenient state of affairs.
+  
+  >[48] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Fancying relates various people to various people:
+    You  >=>  yourself
+    You  >=>  Elizabeth
+    You  >=>  Wickham
+    You  >=>  Darcy
+    You  >=>  Mr Bennett
+    You  >=>  Mrs Bennett
+    You  >=>  Georgiana
+    Elizabeth  >=>  yourself
+    Elizabeth  >=>  Elizabeth
+    Elizabeth  >=>  Wickham
+    Elizabeth  >=>  Darcy
+    Elizabeth  >=>  Mr Bennett
+    Elizabeth  >=>  Mrs Bennett
+    Elizabeth  >=>  Georgiana
+    Wickham  >=>  yourself
+    Wickham  >=>  Elizabeth
+    Wickham  >=>  Wickham
+    Wickham  >=>  Darcy
+    Wickham  >=>  Mr Bennett
+    Wickham  >=>  Mrs Bennett
+    Wickham  >=>  Georgiana
+    Darcy  >=>  yourself
+    Darcy  >=>  Elizabeth
+    Darcy  >=>  Wickham
+    Darcy  >=>  Darcy
+    Darcy  >=>  Mr Bennett
+    Darcy  >=>  Mrs Bennett
+    Darcy  >=>  Georgiana
+    Mr Bennett  >=>  yourself
+    Mr Bennett  >=>  Elizabeth
+    Mr Bennett  >=>  Wickham
+    Mr Bennett  >=>  Darcy
+    Mr Bennett  >=>  Mr Bennett
+    Mr Bennett  >=>  Mrs Bennett
+    Mr Bennett  >=>  Georgiana
+    Mrs Bennett  >=>  yourself
+    Mrs Bennett  >=>  Elizabeth
+    Mrs Bennett  >=>  Wickham
+    Mrs Bennett  >=>  Darcy
+    Mrs Bennett  >=>  Mr Bennett
+    Mrs Bennett  >=>  Mrs Bennett
+    Mrs Bennett  >=>  Georgiana
+    Georgiana  >=>  yourself
+    Georgiana  >=>  Elizabeth
+    Georgiana  >=>  Wickham
+    Georgiana  >=>  Darcy
+    Georgiana  >=>  Mr Bennett
+    Georgiana  >=>  Mrs Bennett
+    Georgiana  >=>  Georgiana
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[49] relieve chaos
+  Now no one fancies anyone, which is safe but tedious.
+  
+  >[50] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[51] test marriage
+  (Testing.)
+  
+  >[52] marry elizabeth to darcy
+  You perform the marriage of Elizabeth to Darcy, joining them to the family of Elizabeth, Darcy, Mr Bennett and Mrs Bennett.
+  
+  >[53] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Elizabeth  ==  Darcy
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+  >[54] divorce elizabeth from darcy
+  Elizabeth is now not married to Darcy.
+  
+  >[55] relations
+  Loving relates one person to one person:
+    Elizabeth  >=>  Wickham
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+    Mr Bennett  <=>  yourself
+    Mr Bennett  <=>  Elizabeth
+    Mr Bennett  <=>  Darcy
+    Mr Bennett  <=>  Mr Bennett
+    Mrs Bennett  <=>  Mr Bennett
+    Georgiana  <=>  Wickham
+    Georgiana  <=>  Mr Bennett
+  Marriage relates one person to another:
+    Mr Bennett  ==  Mrs Bennett
+  Alliance relates people to each other in groups:
+    { Elizabeth, Darcy, Mr Bennett and Mrs Bennett }
+    and yourself, Wickham and Georgiana in single-member groups
+  
+> >

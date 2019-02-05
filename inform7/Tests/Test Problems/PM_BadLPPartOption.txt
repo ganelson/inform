@@ -1,0 +1,3 @@
+The NI School for Typing is a room.
+
+Price is a kind of value. $1.99 specifies a price with parts dollars and cents (optional, preamble optional, monetary).

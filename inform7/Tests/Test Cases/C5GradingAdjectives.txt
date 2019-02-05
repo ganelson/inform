@@ -1,0 +1,18 @@
+Definition: A container is huge if its carrying capacity is 20 or more.
+Definition: A container is large if its carrying capacity is 10 or more.
+Definition: A container is standard if its carrying capacity is 7.
+Definition: A container is small if its carrying capacity is 5 or less.
+
+The shop is a room.
+The basket is a large container in the Shop. The thimble is a small  
+container in the Shop. The matchbox is a standard container in the Shop.
+
+A Crystal Ball is a thing carried by the player.
+
+instead of examining the Crystal Ball:
+	say "Huge: [list of huge containers][line break]";
+	say "Large: [list of large containers][line break]";
+	say "Standard: [list of standard containers][line break]";
+	say "Small: [list of small containers][line break]".
+
+Test me with "x ball".

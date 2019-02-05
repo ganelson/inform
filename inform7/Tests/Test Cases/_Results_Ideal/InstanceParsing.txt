@@ -1,0 +1,36 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see a light blue cube and a dark green ball here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] x light
+  You see nothing special about the light blue cube.
+  
+  >[2] x light cube
+  You see nothing special about the light blue cube.
+  
+  >[3] x blue
+  You see nothing special about the light blue cube.
+  
+  >[4] x light blue cube
+  You see nothing special about the light blue cube.
+  
+  >[5] x dark
+  You see nothing special about the dark green ball.
+  
+  >[6] x green
+  You see nothing special about the dark green ball.
+  
+  >[7] x dark green
+  You see nothing special about the dark green ball.
+  
+  >[8] x green ball
+  You see nothing special about the dark green ball.
+  
+> >

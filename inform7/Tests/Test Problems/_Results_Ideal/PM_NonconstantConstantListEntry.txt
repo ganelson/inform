@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 66 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NonconstantConstantListEntry
+  >--> The constant list 'father-of relation, player, score' (source text, line 10)
+    contains an entry 'player' which does make sense, but isn't a constant
+    (it's a non-temporary variable). Only constants can appear as entries in
+    constant lists, i.e., in lists written in braces '{' and '}'.
+Problem__ PM_NonconstantConstantListEntry
+  >--> The constant list 'father-of relation, player, score' (source text, line 10)
+    contains an entry 'score' which does make sense, but isn't a constant (it's
+    a non-temporary variable). Only constants can appear as entries in constant
+    lists, i.e., in lists written in braces '{' and '}'.
+Inform 7 has finished: 56 centiseconds used.

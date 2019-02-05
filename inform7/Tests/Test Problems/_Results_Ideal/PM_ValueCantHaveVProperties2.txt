@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ValueCantHaveVProperties2
+  >--> You wrote 'An action name has a number called difficulty' (source text, line 3):
+    but this is a kind of value which is not allowed to have properties of its
+    own, because this would cause confusion with variables, which are more
+    useful in most cases. (See the Kinds index for which kinds can have
+    properties.)
+Inform 7 has finished: 18 centiseconds used.

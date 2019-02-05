@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_WhenDefiningUnknown
+  >--> You wrote 'Include (- Global whatever = 1; -) when defining
+    Rumplestiltskin' (source text, line 3): but I do not understand what
+    definition you're referring to, so I can't make an Inform 6 inclusion
+    there.
+Inform 7 has finished: 17 centiseconds used.

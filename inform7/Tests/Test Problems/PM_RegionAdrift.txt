@@ -1,0 +1,3 @@
+Frog is a room.
+
+A region is a kind of thing.

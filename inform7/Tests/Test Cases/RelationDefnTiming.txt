@@ -1,0 +1,8 @@
+The test is a room. 
+
+Attraction relates various people to various people. The verb to 
+desire (he desires, they desire, he desired, he is desired) implies 
+the attraction relation. 
+
+Jealousy relates a person (called X) to a person (called Y) when someone 
+    desires Y. The verb to be jealous of implies the jealousy relation. 

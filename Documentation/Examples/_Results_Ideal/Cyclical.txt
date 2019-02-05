@@ -1,0 +1,103 @@
+   Evidence Room
+  Curare
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Evidence Room
+  On the shelves is a box (in which are a deformed bullet and a driver's license).
+  
+> >   Evidence Room
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the envelope full of Euros, wondering what you're ever going to find to do with it.
+  
+  >[2] i
+  You are carrying:
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the tube of synthetic curare, wondering what you're ever going to find to do with it.
+  
+  >[3] i
+  You are carrying:
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the Chinese passport, wondering what you're ever going to find to do with it.
+  
+  >[4] i
+  You are carrying:
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the steel fish hook, wondering what you're ever going to find to do with it.
+  
+  >[5] i
+  You are carrying:
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the envelope full of Euros, wondering what you're ever going to find to do with it.
+  
+  >[6] i
+  You are carrying:
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the tube of synthetic curare, wondering what you're ever going to find to do with it.
+  
+  >[7] get all from box
+  deformed bullet: Taken.
+  driver's license: Taken.
+  
+  >[8] i
+  You are carrying:
+    a driver's license
+    a deformed bullet
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the deformed bullet, wondering what you're ever going to find to do with it.
+  
+  >[9] i
+  You are carrying:
+    a driver's license
+    a deformed bullet
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the driver's license, wondering what you're ever going to find to do with it.
+  
+  >[10] i
+  You are carrying:
+    a driver's license
+    a deformed bullet
+    a steel fish hook
+    a Chinese passport
+    a tube of synthetic curare
+    an envelope full of Euros
+  
+  You stare morosely at the Chinese passport, wondering what you're ever going to find to do with it.
+  
+> >

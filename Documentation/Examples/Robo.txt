@@ -1,0 +1,48 @@
+* Building lists
+(Robo: 1. Robot that stores only one program at a time--Robot who records, then replays, the player's actions)
+A robot which watches and records the player's actions, then tries to repeat them back in the same order when he is switched into play-back mode.
+
+	{*}"Robo"
+	
+	The Experimentation Chamber is a room. Robo is a man in the Experimentation Chamber. "Robo, your prototype tin companion, stands awkwardly beside you. In the middle of his chest is a red enamel button[if the red button is switched on], currently depressed[otherwise], currently un-depressed[end if]."
+
+	The red button is a device. It is part of Robo. Instead of pushing the red button: if the red button is switched off, try switching on the red button; otherwise try switching off the red button.
+
+	After switching on the red button:
+		say "CLICK! Robo is now in play-back mode."
+	
+	After switching off the red button:
+		say "CLACK! Robo is now in observation mode."
+
+	Definition: Robo is watching if the red button is switched off.
+	
+	The current instruction set is a list of stored actions that varies.
+
+	After doing something when Robo is watching and Robo can see the player:
+		now the actor is Robo;
+		add the current action to the current instruction set;
+		now the actor is the player;
+		say "Robo watches you [the current action][one of], his yellow eyes lamp-like and observant[or]. In his metal head, gears whirr[or], his brushed-copper handlebar moustaches twitching[or] impassively[at random].";
+		continue the action.
+	
+	Every turn when Robo is not watching:
+		if the number of entries in the current instruction set is 0:
+			say "Robo has run out of behavior and grinds to an (expectant) halt.";
+			now the red button is switched off;
+		otherwise:
+			let the next task be entry 1 of the current instruction set; 
+			try the next task;
+			remove entry 1 from the current instruction set.
+
+	The red block and the blue cylinder are things in the Experimentation Chamber. The counter is a supporter in the Experimentation Chamber. The counter is scenery.
+
+	Report Robo examining Robo:
+		say "Robo examines each of his hands in turn, then each of his legs (bending over mostly double in the middle to do this)." instead.
+	
+	Report Robo examining the player:
+		say "Robo stares at you, unblinkingly, for several seconds together[if a random chance of 1 in 7 succeeds]. His left moustache-bar twitches infinitesimally upward[end if]." instead.	
+	
+	Report Robo taking the cylinder:
+		say "[one of][Robo] needs several attempts to get his metal fingers around [the cylinder] -- they are not designed for grasping small objects elegantly. But at last he succeeds[or]Once again, Robo struggles a bit before picking up [the cylinder][stopping]." instead.
+	
+	Test me with "z / take cylinder / take block / put cylinder on counter / put block on counter / x robo / x me / get block / drop block / press red button / z / z / z / z / z / z / z / z / z / z".

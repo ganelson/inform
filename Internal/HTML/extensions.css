@@ -1,0 +1,42 @@
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.oval, .oval TD {
+	background-image:url('inform:/doc_images/ovoid.png');
+	color:white;
+}
+.headingbox {
+	position: relative;
+	height: 56px;
+	padding: 0px;
+	white-space:nowrap;
+	background: #808080;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+.headingtext {
+	position: absolute;
+	top: -4px;
+	left: -1px;
+	width: 100%;
+	color: #ffffff;
+	padding: 14px 10px 0px 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+.headingrubric {
+	position: absolute;
+	top: 36px;
+	width: 100%;
+	color: #ffffff;
+	padding: 0px 10px 0px 10px;
+	font-size: 11px;
+	font-weight: bold;
+}
+p {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 12px;
+}

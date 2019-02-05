@@ -1,0 +1,12 @@
+There is a room.
+
+To foo (this is fooing):
+	do nothing.
+To bar (this is barring):
+	do nothing.
+Definition: a phrase nothing -> nothing is unique if it is fooing.
+
+When play begins:
+	let the list be { fooing, barring };
+	now the list is filter to unique phrases nothing -> nothing of the list;
+	showme the list.

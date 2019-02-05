@@ -1,0 +1,238 @@
+Include Locksmith by Emily Short.  
+
+Use command line echoing. Use scoring.
+
+Singing is an action applying to nothing. Understand "sing" as singing.
+
+Check singing: say "Your singing is abominable."
+
+The Donut Shop is a room. Ogg is a man in the Donut Shop. "Ogg is slumped in the corner[if Ogg carries something] with [a list of things carried by Ogg][end if]." Ogg is carrying an apple and a banana. The apple and the banana are edible.
+
+The Donut Shop contains a transparent closed openable locked lockable enterable container called a case. The case is fixed in place. The case contains some cake donuts, some jelly donuts, and some apple fritters. "The [if unopenable]damaged[otherwise]gleaming[end if] donut case [if something is in the case]contains [a list of things in the case][otherwise]has been stripped of its contents[end if]." The cake donuts, the jelly donuts, and the apple fritters are edible.
+
+The matching key of the case is a silver key. The mesh basket is a closed openable transparent container in the Donut Shop. The silver key is in the basket.
+
+
+The Bagel Shop is west of the Donut Shop. A round door is east of the Donut Shop and west of the Tire Shop. The round door is a lockable locked door. The description of the round door is "It has a hole in the middle."
+
+
+The can't reach inside rooms rule does nothing when doing something other than waiting and the person asked is the player and the person reaching is the player and the window is open.
+
+The can't reach through closed window rule substitutes for the can't reach inside rooms rule when doing something other than waiting and the person asked is the player and the person reaching is the player and the window is closed.
+
+This is the can't reach through closed window rule: 
+	if the person reaching is the player, say "You can't reach through the closed window."; 
+   	deny access.
+
+After looking when a room (called the next room) is adjacent: 
+    try examining the next room.
+ 
+
+The window is a backdrop. It is in the Bagel Shop and the Donut Shop. The window can be openable. The window can be open. The window is openable and closed. Instead of searching the window when the location is the Donut Shop: try examining the Bagel shop. Instead of searching the window  when the location is the Bagel Shop: try examining the Donut Shop.
+
+Understand "examine [any adjacent room]" as examining.
+
+Instead of examining a room: 
+	if the player is in the Tire Shop, say "You can't very well do that." instead;
+	if the noun is the Tire Shop, say "Fat Chance" instead;
+    say "Over in [the noun], you can see [a list of visible things in the noun]."
+
+After deciding the scope of the player: 
+    if the location is the Bagel Shop, place the Donut Shop in scope; 
+    if the location is the Donut Shop, place the Bagel Shop in scope.
+
+A persuasion rule for asking someone to try doing something:
+    persuasion succeeds.
+
+Instead of singing: say "You sing a siren song.";
+    repeat with victim running through people
+    begin;
+        let space be the victim;
+        while space is not a room
+        begin;
+            let space be the holder of the space;
+        end while;
+        let way be the best route from the space to the location, using even locked doors;
+        if way is a direction
+        begin; 
+            try the victim trying going way;
+        end if;
+    end repeat.
+
+The dolly is pushable between rooms. It is in the Tire Shop. On the dolly is a heavy box. The player is in the Tire Shop.
+
+The forklift is a vehicle in the Donut Shop. Igg is a woman in the forklift. The gold ball is a passkey carried by Igg. It unlocks the round door. The description is "It is perfectly round and shiny."
+
+
+After Igg trying unlocking something with something in the presence of Ogg:
+    say "'Holy crow!' bellows Ogg[if Ogg is not visible] from the other room[end if]. 'I didn't know you could do that, Igg!'";
+    continue the action.
+
+Report Igg trying going to somewhere (called the destination) by forklift:
+	if the player is in the destination, say "There is a tremendous rattling of [the list of fixed in place things in the location]."
+	
+Report Ogg trying going through the round door:
+	say "Ogg grunts as he bumps his head on the low frame of the round door."
+	
+Report Ogg trying going through the round door with the dolly:
+	say "Ogg is forced to lift the dolly and sort of scooch it over the bottom of the doorframe."
+	
+Report Igg trying going to the Bagel Shop by forklift with the dolly:
+ 	say "A look of the most intense concentration occupies Igg's face as she tries to maneuver the dolly with the front tines of the forklift, without disturbing anything in the bagel shop. All the same, she does manage." instead.
+
+Report Igg trying examining the forklift more than once:
+	say "Igg ignores you this time, having gleaned all she wants to know about the forklift." instead.
+	
+Instead of Igg trying jumping in the Tire Shop:
+	say "Igg jumps, shaking the towers of rubber until you fear they're all going to come tumbling down. But they don't.";
+	the rule succeeds.
+	
+Instead of Igg trying singing:
+	say "Igg struggles womanfully with this command.";
+	the rule succeeds.
+
+Instead of Ogg trying opening the case for the third time:
+	say "Ogg swears under his breath when he notices that someone has closed the case again."
+
+	Before someone trying taking something which is carried by the player:
+		if the person asked cannot touch the player
+		begin;
+			say "Ogg looks with a fixed frown at [the noun].";
+			continue the action;
+		end if;
+		say "[The person asked] comes up and shakes your arm until you drop [the noun].";
+		say line break;
+		silently try dropping the noun; 
+
+	Before someone trying unlocking keylessly a locked thing when the matching key of the noun is not carried by the person asked:
+		if the person asked can see the matching key of the noun, try the person asked trying taking the matching key of the noun; 
+
+	Before someone trying unlocking a locked thing with something which is not carried by the person asked:
+		try the person asked trying taking the second noun; 
+
+	Before someone trying opening a locked thing (called the sealed chest):
+		if the person asked can see the matching key of the sealed chest
+		begin;
+			if the matching key of the sealed chest is in the sealed chest
+			begin;
+				say "Seeing the paradoxical location of [the matching key of the sealed chest], [the person asked] gives a howl of rage.";
+				increase the score by 1;
+				end the story saying "You have thwarted Ogg";
+			otherwise;
+				try the person asked trying unlocking the sealed chest with the matching key of the sealed chest;
+			end if; 
+		end if.
+
+Before someone trying taking something which is in a closed container (called the shut chest): 
+    try the person asked trying opening the shut chest.
+
+	Ogg has a number called hunger.  The hunger of Ogg is 0.
+
+	Every turn:
+		increase the hunger of Ogg by 1;
+		if the hunger of Ogg is 2 and Ogg is visible, say "Ogg's stomach growls.";
+		if the hunger of Ogg is 3 and Ogg is visible
+		begin;
+			if Ogg can see an edible thing (called the target)
+			begin;
+				say "Ogg eyes [the target] with obvious intent.";
+			otherwise;
+				say "Ogg glances at you in a disturbingly shifty way.";
+			end if;
+		end if;
+		if the hunger of Ogg > 3
+		begin;
+			if Ogg carries an edible thing (called the target)
+			begin;
+				try Ogg trying eating the target;
+			otherwise;
+				if Ogg can see an edible thing (called the new target)
+				begin;
+					try Ogg trying taking the new target;
+				otherwise;
+					if Ogg can touch the player, end the story saying "Ogg is gnawing your ankle";
+				end if;
+			end if;
+		end if.
+
+	The crumbs are a thing. "Crumbs of [the list of edible things which cannot be seen by the player] lie scattered over the whole floor."
+
+	Instead of asking Ogg to try doing something when Ogg cannot touch the player:
+		say "Ogg tilts his head and shrugs, unable to hear your instruction clearly."
+
+	Instead of asking Ogg to try eating something:
+		say "It's not as though Ogg really needs any encouragement in that department, is it?"
+	
+	Definition: Ogg is hungry if the hunger of Ogg > 2.
+
+	Persuasion rule for asking Ogg to try doing something: if Ogg is hungry, persuasion fails; persuasion succeeds.
+
+	Persuasion rule for asking Ogg to try giving something edible to the player:
+		persuasion fails.
+	
+	Unsuccessful attempt by Ogg trying doing something:
+		if the reason the action failed is a failing listed in the Table of Ogg Retorts
+		begin;
+			say "[reply entry][paragraph break]";
+		otherwise;
+			say "Ogg looks adorably confused.";
+		end if.
+	
+	Table of Ogg Retorts
+	failing	reply
+	can't take people's possessions rule	"'Ogg too polite.'"
+	can't take other people rule	"'Ogg not that greedy.'"
+	can't take scenery rule	"'[The noun] very very heavy.'"
+	can't take what's fixed in place rule	"'[The noun] very heavy."
+	can't drop what's not held rule	"'Hunh?'" 
+
+	Carry out Ogg trying eating an edible thing:
+		move the crumbs to the holder of Ogg;
+		now the hunger of Ogg is 0.
+
+	Report Ogg trying unlocking something with something:
+		say "Ogg struggles a bit with [the second noun] in the lock of [the noun], but does eventually succeed. 'Hunh!' says Ogg.";
+		stop the action.
+
+	Carry out Ogg trying opening the case when the case has been open:
+		now the case is unopenable.
+
+	Instead of closing the unopenable case:
+		say "The glass panels are no longer properly seated in their tracks, and the case cannot be closed ever again."
+	
+	Report Ogg trying opening the unopenable case:
+		say "Ogg forces [the case] so hard that it does break.";
+		stop the action.
+	
+	Report Ogg trying opening the case:
+		say "Ogg yanks [the noun] open with such force that you fear for its structural integrity.";
+		stop the action.
+
+	Report Ogg trying taking something edible:
+		say "Ogg acquires [the noun] with a look of tender affection.";
+		stop the action.
+
+	Report Ogg trying eating something:
+		say "Ogg chows down on [the noun], scattering crumbs in all directions.";
+		stop the action.
+
+	Report Ogg trying eating something when the number of visible edible things is 1:
+		say "Ogg eats [the noun] in his trademark style. You can no longer bear to watch.";
+		stop the action.
+
+	After entering the case:
+		say "You climb inside the case, folding yourself up uncomfortably."
+
+	After locking the case with something when the player is in the case:
+		say "You turn the key firmly in the lock -- amazing it locks from within, but it does -- and settle yourself for a long wait, hoping this thing is not air-tight."
+
+	The maximum score is 1.
+
+	Singing is complex behavior. Asking someone about something is complex behavior. Thinking is complex behavior. Telling someone about something is complex behavior. Answering someone that something is complex behavior. 
+	
+	Instead of asking Ogg to try complex behavior:
+		say "Ogg blinks at you. He probably doesn't understand what you mean."
+		
+	After Igg trying complex behavior:
+		if Igg is visible, say "Igg struggles womanfully with this command."
+		

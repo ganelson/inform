@@ -1,0 +1,42 @@
+   Weighbridge
+  Dimensions
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Weighbridge
+  A blackboard propped against one wall reads: "122/10 is 12 remainder 2; 122kg/10kg is 12 remainder 2kg; 122kg/10 is 12kg remainder 2kg."
+  
+  The balance platform is 10m by 8m, giving it an area of 80 sq m, currently weighing nothing. The scale alongside reads: 0kg. It seems to be able to weigh several things at once.
+  
+  You can also see a feather and a lead pig here.
+  
+> >   Weighbridge
+  (Testing.)
+  
+  >[1] get feather
+  Taken.
+  
+  >[2] put it on platform
+  You put the feather on the balance platform.
+  
+  >[3] look
+  Weighbridge
+  A blackboard propped against one wall reads: "122/10 is 12 remainder 2; 122kg/10kg is 12 remainder 2kg; 122kg/10 is 12kg remainder 2kg."
+  
+  The balance platform is 10m by 8m, giving it an area of 80 sq m, currently weighing the feather. The scale alongside reads: 1kg. It seems to be able to weigh several things at once.
+  
+  You can also see a lead pig here.
+  
+  >[4] get pig
+  Taken.
+  
+  >[5] put it on platform
+  You put the lead pig on the balance platform.
+  
+  >[6] look
+  Weighbridge
+  A blackboard propped against one wall reads: "122/10 is 12 remainder 2; 122kg/10kg is 12 remainder 2kg; 122kg/10 is 12kg remainder 2kg."
+  
+  The balance platform is 10m by 8m, giving it an area of 80 sq m, currently weighing the lead pig and the feather. The scale alongside reads: 46kg. Average weight is: 23kg. Heaviest item is the lead pig, at 45kg. Lightest item is the feather, at 1kg.
+  
+> >

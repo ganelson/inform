@@ -1,0 +1,60 @@
+   Grove
+  Replies
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Grove
+  You can see the Sybil here.
+  
+> >   Grove
+  (Testing.)
+  
+  >[1] yes
+  She looks interested.
+  
+  >[2] sybil, yes
+  She looks interested.
+  
+  >[3] say yes to sybil
+  She looks interested.
+  
+  >[4] answer yes
+  (to the Sybil)
+  She looks interested.
+  
+  >[5] tell sybil yes
+  She looks interested.
+  
+  >[6] no
+  She looks annoyed.
+  
+  >[7] sybil, no
+  She looks annoyed.
+  
+  >[8] say no to sybil
+  She looks annoyed.
+  
+  >[9] answer no
+  (to the Sybil)
+  She looks annoyed.
+  
+  >[10] tell sybil no
+  She looks annoyed.
+  
+  >[11] sorry
+  She looks bored.
+  
+  >[12] sybil, sorry
+  She looks bored.
+  
+  >[13] say sorry to sybil
+  She looks bored.
+  
+  >[14] answer sorry
+  (to the Sybil)
+  She looks bored.
+  
+  >[15] tell sybil sorry
+  She looks bored.
+  
+> >

@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_APWithNoParticiple
+  >--> You wrote 'Instead of arfle barfle gloop' (source text, line 3), which
+    seems to introduce a rule taking effect only 'arfle barfle gloop'. But this
+    does not look like an action, since there is no sign of a participle ending
+    '-ing' (as in 'taking the brick', say) - which makes me think I have badly
+    misunderstood what you intended.
+Inform 7 has finished: 19 centiseconds used.

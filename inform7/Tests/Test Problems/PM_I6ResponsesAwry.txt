@@ -1,0 +1,5 @@
+Inline Arena is a room.
+
+The restore the game rule translates into I6 as "RESTORE_THE_GAME_R" with
+	"Restore failed." (A) with
+	"Ok." (B).

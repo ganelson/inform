@@ -1,0 +1,133 @@
+take inventory
+record vault
+photograph vault
+x vault
+x all
+x
+drill vault
+drill through vault
+drill plate
+spin dial to 1384
+spin dial to 31337
+w
+photograph left arm of woman
+photograph left arm of model
+take the camera
+photograph left arm of model
+photograph right arm of model
+photograph left leg of subject
+photograph right leg of model
+drop camera
+x subject
+get camera
+e
+e
+paint the canvas blue
+paint the canvas red
+paint the canvas green
+paint the canvas white
+paint the canvas calico
+paint the canvas cerulean
+paint the canvas cerulean blue
+x the white canvas
+x the blue canvas
+x the blue
+w
+s
+lie down
+lie near the sink
+lie near the floor
+[interesting]
+n
+lie near vault
+n
+polish the component
+polish the component to a shiny finish
+get rough
+get shiny
+x smooth
+x smooth component
+x shiny component
+paint the component blue
+record component
+please record component
+grab
+thank you
+thanks
+thank you for helping out
+please gram
+please grab
+out
+s
+x vault
+x dial
+x pane
+x beam
+x scanner
+x plane
+x plate
+s
+x all
+camera
+g
+camera
+look
+n
+vault
+dial
+system
+pane
+laser
+plate
+e
+canvas
+get canvas
+palette
+g
+g
+brush
+spy on vault
+teleport to studio
+teleport to laundry
+spy on model
+put all in pot
+stir all in pot
+throw pot
+teleport to competition
+throw pot
+hurl pot
+fling pot
+teleport to atelier
+get canvas
+paint canvas white
+teleport to chambre
+x blanc canvas
+teleport to academy
+use eel with eel
+use ideal eel with eel
+use eel with ideal eel
+use ideal eel
+use ideal eel in discussion
+use eel in discussion
+use eel
+g
+use ideal chair
+use chicken on aristotle
+use no chicken
+use modus ponens
+use modus tollens
+use denying the antecedent
+use affirming the consequent
+use aristotle
+use razor
+g
+g
+g
+use chicken
+use chicken on me
+use no modus ponens
+use no modus tollens
+use no denying the antecedent
+use no affirming the consequent
+nw
+use wibble wobble

@@ -1,0 +1,42 @@
+   Lakeside
+  Lakeside Living
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lakeside
+  Here you are by the lake, enjoying a summery view.
+  
+  You can also see a pitcher of absinthe here.
+  
+> >   Lakeside
+  (Testing.)
+  
+  >[1] fill glass
+  (with the lake of water)
+  Mixing water with absinthe would give unsavory results.
+  
+  >[2] empty absinthe into lake
+  (the glass of absinthe into the lake of water)
+  You dump out the glass into the lake.
+  
+  >[3] fill glass
+  (with the lake of water)
+  You fill the glass up with water from the lake.
+  
+  >[4] swim
+  You don't feel like a dip just now.
+  
+  >[5] drink lake
+  You take a sip of water.
+  
+  >[6] drink
+  What do you want to drink?
+  
+  >[7] x water
+  (the glass of water)
+  The glass contains about twelve fluid ounces of water.
+  
+  >[8] x lake
+  The lake is full of water.
+  
+> >

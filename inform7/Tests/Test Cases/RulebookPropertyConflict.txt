@@ -1,0 +1,7 @@
+There is a room.
+The initiative rules are a rulebook.
+A person has a number called initiative.
+The participants list is a list of people that varies.
+When play begins:
+	now the participants list is the list of people;
+	sort the participants list in initiative order.

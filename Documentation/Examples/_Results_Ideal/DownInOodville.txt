@@ -1,0 +1,61 @@
+   Transporter Room
+  Down in Oodville
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Transporter Room
+  The transporter pad in the middle of the floor is currently dull blue: powered but unoccupied.
+  
+> >   Transporter Room
+  (Testing.)
+  
+  >[1] get on pad
+  The transporter beeps and glows amber as you step onto its surface. A moment later a hologram displays your options. From here you could choose to go to:
+    1: Oodville
+    2: Midnight
+  
+  >[2] 0
+  0 is not a valid option. From here you could choose to go to:
+    1: Oodville
+    2: Midnight
+  
+  >[3] -1
+  -1 is not a valid option. From here you could choose to go to:
+    1: Oodville
+    2: Midnight
+  
+  >[4] 8
+  8 is not a valid option. From here you could choose to go to:
+    1: Oodville
+    2: Midnight
+  
+  >[5] 2
+  Midnight
+  
+  >[6] look
+  Midnight
+  
+  >[7] w
+  
+  Diamond City
+  
+  >[8] home
+  Transporter Room
+  The transporter pad in the middle of the floor is currently dull blue: powered but unoccupied.
+  
+  >[9] get on pad
+  The transporter beeps and glows amber as you step onto its surface. A moment later a hologram displays your options. From here you could choose to go to:
+    1: Oodville
+    2: Midnight
+    3: Diamond City
+  
+  >[10] get off pad
+  You get off the transporter pad.
+  
+  Transporter Room
+  The transporter pad in the middle of the floor is currently dull blue: powered but unoccupied.
+  
+  >[11] 3
+  You can transport only from the transporter pad. From other places than the transporter room, you can HOME to your base ship, but not leap sideways to other locations.
+  
+> >

@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 8 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ValueCantHaveVProperties
+  >--> You wrote 'A number has a number called square root' (source text, line 1):
+    but this is a kind of value which is not allowed to have properties of its
+    own, because this would be impossible to store in any sensible way. For
+    instance, 'A scene has a number called difficulty.' is fine because there
+    are not many scenes and I know them all, but 'A number has a text called
+    French translation.' is not allowed, because storing something for every
+    possible number takes an impossible amount of space. (See the Kinds index
+    for which kinds can have properties.)
+Inform 7 has finished: 18 centiseconds used.

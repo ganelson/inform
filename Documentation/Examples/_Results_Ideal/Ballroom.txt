@@ -1,0 +1,36 @@
+   Pacific Ballroom
+  Strictly Ballroom
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pacific Ballroom
+  A rather utilitarian space at the moment, since this is a class and not a party.
+  
+  You can see Timmy, Tommy, Joey, George, Mary, Martha, Yvette, McQueen, Linus and Patricia here.
+  
+> >   Pacific Ballroom
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  Timmy polkas with Joey. Tommy polkas with Yvette. George polkas with Linus. Mary polkas with McQueen. Martha polkas with Patricia.
+  
+  >[2] ask linus about blanket
+  You successfully distract Linus.
+  
+  Timmy cha-chas with Tommy. Joey cha-chas with Patricia. George cha-chas with Mary. Martha cha-chas primly with Yvette.
+  
+  McQueen is forced to be a wallflower. Poor McQueen.
+  
+  >[3] z
+  Time passes.
+  
+  Timmy two-steps with Joey. Tommy two-steps with McQueen. George two-steps with Linus. Mary two-steps with Martha. Yvette two-steps energetically with Patricia.
+  
+  >[4] z
+  Time passes.
+  
+  Timmy two-steps with Martha. Tommy two-steps elegantly with Yvette. Joey two-steps with Patricia. George two-steps elegantly with McQueen. Mary two-steps primly with Linus.
+  
+> >

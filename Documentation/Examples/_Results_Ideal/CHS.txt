@@ -1,0 +1,76 @@
+   Sickbay
+  "Just put that down anywhere," says Nathan, as you come into the room. He's sitting in the sickbed with his legs straight out in front of him. "I don't care where." His voice is weak, but it sharpens up for the last remark: "And don't make a lot of noise about it."
+  
+  Considering that he woke you from a sound slumber to beg you to bring this thing over, his attitude is a bit much. You stare dubiously at the awkward crystal sculpture in your hands.
+  
+  Chronic Hinting Syndrome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sickbay
+  A place arranged for Nathan's comfort, since his sickness has been prolonged and because he becomes so irritating when not comfortable.
+  
+  A wobbly pedestal near the door has sometimes been known to support vases of flowers, but is currently bare.
+  
+  There is also a table of a more ordinary sort.
+  
+  On the sickbed is Nathan.
+  
+> >   Sickbay
+  (Testing.)
+  
+  >[1] highlighting bright
+  Highlighting is now on.
+  
+  >[2] put sculpture on pedestal
+  The pedestal starts to wobble so ominously that you don't dare let go.
+  
+  "Yeah, anywhere but there, I'm afraid," says Nathan. "That thing is falling apart."
+  
+  >[3] put it on table
+  "Come on, use your head -- I can't be watching you all the time, I'm sick," Nathan snaps. "The table is way too far from the sickbed."
+  
+  >[4] put it on sickbed
+  "Look, the floor would be fine," Nathan rebukes you. "You don't want me knocking it over if I roll around. In pain."
+  
+  >[5] drop it
+  You are incredibly careful, but somehow the sculpture slips -- you might almost say slithers -- from your fingers and crashes into a thousand shards at the feet of Nathan.
+  
+  There is a tense silence.
+  
+  >[6] think
+  You recall that thus far you have not followed up with questions about the breakage.
+  
+  You're not quite sure where to begin, but you can't very well leave without making at least some remark on the smashing of the sculpture.
+  
+  >[7] ask nathan about breakage
+  "It's not a big deal. I'll just buy a new mental wave generator." A slight awkward pause. "I mean, this one was a gift, but don't worry about it," says Nathan.
+  
+  >[8] think
+  You recall that thus far you have not followed up with questions about the mental wave generator and the gift.
+  
+  Nathan chuckles under his breath. "Man, I hadn't thought about the gift in ages."
+  
+  >[9] ask him about generator
+  "They're kind of expensive but I can save up. I really need one, though, because of my dreams," says Nathan.
+  
+  >[10] ask him about dreams
+  "They're not the kind of dream you want to have." He closes his eyes and contemplates these undesirable dreams. "Have you ever woken up convinced you were dead? No, probably not. Well... At any rate, I need the mental wave generator. Oh, don't worry, they're expensive but not so expensive that I won't be able to save up for another, in a few months," says Nathan.
+  
+  >[11] ask him about gift
+  "The mental wave generator was a present from a girl named Shari. Actually I'm not sure she'd take to being called a girl," says Nathan.
+  
+  >[12] ask him about shari
+  "Look, let's just not go into it, okay? I don't really want to relive all that right now. I still have a six-inch scar shaped like a banana in the middle of my back," says Nathan.
+  
+  >[13] ask him about scar
+  Nathan clears his throat, lowers his voice, and begins to tell you the story...
+  
+  
+  
+      *** End of Demo -- Register to Continue!! ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

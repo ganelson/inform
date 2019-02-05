@@ -1,0 +1,5 @@
+Home is a room.
+
+A trampoline is an enterable supporter in Home. A box is in Home. In the box is a thing called When worlds collide.
+
+Jumping when the actor is on the trampoline is high-jumping.

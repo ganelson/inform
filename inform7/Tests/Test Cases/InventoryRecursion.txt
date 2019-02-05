@@ -1,0 +1,132 @@
+
+"Inventory Recursion"
+
+Instead of taking inventory:
+	follow the inventory-paragraph rules for the player.
+	
+The inventory-paragraph rules are an object-based rulebook. The inventory-paragraph rulebook has a list of objects called the remaining items.
+ 
+
+Started printing is a truth state that varies.
+
+The first inventory-paragraph rule for something (called the target):
+	now started printing is false;
+	truncate the remaining items to 0 entries;
+	repeat with item running through things held by the target
+	begin;
+		add item to remaining items;
+	end repeat;
+	repeat with item running through things which are part of the target
+	begin;
+		add item to remaining items;
+	end repeat. 
+
+An inventory-paragraph rule for a person (called the target) (this is the list carried items rule): 
+	let the directly carried list be a list of objects;
+	repeat with item running through the remaining items
+	begin;
+		if the target carries the item, add the item to the directly carried list;
+	end repeat;
+	if the number of entries in the directly carried list is greater than zero
+	begin;
+		now started printing is true;
+		say "[if the target is the player]You are[otherwise][The target] is[end if] carrying [the directly carried list with indefinite articles]. ";
+	end if;
+	remove the directly carried list from the remaining items;
+	repeat with item running through the directly carried list
+	begin;
+		follow the inventory-paragraph rules for the item;
+	end repeat;  
+	
+An inventory-paragraph rule for a person (called the target) (this is the separately list worn items rule): 
+	let the worn list be a list of objects;
+	repeat with item running through the remaining items
+	begin;
+		if the target wears the item, add the item to the worn list;
+	end repeat;
+	if the number of entries in the worn list is greater than zero
+	begin;
+		now started printing is true;
+		say "[if the target is the player]You are[otherwise][The target] is[end if] wearing [the worn list with indefinite articles]. ";
+	end if;
+	remove the worn list from the remaining items;
+	repeat with item running through the worn list
+	begin;
+		follow the inventory-paragraph rules for the item;
+	end repeat; 
+	[say "[line break]finished worn items of [target][line break]";]
+	
+An inventory-paragraph rule for a container (called the target) (this is the list container content rule):
+	let the contained list be a list of objects;
+	repeat with item running through the remaining items
+	begin;
+		if the target contains the item, add the item to the contained list;
+	end repeat;
+	if the number of entries in the contained list is greater than zero
+	begin;
+		now started printing is true;
+		say "[The target] contains [the contained list with indefinite articles]. ";
+	end if;
+	remove the contained list from the remaining items;
+	repeat with item running through the contained list
+	begin;
+		follow the inventory-paragraph rules for the item;
+	end repeat;
+	
+An inventory-paragraph rule for a supporter (called the target) (this is the list supporter content rule):
+	let the supported list be a list of objects;
+	repeat with item running through the remaining items
+	begin;
+		if the target supports the item, add the item to the supported list;
+	end repeat;
+	if the number of entries in the supported list is greater than zero
+	begin;
+		now started printing is true;
+		say "[The target] supports [the supported list with indefinite articles]. ";
+	end if;
+	remove the supported list from the remaining items;
+	repeat with item running through the supported list
+	begin;
+		follow the inventory-paragraph rules for the item;
+	end repeat.
+	
+An inventory-paragraph rule for something (called the target) (this is the list parts rule):
+	let the parts list be a list of objects;
+	repeat with item running through the remaining items
+	begin;
+		if the item is part of the target, add the item to the parts list, if absent;
+	end repeat;
+	if the number of entries in the parts list is greater than zero
+	begin;
+		now started printing is true;
+		let printed parts list be text;
+		let printed parts list be "[parts list with indefinite articles]";
+		say "[printed parts list in sentence case] [if the number of entries in the parts list is 1]is[otherwise]are[end if] part of [the target]. ";
+	end if;
+	remove the parts list from the remaining items;
+	repeat with item running through the parts list
+	begin;
+		follow the inventory-paragraph rules for the item;
+	end repeat.
+
+The last inventory-paragraph rule (this is the break rule):
+	if started printing is true, say "[paragraph break]"; 
+	now started printing is false.
+
+The Throne Room is a room. The player wears an ermine robe and a pair of velvet pantaloons. The player carries a mace and a gilded cage. In the gilded cage is a canary. The canary is an animal. It wears a golden collar. It carries a seed. A diamond charm is part of the golden collar.
+ 
+
+The player carries a platter. The platter is a portable supporter. On the platter is a fish.
+
+The extravagant crown is a wearable thing in the Throne Room.
+
+An inventory-paragraph rule for the player when the player wears the extravagant crown:
+	if crown is listed in the remaining items
+	begin;
+		say "Perched on your head is an extravagant crown: everyone who sets eyes on you must be blinded by the 102-carat blue diamond known as the Star of Hopeful Brightness. [paragraph break]";
+		remove the extravagant crown from the remaining items;
+	end if.
+
+The pocket is a container. It is part of the velvet pantaloons. It contains a piece of eight.
+
+Test me with "wear crown / i / drop cage / i / take off crown / i / get piece / i".

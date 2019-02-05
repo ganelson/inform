@@ -1,0 +1,5 @@
+Home is a room.
+
+Weight is a kind of value.
+
+2-2-2-2-2-2-2-2-2-2-2-2-2-2-2-2-2 specifies a weight.

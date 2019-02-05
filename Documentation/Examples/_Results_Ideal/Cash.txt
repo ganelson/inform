@@ -1,0 +1,39 @@
+   Dessert Parlor
+  Frozen Assets
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dessert Parlor
+  An underlit, over-crowded room campily furnished with a lot of gilt-frame mirrors and twinkle lights: it is essentially a brothel of food. The service is slow at best, and on Saturday nights glacial. However. The wares on display more than make up for these trivial inconveniences.
+  
+  You can see a vanilla ice cream, a raspberry tart, a syllabub and an espresso cake here.
+  
+> >   Dessert Parlor
+  (Testing.)
+  
+  >[1] inventory
+  You are carrying:
+    a wallet
+      $4.50 in cash
+  
+  >[2] examine syllabub
+  Whipped cream, alcohol, and lime juice, a substance without any redeeming food value whatever.
+  
+  It can be yours for $4.25.
+  
+  >[3] get syllabub
+  You'll have to pay for that.
+  
+  >[4] buy syllabub
+  You fork over $4.25 for the syllabub, leaving yourself with $0.25.
+  
+  >[5] drop it
+  Dropped.
+  
+  >[6] get it
+  Taken.
+  
+  >[7] buy raspberry tart
+  Your funds do not run to the price of the raspberry tart.
+  
+> >

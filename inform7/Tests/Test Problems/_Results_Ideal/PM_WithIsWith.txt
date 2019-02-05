@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_WithIsWith
+  >--> You wrote 'A container with description "White" is a container with
+    description "Black"' (source text, line 1): but you can't say that one
+    general description is another , for instance by writing 'A container with
+    carrying capacity 10 is a container with description "Handy."'.
+Inform 7 has finished: 17 centiseconds used.

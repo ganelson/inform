@@ -1,0 +1,27 @@
+   Beach
+  Savannah
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Beach
+  The Atlantic stretches east to the horizon, though it is at low tide at the moment. It is dawn: time to pack up and go home.
+  
+  A low fire crackles here, left over from an attempt at s'mores much earlier in the evening.
+  
+> >   Beach
+  (Testing.)
+  
+  >[1] drink seawater
+  Blech!
+  
+  >[2] pour seawater on fire
+  The fire goes out in a great hiss.
+  
+  >[3] x bucket
+  You catch just a hint of seawater at the bottom.
+  
+  >[4] i
+  You are carrying:
+    an empty bucket
+  
+> >

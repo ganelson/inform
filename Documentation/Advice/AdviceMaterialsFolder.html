@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="indoc_WI.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.red
+{
+    color:rgb(255,0,0);
+}
+</style>
+<title>Materials Folder</title>
+</head>
+<body class="paper papertint">
+<!-- START IGNORE -->
+<p class="sectionheading">Materials Folder</p>
+<p>Every project has a &quot;.materials&quot; folder, which is always stored next to it on disc. (Use &#8984;M to show the current project's .materials in the Finder.) This screenshot shows how the .materials folder would look for a project which used it in every possible way. In practice, this is very unlikely.</p>
+
+<img src="MaterialsDiagram.png" width="275" height="403"/>
+
+<p>Project (<span class="red">1</span>) and .materials folder (<span class="red">2</span>) live side by side in the Finder: everything else here is inside .materials (<span class="red">2</span>). The author of this story decided that it should be given to players along with a PDF booklet (<span class="red">3</span>), by including this Release instruction in the source text:
+
+<blockquote class="code"><p class="quoted">
+    Release along with a file of &quot;A Guide to Arboreal Fauna&quot; called &quot;A Guide to Arboreal Fauna.pdf&quot;.
+</p></blockquote>
+
+<p>Every released project needs cover art. Authors have to provide two files, full-sized at 960 by 960 (<span class="red">4</span>) and reduced at 120 by 120 (<span class="red">18</span>): they can either be &quot;Cover.jpg&quot; and &quot;Small Cover.jpg&quot; or &quot;Cover.png&quot; and &quot;Small Cover.png&quot;.</p>
+
+<p>Extensions to Inform are usually centrally installed, and available to all projects. But this project has its own private copy of &quot;Feeding Squirrels by Emily Short&quot; (<span class="red">7</span>), in its own private Extensions folder (<span class="red">5</span>). This would override any installed copy of the same extension. It has to have the correct name and .i7x ending, and it has to live inside a folder with its author's name (<span class="red">6</span>).</p>
+
+<p>Projects which include pictures as well as text need to store the necessary images, in JPEG or PNG format, in the Figures folder (<span class="red">8</span>). This one was declared in the source text like so:</p>
+
+<blockquote class="code"><p class="quoted">
+    Figure of Red Admiral Butterfly is the file &quot;butterfly.jpg&quot;.
+</p></blockquote>
+
+<p>Sound effects are similar, use AIFF or OGG format, and live in Sounds (<span class="red">19</span>). There's one here (<span class="red">20</span>), declared by:</p>
+
+<blockquote class="code"><p class="quoted">
+    Sound of Rustling Leaves is the file &quot;Rustling Leaves.aiff&quot;.
+</p></blockquote>
+
+<p>Projects which read or write files of data as they play should have a Files folder (<span class="red">10</span>) to hold these. This one (<span class="red">11</span>) was declared by:
+
+<blockquote class="code"><p class="quoted">
+    The File of Nut Storage Locations is called &quot;nutstorage&quot;.
+</p></blockquote>
+
+<p>Now for some expert-only features which hardly anybody needs in practice. The I6T folder (<span class="red">12</span>) provides extra template files (<span class="red">13</span>), or indeed replacement ones (<span class="red">14</span>), and allows a project to include substantial portions of raw Inform 6 code. The Languages folder (<span class="red">16</span>) is for experimenting with new language bundles, a 2014 feature still in its early stages. The Templates folder (<span class="red">21</span>) is for providing the project with a non-standard Javascript engine, called an &quot;interpreter&quot;, when it's released as a website. Here there's an intepreter called &quot;Experimental&quot; (<span class="red">22</span>) which can be selected by putting this into the source:</p>
+
+<blockquote class="code"><p class="quoted">
+    Release along with the &quot;Experimental&quot; interpreter.
+</p></blockquote>
+
+<p>And that just leaves the Release folder (<span class="red">17</span>). Inform creates this automatically if the project's Release button is clicked, and then writes into it whatever will eventually go out to players. So never store anything permanent here: it's intended to be just a holding area.
+</p>
+
+<!-- END IGNORE -->
+</body>
+</html>

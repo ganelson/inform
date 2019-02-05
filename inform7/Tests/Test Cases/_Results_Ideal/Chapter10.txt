@@ -1,0 +1,480 @@
+   Kitchen
+  Chapter 10: Le Gourmand
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  On the stove is a frying pan (empty).
+  
+  On the counter are a kettle (closed), some unpeeled onions, some dried apricots, some unwashed sage and a can of chicken broth (closed).
+  
+> >   Kitchen
+  ** take kettle
+  Taken.
+  
+  You should really get started sauteeing the onions.
+  
+> >   Kitchen
+  ** put kettle on stove
+  You put the kettle on the stove.
+  
+  The kettle begins to heat up.
+  
+  You should really get started sauteeing the onions.
+  
+> >   Kitchen
+  ** peel onions
+  You tear away the shining outer skin of the onions, leaving them pale and nekkid. Poor things.
+  
+  You should really get started sauteeing the onions.
+  
+> >   Kitchen
+  ** take knife
+  You already have that.
+  
+  You should really get started sauteeing the onions.
+  
+> >   Kitchen
+  ** dice onions
+  That's not a verb I recognise.
+  
+> >   Kitchen
+  ** cut onions
+  You dice the onions neatly. Your own skill brings tears to your eyes.
+  
+  You should really get started sauteeing the onions.
+  
+> >   Kitchen
+  ** put onions in pan
+  (first taking the diced onions)
+  You put the diced onions into the frying pan.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** take onions
+  Taken.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** put onions in pan
+  You put the diced onions into the frying pan.
+  
+  The onions sizzle in the pan.
+  
+  The kettle begins to burble and whistle shrilly.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  The kettle continues to whistle.
+  
+> >   Kitchen
+  ** x kettle
+  You see nothing special about the kettle.
+  
+  The onions sizzle in the pan.
+  
+  The kettle continues to whistle.
+  
+> >   Kitchen
+  ** open kettle
+  You open the kettle, revealing some boiling water.
+  
+  The onions sizzle in the pan.
+  
+  The kettle continues to whistle.
+  
+> >   Kitchen
+  ** take kettle
+  Taken.
+  
+  The kettle's screaming dies off.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** put kettle on counter
+  You put the kettle on the counter.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** wash sage
+  You rinse off the sage. There -- ready to slice.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** slice sage
+  You slice the sage into thin strips.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** x onions
+  You see nothing special about the diced onions.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+> >   Kitchen
+  ** smell
+  The onions smell marvelous.
+  
+  The onions sizzle in the pan.
+  
+  The onions are starting to look ready.
+  
+> >   Kitchen
+  ** put sage in pan
+  (first taking the julienned sage)
+  You put the julienned sage into the frying pan.
+  
+  The mixture of things in the frying pan stops them cooking quite so fast.
+  
+> >   Kitchen
+  ** undo
+  Kitchen
+  [Previous turn undone.]
+  
+> >   Kitchen
+  ** take sage
+  Taken.
+  
+  The onions are past their prime and are getting blacker by the moment.
+  
+> >   Kitchen
+  ** put sage in pan
+  You put the julienned sage into the frying pan.
+  
+  The mixture of things in the frying pan stops them cooking quite so fast.
+  
+> >   Kitchen
+  ** x pan
+  In the frying pan are some julienned sage and some sauteed onions.
+  
+> >   Kitchen
+  ** open cabinet
+  You open the cabinet, revealing a mixing bowl, a platter and a Calphalon baking dish.
+  
+> >   Kitchen
+  ** take bowl
+  Taken.
+  
+> >   Kitchen
+  ** take apricots
+  Taken.
+  
+> >   Kitchen
+  ** take water
+  Taken.
+  
+> >   Kitchen
+  ** put water in bowl
+  You put the boiling water into the mixing bowl.
+  
+> >   Kitchen
+  ** put apricots in bowl
+  You put the dried apricots into the mixing bowl.
+  
+  The apricots slowly begin to plump up again.
+  
+> >   Kitchen
+  ** look
+  Kitchen
+  Smoke is beginning to collect near the ceiling.
+  
+  On the stove is a frying pan (in which are some julienned sage and some sauteed onions).
+  
+  On the counter are a kettle (empty) and a can of chicken broth (closed).
+  
+> >   Kitchen
+  ** put kettle on stove
+  (first taking the kettle)
+  You put the kettle on the stove.
+  
+> >   Kitchen
+  ** take kettle
+  Taken.
+  
+> >   Kitchen
+  ** put kettle on stove
+  You put the kettle on the stove.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+> >   Kitchen
+  ** take kettle
+  Taken.
+  
+> >   Kitchen
+  ** look
+  Kitchen
+  Smoke is beginning to collect near the ceiling.
+  
+  On the stove is a frying pan (in which are some julienned sage and some sauteed onions).
+  
+  On the counter is a can of chicken broth (closed).
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+> >   Kitchen
+  ** x apricots
+  You see nothing special about the dried apricots.
+  
+  The apricots have turned plump(ish).
+  
+> >   Kitchen
+  ** g
+  You see nothing special about the reconstituted apricots.
+  
+> >   Kitchen
+  ** take apricots
+  Taken.
+  
+> >   Kitchen
+  ** put apricots in pan
+  You put the reconstituted apricots into the frying pan.
+  
+> >   Kitchen
+  ** look
+  Kitchen
+  Smoke is beginning to collect near the ceiling.
+  
+  On the stove is a frying pan (in which are some reconstituted apricots, some julienned sage and some sauteed onions).
+  
+  On the counter is a can of chicken broth (closed).
+  
+> >   Kitchen
+  ** smell
+  The scent of the late disaster lingers in the air.
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    a kettle (open but empty)
+    a mixing bowl
+      some boiling water
+    a butcher knife
+  
+> >   Kitchen
+  ** look
+  Kitchen
+  Smoke is beginning to collect near the ceiling.
+  
+  On the stove is a frying pan (in which are some reconstituted apricots, some julienned sage and some sauteed onions).
+  
+  On the counter is a can of chicken broth (closed).
+  
+> >   Kitchen
+  ** open refrigerator
+  You open the refrigerator, revealing a whole chicken breast, an egg, wrapped goat cheese, a bottle of white cooking wine and a bottle of Thurston Wolfe PGV.
+  
+> >   Kitchen
+  ** take all from refrigerator
+  whole chicken breast: Taken.
+  egg: Taken.
+  wrapped goat cheese: Taken.
+  bottle of white cooking wine: Taken.
+  bottle of Thurston Wolfe PGV: Taken.
+  
+> >   Kitchen
+  ** open goat cheese
+  It would help to have a pair of scissors or something -- the packet resists being torn.
+  
+> >   Kitchen
+  ** open drawer
+  You open the drawer, revealing a spatula, a spoon, a wooden mallet, shears and a ball of twine.
+  
+> >   Kitchen
+  ** take scissors
+  You can't see any such thing.
+  
+> >   Kitchen
+  ** oops shears
+  Taken.
+  
+> >   Kitchen
+  ** cut goat cheese with scissors
+  I only understood you as far as wanting to cut wrapped goat cheese.
+  
+> >   Kitchen
+  ** cut goat cheese
+  You neatly snip through the packaging with the shears.
+  
+> >   Kitchen
+  ** unrwap cheese
+  That's not a verb I recognise.
+  
+> >   Kitchen
+  ** oops unwrap
+  Sorry, that can't be corrected.
+  
+> >   Kitchen
+  ** unwrap cheese
+  Ah, success. The goat cheese is now free of its packet.
+  
+> >   Kitchen
+  ** put cheese in pan
+  You put unwrapped goat cheese into the frying pan.
+  
+> >   Kitchen
+  ** look in pan
+  In the frying pan are unwrapped goat cheese, some reconstituted apricots, some julienned sage and some sauteed onions.
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    shears
+    a bottle of Thurston Wolfe PGV
+    a bottle of white cooking wine
+    an egg
+    a whole chicken breast
+    a kettle (open but empty)
+    a mixing bowl
+      some boiling water
+    a butcher knife
+  
+> >   Kitchen
+  ** x breast
+  It is still entire and has yet to be pounded flat.
+  
+> >   Kitchen
+  ** get mallet
+  Taken.
+  
+> >   Kitchen
+  ** hit breast with mallet
+  I only understood you as far as wanting to hit the whole chicken breast.
+  
+> >   Kitchen
+  ** hit breast
+  You hammer away at the chicken breast, turning all your aggressions into culinary goodness. Several minutes pass. When you are done you have a broad flat chickeny pancake suitable for wrapping about a stuffing.
+  
+> >   Kitchen
+  ** x chicken
+  (the flattened chicken breast)
+  It has been hammered to a thickness of about a half inch. (The recipe said a quarter inch but you're pretty sure it was joking. You have never been able to achieve a quarter inch.)
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    a wooden mallet
+    shears
+    a bottle of Thurston Wolfe PGV
+    a bottle of white cooking wine
+    an egg
+    a flattened chicken breast
+    a kettle (open but empty)
+    a mixing bowl
+      some boiling water
+    a butcher knife
+  
+> >   Kitchen
+  ** look
+  Kitchen
+  Smoke is beginning to collect near the ceiling.
+  
+  On the stove is a frying pan (in which are unwrapped goat cheese, some reconstituted apricots, some julienned sage and some sauteed onions).
+  
+  On the counter is a can of chicken broth (closed).
+  
+> >   Kitchen
+  ** open wine
+  It isn't something you can open.
+  
+> >   Kitchen
+  ** x wine
+  You see nothing special about the bottle of white cooking wine.
+  
+> >   Kitchen
+  ** x thurston
+  A Washington State Pinot Gris-Viognier, vintage 2003. It is said to have "peach aromas", and, startlingly, the untutored person can actually detect these without resorting to fantasy.
+  
+  (It is also supposed to possess a delicate perfume and a moderate body; the label author at least stopped short of adding "and a good sense of humor").
+  
+> >   Kitchen
+  ** break egg
+  Violence isn't the answer to this one.
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    a wooden mallet
+    shears
+    a bottle of Thurston Wolfe PGV
+    a bottle of white cooking wine
+    an egg
+    a flattened chicken breast
+    a kettle (open but empty)
+    a mixing bowl
+      some boiling water
+    a butcher knife
+  
+> >   Kitchen
+  ** open oven
+  You open the oven.
+  
+> >   Kitchen
+  ** turn on oven
+  (closing the oven so that it will heat properly)
+  
+  You close the oven.
+  
+  You switch the oven's dial on.
+  
+  The oven begins to warm up.
+  
+> >   Kitchen
+  ** open oven
+  It'll never heat if you open it up while it's warming.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+> >   Kitchen
+  ** open oven
+  It'll never heat if you open it up while it's warming.
+  
+> >   Kitchen
+  ** z
+  Time passes.
+  
+  The oven beeps to inform you that it has reached the desired hotness.
+  
+> >   Kitchen
+  ** open oven
+  You open the oven.
+  
+> >   Kitchen
+  ** look in oven
+  The oven is empty.
+  
+> >   Kitchen
+  **
+  I beg your pardon?
+  
+> >

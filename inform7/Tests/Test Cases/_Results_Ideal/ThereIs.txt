@@ -1,0 +1,134 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  You can see a box (in which are a coin, a double-bladed axe and a jigsaw puzzle) and a crate (on which are two coins) here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] showme
+  Place - room
+      yourself - person
+      box - open container
+          coin - coin
+          double-bladed axe
+          jigsaw puzzle
+      crate - supporter
+          coin - coin
+          coin - coin
+  
+  >[2] showme shadow
+  Shadow World - room
+      coin - coin
+      coin - coin
+      coin - coin
+      coin - coin
+      coin - coin
+      coin - coin
+      coin - coin
+  singular-named, improper-named; lighted, unvisited
+  list grouping key: none
+  printed name: "Shadow World"
+  printed plural name: none
+  indefinite article: "the"
+  description: none
+  
+  >[3] relations
+  Incrimination relates various things to various people:
+    The pair of boxer shorts  >=>  Mr Darcy
+    The fishing rod  >=>  Mr Darcy
+  
+  >[4] z
+  There is a man.
+  There are men.
+  There is no vehicle.
+  There are no vehicles.
+  A thing is in the box.
+  There is something in the box.
+  There is something which is in the box.
+  Three things are in the box.
+  There are three things in the box.
+  Exactly three things are in the box.
+  There are exactly three things in the box.
+  At least three things are in the box.
+  There are at least three things in the box.
+  Something incriminates Mr Darcy.
+  There is something incriminating Mr Darcy.
+  
+  >[5] get axe
+  Taken.
+  
+  >[6] z
+  There is a man.
+  There are men.
+  There is no vehicle.
+  There are no vehicles.
+  A thing is in the box.
+  There is something in the box.
+  There is something which is in the box.
+  Fewer than three things are in the box.
+  There are fewer than three things in the box.
+  Something incriminates Mr Darcy.
+  There is something incriminating Mr Darcy.
+  
+  >[7] get coin from crate
+  Taken.
+  
+  >[8] put axe in box
+  You put the double-bladed axe into the box.
+  
+  >[9] put coin in box
+  You put the coin into the box.
+  
+  >[10] z
+  There is a man.
+  There are men.
+  There is no vehicle.
+  There are no vehicles.
+  A thing is in the box.
+  There is something in the box.
+  There is something which is in the box.
+  Three things are in the box.
+  There are three things in the box.
+  At least three things are in the box.
+  There are at least three things in the box.
+  Something incriminates Mr Darcy.
+  There is something incriminating Mr Darcy.
+  
+  >[11] get all from box
+  coin: Taken.
+  double-bladed axe: Taken.
+  coin: Taken.
+  jigsaw puzzle: Taken.
+  
+  >[12] z
+  There is a man.
+  There are men.
+  There is no vehicle.
+  There are no vehicles.
+  Nothing is in the box.
+  There is nothing in the box.
+  Fewer than three things are in the box.
+  There are fewer than three things in the box.
+  Something incriminates Mr Darcy.
+  There is something incriminating Mr Darcy.
+  
+  >[13] jump
+  By jumping, you destroy the evidence.
+  
+  >[14] z
+  There is a man.
+  There are men.
+  There is no vehicle.
+  There are no vehicles.
+  Nothing is in the box.
+  There is nothing in the box.
+  Fewer than three things are in the box.
+  There are fewer than three things in the box.
+  Nothing incriminates Mr Darcy.
+  There is nothing incriminating Mr Darcy.
+  
+> >

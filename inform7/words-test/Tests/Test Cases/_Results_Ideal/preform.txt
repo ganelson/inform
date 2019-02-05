@@ -1,0 +1,5 @@
+command: proclaim 1956: It is now 1956.
+command: invade upper and lower egypt: Invading Upper and Lower Egypt
+command: declare india independent: Dominion 1 now independent
+command: declare malaya independent: Dominion 2 now independent
+command: announce "Attention all planets of the Solar Federation": Attention: "Attention all planets of the Solar Federation".

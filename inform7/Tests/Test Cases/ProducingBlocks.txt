@@ -1,0 +1,17 @@
+Home is a room.
+
+Foo is a rulebook producing an text.
+Foo: rule succeeds with result "hello".
+
+When play begins:
+	let N be the text produced by the foo rulebook;
+	if the rule succeeded, say "Success: [N].";
+	otherwise say "Failure."
+
+Goo is a rulebook producing a stored action.
+Goo: rule succeeds with result the action of taking inventory.
+
+When play begins:
+	let N be the stored action produced by the goo rulebook;
+	if the rule succeeded, say "Success: [N].";
+	otherwise say "Failure."

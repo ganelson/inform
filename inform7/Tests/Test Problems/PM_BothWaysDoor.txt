@@ -1,0 +1,6 @@
+South View is a room.
+
+The Drawbridge is north of South View.  It is an open door.  Through
+it is Dauphin Battery.
+
+Dauphin Battery is north of Drawbridge.

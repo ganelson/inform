@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+Problem__ PM_UnendingComment
+  >--> Some source text ended in the middle of a comment: main source text.
+    This probably means that a ']' is missing somewhere. (If you are using
+    Inform with syntax colouring, look for where the comment colour starts.)
+    Inform's convention on 'nested comments' is that each '[' in a comment must
+    be matched by a corresponding ']': so for instance '[This [even nested like
+    so] acts as a comment]' is a single comment - the first ']' character
+    matches the second '[' and so doesn't end the comment: only the second ']'
+    ends the comment.
+I've now read your source text, which is 0 words long.
+Inform 7 has finished: 3 centiseconds used.

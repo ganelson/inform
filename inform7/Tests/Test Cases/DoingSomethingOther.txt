@@ -1,0 +1,24 @@
+The Kitchen is a room.
+
+The player carries the apple.
+The player carries the pear.
+The player carries the banana.
+
+The small pillar is a fixed in place supporter in the Kitchen.
+
+Before doing something other than touching the pear (this is the First Law rule):
+	say "Rule 1 fires."
+
+Before doing something other than putting the apple on the pillar (this is the Second Law rule):
+	say "Rule 2 fires."
+
+Before doing something other than taking to the apple (this is the Third Law rule):
+	say "Rule 3 fires."
+
+Before doing something other than taking (this is the Fourth Law rule):
+	say "Rule 4 fires."
+
+Before doing something other than taking inventory (this is the Fifth Law rule):
+	say "Rule 5 fires."
+
+Test me with "drop banana / get banana / drop apple / get apple / i / put banana on pillar / touch pear / put apple on pillar".

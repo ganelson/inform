@@ -1,0 +1,11 @@
+m
+Herr
+Herz
+Hund
+
+f
+Frau
+Katze
+
+n
+Kind

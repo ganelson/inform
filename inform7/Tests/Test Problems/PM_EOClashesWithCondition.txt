@@ -1,0 +1,5 @@
+A door can be apparent. A door is usually apparent.
+
+A room can be obvious, apparent, or obscure. A room is usually apparent.
+
+This is a room.

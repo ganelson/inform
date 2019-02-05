@@ -1,0 +1,32 @@
+The Plain is a Room.
+
+To view the tableau:
+	repeat with n running from 1 to the number of rows in the Table of Funny Numbers begin;
+		choose  row n in the Table of Funny Numbers;
+		if there is a numeric entry 
+		begin;
+			let x be the numeric entry;
+			say "x is [x].";
+		otherwise;
+			say "Row [n] is blank!";
+		end if;
+	end repeat.
+
+Instead of jumping:
+	sort the Table of Funny Numbers in numeric order;
+	view the tableau.
+
+Instead of waiting:
+	sort the Table of Funny Numbers in reverse numeric order;
+	view the tableau.
+
+Table of Funny Numbers
+numeric
+3
+4
+9
+27
+154
+with 4 blank rows
+
+Test me with "wait/jump/wait/wait/jump".

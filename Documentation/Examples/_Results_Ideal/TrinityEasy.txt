@@ -1,0 +1,22 @@
+                                                                                                              Hollow Core
+  After months of boring through the Earth's crust in this metal-jawed vehicle, you break through...
+  
+  Centered
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hollow Core
+  Truly a magnificent sight: the land curves up away from you in every direction, covered with the cities and fields of the Core People. Molten rock runs in the canals, bringing heat and light to every home.
+  
+  At the center of the Earth hangs a dense black sun.
+  
+> >                                                                                                              Hollow Core
+  (Testing.)
+  
+  >[1] look
+  Hollow Core
+  Truly a magnificent sight: the land curves up away from you in every direction, covered with the cities and fields of the Core People. Molten rock runs in the canals, bringing heat and light to every home.
+  
+  At the center of the Earth hangs a dense black sun.
+  
+> >

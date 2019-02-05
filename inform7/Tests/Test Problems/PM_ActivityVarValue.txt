@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+The printing the name activity has a value called the Mystery Quantity.

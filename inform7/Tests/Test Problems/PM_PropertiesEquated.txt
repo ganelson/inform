@@ -1,0 +1,1 @@
+Hovel is a room. The description is the printed name.

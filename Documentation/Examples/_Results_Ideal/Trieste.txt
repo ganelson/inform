@@ -1,0 +1,23 @@
+   Board Room
+  Trieste
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Board Room
+  Russia (played by Mark) is also hovering over the board.
+  
+> >   Board Room
+  (Testing.)
+  
+  >[1] help
+  Help is available on the following topics:
+    commands
+    saving
+  
+  >[2] help commands
+  The only commands this game recognizes are HOLD, MOVE, CONVOY, SUPPORT MOVE, and SUPPORT HOLD. No others are necessary.
+  
+  >[3] help saving
+  To save the game, type SAVE. You will be prompted to supply a file-name for your saved game. If you'd like to return to play at that point again later, RESTORE the saved game.
+  
+> >

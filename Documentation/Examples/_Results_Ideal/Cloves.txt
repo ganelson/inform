@@ -1,0 +1,14 @@
+   Behaving insouciantly                                                                                                                                                                                                  Poseur Club
+  Cloves
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Poseur Club
+  Lady Mary is laid out on a sofa, her wrists bandaged importantly -- and she looks all the more depressed by your indifference to her state; Salvatore is at the gaming table, clutching his hair with both hands; Frackenbush is muttering lines from another of his works in progress, as though poetry has nearly made him mad.
+  
+  The usual people, in short.
+  
+> >   Behaving insouciantly                                                                                                                                                                                                  Poseur Club
+  But how, my dear boy, how? You simply can't do something without a pose. Thus far you have mastered doing things insouciantly, sheepishly and defiantly.
+  
+> >

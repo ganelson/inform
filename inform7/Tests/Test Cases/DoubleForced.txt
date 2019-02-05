@@ -1,0 +1,15 @@
+Trail Shelter is a room. Fred and George are men in Trail Shelter. The
+possum, the skunk and the weasel are animals. Dixville Notch is north of
+the Shelter. Earl is a man in Dixville Notch.
+
+Suspecting relates various people to various people. The verb to suspect
+(he suspects, they suspect, he suspected, it is suspected, he is
+suspecting) implies the suspecting relation.
+
+Earl suspects the possum.
+
+Instead of waiting:
+	say "A sinister odour begins to make itself felt.";
+	now every person in Trail Shelter suspects every animal which is not suspected by Earl.
+
+Test me with "relations / z / relations".

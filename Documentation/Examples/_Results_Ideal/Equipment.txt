@@ -1,0 +1,145 @@
+   Watery Room
+  Equipment List
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Watery Room
+  
+> >   Watery Room
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a snorkel
+    a waterproof sack (open)
+      an undersea map
+      a diving guide
+      a cup
+        a worm
+      500 Argentine pesos
+    a swimsuit (being worn)
+    a pair of flippers (being worn)
+  
+  >[2] inventory wide
+  Inventory listing is now set to wide.
+  
+  >[3] i
+  You are carrying a snorkel, a waterproof sack (open), inside which are an undersea map, a diving guide, a cup, inside which is a worm and 500 Argentine pesos, a swimsuit (being worn) and a pair of flippers (being worn).
+  
+  >[4] inventory curt
+  Inventory listing is now set to curt.
+  
+  >[5] i
+  You are carrying a snorkel, a waterproof sack (in which are an undersea map, a diving guide, a cup (in which is a worm) and 500 Argentine pesos), a swimsuit and a pair of flippers.
+  
+  >[6] close sack
+  You close the waterproof sack.
+  
+  >[7] i
+  You are carrying a snorkel, a waterproof sack (closed), a swimsuit and a pair of flippers.
+  
+  >[8] open sack
+  You open the waterproof sack, revealing an undersea map, a diving guide, a cup and 500 Argentine pesos.
+  
+  >[9] inventory minimal
+  Inventory listing is now set to minimal.
+  
+  >[10] i
+  You are carrying a snorkel, a waterproof sack (in which are an undersea map, a diving guide, a cup (in which is a worm) and 500 Argentine pesos), a swimsuit and a pair of flippers.
+  
+  >[11] close sack
+  You close the waterproof sack.
+  
+  >[12] i
+  You are carrying a snorkel, a waterproof sack, a swimsuit and a pair of flippers.
+  
+  >[13] open sack
+  You open the waterproof sack, revealing an undersea map, a diving guide, a cup and 500 Argentine pesos.
+  
+  >[14] inventory divided wide
+  Inventory listing is now set to divided wide.
+  
+  >[15] i
+  You are wearing a swimsuit and a pair of flippers.
+  
+  You are carrying a snorkel and a waterproof sack.
+  
+  >[16] inventory divided tall
+  Inventory listing is now set to divided tall.
+  
+  >[17] i
+  You are carrying:
+    a snorkel
+    a waterproof sack (open)
+      an undersea map
+      a diving guide
+      a cup
+        a worm
+      500 Argentine pesos
+  You are wearing:
+    a swimsuit
+    a pair of flippers
+  
+  >[18] drop all
+  snorkel: Dropped.
+  waterproof sack: Dropped.
+  
+  >[19] i
+  You are wearing:
+    a swimsuit
+    a pair of flippers
+  
+  >[20] take all
+  waterproof sack: Taken.
+  snorkel: Taken.
+  undersea map: Taken.
+  diving guide: Taken.
+  cup: Taken.
+  worm: Taken.
+  500 Argentine pesos: Taken.
+  
+  >[21] take off swimsuit
+  You take off the swimsuit.
+  
+  >[22] take off flippers
+  You take off the pair of flippers.
+  
+  >[23] i
+  You are carrying:
+    500 Argentine pesos
+    a worm
+    a cup
+    a diving guide
+    an undersea map
+    a snorkel
+    a waterproof sack (open but empty)
+    a swimsuit
+    a pair of flippers
+  
+  >[24] i divided wide
+  Inventory listing is now set to divided wide.
+  
+  >[25] i
+  You are wearing nothing.
+  
+  You are carrying 500 Argentine pesos, a worm, a cup (empty), a diving guide, an undersea map, a snorkel, a waterproof sack (empty), a swimsuit and a pair of flippers.
+  
+  >[26] wear swimsuit
+  You put on the swimsuit.
+  
+  >[27] drop all
+  500 Argentine pesos: Dropped.
+  worm: Dropped.
+  cup: Dropped.
+  diving guide: Dropped.
+  undersea map: Dropped.
+  snorkel: Dropped.
+  waterproof sack: Dropped.
+  pair of flippers: Dropped.
+  
+  >[28] i
+  You are wearing a swimsuit.
+  
+  You are carrying nothing.
+  
+> >

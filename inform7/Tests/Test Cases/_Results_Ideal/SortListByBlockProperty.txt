@@ -1,0 +1,13 @@
+   Test
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Test
+  You can see a violin, a viola, a mustard, a travesty and a fang here.
+  
+  The list with text in sorts to: violin, travesty, yourself, viola, mustard and fang.
+  The list with text in sorts to: violin, travesty, yourself, viola, mustard and fang.
+  
+> >   Test
+> Are you sure you want to quit? 

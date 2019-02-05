@@ -1,0 +1,77 @@
+   Minivan
+  Annoyotron Jr
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Minivan
+  Pete is playing with his travel activity book.
+  
+> >   Minivan
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] look
+  Minivan
+  Pete is playing with his travel activity book.
+  
+  >[4] g
+  Minivan
+  Pete is starting to look bored.
+  
+  >[5] g
+  Minivan
+  Pete is starting to look bored.
+  
+  >[6] g
+  Minivan
+  Pete is starting to look bored.
+  
+  "Are we there yet?" asks Pete.
+  
+  >[7] no
+  "Oh," says Pete. There is a blessed, momentary silence.
+  
+  "Are we there now?"
+  
+  >[8] z
+  Time passes.
+  
+  "Are we there yet?" asks Pete.
+  
+  >[9] z
+  Time passes.
+  
+  "Are we there yet?" asks Pete.
+  
+  >[10] z
+  Time passes.
+  
+  "Are we there yet?" asks Pete.
+  
+  >[11] no
+  "Oh," says Pete. There is a blessed, momentary silence.
+  
+  "Are we there now?"
+  
+  >[12] z
+  Time passes.
+  
+  "Are we there yet?" asks Pete.
+  
+  >[13] out
+  You leap to your death.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

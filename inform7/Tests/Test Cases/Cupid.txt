@@ -1,0 +1,34 @@
+The Temple of Cupid is a room.
+
+A woman has an list of texts called the gift list. The gift list of a woman is usually { "chocolates", "flowers" }.
+
+Emily, Kate and Helen are women in the Temple.
+
+When play begins:
+	repeat with W running through women:
+		say "[W] will be given [gift list of W] on 14 February.";
+		analyse gift list of W;
+	add "a sports car" to the gift list of Emily;
+	repeat with W running through women:
+		say "[W] will be given [gift list of W] on 14 February.";
+		analyse gift list of W;
+	let Q be the gift list of Emily;
+	showme Q;
+	analyse Q;
+
+When play begins:	
+	let X be an text;
+	let X be "Emily's apple";
+	showme X; analyse X;
+	let Y be X;
+	showme Y; analyse Y;
+	replace word number 2 in X with "peach";
+	showme X; analyse X;
+	showme Y; analyse Y;
+	let Y be X;
+	showme Y; analyse Y;
+	let X be "Kate's banana";
+	showme X; analyse X;
+	showme Y; analyse Y.
+
+To analyse (V - value): (- BlkValueDebug({-by-reference:V}, true); print "^"; -).

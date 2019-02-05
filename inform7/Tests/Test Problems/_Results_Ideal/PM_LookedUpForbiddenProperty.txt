@@ -1,0 +1,22 @@
+Inform 7 build 6M27 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LookedUpForbiddenProperty
+  >--> In the sentence 'let M be the carrying capacity of the Entire Game' (source
+    text, line 4), you seem to be looking up the 'carrying capacity' property,
+    but 'Entire Game' is not allowed to have that property.
+    I was trying to match one of these phrases:
+    1.  let (m - a new name) be (carrying capacity of the entire game - description
+    of relations of values) 
+    2.  let (m - a new name) be (carrying capacity of the entire game - name of
+    kind) 
+    3.  let (m - a new name) be (carrying capacity of the entire game - value)
+    
+    4.  let (m - a temporary named value) be (carrying capacity of the entire
+    game - value) 
+    I recognised:
+    carrying capacity of the entire game = a property whose value is a
+    number, holding a number
+    The name 'm' doesn't yet exist.
+Inform 7 has finished: 57 centiseconds used.

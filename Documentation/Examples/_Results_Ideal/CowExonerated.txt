@@ -1,0 +1,59 @@
+   Old Chicago
+  The Cow Exonerated
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Old Chicago
+  
+> >   Old Chicago
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a log
+    two flaming matches (providing light)
+    a matchbox (open)
+      five new matches
+  
+  >[2] burn match
+  (the new match in the matchbox)
+  You light the match.
+  
+  >[3] i
+  You are carrying:
+    three flaming matches (providing light)
+    a log
+    a matchbox (open)
+      four new matches
+  
+  Two matches go out, leaving one still lit.
+  
+  >[4] i
+  You are carrying:
+    a flaming match (providing light)
+    a log
+    two burnt matches
+    a matchbox (open)
+      four new matches
+  
+  Your last burning match goes out.
+  
+  >[5] burn log with match
+  (the new match in the matchbox)
+  (first taking and lighting the match)
+  It occurs to you to set down the log before burning, just for safety's sake. You burn up the log.
+  
+  >[6] burn matchbox with match
+  (the flaming match you're carrying)
+  The matchbox cannot be burned.
+  
+  >[7] i
+  You are carrying:
+    a flaming match (providing light)
+    three burnt matches
+    a matchbox (open)
+      three new matches
+  
+  Your last burning match goes out.
+  
+> >

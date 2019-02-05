@@ -1,0 +1,35 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see Derek and a crate (empty) here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] examine me
+  Before examining when foo is 1 and bar is 2.
+  
+  Before examining when foo is 1.
+  
+  Before examining when bar is 2.
+  
+  Before examining.
+  
+  As good-looking as ever.
+  
+  >[2] put derek in the crate
+  Before inserting when the noun is a man and the second noun is a container.
+  
+  Before inserting when the noun is a man.
+  
+  Before inserting when the second noun is a container.
+  
+  Before inserting.
+  
+  (first taking Derek)
+  I don't suppose Derek would care for that.
+  
+> >

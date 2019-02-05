@@ -1,0 +1,306 @@
+"Chapter 8: Ragnarok" by Emily Short
+
+Chapter 8
+
+
+ Use command line echoing.
+
+The Great Hall is a room. 
+
+The Kennel is west of the Great Hall.
+
+Heat is a kind of value. The heats are whole, damp, and flaming. [Items that have been completely burnt should be removed from play.]
+
+A thing has a heat. A thing is usually whole.
+
+A thing has a number called endurance. The endurance of a thing is usually 5. A thing has a number called turns of burning.
+
+A thing can be flammable or flame-retardant.
+
+The vengeful deity is a person that varies. The vengeful deity is Surt.
+
+Surt is a man in the Great Hall. Loki is a man in the Great Hall. Freya is a woman in the Great Hall. 
+
+Surt carries a sword. The sword is flammable and flaming. The endurance of the sword is 1000.
+
+Loki wears a metal mask. 
+
+The table is a flammable supporter in the Great Hall. The table supports a twig. The twig is flammable. A box is on the table. The box contains a stone, a length of linen, and a yellow piece of paper. The yellow piece of paper, the linen, and the box are flammable. The yellow piece of paper has endurance 1. The metal fittings are part of the box. The fittings are flame-retardant.
+
+The hearth is a flame-retardant supporter in the Great Hall.
+
+The torch is a flammable flaming thing in the Great Hall. It has endurance 60.
+
+Section 1 - Change of values that vary
+[Values that vary; change; refusal to set inappropriate values]
+
+Every turn when Surt was the vengeful deity:
+	now the vengeful deity is Loki; 
+	if Surt can be seen by the player, say "Surt attacks Loki with a great blow."
+	
+Every turn when Loki was the vengeful deity:
+	now the vengeful deity is Surt; 
+	if Loki can be seen by the player, say "Loki mocks Surt with taunting words and gestures."
+
+Section 2 - Changing the command prompt
+
+Every turn:
+	if the vengeful deity is flaming, now the command prompt is "[bold type][vengeful deity] (in flames)[roman type] > ";
+	otherwise now the command prompt is "[bold type][vengeful deity][roman type] > ";
+
+When play begins: 
+	now the vengeful deity is Surt;
+	now the command prompt is "[bold type][vengeful deity][roman type] > ".
+
+Section 3 - Changing the status line
+
+When play begins:
+	now the right hand status line is "Time: [time of day]".
+
+Section 4 - Change of either/or properties
+
+Instead of attacking something flame-retardant when the sword is carried by the player:
+	now the noun is flammable;
+	say "The sword makes even [the noun] vulnerable to fire."
+
+Section 5 - Change of properties with values
+
+Before printing the name of something flaming:
+	say "flaming ";
+	
+Before burning something when the player is not carrying something flaming:
+	if a flaming portable thing (called the lighter) is touchable
+	begin;
+		say "(with [the lighter], which you first take)[paragraph break]";
+		try taking the lighter;
+	end if;
+	
+Instead of burning something when the player is not carrying something flaming:
+	say "You would first need a fire source."
+
+Instead of burning something flame-retardant:
+	say "[The noun] is not the sort of thing that catches fire."
+
+Instead of burning something flammable when the player is carrying something flaming (called the flame source):
+	say "You light [the noun] with [the flame source].";
+	now the heat of the noun is flaming.
+	
+Instead of burning something when the player is in the noun:
+	say "That seems dangerous given that you yourself are in [the noun]."
+
+Instead of burning something when the player is on the noun:
+	say "That seems dangerous given that you yourself are on [the noun]."
+	
+Section 6 - Whose property?
+
+Instead of examining something:
+	say "Hm, the [printed name] appears to be [heat].";
+
+Section 7 - Moving things
+
+Instead of asking Surt about "fire" when Surt has the sword:
+	move the sword to the table;
+	say "Surt bellows, and swings his sword about his head, then brings it down with a crash on the table."
+
+Section 8 - Moving the player
+
+Instead of waiting in the Kennel:
+	say "One of the dogs begins to bark at you, whereupon you become nervous and return to the Great Hall.";
+	move the player to the Great Hall.
+	
+Instead of listening to the Kennel:
+	say "The sound of baying begins to bother you; unthinkingly you revert to the Great Hall.";
+	move the player to the Great Hall, without printing a room description.
+
+Section 9 - Removing things from play
+
+Instead of attacking Loki when the sword is carried by the player:
+	now Loki is nowhere;
+	say "The sword cuts through the god, killing him. His body, not being mortal, does not linger."
+	
+Section 10 - Now
+
+Instead of attacking Surt when the sword is carried by the player:
+	now Surt is nowhere;
+	say "The sword cuts through the god, killing him and sending fire everywhere.";
+	now all of the flammable things are flaming.
+
+After dropping something:
+	say "You have dropped [the noun]."
+
+Before taking a flaming thing:
+	let turns remaining be the endurance of the noun minus the turns of burning of the noun;
+	if turns remaining is less than two, say "There's no portion of [the noun] sufficiently cool for you to pick up." instead.
+
+
+Every turn:
+	repeat with item running through flaming things 
+	begin;
+		if the item is held by the player
+		begin;
+			let turns remaining be the endurance of the item minus the turns of burning of the item;
+			if turns remaining is less than two
+			begin;
+				say "[The item] becomes too hot to hold! ";
+				try dropping the item;
+				if the item is held by the player, say "This is certainly painful.";
+			end if;
+		end if;
+	end repeat;
+	
+Every turn:
+	repeat with item running through flaming things 
+	begin;
+		if the turns of burning of the item is one
+		begin;
+			spread the flames outward from the item;
+		end if;
+	end repeat;
+
+Every turn:
+	repeat with item running through flaming things 
+	begin;
+		if the turns of burning of the item is two
+		begin;
+			spread the flames inward from the item;
+		end if;
+	end repeat;
+	
+To spread the flames inward from (item - a thing):
+	if the item is a container which contains a flammable whole thing (called the sacrifice)
+	begin;
+		if the sacrifice is visible, say "Flames engulf [the list of flammable whole things in the item].";
+		now all the flammable whole things in the item are flaming;
+	end if;
+	if the item is a supporter which supports a flammable whole thing
+	begin;
+		if the item is visible, say "Flames engulf [the list of flammable whole things on the item].";
+		now all the flammable whole things on the item are flaming;
+	end if;
+	
+To spread the flames outward from (item - a thing):
+	if the item is on a flammable whole supporter (called the pyre)
+	begin;
+		if the pyre is visible, say "[The pyre] catches from [the item].";
+		[try: now the heat of the pyre is flaming.]
+		now the heat of the pyre is flaming;
+	end if;
+	if the item is in a flammable whole container (called the urn)
+	begin;
+		if the urn is visible, say "[The urn] catches from [the item].";
+		now the urn is flaming;
+	end if;
+
+Every turn:
+	repeat with item running through flaming things
+	begin;
+		increase the turns of burning of the item by 1;
+		if the turns of burning of the item is greater than the endurance of the item, destroy the item;
+	end repeat;
+
+To destroy (item - a thing):
+	if the item is a container
+	begin;
+		now all of the things in the item are in the location;
+	end if;
+	if the item is a supporter
+	begin;
+		now all of the things on the item are in the location;
+	end if; 
+	now the item is nowhere;
+	now the item is damp;
+	say "[The item] burns away completely."
+
+Section 11 - Checking on whereabouts
+
+Instead of doing something to the table when the sword is on the table:
+	say "The sword frightens you."
+
+
+Instead of attacking Loki when Surt does not have the sword and Surt can be seen by the player:
+	say "Surt looks as though he'd like to do something to Loki too, if only he had the sword."
+	
+Instead of attacking Loki when Surt has the sword and Surt can be seen by the player:
+	say "Surt looks as though he'd like to do something to Loki too, and with the sword."
+	
+Instead of attacking Loki when the player has the sword and Loki is wearing the mask:
+	say "The sword makes contact with the mask and suddenly the blade seems to be in a different place than you thought, several inches to the left.
+	
+Loki smiles."
+
+
+Instead of taking something when the noun is contained by the flaming box:
+	say "You don't quite dare reach into the flaming box."
+
+Instead of touching something which is within the flaming box:
+	say "It seems a little risky since the box is on fire."
+	
+Instead of turning something when the noun is contained in the flaming box:
+	say "It seems a little risky since the box is on fire."
+	
+Instead of pushing or pulling something when the noun is inside the flaming box:
+	say "The burning box deters you."
+	
+Section 12 - More flexible descriptions of whereabouts
+
+Instead of doing something to the sword when the sword is carried by a man (called the warrior):
+	say "[The warrior] does not look eager to permit that."
+	
+Instead of doing something to Freya in the presence of a man (called the guard):
+	say "[The guard] looks jealously in your direction, making you unwilling to pursue matters further."
+
+[Section 13 - Calling names -- very important, yes, but arguably already tested throughout the code here.]
+
+Section 14 - Counting the number of things
+
+When play begins:
+	now the left hand status line is "Burning: [the number of flaming things]";
+
+Section 15 - Looking at containment by hand
+
+Before burning something which is in a container when the holder of the noun contains the player:
+	say "This could make things toasty for you..."
+
+[Section 16 - Randomness
+
+Every turn:
+	if a random chance of 1 in 5 succeeds, say "Freya smiles at you."
+	
+Every turn:
+	if a random chance of 1 in 3 succeeds, say "Loki's hair looks as though it is [a random heat], just now."
+
+Section 17 - Random choices of things
+[Because I am boring, we will start by testing the manual's suggestion]
+
+Instead of going nowhere:
+	say "You can see [number of adjacent rooms] way[s] from here; how about [the random adjacent room]?"]
+	
+
+Blowing is an action applying to one carried thing. Understand "blow [something]" as blowing.
+
+Section 18 - Testing
+[includes 19, effectively, with stipulations]
+
+Test waiting with "wait / wait / wait / wait".
+
+Test torch with "burn table / blow torch / wait / wait / wait / wait" holding the torch.
+
+Test kennel with "wait / wait / wait" in the Kennel.
+
+Test stone with "burn box / take stone" in the Great Hall holding the torch.
+
+
+Section 20 - Material not for release - Not for release
+
+Understand "deluge" as universal extinguishing.
+
+Universal extinguishing is an action applying to nothing.
+
+Carry out universal extinguishing: 
+	repeat with item running through flaming things 
+	begin;
+		now item is damp;
+	end repeat.
+	
+Report universal extinguishing:
+	say "All fires are out."

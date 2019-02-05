@@ -1,0 +1,24 @@
+* Adapting demonstratives and possessives
+(An example bouquet of flowers; Olfactory Settings)
+Some adaptive text for smelling the flowers, or indeed, anything else.
+
+While this isn't very interesting as IF, it runs through most of the adaptive-text tricks.
+
+	{*}"Olfactory Settings"
+	
+	The Doghouse is a room. "Not so much a place as a state of being."
+	
+	The player carries a ticket to the opera, some papers, and a bouquet of flowers. The bouquet is ambiguously plural.
+	
+	Instead of eating something inedible, say "[The noun] [don't] seem likely to agree with [us] at all. [We][']d be wiser to leave [regarding the noun][them] alone."
+	
+	Instead of touching something: say "[regarding the noun][Those] [are] all prickly."
+	
+	Instead of smelling something: say "[Our] nose [regarding nothing][are] too weak to get much smell from [regarding the noun][those]."
+	
+	Instead of smelling the bouquet: say "[regarding the noun][They]['re] lovely."
+	
+	Instead of tasting something:
+		say "Whew, [regarding the noun][are] [those] ever nasty!"
+	
+	Test me with "x ticket / eat it / eat them / touch it / touch them / smell it / smell them / taste it / taste them / x papers / eat it / eat them / touch them / smell them / taste them / x bouquet / eat it / eat them / touch them / smell them / taste them".	

@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 43 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NameBestAvoided
+  >--> You wrote 'Figure of Duck with Hat is the file "Duck with Hat.png"' (source
+    text, line 1): but this is a name which is best avoided, because it would
+    lead to confusion inside Inform. In general, try to avoid punctuation,
+    quotation marks, or the words 'with' or 'having' in names like this.
+    (Hyphens are fine, so by all means use a name like 'Church-with-Spire', if
+    that will help.)
+Inform 7 has finished: 16 centiseconds used.

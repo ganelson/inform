@@ -1,0 +1,11 @@
+Xanadu is a room.
+
+Colour is a kind of value. Red, green and pink are colours.
+
+When play begins:
+	let Q be a random text;
+	let R be a random number;
+	now the topic understood is a random snippet;
+	let C be a random colour;
+	let D be a random truth state;
+	let P be a random person;

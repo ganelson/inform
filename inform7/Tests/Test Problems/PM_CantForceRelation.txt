@@ -1,0 +1,7 @@
+Wharf is a room.
+
+Contact relates a thing (called X) to a thing (called Y) when X is part of Y
+or Y is part of X. The verb to be joined to implies the contact relation.
+
+When play begins:
+	now the player is joined to the Wharf.

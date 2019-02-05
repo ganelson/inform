@@ -1,0 +1,67 @@
+** More on adapting verbs
+(Describing action outcomes using a random choice of verb or describing the world state that results; Variety 2)
+This builds on the Variety example to add responses such as "You are now carrying the fedora" that describe relations that result from a given verb, as alternate responses.
+
+Some of our default actions establish relations between items in the world, and reporting on the relation ("You are now carrying the fedora") can be a valid response alongside reporting on the action itself ("You take the fedora").
+
+To do this, we need to teach Inform explicitly which relations are the results of actions, then check this when reporting on actions:
+
+	{*}"Variety 2"
+	
+	Section 1 - Descriptive Functionality
+
+	Describing relates various verbs to various action names. The verb to describe means the describing relation.  
+
+	Table of Action Results
+	related action	relation	
+	the taking action	the carrying relation
+	the wearing action	the wearing relation
+	the taking off action	the carrying relation
+
+
+	To take is a verb. To acquire is a verb. To get is a verb.
+
+	The verb take describes the taking action. The verb acquire describes the taking action. The verb get describes the taking action.
+
+	To drop is a verb. To put down is a verb. To discard is a verb. The verb drop describes the dropping action. The verb put down describes the dropping action. The verb discard describes the dropping action.
+
+	To sniff is a verb. To smell is a verb. The verb sniff describes the smelling action. The verb smell describes the smelling action.
+
+	To jump is a verb. To leap is a verb. To pirouette is a verb. The verb jump describes the jumping action. The verb leap describes the jumping action. The verb pirouette describes the jumping action.
+
+	To don is a verb. The verb don describes the wearing action. 
+
+	To doff is a verb. The verb doff describes the taking off action.
+
+
+	After an actor doing something when the noun is nothing and a verb describes (the action name part of the current action) (this is the apply random verbs to describing nounless actions rule):
+		say "[The actor] [verb rendering applied to a random verb that describes (the action name part of the current action)].";
+		rule succeeds. 
+
+	After an actor doing something to something when a verb describes (the action name part of the current action) (this is the apply random verbs to describing actions rule):
+		let current action name be the action name part of the current action;
+		if a random chance of 1 in 2 succeeds and the current action name is a related action listed in the Table of Action Results:
+			choose a row with the related action of current action name in the Table of Action Results;
+			let R be the relation entry;
+			let subject be the actor;
+			let chosen object be the noun; 
+			say "[The subject] [are] now [present participle of a random verb that means R] [the chosen object].";
+		else:
+			say "[The actor] [verb rendering applied to a random verb that describes (the action name part of the current action)] [the noun].";
+		rule succeeds.
+
+	To decide which text is the rendering of (V - verb) (this is verb rendering):
+		decide on "[adapt V]".
+
+	To say infinitive of (V - a verb): (- {V}(1); -).
+
+	To say past participle of (V - a verb): (- {V}(2); -).
+
+	To say present participle of (V - a verb): (- {V}(3); -). 
+
+	Section 2 - Scenario
+
+	Lab is a room. The fedora is a wearable thing in the Lab. 
+
+	Test me with "wear the fedora / take off the fedora / wear fedora / take off fedora".
+

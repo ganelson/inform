@@ -1,0 +1,38 @@
+   Exits:  N NE NW S SE SW E W                                                                                                                                                                                            Dome
+  Ways Out
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dome
+  
+> >   Exits:  W                                                                                                                                                                                                              Courtyard
+  (Testing.)
+  
+  >[1] w
+  
+  Western End
+  
+  >[2] n
+  
+  Quiet Corner
+  
+  >[3] e
+  
+  North Chapel
+  
+  >[4] e
+  
+  Loud Corner
+  
+  >[5] s
+  
+  Eastern End
+  You can see a church door here.
+  
+  >[6] e
+  (first opening the church door)
+  
+  Courtyard
+  You can see a church door here.
+  
+> >

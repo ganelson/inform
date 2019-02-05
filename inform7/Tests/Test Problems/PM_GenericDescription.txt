@@ -1,0 +1,18 @@
+A block is a kind of thing. A block has a number called size.
+
+After taking a block: say "You take [the noun]." instead.
+
+To decide if (X - a lit block) is larger than (Y - a block):
+	if the size of X is greater than the size of Y, decide yes;
+	decide no.
+
+Before taking a block:
+	if a container (called B) carried by the player is larger than the noun begin;
+		try dropping B;
+	end if.
+
+The Example is a room. The green block, the red block, and the blue
+block are blocks in the Example.
+
+The size of the red block is 50. The size of the blue block is 40. The
+size of the green block is 30.

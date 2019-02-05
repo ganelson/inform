@@ -1,0 +1,22 @@
+Inform 7 build 6M30 has started.
+I've now read your source text, which is 43 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NonconstantActionInTable
+  >--> In 'Table of Test Actions' (source text, line 9), I'm reading the text
+    'Steve examining the moron' (source text, line 13) in column 1 (Commands)
+    of row 3, but this is an action involving a variable, that is, a value that
+    might vary in play. This often happens if the action mentions 'the
+    player', for example, because 'the player' is a variable. If 'the player'
+    is the person carrying out the action, simply leave those words out; if
+    'the player' is involved in some other way, try using 'yourself' instead.
+Problem__ PM_NonconstantActionInTable
+  >--> In 'Table of Test Actions' (source text, line 9), I'm reading the text
+    'the moron examining the desk' (source text, line 14) in column 1
+    (Commands) of row 4, but this is an action involving a variable, that is, a
+    value that might vary in play. This often happens if the action mentions
+    'the player', for example, because 'the player' is a variable. If 'the
+    player' is the person carrying out the action, simply leave those words
+    out; if 'the player' is involved in some other way, try using 'yourself'
+    instead.
+Inform 7 has finished: 21 centiseconds used.

@@ -1,0 +1,97 @@
+take off earmuffs
+s
+z
+x blackbird
+ask the blackbird for the cloak
+x blackbird
+wear earmuffs
+x clock
+n
+take off clock
+take off earmuffs
+wear earmuffs
+x king
+x crown
+x expression
+x king's heart
+west
+turn on machine
+take fishing pole
+i
+wear gauntlet
+take pearl
+take pole
+open case
+put pole in case
+i
+wear pince-nez
+x king
+x wizard
+take off pince-nez
+x wizard
+look
+enter door
+open door
+wear hat
+enter door
+wear pince-nez
+x wizard
+take off pince-nez
+x wizard
+x dangerous
+take off hat
+enter door
+x pants
+x mirror
+ask lunatic for mirror
+x mirror
+wink
+touch lunatic
+attack lunatic
+take off gauntlet
+touch lunatic
+drop pole
+attack lunatic
+take off cloak
+attack lunatic
+take all
+i
+wear hat
+go through door
+s
+e
+x king
+e
+se
+ne
+sw
+nw
+take the king's heart
+drop pole
+take the king's heart
+wear glove
+take the king's heart
+take pole
+drop pole
+get expression
+take pole
+get expression
+get crown
+wear gauntlet
+attack the king
+s
+attack blackbird
+drop pole
+attack blackbird
+get pole
+get idol
+n
+w
+turn on machine
+take off earmuffs
+i
+s
+e
+s
+n
+

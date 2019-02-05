@@ -1,0 +1,39 @@
+   Stage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stage
+  You can see a sword here.
+  
+> >   Stage
+  (Testing.)
+  
+  >[1] w
+  
+  Wings
+  
+  >[2] sword
+  That noun did not make sense in this context.
+  
+  >[3] wings
+  That noun did not make sense in this context.
+  
+  >[4] stage
+  Stage
+  You can see a sword here.
+  
+  >[5] wings
+  Wings
+  
+  >[6] stage
+  Stage
+  You can see a sword here.
+  
+  >[7] x sword
+  You see nothing special about the sword.
+  
+  >[8] sword
+  The last time you saw that, it was in Stage.
+  
+> >

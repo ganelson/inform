@@ -1,0 +1,8 @@
+Test is a room.
+
+Include object creations in the debugging log.
+
+An insect is a kind of thing. An insect can be aggressive, skittish, or calm. An insect is usually calm.
+
+An arthropod is a kind of thing. An arthropod can be aggressive, skittish, frisky, or calm. An arthropod is usually 
+calm.

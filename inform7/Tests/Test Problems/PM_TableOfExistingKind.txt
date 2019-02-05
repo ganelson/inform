@@ -1,0 +1,6 @@
+The Admiralty is a room. Ship is a kind of value. Euryalus is a ship.
+Some ships are defined by Table 1.
+
+Table 1 - Vessels
+name				rate
+Agamemnon			1

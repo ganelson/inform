@@ -1,0 +1,9 @@
+Home is a room.
+
+A color is a kind of value.  The colors are red, green, blue.
+
+Painting is an activity on colors.
+
+Sketching something is an activity on colors.
+
+Scoffing is an activity on objects.

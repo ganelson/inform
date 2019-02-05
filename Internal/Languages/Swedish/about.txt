@@ -1,0 +1,5 @@
+1	Swedish
+2	svenska
+3	på svenska
+4	sv
+5	Felix Larsson

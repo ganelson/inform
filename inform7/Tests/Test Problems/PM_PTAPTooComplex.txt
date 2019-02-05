@@ -1,0 +1,7 @@
+Home is a room.
+
+A utensil is a kind of thing.
+
+A knife, a fork and a spoon are utensils in Home. An apple is in Home.
+
+Every turn when we have taken a utensil: say "You're a utensil taker!"

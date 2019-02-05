@@ -1,0 +1,10 @@
+Home is a room.
+
+Bob is a man in Home.
+
+A leg is a kind of thing. Bob's leg is a leg, part of Bob.
+
+Understand "leg of [person]" as a leg.
+Understand "leg that [person] has" as a leg.
+
+Test me with "x leg of bob / x leg that bob has".

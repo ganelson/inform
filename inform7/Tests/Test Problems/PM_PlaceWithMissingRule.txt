@@ -1,0 +1,7 @@
+The Empty Room is a room.
+
+This is the foo rule: say "foo".
+
+This is the bar rule: say "bar".
+
+The bar rule is listed after the foo rule in the every turn rulebook.

@@ -1,0 +1,15 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TypeCheckBP2
+  >--> In the sentence 'if the player's command contains "anything"' (source
+    text, line 4), it looks as if you intend 'player's command contains
+    "anything"' to be a condition, but that would mean applying the containment
+    relation (between objects) to kinds of value which do not fit - a text and
+    an object - so this must be incorrect.
+    I was trying to match this phrase:
+      if (player's command contains "anything" - a condition): 
+    I recognised:
+    player's command contains "anything" = a condition
+Inform 7 has finished: 52 centiseconds used.

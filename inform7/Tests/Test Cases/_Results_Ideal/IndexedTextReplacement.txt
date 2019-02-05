@@ -1,0 +1,30 @@
+   Outer Solar System
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Outer Solar System
+  
+> >   Outer Solar System
+  (Testing.)
+  
+  >[1] n
+  The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The intermediate text: The capture of Triton may explain banana number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The intermediate text: The capture of Triton may explain banana number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's pineapple daiquiri Nereid and the scarcity of moons as compared to the other gas giants.
+  The intermediate text: The zapture of Triton may explain banana number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's pineapple daiquiri Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: The zapture of Triton may explain banana number o(abcdef) features of the Neptunian system, including the extremely eccentric orbit of Neptune's pineapple daiquiri Nereid and the scarcity of moons as compared to the other gas giants.
+  
+  >[2] s
+  The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: The capture of Triton may explain a number of features of potato Neptunian system, including potato extremely eccentric orbit of Neptune's moon Nereid and potato scarcity of moons as compared to potato opotator gas turtles?
+  
+  >[3] e
+  The original text: the capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: potato capture of Triton may explain a number of features of potato Neptunian frog, including potato extremely eccentric orbit of Neptune's moon Nereid and potato scarcity of moons as compared to potato other gas giants.
+  
+  >[4] w
+  The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: The capture of Triton may explain a number of features of the Neptunian toad including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants!
+  
+> >

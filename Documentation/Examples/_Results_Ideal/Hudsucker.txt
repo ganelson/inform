@@ -1,0 +1,102 @@
+   Mailroom
+  Hudsucker Industries
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mailroom
+  Usually a thrumming hive of bee-like workers, but you got in early to get a jump on the day's work.
+  
+  Before you is a wall of mailboxes, including a CEO box, a Hold box and a Trash box.
+  
+> >   Mailroom
+  (Testing.)
+  
+  >[1] inventory
+  You are carrying:
+    a satchel
+      seven letters (all unread, at the moment)
+  
+  >[2] examine letter
+  On inspection, it turns out to be quite polite.
+  
+  >[3] get letter
+  Taken.
+  
+  >[4] i
+  You are carrying:
+    a polite letter
+    a satchel
+      six letters (all unread, at the moment)
+  
+  >[5] put letter in ceo box
+  (the polite letter in the CEO box)
+  You put the polite letter into the CEO box.
+  
+  >[6] inventory
+  You are carrying:
+    a satchel
+      six letters (all unread, at the moment)
+  
+  >[7] get letter
+  (the random letter)
+  Taken.
+  
+  >[8] x letter
+  (the random letter)
+  On inspection, it turns out to be quite polite.
+  
+  >[9] g
+  (the random letter)
+  On inspection, it turns out to be quite polite.
+  
+  >[10] g
+  (the random letter)
+  On inspection, it turns out to be quite flamingly rude.
+  
+  >[11] i
+  You are carrying:
+    a polite letter
+    a satchel
+      five letters (some as yet unread)
+  
+  >[12] x letter
+  (the random letter)
+  On inspection, it turns out to be quite flamingly rude.
+  
+  >[13] g
+  (the random letter)
+  On inspection, it turns out to be quite polite.
+  
+  >[14] g
+  (the random letter)
+  On inspection, it turns out to be quite polite.
+  
+  >[15] i
+  You are carrying:
+    a polite letter
+    a satchel
+      five unsorted letters
+  
+  >[16] put letter in hold box
+  (the polite letter in the Hold box)
+  You put the polite letter into the Hold box.
+  
+  >[17] get letter
+  (the polite random letter)
+  Taken.
+  
+  >[18] g
+  (the flamingly rude random letter)
+  Taken.
+  
+  >[19] g
+  (the flamingly rude random letter)
+  Taken.
+  
+  >[20] i
+  You are carrying:
+    three unsorted letters
+    a satchel
+      two polite letters
+  
+> >

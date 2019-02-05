@@ -1,0 +1,24 @@
+The placeholder is a room.
+
+Table of Stuff
+word
+"abacus"
+"zoo"
+"vacuum"
+"cheese"
+
+Table of Junk
+string (text)
+"abacus"
+"zoo"
+"vacuum"
+"cheese"
+
+when play begins:
+	say "words:[line break]";
+	repeat through the Table of Stuff in word order:
+		say "[the word entry][line break]";
+	say "[paragraph break]indexed words:[line break]";
+	sort the Table of Junk in string order;
+	repeat through the Table of junk:
+		say "[the string entry][line break]";

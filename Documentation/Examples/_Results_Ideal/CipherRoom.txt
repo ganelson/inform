@@ -1,0 +1,62 @@
+   Black Chamber
+  Nameless
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Black Chamber
+  Despite its menacing name, it is quite an ordinary room, underlying the post office above. Here letters are brought each day, unsealed, transcribed, resealed, and sent again on their way; their contents then analyzed and recorded.
+  
+  A woman whose name has never been disclosed to you sits at the window, writing numbers on a sheet of paper.
+  
+  You can also see a safe box (closed) here.
+  
+> >   Black Chamber
+  (Testing.)
+  
+  >[1] test sight
+  (Testing.)
+  
+  >[2] i
+  You are carrying:
+    a letter from the emperor
+  
+  >[3] x letter
+  Though its origin is obvious, its meaning is secret: the letters are an inexplicable jumble.
+  
+  >[4] ask nameless advisor about cipher
+  "I know many dozens of ciphers," she replies, smiling in a disquieting way.
+  
+  >[5] show cipher to nameless advisor
+  You can't see any such thing.
+  
+  >[6] ask nameless advisor about the letter
+  "It is enciphered," she remarks, glancing over the contents. "A substitution cipher of some complexity, I believe."
+  
+  >[7] show the letter to nameless advisor
+  "It is enciphered," she remarks, glancing over the contents. "A substitution cipher of some complexity, I believe."
+  
+  >[8] show nameless advisor the letter
+  "It is enciphered," she remarks, glancing over the contents. "A substitution cipher of some complexity, I believe."
+  
+  >[9] test knowledge
+  (Testing.)
+  
+  >[10] open safe box
+  You open the safe box.
+  
+  >[11] put letter in safe box
+  You put the letter from the emperor into the safe box.
+  
+  >[12] close safe box
+  You close the safe box.
+  
+  >[13] ask nameless advisor about the letter
+  "It is enciphered," she remarks, after you have offered a detailed description. "A substitution cipher of some complexity, I believe."
+  
+  >[14] show the letter to nameless advisor
+  You can't see any such thing.
+  
+  >[15] ask nameless advisor about the apple
+  There is no reply.
+  
+> >

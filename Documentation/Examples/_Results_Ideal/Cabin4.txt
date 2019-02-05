@@ -1,0 +1,38 @@
+   Cabin
+  Disenchantment Bay
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cabin
+  The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
+  
+  Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company.
+  
+> >   Cabin
+  (Testing.)
+  
+  >[1] examine sign
+  You can get half-day and full-day sight-seeing tours, and half-day and full-day fishing trips.
+  
+  >[2] examine glacier
+  The Malaspina glacier covers much of the nearby slope, and -- beyond it -- an area as large as Rhode Island.
+  
+  >[3] examine instruments
+  Knowing what they do is the Captain's job.
+  
+  >[4] examine windows
+  They're a bit the worse for wear, but you can still get an impressive view of the glacier through them. There were whales earlier, but they're gone now.
+  
+  >[5] examine radar
+  Apparently necessary to avoid the larger icebergs.
+  
+  >[6] examine radios
+  With any luck you will not need to radio for help, but it is reassuring that these things are here.
+  
+  >[7] take the cushions
+  They're hardly portable.
+  
+  >[8] take the glacier
+  That's hardly portable.
+  
+> >

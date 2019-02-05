@@ -1,0 +1,14 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150903 / Inform 7 build 6M56 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  A beautiful, glowing crystal lies upon a stone altar.
+  
+  On the stone altar are a statuette, an ancient basket (empty) and a mysterious book.
+  
+  You can also see some straw and some loose rocks here.
+  
+> >   Place
+> Are you sure you want to quit? 

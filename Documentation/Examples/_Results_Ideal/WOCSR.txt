@@ -1,0 +1,111 @@
+   I5
+  The World of Charles S. Roberts
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  I5
+  Where three roads, forward, backward left and backward right, meet. Forward right is a thick hedge.
+  
+     \ I4 /
+  H4  ----
+     /    \
+  --<  I5  >--
+     \    /
+  H5  ----  J5
+     / I6 \
+  
+> >   I4
+  (Testing.)
+  
+  >[1] f
+  
+  I4
+  A straight road runs forward to backward, alongside a long hedge to right.
+  
+     \ I3 /
+  H3  ----
+     /    \
+  --<  I4  >--
+     \    /
+  H4  ----
+     / I5 \
+  
+  >[2] forward
+  
+  I3
+  A straight road runs forward to backward, alongside a long hedge to right.
+  
+     \ I2 /
+  H2  ----
+     /    \
+  --<  I3  >--
+     \    /
+  H3  ----
+     / I4 \
+  
+  >[3] backward left
+  
+  H3
+  A copse of trees.
+  
+     \ H2 /
+  G3  ----  I3
+     /    \
+  --<  H3  >--
+     \    /
+  G4  ----  I4
+     / H4 \
+  
+  >[4] bl
+  
+  G4
+  The backward edge of woodland.
+  
+     \ G3 /
+  F3  ----  H3
+     /    \
+  --<  G4  >--
+     \    /
+  F4  ----  H4
+     / G5 \
+  
+  >[5] br
+  
+  H4
+  Open farmland.
+  
+     \ H3 /
+  G4  ----  I4
+     /    \
+  --<  H4  >--
+     \    /
+  G5  ----  I5
+     / H5 \
+  
+  >[6] br
+  
+  I5
+  Where three roads, forward, backward left and backward right, meet. Forward right is a thick hedge.
+  
+     \ I4 /
+  H4  ----
+     /    \
+  --<  I5  >--
+     \    /
+  H5  ----  J5
+     / I6 \
+  
+  >[7] f
+  
+  I4
+  A straight road runs forward to backward, alongside a long hedge to right.
+  
+     \ I3 /
+  H3  ----
+     /    \
+  --<  I4  >--
+     \    /
+  H4  ----
+     / I5 \
+  
+> >

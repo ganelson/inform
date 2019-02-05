@@ -1,0 +1,54 @@
+   Heathrow Baggage Claim
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Heathrow Baggage Claim
+  The luggage carousel, a scaly rubbered ring, does for the roundabout what Heathrow Airport does for the dream of flight: that is, turns the purest magic into the essence of boredom, only with extra stress. The baggage approaching you now: a blue golf bag, a leopardskin suitcase, a green rucksack and a Lufthansa shoulder-bag.
+  
+> >   Heathrow Baggage Claim
+  (Testing.)
+  
+  >[1] get suitcase
+  The leopardskin suitcase is maddeningly out of range. You'll have to wait for it to come round.
+  
+  The carousel trundles on, bringing a Lufthansa shoulder-bag to within reach.
+  
+  >[2] get suitcase
+  The leopardskin suitcase is maddeningly out of range. You'll have to wait for it to come round.
+  
+  The carousel trundles on, bringing a green rucksack to within reach.
+  
+  >[3] get suitcase
+  The leopardskin suitcase is maddeningly out of range. You'll have to wait for it to come round.
+  
+  The carousel trundles on, bringing a leopardskin suitcase to within reach.
+  
+  >[4] get suitcase
+  Taken.
+  
+  The carousel trundles on, bringing a blue golf bag to within reach.
+  
+  >[5] look
+  Heathrow Baggage Claim
+  The luggage carousel, a scaly rubbered ring, does for the roundabout what Heathrow Airport does for the dream of flight: that is, turns the purest magic into the essence of boredom, only with extra stress. The baggage approaching you now: a blue golf bag, a green rucksack and a Lufthansa shoulder-bag.
+  
+  The carousel trundles on, bringing a Lufthansa shoulder-bag to within reach.
+  
+  >[6] get golf bag
+  The blue golf bag is maddeningly out of range. You'll have to wait for it to come round.
+  
+  The carousel trundles on, bringing a green rucksack to within reach.
+  
+  >[7] look
+  Heathrow Baggage Claim
+  The luggage carousel, a scaly rubbered ring, does for the roundabout what Heathrow Airport does for the dream of flight: that is, turns the purest magic into the essence of boredom, only with extra stress. The baggage approaching you now: a green rucksack, a Lufthansa shoulder-bag and a blue golf bag.
+  
+  The carousel trundles on, bringing a blue golf bag to within reach.
+  
+  >[8] get golf bag
+  Taken.
+  
+  The carousel trundles on, bringing a Lufthansa shoulder-bag to within reach.
+  
+> >

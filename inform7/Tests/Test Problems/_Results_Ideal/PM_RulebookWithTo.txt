@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RulebookWithTo
+  >--> You wrote 'To the sea is a rulebook' (source text, line 3): but this
+    would create a rulebook whose name begins with 'to', which is forbidden
+    since it would lead to ambiguities in the way people write rules. A rule
+    beginning with 'To' is one which defines a phrase, whereas a rule belonging
+    to a rulebook starts with the name of that rulebook, so a rulebook named
+    'to ...' would make such a rule inscrutable.
+Inform 7 has finished: 17 centiseconds used.

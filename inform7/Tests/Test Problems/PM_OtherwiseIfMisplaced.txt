@@ -1,0 +1,4 @@
+TestRoom is a Room.
+When play begins:
+	If true is true, say "--.";
+	Else if true is true, say "--."

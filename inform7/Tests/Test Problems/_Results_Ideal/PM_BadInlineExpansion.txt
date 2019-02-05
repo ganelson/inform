@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadInlineExpansion
+  >--> You wrote 'blow up' (source text, line 6), but when I looked that phrase
+    up I found that its inline definition included the bracing {utter drivel}.
+    Text written in braces like this, in an inline phrase definition, should be
+    one of the following: a name of one of the tokens in the phrase, or a
+    phrase option, or the text 'phrase options' itself. The ability to write
+    inline phrases is really intended only for the Standard Rules and a few
+    other low-level system extensions. A good rule of thumb is: if you can
+    define a phrase without using I6 insertions, do.
+Inform 7 has finished: 42 centiseconds used.

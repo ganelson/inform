@@ -1,0 +1,45 @@
+   Hall                                                                                                                                                                                                                   9:00 am
+  Tom's Midnight Garden
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hall
+  You can see a grandfather clock and a travel clock here.
+  
+> >   Hall                                                                                                                                                                                                                   9:09 am
+  (Testing.)
+  
+  >[1] examine grandfather clock
+  It shows the time to be about nine o'clock.
+  
+  The grandfather clock is currently switched off.
+  
+  >[2] set it to midnight
+  You set the grandfather clock to 12:00 am.
+  
+  >[3] switch it on
+  You switch the grandfather clock on.
+  
+  >[4] wait
+  Time passes.
+  
+  >[5] wait
+  Time passes.
+  
+  >[6] wait
+  Time passes.
+  
+  >[7] examine it
+  It shows the time to be about five past twelve.
+  
+  The grandfather clock is currently switched on.
+  
+  >[8] set travel clock to 4:12
+  You set the travel clock to 4:12 am.
+  
+  >[9] examine it
+  It shows the time to be 4:13 am.
+  
+  The travel clock is currently switched on.
+  
+> >

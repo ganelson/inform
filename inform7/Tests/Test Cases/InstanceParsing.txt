@@ -1,0 +1,19 @@
+The Kitchen is a room.
+
+Color is a kind of value. The colors are light blue, dark blue, light green, dark green.
+
+Understand "light", "blue" as light blue.
+Understand "light", "green" as light green.
+Understand "dark", "blue" as dark blue.
+Understand "dark", "green" as dark green.
+
+A shape is a kind of thing.
+A shape has a color.
+Understand the color property as describing a shape.
+Before printing the name of a shape:
+	say "[the color of the item described] ".
+
+The cube is a light blue shape in the Kitchen.
+The ball is a dark green shape in the Kitchen.
+
+Test me with "x light / x light cube / x blue / x light blue cube / x dark / x green / x dark green / x green ball".

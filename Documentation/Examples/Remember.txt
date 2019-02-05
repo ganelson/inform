@@ -1,0 +1,29 @@
+* Topic columns
+(REMEMBER command keyed to topics; Merlin)
+A REMEMBER command which accepts any text and looks up a response in a table of recollections.
+
+	{*}"Merlin"
+
+	Understand "remember [text]" as remembering. 
+
+	Remembering is an action applying to one topic.
+
+	Carry out remembering:
+		say "Nothing comes to mind.".
+
+	Instead of remembering a topic listed in the Table of Recollections: 
+		say "[response entry][paragraph break]".
+
+	Table of Recollections
+	Topic	Response
+	"rain/weather"	"You've seen worse, but not often: it's falling so hard now that the tin rattles and the runoff, on the low side of the roof, would be a tenable source of hydroelectric power."
+	"hydroelectric power" or "power/hydroelectric"	"It's not as though you have any sort of light bulb in here to turn on, even if you could power it."
+	"light bulb" or "light/bulb"	"Light bulbs, like so much else, are a thing of your past. Or is it your future? Tricky, the way the world loops round on itself."
+	"past/time/future"	"Living backwards has its drawbacks. A tendency to confuse and annoy your friends, being one; the total inability to maintain a stable relationship; and a deep dissatisfaction with most of the bodily processes people enjoy, since they ultimately make you hungrier, colder, or-- no point dwelling on it, really."
+	"backwards"	"It's not even exactly *backwards*, now is it? It's more like a series of forwardses stuck back to back. As though someone had taken each track of a CD and put them in the exactly wrong order. You miss that. The music on demand."
+
+	The Inadequate Shelter is a room. "A piece of corrugated tin, leaned on two sticks, and pathetically augmented with a tire (on one side) and a cardboard box (on the side towards the wind). And that's what you've got between you and the driving rain.
+
+	At the moment rain is all you can remember, in fact."
+	
+	Test me with "remember rain / remember power / remember light bulb / remember future / remember backwards".

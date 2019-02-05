@@ -1,0 +1,79 @@
+   Tomb of Angels
+  Unblinking
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Tomb of Angels
+  This ancient underground tomb is lightless but for a few shafts from the surface. Everywhere in the shadows are carved angels, their faces worn away by water and pollution, their wings little more than nubs.
+  
+  It looks like there is no fully lit path from here to the Crash Site.
+  
+> >   Tomb of Angels
+  (Testing.)
+  
+  >[1] up
+  
+  Upward Path
+  The staircase switches back on itself many times as it ascends towards the Crash Site.
+  
+  A sarcophagus rests in the niche here, the lid firmly in place.
+  
+  It looks like there's a safe, lit path straight up.
+  
+  >[2] drop candle
+  Dropped.
+  
+  >[3] down
+  
+  Tomb of Angels
+  This ancient underground tomb is lightless but for a few shafts from the surface. Everywhere in the shadows are carved angels, their faces worn away by water and pollution, their wings little more than nubs.
+  
+  It looks like there's a safe, lit path if you go up.
+  
+  >[4] up
+  
+  Upward Path
+  The staircase switches back on itself many times as it ascends towards the Crash Site.
+  
+  A sarcophagus rests in the niche here, the lid firmly in place.
+  
+  You can also see a candle (providing light) here.
+  
+  It looks like there's a safe, lit path straight up.
+  
+  >[5] take the candle
+  Taken.
+  
+  >[6] open sarcophagus
+  You open the sarcophagus.
+  
+  >[7] put candle in sarcophagus
+  You put the candle into the sarcophagus.
+  
+  >[8] down
+  
+  Tomb of Angels
+  This ancient underground tomb is lightless but for a few shafts from the surface. Everywhere in the shadows are carved angels, their faces worn away by water and pollution, their wings little more than nubs.
+  
+  It looks like there's a safe, lit path if you go up.
+  
+  >[9] up
+  
+  Upward Path
+  The staircase switches back on itself many times as it ascends towards the Crash Site.
+  
+  A sarcophagus rests in the niche here, the lid pushed aside.
+  
+  It looks like there's a safe, lit path straight up.
+  
+  >[10] close sarcophagus
+  You close the sarcophagus.
+  
+  >[11] d
+  
+  Tomb of Angels
+  This ancient underground tomb is lightless but for a few shafts from the surface. Everywhere in the shadows are carved angels, their faces worn away by water and pollution, their wings little more than nubs.
+  
+  It looks like there is no fully lit path from here to the Crash Site.
+  
+> >

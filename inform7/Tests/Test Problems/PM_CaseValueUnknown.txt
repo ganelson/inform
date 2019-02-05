@@ -1,0 +1,15 @@
+The Lab is a room.
+
+When play begins:
+	say "Ho.";
+	repeat with the counter running from one to five:
+		say "[the counter]";
+		if the counter is:
+			-- one:
+				next;
+			-- khglkjhlkjh:
+				break;
+			-- otherwise:
+				next;
+		say "-";
+	say "Namam.";

@@ -1,0 +1,35 @@
+   Donut Shop
+  IQ Test
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Donut Shop
+  Vibrantly decorated in donut colors: pink, brown, and cream.
+  
+  Ogg is slumped in the corner with a silver key. He wears a nametag which says "HELLO MY NAME IS OG."
+  
+  You can also see a case (closed) (in which are some cake donuts) here.
+  
+> >   Donut Shop
+  (Testing.)
+  
+  >[1] open case
+  It seems to be locked.
+  
+  >[2] get donuts
+  The case isn't open.
+  
+  >[3] og, get donuts
+  Ogg unlocks the case.
+  
+  Ogg opens the case.
+  
+  Ogg picks up the cake donuts.
+  
+  >[4] og, give me the donuts
+  Ogg gives the cake donuts to you.
+  
+  >[5] eat donuts
+  You eat the cake donuts. Not bad.
+  
+> >

@@ -1,0 +1,2 @@
+Constant Peach = Banana;
+Constant Banana = 2;

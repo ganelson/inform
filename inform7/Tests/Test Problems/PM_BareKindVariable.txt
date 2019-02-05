@@ -1,0 +1,10 @@
+The Errea is a room.
+
+To decide whether (X - a value of kind K) is sibling to (Y - a value of kind M):
+	if an M is a K, yes; if M is K, yes;
+	no.
+
+Instead of jumping: 
+   let X be the Errea;
+   let Y be the player;
+   if X is sibling to Y, say "Eureka."

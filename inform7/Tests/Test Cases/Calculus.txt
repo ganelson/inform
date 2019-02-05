@@ -1,0 +1,324 @@
+Laboratory is a room. Peter and Jane are in the laboratory. The box is a
+container. A coin is a kind of thing. Two coins are in the box. A marble is
+in the box. Missee is an animal in the laboratory.
+
+Colour is a kind of value. The colours are black, white, red, green and
+blue. A thing has a colour. The fashionable hue is a colour that varies.
+
+Definition: a thing is tidy if it is in a container.
+
+Definition: a colour is bright if it is red.
+
+Amity relates various people to various people. The verb to like (he likes,
+they like, it is liked, he is liking) implies the amity relation.
+
+Owning relates various people to various animals. The verb to own (he owns,
+they own, it is owned, he is owning) implies the owning relation.
+
+Luring relates various things to various people. The verb to lure (he
+lures, they lure, it is lured, he is luring) implies the luring relation.
+
+Annoying relates various colours to various people. The verb to annoy (he
+annoys, they annoy, it is annoyed, he is annoying) implies the annoying
+relation.
+
+A person can be friendly or unfriendly.
+
+Height is a kind of value. 6 feet 4 inches specifies a height. A person has
+a height.
+
+Definition: a person is tall if his height is 6 feet 4 inches or more.
+
+Transylvania and the Balkans are regions. The doubtful item is an object that varies.
+
+Table of Solid Stuff
+stuff							density
+"water"							1
+"stone"							4
+"Sarah Palin's frontal lobes"	11
+
+Table of Salad Stuff
+stuff			crispiness
+"water"			7
+"lettuce"		2
+
+A statue is a kind of thing. Some statues are defined by the Table of Stolid Stuff.
+
+Table of Stolid Stuff
+statue
+Duke of Wellington
+Duke of Marlborough
+
+A thing has a number called weight.
+
+Mass is a kind of value. 100kg specifies a mass. A thing has a mass.
+Definition: a thing is heavy if its mass is 50kg or more.
+
+The funky todo is a stored action that varies.
+
+
+Test headline (internal) with Basic relations.
+
+Test sentence (internal) with Peter is Jane.
+Test sentence (internal) with Peter carries the box.
+Test sentence (internal) with the box is carried by Peter.
+Test sentence (internal) with Peter likes Jane.
+Test sentence (internal) with Jane is liked by Peter.
+
+
+Test headline (internal) with Negated basic relations.
+
+Test sentence (internal) with Peter is not Jane.
+Test sentence (internal) with Peter does not carry the box.
+Test sentence (internal) with the box is not carried by Peter.
+Test sentence (internal) with Peter does not like Jane.
+Test sentence (internal) with Jane is not liked by Peter.
+
+
+Test headline (internal) with Adjectives from KOVs coinciding with properties.
+
+Test sentence (internal) with blue is red.
+Test sentence (internal) with Peter is red.
+Test sentence (internal) with the fashionable hue is red.
+Test sentence (internal) with Peter is annoyed by green.
+Test sentence (internal) with green annoys Peter.
+
+
+Test headline (internal) with Negated adjectives from KOVs coinciding with properties.
+
+Test sentence (internal) with blue is not red.
+Test sentence (internal) with Peter is not red.
+Test sentence (internal) with the fashionable hue is not red.
+Test sentence (internal) with Peter is not annoyed by green.
+Test sentence (internal) with green does not annoy Peter.
+
+
+Test headline (internal) with Use of adjectives and kinds.
+
+Test sentence (internal) with Peter is friendly.
+Test sentence (internal) with Peter is tidy.
+Test sentence (internal) with Peter is tall.
+Test sentence (internal) with Peter is a man.
+Test sentence (internal) with Peter is a friendly man.
+Test sentence (internal) with Peter is a tidy man.
+Test sentence (internal) with Peter is a tall tidy green visible man.
+Test sentence (internal) with the score is a number.
+Test sentence (internal) with the score is an odd number.
+Test sentence (internal) with the fashionable hue is bright.
+Test sentence (internal) with the fashionable hue is a colour.
+Test sentence (internal) with the fashionable hue is a bright colour.
+
+
+Test headline (internal) with Negated use of adjectives and kinds.
+
+Test sentence (internal) with Peter is not friendly.
+Test sentence (internal) with Peter is not tidy.
+Test sentence (internal) with Peter is not tall.
+Test sentence (internal) with Peter is not a man.
+Test sentence (internal) with Peter is not a friendly man.
+Test sentence (internal) with Peter is not a tidy man.
+Test sentence (internal) with Peter is not a tall tidy green visible man.
+Test sentence (internal) with the score is not a number.
+Test sentence (internal) with the score is not an odd number.
+Test sentence (internal) with the fashionable hue is not bright.
+Test sentence (internal) with the fashionable hue is not a colour.
+Test sentence (internal) with the fashionable hue is not a bright colour.
+
+
+Test headline (internal) with Single quantification.
+
+Test sentence (internal) with Peter likes someone.
+Test sentence (internal) with someone likes Peter.
+Test sentence (internal) with Peter likes everyone.
+Test sentence (internal) with everyone likes Peter.
+Test sentence (internal) with Peter owns something.
+Test sentence (internal) with someone owns Missee.
+
+
+Test headline (internal) with Negated single quantification.
+
+Test sentence (internal) with Peter does not like someone.
+Test sentence (internal) with someone does not like Peter.
+Test sentence (internal) with Peter does not like everyone.
+Test sentence (internal) with everyone does not like Peter.
+Test sentence (internal) with Peter does not own anything.
+Test sentence (internal) with someone does not own Missee.
+
+
+Test headline (internal) with Double quantification.
+
+Test sentence (internal) with someone likes someone.
+Test sentence (internal) with someone likes everyone.
+Test sentence (internal) with everyone likes everyone.
+Test sentence (internal) with a man likes a woman.
+Test sentence (internal) with a woman is liked by a man.
+Test description (internal) with a man who likes a woman.
+Test description (internal) with a woman who is liked by a man.
+
+
+Test headline (internal) with Negated double quantification.
+
+Test sentence (internal) with someone does not like someone.
+Test sentence (internal) with someone does not like everyone.
+Test sentence (internal) with everyone does not like everyone.
+Test sentence (internal) with a man does not like a woman.
+Test sentence (internal) with a woman is not liked by a man.
+Test description (internal) with a man who does not like a woman.
+Test description (internal) with a woman who is not liked by a man.
+
+
+Test headline (internal) with Unquantified relative clauses.
+
+Test description (internal) with a man in the Laboratory.
+Test description (internal) with a man carrying the box.
+Test sentence (internal) with a man can see the box in the Laboratory.
+Test sentence (internal) with a man can see the marble in the box in the Laboratory.
+
+
+Test headline (internal) with Quantification in sentences with relative clauses.
+
+Test sentence (internal) with Peter likes someone who is a woman.
+Test sentence (internal) with Peter likes everyone who is a woman.
+Test sentence (internal) with Peter likes everyone who likes every man.
+Test sentence (internal) with someone likes someone who is a woman.
+Test sentence (internal) with someone likes everyone who is a woman.
+Test sentence (internal) with someone likes everyone who likes every man.
+Test sentence (internal) with everyone likes someone who is a woman.
+Test sentence (internal) with everyone likes everyone who is a woman.
+Test sentence (internal) with everyone likes everyone who likes every man.
+
+Test sentence (internal) with someone who is a woman likes Peter.
+Test sentence (internal) with everyone who is a woman likes Peter.
+Test sentence (internal) with everyone who likes every man likes Peter.
+Test sentence (internal) with someone who is a woman likes someone.
+Test sentence (internal) with everyone who is a woman likes someone.
+Test sentence (internal) with everyone who likes every man likes someone.
+Test sentence (internal) with someone who is a woman likes everyone.
+Test sentence (internal) with everyone who is a woman likes everyone.
+Test sentence (internal) with everyone who likes every man likes everyone.
+
+
+Test headline (internal) with Negated quantification in sentences with relative clauses.
+
+Test sentence (internal) with Peter does not like someone who is a woman.
+Test sentence (internal) with Peter does not like everyone who is a woman.
+Test sentence (internal) with Peter does not like everyone who does likes every man.
+Test sentence (internal) with someone does not like someone who is a woman.
+Test sentence (internal) with someone does not like everyone who is a woman.
+Test sentence (internal) with someone does not like everyone who likes every man.
+Test sentence (internal) with everyone does not like someone who is a woman.
+Test sentence (internal) with everyone does not like everyone who is a woman.
+Test sentence (internal) with everyone does not like everyone who likes every man.
+
+Test sentence (internal) with someone who is not a woman likes Peter.
+Test sentence (internal) with everyone who is not a woman likes Peter.
+Test sentence (internal) with everyone who does not like every man likes Peter.
+Test sentence (internal) with someone who is not a woman likes someone.
+Test sentence (internal) with everyone who is not a woman likes someone.
+Test sentence (internal) with everyone who does not like every man likes someone.
+Test sentence (internal) with someone who is not a woman likes everyone.
+Test sentence (internal) with everyone who is not a woman likes everyone.
+Test sentence (internal) with everyone who does not like every man likes everyone.
+
+
+Test headline (internal) with Quantification in sentences with negated relative clauses.
+
+Test sentence (internal) with Peter likes someone who is not a woman.
+Test sentence (internal) with Peter likes everyone who is not a woman.
+Test sentence (internal) with Peter likes everyone who does not like every man.
+Test sentence (internal) with someone likes someone who is not a woman.
+Test sentence (internal) with someone likes everyone who is not a woman.
+Test sentence (internal) with someone likes everyone who does not like every man.
+Test sentence (internal) with everyone likes someone who is not a woman.
+Test sentence (internal) with everyone likes everyone who is not a woman.
+Test sentence (internal) with everyone likes everyone who does not like every man.
+
+Test sentence (internal) with someone who is a woman does not like Peter.
+Test sentence (internal) with everyone who is a woman does not like Peter.
+Test sentence (internal) with everyone who likes every man does not like Peter.
+Test sentence (internal) with someone who is a woman does not like someone.
+Test sentence (internal) with everyone who is a woman does not like someone.
+Test sentence (internal) with everyone who likes every man does not like someone.
+Test sentence (internal) with someone who is a woman does not like everyone.
+Test sentence (internal) with everyone who is a woman does not like everyone.
+Test sentence (internal) with everyone who likes every man does not like everyone.
+
+
+Test headline (internal) with Listed-in predication.
+
+Test sentence (internal) with 4 is a density listed in the Table of Solid Stuff.
+Test sentence (internal) with nothing is a statue listed in the Table of Stolid Stuff.
+Test sentence (internal) with a crispiness listed in the Table of Salad Stuff is a density listed in the Table of Solid Stuff.
+
+
+Test headline (internal) with Scenery as a noun.
+
+Test description (internal) with the box in scenery.
+Test sentence (internal) with all of the scenery parts of Peter are in the Laboratory.
+
+
+Test headline (internal) with Region containment.
+
+Test sentence (internal) with the box is in the Laboratory.
+Test sentence (internal) with the box is in Transylvania.
+Test sentence (internal) with Transylvania is in the Balkans.
+Test sentence (internal) with Transylvania is in the doubtful item.
+Test sentence (internal) with the box is in the doubtful item.
+Test sentence (internal) with the doubtful item is in the Balkans.
+
+
+Test headline (internal) with Use of everywhere.
+
+Test description (internal) with a backdrop which is everywhere.
+Test description (internal) with a backdrop which is not everywhere.
+
+
+Test headline (internal) with Double negatives.
+
+Test sentence (internal) with the box does not contain nothing.
+Test sentence (internal) with Peter is not lured by nothing.
+Test sentence (internal) with Peter does not like nobody.
+Test sentence (internal) with nobody does not like Peter.
+Test sentence (internal) with no colour does not annoy Peter.
+Test sentence (internal) with nothing does not annoy Peter.
+Test sentence (internal) with no coin is not enclosed by a person.
+
+
+Test headline (internal) with Having value properties.
+
+Test sentence (internal) with the noun has weight.
+Test sentence (internal) with the noun has weight at most 1.
+Test sentence (internal) with the weight of the noun is at most 1.
+
+
+Test headline (internal) with Type-checking.
+
+Test description (internal) with a number which is even.
+Test description (internal) with empty which is empty.
+Test description (internal) with a scene which is not a number.
+Test description (internal) with 100 which is not a text.
+Test description (internal) with a number which is empty.
+Test description (internal) with 100 which is empty.
+Test description (internal) with a number which is inside a scene.
+Test description (internal) with a scene which is inside a number.
+Test description (internal) with a number which is inside a vehicle.
+Test description (internal) with a vehicle which is inside a number.
+Test description (internal) with a woman who likes a number.
+Test description (internal) with a number which likes a man.
+Test description (internal) with a woman who is a number.
+Test description (internal) with a number which is a man.
+Test sentence (internal) with Peter is 20.
+Test sentence (internal) with Peter is less than 20.
+Test description (internal) with 10 which is opaque.
+Test sentence (internal) with the Entire Game is empty.
+
+Test sentence (internal) with funky todo is the action of waiting.
+Test sentence (internal) with funky todo is waiting.
+
+Test sentence (internal) with the player is heavier than 70kg.
+Test sentence (internal) with the player is heavier than 6 feet 2 inches.
+
+Test sentence (internal) with Entire Game is a density listed in the Table of Solid Stuff.
+
+Test description (internal) with things enclosing the player that encloses something.
+Test description (internal) with things that enclose something enclosed by the player.

@@ -1,0 +1,4 @@
+A room has a number called Coolness Index.
+
+The coolness index property translates into I6 as "score".
+The coolness index property translates into I6 as "capacity".

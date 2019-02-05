@@ -1,0 +1,13 @@
+Home is a room.
+
+The box is a container which is carried by the player.
+It is openable and closed.
+
+Understand the open property as referring to the box.
+
+Understand "opened" as open.
+Understand "shut/sealed" or "tightly sealed" as closed.
+
+Test me with "x open box/x closed box/x shut box/x sealed box/x
+tightly sealed box/open box/x shut box/x open box/x opened box".
+

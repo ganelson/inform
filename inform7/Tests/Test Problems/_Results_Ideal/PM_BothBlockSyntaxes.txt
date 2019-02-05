@@ -1,0 +1,18 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BothBlockSyntaxes
+  >--> The rule or phrase definition 'When play begins' (source text, line 3)
+    seems to use both ways of grouping phrases together into 'if', 'repeat' and
+    'while' blocks at once. Inform allows two alternative forms, but they
+    cannot be mixed in the same definition. One way is to end the 'if',
+    'repeat' or 'while' phrases with a 'begin', and then to match that with an
+    'end if' or similar. ('Otherwise' or 'otherwise if' clauses are phrases
+    like any other, and end with semicolons in this case.) You use this
+    begin/end form here, for instance - 'if 1 is 2 begin' (source text, line 4).
+    The other way is to end with a colon ':' and then indent the subsequent
+    phrases underneath, using tabs. (Note that any 'otherwise' or 'otherwise
+    if' clauses also have to end with colons in this case.) You use this
+    indented form here - 'while 1 is 2' (source text, line 7).
+Inform 7 has finished: 14 centiseconds used.

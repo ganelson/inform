@@ -1,0 +1,6 @@
+The dome is a room. 
+
+A thing can be either blue or orange.
+A thing can be either gold or yellow.
+A gold thing is always blue.
+

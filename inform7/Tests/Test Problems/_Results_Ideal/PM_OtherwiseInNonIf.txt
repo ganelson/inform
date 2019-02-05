@@ -1,0 +1,8 @@
+Inform 7 build 6L47 has started.
+I've now read your source text, which is 33 words long.
+I've also read Standard Rules by Graham Nelson, which is 42613 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OtherwiseInNonIf
+  >--> The 'otherwise' (source text, line 7) here did not make sense inside a
+    'while' structure: it's provided for 'if' (or 'unless').
+Inform 7 has finished: 25 centiseconds used.

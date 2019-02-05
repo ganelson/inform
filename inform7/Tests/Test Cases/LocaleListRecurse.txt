@@ -1,0 +1,22 @@
+Mrs Luxor's Home is a room.
+
+The ceramic dog and the carved walrus are on the high shelf. The high shelf
+is in Mrs Luxor's Home.
+
+For choosing notable locale objects:
+	if the player is not on the chair, now everything on the shelf is mentioned;
+	continue the activity.
+
+The chair is an enterable supporter in the Home.
+
+For printing a locale paragraph about the chair:
+	if the player is not on the chair
+	begin;
+		say "To sit might be to squish [the Donut].";
+	end if;
+	continue the activity.
+
+The Versace clutch, the Boston Krispy Kreme Donut and the Guitar Hero CD
+are on the chair.
+
+Test me with "look / get on chair / look".

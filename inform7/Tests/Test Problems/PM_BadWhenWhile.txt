@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Before starting the virtual machine while "stuff": stop.

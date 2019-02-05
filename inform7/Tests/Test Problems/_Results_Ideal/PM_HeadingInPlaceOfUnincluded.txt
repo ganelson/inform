@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_HeadingInPlaceOfUnincluded
+  >--> In the sentence 'Section of Minimal Grammar (in place of Section SR4/10
+    - Grammar in Missing Rules by Graham Nelson)' (source text, line 3), it
+    looks as if you intend to replace a section of source text from the
+    extension 'Missing Rules by Graham Nelson', but no extension of that name
+    has been included - so it is not possible to replace any of its headings.
+Inform 7 has finished: 8 centiseconds used.

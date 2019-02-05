@@ -1,0 +1,7 @@
+Home is a room.
+
+This is the splodge rule: say "Splodge."
+
+This is the flibble rule: say "Flibble."
+
+The splodge rule is not listed after the flibble rule in the instead rules.

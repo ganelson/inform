@@ -1,0 +1,12 @@
+There is a room.
+
+Fred is a rulebook outcome that varies.
+
+A container has a rulebook outcome called blob.
+
+A bag is here. The marble is in the bag.
+
+When play begins:
+	showme the there is sufficient light outcome;
+	showme Fred;
+	showme the blob of the bag.

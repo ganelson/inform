@@ -1,0 +1,35 @@
+   Casino
+  Casino Banale
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Casino
+  Penny grimaces at you-- Penny is the same woman who stepped on your toe in the buffet line. The third time, she blurted, "You have big shoes, don't you?"
+  
+  Frince and Tim are following the spin of the roulette.
+  
+> >   Casino
+  (Testing.)
+  
+  >[1] x penny
+  Loud. Brash. Hot, probably, if you can look past the loud and brash.
+  
+  The bright coral lipstick was really not a wise choice.
+  
+  >[2] x frince
+  Frince is a friend of yours -- if you reckon friendship on the same terms that one reckons a cat as a pet. He spends time with you when he wants to, but if your wishes or convenience ever run counter to a whim of his, it's the whim that wins. Always.
+  
+  He's also wearing a somewhat ludicrous shirt.
+  
+  >[3] x shirt
+  Fine white fabric with satiny white pinstripes: it's that expensive, effeminate look that Frince is so fond of, and which -- combined with his name -- gives people completely the wrong idea about him.
+  
+  There are a couple of smudges of coral-colored lipstick on the collar.
+  
+  >[4] look
+  Casino
+  You avoid Frince's eye. You need some time to adjust to the image of him making out with Penny in a storage closet before you can talk to him without appalled giggling.
+  
+  Tim and Penny are watching the croupier breathlessly.
+  
+> >

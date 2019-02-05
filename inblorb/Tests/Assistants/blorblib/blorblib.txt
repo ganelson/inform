@@ -1,0 +1,185 @@
+blorblib.c: A more or less portable C library for Z-machine interpreters
+which want to use Blorb files.
+
+Version 1.0.2
+Andrew Plotkin <erkyrath@eblong.com>
+http://www.eblong.com/zarf/blorb/index.html
+
+I'll try to keep this simple. See blorb.h for detailed type definitions.
+
+General notes: Most of these functions return an error code (type
+bb_err_t, which is equivalent to int.) Always check this error code. If
+it's non-zero, the call failed and no other information was returned.
+
+What you do is, compile blorblib.c into your interpreter, and #include
+"blorb.h". Be sure to uncomment one of the ENDIAN definitions in
+"blorb.h". (If you get it wrong, the library will tell you when you try
+to use it.)
+
+When the your interpreter starts up and is given a Blorb file, you
+should open the file. Then call:
+
+    bb_err_t err;
+    FILE *file; /* The Blorb file you just opened */
+    bb_map_t *map;
+    err = bb_create_map(file, &map);
+
+If err is zero (bb_err_None), then map now points to an (opaque)
+structure which describes the Blorb file. You will use this value in all
+future blorblib calls.
+
+(It's ok to have more than one Blorb file open at a time; you get
+different bb_map_t pointers.)
+
+When you are finished with the Blorb file, call
+
+    err = bb_destroy_map(map);
+
+to destroy the map structure and all its data (including data chunks it
+has loaded.) After bb_destroy_map() returns, you can fclose(file). Do
+*not* close the file while the map structure still exists. blorblib
+relies on the open file to load resources.
+
+There are three vaguely-defined layers in this API. I'm not going to go
+to the trouble of insulating you from the lower layers -- you can't get
+*too* confused -- but it's generally easier to use the higher-level
+calls rather than the lower level.
+
+All three layers use a similar protocol to load in data. You call a load
+function, and pass in a method constant, and a pointer to a bb_result_t
+structure. The library fills in the bb_result_t structure according to
+the load method you requested.
+
+#define bb_method_DontLoad (0)
+#define bb_method_Memory (1)
+#define bb_method_FilePos (2)
+
+typedef struct bb_result_struct {
+    int chunknum; 
+    union {
+        void *ptr;
+        uint32 startpos;
+    } data;
+    uint32 length;
+} bb_result_t;
+
+If you request bb_method_Memory, then result.data.ptr will contain a
+pointer to the data you requested; result.length is the number of bytes.
+The library allocates this memory, so you should not write into it or
+try to free() it. The library is sensible about remembering what data is
+loaded; if you load the same chunk twice, it will not allocate two
+identical pieces of memory. To deallocate the memory, call
+bb_unload_chunk(result.chunknum).
+
+If you request bb_method_FilePos, then result.data.startpos will contain
+the position in the Blorb file of the data; result.length is the number
+of bytes. You can use fseek() and the usual stdio functions to read the
+data yourself.
+
+If you request bb_method_DontLoad, then result.data won't contain any
+meaningful data. However, result.length and result.chunknum will still
+be set.
+
+* The bottom layer (chunk loading): These are calls you can use to load
+an IFF chunk directly. 
+
+    bb_err_t bb_load_chunk_by_type(bb_map_t *map, int method,
+bb_result_t *res, uint32 chunktype, int count);
+
+This loads a chunk by its IFF chunk type. If count is zero, it loads the
+first chunk of that type; if 1, the second; and so on. You probably
+shouldn't do this to get resource chunks (sounds, images, executable
+data). However, it's the only way to load the optional chunks -- author,
+copyright, and annotation.
+
+    bb_err_t bb_load_chunk_by_number(bb_map_t *map, int method,
+bb_result_t *res, int chunknum);
+
+This loads a chunk based on its chunknum. (Note that a chunk number is
+*not* the same as a resource number.) You might do this using a chunknum
+that you got from the result structure after a previous load.
+
+    bb_err_t bb_unload_chunk(bb_map_t *map, int chunknum);
+
+This deallocates the memory allocated by a bb_method_Memory load. You
+would use the chunknum that you got from the result structure after the
+load. If no memory is allocated, this does nothing.
+
+* The middle layer (resource loading): These are calls you use to load a
+resource based on usage.
+
+    bb_err_t bb_load_resource(bb_map_t *map, int method, bb_result_t
+*res, uint32 usage, int resnum);
+
+This loads a chunk based on usage (bb_ID_Snd, bb_ID_Pict, or bb_ID_Exec)
+and resource number. Note that a resource number is *not* the same as a
+chunk number. The resource number is a constant, which the game file
+uses to find the data. The chunk number is just an internal key in the
+IFF file.
+
+    bb_err_t bb_count_resources(bb_map_t *map, uint32 usage, int *num,
+int *min, int *max);
+
+This counts how many resources there are for a particular usage, and
+their minimum and maximum resource numbers. The results are written into
+*num, *min, and *max. (Any of these pointers can be NULL if you don't
+care about that value.) If there are no resources of that usage, all
+three values will be zero.
+
+* The top layer (resource loading with extra data): These are special
+calls for loading sound or image resources, which also return extra
+information (looping flag for sounds, resolution data for images.)
+
+    bb_err_t bb_load_resource_pict(bb_map_t *map, int method,
+bb_result_t *res, int resnum, bb_aux_pict_t **auxdata);
+
+    bb_err_t bb_load_resource_snd(bb_map_t *map, int method, bb_result_t
+*res, int resnum, bb_aux_sound_t **auxdata);
+
+These do what they say they do. If you don't care about the extra data,
+pass NULL as the last argument; the result is effectively the same as
+bb_load_resource(). If you do care, you should declare pointers
+    bb_aux_pict_t *auxpic;
+    bb_aux_sound_t *auxsound;
+and pass &auxpict or &auxsound as the last argument. The pointer may be
+set to NULL (meaning no extra data for this resource), or it may be set
+pointing to a structure you can read. (This structure is allocated by
+the library, so you should not write into or free() it.)
+
+* There are also some calls for loading data which is not associated
+with any particular resource. You could get this data yourself with
+bb_load_chunk_by_type(), but these calls are easier.
+
+    uint16 bb_get_release_num(bb_map_t *map);
+
+The release number of the resource file. If there is none, this returns
+0.
+
+    bb_zheader_t *bb_get_zheader(bb_map_t *map);
+
+The Z-code header data (which gives the serial number, release number,
+and checksum of the Z-code file this Blorb file is associated with.) If
+there is none, this returns NULL.
+
+    bb_resolution_t *bb_get_resolution(bb_map_t *map);
+
+The resolution data (which gives the preferred, minimum, and maximum
+window size.) If there is none, this returns NULL.
+
+    bb_err_t bb_get_palette(bb_map_t *map, bb_palette_t **res);
+
+The palette data. You should declare a pointer
+    bb_palette_t *pal;
+and pass &pal as the second argument. If pal is set to NULL, there is no
+palette data. If not, you should test pal->isdirect. If pal->isdirect is
+TRUE, then pal->data.depth contains a preferred color depth (either 16
+ot 32 bits per pixel.) If pal->isdirect is FALSE, then pal->data.table
+contains a list of up to 256 preferred color entries;
+pal->data.table.colors is an array of entries, and
+pal->data.table.numcolors is the length of the array.
+
+(If you're wondering why bb_get_palette() doesn't just return a pointer
+like bb_get_zheader() and bb_get_resolution(), it's because the palette
+isn't loaded until you ask for it. So there might be read or allocation
+errors. Ok, it's not a good reason.)
+

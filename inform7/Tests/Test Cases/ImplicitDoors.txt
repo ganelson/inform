@@ -1,0 +1,3 @@
+Neutrality is a room. The white door is a door. The white door is south of
+Neutrality. The red door is north of a room. The white door is north of a
+room called the Hot and Cold Room.

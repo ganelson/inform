@@ -1,0 +1,42 @@
+   Orchard
+  Apples
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Orchard
+  
+> >   Orchard
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    three pristine apples
+  
+  >[2] eat apple
+  You take a satisfying bite.
+  
+  >[3] i
+  You are carrying:
+    three apples, some bitten
+  
+  >[4] eat apple
+  Which do you mean, the bitten apple or a pristine apple?
+  
+  >[5] pristine
+  You take a satisfying bite.
+  
+  >[6] i
+  You are carrying:
+    three apples, some bitten
+  
+  >[7] eat apple
+  Which do you mean, a bitten apple or the pristine apple?
+  
+  >[8] pristine
+  You take a satisfying bite.
+  
+  >[9] i
+  You are carrying:
+    three bitten apples
+  
+> >

@@ -1,0 +1,30 @@
+   Maleska                                                                                                                                                                                                                STR: 5
+  Terror of the Sierra Madre
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hay-Strewn Corridor
+  The horse stalls are empty: you have already drained the animals, and carried off their corpses. The house will not long sustain you now.
+  
+  The window throws on the floor a bright square of malevolent sunlight.
+  
+  Teresa stands opposite you, her fingers wrapped tightly around a bulb of garlic and a cross.
+  
+> Maleska >    Maleska                                                                                                                                                                                                                STR: 5
+  (Testing.)
+  
+  Maleska > [1] look
+  Hay-Strewn Corridor
+  The horse stalls are empty: you have already drained the animals, and carried off their corpses. The house will not long sustain you now.
+  
+  The window throws on the floor a bright square of malevolent sunlight.
+  
+  Teresa stands opposite you, her fingers wrapped tightly around a bulb of garlic and a cross.
+  
+  Teresa > [2] look
+  Hay-Strewn Corridor
+  The stalls for horses run down one side of the room, but the house has long stood empty. A square window without shutters looks out over the ranch, away toward the Sierras.
+  
+  Maleska watches you from eyes entirely black.
+  
+> Maleska > 

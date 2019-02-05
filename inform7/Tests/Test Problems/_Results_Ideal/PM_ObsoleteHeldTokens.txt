@@ -1,0 +1,27 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ObsoleteHeldTokens
+  >--> In the sentence 'Understand "button [something held]" as taking' (source
+    text, line 3), you used the '[something held]' as a token, which was
+    allowed in the early Public Beta versions of Inform 7, but became out of
+    date in August 2006. A change was then made so that if an action needed to
+    apply to something which was carried, this would now be specified when the
+    action is created - not in the Understand line for it. For instance, one
+    might say 'Dismantling is an action which applies to one carried thing',
+    instead of '...which applies to one thing', and then write grammar such as
+    'Understand "dismantle [something] as dismantling' instead of
+    '...[something held]...'. So you probably need to change your '[something
+    held]' token to '[something]', and change the action's definition (unless
+    it is a built-in action such as 'dropping'). An alternative, though, for
+    fine-tuning is to change it to '[something preferably held]', which allows
+    anything to be Understood, but in cases of ambiguity tends to guess that
+    something held is more likely to be what the player means than something
+    not held.
+Problem__ PM_ObsoleteHeldTokens
+  >--> In the sentence 'Understand "lever [things held]" as taking' (source
+    text, line 5), you used the '[things held]' as a token, which was allowed
+    in the early Public Beta versions of Inform 7, but became out of date in
+    August 2006.
+Inform 7 has finished: 44 centiseconds used.

@@ -1,0 +1,67 @@
+   Volunteer Center
+  Generation X
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Volunteer Center
+  A fairly spartan office, though there are a few attractive posters from advertising campaigns of the past, and an ominous map charting the deforestation of Brazil.
+  
+  On the desk are a pile of leaflets, a pile of business cards and a power stapler.
+  
+  Your daughter Jenna is here, barely visible through the cloud of resentment.
+  
+  You can also see a cardboard box (closed) here.
+  
+> >   Volunteer Center
+  (Testing.)
+  
+  >[1] e
+  The whole point of this exercise is to train Jenna. Once you have her on the envelope-stuffing, you can go make some calls.
+  
+  >[2] x jenna
+  Jenna returns your stare, with added hostility.
+  
+  >[3] jenna, get stapler
+  Jenna picks up the power stapler.
+  
+  >[4] jenna, get stapler
+  "Did that," says Jenna.
+  
+  >[5] x jenna
+  Jenna has the power stapler.
+  
+  >[6] jenna, drop stapler
+  Jenna puts down the power stapler.
+  
+  >[7] jenna, drop stapler
+  "Check," says Jenna.
+  
+  >[8] jenna, open box
+  Jenna opens the cardboard box.
+  
+  >[9] jenna, open box
+  "Yeah, Mom, I already did that, okay?"
+  
+  >[10] jenna, switch stapler on
+  Jenna switches the power stapler on.
+  
+  >[11] jenna, switch stapler on
+  "Look, if I have to be here doing dumb stuff, could you at least tell me to do stuff that isn't already done?" Jenna asks wearily.
+  
+  >[12] jenna, take desk
+  "Maybe you should've brought someone a little stronger," Jenna says. "Like the Incredible Hulk."
+  
+  >[13] jenna, open box
+  Jenna gives a great upward sigh, riffling her bangs. "Once again... there is totally no point."
+  
+  >[14] jenna, open box
+  "Okay, I'm going to be, like, in the car," says Jenna. "Outside."
+  
+  
+  
+      *** Jenna has gotten fed up ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

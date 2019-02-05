@@ -1,0 +1,35 @@
+   Llama Pen
+  Alpaca Farm
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Llama Pen
+  Attached to the nearest wall, on its own movable boom, is an industrial-strength blower for doing llama hair.
+  
+  You can also see a gate and a muddy brown llama here.
+  
+> >   Llama Pen
+  (Testing.)
+  
+  >[1] use gate
+  You open the gate.
+  
+  >[2] use blower
+  You switch the industrial-strength blower on.
+  
+  >[3] use nippers
+  You attend diligently to the appearance and hygiene of the now-merely-scruffy brown llama.
+  
+  >[4] use brush
+  You attend diligently to the appearance and hygiene of the now-merely-fluffy brown llama.
+  
+  >[5] use apple
+  You eat the apple. Not bad.
+  
+  >[6] remove sombrero
+  You take off the sombrero.
+  
+  >[7] use sombrero
+  You put on the sombrero.
+  
+> >

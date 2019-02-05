@@ -1,0 +1,95 @@
+-cases [Blorb] 'inblorb/Tests/Test Cases'
+
+-recipe [Blorb]
+
+	set: $I6 = inform6/Tangled/inform6
+	set: $I7 = inform7/Tangled/inform7
+	set: $INBLORB = inblorb/Tangled/inblorb
+	set: $INTERNAL = Internal
+	set: $WORKSPACE = intest/Workspace
+
+	set: $INTERCHAIN = link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,reconcile-verbs,generate-i6:*
+
+	set: $VM = G
+	if: $CASE %c*-Z
+		set: $VM = Z
+	endif
+
+	if: $VM G
+		set: $FORMAT 		= ulx
+		set: $I6OPTIONS		= -kE2~S~DwG
+		set: $BLORBEXT		= gblorb
+	else
+		set: $FORMAT		= z8
+		set: $I6OPTIONS		= -kE2~S~Dwv8
+		set: $BLORBEXT		= zblorb
+	endif
+	set: $I7OPTIONS = -fixtime -release -format=$FORMAT -noprogress -rng -sigils -clock -log nothing -external inblorb/Tests -transient $WORK/Transient -internal $INTERNAL
+	set: $CBLORBOPTIONS = -fixtime
+
+	mkdir: $WORK/Transient
+	step: find $WORK/Transient -mindepth 1 -delete
+
+	extract: $WORK/Example.inform/Source/story.ni $VM
+
+	if: $CASE Audiovisual
+		copy: $WORKSPACE/Samples/Cover.png $WORK/Example.materials/Cover.png
+		copy: '$WORKSPACE/Samples/Small Cover.png' '$WORK/Example.materials/Small Cover.png'
+		mkdir: $WORK/Example.materials/Figures
+		copy: $WORKSPACE/Samples/Shuttle.jpg $WORK/Example.materials/Figures/Shuttle.jpg
+		copy: $WORKSPACE/Samples/Triangle.png $WORK/Example.materials/Figures/Triangle.png
+		mkdir: $WORK/Example.materials/Sounds
+		copy: $WORKSPACE/Samples/Bach.ogg $WORK/Example.materials/Sounds/Bach.ogg
+		copy: $WORKSPACE/Samples/Passacaglia.mid $WORK/Example.materials/Sounds/Passacaglia.mid
+		copy: $WORKSPACE/Samples/Powermac.aiff $WORK/Example.materials/Sounds/Powermac.aiff
+	endif
+
+	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+	step: $I7 `$I7OPTIONS -project $WORK/Example.inform -inter $INTERCHAIN >$I7CONSOLE 2>&1
+	or: 'failed with Problem message(s)' $I7CONSOLE
+
+	set: $BLURB = $WORK/Example.inform/Release.blurb
+	match text: $BLURB $PATH/_Blurb_Ideal/$CASE.blurb
+	or: 'produced the wrong release blurb'
+	match text: $WORK/Example.inform/Metadata.iFiction $PATH/_Metadata_Ideal/$CASE.iFiction
+	or: 'produced the wrong iFiction metadata'
+
+	set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+	set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
+	set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+	or: 'failed to pass through Inform 6' $I6CONSOLE
+	show i6: $I6CONSOLE
+
+	set: $BLORBFILE = $WORK/Example.inform/Build/output.$BLORBEXT
+
+	set: $CA = $PATH/_Console_Actual/$CASE.txt
+	set: $CI = $PATH/_Console_Ideal/$CASE.txt
+	step: $INBLORB `$CBLORBOPTIONS $BLURB $BLORBFILE >$CA 2>&1
+	or: 'failed inblorb' $CA
+	show: $CA
+	match text: $CA $CI
+	or: 'produced the wrong inblorb console output'
+
+	set: $TA = $PATH/_Tree_Actual/$CASE.txt
+	set: $TI = $PATH/_Tree_Ideal/$CASE.txt
+	step: find $WORK/Example.materials/Release >$TA 2>&1
+	or: 'failed find'
+	match text: $TA $TI
+	or: 'produced the wrong tree structure of files in Release'
+
+	exists: inblorb/Tests/Assistants/blorblib/blorbscan
+	or: 'incompletely tested because no blorbscan tool is available'
+
+	set: $TA = $PATH/_Scan_Actual/$CASE.txt
+	set: $TI = $PATH/_Scan_Ideal/$CASE.txt
+	step: inblorb/Tests/Assistants/blorblib/blorbscan $BLORBFILE >$TA 2>&1
+	match text: $TA $TI
+	or: 'produced a blorb whose scan was incorrect'
+
+!	match binary: $BLORBFILE $PATH/_Blorb_Ideal/$CASE.$BLORBEXT
+!	or: 'produced a blorb which did not agree'
+
+	pass: 'passed'
+
+-end

@@ -1,0 +1,75 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see Chris, a Stetson, a fedora and a key here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] x house
+  You see nothing special about the key.
+  
+  >[2] x car
+  You see nothing special about the key.
+  
+  >[3] x key
+  You see nothing special about the key.
+  
+  >[4] x kee
+  You see nothing special about the key.
+  
+  >[5] x house key
+  You see nothing special about the key.
+  
+  >[6] x house kee
+  You see nothing special about the key.
+  
+  >[7] x car key
+  You see nothing special about the key.
+  
+  >[8] x car kee
+  You see nothing special about the key.
+  
+  >[9] x house car
+  You see nothing special about the key.
+  
+  >[10] x car house
+  You see nothing special about the key.
+  
+  >[11] x key kee
+  You see nothing special about the key.
+  
+  >[12] x kee key
+  You see nothing special about the key.
+  
+  >[13] x key house
+  You see nothing special about the key.
+  
+  >[14] x key car
+  You see nothing special about the key.
+  
+  >[15] x kee house
+  You see nothing special about the key.
+  
+  >[16] x kee car
+  You see nothing special about the key.
+  
+  >[17] x brown chapeau
+  Which do you mean, the Stetson or the fedora?
+  
+  >[18] stetson
+  You see nothing special about the Stetson.
+  
+  >[19] take brown stetson hat
+  Taken.
+  
+  >[20] x chris's box
+  Which do you mean, the red box or the blue box?
+  
+  >[21] red
+  You see nothing special about the red box.
+  
+> >

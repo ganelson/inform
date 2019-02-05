@@ -1,0 +1,26 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationSymbolMalformed
+  >--> In 'Equation 2 Abacadabras = Abacadabras2 + Fish100 where Abacadabras is
+    a number, Abacadabras2 is a number, Fish100 is a number' (source text, line 3),
+    you define an equation which mentions the symbol 'Abacadabras': but a
+    symbol in a equation has to be a sequence of one to ten letters optionally
+    followed by a number from 0 to 99, so 'G', 'm', 'pi' and 'KE1' are all
+    legal symbol names. But this one is not.
+Problem__ PM_EquationSymbolMalformed
+  >--> In 'Equation 2 Abacadabras = Abacadabras2 + Fish100 where Abacadabras is
+    a number, Abacadabras2 is a number, Fish100 is a number' (source text, line 3),
+    you define an equation which mentions the symbol 'Abacadabras2': but a
+    symbol in a equation has to be a sequence of one to ten letters optionally
+    followed by a number from 0 to 99, so 'G', 'm', 'pi' and 'KE1' are all
+    legal symbol names. But this one is not.
+Problem__ PM_EquationSymbolMalformed
+  >--> In 'Equation 2 Abacadabras = Abacadabras2 + Fish100 where Abacadabras is
+    a number, Abacadabras2 is a number, Fish100 is a number' (source text, line 3),
+    you define an equation which mentions the symbol 'Fish100': but a symbol in
+    a equation has to be a sequence of one to ten letters optionally followed
+    by a number from 0 to 99, so 'G', 'm', 'pi' and 'KE1' are all legal symbol
+    names. But this one is not.
+Inform 7 has finished: 21 centiseconds used.

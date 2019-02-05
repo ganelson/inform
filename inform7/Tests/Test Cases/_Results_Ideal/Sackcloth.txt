@@ -1,0 +1,52 @@
+   Attic
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150519 / Inform 7 build 6M23 (I6/v6.33 lib 6/12N) SD
+  
+  Attic
+  You can see a CD entitled No Smoke Without Fire, a 70s photograph of an American winning Wimbledon, a polyfraxinus branch, an urn holding your late great-aunt's remains, a convention badge from the American Society of Hypertension and a ghost story by M R James here.
+  
+> >   Attic
+  (Testing.)
+  
+  >[1] get cd
+  Taken.
+  
+  >[2] get 70s
+  Taken.
+  
+  >[3] get branch
+  Taken.
+  
+  >[4] get urn
+  (putting the CD entitled No Smoke Without Fire into the old blue rucksack to make room)
+  Taken.
+  
+  >[5] drop all
+  urn holding your late great-aunt's remains: Dropped.
+  polyfraxinus branch: Dropped.
+  70s photograph of an American winning Wimbledon: Dropped.
+  
+  >[6] take off rucksack
+  You take off the old blue rucksack.
+  
+  >[7] get cd
+  Taken.
+  
+  >[8] get 70s
+  Taken.
+  
+  >[9] get branch
+  (putting the CD entitled No Smoke Without Fire into the old blue rucksack to make room)
+  Taken.
+  
+  >[10] get urn
+  (putting the 70s photograph of an American winning Wimbledon into the old blue rucksack to make room)
+  Taken.
+  
+  >[11] drop all
+  urn holding your late great-aunt's remains: Dropped.
+  polyfraxinus branch: Dropped.
+  old blue rucksack: Dropped.
+  
+> >

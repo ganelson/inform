@@ -1,0 +1,17 @@
+   dome
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  dome
+  You can see a chap, a fruit and a fruit scone here.
+  
+> >   dome
+  (Testing.)
+  
+  >[1] notify fruit of chap
+  (the fruit scone of the chap)
+  (first taking the fruit scone)
+  The chap doesn't seem interested.
+  
+> >

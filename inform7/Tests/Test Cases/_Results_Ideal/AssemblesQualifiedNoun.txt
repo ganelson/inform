@@ -1,0 +1,10 @@
+   Foo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150625 / Inform 7 build 6M38 (I6/v6.33 lib 6/12N) SD
+  
+  Foo
+  You can see a woman and a vehicle (empty and providing light) here.
+  
+> >   Foo
+> Are you sure you want to quit? 

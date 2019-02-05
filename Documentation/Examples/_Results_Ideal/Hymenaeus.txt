@@ -1,0 +1,39 @@
+   Wedding Procession
+  Hymenaeus
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wedding Procession
+  Orpheus carries a flaming torch.
+  
+  Eurydice carries a flaming torch.
+  
+> >   Wedding Procession
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  Aquilo blows down from the north, extinguishing the torch carried by Orpheus.
+  
+  >[4] look
+  Wedding Procession
+  Orpheus carries an extinguished torch.
+  
+  Eurydice carries a flaming torch.
+  
+  >[5] x flaming torch
+  It casts a bright glow over Eurydice.
+  
+  Aquilo blows down from the north, extinguishing the torch carried by Eurydice.
+  
+  >[6] x extinguished torch
+  Orpheus is looking at it disconsolately, obviously worried about the omens.
+  
+> >

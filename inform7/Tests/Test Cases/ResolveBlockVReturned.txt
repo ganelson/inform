@@ -1,0 +1,16 @@
+Do is a room.
+
+Re is east of Do and west of Mi. not-E is a region.  Do is in not-E.
+Rarely Sharped is a region.  Re is in Rarely Sharped.  Rarely Sharped
+is in not-E.
+
+The last carry out looking rule:
+	let RR be the xregions of the location;
+	say "(Within [the xregions of the location].)".
+
+To decide what list of objects is the xregions of (X - a room):
+	let R be a list of objects;
+	let R be {};
+	repeat with N running through regions:
+		if X is regionally in N, add N to R;
+	decide on R.

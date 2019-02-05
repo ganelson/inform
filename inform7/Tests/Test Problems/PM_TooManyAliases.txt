@@ -1,0 +1,34 @@
+The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
+
+Understand the command "alpha" as "take".
+
+Understand the command "Afghanistan" as "take".
+Understand the command "Albania" as "take".
+Understand the command "Algeria" as "take".
+Understand the command "Andorra" as "take".
+Understand the command "Angola" as "take".
+Understand the command "Antigua" as "take".
+Understand the command "Argentina" as "take".
+Understand the command "Armenia" as "take".
+Understand the command "Australia" as "take".
+Understand the command "Austria" as "take".
+Understand the command "Azerbaijan" as "take".
+Understand the command "Bahamas" as "take".
+Understand the command "Bahrain" as "take".
+Understand the command "Bangladesh" as "take".
+Understand the command "Barbados" as "take".
+Understand the command "Belarus" as "take".
+Understand the command "Belgium" as "take".
+Understand the command "Belize" as "take".
+Understand the command "Benin" as "take".
+Understand the command "Bhutan" as "take".
+Understand the command "Bolivia" as "take".
+Understand the command "Bosnia" as "take".
+Understand the command "Botswana" as "take".
+Understand the command "Brazil" as "take".
+Understand the command "Brunei" as "take".
+Understand the command "Bulgaria" as "take".
+Understand the command "Burkina" as "take".
+Understand the command "Burundi" as "take".
+Understand the command "Cambodia" as "take".
+Understand the command "Cameroon" as "take".

@@ -1,0 +1,190 @@
+Laboratory is a room.
+
+The gamma constant is a real number that varies. The gamma constant is 0.5772156649.
+
+When play begins:
+	showme ceiling of pi;
+	showme ceiling of -16.315;
+	showme floor of pi;
+	showme floor of -16.315;
+	showme logarithm of e;
+	showme logarithm of 1;
+	showme logarithm of 1000;
+	showme logarithm of exponential of 7.12;
+	showme logarithm to base 10 of 1000000;
+	showme logarithm to base 10 of 350;
+	showme logarithm to base 2 of 256;
+	showme exponential of 0;
+	showme exponential of 1;
+	showme exponential of -10;
+	showme exponential of 10;
+	showme exponential of logarithm of 7.12;
+	showme 2 to the power 4;
+	showme 100 to the power 0.5;
+	showme 7 to the power -1;
+	showme pi to the power 0;
+	showme reciprocal of -2;
+	showme reciprocal of 0.1;
+	showme reciprocal of 7;
+	showme reciprocal of plus infinity;
+	showme real square root of 2;
+	showme cosine of 2;
+	showme cosine of 2.0;
+	showme 3 divided by 2;
+	showme 3 divided by 2.0;
+	showme 3.0 divided by 2;
+	showme 3.0 divided by 2.0;
+	showme 1.4 to the nearest whole number;
+	showme 1.6 to the nearest whole number;
+	showme -1.6 to the nearest whole number;
+	showme 6 x 10^23 to the nearest whole number;
+	showme sine of 0;
+	showme sine of 45 degrees;
+	showme sine of (pi divided by 4);
+	showme sine of (pi divided by 2);
+	showme sine of pi;
+	showme cosine of 0;
+	showme cosine of 45 degrees;
+	showme cosine of (pi divided by 4);
+	showme cosine of (pi divided by 2);
+	showme cosine of pi;
+	showme tangent of 0;
+	showme tangent of 45 degrees;
+	showme tangent of (pi divided by 4);
+	showme tangent of (pi divided by 2);
+	showme 3 + 3;
+	showme pi + pi;
+	showme pi + 3;
+	showme 3 + pi;
+	showme 3 - 3;
+	showme pi - pi;
+	showme pi - 3;
+	showme 3 - pi;
+	showme 3 * 3;
+	showme pi * pi;
+	showme pi * 3;
+	showme 3 * pi;
+	showme 3 / 3;
+	showme pi / pi;
+	showme pi / 3;
+	showme 3 / pi;
+	showme the remainder after dividing pi by 3;
+	showme the remainder after dividing 3.3 by 1;
+	showme the remainder after dividing 3.7 by 1;
+	showme the remainder after dividing -3.3 by 1;
+	showme the remainder after dividing -3.7 by 1;
+	showme the gamma constant;
+	showme {1, 3, 7.5, 4 x 10^21, 8.9256, 4, -1, 0};
+	let the test list be {2.345, 5.3 x 10^-7, 1, 3, 7.5, 4 x 10^21, 8.9256, 4, -1, 0.0};
+	showme the test list;
+	sort the test list;
+	showme the test list;
+	let M be pi;
+	showme M;
+	increase M by pi;
+	showme M;
+	decrease M by pi;
+	showme M;
+	let M be 4;
+	showme M;
+	repeat through the Table of Proton Data:
+		now the accuracy entry is the absolute value of (100 times the uncertainty entry divided by the constant value entry);
+	sort the Table of Proton Data in accuracy order;
+	say "In order of uncertainty:[paragraph break]";
+	repeat through the Table of Proton Data:
+		say "[constant name entry] is [constant value entry] +/- [uncertainty entry] ([accuracy entry]%).";
+	repeat through the Table of Proton Data:
+		say "The [constant name entry] is known to 1 part in [reciprocal of (accuracy entry divided by 100) to the nearest whole number].";
+	showme the square root of the exponential of 2;
+	showme pi to the power 4;
+	showme pi * pi * pi * pi;
+	showme pi / 2;
+	if plus infinity is infinite, say "Pass.";
+	if minus infinity is infinite, say "Pass.";
+	if 3.42 is infinite, say "Fail.";
+	if the square root of -1.0 is nonexistent, say "Pass.";
+	showme the hyperbolic sine of 1;
+	showme the hyperbolic cosine of 1;
+	showme the hyperbolic tangent of 1;
+	showme the hyperbolic sine of -1;
+	showme the hyperbolic cosine of -1;
+	showme the hyperbolic tangent of -1;
+	showme the hyperbolic sine of pi;
+	showme the hyperbolic cosine of pi;
+	showme the hyperbolic tangent of pi;
+	say "Some equations to solve now.";
+	say "y = 4/2: ";
+	let y be given by y = 4/2 where y is a number;
+	showme y;
+	say "x = log (pi^2): ";
+	let x be given by x = log (pi^2) where x is a real number;
+	showme x;
+	say "x = asinh(1.5): ";
+	let x be given by x = arcsinh(1.5);
+	showme x;
+	say "x = acosh(2): ";
+	let x be given by x = arccosh(2);
+	showme x;
+	say "x = atanh(0.5): ";
+	let x be given by x = arctanh(0.5);
+	showme x;
+	say "x = log pi^2: ";
+	let x be given by x = log pi^2;
+	showme x;
+	say "x = (log pi)^2: ";
+	let x be given by x = (log pi)^2;
+	showme x;
+	say "x = log(pi^2): ";
+	let x be given by x = log(pi^2);
+	showme x;
+	say "x = 2 log pi: ";
+	let x be given by x = 2 log pi;
+	showme x;
+	say "x = exp(exp(0)): ";
+	let x be given by x = exp(exp(0));
+	showme x;
+	say "x = exp exp 0: ";
+	let x be given by x = exp exp 0;
+	showme x;
+	say "log x = 1: ";
+	let x be given by log x = 1;
+	showme x;
+	say "log x = 0: ";
+	let x be given by log x = 0;
+	showme x;
+	say "exp x = e: ";
+	let x be given by exp x = e;
+	showme x;
+	say "cos x = -1: ";
+	let x be given by cos x = -1;
+	showme x;
+	say "sinh x = 1: ";
+	let x be given by sinh x = 1.5;
+	showme x;
+	say "cosh x = 2: ";
+	let x be given by cosh x = 2;
+	showme x;
+
+Table of Proton Data
+constant name	constant value	uncertainty	accuracy
+"proton charge to mass quotient"	9.57883358 x 10^7	0.00000021 x 10^7	(a real number)
+"proton Compton wavelength"	1.32140985623 x 10^-15	0.00000000094 x 10^-15
+"proton Compton wavelength over 2 pi"	0.21030891047 x 10^-15	0.00000000015 x 10^-15
+"proton-electron mass ratio"	1836.15267245	0.00000075
+"proton g factor"	5.585694713	0.000000046
+"proton gyromag. ratio"	2.675222005 x 10^8	0.000000063 x 10^8
+"proton gyromag. ratio over 2 pi"	42.5774806	0.0000010
+"proton mag. mom."	1.410606743 x 10^-26	0.000000033 x 10^-26
+"proton mag. mom. to Bohr magneton ratio"	1.521032210 x 10^-3	0.000000012 x 10^-3
+"proton mag. mom. to nuclear magneton ratio"	2.792847356	0.000000023
+"proton mag. shielding correction"	25.694 x 10^-6	0.014 x 10^-6
+"proton mass"	1.672621777 x 10^-27	0.000000074 x 10^-27
+"proton mass energy equivalent"	1.503277484 x 10^-10	0.000000066 x 10^-10
+"proton mass energy equivalent in MeV"	938.272046	0.000021
+"proton mass in u"	1.007276466812	0.000000000090
+"proton molar mass"	1.007276466812 x 10^-3	0.000000000090 x 10^-3
+"proton-muon mass ratio"	8.88024331	0.00000022
+"proton-neutron mag. mom. ratio"	-1.45989806	0.00000034
+"proton-neutron mass ratio"	0.99862347826	0.00000000045
+"proton rms charge radius"	0.8775 x 10^-15	0.0051 x 10^-15
+"proton-tau mass ratio"	0.528063	0.000048

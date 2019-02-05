@@ -1,0 +1,41 @@
+   Behind the Waterfall
+  Reflections
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Behind the Waterfall
+  Though one wall of the cave is open to the waterfall, the quantity of water is so great that barely any light comes through from the outside.
+  
+  The blazing light of the torch reflects in the surface of Aladdin's lamp.
+  
+> >   Behind the Waterfall
+  (Testing.)
+  
+  >[1] drop ball
+  Dropped.
+  
+  >[2] look
+  Behind the Waterfall
+  Though one wall of the cave is open to the waterfall, the quantity of water is so great that barely any light comes through from the outside.
+  
+  The blazing light of the torch reflects in the surfaces of the reflecting ball and Aladdin's lamp.
+  
+  >[3] blow torch
+  The light of the torch dies to radiant.
+  
+  >[4] look
+  Behind the Waterfall
+  Though one wall of the cave is open to the waterfall, the quantity of water is so great that barely any light comes through from the outside.
+  
+  The radiant light of the torch reflects in the surfaces of the reflecting ball and Aladdin's lamp.
+  
+  >[5] drop torch
+  Dropped.
+  
+  >[6] look
+  Behind the Waterfall
+  Though one wall of the cave is open to the waterfall, the quantity of water is so great that barely any light comes through from the outside.
+  
+  The radiant light of the fallen torch reflects in the surfaces of the reflecting ball and Aladdin's lamp.
+  
+> >

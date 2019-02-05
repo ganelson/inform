@@ -1,0 +1,17 @@
+Inform 7 build 6L66 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InexplicitTableEntryAsValue
+  >--> You wrote 'Act I begins when the player's command includes a topic
+    listed in table 1' (source text, line 3): but this form of table entry can
+    only be used in certain special phrases, because it doesn't explicitly
+    refer to a single value. (You can see which phrases in the Phrasebook
+    index: it's allowed wherever a 'table entry' is wanted.)
+    I was trying to match this phrase:
+      (player's command - snippet) includes (a topic listed in table 1 - topic)
+    
+    I recognised:
+    player's command = a non-temporary variable, holding a snippet
+    a topic listed in table 1 = a table entry, holding a topic
+Inform 7 has finished: 48 centiseconds used.

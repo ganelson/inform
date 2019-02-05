@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SpatialContradiction
+  >--> You wrote 'There is a hairstyle' (source text, line 4), but also 'There
+    is a hairstyle' (source text, line 5): that seems to be saying that the
+    same object (hairspray) must be in two different places (nameless hairstyle
+    created in the sentence 'There is a hairstyle' (source text, line 4) and
+    nameless hairstyle created in the sentence 'There is a hairstyle' (source
+    text, line 5)). This looks like a contradiction. This sometimes happens as
+    a result of a sentence like 'Every person carries a bag', when Inform
+    doesn't know 'bag' as the name of any kind - so that it makes only a single
+    thing called 'bag', and then the sentence looks as if it says everyone is
+    carrying the same bag.
+Inform 7 has finished: 17 centiseconds used.

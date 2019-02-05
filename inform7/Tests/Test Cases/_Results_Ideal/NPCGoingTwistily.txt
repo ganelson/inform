@@ -1,0 +1,21 @@
+   Twisted Passage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Twisted Passage
+  
+> >   Twisted Passage
+  (Testing.)
+  
+  >[1] wait
+  Time passes.
+  
+  The thief arrives.
+  
+  >[2] g
+  Time passes.
+  
+  The thief goes east.
+  
+> >

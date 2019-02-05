@@ -1,0 +1,191 @@
+"Chapter 4: Miles Cross"
+
+Chapter 4 
+
+
+ Use command line echoing.
+
+Section 1 - New Kinds
+
+A crossroad and a dead end are kinds of room.
+
+Miles Cross is a crossroad. "No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone."
+
+The Forest is a dead end. It is west of Miles Cross. South of Miles Cross is the Barren Valley. The Barren Valley is a dead end.
+
+Carter Hall is east of Miles Cross. In Carter Hall is a lantern. The description of the lantern is "Glowing and leaping with flame of human make." It is lit.
+
+The chest is an openable closed lockable locked container in Carter Hall. The lid is part of the chest. It is an enterable supporter.
+
+North of Miles Cross is a crossroad called Seven Dials. The description of Seven Dials is "There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road to be -- now to London, now to Abingdon; now to Weston-super-Mare, or now to Hell."
+
+Seven Dials contains a signpost. The signpost is scenery. Understand "sign" and "post" as the signpost.
+
+
+A horse is a kind of animal. The placid pony is a horse in Carter Hall. It is wearing a bell. It is carrying an openable container called the pack.
+
+A milk-white mare is a horse in the Barren Valley.
+
+A faerie is a kind of person with description "Skin dead, eyes alive.".
+
+Section 2 - Degrees of Certainty
+
+A crossroad is always lighted. A dead end is usually dark. The Barren Valley is lighted. 
+
+A horse is seldom pushable between rooms. It is never portable.
+
+The moon switch is a device in the Barren Valley. "On a wicker platform is a switch, currently [if switched on]on[otherwise]off[end if]." After switching on the moon switch: now all rooms are lighted; say "The moon comes on in a flood of false light."
+
+After switching off the moon switch: now every dead end is dark; now the Barren Valley is lighted; say "With a snap, the moon goes out, leaving a fading afterglow in the sky."
+
+Before looking in a lighted dead end:
+	say "The moon casts a false light on the scene..."
+
+Before looking in a dark room when the lit lantern is carried by the player:
+	say "The lantern lights up only your immediate surroundings."
+
+Section 3 - Plural assertions
+
+Some menacing trees and some deep shadows are fixed in place things in Miles Cross. Some branches are part of the trees. Some trunks are part of the trees. Some faces are part of the trees.
+
+Rule for printing the name of the shadows when the moon switch is switched on:
+	say "shifting shadows"
+
+The plural of hoof is hooves. A hoof is a kind of thing. 
+
+Section 4 - Duplicates
+
+
+Three faeries are in the Forest. 
+
+Section 5 - Assemblies and body parts
+
+A saddle is a kind of vehicle. A saddle is part of every horse. 
+
+A wreath is a kind of thing with description "A fragile crown of autumn-brown leaves.". A wreath is in every room. A wreath is usually wearable.
+
+A footprint is a kind of thing with description "Narrow and tapering, outlined in dew." Two footprints are in every crossroads. A footprint is usually fixed in place.
+
+
+Four hooves are part of every horse.
+
+Section 6 - New either/or properties
+[either/or; can be]
+
+A thing is either illusory or genuine. Horses are always genuine. People are usually illusory.
+
+A faerie can be sly. Faeries are usually sly. Faeries are seldom not sly. 
+
+Section 7 - New value properties
+[string properties; number properties; 'if X has a Y' check.]
+
+A horse has some text called coat. The coat of a horse is usually "dun". The coat of the mare is "spectral".
+
+A crossroads has a number called danger count. Seven Dials has danger count 7. Miles Cross has danger count 1.
+
+Instead of listening to a room:
+	if the location provides the property danger count, say "You hear a sound like [the danger count of location in words] breath[s] sharply drawn in.";
+	otherwise continue the action.
+	
+Height is a kind of value. The heights are tall and short. A horse has a height. A horse is usually tall. The pony is short.
+
+Section 8 - Text with substitutions
+
+Instead of examining a horse: say "[The noun] appears [height] and [coat][if the noun is short]. Nothing too threatening there[end if]."
+
+Section 9 - Text with numbers
+[Already did a basic check in .7, but also check number of turns, number of turns in words; mechanism]
+
+Instead of waiting:
+	say "You've already expended [turn count in words] act[s]. How much time is there to waste?"
+
+Instead of waiting in a crossroads:
+	say "You feel [the danger count of location in words] breath[s] cold on the back of your neck."
+
+Section 10 - Text with lists
+	
+Instead of examining something which is not a horse when something is part of the noun:
+	say "You notice [a list of things which are part of the noun]."
+
+Instead of going nowhere:
+	say "Nearby [is-are a list of adjacent rooms]."
+
+Before examining the pony:
+	say "You first notice [the list of things carried by pony], which it carries, and [the list of things worn by pony], which it wears. Only then can you think about the pony itself."
+
+Section 11 - Text with variations
+
+The printed name of the Barren Valley is "[if unvisited]Valley[otherwise]Barren Valley[end if]"
+
+The description of the Barren Valley is "[if unvisited]A great shallow bowl of dirt, without even weeds[otherwise]Still eerily silent and cursed[end if]."
+
+Section 12 - Text with type styles
+
+Instead of attacking the trees:
+	say "[bold type]Snap[roman type] goes the branch, tweaking at your finger and nearly breaking it clean off."
+
+Instead of climbing or listening to the trees:
+	say "'[fixed letter spacing]NO[variable letter spacing],' says a voice; and '[fixed letter spacing]THEY CAME BY HERE, AND TOOK THE MAN TO HELL[variable letter spacing].'".
+
+Section 13 - Kinds of value
+
+Destination is a kind of value. The destinations are London, Abingdon, Luton, Weston-super-Mare, Runnymede, Hell, and Low Noon.
+
+The signpost has a destination.
+
+Instead of examining the signpost:
+	say "[The signpost] currently puts you on the road to [italic type][the destination of the signpost][roman type], but it swiftly alters again.";
+	now the destination of the signpost is the destination after the destination of the signpost.
+	
+Instead of turning the signpost:
+	now the destination of the signpost is the destination after the destination of the signpost;
+	now the ultimate goal is the destination of the signpost;
+	say "With a hand's touch you turn the signpost to mark your way for [italic type][the destination of the signpost][roman type]."
+
+Instead of going north in Seven Dials when the ultimate goal is Hell:
+	say "It is a path that goes gently ever down and down with no stumbling block or any distraction at either side; there are no bandits and no tolls.";
+	end the story saying "You have died".
+
+Instead of going north in Seven Dials when the ultimate goal is Low Noon:
+	say "A long road whose scenery does not change, nor anything on the horizon move but the sun. When at last you come to Noon, she hangs above your head like a hat.";
+	end the story saying "You have won".
+
+
+Section 14 - Using new kinds of value in properties
+
+The signpost has destination Runnymede.
+
+Section 15 - Conditions of things
+
+The signpost is either slightly crooked, very crooked, or straight. The printed name of the signpost is "[signpost condition] signpost".
+
+Instead of pushing the very crooked signpost:
+	now the signpost is straight;
+	say "You give a shove to the signpost, now [signpost condition]."
+
+Instead of pushing the straight signpost:
+	now the signpost is slightly crooked;
+	say "You give a shove to the signpost, now [signpost condition]."
+	
+Instead of pushing the slightly crooked signpost:
+	now the signpost is very crooked;
+	say "You give a shove to the signpost, now [signpost condition]."
+	
+Every turn:
+	if the signpost is visible, say "The signpost is still [signpost condition], but who knows for how long?"
+	
+Section 16 - Values that vary
+["that varies", "which varies", X variable; assigning the variable up front; having compilation fail because of insufficient examples of the right type. New kinds of value, existing kinds of thing.]
+
+
+Our dearest friend is a person that varies.
+
+The ultimate goal is a destination which varies. 
+
+The number of our foes is a number variable. The number of our foes is 33.
+
+
+Section 17 - Bibliographic data
+[Explicitly setting data; names in quotation marks.]
+
+The release number is 12. The story author is "Emily V. Short". The story genre is "An Interactive Test"	

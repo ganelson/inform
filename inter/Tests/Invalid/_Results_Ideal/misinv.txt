@@ -1,0 +1,14 @@
+inter: inter/Tests/Invalid/misinv.intert, line 9: no such symbol: 'K_odour'
+>--> kind K_stuff struct K_number K_colour K_odour
+inter: inter/Tests/Invalid/misinv.intert, line 23: not a label
+>--> .spong
+inter: inter/Tests/Invalid/misinv.intert, line 27: bad digit for this number base: 'S_stuff'
+>--> ref K_stuff S_stuff
+inter: inter/Tests/Invalid/misinv.intert, line 32: local has kind K_colour which is not a K_number: 'x'
+>--> ref K_number x
+inter: inter/Tests/Invalid/misinv.intert, line 24: this inv of !increment should have 1 argument(s), but has 0
+inter: inter/Tests/Invalid/misinv.intert, line 29: operand 1 of inv '!increment' should be ref, but this is val
+inter: inter/Tests/Invalid/misinv.intert, line 31: this inv of !increment should have 1 argument(s), but has 0
+inter: inter/Tests/Invalid/misinv.intert, line 31: operand 1 of inv 'R_101' should be val, but this is void
+inter: inter/Tests/Invalid/misinv.intert, line 31: this inv of !increment should have 1 argument(s), but has 0
+inter: inter/Tests/Invalid/misinv.intert, line 43: this inv of !increment should have 1 argument(s), but has 0

@@ -1,0 +1,167 @@
+
+
+
+"ceiling of pi" = real number: 4.0
+"ceiling of -16.315" = real number: -16.0
+"floor of pi" = real number: 3.0
+"floor of -16.315" = real number: -17.0
+"logarithm of e" = real number: 0.99999
+"logarithm of 1" = real number: 0.0
+"logarithm of 1000" = real number: 6.90776
+"logarithm of exponential of 7.12" = real number: 7.12
+"logarithm to base 10 of 1000000" = real number: 6.0
+"logarithm to base 10 of 350" = real number: 2.54407
+"logarithm to base 2 of 256" = real number: 8.0
+"exponential of 0" = real number: 1.0
+"exponential of 1" = real number: 2.71828
+"exponential of -10" = real number: 4.53999 × 10^-5
+"exponential of 10" = real number: 22026.46484
+"exponential of logarithm of 7.12" = real number: 7.12
+"2 to the power 4" = real number: 16.0
+"100 to the power 0.5" = real number: 10.0
+"7 to the power -1" = real number: 0.14286
+"pi to the power 0" = real number: 1.0
+"reciprocal of -2" = real number: -0.5
+"reciprocal of 0.1" = real number: 10.0
+"reciprocal of 7" = real number: 0.14286
+"reciprocal of plus infinity" = real number: 0.0
+"real square root of 2" = real number: 1.41421
+"cosine of 2" = real number: -0.41615
+"cosine of 2.0" = real number: -0.41615
+"3 divided by 2" = number: 1
+"3 divided by 2.0" = real number: 1.5
+"3.0 divided by 2" = real number: 1.5
+"3.0 divided by 2.0" = real number: 1.5
+"1.4 to the nearest whole number" = number: 1
+"1.6 to the nearest whole number" = number: 2
+"-1.6 to the nearest whole number" = number: -2
+"6 x 10^23 to the nearest whole number" = number: 2147483647
+"sine of 0" = real number: 0.0
+"sine of 45 degrees" = real number: 0.70711
+"sine of (pi divided by 4)" = real number: 0.70711
+"sine of (pi divided by 2)" = real number: 1.0
+"sine of pi" = real number: -8.74228 × 10^-8
+"cosine of 0" = real number: 1.0
+"cosine of 45 degrees" = real number: 0.70711
+"cosine of (pi divided by 4)" = real number: 0.70711
+"cosine of (pi divided by 2)" = real number: -4.37114 × 10^-8
+"cosine of pi" = real number: -1.0
+"tangent of 0" = real number: 0.0
+"tangent of 45 degrees" = real number: 1.0
+"tangent of (pi divided by 4)" = real number: 1.0
+"tangent of (pi divided by 2)" = real number: -2.28773 × 10^7
+"3 + 3" = number: 6
+"pi + pi" = real number: 6.28319
+"pi + 3" = real number: 6.14159
+"3 + pi" = real number: 6.14159
+"3 - 3" = number: 0
+"pi - pi" = real number: 0.0
+"pi - 3" = real number: 0.14159
+"3 - pi" = real number: -0.14159
+"3 * 3" = number: 9
+"pi * pi" = real number: 9.8696
+"pi * 3" = real number: 9.42478
+"3 * pi" = real number: 9.42478
+"3 / 3" = number: 1
+"pi / pi" = real number: 1.0
+"pi / 3" = real number: 1.0472
+"3 / pi" = real number: 0.95493
+"remainder after dividing pi by 3" = real number: 0.14159
+"remainder after dividing 3.3 by 1" = real number: 0.3
+"remainder after dividing 3.7 by 1" = real number: 0.7
+"remainder after dividing -3.3 by 1" = real number: -0.3
+"remainder after dividing -3.7 by 1" = real number: -0.7
+"gamma constant" = real number: 0.57722
+list of real numbers: {1.0, 3.0, 7.5, 4.0 × 10^21, 8.9256, 4.0, -1.0, 0.0}
+"test list" = list of real numbers: {2.345, 5.3 × 10^-7, 1.0, 3.0, 7.5, 4.0 × 10^21, 8.9256, 4.0, -1.0, 0.0}
+"test list" = list of real numbers: {-1.0, 0.0, 5.3 × 10^-7, 1.0, 2.345, 3.0, 4.0, 7.5, 8.9256, 4.0 × 10^21}
+"M" = real number: 3.14159
+"M" = real number: 6.28319
+"M" = real number: 3.14159
+"M" = real number: 4.0
+In order of uncertainty:
+
+proton mass in u is 1.00728 +/- 9.00001 × 10^-11 (8.935 × 10^-9%).
+proton molar mass is 0.00101 +/- 9.00001 × 10^-14 (8.935 × 10^-9%).
+proton-electron mass ratio is 1836.15271 +/- 7.50001 × 10^-7 (4.08463 × 10^-8%).
+proton-neutron mass ratio is 0.99862 +/- 4.5 × 10^-10 (4.50621 × 10^-8%).
+proton Compton wavelength is 1.32141 × 10^-15 +/- 9.39999 × 10^-25 (7.11363 × 10^-8%).
+proton Compton wavelength over 2 pi is 2.10309 × 10^-16 +/- 1.5 × 10^-25 (7.13237 × 10^-8%).
+proton mag. mom. to Bohr magneton ratio is 0.00152 +/- 1.2 × 10^-11 (7.88939 × 10^-7%).
+proton g factor is 5.5857 +/- 4.6 × 10^-8 (8.23533 × 10^-7%).
+proton mag. mom. to nuclear magneton ratio is 2.79285 +/- 2.3 × 10^-8 (8.23533 × 10^-7%).
+proton charge to mass quotient is 9.57883 × 10^7 +/- 2.1 (2.19233 × 10^-6%).
+proton mass energy equivalent in MeV is 938.27203 +/- 2.1 × 10^-5 (2.23816 × 10^-6%).
+proton mag. mom. is 1.41061 × 10^-26 +/- 3.29999 × 10^-34 (2.33942 × 10^-6%).
+proton gyromag. ratio over 2 pi is 42.57748 +/- 1.0 × 10^-6 (2.34866 × 10^-6%).
+proton gyromag. ratio is 2.67522 × 10^8 +/- 6.3 (2.35495 × 10^-6%).
+proton-muon mass ratio is 8.88024 +/- 2.2 × 10^-7 (2.47741 × 10^-6%).
+proton mass energy equivalent is 1.50328 × 10^-10 +/- 6.6 × 10^-18 (4.39041 × 10^-6%).
+proton mass is 1.67262 × 10^-27 +/- 7.40001 × 10^-35 (4.42419 × 10^-6%).
+proton-neutron mag. mom. ratio is -1.4599 +/- 3.4 × 10^-7 (2.32893 × 10^-5%).
+proton-tau mass ratio is 0.52806 +/- 4.8 × 10^-5 (0.00909%).
+proton mag. shielding correction is 2.5694 × 10^-5 +/- 1.4 × 10^-8 (0.05449%).
+proton rms charge radius is 8.77499 × 10^-16 +/- 5.10001 × 10^-18 (0.5812%).
+The proton mass in u is known to 1 part in 2147483647.
+The proton molar mass is known to 1 part in 2147483647.
+The proton-electron mass ratio is known to 1 part in 2147483647.
+The proton-neutron mass ratio is known to 1 part in 2147483647.
+The proton Compton wavelength is known to 1 part in 1405755136.
+The proton Compton wavelength over 2 pi is known to 1 part in 1402059392.
+The proton mag. mom. to Bohr magneton ratio is known to 1 part in 126752672.
+The proton g factor is known to 1 part in 121428152.
+The proton mag. mom. to nuclear magneton ratio is known to 1 part in 121428152.
+The proton charge to mass quotient is known to 1 part in 45613496.
+The proton mass energy equivalent in MeV is known to 1 part in 44679620.
+The proton mag. mom. is known to 1 part in 42745660.
+The proton gyromag. ratio over 2 pi is known to 1 part in 42577480.
+The proton gyromag. ratio is known to 1 part in 42463844.
+The proton-muon mass ratio is known to 1 part in 40364740.
+The proton mass energy equivalent is known to 1 part in 22776932.
+The proton mass is known to 1 part in 22602998.
+The proton-neutron mag. mom. ratio is known to 1 part in 4293818.
+The proton-tau mass ratio is known to 1 part in 11001.
+The proton mag. shielding correction is known to 1 part in 1835.
+The proton rms charge radius is known to 1 part in 172.
+"square root of the exponential of 2" = real number: 2.71828
+"pi to the power 4" = real number: 97.4091
+"pi * pi * pi * pi" = real number: 97.4091
+"pi / 2" = real number: 1.5708
+Pass.
+Pass.
+Pass.
+"hyperbolic sine of 1" = real number: 1.54308
+"hyperbolic cosine of 1" = real number: 1.1752
+"hyperbolic tangent of 1" = real number: 1.31304
+"hyperbolic sine of -1" = real number: 1.54308
+"hyperbolic cosine of -1" = real number: -1.1752
+"hyperbolic tangent of -1" = real number: -1.31304
+"hyperbolic sine of pi" = real number: 11.59195
+"hyperbolic cosine of pi" = real number: 11.54874
+"hyperbolic tangent of pi" = real number: 1.00374
+Some equations to solve now.
+y = 4/2: "y" = number: 2
+x = log (pi^2): "x" = real number: 2.28946
+x = asinh(1.5): "x" = real number: 1.19476
+x = acosh(2): "x" = real number: 1.31696
+x = atanh(0.5): "x" = real number: 0.54931
+x = log pi^2: "x" = real number: 2.28946
+x = (log pi)^2: "x" = real number: 1.31041
+x = log(pi^2): "x" = real number: 2.28946
+x = 2 log pi: "x" = real number: 2.28946
+x = exp(exp(0)): "x" = real number: 2.71828
+x = exp exp 0: "x" = real number: 2.71828
+log x = 1: "x" = real number: 2.71828
+log x = 0: "x" = real number: 1.0
+exp x = e: "x" = real number: 0.99999
+cos x = -1: "x" = real number: 3.14159
+sinh x = 1: "x" = real number: 1.19476
+cosh x = 2: "x" = real number: 1.31696
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+
+Laboratory
+
+>Are you sure you want to quit? 

@@ -1,0 +1,12 @@
+Inform 7 build 6M27 has started.
+I've now read your source text, which is 39 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SayOverComplex
+  >--> You wrote 'say "[first time][first time][first tim [...]
+    ly][only][only][only][only][only]."' (source text, line 3): but this is too
+    complex a text substitution, and needs to be simplified. You might find it
+    helful to define a new text substitution of your own ('To say fiddly
+    details: ...') and then use it in this text by including the '[fiddly
+    details]'.
+Inform 7 has finished: 59 centiseconds used.

@@ -1,0 +1,919 @@
+5Z71 (18 April 2009)
+
+INFORM FOR OS X
+
+A new option on the Advanced panel of the Preferences allows the user to
+	choose between Git and Glulxe as the interpreter used in the Game panel
+	to play back Glulx-format projects.
+A new option on the Format menu, "Enable elastic tabs", causes Tables in the
+	Source to be shown with elastic-width tabbed columns, which are the
+	right width for their content. (Typing a single tab is enough to mark
+	the end of the contents of a table entry; it's as if the tab is made
+	of something elastic, because it stretches as needed.)
+Various minor bugs have been removed.
+
+INFORM FOR WINDOWS
+
+The spell check dialog now lets the user choose the dictionary language, and
+	whether or not all text is checked, or just the text in quotes.
+Spell check dictionaries for different languages can be installed by copying
+	the ".aff" and ".dic" files into the "Dictionaries" sub-directory of
+	the Inform 7 installation. Dictionaries can be downloaded from the
+	OpenOffice project at
+		http://wiki.services.openoffice.org/wiki/Dictionaries
+In the Source tab's Replace dialog, selecting "Replace All" will also replace
+	the currently selected word, if it matches.
+The interpreter in the Game tab can now play MOD music files.
+Sounds playing in a game in the Game tab are stopped when the game stops.
+Interpreter command files (containing a list of commands entered by the user
+	into a game, as recorded by a game interpreter such as Frotz) can be
+	imported into the skein with the File menu item "Import into Skein".
+There is now a choice of Glulx interpreters for the Game tab: either Glulxe
+	or Git. If there are any problems with games under Git that do not
+	show up under Glulxe, we would be interested to hear of it.
+The directory that Inform uses to store extensions, documentation, etc, which
+	defaults to the user's "My Documents" folder, can be changed by
+	creating a text file "home.txt" in the same directory as the Inform
+	executable, containing the path to the required home directory.
+More options added to the preferences dialog.
+Alt-cursor left and right are now mapped onto the tab's back and forward
+	actions, rather than the web browser's history.
+
+INFORM FOR GNOME ON LINUX
+
+Colour now works in the Game tab.
+The Game tab now has a choice of two Glulx interpreters: in addition to
+	the traditional Glulxe, which has been brought up to date with version 0.4.4,
+	one can now test one's Glulx projects in Git 1.2.2.
+"Elastic tabstops" have been added as an optional way to display the source
+ 	text - this makes table columns the right width regardless of where tab
+ 	positions lie. This feature can be enabled in the Preferences window.
+
+INDEX
+
+The most visible change in this build is that the Index for a project now
+has a new look, and has been reworked throughout. We now have much more
+experience of working with large projects, and have more feedback from users
+about what they found helpful and not in the old Index.
+
+In general, we have tried to improve navigation within the Index pages - each
+of which contains several different tables or charts - to pack more information
+into the existing tables, where sensibly possible, and to improve its visual
+recognisability - to make it easier to see at a glance where you are. Being
+lost in the Index is no better than being lost in the source text, the whole
+problem it's supposed to address.
+
+There are too many changes to itemise, but briefly:
+
+	links to extensions from the Index pages now have a new icon (in place of
+		the old footnotes like [E1]); clicking them jumps to the documentation
+		for the extension;
+	a new use option, "Use numbered rules", indexes rules with identifying
+		numbers alongside their names, and causes the testing command RULES ALL
+		to show these numbers at run-time - which may help in debugging when
+		"Use memory economy" is enforced, so that RULES ALL is unable to quote
+		rule names in full.
+
+CBLORB
+
+This build includes version 1.1 of "cblorb", and matching improvements to
+Inform's system for releasing projects. "cblorb" is an internal tool which is
+run at the end of the translation process, but only when the Release button
+rather than the Go or Replay buttons was clicked. It has two main jobs: to
+bind up the translated project, together with any pictures, sounds, or cover
+art, into a single file called a "blorb" which can be given to players on
+other machines to play; and to produce associated websites, solution files
+and so on as demanded by "Release..." instruction(s) in the source text.
+
+Previous builds of Inform included a minimal implementation of "cblorb"
+which, although it mostly worked, was really only a prototype: it was not
+really flexible or reliable enough to be used in the final system. We have
+long intended to replace it with a better implementation, and version 1.1
+is our first draft of that. It is much faster (running in order N time,
+where N is the line count of the source text, not order N-cubed), and
+produces much better HTML. This also gave us the opportunity to reform
+how "Release" works, and to make it easier to produce tidy collections of
+release material.
+
+Almost all of the size or complexity limits have been taken out, and in
+particular:
+
+	the number of audiovisual files embedded in the blorb, previously limited
+		to about 495 (depending on circumstances), is now limited only by the
+		Blorb specification limit of 32765;
+	the number of auxiliary files, previously at most 50, is now unlimited;
+	the numbers of tables and headings in a project released with source in a
+		website, previously 250 each, are now unlimited;
+	the number of knots in the Skein of a project released with a solution,
+		previously at most 10000, is now unlimited;
+	the story description length, previously at most 1000 characters, is now
+		at most 2047 characters;
+	and all filenames can be up to 2047 characters long, which should help
+		if the project is very, very deep in the file system tree.
+
+Various minor bugs have been removed, of which the most important was a
+tendency to trim 8 bytes from the end of some audio files when embedding
+them, which caused some Ogg Vorbis files to be unplayable. The rendering of
+source text on an accompanying website is also improved somewhat, with
+various bugs to do with nested comments removed, and support for verbatim
+I6 code added; text substitutions are also now styled, and hanging
+indentation for code makes it much easier to read. Particular thanks to
+David Kinder, who diagnosed the Ogg Vorbis fault, and to Stephen Granade,
+whose "i7htmltidy.pl" script was a most effective critique of the original
+"cblorb".
+
+Internal changes include:
+
+	there are several new placeholders:
+		[PAGENUMBER] and [PAGEEXTENT], for pages in the multi-page source
+		web pages, are such that "page [PAGENUMBER] of [PAGEEXTENT]" produces
+		text such as "page 2 of 7";
+		[TEMPLATE] is the name of the web template in current use;
+		[SMALLCOVER] is the filename of the thumbnail-sized version of the
+		cover art file. (Compare [BIGCOVER], which already exists, and is the
+		filename of the real thing.)
+		[STORYFILE] becomes the "leafname" of the story file, e.g., "Bronze.gblorb"
+		[GENERATOR] becomes the name of the program generating the website, e.g.,
+			"cblorb 1.2"
+		[TIMESTAMP] and [DATESTAMP] are the time and date at which cblorb runs
+	new command-line arguments "-trace", "-help";
+	the user interface is now expected to call with the first option
+		being "-osx", "-windows", or "-unix" as appropriate;
+	a new "style" command in Blurb locates the relevant CSS file to
+		use when releasing with a website;
+	"<img ...>" tags generated by "cblorb" are now self-closing ("<img ... />");
+	"<br>" tags generated by "cblorb" are now self-closing ("<br/>");
+	footnote anchors are now closed, preventing link style from spilling;
+	paragraphs generated by "cblorb" are now always in matching
+		"<p>...</p>" tags;
+	links in the lists of links are now in "<li>...</li>" list item tags in
+		a surrounding "<ul>...</ul>", and similarly for the contents listing
+		in a source website, where nested <ul>s are now used to show the
+		headings hierarchy;
+	"halign" and "valign" markers are not used in tables if a CSS file is
+		present to handle table styling better;
+	auxiliary file sizes displayed better, and file size displayed for the
+		Blorb itself;
+	cblorb no longer generates temporary files in the project's Build
+		directory, so it no longer leaves debris behind for the user interface
+		to tidy up.
+
+RELEASING
+
+There are six corresponding changes in Inform itself.
+
+(1) "Release along with..." has a new option - "library card", which is
+the iFiction record for the project, an XML file conforming to the Treaty
+of Babel for bibliographic data.
+
+(2) In "Release along with..." sentences, the adjectives "private" and
+"public" can be used when we release along with any of:
+	source text, solution, library card
+"Public" means that if we release along with a website then the item in
+question will appear in the links from the home page; "private" means it
+will be produced but not be mentioned or linked on the website. If neither
+one is specified, source text is public but everything else is private,
+which conforms to Inform's traditional practice. If we aren't releasing
+along with a website, public vs. private makes no difference.
+
+(3) Suppose Release is clicked in the Inform user interface, and everything
+works without problem messages. If there are no "Release along with..."
+sentences in the source text, then the release consists only of a single
+blorb file. The user interface displays a Save As... dialogue box asking the
+user where to put this file. But if there are "Release along with..."
+sentences, then Inform needs to release multiple files, and it puts those
+in the "Materials" folder for the project. (If the project is, say,
+"Apricot.inform" then this would be a folder called "Apricot Materials" in
+the same place.)
+
+All of that is how Inform has always worked. What's new is that the released
+material is now all put in a subfolder of "Apricot Materials" called "Release".
+Anything in "Release" can be thrown away at any time, as it can all be
+replaced; equally, to upload a website to a server, we only need to copy the
+contents of the "Release" folder. This is much tidier than the old
+arrangement, in which released files mingled with other working documents in
+the root of "Apricot Materials", so that it wasn't easy to see at a glance
+what was part of the released website and what wasn't.
+
+Inform automatically generates the Materials folder and its Release subfolder
+as necessary if they don't already exist.
+
+(4) Inform has always generated websites using what it calls "templates",
+and it has always been supplied with a single built-in template called
+"Standard". This continues to be true, but the new "Standard" is a more
+modern design, making use of CSS. (The old look is preserved as "Classic",
+also built-in, in case anyone really wants to keep using it, or needs to
+generate a website which makes no use of CSS.)
+
+The form of templates has however changed. A template was previously a pair
+of HTML files - for instance, "Platinum.html" and "Platinum-Source.html" -
+containing placeholder text like "[AUTHOR]" where the author's name should
+appear, and so on. A template is now a folder - "Platinum", say - which can
+contain any of the following four files:
+
+	index.html - the template for the home page
+	source.html - the template for source text pages
+		(used only when "Release along with a website" is used)
+	style.css - the CSS styles needed by the HTML files
+	(extras).txt - a catalogue of any other files to be added
+
+If any of these is missing, Inform uses the one in "Standard" instead.
+In practice, this means the easiest way to create a new template is to
+supply just a new CSS file, which can change the colour, font, type size,
+and position of more or less everything in the site.
+
+The optional "(extras).txt" file - note brackets - is a text file which
+contains a list of named extras to throw in. For instance:
+
+	easter.html
+	egg.png
+
+These named files need to be present in the template folder. Files with the
+extension ".html" go through the placeholder expansion process just like the
+index and source pages; all other files are copied verbatim. (Extras allow
+for images, movies, etc., to be added to the template.)
+
+See 22.12 and 22.13 in the documentation, which have been rewritten.
+
+(5) Inform knows templates only by their titles ("Standard", say, or
+"Platinum"). When it needs to find one, it searches the following places
+in sequence:
+
+	(a) the "Templates" subfolder of the project's Materials folder, if this
+		subfolder should exist;
+	(b) the "Templates" folder in the user's own library - on Mac OS X, this is:
+			~/Library/Inform/Templates
+		and on Windows:
+			My Documents\Inform\Templates
+	(c) the built-in stock of templates, currently "Standard" and "Classic".
+
+(6) A file released without cover art now has a generic cover image applied.
+Most people releasing Inform 7 works do now include cover art, and we would
+like future interpreters and website designs to be able to assume that an
+image of some kind can be associated with any I7-produced blorb.
+
+INDEX AND PROBLEMS
+
+It would not be useful to itemise the changes here, but the design of the
+Index pages has been heavily revised. The aim is to present more information,
+but more clearly, and with better navigation and labelling. We'd suggest
+that anyone used to the old Index might find it worthwhile to explore the
+new one.
+
+A process of trying to improve the quality of problem messages is under way,
+though it's certainly not complete. Here the aim has been to be clearer and
+more direct, with hints typographically separated from their messages to
+reduce the tendency of long paragraphs to resist the tired eye. Most problem
+messages are now accompanied by blue documentation-link icons to relevant
+passages of the manual.
+
+KINDS OF VALUE
+
+Activity names can now be stored in variables.
+In previous builds, indexed texts, stored actions and lists could not be
+	properties of values - though they could be properties of objects. This
+	anomaly is removed.
+Inform now makes more apparent that it allows arithmetic on some kinds of
+	value (numbers, times, etc.) but not others (text, scenes, etc.). The
+	new Kinds index page should clarify which.
+The rounding-off notation "V to the nearest D" now works for any numerical
+	value V, not just for times, as in previous builds. Thus, for instance:
+		the pressurised volume to the nearest 100 cu m
+		the score to the nearest 25
+Two new operations also act on any numerical value:
+		cube root of V
+		square root of V
+	The results will necessarily be approximate. Square roots of negative
+	numbers throw a run-time problem.
+It's now legal to declare multiplication rules for any numerical kinds of
+	value, provided this is done consistently. E.g.:
+
+		Bus Stop is a room.	
+		Frequency is a kind of value. 40/min specifies a frequency.
+		Bus frequency is a frequency that varies. Bus frequency is 2/min.
+		A frequency times a time specifies a number.
+			When play begins:
+			say "You can expect [bus frequency times 10 minutes] buses to turn
+				up in the next ten minutes."
+
+	This would previously have been rejected as involving the built-in KOVs
+	"time" and "number", which Inform was rather over-protective towards.
+
+SCIENTIFIC UNITS AND SCALED ARITHMETIC
+
+Inform now allows a spread of alternative notations for units:
+
+	A weight is a kind of value. 10kg specifies a weight. 1 tonne specifies a
+	weight scaled up by 1000. 1g specifies a weight scaled down by 1000.
+
+This enables notations such as "0.45kg" to be used, and causes weights to be
+stored to an accuracy of 1g. These scale factors are kept consistent in all
+arithmetic, and in particular when different units are multiplied together
+or divided.
+
+There can be equivalents on a different scale altogether:
+
+	1 ounce specifies a weight equivalent to 0.028kg.
+	1 pound specifies a weight equivalent to 16 ounce.
+
+We can also mark some notations as singular or plural, and give them names:
+
+	1 tonne (singular, in tonnes) or 2 tonnes (plural, in tonnes) specifies a
+	weight scaled up by 1000.
+
+That enables us to say "[weight of the tank in tonnes]", for instance.
+
+A new built-in extension, "Metric Units by Graham Nelson", makes definitions
+of kinds of value for most of the scientific quantities needed to make models
+of the real world:
+
+	length, mass, elapsed time, electric current, temperature, luminosity,
+	angle, frequency, force, energy, pressure, power, electric charge, voltage,
+	luminance, area, volume, velocity, acceleration, momentum, density, heat
+	capacity, specific heat capacity
+
+The extension defines SI standard notations for all of these, allowing both
+European and American spellings, and gives them the proper dimensional rules
+for multiplication (for instance, length times length is an area). "Elapsed
+time" is much more precise than the built-in "time" kind of value - it measures
+from 1 centisecond up to about 35 weeks, rather than being a count of minutes
+in the course of a single day. Use of "Metric Units" requires the Glulx story
+file format rather than the Z-machine, simply in order to hold large enough
+numbers to make sensible scientific calculations.
+
+EQUATIONS
+
+As trailed, somewhat speculatively, in the January 2007 discussion document,
+Inform now supports displayed equations. Inform imitates the conventions of
+printed scientific books and papers, just as it does with tables of data.
+For example:
+
+	Equation - Newton's Second Law
+		F=ma
+	where F is a force, m is a mass, a is an acceleration.
+
+	Equation - Principle of Conservation of Energy
+			mgh = mv^2/2
+	where m is a mass, h is a length, v is a velocity, and g is the
+	acceleration due to gravity.
+
+(These equations are dimensionally checked for correctness.) Inform can then
+solve them to calculate whatever unknown is missing. For instance,
+
+	let v be given by the Principle of Conservation of Energy, where h = 10m;
+
+is sufficient to determine "v" provided that the quantities other than "v" and
+"h" are known.
+
+In cases where we simply want a quick way to write an elaborate one-off
+formula, we don't need to declare an equation - we can just write it in directly:
+
+	let f be given by V = fL;
+
+LOGIC
+
+It is now legal to use "now" in a way involving more than one varying quantity
+	at a time. For example:
+	
+		Trail Shelter is a room. Fred and George are men in Trail Shelter. The
+		possum, the skunk and the weasel are animals. Dixville Notch is north
+		of the Shelter. Earl is a man in Dixville Notch.
+		
+		Suspecting relates various people to various people.
+		The verb to suspect (he suspects, they suspect, he suspected, it is
+		suspected, he is suspecting) implies the suspecting relation.
+		
+		Earl suspects the possum.
+		
+		Instead of waiting:
+			say "A sinister odour begins to make itself felt.";
+			now every person in Trail Shelter suspects every animal which is not
+				suspected by Earl.
+		
+		Test me with "relations / z / relations".
+	
+	Previous builds would have rejected this use of "now" as too complex.
+
+It's now legal to test if something is "everywhere"; this will only be true
+	for backdrops which are indeed everywhere.
+
+The Standard Rules now define:
+
+		The verb to provide (he provides, they provide, he provided, it is provided,
+		he is providing) implies the provision relation.
+
+	This in general is a relation. The following are equivalent:
+
+		if carrying capacity is provided by the player
+		if the player provides carrying capacity
+
+	For clarity, "the property ..." can be used, and this is compulsory for
+	either/or properties, since those are otherwise adjectives not nouns:
+
+		if the player provides the property male
+		if the player provides the property carrying capacity
+
+	This makes "to provide" a full verb, whereas previously it was only imitated
+		by a definition of "X provides the property P" in the Standard Rules.
+
+It's now legal to assert value relations in relative clauses, e.g.:
+
+	Laboratory is a room. Peter is in the laboratory.
+	Colour is a kind of value. Aquamarine is a colour.
+	Annoying relates various colours to various people. The verb to annoy (he
+	annoys, they annoy, it is annoyed, he is annoying) implies the annoying
+	relation.
+	Aquamarine is a colour which annoys Peter.
+
+MINOR NEW FEATURES
+
+A new use option allows the parser to handle large numbers of objects better.
+For instance,
+
+	Use maximum things understood at once of 200.
+
+enables the parser to handle commands like TAKE ALL to work well in situations
+where up to 200 items are within view at once. (This number was always 64 in
+previous builds, and the default level has been raised to 100.)
+
+Inform has for some time had the phrase
+
+	the room north from the Ballroom
+
+to look up map connections; it now recognises "north of the Ballroom" as being
+synonymous. This reports the room which somebody would get to if they could
+go, in an unimpeded way, north from the Ballroom - perhaps through a door.
+The result is always a room, or nothing. In similar vein, the new phrase:
+
+	the door D from/of R
+
+produces the door which lies in direction D from room R, or else nothing if
+there's no door there.
+
+It's now legal to set values that vary "usually". For instance:
+
+	The speed limit is a speed that varies. The speed limit is usually 100 mph.
+
+This should help extension writers who are nervous of setting values which
+their users might want to alter.
+
+Inform usually allows "while" as synonymous with "when", but until now an
+exception has been that it insists on "Understand... when..." rather than
+"Understand... while...". Both wordings are now allowed.
+
+Build 5U92 was rather strict about not allowing colons in text substitutions.
+Usually that's a good thing, as it catches various accidents, and in general
+text substitutions shouldn't contain punctuation. But that overlooked times
+of day written with colons, as here:
+	"The stage is [if the time of day is after 8:00 PM]filled[else]empty[end if]."
+So colons have been allowed again if used in explicit times of day.
+
+New rules have been added to the Standard Rules:
+
+	standard report preferring abbreviated room descriptions rule
+	standard report preferring sometimes abbreviated room descriptions rule
+	standard report preferring unabbreviated room descriptions rule
+	standard report switching score notification on rule
+	standard report switching score notification off rule
+
+so that these out of world actions are reported by the report rules, which
+can then be modified or pre-empted, just as the corresponding rules can for
+ordinary actions.
+
+In previous builds, and in keeping with ancient Infocom customs, "leave" was
+synonymous with "go" when typed as a command. On balance, though, this leads
+to confusion - especially since "go" often has the sense of "enter", exactly
+reversing the meaning of "leave". "Leave" is now synonymous with "exit".
+
+Perhaps this is really a bug fix: the phrase option "if absent" for the phrase
+"add V at entry N in L" (for adding a value to a list in a given position) was
+claimed to work in the documentation for previous builds, but in fact it has
+only just been implemented in this build. (Previous builds did allow "if absent"
+in the case where V is a list, but not where it is a single entry; and in the
+case where no entry position is specified.)
+
+PERFORMANCE
+
+The Inform 7 compiler is now more economical on memory usage. Previously
+it consumed around 43MB on a small run, and 78MB on "Bronze", a typically-sized
+complete work; those figures are now 9MB and 25MB respectively. (This may
+make Inform more viable on low-memory netbooks.)
+
+Inform's use of temporary files is more or less abolished in this build;
+thus a typical problem-free run on a large source text now involves around
+100 file writes, almost all index pages, where previous builds might make
+around 1400 file writes. (This may speed Inform up on slow media such as
+memory sticks.) Internally, Inform now makes use of flexible-sized memory
+buffers instead, and as a side-effect it should be much harder for
+maliciously-constructed source text to crash Inform by means of buffer
+overruns - though nobody at present is trying this, so far as we know.
+
+The upper limit of 500,000 words of source text has been removed; there is
+now no upper limit. This once seemed unthinkably large, but the recent
+release of Aaron Reed's 385,000-word "Blue Lacuna" changed our minds.
+"A la recherche du temps perdu" is about 1,500,000 words, "Clarissa" about
+1,000,000, and "War and Peace" about 500,000, so it's not impossible for
+novels to grow to such sizes.
+
+"Blue Lacuna" provided some real-world profiling information on how Inform
+handled very large source texts. Although no major bottlenecks were found,
+a little tuning produced about a 10% speed gain on these larger projects.
+
+Inform now takes advantage of a March 2009 extension to the Glulx virtual
+machine specification which causes certain I6 veneer routines (called very
+frequently during play) to be implemented natively rather than in Glulx
+emulation. This can result in speed-ups of a factor of 2 or 3, though those
+gains will only be realised on a Glulx interpreter which supports the new
+"acceleration" feature. (The Glulx interpreters built into Inform as the
+Game panel do support it, and work is under way in making stand-alone Glulx
+interpreters support this too.)
+
+OPTIONS AND TELEMETRY
+
+When Inform starts up, it now looks for a file called Options.txt inside
+the user's home folder for Inform. (On Mac OS X, this is "~/Library/Inform";
+on Windows, "My Documents\Inform", and so on.) If the file is present, then
+the text in it is added to the source text of everything Inform translates.
+
+This should be used only to set use options, and given the potential for
+confusion (it's easy to forget that the Options.txt file is there), should
+only be used if really necessary.
+
+A new use option, "Use telemetry recordings.", causes Inform to copy its
+outcome and problem messages to files in the home folder (see above) as
+they occur. These files are dated, so that for instance
+
+	Telemetry 2009-03-25.txt
+
+contains all of the recorded activity on 25 March 2009. Telemetry only
+records the contents of the "Problems" panel - notes of success or failure,
+and problem messages - and (see below) nothing is transmitted via any network,
+so it isn't really surveillance. The user can deliberately add a note to
+the current telemetry file by writing something like this in source text:
+
+	* "I don't get it! What's a kind? Why can't the lamp be lighted?"
+
+(This is a way to make a note for the benefit of someone who will read the
+telemetry file - for instance, to comment on a problem message that has just
+appeared. Note the double-quotes. Otherwise, it's meant to look like the
+standard way that beta-testers mark up IF transcripts.)
+
+These two features have been added in response to requests from education
+users. Let's suppose that Mr Lebling, who teaches 5th grade in Minnesota,
+wants to set things up just right for his class. He installs Inform on the
+ten computers they will use, and also copies an Options.txt file from his
+memory stick onto each one. The Options.txt file reads:
+
+	Use serial comma.
+	Use American dialect.
+	Use telemetry recordings.
+
+Now Mr Lebling's class won't be confronted with English spellings, and
+so on. And most of the kids are happy, but Mr Lebling gets the feeling that
+young Marc wasn't really paying attention, so after class he checks that day's
+Telemetry file for that computer to see what Marc was up to, and whether he
+was stuck on something.
+
+(The Telemetry feature was originally devised to help with testing the
+response of real users to problem messages, and to find out which problems
+are most often generated. Telemetry systems like this are often built in to
+large applications - for instance, Microsoft Word - and the name implies
+that data can be sent back to the manufacturers, who thus get to look over
+their users' shoulders. But Inform transmits nothing at all, even if the
+use option is set, which by default it is not. So this feature really can't
+invade anyone's privacy. But we would, if people are willing, be very
+interested to see telemetry files resulting from genuine classroom use, and
+use by complete newcomers - we'd really like to know which problem messages
+puzzle people, and what the stumbling blocks are.)
+
+
+MAINTENANCE
+
+It's hard to say whether this is a bug fix or not; more a slight change in
+	philosophical outlook. Inform previously rejected this sort of thing:
+		Before taking something:
+			if a block is larger than the noun, say "Look out!"
+	on the grounds that it couldn't know whether the noun was comparable in
+	size to blocks - it would be if the noun were a block, but not otherwise.
+	This generated a problem message. What now happens is that the above
+	compiles to run-time checking, and a run-time problem is generated if
+	the noun ever turns out not to be a block. (This is done because we
+	often have a situation where the source text does guarantee things about
+	the kinds of objects involved, but which Inform is unable to see.)
+Another one that is arguably a change of design rather than a bug fix:
+	subject-verb inversion in assertions has been withdrawn for prepositions
+	which are also participles. In previous builds, Inform would accept the
+	somewhat Yoda-like sentence
+		Holding the light sabre is the young Jedi.
+	which is an inversion of
+		The young Jedi is holding the light sabre.
+	...yet has the same meaning. Inversions are often perfectly natural in
+	English:
+		On the table is a jar of marmalade.
+	So we don't want to rule them out altogether. But we do want to prevent
+	these sentences from being misread as inversions:
+		Holding Area is a room.
+		Wearing something is good manners.
+The order of testing the conditions on when a rule applies has been reversed.
+	That sounds a more dramatic change than it really is; it means that a rule
+	such as
+		Instead of X when Y: ...
+	will test to see if the action is X before testing whether condition Y is
+	also true, rather than vice versa, as happened in previous builds. The
+	main reason for this is so that a rule like
+		Before printing the name of a vehicle (called the car) when the
+			traffic warden cannot see the car: ...
+	works properly, because the "car" variable is set during the test of X
+	(that the "printing the name" activity is being applied to "a vehicle
+	(called the car)"), and so is available for use in condition Y
+	("the traffic warden cannot see the car").
+When one rule is "listed instead of" another one in the same rulebook,
+	previous builds of Inform duplicated the first rule to provide the
+	replacement; this had some advantages but broke the principle, implicit
+	in the syntax and usually helpful (not to mention announced in the manual)
+	that a rule can only occur once in the same rulebook. This build moves
+	rather than duplicates the build. There was some debate about this on
+	rec.arts.int-fiction in February 2009, and opinions were divided; we
+	changed our own minds in the making of this new build; but in end, what
+	lawyers call a bright-line test - a simple easily-stated principle - seemed
+	for the best.
+When an actor other than the player tries an action which needs him to be able
+	to touch one of the objects involved, Inform normally applies the basic
+	accessibility rule (and thence the accessibility rulebook) to make the
+	decision about whether this should be allowed, just as it would if the
+	player tried the same thing. In previous builds, an exception was made
+	for doors and backdrops, whose ability to be present in multiple rooms
+	made it difficult to determine accessibility for third parties. Erring
+	on the side of caution, the item would be assumed accessible. In this
+	build, that leniency is narrowed so that it applies only in the case
+	of third-party actors in a different location from the player.
+When Inform tests to see if an action applies, and it finds a region where it
+	might have expected a room, it reads this as any room in that region.
+	This is why:
+		Instead of going from the Great Tundra, ...
+	matches going from any room in the Great Tundra region, and since an
+	action cannot apply to a region, there's no ambiguity here. But 5U92 also
+	applied the same room to activities, which _can_ apply meaningfully to
+	regions in their own right, and this was a bug. It has been fixed.
+In previous builds, it was legal but futile to try actions like this one:
+		try asking Xerxes about "Athenians";
+	- futile because command text is always reduced to lower case, so that
+	the capital A in Athenians makes it guaranteed not to match anything
+	Xerxes knows about. In this build, command snippets like this in a "try"
+	are automatically reduced to lower case.
+Attempts to determine "the time since Alien Landing began" or "the time when
+	World Obliteration ended" are not possible if these scenes have, in fact,
+	never begun or ended. In previous builds, these questions would produce
+	misleading answers. They now produce run-time problem messages.
+Problem message added to explain why doors cannot be "part of" other things,
+	and how to achieve the same effect in other ways.
+Problem message added, in place of an internal error, if directions are created
+	by complex rather than simple sentences (in defiance of the instruction
+	in the documentation not to do this).
+Problem message added, in place of an internal error, if the source tries to
+	assign properties to all kinds (e.g. by "A kind can be cool or lame.").
+Problem message clarified when the source tries to use the name of a kind
+	of value as a 'let' variable name (e.g., "let the number be 10").
+Problem messages improved when lists are rejected because the spacing before
+	commas is missing.
+Problem message added to be more helpful if "out of play" is used instead of
+	"off-stage".
+Problem messages added when Inform 6 code is Included in place of template
+	files which don't exist, or parts of them which don't exist.
+Problem message added, in place of an internal error, for attempts to
+	construct a phrase in a vague way, like so:
+		The factorial of a number is a phrase.
+Problem message added, in place of an I6 error, when a property name containing
+	bizarre textual matter is created, usually as a result of missed punctuation:
+	for instance, because of the missing full stop after "climbed" in:
+		The Tree can be climbed "There is a tree in the middle of the lawn." 
+Problem message added, in place of an internal error, for attempts to give
+	definitions to phrases like "To try (the feat - an action): ..." which
+	treat "feat" as if it were a value. (Inline definitions can use this,
+	but not as a value, and nobody else can use it all. "Stored action" would
+	be fine, as the problem message explains.)
+Problem message added to catch attempts to say that whole kinds of backdrop
+	are "everywhere". (You can say a backdrop is everywhere, but only one
+	backdrop at a time.)
+Problem message added to catch certain name-clashes between new values
+	created as table entries, and other values already existing.
+Problem message added to catch "a random X" where X describes something with
+	a domain which can't sensibly be searched - "a random text", for instance.
+Problem message added to prevent defining a rulebook, activity or action
+	variable with a name which already has a meaning as something else.
+Bug fixed whereby a hidden limit of 255 grammatically different command verbs
+	was being applied. Exceedingly this limit (which is quite hard, in fact)
+	resulted previously in inexplicable mix-ups between the command verbs at
+	run-time, clearly a very bad thing. Inform now enforces the limit on the
+	Z-machine, where it's inherent, and lifts it on Glulx, where there can
+	now be 65535 grammatically different command verbs. (Applying this fix
+	required changes to the I6 compiler; we'd like to thank Brian Rapp, who
+	posted issue C63010 to the I6 support pages, for putting us on the right
+	track.)
+Bug fixed whereby releasing an existing story file (for instance to publish
+	an old I6 project with new cover art and bibliographic data) would
+	generate a spurious I6 error.
+Bug fixed whereby a bogus "too many activities" run-time problem message would
+	appear once an "[any ...]" token in parsing produced a particular kind of
+	parser error message on more than 20 different turns during play.
+Bug fixed whereby a condition property with three or more names, which was
+	also given an explicit property name, would have the last name wrongly
+	taken down: thus
+		A fruit can be unripened, ripe, overripe, or mushy (this is its
+		squishiness property).
+	would lead to "mushy" not properly being defined.
+Bug fixed whereby lengths of time (though not times of day) mixed up hours
+	and minutes, so that
+		let T be 8 hours 3 minutes;
+	would in fact set T to 3 hours 8 minutes. (Blushes all round.)
+Bug fixed whereby route-finding wasn't working through one-to-one relations.
+	(It seems we just forgot this case: one-to-various, various-to-one, and
+	various-to-various all worked.)
+Bug fixed whereby, if two actions look the same except that one takes two
+	objects rather than one, then check/carry out/report rules can sometimes
+	apply to the wrong one. For instance, given actions "tying" and "tying it
+	to", a rule such as "Check tying something to: ..." could wrongly apply
+	to the one-object form "tying" rather than to the two-object form.
+Bug fixed whereby a stored action property attached to a kind of object will
+	be such that all instances of that kind which do not define their own
+	value for this property will forever after share the default value, even
+	if it is changed for some instances and not others.
+Bug fixed whereby mysterious run-time problems to do with your former self
+	not having properties would appear in situations where the player is named
+	as a character, and a property has been given to all people.
+Bug fixed whereby a list of ordinary texts being copied into a list of indexed
+	texts would lose their contents, or be corrupted.
+Bug fixed whereby it would sometimes be possible to reach inside a closed
+	container, if that container were part of something else which could be
+	touched by the person concerned.
+Bug fixed whereby a person asked to perform an out of world action will
+	silently do nothing. The reply is now something like this:
+		> CLARK, SAVE
+		[That command asks to do something outside of play, so it can only
+		make sense from you to me. Clark cannot be asked to do this.]
+	(This is a new library message - Miscellany number 74.)
+Bug fixed whereby "does the player mean" rules would sometimes not apply in
+	several cases where the grammar in question involves two nouns, and the
+	second noun either follows immediately on the first or has some stipulation
+	applied to it (such as that it be "[someone]"), or where the first noun
+	has some stipulation applied but which the second noun does not share.
+Bug fixed whereby, relatedly, the definition of the "block tying rule" in the
+	Standard Rules was loosely worded and could catch one-object forms of
+	tying, as well as the two-object form in the Standard Rules for which it
+	was intended.
+Bug fixed whereby Glulx programmers creating additional Glk windows would find
+	that sound channels were improperly created, and that random-number
+	generation would not necessarily be "fixed" on debugging runs. (Many
+	thanks to Eliuk Blau, for both finding and correcting this.)
+Bug fixed whereby units set up to imitate decimal places would print values
+	wrongly if in between 0 and -1; e.g., given "A weight is a kind of value.
+	-99.999 specifies a weight.", the value "-0.123" would print as "0.123".
+Bug fixed whereby table entries initially set to unspecified lists, with a
+	column entry described only as (say) "a list of times", would then during
+	run-time appear sometimes to be lists of numbers regardless of what they
+	had been intended to contain.
+Bug fixed whereby optional clauses in descriptions of actions would not always
+	be checked for sense - or rather, they would, but would fail with an
+	internal error instead of a helpful problem message.
+Bug fixed whereby setting or testing the "to be through" relation, for talking
+	about the far side of one-sided doors, silently failed during play.
+Bug fixed whereby a various-to-various relation where one of the two domains
+	was a kind with no instances would sometimes produce I6 errors in
+	translation.
+Bug fixed whereby, if the player gets into an enterable container on top of
+	a pushable between rooms enterable supporter, and then tries to push that
+	supporter to another room, a spurious programming error is displayed as
+	well as the (thoroughly merited) reproof.
+Bug fixed whereby a supporter which held only an undescribed item would
+	sometimes be mentioned in a broken-off sentence in a room description; e.g.
+		An easel is a supporter in the studio. "An old fashioned easel is
+		here." A painting is on the easel. It is undescribed.
+	would produce
+		An old fashioned easel is here.
+		On the easel .
+Bug fixed whereby confusion could occur between actions which have similar
+	names except that one takes two nouns and the other only one, e.g., as
+	between "pointing at" and "pointing it at".
+Bug fixed whereby the use of brackets in heading names - e.g. "Section 2(c)1" -
+	could cause bracketed stipulations like "(for use with...)" to be
+	unrecognised.
+Bug fixed whereby matching the names of extensions in headings (those "for
+	use with E by A", for instance) was performed case-sensitively - so that
+	unless the exactly correct casing was used, the heading would behave
+	unexpectedly. (Sorry: some people thought this was us being pedantic,
+	but in fact it was an accident.)
+Bug fixed whereby the SHOWME testing command would incorrectly claim that
+	some items were "initially carried".
+Bug fixed whereby the serial comma would be missed out of some lists produced
+	by "say", even when "Use serial comma" was in force.
+Bug fixed whereby mapping tips given to improve the World index map would not
+	always work where room names included the words "of" or "from".
+Bug fixed whereby the Kinds index would sometimes doubly list an either/or
+	property ("Usually... drab not colorful, colorful not drab").
+
+EXAMPLES
+
+Added "The Speed of Thought" to demonstrate unit conversions.
+Added "Hatless" to spell out some details of how "now" works with randomness.
+Added "Slogar's Revenge" to demonstrate unlocking a door with a key can be
+	worn instead of carried (and thus how to manipulate the carrying
+	requirements rules)
+Added "The Facts Were These" to demonstrate giving multiple objects at once,
+	with different results than if the player offered them separately
+Added "Oyster Wide Shut" to offer an alternate (and more flexible) way to
+	handle the inventory listing of properties such as "(closed)"; it also
+	allows the author to add his own properties to the standard list.
+Added "Whither?" to illustrate letting the player refer to a door as "the
+	west door" or "the east door" under the appropriate circumstances.
+Added "Widget Enterprises" to demonstrate equations.
+"The Abolition of Love" and "What Not To Wear" changed to reflect the new
+	flexibility of "now".
+"Zorb" updated to deal with a sentence of explanation that stopped without
+	ending, and also to make it possible for the player to ride in the Zorb.
+"Identity Theft" given extra commentary to explain the different effects of
+	compiling under Z- or Glulx.
+"Four Cheeses" improved with more refinement of scope-handling for interacting
+	with a distant person who should not be visible.
+"Verbosity" slightly tweaked to give more information about how defaults work.
+"Verbosity 2" added to demonstrate how to *force* the player always to use
+	full-length room descriptions (rather than merely setting the default and
+	allowing him to modify it).
+"Only You" simplified and moved to an earlier section because Inform now
+	pre-defines the adjective "even".
+"Channel 2" typo fixed.
+"Peeled 2" error fixed, and the documentation slightly expanded.
+"Dinner is Served" revised to make the sample code more safely portable into
+	a larger game, and to remove a procedural rule that is no longer necessary.
+"Puncak Jaya" edited to improve behavior with revised accessibility rules,
+	and to deal with the case where a ghost is the second noun rather than
+	the noun.
+
+BUILT-IN EXTENSIONS
+
+New built in extension, "Metric Units": see above.
+Documentation for "Menus" substantially rewritten and the version number
+	advanced to 3.
+"Basic Screen Effects" and "Complex Listing" adjusted to be more safely
+	compatible with "Case Management": all three were defining a printed_text
+	array but not consistently, with the result that some compilation effects
+	varied depending on which extension was included first.
+"Rideable Vehicles" tidied up to be more consistent in handling how actors
+	other than the player are treated; version number advanced to 3. The rules
+	here have been more cleanly arranged, but with some renamings as a result -
+	for instance, the "no person mounting a mounted animal rule" used to
+	apply only to non-player actors, while the corresponding rule for the
+	player was anonymous. There is now a single "can't mount when mounted on
+	an animal rule". So any source text making use of the old rule names in this
+	extension will need tidying up, or will need to use version 2. The actual
+	functionality of the extension has not changed except that commands like
+	"tanya, get on mystery" are now correctly understood; a cosmetic blemish in
+	descriptions when multiple people are riding the same animal has been fixed.
+
+RECIPE BOOK
+
+Slightly expanded the section on start up features in order to include the
+	idea of doing some game initialization, as necessary.
+Added a section "Other Built-in Actions" to the Commands section, which
+	provides some explanation and cross-referencing for a number of types
+	of action.
+Extensively rewrote the "Actions on Multiple Objects" section to provide a
+	clearer explanation of how the multiple objects list works.
+Expanded the "Modifying Existing Commands" section to explain more clearly
+	how to change the carrying requirements and related rules, and
+	cross-referenced this segment from "Barter and Exchange", "Taking,
+	Dropping, Inserting and Putting", and several sections that pertain to
+	locking or placement.
+"Room Descriptions" section added to the "Place" chapter, which mostly
+	contains material formerly under "Commands > Looking". Looking now points
+	to this section; this organization change is due to assorted user
+	feedback about where people were looking for material most often (and
+	not finding it).
+"Going, Pushing things between rooms" expanded to explain the behavior of
+	pushing more clearly; to offer more examples of how to write conditional
+	rules governing pushing; and to lay out the details of meddling on room
+	descriptions produced specifically in the context of going actions (as
+	opposed to in response to LOOK). The previously under-documented "the
+	room-describing action" variable used by the looking rulebooks is also
+	explained in this section.
+"Scoring" expanded to explain the NOTIFY ON and NOTIFY OFF commands, to
+	exemplify how to modify their behavior, and to refer the player to
+	default message extensions in order to change the wording of such
+	messages as "[Your score has just gone up by two points.]"
+"Saving and Undoing" expanded to mention undo prevention and warn against
+	some of the dangers of using it.
+"Glulx Multimedia Effects" expanded to discuss in more detail what is and
+	isn't at least theoretically possible under Glulx, in terms of sounds
+	and images. (Several people on the newsgroup have asked recently whether
+	it is possible to have multi-channel sounds or fade-ins and fade-outs
+	under Glulx. The answer is yes, but it is not easy. The section suggests
+	the prospective author check out the latest tools from the Inform
+	extensions site.)
+"Settings and Status Checks During Play" section added to the Out of World
+	chapter; this is largely a pointer to other sections of the manual
+	(verbosity under Looking, notification under Scoring), but it also 
+	explains the other more obscure out of world actions. This is in response
+	to an outstanding request that the unusual out of world actions be
+	better documented.
+"Background, Memory and Knowledge" divided into two, considerably expanding
+	the discussion of ways to track player character knowledge and use that
+	tracking to affect descriptions, object names, and scope.

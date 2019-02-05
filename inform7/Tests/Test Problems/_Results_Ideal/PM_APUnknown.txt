@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 86 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_APUnknown
+  >--> You wrote 'Instead of going arfle barfle gloop while Burrow is dark' (source
+    text, line 3), which seems to introduce a rule taking effect only if the
+    action is 'going arfle barfle gloop while Burrow is dark'. The part after
+    'when' (or 'while') was fine, but the earlier words did not make sense as a
+    description of an action. I am unable to place this rule into any rulebook.
+Problem__ PM_APWithBadWhen
+  >--> You wrote 'Instead of going arfle barfle gloop when spoliation obviates'
+    (source text, line 5), which seems to introduce a rule taking effect only
+    'when spoliation obviates'. But this condition did not make sense, so I am
+    unable to accept this rule.
+Inform 7 has finished: 19 centiseconds used.

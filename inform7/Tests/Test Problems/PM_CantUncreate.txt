@@ -1,0 +1,10 @@
+The Service Area is a room.
+The lock is scenery in the Service Area.
+The winch switch state is a kind of value. The winch switch states are
+lock, free, reel in, run out.
+
+A winch is a kind of thing. It has a winch switch state.
+
+A thing called the portable winch is a winch.
+
+The portable winch is in the Service Area.

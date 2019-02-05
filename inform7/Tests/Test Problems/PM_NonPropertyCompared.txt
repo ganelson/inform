@@ -1,0 +1,5 @@
+The Typographium is a room. Colour is a kind of value. The colours are red,
+green and blue.
+
+When play begins:
+	if the Typographium is blue, say "Heavens to Betsy!"

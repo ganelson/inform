@@ -1,0 +1,23 @@
+   Darkness
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   One Hour Photo
+  (Testing.)
+  
+  >[1] z
+  Robin can see it.
+  
+  >[2] s
+  
+  One Hour Photo
+  You can see Robin and a cash register here.
+  
+  >[3] z
+  Robin can see it.
+  
+> >

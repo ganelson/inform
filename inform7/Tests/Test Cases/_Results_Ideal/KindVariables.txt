@@ -1,0 +1,16 @@
+   Brahms Conservatoire
+  Word version with 3 to 3.
+  Pointer version with fudge to ice cream.
+  Pointer version with 2, 3 and 6 to 2, 3 and 6.
+  
+  Twice 5 is 10.
+  Twice 6kg is 12kg.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  
+> >   Brahms Conservatoire
+> Are you sure you want to quit? 

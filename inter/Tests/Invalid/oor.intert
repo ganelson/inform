@@ -1,0 +1,9 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_number int32
+	kind K_truth_state int2
+	constant true K_truth_state = 1
+	constant false K_truth_state = 0
+	constant dunno K_truth_state = 2

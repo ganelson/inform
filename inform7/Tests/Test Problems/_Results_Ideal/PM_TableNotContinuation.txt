@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableNotContinuation
+  >--> It looks as if 'Table of Vessels (continued)' (source text, line 3) is
+    meant to be related to an existing table, but I can't find one if it is.
+    Perhaps you've put the new part before the original? The original has to
+    be earlier in the source text.
+Inform 7 has finished: 15 centiseconds used.

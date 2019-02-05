@@ -1,0 +1,9 @@
+The Schoolhouse is a room.
+
+The frog and the toad are in the Schoolhouse. The frog is edible.
+
+Every turn:
+	say "Admire [list of on-stage things].";
+	say "It's too late for [list of off-stage things]."
+
+Test me with "wait / eat frog".

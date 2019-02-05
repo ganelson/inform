@@ -1,0 +1,39 @@
+Stanford is a room.
+
+LSD Experience is a scene. Bach Cantata Concert is a scene.
+
+Definition: a scene is bad if it is the LSD Experience.
+
+Definition: a scene is good if it is not the LSD Experience.
+
+Material is a kind of value. The materials are wood and metal. A thing has a material.
+
+Definition: A material is strong if it is metal.
+
+Materiality relates a thing (called X) to a material (called Y) when Y is
+the material of X. The verb to be made of implies the materiality relation.
+
+The desk and lamp are in Stanford. The desk is wood. The lamp is metal. Don
+Knuth is a man in Stanford.
+
+Featuring relates a scene (called X) to a person (called Y) when Y is the
+player. The verb to feature (he features, they feature, it featured, it is
+featured, it is featuring) implies the featuring relation.
+
+When play begins:
+	say "Materials: ";
+	if the player can see a thing made of a strong material, say "The player can see a thing made of a strong material.";
+	otherwise say "The player can't see a thing made of a strong material.";
+	say "Scenes:[paragraph break]";
+	if a scene (called X) features the player, say "Scene [X] features the player.";
+	otherwise say "No scene features the player.";
+	if more than two scenes feature the player, say "More than two scenes feature the player.";
+	otherwise say "Fewer than two scenes feature the player.";
+	if more than two scenes feature Knuth, say "More than two scenes feature Knuth.";
+	otherwise say "Fewer than two scenes feature Knuth.";
+	say "Number of scenes featuring the player: [number of scenes featuring the player].";
+	say "Number of scenes featuring Knuth: [number of scenes featuring Knuth].";
+	say "Number of bad scenes featuring the player: [number of bad scenes featuring the player].";
+	say "Number of bad scenes featuring Knuth: [number of bad scenes featuring Knuth].";
+	say "Number of good scenes featuring the player: [number of good scenes featuring the player].";
+	say "Number of good scenes featuring Knuth: [number of good scenes featuring Knuth].";

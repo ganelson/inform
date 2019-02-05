@@ -1,0 +1,4 @@
+Laboratory is a room.
+
+Every turn:
+	now the Laboratory is empty.

@@ -1,0 +1,7 @@
+The Cage is a room.  Bobo the monkey is an animal in the Cage.  A bag
+of bananas is here.
+
+Instead of asking Bobo about "bananas", say "Bobo looks at you  
+attentively."
+
+Instead of showing the bag to Bobo, try asking Bobo about "bananas".

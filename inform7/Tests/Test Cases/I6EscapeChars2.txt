@@ -1,0 +1,25 @@
+The Gallery of Lexical Monstrosities is a room.
+
+Bastard is a kind of value. The bastards are @@@, ^'^, mayn't, 'do', 'cha' 'cha',
+~ and ~@^.
+
+The boy x girl, the b@t, the ~~ and the flo^flo are in the Gallery.
+
+When play begins:
+	say "mayn't is [mayn't].";
+	say "'do' is ['do'].";
+	say "'cha' 'cha' is ['cha' 'cha'].";
+	say "@@@ is [@@@].";
+	say "^'^ is [^'^].";
+	say "~@^ is [~@^].";
+
+Provoking is an action applying to one bastard. Understand "provoke [bastard]"
+as provoking. Carry out provoking: say "You provoke the [bastard understood]."
+
+Understand "/" as taking inventory.
+
+Understand "x^x" as taking inventory.
+
+Test me with "x x / x b@t / x ~~ / x flo^flo / [/] / x^x / provoke @@@ /
+provoke ^[']^ / provoke mayn[']t / provoke [']do['] / provoke [']cha['] [']cha['] /
+provoke ~ / provoke ~@^".

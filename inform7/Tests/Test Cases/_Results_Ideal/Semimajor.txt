@@ -1,0 +1,13 @@
+   Astral Plane
+  SMA of Ceres is 3 AU.
+  SMA of Uranus is 19 AU.
+  SMA of Traci is 2000 AU.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Astral Plane
+  
+> >   Astral Plane
+> Are you sure you want to quit? 

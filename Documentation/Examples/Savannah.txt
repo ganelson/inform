@@ -1,0 +1,124 @@
+*** Arithmetic with units
+(POUR that pours liquid on a fire--Fire put out by liquid; Savannah)
+Using the liquid implementation demonstrated in Lemonade for putting out fires.
+
+Here we build very slightly on the existing liquid implementation to add a puzzle where the player puts out a fire with a bucket of water. Most of the liquid implementation remains the same as before, but now we understand the names of containers according to the liquids they contain.
+
+The new material, pertaining to extinguishing fires, is at the bottom in section 2.
+
+	{*}"Savannah"
+
+	Section 1 - Essentials of Liquid
+
+	A volume is a kind of value. 15.9 fl oz specifies a volume with parts ounces and tenths (optional, preamble optional).
+
+	A fluid container is a kind of container. A fluid container has a volume called a fluid capacity. A fluid container has a volume called current volume.
+
+	The fluid capacity of a fluid container is usually 12.0 fl oz. The current volume of a fluid container is usually 0.0 fl oz.
+
+	Liquid is a kind of value. A fluid container has a liquid.	
+
+	Instead of examining a fluid container:
+		if the noun is empty,
+			say "You catch just a hint of [the liquid of the noun] at the bottom.";
+		otherwise
+			say "[The noun] contains [current volume of the noun in rough terms] of [liquid of the noun]."
+
+	To say (amount - a volume) in rough terms:
+		if the amount is less than 0.5 fl oz:
+			say "a swallow or two";
+		otherwise if tenths part of amount is greater than 3 and tenths part of amount is less than 7:
+			let estimate be ounces part of amount;
+			say "[estimate in words] or [estimate plus 1 in words] fluid ounces";
+		otherwise:
+			if tenths part of amount is greater than 6, increase amount by 1.0 fl oz;
+			say "about [ounces part of amount in words] fluid ounce[s]".
+
+	Before printing the name of a fluid container (called the target) while not drinking:
+		if the target is empty:
+			say "empty ";
+		otherwise:
+			do nothing.
+
+	After printing the name of a fluid container (called the target) while not examining:
+		unless the target is empty:
+			say " of [liquid of the target]";
+			omit contents in listing.
+
+	Instead of inserting something into a fluid container:
+		say "[The second noun] has too narrow a mouth to accept anything but liquids."
+
+	Definition: a fluid container is empty if the current volume of it is 0.0 fl oz. Definition: a fluid container is full if the current volume of it is the fluid capacity of it.
+
+	Understand "drink from [fluid container]" as drinking.
+
+	Instead of drinking a fluid container:
+		if the noun is empty:
+			say "There is no more [liquid of the noun] within." instead;
+		otherwise:
+			decrease the current volume of the noun by 0.2 fl oz;
+			if the current volume of the noun is less than 0.0 fl oz, now the current volume of the noun is 0.0 fl oz;
+			say "You take a sip of [the liquid of the noun][if the noun is empty], leaving [the noun] empty[end if]."
+
+	Understand the command "fill" as something new.
+
+	Understand "pour [fluid container] in/into/on/onto [fluid container]" as pouring it into. Understand "empty [fluid container] into [fluid container]" as pouring it into. Understand "fill [fluid container] with/from [fluid container]" as pouring it into (with nouns reversed).
+
+	Understand "pour [something] in/into/on/onto [something]" as pouring it into. Understand "empty [something] into [something]" as pouring it into. Understand "fill [something] with/from [something]" as pouring it into (with nouns reversed).
+
+	Pouring it into is an action applying to two things.
+
+	Check pouring it into:
+		if the noun is not a fluid container, say "You can't pour [the noun]." instead;
+		if the second noun is not a fluid container, say "You can't pour liquids into [the second noun]." instead;
+		if the noun is the second noun, say "You can hardly pour [the noun] into itself." instead;
+		if the liquid of the noun is not the liquid of the second noun:
+			if the second noun is empty, now the liquid of the second noun is the liquid of the noun;
+			otherwise say "Mixing [the liquid of the noun] with [the liquid of the second noun] would give unsavory results." instead;
+		if the noun is empty, say "No more [liquid of the noun] remains in [the noun]." instead;
+		if the second noun is full, say "[The second noun] cannot contain any more than it already holds." instead.	
+
+	Carry out pouring it into:
+		let available capacity be the fluid capacity of the second noun minus the current volume of the second noun;
+		if the available capacity is greater than the current volume of the noun, now the available capacity is the current volume of the noun;
+		increase the current volume of the second noun by available capacity;
+		decrease the current volume of the noun by available capacity.
+
+	Report pouring it into:
+		say "[if the noun is empty][The noun] is now empty;[otherwise][The noun] now contains [current volume of the noun in rough terms] of [liquid of the noun]; [end if]";
+		say "[the second noun] contains [current volume of the second noun in rough terms] of [liquid of the second noun][if the second noun is full], and is now full[end if]."
+
+	Understand the liquid property as describing a fluid container. Understand "of" as a fluid container.
+
+	Section 2 - Putting Out Fires
+
+	The Beach is a room. "The Atlantic stretches east to the horizon, though it is at low tide at the moment. It is dawn: time to pack up and go home."
+
+We will skip implementing the Pacific ocean itself, though the example Lakeside Living shows how to incorporate large bodies of water into our liquid simulation.
+
+	{**}The liquids are seawater. [We could include others, but for the moment...]
+
+	Instead of drinking a fluid container when the liquid of the noun is seawater:
+		say "Blech!"
+
+	The bucket is a fluid container carried by the player. The liquid of the bucket is seawater. The current volume of the bucket is 64.0 fl oz. 
+
+	The fire is a fixed in place thing in the beach. "A low fire crackles here, left over from an attempt at s'mores much earlier in the evening." 
+	
+	Instead of touching or rubbing or taking the fire, say "You're not such a glutton for punishment."
+
+	Instead of pouring something into the fire:
+		now the fire is nowhere;
+		now the current volume of the noun is 0.0 fl oz;
+		say "[The second noun] goes out in a great hiss."
+	
+	Test me with "drink seawater / pour seawater on fire / x bucket / i".
+	
+This is still a specific implementation: if we wanted to weave liquids together with a full-scale burning model (as in "In Fire or in Flood"), where pretty much any object in the game can be flaming (currently on fire) or damp (extinguished), we might generalize our rule to
+
+	Instead of pouring something into a flaming thing:
+		now the second noun is damp;
+		now the current volume of the noun is 0.0 fl oz;
+		say "[The second noun] goes out in a great hiss."
+		
+Of course, the merging of fire and liquids also raises the possibility of gasoline and explosives, of heating and boiling liquids, etc.: as always, it's wise to incorporate a simulation that is only as detailed as the game's interactions really justify.

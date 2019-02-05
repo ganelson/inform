@@ -1,0 +1,18 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150614 / Inform 7 build 6M31 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see Jay here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] enter
+  You must supply a noun.
+  
+  >[2] jay, enter
+  I didn't understand that instruction.
+  
+> >

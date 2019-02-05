@@ -1,0 +1,12 @@
+[A little historical plaque: this was test case no. 1000.]
+
+Home is a room.
+
+Table of Greetings
+greeting
+"hello"
+
+When play begins:
+	let bar be 10:12 PM;
+	if bar is a greeting listed in Table of Greetings, say "Found.";
+	if 17 is a greeting listed in Table of Greetings, say "Found."

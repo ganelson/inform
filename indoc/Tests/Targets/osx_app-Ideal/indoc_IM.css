@@ -1,0 +1,693 @@
+
+*, *:before, *:after {
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------------ */
+/* The body elements always belong to two classes: "paper" and a tint class */
+
+body.paper {
+	font-family: lucida grande,geneva,arial,tahoma,verdana,helvetica,helv;
+	font-size: 100%;
+	line-height: 1.25em;
+	text-align: left;
+	overflow-y: scroll;
+	-webkit-hyphens: none;
+}
+
+body.papertint {
+	background-color: #ffffff;
+}
+
+/* Used for neutral-coloured navigation pages in the Midnight interface only */
+
+body.midnightpapertint {
+	background-color: #f0f0f0;
+}
+
+/* And for the Architect interface only */
+
+body.architectpapertint {
+	background-color: #ffffff;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Headings */
+
+/* For headings such as "Volume II. The Inform Recipe Book" */
+
+p.volumeheading {
+	color: #000000;
+	font-size: 1.5em;
+	text-align: center;
+}
+
+/* For headings such as "Chapter 2. Instructions" */
+
+p.chapterheading {
+	color: #000000;
+	font-size: 1.3em;
+	text-align: center;
+}
+
+/* For headings such as "§2.4. Targets" */
+
+p.sectionheading {
+	color: #000000;
+	font-size: 1.1em;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Body text */
+
+p {
+	text-align: left;
+	font-size: 0.8em;
+}
+
+/* Code quotations */
+/* XHTML strict requires that material in blockquotes must be inside a
+paragraph inside the blockquotes, and this one is used, i.e., the structure
+is <blockquote class="code"><p class="quoted">Whatever</p></blockquote> */
+
+blockquote.code {
+	color: #000080;
+}
+
+p.quoted {
+font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+	font-size: 0.75em;
+}
+
+/* In definition inset boxes */
+
+p.defnprototype {
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
+/* These isn't actually used by indoc itself, but are here as a convenience: */
+
+span.italic {
+	font-style: italic;
+}
+
+span.boldface {
+	font-weight: bold;
+}
+
+span.typewriter {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+}
+
+/* However, XHTML, unlike HTML 4 transitional, forbids the use of tables
+inside blockquotes, so we have to use freestanding tables instead: note the
+left margin indentation. */
+
+table.codetable {
+	border-collapse: collapse;
+	color: #000080;
+	margin-left: 40px;
+	padding: 0;
+}
+
+td.quotedtablecell {
+	text-align: left;
+	vertical-align: top;
+	right-margin: 24px;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Example cues */
+
+/* The "example cue" is the rectangular heading area at the top. It's done as
+a table, and  */
+
+table.egcue {
+	border-collapse: collapse;
+	width: 100%;
+	margin-bottom: 12px;
+}
+
+table.egcue td, table.egcue th {
+    padding: 0; /* nearest CSS equivalent to the old 'cellpadding=0' */
+}
+
+/* On the left is an oval icon, with an example number overstriking it. The
+icon is actually quite tricky: it appears in this table cell - */
+
+td.egcellforoval {
+	vertical-align: top;
+	width: 60px;
+}
+
+/* and, nested inside that, in a division which has both of these classes: */
+
+div.egovalfornumber {
+	background-image: url('inform:/doc_images/ovoid.png');
+}
+
+div.overstruckimage {
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-align: center;
+	vertical-align: middle;
+	height: 32px;
+	width: 50px;
+	line-height: 30px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-bottom: 0pt;
+	padding-top: 0px;
+
+	/* Firefox */
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+
+	/* Safari and Chrome */
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+
+	/* W3C */
+	display: box;
+	box-orient: horizontal;
+	box-pack: center;
+	box-align: center;
+
+	font-size: 0.8em; /* for the text being struck over the image, that is */
+}
+
+a.eglink {
+	color: #000000;
+}
+
+/* The centre is the largest part, containing the text about the Example:
+it goes inside the following cell: */
+
+td.egnamecell {
+}
+
+/* All of the text about the example lives in the following paragraph style,
+but since spans restyle the top line, this may in practice control only the
+"rubric" text on the second line: */
+
+p.egcuetext {
+	font-size: 0.75em;
+	margin: 0px;
+}
+
+/* Suppose the heading reads "Example 101. *** Peach Melba". Then: */
+
+span.egbanner { /* the words "Example 101" */
+	color: #505050;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+img.asterisk { /* each asterisk image */
+	height: 15px;
+	width: 13px;
+}
+
+span.egname { /* the words "Peach Melba" */
+	color: #000000;
+}
+
+/* The right-hand side is only used if the examples are also present in
+another volume (besides the one being displayed), and it provides a
+cross-reference link. */
+
+td.egcrossref {
+	width: 38px;
+	text-align: right;
+	vertical-align: top;
+}
+
+/* This is also done with text overstriking a background image, using a
+box which has this and also the overstruckimage class: */
+
+div.egovalforxref {
+	background-image: url('inform:/doc_images/grey-ovoid.png');
+}
+
+/* ------------------------------------------------------------------------ */
+/* Example panels */
+/* That is, where the body text of examples is put */
+
+div.egpanel {
+	background-color: #f0f0f0;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-top: 0px;
+	margin-bottom: 8px;
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Definition boxes */
+/* (For Inform documentation, this shows phrase definitions.) */
+
+div.definition {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dashed #2f6fab;
+	color: black;
+	background-color: #e9e9e9;
+	font-size: 1.0em;
+	line-height: 1.25em;
+}
+
+/* The term being defined appears in this style, except for Inform: */
+
+span.definitionterm {
+	color: #800080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.8em;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Images */
+
+img {
+	border: 0;
+}
+
+/* Not used by indoc, but here as a convenience for rawtext files to use: */
+
+img.floating {
+	border: 0;
+	padding: 5px;
+	float: left; /* May not work in EPUB readers */
+}
+
+img.bordered {
+	border-style: solid;
+	border-width: 2px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img.thinbordered {
+	border-style: solid;
+	border-width: 1px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Change logs included as plain text */
+
+pre.changelog {
+	font-size: 0.75em;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Links */
+
+a:link {										/* unvisited link */
+	text-decoration: none;
+	color: #202020;
+}
+a:visited {									/* visited link */
+	text-decoration: none;
+	color: #202020;
+}
+a:hover {										/* mouse over link */
+	text-decoration: none;
+	color: #D00000;
+}
+a:active {										/* selected link */
+	text-decoration: none;
+	color: #D00000;
+}
+
+/* Most of our links use: */
+
+a.standardlink {
+}
+
+/* But cross-references to other sections ("For X see ...") use: */
+
+a.xreflink {
+}
+
+/* ------------------------------------------------------------------------ */
+/* The General Index */
+
+table.indextable {
+	border-collapse: collapse;
+	width: 100%;
+	margin-top: 8px;
+}
+
+p.indexentry {
+	font-size: 0.8em;
+	margin-top: 0px;
+	margin-bottom: 4px;
+	text-indent: -2em;
+	padding-left: 2em;
+}
+
+a.indexlink {
+	color: #666;
+	text-decoration: none;
+	border-bottom: 1px dotted #666;
+}
+
+a.indexseelink {
+	text-decoration: none;
+	border-bottom: 1px dotted #666;
+}
+
+a.indexlinkalt {
+	color: #666;
+	text-decoration: none;
+	border-bottom: 1px dotted #666;
+	font-style: italic;
+}
+
+span.indexgloss {
+	font-size: 0.7em;
+	font-style: italic;
+	color: #088;
+}
+
+span.indexsee {
+	font-style: italic;
+	color: #666;
+}
+
+span.smoketest {
+	background-color: #000000;
+	color: #ffffff;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+/* ------------------------------------------------------------------------ */
+/* General-purpose tables */
+
+table.centredtable {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* fullwidth is used to partition the full width of the page into columns */
+
+table.fullwidth {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table.fullwidth td, table.fullwidth th {
+    padding: 0;
+}
+
+table.fullwidtharch {
+    border-spacing: 6px;
+    border-collapse: separate;
+	width: 100%;
+}
+
+table.fullwidtharch td, table.fullwidtharch th {
+    padding: 0;
+}
+
+div.headingboxhigh {
+	position: relative;
+	height: 117px;
+	padding: 0px;
+	white-space:nowrap;
+	background: #eeeeee;  /* grey */
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+.headingtext {
+	position: absolute;
+	top: -4px;
+	left: -1px;
+	width: 100%;
+	color: #222222;
+	padding: 14px 10px 0px 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.headingrubric {
+	position: absolute;
+	top: 36px;
+	width: 100%;
+	color: #222222;
+	padding: 0px 10px 0px 10px;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+/* ------------------------------------------------------------------------ */
+/* The index pages */
+
+/* This is used for the horizontal row of link letters from A to Z */
+
+td.letterinrow {
+	width: 3.846%; /* 3.846 = 1/26 to pretty good accuracy */
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #e0e0e0;
+}
+
+td.letterinrow: hover {
+	background-color: #c0c0c0;
+}
+
+/* This is used to hold the "majuscule" A-Z letters left of the alpha index */
+
+td.letterblock {
+	width: 38px;
+	text-align: left;
+	vertical-align: top;
+}
+
+/* Which contains links like so: */
+
+a.letterlink {
+	font-size: 0.75em;
+}
+
+/* A single letter of majuscule is held in this tinted box: */
+
+div.majuscule {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #808080;
+	display: table-cell;
+}
+
+/* But a wider text (such as used in other index headings) is held in this: */
+
+div.stretchymajuscule {
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #808080;
+}
+
+/* Either way, the actual lettering inside uses this: */
+
+span.majusculelettering {
+	font-size: 0.75em;
+	color: #FFFFFF;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Navigation: used in Roadsign interface only */
+
+/* In Roadsign, each volume begins with a chapter listing presented in a
+centred table. Within that, the individual chapter titles are given in: */
+
+span.chapterlisting {
+	white-space: nowrap;
+}
+
+/* Each chapter then begins with a contents listing for its sections: */
+
+p.chaptercontents {
+	text-align: center;
+	padding: 8px;
+}
+
+span.chaptercontentsitem {
+	font-style: italic;
+	white-space: nowrap;
+}
+
+/* The ornaments are the floral motifs used as typographic ornaments: they're
+images, but embedded in paragraphs with these classes: */
+
+p.volumeornament {
+	text-align: center;
+	padding: 8px;
+	page-break-after: always; /* for EPUB readers such as iBooks */
+}
+
+p.chapterornament {
+	text-align: center;
+	padding: 8px;
+}
+
+/* The "roadsign" divisions contain a table with two columns: one column of
+"roadsigndirection" cells, holding the arrow-in-circle icons, and one of links. */
+
+div.roadsigns {
+	page-break-inside: avoid;
+}
+
+td.roadsigndirection {
+	width: 30px;
+	text-align: left;
+	vertical-align: top;
+	page-break-before: avoid; /* this is very badly supported, but worth a try */
+}
+
+/* ------------------------------------------------------------------------ */
+/* Navigation: used in Midnight interface only */
+
+/* In Midnight, there's a black status line at the top of each page, made
+as a "fullwidth" table which also has this class: */
+
+table.midnightblack {
+	background-color: #000000;
+}
+
+/* The table is a single row of three cells: */
+
+td.midnightbannerleftcell {
+	height: 26px;
+	width: 38px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+td.midnightbannercentrecell {
+	text-align: left;
+	vertical-align: middle;
+}
+
+td.midnightbannerrightcell {
+	height: 26px;
+	width: 56px;
+	text-align: right;
+	vertical-align: middle;
+}
+
+/* Within the centre cell, the running-head text is styled with: */
+
+span.midnightbannertext {
+	color: #FFFFFF; /* needs to match the colour of the papertint */
+	font-size: 0.75em;
+}
+
+/* Midnight pages end with a Previous - Contents - Next footer area, which is
+done with a table using the following cells */
+
+td.footerprevious {
+	width: 33%;
+	text-align: left;
+}
+
+td.footercontents {
+	width: 33%;
+	text-align: center;
+}
+
+td.footernext {
+	width: 33%;
+	text-align: right;
+}
+
+/* Links in the footer are styled with: */
+
+a.footerlink {
+	color: #808080;
+	font-size: 0.75em;
+}
+
+/* At the first section, e.g., there's no "previous", but this is used to
+style the unlinked word "Previous": */
+
+span.footernonlink {
+	color: #000000;
+	font-size: 0.75em;
+}
+
+/* Midnight features an elaborate contents page in two columns. */
+
+td.midnightlefthalfpage {
+background-color: #eeeeee;
+	width: 50%;
+	text-align: left;
+	vertical-align: top;
+}
+
+td.midnightrighthalfpage {
+background-color: #ffffe5;
+	width: 50%;
+	text-align: left;
+	vertical-align: top;
+}
+
+/* There are A- and B-level subheadings: */
+
+p.midnightcontentsA {
+	font-size: 0.8em;
+	margin-top: 2px;
+    margin-bottom: 0px;
+    text-indent: -3em;
+    margin-left: 3em;
+    margin-right: 1em;
+    padding-left: 15px;
+}
+
+p.midnightcontentsB {
+	font-size: 0.75em;
+	margin-top: 2px;
+    margin-bottom: 0px;
+    text-indent: -2em;
+    margin-left: 4em;
+    margin-right: 1em;
+    padding-left: 6px;
+}
+
+/* ------------------------------------------------------------------------ */
+p.warning {
+color: #A00000;
+font-size: 1.2em;
+}
+span.quadpoint {
+color: #00A000;
+font-size: 0.8em;
+border-style: dotted;
+border-width: 2px;
+padding: 2px;
+}

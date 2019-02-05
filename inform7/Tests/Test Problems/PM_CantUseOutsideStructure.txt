@@ -1,0 +1,10 @@
+Lab is a room.
+
+To frog -- in if: say "Croak."
+
+When play begins:
+	if 1 is 1:
+		frog;
+	unless 2 is 1:
+		frog;
+	frog;

@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Definition: A room is roomy if arfle barfle gloop.

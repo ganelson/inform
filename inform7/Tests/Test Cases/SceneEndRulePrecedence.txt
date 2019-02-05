@@ -1,0 +1,15 @@
+Once Upon a Time is a scene. Once Upon a Time begins when play begins. Once Upon a Time ends musically 
+when waving. Once Upon a Time ends bouncily when jumping.
+
+When Once Upon a Time ends:
+	say "This should happen second.";
+
+When Once Upon a Time ends bouncily:
+	say "This should happen first.";
+
+When a scene ends:
+	say "This should happen last.";
+	
+Test is a room.
+
+Test me with "scenes/jump"

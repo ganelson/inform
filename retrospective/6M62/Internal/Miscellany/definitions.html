@@ -1,0 +1,3636 @@
+*=ph_requirestouch=*
+
+<p>This condition is true if the action being processed is one whose (first) noun is an object which needs to be touchable by the actor. For example, it's true for &quot;taking&quot;, but false for &quot;examining&quot;.</p>
+
+*=ph_requirestouch2=*
+
+<p>This condition is true if the action being processed is one whose second noun is an object which needs to be touchable by the actor. For example, it's true for &quot;putting the brick in the sack&quot;, but false for &quot;throwing the brick at the window&quot;.</p>
+
+*=ph_requirescarried=*
+
+<p>This condition is true if the action being processed is one whose (first) noun is an object which needs to be carried by the actor. For example, it's true for &quot;dropping&quot;, but false for &quot;taking&quot;.</p>
+
+*=ph_requirescarried2=*
+
+<p>This condition is true if the action being processed is one whose second noun is an object which needs to be carried by the actor.</p>
+
+*=ph_requireslight=*
+
+<p>This condition is true if the action being processed is one which can only be performed if the actor has light to see by. For example, it's true for &quot;examining&quot;, but false for &quot;dropping&quot;.</p>
+
+*=phs_extcredits=*
+
+<p>This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the &quot;use authorial modesty&quot; option are missed out. Example:</p>
+<!-- START CODE "c9065" -->
+<a id="c9065"></a><blockquote class="code"><p class="quoted">
+Standard Rules version 2/090402 by Graham Nelson
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_compextcredits=*
+
+<p>This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Every extension is included, even those whose authors have opted for &quot;use authorial modesty&quot;. Example:</p>
+<!-- START CODE "c9067" -->
+<a id="c9067"></a><blockquote class="code"><p class="quoted">
+Standard Rules version 2/090402 by Graham Nelson
+<br />Locksmith version 9 by Emily Short
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_locationof=*
+
+<p>This phrase produces the room which, perhaps indirectly, contains the object given. Example: if the player stands in Biblioll College and wears a waistcoat, inside which is a fob watch, then</p>
+<!-- START CODE "c483" -->
+<a id="c483"></a><blockquote class="code"><p class="quoted">
+location of the fob watch
+</p></blockquote>
+<!-- END CODE -->
+<p>is Biblioll College. In general, a thing cannot be in two rooms at once, but there are two exceptions: two-sided doors, present on both sides, and backdrops. The &quot;location of&quot; a door is its front side, but a backdrop has no location. (Objects which are not things at all, such as rooms and directions, also have no location.)</p>
+
+*=ph_shiftbefore=*
+
+<p>This phrase produces a time earlier by the amount given, keeping within the 24 hour clock. Example:</p>
+<!-- START CODE "c2209" -->
+<a id="c2209"></a><blockquote class="code"><p class="quoted">
+7 hours before 5:30 AM
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 10:30 PM.</p>
+
+*=ph_shiftafter=*
+
+<p>This phrase produces a time later by the amount given, keeping within the 24 hour clock. Example:</p>
+<!-- START CODE "c2210" -->
+<a id="c2210"></a><blockquote class="code"><p class="quoted">
+9 hours after 11 AM
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 8 PM.</p>
+
+*=ph_timebefore=*
+
+<p>This condition is true if the first time occurs earlier in the day than the second. In recognition of the fact that very few stories begin before 4 AM, whereas many run on past midnight, the start of the day is taken to be 4 AM: thus 3:59 AM is after 11:10 PM, but 4:04 AM is before it.</p>
+
+*=ph_timeafter=*
+
+<p>This condition is true if the first time occurs later in the day than the second. In recognition of the fact that very few stories begin before 4 AM, whereas many run on past midnight, the start of the day is taken to be 4 AM: thus 3:59 AM is after 11:10 PM, but 4:04 AM is before it.</p>
+
+*=ph_stop=*
+
+<p>This phrase causes the current rule to end immediately. It is most often used in the definition of other phrases:</p>
+<!-- START CODE "c2982" -->
+<a id="c2982"></a><blockquote class="code"><p class="quoted">
+To judge the score:
+<br />&#160;&#160;&#160;&#160;if the score is 0, stop;
+<br />&#160;&#160;&#160;&#160;say &quot;The score is [score in words] more than it was a half-hour ago.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>In the case when the score is 0, the &quot;stop&quot; ends the phrase immediately, so that the subsequent text is printed only if the score is not 0.</p>
+<p>&quot;Stop&quot; can also be used in action rules, though this is not very good style - it's clearer to use &quot;stop the action&quot;, which is exactly equivalent.</p>
+
+*=ph_timefromnow=*
+
+<p>This phrase causes the given rule to be run at a given time offset from the current time of day. Example:</p>
+<!-- START CODE "c2219" -->
+<a id="c2219"></a><blockquote class="code"><p class="quoted">
+the egg-timer clucks in 18 minutes from now;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_turnsfromnow=*
+
+<p>This phrase causes the given rule to be run at a given number of turns after the current one. Example:</p>
+<!-- START CODE "c2220" -->
+<a id="c2220"></a><blockquote class="code"><p class="quoted">
+the egg-timer clucks in four turns from now;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_attime=*
+
+<p>This phrase causes the given rule to be run at a given time of day. Example:</p>
+<!-- START CODE "c2221" -->
+<a id="c2221"></a><blockquote class="code"><p class="quoted">
+the egg-timer clucks at 11:35 AM;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_changeexit=*
+
+<p>This phrase alters the map so that the given map connection is made. Note that connections can be made to rooms, but not doors: the positions of doors are fixed. Example:</p>
+<!-- START CODE "c1775" -->
+<a id="c1775"></a><blockquote class="code"><p class="quoted">
+change the east exit of the Closet to the Tsar's Imperial Dining Salon
+</p></blockquote>
+<!-- END CODE -->
+<p>Since &quot;nothing&quot; is not a room, this doesn't allow us to change the exit to nothing, so there is a separate definition of:</p>
+<!-- START CODE "c1776" -->
+<a id="c1776"></a><blockquote class="code"><p class="quoted">
+change the west exit of the Closet to nothing
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_changenoexit=*
+
+<p>This phrase alters the map so that the given map connection is unmade. Example:</p>
+<!-- START CODE "c1777" -->
+<a id="c1777"></a><blockquote class="code"><p class="quoted">
+change the west exit of the Closet to nowhere
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_listof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Example:</p>
+<!-- START CODE "c868" -->
+<a id="c868"></a><blockquote class="code"><p class="quoted">
+&quot;Mr Darcy glares proudly at you. He is wearing [list of things worn by Darcy] and carrying [list of things carried by Darcy].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>And, if this were from a dramatisation of the novel by Miss Fielding rather than Miss Austen, we might find:</p>
+<!-- START CODE "c869" -->
+<a id="c869"></a><blockquote class="code"><p class="quoted">
+Mr Darcy glares proudly at you. He is wearing a pair of Newcastle United boxer shorts and carrying a self-help book.
+</p></blockquote>
+<!-- END CODE -->
+<p>If the description matches nothing - for instance, if Darcy has empty hands - then &quot;nothing&quot; is printed.</p>
+
+*=phs_alistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Each item is prefaced by its indefinite article. Example:</p>
+<!-- START CODE "c872" -->
+<a id="c872"></a><blockquote class="code"><p class="quoted">
+a maritime bill of lading, some hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_Alistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Each item is prefaced by its indefinite article, and the first is capitalised, so that it can be used at the beginning of a sentence. Example:</p>
+<!-- START CODE "c873" -->
+<a id="c873"></a><blockquote class="code"><p class="quoted">
+A maritime bill of lading, some hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_thelistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Each item is prefaced by its definite article. Example:</p>
+<!-- START CODE "c874" -->
+<a id="c874"></a><blockquote class="code"><p class="quoted">
+the maritime bill of lading, the hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_Thelistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Each item is prefaced by its definite article, and the first is capitalised, so that it can be used at the beginning of a sentence. Example:</p>
+<!-- START CODE "c875" -->
+<a id="c875"></a><blockquote class="code"><p class="quoted">
+The maritime bill of lading, the hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_islistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. The whole list starts with &quot;is&quot; (if there's one item or none) or &quot;are&quot; (more than one). Examples:</p>
+<!-- START CODE "c880" -->
+<a id="c880"></a><blockquote class="code"><p class="quoted">
+is marlin-spike
+<br />are maritime bill of lading, hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_isalistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Each item is prefaced by its indefinite article, and the whole list starts with &quot;is&quot; (if there's one item or none) or &quot;are&quot; (more than one). Examples:</p>
+<!-- START CODE "c881" -->
+<a id="c881"></a><blockquote class="code"><p class="quoted">
+is a marlin-spike
+<br />are a maritime bill of lading, some hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_isthelistof=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description. Each item is prefaced by its definite article, and the whole list starts with &quot;is&quot; (if there's one item or none) or &quot;are&quot; (more than one). Examples:</p>
+<!-- START CODE "c882" -->
+<a id="c882"></a><blockquote class="code"><p class="quoted">
+is the marlin-spike
+<br />are the maritime bill of lading, the hemp rope and Falconer's Naval Dictionary
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_alistofconts=*
+
+<p>This text substitution produces a list, in sentence form, of everything matching the description, noting any contents in brackets. This is really intended only to be used by the Standard Rules.</p>
+
+*=ph_multipleobjectlist=*
+
+<p>This phrase produces the current multiple object list as a value. The list will be the collection of objects found to match a plural noun like ALL in the most recent command typed by the player. If there is no multiple object, say if the command was TAKE PEAR, the list will be empty: it won't be a list of size 1.</p>
+
+*=ph_altermultipleobjectlist=*
+
+<p>This phrase sets the multiple object list to the given value. The list is ordinarily the collection of objects found to match a plural noun like ALL in the most recent command typed by the player, but using this phrase at the right moment (before the &quot;generate action rule&quot; in the turn sequence rules takes effect).</p>
+
+*=ph_now=*
+
+<p>This phrase makes the condition become true. Examples:</p>
+<!-- START CODE "c1915" -->
+<a id="c1915"></a><blockquote class="code"><p class="quoted">
+now the score is 100;
+<br />now the player is Kevin;
+<br />now the front door is open;
+<br />now Mr Darcy is wearing the top hat;
+<br />now all the doors are open;
+<br />now all of the things in the sack are in the box;
+</p></blockquote>
+<!-- END CODE -->
+<p>Inform issues a problem message if the condition asks to do the impossible (&quot;now 3 is an even number&quot;) or is vague (&quot;now the duck is not in the Lily Pond&quot;) or not in the present tense (&quot;now the front door had been open&quot;).</p>
+
+*=phs_here=*
+
+<p>Produces &quot;here&quot; if the story tense is the present tense, and &quot;there&quot; otherwise.</p>
+
+*=phs_now=*
+
+<p>Produces &quot;now&quot; if the story tense is the present tense, and &quot;then&quot; otherwise.</p>
+
+*=ph_movebackdrop=*
+
+<p>This phrase moves the backdrop so that it is now present in every room matching the given description. Example: If we define</p>
+<!-- START CODE "c1843" -->
+<a id="c1843"></a><blockquote class="code"><p class="quoted">
+A room can be wet or dry. A room is usually dry. The Rock Pool is wet.
+</p></blockquote>
+<!-- END CODE -->
+<p>then we can write</p>
+<!-- START CODE "c1844" -->
+<a id="c1844"></a><blockquote class="code"><p class="quoted">
+move the stream backdrop to all wet rooms;
+</p></blockquote>
+<!-- END CODE -->
+<p>This phrasing, &quot;move the ... backdrop to all ...&quot; is deliberately meant to look unlike the simpler &quot;move ... to ...&quot;, to emphasise that this kind of movement is possible only for backdrops.</p>
+
+*=ph_updatebackdrop=*
+
+<p>This phrase runs through all backdrops in the model world and makes sure they are correctly in, or not in, the current location, so that everything appears right from the player's point of view. Example:</p>
+<!-- START CODE "c1845" -->
+<a id="c1845"></a><blockquote class="code"><p class="quoted">
+The Upper Cave is above the Rock Pool. The Ledge is east of the Pool. The stream is a backdrop.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c1846" -->
+<a id="c1846"></a><blockquote class="code"><p class="quoted">
+When play begins:
+<br />&#160;&#160;&#160;&#160;move the stream backdrop to all wet rooms.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c1847" -->
+<a id="c1847"></a><blockquote class="code"><p class="quoted">
+A lever is in the Cave. The lever is fixed in place.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c1848" -->
+<a id="c1848"></a><blockquote class="code"><p class="quoted">
+Instead of pulling the lever when the Cave is dry:
+<br />&#160;&#160;&#160;&#160;now the Cave is wet;
+<br />&#160;&#160;&#160;&#160;now the lever is in the Rock Pool;
+<br />&#160;&#160;&#160;&#160;now the lever is portable;
+<br />&#160;&#160;&#160;&#160;update backdrop positions;
+<br />&#160;&#160;&#160;&#160;say &quot;The old rusty lever pulls away, and the thin cave wall goes with it, so that a stream bursts into the cave, falling to the pool below.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_bracket=*
+
+<p>This text substitution expands to a single open square bracket, avoiding the problem that a literal [ in text would look to Inform like the opening of a substitution. Example:</p>
+<!-- START CODE "c841" -->
+<a id="c841"></a><blockquote class="code"><p class="quoted">
+&quot;He [bracket]Lord Astor[close bracket] would, wouldn't he?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>prints as &quot;He [Lord Astor] would, wouldn't he?&quot;.</p>
+
+*=phs_closebracket=*
+
+<p>This text substitution expands to a single close square bracket, avoiding the problem that a literal ] in text would look to Inform like the closing of a substitution. Example:</p>
+<!-- START CODE "c842" -->
+<a id="c842"></a><blockquote class="code"><p class="quoted">
+&quot;He [bracket]Lord Astor[close bracket] would, wouldn't he?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>prints as &quot;He [Lord Astor] would, wouldn't he?&quot;.</p>
+
+*=phs_apostrophe=*
+
+<p>This text substitution expands to a single quotation mark, avoiding Inform's ordinary rule of converting literal single quotation marks to double at the edges of words. Example:</p>
+<!-- START CODE "c845" -->
+<a id="c845"></a><blockquote class="code"><p class="quoted">
+Instead of going outside, say &quot;Lucy snaps, 'What's the matter? You don't trust my cookin[apostrophe] mister?'&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces:</p>
+<!-- START CODE "c846" -->
+<a id="c846"></a><blockquote class="code"><p class="quoted">
+Lucy snaps, &quot;What's the matter? You don't trust my cookin' mister?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>A more abbreviated form would be:</p>
+<!-- START CODE "c847" -->
+<a id="c847"></a><blockquote class="code"><p class="quoted">
+Instead of going outside, say &quot;Lucy snaps, 'What's the matter? You don't trust my cookin['] mister?'&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>which has exactly the same meaning.</p>
+
+*=phs_quotemark=*
+
+<p>This text substitution expands to a double quotation mark. Most of the time this is unnecessary because of Inform's rule of converting literal single quotation marks to double at the edges of words, so it's needed only if we want a double-quote in the middle of a word for some reason. Example:</p>
+<!-- START CODE "c848" -->
+<a id="c848"></a><blockquote class="code"><p class="quoted">
+&quot;The compass reads 41o21'23[quotation mark]E.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>which produces: The compass reads 41o21'23&quot;E. (Note that [&quot;] is not allowed; a double-quotation mark is never allowed inside double-quoted text, not even in a text substitution.)</p>
+
+*=ph_runthrough=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each value matching the description, storing that value in the named variable. (The variable exists only temporarily, within the repetition.) Example:</p>
+<!-- START CODE "c2957" -->
+<a id="c2957"></a><blockquote class="code"><p class="quoted">
+repeat with item running through open containers:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>If there are no containers, or they are all closed, the phrases will not be followed at all. Inform will issue a Problem message if the range of the loop may be infinite: for example, it won't allow:</p>
+<!-- START CODE "c2958" -->
+<a id="c2958"></a><blockquote class="code"><p class="quoted">
+repeat with X running through odd numbers:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>On the other hand it will allow:</p>
+<!-- START CODE "c2959" -->
+<a id="c2959"></a><blockquote class="code"><p class="quoted">
+repeat with T running through times:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>which repeats 1440 times, starting with T at midnight and finishing at 11:59 PM. See the Kinds index for which kinds of value can be repeated through.</p>
+
+*=ph_degrees=*
+
+<p>Inform measures angles in radians, a convention in which the angle for a half circle is pi, and a right angle is pi divided by 2. This is better from a mathematical point of view, but in practice most people think about angles using degrees, where 180 degrees is a half-circle and a right angle is 90 degrees. This phrase helps with that by converting from degrees to radians: in other words, it multiplies by 0.0174532925, since that's roughly 1/180th of pi. Examples:</p>
+<!-- START CODE "c4571" -->
+<a id="c4571"></a><blockquote class="code"><p class="quoted">
+sine of 90 degrees = 0.0
+<br />cosine of 60 degrees = 0.5
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_sine=*
+
+<p>The length of the upright of a right-angled triangle with this angle and a hypotenuse of length 1, where angle is measured in radians. Examples:</p>
+<!-- START CODE "c4572" -->
+<a id="c4572"></a><blockquote class="code"><p class="quoted">
+sine of 0 = 0
+<br />sine of 45 degrees = 0.70711
+<br />sine of (pi divided by 4) = 0.70711
+<br />sine of (pi divided by 2) = 1.0
+<br />sine of pi = 0
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_cosine=*
+
+<p>The length of the base of a right-angled triangle with this angle and a hypotenuse of length 1, where angle is measured in radians. Examples:</p>
+<!-- START CODE "c4573" -->
+<a id="c4573"></a><blockquote class="code"><p class="quoted">
+cosine of 0 = 1.0
+<br />cosine of 45 degrees = 0.70711
+<br />cosine of (pi divided by 4) = 0.70711
+<br />cosine of (pi divided by 2) = 0.0
+<br />cosine of pi = -1.0
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_tangent=*
+
+<p>The ratio of the upright length to the base length in a right-angled triangle with this angle and a hypotenuse of length 1, where angle is measured in radians. Examples:</p>
+<!-- START CODE "c4574" -->
+<a id="c4574"></a><blockquote class="code"><p class="quoted">
+tangent of 0 = 0.0
+<br />tangent of 45 degrees = 1.0
+<br />tangent of (pi divided by 4) = 1.0
+<br />tangent of (pi divided by 2) = plus infinity
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_arcsine=*
+
+<p>The inverse of the sine function.</p>
+
+*=ph_arccosine=*
+
+<p>The inverse of the cosine function.</p>
+
+*=ph_arctangent=*
+
+<p>The inverse of the tangent function.</p>
+
+*=ph_hyperbolicsine=*
+
+<p>The hyperbolic sine function, often written &quot;sinh&quot; but pronounced &quot;shine&quot;.</p>
+
+*=ph_hyperboliccosine=*
+
+<p>The hyperbolic cosine function, often written &quot;cosh&quot;.</p>
+
+*=ph_hyperbolictangent=*
+
+<p>The hyperbolic tangent function, often written &quot;tanh&quot;.</p>
+
+*=ph_hyperbolicarcsine=*
+
+<p>The inverse of the hyperbolic sine function.</p>
+
+*=ph_hyperbolicarccosine=*
+
+<p>The inverse of the hyperbolic cosine function.</p>
+
+*=ph_hyperbolicarctangent=*
+
+<p>The inverse of the hyperbolic tangent function.</p>
+
+*=ph_showrelation=*
+
+<p>This phrase is for testing purposes only. It shows the current state of the named relation, that is, it shows which values relate to which other ones, where it's possible to do this in any sensible way.</p>
+
+*=ph_ifleft=*
+
+<p>This condition is true if the value V is such that V relates to something by the given relation. Example: suppose partnership relates various texts to various texts. Then we can test</p>
+<!-- START CODE "c4207" -->
+<a id="c4207"></a><blockquote class="code"><p class="quoted">
+if &quot;chalk&quot; relates to a text by the partnership relation, ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_ifright=*
+
+<p>This condition is true if the value V is such that something relates to V by the given relation. Example: suppose partnership relates various texts to various texts. Then we can test</p>
+<!-- START CODE "c4208" -->
+<a id="c4208"></a><blockquote class="code"><p class="quoted">
+if a text relates to &quot;cheese&quot; by the partnership relation, ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_rightlookup=*
+
+<p>This phrase produces an Y such that the given value V relates to Y by the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain</p>
+<!-- START CODE "c4209" -->
+<a id="c4209"></a><blockquote class="code"><p class="quoted">
+the text to which &quot;chalk&quot; relates by the partnership relation
+</p></blockquote>
+<!-- END CODE -->
+<p>which might be, say, &quot;cheese&quot;. It's a run-time problem to use this if no such Y exists.</p>
+
+*=ph_leftlookup=*
+
+<p>This phrase produces an X such that X relates to the given value V by the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain</p>
+<!-- START CODE "c4210" -->
+<a id="c4210"></a><blockquote class="code"><p class="quoted">
+the text which relates to &quot;cheese&quot; by the partnership relation
+</p></blockquote>
+<!-- END CODE -->
+<p>which might be, say, &quot;chalk&quot;. It's a run-time problem to use this if no such X exists.</p>
+
+*=ph_leftlookuplist=*
+
+<p>This phrase produces a list of all the X such that X relates to the given value V by the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain</p>
+<!-- START CODE "c4211" -->
+<a id="c4211"></a><blockquote class="code"><p class="quoted">
+list of texts which relate to &quot;cheese&quot; by the partnership relation
+</p></blockquote>
+<!-- END CODE -->
+<p>which might be, say, { &quot;chalk&quot;, &quot;grapes&quot;, &quot;macaroni&quot; }. The answer might be the empty set, but that's not a problem.</p>
+
+*=ph_rightlookuplist=*
+
+<p>This phrase produces a list of all Y such that the given value V relates to Y by the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain</p>
+<!-- START CODE "c4212" -->
+<a id="c4212"></a><blockquote class="code"><p class="quoted">
+list of texts to which &quot;chalk&quot; relates by the partnership relation
+</p></blockquote>
+<!-- END CODE -->
+<p>which might be, say, { &quot;cheese&quot;, &quot;blackboard&quot;, &quot;cliffs&quot; }. The answer might be the empty set, but that's not a problem.</p>
+
+*=ph_leftdomain=*
+
+<p>This phrase produces a list of all X which relate to anything under the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain</p>
+<!-- START CODE "c4213" -->
+<a id="c4213"></a><blockquote class="code"><p class="quoted">
+list of texts which the partnership relation relates
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_rightdomain=*
+
+<p>This phrase produces a list of all Y which anything relates to under the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain</p>
+<!-- START CODE "c4214" -->
+<a id="c4214"></a><blockquote class="code"><p class="quoted">
+list of texts which the partnership relation relates to
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_scenetimesincebegan=*
+
+<p>This phrase produces the time since the named scene began, which only makes sense, of course, if it has indeed begun. Example:</p>
+<!-- START CODE "c2408" -->
+<a id="c2408"></a><blockquote class="code"><p class="quoted">
+time since Entire Game began
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_scenetimesinceended=*
+
+<p>This phrase produces the time since the named scene ended, which only makes sense, of course, if it has indeed ended. Example:</p>
+<!-- START CODE "c2409" -->
+<a id="c2409"></a><blockquote class="code"><p class="quoted">
+time since Formal Dinner ended
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_scenetimewhenbegan=*
+
+<p>This phrase produces the time (i.e., the value of the &quot;time of day&quot; variable) at the moment when the given scene began.</p>
+
+*=ph_scenetimewhenended=*
+
+<p>This phrase produces the time (i.e., the value of the &quot;time of day&quot; variable) at the moment when the given scene ended.</p>
+
+*=ph_subform=*
+
+<p>This takes a text and makes substitution occur immediately. For example,</p>
+<!-- START CODE "c8186" -->
+<a id="c8186"></a><blockquote class="code"><p class="quoted">
+substituted form of &quot;time of death, [time of day]&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces something like &quot;time of death, 9:15 AM&quot; rather than &quot;time of death, [time of day]&quot;. It's entirely legal to apply this to text which never had any substitutions in, so</p>
+<!-- START CODE "c8187" -->
+<a id="c8187"></a><blockquote class="code"><p class="quoted">
+substituted form of &quot;balloon&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;balloon&quot;.</p>
+
+*=ph_decideon=*
+
+<p>This phrase can only be used in the body of a definition of a phrase to decide a value. It causes the calculation to end immediately, with the outcome being the given value, which must be of the kind expected. Example:</p>
+<!-- START CODE "c3042" -->
+<a id="c3042"></a><blockquote class="code"><p class="quoted">
+To decide which number is double (N - a number):
+<br />&#160;&#160;&#160;&#160;let D be N times N;
+<br />&#160;&#160;&#160;&#160;decide on D.
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_let=*
+
+<p>This phrase creates a new temporary variable, starting it with the value supplied. The variable lasts only for the present block of phrases, which certainly means that it lasts only for the current rule. Examples:</p>
+<!-- START CODE "c3002" -->
+<a id="c3002"></a><blockquote class="code"><p class="quoted">
+let outer bull be 25;
+<br />let the current appearance be &quot;reddish brown&quot;;
+<br />let the special room be Marley Wood;
+</p></blockquote>
+<!-- END CODE -->
+<p>The kinds of these are deduced from the values given, so that, for instance,</p>
+<!-- START CODE "c3003" -->
+<a id="c3003"></a><blockquote class="code"><p class="quoted">
+say &quot;The outer bull scores [the outer bull in words] when you practice archery in [special room].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces</p>
+<!-- START CODE "c3004" -->
+<a id="c3004"></a><blockquote class="code"><p class="quoted">
+The outer bull scores twenty-five when you practice archery in Marley Wood.
+</p></blockquote>
+<!-- END CODE -->
+<p>The variable name should be a new one; if it's the name of an existing one, then the kinds must agree. So:</p>
+<!-- START CODE "c3005" -->
+<a id="c3005"></a><blockquote class="code"><p class="quoted">
+let outer bull be 25;
+<br />let outer bull be 50;
+</p></blockquote>
+<!-- END CODE -->
+<p>is a legal combination, because the second &quot;let&quot; simply changes the value of the existing &quot;outer bull&quot; variable to a different number.</p>
+
+*=ph_letdefault=*
+
+<p>This phrase creates a new temporary variable of the given kind. The variable lasts only for the present block of phrases, which certainly means that it lasts only for the current rule. Example:</p>
+<!-- START CODE "c3006" -->
+<a id="c3006"></a><blockquote class="code"><p class="quoted">
+let inner bull be a number;
+</p></blockquote>
+<!-- END CODE -->
+<p>The variable created holding the default value for that kind - in this case, the number 0. A handful of very obscure kinds have no default values, and then a problem message is produced. Inform also disallows:</p>
+<!-- START CODE "c3007" -->
+<a id="c3007"></a><blockquote class="code"><p class="quoted">
+let the conveyance be a vehicle;
+</p></blockquote>
+<!-- END CODE -->
+<p>because temporary variables aren't allowed to have kinds more specific than &quot;object&quot;. (This is a good thing: suppose there are no vehicles in the world?) It's quite safe in such cases to use</p>
+<!-- START CODE "c3008" -->
+<a id="c3008"></a><blockquote class="code"><p class="quoted">
+let the conveyance be an object;
+</p></blockquote>
+<!-- END CODE -->
+<p>instead, which creates it as the special object value &quot;nothing&quot;.</p>
+
+*=ph_reverselist=*
+
+<p>This phrase puts the list in reverse order. The old entry 1 becomes the new last entry, and so on: reversing an empty list or a list containing only one entry leaves it unchanged. Example:</p>
+<!-- START CODE "c8443" -->
+<a id="c8443"></a><blockquote class="code"><p class="quoted">
+let L be {11, 12, 14, 15, 16, 17};
+<br />reverse L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {17, 16, 15, 14, 12, 11}.</p>
+
+*=ph_sortlist=*
+
+<p>This phrase puts the list into ascending order. Example:</p>
+<!-- START CODE "c8444" -->
+<a id="c8444"></a><blockquote class="code"><p class="quoted">
+let L be {6 PM, 11:13 AM, 4:21 PM, 9:01 AM};
+<br />sort L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {9:01 AM, 11:13 AM, 4:21 PM, 6 PM}.</p>
+
+*=ph_sortlistreverse=*
+
+<p>This phrase puts the list into descending order. Example:</p>
+<!-- START CODE "c8445" -->
+<a id="c8445"></a><blockquote class="code"><p class="quoted">
+let L be {6 PM, 11:13 AM, 4:21 PM, 9:01 AM};
+<br />sort L in reverse order;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {6 PM, 4:21 PM, 11:13 AM, 9:01 AM}.</p>
+
+*=ph_sortlistrandom=*
+
+<p>This phrase puts the list into a uniformly random order, shuffling it as if it were a pack of cards. Example:</p>
+<!-- START CODE "c8446" -->
+<a id="c8446"></a><blockquote class="code"><p class="quoted">
+let L be {1, 2, 3, 4, 5, 6};
+<br />sort L in random order;
+</p></blockquote>
+<!-- END CODE -->
+<p>might result in L being {3, 1, 5, 6, 4, 2}. Or any of 719 other arrangements, including being left as it was.</p>
+
+*=ph_sortlistproperty=*
+
+<p>This phrase puts the list into ascending order of the values of the given property for the items in the list; this is only allowed if all of those values do have the property in question. Example:</p>
+<!-- START CODE "c8447" -->
+<a id="c8447"></a><blockquote class="code"><p class="quoted">
+let L be the list of people;
+<br />sort L in carrying capacity order;
+</p></blockquote>
+<!-- END CODE -->
+<p>would arrange people with weaklings first, titans last.</p>
+
+*=ph_sortlistpropertyreverse=*
+
+<p>This phrase puts the list into descending order of the values of the given property for the items in the list; this is only allowed if all of those values do have the property in question. Example:</p>
+<!-- START CODE "c8448" -->
+<a id="c8448"></a><blockquote class="code"><p class="quoted">
+let L be the list of people;
+<br />sort L in reverse carrying capacity order;
+</p></blockquote>
+<!-- END CODE -->
+<p>would arrange people with titans first, weaklings last.</p>
+
+*=ph_rotatelist=*
+
+<p>This phrase shuffles the entries of the list forwards (to the right) by one place, so that the 1st becomes 2nd, the 2nd becomes 3rd, and so on until the last, which becomes the new first entry. Example:</p>
+<!-- START CODE "c8449" -->
+<a id="c8449"></a><blockquote class="code"><p class="quoted">
+let L be { &quot;cow&quot;, &quot;heifer&quot;, &quot;bullock&quot; };
+<br />rotate L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being { &quot;bullock&quot;, &quot;cow&quot;, &quot;heifer&quot; }.</p>
+
+*=ph_rotatelistback=*
+
+<p>This phrase shuffles the entries of the list backwards (to the left) by one place, so that the 3rd becomes 2nd, the 2nd becomes 1st, and so on; the previous 1st entry becomes the new last entry. Example:</p>
+<!-- START CODE "c8450" -->
+<a id="c8450"></a><blockquote class="code"><p class="quoted">
+let L be { &quot;cow&quot;, &quot;heifer&quot;, &quot;bullock&quot; };
+<br />rotate L backwards;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being { &quot;heifer&quot;, &quot;bullock&quot;, &quot;cow&quot;}. (This achieves the same effect as &quot;reverse L; rotate L; reverse L;&quot; but is a little faster, and a lot less effort to read.)</p>
+
+*=ph_try=*
+
+<p>This phrase makes the action, which has to be named literally, take effect now. Example:</p>
+<!-- START CODE "c1329" -->
+<a id="c1329"></a><blockquote class="code"><p class="quoted">
+Instead of entering the trapdoor, try going up.
+</p></blockquote>
+<!-- END CODE -->
+<p>It's as if the player had typed GO UP as a command. Note that the action has to be specific:</p>
+<!-- START CODE "c1330" -->
+<a id="c1330"></a><blockquote class="code"><p class="quoted">
+try eating something;
+</p></blockquote>
+<!-- END CODE -->
+<p>is not allowed, since it doesn't say exactly what is to be eaten.</p>
+
+*=ph_trysilently=*
+
+<p>This phrase makes the action, which has to be named literally, take effect now, under the &quot;silent&quot; convention which means that routine messages aren't printed. Example:</p>
+<!-- START CODE "c1333" -->
+<a id="c1333"></a><blockquote class="code"><p class="quoted">
+try silently taking the napkin;
+</p></blockquote>
+<!-- END CODE -->
+<p>Silence is maintained only if this new action, the taking of the napkin, is successful (so if the napkin is successfully taken, the text &quot;Taken.&quot; will not appear): if the action should fail, a suitable objection will be voiced as usual.</p>
+
+*=ph_currentaction=*
+
+<p>This phrase produces the action currently being processed as a value - it literally stores the action, and remembers, if necessary, the exact wording of the player's command at the time it was stored - so that even actions arising from commands like LOOK UP X100 IN THE CODE BOOK can be stored faithfully. Examples:</p>
+<!-- START CODE "c3659" -->
+<a id="c3659"></a><blockquote class="code"><p class="quoted">
+let the present whim be the current action;
+<br />say &quot;How you would like to be [current action].&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>This only makes sense if an action is currently going on, so it shouldn't be used in &quot;every turn&quot; rules, for instance.</p>
+
+*=ph_actionpart=*
+
+<p>This phrase produces the action name part of an action. Example: suppose the current actor is Algy, who is throwing the brick at Biggles. Then</p>
+<!-- START CODE "c3667" -->
+<a id="c3667"></a><blockquote class="code"><p class="quoted">
+action name part of the current action = throwing it at action
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_nounpart=*
+
+<p>This phrase produces the (first) noun of an action. Example: suppose the current actor is Algy, who is throwing the brick at Biggles. Then</p>
+<!-- START CODE "c3668" -->
+<a id="c3668"></a><blockquote class="code"><p class="quoted">
+noun part of the current action = the brick
+</p></blockquote>
+<!-- END CODE -->
+<p>If the noun is something other than an object, this produces just &quot;nothing&quot;, the non-object.</p>
+
+*=ph_secondpart=*
+
+<p>This phrase produces the second noun of an action. Example: suppose the current actor is Algy, who is throwing the brick at Biggles. Then</p>
+<!-- START CODE "c3669" -->
+<a id="c3669"></a><blockquote class="code"><p class="quoted">
+second noun part of the current action = Biggles
+</p></blockquote>
+<!-- END CODE -->
+<p>If the second noun is something other than an object (for instance for the command SET DIAL TO 3417 it would be the number 3417), this produces just &quot;nothing&quot;, the non-object.</p>
+
+*=ph_actorpart=*
+
+<p>This phrase produces the person who would be carrying out the action if it were being tried. Example: suppose the current actor is Algy, who is throwing the brick at Biggles. Then</p>
+<!-- START CODE "c3670" -->
+<a id="c3670"></a><blockquote class="code"><p class="quoted">
+actor part of the current action = Algy
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_involves=*
+
+<p>This condition is true if the object appears as any of the actor, the noun or the second noun in the action. Example:</p>
+<!-- START CODE "c3671" -->
+<a id="c3671"></a><blockquote class="code"><p class="quoted">
+if the current action involves Algy
+</p></blockquote>
+<!-- END CODE -->
+<p>would be true for &quot;give revolver to Algy&quot;, &quot;Algy trying flying the Sopwith Camel&quot;, &quot;examine Algy&quot; and so on, but false for &quot;ask Raymond about secret airfield&quot;.</p>
+
+*=ph_actionof=*
+
+<p>This phrase is now seldom needed. It produces a literally typed action as a value. Example:</p>
+<!-- START CODE "c3672" -->
+<a id="c3672"></a><blockquote class="code"><p class="quoted">
+now the best idea yet is the action of pushing the button;
+</p></blockquote>
+<!-- END CODE -->
+<p>Nowadays in most contexts we can just type &quot;pushing the button&quot; as a value, and that will work fine, so this phrase is retained only to keep old code working.</p>
+
+*=ph_ceiling=*
+
+<p>Produces the smallest integer value greater than or equal to the one given. Examples:</p>
+<!-- START CODE "c4562" -->
+<a id="c4562"></a><blockquote class="code"><p class="quoted">
+ceiling of pi = 4.0
+<br />ceiling of -16.315 = -16.0
+</p></blockquote>
+<!-- END CODE -->
+<p>(Note that the result is still a real number; it simply has no fractional part any more.)</p>
+
+*=ph_floor=*
+
+<p>Produces the largest integer value less than or equal to the one given. Examples:</p>
+<!-- START CODE "c4563" -->
+<a id="c4563"></a><blockquote class="code"><p class="quoted">
+floor of pi = 3.0
+<br />floor of -16.315 = -17.0
+</p></blockquote>
+<!-- END CODE -->
+<p>(Note that the result is still a real number; it simply has no fractional part any more.)</p>
+
+*=ph_absolutevalue=*
+
+<p>Removes the sign from a value, leaving positive numbers alone but making negative ones positive. Examples:</p>
+<!-- START CODE "c4564" -->
+<a id="c4564"></a><blockquote class="code"><p class="quoted">
+absolute value of 62.1 = 62.1
+<br />absolute value of 0 = 0.0
+<br />absolute value of -62.1 = 62.1
+<br />absolute value of minus infinity = plus infinity
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_reciprocal=*
+
+<p>Calculates 1/x, that is, divides up 1 into this many pieces. Examples:</p>
+<!-- START CODE "c4565" -->
+<a id="c4565"></a><blockquote class="code"><p class="quoted">
+reciprocal of -2 = -0.5
+<br />reciprocal of 0.1 = 10.0
+<br />reciprocal of 7 = 0.14286
+<br />reciprocal of plus infinity = 0.0
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_power=*
+
+<p>Computes x to the power y. Examples:</p>
+<!-- START CODE "c4566" -->
+<a id="c4566"></a><blockquote class="code"><p class="quoted">
+2 to the power 4 = 16.0
+<br />100 to the power 0.5 = 10.0
+<br />7 to the power -1 = 0.14286
+<br />pi to the power 0 = 1.0
+</p></blockquote>
+<!-- END CODE -->
+<p>In the words of the Glulx specification document (section 2.12), &quot;the special cases are breathtaking&quot;: if you need to know exactly what, say, &quot;minus infinity to the power Y&quot; will do for different cases of Y, refer to the details of the &quot;pow&quot; opcode.</p>
+
+*=ph_exp=*
+
+<p>Computes e to the given power, where e is the base of natural logarithms. Examples:</p>
+<!-- START CODE "c4568" -->
+<a id="c4568"></a><blockquote class="code"><p class="quoted">
+exponential of 0 = 1.0
+<br />exponential of 1 = e = 2.7182818
+<br />exponential of -10 = 4.53999 x 10^-5
+<br />exponential of 10 = 22026.46484
+<br />exponential of logarithm of 7.12 = 7.12
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_logarithmto=*
+
+<p>Finds what power the base would have to be raised to in order to get this value. Examples:</p>
+<!-- START CODE "c4569" -->
+<a id="c4569"></a><blockquote class="code"><p class="quoted">
+logarithm to base 10 of 1000000 = 6.0
+<br />logarithm to base 10 of 350 = 2.54407
+<br />logarithm to base 2 of 256 = 8.0
+</p></blockquote>
+<!-- END CODE -->
+<p>Logarithms of zero or negative numbers are nonexistent. Note that &quot;logarithm to base 10 of ...&quot; is what most calculators call simply &quot;log&quot;, but Inform doesn't: it uses &quot;log&quot; for natural logarithms.</p>
+
+*=ph_logarithm=*
+
+<p>Finds what power e would have to be raised to in order to get this value. Examples:</p>
+<!-- START CODE "c4570" -->
+<a id="c4570"></a><blockquote class="code"><p class="quoted">
+logarithm of e = 1.0
+<br />logarithm of 1 = 0.0
+<br />logarithm of 1000 = 6.90776
+<br />logarithm of exponential of 7.12 = 7.12
+</p></blockquote>
+<!-- END CODE -->
+<p>Logarithms of zero or negative numbers are nonexistent. This is the function which most calculators label as &quot;ln&quot;, for &quot;log natural&quot;, but in mathematical and scientific papers it's more often written &quot;log&quot;, and Inform follows that convention.</p>
+
+*=phs_if=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: it says that the text following should be said only if the condition is true. That continues until the end of the text, or until an &quot;[end if]&quot; substitution, whichever comes first. If the &quot;[otherwise]&quot; and &quot;[otherwise if]&quot; substitutions are also present, they allow alternatives to be added in case the condition is false. Example:</p>
+<!-- START CODE "c899" -->
+<a id="c899"></a><blockquote class="code"><p class="quoted">
+The wine cask is a container. The printed name of the cask is &quot;[if open]broached, empty cask[otherwise]sealed wine cask&quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>we find that the cask is described as &quot;a broached, empty cask&quot; when open, and &quot;a sealed wine cask&quot; when closed. A longer example which begins and ends with fixed text, but has two alternatives in the middle:</p>
+<!-- START CODE "c900" -->
+<a id="c900"></a><blockquote class="code"><p class="quoted">
+The Customs Wharf is a room. &quot;Amid the bustle of the quayside, [if the cask is open]many eyes stray to your broached cask. [otherwise]nobody takes much notice of a man heaving a cask about. [end if]Sleek gondolas jostle at the plank pier.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_unless=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: it says that the text following should be said only if the condition is false. That continues until the end of the text, or until an &quot;[end if]&quot; substitution, whichever comes first. If the &quot;[otherwise]&quot; and &quot;[otherwise if]&quot; substitutions are also present, they allow alternatives to be added in case the condition is true. Example:</p>
+<!-- START CODE "c901" -->
+<a id="c901"></a><blockquote class="code"><p class="quoted">
+The Customs Hall is a room. &quot;With infinite slowness, with ledgers and quill pens, the clerks ruin their eyesight.[unless the player is a woman] They barely even glance in your direction.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_otherwise=*
+
+<p>This text substitution produces no text, and can be used only following an &quot;[if ...]&quot; or &quot;[unless ...]&quot; text substitution. It switches from text which appears if the condition is true, to text which appears if it is false. Example:</p>
+<!-- START CODE "c902" -->
+<a id="c902"></a><blockquote class="code"><p class="quoted">
+The wine cask is a container. The printed name of the cask is &quot;[if open]broached, empty cask[otherwise]sealed wine cask&quot;.
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_endif=*
+
+<p>This text substitution produces no text, and can be used only to close off a stretch of varying text which begins with &quot;[if ...]&quot;.</p>
+
+*=phs_endunless=*
+
+<p>This text substitution produces no text, and can be used only to close off a stretch of varying text which begins with &quot;[unless ...]&quot;.</p>
+
+*=phs_elseif=*
+
+<p>This text substitution produces no text, and can be used only following an &quot;[if ...]&quot; or &quot;[unless ...]&quot; text substitution. It gives an alternative text to use if the first condition didn't apply, but this one does. Example:</p>
+<!-- START CODE "c903" -->
+<a id="c903"></a><blockquote class="code"><p class="quoted">
+The wine cask is a container. The printed name of the cask is &quot;[if open]broached, empty cask[otherwise if transparent]sealed cask half-full of sloshing wine[otherwise]sealed wine cask&quot;.
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_elseunless=*
+
+<p>This text substitution produces no text, and can be used only following an &quot;[if ...]&quot; or &quot;[unless ...]&quot; text substitution. It gives an alternative text to use if the first condition didn't apply, and this one is false too.</p>
+
+*=ph_letequation=*
+
+<p>This phrase creates a new temporary variable, starting it with the value found by solving the given equation. The variable lasts only for the present block of phrases, which certainly means that it lasts only for the current rule. Example:</p>
+<!-- START CODE "c4836" -->
+<a id="c4836"></a><blockquote class="code"><p class="quoted">
+let F be given by Newton's Second Law where a is the acceleration due to gravity;
+</p></blockquote>
+<!-- END CODE -->
+<p>There is also a more compact syntax, giving the equation explicitly:</p>
+<!-- START CODE "c4837" -->
+<a id="c4837"></a><blockquote class="code"><p class="quoted">
+let KE be given by KE = mv^2/2 where KE is an energy;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_while=*
+
+<p>This phrase causes the block of phrases following it to be repeated over and over for as long the condition is true. If it isn't even true the first time, the block is skipped over and nothing happens. Example:</p>
+<!-- START CODE "c2936" -->
+<a id="c2936"></a><blockquote class="code"><p class="quoted">
+while someone (called the victim) is in the Crypt:
+<br />&#160;&#160;&#160;&#160;say &quot;A bolt of lightning strikes [the victim]!&quot;;
+<br />&#160;&#160;&#160;&#160;now the victim is in the Afterlife;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_setpronouns=*
+
+<p>This phrase adjusts the meaning of pronouns like IT, HIM, HER and THEM in the command parser as if the object mentioned has become the subject of conversation. Example: the combination of</p>
+<!-- START CODE "c6098" -->
+<a id="c6098"></a><blockquote class="code"><p class="quoted">
+set pronouns from the key;
+<br />set pronouns from Bunny;
+</p></blockquote>
+<!-- END CODE -->
+<p>might change IT to mean the silver key and HIM to mean Harry &quot;Bunny&quot; Manders, while leaving HER and THEM unaltered.</p>
+
+*=ph_roomdirof=*
+
+<p>This phrase produces the room which the given map direction leads to, or the special value &quot;nothing&quot; if it leads nowhere. If it leads to a door, the result is the room through that door. Examples:</p>
+<!-- START CODE "c1149" -->
+<a id="c1149"></a><blockquote class="code"><p class="quoted">
+say &quot;You look north into [the room north from the Garden].&quot;
+<br />if the room north from the Garden is nothing, say &quot;The grass leads nowhere.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_doordirof=*
+
+<p>This phrase produces the door which the given map direction leads to, or the special value &quot;nothing&quot; if it leads nowhere or to a room. Examples:</p>
+<!-- START CODE "c1150" -->
+<a id="c1150"></a><blockquote class="code"><p class="quoted">
+let the barrier be the door north from the Garden;
+<br />if the barrier is a door, say &quot;Well, [the barrier] is in the way.&quot;;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_roomordoor=*
+
+<p>This phrase produces the object which the given map direction leads to, which will always be either a room, a door or the special value &quot;nothing&quot;. The phrase is used mainly by the Standard Rules, for technical reasons, and usually it's better to use &quot;room ... from ...&quot; or &quot;door ... from ...&quot; instead.</p>
+
+*=ph_bestroute=*
+
+<p>This phrase produces a direction to take in order to get from A to B by the shortest number of movements between rooms, or produces &quot;nothing&quot; if there is no way through at all. Example:</p>
+<!-- START CODE "c1151" -->
+<a id="c1151"></a><blockquote class="code"><p class="quoted">
+The description of the brass compass is &quot;The dial points quiveringly to [best route from the location to the Lodestone Room].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Best routes are ordinarily forbidden to go through doors, but if the suffix &quot;using doors&quot; is added as an option then any open or openable and unlocked door may be used on the way; and if &quot;using even locked doors&quot; is given, then any door at all will do. Since magnetism is no respecter of property, that seems right here:</p>
+<!-- START CODE "c1152" -->
+<a id="c1152"></a><blockquote class="code"><p class="quoted">
+The description of the brass compass is &quot;The dial points quiveringly to [best route from the location to the Lodestone Room, using even locked doors].&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_bestroutethrough=*
+
+<p>This phrase produces a direction to take in order to get from A to B by the shortest number of movements between rooms which match the given description, or produces &quot;nothing&quot; if there is no way through at all. Example:</p>
+<!-- START CODE "c1153" -->
+<a id="c1153"></a><blockquote class="code"><p class="quoted">
+best route from the Drawbridge to the Keep through visited rooms
+</p></blockquote>
+<!-- END CODE -->
+<p>The condition - in this case, that &quot;visited rooms&quot; must be used - also applies to both ends of the journey, so if either Drawbridge or Keep are unvisited then this is &quot;nothing&quot;. (Similarly, saying something like &quot;...through containers&quot; would mean there is never a route.)</p>
+
+*=ph_bestroutelength=*
+
+<p>This phrase produces the number of map connections which must be followed in order to get from A to B by the shortest number of movements between rooms. If A and B are the same, the answer is 0; if there is no route at all, the answer is -1. Example:</p>
+<!-- START CODE "c1154" -->
+<a id="c1154"></a><blockquote class="code"><p class="quoted">
+The description of the proximity gadget is &quot;You are now [number of moves from the location to the Sundial] moves from the Sundial.&quot;;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_bestroutethroughlength=*
+
+<p>This phrase produces the number of map connections which must be followed in order to get from A to B by the shortest number of movements between rooms matching the given description. If A and B are the same, the answer is 0; if there is no route at all, or if either A or B fail to match the description themselves, the answer is -1.</p>
+
+*=ph_move=*
+
+<p>This phrase moves the first-named object to the second. Example:</p>
+<!-- START CODE "c1822" -->
+<a id="c1822"></a><blockquote class="code"><p class="quoted">
+move the genie's lamp to Aladdin's Cave;
+</p></blockquote>
+<!-- END CODE -->
+<p>The first object named has to be a thing; the destination must be a room, as here, a container, a supporter, or a person. When something is moved, all its parts and contents (and all their contents, and so on) move with it. If the thing being moved is a person, then the destination is required to be a room or an enterable container. (In particular, a person cannot be carried by another person.)</p>
+<p>Two options can be used if the object being moved is the player.</p>
+<!-- START CODE "c1823" -->
+<a id="c1823"></a><blockquote class="code"><p class="quoted">
+move the player to Aladdin's Cave, without printing a room description
+</p></blockquote>
+<!-- END CODE -->
+<p>omits the description which would otherwise be produced. A compromise is to use:</p>
+<!-- START CODE "c1824" -->
+<a id="c1824"></a><blockquote class="code"><p class="quoted">
+move the player to Aladdin's Cave, printing an abbreviated room description
+</p></blockquote>
+<!-- END CODE -->
+<p>which gives a full description if the player has never been here before, but only a brief one if it is a familiar scene. These options have no effect for any other objects being moved.</p>
+
+*=ph_appliedlist=*
+
+<p>This phrase takes the list, applies the phrase to each entry in the list, and forms a new list of the result. Example:</p>
+<!-- START CODE "c8698" -->
+<a id="c8698"></a><blockquote class="code"><p class="quoted">
+To decide what number is double (N - a number) (this is doubling):
+<br />&#160;&#160;&#160;&#160;decide on N plus N.
+</p></blockquote>
+<!-- END CODE -->
+<p>Then &quot;doubling applied to 2&quot; produces 4, by the simpler definition of &quot;applied to&quot;, but also:</p>
+<!-- START CODE "c8699" -->
+<a id="c8699"></a><blockquote class="code"><p class="quoted">
+doubling applied to {2, 3, 4}
+</p></blockquote>
+<!-- END CODE -->
+<p>produces the list {4, 6, 8}.</p>
+
+*=ph_filter=*
+
+<p>This phrase produces a new list which is a thinner version of the one given, so that it contains only those values which match the description given. Example:</p>
+<!-- START CODE "c8703" -->
+<a id="c8703"></a><blockquote class="code"><p class="quoted">
+filter to even numbers of {3, 8, 4, 19, 7}
+</p></blockquote>
+<!-- END CODE -->
+<p>produces {8, 4}, with the values 3, 19, and 7 failing to make it through. A sufficiently fine filter may well thin out a list to a single entry, or even no entries at all, but the result is always a list.</p>
+
+*=ph_reduction=*
+
+<p>This phrase works through the list and accumulates the values in it, using the phrase supplied. Example: if we have</p>
+<!-- START CODE "c8709" -->
+<a id="c8709"></a><blockquote class="code"><p class="quoted">
+To decide what number is the sum of (N - number) and (M - number)
+<br />&#160;&#160;&#160;&#160;(this is summing):
+<br />&#160;&#160;&#160;&#160;decide on N + M.
+</p></blockquote>
+<!-- END CODE -->
+<p>then the summing reduction of {3, 8, 4, 19, 7} is the number 41, obtained by</p>
+<!-- START CODE "c8710" -->
+<a id="c8710"></a><blockquote class="code"><p class="quoted">
+(((3 + 8) + 4) + 19) + 7
+</p></blockquote>
+<!-- END CODE -->
+<p>so that the summing phrase has been used four times.</p>
+
+*=ph_enumfirst=*
+
+<p>This phrase produces the first-created value of the given kind, which should be an enumeration. Example: if we have</p>
+<!-- START CODE "c3072" -->
+<a id="c3072"></a><blockquote class="code"><p class="quoted">
+Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;first value of colour&quot; is red.</p>
+
+*=ph_enumlast=*
+
+<p>This phrase produces the last-created value of the given kind, which should be an enumeration. Example: if we have</p>
+<!-- START CODE "c3073" -->
+<a id="c3073"></a><blockquote class="code"><p class="quoted">
+Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;last value of colour&quot; is violet.</p>
+
+*=ph_enumafter=*
+
+<p>This phrase produces the next-created value of the given kind, which should be an enumeration. Example: if we have</p>
+<!-- START CODE "c3074" -->
+<a id="c3074"></a><blockquote class="code"><p class="quoted">
+Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;colour after orange&quot; is yellow.</p>
+
+*=ph_enumbefore=*
+
+<p>This phrase produces the previous-created value of the given kind, which should be an enumeration. Example: if we have</p>
+<!-- START CODE "c3075" -->
+<a id="c3075"></a><blockquote class="code"><p class="quoted">
+Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;colour before blue&quot; is green.</p>
+
+*=ph_repeat=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each value in the given range, storing that value in the named variable. (The variable exists only temporarily, within the repetition.) Example:</p>
+<!-- START CODE "c2940" -->
+<a id="c2940"></a><blockquote class="code"><p class="quoted">
+repeat with counter running from 1 to 10:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>This, and runs through the given phrases ten times. Within those phrases, a special value called &quot;counter&quot; has the value 1 the first time through, then the value 2, then 3 and so on up to 10. (It can of course be called whatever we like: this is only an example.) The range can be from any kind where ranges make sense - anything on which arithmetic can be done, so for instance</p>
+<!-- START CODE "c2941" -->
+<a id="c2941"></a><blockquote class="code"><p class="quoted">
+repeat with moment running from 4 PM to 4:07 PM:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>and also any enumeration:</p>
+<!-- START CODE "c2942" -->
+<a id="c2942"></a><blockquote class="code"><p class="quoted">
+Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c2943" -->
+<a id="c2943"></a><blockquote class="code"><p class="quoted">
+...
+<br />&#160;&#160;&#160;&#160;repeat with hue running from orange to indigo:
+<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_defaultvalue=*
+
+<p>Produces the default value of the kind named. Examples:</p>
+<!-- START CODE "c707" -->
+<a id="c707"></a><blockquote class="code"><p class="quoted">
+The silver repeater is here. &quot;You catch sight of a silver repeater watch, hands immobile at [default value of time].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces the output:</p>
+<!-- START CODE "c708" -->
+<a id="c708"></a><blockquote class="code"><p class="quoted">
+You catch sight of a silver repeater watch, hands immobile at 9:00 am.
+</p></blockquote>
+<!-- END CODE -->
+<p>because nine in the morning is the default time in Inform. If we have:</p>
+<!-- START CODE "c709" -->
+<a id="c709"></a><blockquote class="code"><p class="quoted">
+Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;default value of brightness&quot; is guttering, the first brightness created.  When it comes to kinds of object, we sometimes have to be a little careful. For example,</p>
+<!-- START CODE "c710" -->
+<a id="c710"></a><blockquote class="code"><p class="quoted">
+default value of room
+</p></blockquote>
+<!-- END CODE -->
+<p>is always going to be fine (it's always the first room created in the source text). But</p>
+<!-- START CODE "c711" -->
+<a id="c711"></a><blockquote class="code"><p class="quoted">
+default value of vehicle
+</p></blockquote>
+<!-- END CODE -->
+<p>would produce a Problem message if there were no vehicles in the world.</p>
+
+*=ph_showmetable=*
+
+<p>This phrase prints a crude but sometimes useful display on screen of the current contents of the named table. It's intended for authors to see when testing, not for players of the finished version to see.</p>
+
+*=phs_currenttablerow=*
+
+<p>This text substitution produces a crude but sometimes useful listing of the entries in the currently chosen table row.</p>
+
+*=phs_tablerow=*
+
+<p>This text substitution produces a crude but sometimes useful listing of the entries in the specified row.</p>
+
+*=phs_tablecolumn=*
+
+<p>This text substitution produces a crude but sometimes useful listing of the entries in the specified column.</p>
+
+*=ph_rulebookoutcome=*
+
+<p>This phrase produces the (named) outcome of the phrase most recently followed. Example:</p>
+<!-- START CODE "c7923" -->
+<a id="c7923"></a><blockquote class="code"><p class="quoted">
+follow the audibility rules;
+<br />if the outcome of the rulebook is the absolute silence outcome:
+<br />&#160;&#160;&#160;&#160;say &quot;You could hear a pin drop in here.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_numrows=*
+
+<p>This phrase produces the number of rows (including any blank rows) in the given table. Example:</p>
+<!-- START CODE "c5038" -->
+<a id="c5038"></a><blockquote class="code"><p class="quoted">
+number of rows in the Table of Selected Elements
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_plus=*
+
+<p>This phrase performs signed addition on the given values, whose kinds must agree, and produces the result. Examples:</p>
+<!-- START CODE "c4550" -->
+<a id="c4550"></a><blockquote class="code"><p class="quoted">
+200 + 1 = 201
+<br />10:04 AM + two minutes = 10:06 AM
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_minus=*
+
+<p>This phrase performs signed subtraction on the given values, whose kinds must agree, and produces the result. Examples:</p>
+<!-- START CODE "c4551" -->
+<a id="c4551"></a><blockquote class="code"><p class="quoted">
+200 - 1 = 199
+<br />10:04 AM - two minutes = 10:02 AM
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_times=*
+
+<p>This phrase performs signed multiplication on the given values, whose kinds must be dimensionally compatible, and produces the result. Examples:</p>
+<!-- START CODE "c4552" -->
+<a id="c4552"></a><blockquote class="code"><p class="quoted">
+201 times 3 = 603
+<br />two minutes times 4 = eight minutes
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_divide=*
+
+<p>This phrase performs signed division on the given values, whose kinds must be dimensionally compatible, and produces the result. Examples:</p>
+<!-- START CODE "c4553" -->
+<a id="c4553"></a><blockquote class="code"><p class="quoted">
+201 divided by 3 = 67
+<br />202 divided by 3 = 67
+<br />202.0 divided by 3 = 67.33334
+<br />twenty minutes divided by 4 = five minutes
+<br />twenty minutes divided by five minutes = 4
+</p></blockquote>
+<!-- END CODE -->
+<p>Division rounds whole-number values down to the nearest whole number. An attempt to divide a number by 0 will cause a run-time problem message; but an attempt to divide a real number by 0 will instead produce plus infinity or minus infinity.</p>
+
+*=ph_remainder=*
+
+<p>This phrase performs signed division on the given values, whose kinds must be dimensionally compatible, and then produces the remainder. Examples:</p>
+<!-- START CODE "c4554" -->
+<a id="c4554"></a><blockquote class="code"><p class="quoted">
+remainder after dividing 201 by 5 = 1
+<br />remainder after dividing twenty minutes by 7 = six minutes
+</p></blockquote>
+<!-- END CODE -->
+<p>It is mathematically impossible to divide by 0, so any attempt to find the remainder after dividing a number by 0 will cause a run-time problem message. For a real number this won't arise and the remainder will usually be 0.0.</p>
+
+*=ph_nearest=*
+
+<p>This phrase rounds the given value off, rounding upward in boundary cases. Examples:</p>
+<!-- START CODE "c4556" -->
+<a id="c4556"></a><blockquote class="code"><p class="quoted">
+201 to the nearest 5 = 200
+<br />205 to the nearest 10 = 210
+<br />10:27 AM to the nearest five minutes = 10:25 AM
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_squareroot=*
+
+<p>This phrase produces an approximate square root, to the nearest integer, of the given value, which must be of a kind which has square roots. Example:</p>
+<!-- START CODE "c4557" -->
+<a id="c4557"></a><blockquote class="code"><p class="quoted">
+square root of 16 = 4
+</p></blockquote>
+<!-- END CODE -->
+<p>Trying to take the square root of a negative number will cause a run-time problem, because then we can't even nearly solve it.</p>
+<p>(Warning: this is slow to compute if the Z-machine setting is used. For</p>
+<p>best performance, use Glulx.)</p>
+
+*=ph_realsquareroot=*
+
+<p>This phrase produces a square root, as accurately as a real number can hold it, of the given value, which must be of a kind which has square roots. Example:</p>
+<!-- START CODE "c4558" -->
+<a id="c4558"></a><blockquote class="code"><p class="quoted">
+real square root of 2 = 1.41421
+</p></blockquote>
+<!-- END CODE -->
+<p>The real square root of a negative number is nonexistent.</p>
+
+*=ph_cuberoot=*
+
+<p>This phrase produces an approximate cube root, to the nearest integer, of the given value, which must be of a kind which has cube roots. Example:</p>
+<!-- START CODE "c4559" -->
+<a id="c4559"></a><blockquote class="code"><p class="quoted">
+cube root of 27 = 3
+<br />cube root of -27 = -3
+</p></blockquote>
+<!-- END CODE -->
+<p>(Warning: this is not very accurate if the Z-machine setting is used. For</p>
+<p>best performance, use Glulx.)</p>
+
+*=phs_linebreak=*
+
+<p>This text substitution produces a line break. Example:</p>
+<!-- START CODE "c943" -->
+<a id="c943"></a><blockquote class="code"><p class="quoted">
+&quot;There is an endless sense of[line break]falling and[line break]falling.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Line breaks are not paragraph breaks, so the result is:</p>
+<!-- START CODE "c944" -->
+<a id="c944"></a><blockquote class="code"><p class="quoted">
+There is an endless sense of
+<br />falling and
+<br />falling.
+</p></blockquote>
+<!-- END CODE -->
+<p>with no extra vertical spacing between these lines.</p>
+
+*=phs_nolinebreak=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: it prevents a line break where Inform might otherwise assume one. Example:</p>
+<!-- START CODE "c945" -->
+<a id="c945"></a><blockquote class="code"><p class="quoted">
+&quot;The chorus sing [one of]Jerusalem[or]Rule, Britannia![no line break][at random].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Here the &quot;[no line break]&quot; stops Inform from thinking that the exclamation mark means a sentence ending - it's part of the name of the song &quot;Rule, Britannia!&quot;. So we get</p>
+<!-- START CODE "c946" -->
+<a id="c946"></a><blockquote class="code"><p class="quoted">
+The chorus sing Rule, Britannia!.
+</p></blockquote>
+<!-- END CODE -->
+<p>with no line break between the &quot;!&quot; and &quot;.&quot;.</p>
+
+*=phs_runparaon=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: it prevents a paragraph break occurring after the present text is printed, in case Inform might be tempted to place one there. Example:</p>
+<!-- START CODE "c947" -->
+<a id="c947"></a><blockquote class="code"><p class="quoted">
+Before taking something, say &quot;Very well. [run paragraph on]&quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>This allows the reply to, say, TAKE ENVELOPE to be</p>
+<!-- START CODE "c948" -->
+<a id="c948"></a><blockquote class="code"><p class="quoted">
+Very well. Taken.
+</p></blockquote>
+<!-- END CODE -->
+<p>rather than</p>
+<!-- START CODE "c949" -->
+<a id="c949"></a><blockquote class="code"><p class="quoted">
+Very well.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c950" -->
+<a id="c950"></a><blockquote class="code"><p class="quoted">
+Taken.
+</p></blockquote>
+<!-- END CODE -->
+<p>which is how texts produced by different rules would normally be shown. (It's a traditional printer's term. See Oldfield's Manual of Typography, 1892, under &quot;When two paragraphs are required to be made into one, or, in technical language, 'to run on'.&quot;)</p>
+
+*=phs_parabreak=*
+
+<p>This text substitution produces a paragraph break. Example:</p>
+<!-- START CODE "c951" -->
+<a id="c951"></a><blockquote class="code"><p class="quoted">
+&quot;This is not right.[paragraph break]No, something is terribly wrong.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Paragraph breaks have a little vertical spacing in them, unlike mere line breaks, so the result is:</p>
+<!-- START CODE "c952" -->
+<a id="c952"></a><blockquote class="code"><p class="quoted">
+This is not right.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c953" -->
+<a id="c953"></a><blockquote class="code"><p class="quoted">
+No, something is terribly wrong.
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_condparabreak=*
+
+<p>This text substitution either produces a paragraph break, or no text at all. It marks a place where Inform can put a paragraph break if necessary; in effect it simulates what Inform does every time a &quot;before&quot; or similar rule finishes. If there is text already printed, and text then follows on, a paragraph break is made. But if not, nothing is done. This is sometimes useful when producing a large amount of text which changes with the circumstances so that it is hard to predict in advance whether a paragraph break is needed or not.</p>
+
+*=ph_breakpending=*
+
+<p>This condition is true if text has recently been said in such a way that Inform expects to add a paragraph break at the next opportunity (for instance when the present rule ends and another one says something, or when a &quot;[conditional paragraph break]&quot; is made).</p>
+
+*=phs_clarifbreak=*
+
+<p>This text substitution produces a line break, and then also a paragraph break if the text immediately following is a room description brought about by having gone to to a different room and looking around, in which case a line break should be added. In traditional IF, this is used when clarifying what Inform thinks the player intended by a given command. Example:</p>
+<!-- START CODE "c954" -->
+<a id="c954"></a><blockquote class="code"><p class="quoted">
+say &quot;(first opening [the noun])[command clarification break]&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>might result in</p>
+<!-- START CODE "c955" -->
+<a id="c955"></a><blockquote class="code"><p class="quoted">
+(first opening the valise)
+<br />You rummage through the valise for tickets, but find nothing.
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_runparaonsls=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: it indicates that the current printing position does not follow a skipped line, and that further material is expected which will run on from the previous paragraph, but that if no further material turns up then a skipped line would be needed before the next command prompt. (It's very likely that only the Standard Rules will ever need this.)</p>
+
+*=ph_writetext=*
+
+<p>This phrase makes the given text become the entire contents of the named file. Note that files must have been declared, and must be referred to by their Inform names, not by textual filenames. Example:</p>
+<!-- START CODE "c8799" -->
+<a id="c8799"></a><blockquote class="code"><p class="quoted">
+write &quot;Jackdaws love my big sphinx of quartz.&quot; to the file of Abecedary Wisdom;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_appendtext=*
+
+<p>This phrase adds the given text to the end of the current contents of the named file (creating it if it does not exist on disc). Note that files must have been declared, and must be referred to by their Inform names, not by textual filenames. Example:</p>
+<!-- START CODE "c8800" -->
+<a id="c8800"></a><blockquote class="code"><p class="quoted">
+append &quot;Jinxed wizards pluck ivy from the big quilt.&quot; to the file of Abecedary Wisdom;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_saytext=*
+
+<p>This text expands to the contents of the named file. Note that files must have been declared, and must be referred to by their Inform names, not by textual filenames. Example:</p>
+<!-- START CODE "c8801" -->
+<a id="c8801"></a><blockquote class="code"><p class="quoted">
+&quot;[text of the File of Abecedary Wisdom]&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_follow=*
+
+<p>This phrase causes the rule to be obeyed immediately (rather than simply at predetermined times such as when a particular action is being tried, or at the end of every turn, and such). Example:</p>
+<!-- START CODE "c7579" -->
+<a id="c7579"></a><blockquote class="code"><p class="quoted">
+follow the advance time rule;
+<br />follow the appraisal rulebook;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_chooserow=*
+
+<p>This phrase selects the row with the given number. Row numbers in a table start from 1, so</p>
+<!-- START CODE "c5088" -->
+<a id="c5088"></a><blockquote class="code"><p class="quoted">
+choose row 1 from the Table of Recent Monarchs
+</p></blockquote>
+<!-- END CODE -->
+<p>selects the top row.</p>
+
+*=ph_chooserowwith=*
+
+<p>This phrase selects the first row, working down from the top of the given table, in which the given column has the given value. Example:</p>
+<!-- START CODE "c5090" -->
+<a id="c5090"></a><blockquote class="code"><p class="quoted">
+choose row with a name of &quot;Victoria&quot; in the Table of Recent Monarchs;
+</p></blockquote>
+<!-- END CODE -->
+<p>A run-time problem message is produced if the value isn't found anywhere in that column.</p>
+
+*=ph_chooserandomrow=*
+
+<p>This phrase makes a uniformly random choice of non-blank rows in the given table. Note that although a table always has at least one row, it can't be guaranteed that it always has a non-blank row, so it's possible for this to fail: if it does, a real-time problem message is thrown.</p>
+
+*=ph_total=*
+
+<p>This phrase produces the total of some property held by all of the values matching the description. A problem message is produced if the values in question can't have that property (&quot;the total carrying capacity of scenes&quot;), or if it holds a kind of value which can't meaningfully be added up (&quot;the total description of open doors&quot;). Example:</p>
+<!-- START CODE "c4760" -->
+<a id="c4760"></a><blockquote class="code"><p class="quoted">
+total carrying capacity of people in the Deep Pool
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_sortrandom=*
+
+<p>This phrase rearranges the rows of the given table so that the non-blank rows occur at the top, in a uniformly random order, and any blank rows at the bottom. Example:</p>
+<!-- START CODE "c5156" -->
+<a id="c5156"></a><blockquote class="code"><p class="quoted">
+sort the Table of Recent Monarchs in random order;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_sortcolumn=*
+
+<p>This phrase rearranges the rows of the given table so that the non-blank rows occur at the top, so that the given column has ascending order, and any blank rows at the bottom. Example:</p>
+<!-- START CODE "c5157" -->
+<a id="c5157"></a><blockquote class="code"><p class="quoted">
+sort the Table of Recent Monarchs in accession order;
+</p></blockquote>
+<!-- END CODE -->
+<p>Ascending order means 1 up to 10, say, or A up to Z, with blank values coming last.</p>
+
+*=ph_sortcolumnreverse=*
+
+<p>This phrase rearranges the rows of the given table so that the non-blank rows occur at the top, so that the given column has descending order, and any blank rows at the bottom. Example:</p>
+<!-- START CODE "c5158" -->
+<a id="c5158"></a><blockquote class="code"><p class="quoted">
+sort the Table of Recent Monarchs in reverse name order;
+</p></blockquote>
+<!-- END CODE -->
+<p>Descending order means 10 down to 1, say, or Z down to A, with blank values coming last.</p>
+
+*=ph_placeinscope=*
+
+<p>This phrase should only be used in rules for the &quot;deciding the scope of...&quot; activity. It places the given object in scope, making it accessible to the player's commands, regardless of where it is in the model world. Examples:</p>
+<!-- START CODE "c6939" -->
+<a id="c6939"></a><blockquote class="code"><p class="quoted">
+place the distant volcano in scope;
+<br />place the lacquered box in scope, but not its contents;
+</p></blockquote>
+<!-- END CODE -->
+<p>Ordinarily if something is placed in scope, then so are its parts and (in the case of a supporter or a transparent or open container) its contents; using the &quot;but not its contents&quot; option we can place just the box itself in scope.</p>
+
+*=ph_placecontentsinscope=*
+
+<p>This phrase should only be used in rules for the &quot;deciding the scope of...&quot; activity. It places the things inside or on top of the given object in scope, making them accessible to the player's commands, but it does nothing to place the object itself in scope. (It might of course be in scope anyway, and if it is then this phrase won't remove it.) Example:</p>
+<!-- START CODE "c6940" -->
+<a id="c6940"></a><blockquote class="code"><p class="quoted">
+place the contents of the lacquered box in scope;
+<br />place the contents of the Marbled Steps in scope;
+</p></blockquote>
+<!-- END CODE -->
+<p>Note that the object in question can be a room, as in this second example.</p>
+
+*=ph_figureid=*
+
+<p>This phrase produces the ID number used in the eventual Glulx file for the given figure.</p>
+
+*=ph_soundid=*
+
+<p>This phrase produces the ID number used in the eventual Glulx file for the given sound effect.</p>
+
+*=ph_frontside=*
+
+<p>This phrase produces the first of the one or two rooms containing a door - first in the order given in the source text. Example: if</p>
+<!-- START CODE "c272" -->
+<a id="c272"></a><blockquote class="code"><p class="quoted">
+The red rock stair is east of the Orchard and above the Undertomb.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;front side of the red rock stair&quot; produces the Orchard. For a one-sided door, this produces the only room containing the door.</p>
+
+*=ph_backside=*
+
+<p>This phrase produces the last of the one or two rooms containing a door - last in the order given in the source text. Example: if</p>
+<!-- START CODE "c273" -->
+<a id="c273"></a><blockquote class="code"><p class="quoted">
+The red rock stair is east of the Orchard and above the Undertomb.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;back side of the red rock stair&quot; produces the Undertomb. A one-sided door has no &quot;back side.&quot;</p>
+
+*=ph_othersideof=*
+
+<p>This phrase produces the room on the other side of the door, as seen from the given vantage point, which needs to be one of its sides. Example: if</p>
+<!-- START CODE "c274" -->
+<a id="c274"></a><blockquote class="code"><p class="quoted">
+The red rock stair is east of the Orchard and above the Undertomb.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;other side of the red rock stair from the Undertomb&quot; produces the Orchard, and vice versa.</p>
+
+*=ph_directionofdoor=*
+
+<p>This phrase produces the direction in which the door leads, as seen from the given vantage point, which needs to be one of its sides. Example: if</p>
+<!-- START CODE "c275" -->
+<a id="c275"></a><blockquote class="code"><p class="quoted">
+The red rock stair is east of the Orchard and above the Undertomb.
+</p></blockquote>
+<!-- END CODE -->
+<p>then &quot;direction of the red rock stair from the Undertomb&quot; produces up.</p>
+
+*=ph_applied0=*
+
+<p>This phrase produces the result of applying the given phrase, which must be one which takes no values itself.</p>
+
+*=ph_applied1=*
+
+<p>This phrase produces the result of applying the given phrase, which must be one which takes one value itself.</p>
+
+*=ph_applied2=*
+
+<p>This phrase produces the result of applying the given phrase, which must be one which takes two values itself.</p>
+
+*=ph_applied3=*
+
+<p>This phrase produces the result of applying the given phrase, which must be one which takes three values itself.</p>
+
+*=ph_apply0=*
+
+<p>This phrase causes the given phrase to be applied. It must be one which takes no values itself.</p>
+
+*=ph_apply1=*
+
+<p>This phrase causes the given phrase to be applied. It must be one which takes one value itself.</p>
+
+*=ph_apply2=*
+
+<p>This phrase causes the given phrase to be applied. It must be one which takes two values itself.</p>
+
+*=ph_apply3=*
+
+<p>This phrase causes the given phrase to be applied. It must be one which takes three values itself.</p>
+
+*=ph_minspart=*
+
+<p>This phrase converts a time to a number, then takes the result mod 60, which in effect produces the number of minutes after the hours are thrown away. Example:</p>
+<!-- START CODE "c2211" -->
+<a id="c2211"></a><blockquote class="code"><p class="quoted">
+minutes part of 12:41 PM
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 41.</p>
+
+*=ph_hourspart=*
+
+<p>This phrase converts a time to a number, then divides the result by 60, which in effect produces the number of hours after minutes are thrown away. Example:</p>
+<!-- START CODE "c2212" -->
+<a id="c2212"></a><blockquote class="code"><p class="quoted">
+hours part of 8:21 AM
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 8.</p>
+
+*=ph_group=*
+
+<p>This phrase causes the objects described to be listed together in a single item as part of an inventory or room description. The effect is temporary, and the phrase should only be used when this list is imminent. Example:</p>
+<!-- START CODE "c6529" -->
+<a id="c6529"></a><blockquote class="code"><p class="quoted">
+Utensil is a kind of thing. The knife, the fork and the spoon are utensils. Before listing contents: group utensils together.
+</p></blockquote>
+<!-- END CODE -->
+<p>This might produce the list item &quot;fork and spoon&quot;.</p>
+
+*=ph_groupart=*
+
+<p>This phrase causes the objects described to be listed together in a single item as part of an inventory or room description, but giving each individual item its indefinite article. The effect is temporary, and the phrase should only be used when this list is imminent. Example:</p>
+<!-- START CODE "c6530" -->
+<a id="c6530"></a><blockquote class="code"><p class="quoted">
+Utensil is a kind of thing. The knife, the fork and the spoon are utensils. Before listing contents: group utensils together giving articles.
+</p></blockquote>
+<!-- END CODE -->
+<p>This might produce the list item &quot;a fork and a spoon&quot;.</p>
+
+*=ph_grouptext=*
+
+<p>This phrase causes the objects described to be listed together in a single item as part of an inventory or room description, summarised with the given text. The effect is temporary, and the phrase should only be used when this list is imminent. Example:</p>
+<!-- START CODE "c6531" -->
+<a id="c6531"></a><blockquote class="code"><p class="quoted">
+Utensil is a kind of thing. The knife, the fork and the spoon are utensils. Before listing contents: group utensils together as &quot;utensils&quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>This might produce the list item &quot;two utensils (fork and spoon)&quot;.</p>
+
+*=phs_surroundings=*
+
+<p>This text substitution produces a succinct description of where the player is, be this in darkness, in a lighted room or inside an opaque container such as a large packing case. Example:</p>
+<!-- START CODE "c1746" -->
+<a id="c1746"></a><blockquote class="code"><p class="quoted">
+now the left hand status line is &quot;You: [the player's surroundings]&quot;;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_next=*
+
+<p>This phrase can only be used inside a &quot;repeat&quot; or &quot;while&quot; block, and causes the current repetition of the block to finish immediately. That either means the next repetition begins, or (if we are already at the last one) the loop ends too. Example:</p>
+<!-- START CODE "c2980" -->
+<a id="c2980"></a><blockquote class="code"><p class="quoted">
+repeat with X running from 1 to 10:
+<br />&#160;&#160;&#160;&#160;if X is 4, next;
+<br />&#160;&#160;&#160;&#160;say &quot;[X] &quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>produces the text &quot;1 2 3 5 6 7 8 9 10 &quot;, with no &quot;4&quot; because the &quot;say&quot; phrase was never reached on the fourth repetition.</p>
+
+*=ph_break=*
+
+<p>This phrase can only be used inside &quot;repeat&quot;, &quot;while&quot; block, and causes both the current repetition and the entire loop to finish immediately. Example:</p>
+<!-- START CODE "c2981" -->
+<a id="c2981"></a><blockquote class="code"><p class="quoted">
+repeat with X running from 1 to 10:
+<br />&#160;&#160;&#160;&#160;if X is 7, break;
+<br />&#160;&#160;&#160;&#160;say &quot;[X] &quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>produces the text &quot;1 2 3 4 5 6 &quot;, with nothing after &quot;6&quot; because the loop was broken at that point. The &quot;say&quot; wasn't reached on the 7th repetition, and the 8th, 9th and 10th never happened.</p>
+
+*=ph_indarkness=*
+
+<p>This condition is true if the player currently has no light to see by. Note that the test is more complicated than simply testing</p>
+<!-- START CODE "c2869" -->
+<a id="c2869"></a><blockquote class="code"><p class="quoted">
+if the player is in a dark room, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>since the player might have a torch, or be inside a cage which is itself in a dark room, and so on.</p>
+
+*=ph_consents=*
+
+<p>This condition is unusual in doing something and not simply making a silent check: it waits for the player to type YES (or Y) or NO (or N) at the keyboard, and then is true if the answer was yes. Example:</p>
+<!-- START CODE "c2870" -->
+<a id="c2870"></a><blockquote class="code"><p class="quoted">
+say &quot;Are you quite sure you want to kiss the Queen? &quot;;
+<br />if the player consents:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_whether=*
+
+<p>This phrase converts a condition into its result as a value, which is always either &quot;true&quot; or &quot;false&quot;. Example:</p>
+<!-- START CODE "c2871" -->
+<a id="c2871"></a><blockquote class="code"><p class="quoted">
+whether or not 20 is an odd number
+</p></blockquote>
+<!-- END CODE -->
+<p>produces the truth state &quot;false&quot;. This is mostly useful for storing up results to look at later:</p>
+<!-- START CODE "c2872" -->
+<a id="c2872"></a><blockquote class="code"><p class="quoted">
+let victory be whether or not all the treasures are in the cabinet;
+</p></blockquote>
+<!-- END CODE -->
+<p>and then subsequently:</p>
+<!-- START CODE "c2873" -->
+<a id="c2873"></a><blockquote class="code"><p class="quoted">
+if victory is true, ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_showme=*
+
+<p>This phrase is intended for testing purposes only. If used in a story file running inside the Inform application, it prints a line of text showing the given value and its kind; in a Released story file, it does nothing at all. Example:</p>
+<!-- START CODE "c2859" -->
+<a id="c2859"></a><blockquote class="code"><p class="quoted">
+When play begins: showme 11.
+</p></blockquote>
+<!-- END CODE -->
+<p>produces</p>
+<!-- START CODE "c2860" -->
+<a id="c2860"></a><blockquote class="code"><p class="quoted">
+number: 11
+</p></blockquote>
+<!-- END CODE -->
+<p>More usefully:</p>
+<!-- START CODE "c2861" -->
+<a id="c2861"></a><blockquote class="code"><p class="quoted">
+Every turn: showme the score.
+</p></blockquote>
+<!-- END CODE -->
+<p>Now, every turn, we get a line in the story's transcript like so:</p>
+<!-- START CODE "c2862" -->
+<a id="c2862"></a><blockquote class="code"><p class="quoted">
+&quot;score&quot; = number: 0
+</p></blockquote>
+<!-- END CODE -->
+<p>Inform uses the quotation marks and equals sign to show that it had to do some work to find the answer. &quot;score&quot; wasn't a constant value - it was a variable, and Inform had to look up the current value.</p>
+
+*=phs_bold=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: to make the text following it appear in bold face. &quot;[roman type]&quot; should be used to switch back to normal. Example:</p>
+<!-- START CODE "c965" -->
+<a id="c965"></a><blockquote class="code"><p class="quoted">
+&quot;Jane looked down. [bold type]Danger[roman type], the sign read.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_italic=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: to make the text following it appear in italics. &quot;[roman type]&quot; should be used to switch back to normal. Example:</p>
+<!-- START CODE "c966" -->
+<a id="c966"></a><blockquote class="code"><p class="quoted">
+&quot;This is [italic type]very suspicious[roman type], said Peter.&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_roman=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: to return to ordinary Roman type after a previous use of &quot;[bold type]&quot; or &quot;[italic type]&quot;.</p>
+
+*=phs_fixedspacing=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: to make the text following it appear with fixed letter spacing. In variable letter spacing, a lower case &quot;m&quot; is much wider than an &quot;l&quot;, which is natural to the eye since it has been printing practice since the Renaissance. Fixed letter spacing is more like typewriting, and it is best used to reproduce typewritten text or printed notices; it can also be convenient for making simple diagrams. Example:</p>
+<!-- START CODE "c967" -->
+<a id="c967"></a><blockquote class="code"><p class="quoted">
+&quot;On the door is written: [fixed letter spacing]J45--O-O-O[variable letter spacing].&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_varspacing=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: to return to ordinary letter spacing after a previous use of &quot;[fixed letter spacing]&quot;.</p>
+
+*=ph_omit=*
+
+<p>This phrase changes the form of an inventory listing, room description, etc., so that it will simply list &quot;a bottle of sand&quot; or &quot;an empty bottle&quot;, rather than &quot;a bottle (in which is sand)&quot; or &quot;a bottle (which is empty)&quot;. It should be used only when the listing is imminent, and does not have permanent effect.</p>
+
+*=ph_randomdesc=*
+
+<p>This phrase makes a uniformly random choice from values satisfying the description given. Example:</p>
+<!-- START CODE "c2033" -->
+<a id="c2033"></a><blockquote class="code"><p class="quoted">
+a random visited room
+<br />a random scene
+</p></blockquote>
+<!-- END CODE -->
+<p>A problem message is issued if the range is too large (for instance, &quot;a random text&quot;). Unexpected results may follow if no value fits the description, unless we are describing objects, in which case the result is the special value &quot;nothing&quot;.</p>
+
+*=ph_listcontents=*
+
+<p>This phrase produces a list of all things whose holder is the given object, according to Inform's traditional conventions for room descriptions and inventory listings. Example:</p>
+<!-- START CODE "c2987" -->
+<a id="c2987"></a><blockquote class="code"><p class="quoted">
+list the contents of Marley Wood, as a sentence, with newlines
+<br />and including all contents;
+</p></blockquote>
+<!-- END CODE -->
+<p>Where this is possible, it's generally better to use &quot;[list of things in ...]&quot; instead, which produces the same result in an acceptable way for the middle of a sentence.</p>
+
+*=ph_succeeds=*
+
+<p>This causes the current rule to end immediately, with its outcome considered to be a success. The rulebook being worked through also ends, and is also a success.</p>
+
+*=ph_fails=*
+
+<p>This causes the current rule to end immediately, with its outcome considered to be a failure. The rulebook being worked through also ends, and is also a failure.</p>
+
+*=ph_nodecision=*
+
+<p>This causes the current rule to end immediately, but with no outcome. That means the rulebook being worked through will continue to run on, beginning with the next rule.</p>
+
+*=ph_succeeded=*
+
+<p>This condition is true if the most recently followed rule or rulebook ended in success. Example:</p>
+<!-- START CODE "c7889" -->
+<a id="c7889"></a><blockquote class="code"><p class="quoted">
+follow the hypothetical clever rule;
+<br />if rule succeeded:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_failed=*
+
+<p>This condition is true if the most recently followed rule or rulebook ended in failure. Example:</p>
+<!-- START CODE "c7890" -->
+<a id="c7890"></a><blockquote class="code"><p class="quoted">
+follow the hypothetical clever rule;
+<br />if rule failed:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>Note that this is not the opposite of &quot;rule succeeded&quot;, because there's a third possibility: that it ended with no outcome.</p>
+
+*=ph_inlower=*
+
+<p>This condition is true if every character in the text is a lower case letter. Examples: this is true for &quot;wax&quot;, but false for &quot;wax seal&quot; or &quot;eZ mOnEy&quot;.</p>
+
+*=ph_inupper=*
+
+<p>This condition is true if every character in the text is in upper case. Examples: this is true for &quot;BEESWAX&quot;, but false for &quot;ROOM 101&quot;.</p>
+
+*=ph_lowercase=*
+
+<p>This phrase produces a new version of the given text, but with all upper case letters reduced to lower case. Example: &quot;a ticket to Tromsø via Østfold&quot; becomes</p>
+<!-- START CODE "c8103" -->
+<a id="c8103"></a><blockquote class="code"><p class="quoted">
+&quot;a ticket to tromsø via østfold&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_uppercase=*
+
+<p>This phrase produces a new version of the given text, but with all upper case letters reduced to lower case. Example: &quot;a ticket to Tromsø via Østfold&quot; becomes</p>
+<!-- START CODE "c8104" -->
+<a id="c8104"></a><blockquote class="code"><p class="quoted">
+&quot;A TICKET TO TROMSØ VIA ØSTFOLD&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_titlecase=*
+
+<p>This phrase produces a new version of the given text, but with casing of words changed to title casing: this capitalises the first letter of each word, and lowers the rest. Example: &quot;a ticket to Tromsø via Østfold&quot; becomes</p>
+<!-- START CODE "c8105" -->
+<a id="c8105"></a><blockquote class="code"><p class="quoted">
+&quot;A Ticket To Tromsø Via Østfold&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_sentencecase=*
+
+<p>This phrase produces a new version of the given text, but with casing of words changed to sentence casing: this capitalises the first letter of each sentence and reduces the rest to lower case. Example: &quot;a ticket to Tromsø via Østfold&quot; becomes</p>
+<!-- START CODE "c8106" -->
+<a id="c8106"></a><blockquote class="code"><p class="quoted">
+&quot;A ticket to tromsø via østfold&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_listbraced=*
+
+<p>This text substitution produces the list in the form of &quot;{&quot;, then a comma-separated list, and then &quot;}&quot;, which looks less like an English sentence but more mathematical. Example:</p>
+<!-- START CODE "c8346" -->
+<a id="c8346"></a><blockquote class="code"><p class="quoted">
+&quot;[list of people in brace notation]&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>might produce &quot;{ yourself, Mr Darcy, Flashman }&quot;.</p>
+
+*=phs_listdef=*
+
+<p>This text substitution writes out the list in sentence form, adding the appropriate definite articles. Example:</p>
+<!-- START CODE "c8348" -->
+<a id="c8348"></a><blockquote class="code"><p class="quoted">
+let L be {the piano, the music stand};
+<br />say &quot;[L with definite articles]&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;the piano and the music stand&quot;.</p>
+
+*=phs_listindef=*
+
+<p>This text substitution writes out the list in sentence form, adding the appropriate indefinite articles. Example:</p>
+<!-- START CODE "c8349" -->
+<a id="c8349"></a><blockquote class="code"><p class="quoted">
+let L be {the piano, the music stand};
+<br />say &quot;[L with definite articles]&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;a piano and a music stand&quot;.</p>
+
+*=phs_realplaces=*
+
+<p>This text substitution writes out the number to the given number of decimal places. Examples:</p>
+<!-- START CODE "c4547" -->
+<a id="c4547"></a><blockquote class="code"><p class="quoted">
+&quot;The semicircle is roughly [pi to 3 decimal places] paces around.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;The semicircle is roughly 3.142 paces around.&quot; The number of places can only usefully be from 1 to 8. Note that, for example, &quot;[1.235 x 10^-7 to 3 decimal places]&quot; produces 0.0; &quot;[1.235678 x 10^8 to 3 decimal places]&quot; produces &quot;1.236 × 10^8&quot;.</p>
+
+*=phs_decimal=*
+
+<p>This text substitution writes out the number in decimal form, that is, avoiding &quot;x 10^n&quot; even for very large or very small quantities. For example,</p>
+<!-- START CODE "c4548" -->
+<a id="c4548"></a><blockquote class="code"><p class="quoted">
+&quot;[1.23457 x 10^8 in decimal notation]&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 123457000.0 rather than 1.23457 x 10^8. This can look pretty extreme: for example, &quot;[1.8983 x 10^27 in decimal notation]&quot;, the mass of the planet Jupiter in kilograms, produces 1898296960000000000000000000.0.</p>
+
+*=phs_decimalplaces=*
+
+<p>This text substitution writes out the number in decimal form, but rounding to the accuracy given.</p>
+
+*=phs_scientific=*
+
+<p>This text substitution writes out the number in scientific form, that is, using &quot;x 10^n&quot; even for easy-to-judge quantities. For example,</p>
+<!-- START CODE "c4549" -->
+<a id="c4549"></a><blockquote class="code"><p class="quoted">
+&quot;[the reciprocal of 137 in scientific notation]&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 7.29927 x 10^-3 rather than 0.0073. This can look odd: for example, &quot;[pi in scientific notation]&quot; comes out as 3.14159 × 10^0 rather than 3.14159.</p>
+
+*=phs_scientificplaces=*
+
+<p>This text substitution writes out the number in scientific form, but rounding to the accuracy given.</p>
+
+*=ph_thereis=*
+
+<p>This condition is true if the entry referred to exists, that is, that is, the space for it in the table is not blank. Examples:</p>
+<!-- START CODE "c5105" -->
+<a id="c5105"></a><blockquote class="code"><p class="quoted">
+if there is a symbol corresponding to an atomic number of 30 in the Table of Standard Elements ...
+<br />if there is an atomic number in row 2 of the Table of Standard Elements ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_thereisno=*
+
+<p>This condition is true if the entry referred to does not exist, that is, the space for it in the table is blank. Examples:</p>
+<!-- START CODE "c5106" -->
+<a id="c5106"></a><blockquote class="code"><p class="quoted">
+if there is no symbol corresponding to an atomic number of 30 in the Table of Standard Elements ...
+<br />if there is no atomic number in row 2 of the Table of Standard Elements ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_matchesre=*
+
+<p>This condition is true if any contiguous part of the text can be matched against the given regular expression. Examples:</p>
+<!-- START CODE "c8128" -->
+<a id="c8128"></a><blockquote class="code"><p class="quoted">
+if &quot;taramasalata&quot; matches the regular expression &quot;a.*l&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>is true, since this looks for a part of &quot;taramasalata&quot; which begins with &quot;a&quot;, continues with any number of characters, and finishes with &quot;l&quot;; so it matches &quot;aramasal&quot;. (Not &quot;asal&quot;, because it gets the makes the leftmost match it can.) The option &quot;case insensitively&quot; causes lower and upper case letters to be treated as equivalent.</p>
+
+*=ph_exactlymatchesre=*
+
+<p>This condition is true if the whole text (starting from the beginning and finishing at the end) can be matched against the given regular expression. The option &quot;case insensitively&quot; causes lower and upper case letters to be treated as equivalent.</p>
+
+*=ph_nummatchesre=*
+
+<p>This produces the number of times that contiguous pieces of the text can be matched against the regular expression, without allowing them to overlap.</p>
+
+*=ph_matchtext=*
+
+<p>This phrase is only meaningful immediately after a successful match of a regular expression against text, and it produces the text which matched. Example:</p>
+<!-- START CODE "c8129" -->
+<a id="c8129"></a><blockquote class="code"><p class="quoted">
+if &quot;taramasalata&quot; matches the regular expression &quot;m.*l&quot;:
+<br />&#160;&#160;&#160;&#160;say &quot;[text matching regular expression].&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;masal.&quot;</p>
+
+*=ph_subexpressiontext=*
+
+<p>This phrase is only meaningful immediately after a successful match of a regular expression against text, and it produces the text which matched. The number must be from 1 to 9, and must correspond to one of the bracketed groups in the expression just matched. Example: after</p>
+<!-- START CODE "c8148" -->
+<a id="c8148"></a><blockquote class="code"><p class="quoted">
+if &quot;taramasalata&quot; matches the regular expression &quot;a(r.*l)a(.)&quot;:
+</p></blockquote>
+<!-- END CODE -->
+<p>the &quot;text matching regular expression&quot; is &quot;aramasalat&quot;, the &quot;text matching subexpression 1&quot; is &quot;ramasal&quot;, and &quot;text matching subexpression 2&quot; is &quot;t&quot;.</p>
+
+*=ph_writetable=*
+
+<p>This phrase causes the entire contents of the given table to be written out to the given file. Note that files must have been declared, and must be referred to by their Inform names, not by textual filenames. Example:</p>
+<!-- START CODE "c8750" -->
+<a id="c8750"></a><blockquote class="code"><p class="quoted">
+write File of Glaciation Data from the Table of Antarctic Reserves
+</p></blockquote>
+<!-- END CODE -->
+<p>Any blank rows in the table are automatically moved to the bottom, and only the non-blank rows are written.</p>
+
+*=ph_readtable=*
+
+<p>This phrase causes the entire contents of the given table to be read in from the given file. Note that files must have been declared, and must be referred to by their Inform names, not by textual filenames. Example:</p>
+<!-- START CODE "c8751" -->
+<a id="c8751"></a><blockquote class="code"><p class="quoted">
+read File of Glaciation Data into the Table of Antarctic Reserves
+</p></blockquote>
+<!-- END CODE -->
+<p>Any rows left spare at the foot of the table are automatically blanked. On the other hand if the file is too large to fit into the table - with too many columns or too many rows - a run-time problem is produced.</p>
+
+*=ph_fileexists=*
+
+<p>This condition is true if the file-system used by the player appears to contain a file with the right name. For example, if we declared:</p>
+<!-- START CODE "c8752" -->
+<a id="c8752"></a><blockquote class="code"><p class="quoted">
+The binary File of Glaciation Data is called &quot;icedata&quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>and then tested</p>
+<!-- START CODE "c8753" -->
+<a id="c8753"></a><blockquote class="code"><p class="quoted">
+if the File of Glaciation Data exists, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>then Inform would search for a file called &quot;icedata&quot;. (The arrangements for where this might be stored, and its filename extension, vary from platform to platform.)</p>
+
+*=ph_stopaction=*
+
+<p>This phrase stops the current rule, stops the rulebook being worked through, and finally stops the action being processed. Example:</p>
+<!-- START CODE "c1312" -->
+<a id="c1312"></a><blockquote class="code"><p class="quoted">
+Before taking the key:
+<br />&#160;&#160;&#160;&#160;say &quot;It seems to be soldered to the keyhole.&quot;;
+<br />&#160;&#160;&#160;&#160;stop the action.
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_continueaction=*
+
+<p>This phrase ends the current rule, but in a way which keeps its rulebook going, so that the action being processed will carry on rather than being stopped. Example:</p>
+<!-- START CODE "c1313" -->
+<a id="c1313"></a><blockquote class="code"><p class="quoted">
+Instead of taking the napkin:
+<br />&#160;&#160;&#160;&#160;say &quot;(first unfolding its delicate origami swan)[command clarification break]&quot;;
+<br />&#160;&#160;&#160;&#160;continue the action.
+</p></blockquote>
+<!-- END CODE -->
+<p>An &quot;instead&quot; rule ordinarily stops the action when it finishes, so the &quot;continue the action&quot; is needed to make things carry on. (This rule would have been better written as a &quot;before&quot; rule, in fact, but it shows the idea.)</p>
+
+*=ph_numberof=*
+
+<p>This phrase counts the number of values matching the description, which may of course be 0. Example:</p>
+<!-- START CODE "c1042" -->
+<a id="c1042"></a><blockquote class="code"><p class="quoted">
+number of open doors
+</p></blockquote>
+<!-- END CODE -->
+<p>produces the number of doors, anywhere in the model world, which are currently open. A Problem message is produced if the number is potentially infinite, or impractical to count: for instance, Inform rejects &quot;number of odd numbers&quot;.</p>
+
+*=phs_adapt=*
+
+<p>Adapts the given verb to the current story tense and story viewpoint. For example, &quot;you [adapt the verb provoke]&quot; might produce &quot;you provoke&quot;.</p>
+
+*=phs_adaptv=*
+
+<p>Adapts the given verb to the current story tense but the given viewpoint. For example, &quot;he [adapt the verb provoke from the third person singular]&quot; might produce &quot;he provokes&quot;.</p>
+
+*=phs_adaptt=*
+
+<p>Adapts the given verb to the given tense but the current story viewpoint. For example, &quot;you [adapt the verb provoke in the past tense]&quot; might produce &quot;you provoked&quot;.</p>
+
+*=phs_adaptvt=*
+
+<p>Adapts the given verb to the given tense and viewpoint. For example, &quot;we [adapt the verb provoke in the future tense from the first person plural]&quot; might produce &quot;we will provoke&quot;.</p>
+
+*=phs_negate=*
+
+<p>Adapts the given verb to the current story tense and story viewpoint, giving it a negative sense. For example, &quot;you [negate the verb provoke]&quot; might produce &quot;you do not provoke&quot;.</p>
+
+*=phs_negatev=*
+
+<p>Adapts the given verb to the current story tense but the given viewpoint, giving it a negative sense. For example, &quot;he [negate the verb provoke from the third person singular]&quot; might produce &quot;he does not provoke&quot;.</p>
+
+*=phs_negatet=*
+
+<p>Adapts the given verb to the given tense but the current story viewpoint, giving it a negative sense. For example, &quot;you [negate the verb provoke in the past tense]&quot; might produce &quot;you did not provoke&quot;.</p>
+
+*=phs_negatevt=*
+
+<p>Adapts the given verb to the given tense and viewpoint, giving it a negative sense. For example, &quot;we [negate the verb provoke in the future tense from the first person plural]&quot; might produce &quot;we will not provoke&quot;.</p>
+
+*=phs_infinitive=*
+
+<p>Produces the infinitive of the given verb. Note that this is without a &quot;to&quot;: for example, &quot;[infinitive of the verb carry]&quot; is &quot;carry&quot;, not &quot;to carry&quot;.</p>
+
+*=phs_pastpart=*
+
+<p>Produces the past participle of the given verb. For example, &quot;[past participle of the verb carry]&quot; is &quot;carried&quot;. Warning: because modal verbs like &quot;should&quot; or &quot;might&quot; are defective in English, this will produce odd results on them - &quot;shoulded&quot; and &quot;mighted&quot;, for example.</p>
+
+*=phs_prespart=*
+
+<p>Produces the present participle of the given verb. For example, &quot;[present participle of the verb carry]&quot; is &quot;carrying&quot;. Warning: because modal verbs like &quot;should&quot; or &quot;might&quot; are defective in English, this will produce odd results on them - &quot;shoulding&quot; and &quot;mighting&quot;, for example.</p>
+
+*=ph_otherwise=*
+
+<p>This phrase can only be used as part of an &quot;if ...:&quot; or &quot;unless: ...&quot;, and provides an alternative block of phrases to follow if the first block isn't followed. Example:</p>
+<!-- START CODE "c2924" -->
+<a id="c2924"></a><blockquote class="code"><p class="quoted">
+if N is 2:
+<br />&#160;&#160;&#160;&#160;...
+<br />otherwise:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>When there is only a single phrase we can use the shortened form:</p>
+<!-- START CODE "c2925" -->
+<a id="c2925"></a><blockquote class="code"><p class="quoted">
+if N is 2, say &quot;Hooray, N is 2!&quot;;
+<br />otherwise say &quot;Boo, N is not 2...&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>We can also supply an alternative condition:</p>
+<!-- START CODE "c2926" -->
+<a id="c2926"></a><blockquote class="code"><p class="quoted">
+if N is 1:
+<br />&#160;&#160;&#160;&#160;...
+<br />otherwise if N is 2:
+<br />&#160;&#160;&#160;&#160;...
+<br />otherwise if N is greater than 4:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>At most one of the &quot;...&quot; clauses is ever reached - the first which works out.</p>
+
+*=ph_switch=*
+
+<p>This phrase switches between a variety of possible blocks of phrases to follow, depending on the value given. Example:</p>
+<!-- START CODE "c2927" -->
+<a id="c2927"></a><blockquote class="code"><p class="quoted">
+if the dangerous item is:
+<br />&#160;&#160;&#160;&#160;-- the electric hairbrush:
+<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;say &quot;Mind your head.&quot;;
+<br />&#160;&#160;&#160;&#160;-- the silver spoon:
+<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;say &quot;Steer clear of the cutlery drawer.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>One alternative is allowed to be &quot;otherwise&quot;, which is used only if none of the other cases apply, and which therefore guarantees that in any situation exactly one of the blocks will be followed.</p>
+<!-- START CODE "c2928" -->
+<a id="c2928"></a><blockquote class="code"><p class="quoted">
+if N is:
+<br />&#160;&#160;&#160;&#160;-- 1: say &quot;1.&quot;;
+<br />&#160;&#160;&#160;&#160;-- 2: say &quot;2.&quot;;
+<br />&#160;&#160;&#160;&#160;-- otherwise: say &quot;Neither 1 nor 2.&quot;;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_fileready=*
+
+<p>This condition is true if the file exists and is marked as being ready to read; that is, it is not in a state where another program is currently writing it. Example:</p>
+<!-- START CODE "c8855" -->
+<a id="c8855"></a><blockquote class="code"><p class="quoted">
+if ready to read the file of Invariants, ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_markfileready=*
+
+<p>This phrase marks that we have finished writing to the given file, so that any external program is welcome to read it now. Example:</p>
+<!-- START CODE "c8856" -->
+<a id="c8856"></a><blockquote class="code"><p class="quoted">
+mark the file of Invariants as ready to read;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_markfilenotready=*
+
+<p>This phrase marks that we are about to start writing to the given file, so that any external program should wait until we're finished if it wants to read the file. Example:</p>
+<!-- START CODE "c8857" -->
+<a id="c8857"></a><blockquote class="code"><p class="quoted">
+mark the file of Invariants as not ready to read;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_banner=*
+
+<p>This text substitution expands to the banner text giving bibliographic details of the current story file, rather like the opening credits of a movie, or the title page of a book.</p>
+
+*=phs_numwords=*
+
+<p>This text substitution writes out the number in English text. Example:</p>
+<!-- START CODE "c858" -->
+<a id="c858"></a><blockquote class="code"><p class="quoted">
+&quot;You've been wandering around for [turn count in words] turns now.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>might produce &quot;You've been wandering around for two hundred and thirteen turns now.&quot; The &quot;and&quot; here is natural on one side of the Atlantic but not the other - so with the &quot;Use American dialect.&quot; option in place, it disappears.</p>
+
+*=phs_s=*
+
+<p>This text substitution prints a letter &quot;s&quot; unless the last number printed was 1. Example:</p>
+<!-- START CODE "c860" -->
+<a id="c860"></a><blockquote class="code"><p class="quoted">
+&quot;You've been wandering around for [turn count in words] turn[s] now.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;... for one turn now.&quot; or &quot;... for two turns now.&quot; as appropriate. Note that it reacts only to numbers, not to other arithmetic values like times (or, for instance, weights from the &quot;Metric Units&quot; extension).</p>
+
+*=ph_changelength=*
+
+<p>This phrase alters the given list so that it now has exactly the number of entries given. Example:</p>
+<!-- START CODE "c8513" -->
+<a id="c8513"></a><blockquote class="code"><p class="quoted">
+change L to have 21 entries;
+</p></blockquote>
+<!-- END CODE -->
+<p>If L previously had more than 21 entries, they are thrown away (and lost forever); if L previously had fewer, then new entries are created, using the default value for whatever kind of value L holds. So extending a list of numbers will pad it out with 0s, but extending a list of texts will pad it out with the empty text &quot;&quot;, and so on.</p>
+
+*=ph_truncate=*
+
+<p>This phrase alters the given list so that it now has no more than the number of entries given. Example:</p>
+<!-- START CODE "c8514" -->
+<a id="c8514"></a><blockquote class="code"><p class="quoted">
+truncate L to 8 entries;
+</p></blockquote>
+<!-- END CODE -->
+<p>shortens L to length 8 if it is currently longer than that, trimming entries from the end, but would (for instance) leave a list of length 3 unchanged. Note that</p>
+<!-- START CODE "c8515" -->
+<a id="c8515"></a><blockquote class="code"><p class="quoted">
+truncate L to 0 entries;
+</p></blockquote>
+<!-- END CODE -->
+<p>empties it to { }, the list with nothing in.</p>
+
+*=ph_truncatefirst=*
+
+<p>This phrase alters the given list so that it now consists only of the initial part of the list with the given length. Example:</p>
+<!-- START CODE "c8516" -->
+<a id="c8516"></a><blockquote class="code"><p class="quoted">
+truncate L to the first 4 entries;
+</p></blockquote>
+<!-- END CODE -->
+<p>turns {1, 3, 5, 7, 9, 11} to {1, 3, 5, 7}.</p>
+
+*=ph_truncatelast=*
+
+<p>This phrase alters the given list so that it now consists only of the final part of the list with the given length. Example:</p>
+<!-- START CODE "c8517" -->
+<a id="c8517"></a><blockquote class="code"><p class="quoted">
+truncate L to the last 4 entries;
+</p></blockquote>
+<!-- END CODE -->
+<p>turns {1, 3, 5, 7, 9, 11} to {5, 7, 9, 11}.</p>
+
+*=ph_extend=*
+
+<p>This phrase pads out the list with default values as needed so that it now has at least the given length. (If the list is already at least that length, nothing is done.) Example:</p>
+<!-- START CODE "c8518" -->
+<a id="c8518"></a><blockquote class="code"><p class="quoted">
+extend L to 80 entries;
+</p></blockquote>
+<!-- END CODE -->
+<p>lengthens L to length 80 if it is currently shorter than that.</p>
+
+*=ph_chooseblankrow=*
+
+<p>This phrase chooses a row in the given table which is currently blank under every column. A run-time problem message is issued if no rows are blank. Example:</p>
+<!-- START CODE "c5138" -->
+<a id="c5138"></a><blockquote class="code"><p class="quoted">
+choose a blank row in Table 3;
+<br />now element entry is &quot;Fluorine&quot;;
+<br />now symbol entry is &quot;F&quot;;
+<br />now atomic number entry is 9;
+<br />now atomic weight entry is 19;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_numblank=*
+
+<p>This phrase produces the number of rows in the given table which are entirely blank (that is, blank under every column).</p>
+
+*=ph_numfilled=*
+
+<p>This phrase produces the number of rows in the given table which are not entirely blank (that is, at least one column has a value in this row).</p>
+
+*=ph_blankout=*
+
+<p>This phrase replaces the entry referred to with a blank, erasing any value previously stored there. Example:</p>
+<!-- START CODE "c5141" -->
+<a id="c5141"></a><blockquote class="code"><p class="quoted">
+choose row 1 in the Table of Fish Habitats;
+<br />blank out the salinity entry;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_blankoutrow=*
+
+<p>This phrase replaces the currently chosen row with blanks, erasing any value previously stored under any of the columns. Example:</p>
+<!-- START CODE "c5142" -->
+<a id="c5142"></a><blockquote class="code"><p class="quoted">
+choose row 1 in the Table of Fish Habitats;
+<br />blank out the whole row;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_blankoutcol=*
+
+<p>This phrase replaces the currently chosen column with blanks, erasing any value previously stored in any of the rows. Example:</p>
+<!-- START CODE "c5143" -->
+<a id="c5143"></a><blockquote class="code"><p class="quoted">
+blank out the whole salinity column in the Table of Fish Habitats;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_blankouttable=*
+
+<p>This phrase replaces every row of the currently chosen table with blanks, erasing any value previously stored anywhere in it. Example:</p>
+<!-- START CODE "c5144" -->
+<a id="c5144"></a><blockquote class="code"><p class="quoted">
+blank out the whole of the Table of Fish Habitats;
+</p></blockquote>
+<!-- END CODE -->
+<p>This is only really useful when a Table is being used to hold working space for some calculation or other.</p>
+
+*=ph_hashappened=*
+
+<p>This condition is true if the given scene has both begun and ended.</p>
+
+*=ph_hasnothappened=*
+
+<p>This condition is true if the given scene has not ended (or never started).</p>
+
+*=ph_hasended=*
+
+<p>This condition is true if the given scene ended at least once.</p>
+
+*=ph_hasnotended=*
+
+<p>This condition is true if the given scene has never ended.</p>
+
+*=ph_durationmins=*
+
+<p>This phrase converts numbers into lengths of time. Example:</p>
+<!-- START CODE "c2205" -->
+<a id="c2205"></a><blockquote class="code"><p class="quoted">
+15 minutes
+</p></blockquote>
+<!-- END CODE -->
+<p>Because it's a phrase, not just a notation for writing constants down, the number doesn't have to be given literally:</p>
+<!-- START CODE "c2206" -->
+<a id="c2206"></a><blockquote class="code"><p class="quoted">
+let X be 5;
+<br />if the player is in the Slow Room, now X is 10;
+<br />let deadline be the time of day plus X minutes;
+</p></blockquote>
+<!-- END CODE -->
+<p>Note that lengths of time can't exceed 1440 minutes.</p>
+
+*=ph_durationhours=*
+
+<p>This phrase converts numbers into lengths of time. Example:</p>
+<!-- START CODE "c2207" -->
+<a id="c2207"></a><blockquote class="code"><p class="quoted">
+10 hours
+</p></blockquote>
+<!-- END CODE -->
+<p>Note that lengths of time can't exceed 24 hours.</p>
+
+*=ph_followfor=*
+
+<p>This phrase causes the rule to be obeyed immediately (rather than simply at predetermined times such as when a particular action is being tried, or at the end of every turn, and such), and applies it to the value given, which must be of a matching kind. Example:</p>
+<!-- START CODE "c7859" -->
+<a id="c7859"></a><blockquote class="code"><p class="quoted">
+follow the reaching inside rulebook for the electrified cage;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_snippetmatches=*
+
+<p>This condition is true if the given snippet exactly matches the specification. Example:</p>
+<!-- START CODE "c7189" -->
+<a id="c7189"></a><blockquote class="code"><p class="quoted">
+if the player's command matches &quot;room [number]&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>will be true if the command is ROOM 101, but not if it's EXPLORE ROOM 7.</p>
+
+*=ph_snippetdoesnotmatch=*
+
+<p>This condition is true if the given snippet does not exactly match the specification.</p>
+
+*=ph_snippetincludes=*
+
+<p>This condition is true if the given snippet includes words matching the specification, either at the beginning, in the middle, or at the end. Example:</p>
+<!-- START CODE "c7190" -->
+<a id="c7190"></a><blockquote class="code"><p class="quoted">
+if the player's command includes &quot;room [number]&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>will be true if the command is ROOM 101, EXPLORE ROOM 7, or ROOM 22 AHOY, but not if it's VISIT ROOM GAMMA 7.</p>
+
+*=ph_snippetdoesnotinclude=*
+
+<p>This condition is true if the given snippet does not include any run of words which matches the specification.</p>
+
+*=ph_rejectcommand=*
+
+<p>This phrase should be used only in rules for the &quot;reading a command&quot; activity. It tells Inform not to bother analysing the text further, but to go back to the keyboard. (No time passes; no turn elapses; nothing happens in the simulated world.)</p>
+
+*=ph_replacesnippet=*
+
+<p>This phrase should be used only in &quot;after&quot; rules for the &quot;reading a command&quot; activity; it replaces the snippet of command, usually the &quot;matched text&quot; found immediately before, with the given text. Example:</p>
+<!-- START CODE "c7192" -->
+<a id="c7192"></a><blockquote class="code"><p class="quoted">
+if the player's command includes &quot;room [number]&quot;:
+<br />&#160;&#160;&#160;&#160;replace the matched text with &quot;office&quot;.
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_cutsnippet=*
+
+<p>This phrase should be used only in &quot;after&quot; rules for the &quot;reading a command&quot; activity; it removes the snippet of command. Example:</p>
+<!-- START CODE "c7193" -->
+<a id="c7193"></a><blockquote class="code"><p class="quoted">
+if the player's command includes &quot;or else&quot;:
+<br />&#160;&#160;&#160;&#160;cut the matched text.
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_changecommand=*
+
+<p>This phrase should be used only in &quot;after&quot; rules for the &quot;reading a command&quot; activity; it replaces the current command text entirely. Example:</p>
+<!-- START CODE "c7195" -->
+<a id="c7195"></a><blockquote class="code"><p class="quoted">
+After reading a command:
+<br />&#160;&#160;&#160;&#160;let T be &quot;[the player's command]&quot;;
+<br />&#160;&#160;&#160;&#160;replace the regular expression &quot;\p&quot; in T with &quot;&quot;;
+<br />&#160;&#160;&#160;&#160;change the text of the player's command to T.
+</p></blockquote>
+<!-- END CODE -->
+<p>This converts the player's command to text, which is then manipulated by searching for any punctuation mark and replacing it with blank text (that is, deleted), and then put back again as the new command.</p>
+
+*=ph_abide=*
+
+<p>This phrase applies the given rule, and makes its result the result of the present rule. If the rule being abided by succeeds or fails then the original rule also stops, at once and without going on to any further instructions. Example:</p>
+<!-- START CODE "c8032" -->
+<a id="c8032"></a><blockquote class="code"><p class="quoted">
+The omnibus rule:
+<br />&#160;&#160;&#160;&#160;abide by the first rule;
+<br />&#160;&#160;&#160;&#160;abide by the second rule;
+<br />&#160;&#160;&#160;&#160;abide by the third rule;
+<br />&#160;&#160;&#160;&#160;abide by the fourth rule.
+</p></blockquote>
+<!-- END CODE -->
+<p>This duplicates the effect of a rulebook of four rules: the &quot;omnibus rule&quot; tries each in turn, and stops as soon as any of them stop.</p>
+
+*=ph_abidefor=*
+
+<p>This phrase applies the given rule to the given value, and makes its result the result of the present rule. If the rule being abided by succeeds or fails then the original rule also stops, at once and without going on to any further instructions.</p>
+
+*=ph_abideanon=*
+
+<p>This phrase applies the given rule, and makes its result the result of the present rule. If the rule being abided by succeeds or fails then the original rule also stops, at once and without going on to any further instructions. However, the rule deemed to have decided the outcome is the one abided by, not the one doing the abiding.</p>
+
+*=ph_islistedin=*
+
+<p>This condition is true if the given value, which must be of a compatible kind, is one of those in the list. For instance, if L is our list of the numbers 2, 3, 5, 7 and 11 then 5 is listed in it but 6 is not.</p>
+
+*=ph_isnotlistedin=*
+
+<p>This condition is true if the given value, which must be of a compatible kind, is not one of those in the list.</p>
+
+*=ph_repeatlist=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each item in the given list, storing that value in the named variable. (The variable exists only temporarily, within the repetition.) Example:</p>
+<!-- START CODE "c8380" -->
+<a id="c8380"></a><blockquote class="code"><p class="quoted">
+let L be {2, 3, 5, 7, 11, 13, 17, 19};
+<br />repeat with prime running through L:
+<br />&#160;&#160;&#160;&#160;...
+</p></blockquote>
+<!-- END CODE -->
+<p>If the list is empty, nothing happens: the &quot;...&quot; phrase(s) are never tried.</p>
+
+*=ph_nothing=*
+
+<p>This phrase does nothing at all. It is very occasionally useful to make a rule which does nothing:</p>
+<!-- START CODE "c2814" -->
+<a id="c2814"></a><blockquote class="code"><p class="quoted">
+This is the largely ineffective rule:
+<br />&#160;&#160;&#160;&#160;do nothing.
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_randombetween=*
+
+<p>This phrase produces a uniformly random value in the range given. Examples:</p>
+<!-- START CODE "c1986" -->
+<a id="c1986"></a><blockquote class="code"><p class="quoted">
+a random number from 10 to 99
+<br />a random time from 2:31 PM to 2:57 PM
+</p></blockquote>
+<!-- END CODE -->
+<p>If we make a new kind of value:</p>
+<!-- START CODE "c1987" -->
+<a id="c1987"></a><blockquote class="code"><p class="quoted">
+A cloud pattern is a kind of value. The cloud patterns are cumulus, altocumulus, cumulonimbus, stratus, cirrus, nimbus, nimbostratus.
+</p></blockquote>
+<!-- END CODE -->
+<p>then we can also take random values from it:</p>
+<!-- START CODE "c1988" -->
+<a id="c1988"></a><blockquote class="code"><p class="quoted">
+a random cloud pattern between stratus and nimbus
+</p></blockquote>
+<!-- END CODE -->
+<p>which has three possible outcomes, all equally likely.</p>
+
+*=ph_randomchance=*
+
+<p>This condition is true X/Yths of the time, where X and Y are the numbers. Example:</p>
+<!-- START CODE "c1989" -->
+<a id="c1989"></a><blockquote class="code"><p class="quoted">
+if a random chance of 2 in 3 succeeds, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>Here is a rule which applies only 15% of the time:</p>
+<!-- START CODE "c1990" -->
+<a id="c1990"></a><blockquote class="code"><p class="quoted">
+Instead of waiting when a random chance of 15 in 100 succeeds: ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_seed=*
+
+<p>This phrase changes the seed number as specified. Any random numbers generated after that depend only on the seed. Example: the following sentence will &quot;fix&quot; the process of generating these random numbers so that they are not random at all - the same sequence of random numbers will be produced on each run.</p>
+<!-- START CODE "c1991" -->
+<a id="c1991"></a><blockquote class="code"><p class="quoted">
+When play begins, seed the random-number generator with 1234.
+</p></blockquote>
+<!-- END CODE -->
+<p>The seed value &quot;1234&quot; can be anything positive; a different sequence of random numbers will be produced for each different seed value. A seed value of 0 restores the RNG to properly random behaviour again.</p>
+
+*=ph_repeattable=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each row in the given table, choosing each row in turn, from top to bottom. Blank rows are skipped. Example:</p>
+<!-- START CODE "c5092" -->
+<a id="c5092"></a><blockquote class="code"><p class="quoted">
+To list the succession:
+<br />&#160;&#160;&#160;&#160;say &quot;The Succession List runs as follows...&quot;;
+<br />&#160;&#160;&#160;&#160;repeat through the Table of Recent Monarchs:
+<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;say &quot;[accession entry]: [name entry] ([family entry]).&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_repeattablereverse=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each row in the given table, choosing each row in turn, from bottom to top. Blank rows are skipped.</p>
+
+*=ph_repeattablecol=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each row in the given table, choosing each row in turn, in order of the values in the given column. Blank rows are skipped. Example:</p>
+<!-- START CODE "c5093" -->
+<a id="c5093"></a><blockquote class="code"><p class="quoted">
+repeat through the Table of Recent Monarchs in name order: ...
+<br />repeat through the Table of Recent Monarchs in accession order: ...
+</p></blockquote>
+<!-- END CODE -->
+<p>work through the same table in rather different orders. The sequence is lower to higher (small numbers to high numbers, A to Z, and so on); insert &quot;reverse&quot; after &quot;in&quot; to reverse this.</p>
+
+*=ph_repeattablecolreverse=*
+
+<p>This phrase causes the block of phrases following it to be repeated once for each row in the given table, choosing each row in turn, in order of the values in the given column. Blank rows are skipped. Example:</p>
+<!-- START CODE "c5094" -->
+<a id="c5094"></a><blockquote class="code"><p class="quoted">
+repeat through the Table of Recent Monarchs in reverse name order: ...
+<br />repeat through the Table of Recent Monarchs in reverse accession order: ...
+</p></blockquote>
+<!-- END CODE -->
+<p>work through the same table in rather different orders. The sequence is higher to lower (high numbers to small numbers, Z to A, and so on); delete the &quot;reverse&quot; after &quot;in&quot; to reverse this.</p>
+
+*=ph_addtolist=*
+
+<p>This phrase adds the given value to the end of the list. Example:</p>
+<!-- START CODE "c8382" -->
+<a id="c8382"></a><blockquote class="code"><p class="quoted">
+let L be {60, 168};
+<br />add 360 to L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {60, 168, 360}. Note that the value is added even if it already occurs somewhere in L; this can be avoided with &quot;if absent&quot;. So:</p>
+<!-- START CODE "c8383" -->
+<a id="c8383"></a><blockquote class="code"><p class="quoted">
+add 168 to L, if absent;
+</p></blockquote>
+<!-- END CODE -->
+<p>would do nothing - it is already there.</p>
+
+*=ph_addlisttolist=*
+
+<p>This phrase adds the first list to the end of the second. Example:</p>
+<!-- START CODE "c8384" -->
+<a id="c8384"></a><blockquote class="code"><p class="quoted">
+let L be {2, 3, 5, 7};
+<br />add {11, 13, 17, 19} to L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {2, 3, 5, 7, 11, 13, 17, 19}.</p>
+
+*=ph_addatentry=*
+
+<p>This phrase adds the given value so that it becomes the entry with that index number in the list. Example:</p>
+<!-- START CODE "c8385" -->
+<a id="c8385"></a><blockquote class="code"><p class="quoted">
+let L be {1, 2, 3, 4, 8, 24};
+<br />add 12 at entry 6 in L;
+</p></blockquote>
+<!-- END CODE -->
+<p>sets L to {1, 2, 3, 4, 8, 12, 24}. If there are N entries in L, then we can add at any of entries 1 up to N+1: adding at entry N+1 means adding at the end. The phrase option &quot;if absent&quot; makes the phrase do nothing if the value already exists anywhere in L.</p>
+
+*=ph_addlistatentry=*
+
+<p>This phrase adds the first list to the second so that it begins at the given position. Example:</p>
+<!-- START CODE "c8386" -->
+<a id="c8386"></a><blockquote class="code"><p class="quoted">
+let L be {1, 2, 3, 4};
+<br />add {4, 8, 12} at entry 3 in L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {1, 2, 4, 8, 12, 3, 4}.</p>
+
+*=ph_remfromlist=*
+
+<p>This phrase removes every instance of the given value from the list. Example:</p>
+<!-- START CODE "c8389" -->
+<a id="c8389"></a><blockquote class="code"><p class="quoted">
+let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+<br />remove 1 from L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {3, 4, 5, 9, 2, 6, 5, 3}. Ordinarily &quot;remove 7 from L&quot; would produce a run-time problem, since L does not contain the value 7, but using the &quot;if present&quot; option lets us off this: the phrase then does nothing if L does not contain the value to be removed.</p>
+
+*=ph_remlistfromlist=*
+
+<p>This phrase removes every instance of any value in the first list from the second. Example:</p>
+<!-- START CODE "c8390" -->
+<a id="c8390"></a><blockquote class="code"><p class="quoted">
+let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+<br />remove {0, 2, 4, 6, 8} from L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {3, 1, 1, 5, 9, 5, 3}. If both lists are large, this can be a slow process, and we might do better by sorting them and trying a more sophisticated method. But this is convenient for anything reasonable-sized.</p>
+
+*=ph_rementry=*
+
+<p>This phrase removes the entry at the given position, counting from 1 as the first entry. (Once it is removed, the other entries shuffle down.) Example:</p>
+<!-- START CODE "c8391" -->
+<a id="c8391"></a><blockquote class="code"><p class="quoted">
+let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+<br />remove entry 3 from L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {3, 1, 1, 5, 9, 2, 6, 5, 3}.</p>
+
+*=ph_rementries=*
+
+<p>This phrase removes the entries at the given range of positions, counting from 1 as the first entry. (Once they are removed, the other entries shuffle down.) Example:</p>
+<!-- START CODE "c8392" -->
+<a id="c8392"></a><blockquote class="code"><p class="quoted">
+let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+<br />remove entries 3 to 6 from L;
+</p></blockquote>
+<!-- END CODE -->
+<p>results in L being {3, 1, 2, 6, 5, 3}.</p>
+
+*=ph_remove=*
+
+<p>Removes the given object from play, so that it is not present in any room. We are not permitted to remove rooms, or doors, or the player, from play; but we are permitted to remove backdrops, making them disappear from all rooms in which they are present. Example:</p>
+<!-- START CODE "c1891" -->
+<a id="c1891"></a><blockquote class="code"><p class="quoted">
+remove the gold coin from play;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_say=*
+
+<p>This text substitution takes the value and produces a textual representation of it. Most kinds of value, and really all of the useful ones, are &quot;sayable&quot; - numbers, times, objects, rules, scenes, and so on. Example:</p>
+<!-- START CODE "c850" -->
+<a id="c850"></a><blockquote class="code"><p class="quoted">
+The description of the wrist watch is &quot;The dial reads [time of day].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Here &quot;time of day&quot; is a value - it's a time that varies, and time is a sayable kind of value, so we might get &quot;The dial reads 11:03 AM.&quot;</p>
+
+*=phs_a=*
+
+<p>This text substitution produces the name of the object along with its indefinite article. Example:</p>
+<!-- START CODE "c852" -->
+<a id="c852"></a><blockquote class="code"><p class="quoted">
+Instead of examining something (called the whatever):
+<br />&#160;&#160;&#160;&#160;&quot;You can only just make out [a whatever].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>which might produce &quot;You can only just make out a lamp-post.&quot;, or &quot;You can only just make out Trevor.&quot;, or &quot;You can only just make out some soldiers.&quot; The &quot;a&quot; or &quot;an&quot; in the wording is replaced by whatever indefinite article applies, if any.</p>
+
+*=phs_A=*
+
+<p>This text substitution produces the name of the object along with its indefinite article, capitalised. Example:</p>
+<!-- START CODE "c853" -->
+<a id="c853"></a><blockquote class="code"><p class="quoted">
+Instead of examining something (called the whatever):
+<br />&#160;&#160;&#160;&#160;&quot;[A whatever] can be made out in the mist.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>which might produce &quot;A lamp-post can be made out in the mist.&quot;, or &quot;Trevor can be made out in the mist.&quot;, or &quot;Some soldiers can be made out in the mist.&quot; The &quot;A&quot; or &quot;An&quot; in the wording is replaced by whatever indefinite article applies, if any.</p>
+
+*=phs_the=*
+
+<p>This text substitution produces the name of the object along with its definite article. Example:</p>
+<!-- START CODE "c854" -->
+<a id="c854"></a><blockquote class="code"><p class="quoted">
+Instead of examining something (called the whatever):
+<br />&#160;&#160;&#160;&#160;&quot;You can only just make out [the whatever].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>which might produce &quot;You can only just make out the lamp-post.&quot;, or &quot;You can only just make out Trevor.&quot;, or &quot;You can only just make out the soldiers.&quot; The &quot;the&quot; in the wording is replaced by whatever definite article applies, if any.</p>
+
+*=phs_The=*
+
+<p>This text substitution produces the name of the object along with its definite article, capitalised. Example:</p>
+<!-- START CODE "c855" -->
+<a id="c855"></a><blockquote class="code"><p class="quoted">
+Instead of examining something (called the whatever):
+<br />&#160;&#160;&#160;&#160;&quot;[The whatever] may be a trick of the mist.&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>which might produce &quot;The lamp-post may be a trick of the mist.&quot;, or &quot;Trevor may be a trick of the mist.&quot;, or &quot;The soldiers may be a trick of the mist.&quot; The &quot;The&quot; in the wording is replaced by whatever definite article applies, if any.</p>
+
+*=ph_valuematch=*
+
+<p>This condition is true if the value matches the description; the kinds must be compatible, or Inform will issue a problem message. There is no point using this for cases where the description is given explicitly:</p>
+<!-- START CODE "c8672" -->
+<a id="c8672"></a><blockquote class="code"><p class="quoted">
+if 4 matches even numbers, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>because it is easier to write just:</p>
+<!-- START CODE "c8673" -->
+<a id="c8673"></a><blockquote class="code"><p class="quoted">
+if 4 is an even number, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>So this condition is only useful when the description is stored in some variable, and its identity is not known.</p>
+
+*=ph_boxed=*
+
+<p>This phrase displays the given text on screen in an overlaid box. For reasons to do with the way such quotations are plotted onto the screen, their text is treated literally: no substitutions in square brackets are obeyed. The quotation will only ever appear once, regardless of the number of times the &quot;display the boxed quotation ...&quot; phrase is reached. Rather than being shown immediately - and thus, probably, scrolling away before it can be seen - the display is held back until the next command prompt is shown to the player. Example:</p>
+<!-- START CODE "c1015" -->
+<a id="c1015"></a><blockquote class="code"><p class="quoted">
+After looking in the Wabe, display the boxed quotation
+<br />&#160;&#160;&#160;&#160;&quot;And 'the wabe' is the grass-plot round
+<br />&#160;&#160;&#160;&#160;a sun-dial, I suppose? said Alice,
+<br />&#160;&#160;&#160;&#160;surprised at her own ingenuity.
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c1016" -->
+<a id="c1016"></a><blockquote class="code"><p class="quoted">
+&#160;&#160;&#160;&#160;Of course it is. It's called 'wabe,'
+<br />&#160;&#160;&#160;&#160;you know, because it goes a long way
+<br />&#160;&#160;&#160;&#160;before it, and a long way behind it --
+</p></blockquote>
+<!-- END CODE -->
+<!-- START CODE "c1017" -->
+<a id="c1017"></a><blockquote class="code"><p class="quoted">
+&#160;&#160;&#160;&#160;-- Lewis Carroll&quot;.
+</p></blockquote>
+<!-- END CODE -->
+<p>This was the original example used in <span class="italic">Trinity</span>, by Brian Moriarty, which invented the idea. A player exploring Kensington Gardens comes upon a location enigmatically called The Wabe; and by way of explanation, this quotation pops up.</p>
+
+*=ph_increase=*
+
+<p>This phrase increases the variable, table entry, list entry, or property by the given amount, which must be of a compatible kind. Example:</p>
+<!-- START CODE "c1957" -->
+<a id="c1957"></a><blockquote class="code"><p class="quoted">
+increase the score by 8;
+<br />increase the time of day by 5 minutes;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_decrease=*
+
+<p>This phrase decreases the variable, table entry, list entry, or property by the given amount, which must be of a compatible kind. Example:</p>
+<!-- START CODE "c1958" -->
+<a id="c1958"></a><blockquote class="code"><p class="quoted">
+decrease the score by 6;
+<br />decrease the carrying capacity of the player by 10;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_increment=*
+
+<p>This phrase increases the variable, table entry, list entry, or property by 1. Example:</p>
+<!-- START CODE "c1959" -->
+<a id="c1959"></a><blockquote class="code"><p class="quoted">
+increment the score;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_decrement=*
+
+<p>This phrase decreases the variable, table entry, list entry, or property by 1. Example:</p>
+<!-- START CODE "c1960" -->
+<a id="c1960"></a><blockquote class="code"><p class="quoted">
+decrement the score;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_playsf=*
+
+<p>This phrase causes the sound effect to be played. If the option &quot;one time only&quot; is used, it will have no effect if the sound effect has been played before. Example:</p>
+<!-- START CODE "c8739" -->
+<a id="c8739"></a><blockquote class="code"><p class="quoted">
+play the sound of rustling leaves;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_charnum=*
+
+<p>This phrase produces the Nth character from the text, counting from 1. Characters include letters, digits, punctuation symbols, spaces or other letter-forms. Example:</p>
+<!-- START CODE "c8092" -->
+<a id="c8092"></a><blockquote class="code"><p class="quoted">
+character number 8 in &quot;numberless projects of social reform&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;e&quot;. If the index is less than 1 or more than the length of the text, the result is an empty text, &quot;&quot;.</p>
+
+*=ph_numchars=*
+
+<p>This phrase produces the number of characters from the text. Characters include letters, digits, punctuation symbols, spaces or other letter-forms. Examples:</p>
+<!-- START CODE "c8093" -->
+<a id="c8093"></a><blockquote class="code"><p class="quoted">
+number of characters in &quot;War and Peace&quot;
+<br />number of characters in &quot;&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produce 13 and 0 respectively.</p>
+
+*=ph_wordnum=*
+
+<p>This phrase produces the Nth word from the text, counting from 1. Words for this purpose are what's left after breaking the text up at punctuation or spacing (spaces, line breaks, paragraph breaks) and then removing that punctuation or spacing. Example:</p>
+<!-- START CODE "c8095" -->
+<a id="c8095"></a><blockquote class="code"><p class="quoted">
+word number 3 in &quot;ice-hot, don't you think?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;don't&quot;. If the index is less than 1 or more than the number of words in the text, the result is an empty text, &quot;&quot;.</p>
+
+*=ph_numwords=*
+
+<p>This phrase produces the number of words from the text. Words for this purpose are what's left after breaking the text up at punctuation or spacing (spaces, line breaks, paragraph breaks) and then removing that punctuation or spacing. Example:</p>
+<!-- START CODE "c8096" -->
+<a id="c8096"></a><blockquote class="code"><p class="quoted">
+number of words in &quot;ice-hot, don't you think?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 5.</p>
+
+*=ph_pwordnum=*
+
+<p>This phrase produces the Nth word from the text, counting from 1. Words for this purpose are what's left after breaking the text up at punctuation or spacing (spaces, line breaks, paragraph breaks) and then removing the spacing, but leaving the punctuation as independent words. Example:</p>
+<!-- START CODE "c8097" -->
+<a id="c8097"></a><blockquote class="code"><p class="quoted">
+punctuated word number 2 in &quot;ice-hot, don't you think?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;-&quot;. The punctuated words here are &quot;ice&quot;, &quot;-&quot;, &quot;hot&quot;, &quot;,&quot;, &quot;don't&quot;, &quot;you&quot;, &quot;think&quot;, &quot;?&quot;. If two or more punctuation marks are adjacent, they are counted as different words, except for runs of dashes or periods: thus &quot;,,&quot; has two punctuated words, but &quot;--&quot; and &quot;...&quot; have only one each. If the index is less than 1 or more than the number of punctuated words in the text, the result is an empty text, &quot;&quot;.</p>
+
+*=ph_numpwords=*
+
+<p>This phrase produces the number of words from the text. Words for this purpose are what's left after breaking the text up at punctuation or spacing (spaces, line breaks, paragraph breaks) and then removing the spacing, but leaving the punctuation as independent words. Example:</p>
+<!-- START CODE "c8098" -->
+<a id="c8098"></a><blockquote class="code"><p class="quoted">
+number of punctuated words in &quot;ice-hot, don't you think?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces 8; see if you can find them all.</p>
+
+*=ph_upwordnum=*
+
+<p>This phrase produces the Nth word from the text, counting from 1. Words for this purpose are what's left after breaking the text up at spacing (spaces, line breaks, paragraph breaks) but including all punctuation as if it were part of the spelling of the words it joins to. Example:</p>
+<!-- START CODE "c8099" -->
+<a id="c8099"></a><blockquote class="code"><p class="quoted">
+unpunctuated word number 1 in &quot;ice-hot, don't you think?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces &quot;ice-hot,&quot;. The unpunctuated words in &quot;ice-hot, don't you think?&quot; are &quot;ice-hot,&quot;, &quot;don't&quot;, &quot;you&quot;, &quot;think?&quot;. If the index is less than 1 or more than the number of punctuated words in the text, the result is an empty text, &quot;&quot;.</p>
+
+*=ph_numupwords=*
+
+<p>This phrase produces the number of words from the text. Words for this purpose are what's left after breaking the text up at spacing (spaces, line breaks, paragraph breaks) but including all punctuation as if it were part of the spelling of the words it joins to. Example:</p>
+<!-- START CODE "c8100" -->
+<a id="c8100"></a><blockquote class="code"><p class="quoted">
+number of unpunctuated words in &quot;ice-hot, don't you think?&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>produces just 4.</p>
+
+*=ph_linenum=*
+
+<p>This phrase produces the Nth line from the text, counting from 1. Unless explicit use is made of line-breaking, lines and paragraphs will be the same - it doesn't refer to lines as visible on screen, because we have no way of knowing what size screen the player might have.</p>
+
+*=ph_numlines=*
+
+<p>This phrase produces the number of lines in the text. Unless explicit use is made of line-breaking, lines and paragraphs will be the same - it doesn't refer to lines as visible on screen, because we have no way of knowing what size screen the player might have. Example: the number of lines in</p>
+<!-- START CODE "c8101" -->
+<a id="c8101"></a><blockquote class="code"><p class="quoted">
+&quot;Sensational news just in![paragraph break]The Martians have invaded Miranda.[line break](One of the moons of Uranus, that is.)&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>is 3.</p>
+
+*=ph_paranum=*
+
+<p>This phrase produces the Nth paragraph from the text, counting from 1.</p>
+
+*=ph_numparas=*
+
+<p>This phrase produces the number of paragraphs in the text. Example: the number of paragraphs in</p>
+<!-- START CODE "c8102" -->
+<a id="c8102"></a><blockquote class="code"><p class="quoted">
+&quot;Sensational news just in![paragraph break]The Martians have invaded Miranda.[line break](One of the moons of Uranus, that is.)&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>is 2.</p>
+
+*=ph_if=*
+
+<p>This phrase causes the single phrase, or block of phrases, following it to be obeyed only if the condition is true. (If the condition must contain a comma for some reason, the block form should be used.) Example:</p>
+<!-- START CODE "c2901" -->
+<a id="c2901"></a><blockquote class="code"><p class="quoted">
+if the red door is open, say &quot;You could try going east?&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_unless=*
+
+<p>This phrase causes the single phrase, or block of phrases, following it to be obeyed only if the condition is false. (If the condition must contain a comma for some reason, the block form should be used.) Example:</p>
+<!-- START CODE "c2902" -->
+<a id="c2902"></a><blockquote class="code"><p class="quoted">
+unless the red door is closed, say &quot;You could try going east?&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_listofdesc=*
+
+<p>This phrase produces the list of all values matching the given description. Inform will issue a problem message if the result would be an infinite list, or one which is impractical to test: for instance &quot;list of even numbers&quot; is not feasible.</p>
+
+*=phs_timewords=*
+
+<p>This text substitution produces the given time written out in English sentence form. For example:</p>
+<!-- START CODE "c2196" -->
+<a id="c2196"></a><blockquote class="code"><p class="quoted">
+&quot;Through the glass you can see the reversed hands reading [the time of day in words].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>might produce</p>
+<!-- START CODE "c2197" -->
+<a id="c2197"></a><blockquote class="code"><p class="quoted">
+Through the glass you can see the reversed hands reading twenty to nine.
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_response=*
+
+<p>This text substitution writes out the current text of the given response.</p>
+
+*=ph_replacechar=*
+
+<p>This phrase acts on the named text by placing the given text in place of the Nth character, counting from 1. Example:</p>
+<!-- START CODE "c8259" -->
+<a id="c8259"></a><blockquote class="code"><p class="quoted">
+let V be &quot;mope&quot;;
+<br />replace character number 3 in V with &quot;lecul&quot;;
+<br />say V;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;molecule&quot;.</p>
+
+*=ph_replaceword=*
+
+<p>This phrase acts on the named text by placing the given text in place of the Nth word, counting from 1, and dividing words at spacing or punctuation. Example:</p>
+<!-- START CODE "c8260" -->
+<a id="c8260"></a><blockquote class="code"><p class="quoted">
+let V be &quot;Does the well run dry?&quot;;
+<br />replace word number 3 in V with &quot;jogger&quot;;
+<br />say V;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;Does the jogger run dry?&quot;.</p>
+
+*=ph_replacepword=*
+
+<p>This phrase acts on the named text by placing the given text in place of the Nth word, counting from 1, and dividing words at spacing, counting punctuation runs as words in their own right. Example:</p>
+<!-- START CODE "c8261" -->
+<a id="c8261"></a><blockquote class="code"><p class="quoted">
+let V be &quot;Frankly, yes, I agree.&quot;;
+<br />replace punctuated word number 2 in V with &quot;:&quot;;
+<br />say V;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;Frankly: yes, I agree.&quot;.</p>
+
+*=ph_replaceupword=*
+
+<p>This phrase acts on the named text by placing the given text in place of the Nth word, counting from 1, and dividing words at spacing, counting punctuation as part of a word just as if it were lettering. Example:</p>
+<!-- START CODE "c8262" -->
+<a id="c8262"></a><blockquote class="code"><p class="quoted">
+let V be &quot;Frankly, yes, I agree.&quot;;
+<br />replace unpunctuated word number 2 in V with &quot;of course&quot;;
+<br />say V;
+</p></blockquote>
+<!-- END CODE -->
+<p>says &quot;Frankly, of course I agree.&quot;.</p>
+
+*=ph_replaceline=*
+
+<p>This phrase acts on the named text by placing the given text in place of the Nth line, counting from 1. Lines are divided by paragraph or line breaks.</p>
+
+*=ph_replacepara=*
+
+<p>This phrase acts on the named text by placing the given text in place of the Nth paragraph, counting from 1.</p>
+
+*=ph_replace=*
+
+<p>This phrase acts on the named text by searching and replacing, as many non-overlapping times as possible. Example:</p>
+<!-- START CODE "c8263" -->
+<a id="c8263"></a><blockquote class="code"><p class="quoted">
+replace the text &quot;a&quot; in V with &quot;z&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>changes every lower-case &quot;a&quot; to &quot;z&quot;: the same thing done with the &quot;case insensitively&quot; option would change each &quot;a&quot; or &quot;A&quot; to &quot;z&quot;.</p>
+
+*=ph_replacewordin=*
+
+<p>This phrase acts on the named text by searching and replacing, as many non-overlapping times as possible, where the search text must occur as a whole word. Example:</p>
+<!-- START CODE "c8265" -->
+<a id="c8265"></a><blockquote class="code"><p class="quoted">
+replace the word &quot;Bob&quot; in V with &quot;Robert&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>changes &quot;Bob got on the Bobsleigh&quot; to &quot;Robert got on the Bobsleigh&quot;.</p>
+
+*=ph_replacepwordin=*
+
+<p>This phrase acts on the named text by searching and replacing, as many non-overlapping times as possible, where the search text must occur as a whole word or run of punctuation.</p>
+
+*=ph_replacere=*
+
+<p>This phrase acts on the named text by matching the regular expression and replacing anything which fits it, as many non-overlapping times as possible. Example:</p>
+<!-- START CODE "c8266" -->
+<a id="c8266"></a><blockquote class="code"><p class="quoted">
+replace the regular expression &quot;\d+&quot; in V with &quot;...&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>changes &quot;The Battle of Waterloo, 1815, rivalled Trafalgar, 1805&quot; to &quot;The Battle of Waterloo, ..., rivalled Trafalgar, ...&quot;. The &quot;case insensitively&quot; causes lower and upper case letters to be treated as if the same letter.</p>
+<p>When replacing a regular expression, the replacement text also has a few special meanings (though, thankfully, many fewer than for the expression itself). Once again &quot;\n&quot; and &quot;\t&quot; can be used for line break and tab characters, and &quot;\\&quot; must be used for an actual backslash. But, very usefully, &quot;\1&quot; to &quot;\9&quot; expand as the contents of groups numbered 1 to 9, and &quot;\0&quot; to the exact text matched. So:</p>
+<!-- START CODE "c8267" -->
+<a id="c8267"></a><blockquote class="code"><p class="quoted">
+replace the regular expression &quot;\d+&quot; in V with &quot;roughly \0&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>adds the word &quot;roughly&quot; in front of any run of digits in V, because \0 becomes in turn whichever run of digits matched. And</p>
+<!-- START CODE "c8268" -->
+<a id="c8268"></a><blockquote class="code"><p class="quoted">
+replace the regular expression &quot;(\w+) (.*)&quot; in V with &quot;\2, \1&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>performs the transformation &quot;Frank Booth&quot; to &quot;Booth, Frank&quot;.</p>
+<p>Finally, prefixing the number by &quot;l&quot; or &quot;u&quot; forces the text it represents into lower or upper case, respectively. For instance:</p>
+<!-- START CODE "c8269" -->
+<a id="c8269"></a><blockquote class="code"><p class="quoted">
+replace the regular expression &quot;\b(\w)(\w*)&quot; in X with &quot;\u1\l2&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>changes the casing of X to &quot;title casing&quot;, where each individual word is capitalised. (This is a little slow on large texts, since so many matches and replacements are made: it's more efficient to use the official phrases for changing case.)</p>
+
+*=ph_letrelation=*
+
+<p>This phrase creates a new temporary variable, and sets its value to the identity of a newly created and equally temporary relation. These last only for the present block of phrases, which certainly means that they exist only in the current rule. Example:</p>
+<!-- START CODE "c4253" -->
+<a id="c4253"></a><blockquote class="code"><p class="quoted">
+let the password dictionary be a relation of texts;
+</p></blockquote>
+<!-- END CODE -->
+<p>This makes a purely temporary various-to-various relation between texts, which lasts as long as the temporary value &quot;password dictionary&quot; lasts. By default, relations are various-to-various, but we could instead write, say:</p>
+<!-- START CODE "c4254" -->
+<a id="c4254"></a><blockquote class="code"><p class="quoted">
+let the nicknames catalogue be a various-to-one relation of texts;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_matches=*
+
+<p>This condition is true if the second text occurs anywhere inside the first. Examples:</p>
+<!-- START CODE "c8122" -->
+<a id="c8122"></a><blockquote class="code"><p class="quoted">
+if &quot;[score]&quot; matches the text &quot;3&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>tests whether the digit 3 occurs anywhere in the score, as printed out; and</p>
+<!-- START CODE "c8123" -->
+<a id="c8123"></a><blockquote class="code"><p class="quoted">
+if the printed name of the location matches the text &quot;the&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>tests to see whether &quot;the&quot; can be found anywhere in the current room's name. Note that the location &quot;Smotheringly Hot Jungle&quot; would pass this test - it's there if you look. On the other hand, &quot;The Orangery&quot; would not, because &quot;The&quot; does not match against &quot;the&quot;. We can get around this in a variety of ways, one of which is to tell Inform to be insensitive to the case (upper or lower) of letters:</p>
+<!-- START CODE "c8124" -->
+<a id="c8124"></a><blockquote class="code"><p class="quoted">
+if the printed name of the location matches the text &quot;the&quot;, case insensitively: ...
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_exactlymatches=*
+
+<p>This condition is true if the second text matches the first, starting at the beginning and finishing at the end. This appears to be the same as testing if one is equal to the other, but that's not quite true: for example,</p>
+<!-- START CODE "c8125" -->
+<a id="c8125"></a><blockquote class="code"><p class="quoted">
+if &quot;[score]&quot; exactly matches the text &quot;[best score]&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>is true if the score and best score currently print out as the same text, which will be true if they are currently equal as numbers; but</p>
+<!-- START CODE "c8126" -->
+<a id="c8126"></a><blockquote class="code"><p class="quoted">
+if &quot;[score]&quot; is &quot;[best score]&quot;, ...
+</p></blockquote>
+<!-- END CODE -->
+<p>is never true - these are different texts, even if they sometimes look the same.</p>
+
+*=ph_nummatches=*
+
+<p>This produces the number of times the second text occurs within the first. The matches are not allowed to overlap. Example:</p>
+<!-- START CODE "c8127" -->
+<a id="c8127"></a><blockquote class="code"><p class="quoted">
+number of times &quot;pell-mell sally&quot; matches the text &quot;ll&quot; = 3
+<br />number of times &quot;xyzzy&quot; matches the text &quot;Z&quot; = 0
+<br />number of times &quot;xyzzy&quot; matches the text &quot;Z&quot;, case insensitively = 2
+<br />number of times &quot;aaaaaaaa&quot; matches the text &quot;aaaa&quot; = 2
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_holder=*
+
+<p>This phrase produces the container, supporter, carrier, wearer or room in which the object resides.</p>
+
+*=ph_firstheld=*
+
+<p>This phrase produces the first of the list of things held by the object. Example:</p>
+<!-- START CODE "c1983" -->
+<a id="c1983"></a><blockquote class="code"><p class="quoted">
+first thing held by Baroness Orczy
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_nextheld=*
+
+<p>This phrase produces the next item of the list of things held by something. Example: suppose Baroness Orczy is carrying a lapdog and a string of pearls.</p>
+<!-- START CODE "c1984" -->
+<a id="c1984"></a><blockquote class="code"><p class="quoted">
+next thing held after the lapdog
+</p></blockquote>
+<!-- END CODE -->
+<p>is then the string of pearls.</p>
+
+*=phs_oneof=*
+
+<p>This text substitution produces no text. It's used only for a side-effect: it switches between a number of alternative texts, which follow it and are divided by &quot;[or]&quot; substitutions, according to a strategy given in a closing substitution. Example:</p>
+<!-- START CODE "c916" -->
+<a id="c916"></a><blockquote class="code"><p class="quoted">
+&quot;You flip the coin. [one of]Heads[or]Tails[purely at random]!&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Here there are just two alternatives, and the strategy is &quot;purely at random&quot;. Exactly half of the time the text will be printed as &quot;You flip the coin. Heads!&quot;; and the other half, &quot;You flip the coin. Tails!&quot;.</p>
+
+*=phs_or=*
+
+<p>This text substitution produces no text, and can be used only in a &quot;[one of]...&quot; construction. It divides alternative wordings. Example:</p>
+<!-- START CODE "c917" -->
+<a id="c917"></a><blockquote class="code"><p class="quoted">
+&quot;You flip the coin. [one of]Heads[or]Tails[purely at random]!&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_purelyrandom=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are chosen uniformly randomly.</p>
+
+*=phs_thenpurelyrandom=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are chosen in sequence until all have been seen, but that after that they are chosen uniformly randomly.</p>
+
+*=phs_random=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are chosen at random except that the same choice cannot come up twice running. This is useful to avoid the deadening effect of repeating the exact same message. Example:</p>
+<!-- START CODE "c918" -->
+<a id="c918"></a><blockquote class="code"><p class="quoted">
+&quot;The light changes randomly again; now it's [one of]green[or]amber[or]red[at random].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Here we can safely say the light &quot;changes&quot;, because the new colour cannot be the same as the one printed the last time.</p>
+
+*=phs_thenrandom=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are chosen in sequence until all have been seen, and then after that, at random except that the same choice cannot come up twice running. Example:</p>
+<!-- START CODE "c919" -->
+<a id="c919"></a><blockquote class="code"><p class="quoted">
+&quot;Maybe the murderer is [one of]Colonel Mustard[or]Professor Plum[or]Cardinal Cerise[then at random].&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_sticky=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that a random choice is made the first time the text is printed, but that it sticks from there on. Example:</p>
+<!-- START CODE "c920" -->
+<a id="c920"></a><blockquote class="code"><p class="quoted">
+&quot;The newspaper headline is: [one of]War Casualties[or]Terrorists[or]Banks[sticky random] [one of]Continue To Expand[or]Lose Out[sticky random].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>Although the newspaper headline will change with each playing, it will not alter during play.</p>
+
+*=phs_decreasing=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are chosen at random, except that the first is most likely to be chosen, the second is next most likely, and so on down to the rarest at the end. Example:</p>
+<!-- START CODE "c921" -->
+<a id="c921"></a><blockquote class="code"><p class="quoted">
+&quot;Zorro strides by, [one of]looking purposeful[or]grim-faced[or]deep in thought[or]suppressing a yawn[or]scratching his ribs[or]trying to conceal that he has cut himself shaving[as decreasingly likely outcomes].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>There are six outcomes here: the first is six times as likely as the last, and those in between are similarly scaled, so Zorro cuts himself shaving only once in 21 tries, while he looks purposeful almost a third of the time.</p>
+
+*=phs_order=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. A random order is chosen for the alternative passages of text, and they are used in that order as the text is printed again and again. When one random cycle finishes, a new one begins. The effect is somewhat like the &quot;shuffle album&quot; feature on an iPod. Example:</p>
+<!-- START CODE "c922" -->
+<a id="c922"></a><blockquote class="code"><p class="quoted">
+&quot;You dip into the chapter on [one of]freshwater fish[or]hairless mammals[or]extinct birds[or]amphibians such as the black salamander[in random order].&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>One small restriction: if there are more than 32 variations, purely random choices will be printed, and there will be no guarantee that repeats are prevented.</p>
+
+*=phs_cycling=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are used one at a time, in turn: after the last one is reached, we start again from the first. Example:</p>
+<!-- START CODE "c923" -->
+<a id="c923"></a><blockquote class="code"><p class="quoted">
+&quot;The pundits discuss [one of]the weather[or]world events[or]celebrity gossip[cycling].&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_stopping=*
+
+<p>This text substitution produces no text, and can be used only to end a &quot;[one of]...&quot; construction. It indicates that the alternatives are used one at a time, in turn: once the last one is reached, it's used forever after. Example:</p>
+<!-- START CODE "c924" -->
+<a id="c924"></a><blockquote class="code"><p class="quoted">
+&quot;[one of]The phone rings[or]The phone rings a second time[or]The phone rings again[stopping].&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=phs_firsttime=*
+
+<p>This pair of text substitutions causes whatever is between them to be printed only the first time the text is printed. Example:</p>
+<!-- START CODE "c925" -->
+<a id="c925"></a><blockquote class="code"><p class="quoted">
+&quot;The screen door squeaks loudly as when you open it. [first time]Well, you'll get used to it eventually. [only]&quot;
+</p></blockquote>
+<!-- END CODE -->
+<p>This is exactly equivalent to</p>
+<!-- START CODE "c926" -->
+<a id="c926"></a><blockquote class="code"><p class="quoted">
+&quot;The screen door squeaks loudly as when you open it. [one of]Well, you'll get used to it eventually. [or][stopping]&quot;;
+</p></blockquote>
+<!-- END CODE -->
+<p>but easier to read.</p>
+
+*=ph_numberentries=*
+
+<p>This phrase produces the number of positions in the list. Example:</p>
+<!-- START CODE "c8451" -->
+<a id="c8451"></a><blockquote class="code"><p class="quoted">
+the number of entries in {1, 1, 1, 3, 1}
+</p></blockquote>
+<!-- END CODE -->
+<p>is 5, even though there are only two genuinely different items in the list.</p>
+
+*=ph_end=*
+
+<p>This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message &quot;The End.&quot; The end is not considered final.</p>
+
+*=ph_endfinally=*
+
+<p>This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message &quot;The End.&quot; The end is considered final, and any hidden menu options will be revealed.</p>
+
+*=ph_endsaying=*
+
+<p>This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message given in the text. The end is not considered final. Example:</p>
+<!-- START CODE "c2086" -->
+<a id="c2086"></a><blockquote class="code"><p class="quoted">
+end the story saying &quot;You have been stymied&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_endfinallysaying=*
+
+<p>This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message given in the text. The end is considered final, and any hidden menu options will be revealed. Example:</p>
+<!-- START CODE "c2087" -->
+<a id="c2087"></a><blockquote class="code"><p class="quoted">
+end the story finally saying &quot;You have defeated Sauron&quot;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_ended=*
+
+<p>This condition is true if an end has been declared using one of the &quot;end the story...&quot; phrases.</p>
+
+*=ph_notended=*
+
+<p>This condition is true if no end has been declared using one of the &quot;end the story...&quot; phrases.</p>
+
+*=ph_finallyended=*
+
+<p>This condition is true if an end has been declared using one of the &quot;end the story finally...&quot; phrases, so that an ending has been reached which the author feels is a completion of the player's experience.</p>
+
+*=ph_notfinallyended=*
+
+<p>This condition is true if an end has been declared using one of the &quot;end the story...&quot; phrases, but not &quot;finally&quot;, so the author feels that the player can get further experience by playing again and trying different approaches.</p>
+
+*=ph_resume=*
+
+<p>This phrase causes an ended story to resume exactly as if no &quot;end the story...&quot; phrase had been used. Example:</p>
+<!-- START CODE "c2091" -->
+<a id="c2091"></a><blockquote class="code"><p class="quoted">
+When play ends:
+<br />&#160;&#160;&#160;&#160;if the story has not ended finally:
+<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;say &quot;Oh dear. Still, here's another chance.&quot;;
+<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;resume the story.
+</p></blockquote>
+<!-- END CODE -->
+<p>The phrase is likely to be sensible only as part of a &quot;when play ends&quot; rule. Other traditional uses include giving the player three lives, as in an old-school arcade machine.</p>
+
+*=ph_carryout=*
+
+<p>This phrase carries out the given activity, which must be one not applying to any value. Example:</p>
+<!-- START CODE "c6313" -->
+<a id="c6313"></a><blockquote class="code"><p class="quoted">
+carry out the assaying activity;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_carryoutwith=*
+
+<p>This phrase carries out the given activity, which must apply to a kind of value matching the one supplied. Example:</p>
+<!-- START CODE "c6314" -->
+<a id="c6314"></a><blockquote class="code"><p class="quoted">
+carry out the analysing activity with the pitchblende;
+<br />carry out the announcing activity with the score;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_continueactivity=*
+
+<p>This phrase should be used only in rules in activity rulebooks. It causes the current rule to end, but without result, so that the activity continues rather than stopping as a result of the rule. This is useful for rulebooks (like the &quot;for&quot; rulebook of an activity) where the default is that a rule does stop the activity.</p>
+
+*=ph_nextstep=*
+
+<p>This phrase tries to find a shortest route between the two given endpoints, using the given relation of objects to determine single steps. Example:</p>
+<!-- START CODE "c4152" -->
+<a id="c4152"></a><blockquote class="code"><p class="quoted">
+next step via the overlooking relation from the Folly to the Chinese Lake
+</p></blockquote>
+<!-- END CODE -->
+<p>The result is the special object value &quot;nothing&quot; if the two endpoints are the same or if no route exists.</p>
+
+*=ph_numbersteps=*
+
+<p>This phrase tries to find the length of a shortest route between the two given endpoints, using the given relation of objects to determine single steps. Example:</p>
+<!-- START CODE "c4153" -->
+<a id="c4153"></a><blockquote class="code"><p class="quoted">
+number of steps via the overlooking relation from the Folly to the Chinese Lake
+</p></blockquote>
+<!-- END CODE -->
+<p>The result is 0 if the two endpoints are the same, or -1 if no route exists.</p>
+
+*=ph_beginactivity=*
+
+<p>This phrase causes the named activity to become active, and runs its &quot;before&quot; rulebook. The activity must be one which applies to nothing. Example:</p>
+<!-- START CODE "c6378" -->
+<a id="c6378"></a><blockquote class="code"><p class="quoted">
+begin the assaying activity;
+</p></blockquote>
+<!-- END CODE -->
+<p>In all cases a matching &quot;end the ... activity&quot; or else &quot;abandon the ... activity&quot; phrase must be reached.</p>
+
+*=ph_beginactivitywith=*
+
+<p>This phrase causes the named activity to become active, and runs its &quot;before&quot; rulebook. The activity must be one which applies to a value of a matching kind. Example:</p>
+<!-- START CODE "c6379" -->
+<a id="c6379"></a><blockquote class="code"><p class="quoted">
+begin the analysing activity with the pitchblende;
+</p></blockquote>
+<!-- END CODE -->
+<p>In all cases a matching &quot;end the ... activity with ...&quot; or else &quot;abandon the ... activity with...&quot; phrase must be reached.</p>
+
+*=ph_endactivity=*
+
+<p>This phrase runs the &quot;after&quot; rulebook of the activity and then causes it to become inactive. The activity must be one which applies to nothing. Example:</p>
+<!-- START CODE "c6380" -->
+<a id="c6380"></a><blockquote class="code"><p class="quoted">
+end the assaying activity;
+</p></blockquote>
+<!-- END CODE -->
+<p>This must only happen to match an earlier &quot;begin the ... activity&quot; phrase.</p>
+
+*=ph_endactivitywith=*
+
+<p>This phrase runs the &quot;after&quot; rulebook of the activity and then causes it to become inactive. The activity must be one which applies to a value of a matching kind. Example:</p>
+<!-- START CODE "c6381" -->
+<a id="c6381"></a><blockquote class="code"><p class="quoted">
+end the analysing activity with the pitchblende;
+</p></blockquote>
+<!-- END CODE -->
+<p>This must only happen to match an earlier &quot;begin the ... activity with...&quot; phrase.</p>
+
+*=ph_handlingactivity=*
+
+<p>This should be used only where the given activity has been started with &quot;begin ...&quot; and will be finished with &quot;end ...&quot;. It runs the &quot;for&quot; rules for the activity, and then comes out true if none of those for rules intervened in the handling of that activity. (The activity must be one which doesn't apply to any value.)</p>
+
+*=ph_handlingactivitywith=*
+
+<p>This should be used only where the given activity has been started with &quot;begin ...&quot; and will be finished with &quot;end ...&quot;. It runs the &quot;for&quot; rules for the activity, and then comes out true if none of those for rules intervened in the handling of that activity. (The given value must be the one it is being applied to.)</p>
+
+*=ph_abandonactivity=*
+
+<p>This phrase ends an activity at once (without consulting any further rulebooks, including its &quot;after&quot; rulebook). It can only be used with an activity which has had its &quot;begin&quot; but not yet its &quot;end&quot; phrase; it is a drastic remedy best taken only if it is clear that circumstances have changed so that the activity now seems inappropriate. It must not be used during one of the rules for the activity: it can only be used between the begin and for stages, or between the for and end stages.</p>
+<!-- START CODE "c6385" -->
+<a id="c6385"></a><blockquote class="code"><p class="quoted">
+abandon the assaying activity;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_abandonactivitywith=*
+
+<p>This phrase ends an activity at once (without consulting any further rulebooks, including its &quot;after&quot; rulebook). It can only be used with an activity which has had its &quot;begin&quot; but not yet its &quot;end&quot; phrase; it is a drastic remedy best taken only if it is clear that circumstances have changed so that the activity now seems inappropriate. It must not be used during one of the rules for the activity: it can only be used between the begin and for stages, or between the for and end stages.</p>
+<!-- START CODE "c6386" -->
+<a id="c6386"></a><blockquote class="code"><p class="quoted">
+abandon the analysing activity with the pitchblende;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_yes=*
+
+<p>This phrase can only be used in the definition of a phrase to decide whether a condition holds. It ends the decision process immediately and makes the condition true.</p>
+
+*=ph_no=*
+
+<p>This phrase can only be used in the definition of a phrase to decide whether a condition holds. It ends the decision process immediately and makes the condition false.</p>
+
+*=ph_succeedswith=*
+
+<p>This phrase can only be used in a rule which produces a value, and the value given must be of the right kind. It causes the current rule to finish immediately, to succeed, and to produce the value given.</p>
+
+*=ph_producedby=*
+
+<p>This phrase is used to follow the named rule, and to collect the resulting value.</p>
+
+*=ph_producedbyfor=*
+
+<p>This phrase is used to follow the named rule based on the value given, and to collect the resulting value.</p>
+
+*=ph_displayfigure=*
+
+<p>This phrase causes the figure to be displayed in a way visible to the player. If the option &quot;one time only&quot; is used, it will have no effect if the figure has been displayed before. Example:</p>
+<!-- START CODE "c8736" -->
+<a id="c8736"></a><blockquote class="code"><p class="quoted">
+display the Figure of Woodlands;
+</p></blockquote>
+<!-- END CODE -->
+
+*=ph_nearestwholenumber=*
+
+<p>This phrase performs signed addition on the given values, whose kinds must agree, and produces the result. Examples:</p>
+<!-- START CODE "c4540" -->
+<a id="c4540"></a><blockquote class="code"><p class="quoted">
+1.4 to the nearest whole number = 1
+<br />1.6 to the nearest whole number = 2
+<br />-1.6 to the nearest whole number = -2
+</p></blockquote>
+<!-- END CODE -->
+<p>We probably ought to bear in mind that the limited range of &quot;number&quot; means that the nearest whole number might not be all that near. For example:</p>
+<!-- START CODE "c4541" -->
+<a id="c4541"></a><blockquote class="code"><p class="quoted">
+6 x 10^23 to the nearest whole number = 2147483647
+</p></blockquote>
+<!-- END CODE -->
+<p>because 2147483647 is the highest value a &quot;number&quot; can have.</p>
+

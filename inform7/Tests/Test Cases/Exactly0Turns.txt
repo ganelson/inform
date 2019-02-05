@@ -1,0 +1,8 @@
+Stage is a room. A rose is a thing in Stage.
+
+Every turn: say "The rose has been visible for [if rose has been visible for
+exactly 0 turns]0[else if rose has been visible for exactly 1 turn]1[else if
+rose has been visible for exactly 2 turns]2[else if rose has been visible for
+exactly 3 turns]3[else]? [end if] turns."
+
+Test me with "z / z / z / z".

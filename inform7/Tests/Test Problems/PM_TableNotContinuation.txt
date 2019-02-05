@@ -1,0 +1,5 @@
+The Admiralty is a room.
+
+Table of Vessels (continued)
+ship		rate
+"Euryalus"	6

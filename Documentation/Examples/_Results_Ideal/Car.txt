@@ -1,0 +1,75 @@
+   Trafalgar Square
+  No Relation
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Trafalgar Square
+  The Square is overlooked by a pillared statue of Admiral Lord Horatio Nelson (no relation), naval hero and convenience to pigeons since 1812.
+  
+  You can see a car (empty) here.
+  
+> >   Trafalgar Square
+  (Testing.)
+  
+  >[1] get in car
+  You get into the car.
+  
+  >[2] n
+  The ignition is off at the moment.
+  
+  >[3] e
+  The ignition is off at the moment.
+  
+  >[4] turn on car
+  You switch the ignition on.
+  
+  >[5] n
+  You can't drive the car off-road.
+  
+  >[6] e
+  
+  Strand (in the car)
+  
+  >[7] get out
+  You get out of the car.
+  
+  Strand
+  You can see a car (empty) here.
+  
+  >[8] w
+  
+  Trafalgar Square
+  The Square is overlooked by a pillared statue of Admiral Lord Horatio Nelson (no relation), naval hero and convenience to pigeons since 1812.
+  
+  >[9] n
+  
+  National Gallery
+  
+  >[10] s
+  
+  Trafalgar Square
+  The Square is overlooked by a pillared statue of Admiral Lord Horatio Nelson (no relation), naval hero and convenience to pigeons since 1812.
+  
+  >[11] e
+  
+  Strand
+  You can see a car (empty) here.
+  
+  >[12] get in car
+  You get into the car.
+  
+  >[13] turn off car
+  You switch the ignition off.
+  
+  >[14] w
+  The ignition is off at the moment.
+  
+  >[15] turn on ignition
+  You switch the ignition on.
+  
+  >[16] w
+  
+  Trafalgar Square (in the car)
+  The Square is overlooked by a pillared statue of Admiral Lord Horatio Nelson (no relation), naval hero and convenience to pigeons since 1812.
+  
+> >

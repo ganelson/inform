@@ -1,0 +1,57 @@
+   Workroom
+  Low Light
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Workroom
+  You can see a desk (on which is a brilliant lamp) here.
+  
+> >   Workroom
+  (Testing.)
+  
+  >[1] look
+  Workroom
+  You can see a desk (on which is a brilliant lamp) here.
+  
+  >[2] get shadow
+  You can't see any such thing.
+  
+  >[3] turn on lamp
+  You switch the brilliant lamp on.
+  
+  >[4] look
+  Workroom
+  You can see a desk (on which are a brilliant lamp and a barely-visible shadow) here.
+  
+  >[5] get shadow
+  Taken.
+  
+  >[6] i
+  You are carrying:
+    a barely-visible shadow
+  
+  >[7] turn off lamp
+  You switch the brilliant lamp off.
+  
+  >[8] i
+  You are carrying:
+    an invisible (but tangible) shadow
+  
+  >[9] drop shadow
+  You let it go and it fades into the ambient gloom.
+  
+  >[10] look
+  Workroom
+  You can see a desk (on which is a brilliant lamp) here.
+  
+  >[11] get shadow
+  You can't see any such thing.
+  
+  >[12] turn on lamp
+  You switch the brilliant lamp on.
+  
+  >[13] look
+  Workroom
+  You can see a barely-visible shadow and a desk (on which is a brilliant lamp) here.
+  
+> >

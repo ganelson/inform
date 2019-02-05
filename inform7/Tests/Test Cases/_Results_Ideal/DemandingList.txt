@@ -1,0 +1,10 @@
+   X
+  list of action names: {taking, removing it from, taking off, dropping, putting it on, inserting it into, searching, touching, waving, pulling, pushing, turning, squeezing, eating, consulting it about, locking it with, unlocking it with, switching on, switching off, opening, closing, wearing, attacking, showing it to, throwing it at, cutting, tying it to, drinking, swinging, rubbing, setting it to}
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150617 / Inform 7 build 6M35 (I6/v6.33 lib 6/12N) SD
+  
+  X
+  
+> >   X
+> Are you sure you want to quit? 

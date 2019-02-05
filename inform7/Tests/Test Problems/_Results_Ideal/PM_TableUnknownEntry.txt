@@ -1,0 +1,15 @@
+Inform 7 build 6L83 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableUnknownEntry
+  >--> In 'Table 1 - Admirals' (source text, line 3), I'm reading the text
+    'zxcvzcvzcvz' (source text, line 5) in column 1 (admiral) of row 1, but I
+    don't know what this means. This should usually be a value, like a number
+    or a piece of text, or a blank entry marker '--', but in some circumstances
+    it can also be an action (such as 'taking the box'), or a kind (such as 'a
+    number') to show what sort of values will go into an otherwise blank row.
+Problem__ PM_TableKindlessColumn
+  >--> Column 1 (admiral) of 'Table 1 - Admirals' (source text, line 3)
+    contains no values and doesn't tell me anything about its kind.
+Inform 7 has finished: 20 centiseconds used.

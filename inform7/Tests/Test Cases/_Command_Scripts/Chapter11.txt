@@ -1,0 +1,22 @@
+e
+w
+touch door
+w
+touch vase
+look
+touch counter
+look
+take the chickent
+take the chicken
+rubber
+put the chicken in the vase
+touch the suit
+wear suit
+touch me
+undo
+look
+e
+touch florence
+take all
+w
+

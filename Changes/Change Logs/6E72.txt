@@ -1,0 +1,303 @@
+6E72 (1 Jul 2010)
+
+This minor release of Inform contains no new features, and simply corrects a
+number of bugs reported in build 6E59. We would like to thank Jesse McGrew,
+especially, for setting up the Mantis-powered bug tracker on the Inform
+website; but also, of course, all of the people who registered to use the
+tracker, and who filed reports. The case numbers below, alarmingly in seven
+digits, are references to this database at www.inform7.com/bugs.
+
+Contents:
+	1. INFORM FOR OS X
+	2. INFORM FOR WINDOWS
+	3. INFORM FOR GNOME ON LINUX
+	4. CORE INFORM MAINTENANCE
+	5. EXAMPLES
+	6. BUILT-IN EXTENSIONS
+
+
+1. INFORM FOR OS X
+
+The issue in which the Index became inaccessible after a run producing
+Problem messages has been fixed.
+
+2. INFORM FOR WINDOWS
+
+----
+
+3. INFORM FOR GNOME ON LINUX
+
+Bug fixed (0000127) whereby the documentation for installed extensions
+didn't work.
+
+Bug fixed (0000144) whereby the main window couldn't be resized
+smaller than a certain size.
+
+Bug fixed (0000145) whereby installing the program for the first time
+on a fresh Ubuntu system caused all sorts of problems.
+
+4. CORE INFORM MAINTENANCE
+
+4.1. Source text and punctuation
+
+Bug fixed (0000045) whereby phrases defined in the form "(list) ... words ...
+(list)" couldn't then be used with constant lists.
+
+Bug fixed (0000064) whereby hard line breaks typed in the middle of text
+with substitutions would cause problems.
+
+Bug fixed (0000110) whereby Inform would sometimes not allow "otherwise"
+clauses in "if" phrases whose condition ended with a digit, and whose first
+character of the succeeding phrase began with one.
+
+4.2. Headings
+
+Bug fixed (0000051) whereby heading cues for problem messages weren't very
+nicely spaced, vertically.
+
+4.3. Extensions
+
+Bug fixed (0000063) whereby installing an extension whose name contains a
+full stop would cause all kinds of unfortunate results, such as Inform refusing
+to compile projects altogether. (Full stops aren't allowed in extension names.)
+
+Bug fixed (0000098) whereby the use of sections replacing sections found in
+extensions would mask any problem messages about those extensions having the
+wrong version.
+
+Bug fixed (0000116) whereby variables in "unindexed" sections of extensions
+would nevertheless be included in extension documentation (not technically
+speaking the index; still, it must be right to exclude them).
+
+4.4. Assertions and creations
+
+Bug fixed (0000130) whereby confusions of the start location with a direction
+were reported with a cryptic problem message.
+
+Bug fixed (0000112) whereby Inform could crash if asked to define objects using
+a table, and one of the objects exists already with a different meaning.
+
+Bug fixed (0000046) whereby the compiler might go into an endless loop issuing
+problem messages in response to lines such as
+
+	There are 5 numbers in Home.
+
+Problem message reporting such errors improved.
+
+4.5. Model world
+
+Bug fixed (0000038) whereby examining enterable supporters sometimes
+produced odd text.
+
+Bug fixed (0000039) whereby a room whose name included the word "scene"
+provoked spurious problem messages.
+
+4.6. Properties
+
+Bug fixed (0000035) whereby assertions like "A tennis court has numbers called
+length and width." would make one property, called "length and width", not
+two, "length" and "width".
+
+Bug fixed (0000037) whereby "X provides the property P" wouldn't always work
+if P were a property whose name coincides with that of a kind of value.
+
+Bug fixed (0000082) whereby adjective definitions based on the value of a
+property would produce spurious problem messages if that property were
+non-arithmetic, e.g., a truth state.
+
+Bug fixed (0000117) whereby rooms not explicitly declared as such could not
+be used as values of a property required to hold only rooms.
+
+4.7. Relations
+
+Bug fixed (0000104) whereby one-to-one relations of values couldn't always
+be tested directly.
+
+Bug fixed (0000141) whereby conditions implicitly involving searches could
+not be used in definitions of relations, and produced a spurious internal
+error if they were.
+
+Bug fixed (0000043) whereby Inform was not making sensible assumptions about
+the valencies of relations when these weren't explicitly given; e.g. in
+
+	Pet ownership relates various animals to a person (called the owner).
+
+it's clear that this is various-to-one, but Inform was assuming v-to-v.
+
+Bug fixed (0000041) whereby relations defined using a named property, but
+for values not able to take properties, resulted in obscure run-time problem
+messages rather than a helpful compile-time one.
+
+Bug fixed (0000042) whereby equivalence relations of unbounded kinds, such
+as numbers, weren't working properly.
+
+Bug fixed (0000049) whereby constant names of relations couldn't be used as
+values of variables or table entries, etc., if those relations were over
+unbounded kinds.
+
+Relation memory usage slightly reduced in a few cases (see 0000059).
+
+4.8. Actions
+
+Bug fixed (0000057) whereby requesting an actor to end the story resulted in
+an "unable to do that" message.
+
+4.9. Activities
+
+4.10. Rules and rulebooks
+
+Bug fixed (0000143) whereby Inform could crash on the name of a rule which
+contained parentheses.
+
+Bug fixed (0000071) whereby phrases to invoke value-producing rulebooks didn't
+work with lists or some other complicated values.
+
+Bug fixed (0000072) whereby phrases which produce values didn't always work if
+those values were to be lists or some other complicated values.
+
+Bug fixed (0000070) whereby spurious programming errors about the "MStack"
+would appear during start-up in some cases if rulebooks had variables which
+contained lists.
+
+4.11. Lists
+
+Bug fixed (0000074) whereby constant lists were constrained to no more than
+127 entries. (The most serious bug in 6E59, and the main reason for this early
+bug-fixing re-release.)
+
+4.12. Tables
+
+Bug fixed (0000076) whereby self-referential constant lists didn't work in
+tables defining a kind of value.
+
+4.13. Scenes
+
+Bug fixed (0000075, 0000077) whereby the scene change machinery rule would
+always succeed, rather than end without result, which made it impossible to
+have rules working after it in the scene changing rulebook.
+
+4.14. Kinds and typechecking
+
+----
+
+4.15. Phrases and functional programming
+
+Bug fixed (0000033) whereby definitions such as
+
+	To say foo (X - text): ...
+
+could not then be used.
+
+Bug fixed (0000079) whereby the text substitution "[a list of ...]" would
+sometimes list the wrong things if the description included a negated relative
+clause, e.g., "a list of things in the cupboard which are not dishes".
+
+Bug fixed (0000102) whereby "Definition:"s of adjectives given in the longer,
+phrasal form would always be compiled as if they applied to objects, whatever
+the specified domain of the adjective, with usually unfortunate results.
+
+Bug fixed (0000050) whereby descriptions used as phrase tokens would sometimes
+be disallowed on grounds of their specificity, but wrongly - e.g., "all open
+doors" wouldn't be allowed as a description of things, when in fact it's fine
+as such because doors are things.
+
+Bug fixed (0000105) whereby phrase tokens which had to match specific list
+values, and possibly other complicated values, didn't work.
+
+Bug fixed (0000111) whereby phrase tokens involving relative clauses, such
+as "(X - a number that is four)", would fail.
+
+Bug fixed (0000107) whereby "if" phrases using cases would sometimes reject
+constant names of other phrases on spurious type-checking grounds, if a
+specific kind of phrase was required.
+
+Bug fixed (0000087) whereby the problem message would be rather unhelpful
+if a phrase were used to decide a value of a kind whose domain of values
+was in fact empty.
+
+Bug fixed (0000085) whereby invoking a phrase that cannot be applied
+unambiguously produced unhelpful problem messages in some cases.
+
+Bug fixed (0000099) whereby "now" could not be used to move backdrops.
+
+Bug fixed (0000083) whereby using "decide on nothing" outside of a phrase -
+clearly a mistake - produced an internal error instead of a helpful problem
+message.
+
+Bug fixed (0000032) whereby testing "if the player was on the holder of the
+player" always came true during the first turn.
+
+Bug fixed (0000033) whereby "say" phrases whose tokens included text could
+not always be used. (An unusual thing to want to do, but legal.)
+
+4.16. Equations, units and arithmetic
+
+Bug fixed (0000044) whereby Inform could sometimes crash while trying to
+produce problem messages in reply to things like
+
+	showme the square root of "hello"
+
+4.17. Understanding
+
+----
+
+4.18. Glulx issues, file I/O, figures, sounds
+
+----
+
+4.4. Spacing and printing
+
+----
+
+4.20. Indexing
+
+Bug fixed (0000054) whereby the Scenes index had various arguable deficiencies,
+and could have been laid out better; this was really a suggestion, but was
+acted on anyway.
+
+Bug fixed (0000061) whereby the Kinds index incorrectly listed which properties
+a kind typically held; and generally improved the coverage of properties on
+the Kinds index page.
+
+Bug fixed (0000068) whereby phrases with kinds including arrows would have
+boldface misused.
+
+Bug fixed (0000142) whereby the Phrasebook index subheadings would be wrong
+if indexing phrases defined in an extension, under headings in that extension
+which contained two hyphens.
+
+4.21. Testing commands
+
+----
+
+4.22. Releasing, bibliographic data, and cBlorb
+
+Bug fixed (0000040) whereby play-in-browser pages using Parchment would
+sometimes hang in Google's "Chrome" browser.
+
+Bug fixed (0000058) whereby apostrophes couldn't be used edges of words in
+the story title.
+
+Bug fixed (0000146) whereby one-page source web pages would be "page 1 of 0"
+rather than "page 1 of 1".
+
+
+5. EXAMPLES
+
+"WXPQ": Corrected the commentary portion of the example, which continued to
+refer to outdated (as of 6E59) syntax for detecting parser errors.
+
+"North by Northwest": updated to mention "Use DICT_WORD_SIZE of..." as an
+option to raise the nine-letter dictionary limit when compiling to Glulx.
+
+
+6. BUILT-IN EXTENSIONS
+
+"Plurality": updated to remove deprecated "using... option" phrases; see
+report 0000073.
+
+"Locksmith": updated to version 10 to remove deprecated "using... option"
+phrases.
+
+"Complex Listing": updated to version 7 to remove deprecated "using... option"
+phrases.

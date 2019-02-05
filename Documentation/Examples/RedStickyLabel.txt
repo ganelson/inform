@@ -1,0 +1,54 @@
+*** Parts of things
+(Red sticky label; Brown)
+A red sticky label which can be attached to anything in the game, or removed again.
+
+	{*}"Brown"
+	
+	The Shipping Room is a room. The red sticky label is a thing carried by the player. The description of the red sticky label is "It reads: AIRMAIL[if the label is part of something (called the parent)]. It is stuck to [the parent][end if]."
+
+	A black crate is in Shipping. The description is "A boring black crate."  The brown crate is a thing in Shipping. The description is "An ordinary brown crate."
+
+	After examining something when the label is part of the noun:
+		say "A bright red sticky label is attached to [the noun]!"
+	
+Here is the essential point: whenever we ATTACH LABEL TO something, it becomes part of that object.
+
+	{**}Instead of tying the red sticky label to something:
+		now the red sticky label is part of the second noun;
+		say "You stick [the label] to [the second noun]."
+	
+And of course the label cannot be stuck to itself or to more than one thing at a time.
+
+	{**}Before tying the label to something when the label is part of something:
+		if the label is part of the second noun:
+			say "[The label] is already stuck to [the second noun]." instead;
+		otherwise:
+			say "(first freeing the label)[line break]";
+			silently try taking the label;
+			if the label is part of something, stop the action.
+	
+	Instead of tying the red sticky label to the label:
+		say "That would ruin the label entirely."
+	
+	Instead of taking the label when the label is part of something: 
+		now the player carries the label;
+		say "You peel the label off again."
+
+Much of the rest is just tidying to make sure that the player's commands are redirected into the right syntax.
+	
+	{**}Instead of tying something to the label:
+		try tying the label to the noun.
+		
+	Instead of putting the label on something:
+		try tying the label to the second noun.
+		
+	Instead of inserting the label into something:
+		try tying the label to the second noun.
+	
+	Understand the commands "stick" or "apply" as "tie".
+	
+We could have created a new "sticking" action, but to keep the example short we will use the built-in "tying" action instead, and respond to the command "stick" just as if it were "tie".	
+	
+	{**}Understand "peel [something]" or "peel off [something]" as taking.
+	
+	Test me with "i / put label on the black crate / look / x black / x label / get the label / apply label to brown crate / look / x brown / peel off label / stick label to label".

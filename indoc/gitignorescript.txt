@@ -1,0 +1,10 @@
+{basics}
+
+Tests/Basic/Output/
+Tests/Full/Output/
+Tests/Full/Output-C/
+Tests/Targets/ebook-Actual/ePub/
+Tests/Targets/ebook-Actual/
+Tests/Targets/osx_app-Actual/
+Tests/Targets/plain-Actual/
+Tests/Targets/windows_app-Actual/

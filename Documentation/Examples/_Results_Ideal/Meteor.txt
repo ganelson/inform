@@ -1,0 +1,36 @@
+   Spanish Balcony
+  Meteoric I
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Spanish Balcony
+  
+> >   Swimming Pool
+  (Testing.)
+  
+  >[1] wait
+  Time passes.
+  
+  >[2] wait
+  Time passes.
+  
+  A meteor streaks across the sky.
+  
+  >[3] examine meteor
+  The meteor is no longer visible, now nothing more than a memory.
+  
+  >[4] west
+  
+  Inner Court
+  
+  >[5] examine meteor
+  The meteor is no longer visible, now nothing more than a memory.
+  
+  >[6] in
+  
+  Swimming Pool
+  
+  >[7] examine meteor
+  You can't see any such thing.
+  
+> >

@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 7 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadTemplateAtSign
+  >--> An unknown '@...' marker has been found at column 0 in raw Inform 6
+    template material: specifically, '@fish;'. ('@' has a special meaning in
+    this first column, and this might clash with its use to introduce an
+    assembly-language opcode in Inform 6: if that's a problem, you can avoid it
+    simply by putting one or more spaces or tabs in front of the opcode(s) to
+    keep them clear of the left margin.)
+Inform 7 has finished: 55 centiseconds used.

@@ -1,0 +1,52 @@
+   Square Keep
+  A Haughty Spirit
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Square Keep
+  The long window overlooks the Motte and the Bailey.
+  
+> >   Motte
+  (Testing.)
+  
+  >[1] jump through window
+  The long window would have to be opened first.
+  
+  >[2] open window
+  You open the long window.
+  
+  >[3] jump through window
+  You'd break your neck.
+  
+  >[4] d
+  
+  Winding Staircase
+  The narrow window overlooks the Bailey.
+  
+  >[5] x narrow window
+  The narrow window gives a view of the Bailey.
+  
+  >[6] open window
+  You open the narrow window.
+  
+  >[7] climb through window
+  You tumble into the Bailey.
+  
+  Bailey
+  
+  >[8] e
+  
+  Motte
+  You can see a crown and a broken sword here.
+  
+  >[9] up
+  
+  Winding Staircase
+  The narrow window overlooks the Bailey.
+  
+  >[10] down
+  
+  Motte
+  You can see a crown and a broken sword here.
+  
+> >

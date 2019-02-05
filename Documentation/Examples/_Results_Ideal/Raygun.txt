@@ -1,0 +1,34 @@
+   Deathbot Assembly Line
+  Technological Terror
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Deathbot Assembly Line
+  Here is the heart of the whole operation, where your opponents are assembled fresh from scrap metal and bits of old car.
+  
+  One dangerous robot looks ready to take you on!
+  
+> >   Deathbot Assembly Line
+  (Testing.)
+  
+  >[1] x robot
+  The dangerous robot consists of a robotic head, a drill arm, a needle arm, a crushing leg and a kicking leg.
+  
+  >[2] shoot robot
+  (with the Decomposition Ray Gun)
+  ZAP! The dangerous robot twinkles out of existence! The robotic head, the drill arm, the needle arm, the crushing leg and the kicking leg clatter to the ground!
+  
+  >[3] fire at kicking leg
+  (with the Decomposition Ray Gun)
+  ZAP! The kicking leg twinkles out of existence!
+  
+  >[4] shoot gun at drill arm
+  ZAP! The drill arm twinkles out of existence!
+  
+  >[5] look
+  Deathbot Assembly Line
+  Here is the heart of the whole operation, where your opponents are assembled fresh from scrap metal and bits of old car.
+  
+  You can see a crushing leg, a needle arm and a robotic head here.
+  
+> >

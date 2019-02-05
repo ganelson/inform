@@ -1,0 +1,74 @@
+   Back Garden
+  Frizz
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Back Garden
+  It is a beautiful day just at the end of spring and beginning of summer. The sun shines, the trees blossom, the world conspires in Edenic cheerfulness. You can take in none of it. Your eye is on the delicate, valuable copy of The Last Man - which is in the ziploc bag - which is in the pond.
+  
+> >   Stairwell
+  (Testing.)
+  
+  >[1] x book
+  Mary Shelley's very own original copy, loaned to you under the strictest of agreements. How it came to be in its present position is a long story, and not important at the moment: the critical thing is not to blame oneself - who could have anticipated the cricket bat, anyway? - but to fix it immediately, before anything worse occurs.
+  
+  >[2] x bag
+  Dry inside, and containing a delicate, valuable copy of The Last Man.
+  
+  >[3] get bag
+  (soaking your gloves in the process)
+  Taken.
+  
+  >[4] take off gloves
+  You take off the sodden pair of woolly gloves.
+  
+  >[5] w
+  
+  Kitchen
+  Not in any sense your province: Mrs Peaswell gets agitated if anyone besides herself so much as boils a kettle. In general it is best to sneak through, disturbing as little as possible and preserving the cosy domestic fiction that academics cannot cook.
+  
+  The nearby stairwell leads up to the second floor.
+  
+  >[6] u
+  
+  Stairwell
+  Halfway up and halfway down.
+  
+  An airing cupboard here contains the heating system, and is the ideal place for restoring wet items to a dry state.
+  
+  >[7] put gloves in cupboard
+  You put the sodden pair of woolly gloves into the airing cupboard.
+  
+  >[8] z
+  Time passes.
+  
+  >[9] open bag
+  You open the ziploc bag.
+  
+  >[10] touch book
+  The copy of The Last Man is too precious to endanger when you are not wearing gloves.
+  
+  >[11] push book
+  The copy of The Last Man is too precious to endanger when you are not wearing gloves.
+  
+  >[12] turn book
+  The copy of The Last Man is too precious to endanger when you are not wearing gloves.
+  
+  >[13] get gloves
+  Taken.
+  
+  >[14] wear gloves
+  You put on the pair of woolly gloves.
+  
+  >[15] get book
+  Taken.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

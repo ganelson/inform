@@ -1,0 +1,35 @@
+   Cell
+  Straw Into Gold
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cell
+  You can see a dwarf here.
+  
+> >   Cell
+  (Testing.)
+  
+  >[1] x dwarf
+  You see nothing special about the dwarf.
+  
+  >[2] x guy
+  You see nothing special about the guy.
+  
+  >[3] x dude
+  You see nothing special about the dude.
+  
+  >[4] look
+  Cell
+  You can see a dude here.
+  
+  >[5] x rumpelstiltskin
+  You see nothing special about Rumpelstiltskin.
+  
+  >[6] look
+  Cell
+  You can see Rumpelstiltskin here.
+  
+  >[7] x man
+  You see nothing special about Rumpelstiltskin.
+  
+> >

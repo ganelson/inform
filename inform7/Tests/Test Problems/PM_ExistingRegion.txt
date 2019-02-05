@@ -1,0 +1,9 @@
+Chapter 1 - Map
+
+The Valley is a room.
+
+A plain wooden table is here. On the table is a brass lamp.
+
+Chapter 2 - Regions
+
+The Plain is a Region. The valley is in the Plain.

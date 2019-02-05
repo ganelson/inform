@@ -1,0 +1,7 @@
+Laboratory is a room. The car is a vehicle.
+
+Laboratory can be red, blue or green.
+
+Depot is adjacent.
+
+Laboratory is not green.

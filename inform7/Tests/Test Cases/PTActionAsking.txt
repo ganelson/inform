@@ -1,0 +1,9 @@
+The Kitchen is a room. Will is a man in the kitchen. 
+
+Cooking is an action applying to nothing. Understand "cook dinner" as cooking.
+
+Instead of asking will to try cooking for the second time:
+	say "Are you sure you wan't to ask will to cook dinner? He did it last
+	night and he might get mad if you ask again."
+
+Test me with "will, cook dinner / g / will, cook dinner".

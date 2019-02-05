@@ -1,0 +1,11 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_number int32
+	constant MAGIC K_number = 16339
+	splat &"#iftrue MAGIC == 16339;\n"
+	constant WIZARD K_number = 5
+	splat &"#ifnot;\n"
+	constant MUGGLE K_number = 0
+	splat &"#endif;\n"

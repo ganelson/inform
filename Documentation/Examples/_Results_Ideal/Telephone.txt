@@ -1,0 +1,52 @@
+   Guard House
+  Four Cheeses
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Guard House
+  Here you spend all your nights. Bullet-proof windows offer a panoramic view of serene cliffs, palm trees, and a moonlit ocean. Occasionally someone is foolish enough to try a cliff ascent or even an attack by helicopter, but lately things have been pretty quiet.
+  
+  The mansion is up the hill behind you, security lights ablaze.
+  
+  Before you is a grey telephone. In black marker someone has written on it: MAIN OFFICE 2802.
+  
+> >   Guard House
+  (Testing.)
+  
+  >[1] call 2802
+  (on the grey telephone)
+  
+  "Yes?" asks the boss. Her voice is especially husky this evening. Maybe that night of passion isn't so far off after all.
+  
+  >[2] examine boss
+  You're not on a video phone, so you can only hear.
+  
+  >[3] ask boss about night of passion
+  "...Sorry, what?" she asks. "I wasn't listening." Oh. Maybe she'd go for some pizza, though.
+  
+  >[4] ask boss about pizza
+  "I'd love some. No pepperoni, though," she says, sounding dreamy. Yes, this is definitely time for a call to your old friend, the pizza boy.
+  
+  >[5] listen to telephone
+  You can hear the boss breathing.
+  
+  >[6] call delivery boy on telephone
+  (first ending your conversation with the boss)
+  "Hello?" says the pizza delivery boy.
+  
+  >[7] ask boy about cheese
+  "We use four kinds," says the boy, then lowers his voice confidentially. "Actually, two of them are the same. Nobody ever counts. The stringy one, the one that comes in dollops and the orangey one. You know."
+  
+  >[8] tell boy about no pepperoni
+  "Well, I don't see why you'd want that," replies the boy sniffily. "It's free!"
+  
+  >[9] ask boy about delivery
+  "Well, I don't know," says the boy in a worried voice. "Last time I came there were attack dogs. And ninjas."
+  
+  >[10] tell boy about massive gratuity
+  "There's no use in a big tip you don't live to spend," says the delivery boy quite firmly.
+  
+  >[11] attack boy
+  Though you're on the line with the pizza delivery boy, you can't physically reach to Potter's Pizza.
+  
+> >

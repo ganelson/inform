@@ -1,0 +1,560 @@
+actions
+put all in bag
+take inventory
+clark, take inventory
+i
+clark, i
+take me
+clark, take clark
+take clark
+clark, take
+me
+take steering wheel
+clark, take steering wheel
+take stick
+clark, take variety
+open cage
+enter cage
+take cage
+out
+clark, enter cage
+clark, take cage
+clark, out
+get on dais
+get dais
+out
+clark, get on dais
+clark, get dais
+clark, out
+take variety
+clark, take stick
+take the microphon
+take the microphone
+clark, take the microphone
+take the door
+clark, take the door
+take the bone
+i
+take the bone
+i
+drop bone
+clark, take the bone
+x clark
+look
+close cage
+take all from cage
+clark, take all from cage
+take bone from cage
+i
+clark, take bone from cage
+get all from clark
+clark, get all from me
+get on dais
+get all from dais
+clark, get on dais
+clark, get all from dais
+take all from dais
+clark, out
+clark, get all from dais
+get out
+clark, get all from automobile
+i
+clark, get all from bag
+get all from briefcase
+get cage
+get on chair
+get dais
+get all from dais
+get out
+g
+clark, get on chair
+look
+clark, get all from dais
+clark, get all from clark
+get all from me
+get all from cage
+open cage
+clark, get all from cage
+clark, get all from dais
+get all from dais
+get all from cage
+drop me
+clark, drop clark
+i
+look
+clark, drop boulder
+drop bould
+drop boulder
+drop scarf
+get scarf
+clark, drop hat
+clark, drop fedora
+clark, get fedora
+drop dress
+clark, drop pants
+i
+put scarf on dais
+clark, put the fedora on the dais
+get scarf
+clark, get fedora
+clark, put fedora on floor
+clark, put fedora on dais
+g
+put scarf on dais
+g
+i
+put variety on variety
+put bag on bag
+clark, put briefcase on briefcase
+clark, put briefcase on cage
+put bag on cage
+clark, get the fedora
+get scarf
+put dress on dais
+clark, put pants on dais
+put all on chair
+clark, put all on chair
+look
+clark, get up
+clark, take all from chair
+clark, put all on chair
+get in chair
+put all on chair
+look
+take all
+get up
+i
+get in cage
+put all in cage
+take all
+get out
+clark, get in cage
+clark, put all in cage
+clark, take all from cage
+clark, out
+look
+clark, put cage in briefcase
+put cage in briefcase
+put bag in bag
+clark, put briefcase in briefcase
+put strap in bag
+put my hand in the bag
+close bag
+clark, close briefcase
+put scarf in bag
+i
+put fedora in bag
+i
+look
+clark, put bone in briefcase
+put fedora into dais
+clark, put bone into dais
+open bag
+clark, open briefcase
+put scarf into briefcase
+take scarf
+put scarf into briefcase
+undo
+clark, put pants into briefcase
+put dress into bag
+open trunk
+put all in trunk
+get all from trunk
+clark, put all in trunk
+clark, get all from trunk
+wait
+clark, wait
+get in vehicle
+get in automobile
+out
+w
+get on chair
+w
+get up
+out
+clark, get on chair
+clark, w
+clark, out
+g
+n
+clark, n
+w
+clark, w
+open door
+unlock door
+key
+open door
+w
+e
+clark, w
+w
+clark, e
+e
+get in automobile
+w
+e
+clark, get in automobile
+get out
+clark, w
+w
+get in automobile
+e
+clark, w
+look
+e
+clark, push cage w
+look
+push cage e
+clark, out
+out
+clark, push cage e
+clark, push cage w
+w
+push cage e
+w
+clark, e
+e
+clark, go through door
+look
+enter door
+clark, enter door
+enter door
+clark, enter west
+clark, enter east
+enter west
+clark, west
+w
+clark, e
+east
+get on dais
+g
+clark, get on dais
+g
+clark, get in mat
+get on mat
+close cage
+get in cage
+clark, get in cage
+i
+get in bag
+get in tent
+drop tent
+look
+i
+get tent
+drop it
+clark, get tent
+clark, enter tent
+look
+out
+clark, get off
+get folding chair
+x cage
+close cage
+get in seat
+clark, get in seat
+clark, out
+out
+open cage
+get in cage
+clark, get in cage
+close cage
+out
+clark, out
+open cage
+out
+clark, out
+look
+clark, look
+x seat
+x bag
+x clipboard
+x ignition
+clark, x me
+clark, x clipboard
+clark, x ignition
+clark, x bag
+look under dais
+clark, look under dais
+search bag
+clark, search bag
+search dais
+clark, search dais
+search bone
+clark, search bone
+close bag
+search bag
+clark, search bag
+look up lawsuit in contract
+clark, look up lawsuit in contract
+get in cage
+clark, get in automobile
+clark, push cage w
+look
+clark, get out of automobile
+clark, out
+clark, push cage e
+look
+clark, lock the cage
+i
+clark, lock the cage with the briefcase
+lock cage with bag
+open bag
+get key
+lock door
+key
+close door
+lock it
+key
+g
+clark, lock door
+key
+unlock door
+key
+open door
+lock door
+key
+clark, lock the door with the key
+close door
+lock the door with the bag
+clark, lock the door with the briefcase
+lock the door
+key
+unlock door with key
+give key to clark
+undo
+drop key
+clark, take key
+clark, lock the door
+key
+open door
+unlock cage
+key
+i
+clark, drop the key
+get key
+unlock cage with key
+clark, unlock cage with key
+unlock door with key
+g
+clark, unlock door with key
+lock door with key
+unlock door with bag
+clark, unlock door with briefcase
+unlock door with key
+lock door with key
+clark, unlock door with key
+clark, lock door with key
+open door
+clark, turn on door
+turn on door
+clark, turn on ignition
+clark, switch on ignition
+x ignition
+clark, w
+w
+get out
+w
+open door
+unlock the door with the key
+open door
+clark, w
+w
+clark, turn on ignition
+g
+turn on ignition
+turn it off
+clark, turn off ignition
+clark, turn off door
+turn off ignition
+urn on ignition
+turn on ignition
+clark, turn on ignition
+clark, turn off ignition
+open automobile
+clark, open automobile
+open door
+clark, open door
+close door
+lock door
+key
+open door
+clark, open door
+open dumpster
+clark, open dumpster
+get in dumpster
+clark, get in dumpster
+close dumpster
+clark, close dumpster
+clark, open dumpster
+open dumpster
+clark, close the dumpster
+clark, open the dumpster
+open dumpster
+get flashlight
+turn on flashlight
+i
+clark, close dumpster
+g
+clark, open dumpster
+close dumpster
+open dumpster
+look
+clark, out
+out
+clark, close automobile
+close automobile
+i
+wear flashlight
+wear clark
+i
+look
+wear door
+clark, wear bone
+clark, wear door
+clark, wear pants
+wear dress
+take off scarf
+clark, take off fedora
+clark, wear fedora
+look
+clark, take fedora
+drop fedora
+i
+get fedora
+put all in bag
+get fedora
+drop it
+clark, get fedora
+clark, wear fedora
+wear scarf
+clark, eat fedora
+eat scarf
+get bracelet
+wear it
+eat it
+undo
+give bracelet to clark
+drop bracelet
+clark, take bracelet
+clark, wear bracelet
+clark, eat bracelet
+undo
+eat dress
+eat underwear
+clark, eat underwear
+eat choker
+i
+x clark
+clark, i
+search clark
+drop scarf
+clark, take the scarf
+clark, give the scarf to me
+i
+show scarf to clark
+look
+clark, show me the bone
+clark, wake up
+wake up
+clark, wake me
+i
+throw scarf at clark
+clark, throw bone at me
+clark, attack me
+attack clark
+clark, kiss me
+kiss clark
+say hi to clark
+clark, say hi to me
+ask clark about true love
+clark, ask me about our future together
+tell clark about my love for him
+clark, tell me about your boundless affection for short brunettes
+clark, you suck.
+ask clark for the bone
+clark, give me the bone
+give the bone to clark
+clark, ask me for the bone
+touch clark
+clark, touch me
+clark, you're a dreadful cold fish
+wave
+clark, wave
+wave scarf
+clark, wave the bone
+pull clark
+clark, pull me
+i
+look
+clark, pull the automobile
+pull the automobile
+clark, pull the door
+pull the door
+i
+drop the scarf
+clark, pull the scarf
+pull scarf
+push scarf
+clark, push the scarf
+clark, push me
+turn scarf
+clark, turn scarf
+turn clark
+clark, turn me
+clark, turn clark
+squeeze clark
+clark, squeeze me
+yes
+clark, yes
+no
+clark, no
+sorry
+clark, sorry
+burn scarf
+burn clark
+clark, burn the scarf
+clark, burn me 
+wake up
+clark, wake up
+think
+clark, think
+smell clark
+clark, smell me
+listen
+clark, listen
+[hm]
+clark, listen to me
+taste clark
+clark, taste me
+cut clark
+clark, cut me
+jump
+clark, jump
+tie scarf to clark
+clark, tie scarf to me
+i
+drink choker
+clark, drink choker
+swing clark
+clark, swing me
+blow
+scarf
+rub clark
+i
+clark, rub me
+i
+set bag to 1
+clark, set bag to 1
+clark, buy me
+buy clark
+climb dumpster
+clark, climb dumpster
+sleep
+clark, sleep
+clark, save
+[awesome
+clark, restore
+clark, undo
+clark, undo pants
+

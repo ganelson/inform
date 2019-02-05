@@ -1,0 +1,92 @@
+Right here is a room. 
+
+Colour is a kind of value. The colours are red, white and blue.
+
+A scene can be dull or vivid. A scene can be tiresome or fine.
+
+A scene is usually dull.
+
+Abba Concert is a scene. AC-DC Concert is a recurring scene.
+Abba Concert begins when play begins.
+
+Abba Concert is tiresome.
+
+Black Sabbath Concert is a vivid scene.
+
+The guitar is in right here. AC-DC Concert begins when the player is carrying the guitar. AC-DC Concert ends when the player is not carrying the guitar.
+
+Every turn during the AC-DC Concert: say "Twang!"
+
+A colour can be lurid or pale. A colour is usually pale. Red is lurid.
+
+A colour has a number called wavelength.
+
+The wavelength of a colour is usually 195.
+
+The wavelength of blue is 124.
+
+The box is a container with carrying capacity 7. Mauve is a colour with wavelength 316.
+
+When play begins:
+	assess the situation;
+	say "now Abba Concert is dull.";
+	now Abba Concert is dull;
+	assess the situation;
+	say "now Abba Concert is vivid.";
+	now Abba Concert is vivid;
+	assess the situation;
+	say "now AC-DC Concert is dull.";
+	now AC-DC Concert is dull;
+	assess the situation;
+	say "now AC-DC Concert is vivid.";
+	now AC-DC Concert is vivid;
+	assess the situation;
+	say "now Abba Concert is tiresome.";
+	now Abba Concert is tiresome;
+	assess the situation;
+	say "now Abba Concert is fine.";
+	now Abba Concert is fine;
+	assess the situation;
+	say "now AC-DC Concert is tiresome.";
+	now AC-DC Concert is tiresome;
+	assess the situation;
+	say "now AC-DC Concert is fine.";
+	now AC-DC Concert is fine;
+	assess the situation;
+	say "Test complete.";
+	say "now blue is lurid.";
+	now blue is lurid;
+	assess the situation;
+
+To assess (event - a scene):
+	if event is dull, say "[event] is dull.";
+	if event is not dull, say "[event] is not dull.";
+	if event is vivid, say "[event] is vivid.";
+	if event is not vivid, say "[event] is not vivid.";
+	if event is tiresome, say "[event] is tiresome.";
+	if event is not tiresome, say "[event] is not tiresome.";
+	if event is fine, say "[event] is fine.";
+	if event is not fine, say "[event] is not fine.";
+
+To assess the situation:
+	say "List of lurid colours: [list of lurid colours].";
+	say "List of pale colours: [list of pale colours].";
+	say "List of recurring scenes: [list of recurring scenes].";
+	say "List of dull scenes: [list of dull scenes].";
+	say "List of vivid scenes: [list of vivid scenes].";
+	say "List of tiresome scenes: [list of tiresome scenes].";
+	say "List of fine scenes: [list of fine scenes].";
+	assess the Abba Concert;
+	assess the AC-DC Concert;
+	say paragraph break.
+
+When play begins:
+	show wavelengths;
+	now the wavelength of blue is 21;
+	show wavelengths.
+
+To show wavelengths:
+	repeat with C running through colours:
+		say "[C] has wavelength [wavelength of C]."
+
+Test me with "z / get guitar / z / drop guitar / z / get guitar".

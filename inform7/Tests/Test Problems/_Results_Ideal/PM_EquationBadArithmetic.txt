@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 86 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationBadArithmetic
+  >--> You wrote 'Equation 1 Q = I + t where Q is an electric charge, I is an
+    electric current, t is elapsed time' (source text, line 11), but that
+    equation seems to involve adding an electric current to an elapsed time,
+    which is not good arithmetic.
+Inform 7 has finished: 19 centiseconds used.

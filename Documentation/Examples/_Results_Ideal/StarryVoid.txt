@@ -1,0 +1,36 @@
+   Center Ring
+  Starry Void
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Center Ring
+  A magician's booth stands in the corner, painted dark blue with glittering gold stars.
+  
+> >   Starry Void
+  (Testing.)
+  
+  >[1] examine booth
+  It is dark blue and glittering with gold stars. It has been firmly shut.
+  
+  >[2] open door of the booth
+  You open the magician's booth.
+  
+  >[3] in
+  
+  Starry Void
+  The door stands open to the outside.
+  
+  >[4] examine door
+  The booth door is wide open.
+  
+  >[5] close door
+  You close the magician's booth.
+  
+  >[6] look
+  Starry Void
+  A crack of light indicates the way back out to the center ring.
+  
+  >[7] examine crack of light
+  The booth door is shut, admitting only a thin crack of light.
+  
+> >

@@ -1,0 +1,43 @@
+   Your Bedroom
+  Escape
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Your Bedroom
+  You can see a bedroom window here.
+  
+> >   Your Bedroom
+  (Testing.)
+  
+  >[1] look through window
+  Through the window, you make out the Grassy Slope.
+  
+  >[2] climb through window
+  The window is shut: you'd break the glass.
+  
+  >[3] open window
+  You open the bedroom window.
+  
+  >[4] climb through window
+  
+  Grassy Slope
+  You can see a bedroom window here.
+  
+  >[5] look through window
+  Through the window, you make out Your Bedroom.
+  
+  >[6] close window
+  You close the bedroom window.
+  
+  >[7] e
+  The window is shut: you'd break the glass.
+  
+  >[8] open window
+  You open the bedroom window.
+  
+  >[9] e
+  
+  Your Bedroom
+  You can see a bedroom window here.
+  
+> >

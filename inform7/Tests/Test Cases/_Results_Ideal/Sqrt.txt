@@ -1,0 +1,23 @@
+   Testing Room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Testing Room
+  
+> >   Testing Room
+  (Testing.)
+  
+  >[1] 16383
+  16383 => 127
+  
+  >[2] 16384
+  16384 => 128
+  
+  >[3] 32767
+  32767 => 181
+  
+  >[4] 32768
+  I didn't understand that sentence.
+  
+> >

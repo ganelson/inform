@@ -1,0 +1,11 @@
+Inform 7 build 6M37 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MixedConstants
+  >--> The sentence 'Green is a colour' (source text, line 2) reads to me as if
+    'Green' refers to something I should create as brand new - a colour. But
+    that can't be right, because this is a kind of value where I can't simply
+    invent new values. (Just as the numbers are ..., 1, 2, 3, ... and I can't
+    invent a new one called 'Susan'.)
+Inform 7 has finished: 27 centiseconds used.

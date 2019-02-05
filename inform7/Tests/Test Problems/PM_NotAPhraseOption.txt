@@ -1,0 +1,8 @@
+The English-Inform Phrasebook Editorial Building is a room.
+
+To speak in tongues,
+	in French,
+	in German, or
+	in Dutch: say "You babble, heedless of tongue."
+
+When play begins: speak in tongues, in Swahili.

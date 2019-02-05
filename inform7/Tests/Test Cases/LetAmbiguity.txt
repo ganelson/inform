@@ -1,0 +1,10 @@
+[This catches a subtle case in the type-checker, where the kind of value
+of N is possible to misinterpret as a time, due to ambiguities in "after".]
+
+Home is a room. A robot is here. The robot carries a sandwich and an umbrella.
+
+When play begins:
+	let F be the first thing held by the robot;
+	say "F is [F].";
+	let N be the next thing held after F;
+	say "N is [N]."

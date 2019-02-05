@@ -1,0 +1,29 @@
+   Wine Emporium
+  Vouvray
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wine Emporium
+  Set aside, you rather suspect, for tourists: this chamber is barrel-vaulted stone, lined on each side with casks of aging wine. Discarded brochures here and there advertise Wine Tours of the Loire Valley in three different languages, none of them French.
+  
+  You can see a Vouvray cask and a Muscadet cask here.
+  
+> >   Wine Emporium
+  (Testing.)
+  
+  >[1] get barrels
+  What do you want to get those things from?
+  
+  >[2] get barrel
+  Which do you mean, the Vouvray cask or the Muscadet cask?
+  
+  >[3] muscadet
+  That's fixed in place.
+  
+  >[4] x casks
+  You can't use multiple objects with that verb.
+  
+  >[5] x muscadet cask
+  You see nothing special about the Muscadet cask.
+  
+> >

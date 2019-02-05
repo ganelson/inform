@@ -1,0 +1,369 @@
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+
+Outer Solar System
+
+>(Testing.)
+
+>[1] all
+Complete test set.
+test 1: matching a(?:b|c|d){6,7}(.) in acdbcdbe case sensitive --> <11> acdbcdbe
+test 2: matching a(?:b|c|d){6,7}?(.) in acdbcdbe case sensitive --> <6> acdbcdbe
+test 3: matching a(?:b|c|d){5,6}(.) in acdbcdbe case sensitive --> <6> acdbcdbe
+test 4: matching a(?:b|c|d){5,6}?(.) in acdbcdbe case sensitive --> <6> acdbcdb
+test 5: matching a(?:b|c|d){5,7}(.) in acdbcdbe case sensitive --> <11> acdbcdbe
+test 6: matching a(?:b|c|d){5,7}?(.) in acdbcdbe case sensitive --> <6> acdbcdb
+test 7: matching a(?:b|(c|e){1,2}?|d)+?(.) in ace case sensitive --> <1> ace
+test 8: matching ^(.+)?B in AB case sensitive --> <2> AB
+test 9: matching ^(<^a-z>)|(\^)$ in . case sensitive --> <0> .
+test 10: matching ^(a\1?){4}$ in aaaaaaaaaa case sensitive --> <1> aaaaaaaaaa
+test 11: matching ^(a\1?){4}$ in aaaaaaaaa case sensitive --> <4> --
+test 12: matching ^(a\1?){4}$ in aaaaaaaaaaa case sensitive --> <4> --
+test 13: matching ^(a(?(1)\1)){4}$ in aaaaaaaaaa case sensitive --> <0> aaaaaaaaaa
+test 14: matching ^(a(?(1)\1)){4}$ in aaaaaaaaa case sensitive --> <5> --
+test 15: matching ^(a(?(1)\1)){4}$ in aaaaaaaaaaa case sensitive --> <2> --
+test 16: matching ((a{4})+) in aaaaaaaaa case sensitive --> <3> aaaaaaaa
+test 17: matching (((aa){2})+) in aaaaaaaaaa case sensitive --> <4> aaaaaaaa
+test 18: matching (((a{2}){2})+) in aaaaaaaaaa case sensitive --> <5> aaaaaaaa
+test 19: matching (?:(f)(o)(o)|(b)(a)(r))* in foobar case sensitive --> <8> foobar
+test 20: matching (?<=a)b in ab case sensitive --> <0> b
+test 21: matching (?<=a)b in cb case sensitive --> <3> --
+test 22: matching (?<=a)b in b case sensitive --> <3> --
+test 23: matching (?<!c)b in ab case sensitive --> <1> b
+test 24: matching (?<!c)b in cb case sensitive --> <3> --
+test 25: matching (?<!c)b in b case sensitive --> <0> b
+test 26: matching (?<!c)b in b case sensitive --> <0> b
+test 27: compiling (?<%)b to error Sequence (?<%...) not recognized --> *** Regular expression error: unknown (?...) form ***
+
+*** Run-time problem P51: Syntax error in regular expression.
+
+test 28: matching (?:..)*a in aba case sensitive --> <2> aba
+test 29: matching (?:..)*?a in aba case sensitive --> <0> a
+test 30: matching ^(?:b|a(?=(.)))*\1 in abc case sensitive --> <7> ab
+test 31: matching ^(){3,5} in abc case sensitive --> <0> 
+test 32: matching ^(a+)*ax in aax case sensitive --> <11> aax
+test 33: matching ^((a|b)+)*ax in aax case sensitive --> <23> aax
+test 34: matching ^((a|bc)+)*ax in aax case sensitive --> <23> aax
+test 35: matching (a|x)*ab in cab case sensitive --> <5> ab
+test 36: matching (a)*ab in cab case sensitive --> <3> ab
+test 37: matching (?:(?i)a)b in ab case sensitive --> <0> ab
+test 38: matching ((?i)a)b in ab case sensitive --> <0> ab
+test 39: matching (?:(?i)a)b in Ab case sensitive --> <0> Ab
+test 40: matching ((?i)a)b in Ab case sensitive --> <0> Ab
+test 41: matching (?:(?i)a)b in aB case sensitive --> <3> --
+test 42: matching ((?i)a)b in aB case sensitive --> <3> --
+test 43: matching (?i:a)b in ab case sensitive --> <0> ab
+test 44: matching ((?i:a))b in ab case sensitive --> <0> ab
+test 45: matching (?i:a)b in Ab case sensitive --> <0> Ab
+test 46: matching ((?i:a))b in Ab case sensitive --> <0> Ab
+test 47: matching (?i:a)b in aB case sensitive --> <3> --
+test 48: matching ((?i:a))b in aB case sensitive --> <4> --
+test 49: matching (?:(?-i)a)b in ab case insensitive --> <0> ab
+test 50: matching ((?-i)a)b in ab case insensitive --> <0> ab
+test 51: matching (?:(?-i)a)b in aB case insensitive --> <0> aB
+test 52: matching ((?-i)a)b in aB case insensitive --> <0> aB
+test 53: matching (?:(?-i)a)b in Ab case insensitive --> <3> --
+test 54: matching ((?-i)a)b in Ab case insensitive --> <3> --
+test 55: matching (?:(?-i)a)b in aB case insensitive --> <0> aB
+test 56: matching ((?-i)a)b in aB case insensitive --> <0> aB
+test 57: matching (?:(?-i)a)b in AB case insensitive --> <3> --
+test 58: matching ((?-i)a)b in AB case insensitive --> <3> --
+test 59: matching (?-i:a)b in ab case insensitive --> <0> ab
+test 60: matching ((?-i:a))b in ab case insensitive --> <0> ab
+test 61: matching (?-i:a)b in aB case insensitive --> <0> aB
+test 62: matching ((?-i:a))b in aB case insensitive --> <0> aB
+test 63: matching (?-i:a)b in Ab case insensitive --> <3> --
+test 64: matching ((?-i:a))b in Ab case insensitive --> <4> --
+test 65: matching (?-i:a)b in aB case insensitive --> <0> aB
+test 66: matching ((?-i:a))b in aB case insensitive --> <0> aB
+test 67: matching (?-i:a)b in AB case insensitive --> <3> --
+test 68: matching ((?-i:a))b in AB case insensitive --> <4> --
+test 69: matching (?:c|d)(?:)(?:a(?:)(?:b)(?:b(?:))(?:b(?:)(?:b))) in cabbbb case sensitive --> <0> cabbbb
+test 70: matching (?:c|d)(?:)(?:aaaaaaaa(?:)(?:bbbbbbbb)(?:bbbbbbbb(?:))(?:bbbbbbbb(?:)(?:bbbbbbbb))) in caaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb case sensitive --> <0> caaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+test 71: matching (ab)\d\1 in Ab4ab case insensitive --> <0> Ab4ab
+test 72: matching (ab)\d\1 in ab4Ab case insensitive --> <0> ab4Ab
+test 73: matching foo\w*\d{4}baz in foobar1234baz case sensitive --> <15> foobar1234baz
+test 74: matching x(~~)*(?:(?:F)?)? in x~~ case sensitive --> <4> x~~
+test 75: matching ^a(?#xxx){3}c in aaac case sensitive --> <0> aaac
+test 76: matching (?<!<cd>)b in dbcb case sensitive --> <3> --
+test 77: matching (?<!<cd>)<ab> in dbaacb case sensitive --> <1> a
+test 78: matching (?<!(c|d))b in dbcb case sensitive --> <6> --
+test 79: matching (?<!(c|d))<ab> in dbaacb case sensitive --> <4> a
+test 80: matching (?<!cd)<ab> in cdaccb case sensitive --> <1> b
+test 81: matching ^(?:a?b?)*$ in a-- case sensitive --> <10> --
+test 82: matching (?(1)a|b) in a case sensitive --> <3> --
+test 83: matching (?(1)b|a) in a case sensitive --> <0> a
+test 84: matching (x)?(?(1)a|b) in a case sensitive --> <5> --
+test 85: matching (x)?(?(1)b|a) in a case sensitive --> <2> a
+test 86: matching ()?(?(1)b|a) in a case sensitive --> <2> a
+test 87: matching ()(?(1)b|a) in a case sensitive --> <3> --
+test 88: matching ()?(?(1)a|b) in a case sensitive --> <0> a
+test 89: matching ^(\()?blah(?(1)(\)))$ in (blah) case sensitive --> <0> (blah)
+test 90: matching ^(\()?blah(?(1)(\)))$ in blah case sensitive --> <2> blah
+test 91: matching ^(\()?blah(?(1)(\)))$ in blah) case sensitive --> <4> --
+test 92: matching ^(\()?blah(?(1)(\)))$ in (blah case sensitive --> <5> --
+test 93: matching ^(\(+)?blah(?(1)(\)))$ in (blah) case sensitive --> <1> (blah)
+test 94: matching ^(\(+)?blah(?(1)(\)))$ in blah case sensitive --> <3> blah
+test 95: matching ^(\(+)?blah(?(1)(\)))$ in blah) case sensitive --> <5> --
+test 96: matching ^(\(+)?blah(?(1)(\)))$ in (blah case sensitive --> <6> --
+test 97: compiling (?(1?)a|b) to error Switch condition not recognized --> *** Regular expression error: condition not lookahead/behind ***
+test 98: compiling (?(1)a|b|c) to error Switch (?(condition)... contains too many branches --> *** Regular expression error: conditional has too many clauses ***
+test 99: matching (?(?!a)a|b) in a case sensitive --> <4> --
+test 100: matching (?(?!a)b|a) in a case sensitive --> <1> a
+test 101: matching (?(?=a)b|a) in a case sensitive --> <5> --
+test 102: matching (?(?=a)a|b) in a case sensitive --> <0> a
+test 103: matching (?=(a+?))(\1ab) in aaab case sensitive --> <0> aab
+test 104: matching ^(?=(a+?))\1ab in aaab case sensitive --> <2> --
+test 105: matching (\w+:)+ in one: case sensitive --> <4> one:
+test 106: matching $(?<=^(a)) in a case sensitive --> <0> 
+test 107: matching (?=(a+?))(\1ab) in aaab case sensitive --> <0> aab
+test 108: matching ^(?=(a+?))\1ab in aaab case sensitive --> <2> --
+test 109: matching (<\w:>+::)?(\w+)$ in abcd: case sensitive --> <7> --
+test 110: matching (<\w:>+::)?(\w+)$ in abcd case sensitive --> <7> abcd
+test 111: matching (<\w:>+::)?(\w+)$ in xy:z:::abcd case sensitive --> <8> xy:z:::abcd
+test 112: matching ^<^bcd>*(c+) in aexycd case sensitive --> <2> aexyc
+test 113: matching (a*)b+ in caab case sensitive --> <2> aab
+test 114: matching (<\w:>+::)?(\w+)$ in abcd: case sensitive --> <7> --
+test 115: matching (<\w:>+::)?(\w+)$ in abcd case sensitive --> <7> abcd
+test 116: matching (<\w:>+::)?(\w+)$ in xy:z:::abcd case sensitive --> <8> xy:z:::abcd
+test 117: matching ^<^bcd>*(c+) in aexycd case sensitive --> <2> aexyc
+test 118: matching (>a+)ab in aaab case sensitive --> <3> --
+test 119: matching (?>a+)b in aaab case sensitive --> <1> aaab
+test 120: matching (<<:>+) in a:<b>: case sensitive --> <1> :<
+test 121: matching (<<=>+) in a=<b>= case sensitive --> <1> =<
+test 122: matching (<<.>+) in a.<b>. case sensitive --> <1> .<
+test 123: compiling <a<:xyz: to error Unmatched < --> *** Regular expression error: Character range never ends ***
+test 124: matching <a<:>b<:c> in abc case sensitive --> <0> abc
+test 125: matching <a<:>b<:c> in abc case sensitive --> <0> abc
+test 126: matching ((?>a+)b) in aaab case sensitive --> <1> aaab
+test 127: matching (?>(a+))b in aaab case sensitive --> <1> aaab
+test 128: matching ((?><^()>+)|\(<^()>*\))+ in ((abc(ade)ufh()()x case sensitive --> <21> abc(ade)ufh()()x
+test 129: compiling (?<=x+)y to error Variable length lookbehind not implemented --> *** Regular expression error: variable length lookbehind not implemented ***
+test 130: compiling a{37,17} to error Can't do {n,m} with n > m --> *** Regular expression error: {x,y} with x greater than y ***
+test 131: matching (^|x)(c) in ca case sensitive --> <0> c
+test 132: matching a*abc?xyz+pqr{3}ab{2,}xy{4,5}pq{0,6}AB{0,}zz in x case sensitive --> <3> --
+test 133: matching round\(((?><^()>+))\) in _I(round(xs * sz),1) case sensitive --> <1> round(xs * sz)
+test 134: matching foo.bart in foo.bart case sensitive --> <0> foo.bart
+test 135: matching .X(.+)+X in bbbbXcXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <43> bXcX
+test 136: matching .X(.+)+XX in bbbbXcXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <44> bXcXX
+test 137: matching .XX(.+)+X in bbbbXXcXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <43> bXXcX
+test 138: matching .X(.+)+X in bbbbXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 139: matching .X(.+)+XX in bbbbXXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 140: matching .XX(.+)+X in bbbbXXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 141: matching .X(.+)+<X> in bbbbXcXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <43> bXcX
+test 142: matching .X(.+)+<X><X> in bbbbXcXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <44> bXcXX
+test 143: matching .XX(.+)+<X> in bbbbXXcXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <43> bXXcX
+test 144: matching .X(.+)+<X> in bbbbXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 145: matching .X(.+)+<X><X> in bbbbXXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 146: matching .XX(.+)+<X> in bbbbXXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 147: matching .<X>(.+)+<X> in bbbbXcXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <43> bXcX
+test 148: matching .<X>(.+)+<X><X> in bbbbXcXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <44> bXcXX
+test 149: matching .<X><X>(.+)+<X> in bbbbXXcXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <43> bXXcX
+test 150: matching .<X>(.+)+<X> in bbbbXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 151: matching .<X>(.+)+<X><X> in bbbbXXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 152: matching .<X><X>(.+)+<X> in bbbbXXXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa case sensitive --> <2> --
+test 153: matching tt+$ in xxxtt case sensitive --> <1> tt
+test 154: matching (\d+\.\d+) in 3.1415926 case sensitive --> <2> 3.1415926
+test 155: matching (\ba.{0,10}br) in have a web browser case sensitive --> <5> a web br
+test 156: matching \.c(pp|xx|c)?$ in Changes case insensitive --> <2> --
+test 157: matching \.c(pp|xx|c)?$ in IO.c case insensitive --> <5> .c
+test 158: matching (\.c(pp|xx|c)?$) in IO.c case insensitive --> <5> .c
+test 159: matching ^(<a-z>:) in C:/ case sensitive --> <3> --
+test 160: matching (^|a)b in ab case sensitive --> <1> ab
+test 161: matching ^(<ab>*?)(b)?(c)$ in abac case sensitive --> <10> abac
+test 162: matching (\w)?(abc)\1b in abcab case sensitive --> <5> --
+test 163: matching ^(?:.,){2}c in a,b,c case sensitive --> <0> a,b,c
+test 164: matching ^(.,){2}c in a,b,c case sensitive --> <0> a,b,c
+test 165: matching ^(?:<^,>*,){2}c in a,b,c case sensitive --> <2> a,b,c
+test 166: matching ^(<^,>*,){2}c in a,b,c case sensitive --> <2> a,b,c
+test 167: matching ^(<^,>*,){3}d in aaa,b,c,d case sensitive --> <3> aaa,b,c,d
+test 168: matching ^(<^,>*,){3,}d in aaa,b,c,d case sensitive --> <7> aaa,b,c,d
+test 169: matching ^(<^,>*,){0,3}d in aaa,b,c,d case sensitive --> <3> aaa,b,c,d
+test 170: matching ^(<^,>{1,3},){3}d in aaa,b,c,d case sensitive --> <2> aaa,b,c,d
+test 171: matching ^(<^,>{1,3},){3,}d in aaa,b,c,d case sensitive --> <5> aaa,b,c,d
+test 172: matching ^(<^,>{1,3},){0,3}d in aaa,b,c,d case sensitive --> <2> aaa,b,c,d
+test 173: matching ^(<^,>{1,},){3}d in aaa,b,c,d case sensitive --> <3> aaa,b,c,d
+test 174: matching ^(<^,>{1,},){3,}d in aaa,b,c,d case sensitive --> <6> aaa,b,c,d
+test 175: matching ^(<^,>{1,},){0,3}d in aaa,b,c,d case sensitive --> <3> aaa,b,c,d
+test 176: matching ^(<^,>{0,3},){3}d in aaa,b,c,d case sensitive --> <2> aaa,b,c,d
+test 177: matching ^(<^,>{0,3},){3,}d in aaa,b,c,d case sensitive --> <6> aaa,b,c,d
+test 178: matching ^(<^,>{0,3},){0,3}d in aaa,b,c,d case sensitive --> <2> aaa,b,c,d
+test 179: matching (?i) in  case sensitive --> <0> 
+test 180: matching ^(a(b)?)+$ in aba case sensitive --> <4> aba
+test 181: matching ^(aa(bb)?)+$ in aabbaa case sensitive --> <4> aabbaa
+test 182: matching ^(a)?a$ in a case sensitive --> <1> a
+test 183: matching ^(a)?(?(1)a|b)+$ in a case sensitive --> <7> --
+test 184: matching ^(a\1?)(a\1?)(a\2?)(a\3?)$ in aaaaaa case sensitive --> <3> aaaaaa
+test 185: matching ^(a\1?){4}$ in aaaaaa case sensitive --> <6> --
+FAILED - should have had result of $1 equal to aa
+test 186: matching ^(0+)?(?:x(1))? in x1 case sensitive --> <3> x1
+test 187: matching ^(<0-9a-fA-F>+)(?:x(<0-9a-fA-F>+)?)(?:x(<0-9a-fA-F>+))? in 012cxx0190 case sensitive --> <5> 012cxx0190
+test 188: matching ^(b+?|a){1,2}c in bbbac case sensitive --> <9> bbbac
+test 189: matching ^(b+?|a){1,2}c in bbbbac case sensitive --> <10> bbbbac
+test 190: matching \((\w\. \w+)\) in cd. (A. Tw) case sensitive --> <1> (A. Tw)
+test 191: matching ((?:aaaa|bbbb)cccc)? in aaaacccc case sensitive --> <0> aaaacccc
+test 192: matching ((?:aaaa|bbbb)cccc)? in bbbbcccc case sensitive --> <1> bbbbcccc
+test 193: matching (a)?(a)+ in a case sensitive --> <5> a
+test 194: matching (ab)?(ab)+ in ab case sensitive --> <5> ab
+test 195: matching (abc)?(abc)+ in abc case sensitive --> <5> abc
+test 196: matching \ba in a case sensitive --> <0> a
+test 197: matching ab(?i)cd in AbCd case sensitive --> <2> --
+test 198: matching ab(?i)cd in abCd case sensitive --> <0> abCd
+test 199: matching (A|B)*(?(1)(CD)|(CD)) in CD case sensitive --> <4> CD
+test 200: matching (A|B)*(?(1)(CD)|(CD)) in ABCD case sensitive --> <5> ABCD
+test 201: matching (A|B)*?(?(1)(CD)|(CD)) in CD case sensitive --> <0> CD
+test 202: matching (A|B)*?(?(1)(CD)|(CD)) in ABCD case sensitive --> <4> BCD
+test 203: matching ^(o)(?!.*\1) in Oo case insensitive --> <4> --
+test 204: matching (.*)\d+\1 in abc12bc case sensitive --> <10> bc12bc
+test 205: matching (.*)c in abcd case sensitive --> <3> abc
+test 206: matching (.*)(?=c) in abcd case sensitive --> <5> ab
+test 207: matching (.*)(?=b|c) in abcd case sensitive --> <10> ab
+test 208: matching (.*)(?=b|c)c in abcd case sensitive --> <10> abc
+test 209: matching (.*)(?=c|b) in abcd case sensitive --> <9> ab
+test 210: matching (.*)(?=c|b)c in abcd case sensitive --> <9> abc
+test 211: matching (.*)(?=<bc>) in abcd case sensitive --> <5> ab
+test 212: matching (.*)(?<=b) in abcd case sensitive --> <5> ab
+test 213: matching (.*)(?<=b)c in abcd case sensitive --> <5> abc
+test 214: matching (.*)(?<=b|c) in abcd case sensitive --> <6> abc
+test 215: matching (.*)(?<=b|c)c in abcd case sensitive --> <7> abc
+test 216: matching (.*)(?<=c|b) in abcd case sensitive --> <5> abc
+test 217: matching (.*)(?<=c|b)c in abcd case sensitive --> <7> abc
+test 218: matching (.*)(?<=<bc>) in abcd case sensitive --> <3> abc
+test 219: matching (.*)(?<=<bc>)c in abcd case sensitive --> <4> abc
+test 220: matching (.*?)c in abcd case sensitive --> <2> abc
+test 221: matching (.*?)(?=c) in abcd case sensitive --> <4> ab
+test 222: matching (.*?)(?=b|c) in abcd case sensitive --> <4> a
+test 223: matching (.*?)(?=b|c)c in abcd case sensitive --> <6> abc
+test 224: matching (.*?)(?=c|b) in abcd case sensitive --> <5> a
+test 225: matching (.*?)(?=c|b)c in abcd case sensitive --> <6> abc
+test 226: matching (.*?)(?=<bc>) in abcd case sensitive --> <2> a
+test 227: matching (.*?)(?<=b) in abcd case sensitive --> <3> ab
+test 228: matching (.*?)(?<=b)c in abcd case sensitive --> <3> abc
+test 229: matching (.*?)(?<=b|c) in abcd case sensitive --> <5> ab
+test 230: matching (.*?)(?<=b|c)c in abcd case sensitive --> <5> abc
+test 231: matching (.*?)(?<=c|b) in abcd case sensitive --> <6> ab
+test 232: matching (.*?)(?<=c|b)c in abcd case sensitive --> <6> abc
+test 233: matching (.*?)(?<=<bc>) in abcd case sensitive --> <3> ab
+test 234: matching (.*?)(?<=<bc>)c in abcd case sensitive --> <3> abc
+test 235: matching 2(>*)?$\1 in 2 case sensitive --> <1> 2
+test 236: matching a(b)?? in abc case sensitive --> <0> a
+test 237: matching (\d{1,3}\.){3,} in 128.134.142.8 case sensitive --> <3> 128.134.142.
+test 238: matching .*a(?!(b|cd)*e).*f in ......abef case sensitive --> <3> --
+test 239: compiling x(?# to error Sequence (?#... not terminated --> *** Regular expression error: comment never ends ***
+test 240: compiling :x(?#: to error Sequence (?#... not terminated --> *** Regular expression error: comment never ends ***
+test 241: matching (WORDS|WORD)S in WORDS case sensitive --> <1> WORDS
+test 242: matching (X.|WORDS|X.|WORD)S in WORDS case sensitive --> <4> WORDS
+test 243: matching (WORDS|WORLD|WORD)S in WORDS case sensitive --> <2> WORDS
+test 244: matching (X.|WORDS|WORD|Y.)S in WORDS case sensitive --> <3> WORDS
+test 245: matching (foo|fool|x.|money|parted)$ in fool case sensitive --> <1> fool
+test 246: matching (x.|foo|fool|x.|money|parted|y.)$ in fool case sensitive --> <3> fool
+test 247: matching (foo|fool|money|parted)$ in fool case sensitive --> <1> fool
+test 248: matching (foo|fool|x.|money|parted)$ in fools case sensitive --> <8> --
+test 249: matching (x.|foo|fool|x.|money|parted|y.)$ in fools case sensitive --> <10> --
+test 250: matching (foo|fool|money|parted)$ in fools case sensitive --> <7> --
+test 251: matching (a|aa|aaa|aaaa|aaaaa|aaaaaa)(b|c) in aaaaaaaaaaaaaaab case sensitive --> <20> aaaaaab
+test 252: matching ^(a*?)(?!(aa|aaaa)*$) in aaaaaaaaaaaaaaaaaaaa case sensitive --> <22> a
+test 253: matching ^(.)\s+.$(?(1)) in A B case sensitive --> <1> A B
+test 254: matching fish|fowl in fish case sensitive --> <0> fish
+test 255: matching fish|fowl in fowl case sensitive --> <1> fowl
+test 256: matching fish|fowl in more fish case sensitive --> <5> --
+test 257: matching fish|fowl in fowler case sensitive --> <3> --
+test 258: matching fish|fowl in duck soup case sensitive --> <5> --
+test 259: matching a.*a in algebra case sensitive --> <2> algebra
+test 260: matching a.*a in antonine case sensitive --> <11> --
+test 261: matching 0|-?<1-9><0-9>* in -3045 case sensitive --> <2> -3045
+test 262: matching 0|-?<1-9><0-9>* in -045 case sensitive --> <6> --
+test 263: matching 0|-?<1-9><0-9>* in 007 case sensitive --> <6> --
+test 264: matching 0|-?<1-9><0-9>* in 21 case sensitive --> <3> 21
+test 265: matching 0|-?<1-9><0-9>* in 0 case sensitive --> <0> 0
+test 266: matching 0|-?<1-9><0-9>* in fishslice case sensitive --> <6> --
+test 267: replacing a in abacus with "!" case sensitive --> <2> !b!cus
+test 268: replacing bac in abacus with "!" case sensitive --> <2> a!us
+test 269: replacing ac in abacus with "!" case sensitive --> <2> ab!us
+test 270: replacing baz in abacus with "!" case sensitive --> <2> abacus
+test 271: replacing bau in abacus with "!" case sensitive --> <2> abacus
+test 272: replacing bas in abacus with "!" case sensitive --> <2> abacus
+test 273: replacing bauz in abacus with "!" case sensitive --> <2> abacus
+test 274: replacing baus in abacus with "!" case sensitive --> <2> abacus
+test 275: replacing abacus in abacus with "!" case sensitive --> <2> !
+test 276: replacing abacust in abacus with "!" case sensitive --> <2> abacus
+test 277: replacing b in abbababa with "!" case sensitive --> <2> a!!a!a!a
+test 278: replacing bogus in  with "!" case sensitive --> <2> 
+test 279: replacing  in bogus with "!" case sensitive --> <1> bogus
+test 280: replacing  in  with "!" case sensitive --> <1> 
+test 281: replacing $ in sausages with "!" case sensitive --> <0> sausages!
+test 282: replacing s$ in sausages with "!" case sensitive --> <2> sausage!
+test 283: replacing e$ in sausages with "!" case sensitive --> <2> sausages
+test 284: replacing x$ in sausages with "!" case sensitive --> <2> sausages
+test 285: replacing ^ in abacus with "!" case sensitive --> <0> !abacus
+test 286: replacing ^a in abacus with "!" case sensitive --> <0> !bacus
+test 287: replacing ^ac in abacus with "!" case sensitive --> <2> abacus
+test 288: replacing ^b in abacus with "!" case sensitive --> <2> abacus
+test 289: replacing a. in abacus with "!" case sensitive --> <2> !!us
+test 290: replacing a<bc> in abacus with "!" case sensitive --> <2> !!us
+test 291: replacing <abc> in abacus with "!" case sensitive --> <2> !!!!us
+test 292: replacing <ae-m> in jackdaws love my big sphinx of quartz with "!" case sensitive --> <2> !!c!d!ws !ov! !y b!! sp!!nx o! qu!rtz
+test 293: replacing <^abc> in abacus with "!" case sensitive --> <2> abac!!
+test 294: replacing \d in 14 October, 1391. with "!" case sensitive --> <2> !! October, !!!!.
+test 295: replacing \s in 14 October, 1391. with "!" case sensitive --> <2> 14!October,!1391.
+test 296: replacing \S in 14 October, 1391. with "!" case sensitive --> <2> !! !!!!!!!! !!!!!
+test 297: replacing b..gb..g in of bingbangbangbong type with "!" case sensitive --> <2> of !! type
+test 298: replacing (b..g)\1 in of bingbangbangbong type with "!" case sensitive --> <3> of bing!bong type
+test 299: replacing b+ in abba with "!" case sensitive --> <3> a!a
+test 300: replacing b* in abba with "!" case sensitive --> <1> !a!!a!
+test 301: replacing b*b in abba with "!" case sensitive --> <3> a!a
+test 302: replacing b+b in abba with "!" case sensitive --> <3> a!a
+test 303: replacing b+bb in abba with "!" case sensitive --> <3> abba
+test 304: replacing b{2,3} in abbabbbabbbba with "!" case sensitive --> <3> a!a!a!ba
+test 305: replacing b{3} in abbabbbabbbba with "!" case sensitive --> <3> abba!a!ba
+test 306: replacing b{3,} in abbabbbabbbba with "!" case sensitive --> <3> abba!a!a
+test 307: replacing b?bb in abba with "!" case sensitive --> <3> a!a
+test 308: replacing .*b in abba with "!" case sensitive --> <3> !a
+test 309: replacing (.*)b in abba with "!" case sensitive --> <3> !a
+test 310: replacing .+b in abba with "!" case sensitive --> <3> !a
+test 311: replacing .+?b in abba with "!" case sensitive --> <2> !ba
+test 312: replacing ab? in abecedary with "!" case sensitive --> <2> !eced!ry
+test 313: replacing <abc>+ in abacus with "!" case sensitive --> <3> !us
+test 314: replacing <^abc>* in abacus with "!" case sensitive --> <1> !a!b!a!c!!
+test 315: replacing b* in  with "!" case sensitive --> <1> !
+test 316: replacing fish|fowl in neither fish nor fowl with "!" case sensitive --> <4> neither ! nor !
+test 317: replacing fish|fowl|the in neither fish nor fowl with "!" case sensitive --> <5> nei!r ! nor !
+test 318: replacing (fi|sh) in finally fish nor fowl with "!" case sensitive --> <5> !nally !! nor fowl
+test 319: replacing (fi|sh)+ in finally fish nor fowl with "!" case sensitive --> <6> !nally ! nor fowl
+test 320: replacing (b|bc)d in abcdefg with "!" case sensitive --> <5> a!efg
+test 321: replacing (b|bc|bcd) in abcdefg with "!" case sensitive --> <6> a!cdefg
+test 322: replacing (b|bc|bcd)e in abcdefg with "!" case sensitive --> <6> a!fg
+test 323: replacing (\s|f.*l)+ in neither fish nor fowl with "!" case sensitive --> <6> neither!
+test 324: replacing (?=abacus)ab in an abacus, an abcess, a gabby abacusmaster with "!" case sensitive --> <3> an !acus, an abcess, a gabby !acusmaster
+test 325: replacing (?!abacus)ab in an abacus, an abcess, a gabby abacusmaster with "!" case sensitive --> <3> an abacus, an !cess, a g!by abacusmaster
+test 326: replacing (?=\babacus)ab in an abacus, a drabacus, an abcess, a gabby abacusmaster with "!" case sensitive --> <3> an !acus, a drabacus, an abcess, a gabby !acusmaster
+test 327: replacing (?=\babacus\b)ab in an abacus, a drabacus, an abcess, a gabby abacusmaster with "!" case sensitive --> <3> an !acus, a drabacus, an abcess, a gabby abacusmaster
+test 328: replacing a in abacus with "!" case sensitive --> <2> !b!cus
+test 329: replacing bac in abacus with "!" case sensitive --> <2> a!us
+test 330: replacing ac in abacus with "!" case sensitive --> <2> ab!us
+test 331: replacing baz in abacus with "!" case sensitive --> <2> abacus
+test 332: replacing bau in abacus with "!" case sensitive --> <2> abacus
+test 333: replacing bas in abacus with "!" case sensitive --> <2> abacus
+test 334: replacing bauz in abacus with "!" case sensitive --> <2> abacus
+test 335: replacing baus in abacus with "!" case sensitive --> <2> abacus
+test 336: replacing abacus in abacus with "!" case sensitive --> <2> !
+test 337: replacing abacust in abacus with "!" case sensitive --> <2> abacus
+test 338: replacing b in abbababa with "!" case sensitive --> <2> a!!a!a!a
+test 339: replacing a in abacus with "!" case sensitive --> <2> !b!cus
+test 340: replacing bac in abacus with "!" case sensitive --> <2> a!us
+test 341: replacing ac in abacus with "!" case sensitive --> <2> ab!us
+test 342: replacing baz in abacus with "!" case sensitive --> <2> abacus
+test 343: replacing bau in abacus with "!" case sensitive --> <2> abacus
+test 344: replacing bas in abacus with "!" case sensitive --> <2> abacus
+test 345: replacing bauz in abacus with "!" case sensitive --> <2> abacus
+test 346: replacing baus in abacus with "!" case sensitive --> <2> abacus
+test 347: replacing abacus in abacus with "!" case sensitive --> <2> !
+test 348: replacing abacust in abacus with "!" case sensitive --> <2> abacus
+test 349: replacing b in abbababa with "!" case sensitive --> <2> a!!a!a!a
+Batch complete.
+
+>Are you sure you want to quit? 

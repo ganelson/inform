@@ -1,0 +1,58 @@
+   Reliquary
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Reliquary
+  You can see a wooden door and a ghost here.
+  
+> >   Crypt
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  The ghost can touch the wooden door.
+  
+  >[3] in
+  [going inside]
+  (first opening the wooden door)
+  [(1) opening the wooden door - silently]
+  [(1) opening the wooden door - silently - succeeded]
+  
+  Crypt
+  You can see a wooden door here.
+  
+  [going inside - succeeded]
+  
+  The ghost can touch the wooden door.
+  
+  >[4] n
+  [going north]
+  [(1) the ghost closing the wooden door]
+  The wooden door closes.
+  [(1) the ghost closing the wooden door - succeeded]
+  
+  [going north - failed]
+  
+  The ghost can touch the wooden door.
+  
+  >[5] jump
+  [jumping]
+  [(1) the ghost turning the handle]
+  [(2) the ghost opening the wooden door]
+  The wooden door opens.
+  [(2) the ghost opening the wooden door - succeeded]
+  
+  [(1) the ghost turning the handle - failed]
+  
+  [jumping - failed]
+  
+  The ghost can touch the wooden door.
+  
+> >

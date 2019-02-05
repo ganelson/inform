@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 9 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NegatedVerb1
+  >--> You wrote 'The Solomon Islands does not have an air force' (source text, line 1):
+    but assertions about the initial state of play must be positive, not
+    negative, so 'The cat is an animal' is fine but not 'The cat is not a
+    container'. I have only very feeble powers of deduction - sometimes the
+    implications of a negative statement are obvious to a human reader, but not
+    to me.
+Inform 7 has finished: 14 centiseconds used.

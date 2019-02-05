@@ -1,0 +1,71 @@
+"Chapter 2" by Emily Short
+
+Chapter 2
+
+Use command line echoing.
+
+Section 1 - Creating the World
+[Check: room creation; to be, to have, to carry, to wear, to contain, to support. Creation of rooms explicitly. Creation of containers, supporters, people, and clothing both implicitly and explicitly.]
+
+The Kitchen is a room. "The kitchen is for cooking in."
+
+The Kitchen contains a red vase. The red vase contains some flowers. The silver card is in the red vase.
+
+The refrigerator, the stove, and the table are in the Kitchen. The jug, some jars, and the bowl are containers in the refrigerator. The butter dish, the platter, and some plates are supporters in the refrigerator. 
+ 
+The stove supports some dirty pots. The pots have the description "Covered by a thin, mysteriously sticky golden film." They contain some unidentifiable lumps.
+
+The treacle tart is on the table. Some broken dentures are in the treacle tart. They have the description "Someone will be missing these." 
+
+Some oven mitts, a pair of unironed trousers, and a lone grey sock are wearable things on the table.
+
+Florence is in the Kitchen. Florence wears a frilly cap. Florence carries a bucket of french fries. 
+
+Lucy and Matilda are women in the Kitchen. 
+
+Lucy wears an apron. She carries a spatula. 
+
+Fido is an animal. It wears a collar. 
+
+Harris is a man. He is in the Kitchen. He wears a muscle shirt. 
+
+Susanna is a woman. It is in the Kitchen. 
+
+Fido is in South of Kitchen. The South of Kitchen is a room. "An area for eating in!" The South of Kitchen is south of the Kitchen. Fido's bed is scenery in South of Kitchen. The bone is scenery in Fido's bed.
+
+Breakfast Nook is west of the Kitchen.  "Sunlight streams through the open window, illuminating this cheery nook and its windowseat." The windowseat is scenery in the Breakfast Nook. The cushion is scenery on the windowseat. The telegram from Klaxor is in the Breakfast Nook.
+
+Section 2 - Making Rules
+[Oh, included for thoroughness, though we'll get back to this later in more variety, no doubt.]
+
+Instead of eating the treacle tart:
+	say "It is of a startling hardness, akin to the ceramics used to protect spacecraft on re-entry."
+	
+Section 3 - Punctuation
+[In which we bend the system thisway and thatway. Nested quote-marks, paragraph breaks automated properly, correct treatment of ." in source.]
+
+Instead of attacking the treacle tart:
+	say "Tempting, but does it seem a good idea to offend Lucy?"
+	
+Instead of smelling the treacle tart:
+	say "It smells like 10,000 calories..."
+	
+Instead of touching the treacle tart:
+	say "Lucy snaps, 'What's the matter? You don't trust my cookin'?'"
+	
+Instead of tasting the treacle tart:
+	say "Harris looks nervous. 'Oh, I wouldn't do that, if I were you...'"
+	
+Instead of listening to the treacle tart:
+	say "'I can interpret its transmissions, if you like,' remarks Susanna. ''Greetings from the planet Klaxor.''";
+	say paragraph break. 
+
+Section 8 - Including Extensions 
+
+[Include Locksmith by Emily Short.]
+
+Section 9 - Use Options 
+
+Use American dialect and the serial comma. Use abbreviated room descriptions.
+ 
+

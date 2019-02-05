@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Understand "box of [something related by containment]" as 10.

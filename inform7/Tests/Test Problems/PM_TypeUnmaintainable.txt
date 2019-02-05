@@ -1,0 +1,3 @@
+Home is a room.
+
+Cond is an open door that varies.

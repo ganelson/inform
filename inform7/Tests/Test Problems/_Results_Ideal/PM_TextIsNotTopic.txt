@@ -1,0 +1,11 @@
+Inform 7 build 6M38 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TextIsNotTopic
+  >--> In the sentence 'now changed subject is "fish"' (source text, line 5),
+    it looks as if you intend 'changed subject is "fish"' to be a condition,
+    but though they look the same, because both are written in double quotes,
+    text values can't in fact be used as topics, so it's impossible to store
+    this piece of text in that location.
+Inform 7 has finished: 72 centiseconds used.

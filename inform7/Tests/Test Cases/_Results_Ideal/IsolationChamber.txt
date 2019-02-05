@@ -1,0 +1,57 @@
+   Darkness
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Treatment Lab
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] listen
+  The isolation chamber isn't open.
+  
+  [listening to the isolation chamber]
+  You hear nothing unexpected.
+  [listening to the isolation chamber - succeeded]
+  
+  >[3] smell
+  The isolation chamber isn't open.
+  
+  [smelling the isolation chamber]
+  You smell nothing unexpected.
+  [smelling the isolation chamber - succeeded]
+  
+  >[4] open chamber
+  [opening the isolation chamber]
+  You open the isolation chamber.
+  [opening the isolation chamber - succeeded]
+  
+  [looking]
+  Treatment Lab (in the isolation chamber)
+  [looking - succeeded]
+  
+  >[5] exit
+  [exiting]
+  You get out of the isolation chamber.
+  
+  Treatment Lab
+  You can see an isolation chamber (empty) here.
+  
+  [exiting - succeeded]
+  
+  >[6] listen
+  [listening to Treatment Lab]
+  You hear nothing unexpected.
+  [listening to Treatment Lab - succeeded]
+  
+  >[7] smell
+  [smelling Treatment Lab]
+  You smell nothing unexpected.
+  [smelling Treatment Lab - succeeded]
+  
+> >

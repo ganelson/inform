@@ -1,0 +1,2 @@
+inter: inter/Tests/Invalid/cantsubkind.intert, line 6: not a kind which can have subkinds: 'K_number'
+>--> kind K_blurg <= K_number

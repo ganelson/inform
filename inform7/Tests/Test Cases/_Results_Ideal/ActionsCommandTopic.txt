@@ -1,0 +1,31 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150701 / Inform 7 build 6M44 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  You can see a timer here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] set dial to infinity
+  [setting the graduated dial to "infinity"]
+  [setting the graduated dial to "infinity" - succeeded]
+  
+  >[3] set dial to 3
+  [setting the graduated dial to "3"]
+  [setting the graduated dial to "3" - succeeded]
+  
+  >[4] set dial to 5
+  [setting the graduated dial to "5"]
+  [setting the graduated dial to "5" - succeeded]
+  
+  >[5] set dial to 20
+  [setting the graduated dial to "20"]
+  [setting the graduated dial to "20" - succeeded]
+  
+> >

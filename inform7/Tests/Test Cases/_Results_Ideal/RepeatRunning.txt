@@ -1,0 +1,32 @@
+   Splog
+  "counter" = number: 1
+  "counter" = number: 2
+  "counter" = number: 3
+  "counter" = number: 4
+  "counter" = number: 5
+  "counter" = number: 6
+  "counter" = number: 7
+  "counter" = number: 8
+  "counter" = number: 9
+  "counter" = number: 10
+  "moment" = time: 4:00 pm
+  "moment" = time: 4:01 pm
+  "moment" = time: 4:02 pm
+  "moment" = time: 4:03 pm
+  "moment" = time: 4:04 pm
+  "moment" = time: 4:05 pm
+  "moment" = time: 4:06 pm
+  "moment" = time: 4:07 pm
+  "hue" = colour: orange
+  "hue" = colour: yellow
+  "hue" = colour: green
+  "hue" = colour: blue
+  "hue" = colour: indigo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Splog
+  
+> >   Splog
+> Are you sure you want to quit? 

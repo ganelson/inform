@@ -1,0 +1,23 @@
+An elevation is a kind of value. -100 cubits specifies an elevation.
+Every room has an elevation.
+
+The water level is an elevation that varies. The water level is -10 cubits.
+
+The first every turn rule:
+	say "Water level: [water level].";
+	increase the water level by 2 cubits;
+	if water level > elevation of location, say "The water has risen to the
+		level of [water level]-- above your head!".
+
+When play begins:
+	say "Well, assuming this is a logical universe, you should have just
+		enough time to finish this ark."
+
+Beach is a room. The elevation of Beach is 2 cubits. A pile of lumber
+and a hammer are in Beach.
+
+Every turn when water level is at least elevation of location, end the
+story saying "Somehow are you not surprised".
+
+Test me with "z/z/z/z/z/z".
+

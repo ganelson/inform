@@ -1,0 +1,20 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 34 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DuplicateUnitSpec
+  >--> In the sentence '100 specifies a foo' (source text, line 5), it looks as
+    if you intend to give a new meaning to expressions like '100', but this is
+    already something I recognise - specifying a number - so a more distinctive
+    specification must be chosen.
+Problem__ PM_DuplicateUnitSpec
+  >--> In the sentence '"250" specifies a foo' (source text, line 6), it looks
+    as if you intend to give a new meaning to expressions like '"250"', but
+    this is already something I recognise - specifying a text - so a more
+    distinctive specification must be chosen.
+Problem__ PM_DuplicateUnitSpec
+  >--> In the sentence '2/19 specifies a foo' (source text, line 8), it looks
+    as if you intend to give a new meaning to expressions like '2/19', but this
+    is already something I recognise - specifying a bar - so a more distinctive
+    specification must be chosen.
+Inform 7 has finished: 16 centiseconds used.

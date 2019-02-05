@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 4 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MultiplyVague
+  >--> You wrote 'Five rooms are lighted' (source text, line 1): but multiple
+    objects can only be put into relationships, by saying something like 'In
+    the Drawing Room are two women.', and all other assertions with multiple
+    objects are disallowed: so 'Three doors are open.' is rejected - I can't
+    tell which three.
+Inform 7 has finished: 17 centiseconds used.

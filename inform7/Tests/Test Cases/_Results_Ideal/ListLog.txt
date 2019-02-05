@@ -1,0 +1,25 @@
+   Brahms Conservatoire
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  You can see a piano, an oboe, a bassoon, a French horn, a clarinet, a xylophone, a tuba, a trombone, a case (in which is a violin) and a triangle here.
+  
+> >   Brahms Conservatoire
+  (Testing.)
+  
+  >[1] take all
+  piano: Taken. (So, your recent acquisitions: piano.)
+  oboe: Taken. (So, your recent acquisitions: piano and oboe.)
+  bassoon: Taken. (So, your recent acquisitions: piano, oboe and bassoon.)
+  French horn: Taken. (So, your recent acquisitions: piano, oboe, bassoon and French horn.)
+  clarinet: Taken. (So, your recent acquisitions: piano, oboe, bassoon, French horn and clarinet.)
+  xylophone: Taken. (So, your recent acquisitions: piano, oboe, bassoon, French horn, clarinet and xylophone.)
+  tuba: Taken. (So, your recent acquisitions: piano, oboe, bassoon, French horn, clarinet, xylophone and tuba.)
+  trombone: Taken. (So, your recent acquisitions: oboe, bassoon, French horn, clarinet, xylophone, tuba and trombone.)
+  case: Taken. (So, your recent acquisitions: bassoon, French horn, clarinet, xylophone, tuba, trombone and case.)
+  triangle: Taken. (So, your recent acquisitions: French horn, clarinet, xylophone, tuba, trombone, case and triangle.)
+  violin: Taken. (So, your recent acquisitions: clarinet, xylophone, tuba, trombone, case, triangle and violin.)
+  
+> >

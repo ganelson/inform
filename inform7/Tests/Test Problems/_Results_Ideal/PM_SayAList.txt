@@ -1,0 +1,13 @@
+Inform 7 build 6L65 has started.
+I've now read your source text, which is 409 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SayAList
+  >--> You wrote 'say "[The noun] is a [clarity of the no [...] of scents which
+    perfume the noun]."' (source text, line 35), and in particular 'a list of
+    scents which perfume the noun': but this asked to say 'a list of...', which
+    I read as being a general description applying to some lists and not
+    others, so it's not something which can be said. (Maybe you meant 'the list
+    of...' instead? That normally makes a definite list of whatever matches the
+    '...' part.)
+Inform 7 has finished: 56 centiseconds used.

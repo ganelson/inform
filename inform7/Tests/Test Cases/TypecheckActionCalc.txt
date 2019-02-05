@@ -1,0 +1,19 @@
+Home is a room.
+
+Hanging around until is an action applying to one time.
+Understand "wait until [time]" as hanging around until.
+
+Carry out hanging around until: now the time of day is the time
+understood.
+
+Report hanging around until: say "All right. The time is now
+[time of day]."
+
+Waiting minutes is an action applying to one number.
+Understand "wait [number] minutes" as waiting minutes.
+
+Carry out waiting minutes:
+	try hanging around until the time of day plus the number understood minutes.
+
+Test me with "wait 10 minutes / wait 5 minutes".
+

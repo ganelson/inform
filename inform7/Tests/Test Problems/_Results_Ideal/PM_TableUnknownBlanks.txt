@@ -1,0 +1,9 @@
+Inform 7 build 6M52 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42477 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableUnknownBlanks
+  >--> 'Table of Blogg' (source text, line 3) asked to have 'polyhedral' extra
+    blank rows, but that would only make sense for a literal number like '15'
+    or a name for a constant number. (The number must of course be 0 or more.)
+Inform 7 has finished: 38 centiseconds used.

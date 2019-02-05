@@ -1,0 +1,4 @@
+Foo is a room.
+A weight is a kind of value.
+1 kg specifies a weight.
+1 nkg specifies a weight scaled down by -1.

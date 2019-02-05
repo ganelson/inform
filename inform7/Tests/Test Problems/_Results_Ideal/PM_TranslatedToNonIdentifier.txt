@@ -1,0 +1,27 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 57 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TranslatedToNonIdentifier
+  >--> You wrote 'The Home object translates into I6 as your "home"' (source
+    text, line 3): but Inform 7 constructions can only translate into quoted I6
+    identifiers, which must be strings of 1 to 31 characters drawn from 1, 2,
+    ..., 9, a or A, b or B, ..., z or Z, or underscore '_', except that the
+    first character is not allowed to be a digit.
+Problem__ PM_TranslatedToNonIdentifier
+  >--> You wrote 'The Home object translates into I6 as "home sweet home"' (source
+    text, line 4): again, Inform 7 constructions can only translate into quoted
+    I6 identifiers.
+Problem__ PM_TranslatedToNonIdentifier
+  >--> You wrote 'The Home object translates into I6 as "0home"' (source text, line 5):
+    again, Inform 7 constructions can only translate into quoted I6
+    identifiers.
+Problem__ PM_TranslatedToNonIdentifier
+  >--> You wrote 'The Home object translates into I6 as
+    "nn012345678901234567890123456789"' (source text, line 7): again, Inform 7
+    constructions can only translate into quoted I6 identifiers.
+Problem__ PM_TranslatedToNonIdentifier
+  >--> You wrote 'The Home object translates into I6 as "home" from home' (source
+    text, line 8): again, Inform 7 constructions can only translate into quoted
+    I6 identifiers.
+Inform 7 has finished: 18 centiseconds used.

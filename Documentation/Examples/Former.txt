@@ -1,0 +1,35 @@
+*** Going from, going to
+(GO BACK command; Polarity)
+A "go back" command that keeps track of the direction from which the player came, and sends him back.
+
+The main trick of this is always to record where the player has gone when he has just moved. 
+
+	{*}"Polarity"
+	
+	The former location is a room that varies.
+
+Here we record where the player has been before moving him; by calling this the "first carry out going rule", we make sure that this rule is followed during the going action before any other pieces of the movement occur. For more detail, see the chapters on advanced actions and on rules.
+
+	{**}First carry out going rule:
+		now the former location is the location.
+
+	Understand "go back" as retreating. Understand "back" or "return" or "retreat" as retreating.
+
+	Retreating is an action applying to nothing.
+
+	Carry out retreating:
+		let way be the best route from the location to the former location, using doors;
+		if way is a direction, try going way;
+		otherwise say "You can't see an open way back."
+		
+And to deal with the case where the player has not yet moved:
+		
+	{**}When play begins: now the former location is the Dome.
+	
+	Instead of retreating when the former location is the location: say "You haven't gone anywhere yet."
+
+	Dome is a room. North of Dome is North Chapel. South of the Dome is South Chapel. West of the Dome is Western End. Quiet Corner is northwest of the Dome, north of Western End, and west of North Chapel. Loud Corner is east of North Chapel, northeast of Dome, and north of Eastern End. Eastern End is north of Dim Corner and east of Dome. Dim Corner is southeast of Dome and east of South Chapel. Ruined Corner is southwest of Dome, west of South Chapel, and south of Western End.
+
+	The church door is east of Eastern End and west of the Courtyard. The church door is a door.
+
+	Test me with "back / n / go back / e / open door / go through door / go back".

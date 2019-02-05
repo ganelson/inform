@@ -1,0 +1,19 @@
+   Pavilion
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pavilion
+  A box is here. The widget is in the box.
+  
+  You can also see a trophy case (in which are the gold trophy and the silver trophy) here.
+  
+> >   Pavilion
+  (Testing.)
+  
+  >[1] examine case
+  The trophy case contains:
+    gold trophy - It's a trophy made of gold.
+    silver trophy - It's a trophy made of silver.
+  
+> >

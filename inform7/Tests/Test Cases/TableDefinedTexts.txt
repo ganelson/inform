@@ -1,0 +1,10 @@
+Some things are defined by the table of stuff.
+
+Table of stuff
+thing		description
+thing 1		"This is [paragraph break]the first thing."
+thing 2		"This is the second thing."
+
+The Lab is a room.
+
+Test me with "showme thing 1 / showme thing 2".

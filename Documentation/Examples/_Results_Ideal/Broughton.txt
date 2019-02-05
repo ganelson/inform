@@ -1,0 +1,45 @@
+   Discussing: divorce
+  The Problem of Edith
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Broughton Hall
+  Lady Uckfield sits at her desk, looking wholly composed.
+  
+> >   Discussing: penmanship
+  (Testing.)
+  
+  >[1] think
+  You contemplate infidelity.
+  
+  >[2] ask lady about infidelity
+  "Hmm, infidelity," says Lady Uckfield. "Frankly, I rather think there would have been cause enough for divorce without the perversely plentiful evidence of unfaithfulness."
+  
+  >[3] show nasty letter to lady
+  Lady Uckfield nods impatiently.
+  
+  >[4] show note to lady
+  "Hmm, money," says Lady Uckfield. "I'm sorry, but I don't see how having married for money excuses a subsequent infidelity."
+  
+  >[5] think
+  You contemplate a ten-pound note, marriage and Class status.
+  
+  >[6] ask lady about divorce
+  "Hmm, divorce," says Lady Uckfield.
+  
+  >[7] ask lady about love
+  "Hmm, love," says Lady Uckfield. "As it seems to me, all the love is on one side," she says crisply. "And that rarely works."
+  
+  >[8] ask lady about marriage
+  "Hmm, marriage," says Lady Uckfield.
+  
+  >[9] ask lady about divorce
+  "Hmm, divorce," says Lady Uckfield.
+  
+  >[10] ask lady about love
+  "Hmm, love," says Lady Uckfield. "Stop making that plea: it won't work."
+  
+  >[11] ask lady about penmanship
+  She sighs. "So few people write really beautifully these days."
+  
+> >

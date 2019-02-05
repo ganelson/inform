@@ -1,0 +1,19 @@
+   starting room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  starting room
+  You can see a magic door here.
+  
+> >   second room
+  (Testing.)
+  
+  >[1] open door
+  You open the magic door.
+  
+  >[2] enter door
+  
+  second room
+  
+> >

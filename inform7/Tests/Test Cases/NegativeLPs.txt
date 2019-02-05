@@ -1,0 +1,19 @@
+Test is a room.
+
+A weight is a kind of value. -99.999 kg specifies a weight.
+
+When play begins:
+	let temp be -0.123 kg;
+	say "[temp][line break]";
+	let temp be -1.123 kg;
+	say "[temp][line break]";
+	let temp be -10.000 kg;
+	say "[temp][line break]";
+	let temp be 0.123 kg;
+	say "[temp][line break]";
+	let temp be 1.123 kg;
+	say "[temp][line break]";
+	let temp be 10.000 kg;
+	say "[temp][line break]";
+	let temp be 0.000 kg;
+	say "[temp][line break]";

@@ -1,0 +1,45 @@
+   Kitchen
+  Feline Behavior
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see a cat, a bowl (in which is a quantity of cream), a ball of wool and a newspaper here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  The cat laps up the cream.
+  
+  Good thing you have no use for the quantity of cream yourself.
+  
+  >[2] z
+  Time passes.
+  
+  The cat makes the ball of wool into a useless tangle which must be discarded.
+  
+  Good thing you have no use for the ball of wool yourself.
+  
+  >[3] open bag
+  You open the bag, revealing catnip.
+  
+  The cat frolics with the catnip until nothing remains of it.
+  
+  Good thing you have no use for catnip yourself.
+  
+  >[4] z
+  Time passes.
+  
+  The cat bats playfully at the newspaper until all the nasty boring articles are destroyed.
+  
+  Good thing you have no use for the newspaper yourself.
+  
+  >[5] z
+  Time passes.
+  
+  The cat looks miffed at the lack of ready entertainment, and glares at you with yellow eyes as though wondering whether your pants leg is good for claw-sharpening.
+  
+> >

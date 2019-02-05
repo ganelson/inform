@@ -1,0 +1,9 @@
+The Admiralty is a room.
+
+Table of Ships
+ship		rate
+"Euryalus"	1
+
+Table of Ships (continued)
+ship		rate	broadside
+"Nisus"		5		22

@@ -1,0 +1,22 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantAssertAdjective
+  >--> In the sentence 'Depot is adjacent' (source text, line 5), you ask me to
+    arrange for something to be 'adjacent' at the start of play. There are some
+    adjectives ('open' or 'dark', for instance) which I can fix, but others are
+    just too vague. For example, saying 'Peter is visible.' isn't allowed,
+    because it doesn't tell me where Peter is. Like 'visible', being 'adjacent'
+    is something I can test during play at any time, but not something I can
+    arrange at the start.
+Problem__ PM_CantAssertAdjective
+  >--> In the sentence 'Laboratory is not green' (source text, line 7), you ask
+    me to arrange for something not to be 'green' at the start of play. This is
+    only possible when an adjective talks about an either/or property, like
+    'open'/'closed' - if there are three or more possibilities then it's
+    ambiguous. Even if there are only two possibilities, I can't always fix
+    them just on your request - 'visible'/'invisible', for instance, is
+    something I can test during play at any time, but not something I can
+    arrange at the start.
+Inform 7 has finished: 17 centiseconds used.

@@ -1,0 +1,615 @@
+"Chapter 7: Dutch Harbor" by Emily Short.
+
+Chapter 7 - Actions
+
+Use command line echoing.
+
+Singing is an action applying to nothing. Understand "sing" as singing.
+
+Check singing: say "Your singing is abominable."
+
+Linda's Bunkhouse is a room. The player is in Linda's Bunkhouse.
+
+A sign is here. "NO WEARING BOOTS IN HOUSE -- LOVE, BLACK PETE, says a sign on the wall." The description is "It is hand-written in black pen and there is attached a polaroid of Black Pete: he is large, he is bearded, he is smiling in a manner which discourages conversation. He is caucasian, so apparently the epithet is piratical."
+
+A stack of discarded boots is here. The description of the stack is "Covered in cakey grey-brown mud, the kind you get from walking around just about anywhere, since the number of paved roads on this island is approximately equal to the number of unattached women."
+
+Above Linda's Bunkhouse is the Lounge. The description of the Lounge is "The largest and most comfortable room in the Bunkhouse, the lounge offers two shabby sofas and a telephone (card required for long-distance calls, and everything is long-distance here)."
+
+A pyramid of empty beer bottles is fixed in place in the Lounge. 
+
+A television is in the lounge. It is a device. "[if switched on]A television cheerfully displays the local news in Denver, genuinely local news being a contradiction in terms here[otherwise]The television is, atypically, off[end if]."
+
+[Check that this is properly capp'd]
+
+The bedroom door is south of the lounge and north of Your Tiny Bedroom. It is a door. 
+
+The bed is an enterable supporter in Your Tiny Bedroom.
+
+The wardrobe is an openable enterable container in Your Tiny Bedroom.
+
+Outside of Linda's Bunkhouse is the Gravelly Parking Lot. The description of the Lot is "A lot of grey gravel and grey dirt. Off to the west is the Fish Packing Plant; south, the ground slopes down to beach. A thin strip of land, mostly taken up with road, runs north toward the rest of the island."
+
+The grubby pickup truck is a vehicle in the Parking Lot. It is openable, transparent, and closed.
+
+The Beach is south of the Gravelly Parking Lot. "A picturesque beach of rocks and silvery water, and the odd rusting industrial part half-submerged in the shallows."
+
+The wheelbarrow is a container in the Beach. It is fixed in place and pushable between rooms.
+
+The rusting industrial part is a scenery in the Beach. The description is "It looks like a large gear and axle. From what, you couldn't say."
+The Fish Packing Plant is west of the Gravelly Parking Lot. "Not being an employer of fish packers, you are not permitted in the fish packing plant, and from the outside there's not much to see other than a bunch of metal-sided sheds. That's all right, though -- you heard enough stirring tales about life on the job last night. New hires apparently have an unnerving habit of dropping dead of heart-attack, and things like that.
+
+Off to the west, a long road runs towards the airport and the mountain."
+
+The Long Road is west of the Fish Packing Plant.
+
+The Airport is west of the Long Road. "The airport is one low building with a couple of rooms in it; a runway, the shortest in commercial use in the world; and a chain-link fence."
+
+The security gate is east of the Loading Dock and west of the Airport. It is an open door. It is not openable.
+
+The Grand Aleutian Hotel is north of the Long Road. "Called the Grand Illusion by natives and people who actually do work in Dutch Harbor, the Grand Aleutian is the swank hotel used by sport fishers and birdwatchers. Among the amenities are an overpriced restaurant and a similarly excessive cafe."
+
+The red door is north of the Grand Aleutian Hotel and south of the Costly Cafe. The red door is a door.
+
+The description of the Costly Cafe is "The food here is no better than anywhere else -- in fact probably worse -- but it is served in an atmosphere of superiority."
+
+The Museum of the Aleutians is northeast of the Long Road. "A subdued and tasteful museum with gentle lighting. The holdings are not large, but they are interesting: examples of native crafts (heavy on basket-weaving, since there isn't much by way of clay or wood around here); photographs dating back to the 1930s; and memorabilia of World War II, when this was briefly conquered by the enemy, the only piece of the United States to be lost to the Japanese."
+
+The Narrow Spit is north of the Gravelly Parking Lot. "A strip of land barely wider than the road, with water on either side. The views in all directions are fog, water, and the curiously soft curves of the land, carpeted in a bright green but devoid of trees.
+
+Down to the west is the small boat harbor."
+
+The pogo stick is a vehicle in the Narrow Spit.
+
+The staircase is west of the Narrow Spit and east of the Small Boat Harbor. It is a door. It is open and unopenable.
+
+The Small Boat Harbor is below the Narrow Spit. 
+
+The giant beach ball is in the Small Boat Harbor. It is fixed in place and pushable between rooms. The description is "Almost half your height, and too awkward to lift, though light enough to be trivially rolled."
+
+
+Dutch Harbor is a region. The Airport, the Fish Packing Plant, the Beach, Linda's Bunkhouse, the Lounge, Your Bedroom, the Long Road, the Grand Aleutian, Museum of the Aleutians, and the Gravelly Parking Lot are in Dutch Harbor.
+
+The Bridge is north of the Narrow Spit. "A bridge connects Dutch Harbor proper to the south with Unalaska to the north. There isn't much to tell between them, except that Dutch Harbor is more industrial and contains the airport, whereas people actually have houses in Unalaska."
+
+The sitka spruce is fixed in place in the Bridge. "In the lee of the land, down near the water's edge, a stunted and apologetic sitka spruce has managed to grow. It is one of perhaps three trees on the entire island."
+
+The Library is north of the Bridge. "A recently-built and reasonably attractive single-room library, with a selection mostly of popular fiction, but also free internet access at a couple of elderly PCs."
+
+The elderly PCs are scenery in the Library. They are a device. They are switched on. Instead of switching off the elderly PCs, say "It seems foolish to meddle; you might not be able to get them booted properly again."
+
+
+The Unalaskan Clinic is west of the Library. "A clinic built for the use of native Unalaskans. The sign out front is marked in a local script which you cannot read at all." The Clinic is northwest of the Bridge.
+
+The Russian Orthodox Church is west of the Unalaskan Clinic. "Built in the eighteenth century, it looks distinctly out of place now, with its small green onion-domes and handsome white walls. The graveyard is full of almost illegible markers in cyrillic writing.
+
+Down the road to the north is the Elbow Room bar."
+
+The Elbow Room is north of the Russian Orthodox Church. "Reputed to be the most dangerous bar in the United States; from the outside what it looks like is a virulently purple shack, and from the inside like a badly-lit one. No one is having a knife fight at the moment."
+
+The bar is a supporter in the Elbow Room. It is scenery. On the bar is a glass bowl. In the glass bowl is a selection of pull-tabs. The pull-tabs has the description "An odd selection of paper-and-cardboard game pieces for the lottery, mostly decorated with pictures of sled dogs and the like."
+
+The shot glass is on the bar. The description is "It contains a milky brown beverage which travels under the endearing title of 'Duck Fart'. To be fair, it looks better than it sounds."
+
+The Family Restaurant is north of the Elbow Room. "The Family Restaurant serves, impartially, all of the following: inferior hamburgers; inferior fish and chips; inferior spaghetti; inferior Chinese food; inferior sushi. Some nights it is open until its posted time of three am, and some nights the owner is overwhelmed with ennui and shuts down at 9:30. 
+
+The only constant about the Family Restaurant is the garnish on every plate, of half a maraschino cherry, a thick slice of orange, and a bush-sized quantity of parsley."
+
+The cheeseburger is an edible thing in the Family Restaurant. The description is "The same sort of cheeseburger you'd find anywhere in the lower 48, only with the distinction of costing $12."
+
+The Gift Shop is east of the Elbow Room. It is north of the Unalaskan Clinic. "A nearly deserted shop hawking a selection of Alaskan trinkets and new age souvenirs, including but not limited to woven grass baskets, glass dolphin ornaments, arrowheads, hiking maps, postcards, watercolors, and canned fish."
+
+The hiking maps are scenery in the Gift Shop. The description is "USGS topographical maps of the local area and some other interesting portions of Alaska, with hiking trails marked out. You can even get a full set of Denali maps, if you want, and have a lot to spend."
+
+
+Unalaska is a region. The Library, the Unalaskan Clinic, the Russian Orthodox Church, the Gift Shop, Family Restaurant, and the Elbow Room are in Unalaska.
+
+Section 1 - Giving instructions
+
+When play begins: 
+	say "Congratulations, you've arrived at Dutch Harbor! So far you have ", score, " points. " 
+	
+Section 2 - Say
+
+When play begins:
+	say "Now it's time to collect three stamps before going home."
+
+[Section 3 - Actions -- just explanation]
+
+Section 4 - Instead rules
+
+Instead of taking the boots, say "None of these boots belong to you. Black Pete might also frown upon boot-theft."
+
+Instead of smelling the boots: 
+	say "You have some sense of self-preservation."	
+
+Instead of taking the hiking maps, say "You didn't come equipped for backpacking, and they're no use otherwise."
+
+Section 5 - Before rules
+
+Before wearing the boots:
+	say "You are not yet Alaskan enough." instead.
+	
+Instead of switching on the switched off television:
+	say "You steel yourself to the knowledge that there won't be anything interesting on.";
+	continue the action.
+
+Before examining the sign:
+	say "You have the prickly sense of being watched..."
+
+Section 6 - Try and try silently
+
+Before drinking something when the noun is not carried by the player:
+	try silently taking the noun.
+
+Instead of drinking something which is not carried by the player:
+	say "You would need to be holding [the noun] first."
+
+Before entering the closed pickup truck:
+	say "(first opening the door)[line break]";
+	try opening the truck.
+	
+Before exiting when the player is in the closed pickup truck:
+	say "(first opening the door)[line break]";
+	try opening the truck.
+
+Section 7 - After rules
+
+After switching off the television:
+	say "Ah, blessed silence."
+	
+After touching the pyramid:
+	say "The bottles wobble menacingly...";
+	continue the action.
+
+Section 8 - Giving instructions to other people
+
+Jim is a man in the Lounge. "Jim is relaxing in a corner."
+
+Instead of asking Jim to try doing something, say "Jim grins at you salaciously, in a way which makes you suddenly less eager to ask him for favors."
+
+Before asking Jim to try kissing the player:
+	try kissing Jim instead.
+
+Instead of kissing Jim: 
+	say "Considering that last night Jim was sharing stories about doing time for domestic abuse, he might not be the best romantic choice." instead.
+	
+Instead of asking Jim to try doing something when the television is the noun:
+	say "'You want to fix the tv, do it yourself,' says Jim."
+	
+Janet is a woman in the Library. "Janet is the librarian, and mistress of all she surveys -- namely, one of the cleanest, driest, and quietest locations in a radius of several hundred miles."
+
+Instead of asking Janet for the library card when the card is carried by Janet:
+	move the library card to the player;
+	say "'Here you go,' says Janet absently."
+
+The Unalaska library card is carried by Janet. The description is "Unlike library cards in most towns, this one is issued freely to anyone who comes to town and applies for it; and it's really not a card at all, but a little ID tag attached to a pink plastic carabiner, suitable for being clipped to backpacks or belt loops. 
+
+Aside from allowing the bearer to check out books, it permits use of the free internet."
+
+Larry is a man in the Library. "Larry is here, reading a novel."
+
+Instead of asking Larry to try going a direction:
+	say "'Broke my ankle,' Larry mutters. 'Getting compensation from the plant.'"
+
+Black Pete is a man in the Parking Lot. "Black Pete is standing at the edge of the parking lot, looking towards the sea."
+
+Instead of asking Pete to try going somewhere:
+	say "'Yarr,' says Pete."
+
+Instead of asking Pete to try going nowhere:
+	say "'I look like a fool to you, kid?' Pete demands."
+
+Jake is a man in the Elbow Room. John is a man in the Elbow Room. Joe is a man in the Elbow Room. Jack is a man in the Elbow Room. Wallace is a man in the Elbow Room. "Wallace here looks a little put out."
+
+Section 9 - Reading and talking
+
+In the Library is a book by Peter Mayle. The description of the book is "Clearly much-read description of life in southern France."
+
+After consulting the book by Peter Mayle about "Provence":
+	say "It sounds warm and sunny. Someone has dogeared these pages."
+
+After consulting the book by Peter Mayle about "France":
+	say "According to the evidence, a civilized place with delicious food; the opposite of Alaska."
+
+After asking Black Pete about "boots":
+	say "Black Pete growls and a flinty look comes into his eye."
+	
+After telling Black Pete about "television":
+	say "Black Pete shrugs."
+
+Instead of answering Black Pete that "you are crazy":
+	say "Black Pete smiles a menacing smile."
+	
+Instead of telling Jim about something, try asking Jim about it.
+
+Instead of asking Jim about something:
+	say "'Yup, I know all about that,' Jim agrees."	
+
+Section 10 - The other four senses
+
+Instead of listening to the Narrow Spit:
+	say "It sounds like wind."
+
+
+Instead of listening to in the Airport:
+	say "The engine roar drowns out all else."
+
+Instead of smelling a room when the location is in Dutch Harbor: 
+	say "There is a faint but distinct smell of fishiness."
+
+Instead of smelling in the Fish Packing Plant:
+	say "There is an overwhelming aroma of fish."
+
+Section 11 - Rules applying to more than one action
+
+Instead of pushing or pulling or turning the pyramid: 
+	say "You are loath to knock them over, since you'll never get them into this configuration again. Some people are more coordinated drunk than you are sober."
+
+
+
+Instead of examining, looking under, or searching the bed:
+	say "Linda does keep the place clean; you have to give her that."
+
+A chair is a kind of supporter. A chair is enterable.
+
+The sofa is a chair in the Lounge. The stool is a chair in the Bunkhouse. The seat is a chair in the Bedroom.
+
+Instead of looking under or searching a chair:
+	say "Very clean."
+
+Section 12 - All actions and exceptional actions
+
+Instead of doing something other than examining to Wallace:
+	say "'You have a problem?' Wallace demands."
+
+Instead of doing something except examining to the bar in the presence of Wallace:
+	say "'The bar is mine,' says Wallace."
+
+Instead of doing something other than examining with the industrial part:
+	say "You'd probably get tetanus."
+
+Section 13 - The noun and the second noun, and the person asked
+
+Instead of pushing a chair:
+	say "[The noun] is fine where it is."
+	
+Instead of asking someone to try jumping:
+	say "[The person asked] is disinclined to acquiesce to your request."
+
+Section 14 - In rooms and regions
+
+Definition: a room is crowded if it contains at least three people.
+
+Before going down in the Narrow Spit, say "It's a short slope down, avoiding the staircase..."
+
+Instead of taking something in the Elbow Room:
+	say "You have the sense that you shouldn't mess with anything here that isn't yours."
+
+Instead of listening to a crowded room:
+	say "There's some light conversation going on, but it would be rude to eavesdrop."
+
+Instead of singing in Dutch Harbor:
+	say "The strong breeze fills your lungs and carries your song away."
+
+Section 15 - In the presence of, and when
+[This is almost infinitely extensible but on the other hand we've checked it a fair amount already, so.]
+
+Instead of eating something in the presence of Wallace:
+	say "Wallace stares at [the noun] fixedly, and this makes you too nervous to go on."
+
+Section 16 - Going from, going to
+
+Before going from the Elbow Room when the shot glass is on the bar:
+	say "'Hey,' says someone behind you. 'Come back! This Duck Fart is on the house!' But there's no need to listen.".
+
+Instead of going nowhere from the Elbow Room:
+	say "'Someone's had enough already!' remarks the company gleefully."
+
+
+
+Before going to Unalaska by truck:
+	say "You can't go that way in the truck." instead.
+
+Instead of going nowhere from Dutch Harbor:
+	say "There's no solid ground in that direction."
+
+
+Instead of going nowhere:
+	say "There's nothing interesting that way."
+
+Before going to a room which contains an edible thing:
+	say "You can smell something to eat as you go in..."	
+
+Section 17 - Going by, going through, going with
+
+Before going by pickup truck:
+	say "The truck coughs ominously a few times..."
+	
+After going by pickup truck:
+	say "...fortunately the truck still seems to be good for this much.";
+	continue the action.
+
+Before going through the open bedroom door:
+	say "The bedroom door creaks a little but turns out to be just fine. Something tells you, though, that this place is not the sturdiest construction ever."
+
+Instead of going through the red door:
+	say "The door swings and nearly hits you in the head!";
+	if the red door is closed, now the red door is open;
+	continue the action.
+	
+After going through the red door:
+	try looking;
+	if the red door is open, now the red door is closed;
+	say "...and now it swings back and hits you in the back!"
+
+Instead of opening the red door:
+	say "You open the red door, but it swings closed again."
+
+Before going northeast with the wheelbarrow:
+	say "The wheels squeak; for whatever reason the wheelbarrow doesn't like going this direction, but it grudgingly complies in the end..."
+
+Instead of going to the Library with the wheelbarrow:
+	say "Arriving in the Library with the wheelbarrow might give the librarian the wrong idea about your fitness as a patron."
+
+Instead of going to the Library with the wheelbarrow for the second time:
+	say "Not wise."	
+
+Before kissing Wallace:
+	say "You'd have to be really really brave for that."
+	
+Before doing it for the second time:
+	say "Ha."
+	
+After going to the Elbow Room with the wheelbarrow:
+	say "There is much hooting approval of your arriving with the wheelbarrow, and Jack offers to fill er up.";
+	continue the action.
+
+Section 18 - Kinds of action
+
+Attacking someone is provocative behavior. Kissing someone is provocative behavior.
+
+Instead of provocative behavior:
+	say "You're on your own here; it's probably not a good idea starting anything."
+
+Instead of provocative behavior for the second time:
+	say "Don't push your luck."
+
+Instead of provocative behavior in the Elbow Room:
+	say "This is certainly the right venue for doing stupid things, but you should probably refrain anyway."
+
+
+Section 19 - Repeated actions
+
+Instead of provocative behavior in the Elbow Room for the second time:
+	say "Still not a good idea."
+
+Instead of provocative behavior in the Elbow Room for the third time:
+	say "Your will to survive seems to be weak."	
+
+Before going by pickup truck for the third time:
+	say "The truck nearly dies this time..."
+	
+After going by for the fifth time:
+	say "...the truck survives only with great effort.";
+	continue the action.
+
+Instead of going by pickup truck more than ten times:
+	say "The truck is truly dead this time. Or out of gas, which amounts to the same thing."
+
+Instead of going through the red door at least twice:
+	say "The door once again swings and narrowly misses your head!";
+	if the red door is closed, now the red door is open;
+	continue the action.
+	
+After going through the red door more than once:
+	try looking;
+	if the red door is open, now the red door is closed;
+	say "...and now it swings back and hits you in the back! Again!"
+
+Instead of opening the red door for the 5th time:
+	say "You open the red door, continuing your exercise in futility."
+
+Before going northeast with the wheelbarrow for the seventh time:
+	say "The wheels protest extra-loudly this time."
+
+Instead of going to the Library with the wheelbarrow for the third time:
+	say "That continues not to seem wise."
+
+Before going to the Elbow Room with the wheelbarrow more than once:
+	say "The patrons are bored with your wheelbarrow stunt now. Might as well leave it outside." instead.
+
+Section 20 - Actions on consecutive turns
+
+Instead of waiting in the Elbow Room for four to six turns:
+	say "The place is beginning to strike you as a little dull."
+
+Instead of waiting in the Elbow Room when the pull-tabs are in the bowl for seven turns:
+	say "You're almost starting to wonder about those pull-tabs."
+	
+Section 21 - New actions
+
+Understand "hide" as hiding.
+
+Hiding is an action applying to nothing.
+
+Section 22 - Irregular English verbs
+
+Understand "shake [something preferably held]" as shaking.
+
+Shaking is an action with past participle shaken, applying to one carried thing.
+
+Carry out shaking: 
+	say "Nothing results of your shaking [the noun]."
+
+Instead of shaking a closed container when something is in the noun:
+	say "Something rattles inside [the noun]."
+	
+Instead of shaking a closed transparent container when something is in the noun:
+	say "Inside [the noun] there are banging noises produced by [the list of things contained by the noun]."
+	
+Instead of shaking an open container which contains something:
+	say "[The list of things contained by the noun] might fly out."
+	
+The backpack is a player's holdall. It is carried by the player.
+
+
+Section 23 - Check, carry out, report
+
+Check hiding:
+	if a person (called the witness) who is not the player is in the location, say "Pointless: [the witness] can see everything you do." instead.
+	
+Carry out hiding:
+	if an unlocked enterable openable container (called the refuge) is in the location
+	begin;
+		if the refuge is closed, silently try opening the refuge;
+		silently try entering the refuge;
+		silently try closing the refuge;
+	end if;
+	
+
+Report hiding:
+	let refuge be the holder of the player;
+	say "You get into [the holder of the player][if the refuge is closed] and close it behind you[end if].";
+	
+Check hiding:
+	if an unlocked enterable openable container is in the location, do nothing;
+	otherwise say "There is nowhere to hide." instead.
+	
+Understand "zap [something]" as destroying.
+
+Destroying is an action applying to one visible thing.
+
+Check destroying:
+	if the noun is not touchable, say "You are unable to reach [the noun].".
+	
+Carry out destroying:
+	now the noun is nowhere;
+	
+Report destroying:
+	say "Now [the noun] is gone!"
+	
+Carry out destroying a container:
+	now every thing in the noun is in the location.
+	
+Carry out destroying a supporter:
+	now every thing on the noun is in the location.
+	
+Carry out destroying a container (called the sack) which contains the can:
+	if the sack is not in the location, now the can is agitated. 
+
+Carry out destroying a supporter which supports the can:
+	now the can is agitated.
+	
+The sticky mess is fixed in place. "There is a sticky mess on the ground."
+
+Carry out destroying the can:
+	now the sticky mess is in the location.
+	
+The knife is a thing in the backpack.
+
+Check cutting:
+	if the player is not carrying the knife, say "You lack appropriate means." instead.
+
+Check cutting something when the player wears the noun:
+	say "[The noun] is a little close to your own precious skin for that." instead.
+
+The block cutting rule does nothing.
+
+Report cutting:
+	say "You hack away at [the noun] with the knife."
+	
+Carry out cutting the knife:
+	say "You can't use the knife on itself." instead.
+
+Section 24 - Advanced action patterns (based on index, not docs)
+[action or list of actions or kind of action 
+    in room 
+    in the presence of something 
+    when condition 
+    repetition]
+
+Instead of singing in the Elbow Room in the presence of Wallace when the pull-tabs are in the bowl:
+	move Wallace to the Family Restaurant;
+	say "'Could we have some quiet!' says Wallace. And he storms out."
+	
+Instead of singing in the Elbow Room in the presence of Wallace when the pull-tabs are carried by the player:
+	move Wallace to the Family Restaurant;
+	say "'You can't take a hint!' says Wallace. And he storms out."
+	
+Instead of singing in the Elbow Room when the pull-tabs are in the bowl:
+	move the pull-tabs to the player;
+	say "'Here,' says someone. 'I'll buy you all the pull-tabs if you just cut that out.' And they do."
+	
+Instead of singing in the Elbow Room when the pull-tabs are carried by the player:
+	say "'It's no good,' moans someone."
+
+Instead of singing in the Elbow Room when the pull-tabs are carried by the player for the second time:
+	say "'I could sing louder?' suggests someone whose name starts with J.
+	
+'No!' roars the crowd."
+
+The can of root beer is a closed openable container. It is in the backpack. The can of root beer is either agitated or calm.
+
+Instead of shaking the can of root beer:
+	the can calms down in five turns from now;
+	say "You give the can a good hard shake.";
+	now the can is agitated.
+
+Instead of listening to the can: say "It sounds [if agitated]fizzy[otherwise]calm[end if]!"
+
+At the time when the can calms down:
+	now the can is calm.
+	
+Instead of opening the agitated can of root beer in the Library in the presence of Janet when the book is held by the player:
+	say "'No!' says Janet. 'You'll get root beer on the book!'";
+
+Instead of opening the agitated can of root beer in the Library in the presence of Janet when the book is held by the player more than once:
+	say "Janet transfixes you with a ferocious stare.";
+
+Instead of opening the agitated can of root beer in the presence of a man (called the nosy parker) when an edible thing (called the dinner) is held by the player:
+	say "'Hey,' says [the nosy parker]. 'You're going to douse your [dinner] if you open that now.'";
+
+Instead of opening the calm can of root beer in the presence of a man (called the nosy parker) when the can has been agitated:
+	now the can of root beer is nowhere;
+	say "'Hunh,' says [the nosy parker]. 'It didn't make any pfft noise. Maybe it's flat.'";
+	
+Instead of opening the agitated can of root beer:
+	now the can of root beer is nowhere;
+	now the sticky mess is in the location;
+	say "You open the can and fizzing sweet soda goes absolutely everywhere."
+	
+Instead of opening the calm can of root beer when the can has been agitated:
+	now the can of root beer is nowhere;
+	say "The root beer is disappointingly flat. That's what you get for shaking it up!"
+	
+Section 25 - Advanced going patterns (based on index, not docs)
+[going or going direction 
+    to room or nowhere 
+    from room 
+    by vehicle 
+    through door 
+    with something being pushed]
+
+Before going nowhere from the Airport by truck:
+	say "Crashing into the fence would probably bring you undesired security attention." instead.
+	
+Before going somewhere by truck with something (called the pushed item):
+	say "It takes all your driving prowess to direct [the pushed item] with the nose of the truck. You wouldn't have thought you had it in you..."
+	
+Before going by truck through the security gate with the wheelbarrow:
+	say "The guards are very impressed by your success in pushing the wheelbarrow through the security gate with the front of the truck." 
+	
+Before going to the Airport through the security gate by something (called the conveyance):
+	say "Surprisingly, [the conveyance] does not set off any alarms."
+	
+Instead of going to the Small Boat Harbor from the Narrow Spit by truck through the staircase:
+	say "The truck doesn't go on staircases."
+	
+Definition: a vehicle is unsticky if it is not the pogo stick.
+
+Instead of going to the Small Boat Harbor from the Narrow Spit by an unsticky thing (called the conveyance) through the staircase with something (called the burden):
+	say "Evil Knievel would envy your ambition. But no, you cannot drive on a staircase in a [conveyance] while nudging a [burden] on ahead of you."
+	
+Instead of going somewhere by pogo stick with something (called the burden):
+	say "The delicacy of maneuvering a pogo stick in the first place prevents your being able also to send [the burden] on ahead of you."

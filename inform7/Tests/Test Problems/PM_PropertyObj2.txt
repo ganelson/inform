@@ -1,0 +1,5 @@
+The World is a room.
+
+A button is a kind of thing. A button has a text called the label.
+
+The printed name of a button is the text.

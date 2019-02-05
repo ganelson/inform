@@ -1,0 +1,6 @@
+Xanadu is a room.
+
+The cavern measuring rules are a rulebook.
+
+The cavern measuring rules have outcomes man from Porlock visits (failure - the
+default) and poem is completed (success - the default).

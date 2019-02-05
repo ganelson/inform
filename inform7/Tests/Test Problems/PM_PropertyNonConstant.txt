@@ -1,0 +1,4 @@
+The starting room is a room. "Starting room."
+
+v is a number that varies. v is 77.
+A hat is a thing. A hat has a number called x. The x of the hat is v.

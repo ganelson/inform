@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+The player provides 10.

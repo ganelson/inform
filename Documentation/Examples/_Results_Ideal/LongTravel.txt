@@ -1,0 +1,41 @@
+   Monkey House
+  Safari Guide
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Monkey House
+  
+> >   African Grasslands Exhibit
+  (Testing.)
+  
+  >[1] go to aviary
+  (heading north)
+  
+  African Grasslands Exhibit
+  You can see a bird door here.
+  
+  (heading north)
+  (first opening the bird door)
+  (first unlocking the bird door)
+  (with the silver key)
+  
+  Aviary
+  You can see a bird door here.
+  
+  >[2] go to ostrich enclosure
+  (heading west)
+  
+  Ostrich Enclosure
+  
+  >[3] african grasslands
+  (heading east)
+  
+  Aviary
+  You can see a bird door here.
+  
+  (heading south)
+  
+  African Grasslands Exhibit
+  You can see a bird door here.
+  
+> >

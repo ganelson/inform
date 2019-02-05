@@ -1,0 +1,4 @@
+The white room is a room.
+
+The painting is a thing in the white room. "A lovely painting hangs on the wall."
+The description is "The medium seems to be crayon." The painting is scenery.

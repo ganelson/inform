@@ -1,0 +1,28 @@
+   Base of Puncak Jaya
+  Puncak Jaya
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Base of Puncak Jaya
+  You can see Temple, Kippax and Huizenga here.
+  
+> >   Peak of Puncak Jaya
+  (Testing.)
+  
+  >[1] x kippax
+  You see nothing special about Kippax.
+  
+  >[2] up
+  
+  Peak of Puncak Jaya
+  
+  >[3] x kippax
+  You seem to have left Kippax behind.
+  
+  >[4] kiss kippax
+  You seem to have left Kippax behind.
+  
+  >[5] kippax, hello
+  You seem to have left Kippax behind.
+  
+> >

@@ -1,0 +1,651 @@
+4U67 (7 May 2007)
+
+This build, for Mac OS X only, is identical to 4U65 except for the OS X user
+interface, in which the secondary controls in the various different panels
+have been harmonised into new-style bar icons. (In addition, new forward
+and back arrows provide the long-requested "browser-style history buttons".)
+We are releasing this now rather than waiting because it also fixes the
+minor but annoying bug to do with selecting detail pages in the Actions
+index (see the 4U65 release notes).
+
+
+4U65 (27 April 2007)
+
+This build once again fixes all bugs reported up to 22 April, but in fact
+few were found in 4S08; and it removes a hole in the type-checking system,
+to do with phrases to make decisions, but this will have affected few users.
+The main aim is an across-the-board reform of how actions are handled and
+implemented in Inform. Proposals (6.33), (6.35), (6.37) and (6.39) from the
+January 2007 consultation document are all carried through. It is now much
+easier to create actions which work equally for all actors, and which need
+a complicated interaction of rules to work.
+
+
+INFORM 7 FOR MAC OS X
+
+>--> A minor bug in the OS X application means that viewing the new details
+	pages for actions in the index will cause the application to think we
+	have switched to the Documentation panel, with the effect that the tabs
+	normally present for switching between index pages will disappear:
+	switching panel and going back to the Index will cure this. Apologies
+	for the inconvenience: the bug will be fixed in the next release.
+Fixed bug in 4S08 for OS X only which caused Inform to create spurious empty
+	Materials folders in cases where this was not really necessary (although
+	this did no harm, and could not damage any existing Materials folder).
+
+
+INFORM 7 FOR LINUX
+
+i7 now has the -r story-directory and -c story-directory command-line options.
+	These force it into non-interactive mode, where it compiles or releases
+	the story file and exits. They can be combined with -s (for settings)
+	and -p (for prefix of installed inform7 package); see the man page for
+	details. It is hoped that these options will be useful for IDE authors.
+
+
+INFORM 7 FOR WINDOWS
+
+Skein and Transcript improvements:
+A single click on a red badge in the skein is enough to go to the knot
+	in the transcript, rather than a double click as before.
+Any knot can be shown in the transcript by selecting "Show in
+	transcript" from the context menu or clicking on a red badge, not just
+	knots in the current thread.
+A knot selected in the above way is now indicated in the transcript by
+	having a thin blue border around it.
+The last played knot is now indicated in the transcript by having a
+	yellow border around it.
+The thick line in the skein now always shows the thread that is visible in
+	the transcript.
+The new menu item "Play All Blessed" plays through all threads that end in a
+	knot with an expected transcript.
+If the expected text in the transcript tab is double clicked on, the window
+	goes into edit mode, in which the expected text can be amended.
+When editing the expected text in the transcript tab, holding Ctrl+Enter
+	adds a carriage return to the expected text.
+
+
+RULEBOOKS
+
+Variables can now be given to rulebooks. For instance:
+		The every turn rulebook has a number called accumulated bonus.
+	creates a variable called "accumulated bonus", which holds a number.
+	Such variables are initialised to the default values for the relevant
+	kind when the rulebook starts, and are accessible only within rules
+	belonging to that rulebook (or which have historically belonged to it,
+	but been displaced by a "listed in... instead" sentence). Rulebook
+	variables have a namespace of their own: so their names can freely
+	clash with those of things, rooms, etc.) If the rulebook should
+	recursively start again within itself, each new run-through of the
+	rulebook has its own set of variables. In short, they behave exactly
+	like "let" values except that they last for a whole rulebook, not an
+	individual rule or To phrase. (This was (6.33) in the January document.)
+As we can now add a potentially unlimited number of new clauses to the
+	descriptions of actions to say whether or not rules apply (see below),
+	Inform must refine its method for sorting rules in order of how specific
+	they are. The rules on "going" are unchanged and we believe that no pair
+	of existing rules not using the new features will have their orderings
+	changed in any rulebook. Rules which do use new clauses are now subject
+	to a new sorting principle, "III.2.4 - Action/Where/Other Optional
+	Clauses". This follows the standard conventions.
+
+
+ACTIVITIES
+
+Variables can also now be given to activities. These are created just
+	before the "before" rules for the activity begin, and destroyed when
+	the "after" rules end (or when the activity is abandoned, though this
+	is a rare occurrence). They are visible to the rules for that activity,
+	and nowhere else, and again they have their own namespace; again, if
+	the activity should happen a second time within its first run, that
+	second occurrence gets its own copies of the variables. A simple
+	example of an activity variable:
+		Analysing something is an activity.
+		The analysing activity has a text called first impression.
+		Before analysing: now the first impression is "unremarkable".
+		Rule for analysing someone: now the first impression is "living tissue".
+		After analysing something (called the sample):
+			say "Your professional opinion of [the sample] is that it is
+			[first impression]."
+		Instead of examining something (called the sample):
+			carry out the analysing activity with the sample.
+If an activity is called X, we can now also refer to it as "the X activity"
+	for clarity's sake. (As with rulebooks called Y, which can already be
+	called "the Y rulebook". This has been done in order to make the syntax
+	for creating activity variables more explicit in its intentions.)
+
+
+ACTIONS
+
+Variables can also now be given to actions. These are created just before
+	the "before" rules for the action begin, and destroyed when the action ends
+	(by whatever means that should happen). If one action is interrupted by
+	another, the new action gets its own copies of these variables.
+	The names of action variables are visible only within rules in action-based
+	rulebooks ("before", "carry out", etc.).
+	But note that every action's variables are visible to every such rule -
+	as has to be true, because we can have "before" rules which take effect
+	for many different actions, for instance, and such rules might need
+	access to any of their variables. In consequence, there is only one
+	namespace for all action variables: if two different actions name
+	a variable "item", say, clashes will occur. As a result, action variables
+	should be named in a way marking out to which action they belong, and we
+	recommend including the past participle of the action name - so for
+	instance, "vehicle gone by", "door gone through", "sticky item taken", etc.
+	A simple example of an action variable:
+		The singing action has a text called the lyric sung.
+		Before singing: now the lyric sung is "Destruction of the empty spaces
+			is my one and only crime."
+		The block singing rule is not listed in any rulebook.
+		Carry out singing: say "You cheerfully warble: [quotation mark]
+			[lyric sung][quotation mark][paragraph break]".
+	One more warning: since any action-based rule can see all the action
+	variables, it's possible to refer to the variables for an action which
+	is not actually happening. For instance:
+		Before doing something when the lyric sung is "Yesterday..."
+	would compile without problems, but fail at run-time when any action
+	other than singing was tried.
+In the above example, the variable "lyric sung" was set in a before rule.
+	In practice, though, it might be needed by other before rules, and then
+	the order of operation of before rules would become uncomfortably
+	important. To get around this, a new rulebook has been created: the
+	"setting action variables" rulebook. For instance, we could write:
+		Setting action variables for singing:
+			now the lyric sung is "Mystifying eyes."
+	This rulebook is run through before even the before rules, and could be
+	used to detect the context and set variables accordingly: but it does
+	not have any power to stop or change the action, and its rules should
+	ideally say nothing and do nothing other than set rulebook variables,
+	please. (Such a rulebook must work for any actor, not just the player:
+	so if the idea is to set variables based on the local situation where
+	the action will take place, look to see where the "actor" is, not
+	where the "player" is.)
+There is a new kind of value built into Inform: "action-name". (As its
+	hyphenated name suggests, this is primarily intended for internal use,
+	but there are no restrictions on it.) An action-name identifies the
+	particular action but none of the nouns attached: it corresponds to
+	numerical Inform 6 values such as ##Go. When an action called X is
+	created, the constant value "the X action" is also created: thus
+	"the looking action", "the putting it on action", etc., are all valid
+	constant values of this kind. (For those who wish to make variables
+	properties, table columns, etc., of this kind, the default value is
+	"the waiting action", that being a sort of zero among actions.)
+It is now legal to declare a "specification text" for an action, analogously
+	with kinds, and this is used in the Actions index.
+
+
+ACTION-BASED RULES
+
+Inform source text describes actions with so-called "action patterns", and
+	these specify among other things who the actor must be. Up to now, there
+	have only been two ways to specify the actor, as in these examples:
+		taking a container
+		X trying taking a container
+	The former means the actor must be the player: the latter allows any
+	description X so long as X is not the player. Thus,
+		someone trying taking a container
+	allows the actor to be any person in play except the player. This made
+	it impossible to write a single rule applying to any actor equally.
+	A new third form has been added to allow for this:
+		an actor taking a container
+	For instance, we could write:
+		Instead of an actor jumping: ...
+	This implements proposal (6.35) in the January document.
+The second form of actor description above is often found to be clumsy:
+		Before X trying taking a container...
+		try X trying eating the cake...
+	Here the word "trying" is cumbersome. In a few cases it is needed to
+	make the text unambiguous, and if the description of the actual action
+	is the name of a kind of action, it is positively a good thing:
+		Before X trying risky behaviour...
+	but very often it is a nuisance. The word is now optional provided that:
+	(a) the actor is described using a description ("someone", say, or
+		"Captain Haddock") or a variable name;
+	(b) the eventual action is something explicit (like "taking...") rather
+		than a named kind of action (like "risky behaviour");
+	(c) the action is being used in a "try" (or other phrase with an action
+		as its parameter) or as the premiss for a rule.
+	In other cases, "trying" will remain obligatory, but in practice they will
+	be very few. The Examples for 4S08 contained some 120 uses of "trying"
+	between them: this reform enabled every "trying" to be removed except one,
+		Instead of someone trying disorderly conduct in the presence of
+			the policeman:
+	where it would clearly not be grammatical to remove it anyway.
+As mentioned above, every action variable is visible from every action rule.
+	But so far they have all been specific in nature to particular actions:
+	for instance "lyric sung" makes no sense for non-singing actions. But
+	we can also make general action variables, also visible from all action
+	rules, by creating variables for the "action-processing rulebook".
+	This is really a concept which has always existed - "noun" and "second
+	noun" are exactly such variables. Joining them henceforth is "actor":
+	the person trying the action.
+>--> Thus if existing source text contains references to something called
+	simply "actor", perhaps in a work of IF about the theatre, it may now
+	fail to work. (Something like "stage actor" or indeed "thespian" would
+	of course work instead. When we made this change it affected only one of
+	the Inform examples: Ballroom, which was previously using "actor" as a
+	let value in just such a rule - we changed it to read "dancer" instead.)
+Although the following is a bug fix, it is worth recording as a change in
+	behaviour. The room description at the end of a going action to a new
+	location is not technically the result of a looking action. (It doesn't
+	quite do a LOOK: for instance, it suppresses the body text for a room
+	visited before, and the paragraph spacing is different, etc.) In principle,
+	then, during such a room description the action ought still to be "going",
+	but that means that a rule such as
+		After printing the name of a person while looking: ...
+	would not take effect, which is clearly incorrect. This bug has been
+	fixed and such a rule now takes effect.
+It has always been the case up to now that the "going" action had a special
+	status in Inform: it allowed special clauses such as "... through ..."
+	(for the door gone through) not allowed for any other action, and this
+	behaviour was hard-wired into the syntax of the language. The ability
+	to create such clauses is now available to any action. For instance,
+	the following adds "...into..." and "...onto..." to Inform's syntax
+	for writing rules about dropping:
+		The dropping action has an object called the container dropped into
+			(matched as "into").
+		The dropping action has an object called the supporter dropped onto
+			(matched as "onto").
+		Rule for setting action variables for dropping:
+			if the actor is in a container (called C), now the container dropped
+				into is C;
+			if the actor is on a supporter (called C), now the supporter dropped
+				onto is C.
+	What's new here is the "(matched as...)" clause attached to the action
+	variable. We have declared that "... into X" should test to see if the
+	action variable "container dropped into" matches X, and similarly for "onto".
+	As a result, we can now write:
+		Instead of dropping something onto something, say "Don't drop things
+			onto platforms or ledges."
+		Instead of dropping something into an open container, say "Don't drop
+			things into open containers."
+	(Note that these clauses are only descriptions of the action: it makes no
+	sense to write
+		try dropping A onto B;
+	since the question of whether or not B is dropped onto depends on where the
+	player is, and is not something we can choose. Note that this is exactly
+	the same position as "going" was in before: for instance,
+		try going east from the Ballroom;
+	was and is not allowed, because the question of whether it's from the
+	Ballroom or not depends on where the player happens to be.)
+	This change implements proposal (6.37) in the January document.
+In previous builds, Inform has used a messy compromise in its handling of
+	check, carry out and report rules. These sometimes look to the user as
+	if they are single rulebooks: as if "check", for instance, is on a par
+	with "before" (which is indeed a single rulebook). In fact, for efficiency
+	reasons, there are individual check rulebooks for each action, as shown
+	by the diagram at 12.2 in the documentation.
+	Up to now, it has been legal to write a rule like
+		Check doing something: ...
+	even though this clearly can't belong to any rulebook in the diagram at
+	12.2. What was actually happening was that the checking stage used _both_
+	a single generic "check" rulebook _and_ a family of rulebooks with names
+	like "check taking". Rules defined in the Standard Rules would always go
+	into the individual rulebooks, but most (not quite all) rules created by
+	the user would end up in the generic "check" rulebook. While this gave a
+	pretty convincing illusion that all was well, it led to violations of
+	the rule-sorting principle that specific rules come before generic ones
+	("check doing something" would come before "check taking an open
+	container in the presence of a vehicle when the time of day is 11:13 AM",
+	say), and attempts to explicitly list rules into these rulebooks could
+	have odd consequences because of misunderstandings between "check" and
+	"check taking", say. Moreover, for implementation reasons, the actions
+	in the Standard Rules created check, carry out and report rulebooks
+	with funny properties which no other rulebooks had.
+	All of this has been abolished:
+	- the position is now strictly as shown in the diagram at section 12.2:
+		there are now no generic "check", "carry out" or "report" rules.
+	- all such rules are now placed into rulebooks specific to the actions
+		they belong to. Thus, e.g.,
+			Check an actor going: ...
+		is filed in the "check going" rulebook.
+	- problem messages now result from creating rules such as
+			Carry out doing something: ...
+			Report dropping or taking a container: ...
+		which cannot be filed into single unambiguous rulebooks;
+	- the Standard Rules now use the same action-creating syntax and
+		semantics as anyone else.
+	The one respect in which "check A", "carry out A" and "report A" rulebooks
+	are unlike other rulebooks is that rules in them do not check that the
+	action is indeed A. This is partly because there is no need (if we are
+	looking at the check taking rulebook, the action must be taking) but
+	mostly so that a single rule can be explicitly placed in the check (etc)
+	rules for more than one action at once. For instance, if we write:
+		Check an actor taking (this is the hypothetical rule): ...
+	and then say
+		The hypothetical rule is listed in the check removing it from rulebook.
+	the rule can be effective in both rulebooks: if it tested to see that the
+	action was taking, it would never have any effect in the check removing
+	it from rulebook, and thus it would be impractical to share rules between
+	more than one of these rulebooks - which would be inconvenient to the
+	Standard Rules, and also to extensions wanting to consider or abide by
+	rules from one action while processing another.
+We appreciate that this will cause a small amount of pain (we had to change
+	7 not-specifically-action-worded rules in the Inform examples) but we
+	think the pain is worth it for the simplification resulting, and most
+	such rules are fairly easy to recast. For instance,
+		Carry out doing something: ...
+	can probably become
+		Instead of doing something:
+			...
+			continue the action.
+	without any practical change in the outcome.
+Detailed index pages on individual actions now appear in the Index. We hope
+	these give a truer picture of what happens to any given action, by
+	showing every rule which can affect it, and making the sequence more
+	explicit.
+Problem message added to catch action descriptions which name unknown actors
+	(e.g. "Xerxes the Otherwise Never Mentioned examining the bucket" was
+	being read as simply "examining the bucket").
+
+
+THE BUILT-IN ACTIONS
+
+Inform provides about 70 built-in actions which form part of the model world.
+	(That is, not counting out-of-world actions such as saving the game.)
+	In previous builds these have been implemented using a special action
+	definition syntax reserved for use of the Standard Rules only, and
+	consisting essentially of tables of rule names against I6 identifiers:
+	all the rules involved were implemented by I6 code. This was bad because
+	it meant that the built-in actions were treated as special in all sorts
+	of ways (not a very clean design technique) and because it was quite
+	hard to work out how the built-in actions worked, since one needed to
+	be able to puzzle out the I6 code at the bottom of all this. On the
+	other hand, it had the advantage of speed, since Inform did not have
+	to read and compile the built-in action rules from I7 source text.
+	As discussed in the January document at (6.39), there are trade-offs
+	here, but we have now bitten the bullet and reimplemented all of the
+	(not out of world) actions in I7 source text.
+
+
+THE GOING ACTIONS
+
+The "going" action is the second most complex in Inform ("looking" probably
+	takes the palm) and the re-implementation in I7 has turned up two bugs
+	which have also been fixed. In addition, numerous rules have been
+	renamed or removed:
+	- the can't go through concealed doors rule has been renamed
+		the can't go through undescribed doors rule ("undescribed" being
+		the I7 word for what I6 called "concealed");
+	- the following rules have been abolished:
+			set up going rule
+			check to see if in a vehicle rule
+			determine direction property rule
+			print textual map connections rule
+			consult routine map connections rule
+			determine what's through door rule
+		These all clumsily worked out what we now regard as action variables,
+		except for the textual and routine map connections rules, which were
+		to provide backwards compatibility with traditional I6 use of the map
+		properties, which I7 doesn't recognise or use; however, we retain the
+			determine map connection rule
+		whose purpose now is to recalculate the "room gone to" variable
+		immediately before the "can't go" check. (This is done because people
+		often use before rules to modify the map, in order to make dynamic
+		map structures which respond to movement.)
+	- in the check rules, the can't go that way rule has been moved to after
+		the rules checking on undescribed and closed doors: after all how is
+		one to know that a door leads nowhere if it is closed? But if you do
+		succeed in opening such a door and try going through it, the
+		traditional I6 response "You can't, since the X leads nowhere."
+		has been restored in place of I7's recent practice of simply saying
+		"You can't go that way."
+A bug has been fixed which caused a person other than the player getting
+	off something to be reported as if he were getting out of it.
+
+
+THE LOOKING ACTIONS
+
+The following rules have been abolished:
+		consult LookRoutine entry point rule
+		standard searching rule
+	The former provided vestigial I6 support; the latter in all cases did
+	nothing.
+
+
+THE OBJECT MOVEMENT ACTIONS
+
+Under the taking action, actors other than the player can now also use a
+	"player's holdall" (if carried) to overcome carrying capacity limits.
+The following rules have been abolished:
+		default inventory style rule
+		check let-go-before rule
+		check let-go-after rule
+		check receive-before for supporter rule
+		check receive-after for supporter rule
+		check receive-before for container rule
+		check receive-after for container rule
+	These provided vestigial I6 library support and are irrelevant for I7.
+The following rules for the removing it from action have been abolished:
+		can't remove from closed containers rule
+		check after-rules for taking too rule
+		standard report removing rule
+	They had no effect in 4S08, having been pre-empted for some time by the
+	automatic conversion of removing to taking: they had been left in the
+	Standard Rules by accident but could never have any effect.
+Similarly: the
+		can't insert component parts rule
+	was redundant in 4S08 and has been removed.
+
+
+THE ACTIONS WHICH CHANGE THE STATE OF THINGS
+
+When the opening action by the player is successful, Inform shows the contents
+	of what was opened, provided it was opaque (so that the contents were
+	previously not visible) and provided that the player is not inside it.
+	The rule causing this was called the
+		reveal any newly visible exterior rule
+	which is a misleading - it has been renamed the
+		reveal any newly visible interior rule
+
+
+THE ACTIONS INVOLVING OTHER PEOPLE
+
+The following rules have been abolished:
+	check life property for giving rule
+	check life property for showing rule
+	check life property for waking rule
+	check life property for throwing at rule
+	check life property for attacking rule
+	check life property for kissing rule
+	check life property for answering rule
+	check life property for telling rule
+	check life property for asking rule
+	check thrown-at rule
+	These provided vestigial I6 library support and are irrelevant for I7.
+As for the do-nothing actions (see below), these are now also handled
+	symmetrically for all actors. (Thus, for instance, the block attacking
+	rule now blocks any actor attacking any other.)
+
+
+THE DO NOTHING ACTIONS
+
+The actions indexed as "Actions which always do nothing unless rules
+	intervene", which consist only of a single checking rule to block them,
+	behaved asymmetrically in previous builds since they blocked the
+	action for the player, but allowed it to run through untouched and
+	with no rules applying for any other actor. This could result in odd
+	transcripts such as:
+		> SING
+		Your singing is abominable.
+		> PETER, SING
+		>
+	...because no rules at all fire for Peter trying singing, so the
+	action succeeds by default, and nothing is said or done.
+	In this build, the blocking rules for do-nothing actions now block
+	all actors. Thus:
+		> PETER, SING
+		Peter is unable to do that.
+	or with ACTIONS switched on:
+		> PETER, SING
+		[asking Peter to try singing]
+		[(1) Peter trying singing]
+		[(1) Peter trying singing - failed the block singing rule]
+		Peter is unable to do that.
+		[asking Peter to try singing - succeeded]
+	This affects the actions:
+		Saying yes, Saying no, Burning, Waking up, Thinking, Smelling,
+		Listening to, Tasting, Cutting, Jumping, Tying it to, Drinking,
+		Saying sorry, Swearing obscenely, Swearing mildly, Swinging,
+		Rubbing, Setting it to, Waving hands, Buying, Singing,
+		Climbing, Sleeping
+>--> While this is much more logical, and means that every (non-out-of-world)
+	action in the Standard Rules now works equally for all actors, it does
+	mean that a rule in the form:
+		After Peter trying singing: ...
+	will no longer work, because Peter's singing action will be blocked and
+	never reach the "after" stage. To get around this:
+		Instead of Peter trying singing:
+			...
+			the rule succeeds.
+	Note the last line, forcing the action to be considered a success: actions
+	stopped by instead rules are normally deemed to fail, but making this
+	succeed means that no "Peter is unable to do that." text will be printed.
+
+
+PHRASES
+
+Inform has been made a little stricter in when it allows certain phrases
+	to be used. For instance, the phrase "decide on X", which chooses a
+	value X, is now only allowed in a phrase "To decide which ..." - of
+	course it didn't make sense anywhere else, but this is now policed.
+	Similarly, "decide yes" is now restricted to phrases which need to
+	decide if something is or isn't true, and so on. (We're pretty certain
+	that this new check only rejects uses which do not at all achieve what
+	they look as they ought to do.)
+Similarly, "decide on X" now checks the kind of X to see if it matches the
+	required kind. This may produce problems either at compile time, or
+	at run-time. Note in particular that "nothing" is forbidden as a
+	value to decide on if we are required to produce a particular kind
+	of object such as, say, a "room", but is allowed if we are only required
+	to produce an "object". (This agrees with the conventions used for
+	variables.)
+Finally, phrases to decide a value now return the default value of the
+	appropriate kind if execution runs through to the end of the definition
+	without having reach any "decide on X" phrase.
+Problem message added to explain why two bracketed phrase terms immediately
+	next to each other, with no word in between, is against the rules -
+	e.g. "To combine (X - a number) (Y - a number)". (Previously Inform
+	would allow the definition, but then never recognise it in source text,
+	which was not a very helpful way of rejecting it.)
+Bug fixed whereby setting up a phrase "To decide what X is ..." might
+	read X as a description of a thing rather than a kind of value in
+	cases where X is both the name of such a kind, and also part of the
+	name of a thing. (For instance, if there is an object somewhere called
+	"number puzzle", then a phrase "To decide what number is ..." was
+	being misread as if its type had to be always the number puzzle object,
+	not a number.)
+
+
+PROPERTIES
+
+Two changes have been made to the way that assertions about either/or
+	properties of kinds are read. To demonstrate, consider the sentence in
+	the Standard Rules which reads
+		A thing is usually inedible.
+	What if we want to contradict this? In previous builds, we could write:
+		A thing is never inedible.
+	This worked, but owing to a bug,
+		A thing is always edible.
+	did not work - this bug has now been fixed. In either of these sentences,
+	we undo the sentence in the Standard Rules by writing a sentence which is
+	more definite - certain ("never", "always") rather than merely likely
+	("usually"). But what if we don't want extra certainty? In previous builds,
+	writing
+		A thing is usually edible.
+	would have no effect, because when two inferences are drawn about the
+	same property which contradict but which are each uncertain, the original
+	first-drawn inference is allowed to stand, and the second is ignored.
+	This convention has been reversed in the case of inferences drawn about
+	properties of kinds:
+		A later uncertain assertion about a property of a kind beats
+		an earlier uncertain assertion about the same property.
+Problem message added for saying that a kind has an either/or property
+	without previously having said that it can have that property. This
+	would usually not work anyway, but in previous builds, saying "K is
+	usually openable." would make it so: Inform now insists that we write
+	"K can be openable. K is usually openable.", as the documentation implies.
+	(The examples A Haughty Spirit and Disappointment Bay 12 needed to be
+	corrected in just this way.)
+Problem message added (rather than internal error) to reject implications
+	where the implied outcome is a value property rather than a simple
+	either/or property like open/closed.
+Problem message added to explain why "D can be X or Y" makes no sense if
+	D is something qualified by adjectives - e.g. "An open door can be
+	rickety or sturdy" makes no sense because the door still has to have the
+	property even at times when it is not open. (Previously Inform simply
+	ignored the adjectives, and assigned the property to the underlying kind.)
+Bug fixed whereby saying "now X is P" could be misconstrued if P refers to a
+	property but does so inexplicitly: for instance, "now X is the colour of
+	the button" would try to change X to be equal to this colour whereas
+	"now X is green" would simply change the colour of X. Both forms now
+	change the properties, not the identity, of X.
+Bug fixed whereby large numbers of either/or properties created for things,
+	followed by an either/or property being created for rooms, would sometimes
+	lead to bogus programming errors at run time.
+Bug fixed whereby creating a new either/or property but giving its antonym
+	as an existing one would sometimes wrongly be allowed, leading to
+	peculiar run-time problem messages. (E.g. writing "The Catwalk can be
+	flaming or unlit." causes this, because "unlit" is already the antonym
+	of "lit", a property of things.)
+Bug fixed whereby certain complicated forms of property assignment in
+	assertions could cause an internal error (e.g., "Blinky is an ephemeral
+	ghost with reaction "Boo!".").
+
+
+EXAMPLES
+
+New example "Croft" added to demonstrate action variables.
+The now usually unnecessary word "trying" (see above) has been removed from
+	most of the examples involving actions.
+
+
+MISCELLANEOUS
+
+Problem messages added for creating table columns whose names are articles
+	or existing values such as literal numbers.
+Problem message added (rather than internal error) for initialising a
+	K that varies (where K is a kind) to the value "nothing". This is legal
+	for an object that varies (though in 4S08 a bug blocked this), but not
+	where the variable always has to hold something of a given kind.
+Problem message added (rather than internal error) for an attempt to total
+	the column of a table rather than a property.
+Problem message added (rather than eventual I6 errors) for defining plurals
+	using quotation marks, e.g., writing 'The plural of "coin" is monies.'
+	rather than 'The plural of coin is monies.'
+Better problem message added for close square brackets used wrongly as
+	literals in quoted text.
+Bug fixed whereby continuations of tables would sometimes wrongly be reported
+	as containing columns not found in the original tables, and would
+	sometimes (even when they worked) have their columns incorrectly matched
+	up to the original table, in cases where the columns had been reordered.
+Bug fixed whereby a compound sentence asserting a relationship both with a
+	new specific object and also a new object described only generically by
+	naming its kind, as in:
+		The big box contains a container and Peter.
+	...would fail complaining of an overly complicated relationship.
+Bug fixed whereby the word "visible", redundantly used in a grammar token
+	as in e.g.
+		Understand "inspect [any visible thing]" as examining.
+	would cause a hang because I6 scope loops can't be nested.
+Bug fixed whereby hanging dependent clauses which depended on local variables
+	would sometimes be construed unexpectedly. (This really only affected
+	descriptions which were not very useful anyway, e.g., "the number of
+	things worn by X which fit Y", which is not good style since it in
+	fact evaluates the number of things worn by an X-which-fits-Y - that
+	is, the "which fit Y" clause appends to X and not the things.)
+Bug fixed whereby the "after reading a command" rulebook would sometimes
+	fail to be able to replace matched text in a command in cases where it had
+	been rewritten as a result of a "Which do you mean...?" question.
+Bug fixed whereby the character @ could not be parsed at run-time, and an
+	attempt to write something like 'Understand "@" as the giant at-symbol'
+	would produce I6 errors.
+Bug fixed whereby expressions containing more than one bracketed subexpression
+	would sometimes be misparsed: e.g. "let a be (x + y) / (x - y)" would
+	produce spurious problem messages despite being legal syntax.
+Bug fixed whereby Definitions involving looking up entries in tables would
+	sometimes compile through I7 but cause I6 errors.
+Bug fixed whereby calculations of the other side of a door, or the direction
+	taken by a door, would sometimes be incorrect in darkness.
+Bug fixed whereby problems to do with variable initialisation were
+	reported at the correct sentences but under the wrong headings.

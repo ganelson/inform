@@ -1,0 +1,127 @@
+   Thirtieth Street Station
+  Witnessed
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Thirtieth Street Station
+  A huge, high, rectangular room with coffered ceilings, which looks grand but mostly makes you feel lonely and small. There are long benches in rows down the middle of the room, and an information desk with the train times, and a series of ticket windows, none of which matters very much at the moment.
+  
+  At the north side of the station is a particularly pointless and empty annex to the main room. It is dominated by a huge relief of sorts, and this is what you remember.
+  
+  Carefully attached to the wall with a piece of duct tape and a hook is a light-weight set of wind chimes. Someone else has been here before you, it seems.
+  
+> >   Thirtieth Street Station
+  (Testing.)
+  
+  >[1] test first
+  (Testing.)
+  
+  >[2] i
+  You are carrying:
+    a D battery
+    a backpack (being worn and open)
+      a flashlight
+      a cassette recorder
+  
+  >[3] open flashlight compartment
+  You open the flashlight's battery compartment.
+  
+  >[4] put battery in it
+  (the D battery in the flashlight's battery compartment)
+  You put the D battery into the flashlight's battery compartment.
+  
+  >[5] turn on flashlight
+  You switch the flashlight on.
+  
+  >[6] take d battery
+  Taken.
+  
+  The flashlight loses power and switches off!
+  
+  >[7] open cassette compartment
+  You open the cassette recorder's battery compartment.
+  
+  >[8] turn on cassette
+  Nothing happens, perhaps because there isn't a charged battery in the cassette recorder.
+  
+  >[9] put battery in cassette compartment
+  (the D battery in the cassette recorder's battery compartment)
+  You put the D battery into the cassette recorder's battery compartment.
+  
+  >[10] turn on cassette
+  You switch the cassette recorder on.
+  
+  The cassette recorder hisses faintly.
+  
+  >[11] z
+  Time passes.
+  
+  The cassette recorder hisses faintly.
+  
+  >[12] z
+  Time passes.
+  
+  The cassette recorder hisses faintly.
+  
+  >[13] z
+  Time passes.
+  
+  The cassette recorder hisses faintly.
+  
+  >[14] z
+  Time passes.
+  
+  The cassette recorder hisses faintly.
+  
+  >[15] test second
+  (Testing.)
+  
+  >[16] get d battery
+  Taken.
+  
+  The cassette recorder loses power and switches off!
+  
+  >[17] put d battery in flashlight compartment
+  You put the D battery into the flashlight's battery compartment.
+  
+  >[18] turn on flashlight
+  You switch the flashlight on.
+  
+  >[19] z
+  Time passes.
+  
+  >[20] z
+  Time passes.
+  
+  >[21] z
+  Time passes.
+  
+  >[22] z
+  Time passes.
+  
+  >[23] z
+  Time passes.
+  
+  >[24] z
+  Time passes.
+  
+  The flashlight is obviously going to go out quite soon.
+  
+  >[25] turn off flashlight
+  You switch the flashlight off.
+  
+  >[26] z
+  Time passes.
+  
+  >[27] z
+  Time passes.
+  
+  >[28] turn on flashlight
+  You switch the flashlight on.
+  
+  >[29] z
+  Time passes.
+  
+  The flashlight loses power and switches off!
+  
+> >

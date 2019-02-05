@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+Instead of jumping (this is the don't jump, don't tell rule): say "Yikes."
+
+This is the (mostly) useless rule: do nothing.

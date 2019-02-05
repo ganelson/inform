@@ -1,0 +1,5 @@
+Home is a room.
+
+When play begins:
+	let L be {1, 2, 3};
+	let M be entry "three" of L.

@@ -1,0 +1,72 @@
+* Basis of a rulebook
+(Object-based rulebooks--Flotation of objects; Flotation)
+Objects that can sink or float in a well, depending on their own properties and the state of the surrounding environment.
+
+Here we want a rulebook to determine whether objects float or sink, so we create an object-based rulebook for the purpose. The more specific rules here, pertaining to corks and to inflated things, will be consulted first; then, as a default, the general flotation rule. 
+
+We also want a switch that can turn flotation off at will. The rule about the big switch will be observed before the others because the when... clause makes it more specific than the other rules in the flotation rulebook.
+
+If we wanted, we could also put these rules into a rulebook in an explicit order, overriding Inform's automatic sorting by specificity.
+
+	{*}"Flotation"
+	
+	The Pumping House is a room. 
+	
+	A well is a fixed in place container in the Pumping House. 
+	
+	Instead of examining the well:
+		say "[if something is in the well]On the surface of the water you can see [a list of things in the well][otherwise]There is nothing on the surface of the water, nor can you see into the depths[end if]."
+
+	The well bottom is a container.
+
+	The cork, the rubber ring and a lead ingot are in the Pumping House.
+
+	A big switch is a fixed in place device in the Pumping House. "A big switch labelled 'MAKE EVERYTHING SINK' is mounted on one wall[if switched on]. It crackles with electricity[otherwise]. It is currently switched off and silent[end if]."
+
+	A thing can be inflated or uninflated. A thing is usually uninflated. Before printing the name of an inflated thing: say "inflated ".
+
+	The rubber ring is inflated.
+
+	The flotation rules are an object-based rulebook.  
+
+	A flotation rule for the cork: rule succeeds.
+	A flotation rule for an inflated thing: rule succeeds.
+	A flotation rule when the big switch is switched on: rule fails.
+
+	After inserting something into the well:
+		follow the flotation rules for the noun;
+		if the rule succeeded:
+			say "[The noun] bobs on the surface.";
+		otherwise:
+			move the noun to the well bottom;
+			say "[The noun] sinks out of sight."
+		
+	A thing can be sinking, rising, or static. A thing is usually static.
+	
+	Definition: a thing is wet:
+		if it is in the well, yes;
+		if it is in the well bottom, yes;
+		no.
+		
+	Every turn:
+		now every thing is static;
+		repeat with item running through wet things:
+			follow the flotation rules for the item;
+			if the rule failed and the item is in the well, now the item is sinking;
+			if the rule succeeded and the item is in the well bottom, now the item is rising;
+		now every rising thing is in the well;
+		now every sinking thing is in the well bottom;
+		if something is rising, say "[The list of rising things] rise[if the number of rising things is 1]s[end if] to the surface of the well.";
+		if something is sinking, say "[The list of sinking things] sink[if the number of sinking things is 1]s[end if] out of sight."
+		 
+And finally a few description rules to make things look prettier: 
+	
+	{**}Rule for writing a paragraph about the well when the well contains something:
+		say "The chief feature of the room is a concrete-sided well in which there float[if the number of things in the well is 1]s[end if] [a list of things in the well]."
+	
+	Rule for writing a paragraph about the well:
+		say "The chief feature of the room is a concrete-sided well full of water."
+
+As we recall from the chapter on activities, "writing a paragraph about..." is an activity; activities are themselves structured as sets of object-based rulebooks. The activity "writing a paragraph about" uses three object-based rulebooks (before writing..., for writing..., after writing...). We could have made a flotation activity as well, but in general it is overkill to make an activity to make success/failure decisions. For that purpose an object-based rulebook is sufficient.
+
+	{**}Test me with "get all / put cork in well / put ring in well / put ingot in well / x well / get cork / get ring / switch switch on / put cork in well / put ring in well / x well / switch switch off / switch switch on".

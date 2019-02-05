@@ -1,0 +1,26 @@
+   Jade Temple Dojo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Jade Temple Dojo
+  Here is where the great kung fu masters -- Tiger, Snake, Mantis, Crane and Monkey -- practice their ancient fighting arts.
+  
+> >   Jade Temple Dojo
+  (Testing.)
+  
+  >[1] x scroll
+  What is this? According to the scroll, a humble Panda is destined to defeat the mighty Tai Lung!
+  
+  >[2] l
+  Jade Temple Dojo
+  Here is where the great kung fu masters -- Tiger, Snake, Mantis, Crane, Monkey and Panda -- practice their ancient fighting arts.
+  
+  >[3] x scroll
+  What is this? According to the scroll, a humble Panda is destined to defeat the mighty Tai Lung!
+  
+  >[4] l
+  Jade Temple Dojo
+  Here is where the great kung fu masters -- Tiger, Snake, Mantis, Crane, Monkey and Panda -- practice their ancient fighting arts.
+  
+> >

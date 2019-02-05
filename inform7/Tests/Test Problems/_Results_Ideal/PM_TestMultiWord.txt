@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TestMultiWord
+  >--> You wrote 'Test the huge memorial statue with "look"' (source text, line 3):
+    but test scenarios must have single-word names, so 'test garden with ...'
+    is allowed but not 'test garden gate with...'
+Inform 7 has finished: 17 centiseconds used.

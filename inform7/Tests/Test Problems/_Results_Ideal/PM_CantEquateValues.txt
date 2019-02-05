@@ -1,0 +1,13 @@
+Inform 7 build 6L96 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantForceRelation
+  >--> You wrote 'now 1 is 2' (source text, line 4): but this is not something
+    I can make true with 'now', because it is too vague about the underlying
+    cause which would need to be arranged.
+Problem__ PM_CantEquateValues
+  >--> You wrote 'now the Conservatoire is the Rostrum' (source text, line 5):
+    but equality is not something I can change, so either those are already the
+    same or are different, and I can't alter matters.
+Inform 7 has finished: 50 centiseconds used.

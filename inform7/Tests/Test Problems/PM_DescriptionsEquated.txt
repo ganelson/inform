@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+The dark door is a container.

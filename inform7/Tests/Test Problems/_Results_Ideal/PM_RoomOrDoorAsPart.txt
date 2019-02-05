@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RoomOrDoorAsPart
+  >--> The Big Door was set up as being part of something else, which doors and
+    rooms are not allowed to be, because they are part of the fixed map of the
+    world - if they were parts of something else, they might move around. (Of
+    course, it's easy to make a door look as if it's part of something to the
+    player - describing it as part of a wall, or bulkhead, or cottage, say -
+    and if there really is an entrance that needs to move around - say, the
+    hatchway on a tank - it's probably best to make it an enterable container.)
+Inform 7 has finished: 17 centiseconds used.

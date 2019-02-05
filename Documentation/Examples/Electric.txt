@@ -1,0 +1,24 @@
+* Check, carry out, report
+(Electric light kind of device; The Dark Ages Revisited)
+An electric light kind of device which becomes lit when switched on and dark when switched off.
+
+This will be explored more in subsequent examples, but one of the things we can do with carry out rules is extend the function of existing commands so that they do more, or have special effects in specific situations. For instance, suppose we want to have a class of electric light:
+
+	{*}"The Dark Ages Revisited"
+
+	An electric light is a kind of device. Carry out switching on an electric light: now the noun is lit. Carry out switching off an electric light: now the noun is unlit.
+	
+This will not affect the behavior of any other devices when switched; it will also not change the way in which switching lights on and off is reported. The player will still see "You switch the sodium lamp on." or the like. In this case that is probably what we want. If we wanted a special way of describing turning on electric lights as opposed to all other devices, we could also add an after rule for the electric light class. Adding this rule to the carry out train does guarantee, though, that in no case will we manage to make the lamp lit without actually making it switched on (or vice versa).
+
+	{**}The Stooped Corridor is a room. "A low, square-cut corridor, running north to south, stooping you over."
+	
+	The sodium lamp is an electric light in the Stooped Corridor. "[if switched on]The sodium lamp squats on the ground, burning away.[otherwise]The sodium lamp squats heavily on the ground.[end if]". The description is "It is a heavy-duty archaeologist's lamp, [if switched off]currently off.[otherwise]blazing with brilliant yellow light.[end if]"
+
+	Instead of burning the sodium lamp, try switching on the lamp.
+
+So far so easy. Since we've built the description of its light or darkness into the lamp's description, though, we may want to get rid of the "...is switched on" line that automatically follows when we look at something. For this we do need to borrow from a later chapter:
+
+	{**}The examine devices rule is not listed in the carry out examining rules.
+
+	Test me with "x lamp / switch lamp on / look / x lamp".
+	

@@ -1,0 +1,8 @@
+The NI School for Typing is a room.
+
+To award (N - number) points:
+	increase the score by N.
+
+When play begins:
+	let the tally be "Lots of points.";
+	award tally points.

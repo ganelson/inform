@@ -1,0 +1,9 @@
+Inform 7 build 6M34 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EmptyQuotationBox
+  >--> You wrote 'display the boxed quotation ""' (source text, line 2): but a
+    boxed quotation can't be empty, though I suppose you could make it consist
+    of just a few spaces to get a similar effect if you really needed to.
+Inform 7 has finished: 57 centiseconds used.

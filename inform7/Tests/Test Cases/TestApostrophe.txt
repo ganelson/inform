@@ -1,0 +1,9 @@
+Home is a room. The bar is in Home.
+
+After reading a command:
+	let N be text;
+	let N be the player's command;
+	replace the text "[apostrophe]foo" in N with "bar";
+	change the text of the player's command to N.
+
+Test me with "x me / x [']foo".

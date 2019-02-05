@@ -1,0 +1,30 @@
+   Square Chamber
+  Indirection
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Square Chamber
+  A sunken, gloomy stone chamber, ten yards across. A shaft of sunlight cuts in from the steps above, giving the chamber a diffuse light, but in the shadows low lintelled doorways to east and south lead into the deeper darkness of the Temple.
+  
+> >   Square Chamber
+  (Testing.)
+  
+  >[1] kan
+  
+  Corridor
+  
+  >[2] white
+  
+  Square Chamber
+  A sunken, gloomy stone chamber, ten yards across. A shaft of sunlight cuts in from the steps above, giving the chamber a diffuse light, but in the shadows low lintelled doorways to east and south lead into the deeper darkness of the Temple.
+  
+  >[3] chac
+  
+  Wormcast
+  
+  >[4] black
+  
+  Square Chamber
+  A sunken, gloomy stone chamber, ten yards across. A shaft of sunlight cuts in from the steps above, giving the chamber a diffuse light, but in the shadows low lintelled doorways to east and south lead into the deeper darkness of the Temple.
+  
+> >

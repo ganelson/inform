@@ -1,0 +1,61 @@
+   Foyer of the Opera House                                                                                                                                                                                               0/1
+  Hurrying through the rainswept November night, you're glad to see the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?
+  
+  Cloak of Darkness
+  A basic IF demonstration.
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foyer of the Opera House
+  You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead. The entrance from the street is to the north, and there are doorways south and west.
+  
+> >   Foyer Bar                                                                                                                                                                                                              2/8
+  (Testing.)
+  
+  >[1] s
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+  >[2] n
+  
+  Foyer of the Opera House
+  You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead. The entrance from the street is to the north, and there are doorways south and west.
+  
+  >[3] w
+  
+  Cloakroom
+  The walls of this small room were clearly once lined with hooks, though now only one remains. The exit is a door to the east.
+  
+  >[4] inventory
+  You are carrying:
+    a velvet cloak (being worn)
+  
+  >[5] hang cloak on hook
+  (first taking it off)
+  You put the velvet cloak on the small brass hook.
+  
+  [Your score has just gone up by one point.]
+  
+  >[6] e
+  
+  Foyer of the Opera House
+  You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead. The entrance from the street is to the north, and there are doorways south and west.
+  
+  >[7] s
+  
+  Foyer Bar
+  The bar, much rougher than you'd have guessed after the opulence of the foyer to the north, is completely empty. There seems to be some sort of message scrawled in the sawdust on the floor.
+  
+  >[8] read message
+  The message, neatly marked in the sawdust, reads...
+  
+  
+  
+      *** The End ***
+  
+  
+  In that game you scored 2 out of a possible 2, in 8 turns.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

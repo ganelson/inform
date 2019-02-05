@@ -1,0 +1,52 @@
+   Evidence Room
+  Customs
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Evidence Room
+  On the shelves is a box (in which are a deformed bullet and a driver's license).
+  
+  You can also see a Cloak of Distant Holding here.
+  
+> >   Evidence Room
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] assay me
+  [assaying yourself]
+  (first taking yourself)
+  [(1) taking yourself - silently]
+  You are always self-possessed.
+  [(1) taking yourself - silently - failed the can't take yourself rule]
+  
+  [assaying yourself - failed the carrying requirements rule]
+  
+  >[3] actions off
+  Actions listing off.
+  
+  >[4] assay hook
+  You assay the steel fish hook.
+  
+  >[5] drop hook
+  Dropped.
+  
+  >[6] assay hook
+  (first taking the steel fish hook)
+  You assay the steel fish hook.
+  
+  >[7] drop curare
+  Dropped.
+  
+  >[8] assay curare
+  Ordinarily you'd pick up the curare in order to be able to do that, but this seems like a good moment for caution.
+  
+  >[9] wear cloak
+  (first taking the Cloak of Distant Holding)
+  You put on the Cloak of Distant Holding.
+  
+  >[10] assay me
+  You assay yourself.
+  
+> >

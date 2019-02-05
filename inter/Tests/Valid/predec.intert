@@ -1,0 +1,10 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	symbol public misc K_number
+	symbol public misc Banana
+	symbol public misc Peach
+	kind K_number int32
+	constant Peach K_number = Banana
+	constant Banana K_number = 2

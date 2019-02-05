@@ -1,0 +1,16 @@
+For printing a parser error when the best match is at least the first word:
+	say "I only understood you as far as '[the best match]'. I don't know the word '[first word]'. (foobar is nothing: [foobar].)"
+
+For printing a parser error when the best match is at least the first word and the foobar is not nothing:
+	say "I only understood you as far as '[the best match]' ([foobar]). I don't know the word '[first word]'."
+
+To decide which snippet is the first word: (- 101 -).
+To decide which snippet is the best match: (- 101 -).
+
+The foobar is an object that varies. The foobar is yourself.
+
+spot is room.
+
+After waiting: now foobar is nothing.
+
+Test me with "hi / montelimar / asdf / z / what".

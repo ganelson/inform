@@ -1,0 +1,80 @@
+   Test Kitchen                                                                                                                                                                                                           0/1
+  Hot Glass Looks Like Cold Glass
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Test Kitchen
+  Your own personal lab, ready for scrupulously scientific recipe research. You hope. The previous three runs of this did not go well.
+  
+  On the counter are seven glass dishes (empty).
+  
+  Your assistant Claudia stands by with a notepad, a brined chicken breast, a blowtorch and a cup of heavy cream.
+  
+> >   Test Kitchen                                                                                                                                                                                                           -5/10
+  (Testing.)
+  
+  >[1] get all
+  glass dish: Taken.
+  glass dish: Taken.
+  glass dish: Taken.
+  glass dish: Ow! Crikey! You swear, and Claudia makes a sympathetic hiss. "You're going to have a mark from that for sure," she comments.
+  glass dish: Ow! Crikey! You swear, and Claudia makes a sympathetic hiss. "You're going to have a mark from that for sure," she comments.
+  glass dish: Taken.
+  glass dish: Taken.
+  notepad: That seems to belong to Claudia.
+  brined chicken breast: That seems to belong to Claudia.
+  blowtorch: That seems to belong to Claudia.
+  cup of heavy cream: That seems to belong to Claudia.
+  
+  [Your score has just gone down by four points.]
+  
+  >[2] drop all
+  glass dish: Dropped.
+  glass dish: Dropped.
+  glass dish: Dropped.
+  glass dish: Dropped.
+  glass dish: Dropped.
+  pair of infrared goggles: Dropped.
+  
+  >[3] look
+  Test Kitchen
+  Your own personal lab, ready for scrupulously scientific recipe research. You hope. The previous three runs of this did not go well.
+  
+  On the counter are two glass dishes (empty).
+  
+  Your assistant Claudia stands by with a notepad, a brined chicken breast, a blowtorch and a cup of heavy cream.
+  
+  You can also see a pair of infrared goggles and five glass dishes (empty) here.
+  
+  >[4] wear goggles
+  (first taking the pair of infrared goggles)
+  You put on the pair of infrared goggles.
+  
+  >[5] look
+  Test Kitchen
+  Your own personal lab, ready for scrupulously scientific recipe research. You hope. The previous three runs of this did not go well.
+  
+  On the counter are two hot glass dishes (empty).
+  
+  Your assistant Claudia stands by with a notepad, a brined chicken breast, a blowtorch and a cup of heavy cream.
+  
+  You can also see three room temperature glass dishes (empty) and two cold glass dishes (empty) here.
+  
+  >[6] ask claudia for cream
+  "Check, cup of heavy cream," repeats Claudia, in the tone of one who has seen too many medical dramas. She does hand it over, though.
+  
+  >[7] put cream in hot dish
+  You brush the hot glass dish, and wince, but manage to conceal that from Claudia.
+  
+  [Your score has just gone down by one point.]
+  
+  >[8] put cream in cold dish
+  You put the cup of heavy cream into the cold glass dish.
+  
+  >[9] remove goggles
+  You take off the pair of infrared goggles.
+  
+  >[10] get hot dish
+  Without the IR goggles on, you cannot tell hot things from cold at sight.
+  
+> >

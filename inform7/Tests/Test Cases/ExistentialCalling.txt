@@ -1,0 +1,7 @@
+There is a room.
+There is a nothing based rulebook called [in] response to foo.
+There is a nothing based rulebook called in xresponse to foo.
+
+When play begins:
+	showme response to foo;
+	showme in xresponse to foo.

@@ -1,0 +1,9 @@
+The Kitchen is a room.
+
+A key is a kind of thing.
+A key is always improper-named.
+
+The locker is a locked container in the Kitchen.
+Matching key of locker is red key.
+
+The red key is a key in the Kitchen.

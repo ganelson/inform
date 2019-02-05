@@ -1,0 +1,19 @@
+Home is a room.
+
+To decide which time is the interior volume of (R - a lighted room):
+	decide on 10:10 AM.
+
+To decide which time is the exterior volume of (R - an even number):
+	decide on 10:10 AM.
+
+To blob (R - a lit room):
+	say "R is [R].";
+
+To blab (R - an even number):
+	say "R is [R].";
+
+When play begins:
+	blob Home;
+	blab 4;
+	let X be the interior volume of Home;
+	let Y be the exterior volume of 16;

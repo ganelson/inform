@@ -1,0 +1,13 @@
+Testing is a room.
+
+An umbrella is here. A pear is here. The screwdriver is a device.
+
+Blorbing relates various devices to one thing.
+The verb to be blorbed into implies the blorbing relation.
+
+Instead of inserting something into something:
+	if the noun is blorbed into the second noun, say "Blorbed!";
+	now the screwdriver is blorbed into the pear;
+	now the noun is blorbed into the second noun.
+
+Test me with "put umbrella in pear".

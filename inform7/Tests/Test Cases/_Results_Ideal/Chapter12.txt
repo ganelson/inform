@@ -1,0 +1,288 @@
+   Tire Shop                                                                                                                                                                                                              0/1
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Tire Shop
+  You can see a round door and a dolly (on which is a heavy box) here.
+  
+> >   Tire Shop                                                                                                                                                                                                              0/2
+  ** sing
+  You sing a siren song.
+  
+  "Holy crow!" bellows Ogg from the other room. "I didn't know you could do that, Igg!"
+  
+  The round door opens.
+  
+  There is a tremendous rattling of the forklift, the round door and the dolly.
+  
+  Igg arrives from the west in the forklift.
+  
+> >   Tire Shop                                                                                                                                                                                                              0/3
+  ** igg, sing
+  Igg struggles womanfully with this command.
+  
+> >   Tire Shop                                                                                                                                                                                                              0/4
+  ** igg, jump
+  Igg jumps, shaking the towers of rubber until you fear they're all going to come tumbling down. But they don't.
+  
+> >   Tire Shop                                                                                                                                                                                                              0/5
+  ** sing
+  You sing a siren song.
+  
+  Ogg grunts as he bumps his head on the low frame of the round door.
+  
+  Ogg arrives from the west.
+  
+  Ogg eats the apple in his trademark style. You can no longer bear to watch.
+  
+> >   Tire Shop                                                                                                                                                                                                              0/6
+  ** igg, push dolly w
+  Igg goes west in the forklift, pushing the dolly away.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/7
+  ** w
+  
+  Donut Shop
+  The gleaming donut case contains some cake donuts, some jelly donuts and some apple fritters.
+  
+  You can also see a round door, a dolly (on which is a heavy box), a forklift (in which is Igg) and a mesh basket (closed) (in which is a silver key) here.
+  
+  Over in the Bagel Shop, you can see nothing.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/8
+  ** w
+  
+  Bagel Shop
+  Over in the Donut Shop, you can see a round door, a dolly, a forklift, a case and a mesh basket.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/9
+  ** sing
+  You sing a siren song.
+  
+  Ogg grunts as he bumps his head on the low frame of the round door.
+  
+  Ogg arrives at the Donut Shop from the east.
+  
+  There is a tremendous rattling of the forklift and the window.
+  
+  Igg arrives from the east in the forklift.
+  
+  Ogg chows down on the banana, scattering crumbs in all directions.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/10
+  ** hit ogg
+  You can't reach through the closed window.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/11
+  ** open window
+  You open the window.
+  
+  Ogg's stomach growls.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/12
+  ** hit ogg
+  Violence isn't the answer to this one.
+  
+  Ogg eyes the cake donuts with obvious intent.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/13
+  ** igg, open case
+  There is no reply.
+  
+  Ogg opens the mesh basket.
+  
+  Ogg picks up the silver key.
+  
+  Ogg struggles a bit with the silver key in the lock of the case, but does eventually succeed. "Hunh!" says Ogg.
+  
+  Ogg yanks the case open with such force that you fear for its structural integrity.
+  
+  Ogg acquires the cake donuts with a look of tender affection.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/14
+  ** ogg, open basket
+  Ogg tilts his head and shrugs, unable to hear your instruction clearly.
+  
+  Ogg chows down on the cake donuts, scattering crumbs in all directions.
+  
+> >   Bagel Shop                                                                                                                                                                                                             0/15
+  ** open window
+  That's already open.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/16
+  ** e
+  
+  Donut Shop
+  Crumbs of the apple, the banana and the cake donuts lie scattered over the whole floor.
+  
+  Ogg is slumped in the corner with a silver key.
+  
+  The gleaming donut case contains some jelly donuts and some apple fritters.
+  
+  You can also see a round door, a dolly (on which is a heavy box) and a mesh basket (empty) here.
+  
+  Over in the Bagel Shop, you can see a forklift.
+  
+  Ogg's stomach growls.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/16
+  **
+  I beg your pardon?
+  
+> >   Donut Shop                                                                                                                                                                                                             0/17
+  ** ogg, open basket
+  Ogg looks adorably confused.
+  
+  Ogg eyes the jelly donuts with obvious intent.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/18
+  ** ogg, take me
+  Ogg has better things to do.
+  
+  Ogg acquires the jelly donuts with a look of tender affection.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/19
+  ** z
+  Time passes.
+  
+  Ogg eats the jelly donuts in his trademark style. You can no longer bear to watch.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/20
+  ** ogg, take me
+  "Ogg not that greedy."
+  
+> >   Donut Shop                                                                                                                                                                                                             0/21
+  ** ogg, take case
+  "The case very heavy.
+  
+  Ogg's stomach growls.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/22
+  ** ogg, drop case
+  Ogg looks adorably confused.
+  
+  Ogg eyes the apple fritters with obvious intent.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/23
+  ** i
+  You are carrying nothing.
+  
+  Ogg acquires the apple fritters with a look of tender affection.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/24
+  ** ogg, drop key
+  Ogg has better things to do.
+  
+  Ogg chows down on the apple fritters, scattering crumbs in all directions.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/25
+  ** g
+  Ogg puts down the silver key.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/26
+  ** get key
+  Taken.
+  
+  Ogg's stomach growls.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/27
+  ** get in case
+  You climb inside the case, folding yourself up uncomfortably.
+  
+  Ogg glances at you in a disturbingly shifty way.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/28
+  ** close case
+  You close the case.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/29
+  ** lock case
+  (with the silver key)
+  You turn the key firmly in the lock -- amazing it locks from within, but it does -- and settle yourself for a long wait, hoping this thing is not air-tight.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/30
+  ** drop key
+  Dropped.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/31
+  ** z
+  Time passes.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/32
+  ** look
+  Donut Shop (in the case)
+  Crumbs of the apple, the banana, the cake donuts, the jelly donuts and the apple fritters lie scattered over the whole floor.
+  
+  Ogg is slumped in the corner.
+  
+  You can also see a round door, a dolly (on which is a heavy box) and a mesh basket (empty) here.
+  
+  In the case you can see a silver key.
+  
+  Over in the Bagel Shop, you can see a forklift.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/33
+  ** igg, hi
+  The case isn't open.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/34
+  ** igg, e
+  Igg arrives from the west in the forklift.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/35
+  ** igg, w
+  Igg goes west in the forklift.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/36
+  ** igg, e
+  Igg arrives from the west in the forklift.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/37
+  ** igg, push forklift w
+  Igg is unable to do that.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/38
+  ** igg, push dolly w
+  A look of the most intense concentration occupies Igg's face as she tries to maneuver the dolly with the front tines of the forklift, without disturbing anything in the bagel shop. All the same, she does manage.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/39
+  ** igg, push dolly e
+  Igg arrives from the west in the forklift, pushing the dolly in.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/40
+  ** i
+  You are carrying nothing.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/41
+  ** unlock case
+  You lack a key that fits the case.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/42
+  ** get key
+  Taken.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/43
+  ** unlock case
+  (with the silver key)
+  You unlock the case.
+  
+> >   Donut Shop                                                                                                                                                                                                             0/43
+  ** open case
+  You open the case.
+  
+  
+  
+      *** Ogg is gnawing your ankle ***
+  
+  
+  In that game you scored 0 out of a possible 1, in 43 turns.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> >    Donut Shop                                                                                                                                                                                                             0/43
+  **
+  Please give one of the answers above.
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

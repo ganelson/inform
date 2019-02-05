@@ -1,0 +1,5 @@
+There is room.
+
+The tricksy variable is a description of numbers that varies.
+
+The tricksy variable is even numbers.

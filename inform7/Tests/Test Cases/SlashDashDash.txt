@@ -1,0 +1,12 @@
+Lab is a room.
+
+The library computer is in the lab.
+
+Understand "alpha/beta/gamma/--" as "[greek]".
+
+Understand "google [greek] for/aboot/-- [text] in/on [library computer]" as
+consulting it about (with nouns reversed).
+
+Test me with "google for fish on the computer / google alpha for fish on the
+computer / google beta for fish on the computer / google gamma for fish on
+the computer / google fish on the computer".

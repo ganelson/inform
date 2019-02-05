@@ -1,0 +1,3 @@
+King Solomon's Mine is a room.
+
+The specification of 12 is "A dozen."

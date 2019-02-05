@@ -1,0 +1,43 @@
+   Paradise
+  Wonderland
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Paradise
+  A handsome parking lot, a picnic ground, and the Henry M. Jackson Memorial Visitor Center. The latter offers, for serious climbers, a hot shower; for nature enthusiasts, an interpretive museum; and for car-trippers, a gift shop selling canned slugs. All of which is a largely unsuccessful distraction from the peak of Mt. Rainier beyond.
+  
+> >   Columbia Crest
+  (Testing.)
+  
+  >[1] up
+  (that is, north)
+  
+  Panorama Point
+  
+  >[2] up
+  (that is, north)
+  
+  Camp Muir
+  
+  >[3] up
+  (that is, northwest)
+  
+  Columbia Crest
+  
+  >[4] down
+  (that is, northeast)
+  
+  Camp Schuman
+  
+  >[5] down
+  You're in a local valley: there's no down from here.
+  
+  >[6] up
+  (that is, southwest)
+  
+  Columbia Crest
+  
+  >[7] up
+  You're standing at the summit of Mt. Rainier, the highest point in the state of Washington. There is no up.
+  
+> >

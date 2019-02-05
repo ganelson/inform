@@ -1,0 +1,49 @@
+   Parlor
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Parlor
+  
+> >   Attic2
+  (Testing.)
+  
+  >[1] u
+  
+  Attic
+  
+  >[2] d
+  You can't go that way.
+  
+  >[3] gonear attic
+  Attic
+  
+  >[4] d
+  You can't go that way.
+  
+  >[5] u
+  You can't go that way.
+  
+  >[6] gonear parlor2
+  Parlor2
+  
+  >[7] u
+  
+  Attic2
+  
+  >[8] d
+  
+  Parlor2
+  
+  >[9] gonear attic2
+  Attic2
+  
+  >[10] d
+  
+  Parlor2
+  
+  >[11] u
+  
+  Attic2
+  
+> >

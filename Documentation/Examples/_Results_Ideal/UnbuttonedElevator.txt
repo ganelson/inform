@@ -1,0 +1,32 @@
+   UNCLE Headquarters
+  The Unbuttoned Elevator Affair
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  UNCLE Headquarters
+  The steel nerve-center of the free world's battle against the Technological Hierarchy for the Removal of Undesirables and the Subjugation of Humanity. Being against technology, we have only a very simple elevator to the east.
+  
+> >   UNCLE Headquarters
+  (Testing.)
+  
+  >[1] east
+  The doors automatically close, there is a rush of motion, and they open again.
+  
+  Secret Elevator
+  
+  >[2] west
+  
+  Del Floria's Tailor Shop
+  Only trained anti-THRUSH agents recognise the booth in the east wall as a secret elevator.
+  
+  >[3] east
+  The doors automatically close, there is a rush of motion, and they open again.
+  
+  Secret Elevator
+  
+  >[4] west
+  
+  UNCLE Headquarters
+  The steel nerve-center of the free world's battle against the Technological Hierarchy for the Removal of Undesirables and the Subjugation of Humanity. Being against technology, we have only a very simple elevator to the east.
+  
+> >

@@ -1,0 +1,39 @@
+   Circle in the Grass
+  You more or less stumble across them in Central Park: a disparate group of people, all of different ages, sitting in a circle. They aren't talking to one another -- in fact, they seem to be trying very hard to ignore one another, like people in the waiting room of an especially embarrassing kind of doctor. You are about to go around when a woman in a grey pressed suit comes up to you. Her suit-skirt is trimmed in lavender cord, and she looks as though she might have been extremely sharp-dressed in 1944. She hands you a card.
+  
+  Hour of the Wren
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Circle in the Grass
+  No one is looking at you, except for the secretary, if that is what she is.
+  
+> >   Circle in the Grass
+  (Testing.)
+  
+  >[1] x card
+  Typed: "Active astrology - dislike your fortunes? change your stars! - make an appointment now - hour of the wren STILL AVAILABLE."
+  
+  >[2] make appointment for hour of the wren
+  You settle on 2:00 pm for your appointment. The woman makes a note of it in an appointment book, which she carries in a brown paper bag. "Excellent choice, ma'am," she says in a low, urgent voice. "You'll be very satisfied."
+  
+  >[3] z
+  Time passes.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] z
+  Time passes.
+  
+  
+  
+      *** insert cataclysm here ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

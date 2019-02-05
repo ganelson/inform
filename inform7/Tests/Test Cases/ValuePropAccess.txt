@@ -1,0 +1,22 @@
+Home is a room.
+
+A colour is a kind of value. The colours are defined by the Table of Colours.
+
+Table of Colours
+Colour		Complement
+black		white
+white		black
+red		cyan
+green		magenta
+blue		yellow
+cyan		red
+magenta		green
+yellow		blue
+
+When play begins: say "Today's colour is [complement of green]."
+
+Instead of waiting:
+	now the complement of green is black;
+	say "Tomorrow's colour is [complement of green]."
+
+Test me with "z".

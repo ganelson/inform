@@ -1,0 +1,359 @@
+   Late Morning                                                                                                                                                                                                           Time: 10:13 am
+  Things have gone somewhat wrong.
+  
+  
+  Chapter 9: Minutiae
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:13 am.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:14 am
+  ** n
+  
+  Early Morning
+  A mechanical lunar clock is built into the face of cold stone.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:15 am
+  ** turn on the lunar clock
+  The clock starts up ever so slowly, making a noise like distant tide.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:16 am
+  ** s
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:15 am.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:17 am
+  ** se
+  You can't go that way.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:18 am
+  ** s
+  You can't go that way.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:19 am
+  ** n
+  
+  Early Morning
+  A mechanical lunar clock is built into the face of cold stone.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:20 am
+  ** turn on the clock
+  That's already on.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:21 am
+  ** n
+  You can't go that way.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:22 am
+  ** turn off the clock
+  The clock's action dies.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:23 am
+  ** turn on the clock
+  The clock starts up ever so slowly, making a noise like distant tide.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:24 am
+  ** n
+  You can't go that way.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:25 am
+  ** s
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:24 am.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:26 am
+  Things have gone somewhat wrong.                                                                     Higher and higher every day,
+                                                                                                       Till over the mast at noon--
+  
+  Chapter 9: Minutiae
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:13 am.
+  
+  >n
+  ** n
+  
+  Early Morning
+  A mechanical lunar clock is built into the face of cold stone.
+  
+  >turn on the lunar clock
+  ** turn on the lunar clock
+  The clock starts up ever so slowly, making a noise like distant tide.
+  
+  >s
+  ** s
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:15 am.
+  
+  >se
+  ** se
+  You can't go that way.
+  
+  >s
+  ** s
+  You can't go that way.
+  
+  >n
+  ** n
+  
+  Early Morning
+  A mechanical lunar clock is built into the face of cold stone.
+  
+  >turn on the clock
+  ** turn on the clock
+  That's already on.
+  
+  >n
+  ** n
+  You can't go that way.
+  
+  >turn off the clock
+  ** turn off the clock
+  The clock's action dies.
+  
+  >turn on the clock
+  ** turn on the clock
+  The clock starts up ever so slowly, making a noise like distant tide.
+  
+  >n
+  ** n
+  You can't go that way.
+  
+  >s
+  ** s
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:24 am.
+  
+  >sw
+  ** sw
+  
+  Low Noon
+  You can see a sun here.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:27 am
+  ** x sun
+  You see nothing special about the sun.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:28 am
+  ** nw
+  
+  Early Afternoon
+  The new moon is in the sky just overhead.
+  
+  There is a vast bowl of sand, almost a miniature desert; the bowl is black stone on columns. From the center of the bowl a thin trickle of sand runs into a heap on the ground. The height of the heap tells you that it is now twenty past ten.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:29 am
+  ** x moon
+  It is waxing crescent, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:30 am
+  ** g
+  It is waxing gibbous, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:31 am
+  ** g
+  It is full, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:32 am
+  ** g
+  It is waning gibbous, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:33 am
+  ** g
+  It is waning crescent, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:34 am
+  ** g
+  It is new, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:35 am
+  ** g
+  It is waxing crescent, very pale in this light.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:36 am
+  ** se
+  
+  Low Noon
+  You can see a sun here.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:37 am
+  ** nw
+  
+  Early Afternoon
+  The full moon is in the sky just overhead.
+  
+  There is a vast bowl of sand, almost a miniature desert; the bowl is black stone on columns. From the center of the bowl a thin trickle of sand runs into a heap on the ground. The height of the heap tells you that it is now half past ten.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:38 am
+  ** se
+  
+  Low Noon
+  You can see a sun here.
+  
+  The passage through here gets narrower every time you come by.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:39 am
+  ** ne
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:38 am.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:40 am
+  ** n
+  
+  Early Morning
+  A mechanical lunar clock is built into the face of cold stone.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:41 am
+  ** turn off clock
+  The clock's action dies.
+  
+> >   Early Morning                                                                                                                                                                                                          Time: 10:42 am
+  ** se
+  You can't go that way.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:43 am
+  ** s
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:42 am.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:44 am
+  ** se
+  You can't go that way.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:45 am
+  ** sw
+  
+  Low Noon
+  You can see a sun here.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:46 am
+  ** nw
+  
+  Early Afternoon
+  The waxing crescent moon is in the sky just overhead.
+  
+  There is a vast bowl of sand, almost a miniature desert; the bowl is black stone on columns. From the center of the bowl a thin trickle of sand runs into a heap on the ground. The height of the heap tells you that it is now twenty to eleven.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:47 am
+  ** x moon
+  It is waxing crescent, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:48 am
+  ** g
+  It is waxing crescent, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:49 am
+  ** g
+  It is waxing crescent, very pale in this light.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:50 am
+  ** g
+  It is waxing crescent, very pale in this light.
+  
+> >   Late Afternoon                                                                                                                                                                                                         Time: 10:51 am
+  ** n
+  
+  Late Afternoon
+  Set into the ground is a button large enough for a person to stand on.
+  
+> >   Late Afternoon                                                                                                                                                                                                         Time: 10:14 am
+  ** press button
+  Thick shadows collect around you, prod your skin, and then disperse.
+  
+  Back to the beginning...
+  
+> >   Late Afternoon                                                                                                                                                                                                         Time: 10:14 am
+  ** score
+  You have so far scored 0 out of a possible 12, in 40 turns, earning you the rank of Visitor Running Late.
+  
+> >   Late Afternoon                                                                                                                                                                                                         Time: 10:15 am
+  ** sw
+  You can't go that way.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:16 am
+  ** s
+  
+  Early Afternoon
+  The waxing crescent moon is in the sky just overhead.
+  
+  There is a vast bowl of sand, almost a miniature desert; the bowl is black stone on columns. From the center of the bowl a thin trickle of sand runs into a heap on the ground. The height of the heap tells you that it is now ten past ten.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:17 am
+  ** s
+  You can't go that way.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:18 am
+  ** se
+  
+  Low Noon
+  You can see a sun here.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:19 am
+  ** get sun
+  The sun resents your interference.
+  
+  [Your score has just gone up by five points.]
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:19 am
+  ** score
+  You have so far scored 5 out of a possible 12, in 45 turns, earning you the rank of Student of Time.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:20 am
+  ** drop sun
+  Dropped.
+  
+> >   Late Morning                                                                                                                                                                                                           Time: 10:21 am
+  ** ne
+  
+  Late Morning
+  A primitive clock ticks angrily in the corner, showing the time as 10:20 am.
+  
+> >   Low Noon                                                                                                                                                                                                               Time: 10:22 am
+  ** sw
+  
+  Low Noon
+  You can see a sun here.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:23 am
+  ** nw
+  
+  Early Afternoon
+  The waxing crescent moon is in the sky just overhead.
+  
+  There is a vast bowl of sand, almost a miniature desert; the bowl is black stone on columns. From the center of the bowl a thin trickle of sand runs into a heap on the ground. The height of the heap tells you that it is now ten past ten.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:24 am
+  ** get moon
+  The moon hangs neatly in your palm.
+  
+  [Your score has just gone up by five points.]
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:25 am
+  ** drop moon
+  Dropped.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:25 am
+  ** score
+  You have so far scored 10 out of a possible 12, in 51 turns, earning you the rank of Expert in Eternity.
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:26 am
+  ** i
+  You are carrying:
+    a book of hours
+    a tiny brass timer
+  
+> >   Early Afternoon                                                                                                                                                                                                        Time: 10:26 am
+  **
+  I beg your pardon?
+  
+> >

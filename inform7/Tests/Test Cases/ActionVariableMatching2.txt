@@ -1,0 +1,11 @@
+Home is a room.
+
+Exhibiting success is an action applying to nothing. The exhibiting
+success action has a number called bar.
+Exhibiting failure is an action applying to nothing. The exhibiting
+failure action has a number called foo.
+
+Check exhibiting success:
+	if bar is 123, say "Bar is 123."
+Check exhibiting failure when foo is 123:
+	say "Foo is 123."

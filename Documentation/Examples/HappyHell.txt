@@ -1,0 +1,58 @@
+** Listing nondescript items of something
+(People listed as a group, with their possessions afterward; Happy Hour)
+Listing visible characters as a group, then giving some followup details in the same paragraph about specific ones.
+
+Often it is best to have an entire paragraph about the characters present in a room, but suppose we're narrating a large party with a lot of people moving around. In that case, it might be better to list everyone together, then add a few salient details by way of follow-up, like this:
+	
+	{*}"Happy Hour"
+	
+	Before listing nondescript items:
+		say "You can see [a list of people who are marked for listing] here. ";
+		repeat with named party running through people:
+			now the named party is not marked for listing;
+		let count be the number of visible other people who are carrying something;
+		if count is 0:
+			say paragraph break;
+			continue the action;
+		let index be count;
+		repeat with holder running through visible other people who are carrying something:
+			if index is count, say "[The holder]";
+			otherwise say "[the holder]";
+			say " has [a list of things carried by the holder]";
+			decrement index;
+			make delimiter index of count.
+
+The next part could be simpler, but for rigor we will write it in such a way that it will work whether or not the serial comma is in use. This requires some extra work.
+	
+	{**}To make delimiter (index - a number) of (count - a number), continuing or halting:
+		if index is 0:
+			if continuing, say ". [run paragraph on]";
+			otherwise say ".";
+		otherwise if index is 1:
+			if count is 2, say " and ";
+			otherwise say "[optional comma] and ";
+		otherwise:
+			say ", ".
+
+	To say optional comma:
+		if the serial comma option is active:
+			say ",".
+		
+And now the scene:	
+	
+	{**}The Banquet Hall is a room. "A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!"
+		
+	Fred, George, and Larry are men in the Banquet Hall. Fred carries a dry martini. Larry carries a cream puff. Matilda and Louise are women in the Banquet Hall.
+
+	Definition: a person is other if it is not the player.
+
+	Every turn:
+		let wanderer be a random other person;
+		let place be the holder of the wanderer;
+		let next place be a random room adjacent to the place;
+		let the way be the best route from the place to the next place;
+		try the wanderer going the way.
+	
+	The Kitchen is west of the Banquet Hall. "Dominated by a pile of dirty plates which you imagine it will be someone's privilege to wash, later." Vanessa is a woman in the Kitchen. Vanessa carries a tray. On the tray is a salmon roll. The roll is edible.
+
+	Test me with "z / look / g / g / g ".

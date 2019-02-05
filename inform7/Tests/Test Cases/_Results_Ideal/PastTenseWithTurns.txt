@@ -1,0 +1,49 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see McWiggy and a hat here.
+  
+> >   Home
+  (Testing.)
+  
+  >[1] wear hat
+  (first taking the hat)
+  You put on the hat.
+  
+  >[2] touch mcwiggy
+  You've worn the hat at some point.
+  
+  Whoops, now he's upset.
+  
+  >[3] z
+  You've worn the hat at some point.
+  
+  Time passes.
+  
+  >[4] z
+  You've worn the hat for exactly three turns.
+  
+  You've worn the hat at some point.
+  
+  Time passes.
+  
+  He's been upset for two turns! He explodes!
+  
+  >[5] z
+  You've worn the hat at some point.
+  
+  Time passes.
+  
+  He's been upset for two turns! He explodes!
+  
+  >[6] z
+  You've worn the hat at some point.
+  
+  Time passes.
+  
+  He's been upset for two turns! He explodes!
+  
+> >

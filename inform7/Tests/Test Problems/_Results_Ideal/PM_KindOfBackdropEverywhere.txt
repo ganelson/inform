@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 9 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindOfBackdropEverywhere
+  >--> You wrote 'A backdrop is usually everywhere' (source text, line 3), but
+    the backdrop seems to be said to be 'everywhere' in some way, which doesn't
+    make sense. An individual backdrop can be 'everywhere', but here we're
+    talking about a whole kind, and it's not allowed to talk about general
+    locations of a whole kind of things at once.
+Inform 7 has finished: 16 centiseconds used.

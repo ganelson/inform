@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 32 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OppositeNotDirection
+  >--> I'm trying to make a map connection in the Downstream direction, which
+    means there ought to be map connection back in the opposite direction. But
+    the opposite of Downstream seems to be upstream, which doesn't make sense
+    since upstream isn't a direction. (Maybe you forgot to say that it was?)
+Inform 7 has finished: 17 centiseconds used.

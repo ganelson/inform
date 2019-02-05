@@ -1,0 +1,11 @@
+Home is a room.
+
+A foobar is a kind of value. The foobars are foo and bar.
+
+Understand "fooey" or "foozle" as "[foo-phrase]".
+Understand "[foo-phrase]" as foo.
+
+Frogging is an action applying to one foobar. Understand "frog [foobar]" as
+frogging. Carry out frogging: say "Ah, frog the [foobar understood], then."
+
+Test me with "frog foo / frog bar / frog fooey / frog foozle".

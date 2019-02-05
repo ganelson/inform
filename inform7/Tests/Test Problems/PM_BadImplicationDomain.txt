@@ -1,0 +1,16 @@
+Color is a kind of value. The colors are red, white, and blue.
+Definition: A thing is colored if it provides the property color.
+Definition: A thing is uncolored if it is not colored.
+A thing is either colorable or not colorable.
+An uncolored thing is seldom colorable.
+A portable thing is usually colorable.
+A colored thing is usually colorable.
+
+Instead of looking:
+	repeat with x running through all things in the location begin;
+		say "[x] is [if x is colored]colored[otherwise]uncolored[end if].";
+		say "[x] is [if x is colorable]colorable[otherwise]not colorable[end if].";
+	end repeat.
+
+The origin is a room.
+Widget is in the origin. Widget has a color. Widget is red.

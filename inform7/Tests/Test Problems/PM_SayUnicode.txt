@@ -1,0 +1,6 @@
+The NI School for Typing is a room.
+
+When play begins:
+	say unicode Coastline of Spain;
+	say "Look at the [unicode Coastline of France] there.";
+	let T be "oh, my, that appears to be [unicode Coastline of Italy]".

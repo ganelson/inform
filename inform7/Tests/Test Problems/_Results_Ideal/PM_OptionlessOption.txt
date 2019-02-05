@@ -1,0 +1,16 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 32 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OptionlessOption
+  >--> In the sentence 'if using the American dialect' (source text, line 8), I
+    was expecting to read a use option, but instead found some text that I
+    couldn't understand - 'American dialect'. The names of use options, on the
+    rare occasions when they appear as values, always end with the word
+    'option' - for instance, we have to write 'American dialect option' not
+    'American dialect'. As your text here doesn't end with the word 'option',
+    perhaps you've forgotten this arcane rule?
+    I was trying to match this phrase:
+      using (american dialect - use option) 
+    But I didn't recognise 'american dialect'.
+Inform 7 has finished: 51 centiseconds used.

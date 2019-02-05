@@ -1,0 +1,2 @@
+There is a room.
+A kind has a number called x.

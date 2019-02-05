@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnopenedSubstitution
+  >--> You wrote 'say "foo the player] bar"' (source text, line 5): but the
+    text here uses a close square bracket ']', which closes a substitution in
+    the text, but never actually opened it, with a matching '['. (If you just
+    wanted a literal close square bracket, use '[close bracket]'.)
+Inform 7 has finished: 44 centiseconds used.

@@ -1,0 +1,109 @@
+Inform 7.10.1 build 6P01 has started.
+I've now read your source text, which is 187 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let rude comment be "It was lighted!"' (source text, line 4),
+    but when a temporary value is created inside an 'if ..., ...' or an
+    'otherwise ...', it only lasts until that line is complete - which means it
+    can never be used for anything, because it goes away as soon as created. To
+    make something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (rude comment - a new name) be ("It was lighted!" - description of
+    relations of values) 
+    2.  let (rude comment - a new name) be ("It was lighted!" - name of
+    kind) 
+    3.  let (rude comment - a new name) be ("It was lighted!" - value) 
+    4.  let (rude comment - a temporary named value) be ("It was lighted!" -
+    value) 
+    The name 'rude comment' doesn't yet exist.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let rude comment be "It was dark!"' (source text, line 5),
+    but when a temporary value is created inside an 'if ..., ...' or an
+    'otherwise ...', it only lasts until that line is complete - which means it
+    can never be used for anything, because it goes away as soon as created. To
+    make something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (rude comment - a new name) be ("It was dark!" - description of
+    relations of values) 
+    2.  let (rude comment - a new name) be ("It was dark!" - name of kind) 
+    3.  let (rude comment - a new name) be ("It was dark!" - value) 
+    4.  let (rude comment - a temporary named value) be ("It was dark!" - value)
+    
+    The name 'rude comment' doesn't yet exist.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let spong be the list of things' (source text, line 10), but
+    when a temporary value is created inside an 'if ..., ...' or an 'otherwise
+    ...', it only lasts until that line is complete - which means it can never
+    be used for anything, because it goes away as soon as created. To make
+    something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (spong - a new name) be (list of things - description of relations of
+    values) 
+    2.  let (spong - a new name) be (list of things - name of kind) 
+    3.  let (spong - a new name) be (list of things - value) 
+    4.  let (spong - a temporary named value) be (list of things - value) 
+    I recognised:
+    list of things = an instruction to work out a list of things
+    The name 'spong' doesn't yet exist.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let spong be the list of things' (source text, line 17), but
+    when a temporary value is created inside an 'if ..., ...' or an 'otherwise
+    ...', it only lasts until that line is complete - which means it can never
+    be used for anything, because it goes away as soon as created. To make
+    something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (spong - a new name) be (list of things - description of relations of
+    values) 
+    2.  let (spong - a new name) be (list of things - name of kind) 
+    3.  let (spong - a new name) be (list of things - value) 
+    4.  let (spong - a temporary named value) be (list of things - value) 
+    I recognised:
+    list of things = an instruction to work out a list of things
+    The name 'spong' doesn't yet exist.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let spong be the list of things' (source text, line 25), but
+    when a temporary value is created inside an 'if ..., ...' or an 'otherwise
+    ...', it only lasts until that line is complete - which means it can never
+    be used for anything, because it goes away as soon as created. To make
+    something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (spong - a new name) be (list of things - description of relations of
+    values) 
+    2.  let (spong - a new name) be (list of things - name of kind) 
+    3.  let (spong - a new name) be (list of things - value) 
+    4.  let (spong - a temporary named value) be (list of things - value) 
+    I recognised:
+    list of things = an instruction to work out a list of things
+    The name 'spong' doesn't yet exist.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let spong be the list of things' (source text, line 44), but
+    when a temporary value is created inside an 'if ..., ...' or an 'otherwise
+    ...', it only lasts until that line is complete - which means it can never
+    be used for anything, because it goes away as soon as created. To make
+    something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (spong - a new name) be (list of things - description of relations of
+    values) 
+    2.  let (spong - a new name) be (list of things - name of kind) 
+    3.  let (spong - a new name) be (list of things - value) 
+    4.  let (spong - a temporary named value) be (list of things - value) 
+    I recognised:
+    list of things = an instruction to work out a list of things
+    The name 'spong' doesn't yet exist.
+Problem__ PM_LetCreatedInIf
+  >--> You wrote 'let spong be the list of things' (source text, line 45), but
+    when a temporary value is created inside an 'if ..., ...' or an 'otherwise
+    ...', it only lasts until that line is complete - which means it can never
+    be used for anything, because it goes away as soon as created. To make
+    something more durable, create it before the 'if' or 'otherwise'.
+    I was trying to match one of these phrases:
+    1.  let (spong - a new name) be (list of things - description of relations of
+    values) 
+    2.  let (spong - a new name) be (list of things - name of kind) 
+    3.  let (spong - a new name) be (list of things - value) 
+    4.  let (spong - a temporary named value) be (list of things - value) 
+    I recognised:
+    list of things = an instruction to work out a list of things
+    The name 'spong' doesn't yet exist.
+Inform 7 has finished: 156 centiseconds used.

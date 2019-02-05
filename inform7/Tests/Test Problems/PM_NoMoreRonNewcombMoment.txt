@@ -1,0 +1,7 @@
+There is a room.
+Here is a grail.  Here is another thing, yet another thing, and a further thing yet.
+Every turn:
+	repeat with X running through things:
+		if we have examined the grail for the fifth time:
+			say "Hello."
+Test me with "x grail".

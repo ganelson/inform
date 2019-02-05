@@ -1,0 +1,13 @@
+Laboratory is a room.
+
+Length is a kind of value. 1m specifies a length.
+
+Weight is a kind of value. 1g specifies a weight.
+
+Force is a kind of value. 1N specifies a force.
+
+A length times a weight specifies a number.
+
+A force times a weight specifies a length.
+
+A weight times a force specifies a force.

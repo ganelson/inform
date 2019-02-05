@@ -1,0 +1,57 @@
+   Studio Apartment
+  Neighborhood Watch
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Studio Apartment
+  You can see a shabby door here.
+  
+> >   Rickety Stairwell
+  (Testing.)
+  
+  >[1] unlock door
+  You flip over the deadbolt to unlock the shabby door.
+  
+  >[2] drop key
+  Dropped.
+  
+  >[3] open door
+  You open the shabby door.
+  
+  >[4] out
+  
+  Rickety Stairwell
+  You can see a shabby door here.
+  
+  >[5] close door
+  You close the shabby door.
+  
+  >[6] lock door
+  You can't lock the door from this side without the key.
+  
+  >[7] open door
+  You open the shabby door.
+  
+  >[8] in
+  
+  Studio Apartment
+  You can see a shabby door and a brass key here.
+  
+  >[9] get key
+  Taken.
+  
+  >[10] out
+  
+  Rickety Stairwell
+  You can see a shabby door here.
+  
+  >[11] close door
+  You close the shabby door.
+  
+  >[12] lock door
+  You lock the shabby door.
+  
+  >[13] unlock door
+  You unlock the shabby door.
+  
+> >

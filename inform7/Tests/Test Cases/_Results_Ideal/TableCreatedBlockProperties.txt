@@ -1,0 +1,14 @@
+   Testlab
+  subject: subjA
+  Followers: subjA and subjB, M: 3. Number of followers: 2
+  subjA - followers: subjA and subjB - mass: 3.
+  subjB - followers: subjB - mass: 5.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Testlab
+  
+> >   Testlab
+> Are you sure you want to quit? 

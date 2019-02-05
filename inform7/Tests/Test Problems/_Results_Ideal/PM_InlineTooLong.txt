@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InlineTooLong
+  >--> You wrote 'To exceed reasonable limits' (source text, line 3): but the
+    inline definition of this 'to...' phrase is too long, using a quantity of
+    Inform 6 code which exceeds the fairly small limit allowed. You will need
+    either to write the phrase definition in Inform 7, or to call an I6 routine
+    which you define elsewhere with an 'Include ...'.
+Inform 7 has finished: 19 centiseconds used.

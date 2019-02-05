@@ -1,0 +1,37 @@
+The Parlor is a room. The description is "A sparsely furnished room."
+
+The table is a supporter in the parlor.
+
+Relative-position is a kind of value. The relative-positions are left, center, and right.
+
+A coconut half is a kind of thing. A coconut half has a relative-position. A coconut half is usually center. Before printing the name of a coconut half: say "[relative-position] ". The description of a coconut half is "It's an irregular brown hump. It's sitting on the table with its open side down, so you can't see what's underneath (if anything)." Understand "irregular" and "brown" and "hump" as a coconut half. Understand the relative-position property as describing a coconut half.
+
+On the table are a left coconut half, a center coconut half, and a right coconut half. Understand "middle" as center.
+
+Instead of taking or touching a coconut half:
+	say "Don't touch [the noun]."
+
+Pointing at is an action applying to one visible thing and requiring light. Understand "point at [something]" and "indicate [something]" and "point to [something]" as pointing at.
+
+Report pointing at:
+	say "You point at [the noun]."
+
+Instead of pointing at a coconut half (called the nut):
+	say "You have pointed gloriously at [the nut].";
+	stop the action.
+
+Carry out pointing at the table:
+	say "The card table cringes as you point at it.";
+	stop the action.
+
+Pointing it at is an action applying to two things.
+
+Check pointing it at:
+	if the noun is not held by the player:
+		say "You would need to be holding [the noun] in order to point it at something else.";
+		stop the action.
+
+Report pointing it at:
+	say "You aim [the noun] in the general direction of [the second noun]."
+
+Test me with "actions / take left half /  point at left half / rules all / point at middle half".

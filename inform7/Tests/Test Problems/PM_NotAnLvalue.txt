@@ -1,0 +1,4 @@
+Home is a room.
+
+Every turn:
+	remove 2 from {1, 2, 3}.

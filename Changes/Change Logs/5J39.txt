@@ -1,0 +1,123 @@
+5J39 (1 December 2007)
+
+This build introduces lists as first-class values. For any kind of value K,
+"list of K" is now also a kind of value, and rich support is provided for
+building and iterating over lists, which are dynamically resized as
+necessary. Otherwise little is new, but once again all known bugs have
+been fixed.
+
+For any kind of value K, "list of K" is now also a kind of value. Lists
+	resize automatically, can be iterated through, sorted, searched,
+	reversed or rotated, and they have a notation enabling constant lists
+	to be written down concisely: for instance,
+		let L be {2, 3, 5, 7, 11};
+	gives the temporary variable L the kind of value "list of numbers",
+	and sets it initially to this sequence of five values, whereas
+		let M be the list of open doors;
+	gives M the kind of value "list of objects", and sets its initial
+	contents to be all the doors which are currently open. (Lists can also
+	be used in global variables, in properties, or table entries, and can
+	include each other: "list of lists of numbers", say, is a kind of value.)
+	Values can be added or removed at any point in a list; lists can be merged,
+	or compared for differences; and examples are presented to show the
+	use of lists as queues, stacks, rings, sets, arrays, and so forth.
+	(All memory management is automatic and all bounds are automatically
+	checked.) See the new Chapter 20 ("Lists").
+Examples:
+	"Eyes, Fingers, Toes" added to demonstrate a multi-number safe using
+		lists to create a log of dialed numbers.
+	"Robo 1" added to demonstrate a programmable robot that will replay the
+		player's behavior.
+	"Robo 2" added to demonstrate a robot that can learn multiple stored
+		action scripts with command names determined by the player.
+	"Rock Garden" reformatted to give the general material at the top.
+	"The Fibonacci Sequence" added to demonstrate using lists as arrays.
+	"I Didn't Come All The Way From Great Portland Street" added to
+		demonstrate using lists as sets.
+	"Lugubrious Pete's Delicatessen" added to demonstrate using lists as
+		queues.
+	"Sieve of Eratosthenes" added to demonstrate using lists as sieves.
+	"Circle of Misery" added to demonstrate using lists as ring buffers.
+	"Lanista 1" corrected to fix a truncated sentence in the commentary.
+	"Leopard-skin" added to demonstrate a log of stored actions.
+	"What Makes You Tick" added to demonstrate building a fishing rod from
+		component parts.
+	"Your Mother Doesn't Work Here" added to demonstrate using a list as a
+		stack to plan character behavior.
+The previous restriction whereby TEST scripts could not exceed 255 characters
+	in length has been withdrawn. The new maximum is 9999 (a cap intended
+	only to catch accidental runaway cases where the closing quote has been
+	forgotten).
+Problem message added to prevent the UNDO command being used in a TEST
+	script (which can't safely be done since it undoes progress in the test
+	itself), and also to prevent individual commands in TEST scripts from
+	exceeding 100 characters (since the I6 library would choke on those).
+Problem message improved for namespace clashes between variable names and
+	descriptions.
+Problem message added (in place of previous I6 errors) when a
+	description of an action, used as a condition, refers both to the past
+	and to values in the present (by means of "called").
+Problem message improved for an ambiguity in rule premisses as between
+	a description of an actor followed by an action, and an action name
+	with no actor attached. (This arose in the case of "standing using ...",
+	where "standing" had also been defined so as to describe certain people:
+	was the action here "standing using", done by nobody in particular, or
+	"using", done by a person matching "standing"?)
+Bug fixed whereby pastes of Example text for examples including backslashes
+	(such as those arising from the introduction of regular expression
+	matching) and, in some cases, other unusual characters would cause
+	the text to be pasted incomplete - so that it did not work as it
+	was claimed to do.
+Bug fixed whereby two or more consecutive double-quoted texts in a single
+	table entry would lead to an internal error rather than a problem
+	message; something which can happen easily if pasted text converts
+	tabs to spaces, when two adjacent table columns are both supposed to
+	contain text.
+Bug fixed whereby a rule whose premiss involved clauses of several different
+	sorts, one of them "when", could sometimes produce an internal error.
+Bug fixed - or, really, feature added, but the lack of it was regarded as
+	peculiar - whereby an action description used in a rule was not allowed
+	to give the name of a kind of value to mean "any value of this kind":
+	for instance, "Instead of dialing something to a code symbol", where
+	"code symbol" is a kind of value and "dialing it to" is an action
+	applying to one thing and one code symbol.
+Bug fixed whereby "[']" for apostrophe wasn't being allowed in titles given
+	as the opening text of a bibliographic heading.
+Bug fixed whereby indexed text and stored action variables were not working
+	properly if they belonged to rulebooks, activities or actions.
+Bug fixed whereby "if there is a [table-reference]" was not working in the
+	case of columns holding indexed text.
+Bug fixed whereby spurious "no such entry" run-time problems would occur if
+	a table with a column holding indexed text was created with blank rows.
+Bug fixed whereby ambiguous phrases requiring run-time checking on some
+	arguments would sometimes go wrong if other arguments were stored
+	actions or indexed text.
+Bug fixed whereby if several "let" variables in a single phrase needed to
+	be indexed text or stored actions, they would sometimes have their kinds
+	of value rearranged between them, with occasionally bizarre results.
+Bug fixed whereby the dynamic memory allocator would print up debugging
+	information such as "1+128+256+512+1024+2048+4096+8192+16384+65536"
+	after successfully allocating memory via Glulx's @malloc mechanism.
+	Apologies for this.
+Bug fixed whereby a compound phrase which looks as if it might be in the
+	form "total ...", counting the total of some property - but which isn't -
+	would generate an internal error rather than being rejected in favour
+	of some other interpretation.
+Bug fixed whereby a rule predicated on a condition about something being
+	listed (or not) in a table would cause I6 errors.
+Bug fixed whereby an internal error rather than a problem message would
+	sometimes be issued when a condition was used which had no active verb
+	but could be taken as a description of things (typically arising if
+	"is" had been mistyped as "in").
+Infelicity fixed whereby the problem message about minus signs being
+	wrongly used in unit constants could be repeated (sometimes quite a
+	few times) for the same mistake.
+Problem message added (rather than I6 error or mysteriously incorrect
+	behaviour) for the case of a phrase so ambiguous that at compile-time
+	it is not possible to tell how many values it takes as arguments.
+	The problem explains this, shows the phrases it cannot choose between,
+	and invites the author to reword one of them.
+Bug fixed whereby the old I6 debugging commands CHANGES and ROUTINES, which
+	are no longer implemented in I7, still had their grammar visible in
+	I7-compiled games, so that it was possible (but usually quickly fatal)
+	to try using these commands.

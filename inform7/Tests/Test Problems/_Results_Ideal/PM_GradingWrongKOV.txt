@@ -1,0 +1,9 @@
+Inform 7.10.1 build 6N54 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_GradingWrongKOV
+  >--> You gave as a definition 'a thing is stately if its carrying capacity is
+    10:15 AM or more' (source text, line 3): but the property value given here
+    is the wrong kind, and does not match the property being looked at.
+Inform 7 has finished: 40 centiseconds used.

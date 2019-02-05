@@ -1,0 +1,13 @@
+The Cave is a room.
+
+The jelly monster is an animal in the cave.
+
+The parasitic cream blob is an animal. The blob is part of the monster.
+
+Instead of going east:
+	now the player is part of the jelly monster.
+
+Instead of going west:
+	now the player is the blob.
+
+Test me with "e / w".

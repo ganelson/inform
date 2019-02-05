@@ -1,0 +1,27 @@
+3K56 (4 May 2006)
+
+(Mac OS X only) Support for OS 10.3.9 restored.
+(Mac OS X only) Build number now correct in Finder's Information window
+	for the application file.
+Changed the "tieing" action to "tying". (Inform's British author thought
+	this was an American spelling, and vice versa. Sorry.) This entailed
+	changes to examples Otranto, Brown, Snip, Snip Snip, and Under Contract.
+Bug in U-Stor-It example fixed, and Disappointment Bay 12 slightly improved.
+Tidied up documentation of Basic Screen Effects and Plurality extensions.
+Fixed the "South is a dead end with printed name "Collapsed Dead End"."
+	bug causing the Undertomb example in the main text to fail to compile.
+Fixed problem with the "Early Childhood 4" example.
+Fixed compiler hang to do with misunderstood sentences setting the kind
+	of a kind to itself.
+Fixed internal error on "now X is P", where X is a thing and P an
+	property which isn't an either/or property.
+Fixed problems with defining a kind which includes the word "object".
+Fixed internal error on sentences using "to have" incorrectly.
+Fixed internal error on assertions giving inexplicit information about
+	the kinds of things (asserting kind(f(x)) = y where f(x) is unknown).
+Fixed failure to object to malformed sentences caused by misunderstanding
+	of the punctuation convention about quoted text ending sentences.
+Fixed failure to object to names of things or rooms containing literal
+	double-quoted text (which then failed to compile through I6).
+Fixed failure to object to negative assertions in the form "The P is not
+	X.", where P is a property taking a value.

@@ -1,0 +1,15 @@
+Home is a room.
+
+Every turn when we have taken inventory: say "You sure are glad that
+your inventory is in order!"
+
+Every turn when we have waited: say "Time keeps dragging on."
+
+The block waking up rule is not listed in any rulebook.
+
+Report waking up: say "You are now wide awake."
+
+Every turn when we have woken up: say "It's good that you're awake
+too."
+
+Test me with "actions / i / z / wake up / z / z"

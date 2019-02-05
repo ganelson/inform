@@ -1,0 +1,51 @@
+   Banquet Hall
+  Happy Hour
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Banquet Hall
+  A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
+  
+  You can see Fred, George, Larry, Matilda and Louise here. Fred has a dry martini and Larry has a cream puff.
+  
+> >   Banquet Hall
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  George goes west.
+  
+  >[2] look
+  Banquet Hall
+  A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
+  
+  You can see Fred, Larry, Matilda and Louise here. Fred has a dry martini and Larry has a cream puff.
+  
+  Larry goes west.
+  
+  >[3] g
+  Banquet Hall
+  A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
+  
+  You can see Fred, Matilda and Louise here. Fred has a dry martini.
+  
+  Matilda goes west.
+  
+  >[4] g
+  Banquet Hall
+  A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
+  
+  You can see Fred and Louise here. Fred has a dry martini.
+  
+  Larry arrives from the west.
+  
+  >[5] g
+  Banquet Hall
+  A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
+  
+  You can see Larry, Fred and Louise here. Fred has a dry martini and Larry has a cream puff.
+  
+  Larry goes west.
+  
+> >

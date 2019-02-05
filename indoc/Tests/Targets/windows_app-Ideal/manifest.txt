@@ -1,0 +1,3 @@
+doc1.html: 1.1  1.1. Truth
+doc2.html: 1.2  1.2. Money
+doc3.html: 2.1  2.1. Bingley

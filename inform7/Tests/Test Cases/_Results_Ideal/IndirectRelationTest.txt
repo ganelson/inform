@@ -1,0 +1,14 @@
+   Home
+  Containment test succeeded.
+  Wearing test succeeded.
+  Support test succeeded.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see a fruit bowl (in which is an apple), a plinth (on which is an orange) and Martina here.
+  
+> >   Home
+> Are you sure you want to quit? 

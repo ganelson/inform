@@ -1,0 +1,20 @@
+   Game Room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Game Room
+  
+> >   Game Room
+  (Testing.)
+  
+  >[1] dice 2d20+1
+  For your own amusement, you roll 2d20+1: 18,4+1=23, making twenty-three.
+  
+  >[2] dice 2d20+
+  I didn't understand that sentence.
+  
+  >[3] dice 2d20
+  For your own amusement, you roll 2d20: 7,15=22, making twenty-two.
+  
+> >

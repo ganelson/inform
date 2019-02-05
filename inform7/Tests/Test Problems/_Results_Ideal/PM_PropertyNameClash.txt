@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyNameClash
+  >--> You wrote 'A person has a text called 101' (source text, line 3), but
+    '101' is not free to be the name of a fresh property: it already has a
+    meaning (as a number).
+Inform 7 has finished: 14 centiseconds used.

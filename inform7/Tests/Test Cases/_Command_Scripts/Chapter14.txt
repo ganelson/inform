@@ -1,0 +1,27 @@
+x rosemary
+x oregano
+buy saffron
+undo
+buy saffron
+buy chicory
+buy saffron
+buy cayenne
+i
+x saffron
+smell saffron
+smell chicory
+smell oregano
+i
+buy oregano
+drop oregano
+buy fennel
+drop oregano
+take oregano
+buy oregano
+i
+look
+buy rosemary
+drop oregano
+x tea
+buy tea
+

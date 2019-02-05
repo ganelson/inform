@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+Include (-
+	Global whatever = 1;
+-) before the library.

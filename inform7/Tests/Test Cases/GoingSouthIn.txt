@@ -1,0 +1,9 @@
+Home is a room.
+
+Garden is south of Home.
+
+Going south in the Home is frivolous behaviour.
+
+Instead of frivolous behaviour, say "No way!"
+
+Test me with "s".

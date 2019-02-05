@@ -1,0 +1,8 @@
+Xanadu is a room.
+
+Colour is a kind of value. Mauve and cerise are colours.
+
+Slyness relates various things to various colours.
+
+A box is a kind of container. Understand "box of [something related by slyness]"
+as a box.

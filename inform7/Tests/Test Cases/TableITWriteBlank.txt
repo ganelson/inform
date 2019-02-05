@@ -1,0 +1,1 @@
+Home is a room.Table of Foomessagean textwith 5 blank rows.When play begins:	choose a blank row in Table of Foo;	now the message entry is "hello world".Instead of waiting:	repeat through the Table of Foo:		say "Foo says this: [message entry]."

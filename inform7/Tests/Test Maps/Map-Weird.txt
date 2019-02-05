@@ -1,0 +1,794 @@
+"The Reconditely Weird Affair"
+
+Use MAX_STATIC_DATA of 512000.
+
+Limbo is a room.
+Metaphysics is a region.
+Limbo is in Metaphysics.
+The player is in Limbo.
+Metaphysics is a region.
+Battlement is a room.
+Scotland is a region.
+Battlement is in Scotland.
+Fore is a direction. The opposite of Fore is aft.
+aft is a direction. The opposite of aft is Fore.
+Starboard is a direction. The opposite of Starboard is port.
+port is a direction. The opposite of port is Starboard.
+Scotland is a region.
+Lake is a room.
+Lake is in Scotland.
+Populated_Rome is a region.
+Forum is a room.
+Forum is in Populated_Rome.
+Via Sacra is a room.
+Via Sacra is in Populated_Rome.
+Rome is a region.
+Curia Steps is a room.
+Curia Steps is in Rome.
+Curia Interior is a room.
+Curia Interior is in Rome.
+Temple of Eris is a room.
+Temple of Eris is in Rome.
+Altar of Eris is a room.
+Altar of Eris is in Rome.
+Temple of Jupiter Virilis is a room.
+Temple of Jupiter Virilis is in Rome.
+Twisty Little Alley is a room.
+Twisty Little Alley is in Rome.
+Artist's Hut is a room.
+Artist's Hut is in Rome.
+Phallus Interior is a room.
+Phallus Interior is in Rome.
+Seedy Tavern is a room.
+Seedy Tavern is in Rome.
+Hometown is a region.
+Domus Macana is a region.
+Sewers is a region.
+Town is a region.
+Atrium is a room.
+Atrium is in Domus Macana.
+Peristyle is a room.
+Peristyle is in Domus Macana.
+Ostia is a room.
+Ostia is in Town.
+Dockside is a room.
+Dockside is in Town.
+Stiffy Love Nest is a room.
+Stiffy Love Nest is in Domus Macana.
+Tablinum is a room.
+Tablinum is in Domus Macana.
+Privy is a room.
+Privy is in Domus Macana.
+plain wooden door is a door.
+heavy wooden door is a door.
+flimsy door is a door.
+Beneath the privy is a room.
+Special_Sewers is a region.
+Beneath the privy is in Special_Sewers.
+Generic_Sewers is a region.
+Special_Sewers is a region.
+Sewer1 is a room.
+Sewer1 is in Generic_Sewers.
+Sewer2 is a room.
+Sewer2 is in Generic_Sewers.
+Sewer3 is a room.
+Sewer3 is in Generic_Sewers.
+Sewer4 is a room.
+Sewer4 is in Generic_Sewers.
+sewer5 is a room.
+sewer5 is in Generic_Sewers.
+Sewer6 is a room.
+Sewer6 is in Generic_Sewers.
+Sewer7 is a room.
+Sewer7 is in Generic_Sewers.
+Sewer8 is a room.
+Sewer8 is in Generic_Sewers.
+Sewer9 is a room.
+Sewer9 is in Generic_Sewers.
+Sewer10 is a room.
+Sewer10 is in Generic_Sewers.
+black iron grate is a door.
+House_Of_Glub is a room.
+House_Of_Glub is in Special_Sewers.
+Sewer_Mouth is a room.
+Sewer_Mouth is in Special_Sewers.
+Shipboard is a region.
+Poop Deck is a room.
+Poop Deck is in Shipboard.
+Sicily is a region.
+Syracuse is a room.
+Syracuse is in Sicily.
+Polyphemus Brothel is a room.
+Polyphemus Brothel is in Sicily.
+Phoenicia is a region.
+Generic_Carthage is a region.
+Clinic is a room.
+Clinic is in Phoenicia.
+Fortune-teller's Tent is a room.
+Fortune-teller's Tent is in Phoenicia.
+Cemetery is a room.
+Cemetery is in Phoenicia.
+Carthage Docks is a room.
+Carthage Docks is in Generic_Carthage.
+Harbor Ruins is a room.
+Harbor Ruins is in Generic_Carthage.
+Agora is a room.
+Agora is in Generic_Carthage.
+Industrial Wasteland is a room.
+Industrial Wasteland is in Generic_Carthage.
+necropolis gate is a door.
+Campania is a region.
+Cumae is a room.
+Cumae is in Campania.
+Lake Avernus is a room.
+Lake Avernus is in Campania.
+Cocceio's Cave is a room.
+Cocceio's Cave is in Campania.
+Sybilline Grotto is a room.
+Sybilline Grotto is in Campania.
+Judaea is a region.
+Jaffa is a room.
+Jaffa is in Judaea.
+Jonah's Museum is a room.
+Jonah's Museum is in Judaea.
+Fake Whale Interior is a room.
+Fake Whale Interior is in Judaea.
+Gift Shop is a room.
+Gift Shop is in Judaea.
+Jerusalem is a room.
+Jerusalem is in Judaea.
+Jerusalem_Alley is a room.
+Jerusalem_Alley is in Judaea.
+Temple Courtyard is a room.
+Temple Courtyard is in Judaea.
+Judaean Brothel is a room.
+Judaean Brothel is in Judaea.
+Zach's Mohelerie is a room.
+Zach's Mohelerie is in Judaea.
+fake_whale_mouth is a door.
+Egypt is a region.
+Egyptian_streets is a region.
+Palace Grounds is a region.
+Hotel Metropole is a room.
+Hotel Metropole is in Egypt.
+Eugenidean Boudoir is a room.
+Eugenidean Boudoir is in Egypt.
+Museum Antechamber is a room.
+Museum Antechamber is in Egypt.
+Great Library is a room.
+Great Library is in Egypt.
+Top of the Pharos is a room.
+Top of the Pharos is in Egypt.
+The Temple of Serapis is a room.
+The Temple of Serapis is in Egypt.
+Alexandrine Wharf is a room.
+Alexandrine Wharf is in Egyptian_streets.
+Great Harbor is a room.
+Great Harbor is in Egyptian_streets.
+Canopic Way is a room.
+Canopic Way is in Egyptian_streets.
+Western Canopic Way is a room.
+Western Canopic Way is in Egyptian_streets.
+Heptastadion is a room.
+Heptastadion is in Egyptian_streets.
+By The Museum is a room.
+By The Museum is in Egyptian_streets.
+Intersection is a room.
+Intersection is in Egyptian_streets.
+Isle of Pharos is a room.
+Isle of Pharos is in Egyptian_streets.
+Gate of the Sun is a room.
+Gate of the Sun is in Egyptian_streets.
+Lake Harbor is a room.
+Lake Harbor is in Egyptian_streets.
+Cleopatra's Palace is a room.
+Cleopatra's Palace is in Palace Grounds.
+Soma Mausoleum is a room.
+Soma Mausoleum is in Palace Grounds.
+Cleopatra's Throne Room is a room.
+Cleopatra's Throne Room is in Palace Grounds.
+Cleopatra's Boudoir is a room.
+Cleopatra's Boudoir is in Palace Grounds.
+bead curtain is a door.
+Macedonia is a region.
+Thessalonica Docks is a room.
+Thessalonica Docks is in Macedonia.
+Prionia is a room.
+Prionia is in Macedonia.
+Litochoro is a room.
+Litochoro is in Macedonia.
+Near The Tree Line is a room.
+Olympic Slopes is a region.
+Near The Tree Line is in Olympic Slopes.
+Jungly Africa is a region.
+Jungle Slope is a room.
+Jungle Slope is in Jungly Africa.
+Canyon's Edge is a room.
+Canyon's Edge is in Jungly Africa.
+Narrow Chasm is a room.
+Narrow Chasm is in Jungly Africa.
+East Side of Chasm is a room.
+East Side of Chasm is in Jungly Africa.
+West Side of Chasm is a room.
+West Side of Chasm is in Jungly Africa.
+Waterfall Overlook is a room.
+Waterfall Overlook is in Jungly Africa.
+Rocky Ford is a room.
+Rocky Ford is in Jungly Africa.
+Palm Grove is a room.
+Palm Grove is in Jungly Africa.
+Melon Patch is a room.
+Melon Patch is in Jungly Africa.
+Cane Field is a room.
+Cane Field is in Jungly Africa.
+North Shore of the Lake is a room.
+North Shore of the Lake is in Jungly Africa.
+African Lake is a region.
+North End of the Lake is a room.
+North End of the Lake is in African Lake.
+Middle of the Lake is a room.
+Middle of the Lake is in African Lake.
+Up a Tree is a region.
+Halfway up the Banana Tree is a room.
+Halfway up the Banana Tree is in Up a Tree.
+Top of the Banana Tree is a room.
+Top of the Banana Tree is in Up a Tree.
+Darkest Africa is a region.
+High on a Hillside is a room.
+High on a Hillside is in Darkest Africa.
+Precarious Ledge is a room.
+Precarious Ledge is in Darkest Africa.
+Mountain Pass is a room.
+Mountain Pass is in Darkest Africa.
+Spit of Land is a room.
+Spit of Land is in Darkest Africa.
+Rocky Streambed is a room.
+Rocky Streambed is in Darkest Africa.
+Plateau is a room.
+Plateau is in Darkest Africa.
+Dark Africa is a region.
+Hidden Valley is a room.
+Hidden Valley is in Dark Africa.
+Ridiculous Animalistic Vehicles is a region.
+Real Whale Interior is a room.
+Real Whale Interior is in Ridiculous Animalistic Vehicles.
+Hippopotamus Interior is a room.
+Hippopotamus Interior is in Ridiculous Animalistic Vehicles.
+elephant ribcage is a door.
+footbridge is a door.
+Outside_Shipboard is a region.
+Poop_Deck2 is a room.
+Poop_Deck2 is in Outside_Shipboard.
+Main_Deck is a room.
+Main_Deck is in Outside_Shipboard.
+Halfway Up the Mast is a room.
+Halfway Up the Mast is in Outside_Shipboard.
+Crow's Nest is a room.
+Crow's Nest is in Outside_Shipboard.
+Cabin Hallway is a room.
+Cabin Hallway is in Shipboard.
+Stiffy's Cabin is a room.
+Stiffy's Cabin is in Shipboard.
+Hold is a room.
+Hold is in Shipboard.
+cabin hatch is a door.
+Captain's door is a door.
+Palinurus's door is a door.
+Stiffy's door is a door.
+hold hatch is a door.
+Slave Ship is a region.
+Captain's Cabin is a room.
+Captain's Cabin is in Slave Ship.
+Galley is a room.
+Galley is in Slave Ship.
+Viking_region is a region.
+Viking Longboat is a room.
+Viking Longboat is in Viking_region.
+Druidic Grove is a room.
+Druidic Grove is in Scotland.
+Game Room is a room.
+Olympus is a region.
+Game Room is in Olympus.
+Olympus is a region.
+Underworld is a region.
+Unreal City is a room.
+Unreal City is in Underworld.
+Garden is a room.
+Garden is in Underworld.
+Plaza is a room.
+Plaza is in Underworld.
+Land of the Dead is a room.
+Land of the Dead is in Underworld.
+Little Thebes is a room.
+Little Thebes is in Underworld.
+Rats' Alley is a room.
+Rats' Alley is in Underworld.
+Slough of Despond is a room.
+Slough of Despond is in Underworld.
+Apartment is a room.
+Apartment is in Underworld.
+Bloody Wood is a room.
+Bloody Wood is in Underworld.
+Riverbank is a room.
+Riverbank is in Underworld.
+Northern_riverbank is a room.
+Northern_riverbank is in Underworld.
+Circular Ruins is a room.
+Circular Ruins is in Underworld.
+Olive Grove is a room.
+Olive Grove is in Underworld.
+Muddy Field is a room.
+Muddy Field is in Underworld.
+Persephone's Palace is a room.
+Persephone's Palace is in Underworld.
+Kentucky is a region.
+End_Of_Road is a room.
+End_Of_Road is in Kentucky.
+Open_Forest is a room. The printed name of Open_Forest is "Open Forestation".
+Open_Forest is in Kentucky.
+Other_Forest is a room.
+Other_Forest is in Kentucky.
+In_Valley is a room.
+In_Valley is in Kentucky.
+Slit_In_Streambed is a room.
+Slit_In_Streambed is in Kentucky.
+Inside_Building is a room.
+Inside_Building is in Kentucky.
+Outside_Grate is a room.
+Outside_Grate is in Kentucky.
+Road_Hill is a room.
+Road_Hill is in Kentucky.
+kentucky_grate is a door.
+The other side of kentucky_grate is Limbo.
+Mantua is a region.
+Mantua_outdoors is a region.
+Villa Entrance is a room.
+Villa Entrance is in Mantua_outdoors.
+Little Pond is a room.
+Little Pond is in Mantua_outdoors.
+Chestnut Grove is a room.
+Chestnut Grove is in Mantua_outdoors.
+Field Near Cave is a room.
+Field Near Cave is in Mantua_outdoors.
+Mantua_cave is a region.
+Inside_the_Cavern is a room.
+Inside_the_Cavern is in Mantua_cave.
+Cavern_Mouth is a room.
+Cavern_Mouth is in Mantua_cave.
+Mantua_indoors is a region.
+Villa Atrium is a room.
+Villa Atrium is in Mantua_indoors.
+Villa Peristyle is a room.
+Villa Peristyle is in Mantua_indoors.
+Kitchen is a room.
+Kitchen is in Mantua_indoors.
+Mantua_cellars is a region.
+Pantry is a room.
+Pantry is in Mantua_cellars.
+Root Cellar is a room.
+Root Cellar is in Mantua_cellars.
+Shadowy Nook is a room.
+Shadowy Nook is in Mantua_cellars.
+Wine Cellar is a room.
+Wine Cellar is in Mantua_cellars.
+Dim Alcove is a room.
+Dim Alcove is in Mantua_cellars.
+Villa Doorway is a door.
+stout door is a door.
+Olympic Slopes is a region.
+Olympic Ridge is a room.
+Olympic Ridge is in Olympic Slopes.
+Saddle is a room.
+Saddle is in Olympic Slopes.
+Southern Peak is a room.
+Southern Peak is in Olympic Slopes.
+Skolio is a room.
+Skolio is in Olympic Slopes.
+Cirque is a room.
+Cirque is in Olympic Slopes.
+Perilous Ledge is a room.
+Perilous Ledge is in Olympic Slopes.
+Skala is a room.
+Skala is in Olympic Slopes.
+Summit is a room.
+Summit is in Olympus.
+Olympic Plaza is a room.
+Olympic Plaza is in Olympus.
+Palace Steps is a room.
+Palace Steps is in Olympus.
+Olympic Garden is a room.
+Olympic Garden is in Olympus.
+Colossal Baths is a room.
+Colossal Baths is in Olympus.
+Grand Palace is a room.
+Grand Palace is in Olympus.
+Halls of Justice is a room.
+Halls of Justice is in Olympus.
+Eternity is a region.
+Macedonian Hillside is a room.
+Macedonian Hillside is in Macedonia.
+Ruined Villa is a room.
+Ruined Villa is in Eternity.
+Pumpkin Patch is a room.
+Pumpkin Patch is in Eternity.
+Atomic Wasteland is a room.
+Atomic Wasteland is in Eternity.
+Ant-Man Kingdom is a room.
+Ant-Man Kingdom is in Eternity.
+Deep Space is a room.
+Deep Space is in Eternity.
+Black Hole is a room.
+Black Hole is in Eternity.
+Lake is down of Battlement.
+up of Lake is nowhere.
+Curia Steps is north of Forum.
+Temple of Eris is south of Forum.
+Via Sacra is east of Forum.
+Temple of Jupiter Virilis is west of Forum.
+Temple of Jupiter Virilis is inside of Forum.
+Twisty Little Alley is north of Via Sacra.
+Forum is west of Via Sacra.
+Curia Interior is north of Curia Steps.
+Forum is south of Curia Steps.
+Curia Interior is inside of Curia Steps.
+Curia Steps is south of Curia Interior.
+Curia Steps is outside of Curia Interior.
+Forum is north of Temple of Eris.
+Altar of Eris is south of Temple of Eris.
+Forum is outside of Temple of Eris.
+Temple of Eris is north of Altar of Eris.
+Forum is east of Temple of Jupiter Virilis.
+Phallus Interior is west of Temple of Jupiter Virilis.
+Phallus Interior is inside of Temple of Jupiter Virilis.
+Forum is outside of Temple of Jupiter Virilis.
+Seedy Tavern is north of Twisty Little Alley.
+Via Sacra is south of Twisty Little Alley.
+Artist's Hut is east of Twisty Little Alley.
+Seedy Tavern is inside of Twisty Little Alley.
+Twisty Little Alley is west of Artist's Hut.
+Twisty Little Alley is outside of Artist's Hut.
+Temple of Jupiter Virilis is east of Phallus Interior.
+Temple of Jupiter Virilis is outside of Phallus Interior.
+Twisty Little Alley is south of Seedy Tavern.
+Twisty Little Alley is outside of Seedy Tavern.
+Tablinum is north of Atrium.
+Ostia is south of Atrium.
+heavy wooden door is east of Atrium.
+plain wooden door is west of Atrium.
+Ostia is outside of Atrium.
+flimsy door is north of Peristyle.
+Tablinum is south of Peristyle.
+Privy is inside of Peristyle.
+Atrium is north of Ostia.
+Dockside is west of Ostia.
+Atrium is inside of Ostia.
+Ostia is east of Dockside.
+Sewer_Mouth is down of Dockside.
+Sewer_Mouth is inside of Dockside.
+plain wooden door is east of Stiffy Love Nest.
+Peristyle is north of Tablinum.
+Atrium is south of Tablinum.
+flimsy door is south of Privy.
+Beneath the privy is down of Privy.
+Peristyle is outside of Privy.
+Sewer1 is east of Beneath the privy.
+Privy is up of Beneath the privy.
+Sewer2 is north of Sewer1.
+Beneath the privy is west of Sewer1.
+Sewer1 is south of Sewer2.
+Sewer4 is east of Sewer2.
+Sewer3 is west of Sewer2.
+Sewer2 is east of Sewer3.
+Sewer6 is west of Sewer3.
+sewer5 is south of Sewer4.
+Sewer2 is west of Sewer4.
+Sewer4 is north of sewer5.
+Sewer7 is south of sewer5.
+Sewer3 is east of Sewer6.
+sewer5 is north of Sewer7.
+Sewer8 is west of Sewer7.
+Sewer7 is east of Sewer8.
+Sewer9 is west of Sewer8.
+Sewer8 is east of Sewer9.
+Sewer10 is west of Sewer9.
+black iron grate is north of Sewer10.
+Sewer9 is east of Sewer10.
+Sewer_Mouth is west of Sewer10.
+black iron grate is south of House_Of_Glub.
+Sewer10 is east of Sewer_Mouth.
+Dockside is up of Sewer_Mouth.
+Dockside is outside of Sewer_Mouth.
+Polyphemus Brothel is north of Syracuse.
+Polyphemus Brothel is inside of Syracuse.
+Syracuse is south of Polyphemus Brothel.
+Syracuse is outside of Polyphemus Brothel.
+Industrial Wasteland is north of Clinic.
+Industrial Wasteland is outside of Clinic.
+Agora is west of Fortune-teller's Tent.
+Agora is outside of Fortune-teller's Tent.
+necropolis gate is south of Cemetery.
+Harbor Ruins is north of Carthage Docks.
+Industrial Wasteland is west of Carthage Docks.
+Agora is north of Harbor Ruins.
+Carthage Docks is south of Harbor Ruins.
+necropolis gate is north of Agora.
+Harbor Ruins is south of Agora.
+Fortune-teller's Tent is east of Agora.
+Fortune-teller's Tent is inside of Agora.
+Clinic is south of Industrial Wasteland.
+Carthage Docks is east of Industrial Wasteland.
+Clinic is inside of Industrial Wasteland.
+Cocceio's Cave is east of Cumae.
+Sybilline Grotto is south of Lake Avernus.
+Cocceio's Cave is west of Lake Avernus.
+Sybilline Grotto is inside of Lake Avernus.
+Lake Avernus is east of Cocceio's Cave.
+Cumae is west of Cocceio's Cave.
+Lake Avernus is north of Sybilline Grotto.
+Lake Avernus is outside of Sybilline Grotto.
+Jonah's Museum is south of Jaffa.
+Jerusalem is east of Jaffa.
+Jaffa is north of Jonah's Museum.
+Gift Shop is south of Jonah's Museum.
+fake_whale_mouth is west of Jonah's Museum.
+Fake Whale Interior is inside of Jonah's Museum.
+fake_whale_mouth is east of Fake Whale Interior.
+Jonah's Museum is outside of Fake Whale Interior.
+Jonah's Museum is north of Gift Shop.
+Jerusalem_Alley is north of Jerusalem.
+Zach's Mohelerie is south of Jerusalem.
+Temple Courtyard is east of Jerusalem.
+Jaffa is west of Jerusalem.
+Jerusalem is south of Jerusalem_Alley.
+Jerusalem is west of Temple Courtyard.
+Jerusalem is north of Zach's Mohelerie.
+Eugenidean Boudoir is south of Hotel Metropole.
+Lake Harbor is west of Hotel Metropole.
+Eugenidean Boudoir is up of Hotel Metropole.
+Lake Harbor is outside of Hotel Metropole.
+Hotel Metropole is north of Eugenidean Boudoir.
+Hotel Metropole is down of Eugenidean Boudoir.
+Great Library is east of Museum Antechamber.
+By The Museum is west of Museum Antechamber.
+By The Museum is outside of Museum Antechamber.
+Museum Antechamber is west of Great Library.
+Isle of Pharos is west of Top of the Pharos.
+Isle of Pharos is outside of Top of the Pharos.
+Canopic Way is north of The Temple of Serapis.
+Canopic Way is outside of The Temple of Serapis.
+By The Museum is east of Alexandrine Wharf.
+By The Museum is south of Great Harbor.
+Cleopatra's Palace is east of Great Harbor.
+Cleopatra's Palace is inside of Great Harbor.
+The Temple of Serapis is south of Canopic Way.
+Intersection is east of Canopic Way.
+Western Canopic Way is west of Canopic Way.
+The Temple of Serapis is inside of Canopic Way.
+Heptastadion is north of Western Canopic Way.
+Canopic Way is east of Western Canopic Way.
+Isle of Pharos is north of Heptastadion.
+Western Canopic Way is south of Heptastadion.
+Great Harbor is north of By The Museum.
+Intersection is south of By The Museum.
+Museum Antechamber is east of By The Museum.
+Alexandrine Wharf is west of By The Museum.
+Museum Antechamber is inside of By The Museum.
+By The Museum is north of Intersection.
+Lake Harbor is south of Intersection.
+Gate of the Sun is east of Intersection.
+Canopic Way is west of Intersection.
+Heptastadion is south of Isle of Pharos.
+Top of the Pharos is east of Isle of Pharos.
+Top of the Pharos is inside of Isle of Pharos.
+Intersection is west of Gate of the Sun.
+Intersection is north of Lake Harbor.
+Hotel Metropole is east of Lake Harbor.
+Hotel Metropole is inside of Lake Harbor.
+Cleopatra's Throne Room is north of Cleopatra's Palace.
+Soma Mausoleum is east of Cleopatra's Palace.
+Great Harbor is west of Cleopatra's Palace.
+Soma Mausoleum is down of Cleopatra's Palace.
+Soma Mausoleum is inside of Cleopatra's Palace.
+Great Harbor is outside of Cleopatra's Palace.
+Cleopatra's Palace is west of Soma Mausoleum.
+Cleopatra's Palace is up of Soma Mausoleum.
+Cleopatra's Palace is outside of Soma Mausoleum.
+Cleopatra's Palace is south of Cleopatra's Throne Room.
+bead curtain is east of Cleopatra's Throne Room.
+bead curtain is west of Cleopatra's Boudoir.
+Litochoro is west of Thessalonica Docks.
+Litochoro is east of Prionia.
+Near The Tree Line is west of Prionia.
+Thessalonica Docks is east of Litochoro.
+Prionia is west of Litochoro.
+Cirque is north of Near The Tree Line.
+Olympic Ridge is south of Near The Tree Line.
+Prionia is east of Near The Tree Line.
+High on a Hillside is east of Jungle Slope.
+Canyon's Edge is west of Jungle Slope.
+Narrow Chasm is north of Canyon's Edge.
+East Side of Chasm is south of Canyon's Edge.
+Jungle Slope is east of Canyon's Edge.
+Canyon's Edge is south of Narrow Chasm.
+Precarious Ledge is west of Narrow Chasm.
+Canyon's Edge is north of East Side of Chasm.
+Waterfall Overlook is south of East Side of Chasm.
+footbridge is west of East Side of Chasm.
+footbridge is east of West Side of Chasm.
+Mountain Pass is west of West Side of Chasm.
+East Side of Chasm is north of Waterfall Overlook.
+Rocky Ford is south of Waterfall Overlook.
+Waterfall Overlook is north of Rocky Ford.
+Melon Patch is north of Palm Grove.
+Cane Field is south of Palm Grove.
+Mountain Pass is east of Palm Grove.
+Spit of Land is west of Palm Grove.
+Palm Grove is south of Melon Patch.
+Palm Grove is north of Cane Field.
+North End of the Lake is south of North Shore of the Lake.
+Rocky Streambed is east of North Shore of the Lake.
+North Shore of the Lake is north of North End of the Lake.
+Middle of the Lake is south of North End of the Lake.
+North End of the Lake is north of Middle of the Lake.
+Spit of Land is south of Middle of the Lake.
+Top of the Banana Tree is east of Halfway up the Banana Tree.
+Plateau is west of Halfway up the Banana Tree.
+Halfway up the Banana Tree is west of Top of the Banana Tree.
+elephant ribcage is east of High on a Hillside.
+Jungle Slope is west of High on a Hillside.
+Narrow Chasm is east of Precarious Ledge.
+West Side of Chasm is east of Mountain Pass.
+Palm Grove is west of Mountain Pass.
+Middle of the Lake is north of Spit of Land.
+Palm Grove is east of Spit of Land.
+Plateau is north of Rocky Streambed.
+North Shore of the Lake is west of Rocky Streambed.
+Rocky Streambed is south of Plateau.
+Halfway up the Banana Tree is east of Plateau.
+elephant ribcage is west of Hidden Valley.
+cabin hatch is down of Poop_Deck2.
+Main_Deck is fore of Poop_Deck2.
+Halfway Up the Mast is up of Main_Deck.
+hold hatch is down of Main_Deck.
+Poop_Deck2 is aft of Main_Deck.
+Crow's Nest is up of Halfway Up the Mast.
+Main_Deck is down of Halfway Up the Mast.
+Halfway Up the Mast is down of Crow's Nest.
+cabin hatch is up of Cabin Hallway.
+Captain's door is aft of Cabin Hallway.
+Stiffy's door is starboard of Cabin Hallway.
+Palinurus's door is port of Cabin Hallway.
+Stiffy's door is port of Stiffy's Cabin.
+hold hatch is up of Hold.
+Olympic Plaza is west of Game Room.
+Plaza is north of Unreal City.
+Land of the Dead is south of Unreal City.
+Persephone's Palace is east of Unreal City.
+Garden is west of Unreal City.
+Persephone's Palace is inside of Unreal City.
+Unreal City is east of Garden.
+Slough of Despond is north of Plaza.
+Unreal City is south of Plaza.
+Rats' Alley is east of Plaza.
+Little Thebes is west of Plaza.
+Slough of Despond is outside of Plaza.
+Unreal City is north of Land of the Dead.
+Plaza is east of Little Thebes.
+Apartment is north of Rats' Alley.
+Plaza is west of Rats' Alley.
+Apartment is inside of Rats' Alley.
+Riverbank is north of Slough of Despond.
+Plaza is south of Slough of Despond.
+Bloody Wood is west of Slough of Despond.
+Plaza is inside of Slough of Despond.
+Rats' Alley is south of Apartment.
+Rats' Alley is outside of Apartment.
+Slough of Despond is east of Bloody Wood.
+Slough of Despond is south of Riverbank.
+Circular Ruins is north of Northern_riverbank.
+Muddy Field is west of Northern_riverbank.
+Olive Grove is north of Circular Ruins.
+Northern_riverbank is south of Circular Ruins.
+Circular Ruins is south of Olive Grove.
+Northern_riverbank is east of Muddy Field.
+Unreal City is west of Persephone's Palace.
+Unreal City is outside of Persephone's Palace.
+In_Valley is south of End_Of_Road.
+Inside_Building is east of End_Of_Road.
+Road_Hill is west of End_Of_Road.
+Road_Hill is up of End_Of_Road.
+Inside_Building is inside of End_Of_Road.
+Open_Forest is north of Open_Forest.
+Open_Forest is south of Open_Forest.
+Open_Forest is east of Open_Forest.
+Open_Forest is west of Open_Forest.
+In_Valley is down of Open_Forest.
+End_Of_Road is north of Other_Forest.
+Open_Forest is south of Other_Forest.
+In_Valley is east of Other_Forest.
+End_Of_Road is north of In_Valley.
+Slit_In_Streambed is south of In_Valley.
+Open_Forest is east of In_Valley.
+Other_Forest is west of In_Valley.
+Open_Forest is up of In_Valley.
+In_Valley is north of Slit_In_Streambed.
+Outside_Grate is south of Slit_In_Streambed.
+Open_Forest is east of Slit_In_Streambed.
+Open_Forest is west of Slit_In_Streambed.
+End_Of_Road is west of Inside_Building.
+End_Of_Road is outside of Inside_Building.
+Slit_In_Streambed is north of Outside_Grate.
+Open_Forest is south of Outside_Grate.
+Open_Forest is east of Outside_Grate.
+Open_Forest is west of Outside_Grate.
+kentucky_grate is down of Outside_Grate.
+End_Of_Road is north of Road_Hill.
+Open_Forest is south of Road_Hill.
+End_Of_Road is east of Road_Hill.
+End_Of_Road is down of Road_Hill.
+Field Near Cave is south of Villa Entrance.
+Villa Doorway is east of Villa Entrance.
+Villa Entrance is north of Little Pond.
+Field Near Cave is west of Little Pond.
+Field Near Cave is north of Chestnut Grove.
+Villa Entrance is north of Field Near Cave.
+Chestnut Grove is south of Field Near Cave.
+Little Pond is east of Field Near Cave.
+Cavern_Mouth is west of Field Near Cave.
+Cavern_Mouth is east of Inside_the_Cavern.
+Field Near Cave is east of Cavern_Mouth.
+Inside_the_Cavern is west of Cavern_Mouth.
+Villa Peristyle is east of Villa Atrium.
+Villa Doorway is west of Villa Atrium.
+Kitchen is south of Villa Peristyle.
+Villa Atrium is west of Villa Peristyle.
+Villa Peristyle is north of Kitchen.
+Pantry is east of Kitchen.
+Root Cellar is north of Pantry.
+Shadowy Nook is south of Pantry.
+stout door is east of Pantry.
+Kitchen is west of Pantry.
+Pantry is south of Root Cellar.
+Pantry is north of Shadowy Nook.
+Dim Alcove is east of Wine Cellar.
+stout door is west of Wine Cellar.
+Wine Cellar is west of Dim Alcove.
+Near The Tree Line is north of Olympic Ridge.
+Saddle is south of Olympic Ridge.
+Skala is west of Olympic Ridge.
+Olympic Ridge is north of Saddle.
+Southern Peak is south of Saddle.
+Perilous Ledge is west of Saddle.
+Saddle is north of Southern Peak.
+Skolio is west of Southern Peak.
+Skala is north of Skolio.
+Southern Peak is east of Skolio.
+Perilous Ledge is north of Cirque.
+Near The Tree Line is south of Cirque.
+Cirque is south of Perilous Ledge.
+Saddle is east of Perilous Ledge.
+Summit is west of Perilous Ledge.
+Summit is north of Skala.
+Skolio is south of Skala.
+Olympic Ridge is east of Skala.
+Olympic Plaza is north of Summit.
+Skala is south of Summit.
+Perilous Ledge is east of Summit.
+Palace Steps is north of Olympic Plaza.
+Summit is south of Olympic Plaza.
+Game Room is east of Olympic Plaza.
+Colossal Baths is west of Olympic Plaza.
+Grand Palace is north of Palace Steps.
+Olympic Plaza is south of Palace Steps.
+Olympic Plaza is east of Colossal Baths.
+Palace Steps is south of Grand Palace.
+
+Index map with an EPS file and title set to "Mentula Macanus: Apocolocyntosis", room-size set to 80, grid-size set to 108, room-name-size set to 8, room-name-length set to 28, room-name-font of Rome set to "Georgia-Bold", room-colour of Rome set to "Thistle", room-name-size of Rome set to 6, rubric "Rome" size 36 font "Georgia" at 50&-100 from Phallus Interior, room-colour of Domus Macana set to "Pale Golden Rod", room-name-font of Domus Macana set to "Georgia", room-name-size of Domus Macana set to 10, room-colour of Generic_Sewers set to "Sienna", room-name-font of Generic_Sewers set to "Georgia", room-name-size of Generic_Sewers set to 10, room-name-length of Special_Sewers set to 28, room-colour of Special_Sewers set to "Sienna", room-name-font of Special_Sewers set to "Georgia", room-name-size of Special_Sewers set to 10, room-name-length of Special_Sewers set to 28, room-name of Sewer1 set to "Sewer", room-name of Sewer2 set to "Sewer", room-name of Sewer3 set to "Sewer", room-name of Sewer4 set to "Sewer", room-name of Sewer5 set to "Sewer", room-name of Sewer6 set to "Sewer", room-name of Sewer7 set to "Sewer", room-name of Sewer8 set to "Sewer", room-name of Sewer9 set to "Sewer", room-name of Sewer10 set to "Sewer", room-name of Sewer_Mouth set to "Sewer Mouth", room-name of House_of_Glub set to "House of Glub", room-shape of Sewer6 set to "circle", room-shape of House_of_Glub set to "circle", room-colour of Town set to "Blanched Almond", room-name-length of Town set to 28, room-name-font of Town set to "Georgia", room-name-size of Town set to 10, rubric "Ostia" size 36 font "Georgia" at 0&130 from Privy, rubric "Ostian" size 36 font "Georgia" at 0&150 from Sewer_Mouth, rubric "Sewers" size 36 font "Georgia" at 0&100 from Sewer_Mouth, room-colour of Shipboard set to "Sienna", room-name-size of Shipboard set to 10, room-name-font of Shipboard set to "Chalkboard", rubric "Shipboard" size 20 font "Chalkboard" at -100&0 from Poop Deck, rubric "Shipboard" size 20 font "Chalkboard" at 100&0 from Halfway up the Mast, room-name of Poop_Deck2 set to "Poop Deck", room-name of Main_Deck set to "Deck", room-name of Halfway Up The Mast set to "Mast", room-colour of Slave Ship set to "Papaya Whip", room-name-size of Slave Ship set to 10, room-name-font of Slave Ship set to "Chalkboard", rubric "Slave Ship" size 20 font "Chalkboard" at -50&-100 from Galley, room-colour of Viking Longboat set to "Powder Blue", room-name-size of Viking Longboat set to 10, room-name-font of Viking Longboat set to "Chalkboard", rubric "Viking Ship" size 20 font "Chalkboard" at 0&-100 from Viking Longboat, room-colour of Sicily set to "Light Pink", room-name-font of Sicily set to "ComicSansMS", rubric "Syracuse" size 24 font "ComicSansMS" at 0&100 from Polyphemus Brothel, room-colour of Phoenicia set to "Pale Green", room-name-font of Phoenicia set to "Papyrus", Rubric "Carthage" size 24 font "Papyrus" at 0&-100 from Carthage Docks, room-colour of Campania set to "Ghost White", room-name-font of Campania set to "BrushScriptMT", Room-name-size of Campania set to 14, rubric "Campania" size 20 font "BrushScriptMT" at 0&100 from Cocceio's Cave, room-colour of Judaea set to "Sky Blue", room-name-font of Judaea set to "Peace", room-name-size of Judaea set to 8, Rubric "Judaea" size 18 font "Peace" at 0&100 from Judaean Brothel, room-name of Jerusalem_Alley set to "Alley", room-name of Judaean Brothel set to "Brothel", room-name of Temple Courtyard set to "Courtyard", room-name of Zach's Mohelerie set to "Mohelerie", room-name of Jonah's Museum set to "Museum", room-name of Fake Whale Interior set to "Whale", room-colour of Egypt set to "Wheat", room-name-font of Egypt set to "Aegyptus", room-name-size of Egypt set to 8, Rubric "Egypt" size 20 font "Aegyptus" at 0&100 from Top of the Pharos, room-colour of Palace Grounds set to "Pale Violet Red", room-name of Cleopatra's Palace set to "Palace", room-name of Cleopatra's Boudoir set to "Boudoir", room-name of Cleopatra's Throne Room set to "Throne Room", room-name of Soma Mausoleum set to "Mausoleum", room-name of Eugenidean Boudoir set to "Room 14", room-name of Museum Antechamber set to "Antechamber", room-name-font of Macedonia set to "Georgia", room-colour of Macedonia set to "Navajo White", Rubric "Macedonia" size 16 font "Georgia" at 0&100 from Litochoro, Rubric "Olympic Slopes" size 14 font "Georgia" at 0&-100 from Macedonian Hillside, room-colour of Olympic Slopes set to "Ghost White", room-name-font of Dark Africa set to "Helvetica", room-colour of Dark Africa set to "Sea Green", room-name-font of Real Whale Interior set to "Chalkboard", room-name-size of Real Whale Interior set to 10, room-name of Real Whale Interior set to "Whale", room-colour of Real Whale Interior set to "Dark Salmon", room-name-font of Hippopotamus Interior set to "Chalkboard", room-name-size of Hippopotamus Interior set to 10, room-name of Hippopotamus Interior set to "Hippo", room-colour of Hippopotamus Interior set to "Lavender Blush", room-name of North Shore of the Lake set to "North Shore", room-name of Halfway Up the Banana Tree set to "Banana Tree", room-name of Top of the Banana Tree set to "Treetop", Rubric "Africa" size 28 font "Helvetica" at 0&100 from Mountain Pass, room-name-font of Scotland set to "Onyx", room-colour of Scotland set to "Light Grey", room-name-size of Scotland set to 18, room-shape of the Druidic Grove set to "circle", rubric "Scotland" size 36 font "Onyx" at -50&100 from Lake, room-name-font of Olympus set to "Didot", room-colour of Olympus set to "Lime", room-name-size of Olympus set to 10, room-shape of Grand Palace set to "circle", rubric "Olympus" size 24 font "Didot" at 0&100 from Halls of Justice, room-name-font of Underworld set to "LucidaBlackletter", room-colour of Underworld set to "Papaya Whip", room-name of the northern_riverbank set to "Riverbank", room-name of Persephone's Palace set to "Palace", room-shape of the Circular Ruins set to "circle", rubric "Underworld" size 36 font "LucidaBlackletter" at 0&-100 from Land of the Dead, room-name-font of Kentucky set to "PRNumber3", room-colour of Kentucky set to "Lawn Green", room-name of End_Of_Road set to "At End Of Road", room-name of Open_Forest set to "In Forest", room-name of Other_Forest set to "In Forest", room-name of In_Valley set to "In A Valley", room-name of Outside_Grate set to "Outside Grate", room-name of Road_Hill set to "At Hill In Road", room-name of Inside_Building set to "Inside Building", room-name of Slit_In_Streambed set to "Slit in Streambed", rubric "Kentucky" size 24 font "PRNumber3" at 0&100 from End_Of_Road, room-name-font of Metaphysics set to "Zapfino", room-colour of Metaphysics set to "Powder Blue", room-name-size of Metaphysics set to 10, Rubric "Limbo" size 16 font "Zapfino" at 0&-100 from Limbo, room-name-font of Mantua set to "Garamond", room-colour of Mantua_outdoors set to "Light Green", room-colour of Mantua_cave set to "Khaki", room-name of Inside_the_Cavern set to "Cavern", room-name of Cavern_Mouth set to "Cavern Mouth", room-colour of Mantua_indoors set to "Bisque", room-name of Villa Atrium set to "Atrium", rubric "Mantua" size 24 font "Garamond" at 0&-100 from Cavern_Mouth, room-name-font of Eternity set to "Zapfino", room-name-size of Eternity set to 6, room-colour of Eternity set to "Powder Blue", rubric "Eternity" size 20 font "Zapfino" at 0&100 from Pumpkin Patch.
+
+Index map with fore mapped as north.
+
+Index map with aft mapped as south.
+
+Index map with port mapped as west.
+
+Index map with starboard mapped as east.

@@ -1,0 +1,24 @@
+   Hotel Stechelberg
+  Hotel Stechelberg
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hotel Stechelberg
+  The wooden hiking inn at the end of the road, with flowerboxes, canton flags, outdoor tables and a triangular paddock for the cows contesting the annual Miss Stechelberg competition. Otto and Marianne do cheerful innkeeper things, while the sun blazes from a gentian-blue sky.
+  
+  Yellow arms on the signpost point:-
+    north for Lauterbrunnen: 2 Std.
+    southeast for Trachsellauenen: 1 Std.
+  
+> >   Hotel Stechelberg
+  (Testing.)
+  
+  >[1] look
+  Hotel Stechelberg
+  The wooden hiking inn at the end of the road, with flowerboxes, canton flags, outdoor tables and a triangular paddock for the cows contesting the annual Miss Stechelberg competition. Otto and Marianne do cheerful innkeeper things, while the sun blazes from a gentian-blue sky.
+  
+  Yellow arms on the signpost point:-
+    north for Lauterbrunnen: 2 Std.
+    southeast for Trachsellauenen: 1 Std.
+  
+> >

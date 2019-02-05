@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 102 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationSymbolWrongKOV
+  >--> In 'let Q be given by Equation 1 where t = 12s' (source text, line 17),
+    you asked to let Q be given by the equation 'Q = It', but in that equation
+    'I' is supposedly an electric current - whereas right here, it seems to be
+    a number. Perhaps two different quantities have ended up with the same
+    symbol in the source text?
+Inform 7 has finished: 43 centiseconds used.

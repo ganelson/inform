@@ -1,0 +1,120 @@
+i
+listen
+n
+x wreath
+x footprints
+take wreath
+wear it
+x signpost
+turn it
+g
+g
+g
+g
+g
+g
+look
+push signpost
+g
+g
+g
+turn signpost
+g
+g
+g
+g
+g
+g
+g
+s
+x trees
+get branches
+x branches
+x trunks
+x faces
+x shadows
+get wreath
+x footprints
+get them
+e
+x lantern
+get it
+open chest
+sit on chest
+x pony
+take bell
+push pony
+x hooves
+x hoof
+i
+w
+w
+x faeries
+get wreath
+e
+drop lantern
+w
+listen
+e
+z
+n
+z
+s
+w
+z
+e
+s
+x mare
+look
+take wreath
+se
+n
+attack trees
+listen to trees
+climb trees
+n
+x signpost
+n
+undo
+turn signpost
+g
+g
+g
+g
+n
+undo
+s
+take lantern
+w
+look
+drop lantern
+look
+e
+s
+turn on switch
+n
+w
+look
+take lantern
+e
+drop lantern
+w
+look
+e
+look
+take lantern
+s
+turn off switch
+look
+n
+w
+e
+drop lantern
+w
+e
+n
+push post
+push signpost
+g
+g
+

@@ -1,0 +1,191 @@
+/* GlkOte stylesheet for Quixe/I7 Template
+ * Designed by Andrew Plotkin <erkyrath@eblong.com>
+ * <http://eblong.com/zarf/glk/glkote.html>
+ * <http://eblong.com/zarf/glulx/quixe/>
+ * 
+ * This CSS stylesheet is in the public domain. Do whatever you want
+ * with it.
+ */
+
+#windowport {
+  width: 100%;
+  height: 100%;
+}
+
+#errorpane {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  background: #FF4040;
+  padding-bottom: 3px;
+}
+
+#errorcontent {
+  padding: 8px;
+  text-align: center;
+  background: #FFA0A0;
+}
+
+#loadingpane {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 20%;
+}
+
+.WindowFrame {
+  /* This class provides the default background color of windows. You
+     can change that, but don't touch the position or margin. */
+  position: absolute;
+  margin: 0px;
+  background: white;
+}
+
+.BufferWindow {
+  overflow: scroll;   /* vertical scrollbar is mandatory */
+  overflow-x: hidden; /* but horizontal scrollbar is forbidden */
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15px;
+  line-height: 1.4;
+  padding: 6px 10px 6px 10px;
+}
+
+.BufferLine {
+}
+
+.GridWindow {
+  background: #D0D0C0;
+  overflow: hidden;
+  font-family: monaco, andale mono, lucidatypewriter, courier, courier new, monospace; /* necessary! */
+  font-size: 14px;
+  padding: 6px 10px 6px 10px;
+}
+
+.GridLine {
+  white-space: pre; /* required for spaces to work right */
+}
+
+.InvisibleCursor {
+  /* This provides the padding below the last line of text (and the input
+     prompt). Without this, they'd be flush against the bottom of the
+     window, which would be ugly. Do not modify this CSS class. */
+  position: relative;
+  padding-bottom: 14px;
+}
+
+.MorePrompt {
+  /* This describes the "More" prompt that flashes in the bottom right corner
+     of a window when it needs paging. */
+  font-weight: bold;
+  position: absolute;
+  background: #603010;
+  color: #FFFFCC;
+  opacity: 0.5;
+  padding: 2px 6px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+
+.Input {
+  /* This class mimicks the Style_input class. It also eliminates the 
+     usual decoration of an <input> field, as much as possible. */
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  outline-width: 0px;
+  outline-style: none;
+  background: none;
+  font-weight: bold;
+}
+
+.BufferWindow .Input {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15px;
+}
+
+.GridWindow .Input {
+  font-family: monaco, andale mono, lucidatypewriter, courier, courier new, monospace; /* necessary! */
+  font-size: 14px;
+}
+
+/* The following are used for image alignment (in buffer windows). */
+
+.ImageMarginLeft {
+  float: left;
+  margin-right: 0.5em;
+}
+
+.ImageMarginRight {
+  float: right;
+  margin-left: 0.5em;
+}
+
+.ImageInlineDown {
+  vertical-align: text-top;
+}
+
+.ImageInlineUp {
+  vertical-align: text-bottom;
+}
+
+.ImageInlineCenter {
+  vertical-align: middle;
+}
+
+.FlowBreak {
+  clear: both;
+}
+
+.GraphicsWindow canvas {
+  background-color: white;
+}
+
+/* The following are the standard Glk styles. */
+
+.Style_normal {
+}
+
+.Style_emphasized {
+  font-style: italic;
+}
+
+.Style_preformatted {
+  font-family: monaco, andale mono, lucidatypewriter, courier, courier new, monospace;
+}
+
+.Style_header {
+  font-weight: bold;
+}
+
+.BufferWindow .Style_header {
+  font-size: 17px;
+}
+
+.Style_subheader {
+  font-weight: bold;
+}
+
+.Style_alert {
+  font-weight: bold;
+}
+
+.Style_note {
+  font-style: italic;
+}
+
+.Style_blockquote {
+  background: #FFF0C0;
+}
+
+.Style_input {
+  font-weight: bold;
+  color: #300000;
+}
+
+.Style_user1 {
+}
+
+.Style_user2 {
+}
+
+/* End of GlkOte default stylesheet. */

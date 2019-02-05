@@ -1,0 +1,3 @@
+The Vehicle Assembly Building is a room.
+
+The Shuttle Processing Bay is part of the Vehicle Assembly Building.

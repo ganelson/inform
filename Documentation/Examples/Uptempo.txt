@@ -1,0 +1,65 @@
+* Listing rules explicitly
+(Turns take 15 minutes each; Uptempo)
+Adjust time advancement so the game clock moves fifteen minutes each turn.
+
+Suppose a game in which all actions take a very long time. Here's a simple implementation:
+
+	{*}"Uptempo"
+	
+	The fast time rule is listed instead of the advance time rule in the turn sequence rules.
+
+	This is the fast time rule:
+		increment the turn count;
+		increase the time of day by 15 minutes.
+		
+	When play begins: now the right hand status line is "[time of day]".
+	
+	The Temporal Hot Spot is a room.
+	
+	Test me with "z / z".
+	
+This works fine as it stands, but we may run into some difficulty with it if we add scheduled events:
+	
+	{*}At 9:30 AM:
+		say "Two turtles run by, almost too fast to see."
+		
+	At 9:37 AM:
+		say "A snail blitzes past."
+		
+	At 9:42 AM:
+		say "The grass grows."
+		
+	At 9:50 AM:
+		say "Several flowers burst open."
+
+Time is counted forward after the schedule has already been consulted, so that only the 9:30 AM event happens between 9:30 and 9:45; the next two appear to occur between 9:45 and 10:00 AM, and the 9:50 AM event is not reported until the 10:00 AM to 10:15 wait. To get around this, we might schedule events only on the fifteen-minute mark when we want them to occur. Alternatively, we might try instead
+
+	{*}"Uptempo"
+	
+	The fast time rule is listed before the timed events rule in the turn sequence rules.
+
+	The advance time rule is not listed in the turn sequence rules.
+
+	This is the fast time rule:
+		increment the turn count;
+		increase the time of day by 15 minutes.
+		
+	When play begins: now the right hand status line is "[time of day]".
+	
+	The Temporal Hot Spot is a room.
+	
+	At 9:30 AM:
+		say "Two turtles run by, almost too fast to see."
+		
+	At 9:37 AM:
+		say "A snail blitzes past."
+		
+	At 9:42 AM:
+		say "The grass grows."
+		
+	At 9:50 AM:
+		say "Several flowers burst open."
+	
+	Test me with "z / z / z / z".
+
+This time our revised time-advancing rule is listed just before the event scheduler, not just afterwards.

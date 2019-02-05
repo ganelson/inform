@@ -1,0 +1,3 @@
+Example Location is a room. 
+
+test "me" with "look".

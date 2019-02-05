@@ -1,0 +1,30 @@
+   Northside
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Northside
+  You can see Bob and Charlie here.
+  
+> >   Southside
+  (Testing.)
+  
+  >[1] bob
+  Bob will attend you. your former self and Charlie will not.
+  
+  >[2] privacy
+  your former self and Charlie leaves the room.
+  
+  >[3] look
+  Northside
+  You can see Bob here.
+  
+  >[4] bob
+  nothing will attend you. your former self, Bob and Charlie will not.
+  
+  >[5] south
+  
+  Southside
+  You can see Charlie here.
+  
+> >

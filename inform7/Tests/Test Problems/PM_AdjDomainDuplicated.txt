@@ -1,0 +1,11 @@
+Kitchen is a room.
+
+A person called the dog is here.
+
+A beef stick and a wedge of cheese are edible things in the Kitchen.
+
+A newspaper is here.
+
+Definition: A thing is a doggie-snack if it is edible.
+
+Definition: A thing is a doggie-snack if it is the newspaper.

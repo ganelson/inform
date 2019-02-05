@@ -1,0 +1,23 @@
+The Kitchen is a room. 
+
+Length is a kind of value.
+
+1m (in metric units, in m) or 1 m (in metric units, in m) or 1 meter (in meters, singular) or 1 metre 
+(in metres, singular) or 2 meters (in meters, plural) or 2 metres (in metres, plural) specifies a length.
+
+
+1cm (in metric units, in cm) or 1 cm (in metric units, in cm) or 1 centimeter (in centimeters, singular) 
+or 1 centimetre (in centimetres, singular) or 2 centimeters (in centimeters, plural) or 2 centimetres 
+(in centimetres, plural) specifies a length scaled down by 100.
+
+1km (in metric units, in km) or 1 km (in metric units, in km) or 1 kilometer (in kilometers, singular) 
+or 1 kilometre (in kilometres, singular) or 2 kilometers (in kilometers, plural) or 2 kilometres (in 
+kilometres, plural) specifies a length scaled up by 1000.
+
+When play begins:
+	let L be 1 m;
+	say "One meter is [L].";
+	now L is 1 cm;
+	say "One centimeter is [L].";
+	now L is 0.01 km;
+	say "Ten meters is [L].";

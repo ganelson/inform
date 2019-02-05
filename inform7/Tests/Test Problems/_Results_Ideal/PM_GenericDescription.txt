@@ -1,0 +1,19 @@
+Inform 7 build 6M05 has started.
+I've now read your source text, which is 123 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_GenericDescription
+  >--> You wrote 'if a container (called B) carried by the player is larger
+    than the noun' (source text, line 10), but 'a container (called B) carried
+    by the player' is used in a context where I'd expect to see a (single)
+    specific example of a block. Although what you wrote did make sense as a
+    description, it could refer to many different values or to none, so it
+    wasn't specific enough.
+    I was trying to match this phrase:
+      (a container ( called b ) carried by the player - a lit block) is larger
+    than (noun - block) 
+    I recognised:
+    a container ( called b ) carried by the player = a description of
+    containers
+    noun = a non-temporary variable, holding an object
+Inform 7 has finished: 51 centiseconds used.

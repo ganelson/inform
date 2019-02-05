@@ -1,0 +1,22 @@
+   Dome
+  Higher Calling
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dome
+  
+> >   Courtyard
+  (Testing.)
+  
+  >[1] e
+  
+  Eastern End
+  You can see a church door here.
+  
+  >[2] e
+  (first opening the church door)
+  
+  Courtyard
+  You can see a church door here.
+  
+> >

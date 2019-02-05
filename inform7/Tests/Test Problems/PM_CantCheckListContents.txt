@@ -1,0 +1,8 @@
+Place is a room.
+
+To floozle (foobar - a list of people):
+	do nothing.
+
+When play begins:
+	let barbaz be a list of objects;
+	floozle barbaz.

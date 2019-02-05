@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LPEnumeration
+  >--> You wrote '16:9 specifies a colour' (source text, line 5): but this is a
+    kind of value which already has named values, so it can't have a basically
+    numerical form as well.
+Inform 7 has finished: 16 centiseconds used.

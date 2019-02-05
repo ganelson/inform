@@ -1,0 +1,16 @@
+Foo is a room.
+
+Ullage is a kind of value. 1.0U specifies an ullage.
+Bullage is a kind of value. 1.0B specifies a bullage.
+Qullage is a kind of value. 1.0Q specifies a qullage.
+Ullage times ullage specifies a bullage.
+Bullage times bullage specifies a qullage.
+
+Equation - Stefan-Boltzmann Law
+	P = T^4
+where P is a qullage and T is an ullage.
+
+When play begins:
+	let P be 16Q;
+	let T be given by the Stefan-Boltzmann Law;
+	say "[T]."

@@ -1,0 +1,7 @@
+The Server is a room. Kate is in the Server. Kate wears a pink hat.
+
+The hypnosis fish is in the Server.
+
+The can't take other people rule does nothing if the player has the hypnosis asdfasf fish.
+
+Test me with "get kate / get fish / get kate".

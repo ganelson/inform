@@ -1,0 +1,75 @@
+   Mysterious Void
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mysterious Void
+  Spooky.
+  
+  You can see Ayn Rand here.
+  
+> >   Vast Nothingness
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  Ayn Rand is now in Mysterious Void.
+  
+  [Ayn Rand going east]
+  Ayn Rand goes east.
+  [Ayn Rand going east - succeeded]
+  
+  >[3] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  Ayn Rand is now in Vast Nothingness.
+  
+  [Ayn Rand going east]
+  Only Ubermenschen may travel east from the Vast Nothingness.
+  [Ayn Rand going east - failed]
+  
+  >[4] e
+  [going east]
+  
+  Vast Nothingness
+  Empty.
+  
+  [going east - succeeded]
+  
+  Ayn Rand is now in Mysterious Void.
+  
+  [Ayn Rand going east]
+  Ayn Rand arrives from the west.
+  [Ayn Rand going east - succeeded]
+  
+  >[5] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  Ayn Rand is now in Vast Nothingness.
+  
+  [Ayn Rand going east]
+  Only Ubermenschen may travel east from the Vast Nothingness.
+  [Ayn Rand going east - failed]
+  
+  >[6] e
+  [going east]
+  Only Ubermenschen may travel east from the Vast Nothingness.
+  [going east - failed]
+  
+  Ayn Rand is now in Mysterious Void.
+  
+  [Ayn Rand going east]
+  Ayn Rand arrives from the west.
+  [Ayn Rand going east - succeeded]
+  
+> >

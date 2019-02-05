@@ -1,0 +1,6 @@
+Foo is a room.
+Zog is a region. Zog is in Foo. Foo is in Zog.
+When play begins:
+	repeat with obj running through objects in Foo:
+		say "[obj] is in Foo.";
+	say "Zog is in Foo: [whether or not Zog is in Foo]".

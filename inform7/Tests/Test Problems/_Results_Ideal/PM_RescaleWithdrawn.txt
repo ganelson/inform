@@ -1,0 +1,9 @@
+Inform 7.10.1 build 6P49 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_RescaleWithdrawn
+  >--> I attempted to compile 'flibble 12' (source text, line 5) using its
+    inline definition, but this contained the invalid annotation
+    '{-rescale:...}', which has been withdrawn.
+Inform 7 has finished: 51 centiseconds used.

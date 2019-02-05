@@ -1,0 +1,13 @@
+The Formless Void is a room. "This is where I do dangerous coding."
+
+A height is a kind of value. 5'11" specifies a height.
+
+Every room has a height called ceiling height.
+
+The ceiling height of the Formless Void is 28'6".
+
+Instead of jumping:
+	say "You jump to the maximum safe height of [ceiling height of the location]."
+
+Test me with "jump".
+

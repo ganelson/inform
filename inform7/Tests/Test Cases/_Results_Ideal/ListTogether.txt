@@ -1,0 +1,44 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  
+> >   Garden
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    three pots:
+      a red pot
+      a green pot
+      a blue pot
+    three pans:
+      a white pan
+      a black pan
+      a gray pan
+  
+  Inventory: three pots (a red pot, a green pot and a blue pot) and three pans (a white pan, a black pan and a gray pan).
+  
+  >[2] e
+  
+  Dining Room
+  Inventory: three pots (a red pot, a green pot and a blue pot) and three pans (a white pan, a black pan and a gray pan).
+  
+  >[3] e
+  
+  Living Room
+  Inventory: three implement-1 (a red pot, a green pot and a blue pot) and three implement-2 (a white pan, a black pan and a gray pan).
+  
+  >[4] e
+  
+  Bathroom
+  Inventory: three implement-1 (a red pot, a green pot and a blue pot) and three implement-2 (a white pan, a black pan and a gray pan).
+  
+  >[5] e
+  
+  Garden
+  Inventory: a red pot, a green pot, a blue pot, a white pan, a black pan and a gray pan.
+  
+> >

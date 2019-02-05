@@ -1,0 +1,48 @@
+   Ludus
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ludus
+  You can see some five tiles (X, W, F, Y and Z) from a Scrabble set and a mystic triad of blocks here.
+  
+> >   Ludus
+  (Testing.)
+  
+  >[1] get x
+  Taken.
+  
+  >[2] get w
+  (the W)
+  Taken.
+  
+  >[3] get two blocks
+  block: Taken.
+  block: Taken.
+  
+  >[4] i
+  You are carrying:
+    two blocks
+    W and X
+  
+  >[5] look
+  Ludus
+  You can see F, Y and Z and a block here.
+  
+  >[6] get f
+  Taken.
+  
+  >[7] i
+  You are carrying:
+    two blocks
+    F, W and X
+  
+  >[8] get z
+  Taken.
+  
+  >[9] i
+  You are carrying:
+    two blocks
+    some four tiles (Z, F, W and X) from a Scrabble set
+  
+> >

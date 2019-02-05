@@ -1,0 +1,274 @@
+6G60 (23 December 2010)
+
+This release of Inform leaves the core language unchanged, except for the
+correction of a small number of bugs, and its main purpose is to provide
+an improved Index. Better maps are drawn on the World Index, and there's
+more detail across several other pages.
+
+Contents:
+	1. INFORM FOR OS X
+	2. INFORM FOR WINDOWS
+	3. INFORM FOR GNOME ON LINUX
+	4. INDEX CHANGES
+	5. CORE INFORM MAINTENANCE
+
+
+1. INFORM FOR OS X
+
+The OS X application is unchanged.
+
+
+2. INFORM FOR WINDOWS
+
+The preferences dialog now allows the font and font size to be changed.
+
+If a window is brought to the front, and its underlying source file has
+been changed by another program, then the source file is re-loaded. The
+only exception to this is if the source has been changed in Inform 7
+but not saved, in which case there is no re-load.
+
+The settings file is only now updated if the user changes any of the
+project's settings, and the settings file format has been adjusted to
+be closer to the latest version of the OS X Inform front-end.
+
+
+3. INFORM FOR GNOME ON LINUX
+
+Fixed the same bug as on the other platforms (0000394) which caused
+incorrect highlighting of Unicode quotation marks.
+
+Made some other minor improvements to syntax highlighting.
+
+
+4. INDEX CHANGES
+
+Although we have given the Index a comprehensive revision, the effect is more
+evolutionary than revolutionary. Most of the changes are refinements aimed at
+people with larger source texts. We'd like to thank everyone who made
+suggestions on the forum at inform7.uservoice.com, whether we accepted these
+or not.
+
+The major change in this build is to the World Index page, where the method
+used to deduce the positions of rooms has been replaced by a more sophisticated
+algorithm, producing better-laid-out rooms for a variety of source texts;
+and where maps are also better rendered. A text-only change log is not the
+best place to explain what has been done, so we have prepared a PDF file to
+accompany the new build, illustrating what's new.
+
+Otherwise, there are changes as follows:
+
+4.1. Actions Index
+
+Acting on suggestion 1163485, we have provided a new index of the Understand
+tokens which are built-in (like "[things]") or defined in the source, or in
+extensions. Definitions are shown, with source links, and there are
+documentation links.
+
+The general actions rulebooks - before, after, instead, and so on - used to
+be indexed at the foot of this page. They have moved, and are now at the top
+of the Rules Index page.
+
+4.2. Contents Index
+
+The contents listing by heading now opens with the title and author rather
+than the word "Contents".
+
+The memory usage estimates are now shown only for projects with the Z-machine
+setting, since they're irrelevant for Glulx, and are hidden behind a (+) icon.
+
+Acting on suggestion 1238573, there's now an index of the use options which
+are currently set for a project; there are source links as usual, and also
+paste icons for setting currently unset options.
+
+4.3. Kinds Index
+
+This was overhauled back in the summer, so not much has changed in this
+one. However, the sometimes distractingly long lists of objects belonging
+to each kind have been shaded in grey or (in cases where they become long
+enough to make it worthwhile) hidden behind a (+) icon. On very large
+projects, this makes a big difference to legibility.
+
+4.4. Phrasebook Index
+
+The table of "Relations" now has column headings.
+
+The table of "Verbs used in descriptions" now includes the meanings of
+verbs (i.e., which relations they correspond to), and links to the source text
+definitions of any new verbs. Prepositional usages such as "To be adjacent to"
+are also listed for the first time (see bug report 0000395, though this wasn't
+really a bug as such).
+
+4.5. Rules Index
+
+Acting on suggestion 1099933, the rules index is consolidated onto a single
+page which shows the names of all of the rulebooks; actual contents of each
+rulebook are hidden behind a (+), but the number of rules in the book can be
+seen without opening it, and in particular empty rulebooks or activities are
+shaded grey. The "Detail view" sub-pages of the Rules Index are therefore
+no longer needed.
+
+Also following 1099933, there are now source links to the creations of rulebooks
+and activities in the source text. 
+
+The groups of rulebooks have been reordered to put the ones most useful to
+working Inform authors at the top, and the technicalities down at the bottom.
+In particular, the action rulebooks have moved here from the Actions Index.
+
+4.6. Scenes Index
+
+This is unchanged. It was perfect already.
+
+4.7. World Index
+
+As noted above, the map-making algorithm is entirely overhauled, but in ways
+we won't detail here. In addition, each room and thing has a (+) icon hiding
+a new panel of details, including the properties and where they are set;
+the kind, and where it is set; map connections and region (for rooms), and
+where they are set; and a list of rules in the source text which make
+specific reference to the room or thing in question.
+
+Following suggestion 1109933, the World Index map now follows the same room
+colouring as the EPS map, where this has been specified. So, for example:
+
+	Index map with room-colour of Zoo set to "Navy" and room-name-colour of
+	Zoo set to "White".
+
+will now affect both maps. (The only settings recognised by the World Index
+map are "room-colour" and "room-name-colour", and only for named individual
+rooms and for regions.)
+
+
+5. CORE INFORM MAINTENANCE
+
+5.1. Source text and punctuation
+
+Bug fixed (0000381) to improve problem messages for doubtful phrase punctuation. 
+
+Bug fixed (0000400) to improve problem message for text substitutions using
+exotic Unicode characters as part of their names.
+
+Bug fixed (0000373) whereby improperly using brackets to define an antonym,
+like so:
+
+	Definition: a room is home (rather than house) if ...
+
+would cause an internal error rather than a problem message. (Removing the
+brackets makes this work as intended.)
+
+5.2. Headings
+
+----
+
+5.3. Extensions
+
+----
+
+5.4. Assertions and creations
+
+Bug fixed (0000370) whereby Inform wasn't allowing words long enough to hold
+enormous URLs, or the longest word in James Joyce's Finnegans Wake.
+
+Bug fixed (0000375) whereby very deeply recursive assemblies would spuriously
+produce problem messages for composite names which were too long.
+
+5.5. Model world
+
+Bug fixed (0000432) whereby the problem message for a three-sided door wasn't
+giving source text links.
+
+Bug fixed (0000372) whereby the BRIEF printing mode was still being described
+as "normal", when in fact it's no longer the default.
+
+5.6. Properties
+
+Bug fixed (0000390) whereby misleading problem messages were issued for
+attempts to create properties of actions, activities or rulebooks.
+
+Bug fixed (0000397) whereby Inform produced an internal error rather than a
+problem message for attempts to use "player" as a constant property value.
+(The "player" is not constant, because point of view can switch during play.)
+
+5.7. Relations
+
+----
+
+5.8. Actions
+
+----
+
+5.9. Activities
+
+----
+
+5.10. Rules and rulebooks
+
+Bug fixed (0000405) whereby rules written like so:
+
+	Carry out an actor dead end reaching: ...
+
+would cause spurious problem messages if (a) the action had its participle,
+in this case "reaching", as other than the first word; and (b) the text "an
+actor" was given to specify who would be doing it.
+
+5.11. Lists
+
+----
+
+5.12. Tables
+
+----
+
+5.13. Scenes
+
+Bug fixed (0000415) whereby Inform could hang if told that scene S begins
+when scene T ends and also vice versa.
+
+5.14. Kinds and typechecking
+
+----
+
+5.15. Phrases and functional programming
+
+Bug fixed (0000398) whereby Inform produced an internal error instead of a
+problem message for an attempt to use "otherwise if" incorrectly.
+
+Bug fixed (0000404) whereby attempts to use descriptions rather than explicit
+values in the phrase "place ... in scope" would cause an internal error rather
+than a problem message.
+
+5.16. Equations, units and arithmetic
+
+An embarrassing one, this: bug fixed (0000370) whereby, when printing numbers
+in words, Inform printed billions as "millions".
+
+5.17. Understanding
+
+----
+
+5.18. Glulx issues, file I/O, figures, sounds
+
+----
+
+5.19. Spacing and printing
+
+----
+
+5.20. Indexing
+
+Bug fixed (0000363) whereby kinds were listed as kinds of themselves in the
+Lexicon (as for instance "animal... noun, a kind of animal").
+
+Bug fixed (0000351) whereby an EPS map, if output, didn't respect instructions
+to map non-standard directions like "starboard".
+
+Bug fixed (0000371) whereby regions on the World Index weren't being
+coloured as they should have been, and whereby disconnected components
+were being superimposed in some cases.
+
+5.21. Testing commands
+
+----
+
+5.22. Releasing, bibliographic data, and cBlorb
+
+----

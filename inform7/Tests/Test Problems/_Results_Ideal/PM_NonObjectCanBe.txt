@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 6 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NonObjectCanBe
+  >--> You wrote 'Dropping can be fun or tiresome' (source text, line 1): but
+    only a room, a thing or a kind can have such adjectives applied to it, so
+    that 'a dead end can be secret' is fine but 'taking can be secret' would
+    not be, since 'taking' is an action and not a room, thing or kind.
+Inform 7 has finished: 16 centiseconds used.

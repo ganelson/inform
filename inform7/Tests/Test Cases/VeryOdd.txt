@@ -1,0 +1,36 @@
+Definition: a number is odd if the remainder after dividing it by 2 is 1.
+
+Definition: a number is even if the remainder after dividing it by 2 is 0.
+
+Definition: a time (called T) is odd if the remainder after dividing the hours part of T by 2 is 1.
+
+Definition: a time (called T) is even if the remainder after dividing the hours part of T by 2 is 0.
+
+Definition: a container (called C) is odd if the carrying capacity of C is 1.
+
+Definition: a thing is odd if it is in the rucksack.
+
+When play begins:
+	repeat with C running through odd things:
+		say "[The C] is an odd thing.";
+	repeat with C running through odd containers:
+		say "[The C] is an odd container.";
+	repeat with C running through containers:
+		if C is odd, say "Among containers, [the C] is odd.";
+	repeat with N running from 1 to 10:
+		if N is an odd number, say "[N] is an odd number.";
+		if N is odd, say "[N] is odd.";
+		announce N;
+	if the time of day is even, say "[the time of day] is even.";
+	otherwise say "[the time of day] is odd.";
+
+To announce (N - even number): say "I proclaim [N] the even!"
+
+To announce (N - odd number): say "I proclaim [N] the odd!"
+
+To announce (N - number): say "I note [N]."
+
+The Lexis is a room.
+
+The rucksack is a container with carrying capacity 1. The paper bag is a
+container. The tourist map is in the rucksack.

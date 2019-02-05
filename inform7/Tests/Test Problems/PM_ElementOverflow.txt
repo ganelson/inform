@@ -1,0 +1,5 @@
+Aspect ratio is a kind of value. 16:9 specifies an aspect ratio.
+
+Home is a room.
+
+X is an aspect ratio that varies. X is 16:10.

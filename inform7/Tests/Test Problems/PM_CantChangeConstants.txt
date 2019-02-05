@@ -1,0 +1,3 @@
+Temple is a room.
+
+When play begins: now story title is "Hello World".

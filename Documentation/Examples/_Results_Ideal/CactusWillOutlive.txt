@@ -1,0 +1,35 @@
+   Death Valley
+  Cactus Will Outlive Us All
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Death Valley
+  You can see Luckless Luke, Dead-Eye Pete and a cactus here.
+  
+> >   Death Valley
+  (Testing.)
+  
+  >[1] get cactus
+  Taken.
+  
+  >[2] drop cactus
+  Dropped.
+  
+  >[3] luke, get cactus
+  Luckless Luke picks up the cactus.
+  
+  >[4] luke, drop cactus
+  It looks as if Luckless Luke dropping the cactus was the death knell for Dead-Eye Pete, who looks startled, then nonexistent.
+  
+  Luckless Luke puts down the cactus.
+  
+  >[5] pull cactus
+  It looks as if pulling the cactus was the death knell for Luckless Luke, who looks startled, then nonexistent.
+  
+  That's a real shame.
+  
+  >[6] look
+  Death Valley
+  You can see a cactus here.
+  
+> >

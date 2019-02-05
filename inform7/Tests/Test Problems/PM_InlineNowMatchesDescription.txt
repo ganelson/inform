@@ -1,0 +1,8 @@
+Inline Arena is a room.
+
+To go awry: (-
+		{-now-matches-description:frog:amphibian};
+	-).
+
+When play begins:
+	go awry.

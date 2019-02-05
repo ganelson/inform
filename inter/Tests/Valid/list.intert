@@ -1,0 +1,10 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	symbol public misc K_number
+	symbol public misc K_list_of_number
+	symbol public misc C_primes
+	kind K_number int32
+	kind K_list_of_number list of K_number
+	constant C_primes K_list_of_number = { 2, 3, 5, 7, 11, 13, 17, 19 }

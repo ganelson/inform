@@ -1,0 +1,4 @@
+This Spot is a room.
+
+After reading a command:
+	if the player's command contains "anything", say "Yowza!"

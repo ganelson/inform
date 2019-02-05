@@ -1,0 +1,11 @@
+Splog is a room.
+
+Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
+
+When play begins:
+	repeat with counter running from 1 to 10:
+		showme counter;
+	repeat with moment running from 4 PM to 4:07 PM:
+		showme moment;
+	repeat with hue running from orange to indigo:
+		showme hue;

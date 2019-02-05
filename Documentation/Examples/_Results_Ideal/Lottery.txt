@@ -1,0 +1,38 @@
+   Caribou Lodge
+  Wonka's Revenge
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Caribou Lodge
+  Hundreds of expectant faces are turned your way from every table.
+  
+  Before you is the lottery drum, waiting to be spun.
+  
+> >   Caribou Lodge
+  (Testing.)
+  
+  >[1] open drum
+  You open the lottery drum, revealing a red ticket, an orange ticket, a yellow ticket, a green ticket, a blue ticket, a purple ticket and a ticket of pure gold.
+  
+  >[2] look in drum
+  In the lottery drum are a red ticket, an orange ticket, a yellow ticket, a green ticket, a blue ticket, a purple ticket and a ticket of pure gold.
+  
+  >[3] close drum
+  You close the lottery drum.
+  
+  >[4] spin drum
+  You rattle the stuff in the lottery drum.
+  
+  >[5] open drum
+  In the lottery drum are a red ticket, a yellow ticket, a ticket of pure gold, an orange ticket, a blue ticket, a purple ticket and a green ticket.
+  
+  The red ticket it is, then.
+  
+  
+  
+      *** Oh well, better luck next time. ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

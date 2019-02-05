@@ -1,0 +1,34 @@
+There is a room. The umbrella is here. The raincoat is here. A woman called Susie is here.
+
+The gadget is a relation of things to things that varies.
+
+The metagadget is a list of numbers that varies.
+
+A person has a relation of things to things called the association.
+
+When play begins:
+	say "First.";
+	show relation gadget;
+	now the gadget relates the raincoat to the umbrella;
+	show relation gadget.
+
+When play begins:
+	say "Second.";
+	let X be a relation of things to things;
+	now the gadget is x;
+	now the gadget relates yourself to the umbrella;
+	show relation gadget;
+	showme the thing that relates to the umbrella by the gadget;
+
+When play begins:
+	say "Third.";
+	repeat with X running through people:
+		now the association of X relates X to the raincoat;
+		say "For [X], [X] ~ raincoat."
+
+When play begins:
+	say "Fourth.";
+	show relation gadget;
+	repeat with X running through people:
+		say "For [X]: ";
+		show relation association of X.

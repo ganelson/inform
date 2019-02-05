@@ -1,0 +1,18 @@
+   Starter Room
+  Rules as Properties
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Starter Room
+  You can see the license registration here.
+  
+> >   Starter Room
+  (Testing.)
+  
+  >[1] wait
+  Time passes.
+  
+  >[2] get registration
+  License has been submitted!
+  
+> >

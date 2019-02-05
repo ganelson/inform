@@ -1,0 +1,46 @@
+   Parlor
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Parlor
+  A sparsely furnished room.
+  
+  You can see a table (on which are a left coconut half, a center coconut half and a right coconut half) here.
+  
+> >   Parlor
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] take left half
+  [taking the left coconut half]
+  Don't touch the left coconut half.
+  [taking the left coconut half - failed]
+  
+  >[3] point at left half
+  [pointing at the left coconut half]
+  You have pointed gloriously at the left coconut half.
+  [pointing at the left coconut half - ended without result]
+  
+  >[4] rules all
+  Rules tracing now switched to "all". Type "rules off" to switch it off again.
+  
+  >[5] point at middle half
+  [Rule "declare everything initially unmentioned rule" applies.]
+  [pointing at the center coconut half]
+  [Rule "announce items from multiple object lists rule" applies.]
+  [Rule "set pronouns from items from multiple object lists rule" applies.]
+  [Rule "before stage rule" applies.]
+  [Rule "can't act in the dark rule" applies.]
+  [Rule "instead stage rule" applies.]
+  [Rule "Instead of pointing at a coconut half ( called the nut )" applies.]
+  You have pointed gloriously at the center coconut half.
+  [pointing at the center coconut half - ended without result]
+  
+  [Rule "A first turn sequence rule" applies.]
+  [Rule "every turn stage rule" applies.]
+  [Rule "A last turn sequence rule" applies.]
+  [Rule "notify score changes rule" applies.]
+> >

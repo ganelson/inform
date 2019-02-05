@@ -1,0 +1,18 @@
+   Cloister
+  Virtue
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cloister
+  You can see Lady Teresa and Mother Margaret here.
+  
+> >   Cloister
+  (Testing.)
+  
+  >[1] kiss margaret
+  Mother Margaret might not like that.
+  
+  >[2] margaret, kiss me
+  Mother Margaret stiffens, offended by your suggestion.
+  
+> >

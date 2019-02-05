@@ -1,0 +1,12 @@
+Square One is a room.
+
+The elegant jacket is a wearable thing in Square One.
+The top hat is a wearable thing in Square One.
+
+Instead of taking the jacket:
+	say "The jacket resists!"
+
+Instead of taking the top hat less than three times:
+	say "The top hat resists!"
+
+Test me with "actions / wear jacket / wear hat".

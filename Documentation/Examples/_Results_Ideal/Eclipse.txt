@@ -1,0 +1,50 @@
+   Chamber
+  Totality
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Chamber
+  
+> >   Chamber
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  The sunlight dies away to an eerie, brownish penumbra.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  The moon passes across the disc of the sun, plunging the world into darkness.
+  
+  It is now pitch dark in here!
+  
+  >[4] z
+  Time passes.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] z
+  Time passes.
+  
+  The moon passes away from the sun, and a gloomy penumbral light returns.
+  
+  Chamber
+  
+  >[7] z
+  Time passes.
+  
+  >[8] z
+  Time passes.
+  
+  The sun shines once more bright in the sky, not to be eclipsed again on this spot for another thirty-seven years.
+  
+  >[9] z
+  Time passes.
+  
+> >

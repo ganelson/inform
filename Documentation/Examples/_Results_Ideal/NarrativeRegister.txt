@@ -1,0 +1,46 @@
+   Lab
+  Narrative Register
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see a table (on which are a bat and a ball) here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] get ball
+  You gain the ball.
+  
+  >[2] drop ball
+  You throw away the ball.
+  
+  >[3] get bat
+  You gain the bat.
+  
+  >[4] drop bat
+  You dispose of the bat.
+  
+  >[5] new tone
+  Your narrator will now be upbeat.
+  
+  >[6] get all
+  bat: You take the bat.
+  ball: You gain the ball.
+  
+  >[7] drop all
+  ball: You put down the ball.
+  bat: You set down the bat.
+  
+  >[8] new tone
+  Your narrator will now be upbeat.
+  
+  >[9] get all
+  bat: You gain the bat.
+  ball: You score the ball.
+  
+  >[10] drop all
+  ball: You drop the ball.
+  bat: You dispose of the bat.
+  
+> >

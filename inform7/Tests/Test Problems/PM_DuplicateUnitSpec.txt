@@ -1,0 +1,8 @@
+Home is a room.
+
+A foo is a kind of value.
+A bar is a kind of value.
+100 specifies a foo.
+"250" specifies a foo.
+3/13 specifies a bar.
+2/19 specifies a foo.

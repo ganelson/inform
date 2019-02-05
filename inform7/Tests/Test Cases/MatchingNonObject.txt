@@ -1,0 +1,14 @@
+There is a room.
+
+Testing is an action applying to nothing.
+The Testing action has a thing called the test thing (matched as "thing").
+The Testing action has a number called the test number (matched as "number").
+
+Carry out Testing thing the player:
+	say "Testing the thing";
+	
+Carry out Testing number 0:
+	say "Testing the number";
+	
+When play begins:
+	try testing.

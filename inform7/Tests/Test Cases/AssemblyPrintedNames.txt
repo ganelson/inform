@@ -1,0 +1,11 @@
+Stage is a room.
+
+An oak tree is a kind of thing. Understand "oak/tree" as an oak tree.
+An oak tree is always fixed in place. Some oak leaves are a kind of
+thing. Some oak leaves are part of every oak tree.
+
+The printed name of an oak tree is usually "a mighty oak".
+
+Oak1 is an oak tree in Stage. 	
+
+Test me with "x tree / x leaves".

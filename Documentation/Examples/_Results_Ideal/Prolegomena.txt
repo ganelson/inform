@@ -1,0 +1,71 @@
+   Editor's Office
+  Prolegomena
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Editor's Office
+  You can see a desk (on which are red pencils in nearly-sufficient quantity and various correspondence) here.
+  
+> >   Editor's Office
+  (Testing.)
+  
+  >[1] get two letters
+  letter: Taken.
+  letter: Taken.
+  
+  >[2] look
+  Editor's Office
+  You can see a desk (on which are red pencils in nearly-sufficient quantity and an assortment of correspondence) here.
+  
+  >[3] get a pencil
+  Taken.
+  
+  >[4] i
+  You are carrying:
+    a red pencil
+    two letters
+  
+  >[5] get pencil
+  Taken.
+  
+  >[6] g
+  Taken.
+  
+  >[7] g
+  Taken.
+  
+  >[8] look
+  Editor's Office
+  You can see a desk (on which are various red pencils and some correspondence) here.
+  
+  >[9] i
+  You are carrying:
+    four red pencils
+    two letters
+  
+  >[10] get all
+  red pencil: Taken.
+  red pencil: Taken.
+  red pencil: Taken.
+  red pencil: Taken.
+  red pencil: Taken.
+  red pencil: Taken.
+  red pencil: Taken.
+  red pencil: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  letter: Taken.
+  
+  >[11] i
+  You are carrying:
+    an assortment of correspondence
+    red pencils in nearly-sufficient quantity
+  
+> >

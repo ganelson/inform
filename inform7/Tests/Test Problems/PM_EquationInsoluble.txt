@@ -1,0 +1,10 @@
+Laboratory is a room.
+
+To decide what number is the adjusted value of (N - a number)
+	(this is the wibble function):
+	decide on N+7.
+
+When play begins:
+	let m be 2;
+	let F be 0;
+	let F be given by m = wibble F.

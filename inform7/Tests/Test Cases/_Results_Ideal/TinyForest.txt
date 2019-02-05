@@ -1,0 +1,29 @@
+   Clearing
+  Tiny Forest
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Clearing
+  You are in the middle of an ancient forest, much overgrown by briars. There is a nasty-looking bog to your south. A path heads east.
+  
+> >   Mighty Oak
+  (Testing.)
+  
+  >[1] north
+  The briars in that direction are impassable.
+  
+  >[2] south
+  You take another look at the bog and reconsider.
+  
+  >[3] east
+  
+  Mighty Oak
+  There is a tremendous old oak here. A path heads west to the clearing. There is a greasy-looking bog to your north.
+  
+  >[4] north
+  You take another look at the bog and reconsider.
+  
+  >[5] south
+  The briars in that direction are impassable.
+  
+> >

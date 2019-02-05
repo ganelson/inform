@@ -1,0 +1,12 @@
+Inform 7 build 6M26 has started.
+I've now read your source text, which is 62 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TooManyTokens
+  >--> In 'To zog (a - a thing) zog (b - a thing) zog (c - a thing) zog (d - a
+    thing) zog (e - a thing) zog (f - a thing) zog (g - a thing) zog (h - a
+    thing) zog (i - a thing) zog (j - a thing) zog (k - a thing)' (source text, line 2),
+    I ran out of tokens when I got up to 'a thing'. Phrases are only allowed 10
+    tokens, that is, they are only allowed 10 bracketed parts in their
+    definitions.
+Inform 7 has finished: 23 centiseconds used.

@@ -1,0 +1,8 @@
+There is a room. 
+Act I is a scene.
+Act I begins when the player's command includes a topic listed in table 1.
+
+table 1
+topic
+"plover"
+"xyzzy"

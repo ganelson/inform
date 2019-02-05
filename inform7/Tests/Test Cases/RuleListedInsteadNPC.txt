@@ -1,0 +1,41 @@
+The Mysterious Void is a room. "Spooky."
+
+Cassie is a woman in the Mysterious Void.
+
+Persuasion rule for asking people to try doing something: persuasion
+succeeds.
+
+This is the replacement can't go that way rule:
+	say "Hi!";
+    if stuck begin;
+        rule fails; [ so the location of the player isn't changed ]
+    end if.
+
+The replacement can't go that way rule is listed instead of the can't
+go that way rule in the check going rulebook.
+
+To decide if stuck:
+	decide yes.
+[   (- GoSub_C8_Replacement() -).]
+
+[ the following code is from Inform7/Extensions/Reserved/Verbs.i6,
+with a call to "custom can't go that way rule" instead of the cant_go
+property ]
+
+[Include (-
+[ GoSub_C8_Replacement i;
+   i = parent(actor);
+   if (go_with_vehicle) i = Room_Of(go_with_vehicle);
+   if (go_to_location == nothing) {
+       if (actor == player) {
+           print "Whoo, you can't go that way.^";
+           say__p = 1;
+       }
+       rtrue;
+   }
+   rfalse;
+];
+-)
+]
+
+Test me with "u / cassie, u".

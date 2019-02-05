@@ -1,0 +1,9 @@
+Laboratory is a room.
+
+Equation 2
+F = ma
+where F is a number, m is a number, a is a number.
+
+When play begins:
+	let m be 1;
+	let F be given by Equation 2 where a = 5, Z = 10.

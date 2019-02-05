@@ -1,0 +1,24 @@
+   Stage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stage
+  
+> >   Stage
+  (Testing.)
+  
+  >[1] x lantern
+  The lantern shines with a flame at 1400C.
+  
+  >[2] read book
+  Many secrets are now yours.
+  
+  >[3] jump
+  >[4] x lantern
+  The lantern shines with a flame at 700C.
+  
+  >[5] read book
+  No, the print's too tiny by this awful light.
+  
+> >

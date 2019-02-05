@@ -1,0 +1,22 @@
+   Study
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Study
+  A well-appointed study, with a large bookcase and an equally impressive desk.
+  
+> >   Study
+  (Testing.)
+  
+  >[1] look behind desk
+  There's no need to look behing anything in this game: EXAMINE and SEARCH should suffice.
+  
+  >[2] look
+  Study
+  A well-appointed study, with a large bookcase and an equally impressive desk.
+  
+  >[3] look at desk
+  You see nothing special about the equally impressive desk.
+  
+> >

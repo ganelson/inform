@@ -1,0 +1,30 @@
+   Break Room
+  Ferragamo Again
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Break Room
+  You can see Vanessa, Tina, Lisa, Mark and Holman here.
+  
+> >   Break Room
+  (Testing.)
+  
+  >[1] talk about chocolate
+  Mostly you're interested in Assyrian vowel sounds, designer handbags and instant run-off voting.
+  
+  >[2] talk about vowel sounds
+  You chat for a while about Assyrian vowel sounds.
+  
+  >[3] g
+  Lisa sighs heavily. Maybe you should let this one go.
+  
+  >[4] talk about handbags
+  You chat for a while about designer handbags.
+  
+  >[5] talk about prada
+  Mark sighs heavily. Maybe you should let this one go.
+  
+  >[6] talk about tods
+  Tina sighs heavily. Maybe you should let this one go.
+  
+> >

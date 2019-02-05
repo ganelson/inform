@@ -1,0 +1,27 @@
+   Schoolhouse
+  Flashlight
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Schoolhouse
+  Though normally comfortable, the room is dark and menacing during the storm; rain sheets on the windows, and you can barely see the flash of the lighthouse only a few miles away.
+  
+  A hurricane lantern hangs from a peg.
+  
+  You can also see a cabinet (empty) here.
+  
+> >   Schoolhouse
+  (Testing.)
+  
+  >[1] look under cabinet
+  It is pitch dark, and you can't see a thing.
+  
+  >[2] get lantern
+  Taken.
+  
+  >[3] look under cabinet
+  You shine the hurricane lantern under the cabinet...
+  
+  Billy's lost marble! So that's where it got to!
+  
+> >

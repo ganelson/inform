@@ -1,0 +1,66 @@
+   Broad Lawn
+  Bowler Hats and Baby Geese
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Broad Lawn
+  A sort of fun fair has been set up on this broad lawn, with the House as a backdrop: it's an attempt to give local children something to do during the bank holiday. In typical fashion, everyone is doing a very good job of ignoring the House itself, despite its swarthy roofline and dozens of blacked-out windows.
+  
+> >   Broad Lawn
+  (Testing.)
+  
+  >[1] scenes
+  Scene 'Entire Game' playing (for 0 mins now)
+  (Scene monitoring now switched on. Type "scenes off" to switch it off again.)
+  
+  >[2] n
+  
+  Gazebo
+  The gazebo is sometimes used for bands, but at the moment has been appropriated for the distribution of lemonade.
+  
+  >[3] z
+  Time passes.
+  
+  [Scene 'Clown Performance' begins]
+  >[4] z
+  Time passes.
+  
+  A clown with a purple polka-dot bowler hat strides into the vicinity and begins to juggle baby geese.
+  
+  >[5] look
+  Gazebo
+  The gazebo is sometimes used for bands, but at the moment has been appropriated for the distribution of lemonade.
+  
+  A clown wearing a purple polka-dot bowler hat stands nearby.
+  
+  While the clown juggles, the baby geese visibly grow older and larger. The clown becomes unnerved.
+  
+  >[6] x geese
+  Three or four. Or five. It's hard to count.
+  
+  In an attempt to resolve the problem, the clown reverses the direction of his juggling. The geese revert to goslings.
+  
+  >[7] s
+  Better to stay here for the moment and find out what is going to happen next.
+  
+  The goslings become smaller and smaller until the clown is juggling goose eggs.
+  
+  >[8] x geese
+  You can't see any such thing.
+  
+  >[9] x eggs
+  A blur, really.
+  
+  The clown throws all the eggs into the air at once and catches them in the bowler hat. He takes a bow; the audience applauds. As a final gesture, he upends his hat to release a perfectly cooked omelet.
+  
+  [Scene 'Clown Performance' ends]
+  [Scene 'Free Time' begins]
+  >[10] z
+  Time passes.
+  
+  >[11] s
+  
+  Broad Lawn
+  A sort of fun fair has been set up on this broad lawn, with the House as a backdrop: it's an attempt to give local children something to do during the bank holiday. In typical fashion, everyone is doing a very good job of ignoring the House itself, despite its swarthy roofline and dozens of blacked-out windows.
+  
+> >

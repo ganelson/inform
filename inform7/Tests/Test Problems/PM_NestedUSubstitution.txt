@@ -1,0 +1,5 @@
+To say ¶: say line break.
+
+When play begins, say "NEW YORK. 1832.[¶]I had just..."
+
+There is a room.

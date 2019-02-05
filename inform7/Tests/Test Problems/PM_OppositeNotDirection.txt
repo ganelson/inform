@@ -1,0 +1,5 @@
+Downstream is a direction. The opposite of downstream is upstream.
+
+End of the Road is a room. 
+
+South and downstream from End of the Road is a room called In a Valley.

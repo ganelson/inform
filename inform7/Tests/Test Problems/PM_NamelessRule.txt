@@ -1,0 +1,4 @@
+There is room.
+
+When play begins (this is the rule):
+	say "A".

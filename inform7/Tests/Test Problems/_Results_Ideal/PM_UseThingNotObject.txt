@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UseThingNotObject
+  >--> The grammar token 'object' in the sentence 'Understand "take [object]"
+    as taking' (source text, line 1) would in some ways be the right logical
+    way to suggest 'any object at all here', but Inform uses the special syntax
+    '[thing]' for that. (Or '[things]' if multiple objects are allowed.)
+Inform 7 has finished: 44 centiseconds used.

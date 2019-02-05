@@ -1,0 +1,655 @@
+   Treasury
+  Chapter 16: Probe Droid
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150831 / Inform 7 build 6M54 (I6/v6.33 lib 6/12N) SD
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+  (This is your chance to say what the protagonist should do next. After the ">", try typing "take inventory".)
+  
+> >   Treasury
+  ** take inventory
+  You are carrying:
+    a pot
+      a small lottery ticket
+      a large lottery ticket
+  
+> >   Treasury
+  ** record vault
+  You note down the characteristics of the vault for future reference.
+  
+> >   Treasury
+  ** photograph vault
+  You note down the characteristics of the vault for future reference.
+  
+> >   Treasury
+  ** x vault
+  The vault's system includes a dial, a timing system, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, small red lights and a large lever.
+  
+> >   Treasury
+  ** x all
+  pot: In the pot are a small lottery ticket and a large lottery ticket.
+  
+  vault: The vault's system includes a dial, a timing system, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, small red lights and a large lever.
+  
+  small lottery ticket: You see nothing special about the small lottery ticket.
+  
+  large lottery ticket: You see nothing special about the large lottery ticket.
+  
+  dial: You see nothing special about the dial.
+  
+  timing system: You see nothing special about the timing system.
+  
+  thin black pane of glass: You see nothing special about the thin black pane of glass.
+  
+  laser beam: You see nothing special about the laser beam.
+  
+  retinal scanner: You see nothing special about the retinal scanner.
+  
+  thumbprint ID plate: You see nothing special about the thumbprint ID plate.
+  
+  small red lights: You see nothing special about small red lights.
+  
+  large lever: You see nothing special about the large lever.
+  
+> >   Treasury
+  ** x
+  (the pot)
+  In the pot are a small lottery ticket and a large lottery ticket.
+  
+> >   Treasury
+  ** drill vault
+  You drill a hole right through the vault.
+  
+> >   Treasury
+  ** drill through vault
+  You drill a hole right through the vault.
+  
+> >   Treasury
+  ** drill plate
+  Whirrr! You take a small sample of the thumbprint ID plate.
+  
+> >   Treasury
+  ** spin dial to 1384
+  "As if," says a computerized voice.
+  
+> >   Treasury
+  ** spin dial to 31337
+  "Nice try," says a computerized voice.
+  
+> >   Studio
+  ** w
+  
+  Studio
+  The unreal world of the photographic studio, full of fake furniture, cantilevered stands and silver-white shades like miniature parachutes.
+  
+  A lumpy black camera hangs from a tripod.
+  
+  A rake-thin model, exquisitely bored and boringly exquisite, angles herself indolently.
+  
+> >   Studio
+  ** photograph left arm of woman
+  You can't see any such thing.
+  
+> >   Studio
+  ** photograph left arm of model
+  You can hardly photograph without a camera, now can you?
+  
+> >   Studio
+  ** take the camera
+  Taken.
+  
+> >   Studio
+  ** photograph left arm of model
+  Click! You take a detail photograph of the left arm of the rake-thin model.
+  
+> >   Studio
+  ** photograph right arm of model
+  Click! You take a detail photograph of the right arm of the rake-thin model.
+  
+> >   Studio
+  ** photograph left leg of subject
+  Click! You take a detail photograph of the left leg of the rake-thin model.
+  
+> >   Studio
+  ** photograph right leg of model
+  Click! You take a detail photograph of the right leg of the rake-thin model.
+  
+> >   Studio
+  ** drop camera
+  Dropped.
+  
+> >   Studio
+  ** x subject
+  You can't see any such thing.
+  
+> >   Studio
+  ** get camera
+  Taken.
+  
+> >   Treasury
+  ** e
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+> >   Atelier
+  ** e
+  
+  Atelier
+  The floridly untidy loft space used by a moderately unsuccessful artist (you, that is).
+  
+  You can see a largely white canvas, a palette and a paint brush here.
+  
+> >   Atelier
+  ** paint the canvas blue
+  You splash away at the now largely blue canvas.
+  
+> >   Atelier
+  ** paint the canvas red
+  You splash away at the now largely red canvas.
+  
+> >   Atelier
+  ** paint the canvas green
+  You splash away at the now largely green canvas.
+  
+> >   Atelier
+  ** paint the canvas white
+  You splash away at the now largely white canvas.
+  
+> >   Atelier
+  ** paint the canvas calico
+  I didn't understand that sentence.
+  
+> >   Atelier
+  ** paint the canvas cerulean
+  You splash away at the now largely blue canvas.
+  
+> >   Atelier
+  ** paint the canvas cerulean blue
+  I didn't understand that sentence.
+  
+> >   Atelier
+  ** x the white canvas
+  You can't see any such thing.
+  
+> >   Atelier
+  ** x the blue canvas
+  You see nothing special about the largely blue canvas.
+  
+> >   Atelier
+  ** x the blue
+  You see nothing special about the largely blue canvas.
+  
+> >   Treasury
+  ** w
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+> >   Laundry
+  ** s
+  
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+> >   Laundry
+  ** lie down
+  You lie down for a while in the middle of the Laundry, wondering about the point of existence, then get up again.
+  
+> >   Laundry
+  ** lie near the sink
+  Lying down close to the cool butcher's marble slabs of the sink, your attention is caught by the sight of coolie shoes through a floor-level grille for ventilation. The game is afoot!
+  
+> >   Laundry
+  ** lie near the floor
+  You can't see any such thing.
+  
+> >   Laundry
+  ** [interesting]
+  That's not a verb I recognise.
+  
+> >   Treasury
+  ** n
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+> >   Treasury
+  ** lie near vault
+  You lie down next to the vault for a while, mumbling to yourself.
+  
+> >   Machine Room
+  ** n
+  
+  Machine Room
+  You can see a newly-lathed metal component and a wood ball here.
+  
+> >   Machine Room
+  ** polish the component
+  You'll have to indicate what level of polish you want to achieve; for instance, POLISH the noun TO A ROUGH FINISH.
+  
+> >   Machine Room
+  ** polish the component to a shiny finish
+  (first taking the newly-lathed metal component)
+  The newly-lathed metal component is now shiny.
+  
+> >   Machine Room
+  ** get rough
+  You can't see any such thing.
+  
+> >   Machine Room
+  ** get shiny
+  You can't see any such thing.
+  
+> >   Machine Room
+  ** x smooth
+  You can't see any such thing.
+  
+> >   Machine Room
+  ** x smooth component
+  You see nothing special about the newly-lathed metal component.
+  
+> >   Machine Room
+  ** x shiny component
+  You see nothing special about the newly-lathed metal component.
+  
+> >   Machine Room
+  ** paint the component blue
+  Centuries of tradition suggest that canvas is the natural home of paint.
+  
+> >   Machine Room
+  ** record component
+  You note down the characteristics of the newly-lathed metal component for future reference.
+  
+> >   Machine Room
+  ** please record component
+  (Quelle politesse! But no need to say please.)
+  
+  You note down the characteristics of the newly-lathed metal component for future reference.
+  
+> >   Machine Room
+  ** grab
+  wood ball: Taken.
+  
+> >   Machine Room
+  ** thank you
+  I will thank you not to say that.
+  
+> >   Machine Room
+  ** thanks
+  That's not a verb I recognise.
+  
+> >   Machine Room
+  ** thank you for helping out
+  I will thank you not to say that.
+  
+> >   Machine Room
+  ** please gram
+  (Quelle politesse! But no need to say please.)
+  That's not a verb I recognise.
+  
+> >   Machine Room
+  ** please grab
+  (Quelle politesse! But no need to say please.)
+  
+  There are none at all available!
+  
+> >   Machine Room
+  ** out
+  But you aren't in anything at the moment.
+  
+> >   Treasury
+  ** s
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+> >   Treasury
+  ** x vault
+  The vault's system includes a dial, a timing system, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, small red lights and a large lever.
+  
+> >   Treasury
+  ** x dial
+  You see nothing special about the dial.
+  
+> >   Treasury
+  ** x pane
+  You see nothing special about the thin black pane of glass.
+  
+> >   Treasury
+  ** x beam
+  You see nothing special about the laser beam.
+  
+> >   Treasury
+  ** x scanner
+  You see nothing special about the retinal scanner.
+  
+> >   Treasury
+  ** x plane
+  You can't see any such thing.
+  
+> >   Treasury
+  ** x plate
+  You see nothing special about the thumbprint ID plate.
+  
+> >   Laundry
+  ** s
+  
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+> >   Laundry
+  ** x all
+  wood ball: You see nothing special about the wood ball.
+  
+  newly-lathed metal component: You see nothing special about the newly-lathed metal component.
+  
+  lumpy black camera: You see nothing special about the lumpy black camera.
+  
+  pot: In the pot are a small lottery ticket and a large lottery ticket.
+  
+  vast marble sink: The vast marble sink is empty.
+  
+  small lottery ticket: You see nothing special about the small lottery ticket.
+  
+  large lottery ticket: You see nothing special about the large lottery ticket.
+  
+> >   Laundry
+  ** camera
+  Dropped.
+  
+> >   Laundry
+  ** g
+  Taken.
+  
+> >   Laundry
+  ** camera
+  Dropped.
+  
+> >   Laundry
+  ** look
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+  You can also see a lumpy black camera here.
+  
+> >   Treasury
+  ** n
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+> >   Treasury
+  ** vault
+  The vault's system includes a dial, a timing system, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, small red lights and a large lever.
+  
+> >   Treasury
+  ** dial
+  I didn't understand that sentence.
+  
+> >   Treasury
+  ** system
+  That seems to be a part of the vault.
+  
+> >   Treasury
+  ** pane
+  That seems to be a part of the vault.
+  
+> >   Treasury
+  ** laser
+  That seems to be a part of the vault.
+  
+> >   Treasury
+  ** plate
+  That seems to be a part of the vault.
+  
+> >   Atelier
+  ** e
+  
+  Atelier
+  The floridly untidy loft space used by a moderately unsuccessful artist (you, that is).
+  
+  You can see a largely blue canvas, a palette and a paint brush here.
+  
+> >   Atelier
+  ** canvas
+  Taken.
+  
+> >   Atelier
+  ** get canvas
+  You already have that.
+  
+> >   Atelier
+  ** palette
+  You see nothing special about the palette.
+  
+> >   Atelier
+  ** g
+  Taken.
+  
+> >   Atelier
+  ** g
+  Dropped.
+  
+> >   Atelier
+  ** brush
+  You see nothing special about the paint brush.
+  
+> >   Atelier
+  ** spy on vault
+  The vault's system includes a dial, a timing system, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, small red lights and a large lever.
+  
+> >   Studio
+  ** teleport to studio
+  Studio
+  The unreal world of the photographic studio, full of fake furniture, cantilevered stands and silver-white shades like miniature parachutes.
+  
+  A rake-thin model, exquisitely bored and boringly exquisite, angles herself indolently.
+  
+> >   Laundry
+  ** teleport to laundry
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+  You can also see a lumpy black camera here.
+  
+> >   Laundry
+  ** spy on model
+  You see nothing special about the rake-thin model.
+  
+> >   Laundry
+  ** put all in pot
+  largely blue canvas: Done.
+  wood ball: Done.
+  newly-lathed metal component: Done.
+  
+> >   Laundry
+  ** stir all in pot
+  newly-lathed metal component: You stir up the newly-lathed metal component.
+  
+  wood ball: You stir up the wood ball.
+  
+  largely blue canvas: You stir up the largely blue canvas.
+  
+  small lottery ticket: You stir up the small lottery ticket.
+  
+  large lottery ticket: You stir up the large lottery ticket.
+  
+> >   Laundry
+  ** throw pot
+  You hurl the pot at the wall but it bounces back to you!
+  
+> >   Discus Competition
+  ** teleport to competition
+  Discus Competition
+  
+> >   Discus Competition
+  ** throw pot
+  You throw the pot a truly impressive distance.
+  
+> >   Discus Competition
+  ** hurl pot
+  (first taking the pot)
+  You throw the pot a truly impressive distance.
+  
+> >   Discus Competition
+  ** fling pot
+  Oh, no, merely flinging things aimlessly will not work -- you want to hurl them!
+  
+> >   Atelier
+  ** teleport to atelier
+  Atelier
+  The floridly untidy loft space used by a moderately unsuccessful artist (you, that is).
+  
+  You can see a palette and a paint brush here.
+  
+> >   Atelier
+  ** get canvas
+  You can't see any such thing.
+  
+> >   Atelier
+  ** paint canvas white
+  You can't see any such thing.
+  
+> >   Chambre
+  ** teleport to chambre
+  Chambre
+  
+> >   Chambre
+  ** x blanc canvas
+  You can't see any such thing.
+  
+> >   Academy
+  ** teleport to academy
+  Academy
+  Aristotle is here, casting his gaze over yourself, Aristotle, an electric razor, a himation and an eel from the Copaic lake.
+  
+> >   Academy
+  ** use eel with eel
+  You point out how the eel from the Copaic lake differs from the ideal eel.
+  
+> >   Academy
+  ** use ideal eel with eel
+  You point out how the eel from the Copaic lake differs from the ideal eel.
+  
+> >   Academy
+  ** use eel with ideal eel
+  You point out how the eel from the Copaic lake differs from the ideal eel.
+  
+> >   Academy
+  ** use ideal eel
+  You can't eat imaginary food.
+  
+> >   Academy
+  ** use ideal eel in discussion
+  You mention the ideal eel. Aristotle looks irritated.
+  
+> >   Academy
+  ** use eel in discussion
+  You mention the ideal eel. Aristotle looks irritated.
+  
+> >   Academy
+  ** use eel
+  (first taking the eel from the Copaic lake)
+  You eat the eel from the Copaic lake. Not bad.
+  
+> >   Academy
+  ** g
+  You can't eat imaginary food.
+  
+> >   Academy
+  ** use ideal chair
+  You mention the ideal chair. Aristotle looks irritated.
+  
+> >   Academy
+  ** use chicken on aristotle
+  Your point is well taken.
+  
+> >   Academy
+  ** use no chicken
+  You propose a chicken made entirely of anti-matter.
+  
+> >   Academy
+  ** use modus ponens
+  "If P, then Q," you assert. "P! Therefore Q!"
+  
+> >   Academy
+  ** use modus tollens
+  "If P, then Q," you assert. "Not Q! Therefore not P!"
+  
+> >   Academy
+  ** use denying the antecedent
+  (on Aristotle)
+  "If P, then Q!" you say. "Not P, so not Q!"
+  
+> >   Academy
+  ** use affirming the consequent
+  (on Aristotle)
+  "If P, then Q!" you say. "Q, therefore P!"
+  
+> >   Academy
+  ** use aristotle
+  You see nothing special about Aristotle.
+  
+> >   Academy
+  ** use razor
+  You switch the electric razor on.
+  
+> >   Academy
+  ** g
+  You switch the electric razor off.
+  
+> >   Academy
+  ** g
+  You switch the electric razor on.
+  
+> >   Academy
+  ** g
+  You switch the electric razor off.
+  
+> >   Academy
+  ** use chicken
+  (on Aristotle)
+  Your point is well taken.
+  
+> >   Academy
+  ** use chicken on me
+  Getting desperate, are we?
+  
+> >   Academy
+  ** use no modus ponens
+  You'll have to say positively what you do mean, then.
+  
+> >   Academy
+  ** use no modus tollens
+  You'll have to say positively what you do mean, then.
+  
+> >   Academy
+  ** use no denying the antecedent
+  You'll have to say positively what you do mean, then.
+  
+> >   Academy
+  ** use no affirming the consequent
+  You'll have to say positively what you do mean, then.
+  
+> >   Treasury
+  ** nw
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+> >   Treasury
+  ** use wibble wobble
+  Getting desperate, are we?
+  
+> >

@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DuplicateRuleName
+  >--> You wrote 'This is the Remember You're a Womble rule' (source text, line 5),
+    but this would give a name ('Remember You're a Womble rule') to a new rule
+    which already belongs to an existing one.
+Inform 7 has finished: 18 centiseconds used.

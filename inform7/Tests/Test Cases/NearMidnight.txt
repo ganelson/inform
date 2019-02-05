@@ -1,0 +1,11 @@
+The fast time rule is listed before the timed events rule in the turn sequence rules.
+The advance time rule is not listed in the turn sequence rules.
+This is the fast time rule:
+	increment the turn count;
+	increase the time of day by 15 minutes.
+When play begins: now the right hand status line is "[time of day]".
+The Temporal Hot Spot is a room.
+The time of day is 11:45 PM.
+At 11:58 PM: say "Two turtles run by, almost too fast to see."
+At 12:02 AM: say "The grass grows."
+Test me with "z / z".

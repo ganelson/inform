@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RelatedByEquality
+  >--> The grammar you give in 'Understand "[something related by equality]'s"
+    as a person' (source text, line 5) contains a token 'something related by
+    equality' (source text, line 1) which would create a circularity. To follow
+    this, I'd have to compute forever.
+Problem__ PM_RelatedByEquality
+  >--> The grammar you give in 'Understand "[something related by equality]'s"
+    as a person' (source text, line 5) contains a token 'something related by
+    equality' (source text, line 1) which would create a circularity. To follow
+    this, I'd have to compute forever.
+Inform 7 has finished: 56 centiseconds used.

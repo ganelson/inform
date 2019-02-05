@@ -1,0 +1,16 @@
+The Stage is a room. A sword is in Stage. Wings is west of Stage.
+Dressing Room is north of Wings.
+
+Definition: a thing is seen if we have examined it.
+
+Understand "[any adjacent room]" as going by name. Going by name is an
+action applying to one thing. Carry out going by name: move the player
+to the noun.
+
+Understand "[any seen thing]" as remembering. Remembering is an action
+applying to one thing. Carry out remembering: say "The last time you
+saw that, it was in [location of noun]."
+
+The basic accessibility rule is not listed in any rulebook.
+
+Test me with "w / sword / wings / stage / wings / stage / x sword / sword".

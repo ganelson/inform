@@ -1,0 +1,7 @@
+Xanadu is a room.
+
+Applause is a number that varies.
+
+The applause variable translates into I6 as "applause".
+
+The applause variable translates into I6 as "clapping".

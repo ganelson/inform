@@ -1,0 +1,24 @@
+** Directions
+(Exits added to a room; Prisoner's Dilemma)
+A button that causes a previously non-existent exit to come into being.
+
+We can change the directions in the map in mid-game, though in practice this is rarely necessary. But suppose we do not want a door or any sign of a door to exist before the player takes some action, in this case pressing a button:
+
+	{*}"Prisoner's Dilemma"
+
+	Challenger's Waiting Room is a room. "The challenge is this: to wait as long as you can endure to do so in a room with no features and no clock. If you wait longer than all the other contestants, you win." 
+	
+	The button is fixed in place in the Challenger's Waiting Room. "The only item in view is a black recessed button."
+
+	Amid the Cheering Throng is a room.
+
+	Instead of pushing the button for the first time:
+		change the east exit of the Challenger's Waiting Room to Amid the Cheering Throng;
+		change the west exit of the Cheering Throng to the Challenger's Waiting Room;
+		say "With a groan of gears, the east wall swings open! If you've lost now, well, you've lost..."
+	
+	Test me with "e / push button / e / w".
+
+Our instructions about pushing the button will be further explained in the chapter on Actions, but the thing to note here is that we can "change (whatever) exit" in order to set or re-set map directions. Notice that we have to set both directions explicitly: changing the east exit of the Waiting Room does not automatically also change the west exit of Amid the Cheering Throng. 
+
+This allows greater flexibility in our games but does require an extra line or so of work.

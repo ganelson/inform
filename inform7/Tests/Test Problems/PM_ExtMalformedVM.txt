@@ -1,0 +1,3 @@
+Include ExtMalformedVM Extension by Araminta Intest.
+
+Clifftop is a room.

@@ -1,0 +1,5 @@
+Current Place is a room.
+
+Table 3 - Undiscovered Periodic Table
+Element (text)	Symbol (text)	Atomic number (a number)	Atomic weight (a number)
+with 92 blank rows

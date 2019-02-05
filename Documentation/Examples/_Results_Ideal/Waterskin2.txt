@@ -1,0 +1,85 @@
+   Campsite
+  Thirst
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Campsite
+  It is solid night now, and the stars have come out. Unfamiliar stars. On the other side of the valley -- a valley round-bottomed but shallow, like a soup bowl -- burn other campfires, most likely bandits. Their voices do not carry, but the smoke rises and obscures the starlight over that way.
+  
+  Your sleepsack is laid out in a pocket of sandy soil and coarse grass.
+  
+  You can also see some kindling here.
+  
+> >   By The Campfire
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a waterskin (full)
+    a tinderbox
+      a flint
+      a steel
+      some tinder
+      a patch of carbonized cloth
+  
+  >[2] drink water
+  You drink a long draught.
+  
+  >[3] i
+  You are carrying:
+    a waterskin (partly drained)
+    a tinderbox
+      a flint
+      a steel
+      some tinder
+      a patch of carbonized cloth
+  
+  >[4] drink water
+  You drink a long draught.
+  
+  >[5] i
+  You are carrying:
+    a waterskin (empty)
+    a tinderbox
+      a flint
+      a steel
+      some tinder
+      a patch of carbonized cloth
+  
+  >[6] wear steel
+  (first taking the steel)
+  You put on the steel.
+  
+  >[7] get flint
+  Taken.
+  
+  >[8] get cloth
+  Taken.
+  
+  >[9] drop cloth
+  Dropped.
+  
+  >[10] get tinder
+  Taken.
+  
+  >[11] hit flint
+  You strike the flint against the steel and throw sparks onto the patch of cloth; they make tiny circles of orange there, which will only prosper if blown into flame.
+  
+  Now the patch of cloth is fading.
+  
+  >[12] blow on cloth
+  You blow on the faint sparks on the cloth and turn them into the beginnings of flame.
+  
+  >[13] burn tinder
+  You light the tinder with the patch of cloth, and have the elements of a fire.
+  
+  >[14] burn kindling
+  You succeed in lighting yourself a proper campfire.
+  
+  >[15] look
+  By The Campfire
+  It is solid night now, and the stars have come out. Unfamiliar stars. On the other side of the valley -- a valley round-bottomed but shallow, like a soup bowl -- burn other campfires, most likely bandits. Their voices do not carry, but the smoke rises and obscures the starlight over that way.
+  
+  Your sleepsack is laid out in a pocket of sandy soil and coarse grass.
+  
+> >

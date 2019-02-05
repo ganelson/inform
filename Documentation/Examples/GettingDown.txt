@@ -1,0 +1,18 @@
+* New commands for old grammar
+(GET DOWN and DOWN understood as EXIT; Anchorite)
+By default, Inform understands GET OFF, GET UP, or GET OUT when the player is sitting or standing on an enterable object. We might also want to add GET DOWN and DOWN as exit commands, though.
+
+With GET DOWN, we can replace the whole command, which will not interfere with the normal function of the TAKE verb, or allow the player to attempt to GET any other directions:
+
+	{*}"Anchorite"
+	
+	The Solitary Place is a room. "A glittering, shimmering desert without either locusts or honey." The pillar is an enterable supporter in the Solitary Place. "The broken pillar is short enough to climb and sit on." The description of the pillar is "Once it was a monument: a long frieze of battles and lion-hunts spirals up the side, in honor of an earthly king." The player is on the pillar.
+	
+	Understand "get down" as exiting.
+	
+This doesn't cover the case where the player just types "DOWN", and we don't want to preempt the normal operation of the GO action here. So instead of writing a new understand instruction, we might catch this one at the action-processing level:
+
+	{**}Instead of going down when the player is on a supporter:
+		try exiting.
+		
+	Test me with "down / enter pillar / get down / down / get down".

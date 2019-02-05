@@ -1,0 +1,13 @@
+The Study is a room.
+
+Eightball is a scene. 
+
+Eightball has a number called countervalue. 
+
+Eightball begins when play begins.
+
+Every turn during Eightball:
+	increase the countervalue of Eightball by 1;
+	say "[countervalue of Eightball]".
+
+Test me with "z/z/z/z/z/z"

@@ -1,0 +1,19 @@
+Table of Craziness
+subject
+"This is in the extension"
+
+Table of Craziness
+subject
+"This is in the main code"
+
+The Street is a room.  The sign is a thing in the Street.
+
+Instead of examining the sign:
+	repeat through the Table of Craziness begin;
+		say "[subject entry].";
+	end repeat.
+
+Table of Craziness (continued)
+subject
+"This is the continuation"
+

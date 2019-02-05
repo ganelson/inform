@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 43 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableDefiningObject
+  >--> You wrote 'The retro T-shirt are defined by the Table of Player's
+    Clothing' (source text, line 9): but you can only use 'defined by' to set
+    up values and things, as created with sentences like 'The tree species are
+    defined by Table 1.' or 'Some men are defined by the Table of Eligible
+    Bachelors.' - trying to define a single specific object, as here, is not
+    allowed.
+Inform 7 has finished: 18 centiseconds used.

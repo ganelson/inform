@@ -1,0 +1,10 @@
+Inform 7 build 6L47 has started.
+I've now read your source text, which is 36 words long.
+I've also read Standard Rules by Graham Nelson, which is 42613 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OtherwiseIfAfterOtherwise
+  >--> You wrote 'otherwise' (source text, line 7): but this seems to be
+    misplaced since it is out of sequence within its 'if', with an 'otherwise
+    if...' coming after the more general 'otherwise' rather than before. (If
+    there's an 'otherwise' clause, it has to be the last clause of the 'if'.)
+Inform 7 has finished: 19 centiseconds used.

@@ -1,0 +1,51 @@
+   Temporal Lobe
+  Tense Boxing
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Temporal Lobe
+  You can see a mysterious box (closed) here.
+  
+> >   Temporal Lobe
+  (Testing.)
+  
+  >[1] open box
+  You are about to open the box.
+  The box was not open.
+  The box had not been open.
+  The box is not open.
+  The box has not been open.
+  
+  You now open the box.
+  The box was not open.
+  The box had not been open.
+  The box is open.
+  The box has been open.
+  
+  >[2] close box
+  You are about to close the box.
+  The box was open.
+  The box had been open.
+  The box is open.
+  The box has been open.
+  
+  You now close the box.
+  The box was open.
+  The box had been open.
+  The box is not open.
+  The box has been open.
+  
+  >[3] open box
+  You are about to open the box.
+  The box was not open.
+  The box had been open.
+  The box is not open.
+  The box has been open.
+  
+  You now open the box.
+  The box was not open.
+  The box had been open.
+  The box is open.
+  The box has been open.
+  
+> >

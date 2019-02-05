@@ -1,0 +1,32 @@
+   Southwest Corner
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Southwest Corner (in the truck)
+  In the truck you can see Bob.
+  
+> >   Southwest Corner
+  (Testing.)
+  
+  >[1] wait
+  Time passes.
+  
+  "location" = object: Southwest Corner
+  
+  Bob goes north in the truck, taking you along.
+  
+  Northwest Corner (in the truck)
+  In the truck you can see Bob.
+  
+  >[2] wait
+  Time passes.
+  
+  "location" = object: Northwest Corner
+  
+  Bob goes south in the truck, taking you along.
+  
+  Southwest Corner (in the truck)
+  In the truck you can see Bob.
+  
+> >

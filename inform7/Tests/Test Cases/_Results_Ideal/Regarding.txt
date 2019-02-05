@@ -1,0 +1,38 @@
+   Foo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foo
+  You can see a torch, a banana and some grapes here.
+  
+> >   Foo
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  Every possession is a worry. I wonder if it still looks okay? And speaking of fruit, is it still edible?
+  
+  >[2] take torch
+  Taken.
+  
+  Every possession is a worry. I wonder if it still looks okay? And speaking of fruit, is it still edible?
+  
+  >[3] take banana
+  Taken.
+  
+  Every possession is a worry. I wonder if they still look okay? And speaking of fruit, is it still edible?
+  
+  >[4] drop all
+  banana: Dropped.
+  torch: Dropped.
+  
+  Every possession is a worry. I wonder if it still looks okay? And speaking of fruit, is it still edible?
+  
+  >[5] get grapes
+  Taken.
+  
+  Every possession is a worry. I wonder if they still look okay? And speaking of fruit, is it still edible?
+  
+> >

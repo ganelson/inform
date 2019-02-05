@@ -1,0 +1,7 @@
+A tree is a kind of thing.
+A tree is either living or dead.
+
+The Forest is a room.
+
+When play begins:
+	let X be the tree condition.

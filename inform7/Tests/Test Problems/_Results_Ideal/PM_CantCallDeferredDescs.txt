@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantCallDeferredDescs
+  >--> You wrote 'After printing the name of something while considering a
+    thing (called X)' (source text, line 4): but 'called' can't be used when
+    testing a description, since it would make a name for something which
+    existed only so temporarily that it couldn't be used anywhere else.
+Problem__ PM_Unknown
+  >--> In the sentence 'Showme X' (source text, line 6), I was expecting to
+    read a value, but instead found some text that I couldn't understand - 'X'.
+    I was trying to match this phrase:
+      showme (x - value) 
+    But I didn't recognise 'x'.
+Inform 7 has finished: 44 centiseconds used.

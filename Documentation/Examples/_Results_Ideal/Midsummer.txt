@@ -1,0 +1,40 @@
+   Garden
+  Midsummer Day
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Garden
+  
+> >   Gazebo
+  (Testing.)
+  
+  >[1] up
+  
+  Treehouse
+  You can see a cardboard box (empty) here.
+  
+  >[2] x box
+  The cardboard box is empty.
+  
+  >[3] d
+  
+  Garden
+  
+  >[4] e
+  
+  Gazebo
+  You can see a billiards table (on which is a trophy cup (in which is a starting pistol)) here.
+  
+  >[5] x table
+  On the billiards table is a trophy cup (in which is a starting pistol).
+  
+  >[6] x cup
+  In the trophy cup is a starting pistol.
+  
+  >[7] x pistol
+  You see nothing special about the starting pistol.
+  
+  >[8] get cup
+  Taken.
+  
+> >

@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationDoesntEquate
+  >--> In 'Equation 2 ma where m is a number, a is a number' (source text, line 3),
+    you define an equation 'ma': but this equation doesn't seem to contain an
+    equals sign, and without '=' there is no equating anything with anything.
+Inform 7 has finished: 19 centiseconds used.

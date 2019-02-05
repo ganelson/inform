@@ -1,0 +1,8 @@
+The Kitchen is a room.
+
+Counting is an action applying to one number.
+Understand "count [number]" as counting.
+
+Check counting value (called N):
+	showme N;
+	say "Count [N]."

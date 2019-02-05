@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquatesSomethingToValue
+  >--> You wrote 'Something called mauve is a colour' (source text, line 5):
+    but that seems to say that an object is the same as a value, which must be
+    wrong. This can happen if the word 'something' is used loosely - I read it
+    as 'some thing', so I think it has to refer to a thing, which is a kind of
+    object. A sentence like 'Something called mauve is a colour' trips me up
+    because mauve is a value, so it isn't an object, and doesn't match
+    'something'.
+Inform 7 has finished: 17 centiseconds used.

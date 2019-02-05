@@ -1,0 +1,8 @@
+The Temple is a room.
+
+When play begins:
+	if the banana split rule response (A) is "fishy":
+		say "Look out!"
+
+This is the banana split rule:
+	say "Yellow!" (A).

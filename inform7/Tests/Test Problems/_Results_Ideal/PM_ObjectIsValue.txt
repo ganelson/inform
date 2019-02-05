@@ -1,0 +1,9 @@
+Inform 7 build 6M45 has started.
+I've now read your source text, which is 4 words long.
+I've also read Standard Rules by Graham Nelson, which is 42468 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ObjectIsValue
+  >--> I am reading the sentence 'The pineapple is 20' (source text, line 1) as
+    saying that a thing called 'pineapple' is a value, but this makes no sense
+    to me - it would be like saying 'the chair is 10'.
+Inform 7 has finished: 29 centiseconds used.

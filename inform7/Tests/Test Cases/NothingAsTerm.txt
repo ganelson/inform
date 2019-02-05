@@ -1,0 +1,9 @@
+Home is a room.
+
+The player is carrying a box. In the box is a banana and a peach.
+
+Every turn:
+	if nothing is in the box, say "Nothing is in the box.";
+	if the box contains nothing, say "Nothing is in the box."
+
+Test me with "z / get banana / get peach / put banana in box".

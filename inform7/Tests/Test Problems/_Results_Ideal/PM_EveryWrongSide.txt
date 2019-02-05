@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 86 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EveryWrongSide
+  >--> You wrote 'Sir Francis prefers every blonde' (source text, line 15): but
+    'every' can only be used on the other side of the verb, because of
+    limitations in Inform (but also to avoid certain possible ambiguities). In
+    general, 'every' should be applied to the subject of an assertion sentence
+    and not the object. Thus 'Sir Francis prefers every blonde' is not allowed,
+    but 'Every blonde is preferred by Sir Francis' is. (It would be different
+    if, instead of Sir Francis who's just one man, the name of a kind appeared:
+    'A vehicle is in every room' is fine, for example, because 'vehicle' is a
+    kind.)
+Inform 7 has finished: 17 centiseconds used.

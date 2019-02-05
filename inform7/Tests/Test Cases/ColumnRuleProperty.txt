@@ -1,0 +1,13 @@
+A behavior is a kind of value. The behavior are defined by the Table of Behaviors.
+
+Table of Behaviors
+behavior			turn rule
+Aimless				--
+Happy				--
+Sad					--
+Suffering mildly	interesting rule
+
+This is the interesting rule:
+	rule succeeds.
+
+The Lane is a room.

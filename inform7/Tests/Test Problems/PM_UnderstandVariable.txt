@@ -1,0 +1,3 @@
+Obligatory Starting Point is a room.
+
+Understand "fooble" as the player.

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindsIncompatible
+  >--> You wrote 'Taj Mahal is a person' (source text, line 1), but that seems
+    to contradict 'Taj Mahal is a room' (source text, line 1), as a person and
+    a room are incompatible. (If a person were a kind of a room or vice versa
+    there'd be no problem, but they aren't.)
+Inform 7 has finished: 16 centiseconds used.

@@ -1,0 +1,27 @@
+   Lab
+  Variety 2
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see a fedora here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] wear the fedora
+  (first taking the fedora)
+  You take the fedora.
+  
+  You are now wearing the fedora.
+  
+  >[2] take off the fedora
+  You doff the fedora.
+  
+  >[3] wear fedora
+  You are now wearing the fedora.
+  
+  >[4] take off fedora
+  You are now carrying the fedora.
+  
+> >

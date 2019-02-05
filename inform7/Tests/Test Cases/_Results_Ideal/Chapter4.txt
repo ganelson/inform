@@ -1,0 +1,734 @@
+   Miles Cross
+  Chapter 4: Miles Cross
+  An Interactive Fiction by Emily V. Short
+  Release 12 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows, a wreath and two footprints here.
+  
+> >   Miles Cross
+  ** i
+  You are carrying nothing.
+  
+> >   Miles Cross
+  ** listen
+  You hear a sound like one breath sharply drawn in.
+  
+> >   Seven Dials
+  ** n
+  
+  Seven Dials
+  There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road to be -- now to London, now to Abingdon; now to Weston-super-Mare, or now to Hell.
+  
+  You can see a wreath and two footprints here.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** x wreath
+  A fragile crown of autumn-brown leaves.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** x footprints
+  Narrow and tapering, outlined in dew.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** take wreath
+  Taken.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** wear it
+  You put on the wreath.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** x signpost
+  The slightly crooked signpost currently puts you on the road to Runnymede, but it swiftly alters again.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** turn it
+  With a hand's touch you turn the signpost to mark your way for Low Noon.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for London.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Abingdon.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Luton.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Weston-super-Mare.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Runnymede.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Hell.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** look
+  Seven Dials
+  There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road to be -- now to London, now to Abingdon; now to Weston-super-Mare, or now to Hell.
+  
+  You can see two footprints here.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** push signpost
+  You give a shove to the signpost, now very crooked.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  You give a shove to the signpost, now straight.
+  
+  The signpost is still straight, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  You give a shove to the signpost, now slightly crooked.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  You give a shove to the signpost, now very crooked.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** turn signpost
+  With a hand's touch you turn the signpost to mark your way for Low Noon.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for London.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Abingdon.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Luton.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Weston-super-Mare.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Runnymede.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Hell.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Low Noon.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Miles Cross
+  ** s
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows, a wreath and two footprints here.
+  
+> >   Miles Cross
+  ** x trees
+  You notice some branches, some trunks and some faces.
+  
+> >   Miles Cross
+  ** get branches
+  Those seem to be a part of the menacing trees.
+  
+> >   Miles Cross
+  ** x branches
+  You see nothing special about the branches.
+  
+> >   Miles Cross
+  ** x trunks
+  You see nothing special about the trunks.
+  
+> >   Miles Cross
+  ** x faces
+  You see nothing special about the faces.
+  
+> >   Miles Cross
+  ** x shadows
+  You see nothing special about the deep shadows.
+  
+> >   Miles Cross
+  ** get wreath
+  Taken.
+  
+> >   Miles Cross
+  ** x footprints
+  Narrow and tapering, outlined in dew.
+  
+> >   Miles Cross
+  ** get them
+  They're fixed in place.
+  
+> >   Carter Hall
+  ** e
+  
+  Carter Hall
+  You can see a lantern, a chest (closed), a placid pony and a wreath here.
+  
+> >   Carter Hall
+  ** x lantern
+  Glowing and leaping with flame of human make.
+  
+> >   Carter Hall
+  ** get it
+  Taken.
+  
+> >   Carter Hall
+  ** open chest
+  It seems to be locked.
+  
+> >   Carter Hall
+  ** sit on chest
+  That's not something you can sit down on.
+  
+> >   Carter Hall
+  ** x pony
+  You first notice the pack, which it carries, and the bell, which it wears. Only then can you think about the pony itself.
+  
+  The placid pony appears short and dun. Nothing too threatening there.
+  
+> >   Carter Hall
+  ** take bell
+  That seems to belong to the placid pony.
+  
+> >   Carter Hall
+  ** push pony
+  He is fixed in place.
+  
+> >   Carter Hall
+  ** x hooves
+  You can't use multiple objects with that verb.
+  
+> >   Carter Hall
+  ** x hoof
+  You see nothing special about the hoof.
+  
+> >   Carter Hall
+  ** i
+  You are carrying:
+    a lantern (providing light)
+    a wreath
+    a wreath (being worn)
+  
+> >   Miles Cross
+  ** w
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows and two footprints here.
+  
+> >   Forest
+  ** w
+  
+  Forest
+  You can see three faeries and a wreath here.
+  
+> >   Forest
+  ** x faeries
+  You can't use multiple objects with that verb.
+  
+> >   Forest
+  ** get wreath
+  Taken.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows and two footprints here.
+  
+> >   Miles Cross
+  ** drop lantern
+  Dropped.
+  
+> >   Darkness
+  ** w
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Darkness
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some deep shadows and two footprints here.
+  
+> >   Miles Cross
+  ** z
+  You feel one breath cold on the back of your neck.
+  
+> >   Seven Dials
+  ** n
+  
+  Seven Dials
+  There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road to be -- now to London, now to Abingdon; now to Weston-super-Mare, or now to Hell.
+  
+  You can see two footprints here.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** z
+  You feel seven breaths cold on the back of your neck.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Miles Cross
+  ** s
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some deep shadows and two footprints here.
+  
+> >   Darkness
+  ** w
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Darkness
+  ** z
+  You've already expended sixty-two acts. How much time is there to waste?
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some deep shadows and two footprints here.
+  
+> >   Barren Valley
+  ** s
+  
+  Valley
+  A great shallow bowl of dirt, without even weeds.
+  
+  On a wicker platform is a switch, currently off.
+  
+  You can also see a milk-white mare and a wreath here.
+  
+> >   Barren Valley
+  ** x mare
+  The milk-white mare appears tall and spectral.
+  
+> >   Barren Valley
+  ** look
+  The moon casts a false light on the scene...
+  
+  Barren Valley
+  Still eerily silent and cursed.
+  
+  On a wicker platform is a switch, currently off.
+  
+  You can also see a milk-white mare and a wreath here.
+  
+> >   Barren Valley
+  ** take wreath
+  Taken.
+  
+> >   Barren Valley
+  ** se
+  Nearby is Miles Cross.
+  
+> >   Miles Cross
+  ** n
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some deep shadows and two footprints here.
+  
+> >   Miles Cross
+  ** attack trees
+  Snap goes the branch, tweaking at your finger and nearly breaking it clean off.
+  
+> >   Miles Cross
+  ** listen to trees
+  "NO," says a voice; and "THEY CAME BY HERE, AND TOOK THE MAN TO HELL."
+  
+> >   Miles Cross
+  ** climb trees
+  "NO," says a voice; and "THEY CAME BY HERE, AND TOOK THE MAN TO HELL."
+  
+> >   Seven Dials
+  ** n
+  
+  Seven Dials
+  There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road to be -- now to London, now to Abingdon; now to Weston-super-Mare, or now to Hell.
+  
+  You can see two footprints here.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** x signpost
+  The very crooked signpost currently puts you on the road to Low Noon, but it swiftly alters again.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** n
+  A long road whose scenery does not change, nor anything on the horizon move but the sun. When at last you come to Noon, she hangs above your head like a hat.
+  
+  
+  
+      *** You have won ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> >    Seven Dials
+  ** undo
+  Seven Dials
+  [Previous turn undone.]
+  
+> >   Seven Dials
+  ** turn signpost
+  With a hand's touch you turn the signpost to mark your way for Abingdon.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Luton.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Weston-super-Mare.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Runnymede.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  With a hand's touch you turn the signpost to mark your way for Hell.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** n
+  It is a path that goes gently ever down and down with no stumbling block or any distraction at either side; there are no bandits and no tolls.
+  
+  
+  
+      *** You have died ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> >    Seven Dials
+  ** undo
+  Seven Dials
+  [Previous turn undone.]
+  
+> >   Miles Cross
+  ** s
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some deep shadows and two footprints here.
+  
+> >   Miles Cross
+  ** take lantern
+  Taken.
+  
+> >   Forest
+  ** w
+  
+  Forest
+  You can see three faeries here.
+  
+> >   Forest
+  ** look
+  The lantern lights up only your immediate surroundings.
+  
+  Forest
+  You can see three faeries here.
+  
+> >   Forest
+  ** drop lantern
+  Dropped.
+  
+> >   Forest
+  ** look
+  Forest
+  You can see a lantern (providing light) and three faeries here.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows and two footprints here.
+  
+> >   Barren Valley
+  ** s
+  
+  Barren Valley
+  Still eerily silent and cursed.
+  
+  On a wicker platform is a switch, currently off.
+  
+  You can also see a milk-white mare here.
+  
+> >   Barren Valley
+  ** turn on switch
+  The moon comes on in a flood of false light.
+  
+> >   Miles Cross
+  ** n
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some shifting shadows and two footprints here.
+  
+> >   Forest
+  ** w
+  
+  Forest
+  You can see a lantern and three faeries here.
+  
+> >   Forest
+  ** look
+  The moon casts a false light on the scene...
+  
+  Forest
+  You can see a lantern and three faeries here.
+  
+> >   Forest
+  ** take lantern
+  Taken.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some shifting shadows and two footprints here.
+  
+> >   Miles Cross
+  ** drop lantern
+  Dropped.
+  
+> >   Forest
+  ** w
+  
+  Forest
+  You can see three faeries here.
+  
+> >   Forest
+  ** look
+  The moon casts a false light on the scene...
+  
+  Forest
+  You can see three faeries here.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some shifting shadows and two footprints here.
+  
+> >   Miles Cross
+  ** look
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some shifting shadows and two footprints here.
+  
+> >   Miles Cross
+  ** take lantern
+  Taken.
+  
+> >   Barren Valley
+  ** s
+  
+  Barren Valley
+  Still eerily silent and cursed.
+  
+  On a wicker platform is a switch, currently on.
+  
+  You can also see a milk-white mare here.
+  
+> >   Barren Valley
+  ** turn off switch
+  With a snap, the moon goes out, leaving a fading afterglow in the sky.
+  
+> >   Barren Valley
+  ** look
+  The moon casts a false light on the scene...
+  
+  Barren Valley
+  Still eerily silent and cursed.
+  
+  On a wicker platform is a switch, currently off.
+  
+  You can also see a milk-white mare here.
+  
+> >   Miles Cross
+  ** n
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows and two footprints here.
+  
+> >   Forest
+  ** w
+  
+  Forest
+  You can see three faeries here.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see some menacing trees, some deep shadows and two footprints here.
+  
+> >   Miles Cross
+  ** drop lantern
+  Dropped.
+  
+> >   Darkness
+  ** w
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Miles Cross
+  ** e
+  
+  Miles Cross
+  No marker nor signpost nor hanged man identifies the place. Nonetheless, Miles Cross it is, a north-south road and an east-west. But you have come too late. The footprints are in the dust already. The child's father is come, and gone.
+  
+  You can see a lantern, some menacing trees, some deep shadows and two footprints here.
+  
+> >   Seven Dials
+  ** n
+  
+  Seven Dials
+  There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road to be -- now to London, now to Abingdon; now to Weston-super-Mare, or now to Hell.
+  
+  You can see two footprints here.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** push post
+  You give a shove to the signpost, now straight.
+  
+  The signpost is still straight, but who knows for how long?
+  
+> >   Seven Dials
+  ** push signpost
+  You give a shove to the signpost, now slightly crooked.
+  
+  The signpost is still slightly crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  You give a shove to the signpost, now very crooked.
+  
+  The signpost is still very crooked, but who knows for how long?
+  
+> >   Seven Dials
+  ** g
+  You give a shove to the signpost, now straight.
+  
+  The signpost is still straight, but who knows for how long?
+  
+> >   Seven Dials
+  **
+  I beg your pardon?
+  
+> >

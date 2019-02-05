@@ -1,0 +1,5 @@
+Laboratory is a room. The bat is here.
+
+Understand "purloin [thing]" as examining.
+
+Test me with "purloin bat / !purloin bat".

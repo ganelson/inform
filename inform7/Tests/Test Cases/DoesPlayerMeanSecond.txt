@@ -1,0 +1,16 @@
+A color is a kind of value. The colors are red and yellow.
+
+A widget is a kind of thing. A widget has a color. Understand the
+color property as describing a widget.
+Before printing the name of a widget: say "[color] ". Before printing
+the plural name of a widget: say "[color] ".
+
+The oak box is an open container. The mahogany box is an open container.
+
+Does the player mean inserting into the oak box: it is likely.
+
+The Kitchen is a room. In the kitchen is a red widget and a yellow widget.
+
+The player carries the oak box and the mahogany box.
+
+Test me with "get widgets / put red in box / get red / put widgets in box".

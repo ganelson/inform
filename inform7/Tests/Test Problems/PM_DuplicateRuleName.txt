@@ -1,0 +1,5 @@
+Burrow is a room.
+
+Instead of jumping (this is the Remember You're a Womble rule): say "Jump!"
+
+This is the Remember You're a Womble rule: say "Run!"

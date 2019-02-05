@@ -1,0 +1,32 @@
+   Moon
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Moon
+  You can see Neil Armstrong and Buzz Aldrin here.
+  
+  Neil Armstrong and Buzz Aldrin are carrying nothing.
+  In other words: Neil Armstrong and Buzz Aldrin are empty-handed.
+  
+> >   Moon
+  (Testing.)
+  
+  >[1] look
+  Moon
+  You can see Neil Armstrong and Buzz Aldrin here.
+  
+  Neil Armstrong and Buzz Aldrin are carrying nothing.
+  In other words: Neil Armstrong and Buzz Aldrin are empty-handed.
+  
+  >[2] z
+  Buzz picks up a rock.
+  
+  >[3] look
+  Moon
+  You can see Neil Armstrong and Buzz Aldrin here.
+  
+  Neil Armstrong are carrying nothing.
+  In other words: Neil Armstrong are empty-handed.
+  
+> >

@@ -1,0 +1,34 @@
+To stand is a verb.
+
+The Taj Mahal is a room. "[We] [stand] to admire the Taj Mahal."
+
+To shimmer is a verb. The world is a thing.
+
+Adopting is an action applying to one grammatical tense.
+
+Carry out adopting:
+	say "The [world] [shimmer] into the [grammatical tense understood].";
+	now the story tense is the grammatical tense understood.
+
+Understand "adopt [grammatical tense]" as adopting.
+
+Regarding as is an action applying to one narrative viewpoint.
+
+Carry out regarding as:
+	say "[We] [shimmer] into the [narrative viewpoint understood].";
+	now the story viewpoint is the narrative viewpoint understood.
+
+Understand "regard as [narrative viewpoint]" as regarding as.
+
+The fish and some condensers are here.
+
+To move is a verb.
+
+Instead of taking something:
+	say "[The noun] [are] pinned down by Dr Zarkov's force field. [They]
+	[aren't] free to move. [They] [can't] move. [They] [won't] move. [They]
+	[haven't] a chance to move. Anyhow, [they] [don't] move."
+
+Test me with "get me / get fish / get condensers / adopt past tense / get me /
+get fish / get condensers / adopt future tense / get me / get fish / get
+condensers".

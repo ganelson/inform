@@ -1,0 +1,5 @@
+Home is a room.
+
+Weight is a kind of value.
+
+1 tonne 999 kg specifies a weight with parts tonnes (optional) and kilograms.

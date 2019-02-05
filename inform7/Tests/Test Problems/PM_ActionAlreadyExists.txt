@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Taking is an action applying to two things.

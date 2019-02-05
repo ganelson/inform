@@ -1,0 +1,23 @@
+   Cave
+  Cave-troll
+  An Interactive Fiction by JDC
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cave
+  You can see a troll and a chest (closed) here.
+  
+> >   Cave
+  (Testing.)
+  
+  >[1] attack troll with sword
+  (ignoring the unnecessary words "with sword")
+  
+  Violence isn't the answer to this one.
+  
+  >[2] unlock chest with sword
+  That doesn't seem to fit the lock.
+  
+  >[3] attack troll as a test
+  I only understood you as far as wanting to attack the troll.
+  
+> >

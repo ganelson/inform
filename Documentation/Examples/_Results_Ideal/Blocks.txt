@@ -1,0 +1,19 @@
+   Nursery
+  Early Childhood 1
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Nursery
+  You can see six red blocks, four blue blocks and a green block here.
+  
+> >   Nursery
+  (Testing.)
+  
+  >[1] look
+  Nursery
+  You can see six red blocks, four blue blocks and a green block here.
+  
+  >[2] get red block
+  Taken.
+  
+> >

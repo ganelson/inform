@@ -1,0 +1,7 @@
+There is room. A rock is here. Bob is a man, here.
+
+For printing a parser error:
+	say "The [latest parser error] happened.";
+	continue the activity.
+
+Test me with "she said, x me / rock, x me / Bob foobar, x me / me, again / , really"

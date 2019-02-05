@@ -1,0 +1,47 @@
+   Clearing
+  Stone
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Clearing
+  Poison ivy grows nearby.
+  
+  You can also see a fire (on which is a kettle (in which is some broth)) here.
+  
+> >   Clearing
+  (Testing.)
+  
+  >[1] x broth
+  It is just a thin broth with no other ingredients.
+  
+  >[2] eat hambone
+  You cannot just eat a bone!
+  
+  >[3] put hambone in kettle
+  The hambone sinks into the kettle, making the broth richer.
+  
+  >[4] x broth
+  In the broth, a hambone floats.
+  
+  >[5] put potatoes in broth
+  The potatoes sink into the kettle, making the broth richer.
+  
+  >[6] x broth
+  In the broth, some potatoes and a hambone float.
+  
+  >[7] eat carrots
+  You eat the carrots. You are healthy. You are sleepy. Your eyesight is clear. You are weak. You are well-fed.
+  
+  >[8] eat broth
+  (first taking the broth)
+  You cannot take the broth in your bare hands.
+  
+  >[9] put ivy in kettle
+  (first taking the poison ivy)
+  The poison ivy sinks into the kettle, making the broth richer.
+  
+  >[10] eat ivy
+  (first taking the poison ivy)
+  That seems to be a part of the broth.
+  
+> >

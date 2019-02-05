@@ -1,0 +1,16 @@
+Burrow is a room.
+
+Instead of going arfle barfle gloop while Burrow is dark: say "It's dark."
+
+Instead of going arfle barfle gloop when spoliation obviates: say "It's dark."
+
+Definition: a person is stood if it is the player.
+
+Stood using is an action applying to one thing.
+
+The Intro Middle is a room.
+
+The rong of pillows is scenery in the Intro Middle.
+
+Instead of stood using the rong of pillows, say "They are all
+smooshy and that makes them too hard to pull up on."

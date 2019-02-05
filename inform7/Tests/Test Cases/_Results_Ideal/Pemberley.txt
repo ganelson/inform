@@ -1,0 +1,157 @@
+   Big House
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150903 / Inform 7 build 6M57 (I6/v6.33 lib 6/12N) SD
+  
+  Big House
+  You can see Elizabeth and Darcy here.
+  
+> >   Big House
+  (Testing.)
+  
+  >[1] test love
+  (Testing.)
+  
+  >[2] x woman infatuated with darcy
+  You see nothing special about Elizabeth.
+  
+  >[3] x man loved by elizabeth
+  You see nothing special about Darcy.
+  
+  >[4] x man infatuated with elizabeth
+  You can't see any such thing.
+  
+  >[5] x woman loved by darcy
+  You can't see any such thing.
+  
+  >[6] test noticing
+  (Testing.)
+  
+  >[7] x man noticed by elizabeth
+  You see nothing special about Darcy.
+  
+  >[8] x woman who notices darcy
+  You see nothing special about Elizabeth.
+  
+  >[9] x man who notices elizabeth
+  You can't see any such thing.
+  
+  >[10] x woman noticed by darcy
+  You can't see any such thing.
+  
+  >[11] test impressing
+  (Testing.)
+  
+  >[12] x woman who impresses darcy
+  You see nothing special about Elizabeth.
+  
+  >[13] x man impressed by elizabeth
+  You see nothing special about Darcy.
+  
+  >[14] x man who impresses elizabeth
+  You can't see any such thing.
+  
+  >[15] x woman impressed by darcy
+  You can't see any such thing.
+  
+  >[16] test fancying
+  (Testing.)
+  
+  >[17] x woman who fancies darcy
+  You see nothing special about Elizabeth.
+  
+  >[18] x man fancied by elizabeth
+  You see nothing special about Darcy.
+  
+  >[19] x man who fancies elizabeth
+  You can't see any such thing.
+  
+  >[20] x woman fancied by darcy
+  You can't see any such thing.
+  
+  >[21] test marriage
+  (Testing.)
+  
+  >[22] x wife of darcy
+  You see nothing special about Elizabeth.
+  
+  >[23] x husband of elizabeth
+  You see nothing special about Darcy.
+  
+  >[24] x spouse of darcy
+  You see nothing special about Elizabeth.
+  
+  >[25] x spouse of elizabeth
+  You see nothing special about Darcy.
+  
+  >[26] test acquaintance
+  (Testing.)
+  
+  >[27] x woman acquainted with darcy
+  You see nothing special about Elizabeth.
+  
+  >[28] x man acquainted with elizabeth
+  You see nothing special about Darcy.
+  
+  >[29] x woman known by darcy
+  You see nothing special about Elizabeth.
+  
+  >[30] x man known by elizabeth
+  You see nothing special about Darcy.
+  
+  >[31] test alliance
+  (Testing.)
+  
+  >[32] x man allied to elizabeth
+  You see nothing special about Darcy.
+  
+  >[33] x woman allied to darcy
+  You see nothing special about Elizabeth.
+  
+  >[34] x man connected to elizabeth
+  You see nothing special about Darcy.
+  
+  >[35] x woman connected to darcy
+  You see nothing special about Elizabeth.
+  
+  >[36] jump
+  relation of people: loving relation
+  Loving relates one person to one person:
+    Elizabeth  >=>  Darcy
+  relation of people: loving relation
+  Which is empty.
+  relation of people: noticing relation
+  Noticing relates various people to one person:
+    Elizabeth  >=>  Darcy
+  relation of people: noticing relation
+  Which is empty.
+  relation of people: impressing relation
+  Impressing relates one person to various people:
+    Elizabeth  >=>  Darcy
+  relation of people: impressing relation
+  Which is empty.
+  relation of people: fancying relation
+  Fancying relates various people to various people:
+    Elizabeth  >=>  Darcy
+  relation of people: fancying relation
+  Which is empty.
+  relation of people: marriage relation
+  Marriage relates one person to another:
+    Elizabeth  ==  Darcy
+  relation of people: marriage relation
+  Which is empty.
+  relation of people: acquaintance relation
+  Acquaintance relates people to each other:
+    Darcy  <=>  Elizabeth
+  relation of people: acquaintance relation
+  Which is empty.
+  relation of people: alliance relation
+  Alliance relates people to each other in groups:
+    { Elizabeth and Darcy }
+    and yourself in a single-member group
+  relation of people: alliance relation
+  Alliance relates people to each other in groups:
+    yourself, Elizabeth and Darcy in single-member groups
+  Which is empty.
+  
+> >

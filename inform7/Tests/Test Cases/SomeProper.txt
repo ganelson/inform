@@ -1,0 +1,8 @@
+The kitchen is a room. 
+
+Some tea is in the kitchen.
+
+When play begins:
+	now the player has some tea.
+
+Test me with "inv".

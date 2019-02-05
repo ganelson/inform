@@ -1,0 +1,72 @@
+   Barn
+  Rules of Attraction
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Barn
+  You can see a bucket (in which is the iron hook) here.
+  
+> >   Barn
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a horseshoe magnet
+    a nail
+  
+  >[2] put horseshoe in bucket
+  You put the horseshoe magnet into the bucket.
+  
+  The iron hook sticks to the horseshoe magnet.
+  
+  >[3] look
+  Barn
+  You can see a bucket (in which is a horseshoe magnet (stuck to which is the iron hook)) here.
+  
+  >[4] get horseshoe
+  Taken.
+  
+  >[5] i
+  You are carrying:
+    an horseshoe magnet (stuck to which is the iron hook)
+    a nail
+  
+  >[6] drop horseshoe
+  Dropped.
+  
+  >[7] i
+  You are carrying:
+    a nail
+  
+  >[8] look
+  Barn
+  You can see a horseshoe magnet (stuck to which is the iron hook) and a bucket (empty) here.
+  
+  >[9] get all
+  horseshoe magnet: Taken.
+  bucket: Taken.
+  
+  >[10] put all in bucket
+  horseshoe magnet: Done.
+  nail: Done.
+  
+  The nail sticks to the horseshoe magnet.
+  
+  >[11] i
+  You are carrying:
+    a bucket
+      an horseshoe magnet (stuck to which are the nail and the iron hook)
+  
+  >[12] x magnet
+  You see nothing special about the horseshoe magnet.
+  
+  >[13] get nail
+  Taken.
+  
+  >[14] i
+  You are carrying:
+    a nail
+    a bucket
+      an horseshoe magnet (stuck to which is the iron hook)
+  
+> >

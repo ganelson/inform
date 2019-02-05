@@ -1,0 +1,49 @@
+   Pumping House
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pumping House
+  A big switch labelled: MAKE EVERYTHING SINK is mounted on one wall.
+  
+  You can also see a well (empty), a cork, an inflated rubber ring and a lead ingot here.
+  
+> >   Pumping House
+  (Testing.)
+  
+  >[1] get all
+  cork: Taken.
+  inflated rubber ring: Taken.
+  lead ingot: Taken.
+  
+  >[2] put cork in well
+  The cork bobs on the surface.
+  
+  >[3] put ring in well
+  The inflated rubber ring bobs on the surface.
+  
+  >[4] put ingot in well
+  The lead ingot sinks out of sight.
+  
+  >[5] x well
+  In the well are an inflated rubber ring and a cork.
+  
+  >[6] get cork
+  Taken.
+  
+  >[7] get ring
+  Taken.
+  
+  >[8] switch switch on
+  You switch the big switch on.
+  
+  >[9] put cork in well
+  The cork sinks out of sight.
+  
+  >[10] put ring in well
+  The inflated rubber ring sinks out of sight.
+  
+  >[11] x well
+  The well is empty.
+  
+> >

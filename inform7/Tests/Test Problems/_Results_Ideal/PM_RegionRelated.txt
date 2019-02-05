@@ -1,0 +1,27 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RegionRelated
+  >--> You wrote 'East of Eden is a region' (source text, line 1): but a region
+    cannot be given a specific location, since it contains what may be many
+    rooms, which may not be contiguous and could be scattered about all over.
+    (Sometimes this problem arises because an ambiguous sentence like 'East of
+    Eden is a region.' has been used: Inform reads that as saying that a
+    nameless region lies to the east of the room 'Eden'. The desired effect can
+    be got using 'called' to stop Inform taking 'East of' literally: for
+    instance, 'The Land of Nod is in a region called East of Eden.'
+Problem__ PM_RegionRelated
+  >--> You wrote 'On the Prairie is a region' (source text, line 1): again, a
+    region cannot be given a specific location.
+Problem__ PM_ChalkCheese
+  >--> The sentence 'Small Room is a room in East of Eden' (source text, line 5)
+    appears to say two things are the same - I am reading 'Small Room' and
+    'room in East of Eden' as two different things, and therefore it makes no
+    sense to say that one is the other: it would be like saying that 'the hawk
+    is the handsaw'. It would be all right if the second thing were the name of
+    a kind, perhaps with properties: for instance 'Elsinore is a lighted room'
+    says that something called Elsinore exists and that it is a 'room', which
+    is a kind I know about, combined with a property called 'lighted' which I
+    also know about.
+Inform 7 has finished: 16 centiseconds used.

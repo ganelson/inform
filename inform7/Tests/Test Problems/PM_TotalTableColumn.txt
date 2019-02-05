@@ -1,0 +1,10 @@
+Lab is a room.
+
+Table of Bogosity
+drongo
+1
+2
+44
+
+When play begins:
+	let T be the total drongo of people.

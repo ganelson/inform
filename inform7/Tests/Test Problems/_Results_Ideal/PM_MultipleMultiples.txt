@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 43 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MultipleMultiples
+  >--> You wrote 'Understand "put [things] in [things]" as inserting it into' (source
+    text, line 4): but there can be at most one token in any line which can
+    match multiple things, so you'll have to remove one of the 'things' tokens
+    and make it a 'something' instead.
+Inform 7 has finished: 44 centiseconds used.

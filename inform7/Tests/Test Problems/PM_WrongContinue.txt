@@ -1,0 +1,4 @@
+Home is a room.
+
+When play begins:
+	continue.

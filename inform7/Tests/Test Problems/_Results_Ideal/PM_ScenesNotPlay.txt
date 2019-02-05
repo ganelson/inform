@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ScenesNotPlay
+  >--> You wrote 'Train Stop ends when play ends' (source text, line 3): but
+    'play' is not really a scene, so although you can write '... when play
+    begins' you cannot write '... when play ends'. But there's no need to do
+    so, anyway. When play ends, all scenes end.
+Inform 7 has finished: 17 centiseconds used.

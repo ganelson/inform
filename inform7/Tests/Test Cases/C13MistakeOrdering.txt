@@ -1,0 +1,12 @@
+The Study is a room. "A well-appointed study, with a large bookcase and an
+equally impressive desk."
+
+The equally impressive desk is here. It is scenery.
+
+The large bookcase is here. It is scenery.
+
+Understand "look behind [something]" as a mistake ("There's no need to look
+behing anything in this game: EXAMINE and SEARCH should suffice.").
+
+Test me with "look behind desk / look / look at desk".
+

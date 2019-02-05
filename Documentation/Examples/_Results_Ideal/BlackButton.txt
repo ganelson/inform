@@ -1,0 +1,31 @@
+   Challenger's Waiting Room
+  Prisoner's Dilemma
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Challenger's Waiting Room
+  The challenge is this: to wait as long as you can endure to do so in a room with no features and no clock. If you wait longer than all the other contestants, you win.
+  
+  The only item in view is a black recessed button.
+  
+> >   Challenger's Waiting Room
+  (Testing.)
+  
+  >[1] e
+  You can't go that way.
+  
+  >[2] push button
+  With a groan of gears, the east wall swings open! If you've lost now, well, you've lost...
+  
+  >[3] e
+  
+  Amid the Cheering Throng
+  
+  >[4] w
+  
+  Challenger's Waiting Room
+  The challenge is this: to wait as long as you can endure to do so in a room with no features and no clock. If you wait longer than all the other contestants, you win.
+  
+  The only item in view is a black recessed button.
+  
+> >

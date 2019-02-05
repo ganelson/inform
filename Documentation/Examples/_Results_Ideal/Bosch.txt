@@ -1,0 +1,39 @@
+   Garden of Excess                                                                                                                                                                                                       0/1
+  Bosch
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Garden of Excess
+  You can see a gilded lily here.
+  
+> >   Pathway to Desire                                                                                                                                                                                                      20/4
+  (Testing.)
+  
+  >[1] eat lily
+  (first taking the gilded lily)
+  You eat the gilded lily. Not bad.
+  
+  [Your score has just gone up by five points.]
+  
+  >[2] w
+  
+  Pathway to Desire
+  You can see an emerald leaf here.
+  
+  >[3] full score
+  So far you have received points for the following:
+  
+    eating the gilded lily: 5 points
+  
+  >[4] get leaf
+  Taken.
+  
+  [Your score has just gone up by fifteen points.]
+  
+  >[5] full
+  So far you have received points for the following:
+  
+    eating the gilded lily: 5 points
+    taking the emerald leaf: 15 points
+  
+> >

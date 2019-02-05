@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyKindClashes
+  >--> You wrote 'A container has some text called bogosity' (source text, line 2),
+    but 'text' contradicts what I previously thought about the property
+    bogosity, which was that it was a number.
+Inform 7 has finished: 17 centiseconds used.

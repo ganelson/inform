@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DontCallPhrasesWithCalled
+  >--> You wrote 'To agree (called okaying)' (source text, line 2): but phrases
+    aren't named using 'called', and instead use 'this is...'. For example, 'To
+    salute (called saluting)' isn't allowed, but 'To salute (this is saluting)'
+    is.
+Inform 7 has finished: 15 centiseconds used.

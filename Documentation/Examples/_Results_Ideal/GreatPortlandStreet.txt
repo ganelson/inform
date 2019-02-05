@@ -1,0 +1,69 @@
+   Paris Theatre
+  "And the subject on the card is... musical instruments. Will you carry out for us something to do with that, please, for ten turns starting - now!"
+  
+  I Didn't Come All The Way From Great Portland Street
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Paris Theatre
+  You can see a tuba, a xylophone, a triangle, a case (in which is a violin), a radish, a bust of Nicholas Parsons and a purple felt hat here.
+  
+> >   Paris Theatre
+  (Testing.)
+  
+  >[1] look
+  Bzzzzt! "And Derek Nimmo has challenged."
+  
+  "Repetition of looking!"
+  
+  "Well, as it's your first time playing the game, and the audience was enjoying your contribution so much, I will disallow the challenge, you have 9 turns left on musical instruments, starting... now!
+  
+  >[2] wait
+  Bzzzzt! "And Peter Jones has challenged."
+  
+  "Hesitation!"
+  
+  "Well, as it's your first time playing the game, and the audience was enjoying your contribution so much, I will disallow the challenge, you have 8 turns left on musical instruments, starting... now!
+  
+  >[3] examine bust
+  Bzzzzt! "And Kenneth Williams has challenged."
+  
+  "Deviation!"
+  
+  "Well, as it's your first time playing the game, and the audience was enjoying your contribution so much, I will disallow the challenge, you have 7 turns left on musical instruments, starting... now!
+  
+  >[4] take tuba
+  Taken.
+  
+  >[5] get triangle
+  Taken.
+  
+  >[6] hit xylophone
+  Violence isn't the answer to this one.
+  
+  >[7] get tuba
+  Bzzzzt! "And Peter Jones has challenged."
+  
+  "Repetition of taking the tuba!"
+  
+  "Well, as it's your first time playing the game, and the audience was enjoying your contribution so much, I will disallow the challenge, you have 3 turns left on musical instruments, starting... now!
+  
+  >[8] examine tuba
+  You see nothing special about the tuba.
+  
+  >[9] get violin
+  Taken.
+  
+  Phweeep!
+  
+  "So, when the whistle goes ten turns are up, you get a point for acting when the whistle blows, and in that round you entertained us by taking the tuba, taking the triangle, taking the violin, looking, examining the tuba, examining the bust of Nicholas Parsons, attacking the xylophone and waiting, and you also get a bonus point for keeping going until the whistle went."
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

@@ -1,0 +1,10 @@
+   8-22, or 8 Z, 22 f.
+  Zqlran Era 8
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Barren Lavender Surface of Zql
+  It is late twilight on Zql. Overhead, two crescent moons, both green, mark the sluggish passage of time. A cold wind is blowing over the pale purplish ground cover, but it does not penetrate your airtight suit.
+  
+> >   8-22, or 8 Z, 22 f.
+> Are you sure you want to quit? 

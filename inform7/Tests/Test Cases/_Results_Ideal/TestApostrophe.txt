@@ -1,0 +1,18 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see a bar here.
+  
+> >   Home
+  (Testing.)
+  
+  >[1] x me
+  As good-looking as ever.
+  
+  >[2] x 'foo
+  You see nothing special about the bar.
+  
+> >

@@ -1,0 +1,2 @@
+Foo is a room.
+A combination is a kind of value. 99-99-99 specifies a combination.

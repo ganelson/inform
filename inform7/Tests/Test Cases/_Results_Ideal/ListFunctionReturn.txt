@@ -1,0 +1,11 @@
+   Brahms Conservatoire
+  The Fibonacci sequence is 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584 and 4181.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  
+> >   Brahms Conservatoire
+> Are you sure you want to quit? 

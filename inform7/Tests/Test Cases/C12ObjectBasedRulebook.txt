@@ -1,0 +1,32 @@
+The Pumping House is a room. A well is a fixed in place container in
+the Pumping House. The cork, the rubber ring and a lead ingot are in
+the Pumping House.
+
+A thing can be inflated or uninflated. A thing is usually uninflated.
+Before printing the name of an inflated thing: say "inflated ".
+
+The rubber ring is inflated.
+
+The flotation rules are an object-based rulebook.
+
+A flotation rule for the cork: rule succeeds.
+A flotation rule for an inflated thing: rule succeeds.
+A flotation rule: rule fails.
+A flotation rule when the big switch is switched on: rule fails.
+
+A big switch is a fixed in place device in the Pumping House. "A big
+switch labelled: MAKE EVERYTHING SINK is mounted on one wall."
+
+After inserting something into the well:
+	follow the flotation rules for the noun;
+	if the rule succeeded
+	begin;
+		say "[The noun] bobs on the surface.";
+	otherwise;
+		now the noun is nowhere;
+		say "[The noun] sinks out of sight.";
+	end if.
+
+Test me with "get all / put cork in well / put ring in well / put
+ingot in well / x well / get cork / get ring / switch switch on / put
+cork in well / put ring in well / x well".

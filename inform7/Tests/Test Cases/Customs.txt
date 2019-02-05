@@ -1,0 +1,30 @@
+"Customs"
+
+Assaying is an action applying to one carried thing. Understand "assay
+[something]" as assaying.
+
+Carry out assaying: say "You assay [the noun]."
+
+Rule for implicitly taking the curare:
+	say "Ordinarily you'd pick up the curare in order to be able to do that,
+		but this seems like a good moment for caution." instead.
+
+The Evidence Room is a room. Some shelves are scenery supporters in the
+Evidence Room. A box is a kind of container which is open and not openable.
+On the shelves is a box. It contains a deformed bullet and a driver's
+license.
+
+The player carries a steel fish hook, a Chinese passport, a vial of
+synthetic curare, and an envelope full of Euros.
+
+In the Evidence Room is a Cloak of Distant Holding. The cloak is wearable.
+
+The player-aware carrying requirements rule is listed instead
+	of the carrying requirements rule in the action-processing rules.
+
+This is the player-aware carrying requirements rule:
+	if the player is wearing the cloak, continue the action;
+	abide by the carrying requirements rule.
+
+Test me with "actions / assay me / actions off / assay hook / drop hook /
+assay hook / drop curare / assay curare / wear cloak / assay me".

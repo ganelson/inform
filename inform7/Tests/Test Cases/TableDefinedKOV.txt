@@ -1,0 +1,22 @@
+Home is a room. French curves and Dutch cheese are in the Home.
+
+Language is a kind of value.
+
+There is a language called French. There is a language called Double Dutch.
+
+Spell is a kind of value. The Spells are defined by the Table of Spells.
+
+Table of Spells
+Spell			Comment
+Fireball		"Real Men cast Fireball"
+Path			"Real Roleplayers cast Find the Path"
+Nose-Picking	"Loonies cast Otto's Irresistible Nose-Picking"
+Smite			"Munchkins cast Smite Ruler and Transfer Loyalty of Populace"
+
+The Smite Manual is in the Home.
+
+The Ring of Infinite Nose-Picking is in the Home.
+
+When play begins:
+	repeat through the Table of Spells:
+		say "[spell entry]: [comment entry]."

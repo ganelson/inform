@@ -1,0 +1,20 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 51 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_Contradiction
+  >--> You wrote 'The Other Ballroom is east of the Hall' (source text, line 5),
+    but in another sentence 'The Ballroom is east of the Hall' (source text, line 3):
+    but this looks like a contradiction, which might be because I have
+    misunderstood what was meant to be the subject of one or both of those
+    sentences.
+Problem__ PM_SpatialContradiction
+  >--> You wrote 'Bob is in Home' (source text, line 12), but also 'Bob is in
+    the autre place' (source text, line 13): that seems to be saying that the
+    same object (Bob) must be in two different places (Home and Autre place).
+    This looks like a contradiction. This sometimes happens as a result of a
+    sentence like 'Every person carries a bag', when Inform doesn't know 'bag'
+    as the name of any kind - so that it makes only a single thing called
+    'bag', and then the sentence looks as if it says everyone is carrying the
+    same bag.
+Inform 7 has finished: 17 centiseconds used.

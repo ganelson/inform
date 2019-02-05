@@ -1,0 +1,5 @@
+Stage is a room. Tom is a man in Stage. The player holds a spork.
+
+A gift is a kind of value. The gifts are strength, discipline, foresight and knowledge.
+
+Instead of giving something (called the number) to Tom, try Tom examining the gift.

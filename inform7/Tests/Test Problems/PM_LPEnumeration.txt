@@ -1,0 +1,5 @@
+Home is a room.
+
+Colour is a kind of value. Red and blue are colours.
+
+16:9 specifies a colour.

@@ -1,0 +1,27 @@
+   Pere Blanchard's Hut
+  X is 1.
+  X is 2.
+  X is 3.
+  X is 5.
+  X is 6.
+  X is 7.
+  Y is yourself.
+  Y is Marguerite.
+  Y is Louise.
+  Y is Armand St Just.
+  Z is 30.
+  Z is 44.
+  Z is 51.
+  Z is 58.
+  Z is 65.
+  Z is 72.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pere Blanchard's Hut
+  You can see Percival Blakeney and Marguerite here.
+  
+> >   Pere Blanchard's Hut
+> Are you sure you want to quit? 

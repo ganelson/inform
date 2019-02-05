@@ -1,0 +1,19 @@
+   Crypt                                                                                                                                                                                                                  0/1
+  The Unexamined Life
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Crypt
+  This squat, barrel-vaulted chamber runs roughly north-south. Along either side are the graves of Saxon kings and early bishops of the church long since gone to dust -- one tomb in particular looks undisturbed.
+  
+  The wight lurks near the south exit.
+  
+  Someone has painstakingly carved an inscription into the wall above the door.
+  
+> >   Crypt                                                                                                                                                                                                                  0/1
+  (Testing.)
+  
+  >[1] hint about wight
+  You're missing an object that might be useful to resolving this problem.
+  
+> Shall I go on? > 

@@ -1,0 +1,16 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 51 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SpecificCalling
+  >--> You wrote 'if the gem (called cc) is carried' (source text, line 7): but
+    a 'called' name can only be given to something which is described vaguely,
+    and can't be given to a definite object or value. So 'if a thing (called
+    the gadget) is carried' is allowed, but 'if the X-Ray Zapper (called the
+    gadget) is carried' isn't allowed - if it's the X-Ray Zapper, then call it
+    that.
+    I was trying to match this phrase:
+      if (gem ( called cc ) is carried - a condition): 
+    I recognised:
+    gem ( called cc ) is carried = a condition
+Inform 7 has finished: 51 centiseconds used.

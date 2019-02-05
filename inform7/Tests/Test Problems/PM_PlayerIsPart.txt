@@ -1,0 +1,3 @@
+The Cave is a room.
+
+The jelly monster is an animal in the cave.  The player is part of the jelly monster.

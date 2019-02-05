@@ -1,0 +1,8 @@
+Room1 is a room.
+
+Room2 is east of room1.
+
+Every turn when the player is in room2 for the first time:
+	say "Here we are!";
+
+test me with "e / z / w / e / z"

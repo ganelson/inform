@@ -1,0 +1,126 @@
+"Disenchantment Bay"
+
+Release along with cover art.
+
+Include Locksmith by Emily Short.
+
+Use scoring.
+
+The Cabin is a room.  "The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions[if the compartment is closed], which can be lifted to reveal the storage space underneath[otherwise], one of which is currently lifted to allow access to the storage compartment within[end if]. A glass case against the wall contains several fishing rods.
+
+Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company."
+
+The Cabin contains a glass case. In the glass case is a collection of fishing rods. Understand "rod" as the collection. The case is closed, transparent, openable, lockable, and locked. The case is scenery. The small silver key unlocks the case.
+
+The bench is in the cabin. On the bench are some blue vinyl cushions. The bench is enterable and scenery. The cushions are scenery. 
+
+A storage compartment is an openable closed container. It is part of the bench. Understand "space" as the storage compartment.
+
+Instead of opening the bench:
+	try opening the storage compartment. 
+
+Instead of closing the bench:
+	try closing the storage compartment. 
+
+Instead of pushing or pulling or turning the cushions:
+	try opening the storage compartment. 
+
+Some nets and a Coke are in the compartment. Understand "net" as the nets. The description of the nets is "They must have something to do with fish as well. Really, you're just here for the sights." The nets are a container.
+
+Some navigational instruments, some scratched windows, a radar display, and some radios are scenery in the cabin. The radar, the instruments, and the radios are devices. The radar and the instruments are switched on.
+
+A screen is part of the radar. The description of the screen is "[if the radar is switched on]Phantom lights move across the screen.[otherwise]The screen is dark.[end if]". 
+
+Instead of doing something other than examining to the screen:
+	say "It's not good for much but looking at."
+
+The Captain is a man in the Cabin. "The captain sits at the wheel, steering the boat and occasionally checking the radar readout." The description of the captain is "[The captain] is wearing [a list of things worn by the captain][if the captain carries something] and carrying [a list of things carried by the captain][end if]." 
+
+The captain wears a baseball cap. The description of the cap is "It says, THE WORST DAY FISHING IS BETTER THAN THE BEST DAY WORKING." 
+
+The captain carries the silver key. 
+
+The description of the instruments is "Knowing what they do is the Captain's job." 
+
+Instead of doing something other than examining to the instruments in the presence of the Captain: 
+	say "The Captain glares at you. Clearly you are not welcome to do that."
+
+The description of the windows is "They're a bit the worse for wear, but you can still get an impressive view of the glacier through them. There were whales earlier, but they're gone now." Understand "window" as the windows.
+
+The description of the radar is "Apparently necessary to avoid the larger icebergs."
+
+The description of the radios is "With any luck you will not need to radio for help, but it is reassuring that these things are here."
+
+A sign is scenery in the Cabin. The description is "You can get half-day and full-day sight-seeing tours, and half-day and full-day fishing trips."
+
+The view of the Malaspina glacier is a backdrop. It is everywhere. The description is "The Malaspina glacier covers much of the nearby slope, and -- beyond it -- an area as large as Rhode Island." Understand "view of the surrounding bay" or "surrounding bay" as the view. 
+
+The cabin door is south of the Cabin and north of the Deck. It is a door and scenery. The description of the Deck is "The whole back half of the boat is open, allowing you to view the surroundings without intervening windows -- if you can stand the cold."
+
+The ice chest is a closed openable container in the Deck. "A very heavy ice chest sits on the ground." It is fixed in place and pushable between rooms. 
+
+A quantity of ice is in the Deck. "All around the boat bob chunks of glacier ice." Understand "glacier ice" as the quantity. The description is "Curiously cooled into funny-shaped chunks." The printed name of the quantity is "glacier ice". 
+
+Instead of taking the quantity of ice when the player is not carrying the nets: 
+	if the quantity of ice is handled, continue the action; 
+	say "You are having a hard time fishing out the ice with your bare hands."
+
+Instead of taking the quantity of ice when the player is carrying the nets:
+	if the quantity of ice is handled or the quantity of ice is in the nets, continue the action; 
+	now the quantity of ice is in the nets;
+	say "You scoop up the ice with the net."
+
+Instead of taking the chest: say "It's too heavy to lift, but you might be able to push it, and just inch it over the frame of the door."
+
+The player is carrying a backpack. The player is wearing a pair of sunglasses. The description of the sunglasses is "The light off the water and the ice does get pretty bright sometimes."
+
+The backpack is a player's holdall. The carrying capacity of the player is 3. The backpack is wearable.
+
+Instead of asking the Captain for the key:
+	say "'Sure, you can -- well, get me a drink first, would you?'"
+
+Instead of asking the Captain for the key when the Captain is carrying a cold Coke and the Captain is carrying the key:
+	move the key to the player;
+	say "'Here, knock yourself out.'"
+	
+Instead of asking the Captain for the key when the Captain is not carrying the key: say "'I already gave it to you. You didn't lose it, did you?'"
+
+Heat is a kind of value. The heats are cold, cool, room temperature, and warm.
+
+A beverage is a kind of thing. A beverage can be open or closed. A beverage can be openable or unopenable. A beverage is always edible and openable. A beverage has a heat. A beverage is usually warm. The Coke is a beverage. The beer is a beverage. The beer is in the backpack.
+
+Instead of giving or showing a beer to the Captain:
+	say "'I don't drink on the job, thanks,' he says. 'You can help yourself if you want it, though.'"
+
+Instead of giving or showing a Coke to the Captain:
+	say "'It needs chilling,' the Captain remarks, disgruntled."
+
+Instead of giving or showing a cold Coke to the Captain:
+	move the Coke to the Captain;
+	increase the score by 2;
+	say "'Ah, thank you,' he says. How he can drink an iced soda on a day like today is an open question, but Alaskans are special."
+
+Every turn when the quantity of ice is in the ice chest:
+	repeat with item running through beverages in the ice chest:
+		let the current heat be the heat of the item;
+		if the current heat is not cold, now the heat of the item is the heat before the current heat.
+
+Before printing the name of a beverage (called the drink):
+	say "[heat of the drink] ".	
+
+Understand the heat property as describing a beverage.
+
+The maximum score is 5.
+
+After taking the fishing rods:
+	end the story finally;
+	increase the score by 3;
+	say "Success is yours! (Now if only you knew anything about fishing.)"
+	
+Test me with "test first / test second / test third".
+
+Test first with "x captain / open case / i / ask captain for the key / give beer to captain / open bench / x nets / get nets / get coke / give coke to captain".
+
+Test second with "s / open chest / drop nets / get glacier ice / get nets / get glacier ice / g / put glacier ice in chest / get coke / put coke in chest".
+
+Test third with "x coke / g / g / g / get coke / n / give coke to captain / ask captain for key / open case / get rods".

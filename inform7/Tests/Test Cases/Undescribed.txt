@@ -1,0 +1,26 @@
+The Bar is a room.
+
+The counter is a thing in the Bar. The unnoticed change is an undescribed
+thing on the counter. The indefinite article is "some".
+
+The obvious item is a thing in the Bar.
+
+The hidden object is an undescribed thing in the Bar.
+
+The glass jar is on the counter. A scrap of paper is a kind of thing. A
+scrap of paper is usually undescribed. The plural of scrap of paper is
+scraps of paper. Three scraps of paper are in the glass jar.
+
+The Table of Invisibility is an undescribed supporter in the Bar. The secret
+sequined dress is on the Table. The dress is undescribed and wearable.
+
+The mostly unseen podium is an undescribed supporter in the Bar. The trophy
+is on the podium.
+
+Test me with "x jar / x hidden object / look / take all / take hidden object
+/ x hidden object / i / drop hidden object / look / x counter / x unnoticed
+change / get unnoticed change / x change / i / look / put change on counter
+/ look / x counter / drop all / look / get all / drop glass jar / x glass
+jar / search glass jar / get scrap / i / get scrap / i / get scrap / i /
+drop all / look / get all / put all on the Table of Invisibility / look /
+wear dress / i / take off dress / drop dress / look".

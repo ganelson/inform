@@ -1,0 +1,91 @@
+Test is a room. Peter and Jane are people in Test. Peter has carrying capacity
+20. Jane has carrying capacity 10.
+
+When play begins:
+	say "Emrby.";
+	let L be a list of text;
+	showme L;
+	let L be {"oranges", "apples", "bananas", "apple"};
+	let L2 be {"oranges", "apples", "bananas", "apple"};
+	let L3 be a list of text;
+	let L4 be {"pears", "plums"};
+	let L5 be {"passionfruit", "apples", "bananas"};
+	let IT1 be an text;
+	let IT2 be an text;
+	let IT3 be an text;
+	let IT4 be an text;
+	let IT1 be "oranges";
+	let IT2 be "apples";
+	let IT3 be "bananas";
+	let IT4 be "apple";
+	add IT1 to L3;
+	add IT2 to L3;
+	add IT3 to L3;
+	add IT4 to L3;
+	showme L;
+	showme L2;
+	showme L3;
+	sort L;
+	sort L2;
+	sort L3;
+	say "Today's list of IT is [L].";
+	say "Today's list of T is [L2].";
+	say "Today's list of IT by hand is [L3].";
+	repeat with X running through L:
+		showme X;
+		say "Char 1 is [character number 1 in X].";
+	let GL be a list of lists of texts;
+	add L2 to GL;
+	add L4 to GL;
+	add L5 to GL;
+	say "Grand list is [GL].";
+	sort GL;
+	say "Grand list sorts to [GL].";
+	let L6 be {yourself, Peter, Jane};
+	showme L6;
+	sort L6 in carrying capacity order;
+	showme L6;
+	sort L6 in reverse carrying capacity order;
+	showme L6;
+		
+Table of Stuff
+word
+"abacus"
+"zoo"
+"vacuum"
+"cheese"
+
+Table of Junk
+string (text)
+"abacus"
+"zoo"
+"vacuum"
+"cheese"
+
+when play begins:
+	say "words:[line break]";
+	repeat through the Table of Stuff in word order:
+		say "[the word entry][line break]";
+	say "[paragraph break]indexed words:[line break]";
+	sort the Table of Junk in string order;
+	repeat through the Table of junk:
+		say "[the string entry][line break]";
+
+
+A thing has an text called the of-type. The of-type of a thing is usually "standard".
+
+A thing has a text called the noni-of-type. The noni-of-type of a thing is usually "standard".
+
+The violin is in Test. The of-type is "special". The noni-of-type is "special".
+The viola is in Test.
+The mustard is in Test.
+The travesty is in Test. The of-type is "special". The noni-of-type is "special".
+The fang is in Test.
+
+After looking in Test:
+	let L be the list of things;
+	sort L in of-type order;
+	say "The list with text in sorts to: [L].";
+	let L be the list of things;
+	sort L in noni-of-type order;
+	say "The list with text in sorts to: [L].";

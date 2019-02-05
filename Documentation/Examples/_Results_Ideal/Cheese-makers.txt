@@ -1,0 +1,95 @@
+   Theater of Dionysus                                                                                                                                                                                                    416 BC
+  The Cheese-makers
+  An Interactive Fiction by Phrynichus
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Theater of Dionysus
+  The usual audience looks on: the priests and judges in the front row, and then Athenians, metics, and foreigners.
+  
+> >   Theater of Dionysus                                                                                                                                                                                                    416 BC
+  (Testing.)
+  
+  >[1] ask audience about me
+  (To communicate in The Cheese-makers, TALK TO a character.)
+  
+  >[2] tell audience about me
+  (To communicate in The Cheese-makers, TALK TO a character.)
+  
+  >[3] audience, hello
+  (To communicate in The Cheese-makers, TALK TO a character.)
+  
+  >[4] audience, jump
+  (To communicate in The Cheese-makers, TALK TO a character.)
+  
+  >[5] talk to me
+  There will be plenty of occasion for muttered asides later in the play, but for now you must prepare the audience for things to come.
+  
+  >[6] talk to audience
+  Drawing breath, you turn to the audience, and offer them a genial, witty, colorful, and of course crude synopsis of what they are about to see; describing all the characters in unmistakable terms and not omitting the most important of them all, your august self.
+  
+  The chorus now begins its entry, accompanying with anapestic song its march up the eisodos.
+  
+  >[7] g
+  You may only direct monologues to the audience when the other actors are off-stage. Otherwise, their characters might have to notice.
+  
+  The chorus draws nearer, stomping and clomping and swinging their baskets of cheese.
+  
+  >[8] talk to chorus
+  Sssh: this moment belongs to the chorus. They've worked so hard on it, after all.
+  
+  You stand aside as the chorus fills the orchestra and dances to and fro.
+  
+  >[9] look
+  Theater of Dionysus
+  The chorus are dancing and singing their way into position in the orchestra. The audience appear to be pricing their costumes to the nearest obol: woe to the producer who cheats them of their due share of spectacle.
+  
+  The tune of the aulos-player grows more and more frenzied and then breaks off.
+  
+  The chorus falls silent, which is the cue: Heracles bursts out of the scene building.
+  
+  >[10] x heracles
+  Hard to mistake in his lion skin and boots, and carrying a formidable club.
+  
+  With a fart and a roar, Heracles asks the world at large, and you in particular, where his dinner might be.
+  
+  >[11] talk to me
+  "By the dog, he'll eat me if he gets a chance," you mutter aside.
+  
+  "What's that you say, my ignoble friend?" demands Heracles, hefting his club. He's not entirely joking: you've left the script just now.
+  
+  >[12] talk to audience
+  You may only direct monologues to the audience when the other actors are off-stage. Otherwise, their characters might have to notice.
+  
+  >[13] z
+  Time passes.
+  
+  In epic diction, Heracles invites the dairy-mistresses, whey-matrons, and concubines of curd to supply him a supper from their ample baskets.
+  
+  >[14] look
+  Theater of Dionysus
+  Heracles stands at the center of the orchestra, with members of the chorus ranged on either side.
+  
+  The audience appear to be reserving their judgement, though they show signs of restiveness at the usual jokes: must there be a Heracles in every play?
+  
+  Heracles and the chorus banter about the proclivities of cheese-wives. The chorus suggest that Heracles, as a son of Zeus, must know something about the appetites of which they speak.
+  
+  >[15] talk to heracles
+  "Dear Heracles, friendly Heracles," you begin, cringing out of the way as he responds with one of his affectionate ox-killing punches to the shoulder.
+  
+  But Heracles falls still, and looks almost thoughtful, as tell him you know how he may rout the Spartans, woo all twenty-four lactic ladies, and tame his savage gut with a bathtubful of porridge.
+  
+  "Speak on, little man," he says.
+  
+  >[16] g
+  It takes several exchanges for him to wrap his one-inch brain around your ten-inch plan; but in the end he embraces the scheme, the women, and your humble self.
+  
+  That, of course, is your cue: you're to come back on as Pan thirty verses from now, and it takes time to put on the hooves and the woolly-legged trousers.
+  
+  
+  
+      *** You exit ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

@@ -1,0 +1,4 @@
+Wharf is a room.
+
+When play begins:
+	now a woman is in the Wharf.

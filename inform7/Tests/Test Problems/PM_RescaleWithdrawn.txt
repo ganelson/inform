@@ -1,0 +1,5 @@
+Lab is a room.
+
+To flibble (X - a number): (- {-rescale:X} -).
+
+When play begins: flibble 12.

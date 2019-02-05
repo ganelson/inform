@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 47 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BackdoorFigureCreation
+  >--> You wrote 'Outdoors tags Figure of Froest' (source text, line 10): but
+    this is not the way to create a new figure name, which should be done with
+    a special 'Figure ... is the file ...' sentence.
+Inform 7 has finished: 16 centiseconds used.

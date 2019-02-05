@@ -1,0 +1,4 @@
+The Typographium is a room.
+
+When play begins:
+	if 1 is a container, say "Heavens to Betsy!"

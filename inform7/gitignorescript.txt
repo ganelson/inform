@@ -1,0 +1,21 @@
+{basics}
+
+core-module/Woven/
+if-module/Woven/
+index-module/Woven/
+inflections-module/Woven/
+kinds-module/Woven/
+linguistics-module/Woven/
+multimedia-module/Woven/
+problems-module/Woven/
+syntax-module/Woven/
+words-module/Woven/
+
+Tests/Test Cases/_Results_Actual/
+Tests/Test Extensions/_Results_Actual/
+Tests/Test Index/_Indices_Actual/Gelix/
+Tests/Test Inter/_Inter_Actual/
+Tests/Test Inter/_Inter_Textual/
+Tests/Test Inter/_Inter_Binary/
+Tests/Test Maps/_Maps_Actual/
+Tests/Test Problems/_Results_Actual/

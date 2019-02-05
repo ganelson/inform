@@ -1,0 +1,32 @@
+
+
+
+The Empire Strikes Back
+An Interactive Fiction
+Release 1 / Serial number 160109 / Inform 7 build 6M62 (I6/v6.33 lib 6/12N) SD
+
+Steeple Aston Cricket Pitch
+
+>(Testing.)
+
+>[1] convert 1.2m
+Measuring A = 1.2m, which = 1200.0 millimetres = 120.00001 centimetres = 1.2 metres = 0.0012 kilometres = 48.0 inches = 4.0 feet = 1.33333 yards = 0.06061 chains = 0.00606 furlongs = 0.00076 miles = 0.00025 leagues.
+Metric: 1.2m.
+Imperial: 1.33333 yards.
+
+>[2] convert 2m
+Measuring A = 2.0m, which = 1999.99988 millimetres = 200.0 centimetres = 2.0 metres = 0.002 kilometres = 80.0 inches = 6.66667 feet = 2.22222 yards = 0.10101 chains = 0.0101 furlongs = 0.00126 miles = 0.00042 leagues.
+Metric: 2.0m.
+Imperial: 2.22222 yards.
+
+>[3] convert 30cm
+Measuring A = 29.99999cm, which = 299.99997 millimetres = 29.99999 centimetres = 0.3 metres = 0.0003 kilometres = 11.99999 inches = 0.99999 feet = 0.33333 yards = 0.01515 chains = 0.00152 furlongs = 0.00019 miles = 6.31313 × 10^-5 leagues.
+Metric: 29.99999cm.
+Imperial: 11.99999 inches.
+
+>[4] convert 20 chains
+Measuring A = 396.0m, which = 395999.96875 millimetres = 39600.0 centimetres = 396.0 metres = 0.396 kilometres = 15840.0 inches = 1320.0 feet = 440.0 yards = 20.0 chains = 2.0 furlongs = 0.25 miles = 0.08333 leagues.
+Metric: 396.0m.
+Imperial: 2.0 furlongs.
+
+>Are you sure you want to quit? 

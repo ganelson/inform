@@ -1,0 +1,59 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see a can of shoe polish, a shoe polish vending machine, a Polish sausage and a Polish man here.
+  
+> >   Hallway
+  (Testing.)
+  
+  >[1] throw polish at polish
+  (the can of shoe polish at the shoe polish vending machine)
+  (first taking the can of shoe polish)
+  Futile.
+  
+  >[2] drop all
+  (the can of shoe polish)
+  Dropped.
+  
+  >[3] throw polish at man
+  (the Polish sausage at the Polish man)
+  (first taking the Polish sausage)
+  You lack the nerve when it comes to the crucial moment.
+  
+  >[4] drop all
+  (the Polish sausage)
+  Dropped.
+  
+  >[5] throw sausage at polish
+  Which do you mean, the Polish sausage, the can of shoe polish, the shoe polish vending machine, the Polish man or the Polish man's nose?
+  
+  >[6] x nose
+  (the Polish man's nose)
+  You see nothing special about the Polish man's nose.
+  
+  >[7] get can and sausage
+  can of shoe polish: Taken.
+  Polish sausage: Taken.
+  
+  >[8] n
+  
+  Hallway
+  
+  >[9] x nose
+  You see nothing special about your nose.
+  
+  >[10] tie can to polish
+  (the Polish sausage)
+  You would achieve nothing by this.
+  
+  >[11] tie polish to sausage
+  (the can of shoe polish to the Polish sausage)
+  You would achieve nothing by this.
+  
+  >[12] tie polish to polish
+  Which do you mean, the Polish sausage or the can of shoe polish?
+  
+> >

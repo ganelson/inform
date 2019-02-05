@@ -1,0 +1,22 @@
+   Pisa
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pisa
+  You can see a pen, a blotter, a ball and Leonardo Fibonacci here.
+  
+> >   Pisa
+  (Testing.)
+  
+  >[1] leonardo, sequence 20
+  Leonardo offers 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584 and 4181.
+  
+  >[2] get all
+  pen: (an interesting choice of object)
+  Taken.
+  blotter: (an interesting choice of object)
+  Taken.
+  ball: Taken.
+  
+> >

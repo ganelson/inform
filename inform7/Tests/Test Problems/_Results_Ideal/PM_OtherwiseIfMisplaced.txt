@@ -1,0 +1,12 @@
+Inform 7 build 6L47 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42616 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OtherwiseIfMisplaced
+  >--> You wrote 'Else if true is true, say "--."' (source text, line 4): but
+    the 'otherwise if' clause here seems not to be occurring inside a large
+    'if', and seems to be freestanding instead. (Though 'otherwise ...' can
+    usually be used after simple one-line 'if's to provide an alternative
+    course of action, 'otherwise if...' is a different matter, and is used to
+    divide up larger-scale instructions.)
+Inform 7 has finished: 15 centiseconds used.

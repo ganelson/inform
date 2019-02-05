@@ -1,0 +1,673 @@
+# -----------------------------------------------------------------------------
+# Core Inform makescript - to be turned into a makefile by inweb
+# -----------------------------------------------------------------------------
+# Inform is a suite of software with many components and a full makefile for
+# it would be highly repetitive, and hard to maintain. Instead we use this
+# script for making that makefile; it's human-readable and editable.
+# To perform the translation, run this as a shell command:
+#
+#    $ inweb/Tangled/inweb -prototype makescript.txt -makefile makefile
+#
+# In the syntax of this file, only curly braces {thus} represent special
+# features: everything else is raw makefile syntax, copied directly across.
+# -----------------------------------------------------------------------------
+# The following ensures that basic tools such as CC and LINK have suitable
+# definitions.
+
+{platform-settings}
+
+# The "-" at the front here tells make to load this file if it exists, and
+# continue otherwise. If it does exist, it will define the symbol INTEGRATION.
+# That signals that the user wants to integrate the intools into the UI app;
+# if it's not defined, the user is just playing with the intools in isolation.
+# (Different versions of this file are needed on different operating systems.)
+
+-include ../make-integration-settings.mk
+
+# If present, this should define the symbol BENEVOLENTOVERLORD, which indicates
+# that you should have the power, in the build process, of advancing the master
+# build code for Inform: 6P21 -> 6P22, and so on. (It has no other effect.)
+
+-include ../make-benevolent-overlord.mk
+
+# And this defines the BUILDCODE symbol to some value such as "6P01":
+
+-include build-code.mk
+
+# -----------------------------------------------------------------------------
+# Most components of Inform are C programs written as literate-programming
+# webs, making use of shared libraries of code called modules. We list them.
+
+# Each module in turn is defined by a symbol name such as NAME, a tool name
+# (usually the same but in lower case), and lastly a location relative to the
+# root of the core Inform distribution.
+# In the eventual makefile, the symbol NAMEWEB is defined as its location.
+
+{module} FOUNDATION foundation inweb/foundation-module
+{module} WORDS words inform7/words-module
+{module} INFLECTIONS inflections inform7/inflections-module
+{module} SYNTAX syntax inform7/syntax-module
+{module} LINGUISTICS linguistics inform7/linguistics-module
+{module} KINDS kinds inform7/kinds-module
+{module} PROBLEMS problems inform7/problems-module
+{module} CORE core inform7/core-module
+{module} IF if inform7/if-module
+{module} INDEX index inform7/index-module
+{module} MULTIMEDIA multimedia inform7/multimedia-module
+{module} INTER inter inter/inter-module
+{module} CODEGEN codegen inter/codegen-module
+
+# First, the tools we need to make, using the same declaration notation.
+# In the eventual makefile, the symbol NAMEWEB is the location of NAME;
+# the symbol NAMEMAKER is the individual make file for the tool; and
+# the symbol NAMEX is the actual executable which the tool compiles into.
+# After its declaration, we list all modules needed to compile the tool.
+
+{tool} INBLORB inblorb inblorb
+{dep} INBLORB on FOUNDATION
+
+{tool} INDOC indoc indoc
+{dep} INDOC on FOUNDATION
+
+{tool} INFORM7 inform7 inform7
+{dep} INFORM7 on FOUNDATION
+{dep} INFORM7 on WORDS
+{dep} INFORM7 on INFLECTIONS
+{dep} INFORM7 on SYNTAX
+{dep} INFORM7 on LINGUISTICS
+{dep} INFORM7 on KINDS
+{dep} INFORM7 on PROBLEMS
+{dep} INFORM7 on CORE
+{dep} INFORM7 on IF
+{dep} INFORM7 on MULTIMEDIA
+{dep} INFORM7 on INDEX
+{dep} INFORM7 on INTER
+{dep} INFORM7 on CODEGEN
+
+{tool} INPOLICY inpolicy inpolicy
+{dep} INPOLICY on FOUNDATION
+
+{tool} INRTPS inrtps inrtps
+{dep} INRTPS on FOUNDATION
+
+{tool} INTEST intest intest
+{dep} INTEST on FOUNDATION
+
+{tool} INWEB inweb inweb
+{dep} INWEB on FOUNDATION
+
+{tool} INTERTOOL inter inter
+{dep} INTERTOOL on FOUNDATION
+{dep} INTERTOOL on INTER
+{dep} INTERTOOL on CODEGEN
+
+# Inform 6 is not a web, so we have to give it special treatment:
+
+INFORM6X = inform6/Tangled/inform6
+
+# While these are also executables, they only provide unit tests for modules:
+
+{tool} FOUNDATIONTEST foundation-test inweb/foundation-test
+{dep} FOUNDATIONTEST on FOUNDATION
+
+#{tool} CORETEST core-test inform7/core-test
+#{dep} CORETEST on FOUNDATION
+#{dep} CORETEST on WORDS
+#{dep} CORETEST on INFLECTIONS
+#{dep} CORETEST on SYNTAX
+#{dep} CORETEST on LINGUISTICS
+#{dep} CORETEST on KINDS
+#{dep} CORETEST on PROBLEMS
+#{dep} CORETEST on CORE
+#{dep} CORETEST on INDEX
+#{dep} CORETEST on INTER
+#{dep} CORETEST on CODEGEN
+
+{tool} INFLECTIONSTEST inflections-test inform7/inflections-test
+{dep} INFLECTIONSTEST on FOUNDATION
+{dep} INFLECTIONSTEST on WORDS
+{dep} INFLECTIONSTEST on INFLECTIONS
+
+{tool} KINDSTEST kinds-test inform7/kinds-test
+{dep} KINDSTEST on FOUNDATION
+{dep} KINDSTEST on WORDS
+{dep} KINDSTEST on INFLECTIONS
+{dep} KINDSTEST on SYNTAX
+{dep} KINDSTEST on LINGUISTICS
+{dep} KINDSTEST on KINDS
+
+{tool} LINGUISTICSTEST linguistics-test inform7/linguistics-test
+{dep} LINGUISTICSTEST on FOUNDATION
+{dep} LINGUISTICSTEST on WORDS
+{dep} LINGUISTICSTEST on INFLECTIONS
+{dep} LINGUISTICSTEST on SYNTAX
+{dep} LINGUISTICSTEST on LINGUISTICS
+
+{tool} PROBLEMSTEST problems-test inform7/problems-test
+{dep} PROBLEMSTEST on FOUNDATION
+{dep} PROBLEMSTEST on WORDS
+{dep} PROBLEMSTEST on SYNTAX
+{dep} PROBLEMSTEST on PROBLEMS
+
+{tool} SYNTAXTEST syntax-test inform7/syntax-test
+{dep} SYNTAXTEST on FOUNDATION
+{dep} SYNTAXTEST on WORDS
+{dep} SYNTAXTEST on SYNTAX
+
+{tool} WORDSTEST words-test inform7/words-test
+{dep} WORDSTEST on FOUNDATION
+{dep} WORDSTEST on WORDS
+
+# -----------------------------------------------------------------------------
+# Targets "all" and "force"
+# -----------------------------------------------------------------------------
+# "make all", the default target, incrementally makes the tools; "make force"
+# makes everything, disregarding all timestamps on files.
+
+.PHONY: all
+
+all: tools srules
+
+.PHONY: force
+
+force: forcetools forcesrules
+
+# (Of course those four targets are yet to be defined.)
+
+# -----------------------------------------------------------------------------
+# Target "makers"
+# -----------------------------------------------------------------------------
+# Each individual tool has its own makefile, stored inside its individual web. 
+# "make makers" runs through each tool in turn and creates this makefile.
+# Note the repeatblock feature: the line in the block is repeated once for each
+# defined tool. Inside the block, an asterisk expands to the tool's symbol
+# name: so for example, for inblorb, *WEB would become INBLORBWEB.
+
+.PHONY: makers
+makers:
+	{repeatblock}
+	$(INWEBX) $(*WEB) -makefile $(*MAKER)
+	{endblock}
+	inweb/Tangled/inweb -prototype inform6/makescript.txt -makefile inform6/inform6.mk
+
+# -----------------------------------------------------------------------------
+# Target "gitignores"
+# -----------------------------------------------------------------------------
+# Each individual web needs its own .gitignore file, and this makes them.
+
+.PHONY: gitignores
+gitignores:
+	{repeatblock}
+	$(INWEBX) $(*WEB) -gitignore $(*WEB)/.gitignore
+	{endblock}
+	inweb/Tangled/inweb -prototype inform6/gitignorescript.txt -gitignore inform6/.gitignore
+
+# -----------------------------------------------------------------------------
+# Target "versions"
+# -----------------------------------------------------------------------------
+# Asks the tools their current version numbers.
+
+.PHONY: versions
+versions:
+	{repeatblock}
+	$(*X) -version
+	{endblock}
+	$(INFORM6X) -V
+
+# -----------------------------------------------------------------------------
+# Targets "srules" and "forcesrules"
+# -----------------------------------------------------------------------------
+# The Standard Rules extension is generated as a tangle from Appendix A of
+# the inform7 web, and is not, of course, a C program, so it needs its own
+# individual handling. "make srules" updates this if need be; "make forcesrules"
+# updates it regardless.
+
+SRULES = Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
+
+.PHONY: srules
+srules: $(SRULES)
+
+$(SRULES): $(INFORM7WEB)/Appendix*A/*.w
+	$(INWEBX) $(INFORM7WEB) -tangle A
+	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
+
+.PHONY: forcesrules
+forcesrules:
+	$(INWEBX) $(INFORM7WEB) -tangle A
+	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
+
+# -----------------------------------------------------------------------------
+# Target "tools"
+# -----------------------------------------------------------------------------
+# "make tools" builds all of the tools incrementally, i.e., only as necessary.
+# Note the use of repeat to make a list: $(INBLORBX) $(INDOCX) ..., etc.
+
+.PHONY: tools
+tools: {repeatspan}$(*X){endspan} $(INFORM6X)
+
+{repeatblock}
+$(*X): {dependent-files-for}*
+ifdef BENEVOLENTOVERLORD
+	$(MAKE) -f $(INPOLICYMAKER)
+	$(INPOLICYX) -advance-build $(*WEB)
+endif
+	$(MAKE) -f $(*MAKER)
+
+{endblock}
+
+# As ever, Inform 6 needs special handling:
+
+$(INFORM6X): inform6/Inform6/*.c
+	$(MAKE) -f inform6/inform6.mk
+
+# -----------------------------------------------------------------------------
+# Target "forcetools"
+# -----------------------------------------------------------------------------
+# Similarly, but with a single target, since nothing is incremental here.
+
+.PHONY: forcetools
+forcetools:
+ifdef BENEVOLENTOVERLORD
+	$(MAKE) -f $(INPOLICYMAKER)
+endif
+	$(MAKE) -f $(INWEBMAKER) initial
+	{repeatblock}
+ifdef BENEVOLENTOVERLORD
+	$(INPOLICYX) -advance-build $(*WEB)
+endif
+	$(MAKE) -f $(*MAKER) force
+	$(MAKE) -f inform6/inform6.mk force
+	{endblock}
+
+# -----------------------------------------------------------------------------
+# Target "check"
+# -----------------------------------------------------------------------------
+# "make check" invites the make file for every tool to run its own tests.
+# I6 must come first, because that guarantees the Z and Glulx interpreters
+# are safely built before we need them.
+# -----------------------------------------------------------------------------
+
+.PHONY: check
+check:
+	$(MAKE) -f inform6/inform6.mk test
+	$(INPOLICYX) -silence -check-problems
+	{repeatblock}
+	$(MAKE) -f $(*MAKER) test
+	{endblock}
+
+# -----------------------------------------------------------------------------
+# Target "tangle"
+# -----------------------------------------------------------------------------
+# "make tangle", probably not very useful, tangles each web in turn.
+# -----------------------------------------------------------------------------
+
+.PHONY: tangle
+tangle:
+	$(call tangle-webs)
+
+define tangle-webs
+	{repeatblock}
+	$(INWEBX) $(*WEB) -tangle
+	{endblock}
+endef
+
+# -----------------------------------------------------------------------------
+# Target "weave"
+# -----------------------------------------------------------------------------
+# "make weave" weaves each web in turn.
+# -----------------------------------------------------------------------------
+
+WEAVEOPTS = -weave sections
+
+.PHONY: weave
+weave:
+	$(call weave-webs)
+
+define weave-webs
+	{repeatblock}
+	$(INWEBX) $(*WEB) $(WEAVEOPTS)
+	{endblock}
+endef
+
+# -----------------------------------------------------------------------------
+# Target "clean"
+# -----------------------------------------------------------------------------
+# "make clean" removes inessential files from the Inform source hierarchy
+# -----------------------------------------------------------------------------
+
+.PHONY: clean
+clean:
+	$(call clean-up)
+
+define clean-up
+	{repeatblock}
+	$(MAKE) -f $(*MAKER) clean
+	{endblock}
+	$(MAKE) -f inform6/inform6.mk clean
+endef
+
+# -----------------------------------------------------------------------------
+# Target "purge"
+# -----------------------------------------------------------------------------
+# "make purge" cleans, but also removes binaries
+# -----------------------------------------------------------------------------
+
+.PHONY: purge
+purge:
+	$(call purge-up)
+
+define purge-up
+	{repeatblock}
+	$(MAKE) -f $(*MAKER) purge
+	{endblock}
+	$(MAKE) -f inform6/inform6.mk purge
+endef
+
+# -----------------------------------------------------------------------------
+# Target "archive"
+# -----------------------------------------------------------------------------
+# "make archive" produces a tarball of core Inform: this was the form normally
+# circulated to the platform people, before the move to Github
+# -----------------------------------------------------------------------------
+
+MANIFEST = \
+	About.txt \
+	Changes Documentation Imagery Internal "Outcome Pages" "Sample Projects" \
+	inblorb indoc inform6 inform7 inpolicy inrtps inter intest inweb \
+	makefile makescript.txt gitignorescript.txt .gitignore build-code.mk
+
+# the "COPYFILE_DISABLE" nonsense is a hack for Mac OS X to suppress OS X files
+# like .DS_STORE, though it only somewhat works
+
+.PHONY: archive
+archive:
+	$(call tangle-webs)
+	$(call purge-up)
+	export COPYFILE_DISABLE=true
+	tar --create --exclude='*/.*' --exclude='inweb/Tangled/inweb' --file Inform-Source-$(BUILDCODE).tar $(MANIFEST)
+	gzip -f Inform-Source-$(BUILDCODE).tar
+	export COPYFILE_DISABLE=false
+ 
+# -----------------------------------------------------------------------------
+# Target "ebooks"
+# -----------------------------------------------------------------------------
+# "make ebooks" generates the two Inform ebook files in EPUB format.
+# One combines the manuals Writing with Inform and The Inform Recipe Book into
+# a single volume, while the other holds the collected change logs.
+# -----------------------------------------------------------------------------
+
+.PHONY: ebooks
+ebooks:
+	$(call clean-ebooks)
+	$(INDOCX) ebook
+	$(call clean-ebooks)
+	$(INDOCX) -from Changes ebook
+	$(call clean-ebooks)
+
+define clean-ebooks
+	rm -f Documentation/Output/OEBPS/images/*
+	rm -f Documentation/Output/OEBPS/*.*
+	rm -f Documentation/Output/META-INF/container.xml
+	rm -f Documentation/Output/mimetype
+	rm -f Documentation/Output/*.*
+	rm -f Changes/Output/OEBPS/images/*
+	rm -f Changes/Output/OEBPS/*.*
+	rm -f Changes/Output/META-INF/container.xml
+	rm -f Changes/Output/mimetype
+	rm -f Changes/Output/*.*
+endef
+
+# -----------------------------------------------------------------------------
+# Target "csr"
+# -----------------------------------------------------------------------------
+# "make csr" is for use while experimenting with Inter - it caches the Standard
+# Rules as inter files, one for Z, one for Glulx.
+# -----------------------------------------------------------------------------
+
+.PHONY: csr
+csr:
+	cp -f $(INFORM7WEB)/Home.txt $(INTESTWEB)/Workspace/T0/Example.inform/Source/story.ni
+	'inform7/Tangled/inform7' '-format=z8' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'Internal/I6T/sr-Z.intert' '-inter'  'stop'
+	$(INTERTOOLWEB)/Tangled/inter Internal/I6T/sr-Z.intert -binary Internal/I6T/sr-Z.interb
+	cp -f Internal/I6T/sr-Z.intert $(INTERNAL)/I6T/sr-Z.intert 
+	cp -f Internal/I6T/sr-Z.interb $(INTERNAL)/I6T/sr-Z.interb 
+	'inform7/Tangled/inform7' '-format=ulx' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'Internal/I6T/sr-G.intert' '-inter'  'stop'
+	$(INTERTOOLWEB)/Tangled/inter Internal/I6T/sr-G.intert -binary Internal/I6T/sr-G.interb
+	cp -f Internal/I6T/sr-G.intert $(INTERNAL)/I6T/sr-G.intert 
+	cp -f Internal/I6T/sr-G.interb $(INTERNAL)/I6T/sr-G.interb 
+
+# -----------------------------------------------------------------------------
+# Targets "integration" and "forceintegration"
+# -----------------------------------------------------------------------------
+# This copies material into the user interface application.
+# -----------------------------------------------------------------------------
+
+INTOOLSBUILTIN = \
+	$(BUILTINCOMPS)/$(INBLORBNAME) \
+	$(BUILTINCOMPS)/$(INFORM6NAME) \
+	$(BUILTINCOMPS)/$(INFORM7NAME) \
+	$(BUILTINCOMPS)/$(INTESTNAME)
+
+SRULESINPLACE = $(INTERNAL)/Extensions/Graham\ Nelson/Standard\ Rules.i7x
+INTERNALEXEMPLUM = $(INTERNAL)/Miscellany/Cover.jpg
+INTERNALEXEMPLUMFROM = Internal/Miscellany/Cover.jpg
+IMAGESEXEMPLUM = $(BUILTINHTML)/doc_images/help.png
+IMAGESEXEMPLUMFROM = Imagery/doc_images/help.png
+DOCEXEMPLUM = $(BUILTINHTMLINNER)/index.html
+RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
+
+.PHONY: integration
+integration: \
+		$(INTOOLSBUILTIN) \
+		$(INTERNAL)/Languages/English/Syntax.preform \
+		$(SRULESINPLACE) \
+		$(INTERNAL)/I6T/Main.i6t \
+		$(INTERNALEXEMPLUM) \
+		$(IMAGESEXEMPLUM) \
+		$(DOCEXEMPLUM) \
+		$(RTPEXEMPLUM)
+
+.PHONY: forceintegration
+forceintegration:
+	$(call transfer-intools)
+	$(call transfer-preform)
+	$(call transfer-standard-rules)
+	$(call transfer-i6-template)
+	$(call transfer-internal-tree)
+	$(call transfer-images)
+	$(call make-inapp-documentation)
+	$(call make-inapp-outcome-pages)
+
+# (a) Copying necessary intools into the app
+
+# Only the following intools are present in the UI app at run-time: inblorb,
+# inform6, inform7, intest. All can have different names there.
+
+$(BUILTINCOMPS)/$(INBLORBNAME): $(INBLORBX)
+	mkdir -p $(BUILTINCOMPS)
+	cp -f $(INBLORBX) $(BUILTINCOMPS)/$(INBLORBNAME)
+
+$(BUILTINCOMPS)/$(INFORM6NAME): inform6/Tangled/inform6
+	$(MAKE) -f inform6/inform6.mk
+	mkdir -p $(BUILTINCOMPS)
+	cp -f $(INFORM6X) $(BUILTINCOMPS)/$(INFORM6NAME)
+
+$(BUILTINCOMPS)/$(INFORM7NAME): $(INFORM7WEB)/Tangled/inform7
+	$(MAKE) -f $(INFORM7MAKER)
+	mkdir -p $(BUILTINCOMPS)
+	cp -f $(INFORM7X) $(BUILTINCOMPS)/$(INFORM7NAME)
+
+$(BUILTINCOMPS)/intest: $(INTESTWEB)/Tangled/intest
+	$(MAKE) -f $(INTESTMAKER)
+	mkdir -p $(BUILTINCOMPS)
+	cp -f $(INTESTX) $(BUILTINCOMPS)/intest
+
+define transfer-intools
+	mkdir -p $(BUILTINCOMPS)
+	cp -f $(INBLORBX) $(BUILTINCOMPS)/$(INBLORBNAME)
+	cp -f $(INFORM6X) $(BUILTINCOMPS)/$(INFORM6NAME)
+	cp -f $(INFORM7X) $(BUILTINCOMPS)/$(INFORM7NAME)
+	cp -f $(INTESTX) $(BUILTINCOMPS)/intest
+endef
+
+# (b) Copying Preform definition into the app
+
+$(INTERNAL)/Languages/English/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
+	$(call transfer-preform)
+	
+$(INFORM7WEB)/Tangled/Syntax.preform:
+	$(MAKE) -f $(INFORM7MAKER)
+
+define transfer-preform
+	cp -f 'inform7/Tangled/Syntax.preform' "$(INTERNAL)/Languages/English/Syntax.preform"
+	cp -f 'inform7/Tangled/Syntax.preform' "Internal/Languages/English/Syntax.preform"
+endef
+
+# (c) Copying the Standard Rules into the app
+
+$(SRULESINPLACE): $(SRULES)
+	$(call transfer-standard-rules)
+
+define transfer-standard-rules
+	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
+	cp $(SRULES) $(SRULESINPLACE)
+endef
+
+# (d) Copying the I6 template into the app
+
+$(INTERNAL)/I6T/Main.i6t: $(INFORM7WEB)/Appendix\ B/*.i6t
+	$(call transfer-i6-template)
+
+# The I6 template could be tangled by inweb, but we don't do so: instead the
+# tangling happens at run-time and is done by Core Inform on the fly. So the
+# build process consists only of copying it:
+
+define transfer-i6-template
+	mkdir -p "$(INTERNAL)/I6T"
+	rm -f $(INTERNAL)/I6T/*.i6t
+	touch $(INFORM7WEB)/Appendix\ B/Main.i6t
+	cp -R -f $(INFORM7WEB)/Appendix\ B/*.i6t $(INTERNAL)/I6T
+	rm -f Internal/I6T/*.i6t
+	cp -R -f $(INFORM7WEB)/Appendix\ B/*.i6t Internal/I6T
+endef
+
+# (e) Copying internal resources into the app
+
+# The Internal tree also holds built-in extensions, web interpreters and so on.
+# In effect, it's a repository in the UI app of non-executable resources:
+
+$(INTERNALEXEMPLUM): \
+		Internal/Extensions/Eric\ Eve/[A-Za-z]* \
+		Internal/Extensions/Emily\ Short/[A-Za-z]* \
+		Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
+		Internal/Miscellany/[A-Za-z]*.* \
+		Internal/HTML/[A-Za-z]*.* \
+		Internal/Templates/Parchment/[A-Za-z]*.* \
+		Internal/Templates/Quixe/[A-Za-z]*.* \
+		Internal/Templates/Classic/[A-Za-z]*.* \
+		Internal/Templates/Vorple/[A-Za-z]*.* \
+		Internal/Templates/Standard/[A-Za-z]*.*
+	$(call transfer-internal-tree)
+
+define transfer-internal-tree
+	touch $(INTERNALEXEMPLUMFROM)
+	mkdir -p $(INTERNAL)
+	mkdir -p "$(INTERNAL)/Extensions/Eric Eve"
+	rm -f $(INTERNAL)/Extensions/Eric\ Eve/*
+	mkdir -p "$(INTERNAL)/Extensions/Emily Short"
+	rm -f $(INTERNAL)/Extensions/Emily\ Short/*
+	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
+	rm -f $(INTERNAL)/Extensions/Graham\ Nelson/*
+	cp -R -f Internal/Extensions $(INTERNAL)/Extensions/..
+	mkdir -p "$(INTERNAL)/Languages"
+	mkdir -p "$(INTERNAL)/Languages/English"
+	mkdir -p "$(INTERNAL)/Languages/French"
+	mkdir -p "$(INTERNAL)/Languages/German"
+	mkdir -p "$(INTERNAL)/Languages/Italian"
+	mkdir -p "$(INTERNAL)/Languages/Spanish"
+	cp -R -f Internal/Languages $(INTERNAL)/Languages/..
+	mkdir -p "$(INTERNAL)/Templates"
+	mkdir -p "$(INTERNAL)/Templates/Standard"
+	rm -f $(INTERNAL)/Templates/Standard/*
+	mkdir -p "$(INTERNAL)/Templates/Classic"
+	rm -f $(INTERNAL)/Templates/Classic/*
+	mkdir -p "$(INTERNAL)/Templates/Parchment"
+	rm -f $(INTERNAL)/Templates/Parchment/*
+	mkdir -p "$(INTERNAL)/Templates/Quixe"
+	rm -f $(INTERNAL)/Templates/Quixe/*
+	mkdir -p "$(INTERNAL)/Templates/Vorple"
+	rm -f $(INTERNAL)/Templates/Vorple/*
+	cp -R -f Internal/Templates $(INTERNAL)/Templates/..
+	mkdir -p "$(INTERNAL)/Miscellany"
+	rm -f $(INTERNAL)/Miscellany/*
+	cp -R -f Internal/Miscellany $(INTERNAL)/Miscellany/..
+	mkdir -p "$(INTERNAL)/HTML"
+	rm -f $(INTERNAL)/HTML/*
+	cp -R -f Internal/HTML $(INTERNAL)/HTML/..
+endef
+
+# (f) Copying images into the app
+
+$(IMAGESEXEMPLUM): \
+	Imagery/app_images/[A-Za-z]*.* \
+	Imagery/bg_images/[A-Za-z]*.* \
+	Imagery/doc_images/[A-Za-z]*.* \
+	Imagery/map_icons/[A-Za-z]*.* \
+	Imagery/outcome_images/[A-Za-z]*.* \
+	Imagery/scene_icons/[A-Za-z]*.*
+	$(call transfer-images)
+
+define transfer-images
+	touch $(IMAGESEXEMPLUMFROM)
+	cp -f Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
+	mkdir -p $(BUILTINHTML)/bg_images
+	rm -f $(BUILTINHTML)/bg_images/*
+	cp -f Imagery/bg_images/[A-Za-z]*.* $(BUILTINHTML)/bg_images
+	mkdir -p $(BUILTINHTML)/doc_images
+	rm -f $(BUILTINHTML)/doc_images/*
+	cp -f Imagery/doc_images/[A-Za-z]*.* $(BUILTINHTML)/doc_images
+	mkdir -p $(BUILTINHTML)/map_icons
+	rm -f $(BUILTINHTML)/map_icons/*
+	cp -f Imagery/map_icons/[A-Za-z]*.* $(BUILTINHTML)/map_icons
+	mkdir -p $(BUILTINHTML)/outcome_images
+	rm -f $(BUILTINHTML)/outcome_images/*
+	cp -f Imagery/outcome_images/[A-Za-z]*.* $(BUILTINHTML)/outcome_images
+	mkdir -p $(BUILTINHTML)/scene_icons
+	rm -f $(BUILTINHTML)/scene_icons/*
+	cp -f Imagery/scene_icons/[A-Za-z]*.* $(BUILTINHTML)/scene_icons
+endef
+
+# (g) Typesetting documentation to HTML inside the app
+
+$(DOCEXEMPLUM): Documentation/*.txt Documentation/Examples/*.txt
+	$(call make-inapp-documentation)
+
+ifdef BENEVOLENTOVERLORD
+define make-inapp-documentation
+	mkdir -p "$(INTERNAL)/Documentation"
+	mkdir -p $(BUILTINHTMLINNER)
+	$(INDOCX) -rewrite-standard-rules 'inform7/Appendix A/Preamble.w' $(INDOCOPTS)
+	$(INWEBX) inform7 -tangle A
+	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
+	$(call transfer-standard-rules)
+	$(INDOCX) $(INDOCOPTS)
+endef
+else
+define make-inapp-documentation
+	mkdir -p "$(INTERNAL)/Documentation"
+	mkdir -p $(BUILTINHTMLINNER)
+	$(INDOCX) $(INDOCOPTS)
+endef
+endif
+
+# (h) Typesetting the HTML pages used to display run-time problem messages
+
+$(RTPEXEMPLUM): Outcome*Pages/texts.txt Outcome*Pages/*.html
+	$(call make-inapp-outcome-pages)
+
+define make-inapp-outcome-pages
+	$(INRTPSX) Outcome\ Pages $(BUILTINHTMLINNER) $(INRTPSOPTS)
+	cp -f Outcome\ Pages/pl404.html $(BUILTINHTMLINNER)
+endef
+
+# -----------------------------------------------------------------------------

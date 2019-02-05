@@ -1,0 +1,21 @@
+Inform 7 build 6L91 has started.
+I've now read your source text, which is 30 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MiscellaneousEOProblem
+  >--> In 'A thing can be carrying capacity' (source text, line 3), you
+    proposed the new either/or property 'carrying capacity': but this already
+    has a meaning as a value property.
+Problem__ PM_MiscellaneousEOProblem
+  >--> In 'A thing can be 10' (source text, line 5), you proposed the new
+    either/or property '10': but this already has a meaning.
+Problem__ PM_MiscellaneousEOProblem
+  >--> In 'A thing can be open or unlocked' (source text, line 7), you proposed
+    the new either/or property 'unlocked': but this is not the same negation as
+    the last time this either/or property was used.
+Problem__ PM_BrokenNegationPair
+  >--> In 'A thing can be open or not open' (source text, line 9), you proposed
+    to set up the properties 'open' and 'not open' as opposites of each other.
+    But I can't allow that, because 'open' already has an opposite in another
+    context ('closed').
+Inform 7 has finished: 19 centiseconds used.

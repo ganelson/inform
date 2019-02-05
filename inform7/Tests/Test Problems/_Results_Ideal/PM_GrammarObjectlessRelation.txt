@@ -1,0 +1,10 @@
+Inform 7.10.1 build 6N67 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_GrammarObjectlessRelation
+  >--> You wrote 'Understand "box of [something related by containment]" as 10'
+    (source text, line 3): but a grammar token in an 'Understand...' can only
+    be based on a relation if it is to understand the name of a room or thing,
+    since otherwise there is nothing for the relation to be with.
+Inform 7 has finished: 146 centiseconds used.

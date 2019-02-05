@@ -1,0 +1,10 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_object enum
+	kind K_fruit <= K_object
+	kind K_citrus_fruit <= K_fruit
+	kind K_stone <= K_object
+	kind K_feldspar <= K_stone
+	kind K_mica <= K_stone

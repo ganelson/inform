@@ -1,0 +1,6 @@
+Home is a room.
+
+When play begins:
+	let the dangerous item be the player;
+	if the dangerous item is:
+		-- 2: say "2".

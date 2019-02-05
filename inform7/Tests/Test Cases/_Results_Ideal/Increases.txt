@@ -1,0 +1,39 @@
+   Home                                                                                                                                                                                                                   -2/1
+  "N" = number: 45
+  "score" = number: 0
+  "carrying capacity of the player" = number: 100
+  "cat entry" = number: 2
+  "L" = list of numbers: {3, 5, 6, 11}
+  Now increase by 5...
+  "N" = number: 50
+  "score" = number: 5
+  "carrying capacity of the player" = number: 105
+  "cat entry" = number: 7
+  "L" = list of numbers: {3, 10, 6, 11}
+  Now decrease by 7...
+  "N" = number: 43
+  "score" = number: -2
+  "carrying capacity of the player" = number: 98
+  "cat entry" = number: 0
+  "L" = list of numbers: {3, 3, 6, 11}
+  Now increment...
+  "N" = number: 44
+  "score" = number: -1
+  "carrying capacity of the player" = number: 99
+  "cat entry" = number: 1
+  "L" = list of numbers: {3, 4, 6, 11}
+  Now decrement...
+  "N" = number: 43
+  "score" = number: -2
+  "carrying capacity of the player" = number: 98
+  "cat entry" = number: 0
+  "L" = list of numbers: {3, 3, 6, 11}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home                                                                                                                                                                                                                   -2/1
+> Are you sure you want to quit? 

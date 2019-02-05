@@ -1,0 +1,3 @@
+Lettuce Patch is a room. 
+
+A container never is usually opaque.

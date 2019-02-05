@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+When play begins:
+    let Q be the default value of number valued table column.

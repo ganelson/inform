@@ -1,0 +1,13 @@
+   climbing room
+  I am sweeping the black hat off the Magician's staircase.
+  I am sweeping the pointy silver hat off the Wizard's staircase.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  climbing room
+  You can see a Magician's staircase (on which is a black hat) and a Wizard's staircase (on which is a pointy silver hat) here.
+  
+> >   climbing room
+> Are you sure you want to quit? 

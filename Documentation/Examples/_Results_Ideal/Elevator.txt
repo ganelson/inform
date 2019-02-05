@@ -1,0 +1,116 @@
+   Burj al-Arab Lobby
+  Dubai
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Burj al-Arab Lobby
+  The 202-suite Burj al-Arab - or Tower of the Arabs - stands 321 metres (1,060 feet) high, and floats on its own man-made island. It is shaped like the sail of a boat; just crossing the private bridge to reach this place set you back $55.
+  
+  You can enter the elevator here.
+  
+> >   Sahn Eddar
+  (Testing.)
+  
+  >[1] press 3
+  You cannot control the express panoramic lift unless you are yourself inside.
+  
+  >[2] in
+  Lift
+  This is not a mere elevator: it is an express panoramic lift, traveling six meters a second, and capable of taking you from lobby to the rooftop restaurant in an astonishingly short time. The illuminated number above the door says 1 - though you can make it move by pressing a numbered button.
+  
+  >[3] press button 3
+  You press button 3. The lift whirs into action and moves to the correct level.
+  
+  >[4] look
+  Lift
+  This is not a mere elevator: it is an express panoramic lift, traveling six meters a second, and capable of taking you from lobby to the rooftop restaurant in an astonishingly short time. The illuminated number above the door says 3 - though you can make it move by pressing a numbered button.
+  
+  >[5] out
+  Juna Lounge
+  Two humidors that offer one of the largest selections of the finest Havana cigars in Dubai.
+  
+  You can enter the elevator here.
+  
+  >[6] in
+  Lift
+  This is not a mere elevator: it is an express panoramic lift, traveling six meters a second, and capable of taking you from lobby to the rooftop restaurant in an astonishingly short time. The illuminated number above the door says 3 - though you can make it move by pressing a numbered button.
+  
+  >[7] press 27
+  You press button 27. The lift whirs into action and moves to the correct level.
+  
+  >[8] out
+  Al Muntaha
+  A top-floor restaurant with a magnificent view: the name means the ultimate or the highest, suitable for a place that stands at 200 metres above the Arabian Gulf. It offers modern European cuisine; and just off to the south is the Skyview Bar.
+  
+  You can enter the elevator here.
+  
+  >[9] s
+  
+  Skyview Bar
+  "A wonderful location for pre- and post dinner drinks," claims the hotel's brochure, and certainly you can't fault the view.
+  
+  >[10] in
+  You can't go that way.
+  
+  >[11] n
+  
+  Al Muntaha
+  A top-floor restaurant with a magnificent view: the name means the ultimate or the highest, suitable for a place that stands at 200 metres above the Arabian Gulf. It offers modern European cuisine; and just off to the south is the Skyview Bar.
+  
+  You can enter the elevator here.
+  
+  >[12] in
+  Lift
+  This is not a mere elevator: it is an express panoramic lift, traveling six meters a second, and capable of taking you from lobby to the rooftop restaurant in an astonishingly short time. The illuminated number above the door says 27 - though you can make it move by pressing a numbered button.
+  
+  >[13] press 15
+  You press button 15. The lift whirs into action and moves to the correct level.
+  
+  >[14] out
+  Al Falak Ballroom
+  A palatial, two-tiered, domed ballroom crowned with a unique crystal chandelier.
+  
+  You can enter the elevator here.
+  
+  >[15] in
+  Lift
+  This is not a mere elevator: it is an express panoramic lift, traveling six meters a second, and capable of taking you from lobby to the rooftop restaurant in an astonishingly short time. The illuminated number above the door says 15 - though you can make it move by pressing a numbered button.
+  
+  >[16] press 18
+  You press button 18. The lift whirs into action and moves to the correct level.
+  
+  >[17] out
+  Assawan Spa
+  Treatment rooms, hydrotherapy baths, oriental massage, stand-up solarium, sauna, steam rooms and jacuzzi, two swimming pools, squash court, two fully equipped fitness studios and an aerobics floor. To the south is a shopping area, for those who do not find exercise adequately therapeutic.
+  
+  You can enter the elevator here.
+  
+  >[18] s
+  
+  Shopping Area
+  In a setting that would make a poet sigh, you may enjoy the services of (among others) Bulgari, Black Pearl Caviar, Albarajeel Carpet Shop, Abdul Samed Al Qurashi (amber and Arabic perfumes), Dianoor (jewellery), and the Commercial Bank of Dubai.
+  
+  >[19] in
+  You can't go that way.
+  
+  >[20] n
+  
+  Assawan Spa
+  Treatment rooms, hydrotherapy baths, oriental massage, stand-up solarium, sauna, steam rooms and jacuzzi, two swimming pools, squash court, two fully equipped fitness studios and an aerobics floor. To the south is a shopping area, for those who do not find exercise adequately therapeutic.
+  
+  You can enter the elevator here.
+  
+  >[21] in
+  Lift
+  This is not a mere elevator: it is an express panoramic lift, traveling six meters a second, and capable of taking you from lobby to the rooftop restaurant in an astonishingly short time. The illuminated number above the door says 18 - though you can make it move by pressing a numbered button.
+  
+  >[22] press 4 button
+  You press button 4. The lift whirs into action and moves to the correct level.
+  
+  >[23] out
+  Sahn Eddar
+  At the base of the world's tallest atrium, the Sahn Eddar restaurant offers light fine fare and Afternoon Tea. At the center, a 32-meter water column leaps toward the roof of the atrium.
+  
+  You can enter the elevator here.
+  
+> >

@@ -1,0 +1,4 @@
+Wharf is a room.
+
+When play begins:
+	now the player is not everywhere.

@@ -1,0 +1,58 @@
+   Balcony
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Balcony
+  Overlooking the great fountain below.
+  
+  You can see a bench here.
+  
+> >   Balcony
+  (Testing.)
+  
+  >[1] get all from bench
+  The bench is empty.
+  
+  >[2] get all from key
+  That can't contain things.
+  
+  >[3] put key on bench
+  You put the key on the bench.
+  
+  >[4] get all from bench
+  (the key from the bench)
+  Taken.
+  
+  >[5] put key on bench
+  You put the key on the bench.
+  
+  >[6] get key from bench
+  Taken.
+  
+  >[7] jump
+  You jump on the spot.
+  
+  >[8] get all from bench
+  The bench is empty.
+  
+  >[9] get all from key
+  That can't contain things.
+  
+  >[10] put key on bench
+  You put the key on the bench.
+  
+  >[11] get all from bench
+  (the key from the bench)
+  Taken.
+  
+  >[12] put key on bench
+  You put the key on the bench.
+  
+  >[13] get key from bench
+  Taken.
+  
+  >[14] put key on key
+  You can't put something on top of itself.
+  
+> >

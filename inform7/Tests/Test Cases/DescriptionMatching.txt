@@ -1,0 +1,7 @@
+Home is a room.
+
+To tally (D - a description of things): say "Too lazy to actually
+do anything."
+
+When play begins:
+	tally all open doors.

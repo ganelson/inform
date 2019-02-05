@@ -1,0 +1,5 @@
+Foo is a room.
+When play begins:
+	if 5 is:
+		-- 5: say "I'm 5";
+		-- 5: say "no, I'm 5".

@@ -1,0 +1,27 @@
+   Lab
+  Variety
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see a table (on which are a bat and a ball) here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] get ball
+  You take the ball.
+  
+  >[2] drop ball
+  You put down the ball.
+  
+  >[3] get bat
+  You acquire the bat.
+  
+  >[4] drop bat
+  You put down the bat.
+  
+  >[5] smell ball
+  You sniff the ball.
+  
+> >

@@ -1,0 +1,13 @@
+   Tool Room
+  All but one of the devices are switched on.
+  All except one of the devices are switched on.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Tool Room
+  You can see a blue button and a red button here.
+  
+> >   Tool Room
+> Are you sure you want to quit? 

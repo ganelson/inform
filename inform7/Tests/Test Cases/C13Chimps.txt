@@ -1,0 +1,8 @@
+The Starting Room is a room. "This is the starting room."
+
+A monkey is a kind of thing. A tail is a kind of thing. A tail is part of
+every monkey. Understand "appendage" as "[extremity]". Understand "fur"
+and "[extremity]" as a tail. Chimpy is a monkey in the starting room.
+
+Test me with "x chimpy's fur / x chimpy's tail / x fur / x tail /
+x appendage / x chimpy's appendage / x appendage fur".

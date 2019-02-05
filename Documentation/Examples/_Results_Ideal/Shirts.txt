@@ -1,0 +1,85 @@
+   Boutique
+  Some Assembly Required
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Boutique
+  Still festively strewn with the confetti and streamers of the Grand Opening party, and still almost totally customer-free.
+  
+> >   Boutique
+  (Testing.)
+  
+  >[1] sew collar to shirt
+  You sew the collar on, creating a shell.
+  
+  >[2] i
+  You are carrying:
+    a shell
+    three short sleeves
+    two long sleeves
+    a collar
+  
+  >[3] sew short sleeve to shirt
+  You sew the short sleeve on, creating an experiment.
+  
+  >[4] g
+  You sew the short sleeve on, creating a polo shirt.
+  
+  >[5] i
+  You are carrying:
+    a polo shirt
+    a short sleeve
+    two long sleeves
+    a collar
+  
+  >[6] x polo shirt
+  Stitched to the polo shirt are two short sleeves and a collar.
+  
+  >[7] cut collar
+  You carefully snip the collar free.
+  
+  >[8] i
+  You are carrying:
+    two collars
+    a t-shirt
+    a short sleeve
+    two long sleeves
+  
+  >[9] cut shirt
+  You cut up the t-shirt, snipping off two short sleeves.
+  
+  >[10] sew long sleeve to shirt
+  You sew the long sleeve on, creating an experiment.
+  
+  >[11] i
+  You are carrying:
+    three short sleeves
+    two collars
+    an experiment
+    a long sleeve
+  
+  >[12] sew long sleeve to shirt
+  You sew the long sleeve on, creating a mandarin blouse.
+  
+  >[13] i
+  You are carrying:
+    three short sleeves
+    two collars
+    a mandarin blouse
+  
+  >[14] sew collar to shirt
+  You sew the collar on, creating a button-down.
+  
+  >[15] g
+  The button-down already sports a collar.
+  
+  >[16] i
+  You are carrying:
+    three short sleeves
+    a button-down
+    a collar
+  
+  >[17] wear button-down
+  You put on the button-down.
+  
+> >

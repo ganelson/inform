@@ -1,0 +1,43 @@
+   Noplace
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Noplace
+  You can see a pebble here.
+  
+> >   Noplace
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  The pebble has been examined for less than one turn.
+  The pebble has been examined for zero turns.
+  
+  >[2] x pebble
+  You see nothing special about the pebble.
+  
+  The pebble has been examined for one turns.
+  
+  >[3] z
+  Time passes.
+  
+  The pebble has been examined for two turns.
+  
+  >[4] z
+  Time passes.
+  
+  The pebble has been examined for three turns.
+  
+  >[5] z
+  Time passes.
+  
+  The pebble has been examined for many turns.
+  
+  >[6] z
+  Time passes.
+  
+  The pebble has been examined for many turns.
+  
+> >

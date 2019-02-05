@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Extensions</title>
+<style type="text/css">
+<!--
+.headingbox {
+position: relative;
+height: 56px;
+padding: 0px;
+white-space:nowrap;
+background: #808080;
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+}
+.headingtext {
+position: absolute;
+top: -4px;
+left: -1px;
+width: 100%;
+color: #ffffff;
+padding: 14px 10px 0px 10px;
+font-size: 20px;
+font-weight: bold;
+}
+.headingrubric {
+position: absolute;
+top: 36px;
+width: 100%;
+color: #ffffff;
+padding: 0px 10px 0px 10px;
+font-size: 11px;
+font-weight: bold;
+}
+.buttons {
+height: 20px;
+padding: 2px 8px 2px 8px;
+margin: 2px;
+font-size: 11px;
+border:1px solid;
+border-radius: 5px;
+border-color: #000000;
+}
+.minibuttons {
+height: 14px;
+padding: 2px 5px 2px 5px;
+margin: 2px;
+font-size: 10px;
+border:1px solid;
+border-radius: 4px;
+border-color: #000000;
+}
+.uninstalled {
+color: #000000;
+background: #ffffdd;
+}
+.installed {
+color: #000000;
+background: #ffffff;
+pointer-events: none;
+}
+.builtin {
+color: #888888;
+background: #ffffff;
+pointer-events: none;
+}
+.update {
+color: #000000;
+background: #aaddff;
+}
+.revert {
+color: #000000;
+background: #ddaaff;
+}
+.revealer {
+color: #ffffff;
+background: #444444;
+}
+p {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 12px;
+}
+span.domainnameopen {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 15px;
+line-height: 18px;
+}
+div.domainitemsopen {
+display: block;
+}
+span.domainname {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 16px;
+line-height: 18px;
+}
+span.domainmark {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 16px;
+line-height: 18px;
+color: #666;
+}
+div.domainitemsclosed {
+display: none;
+}
+span.subdomainname {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 14px;
+line-height: 16px;
+}
+span.subdomainmark {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 14px;
+line-height: 16px;
+color: #666;
+}
+p.item {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 12px;
+line-height: 16px;
+padding-left: 80px;
+text-indent: -40px;
+}
+p.leftitem {
+font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+-webkit-font-smoothing: antialiased;
+font-size: 12px;
+line-height: 16px;
+padding-left: 40px;
+text-indent: -40px;
+}
+a.silentlink {
+text-decoration: none;
+color: #000;
+}
+a.buttonlink {
+text-decoration: none;
+}
+a.contentslink:link {										/* unvisited link */
+text-decoration: none;
+color: #202020;
+}
+a.contentslink:visited {									/* visited link */
+text-decoration: none;
+color: #202020;
+}
+a.contentslink:hover {										/* mouse over link */
+text-decoration: none;
+color: #D00000;
+}
+a.contentslink:active {										/* selected link */
+text-decoration: none;
+color: #D00000;
+}
+--></style>
+<script type="text/javascript">
+window.getAllList = [];
+window.getAllLength = 0;
+window.updateList = [];
+window.updateListLength = 0;
+window.departmentSizeD = new Array();
+window.departmentSizeI = new Array();
+window.departmentSizeU = new Array();
+window.departmentSizeR = new Array();
+window.subDepartmentSizeD = new Array();
+window.subDepartmentSizeI = new Array();
+window.subDepartmentSizeU = new Array();
+window.subDepartmentSizeR = new Array();
+function query(itemid, domid, subdomid, author, title, available, url) {
+var myProject = window.Project;
+var imid = 'button' + itemid;
+var res = myProject.askInterfaceForLocalVersion(author, title, available);
+var buttontext = 'DOWNLOAD';
+var buttonclass = 'buttons uninstalled';
+if (res == '!') {
+buttontext = 'BUILT IN'; buttonclass = 'buttons builtin';
+window.departmentSizeI[domid]++;
+window.subDepartmentSizeI[subdomid]++;
+}
+if (res == '=') {
+buttontext = 'INSTALLED'; buttonclass = 'buttons installed';
+window.departmentSizeI[domid]++;
+window.subDepartmentSizeI[subdomid]++;
+}
+if (res == '<') {
+var loc = myProject.askInterfaceForLocalVersionText(author, title);
+buttontext = 'UPDATE ' + loc + ' &#9654 ' + available;
+buttonclass = 'buttons update';
+window.updateList.push(itemid);
+window.updateList.push(url);
+window.updateList.push(title + ' by ' + author);
+window.updateListLength = window.updateListLength + 1;
+window.departmentSizeU[domid]++;
+window.subDepartmentSizeU[subdomid]++;
+}
+if (res == '>') {
+var loc = myProject.askInterfaceForLocalVersionText(author, title);
+buttontext = 'REVERT TO LIBRARY VERSION (' + loc + ' &#9654 ' + available + ')';
+buttonclass = 'buttons revert';
+window.departmentSizeR[domid]++;
+window.subDepartmentSizeR[subdomid]++;
+}
+if (buttontext == 'DOWNLOAD') {
+window.getAllList.push(itemid);
+window.getAllList.push(url);
+window.getAllList.push(title + ' by ' + author);
+window.getAllLength = window.getAllLength + 1;
+window.departmentSizeD[domid]++;
+window.subDepartmentSizeD[subdomid]++;
+}
+document.getElementById(imid).innerHTML = buttontext;
+document.getElementById(imid).className = buttonclass;
+}
+function onLoaded() {
+resetCounts(0);
+}
+window.onload=onLoaded;
+function resetCounts(updating) {
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+[ZEROINDICATOR]
+
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+[QUERY]
+
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+[SETINDICATOR]
+
+if (window.getAllLength == 0) {
+document.getElementById('getall').innerHTML = 'ALL DOWNLOADED';
+document.getElementById('getall').className = 'buttons installed';
+} else {
+if (window.getAllLength == 1) {
+document.getElementById('getall').innerHTML = 'DOWNLOAD 1 EXTENSION';
+} else {
+document.getElementById('getall').innerHTML = 'DOWNLOAD ' + window.getAllLength + ' EXTENSIONS';
+}
+document.getElementById('getall').className = 'buttons uninstalled';
+}
+if (window.updateListLength == 0) {
+document.getElementById('updateall').innerHTML = 'ALL UP TO DATE';
+document.getElementById('updateall').className = 'buttons installed';
+} else {
+if (window.updateListLength == 1) {
+document.getElementById('updateall').innerHTML = 'UPDATE 1 EXTENSION';
+} else {
+document.getElementById('updateall').innerHTML = 'UPDATE ' + window.updateListLength + ' EXTENSIONS';
+}
+document.getElementById('updateall').className = 'buttons update';
+}
+}
+function downloadSucceeded(itemid) {
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+[OPENTHISDOMAIN]
+
+resetCounts(1);
+}
+function addToIndicator(existing, count, className) {
+if (count == 0) return existing;
+if (existing != '') existing = existing + '+';
+return existing + '<span class="minibuttons ' + className + '">' + count + '</span>';
+}
+function setIndicatorFor(domid) {
+var temp = addToIndicator('', window.departmentSizeI[domid], 'installed');
+temp = addToIndicator(temp, window.departmentSizeD[domid], 'uninstalled');
+temp = addToIndicator(temp, window.departmentSizeU[domid], 'update');
+temp = addToIndicator(temp, window.departmentSizeR[domid], 'revert');
+document.getElementById('domainindicator'+domid).innerHTML = temp;
+}
+function setIndicatorForSub(domid) {
+var temp = addToIndicator('', window.subDepartmentSizeI[domid], 'installed');
+temp = addToIndicator(temp, window.subDepartmentSizeD[domid], 'uninstalled');
+temp = addToIndicator(temp, window.subDepartmentSizeU[domid], 'update');
+temp = addToIndicator(temp, window.subDepartmentSizeR[domid], 'revert');
+document.getElementById('subdomainindicator'+domid).innerHTML = temp;
+}
+function openDomain(domid) {
+document.getElementById('domainitems'+domid).className = 'domainitemsopen';
+document.getElementById('domainindicator'+domid).innerHTML = '';
+}
+function closeDomain(domid) {
+document.getElementById('domainitems'+domid).className = 'domainitemsclosed';
+setIndicatorFor(domid);
+}
+function maybeCloseDomain(domid, updating) {
+if ((updating == 1) && (document.getElementById('domainitems'+domid).className != 'domainitemsclosed')) {
+return;
+}
+document.getElementById('domainitems'+domid).className = 'domainitemsclosed';
+setIndicatorFor(domid);
+}
+function toggleDomain(domid) {
+if (document.getElementById('domainitems'+domid).className == 'domainitemsclosed') {
+openDomain(domid);
+} else {
+closeDomain(domid);
+}
+}
+function openSubDomain(domid) {
+document.getElementById('subdomainitems'+domid).className = 'domainitemsopen';
+document.getElementById('subdomainindicator'+domid).innerHTML = '';
+}
+function closeSubDomain(domid) {
+document.getElementById('subdomainitems'+domid).className = 'domainitemsclosed';
+setIndicatorForSub(domid);
+}
+function maybeCloseSubDomain(domid, updating) {
+if ((updating == 1) && (document.getElementById('subdomainitems'+domid).className != 'domainitemsclosed')) {
+return;
+}
+document.getElementById('subdomainitems'+domid).className = 'domainitemsclosed';
+setIndicatorForSub(domid);
+}
+function toggleSubDomain(domid) {
+if (document.getElementById('subdomainitems'+domid).className == 'domainitemsclosed') {
+openSubDomain(domid);
+} else {
+closeSubDomain(domid);
+}
+}
+function closeDomains() {
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+[CLOSEDOMAIN]
+
+}
+function closeSubDomains() {
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+[CLOSESUBDOMAINS]
+
+}
+function openSubDomains() {
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+[OPENSUBDOMAINS]
+
+}
+</script>
+</head>
+<body>
+<table cellspacing="3" border="0" width="100%"><tr id="surround0"><td style="width:100%">
+<div class="headingbox">
+<div class="headingtext">The Public Library: <i>Disconnected</i></div>
+<div class="headingrubric">Extensions shared by Inform users at www.inform7.com</div>
+</div></td></tr>
+</table>
+<table border="0" cellspacing="4" cellpadding="0" width=100%><tr>
+<td align="left" valign="top" width="0"></td><td align="left" valign="top">
+<font face="lucida grande,geneva,arial,tahoma,verdana,helvetica,helv" size=2>
+<p>This tab normally holds a public library of extensions shared by Inform authors, but right now it's <b>disconnected</b>.</p>
+<p>It's possible that the Inform website is down, and if so then our apologies: please try again later.</p>
+<p>It's possible that your computer is not currently connected to the Internet, and if so, please try again when you're back online.</p>
+<p>Though this is less likely, it's also possible that you're behind a firewall which is for some reason blocking the traffic. But since Inform is only making a regular Internet connection, not using an unusual port, it's more likely to be for one of the reasons above.</p>
+<hr>
+</font></td></tr></table>
+</body>
+</html>

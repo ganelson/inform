@@ -1,0 +1,7 @@
+Foo is a room.
+Quoggle is a number based rulebook.
+Quoggle a number (this is the blob rule): say "number."
+Foggle is a text based rulebook.
+Foggle a text (called the utterance) (this is the fog rule): say the utterance.
+The fog rule substitutes for the blob rule.
+When play begins: follow the quoggle rules for 10.

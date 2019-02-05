@@ -1,0 +1,87 @@
+   Empty Room
+  Tilt
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empty Room
+  Nothing to see here.
+  
+  You can see a deck of cards here.
+  
+> >   Empty Room
+  (Testing.)
+  
+  >[1] seed
+  >[2] draw
+  You draw a six of clubs.
+  
+  >[3] g
+  You draw a jack of diamonds.
+  
+  >[4] g
+  You draw a queen of diamonds.
+  
+  >[5] g
+  You draw a four of hearts.
+  
+  >[6] g
+  You draw a seven of spades.
+  
+  >[7] i
+  You are carrying:
+    a seven of spades
+    a four of hearts
+    a queen of diamonds
+    a jack of diamonds
+    a six of clubs
+  
+  >[8] discard seven of spades
+  You toss the seven of spades nonchalantly onto the discard pile.
+  
+  >[9] draw
+  You draw an eight of diamonds.
+  
+  >[10] discard six
+  You toss the six of clubs nonchalantly onto the discard pile.
+  
+  >[11] draw
+  You draw a six of diamonds.
+  
+  >[12] i
+  You are carrying:
+    a six of diamonds
+    an eight of diamonds
+    a four of hearts
+    a queen of diamonds
+    a jack of diamonds
+  
+  >[13] discard hearts
+  You toss the four of hearts nonchalantly onto the discard pile.
+  
+  >[14] discard six of diamonds card
+  You toss the six of diamonds nonchalantly onto the discard pile.
+  
+  >[15] draw
+  You draw a king of hearts.
+  
+  >[16] draw
+  You draw a four of spades.
+  
+  >[17] i
+  You are carrying:
+    a four of spades
+    a king of hearts
+    an eight of diamonds
+    a queen of diamonds
+    a jack of diamonds
+  
+  >[18] discard spades card
+  You toss the four of spades nonchalantly onto the discard pile.
+  
+  >[19] draw
+  You draw a nine of clubs.
+  
+  >[20] discard king card
+  You toss the king of hearts nonchalantly onto the discard pile.
+  
+> >

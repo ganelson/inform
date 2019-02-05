@@ -1,0 +1,308 @@
+"Chapter 10: Le Gourmand" by Emily Short
+
+Chapter 10
+
+
+ Use command line echoing.
+
+[Section 1 - Scenes]
+
+The Kitchen is a room. 
+
+The stove is scenery in the kitchen. It is a supporter. The oven is a container. It is part of the stove. It is closed and openable. The stove's switch is a device. It is switched on. It is part of the stove. The  oven's dial is a device. It is switched off. It is part of the oven. 
+
+A thing can be heatproof.
+
+Instead of putting something which is not heatproof on the stove when the stove's switch is switched on:
+	say "You catch yourself just at the last minute: not a good idea to put [the noun] directly on the stove while it's turned on."
+
+Instead of switching on the stove, try switching on the stove's switch.
+
+Instead of switching off the stove, try switching off the stove's switch.
+
+Instead of switching on the oven, try switching on the oven's dial.
+
+Instead of switching off the oven, try switching off the oven's dial.
+
+Before switching on the oven's dial when the oven is open:
+	say "(closing the oven so that it will heat properly)[paragraph break]";
+	try closing the oven.
+
+The frying pan is a heatproof unopenable open container on the stove. 
+
+The cabinet is a closed openable container in the kitchen. It is scenery. It contains an open unopenable container called a mixing bowl. It contains a portable supporter called a platter. An open unopenable heatproof container called a Calphalon baking dish is in the cabinet. The baking dish has the description "One of those marvelous pieces of kitchen equipment which goes on the stove or in the oven, as you will. The chief thing is never ever to touch it when it is hot, since the handles are metal and the heat retention excellent."
+
+The counter is a supporter in the kitchen. It is scenery. The kettle is a heatproof openable closed container on the counter. Some water is in the kettle.
+
+The water can be cool, warm, or boiling. The printed name of the water is "[water condition] water".
+
+The refrigerator is a closed openable container in the kitchen. It is scenery. 
+
+An ingredient is a kind of thing. 
+
+Some onions, some apricots, and some sage are ingredients on the counter. A chicken breast, an egg, and goat cheese are ingredients in the refrigerator.
+
+The goat cheese can be wrapped, snipped open, or unwrapped. The printed name of the goat cheese is "[goat cheese condition] goat cheese".
+
+The sage can be unwashed, clean, or julienned. The sage is unwashed. The printed name of the sage is "[sage condition] sage".
+
+The apricots can be dried, reconstituted, or chopped. The apricots are dried. The printed name of the apricots is "[apricots condition] apricots".
+
+The chicken breast can be whole, flattened, stuffed, rolled, coated, browned, or baked. The printed name of the chicken breast is "[chicken breast condition] chicken breast".
+
+The onions can be unpeeled, peeled, diced, sauteed, or burnt. [The printed name of the onions is "[onions condition] onions".]
+
+The can of chicken broth is a closed container on the counter. The bottle of white cooking wine and the bottle of Thurston Wolfe PGV are a closed containers in the refrigerator.
+
+The description of the Thurston Wolfe is "A Washington State Pinot Gris-Viognier, vintage 2003. It is said to have 'peach aromas', and, startlingly, the untutored person can actually detect these without resorting to fantasy. 
+
+(It is also supposed to possess a delicate perfume and a moderate body; the label author at least stopped short of adding 'and a good sense of humor')."
+
+Understand the commands "wash" and "rinse" as "rub".
+
+Instead of rubbing the unwashed sage:
+	now the sage is clean;
+	say "You rinse off the sage. There -- ready to slice."
+
+Instead of cutting the sage:
+	say "You'd need to have a knife in hand, first."
+
+Instead of cutting the clean sage when the player is carrying the butcher knife:
+	now the sage is julienned;
+	say "You slice the sage into thin strips." 
+
+Instead of cutting the unwashed sage:
+	say "It came from the garden, so it won't have any strange chemicals on it, but you should still give it a rinse for dirt and bugs and so on before using it."
+
+Instead of doing something other than examining or rubbing with the unwashed sage:
+	say "It needs to be washed off."
+
+Understand "peel [something]" as peeling.
+
+Peeling is an action applying to one thing.
+
+Instead of peeling the unpeeled onions:
+	now the onions are peeled;
+	say "You tear away the shining outer skin of the onions, leaving them pale and nekkid. Poor things."
+
+Instead of cutting the diced onions:
+	say "That seems unnecessary now."
+
+Instead of cutting the sauteed onions:
+	say "Too late; you're well past that stage."
+	
+Instead of cutting the burnt onions:
+	say "There's no rescuing 'em -- the carbon isn't going to flake off, you know."
+
+Instead of cutting the unpeeled onions:
+	say "It would help to peel them first."
+
+Instead of cutting the peeled onions:
+	say "You'd need to have a knife in hand, first."
+
+Instead of cutting the peeled onions when the player is carrying the butcher knife:
+	now the onions are diced;
+	say "You dice the onions neatly. Your own skill brings tears to your eyes." 
+
+
+Instead of opening the goat cheese:
+	try peeling the goat cheese instead.
+	
+Instead of peeling the unwrapped goat cheese:
+	say "The goat cheese is already unwrapped. (Stay focused, stay focused...)"
+
+Before peeling the wrapped goat cheese when the shears are held by the player:
+	try cutting the goat cheese.
+
+Instead of peeling the snipped open goat cheese:
+	now the goat cheese is unwrapped;
+	say "Ah, success. The goat cheese is now free of its packet."
+
+Instead of peeling the wrapped goat cheese:
+	say "It would help to have a pair of scissors or something -- the packet resists being torn."
+	
+Instead of cutting the goat cheese:
+	say "No need, at this point."	
+
+Before cutting the wrapped goat cheese when the shears are not held by the player and the shears are visible:
+	say "(first picking up the shears)[paragraph break]";
+	try taking the shears.
+
+Instead of cutting the wrapped goat cheese:
+	say "Something to cut with would be useful."
+	
+Instead of cutting the wrapped goat cheese when the shears are held by the player:
+	now the goat cheese is snipped open;
+	say "You neatly snip through the packaging with the shears."
+
+
+Instead of examining the whole chicken breast:
+	say "It is still entire and has yet to be pounded flat."
+
+Instead of examining the flattened chicken breast:
+	say "It has been hammered to a thickness of about a half inch. (The recipe said a quarter inch but you're pretty sure it was joking. You have never been able to achieve a quarter inch.)"
+
+Instead of attacking the whole chicken breast:
+	say "You need something heavy enough to flatten it with."
+	
+Instead of attacking the whole chicken breast when the player is holding the wooden mallet:
+	now the chicken breast is flattened;
+	say "You hammer away at the chicken breast, turning all your aggressions into culinary goodness. Several minutes pass. When you are done you have a broad flat chickeny pancake suitable for wrapping about a stuffing."
+	
+[Before printing the name of chicken:
+	say "[chicken breast condition] " 
+
+Before printing the name of apricots:
+	say "[apricots condition] "]
+
+Before printing the name of onions:
+	say "[onions condition] ".
+
+
+The drawer is an openable closed container. It is part of the counter. 
+
+A tool is a kind of thing. A spatula, a spoon, a wooden mallet, shears, and a ball of twine are tools in the drawer. A butcher knife is a tool carried by the player.
+
+Instead of burning something:
+	say "You'll have to do that the hard way."
+
+Some steam is fixed in place. "Dense clouds of steam fill the room."
+
+Some smoke is fixed in place. "Smoke is beginning to collect near the ceiling."
+
+
+Section 2 - Creating a Scene
+
+Sauteeing Onions is a scene. Sauteeing Onions begins when the diced onions are in a hot container.
+
+Definition: a container is hot if it is on the stove and the stove's switch is switched on.
+
+Instead of touching the hot pan: 
+	say "Ow!"
+
+Scorching Onions is a scene. 
+
+When Scorching Onions begins:
+	move smoke to location.
+
+
+
+
+Preheating the Oven is a scene. Preheating the Oven begins when the oven's dial is heating.
+
+Definition: a oven's dial is heating if the oven's dial has been switched on for exactly one turn.
+
+Preheating the Oven ends when the time since Preheating the Oven began is five minutes.
+
+When Preheating the Oven begins:
+	say "The oven begins to warm up."
+
+When Preheating the Oven ends:
+	say "The oven beeps to inform you that it has reached the desired hotness."
+
+Section 5 - During Scenes
+
+Every turn during Idling:
+	say "You should really get started sauteeing the onions."
+
+Every turn during Sauteeing Onions:
+	say "The onions sizzle in the pan."
+	
+Every turn during Scorching Onions:
+	say "The onions are past their prime and are getting blacker by the moment."
+
+Every turn during Hearing the Kettle Whistle:
+	say "The kettle continues to whistle."
+
+Instead of listening to during Hearing the Kettle Whistle:
+	say "The only thing you can really hear just at the moment is the kettle."
+
+Instead of smelling the Kitchen during Sauteeing Onions:
+	try smelling the onions.
+	
+Instead of smelling the onions during Sauteeing Onions:
+	say "The onions smell marvelous."
+	
+Instead of opening the oven during Preheating the Oven:
+	say "It'll never heat if you open it up while it's warming."
+
+
+
+
+Section 6 - Linking scenes together
+
+Heating Kettle is a scene. Heating Kettle begins when the hot kettle contains cool water. 
+
+When Heating Kettle begins:
+	say "The kettle begins to heat up."
+
+Heating Kettle ends when the time since Heating Kettle began is 7 minutes.
+
+Hearing the Kettle Whistle is a scene. Hearing the Kettle Whistle begins when Heating Kettle ends. Hearing the Kettle Whistle ends when the kettle is not hot.
+
+When Hearing the Kettle Whistle begins:
+	now the water is boiling;
+	say "The kettle begins to burble and whistle shrilly."
+	
+When Hearing the Kettle Whistle ends:
+	say "The kettle's screaming dies off."
+
+
+Section 7 - More general linkages
+
+Idling is a scene. Idling begins when play begins. Idling ends when Sauteeing Onions begins.
+
+Section 8 - Multiple beginnings and repeats
+
+Section 9 - Multiple endings
+
+Sauteeing Onions ends in disaster when Scorching Onions begins.
+
+Sauteeing Onions ends in success when the sauteed onions are not in a hot container.
+
+Definition: a thing is alone if it is in a container which contains exactly one thing.
+
+
+Sauteeing Onions ends in mixture when the sauteed onions are not alone.
+
+When Sauteeing Onions ends in mixture:
+	say "The mixture of things in [the holder of the onions] stops them cooking quite so fast."
+
+When Sauteeing Onions ends in success:
+	say "Nice work with the onions."
+	
+Every turn:
+	if diced onions have been in a hot pan for ten turns
+	begin;
+		say "The onions are starting to look ready.";
+		now the onions are sauteed;
+	end if;
+
+Scorching Onions begins when Sauteeing Onions ends in disaster. Scorching Onions begins when the alone sauteed onions are in a hot container. 
+
+Scorching Onions ends horribly when the time since Scorching Onions began is three minutes. Scorching Onions ends in reprieve when the sauteed onions are not in a hot container.  Scorching Onions ends in mixture when the sauteed onions are not alone. 
+
+When Scorching Onions ends in mixture:
+	say "The mixture of things in [the holder of the onions] stops them cooking quite so fast."
+
+When Scorching Onions ends horribly:
+	now the onions are burnt.
+	
+Instead of smelling when Scorching Onions has ended:
+	say "The scent of the late disaster lingers in the air."
+	
+Reconstituting the Apricots is a scene.
+
+Reconstituting the Apricots begins when the dried apricots are in a container which contains boiling water.
+
+When Reconstituting the Apricots begins:
+	say "The apricots slowly begin to plump up again."
+	
+Reconstituting the Apricots ends when the dried apricots are not in a container which contains boiling water.
+
+Every turn:
+	if dried apricots have been in a container which contains boiling water for ten turns
+	begin;
+		say "The apricots have turned plump(ish).";
+		now the apricots are reconstituted;
+	end if;

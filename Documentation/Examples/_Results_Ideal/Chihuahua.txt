@@ -1,0 +1,30 @@
+   Temporary Employment Office
+  Today Tomorrow
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Temporary Employment Office
+  "Tomorrow's Temporary Workers - Today!" proclaims the logo over the door. The office is divided into two areas, the inner sanctum where you take calls and fiddle with the computer, and the outer area where workers take skill exams and watch inspirational videos ("Earn your way to partial benefits!", "Vacation days and you!", "Temping the Tomorrow Way", etc.).
+  
+  Your coworker Maya sits at her own computer, diligently modifying all the billing rates in the database up from $25.00 an hour to $25.04.
+  
+  On the desk are a multi-line telephone and a printer.
+  
+> >   Temporary Employment Office
+  (Testing.)
+  
+  >[1] x maya
+  She's wearing a trenchcoat, in a bizarre bid to keep your boss unaware of the chihuahua in her pocket. "Because petsitters are really expensive!" she explained to you in an urgent hiss this morning over the coffeemaker. To all appearances, she is carrying nothing.
+  
+  >[2] x cheeseburger
+  A minor self-indulgence to make up for the fact that you have to work through lunch.
+  
+  >[3] drink shake
+  You eat the chocolate shake. Not bad.
+  
+  Your boss pokes his head in, temporarily free of the round of conference calls that occupy all his days. "Maya," he says. "Your coat?" He shakes his head, clucking sadly. "It doesn't say professional!" But mercifully Maya manages to take it off so slowly that he doesn't glimpse her pet before her phone rings again.
+  
+  >[4] eat cheeseburger
+  The chihuahua yips at you! Maya looks despairingly at the double bacon cheeseburger, which is obviously inciting it.
+  
+> >

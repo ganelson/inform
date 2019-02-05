@@ -1,0 +1,28 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see a generic foobar and a special foobar here.
+  
+> >   Home
+  (Testing.)
+  
+  >[1] x generic foobar
+  The generic foobar is unsatisfied.
+  
+  >[2] x special foobar
+  The special foobar is satisfied.
+  
+  >[3] take all
+  generic foobar: Taken.
+  special foobar: Taken.
+  
+  >[4] x generic foobar
+  The generic foobar is satisfied.
+  
+  >[5] x special foobar
+  The special foobar is unsatisfied.
+  
+> >

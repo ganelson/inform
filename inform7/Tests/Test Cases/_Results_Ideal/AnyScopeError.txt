@@ -1,0 +1,17 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] bug me
+  As good-looking as ever.
+  
+  >[2] bug home
+  Oh, if you must use "any thing", you deserve all you get.
+  
+> >

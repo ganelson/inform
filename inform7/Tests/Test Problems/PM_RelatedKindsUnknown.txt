@@ -1,0 +1,5 @@
+Home is a room.
+
+Treedom relates one xyzzy to one person.
+
+Shrubdom relates one person to one plugh.

@@ -1,0 +1,174 @@
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+
+Atom Furnace
+
+>(Testing.)
+
+>[1] actions
+Actions listing on.
+
+>[2] rules
+Rules tracing now switched on. Type "rules off" to switch it off again, or "rules all" to include even rules which do not apply.
+
+>[3] trace 2
+[Rule "declare everything initially unmentioned rule" applies.]
+[Parser tracing set to level 2.]
+
+>[4] x20
+[ "x20" x20 ]
+[Parsing for the verb 'x20' (1 lines)]
+
+[line 0 * -> A97_action20ing]
+ [line 0 token 1 word 2 : END]
+[Line successfully parsed]
+[Rule "declare everything initially unmentioned rule" applies.]
+[action20ing]
+[Rule "announce items from multiple object lists rule" applies.]
+[Rule "set pronouns from items from multiple object lists rule" applies.]
+[Rule "before stage rule" applies.]
+[Rule "instead stage rule" applies.]
+[Rule "investigate player's awareness before action rule" applies.]
+[Rule "player aware of his own actions rule" applies.]
+[Rule "check stage rule" applies.]
+[Rule "carry out stage rule" applies.]
+[Rule "Carry out action20ing" applies.]
+[Rule "after stage rule" applies.]
+[Rule "investigate player's awareness after action rule" applies.]
+[Rule "report stage rule" applies.]
+[Rule "last specific action-processing rule" applies.]
+[action20ing - succeeded]
+
+[Rule "A first turn sequence rule" applies.]
+[Rule "every turn stage rule" applies.]
+[Rule "A last turn sequence rule" applies.]
+[Rule "notify score changes rule" applies.]
+>[5] x110
+[ "x110" x110 ]
+[Parsing for the verb 'x110' (1 lines)]
+
+[line 0 * -> A187_action110ing]
+ [line 0 token 1 word 2 : END]
+[Line successfully parsed]
+[Rule "declare everything initially unmentioned rule" applies.]
+[action110ing]
+[Rule "announce items from multiple object lists rule" applies.]
+[Rule "set pronouns from items from multiple object lists rule" applies.]
+[Rule "before stage rule" applies.]
+[Rule "instead stage rule" applies.]
+[Rule "investigate player's awareness before action rule" applies.]
+[Rule "player aware of his own actions rule" applies.]
+[Rule "check stage rule" applies.]
+[Rule "carry out stage rule" applies.]
+[Rule "Carry out action110ing" applies.]
+[Rule "after stage rule" applies.]
+[Rule "investigate player's awareness after action rule" applies.]
+[Rule "report stage rule" applies.]
+[Rule "last specific action-processing rule" applies.]
+[action110ing - succeeded]
+
+[Rule "A first turn sequence rule" applies.]
+[Rule "every turn stage rule" applies.]
+[Rule "A last turn sequence rule" applies.]
+[Rule "notify score changes rule" applies.]
+>[6] x220
+[ "x220" x220 ]
+[Parsing for the verb 'x220' (1 lines)]
+
+[line 0 * -> A297_action220ing]
+ [line 0 token 1 word 2 : END]
+[Line successfully parsed]
+[Rule "declare everything initially unmentioned rule" applies.]
+[action220ing]
+[Rule "announce items from multiple object lists rule" applies.]
+[Rule "set pronouns from items from multiple object lists rule" applies.]
+[Rule "before stage rule" applies.]
+[Rule "instead stage rule" applies.]
+[Rule "investigate player's awareness before action rule" applies.]
+[Rule "player aware of his own actions rule" applies.]
+[Rule "check stage rule" applies.]
+[Rule "carry out stage rule" applies.]
+[Rule "Carry out action220ing" applies.]
+[Rule "after stage rule" applies.]
+[Rule "investigate player's awareness after action rule" applies.]
+[Rule "report stage rule" applies.]
+[Rule "last specific action-processing rule" applies.]
+[action220ing - succeeded]
+
+[Rule "A first turn sequence rule" applies.]
+[Rule "every turn stage rule" applies.]
+[Rule "A last turn sequence rule" applies.]
+[Rule "notify score changes rule" applies.]
+>[7] x230
+[ "x230" x230 ]
+[Parsing for the verb 'x230' (1 lines)]
+
+[line 0 * -> A307_action230ing]
+ [line 0 token 1 word 2 : END]
+[Line successfully parsed]
+[Rule "declare everything initially unmentioned rule" applies.]
+[action230ing]
+[Rule "announce items from multiple object lists rule" applies.]
+[Rule "set pronouns from items from multiple object lists rule" applies.]
+[Rule "before stage rule" applies.]
+[Rule "instead stage rule" applies.]
+[Rule "investigate player's awareness before action rule" applies.]
+[Rule "player aware of his own actions rule" applies.]
+[Rule "check stage rule" applies.]
+[Rule "carry out stage rule" applies.]
+[Rule "Carry out action230ing" applies.]
+[Rule "after stage rule" applies.]
+[Rule "investigate player's awareness after action rule" applies.]
+[Rule "report stage rule" applies.]
+[Rule "last specific action-processing rule" applies.]
+[action230ing - succeeded]
+
+[Rule "A first turn sequence rule" applies.]
+[Rule "every turn stage rule" applies.]
+[Rule "A last turn sequence rule" applies.]
+[Rule "notify score changes rule" applies.]
+>[8] x240
+[ "x240" x240 ]
+[Parsing for the verb 'x240' (1 lines)]
+
+[line 0 * -> A317_action240ing]
+ [line 0 token 1 word 2 : END]
+[Line successfully parsed]
+[Rule "declare everything initially unmentioned rule" applies.]
+[action240ing]
+[Rule "announce items from multiple object lists rule" applies.]
+[Rule "set pronouns from items from multiple object lists rule" applies.]
+[Rule "before stage rule" applies.]
+[Rule "instead stage rule" applies.]
+[Rule "investigate player's awareness before action rule" applies.]
+[Rule "player aware of his own actions rule" applies.]
+[Rule "check stage rule" applies.]
+[Rule "carry out stage rule" applies.]
+[Rule "Carry out action240ing" applies.]
+[Rule "after stage rule" applies.]
+[Rule "investigate player's awareness after action rule" applies.]
+[Rule "report stage rule" applies.]
+[Rule "last specific action-processing rule" applies.]
+[action240ing - succeeded]
+
+[Rule "A first turn sequence rule" applies.]
+[Rule "every turn stage rule" applies.]
+[Rule "A last turn sequence rule" applies.]
+[Rule "notify score changes rule" applies.]
+>[ "quit" quit ]
+[Parsing for the verb 'quit' (1 lines)]
+
+[line 0 * -> Quit]
+ [line 0 token 1 word 2 : END]
+[Line successfully parsed]
+[Rule "declare everything initially unmentioned rule" applies.]
+[quitting the game]
+[Rule "investigate player's awareness before action rule" applies.]
+[Rule "player aware of his own actions rule" applies.]
+[Rule "check stage rule" applies.]
+[Rule "carry out stage rule" applies.]
+Are you sure you want to quit? 

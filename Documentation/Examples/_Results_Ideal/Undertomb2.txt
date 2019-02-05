@@ -1,0 +1,99 @@
+   Undertomb
+  Undertomb 2
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Undertomb
+  From this dim cross-groined room, exits depart east, south, and northwest.
+  
+  You can see a lantern (providing light) here.
+  
+> >   Dead End
+  (Testing.)
+  
+  >[1] east
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+  >[2] west
+  
+  Undertomb
+  From this dim cross-groined room, exits depart east, south, and northwest.
+  
+  You can see a lantern (providing light) here.
+  
+  >[3] get lantern
+  Taken.
+  
+  >[4] east
+  
+  Dead End
+  This is a dead end, where crags in the uneven rock are caught by the blazing flame you hold aloft. Despite a faint whispering of running water there is no sign of the stream.
+  
+  >[5] west
+  
+  Undertomb
+  From this dim cross-groined room, exits depart east, south, and northwest.
+  
+  >[6] south
+  
+  Collapsed Dead End
+  This is a dead end, where crags in the uneven rock are caught by the blazing flame you hold aloft. Despite a faint whispering of running water there is no sign of the stream.
+  
+  >[7] north
+  
+  Undertomb
+  From this dim cross-groined room, exits depart east, south, and northwest.
+  
+  >[8] northwest
+  
+  Dead End
+  This is a dead end, where crags in the uneven rock are caught by the blazing flame you hold aloft. Despite a gurgle of running water there is no sign of the stream.
+  
+  >[9] read book
+  Many secrets are now yours.
+  
+  >[10] x lantern
+  The lantern shines with a flame at 1400C.
+  
+  >[11] z
+  You wait so long that your lantern dims a bit.
+  
+  >[12] x lantern
+  The lantern shines with a flame at 1100C.
+  
+  >[13] read book
+  Many secrets are now yours.
+  
+  >[14] look
+  Dead End
+  This is a dead end, where crags in the uneven rock are caught by the radiant flame you hold aloft. Despite a gurgle of running water there is no sign of the stream.
+  
+  >[15] z
+  You wait so long that your lantern dims a bit.
+  
+  >[16] x lantern
+  The lantern shines with a flame at 700C.
+  
+  >[17] read book
+  Many secrets are now yours.
+  
+  >[18] look
+  Dead End
+  This is a dead end, where crags in the uneven rock are caught by the weak flame you hold aloft. Despite a gurgle of running water there is no sign of the stream.
+  
+  >[19] z
+  You wait so long that your lantern dims a bit.
+  
+  >[20] x lantern
+  The lantern shines with a flame at 700C.
+  
+  >[21] read book
+  No, the print's too tiny by this awful light.
+  
+  >[22] look
+  Dead End
+  This is a dead end, where crags in the uneven rock are caught by the guttering flame you hold aloft. Despite a gurgle of running water there is no sign of the stream.
+  
+> >

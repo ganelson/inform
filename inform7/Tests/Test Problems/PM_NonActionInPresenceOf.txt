@@ -1,0 +1,3 @@
+Burrow is a room. Mme Cholet is in the Burrow.
+
+Every turn in the presence of Mme Cholet: say "Mme Cholet eyes you."

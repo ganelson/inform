@@ -1,0 +1,4 @@
+"Foo" by Bar.
+Foo is a room. 
+To flob (N - any number): do nothing.
+Every turn: flob 4.

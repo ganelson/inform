@@ -1,0 +1,16 @@
+"Locks" by Emily Short
+
+
+ Use command line echoing.
+
+Include Locksmith by Emily Short.
+
+The Summoning Room is a room. 
+
+The protected door is east of the Summoning Room and west of the Abattoir. It is a door. It is closed, lockable, and locked.
+
+The passcard unlocks the protected door. It is carried by the player.
+
+The safe is a closed openable lockable locked container in the Abattoir. In the safe is an amphora.
+
+The goat-headed key is a passkey. It unlocks the safe. It is in the Summoning Room.

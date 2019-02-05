@@ -1,0 +1,52 @@
+   Shipping Room
+  Brown
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Shipping Room
+  You can see a black crate and a brown crate here.
+  
+> >   Shipping Room
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a red sticky label
+  
+  >[2] put label on the black crate
+  You stick the red sticky label to the black crate.
+  
+  >[3] look
+  Shipping Room
+  You can see a black crate and a brown crate here.
+  
+  >[4] x black
+  A boring black crate.
+  
+  A bright red sticky label is attached to the black crate!
+  
+  >[5] x label
+  It reads: AIRMAIL. It is stuck to the black crate.
+  
+  >[6] get the label
+  You peel the label off again.
+  
+  >[7] apply label to brown crate
+  You stick the red sticky label to the brown crate.
+  
+  >[8] look
+  Shipping Room
+  You can see a black crate and a brown crate here.
+  
+  >[9] x brown
+  An ordinary brown crate.
+  
+  A bright red sticky label is attached to the brown crate!
+  
+  >[10] peel off label
+  You peel the label off again.
+  
+  >[11] stick label to label
+  That would ruin the label entirely.
+  
+> >

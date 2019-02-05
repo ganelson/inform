@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnderstandNothingWhen
+  >--> You wrote 'Understand nothing as mumbling when 1 is 2' (source text, line 5):
+    but 'Understand nothing as ...' must be unconditional, so your 'when' or
+    'while' condition will have to go.
+Inform 7 has finished: 17 centiseconds used.

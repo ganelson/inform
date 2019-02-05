@@ -1,0 +1,14 @@
+   Situation Room                                                                                                                                                                                                         1809
+  Situation Room
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Situation Room
+  
+> >   Situation Room                                                                                                                                                                                                         1810
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+> >

@@ -1,0 +1,21 @@
+   Cell
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cell
+  You can see Julian here.
+  
+> >   Cell
+  (Testing.)
+  
+  >[1] showme
+  Cell - room
+      yourself - man
+          your tattoo (part of yourself) - tattoo
+          your nose (part of yourself) - nose
+      Julian - man
+          Julian's tattoo (part of Julian) - tattoo
+          Julian's nose (part of Julian) - nose
+  
+> >

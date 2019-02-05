@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SpacyCommand
+  >--> You wrote 'Understand the command "two words" as something new' (source
+    text, line 3): but 'understand the command ... as ...' is only allowed when
+    the old command is a single word, so for instance 'understand the command
+    "capture" as "get"' is okay, but 'understand the command "capture the flag"
+    as "get"' is not.
+Inform 7 has finished: 17 centiseconds used.

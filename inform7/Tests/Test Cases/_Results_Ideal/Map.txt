@@ -1,0 +1,26 @@
+   Brahms Conservatoire
+  relation of numbers: joint magnitude relation
+  "location" = object: Brahms Conservatoire
+  "list of colours" = list of colours: {red, indigo, chartreuse}
+  phrase text -> text: txtng
+  phrase (number, number) -> number: maximizing
+  "doubling applied to 2" = number: 4
+  "txtng applied to spelling out applied to doubling applied to { 3, 8, 4, 19, 7 }" = list of texts: {"sx", "sxtn", "ght", "thrty-ght", "frtn"}
+  "maximizing reduction of { 3, 8, 4, 19, 7 }" = number: 19
+  "filter to even numbers of { 3, 8, 4, 19, 7 }" = list of numbers: {8, 4}
+  "maximizing reduction of { -3, -8, -4, -19, -7 }" = number: -3
+  "summing reduction of { 3, 8, 4, 19, 7 }" = number: 41
+  "concatenation reduction of spelling out applied to { 3, 8, 4, 19, 7 }" = text: threeeightfournineteenseven
+  "filter to lengthy texts of spelling out applied to { 3, 8, 4, 19, 7 }" = list of texts: {"nineteen"}
+  "filter to lengthy texts of spelling out applied to { 15, 2, 20, 29, -4 }" = list of texts: {"fifteen", "twenty-nine", "minus four"}
+  
+  "length extraction applied to "Hello world!"" = number: 12
+  "length of "podgorny"" = number: 8
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  
+> >   Brahms Conservatoire
+> Are you sure you want to quit? 

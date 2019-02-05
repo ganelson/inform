@@ -1,0 +1,58 @@
+   Gallery of Lexical Monstrosities
+  mayn't is mayn't.
+  "do" is 'do'.
+  "cha" "cha" is 'cha' 'cha'.
+  @@@ is @@@.
+  ^"^ is ^'^.
+  ~@^ is ~@^.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Gallery of Lexical Monstrosities
+  You can see a boy x girl, a b@t, a ~~ and a flo^flo here.
+  
+> >   Gallery of Lexical Monstrosities
+  (Testing.)
+  
+  >[1] x x
+  You see nothing special about the boy x girl.
+  
+  >[2] x b@t
+  You see nothing special about the b@t.
+  
+  >[3] x ~~
+  You can't see any such thing.
+  
+  >[4] x flo^flo
+  You see nothing special about the flo^flo.
+  
+  >[5] /
+  You are carrying nothing.
+  
+  >[6] x^x
+  You are carrying nothing.
+  
+  >[7] provoke @@@
+  You provoke the @@@.
+  
+  >[8] provoke ^'^
+  You provoke the ^'^.
+  
+  >[9] provoke mayn't
+  You provoke the mayn't.
+  
+  >[10] provoke 'do'
+  You provoke the 'do'.
+  
+  >[11] provoke 'cha' 'cha'
+  You provoke the 'cha' 'cha'.
+  
+  >[12] provoke ~
+  I didn't understand that sentence.
+  
+  >[13] provoke ~@^
+  I didn't understand that sentence.
+  
+> >

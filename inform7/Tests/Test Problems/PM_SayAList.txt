@@ -1,0 +1,41 @@
+Open Road is a room. "On pleasant days, the open road beckons you onward.
+
+Today is not a pleasant day. The clouds are thick and low, and even though it's noon, there's very little light. It is not raining now, but it has been raining very recently and it threatens to do so again soon. The road is muddy, and the trees drip strategically down the back of your neck."
+
+Steadfast is an animal in the Open Road.  "Your pony Steadfast looks more than usually fed up."
+
+The herbalist's traveling wagon is an enterable container in Open Road. "Your traveling wagon is hitched to Steadfast." The description of the traveling wagon is "The gaily striped awnings have become ratty with wear, streaked with mildew from travels in the north. When the awnings are propped open, however, they still reveal ordered rows of hooks and bottles and shelves: space enough for dozens of potions and concoctions to be safely transported from town to town, and displayed at every marketplace and fair."
+
+A component is a kind of thing. Limbo is a container. 100 components are in Limbo.  100 components are in Limbo. 
+
+The indefinite article of a component is usually "some".
+
+A scent is a kind of value. Lavender, grapefruit, lime, lilac, opoponax, amber, vanilla, and sandalwood are scents.
+
+Perfume relates various scents to various components. The verb to perfume means the perfume relation. The verb to be redolent of means the reversed perfume relation. 
+
+A color is a kind of value. red, orange, yellow, green, blue, dark blue, violet, pink, and magenta are colors.
+
+A component has a color.
+
+A clarity is a kind of value. clear and cloudy are clarities.
+
+A component has a clarity.
+
+A viscosity is a kind of value. watery, oily, and viscous are viscosities.
+
+A component has a viscosity.
+
+A toxicity is a kind of value. poisonous, mildly toxic, and safe are toxicities.
+
+A component has a toxicity.
+
+After examining a component:
+	showme list of scents which perfume the noun;
+	say "[The noun] is a [clarity of the noun] [color of the noun] [toxicity of the noun] liquid.  It smells like [a list of scents which perfume the noun]."
+	
+An angelic honey is a viscous clear yellow safe component in the traveling wagon. Angelic honey is redolent of vanilla. 
+
+After tasting a component when the toxicity of the noun is not safe:
+	say "This turns out to be a terrible idea.";
+	end the story.

@@ -1,0 +1,10 @@
+Numbering is an action applying to one number. Understand "[number]" as numbering.
+
+Report numbering (this is the standard report numbering rule):
+say "[number understood] => [square root of number understood][line break]".
+
+The Testing Room is A Room.
+
+Test me with "16383 / 16384 / 32767 / 32768".
+
+Test glulx with "1073741823 / 1073741824 / 2147483647 / 2147483648".

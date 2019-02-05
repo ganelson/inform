@@ -1,0 +1,25 @@
+Inform 7 build 6L84 has started.
+I've now read your source text, which is 41 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TypeCheckBP2a
+  >--> In the sentence 'if bar is a greeting listed in Table of Greetings' (source
+    text, line 11), it looks as if you intend 'bar is a greeting listed in
+    Table of Greetings' to be a condition, but that doesn't work because you
+    use the listed in relation (between a text and a table name) with a time
+    instead of a text.
+    I was trying to match this phrase:
+      if (bar is a greeting listed in table of greetings - a condition): 
+    I recognised:
+    bar is a greeting listed in table of greetings = a condition
+Problem__ PM_TypeCheckBP2a
+  >--> In the sentence 'if 17 is a greeting listed in Table of Greetings' (source
+    text, line 12), it looks as if you intend '17 is a greeting listed in Table
+    of Greetings' to be a condition, but that doesn't work because you use the
+    listed in relation (between a text and a table name) with a number instead
+    of a text.
+    I was trying to match this phrase:
+      if (17 is a greeting listed in table of greetings - a condition): 
+    I recognised:
+    17 is a greeting listed in table of greetings = a condition
+Inform 7 has finished: 63 centiseconds used.

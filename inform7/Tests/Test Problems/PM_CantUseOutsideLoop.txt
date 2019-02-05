@@ -1,0 +1,4 @@
+Lab is a room.
+
+When play begins:
+	next.

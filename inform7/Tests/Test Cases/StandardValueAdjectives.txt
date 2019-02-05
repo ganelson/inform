@@ -1,0 +1,84 @@
+Stanford is a room.
+
+Abba Concert is a scene. AC-DC Concert is a recurring scene.
+Abba Concert begins when play begins.
+
+Table of Vacancy
+angels	dream
+a number	a text
+with 10 blank rows.
+
+Table of Plenitude
+angels	dream
+4	"a string quartet"
+3	"the Graces"
+
+Table of Middlingness
+angels	dream
+6	"a really complicated orgy"
+--	--
+
+Adjective testing is an activity.
+
+When play begins:
+	carry out the adjective testing activity.
+
+For adjective testing:
+	repeat with N running from -5 to 5:
+		if N is odd, say "[N] is odd.";
+		if N is even, say "[N] is even.";
+		if N is negative, say "[N] is negative.";
+		if N is positive, say "[N] is positive.";
+	let T1 be "Knowing Me, Knowing You";
+	let T2 be "";
+	if T1 is empty, say "'[T1]' is empty.";
+	if T1 is non-empty, say "'[T1]' is non-empty.";
+	if T2 is empty, say "'[T2]' is empty.";
+	if T2 is non-empty, say "'[T2]' is non-empty.";
+	let IT1 be text;
+	let IT2 be text;
+	let IT1 be "Voulez Vous";
+	let IT2 be "";
+	if IT1 is empty, say "'[IT1]' is empty.";
+	if IT1 is non-empty, say "'[IT1]' is non-empty.";
+	if IT2 is empty, say "'[IT2]' is empty.";
+	if IT2 is non-empty, say "'[IT2]' is non-empty.";
+	if the Table of Vacancy is empty, say "[Table of Vacancy] is empty.";
+	if the Table of Vacancy is full, say "[Table of Vacancy] is full.";
+	if the Table of Vacancy is non-empty, say "[Table of Vacancy] is non-empty.";
+	if the Table of Vacancy is non-full, say "[Table of Vacancy] is non-full.";
+	if the Table of Plenitude is empty, say "[Table of Plenitude] is empty.";
+	if the Table of Plenitude is full, say "[Table of Plenitude] is full.";
+	if the Table of Plenitude is non-empty, say "[Table of Plenitude] is non-empty.";
+	if the Table of Plenitude is non-full, say "[Table of Plenitude] is non-full.";
+	if the Table of Middlingness is empty, say "[Table of Middlingness] is empty.";
+	if the Table of Middlingness is full, say "[Table of Middlingness] is full.";
+	if the Table of Middlingness is non-empty, say "[Table of Middlingness] is non-empty.";
+	if the Table of Middlingness is non-full, say "[Table of Middlingness] is non-full.";
+	if the Abba Concert is happening, say "[Abba Concert] is happening.";
+	if the Abba Concert is not happening, say "[Abba Concert] is not happening.";
+	if the AC-DC Concert is happening, say "[AC-DC Concert] is happening.";
+	if the AC-DC Concert is not happening, say "[AC-DC Concert] is not happening.";
+	if the Abba Concert is recurring, say "[Abba Concert] is recurring.";
+	if the Abba Concert is not recurring, say "[Abba Concert] is not recurring.";
+	if the AC-DC Concert is recurring, say "[AC-DC Concert] is recurring.";
+	if the AC-DC Concert is not recurring, say "[AC-DC Concert] is not recurring.";
+	let L1 be {2, 3, 4};
+	let L2 be a list of numbers;
+	let L2 be {};
+	if L1 is empty, say "'[L1 in brace notation]' is empty.";
+	if L1 is non-empty, say "'[L1 in brace notation]' is non-empty.";
+	if L2 is empty, say "'[L2 in brace notation]' is empty.";
+	if L2 is non-empty, say "'[L2 in brace notation]' is non-empty.";
+	if the Reading a command activity is empty, say "Reading a command activity is empty.";
+	if the Reading a command activity is not empty, say "Reading a command activity is not empty.";
+	if the adjective testing activity is empty, say "adjective testing activity is empty.";
+	if the adjective testing activity is not empty, say "adjective testing activity is not empty.";
+	if the Reading a command activity is going on, say "Reading a command activity is going on.";
+	if the Reading a command activity is not going on, say "Reading a command activity is not going on.";
+	if the adjective testing activity is going on, say "adjective testing activity is going on.";
+	if the adjective testing activity is not going on, say "adjective testing activity is not going on.";
+	if the turn sequence rulebook is empty, say "turn sequence rulebook is empty.";
+	if the turn sequence rulebook is not empty, say "turn sequence rulebook is not empty.";
+	if the every turn rulebook is empty, say "every turn rulebook is empty.";
+	if the every turn rulebook is not empty, say "every turn rulebook is not empty.";

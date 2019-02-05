@@ -1,0 +1,9 @@
+There is a room.
+To foo (X - a thing):
+	say "Thing."
+To foo (X - a person):
+	say "Person."
+Bar is a thing. Jenkins is a man.
+When play begins:
+	repeat with a counter running from one to ten:
+		foo a random thing.

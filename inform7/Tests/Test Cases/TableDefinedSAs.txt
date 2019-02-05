@@ -1,0 +1,16 @@
+The Mansion is a room. The large boulder is here.
+
+A task is a kind of thing. A task has a stored action called the
+relevant action.
+
+Some tasks are defined by the Table of Unfinished Tasks.
+
+Table of Unfinished Tasks
+task	relevant action
+boulder_touching	touching the large boulder
+boulder_recovering	taking the large boulder
+
+Table of Splodghu Tasks
+adfadfa	asdfadf
+1	touching the large boulder
+2	taking the large boulder

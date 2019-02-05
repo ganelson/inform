@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 4 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+*** Exit(1) requested for testing purposes ***
+Problem__ PM_Crash1
+  >--> You wrote 'ni--crash--1 is a room' (source text, line 1): but this uses
+    the first secret hieroglyph of dreadful power, which forces me to crash.
+    (It's for testing the way I crash, in fact. If this is a genuine
+    inconvenience to you, get in touch with my authors.)

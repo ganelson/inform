@@ -1,0 +1,11 @@
+Inform 7 build 6L70 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InitialiseQ1
+  >--> The sentence 'Dawn is Sunrise' (source text, line 5) tells me that
+    'Dawn', which should be a time that varies, is to have an initial value
+    equal to 'Sunrise', which in turn is a time that varies. At the start of
+    play, variable values have to be set equal to definite constants, so this
+    is not allowed.
+Inform 7 has finished: 26 centiseconds used.

@@ -1,0 +1,19 @@
+Garden is a room. The chair is a fixed in place enterable supporter in  Garden.
+
+When play begins:
+   say "You sit[Begin-sitting]."
+
+To say Begin-sitting:
+   try silently entering a random visible supporter.
+
+To say current status line:
+	let N be the text produced by the N0123 rules;
+	say "it works";
+
+The N0123 rules is a rulebook producing a text.
+A N0123 rule:
+	rule succeeds with result "dummy";
+	
+When play begins:
+	showme text produced by the N0123 rules;
+	say current status line, "[line break]";

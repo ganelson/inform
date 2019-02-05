@@ -1,0 +1,15 @@
+Heart of the Sun is a room. The fish and the fowl are here.
+
+To assay (name of kind of value K):
+	repeat with item running through Ks:
+		say "There's [item]."
+
+Colour is a kind of value. The colours are red, blue and purple.
+
+When play begins:
+	say "People...";
+	assay people;
+	say "Things...";
+	assay thing;
+	say "Colours...";
+	assay colours;

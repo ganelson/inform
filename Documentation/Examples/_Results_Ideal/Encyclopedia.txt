@@ -1,0 +1,91 @@
+   Boise Memorial Library
+  AARP-Gnosis
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Boise Memorial Library
+  A concrete box of a room, roughly eight feet by fourteen, which contains all the fallout shelter has to offer by way of entertainment. Someone with a grim sense of humor has tacked a READ! literacy poster to the door, as though there were anything else to do while you await the calming of the Geiger counters.
+  
+  A battered utility shelf stands against the south wall.
+  
+  On the shelf is a complete New Idahoan Encyclopedia Set.
+  
+> >   Boise Memorial Library
+  (Testing.)
+  
+  >[1] get aarhus-aaron
+  Taken.
+  
+  >[2] look
+  Boise Memorial Library
+  A concrete box of a room, roughly eight feet by fourteen, which contains all the fallout shelter has to offer by way of entertainment. Someone with a grim sense of humor has tacked a READ! literacy poster to the door, as though there were anything else to do while you await the calming of the Geiger counters.
+  
+  A battered utility shelf stands against the south wall.
+  
+  On the shelf is a New Idahoan Encyclopedia Set (missing Volume Aarhus-Aaron).
+  
+  >[3] inventory
+  You are carrying:
+    Volume Aarhus-Aaron
+  
+  >[4] get aam-aardvark
+  Taken.
+  
+  >[5] look
+  Boise Memorial Library
+  A concrete box of a room, roughly eight feet by fourteen, which contains all the fallout shelter has to offer by way of entertainment. Someone with a grim sense of humor has tacked a READ! literacy poster to the door, as though there were anything else to do while you await the calming of the Geiger counters.
+  
+  A battered utility shelf stands against the south wall.
+  
+  On the shelf is a New Idahoan Encyclopedia Set (missing Volume AAM-Aardvark and Volume Aarhus-Aaron).
+  
+  >[6] get gnu-zygote
+  Taken.
+  
+  >[7] look
+  Boise Memorial Library
+  A concrete box of a room, roughly eight feet by fourteen, which contains all the fallout shelter has to offer by way of entertainment. Someone with a grim sense of humor has tacked a READ! literacy poster to the door, as though there were anything else to do while you await the calming of the Geiger counters.
+  
+  A battered utility shelf stands against the south wall.
+  
+  On the shelf is a New Idahoan Encyclopedia Set (missing Volume Gnu-Zygote, Volume AAM-Aardvark and Volume Aarhus-Aaron).
+  
+  >[8] get aarp-gnosis
+  Taken.
+  
+  >[9] look
+  Boise Memorial Library
+  A concrete box of a room, roughly eight feet by fourteen, which contains all the fallout shelter has to offer by way of entertainment. Someone with a grim sense of humor has tacked a READ! literacy poster to the door, as though there were anything else to do while you await the calming of the Geiger counters.
+  
+  A battered utility shelf stands against the south wall.
+  
+  On the shelf is Volume A-Aalto.
+  
+  >[10] inventory
+  You are carrying:
+    a New Idahoan Encyclopedia Set (missing Volume A-Aalto)
+  
+  >[11] drop set
+  Dropped.
+  
+  >[12] look
+  Boise Memorial Library
+  A concrete box of a room, roughly eight feet by fourteen, which contains all the fallout shelter has to offer by way of entertainment. Someone with a grim sense of humor has tacked a READ! literacy poster to the door, as though there were anything else to do while you await the calming of the Geiger counters.
+  
+  A battered utility shelf stands against the south wall.
+  
+  On the shelf is Volume A-Aalto.
+  
+  You can also see a New Idahoan Encyclopedia Set (missing Volume A-Aalto) here.
+  
+  >[13] get set
+  Taken.
+  
+  >[14] get a-aalto
+  Taken.
+  
+  >[15] inventory
+  You are carrying:
+    a complete New Idahoan Encyclopedia Set
+  
+> >

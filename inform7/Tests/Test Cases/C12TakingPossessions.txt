@@ -1,0 +1,8 @@
+A shape is a kind of thing. A triangle is a kind of shape.
+
+The Lab is a room.
+
+The table is a supporter in the Lab. On the table are three triangles.
+
+Test me with "get triangle / get triangle / get triangle / put all on table /
+get triangle / get triangle".

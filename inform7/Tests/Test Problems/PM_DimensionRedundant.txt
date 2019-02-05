@@ -1,0 +1,8 @@
+Laboratory is a room.
+
+Velocity is a kind of value. 20 m/s specifies a velocity.
+Frequency is a kind of value. 40 Hz specifies a frequency.
+Length is a kind of value. 10 m specifies a length.
+
+Frequency times length specifies a velocity.
+Frequency times length specifies a number.

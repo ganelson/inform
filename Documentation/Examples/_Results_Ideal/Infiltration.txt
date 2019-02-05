@@ -1,0 +1,70 @@
+   Wasteland
+  Infiltration
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wasteland
+  In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs.
+  
+  To the west, a portal in the cinder-block and barbed wire wall leads inside.
+  
+> >   Secure Zone
+  (Testing.)
+  
+  >[1] look
+  Wasteland
+  In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs.
+  
+  To the west, a portal in the cinder-block and barbed wire wall leads inside.
+  
+  >[2] open portal
+  You open the portal.
+  
+  >[3] w
+  
+  Secure Zone
+  Despite your carefully-chosen outfit and the walk you have been practicing, you are sure those inside can tell you don't belong. Not that very many people are visible here.
+  
+  A portal in the cinder-block and barbed wire wall leads outside.
+  
+  >[4] look
+  Secure Zone
+  Despite your carefully-chosen outfit and the walk you have been practicing, you are sure those inside can tell you don't belong. Not that very many people are visible here.
+  
+  A portal in the cinder-block and barbed wire wall leads outside.
+  
+  >[5] e
+  
+  Wasteland
+  In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs.
+  
+  To the west, a portal in the cinder-block and barbed wire wall leads back inside.
+  
+  >[6] look
+  Wasteland
+  In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs.
+  
+  To the west, a portal in the cinder-block and barbed wire wall leads back inside.
+  
+  >[7] w
+  
+  Secure Zone
+  Re-entering the Zone has not made you any more comfortable inside. Despite your carefully-chosen outfit and the walk you have been practicing, you are sure those inside can tell you don't belong. Not that very many people are visible here.
+  
+  A portal in the cinder-block and barbed wire wall leads outside.
+  
+  >[8] e
+  
+  Wasteland
+  In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs.
+  
+  To the west, a portal in the cinder-block and barbed wire wall leads back inside.
+  
+  >[9] w
+  
+  Secure Zone
+  Despite your carefully-chosen outfit and the walk you have been practicing, you are sure those inside can tell you don't belong. Not that very many people are visible here -- the place seems more desolate than ever.
+  
+  A portal in the cinder-block and barbed wire wall leads outside.
+  
+> >

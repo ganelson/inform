@@ -1,0 +1,10 @@
+Home is a room.
+
+A tag is a kind of value.
+
+Tagging relates various tags to various figure names. The verb to tag (he tags, they tag) implies the 
+tagging relation.
+
+Figure of Forest is the file "forest.jpg".
+
+Outdoors is a tag. Outdoors tags Figure of Froest.

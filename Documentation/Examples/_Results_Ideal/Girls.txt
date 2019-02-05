@@ -1,0 +1,32 @@
+   Riverside Drive
+  Uptown Girls
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Riverside Drive
+  There's a pleasant late-afternoon view of the Hudson, and a snap in the air, and you would rather be here than anywhere.
+  
+> >   Riverside Drive
+  (Testing.)
+  
+  >[1] z
+  You stroll along enjoying the November crispness.
+  
+  >[2] z
+  You stroll along enjoying the November crispness.
+  
+  >[3] x passerby
+  An older woman with long red hippie-hair poking out of a ponytail in straggles, and bent to hide how tall she is.
+  
+  >[4] z
+  You stroll along enjoying the November crispness.
+  
+  >[5] z
+  You stroll along enjoying the November crispness.
+  
+  Some short woman nearly bumps into you.
+  
+  >[6] x passerby
+  Almost an urchin, and very young, with ginger hair and a smudged nose and far too many freckles.
+  
+> >

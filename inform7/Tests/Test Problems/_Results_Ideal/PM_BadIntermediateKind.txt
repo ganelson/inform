@@ -1,0 +1,20 @@
+Inform 7 build 6M12 has started.
+I've now read your source text, which is 38 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadIntermediateKind
+  >--> In 'if foo bar yourself is odd' (source text, line 5), the phrase 'bar
+    yourself' doesn't seem to fit: I was hoping it would be a number, but in
+    fact it's a time.
+    I was trying to match this phrase:
+      bar (yourself - object) 
+    I recognised:
+    yourself = a person
+Problem__ PM_AllInvsFailed
+  >--> You wrote 'if foo bar yourself is odd' (source text, line 5), which I
+    tried to match against several possible phrase definitions. None of them
+    worked.
+      foo (bar yourself - number) 
+    I recognised:
+    bar yourself = an instruction to work out a time
+Inform 7 has finished: 53 centiseconds used.

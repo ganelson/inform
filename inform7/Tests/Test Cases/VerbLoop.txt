@@ -1,0 +1,19 @@
+Foo is a room. The ball is in Foo. The bar is in Foo.
+
+Describing relates various verbs to various action names. The verb to describe means the describing relation.
+
+To take is a verb. The verb take describes the taking action.
+
+To snatch is a verb. The verb snatch describes the taking action.
+
+After an actor doing something to something when a verb describes (the action name part of the current action):
+	repeat with frog running through things which are in lighted rooms:
+		say "Yeah, [frog].";
+	let count be 0;
+	repeat with chosen verb running through verbs that describe (the action name part of the current action): 
+		increase count by 1;
+		say "[count]: [chosen verb].";
+		if count > 15:  
+			stop the action.
+			
+Test me with "get ball".

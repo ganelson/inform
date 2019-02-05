@@ -1,0 +1,26 @@
+Config line is an text variable. Config line is "monsters=25".
+
+Stage is a room.
+
+Section - List of texts - this doesn't work
+
+Key value pair is a list of texts variable.
+
+When play begins:
+	set key value pair for config line;
+	showme key value pair.
+
+To set key value pair for (thisline - an text):
+	if thisline matches the regular expression "(.*)=(.*)":
+		now key value pair is {"[text matching subexpression 1]", "[text matching subexpression 2]"}.
+
+JustKey is an text variable.
+
+To set justkey for (thisline - an text):
+	if thisline matches the regular expression "(.*)=(.*)":
+		now justKey is "[text matching subexpression 1]".
+		
+When play begins:
+	set justkey for config line;
+	showme justkey.
+

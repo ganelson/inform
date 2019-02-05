@@ -1,0 +1,12 @@
+The Arena is a room.
+
+To decide what room is spong:
+	yes.
+
+To blorple:
+	yes;
+	decide on 12.
+
+To decide if wibble:
+	continue the action;
+	decide on 1.

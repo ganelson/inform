@@ -1,0 +1,15 @@
+Swearing obscenely is an action applying to nothing.
+
+Understand "Beetlejuice" as swearing obscenely.
+
+Instead of swearing obscenely for one turn: say "Wash you mouth out with soap."
+
+Instead of swearing obscenely for two turns: say "Wash your mouth out with soup."
+
+Every turn while swearing obscenely for one turn: say "'Hey, don't say that three times in a row.  Bad things happen.'"
+
+Every turn while swearing obscenely for two turns: say "'Hey, doubly so.'"
+
+There is a room.
+
+Test me with "beetlejuice / beetlejuice".

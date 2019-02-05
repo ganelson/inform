@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 5 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NoMapOrigin
+  >--> You wrote 'North is the Reptile Cage' (source text, line 1): but no
+    location is under discussion to be the origin of this map connection, so
+    this is like starting with 'North is the Aviary': I can't tell where from.
+Inform 7 has finished: 17 centiseconds used.

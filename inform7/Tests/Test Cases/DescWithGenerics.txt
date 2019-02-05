@@ -1,0 +1,11 @@
+Home is a room.
+
+A colour is a kind of value. The colours are red, green, blue,
+yellow, orange and teal.
+
+To announce (D - a description of sayable values):
+	let L be the list of D;
+	say "Today's random list is [L].";
+	say "Today's random list is [the list of D]."
+
+When play begins: announce all colours.

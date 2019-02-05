@@ -1,0 +1,26 @@
+Length is a kind of value. 1m specifies a length. 1mm specifies a length
+scaled down by 1000. 1cm specifies a length scaled down by 100. 1km
+specifies a length scaled up by 1000.
+
+Area is a kind of value. 1 sq m specifies an area. 1 sq cm specifies an
+area scaled down by 10000. 1 hectare specifies an area scaled up by 10000.
+Length times length specifies an area.
+
+A volume is a kind of value. 1 cu m specifies a volume. 1cc specifies
+a volume scaled down by 1000000. Length times area specifies a volume.
+
+Laboratory is a room.
+
+When play begins:
+	say "The time is about [time of day to the nearest 5 minutes].";
+	say "2174 to the nearest 25 is [2174 to the nearest 25].";
+	say "51.82m to the nearest 3m is [51.82m to the nearest 3m].";
+	say "square root of 16 is [square root of 16].";
+	say "square root of 10240000 is [square root of 10240000].";
+	say "square root of 1024 sq m is [square root of 1024 sq m].";
+	let A be square root of 1024 sq m;
+	say "squaring which gives [A times A].";
+	say "cube root of 16 is [cube root of 16].";
+	say "cube root of 26 cu m is [cube root of 26 cu m].";
+	let T be cube root of 26 cu m;
+	say "cubing which gives [T times T times T].";

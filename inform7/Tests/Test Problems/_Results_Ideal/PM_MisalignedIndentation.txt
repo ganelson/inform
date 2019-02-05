@@ -1,0 +1,25 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 26 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MisalignedIndentation
+  >--> The phrase or rule definition 'When play begins' (source text, line 3)
+    is written using the 'colon and indentation' syntax for its 'if's,
+    'repeat's and 'while's, where blocks of phrases grouped together are
+    indented one tab step inward from the 'if ...:' or similar phrase to which
+    they belong. But the tabs here seem to be misaligned, and I can't determine
+    the structure. The first phrase going awry in the definition seems to be
+    'say "1 is 2"' (source text, line 5), in case that helps. This sometimes
+    happens even when the code looks about right, to the eye, if rows of spaces
+    have been used to indent phrases instead of tabs.
+Problem__ PM_MisalignedIndentation
+  >--> The phrase or rule definition 'When play begins' (source text, line 7)
+    is written using the 'colon and indentation' syntax for its 'if's,
+    'repeat's and 'while's, where blocks of phrases grouped together are
+    indented one tab step inward from the 'if ...:' or similar phrase to which
+    they belong. But the tabs here seem to be misaligned, and I can't determine
+    the structure. The first phrase going awry in the definition seems to be
+    'say "1 is 2"' (source text, line 9), in case that helps. This sometimes
+    happens even when the code looks about right, to the eye, if rows of spaces
+    have been used to indent phrases instead of tabs.
+Inform 7 has finished: 14 centiseconds used.

@@ -1,0 +1,29 @@
+   Planetarium
+  Night Sky
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Planetarium
+  A tranquil dark room with a ceilingful of stars.
+  
+  A message is taped to the wall.
+  
+> >   Planetarium
+  (Testing.)
+  
+  >[1] look
+  Planetarium
+  A tranquil dark room with a ceilingful of stars.
+  
+  A message is taped to the wall.
+  
+  >[2] x message
+  "BEWARE."
+  
+  >[3] look
+  Planetarium
+  A dark room where it seems something is about to jump out at you!
+  
+  A message is taped to the wall.
+  
+> >

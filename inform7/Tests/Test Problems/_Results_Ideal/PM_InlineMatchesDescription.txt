@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 15 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InlineMatchesDescription
+  >--> You wrote 'go awry' (source text, line 8), which I read as making use of
+    the phrase 'To go awry' (source text, line 3). This in turn has what's
+    called an 'inline' definition, written in a technical notation usually
+    needed only by the Standard Rules or other low-level extensions. The
+    definition here is '{-matches-description:frog:amphibian};' but it seems to
+    be broken. The command {-matches-description:...}, which asks to test
+    whether 'amphibian' is a valid description for 'frog', has gone wrong: I
+    couldn't work those out.
+Inform 7 has finished: 44 centiseconds used.

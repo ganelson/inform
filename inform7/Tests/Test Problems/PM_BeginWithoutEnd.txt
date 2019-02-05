@@ -1,0 +1,5 @@
+Burrow is a room.
+
+To trigger an error:
+	repeat with item running through things in the Burrow begin;
+		say "Oh look, there's [the item]."

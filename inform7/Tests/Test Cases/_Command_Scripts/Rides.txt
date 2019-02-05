@@ -1,0 +1,27 @@
+mount swan
+give chow to swan
+n
+mount swan
+get off
+get on swan
+n
+swan, e
+swan, s
+dismount
+get on swan
+w
+get in wagon
+n
+e
+w
+mount harley
+mount wagon
+e
+get in elevator
+e
+d
+n
+u
+get out
+d
+

@@ -1,0 +1,48 @@
+   Test
+  Emrby.
+  "L" = list of texts: {}
+  "L" = list of texts: {"oranges", "apples", "bananas", "apple"}
+  "L2" = list of texts: {"oranges", "apples", "bananas", "apple"}
+  "L3" = list of texts: {"oranges", "apples", "bananas", "apple"}
+  Today's list of IT is apple, apples, bananas and oranges.
+  Today's list of T is apple, apples, bananas and oranges.
+  Today's list of IT by hand is apple, apples, bananas and oranges.
+  "X" = text: apple
+  Char 1 is a.
+  "X" = text: apples
+  Char 1 is a.
+  "X" = text: bananas
+  Char 1 is b.
+  "X" = text: oranges
+  Char 1 is o.
+  Grand list is {"apple", "apples", "bananas", "oranges"}, {"pears", "plums"} and {"passionfruit", "apples", "bananas"}.
+  Grand list sorts to {"pears", "plums"}, {"passionfruit", "apples", "bananas"} and {"apple", "apples", "bananas", "oranges"}.
+  "L6" = list of people: {yourself, Peter, Jane}
+  "L6" = list of people: {Jane, Peter, yourself}
+  "L6" = list of people: {yourself, Peter, Jane}
+  
+  words:
+  abacus
+  cheese
+  vacuum
+  zoo
+  
+  
+  indexed words:
+  abacus
+  cheese
+  vacuum
+  zoo
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Test
+  You can see Peter, Jane, a violin, a viola, a mustard, a travesty and a fang here.
+  
+  The list with text in sorts to: violin, travesty, yourself, Peter, Jane, viola, mustard and fang.
+  The list with text in sorts to: violin, travesty, yourself, Peter, Jane, viola, mustard and fang.
+  
+> >   Test
+> Are you sure you want to quit? 

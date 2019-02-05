@@ -1,0 +1,23 @@
+Inform 7 build 6M27 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnknownCondition
+  >--> In the sentence 'let X be the tree condition' (source text, line 7), I
+    was expecting to read a value, but instead found some text that I couldn't
+    understand - 'tree condition'. Names which end in 'condition' often
+    represent the current state of something which can be in any one of three
+    or more states. Names like this only work if you've declared them, with a
+    line like 'The rocket is either dry, fuelled or launched.' - in which case
+    the value 'rocket condition' will always be one of 'dry', 'fuelled' or
+    'launched'. Maybe you forgot to declare something like this, or mis-spelled
+    the name of the owner?
+    I was trying to match one of these phrases:
+    1.  let (x - a new name) be (tree condition - description of relations of
+    values) 
+    2.  let (x - a new name) be (tree condition - name of kind) 
+    3.  let (x - a new name) be (tree condition - value) 
+    4.  let (x - a temporary named value) be (tree condition - value) 
+    But I didn't recognise 'tree condition'.
+    The name 'x' doesn't yet exist.
+Inform 7 has finished: 57 centiseconds used.

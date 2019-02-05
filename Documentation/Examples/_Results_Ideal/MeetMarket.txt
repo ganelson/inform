@@ -1,0 +1,22 @@
+   Meet Market
+  Meet Market
+  An Interactive Fiction by K M and Eric Rossing
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  The snub-nosed ones: Bob and Ted
+  The gangly ones: yourself and Bob
+  The comely ones: Carol and Alice
+  The bright-eyed ones: Carol and Alice
+  The sulky ones: yourself and Ted
+  
+> >   Meet Market
+  (Testing.)
+  
+  >[1] look
+  The snub-nosed ones: Bob and Ted
+  The gangly ones: yourself and Bob
+  The comely ones: Carol and Alice
+  The bright-eyed ones: Carol and Alice
+  The sulky ones: yourself and Ted
+  
+> >

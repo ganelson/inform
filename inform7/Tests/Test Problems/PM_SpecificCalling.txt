@@ -1,0 +1,1 @@
+The garden is a room.The gem is in the garden.Every turn when the gem is carried:	if a thing (called aa) is carried, say "a. [aa].";	if the gem is carried, say "b. [gem].";	if the gem (called cc) is carried, say "c. [cc].".	Test me with "take gem".

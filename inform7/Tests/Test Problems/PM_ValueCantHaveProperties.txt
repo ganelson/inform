@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+A number can be green or blue.

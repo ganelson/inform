@@ -1,0 +1,38 @@
+   Maison de la Magie
+  The Hypnotist of Blois
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Maison de la Magie
+  In a darkened room, a few hundreds of paces from the chateau of Blois, you give to tourists three shows a day: displaying to them power they do not comprehend and spectacles they do not deserve.
+  
+  A volunteer from the audience stands facing you, skeptically awaiting hypnosis.
+  
+> >   Maison de la Magie
+  (Testing.)
+  
+  >[1] volunteer, remove hat
+  (the baseball hat)
+  The volunteer from the audience has better things to do.
+  
+  >[2] hypnotize volunteer
+  The volunteer from the audience slips under your control.
+  
+  >[3] look
+  Maison de la Magie
+  In a darkened room, a few hundreds of paces from the chateau of Blois, you give to tourists three shows a day: displaying to them power they do not comprehend and spectacles they do not deserve.
+  
+  A volunteer from the audience stands facing you, her face worshipful and obedient.
+  
+  >[4] volunteer, remove hat
+  (the baseball hat)
+  The volunteer from the audience takes off the baseball hat.
+  
+  >[5] wake volunteer
+  The volunteer from the audience returns abruptly to consciousness.
+  
+  >[6] volunteer, wear hat
+  (the baseball hat)
+  The volunteer from the audience has better things to do.
+  
+> >

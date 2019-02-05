@@ -1,0 +1,12 @@
+Street is a room. "There is a nasty looking bar east of here." Bar is
+east of Street.
+
+Setup is a scene. Setup begins when play begins. Setup ends when
+location is Bar.
+
+Punchline is a scene. Punchline begins when Setup is not happening.
+When Punchline begins, say "Ouch! You wham your head against the nasty
+bar. Ducking this time, you manage to enter the drinking
+establishment."
+
+Test me with "scenes / e".

@@ -1,0 +1,24 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  You can see Graham here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] ask graham about inform
+  It's really rather good.
+  
+  >[2] ask graham about inform 7
+  It's really rather good.
+  
+  >[3] ask graham about inform 6
+  There is no reply.
+  
+  >[4] ask graham about i7
+  It's really rather good.
+  
+> >

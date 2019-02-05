@@ -1,0 +1,100 @@
+   Shoe Store
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Shoe Store
+  
+> >   Shoe Store
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] rules all
+  Rules tracing now switched to "all". Type "rules off" to switch it off again.
+  
+  >[3] dye shoe white
+  [Rule "declare everything initially unmentioned rule" applies.]
+  [dyeing the satin shoe to white]
+  [Rule "announce items from multiple object lists rule" applies.]
+  [Rule "set pronouns from items from multiple object lists rule" applies.]
+  [Rule "before stage rule" applies.]
+  [Rule "instead stage rule" applies.]
+  [Rule "investigate player's awareness before action rule" applies.]
+  [Rule "player aware of his own actions rule" applies.]
+  [Rule "check stage rule" applies.]
+  [Rule "Check dyeing something to the color understood when the color of the noun is not white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood when the color understood is white" applies.]
+  yes"color understood" = color: white
+  You have dyes, but not bleach.
+  [dyeing the satin shoe to white - failed the Check dyeing something to the color understood when the color understood is white]
+  
+  [Rule "A first turn sequence rule" applies.]
+  [Rule "every turn stage rule" applies.]
+  [Rule "A last turn sequence rule" applies.]
+  [Rule "notify score changes rule" applies.]
+  >[4] dye dress lilac
+  [Rule "declare everything initially unmentioned rule" applies.]
+  [dyeing the dress to lilac]
+  [Rule "announce items from multiple object lists rule" applies.]
+  [Rule "set pronouns from items from multiple object lists rule" applies.]
+  [Rule "before stage rule" applies.]
+  [Rule "instead stage rule" applies.]
+  [Rule "investigate player's awareness before action rule" applies.]
+  [Rule "player aware of his own actions rule" applies.]
+  [Rule "check stage rule" applies.]
+  [Rule "Check dyeing something to the color understood when the color of the noun is not white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood when the color understood is white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood" applies.]
+  "color understood" = color: lilac
+  The dress is already dyed white.
+  [dyeing the dress to lilac - failed the Check dyeing something to the color understood]
+  
+  [Rule "A first turn sequence rule" applies.]
+  [Rule "every turn stage rule" applies.]
+  [Rule "A last turn sequence rule" applies.]
+  [Rule "notify score changes rule" applies.]
+  >[5] dye shoe light purple
+  [Rule "declare everything initially unmentioned rule" applies.]
+  [dyeing the satin shoe to light purple]
+  [Rule "announce items from multiple object lists rule" applies.]
+  [Rule "set pronouns from items from multiple object lists rule" applies.]
+  [Rule "before stage rule" applies.]
+  [Rule "instead stage rule" applies.]
+  [Rule "investigate player's awareness before action rule" applies.]
+  [Rule "player aware of his own actions rule" applies.]
+  [Rule "check stage rule" applies.]
+  [Rule "Check dyeing something to the color understood when the color of the noun is not white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood when the color understood is white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood" applies.]
+  "color understood" = color: light purple
+  The satin shoe is already dyed white.
+  [dyeing the satin shoe to light purple - failed the Check dyeing something to the color understood]
+  
+  [Rule "A first turn sequence rule" applies.]
+  [Rule "every turn stage rule" applies.]
+  [Rule "A last turn sequence rule" applies.]
+  [Rule "notify score changes rule" applies.]
+  >[6] g
+  [Rule "declare everything initially unmentioned rule" applies.]
+  [dyeing the satin shoe to light purple]
+  [Rule "announce items from multiple object lists rule" applies.]
+  [Rule "set pronouns from items from multiple object lists rule" applies.]
+  [Rule "before stage rule" applies.]
+  [Rule "instead stage rule" applies.]
+  [Rule "investigate player's awareness before action rule" applies.]
+  [Rule "player aware of his own actions rule" applies.]
+  [Rule "check stage rule" applies.]
+  [Rule "Check dyeing something to the color understood when the color of the noun is not white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood when the color understood is white" does not apply (wrong action).]
+  [Rule "Check dyeing something to the color understood" applies.]
+  "color understood" = color: light purple
+  The satin shoe is already dyed white.
+  [dyeing the satin shoe to light purple - failed the Check dyeing something to the color understood]
+  
+  [Rule "A first turn sequence rule" applies.]
+  [Rule "every turn stage rule" applies.]
+  [Rule "A last turn sequence rule" applies.]
+  [Rule "notify score changes rule" applies.]
+> >

@@ -1,0 +1,3 @@
+Entrance is a room.
+
+Before printing the description of a dark room: (- x -).

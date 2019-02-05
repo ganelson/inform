@@ -1,0 +1,5 @@
+Home is a room.
+
+Foo is a "hello" which varies.
+Bar is a 123 which varies.
+Baz is a {1, 2, 3} which varies.

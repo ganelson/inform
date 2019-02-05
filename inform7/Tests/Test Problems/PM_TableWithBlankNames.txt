@@ -1,0 +1,9 @@
+A vial is a kind of container. A vial has a number called fullness.
+
+Starting Room is a room. Some vials in the starting room are defined by
+the Table of Vial Statistics
+
+Table of Vial Statistics
+vial	fullness
+--		100
+--		0

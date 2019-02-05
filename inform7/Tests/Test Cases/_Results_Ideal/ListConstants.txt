@@ -1,0 +1,31 @@
+   Brahms Conservatoire
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  You can see a tuba, a saxophone, Sally and Frieda here.
+  
+> >   Brahms Conservatoire
+  (Testing.)
+  
+  >[1] z
+  Begin with the sets S = {2, 4, 8, 16, 32, 64}, T = {2, 4, 6, 10}, U = {"genius", "brilliance", "ineffability"}, V = {{1, 2}, {3, 4}}.
+  Z is {3, 4}.
+  V is now {{1, 2}, {3, 4}, {6, 7, 8}}.
+  In this repetition, W is {1, 2}.
+  In this repetition, W is {3, 4}.
+  In this repetition, W is {6, 7, 8}.
+  X is {tuba, saxophone}.
+  Task shopping involves going to shops, choosing stuff and paying for it.
+  Task cooking involves preheating oven, unwrapping, putting in oven and setting time.
+  Reexamined, task shopping involves choosing stuff, going to shops and paying for it.
+  Reexamined, task cooking involves preheating oven, putting in oven, setting time and unwrapping.
+  
+  >[2] x frieda
+  Frieda is clearly revolted by the saxophone.
+  
+  >[3] x sally
+  Sally is clearly revolted by Frieda and the tuba.
+  
+> >

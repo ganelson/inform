@@ -1,0 +1,390 @@
+"Chapter 16: Probe Droid" by Emily Short
+
+Chapter 1
+
+
+ Use command line echoing.
+
+Colour is a kind of value. The colours are white, red, blue and green.
+
+The Treasury is a room. The vault is a lockable locked closed openable container in the Treasury. It is fixed in place. "A massive vault fills up one wall."
+
+The dial, a timing system, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, small red lights, and a large lever are part of the vault.
+
+In the vault is a diamond of unusual brilliance and size.
+
+Instead of examining the vault:
+	say "The vault's system includes [a list of things which are part of the vault]."
+
+Section 1 - Understand
+
+Recording is an action applying to one visible thing and requiring light.
+
+Understand "record [something]" as recording.
+
+Carry out recording:
+	say "You note down the characteristics of [the noun] for future reference."
+
+
+Section 2 - New commands for old grammar
+
+Understand the command "photograph" as "record".
+
+Understand the command "contemplate" as "examine".
+
+Section 3 - Overriding existing commands
+
+Understand the command "throw" as something new.
+
+Understand "throw [something preferably held]" as flinging.
+
+Flinging is an action applying to one carried thing.
+
+Carry out flinging: say "You hurl [the noun] at the wall but it bounces back to you!"
+
+Section 4 - Other standard tokens of grammar
+
+Understand "examine [things]" as multiply examining.
+
+Understand "view [things]" as multiply examining.
+
+Multiply examining is an action applying to one visible thing.
+
+Carry out multiply examining:
+	try examining the noun.
+	
+Understand "stir [things inside] in [something]" as agitating.
+
+Agitating is an action applying to two things.
+
+Carry out agitating: say "You stir up [the noun]." The player is carrying a pot. In the pot are a small lottery ticket and a large lottery ticket.
+
+Section 5 - Visible vs touchable
+
+Understand "drill [something]" as drilling.
+
+Drilling is an action applying to one touchable thing.
+
+Carry out drilling:
+	say "Whirrr! You take a small sample of [the noun]."
+
+Section 6 - Actions applying to kinds of value
+[And here we rather cheaply yank the manual's example, because we are tired and uninventive, and it is late...]
+
+Spinning it to is an action applying to one thing and one number. Check spinning it to: if the noun is not the dial, say "[The noun] does not spin." instead. Report spinning it to: say "Click! and nothing else happens."
+
+Understand "spin [something] to [a number]" as spinning it to.
+
+Understand "dial [a number] on [something]" as spinning it to (with nouns reversed).
+
+After spinning the dial to 1384:
+	say "'As if,' says a computerized voice."
+	
+[I6 doesn't parse numbers this high]
+After spinning the dial to 31337:
+	say "'Nice try,' says a computerized voice."
+
+After spinning the dial to a choice listed in the table of Dial Onomatopoeia:
+	say "[response entry][paragraph break]".
+	
+Table of Dial Onomatopoeia
+choice	response
+1	"Beep!"
+2	"Boop!"
+3	"Click!"
+4	"Snick!"
+ 
+
+Section 7 - Understanding any, understanding rooms
+
+
+Understand "teleport to [any room]" as teleporting to.
+
+Teleporting to is an action applying to one thing.
+
+Carry out teleporting to:
+    move the player to the noun.
+
+Understand "spy on [any thing]" as distance viewing.
+
+Distance viewing is an action applying to one visible thing.
+
+Carry out distance viewing:
+	try examining the noun.
+
+Section 8 - Understanding kinds of value
+
+
+
+The Studio is west of the Treasury. "The unreal world of the photographic studio, full of fake furniture, cantilevered stands and silver-white shades like miniature parachutes." The lumpy black camera is in the Studio. "A lumpy black camera hangs from a tripod."
+
+The rake-thin model is a woman in the Studio. "A rake-thin model, exquisitely bored and boringly exquisite, angles herself indolently."
+
+Limb is a kind of value. The limbs are left leg, left arm, right leg and right arm.
+
+Detailing is an action applying to one limb and one visible thing, requiring light. Check detailing: if the camera is not carried, say "You can hardly photograph without a camera, now can you?" instead. Report detailing: say "Click! You take a detail photograph of the [limb understood] of [the second noun]."
+
+Understand "photograph [limb] of [a person]" as detailing.
+
+
+Section 9 - Commands consisting only of nouns
+
+Understand "[something]" as using.
+
+Using is an action applying to one thing.
+
+A thing can be examined or unexamined. A thing is usually unexamined. Before examining something: now the noun is examined.
+
+Carry out using:
+	try examining the noun.
+	
+Instead of using an unexamined thing: try examining the noun.
+
+Instead of using an examined portable thing which is not carried by the player: try taking the noun.
+
+Instead of using an examined thing which is carried by the player: try dropping the noun.
+
+Section 10 - Understanding values
+[In fact, doing a lot of cheaty thievin' here.]
+
+The Atelier is east of the Treasury. "The floridly untidy loft space used by a moderately unsuccessful artist (you, that is)." The canvas, the palette and the paint brush are here. Understand "painting" as the canvas.
+
+The canvas has a colour. The canvas is white. The printed name of the canvas is "largely [colour] canvas".
+
+Painting is an action applying to one thing and one colour. Check painting: if the noun is not the canvas, say "Centuries of tradition suggest that canvas is the natural home of paint." instead. Carry out painting: now the colour of the canvas is the colour understood. Report painting: say "You splash away at the now [canvas]."
+
+Understand "paint [something] [a colour]" as painting.
+
+Understand "calico" as white. Understand "cerulean" or "cerulean blue" as blue.
+
+Section 11 - This/that
+
+Understand "drill into/through [something]" as drilling.
+
+Section 12 - New tokens
+[Whee]
+
+The Laundry is south of the Treasury. "An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion." The vast marble sink is here. "There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by." The sink is an enterable container, fixed in place.
+
+Lying down is an action applying to nothing. Report lying down: say "You lie down for a while in the middle of the Laundry, wondering about the point of existence, then get up again."
+
+Lying near is an action applying to one thing. Report lying near: say "You lie down next to [the noun] for a while, mumbling to yourself."
+
+Instead of lying near the sink, say "Lying down close to the cool butcher's marble slabs of the sink, your attention is caught by the sight of coolie shoes through a floor-level grille for ventilation. The game is afoot!"
+
+Understand "beneath/under/by/near/beside/alongside/against" or "next to" or "in front of" as "[beside]".
+
+Understand "on/in/inside" or "on top of" as "[within]".
+
+Understand "lie down" as lying down.
+
+Understand "lie down [within] [something]" as entering.
+
+Understand "lie [beside] [something]" or "lie down [beside] [something]" as lying near.
+
+Section 13 - Tokens can produce values
+
+Texture is a kind of value. The textures are rough, shiny, and matte. Understand "smooth" as shiny.
+
+Understand "a [a texture] finish" or "a [a texture] texture" as "[finish]".
+
+The Machine Room is north of the Treasury. A thing has a texture. A thing is usually rough.
+
+The newly-lathed metal component is a thing in the Machine Room. A wood ball is a thing in the Machine Room.
+
+Understand the command "polish" as something new.
+
+Understand "polish [something preferably held] to [finish]" as polishing it to.
+
+Polishing it to is an action applying to one carried thing and one texture.
+
+Check polishing it to:
+	if the texture of the noun is the texture understood,
+		say "[The noun] is already [the texture understood]." instead.
+
+Carry out polishing it to:
+	now the texture of the noun is the texture understood;
+	say "[The noun] is now [texture]."
+	
+Instead of touching something: say "It feels [texture]."
+	
+Section 14 - Understanding things by their properties
+
+Understand the texture property as referring to a thing.
+
+Understand the colour property as describing the canvas.
+
+Section 15 - Context and understanding when
+
+The Pottery is southwest of the Treasury. It contains a potter's wheel.
+
+Understand "throw pot" as potting when the player is in the Treasury.
+
+Potting is an action applying to nothing.
+
+Carry out potting: say "You putter around with clay for a good few minutes but haven't the skill to produce a plausible result."
+
+Understand "subject" as the model when the player has the camera. 
+
+The Chambre is northwest of the Treasury. Understand "blanc" as white when the player is in the Chambre. Understand "noir" as black when the player is in the Chambre.
+
+The Discus Competition is northeast of the Treasury. Understand "throw [something preferably held]" as hurling when the player is in the Competition. Understand "hurl [something preferably held]" as hurling when the player is in the competition.
+
+Hurling is an action applying to one carried thing.
+
+Carry out hurling: move the noun to the location; say "You throw [the noun] a truly impressive distance."
+
+Section 16 - Understanding mistakes
+
+Understand "polish [something]" as a mistake ("You'll have to indicate what level of polish you want to achieve; for instance, POLISH the noun TO A ROUGH FINISH.")
+
+Understand "fling [text]" as a mistake ("Oh, no, merely flinging things aimlessly will not work -- you want to hurl them!") when the location is the Competition.
+
+Section 17 - In what order?
+
+Understand "drill [an openable thing]" as drilling through. 
+Understand "drill into/through [something openable]" as drilling through.
+
+Drilling through is an action applying to one thing.
+
+Carry out drilling through:
+	say "You drill a hole right through [the noun]."
+	
+
+[Snippet testing because this overlaps the parsing issues; will be explored more in 16]
+
+Before reading a command while the turn count is 1, say "(This is your chance to say what the protagonist should do next. After the '>', try typing 'take inventory'.)"
+
+After reading a command: 
+	if the player's command includes "thank" begin; 
+		say "I will thank you not to say that."; 
+		reject the player's command; 
+	end if.
+	
+After reading a command: 
+	if the player's command includes "please" begin; 
+		say "(Quelle politesse! But no need to say please.)"; 
+		cut the matched text; 
+	end if.
+	
+After reading a command: 
+	if the player's command matches "grab", replace the player's command with "take all".
+	
+The Academy is southeast of the Treasury. Aristotle is a man in the Academy. Aristotle is carrying an electric razor. The razor is a device. 
+
+A himation is in the Academy. It is wearable. The Academy contains an eel from the Copaic lake. The eel is edible.
+
+Rule for writing a paragraph about Aristotle:
+	say "Aristotle is here, casting his gaze over [a list of things which can be seen by Aristotle]."
+
+Syllogism is a kind of value. The syllogisms are modus tollens and modus ponens.
+
+Fallacy is a kind of value. The fallacies are affirming the consequent and denying the antecedent.
+
+Understand "use [syllogism]" as asserting. Understand "use syllogism of [syllogism] type" as asserting.
+
+Understand "use [syllogism] on [someone]" as asserting it to. Understand "use [syllogism] in conversation with [someone]" as asserting it to. Understand "use syllogism of [syllogism] type on [someone]" as asserting it to. Understand "use on [someone] [syllogism]" as asserting it to (with nouns reversed).
+
+Asserting is an action applying to one syllogism.
+
+Asserting it to is an action applying to one syllogism and one thing.
+ 
+Carry out asserting:
+	do nothing.
+	
+Report asserting: say "You mumble something."
+
+Instead of asserting modus ponens:
+	say "'If P, then Q,' you assert. 'P! Therefore Q!'"
+	
+Instead of asserting modus tollens:
+	say "'If P, then Q,' you assert. 'Not Q! Therefore not P!'"
+	
+Carry out asserting it to:
+	say "You turn to [the second noun]. ";
+	try asserting the syllogism understood instead.
+
+Instead of asking someone about a topic listed in the Table of Chatting:
+	say "[reply entry][paragraph break]"
+	
+Table of Chatting
+topic	reply	negative reply
+"modus tollens"	"BUG BUG"	"If you prefer."
+"modus ponens"	"BUG BUG BUG"	"If you prefer."
+"chicken"	"Your point is well taken."	"You propose a chicken made entirely of anti-matter."
+
+Understand "use [text]" as floundering.
+
+Floundering is an action applying to one topic. Carry out floundering: say "Getting desperate, are we?"
+ 
+Understand "use no [text]" as negating.
+
+Negating is an action applying to one topic.
+
+Instead of negating a topic listed in the Table of Chatting:
+	say "[negative reply entry][paragraph break]"
+	
+Negating a syllogism is an action applying to one syllogism.
+
+Understand "use no [syllogism]" as negating a syllogism.
+
+Carry out negating a syllogism: say "You'll have to say positively what you do mean, then."
+	
+Negating a fallacy is an action applying to one fallacy.
+
+Understand "use no [fallacy]" as negating a fallacy.
+
+Carry out negating a fallacy: say "You'll have to say positively what you do mean, then."
+
+A form is a kind of thing. The ideal chair is a form. The ideal table is a form. The ideal eel is an edible form.
+
+Understand "use [any form]" as Platonic argumentation. Understand "use [any form] in discussion" as Platonic argumentation.
+
+Platonic argumentation is an action applying to one visible thing.
+
+Carry out Platonic argumentation:
+	say "You mention [the noun]. Aristotle looks irritated."
+	
+Understand "use [any edible form]" as incorrect eating.
+
+Incorrect eating is an action applying to one visible thing.
+
+Carry out incorrect eating: say "You can't eat imaginary food."
+
+Understand "use [something] with [any form]" as Platonic comparison. Understand "use [any form] with [something]" as Platonic comparison (with nouns reversed).
+
+Platonic comparison is an action applying to two visible things.
+
+Check Platonic comparison:
+	if the second noun is not a form, say "Invalid argument!"
+	
+Carry out Platonic comparison:
+	do nothing.
+	
+Report Platonic comparison:
+	say "You point out how [the noun] differs from [the second noun]."
+	
+Understand "use [something]" as examining. 
+
+Understand "use [something wearable]" as wearing.  
+
+Understand "use [an edible thing]" as eating.
+
+Understand "use [a switched off device]" as switching on. Understand "use [a switched on device]" as switching off.
+
+Understand "use [text] on [someone nonplaying]" as asking it about (with nouns reversed).  
+
+Understand "use [fallacy] on [someone]" as tricking it with (with nouns reversed). Understand "use on [someone] [fallacy]" as tricking it with.
+
+Instead of tricking someone with affirming the consequent:
+	say "'If P, then Q!' you say. 'Q, therefore P!'"
+
+Instead of tricking someone with denying the antecedent:
+	say "'If P, then Q!' you say. 'Not P, so not Q!'"
+
+Tricking it with is an action applying to one thing and one fallacy.
+
+Carry out tricking it with:
+	say "It turns out you were foolish to try this ploy."
+	
+Definition: a person is nonplaying if it is not the player.

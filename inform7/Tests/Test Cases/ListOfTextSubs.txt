@@ -1,0 +1,19 @@
+Home is a room.
+
+L is a list of text that varies. L is { "[the problem]" }.
+
+To say the problem: say "This doesn't work."
+
+A thing has a list of texts called the hint list.
+
+Instead of examining something:
+	repeat with H running through the hint list of the noun:
+		say "- [H][line break]";
+	say "And L is [L]."
+
+An apple is in home. It is edible. The hint list is {"What can you do
+with an apple?", "It's a kind of fruit, isn't it?", "It could perhaps
+provide nutrition.", "Just [italic type]eat apple[roman type]."}.
+
+Test me with "x apple".
+

@@ -1,0 +1,4 @@
+Cygnus is a room.
+
+When play begins:
+	try arfle barfle gloop.

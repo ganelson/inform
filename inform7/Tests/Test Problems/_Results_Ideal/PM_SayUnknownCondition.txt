@@ -1,0 +1,21 @@
+Inform 7 build 6L65 has started.
+I've now read your source text, which is 29 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SayUnknownCondition
+  >--> In the line '"A [tree condition] tree"' (source text, line 3), I was
+    expecting that 'tree condition' would be something to 'say', but it didn't
+    look like any form of 'say' that I know. So I tried to read 'tree
+    condition' as a value of some kind (because it's legal to say values), but
+    couldn't make sense of it that way either. Sometimes this happens because
+    punctuation has gone wrong - for instance, if you've omitted a semicolon or
+    full stop at the end of the 'say' phrase.Names which end in 'condition'
+    often represent the current state of something which can be in any one of
+    three or more states. This will only be the case if you have explicitly
+    said so, with a line like 'The rocket is either dry, fuelled or launched.'
+    - in which case the value 'rocket condition' will always be one of 'dry',
+    'fuelled' or 'launched'. Note that all of this only applies to a list of
+    three or more possibilities - a thing can have any number of either/or
+    properties. For instance, a container is open or closed, but it also
+    transparent or opaque. Neither of these counts as its 'condition'.
+Inform 7 has finished: 65 centiseconds used.

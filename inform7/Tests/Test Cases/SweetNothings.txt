@@ -1,0 +1,7 @@
+Home is a room.
+
+The table is a supporter in Home.
+
+When play begins: say "On the table [is-are a list of things on the table].
+[A list of things on the table] await(s). [The list of things on the table]
+might get impatient."

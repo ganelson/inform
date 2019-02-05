@@ -1,0 +1,29 @@
+Splog is a room.
+
+Table 2.1 - Selected Elements
+Element	Symbol	Atomic number	Atomic weight
+"Hydrogen"	"H"	1	1
+"Iron"	"Fe"	--	56
+"Zinc"	--	30	65
+"Uranium"	"U"	92	238
+
+Every turn:
+	repeat through Table 2.1:
+		say "Element [element entry].";
+		if there is an atomic number entry, say "Which has N = [atomic number entry]."
+
+Before jumping:
+	choose row 3 from the Table of Selected Elements;
+	blank out the whole row.
+
+After taking inventory:
+	blank out the whole of the Table of Selected Elements.
+
+Before going:
+	choose row 1 from the Table of Selected Elements;
+	blank out the atomic number entry.
+
+Before eating:
+	blank out the whole atomic number column in the Table of Selected Elements.
+
+Test me with "z / e / eat me / jump / inv".

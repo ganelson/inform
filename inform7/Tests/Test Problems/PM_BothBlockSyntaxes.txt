@@ -1,0 +1,8 @@
+Home is a room.
+
+When play begins:
+	if 1 is 2 begin;
+		say "yes";
+	end if;
+	while 1 is 2:
+		say "oh yes".

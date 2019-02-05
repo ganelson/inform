@@ -1,0 +1,13 @@
+The Ballroom is a room.
+
+The Ballroom is east of the Hall.
+
+The Other Ballroom is east of the Hall.
+
+Home is a room. Autre place is a room.
+
+The table is a thing in the Home.
+
+Bob is a person.
+Bob is in Home.
+Bob is in the autre place.

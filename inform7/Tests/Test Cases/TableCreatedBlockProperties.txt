@@ -1,0 +1,18 @@
+Subject is a kind of value. The subjects are defined by the Table of
+TestSubjects.
+
+Table of TestSubjects
+Subject	Followers	Mass
+subjA	{subjA, subjB} 	3
+subjB	{subjB}	5
+
+Testlab is a room.
+When play begins, showme subjA.
+
+When play begins, say "Followers: [Followers of subjA], M: [mass of
+subjA]. Number of followers: [number of entries of followers of
+subjA]".
+
+When play begins:
+	repeat through the Table of TestSubjects:
+		say "[subject entry] - followers: [followers entry] - mass: [mass entry].";

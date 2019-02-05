@@ -1,0 +1,13 @@
+Test is a room.
+
+A foo is a kind of thing. A foo has an text called the text-handle.
+
+Some foos are defined by the Table of Text-Bearing Objects.
+
+Table of text-bearing objects
+foo	text-handle
+Foo_1	"Text_A"
+
+When play begins:
+	replace character number 1 in the text-handle of Foo_1 with "/";
+		say "[Foo_1]: [text-handle of Foo_1]."

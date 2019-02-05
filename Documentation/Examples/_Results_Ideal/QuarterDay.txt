@@ -1,0 +1,26 @@
+   Saturday afternoon
+  The Hang of Thursdays
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Saturday afternoon
+  
+> >   Sunday evening
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] z
+  Time passes.
+  
+> >

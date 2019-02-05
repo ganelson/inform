@@ -1,0 +1,21 @@
+
+
+
+The time is about 9:00 am.
+2174 to the nearest 25 is 2175.
+51.82m to the nearest 3m is 51m.
+square root of 16 is 4.
+square root of 10240000 is 3200.
+square root of 1024 sq m is 32m.
+squaring which gives 1024 sq m.
+cube root of 16 is 2.
+cube root of 26 cu m is 61.2cm.
+cubing which gives 229194cc.
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+
+Laboratory
+
+>Are you sure you want to quit? 

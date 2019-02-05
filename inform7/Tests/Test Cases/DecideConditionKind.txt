@@ -1,0 +1,10 @@
+There is a room.
+
+To decide whether Pluto is a planet (this is ruling on Pluto's status):
+	decide no.
+
+To present (decider - a phrase nothing -> truth state):
+	showme the decider.
+
+When play begins:
+	present ruling on Pluto's status.

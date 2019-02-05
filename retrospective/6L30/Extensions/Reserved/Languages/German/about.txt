@@ -1,0 +1,5 @@
+1	German
+2	Deutsch
+3	in deutscher Sprache
+4	de
+5	Team GerX

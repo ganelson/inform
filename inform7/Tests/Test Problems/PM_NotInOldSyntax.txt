@@ -1,0 +1,3 @@
+Home is a room.
+
+When play begins: let N be 13; if N is begin; -- 1; say "1"; end if.

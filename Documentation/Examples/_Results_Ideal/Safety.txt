@@ -1,0 +1,32 @@
+   Vault
+  Safety
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Vault
+  Snug yet paranoid, this represents the state of the art in cheerless security.
+  
+  A mammoth safe, with a dial which can spin to any number, has pride of place. It must weigh about the same as a small car, so don't get any ideas.
+  
+> >   Vault
+  (Testing.)
+  
+  >[1] open safe
+  The safe opens only when turned to the correct combination.
+  
+  >[2] spin safe to 1131
+  Click! and nothing else happens.
+  
+  >[3] open safe
+  The safe opens only when turned to the correct combination.
+  
+  >[4] spin safe to 1384
+  Clonk! and the safe door swings slowly open, revealing a silver florin.
+  
+  >[5] x safe
+  In the Safe is a silver florin.
+  
+  >[6] get florin
+  Taken.
+  
+> >

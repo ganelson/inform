@@ -1,0 +1,3 @@
+Burrow is a room.
+
+Definition: A room is the if it is dark.

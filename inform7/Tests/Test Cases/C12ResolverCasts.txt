@@ -1,0 +1,14 @@
+The Study is a room. The duck is in the Study.
+
+Instead of taking something (called the item):
+	write "Monkeys ate my guava" for the item;
+	xwrite "Monkeys stole my cheese" for the item;
+
+To write (t - text) for (p - a thing):
+	say "t is: [t].".
+
+To xwrite (t - text) for (p - object):
+	say "t is: [t].".
+
+Test me with "take duck".
+

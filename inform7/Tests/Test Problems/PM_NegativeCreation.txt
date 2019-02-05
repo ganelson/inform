@@ -1,0 +1,2 @@
+Foo is a room.
+In Foo is never a device.

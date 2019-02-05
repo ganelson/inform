@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+When play begins:
+	repeat with X running through numbers:
+		say "X.";

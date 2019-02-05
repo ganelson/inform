@@ -1,0 +1,41 @@
+A thing can be spotted.
+
+Definition: A thing is player-visible if the player can see it.
+
+Every turn:
+	repeat with spied item running through player-visible things:
+		now spied item is spotted.
+
+Place is a room.
+
+Other Place is east of Place.
+
+A table is in Other Place. A napkin, a fork, a knife, a spoon, and a plate are on the table.
+
+A cracker is a kind of thing. A cracker is usually edible. Understand "crackers" as the plural 
+of cracker.
+
+A basket is on the table. Three crackers are in the basket.
+
+This is the can't conjure things never seen rule:
+	say "You can't recall seeing anything like that to conjure.";
+	rule fails.
+
+Conjuring blindly is an action applying to one topic. Understand "conjure [text]" as conjuring 
+blindly.
+
+Check conjuring blindly (this is the can't conjure made-up things rule):
+	abide by the can't conjure things never seen rule.
+
+Conjuring is an action applying to one visible thing. Understand "conjure [any things]" as 
+conjuring.
+
+Check conjuring something that is not spotted (this is the can't conjure something never seen rule):
+	abide by the can't conjure things never seen rule.
+
+After conjuring something (this is the successful conjuration rule):
+	now the noun is in the location;
+	say "With a puff of magical smoke, [a noun] appears!"
+
+Test me with "conjure fork / conjure elephant / e / w / conjure fork / conjure cracker / conjure 
+crackers / actions / conjure crackers".

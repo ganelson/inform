@@ -1,0 +1,36 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150704 / Inform 7 build 6M45 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  You can see Bob here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] ask bob about shack
+  [asking Bob about "shack"]
+  "I like it all right," Bob drawls.
+  [asking Bob about "shack" - succeeded]
+  
+  >[3] ask bob about acrobatics
+  [asking Bob about "acrobatics"]
+  [(1) jumping]
+  You jump on the spot.
+  [(1) jumping - succeeded]
+  
+  [asking Bob about "acrobatics" - succeeded]
+  
+  >[4] ask bob about home
+  [asking Bob about "home"]
+  [(1) asking Bob about "shack"]
+  "I like it all right," Bob drawls.
+  [(1) asking Bob about "shack" - succeeded]
+  
+  [asking Bob about "home" - succeeded]
+  
+> >

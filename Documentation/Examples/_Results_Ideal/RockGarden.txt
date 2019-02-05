@@ -1,0 +1,48 @@
+   Rock Garden West
+  Rock Garden
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Rock Garden West
+  You can see a bench and a maple leaf here.
+  
+  In Rock Garden East you can see a rake.
+  
+> >   Rock Garden East
+  (Testing.)
+  
+  >[1] get rake
+  (first heading east)
+  
+  Rock Garden East
+  You can see a rake here.
+  
+  In Rock Garden West you can see a bench and a maple leaf.
+  
+  Taken.
+  
+  >[2] drop rake
+  Dropped.
+  
+  >[3] sit on bench
+  (first heading west)
+  
+  Rock Garden West
+  You can see a bench and a maple leaf here.
+  
+  In Rock Garden East you can see a rake.
+  
+  You get onto the bench.
+  
+  >[4] get rake
+  (first heading east)
+  (first getting off the bench)
+  
+  Rock Garden East
+  You can see a rake here.
+  
+  In Rock Garden West you can see a bench and a maple leaf.
+  
+  Taken.
+  
+> >

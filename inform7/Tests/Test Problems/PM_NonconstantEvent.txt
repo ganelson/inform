@@ -1,0 +1,6 @@
+Frogstar is a room.
+
+When play begins:
+	let K be a rule;
+	K at 10:11 AM.
+

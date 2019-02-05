@@ -1,0 +1,564 @@
+Inform build 6L38 (30 August 2014)
+
+Contents:
+	1. Introduction
+	2. Minor new features in the language
+	3. The Inform application
+		3 (a). Inform for Mac OS X
+		3 (b). Inform for Windows
+		3 (c). Inform for Linux
+		3 (d). Inform for Command-Line Linux
+		3 (e). Inform for Android
+	4. Maintenance
+		4 (a). Core Inform maintenance
+		4 (b). Extension maintenance
+		4 (c). Examples maintenance
+		4 (d). Interpreter maintenance
+
+Note: Throughout this document, bug numbers in the seven-digit form "0000123"
+refer to tickets at the Inform bug tracker: http://inform7.com/mantis/.
+Suggestion numbers, also large but not starting with a 0, refer to tickets at
+Inform's Uservoice forum, a public venue for suggestions to be made about
+future features: http://inform7.uservoice.com/.
+
+
+1. Introduction
+
+Unlike its predecessor, build 6L02, this release of Inform is aimed almost
+entirely at maintenance: it fixes around 150 bugs, most of them minor and
+related to recent changes. Users of 6L02 should be able to upgrade with
+no preparation needed; users of earlier builds, though, would be well
+advised to read the notes on the big changes in 6L02 before proceeding.
+
+But there is one major development, all the same: for the first time
+Inform is released for a mass-market mobile operating system - Android.
+
+
+2. Minor new features in the language
+
+* It was realised soon after the release of 6L02 that the text substitutions
+"[those]" and "[Those]" were ambiguous, since if they're applied to an
+object which is a man or woman then they would have to be different in the
+accusative and nominative cases. Consider the two texts:
+
+	"But [we] [aren't] holding [regarding the noun][those]."
+	"But [regarding the noun][those] [aren't] available."
+
+and suppose the noun is Andrew. Then "[those]" needs to expand as "him" in the
+first case but as "he" in the second. To distinguish these,
+
+	"[those in the nominative]"
+	"[those in the accusative]"
+
+and similarly for Those. But what should plain "[those]" and "[Those]" do?
+We note that the Standard Rules used "[those]" in 7 responses, all accusative,
+and "[Those]" in a further 12, all nominative. Accordingly, Inform now defines
+"[those]" as equivalent to "[those in the accusative]" and "[Those]" as
+"[Those in the nominative]". This fixes bug 0001232, and though it's not a
+perfect solution, it's intended to be something we might revisit when Inform
+has a better idea of noun cases (as it will need for, say, adaptive German).
+Note that "nominative" and "accusative" are the two values of the kind
+"grammatical case"; "nominative" existed in 6L02, but "accusative" is new in
+this build.
+
+* The real square root function can now be applied to any numerical quantity
+for which the dimensions (in physics terms) are a perfect square. Thus, if
+we're using the Metric Units extension,
+
+	the real square root of 4 sq m
+
+produces the length "2.0m". This also means that equations such as:
+
+	Equation - Pythagoras's Theorem
+	a = root (b^2+c^2)
+	where a is a length, b is a length, c is a length.
+
+can be solved for "a"; this previously failed because "root" could be applied
+only to dimensionless numbers. (See also bug report 0001264.)
+
+* The following are now equivalent:
+
+	[1] A food is a kind of thing which is edible. [2] A food is a kind of edible thing.
+
+(Previously [1] was allowed, but [2] was disallowed.)
+
+* Action descriptions like the following are now rejected:
+
+	Instead of taking seven things: ...
+	Instead of taking the teddy bear on the dresser: ...
+
+The first case is rejected because a single noun can't be "seven things", and
+the second because "the teddy bear", a proper noun, is being used as if it
+were a common noun. ("a thing on the dresser" would be fine.) Previous builds
+of Inform allowed these, but compiled misleading tests: e.g. the latter
+would simply test whether the teddy bear was on the dresser, regardless
+of whether or not it was the thing taken.
+
+* It is now officially illegal to create something new with one of the
+following reserved names:
+
+	action, condition, list-entry, now-condition, phrase, property-value,
+	storage, table-reference, variable
+
+These all have internal meanings and it's unlikely to be safe to create
+anything with these names, though in some cases one might be lucky. (The
+example "Greater Variety", for instance, created a table column named
+"action" in 6L02 and got away with it; this column has been renamed.
+See bug report 0001347.)
+
+* It is now officially illegal to define a phrase which looks like "X is
+(a relationship) Y". For example,
+
+	To decide whether (X - testval) is less than (Y - testval):
+
+is now disallowed, because there's already a meaning of "To be less than".
+(See bug report 0001230.)
+
+* When replacing a heading from an extension, it is now possible to put the
+heading name in quotation marks for clarity. For example:
+
+	Section - Another Questions fix (in place of "Section 4 - Phrase used to
+	ask questions in closed mode" in Questions by Michael Callaghan)
+
+(Without quotation marks, the grammar is ambiguous, because of the "in" in
+the name of the heading. See bug report 0001239.)
+
+* It's now legal to test actions against kinds of actions in a more flexible
+way. For example:
+
+	Attacking is aggressive behaviour.
+	Examining is inquisitive behaviour.
+	[1] Before aggressive behaviour: ...
+	[2] Before doing something other than aggressive behaviour: ...
+	[3] Before aggressive behaviour or inquisitive behaviour: ...
+	[4] Before aggressive behaviour or jumping: ...
+
+Previously only rule [1] would have been allowed. (This was prompted by
+bug report 0001244, though that was arguably a suggestion in disguise.)
+
+* The "backtrace" problem messages arising from ambiguous possible phrases,
+which list what Inform was trying to read, have been redesigned a little.
+
+* The default contents of the following two responses have changed:
+
+	list writer internal rule response (R)
+	list writer internal rule response (T)
+
+in each case to remove an open bracket at the beginning; this open bracket
+is instead displayed using list writer internal rule response (A) first. The
+practical effect of this is that only two changes are needed to make the
+list writer always use, say, square brackets instead of round ones:
+
+	The list writer internal rule response (A) is " [bracket]".
+	The list writer internal rule response (B) is "[close bracket]".
+
+(See bug report 0001344, to which this is related.)
+
+* I6 template files can now be installed in Inform's external resources
+folder, in a subfolder called "I6T". Inform first looks for these in
+Project.materials/I6T, then in (external)/I6T, and lastly in its own
+built-in reservoir. This is a change nobody actually asked for, but it makes
+everything consistent since the same convention is followed for Language
+bundles, website Templates and Extensions.
+
+
+3. The Inform application
+
+3 (a). Inform for Mac OS X
+
+6L02 introduced an almost entirely rewritten user interface, and inevitably
+there were a few bugs: the Installed Extensions list redrew awkwardly,
+flashing content (0001238); entering full screen mode could leave the Find
+dialog stranded behind (0001252); save panels from the Welcome window were
+not sufficiently explanatory (0001273); clicking on extension names to
+bring up their documentation worked badly (0001237); unchecking the "bind up
+into a Blorb file on release" option on the Settings pane had no effect
+(0001306); Inform crashed on launch under Snow Leopard (0001271); IFIDs
+were not persistent, defeating their purpose (0001278); headings at the
+top of the source text were not correctly rendered on screen (0001331).
+These are all fixed.
+
+3 (b). Inform for Windows
+
+A new option, "Generate Inform 6 debugging information", has been added to the
+preferences dialog. This option controls whether the command line used to run
+Inform 6 specifies that the debugging output file should be created, and
+defaults to "off".
+
+The Extensions tab is now implemented, providing access to the Public Library.
+
+"Create new project" buttons are present in the documentation, next to example
+projects.
+
+The elastic tab-stops option is now "Auto-space table columns" in the
+preferences dialog, to match better how things work on OS X.
+
+Bugs 0000210 and 0001362 have been fixed.
+
+3 (c). Inform for Linux
+
+We would like to thank Vincent Petry, who has helpfully contributed packages
+for OpenSUSE Linux.
+
+3 (d). Inform for Command-Line Linux
+
+TO FOLLOW
+
+3 (e). Inform for Android
+
+For the first time, this build of Inform is available for Android:
+specifically, for Android 2.1 (Eclair) or later.
+
+
+4. Maintenance
+
+4 (a). Core Inform maintenance
+
+Around 100 bug fixes are made in this build, and once again all known issues
+have been resolved.
+
+The following lists only the more significant bug fixes: it excludes those
+categorised by the bug tracker as "cosmetic", mostly small improvements to
+problem messages, or which affect only the documentation. I'm nevertheless
+grateful to all those who submitted these bugs, and in particular this build
+benefits from reports 0001229, 0001234, 0001246, 0001251, 0001259, 0001262,
+0001263, 0001281, 0001289, 0001295, 0001299, 0001303, 0001308, 0001311,
+0001316, 0001318, 0001321, 0001324, 0001327, 0001333, 0001334, 0001341,
+0001342, 0001345, 0001352, 0001388.
+
+(A special mention to 0001336 and 0001337 for some close proof-reading of the
+manuals, and another to 0001275 for pointing out that we confused the Swedish
+country code (SE) with its language code (SV) when putting together icons to
+indicate the language of play, which resulted in the flag of San Salvador
+making an appearance.)
+
+4 (a) 0. Uncategorisable
+
+Bug fixed (0001339) whereby a really large source text might compile to I6
+	code containing spurious space characters which, with bad luck, might
+	fall in the middle of a keyword and thus cause I6 errors. (This is only
+	ever known to have occurred on a 3.6 million word source.)
+
+4 (a) 1. Source text and punctuation
+
+--
+
+4 (a) 2. Headings
+
+Bug fixed (0001249) whereby headings with multiple bracketed stipulations
+
+	Section - Fruit (for use with Locksmith by Emily Short) (not for release) (for Glulx only)
+
+	would produce spurious problem messages.
+
+4 (a) 3. Extensions
+
+--
+
+4 (a) 4. Assertions and creations
+
+Bug fixed (0001309) whereby assertions to set rule responses would be
+	misread if the rule names included the word "with" or "having".
+
+Bug fixed (0001247) whereby assertions moving rules in rulebooks would
+	sometimes be misread if the rule or rulebook names included the word "in".
+
+Bug fixed (0001373) whereby "The Attic is above the Parlor" would work,
+	but "The Attic is a room above the Parlor" would make a connection
+	the wrong way (up from the Attic to the Parlor rather than vice versa).
+
+Bug fixed (0001290) whereby some attempts to make map connections to
+	constant values which aren't objects would be ignored (which is fair
+	enough) but with no problem message (which isn't).
+
+Bug fixed (0001260) whereby an oddly-phrased sentence such as
+
+		X with the printed name "Cross" is a thing.
+
+	would be read even more oddly as a declaration that all things have
+	this printed name.
+
+Bug fixed (0001361) whereby the assertion "X is on top of Y" would sometimes
+	be read as "X is on (top of Y)".
+
+4 (a) 5. Model world
+
+Bug fixed (0001292) whereby the reaching inside/outside rules would not
+	properly set the "person reaching" variable if the test were run
+	other than via an action.
+
+Bug fixed (0001363) whereby "the direction of D from R" would produce
+	a bogus result for a one-sided door.
+
+Bug fixed (0001243) whereby making scenery parts of a person would lead to
+	a strangely worded problem message.
+
+Bug fixed (0001359) whereby the text substitution "[the player's surroundings]"
+	would produce empty text before play begins.
+
+4 (a) 6. Properties
+
+Bug fixed (0001228) whereby attempts to refer to an impossible property
+	of an object (a property, that is, which can only belong to an object
+	of a different kind) would not always be caught at compile time.
+
+4 (a) 7. Relations
+
+Bug fixed (0001364) whereby a relation defined by a condition involving a test which,
+	to resolve, would require the expansion of a text substitution, would
+	fail with an internal error. (Such a relation is quite legal and now
+	compiles properly.)
+
+Bug fixed (0001285) whereby route-finding through a various-to-one relation
+	would fail to work in some configurations of the relationship. (That's
+	probably being generous - when it did work, that was mostly luck.)
+
+4 (a) 8. Actions
+
+--
+
+4 (a) 9. Activities
+
+--
+
+4 (a) 10. Rules and rulebooks
+
+Bug fixed (0001329) whereby a condition limiting the applicability of a rule
+	might not be properly type-checked, causing internal errors in some cases.
+
+Bug fixed (0001280) whereby an attempt to put just a "value" into a rule's
+	preamble would cause an unclear problem message.
+
+Bug fixed (0001323) whereby rules such as...
+
+		Before doing something other than listening to or examining the creature:
+
+	...would be misunderstood as (listening) to (or examining the creature)
+	rather than (listening to or examining) (the creature).
+
+Bug fixed (0001296) whereby
+
+		[1] Instead of taking the rock or looking: ...
+		[2] Instead of looking or taking the rock: ...
+
+	[1] was reported as a problem (the actions can't mix because "looking"
+	can't apply to the rock), but [2] wasn't. To avoid ambiguities, both
+	forms are illegal.
+
+Problem message improved (0001389) for getting the 'for...' and 'when...'
+	clauses attached to a rule about actions in the wrong order.
+
+Bug fixed (0001328) whereby rules based on a parameter which happens to
+	end with the word "rule" would sometimes have the parameter ignored,
+	making them more widely applicable than intended.
+
+4 (a) 11. Lists
+
+Bug fixed (0001387) whereby Inform wasn't preventing constant lists or
+	texts from being modified using text replacement, list sorting and
+	so forth. All such attempts now result in problem messages.
+
+4 (a) 12. Tables
+
+Bug fixed (0001322, 0001338) whereby creating objects via a table which contained
+	additional blank rows would generate spurious I6 errors.
+
+Bug fixed (0001360) whereby attempting to access a table row, where no row
+	was selected, could cause TableLookUpEntry() to crash at run time. There's
+	now a run-time problem message instead.
+
+Bug fixed (0001255) whereby looking up texts, lists, etc., in a table which
+	contained a blank row before the match would sometimes cause memory
+	out of range crashes at run time.
+
+Bug fixed (0001250) whereby it was possible to create the same column in
+	two different tables with different kinds, provided that both columns
+	started out empty; this resulted in mysterious type-checking problem
+	messages.
+
+Bug fixed (0001390) whereby attempting to read a blank entry of a table as
+	if it held a value would throw a run-time problem (as it should) but
+	then also in some circumstances crash the virtual machine.
+
+4 (a) 13. Scenes
+
+--
+
+4 (a) 14. Kinds and typechecking
+
+--
+
+4 (a) 15. Phrases and functional programming
+
+--
+
+4 (a) 16. Equations, units and arithmetic
+
+Bug fixed (0001302) whereby real-valued constants of some kinds, notably
+	those defined by the Metric Units extension, couldn't be written with
+	a minus sign.
+
+Bug fixed (0001268) whereby local variables were not being promoted implicitly
+	from "number" to "real number" when used in an equation. (The documentation
+	half-promised that this would happen; well, now it does.)
+
+Bug fixed (0001310) whereby comparisons between values of a kind other than
+	"real number", but nevertheless stored as floating-point quantities,
+	would wrongly be made using integer comparisons.
+
+Bug fixed (0001257) whereby comparisons between real numbers and numbers
+	would not always implicitly promote the numbers to reals before making
+	the comparison.
+
+4 (a) 17. Understanding
+
+Bug fixed (0001369) whereby a declaration of "Understand... as a mistake",
+	with no error message text supplied, would sometimes crash Inform.
+
+Bug fixed (0001265) whereby an "Understand... when..." condition would
+	throw a problem about referring to the current action even when it
+	in fact tested whether actions had taken place in the past.
+
+Bug fixed (0001313) whereby a runtime error is thrown when the player's
+	command is matched against the text "me", which doesn't qualify,
+	on early turns only.
+
+Bug fixed (0001325) whereby the Understand token "[any K]", where K is
+	a kind of value but not a kind of object, could sometimes produce
+	an internal error.
+
+Bug fixed (0001301) whereby single-letter elements of literal patterns
+	would fail to parse at the command line under Glulx if written in
+	upper case. (Thus a command such as "heat the water by 5c" would work,
+	but not "heat the water by 5C".) Note that this only affected commands
+	typed by hand, because the TEST command flattens to lower case
+	automatically.
+
+4 (a) 18. Glulx issues, file I/O, figures, sounds
+
+--
+
+4 (a) 19. I6 template layer and inclusions
+
+--
+
+4 (a) 20. Text, spacing and printing
+
+Bug fixed (0001242) whereby "blouse" and its derivations pluralized as
+	"blmice", not "blouses".
+
+Bug fixed (0001231, but see also 0001396) whereby the text substitution "[A
+	list of...]" would only capitalise the first word of the output if it were an
+	article, so for example it could produce "four gold coins" rather than "Four
+	gold coins". And similarly for "[The list of...]", which could be fooled by
+	proper nouns in lower case.
+
+Bug fixed (0001258) whereby printing unusual indefinite articles using the
+	"[A ...]" text substitution would produce a "library error 2" at
+	run-time.
+
+Bug fixed (0001319) whereby a text substitution defined with a slash to
+	indicate alternate phrasings on the opening word would lose its case
+	sensitivity.
+
+Bug fixed (0001291) whereby string comparisons in the background would cause
+	"[first time]..." text substitutions to behave unexpectedly when used
+	in certain properties of rooms or things.
+
+Bug fixed (0001370) whereby the string "[one of]..." compares as equal to the
+	empty text "" before being first printed, even if it's never possible for
+	it to be empty. For comparison purposes, it now is equal to the text
+	value it will have when next printed.
+
+Bug fixed (0001368) whereby spurious line breaks would sometimes appear in
+	room descriptions including paragraphs arising from "writing a paragraph
+	about" rules.
+
+Bug fixed (0001365) whereby grouping items under a given text would not
+	always work if that text included substitutions. It now does, and
+	automatically performs the substitution at grouping time.
+
+Bug fixed (0001344) whereby two oddball cases in the list-writer printed
+	a close round bracket ")" directly, rather than printing it with the
+	list writer internal rule response (B).
+
+Bug fixed (0001283) whereby the past tenses of regular English verbs ending
+	-ay, -ey or -oy were incorrect: thus play was plaied, annoy was annoied,
+	and so forth.
+
+Bug fixed (0001396) to do with capitalising "ÿ" in the Z-machine (Queensrÿche
+	fans, beware).
+
+4 (a) 21. Indexing
+
+Bug fixed (0001300) whereby the text "This text is not actually used" is
+	actually used in the Actions detail view.
+
+Bug fixed (0001335) whereby the adjective "substituted" was wrongly defined
+	in the Lexicon index.
+
+Bug fixed (0001332) whereby the Contents index was miscounting the number of
+	words under some headings.
+
+4 (a) 22. Testing commands
+
+Bug fixed (0001256) whereby the RESPONSES testing command would list responses
+	from some extensions in more than one numbered chunk.
+
+Bug fixed (0001236) whereby run-time problem messages would sometimes be
+	hidden on screen if they occurred during the expansion of a text
+	substitution.
+
+4 (a) 23. Releasing, bibliographic data, and cBlorb
+
+Bug fixed (0001293) to make HTML generated by cBlorb slightly better
+	at passing validators.
+
+Bug fixed (0001253) whereby releasing along with the "introductory booklet"
+	or "introductory postcard" had stopped working.
+
+4 (b). Extension maintenance
+
+Glulx Text Effects by Emily Short (now maintained by Dannii Willis) has been
+updated to give comprehensive support for all Glk text features, and to
+simplify how colours are set, by using web (CSS) colours like #8800FF.
+See the extension documentation for more details. An issue to do with
+deprecated phrases in the examples has been resolved (see 0001367).
+This update is not fully backwards compatible, but any changes will be
+easy to make.
+
+Metric Units: removed documentation references to the limitations which
+existed before we switched to floating-point arithmetic in 6L02.
+
+Epistemology by Eric Eve: Updated to version 8. This fixes a bug (which has
+oddly only just come to light after all this time, unless it’s a by-product of
+6L02) by which backdrops weren’t being marked as seen. It also adds an (A) to
+label the response of the report epistemic status rule.
+
+4 (c). Examples maintenance
+
+Examples in the documentation which contained ampersands now paste correctly
+into the source panel (see 0001312).
+
+Small revisions have been made to the examples Lethal Concentration 1 and 2
+(see 0001341), Persephone (see 0001346), Terror of the Sierra Madre (0001340),
+Olfactory Settings (see 0001305).
+
+The example "Lollipop Guild" has been rewritten to demonstrate removing
+implicit takes from a different action (since eating no longer mandates
+these); and it is more dentist-friendly into the bargain.
+
+The tiny example "We" has been removed: responses and adaptive text have
+overtaken it (see 0001245).
+
+The example "Greater Variety" has been renamed "Variety 2" to emphasise its
+sequelness (see 0001284).
+
+4 (d). Interpreter maintenance
+
+Inform comes with browser interpreters built in, so that it can act on release
+instructions such as "Release along with an interpreter.", which tell Inform
+to make a website in which the current story is immediately playable.
+
+Parchment, Quixe and Vorple, all included by default, are unchanged from
+their 6L02 versions.

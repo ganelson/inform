@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 15 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindsIncompatible
+  >--> You wrote 'The Prairie is carrying the Great Outdoors' (source text, line 3),
+    but that seems to contradict 'The Great Outdoors and the Prairie are
+    regions' (source text, line 1), as a person and a region are incompatible.
+    (If a person were a kind of a region or vice versa there'd be no problem,
+    but they aren't.)
+Problem__ PM_RegionRelation
+  >--> You wrote 'The Prairie is carrying the Great Outdoors' (source text, line 3):
+    but regions can only contain rooms, and have no other relationships.
+Inform 7 has finished: 17 centiseconds used.

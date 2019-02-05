@@ -1,0 +1,31 @@
+Length is a kind of value. 1m specifies a length. 1mm specifies a length
+scaled down by 1000. 1cm specifies a length scaled down by 100. 1km
+specifies a length scaled up by 1000.
+
+Area is a kind of value. 1 sq m specifies an area. 1 sq cm specifies an
+area scaled down by 10000. 1 hectare specifies an area scaled up by 10000.
+Length times length specifies an area.
+
+A volume is a kind of value. 1 cu m specifies a volume. 1cc specifies
+a volume scaled down by 1000000. Length times area specifies a volume.
+
+An angle is a kind of value. 1 radian specifies an angle. Length times
+angle specifies a length.
+
+A solid angle is a kind of value. 1 steradian specifies a solid angle.
+Area times solid angle specifies an area.
+
+Test evaluation (internal) with 2 radian.
+Test evaluation (internal) with 4 steradian.
+Test evaluation (internal) with 6.
+Test evaluation (internal) with 2 radian + 2 radian.
+Test evaluation (internal) with 4 steradian + 4 steradian.
+Test evaluation (internal) with 6 + 6.
+Test evaluation (internal) with 2 radian times 2 radian.
+Test evaluation (internal) with 4 steradian times 4 steradian.
+Test evaluation (internal) with 6 times 6.
+Test evaluation (internal) with 6 times 2 radian.
+Test evaluation (internal) with 4 steradian times 6.
+Test evaluation (internal) with 2 radian times 4 steradian.
+
+Laboratory is a room.

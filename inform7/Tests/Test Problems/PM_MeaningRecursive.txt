@@ -1,0 +1,4 @@
+Foo is a room.
+Wog is always Zog.
+Zog is always Wog.
+When play begins: say "[Wog]."

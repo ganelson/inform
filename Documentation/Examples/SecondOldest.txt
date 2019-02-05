@@ -1,0 +1,34 @@
+* Action variables
+(Falling into a pit when going from darkness to darkness; The Second Oldest Problem)
+Adapting the going action so that something special can happen when going from a dark room to another dark room.
+
+Text in this example is drawn from Will Crowther's original 1976 FORTRAN implementation of ADVENTURE, the founding work of the genre, whose source code was rediscovered by Dennis G. Jerz in 2007. Note the capitals: the program ran on an early computer without lower case lettering. They look a little mimsy now, but picture them glowing green on an old-style cathode ray tube monitor in a darkened room late at night.
+
+The problem alluded to is that the player is forbidden to walk between two dark rooms, so that he must always have light to see by from at least one end of any movement. Writing source text to achieve this is tricky to get right in every case, because the determination of light is hard to do. Here we interleave the necessary rules into the existing "going" action, using a new action variable to record the number of ends which are dark as experienced by the player, which might be 0, 1 or 2:
+
+	{*}"THE SECOND OLDEST PROBLEM"
+	
+	The going action has a number called the dark terminus count.
+	Setting action variables for going:
+		now the dark terminus count is 0;
+		if in darkness, increment the dark terminus count.
+	The last carry out going rule:
+		if in darkness, increment the dark terminus count;
+		if the dark terminus count is 2, end the story saying "YOU FELL INTO A PIT AND BROKE EVERY BONE IN YOUR BODY!" instead.
+
+And now three early rooms to try this out. 
+
+	{**}COBBLE CRAWL is a room. "YOU ARE CRAWLING OVER COBBLES IN A LOW PASSAGE. THERE IS A DIM LIGHT AT THE EAST END OF THE PASSAGE."
+	
+	DEBRIS ROOM is west of COBBLE CRAWL. "YOU ARE IN A DEBRIS ROOM, FILLED WITH STUFF WASHED IN FROM THE SURFACE. A LOW WIDE PASSAGE WITH COBBLES BECOMES PLUGGED WITH MUD AND DEBRIS HERE,BUT AN AWKWARD CANYON LEADS UPWARD AND WEST."
+	
+	AWKWARD CANYON is west of DEBRIS ROOM. "YOU ARE IN AN AWKWARD SLOPING EAST/WEST CANYON."
+	
+	DEBRIS ROOM and AWKWARD CANYON are dark.
+	
+	Rule for printing the name of a dark room: say "DARKNESS" instead.
+	Rule for printing the description of a dark room: say "IT IS NOW PITCH BLACK. IF YOU PROCEED YOU WILL LIKELY FALL INTO A PIT." instead.
+	
+	Test me with "w / e / w / w".
+
+This is only the second oldest problem in the IF literature: the earliest puzzle is unlocking the steel grate which bars entrance to the cave.

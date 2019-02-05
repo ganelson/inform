@@ -1,0 +1,60 @@
+Table 1
+fish	cat
+"chub"	2
+"bream"	16
+
+Home is a room. Use scoring.
+
+When play begins:
+	choose row 1 in Table 1;
+	let N be 45;
+	let L be { 3, 5, 6, 11 };
+	showme N;
+	showme score;
+	showme carrying capacity of the player;
+	showme cat entry;
+	showme L;
+	say "Now increase by 5...";
+	increase N by 5;
+	increase score by 5;
+	increase carrying capacity of the player by 5;
+	increase the cat entry by 5;
+	increase entry 2 of L by 5;
+	showme N;
+	showme score;
+	showme carrying capacity of the player;
+	showme cat entry;
+	showme L;
+	say "Now decrease by 7...";
+	decrease N by 7;
+	decrease score by 7;
+	decrease carrying capacity of the player by 7;
+	decrease the cat entry by 7;
+	decrease entry 2 of L by 7;
+	showme N;
+	showme score;
+	showme carrying capacity of the player;
+	showme cat entry;
+	showme L;
+	say "Now increment...";
+	increment N;
+	increment score;
+	increment carrying capacity of the player;
+	increment the cat entry;
+	increment entry 2 of L;
+	showme N;
+	showme score;
+	showme carrying capacity of the player;
+	showme cat entry;
+	showme L;
+	say "Now decrement...";
+	decrement N;
+	decrement score;
+	decrement carrying capacity of the player;
+	decrement the cat entry;
+	decrement entry 2 of L;
+	showme N;
+	showme score;
+	showme carrying capacity of the player;
+	showme cat entry;
+	showme L;

@@ -1,0 +1,27 @@
+Shape is a kind of value. The shapes are square and round.
+Colour is a kind of value. The colours are red and blue.
+Texture is a kind of value. The textures are smooth and rough.
+
+A block is a kind of thing.
+Blocks have a shape. A block is usually round. Understand the shape
+property as describing a block.
+Block have a colour. A block is usually blue. Understand the colour
+property as describing a block.
+Blocks have a texture. A block is usually smooth. Understand the
+texture property as describing a block.
+
+Before printing the name of a block, say "[colour] [texture] [shape] ".
+Before printing the plural name of a block, say "[colour] [texture] [shape] ".
+
+The Lab is a room. In the lab is a table. On the table are a red rough
+square block, a rough red square block, a red square rough block, a
+square red rough block, a square rough red block, a square rough blue block,
+and a rough square red block.
+
+On the table is a block. It is red. It is rough. It is square.
+
+Before taking: if the noun is a red square rough block, say "Oooh, a red one!"
+
+Understand "cube" as a block.
+
+Test me with "take blue / take red / inventory / drop red cube / drop cube / look".

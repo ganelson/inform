@@ -1,0 +1,18 @@
+The Attic is a room.
+
+In the Attic are a CD entitled No Smoke Without Fire, a 70s
+photograph of an American winning Wimbledon, a fraxinus branch,
+an urn holding your late great-aunt's remains, a convention badge
+from the American Society of Hypertension and a ghost story by
+M R James.
+
+The shelf is in the Attic. On the shelf are Of Mice And Men and
+The Girl From Ipanema.
+
+A person can be asleep or awake.
+
+Sleeping Beauty is a woman who is asleep in the Attic.
+
+Beauty's croissant is a thing which is edible in the Attic.
+
+Test me with "showme / showme beauty / showme croissant".

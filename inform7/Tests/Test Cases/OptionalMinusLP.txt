@@ -1,0 +1,17 @@
+Test is a room.
+
+A surreal number is a kind of value. -999999:9999 specifies a surreal number with parts whole and fractional.
+
+The element-selection set is a list of numbers variable. The element-selection set is {1}.
+
+Scaling elements is an action applying to one surreal number. Understand "scale at [surreal number]" 
+or  "scale element/elements at [surreal number]" or "scale to [surreal number]" or "scale 
+element/elements to [surreal number]" as scaling elements.
+
+Understand "scale [surreal number]" as scaling elements when the number of entries of the element-selection set > 0.
+
+Carry out scaling elements:
+	say "Scaled to [surreal number understood]!"
+
+Test me with "scale element at 0:8000 / scale element at 1:2500 / scale 0:8000 / scale 1:2500 / 
+scale -1:0000 / scale -0:9000 / scale 0:9999 / scale 1:0000"

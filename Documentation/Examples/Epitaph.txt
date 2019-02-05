@@ -1,0 +1,28 @@
+* Printing the player's obituary
+(Death message replaced; Battle of Ridgefield)
+Completely replacing the endgame text and stopping the game without giving the player a chance to restart or restore.
+
+Occasionally, a piece of IF is sufficiently serious that it feels bathetic to offer the player the usual restore-restart-undo-quit options at the end. The following would replace "*** You have died ***" with a centered epitaph, then quit the game when the player hits a key.
+
+This example relies on a standard extension to avoid any fancy programming:
+
+	{*}"Battle of Ridgefield"
+
+	Include Basic Screen Effects by Emily Short.
+
+	Ridgefield is a room. 
+
+	Instead of doing something when the turn count is greater than 1: say "Alas, you no longer have the strength."; end the story.
+
+	Rule for printing the player's obituary: 
+		say paragraph break;
+		center "In defense of American Independence";
+		center "at the Battle of Ridgefield, April 27, 1777,";
+		center "died Eight Patriots who were laid in this ground,";
+		center "Companioned by Sixteen British Soldiers,";
+		center "Living, their enemies,";
+		center "Dying, their guests";
+		say paragraph break;
+		wait for any key;
+		stop game abruptly;
+		rule succeeds.

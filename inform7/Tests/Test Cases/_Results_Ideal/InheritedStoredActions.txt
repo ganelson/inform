@@ -1,0 +1,15 @@
+   voting booth
+  Bill has Splodgo 3. and Andy has Splodgo 3..
+  Bill has waiting and Andy has waiting.
+  Bill has going up and Andy has waiting.
+  Bill has going up and Andy has going down.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  voting booth
+  You can see Bill and Andy here.
+  
+> >   voting booth
+> Are you sure you want to quit? 

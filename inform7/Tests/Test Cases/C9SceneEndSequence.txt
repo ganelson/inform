@@ -1,0 +1,14 @@
+Home is a room.
+
+Starting is a scene. Starting begins when play begins. Starting ends
+roundly when the player carries the ball. Starting ends squarely when  
+the player carries the cube.
+
+The cube and the ball are here.
+
+Ending is a scene. Ending begins when Starting ends.
+When Ending begins:
+	if Starting ended roundly, say "Roundly.";
+	if Starting ended squarely, say "Squarely."
+
+Test me with "scenes / take ball".

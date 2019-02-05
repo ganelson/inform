@@ -1,0 +1,10 @@
+Stage is a room.
+
+A beat is a kind of thing.  A beat can be insistent, dogged, or
+casual. A beat is usually casual.
+
+Test1 is a beat. Test2 is a beat. Test3 is a beat.
+
+When play begins:
+	repeat with item running through beats:
+		say "[item]: [beat condition of item][line break]".

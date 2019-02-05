@@ -1,0 +1,135 @@
+   Empire Builder Train                                                                                                                                                                                                   4:43 pm
+  Empire
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empire Builder Train
+  One of the (relatively) plush long-distance Amtrak trains. You're in a two-story car with toilets and a cafe at one end, not having sprung for a sleeper.
+  
+  Through the windows you can see the Seattle train station.
+  
+> >   Edmonds                                                                                                                                                                                                                5:17 pm
+  (Testing.)
+  
+  >[1] out
+  Seattle
+  The scenic train station of Seattle.
+  
+  The pompously-titled Empire Builder train is pulled up here, soon to continue its journey towards Chicago.
+  
+  >[2] in
+  Empire Builder Train
+  One of the (relatively) plush long-distance Amtrak trains. You're in a two-story car with toilets and a cafe at one end, not having sprung for a sleeper.
+  
+  Through the windows you can see the Seattle train station.
+  
+  >[3] z
+  Time passes.
+  
+  The train pulls out of Seattle!
+  
+  >[4] z
+  Time passes.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] out
+  The train is not stopped at a station.
+  
+  >[7] z
+  Time passes.
+  
+  >[8] z
+  Time passes.
+  
+  >[9] z
+  Time passes.
+  
+  >[10] z
+  Time passes.
+  
+  >[11] z
+  Time passes.
+  
+  >[12] z
+  Time passes.
+  
+  >[13] z
+  Time passes.
+  
+  >[14] z
+  Time passes.
+  
+  >[15] z
+  Time passes.
+  
+  >[16] z
+  Time passes.
+  
+  >[17] z
+  Time passes.
+  
+  >[18] z
+  Time passes.
+  
+  >[19] z
+  Time passes.
+  
+  >[20] z
+  Time passes.
+  
+  >[21] z
+  Time passes.
+  
+  >[22] z
+  Time passes.
+  
+  >[23] z
+  Time passes.
+  
+  >[24] z
+  Time passes.
+  
+  >[25] z
+  Time passes.
+  
+  >[26] z
+  Time passes.
+  
+  >[27] z
+  Time passes.
+  
+  >[28] z
+  Time passes.
+  
+  The train pulls into Edmonds and comes to a stop.
+  
+  >[29] z
+  Time passes.
+  
+  >[30] out
+  Edmonds
+  The scenic train station of Edmonds.
+  
+  The pompously-titled Empire Builder train is pulled up here, soon to continue its journey towards Chicago.
+  
+  >[31] in
+  Empire Builder Train
+  One of the (relatively) plush long-distance Amtrak trains. You're in a two-story car with toilets and a cafe at one end, not having sprung for a sleeper.
+  
+  Through the windows you can see the Edmonds train station.
+  
+  >[32] out
+  Edmonds
+  The scenic train station of Edmonds.
+  
+  The pompously-titled Empire Builder train is pulled up here, soon to continue its journey towards Chicago.
+  
+  >[33] z
+  Time passes.
+  
+  >[34] z
+  Time passes.
+  
+> >

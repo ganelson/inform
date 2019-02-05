@@ -1,0 +1,7 @@
+Place is a room.
+
+The player carries an edible container called an ice cream cone. An edible thing called a scoop of mint 
+ice cream is in the ice cream cone. In the ice cream cone is an edible thing called a cherry.
+
+The description of the ice cream cone is "A delicious ice cream cone[if the cherry is in the ice 
+cream cone], topped with a cherry[else if], sadly lacking a cherry[end if]."

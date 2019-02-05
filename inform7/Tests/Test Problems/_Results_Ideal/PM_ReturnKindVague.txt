@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ReturnKindVague
+  >--> The declaration 'To decide which value is froggg' (source text, line 2)
+    tries to set up a phrase which decides a value which is too vaguely
+    described. For example, 'To decide which number is the target: ...' is
+    fine, because 'number' is clear about what kind of value should emerge; but
+    'To decide which value is the target: ...' is not clear enough.
+Inform 7 has finished: 43 centiseconds used.

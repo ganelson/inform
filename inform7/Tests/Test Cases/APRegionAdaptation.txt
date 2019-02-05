@@ -1,0 +1,21 @@
+Foo is a region. The Lab is in Foo. The Corridor is south of the Lab.
+
+Barring is an action applying to one visible thing.
+
+Understand "bar [any region]" as barring.
+
+Instead of barring foo: say "Foo barred."
+
+Before going in foo: say "Going in Foo now."
+
+Before going to foo: say "Going to Foo now."
+
+Before going from foo: say "Going from Foo now."
+
+Before going in Corridor: say "Going in Corridor now."
+
+Before going to Corridor: say "Going to Corridor now."
+
+Before going from Corridor: say "Going from Corridor now."
+
+Test me with "actions / bar foo / s / n".

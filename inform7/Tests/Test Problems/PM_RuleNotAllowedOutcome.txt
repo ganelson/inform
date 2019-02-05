@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+Instead of jumping:
+	rule succeeds with result 21.

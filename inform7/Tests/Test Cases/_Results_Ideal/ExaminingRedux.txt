@@ -1,0 +1,89 @@
+   Lounge
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lounge (on the comfy green chair)
+  Ah, the Lounge! How relaxing.
+  
+  You can see a big basket (empty) here.
+  
+> >   Lounge
+  (Testing.)
+  
+  >[1] x chair
+  The comfy chair is green.
+  
+  >[2] enter basket
+  (getting off the comfy green chair)
+  You get into the big basket.
+  
+  >[3] x basket
+  You see nothing special about the big basket.
+  
+  >[4] drop ball
+  Dropped.
+  
+  >[5] x basket
+  In the big basket is a ball.
+  
+  >[6] get ball
+  Taken.
+  
+  >[7] put ball on chair
+  You put the ball on the comfy green chair.
+  
+  >[8] x chair
+  The comfy chair is green.
+  
+  On the comfy green chair is a ball.
+  
+  >[9] exit
+  You get out of the big basket.
+  
+  Lounge
+  Ah, the Lounge! How relaxing.
+  
+  On the comfy green chair is a ball.
+  
+  You can also see a big basket (empty) here.
+  
+  >[10] x chair
+  The comfy chair is green.
+  
+  On the comfy green chair is a ball.
+  
+  >[11] get ball
+  Taken.
+  
+  >[12] put ball in basket
+  You put the ball into the big basket.
+  
+  >[13] x basket
+  In the big basket is a ball.
+  
+  >[14] put box in basket
+  You put the box into the big basket.
+  
+  >[15] x basket
+  In the big basket are a box and a ball.
+  
+  >[16] get ball
+  Taken.
+  
+  >[17] put ball in box
+  You put the ball into the box.
+  
+  >[18] x basket
+  In the big basket is a box.
+  
+  >[19] put box on chair
+  (first taking the box)
+  You put the box on the comfy green chair.
+  
+  >[20] x chair
+  The comfy chair is green.
+  
+  On the comfy green chair is a box (in which is a ball).
+  
+> >

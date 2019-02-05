@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 43 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationSymbolSpurious
+  >--> In 'let F be given by Equation 2 where a = 5, Z = 10' (source text, line 9),
+    you define an equation which mentions the symbol 'Z': but when 'where' is
+    used to supply values to plug into a named equation as part of a 'let'
+    phrase, you can only supply values for symbols actually used in that
+    equation. This one doesn't seem to occur there.
+Inform 7 has finished: 42 centiseconds used.

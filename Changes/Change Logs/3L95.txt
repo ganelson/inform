@@ -1,0 +1,129 @@
+3L95 (14 May 2006)
+
+(Windows only) If compilation fails, index pages from the previous compilation
+	are kept.
+(Windows only) Invalid characters cannot now be entered into the new project
+	name field.
+(Windows only) The File/Revert menu item has been removed, as it was
+	misleading quite a few people.
+(Windows only) Characters input with the AltGr key held down (such as ']' on
+	a Spanish keyboard) can now be entered in the Source and Game panels.
+(Windows only) Inform 6 code is coloured grey in the Source tab.
+(Windows only) The application now works with IE7 installed.
+(Windows only) The installer would sometimes fail to reinstall a new version
+	if the old version was not uninstalled, leading to an incorrect install
+	and two entries in "Add and Remove Programs". This should now be fixed.
+(Windows only) The application should now cope if the "My Documents" path is
+	something like "G:\".
+(Windows only) Replace now works if the string being searched for is only a
+	case insensitive match.
+(Windows only) The Source tab now has the standard edit context menu available
+	if you right click on it with the mouse.
+(Windows only) Fixed mis-addressing of the blue "go to documentation"
+	links, which always linked two pages after the one intended.
+(Mac OS X only) Added a "Prune" button to the skein, with a slider control
+	for the severity of pruning required.
+(Mac OS X only) Added a font size option in the Preferences, affecting all
+	the panels simultaneously.
+(Mac OS X only) Removed the spurious error on the extensions contents page
+	about incorrect extension "Standard Rules.zip".
+Various minor clarifications added to documentation, and new section 3.24
+	("Directions") added.
+As the beginnings of a process of adding reviews at the end of each chapter,
+	brief notes are added to the ends of chapters 9 and 10.
+Fixed bug in extension Plurality by Emily Short which involved noticing the
+	plurality of items mentioned by the player but not printed in the text.
+Added two new Examples: "Feline Behavior" and "Panache".
+Minor changes to Examples:
+	Being Prepared, Model Shop, Ballpark: added comments.
+	Crane's Leg I and Eddystone: modified because of type-checking bug.
+	U-Stor-It: fixed bug to do with cards appearing on all of the chests.
+	Fussy Table: added understanding of "chair" as a chair.
+	Yolk of Gold: rearranged rule order.
+Added the implication that something locked is usually lockable. This in
+	practice means that doors and containers described as being locked at
+	the start of play are considered to be something which the player
+	could in principle lock or unlock, given the correct key. (In the
+	absence of information about that key, the player will still not be
+	able to lock or unlock them, but will get a more realistic reply
+	from the game in response to attempts to unlock.)
+Added "persons" as an alternative plural of "person" (the usual one being
+	"people").
+Fixed nested comments: thus "[This [even so] is all one comment.]"
+Improved the "hawk is a handsaw" problem message.
+Improved the problem messages for incorrectly specified rules.
+Improved problem messages for "now ..." used with a condition which cannot
+	be directly arranged during play, such as "now Scene IV is happening",
+	and for "now ... and ...".
+Improved problem messages for assertions where it seems possible that the
+	wrong primary verb has been construed.
+Problem message for understand followed by an incorrect action corrected
+	(it was previously recommended as correct usage something which wasn't).
+More explicit problem message for an attempt to create a "part" of a room.
+Added run-time problem message for using the bare condition "in R" where
+	R is neither a room nor a region.
+Fixed bug whereby an assertion containing three or more consecutive
+	property adjectives ("a red rough square block is on the table")
+	would have only the first two acted upon.
+Fixed bug in which rules whose premiss contained an unrecognised action
+	plus the explicit word "rule" would activate every turn, rather than
+	produce a problem message.
+Fixed bug to do with rules beginning "Check/report/carry out", then an
+	action name including "it", then a conditional clause with "when" or
+	"while".
+Fixed bug in which using a "To say ..." phrase in the middle of a complex
+	say would cause it to lose track of conditional saying, sometimes
+	resulting in both "[if ...]" and "[otherwise]" parts being printed.
+Fixed bug in previous fix for failure to object to names of things or
+	rooms containing literal double-quoted text (which then failed to
+	compile through I6).
+Fixed bug to do with assigning properties to a null object when "it" is
+	currently undefined.
+Fixed bug to do with incorrect sorting of rules as between a rule
+	specifying "going ... in..." and one specifying "going ... from...",
+	where there are at least three such defined in a particular order.
+Fixed bug in which run-time type-checking did not resolve which phrase
+	definition to use where they differed only in properties of objects
+	(for instance, distinguishing "To recite (something - closed container)"
+	and "To recite (something - open container)").
+Fixed bug which very occasionally caused a "bad check-against in run-time 
+	type check" internal error.
+Fixed crash if a Table is improperly named (or not named at all), and
+	added checking to enforce the rules on Table names.
+Fixed bug confusing ordinal and cardinal numbers in assertions (so that
+	"The third man is here." would be misread as if "Three men are here.").
+Fixed bug if a region is created whose name begins with a direction or
+	other indication of location ("East of Eden is a region.", say, or
+	"On the Prairie is a region.").
+Fixed crash if a room is created only by implication and with no name.
+Fixed failure of sentences like "East of the Garden is the Gazebo." to
+	establish which room is currently under discussion (the Garden): this
+	meant that some source text in the documentation and website failed.
+Fixed bug in which if pronouns would sometimes be assigned to implicitly
+	created things: for instance, in "A nose is part of every person. ...
+	George is a man. He wears a shirt and a pair of pants.", "he" was
+	incorrectly thought to refer to George's nose rather than George.
+Fixed bug (or arguably added feature) so that named rules can be property
+	values, that is, so that a property can have "rule" as its kind of value.
+Fixed bug in which values that vary, such as "location", were allowed
+	by I7 as table entries, only to fail to compile through I6; and added
+	problem message for the special case of "player".
+Fixed bug in which initialising a value that varies to itself, or to another
+	value that varies, was not reported as a problem, and fell through to
+	fail in I6.
+Fixed bug in which attempts to manipulate the properties of kinds would
+	sometimes not be reported as problems, and fall through to fail in I6.
+Fixed bug in which properties of indefinitely described objects, used as
+	the subjects of verbs, failed to compile in I6.
+Fixed bug in which, in some circumstances, the character "@" used in text
+	failed to compile in I6 (making it hard to write email addresses).
+Fixed bug in which "(called ...)" used improperly in adjective definitions
+	was not reported as a problem, and fell through to I6.
+Fixed bug in which doors described both as one- and two-sided would not be
+	picked up as a problem.
+Fixed bug in which explicitly starting the player in a container which is not
+	contained in any room would fall through to an error in I6.
+Added a very limited ability to cope with "if X has P greater than N", where
+	P is a property, and fixed bug whereby uses of "to have P" resulted
+	in internal errors: those which cannot be compiled now result in better
+	problem messages.

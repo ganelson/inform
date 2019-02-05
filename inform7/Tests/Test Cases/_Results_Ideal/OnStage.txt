@@ -1,0 +1,50 @@
+   Stage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stage
+  You can see a meteor, a stone and a long glass of sherbet here.
+  
+> >   Stage
+  (Testing.)
+  
+  >[1] look
+  Stage
+  You can see a meteor, a stone and a long glass of sherbet here.
+  
+  The stone is on-stage.
+  
+  >[2] z
+  The stone is off-stage.
+  
+  >[3] look
+  Stage
+  You can see a meteor and a long glass of sherbet here.
+  
+  The stone is off-stage.
+  
+  >[4] jump
+  The stone is on-stage.
+  
+  >[5] get stone
+  Taken.
+  
+  The stone is on-stage.
+  
+  >[6] jump
+  The stone is on-stage.
+  
+  >[7] look
+  Stage
+  You can see a meteor and a long glass of sherbet here.
+  
+  The stone is on-stage.
+  
+  >[8] i
+  You are carrying:
+    a stone
+  
+  The stone is on-stage.
+  
+> >

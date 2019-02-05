@@ -1,0 +1,72 @@
+   Living Room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Living Room
+  A multi function remote control.
+  
+> >   Living Room
+  (Testing.)
+  
+  >[1] punch 50
+  (on the remote control)
+  ** check: 50 on the remote control **
+  ** carry out: 50 on the remote control **
+  ** check: 50 **
+  ** carry out: 50 **
+  >[2] punch -17
+  (on the remote control)
+  ** check: -17 on the remote control **
+  ** carry out: -17 on the remote control **
+  ** check: -17 **
+  ** carry out: -17 **
+  >[3] punch 0
+  (on the remote control)
+  ** check: 0 on the remote control **
+  ** carry out: 0 on the remote control **
+  ** check: 0 **
+  ** carry out: 0 **
+  >[4] punch 9999
+  (on the remote control)
+  ** check: 9999 on the remote control **
+  ** carry out: 9999 on the remote control **
+  ** check: 9999 **
+  ** carry out: 9999 **
+  >[5] punch 10000
+  (on the remote control)
+  ** check: 10000 on the remote control **
+  ** carry out: 10000 on the remote control **
+  ** check: 10000 **
+  ** carry out: 10000 **
+  >[6] punch 10001
+  (on the remote control)
+  ** check: 10001 on the remote control **
+  ** carry out: 10001 on the remote control **
+  ** check: 10001 **
+  ** carry out: 10001 **
+  >[7] punch -32768
+  (on the remote control)
+  ** check: -32768 on the remote control **
+  ** carry out: -32768 on the remote control **
+  ** check: -32768 **
+  ** carry out: -32768 **
+  >[8] punch 32767
+  (on the remote control)
+  ** check: 32767 on the remote control **
+  ** carry out: 32767 on the remote control **
+  ** check: 32767 **
+  ** carry out: 32767 **
+  >[9] dial one
+  (on the remote control)
+  ** check: 1 on the remote control **
+  ** carry out: 1 on the remote control **
+  ** check: 1 **
+  ** carry out: 1 **
+  >[10] punch eleven
+  (on the remote control)
+  ** check: 11 on the remote control **
+  ** carry out: 11 on the remote control **
+  ** check: 11 **
+  ** carry out: 11 **
+> >

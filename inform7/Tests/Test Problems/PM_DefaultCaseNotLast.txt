@@ -1,0 +1,8 @@
+Lab is a room.
+
+When play begins:
+	if 21 is:
+		-- otherwise:
+			say "No.";
+		-- 21:
+			say "Yes.";

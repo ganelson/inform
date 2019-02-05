@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 22 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ImplicationValueProperty
+  >--> You wrote 'A portable thing is usually variably stashable' (source text, line 5):
+    but that's an implication where the outcome is an adjective other than a
+    simple either/or property, which is the only form of implication I can
+    handle.
+Inform 7 has finished: 16 centiseconds used.

@@ -1,0 +1,14 @@
+The Daily Planet Newsroom is a room.
+
+"Typewriters and stuff. [otherwise]At least Clark has gone![end if]"
+
+Perry White's Office is west of the Newsroom. In Perry White's Office are a
+desk and a poster of Elvis. On the desk is a lead-lined box. The box is
+openable. In the box is the green kryptonite crystal.
+
+The Supply Closet is east of the Newsroom. The Elevator Bank is north of
+the Newsroom.
+
+Clark Kent is a man in the Newsroom. "Clark [if Clark can see the
+kryptonite]looks a bit ill[otherwise]is here, frowning as he revises
+his latest article[end if]."

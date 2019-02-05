@@ -1,0 +1,9 @@
+Home is a room.
+
+Volume 1G (for Glulx only)
+
+When play begins: say "This is a Glulx game."
+
+Volume 1Z (for Z-machine only)
+
+When play begins: say "This is a Z-machine game."

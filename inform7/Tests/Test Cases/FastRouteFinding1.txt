@@ -1,0 +1,83 @@
+Use fast route-finding.
+
+Barn is west of Farm. Farm is west of Open Plain. Open Plain is west of
+Rolling Foothills. Rolling Foothills is west of Steep Hills. Steep Hills is
+west of Mountain Ascent. Narrow Crevice is east of Mountain Ascent.
+Encircled Plateau is east of Narrow Crevice. The unexpected door is a door.
+The unexpected door is east of Plateau and west of Crack. Dangerous Descent
+is east of Crack.
+
+Town is north of Farm. Village Outskirts is east of Town and north of Open
+Plain. Neighboring Farmland is east of Village Outskirts and north of
+Rolling Foothills. Mine Entrance is east of Neighboring Farmland and north
+of Steep Hills.
+
+Mine Depth is below Mine Entrance. Diamond Seam is west of Mine Depth.
+Frightening Narrowness is north of Mine Depth and northeast of Diamond
+Seam.
+
+Road is north of Town. Wilderness is east of Road and north of Village
+Outskirts. Scrubland is east of Wilderness and north of Neighboring
+Farmland.
+
+City is north of Road. Cathedral is east of City and north of Wilderness
+and northeast of Road and northwest of Scrubland. Graveyard is east of
+Cathedral and north of Scrubland.
+
+Landing is east of Descent. Rookery is north of Landing. Temple is
+northwest of Landing. Sacred Chamber is north of Temple. Egg Polishing
+Grounds is east of Landing and southeast of Rookery. Shell Dump is east of
+Polishing Grounds.
+
+North of Plateau is Ridge Climb. North of Ridge Climb is Perilous Peak.
+North of Perilous Peak is the Forecourt of the Gods. North of Forecourt is
+the Divine Palace. Northwest of Forecourt is the Dungbeetle Harnessing
+Station. Northeast of Forecourt is the Vista Over Clouds. Northwest of
+Vista is Cottage of Lesser Deities. Cottage is northeast of the Dungbeetle
+Harnessing Station. Dungbeetle Feeding Station is west of Dungbeetle
+Harnessing Station.
+
+Slippery Chute is northwest of Harnessing Station. Long Ride is west of
+Slippery Chute. Feather Heap is south of Long Ride. Feather Heap is
+northeast of Graveyard.
+
+Understand "[any room]" as going by name. Understand "go to [any room]" as going by name.
+
+Going by name is an action applying to one thing.
+
+
+Carry out an actor going by name:
+	let step count be 0;
+	let original be the location of the actor;
+	while location of the actor is not the noun
+	begin;
+		let aim be the best route from the location of the actor to the noun, using doors;
+		if aim is not a direction
+		begin;
+			if the player is the actor, say "You can't think how to get there from here." instead;
+			stop the action;
+		end if;
+		let destiny be the room aim from the location of the actor;
+		if actor is player, say "(heading [aim])[command clarification break]";
+		increase step count by 1;
+		try the actor going aim;
+		if the location of the actor is not destiny
+		begin;
+			if the player is the actor, say "You're stuck." instead;
+			stop the action;
+		end if;
+	end while;
+	if actor is not player, say "[actor] hikes from [original] to [noun] in [step count] move[s]."
+
+Larry, Curly, Moe, George, Mike, Bob, Jayson, Crito, and Pheidippides are
+men in the Barn. Lisa, Tina, Maria, Benita, Sasha, Marita, Queenie,
+Elspeth, Lampito, Arwen, and Felicia are women in the Dump.
+
+Every turn:
+	repeat with victim running through every person who is not the player
+	begin;
+		let goal be a random room;
+		try the victim going by name the goal;
+	end repeat;
+
+Test me with "go to Plateau/z/z/z/z/open door/z/z/z/z/z".

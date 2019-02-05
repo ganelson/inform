@@ -1,0 +1,24 @@
+Inform 7 build 6M12 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LiteralDescriptionAsValue
+  >--> You wrote 'let D be even numbers' (source text, line 5), but 'even
+    numbers' is used in a context where I'd expect to see a (single) specific
+    example of a value, not a description.
+    I was trying to match one of these phrases:
+    1.  let (d - a new name) be (even numbers - description of relations of
+    values) 
+    2.  let (d - a new name) be (even numbers - name of kind) 
+    3.  let (d - a new name) be (even numbers - value) 
+    4.  let (d - a temporary named value) be (even numbers - value) 
+    I recognised:
+    d = a temporary named value, holding a description of numbers
+    even numbers = a description of numbers
+Problem__ PM_LiteralDescriptionAsValue
+  >--> You wrote 'say the time' (source text, line 6), but 'time' is used in a
+    context where I'd expect to see a (single) specific example of an object,
+    not a description. (If you meant the current time, this is called 'time of
+    day' in Inform to avoid confusing it with the various other meanings that
+    the word 'time' can have.)
+Inform 7 has finished: 52 centiseconds used.

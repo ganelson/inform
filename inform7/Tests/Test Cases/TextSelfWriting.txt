@@ -1,0 +1,7 @@
+Foo is a room.
+When play begins:
+	let L be "abc";
+	replace the text "z" in L with "q";
+	say "[L].";
+	now L is L;
+	say "[L]."

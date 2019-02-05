@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TestCommandTooLong
+  >--> You wrote 'Test me with "i/z/take inventory/take inventory/ [...]
+    tory/take inventory/take inventory"' (source text, line 3): but this test
+    script contains a command which is too long, and cannot be fed into Inform
+    for automatic testing. (The format for a test script is a sequence of
+    commands, divided up by slashes '/': maybe you forgot these divisions?)
+Inform 7 has finished: 17 centiseconds used.

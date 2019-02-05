@@ -1,0 +1,50 @@
+Stanford is a room.
+
+Figure of Woodlands is the file "Woodlands.png".
+Sound of rustling leaves is the file "Rustling leaves.ogg".
+The File of Glaciers is called "ice".
+
+LSD Experience is a scene. Bach Cantata Concert is a scene.
+
+Definition: a scene is bad if it is the LSD Experience.
+
+Definition: a scene is good if it is not the LSD Experience.
+
+Colour is a kind of value. The colours are red, blue and green.
+
+When play begins:
+	say "LIST FORMATION TEST.";
+	say "Figures: ";
+	let fig be the list of figure-names;
+	say " [fig in brace notation]";
+	say "[paragraph break]";
+	say "Sounds: ";
+	let fx be the list of sound-names;
+	say " [fx in brace notation]";
+	say "[paragraph break]";
+	say "External files: ";
+	let docket be the list of external-files;
+	say " [docket in brace notation]";
+	say "[paragraph break]";
+	say "Times: ";
+	let moment be the list of times;
+	say " [moment in brace notation]";
+	say "[paragraph break]";
+	say "Tables: ";
+	let almanac be the list of table-names;
+	say " [almanac in brace notation]";
+	say "[paragraph break]";
+	say "Truth states: ";
+	let parity be the list of truth states;
+	say " [parity in brace notation]";
+	say "[paragraph break]";
+	say "Colours: ";
+	let hue be the list of colours;
+	say " [hue in brace notation]";
+	say "[paragraph break]";
+	let interlude be the list of scenes;
+	say "[interlude in brace notation] are the scenes.";
+	let interlude be the list of good scenes;
+	say "[interlude in brace notation] are the good scenes.";
+	let interlude be the list of bad scenes;
+	say "[interlude in brace notation] are the bad scenes."

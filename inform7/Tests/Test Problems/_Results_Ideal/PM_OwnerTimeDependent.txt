@@ -1,0 +1,24 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 41 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OwnerTimeDependent
+  >--> You wrote 'A person that is not an animal can be talkative' (source text, line 3):
+    but ownership of a property is something that has to be always true or
+    always false, so that 'a room can be secret' is fine - a room is always a
+    room - but 'a dark room can be secret' is not - a room might be dark some
+    of the time, and lighted the rest of the time. You need to give a
+    straightforward owner, and not qualify it with adjectives or other
+    conditions.
+Problem__ PM_OwnerTimeDependent
+  >--> You wrote 'A room that is not dark can be semi-dark' (source text, line 5):
+    again, ownership of a property is something that has to be always true or
+    always false.
+Problem__ PM_QualifiedCanBe
+  >--> You wrote 'A room that is dark can be dangerous' (source text, line 6):
+    but only a room, a thing or a kind can have such adjectives applied to it,
+    and qualifications cannot be used. It makes no sense to say 'An open door
+    can be rickety or sturdy' because the door still has to have the property
+    even at times when it is not open: we must instead just say 'A door can be
+    rickety or sturdy'.
+Inform 7 has finished: 18 centiseconds used.

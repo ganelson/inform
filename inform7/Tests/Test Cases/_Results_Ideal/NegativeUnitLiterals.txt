@@ -1,0 +1,51 @@
+   Beach
+  Well, assuming this is a logical universe, you should have just enough time to finish this ark.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Beach
+  You can see a pile of lumber and a hammer here.
+  
+> >   Beach
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  Water level: -10 cubits.
+  
+  >[2] z
+  Time passes.
+  
+  Water level: -8 cubits.
+  
+  >[3] z
+  Time passes.
+  
+  Water level: -6 cubits.
+  
+  >[4] z
+  Time passes.
+  
+  Water level: -4 cubits.
+  
+  >[5] z
+  Time passes.
+  
+  Water level: -2 cubits.
+  
+  >[6] z
+  Time passes.
+  
+  Water level: 0 cubits.
+  
+  
+  
+      *** Somehow are you not surprised ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 182 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ScenesWithTooManyEnds
+  >--> You wrote 'Frogmarch ends in manner 14 when the player is in Danger
+    Zone' (source text, line 20): but this scene now has too many different
+    ways to end, and will need to be simplified. (We can have up to 15 ends to
+    a scene if the project format is for the Z-machine, and 31 for Glulx: see
+    the project's Settings panel. Note that the ordinary 'begins' and 'ends'
+    count as two of those, so you can only name up to 13 or 29 more specific
+    ways for the scene to end.)
+Inform 7 has finished: 17 centiseconds used.

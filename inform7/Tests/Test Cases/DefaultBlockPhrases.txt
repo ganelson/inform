@@ -1,0 +1,12 @@
+Home is a room.
+
+When play begins:
+	let P be a phrase [indexed] text -> number;
+	let T be P applied to "some text";
+	showme T;
+	let P2 be a phrase [indexed] text -> text;
+	let T2 be P2 applied to "some text";
+	showme T2;
+	let P3 be a phrase [indexed] text -> stored action;
+	let T3 be P3 applied to "some text";
+	showme T3;

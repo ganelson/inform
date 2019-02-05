@@ -1,0 +1,56 @@
+   Death Valley
+  Anteaters
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Death Valley
+  You can see a Guide to Desert Fauna and a gizmo here.
+  
+> >   Death Valley
+  (Testing.)
+  
+  >[1] get guide
+  Taken.
+  
+  >[2] look up spines in guide
+  You flip through the Guide for a while and eventually realise that spines are flora, not fauna.
+  
+  >[3] x gizmo
+  The gizmo is hard to describe, but it projects an idea of waiting.
+  
+  >[4] get gizmo
+  Taken.
+  
+  >[5] i
+  The gizmo eagerly soaks up the whole idea of taking inventory.
+  
+  You are carrying:
+    a gizmo
+    a Guide to Desert Fauna
+  
+  >[6] x gizmo
+  The gizmo is hard to describe, but it projects an idea of taking inventory.
+  
+  >[7] drop gizmo
+  The percussion of the fall seems to have shaken the gizmo's idea loose! There's nothing for it now but taking inventory.
+  
+  You are carrying:
+    a Guide to Desert Fauna
+  
+  >[8] get gizmo
+  Taken.
+  
+  >[9] look up anteater colonies in guide
+  The gizmo eagerly soaks up the whole idea of consulting the Guide to Desert Fauna about "anteater colonies".
+  
+  The giant anteater, which grows to six feet in size and can kill a jaguar, is a solitary animal, found in many habitats, including grasslands, deciduous forests and rainforests. It does not form colonies. That's ants. They're actually quite easy to tell apart.
+  
+  >[10] x gizmo
+  The gizmo is hard to describe, but it projects an idea of consulting the Guide to Desert Fauna about "anteater colonies".
+  
+  >[11] drop gizmo
+  The percussion of the fall seems to have shaken the gizmo's idea loose! There's nothing for it now but consulting the Guide to Desert Fauna about "anteater colonies".
+  
+  The giant anteater, which grows to six feet in size and can kill a jaguar, is a solitary animal, found in many habitats, including grasslands, deciduous forests and rainforests. It does not form colonies. That's ants. They're actually quite easy to tell apart.
+  
+> >

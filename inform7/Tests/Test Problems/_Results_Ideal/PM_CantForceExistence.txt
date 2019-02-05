@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantForceExistence
+  >--> You wrote 'now a woman is in the Wharf' (source text, line 4): but this
+    is not explicit enough, and should set out definite relationships between
+    specific things, like 'now the cat is in the bag', not something more
+    elusive like 'now the cat is carried by a woman.' (Which woman? That's the
+    trouble.)
+Inform 7 has finished: 43 centiseconds used.

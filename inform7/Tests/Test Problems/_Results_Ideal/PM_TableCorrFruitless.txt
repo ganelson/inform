@@ -1,0 +1,10 @@
+Inform 7 build 6L65 has started.
+I've now read your source text, which is 32 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableCorrFruitless
+  >--> In the sentence 'say the price corresponding to a character of 4 in
+    table 1' (source text, line 11), you seem to be looking up a corresponding
+    entry in a table: but it's fruitless to go looking for a number in a column
+    where each entry contains an object.
+Inform 7 has finished: 47 centiseconds used.

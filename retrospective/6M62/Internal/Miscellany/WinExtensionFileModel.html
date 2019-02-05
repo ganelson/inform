@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Extension</title>
+<script type="text/javascript">
+	function showExtra(id, imid) {
+		if (document.getElementById(id).style.display == 'block') {
+			document.getElementById(id).style.display = 'none';
+			document.getElementById(imid).src = 'inform:/extra.png';
+		} else {
+			document.getElementById(id).style.display = 'block';
+			document.getElementById(imid).src = 'inform:/extraclose.png';
+		}
+	}
+    function openExtra(id, imid) {
+    	document.getElementById(id).style.display = 'block';
+    	document.getElementById(imid).src = 'inform:/extraclose.png';
+    }
+    function closeExtra(id, imid) {
+    	document.getElementById(id).style.display = 'none';
+    	document.getElementById(imid).src = 'inform:/extra.png';
+    }
+</script>
+</head>
+<STYLE TYPE="text/css">
+<!--
+.oval, .oval TD
+{
+background-image:url('inform:/doc_images/ovoid.png');
+color:white;
+}
+-->
+</STYLE>
+<body><script language="JavaScript">
+function project() {
+   return external.Project;
+}
+function pasteCode(code) {
+    var myProject = external.Project;
+
+    myProject.selectView('source');
+    myProject.pasteCode(code);
+}
+</script>
+<font size=2><table CELLPADDING=0 CELLSPACING=0 width="100%" bgcolor="#000000"><tr><TD width=38px height=26px align="center" valign="center"><a href="inform://Extensions/Extensions.html" border=0><img border=0 src="inform:/doc_images/Hookindex.png" border=0></a></td><TD width=38px height=26px align="center" valign="center"></td><td halign="left" valign="center" CELLPADDING=0 CELLSPACING=0><font color="#FFFFFF" size=2>Extensions</font></a></td><TD width=56px height=26px align="right" valign="center"><a href="inform:/index.html" border=0><img border=0 src="inform:/doc_images/Hookup.png" border=0></a></td></tr></table>
+<a name=on>
+...
+<a name=off>
+<p></body></html>
+

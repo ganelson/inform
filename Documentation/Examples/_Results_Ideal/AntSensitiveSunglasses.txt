@@ -1,0 +1,65 @@
+   Kitchen
+  Ant-Sensitive Sunglasses
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  A small kitchen tucked into a corner of the vacation house. There is storage space for five or six cups, a sink, a two-ring stove; nothing else to speak of.
+  
+  You can see a microwave here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] look
+  Kitchen
+  A small kitchen tucked into a corner of the vacation house. There is storage space for five or six cups, a sink, a two-ring stove; nothing else to speak of.
+  
+  You can see a microwave here.
+  
+  >[2] turn on microwave
+  You flip a switch. The microwave hums meaningfully to itself.
+  
+  >[3] turn off microwave
+  You switch the microwave off.
+  
+  >[4] x apple
+  You see nothing special about the apple.
+  
+  >[5] x sunglasses
+  You see nothing special about sunglasses of freakiness.
+  
+  >[6] s
+  
+  Living Area
+  A whitewashed living/dining/reclining area in what used to be a shepherd's stone hut, but now costs vacationers 600 euros a week. It offers no mod cons, only a straight view of the Mediterranean and a wobbly writing table.
+  
+  >[7] wear sunglasses
+  You put on sunglasses of freakiness.
+  
+  >[8] look
+  Living Area
+  The walls look like they're covered with ants. Just a coincidence, I'm sure.
+  
+  >[9] x apple
+  The apple is ant-legged.
+  
+  >[10] n
+  
+  Kitchen
+  Are ants coming out of the sink? No, probably not.
+  
+  You can see a microwave here.
+  
+  >[11] turn on microwave
+  You flip a switch. The microwave hums as though inhabited by a billion ants.
+  
+  Augh! AUUUGH! GET THEM OFF--
+  
+  
+      *** You have lost your mind. ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

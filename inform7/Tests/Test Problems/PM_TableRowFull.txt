@@ -1,0 +1,7 @@
+Xanadu is a room.
+
+Table of Exempla
+model	model name
+4		"Quad XL"
+6		"Lollapalooza 6 Pro"
+7		"Magic Seven"	Entire Game

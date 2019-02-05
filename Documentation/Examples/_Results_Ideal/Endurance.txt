@@ -1,0 +1,31 @@
+   Quai                                                                                                                                                                                                                   9:00 am
+  Endurance
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Quai
+  An attractive park at the edge of the river Aude: here you can wander among palm trees, and watch cyclists go by on the bike path; in the water there are ducks. In the cafe to your north, patrons sip their pastis; and above you is the medieval walled city and its castle.
+  
+> >   City                                                                                                                                                                                                                   9:19 am
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] n
+  
+  Cafe
+  A charming collection of umbrella-shaded tables, from which one can watch the river and the walls of the city beyond. The noise of traffic is only a minor distraction.
+  
+  >[3] s
+  
+  Quai
+  An attractive park at the edge of the river Aude: here you can wander among palm trees, and watch cyclists go by on the bike path; in the water there are ducks. In the cafe to your north, patrons sip their pastis; and above you is the medieval walled city and its castle.
+  
+  >[4] u
+  You struggle uphill for some distance...
+  
+  City
+  The bells ring out from Place Carnot.
+  
+> >

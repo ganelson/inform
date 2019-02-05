@@ -1,0 +1,10 @@
+Inform 7 build 6M38 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PluralisedRule
+  >--> You wrote 'Every turn when the current action is jumping (this is the
+    jumping rules)' (source text, line 3): but a rule must be given a definite
+    name ending in 'rule' not 'rules', since the plural is only used for
+    rulebooks, which can of course contain many rules at once.
+Inform 7 has finished: 22 centiseconds used.

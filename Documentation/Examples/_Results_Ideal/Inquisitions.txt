@@ -1,0 +1,48 @@
+   Grove
+  Consulting the Oracle
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Grove
+  You can see the Sybil here.
+  
+> >   Grove
+  (Testing.)
+  
+  >[1] test one
+  (Testing.)
+  
+  >[2] ask sybil about persians
+  She nods gravely.
+  
+  >[3] tell sybil about persians
+  She nods gravely.
+  
+  >[4] sybil, persians
+  She nods gravely.
+  
+  >[5] ask sybil about darius
+  Her smile unnerves you.
+  
+  >[6] ask sybil about king
+  Her smile unnerves you.
+  
+  >[7] test two
+  (Testing.)
+  
+  >[8] ask sybil about greeks
+  She looks encouraging.
+  
+  >[9] ask sybil about athenians
+  She looks encouraging.
+  
+  >[10] ask sybil about hoplite army
+  She looks encouraging.
+  
+  >[11] ask sybil about hoplite forces
+  She looks encouraging.
+  
+  >[12] give the coin to the sybil
+  She accepts with a smile.
+  
+> >

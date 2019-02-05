@@ -1,0 +1,29 @@
+   Stooped Corridor
+  The Dark Ages Revisited
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stooped Corridor
+  A low, square-cut corridor, running north to south, stooping you over.
+  
+  The sodium lamp squats heavily on the ground.
+  
+> >   Stooped Corridor
+  (Testing.)
+  
+  >[1] x lamp
+  It is a heavy-duty archaeologist's lamp, currently off.
+  
+  >[2] switch lamp on
+  You switch the sodium lamp on.
+  
+  >[3] look
+  Stooped Corridor
+  A low, square-cut corridor, running north to south, stooping you over.
+  
+  The sodium lamp squats on the ground, burning away.
+  
+  >[4] x lamp
+  It is a heavy-duty archaeologist's lamp, blazing with brilliant yellow light.
+  
+> >

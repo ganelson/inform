@@ -1,0 +1,29 @@
+   Abstraction
+  1 <=> 1 by parity relation
+  1 <=> 3 by parity relation
+  1 <=> 5 by parity relation
+  2 <=> 2 by parity relation
+  2 <=> 4 by parity relation
+  3 <=> 1 by parity relation
+  3 <=> 3 by parity relation
+  3 <=> 5 by parity relation
+  4 <=> 2 by parity relation
+  4 <=> 4 by parity relation
+  5 <=> 1 by parity relation
+  5 <=> 3 by parity relation
+  5 <=> 5 by parity relation
+  3 <=> 5 by joint magnitude relation
+  4 <=> 4 by joint magnitude relation
+  4 <=> 5 by joint magnitude relation
+  5 <=> 3 by joint magnitude relation
+  5 <=> 4 by joint magnitude relation
+  5 <=> 5 by joint magnitude relation
+  
+  Number Study
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Abstraction
+  
+> >   Abstraction
+> Are you sure you want to quit? 

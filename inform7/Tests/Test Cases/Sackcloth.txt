@@ -1,0 +1,14 @@
+The Attic is a room. The old blue rucksack is a player's
+holdall. The player is wearing the rucksack.
+
+The carrying capacity of the player is 3.
+
+In the Attic are a CD entitled No Smoke Without Fire, a 70s
+photograph of an American winning Wimbledon, a polyfraxinus branch,
+an urn holding your late great-aunt's remains, a convention badge
+from the American Society of Hypertension and a ghost story by
+M R James.
+
+Test me with "get cd / get 70s / get branch / get urn / drop all /
+take off rucksack / get cd / get 70s / get branch / get urn / drop all".
+

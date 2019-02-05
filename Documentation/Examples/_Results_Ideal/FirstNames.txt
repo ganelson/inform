@@ -1,0 +1,44 @@
+   Crew Lounge
+  First Name Basis
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Crew Lounge
+  Deliberately spartan: the crew feels weight restrictions here first, so there aren't any chairs, just a few thin pads on the ground.
+  
+  The one major source of entertainment is the holographic projector, a top of the line Misthon 9000, on which you view every beam you can get.
+  
+  You can also see Lewis and Harper here.
+  
+> >   Crew Lounge
+  (Testing.)
+  
+  >[1] x holo
+  The air above the projector is disappointingly clear.
+  
+  The holographic projector is currently switched off.
+  
+  >[2] x man
+  Who do you mean, Lewis or Harper?
+  
+  >[3] lewis
+  A wiry, excitable engineer who just signed aboard last week.
+  
+  >[4] x guy
+  Who do you mean, Lewis or Harper?
+  
+  >[5] harper
+  Harper's a good guy: taciturn when sober, affectionate when drunk, but rarely annoying in either state.
+  
+  >[6] turn on projector
+  You switch the holographic projector on.
+  
+  >[7] x holo projector
+  The projector is now playing a documentary about the early politics of the Mars colony.
+  
+  The holographic projector is currently switched on.
+  
+  >[8] get men
+  What do you want to get those things from?
+  
+> >

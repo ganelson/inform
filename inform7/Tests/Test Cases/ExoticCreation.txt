@@ -1,0 +1,12 @@
+Home is a room.
+
+Scene involvement relates various scenes to various people. The
+verb to involve (he involves, they involve, he involved, it is
+involved, he is involving) implies the scene involvement relation.
+
+Bob is a man in Home.
+
+Bob's Revenge is a scene involving Bob.
+Bob's Revenge begins when we have attacked Bob.
+
+Test me with "relations".

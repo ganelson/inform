@@ -1,0 +1,19 @@
+The TARDIS is a room.
+
+When play begins:
+	say "[-46 to the nearest 5].";
+	say "[-63 to the nearest 45]."
+
+When play begins:
+	now the time of day is 11:59 pm;
+	now the time of day is the time of day plus one minute; [imitating the Slow Room snippet in WI 9.8]
+	showme the time of day;
+	showme whether or not the time of day is 12:00 am;
+	showme whether or not the time of day is 12:00 pm;
+	now the time of day is 11:59 pm;
+	increment the time of day;
+	showme the time of day;
+	showme whether or not the time of day is 12:00 am;
+	showme whether or not the time of day is 12:00 pm;
+	decrement the time of day;
+	showme the time of day;

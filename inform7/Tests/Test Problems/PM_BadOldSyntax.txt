@@ -1,0 +1,7 @@
+There is a room.
+
+When play begins:
+	let x be zero;
+	if x is:
+		-- 0
+			say "Okay."

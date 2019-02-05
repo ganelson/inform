@@ -1,0 +1,28 @@
+   Hunger
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hunger
+  Delicious fungus coats the walls.
+  
+  You can also see a cake, a harem girl, Madame Cholet and a dining table (on which is a jam tart) here.
+  
+> >   Hunger
+  (Testing.)
+  
+  >[1] eat cake
+  (first taking the cake)
+  You eat the cake. Not bad.
+  
+  >[2] eat grapes
+  The harem girl might not appreciate that.
+  
+  >[3] eat fungus
+  You eat the fungus. Not bad.
+  
+  >[4] eat tart
+  (first taking the jam tart)
+  Madame Cholet smacks your hand away.
+  
+> >

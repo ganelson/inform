@@ -1,0 +1,32 @@
+   Entrevaux Station
+  Chapter 1: Arrival
+  After many days' journey, you have arrived at last in Entrevaux, a walled medieval town now chiefly of interest to tourists and crusade re-enactors.
+  
+  Entrevaux
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Entrevaux Station
+  The station building consists of a waiting room and a ticket-selling office so small that only one person can buy a ticket at a time. On the outside wall is a clock that runs twelve minutes late; but since the trains also run twelve minutes, give or take, behind their published schedule, this clock is helpful in establishing reasonable expectations.
+  
+  Painted on the door is the logo of the Chemin de Fer de Provence, the only railway in France that is not part of the SNCF.
+  
+  The "train" on which you arrived is really just a single car, more like a trolley than a proper train.
+  
+  Milling about one end of the station is a crowd of medieval re-enactors.
+  
+> >   Entrevaux Station
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    an one-euro coin
+    an used ticket
+  
+  >[2] x re-enactors
+  They're dressed in a somewhat aimless range of styles roughly honoring the period of 900-1500 AD. One gentleman is wearing a knobby leather cap; which is a good thing, because there is a rooster standing on his head.
+  
+  
+  
+  Please press SPACE to continue.
+) 

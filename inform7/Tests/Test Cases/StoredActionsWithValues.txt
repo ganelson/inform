@@ -1,0 +1,29 @@
+Home is a room. Bob is in Home.
+
+Factoring is an action applying to one number.
+
+The best idea yet is a stored action which varies. The best idea yet
+is the action of factoring 15.
+
+The second best idea is a stored action which varies. The second best idea
+is the action of asking Bob about "melon clusters".
+
+When play begins:
+	try factoring 16339;
+	say "You consider [the best idea yet].";
+	try the best idea yet;
+	say "You then turn your mind to [the second best idea].";
+	try the second best idea.
+
+Carry out factoring: say "You factor [the number understood]."
+
+Instead of thinking: say "You consider [the best idea yet]."; try the best idea yet.
+
+Instead of jumping: now The best idea yet is the action of factoring 15.
+
+Instead of going: now The best idea yet is the action of going east.
+
+Instead of taking inventory:
+	now the best idea yet is the action of asking Bob about "grapefruit pith".
+
+Test me with "think / i / think / jump / think / e / think".

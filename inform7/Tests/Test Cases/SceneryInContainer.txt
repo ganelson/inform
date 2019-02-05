@@ -1,0 +1,7 @@
+ArenaNet is a room.
+
+The cubicle is an enterable container in ArenaNet. The swivel chair is an enterable supporter. It is scenery in the cubicle.
+
+The shelf is a supporter in ArenaNet. On the shelf is an unobtrusive pumpkin. The unobtrusive pumpkin is scenery.
+
+Test me with "x cubicle / x shelf".

@@ -1,0 +1,5 @@
+The Dock is a room. Some vending machines are containers in the dock.
+
+Instead of examining the vending machines:
+	now the machines are open and the player is in the Dock;
+	say "Your heat-vision prangs open the machine."

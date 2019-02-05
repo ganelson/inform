@@ -1,0 +1,26 @@
+   Movie Set
+  Hays Code
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Movie Set
+  Clark leans on a polystyrene pillar, wearing a pin-striped suit with his usual aplomb.
+  
+> >   Movie Set
+  (Testing.)
+  
+  >[1] clark, remove suit
+  Clark Gable takes off the pin-striped suit.
+  
+  >[2] look
+  Movie Set
+  Clark leans on a polystyrene pillar, wearing a pink thong with his usual aplomb.
+  
+  >[3] clark, remove thong
+  Clark Gable takes off the pink thong.
+  
+  >[4] look
+  Movie Set
+  Clark leans on a polystyrene pillar, wearing nothing with his usual aplomb.
+  
+> >

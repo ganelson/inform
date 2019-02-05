@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_WhenAction
+  >--> You wrote 'Understand "mumble [thing]" as mumbling when taking' (source
+    text, line 5): but the condition after 'when' involves the current action,
+    but this can never work, because when Inform is still trying to understand
+    a command, the current action isn't yet decided on.
+Inform 7 has finished: 56 centiseconds used.

@@ -1,0 +1,8 @@
+Globular Cluster is a room.
+
+Mass is a kind of value.
+
+1kg specifies a mass scaled at 100.
+
+When play begins:
+	let X be 0.004kg;

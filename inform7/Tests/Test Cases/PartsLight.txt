@@ -1,0 +1,7 @@
+[The rod should illuminate the Lab.]
+
+The Lab is a room. It is dark.
+
+The bulb is a lit thing.
+
+The rod is in the Lab. The bulb is part of the rod.

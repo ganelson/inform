@@ -1,0 +1,20 @@
+The Valhalla Antechamber is a room.
+
+When play begins:
+	let L be a list of text;
+	let L be {"oranges", "apples", "bananas"};
+	add "pears" to L;
+	say "Today's random list is [L]."
+
+To mix (new entry - K) with (exemplar - value of kind K):
+	(- print (TEXT_TY_Say) {new entry}, "^"; -).
+
+To announce (event - text):
+	(- print "I declare ", (TEXT_TY_Say) {event}, ".^"; -).
+
+When play begins, announce "Saturnalia".
+
+When play begins:
+	let tricky be text;
+	let tricky be "dfrog";
+	mix "bat" with tricky;

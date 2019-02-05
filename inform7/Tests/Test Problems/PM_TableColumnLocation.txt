@@ -1,0 +1,8 @@
+Foo is west of Bar.
+
+A shirt is a kind of thing. Some shirts are defined by the Table of Shirtness.
+
+Table of Shirtness
+shirt	description	location
+a blue shirt	"This shirt is blue."	Foo
+a grey shirt	"This shirt is grey."	Bar

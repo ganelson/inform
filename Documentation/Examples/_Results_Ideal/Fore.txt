@@ -1,0 +1,27 @@
+   Fish Room
+  Fore
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Fish Room
+  Absurd quantities of salt fish are kept here, and periodically visited by the cook or someone serving him. It is otherwise an unexceptional little chamber, so far below the waterline that there are no portholes and no external light of any kind.
+  
+  A narrow doorway leads forward into the Spirit Room, and the After Powder Magazine is starboard.
+  
+> >   Spirit Room
+  (Testing.)
+  
+  >[1] north
+  Compass directions make no sense on board ship, but you can use up, down, inside, outside, starboard, port, fore and aft instead.
+  
+  >[2] aft
+  You can't go that way.
+  
+  >[3] fore
+  
+  Spirit Room
+  Despite its ghostly name, this is little more than a closet down at the very navel of the ship, in which alcohol is kept: both for purifying wounds and for drinking. Under normal circumstances there is a guard posted here at every hour, lest anyone take to raiding the larder. The current absence of the guard marine strikes you as a very bad sign indeed.
+  
+  The only way out is aft.
+  
+> >

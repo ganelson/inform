@@ -1,0 +1,11 @@
+A fruit is a kind of thing.
+
+A fruit can be early, summer or late.
+
+A fruit can be unripened, ripe, overripe, or mushy (this is its squishiness property).
+
+A fruit can be citrus, berry, melon, or pome.
+
+The orange is an overripe late citrus fruit.
+
+Stage is a room. Test me with "showme orange".

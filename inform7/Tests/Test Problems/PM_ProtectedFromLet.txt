@@ -1,0 +1,8 @@
+When play begins:
+	repeat with x running from 1 to 10:
+		let x be 1000;
+		let q be 6;
+		let q be 7;
+		say "[x]."
+
+Place is room.

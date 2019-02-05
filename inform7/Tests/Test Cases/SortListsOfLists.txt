@@ -1,0 +1,18 @@
+Test Room is a room.
+
+Every thing has a list of lists of numbers called myL.
+
+Bob is a person in Test Room. 
+myL of Bob is {{1, 1}, {0, 1}}.
+
+When play begins: 
+	add {1, 1} to myL of player; 
+	add {1, 0} to myL of player; 
+	add {0, 1} to myL of player; 
+	add {0, 0} to myL of player; 
+	sort myL of player; 
+	say myL of player; say line break; 
+	add {1, 0} to myL of Bob; 
+	add {0, 0} to myL of Bob; 
+	sort myL of Bob; 
+	say myL of Bob. 

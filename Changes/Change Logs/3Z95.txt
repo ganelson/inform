@@ -1,0 +1,247 @@
+3Z95 (14 September 2006)
+
+(Mac OS X only) A new toolbar gadget, Headings, provides a breadcrumb-style
+	drop-down menu to navigate the headings and subheadings in the source.
+A new toolbar button, Index, (re-)makes the current project, but shows the
+	revised index rather than the ensuing game. It's useful when, for
+	instance, laying out rooms and map connections, as it allows for an
+	easier comparison of the source text with the World map.
+A new chapter (Chapter 5: Text) has been created in the documentation: this
+	is made up of material previously in the middle of Chapter 4, with a
+	variety of sections (on Unicode, quotations, "say" and text substitutions)
+	pulled in from surrounding chapters.
+More detailed material has been added to the chapter on Rulebooks to cover
+	the distinction between object- and action-based rulebooks.
+Review sections added to chapters 2, 5, 6, 7, 8 and 9.
+The unsupported types "object-specification" and "object-specification-unsub"
+	have been withdrawn. In all cases where a phrase takes a description of
+	a set of objects - for instance as what to list in a "[list of S]",
+	or as what to repeat through in a "repeat with X running through S" -
+	this is now called simply "description". Moreover, the operations
+	"random S", "number of S", "total P of S" and "(superlative) S" -
+	such as "number of men", "a random man", "total carrying capacity of
+	men", "the heaviest man" - are all now defined as phrases like any other,
+	rather than being special constructions inside Inform. (This should ease
+	slightly odd problems experienced by a few people where Inform's parser
+	could not cope with phrases whose names were too similar to these four
+	constructions.) Finally, although "description" is not a kind of value,
+	it is legal to use "description" in new phrases:
+		To enumerate (collection - a description):
+			repeat with the item running through the collection
+			begin;
+				say "-- [The item].";
+			end repeat.
+	We could then "enumerate lighted rooms", say. Note that "collection"
+	here stands for whatever description is used when the phrase is invoked:
+	it can in turn be used wherever a description is needed. We could,
+	for instance, evaluate "the total carrying capacity of the collection".
+Actions can now require three levels of access to something in order to
+	work, rather than two:
+	- "Visible" and "touchable" (the default) are as before, and "carried"
+	has been added. (E.g., "Assaying is an action applying to one carried
+	thing.") Carried implies touchable which implies visible, in this sense.
+	- A new accessibility rule, the "carrying requirements rule", checks that
+	this requirement is met.
+	- Should it fail, a new activity, "implicitly taking something", will
+	attempt to have the actor silently take the item(s) required.
+	- Should this in turn fail, the action as a whole will fail the "carrying
+	requirements rule".
+	- In Understand sentences, the tokens "[something held]" and "[things
+	held]" have been withdrawn. If used, they now produce an explanatory
+	Problem message which lays out what must change. In most cases, what
+	will be needed is for the action's declaration to include the carrying
+	requirement, and then these tokens to revert to plain "[something]"
+	or "[things]"; but new tokens "[something preferably held]" and
+	"[things preferably held]" have been created which, though they can
+	match anything visible, will prefer items held when ambiguous names
+	are used.
+	These changes make little difference to the player's perception of what
+	is happening. They have two advantages: first, it is conceptually clearer
+	for the action to be where realism constraints are declared, rather than
+	in grammar for parsing, and it ensures that all grammar using the same
+	action follows the same rules; second, it moves implicit taking from the
+	I6 library into more modern I7 terms, thus making it much easier to adapt
+	and modify the behaviour of implicit taking: this has been a frequent
+	request.
+The actions "throwing X at Y" and "showing X to Y" now require Y only to
+	be visible, not to be touchable. (We envisage daggers thrown across
+	chasms, security passes shown through windows, and so forth.)
+The "blowing" action, intended for woodwind instruments and perhaps the
+	occasional siphon, has been withdrawn from the built-in set: it no
+	longer seems to us part of the essential core of actions. We have
+	similarly removed praying, digging, jumping over, filling and
+	swimming. (Our main concern with these was that, besides being of
+	marginal use, they tended to result in inappropriate text being
+	produced in the few cases where they were relevant.)
+Finally, "remove X" (as distinct from "remove X from Y") is no longer
+	understood as referring to the taking action. (It caused confusions
+	with removing in the sense of removing an item of clothing, and
+	hardly anybody ever used it.)
+Further work has been carried out on providing Glulx support. We now
+	believe that any work written without the explicit use of Z-code
+	assembly language (or extensions themselves containing such) should
+	compile, run and release correctly in with "Glulx" selected on the
+	Settings panel.
+Moreover, there is (as yet limited) support for displaying images, which
+	Inform calls "Figures", following an analogy with book conventions. To
+	use these:
+	- Place an image file, which must be a JPEG or PNG, in a subfolder
+		called Figures of the Materials folder for the project. Suppose
+		this is "Woodlands.png".
+	- Add the sentence:	
+			Figure of Woodlands is the file "Woodlands.png".
+		to the source text. (Figure names can consist of any text so
+		long as they start with the word "Figure": "Figure 3 - Woodlands",
+		for instance, or "Figure W" would have been just as good.)
+	- The phrase
+			display the Figure of Woodlands;
+		will now show the image, when the work is compiled to Glulx. When
+		compiled to the Z-machine (which is the default setting on the
+		Settings panel, of course), nothing will happen: the phrase will
+		do nothing. The phrase option
+			display the Figure of Woodlands, one time only;
+		causes the image to be shown only the first time this phrase is
+		reached.
+	- A list of figures, with thumbnails and dimensions, appears in the
+		Contents index; a warning triangle is shown for any images in the
+		wrong format, or which are missing from the Figures folder.
+	- When a Glulx work is released as a blorb (the default setting for the
+		way releases occur), any such images are automatically included.
+	- The new kind of value "figure-name" can be used to define phrases
+		which work with Glulx pictures:
+			To do something funny with (F - a figure-name): ...
+		Figure names compile to resource ID numbers as used in the final
+		released blorb; these will usually be integers 2, 3, 4, ...,
+		since picture resource number 1 is reserved for the cover art.
+	- We would like to thank John Cater for contributing his infglk.h
+		definitions to the project: these definitions are included in the
+		I6 source code compiled by I7 on any project set to Glulx.
+In line with the existing text substitutions "[the Thing]", "[The Thing]",
+	"[a Thing]", "[an Entity]", for the name of something together with the
+	given article and casing, "[A Thing]" and "[An Entity]" have been added,
+	providing for a capitalised indefinite article.
+Technically a new feature rather than a bug fix: if an object is established
+	as a proper noun, in that its name as specified by "called" does not
+	begin with a standard English article - for instance "A man called your
+	local vicar is in the Belfry", where "your local vicar" is treated as
+	a proper noun - then this name will be capitalised if the object's
+	name is printed with "[The whatever]", "A whatever" or "An whatever".
+	(Thus "Your local vicar" would be printed instead of "your local vicar".)
+Kinds can now have plural names. This will relatively seldom be useful, but
+	the result is that the text "A house is a kind of thing. Some windows
+	are a kind of thing. Some windows are part of every house." - will now
+	result in a house's windows being deemed to have plural names (which for
+	instance means they will produce better messages with the Plurality
+	extension).
+Conversely, fewer plural names are now understood by the run-time parser:
+	an over-eagerness to recognise plurals of the names of unique, one-off
+	items was sometimes leading to name clashes and consequently misinterpreted
+	input.
+Examples:
+	"Alpaca Farm" -- modified for new held rules
+	"Ballpark" -- added commentary to better explain the function of
+		the table
+	"Beachfront" -- added commentary to explain the order of
+		operations of the rules
+	"Beneath the Surface" -- modified to account for changes to the
+		held token
+	"Big Sky Country" -- modified to account for the removal of the
+		DIG action
+	"Bruneseau's Journey" -- modified for the fact that BLOW has been
+		removed
+	"Bumping into Walls" -- substantially simplified entire example to
+		demonstrate simpler handling of the problem
+	"Cloak of Darkness" -- modified for new held rules
+	"Crane's Leg 1" and "Crane's Leg 2" -- removed "a thing has a
+		thing called the ideal" and replaced this with a relation and some
+		discussion of why it is better to use relations than object
+		properties
+	"Curare" -- added to demonstrate a possible use of descriptions
+	"Dig" -- removed, since it showed how to get around a problem that
+		is no longer a problem
+	"Down Below" -- added a demonstration of >FLIP grammar for the
+		light switch, and corrected a bug that would have allowed the
+		switch to be interacted-with from rooms other than the basement
+	"Lakeside Living" -- modified to account for the removal of the
+		swimming action
+	"Model Shop" -- added a few extra lines showing how to make
+		alternative names for the created buttons
+	"Morning After" -- comment added to explain the meaning of "carry
+		out"
+	"Pine" -- modified to account for the removal of the swimming action
+	"Polarity" -- comment added to explain "first carry out going
+		rule"
+	"Reflections" -- modified to account for the removal of the blowing
+		action
+	"Revenge of the Fussy Table" -- redundancy removed from one
+		definition
+	"Space Patrol - Stranded on Jupiter!" -- modified to account for
+		the removal of the DIG action
+	"Tamed" -- modified also to model the case of a room whose
+		exterior is visible in another room (ie, nested locations)
+	"3 AM" -- modified to reflect the changes to the held token
+	"Trachypachidae Maturin 1803" -- modified to reflect changes in
+		the held token
+	"Transmutation" -- added example on group relations, thanks to
+		Jesse McGrew
+	"Under Contract" -- modified for the fact that various actions
+		have been removed
+	"The Unexamined Life" -- modified to reflect changes in the held
+		token
+	"A View of Green Hills" -- comment added explaining what noun
+		means in this context
+	"Waterskin" -- modified to reflect removal of blowing action
+	"Would you...?" -- more comment added explaining the behavior of
+		edible things
+	"Zodiac" -- added missing line to the first version of the
+		scenario
+	"Zorn of Zorna" -- modified to reflect removal of blowing action
+	A new information-only example has been added to the chapter on Rulebooks,
+		giving a Backus-Naur form grammar for Inform's rule preambles
+Worked Examples:
+	"Bronze" -- modified to reflect myriad changes to action definitions
+		and held tokens
+	"Glass", "When in Rome 1", "When in Rome 2" -- modified to remove a few
+		responses to now-undefined actions
+	"Damnatio Memoriae" -- modified to reflect changes to held tokens; fixed
+		minor bug about thinking on the first turn
+	"Reliques of Tolti-Aph" -- modified to reflect action changes
+Extensions:
+	"Complex Listing" modified to deal with the new specification type, and
+		advanced to version 3. Please note that "register things marked for
+		listing" is now not necessary in most cases: see the documentation.
+The SCENES testing command now summarises the current situation when scene
+	tracing is switched on - the story so far, as it were.
+Changes in the type-checker should cause Inform to compile slightly more
+	efficient code: it also checks a few more cases, and notably that the
+	parameters of an action in a "try" phrase are genuinely of the right
+	kind of value for the action in question.
+Bug fixed in which phrases to decide if something-or-other would sometimes
+	not properly be parsed where they naturally begin with "the": so that,
+	for instance, the condition "if the action requires a touchable noun..."
+	would sometimes fail because of the "the".
+Bug fixed to do with spurious paragraphs such as "On the mantelpiece is a
+	brass clock." being produced in room descriptions when the mantelpiece
+	is scenery, and the brass clock has already been mentioned.
+Bug fixed whereby the creation of three things X, Y and Z with text in the
+	pattern "an X of Y and a Z" would sometimes cause Z to be created with
+	no article, i.e., as if its name were a proper noun - ignoring the "a".
+Bug fixed whereby testing if "X is in R", where X is a thing and R is a
+	region, would always come up negative even if X was in a room inside
+	that region. It now makes the obviously intended test.
+Bug fixed to do with incorrect casing when printing a literal value in a
+	pattern which includes words already occurring earlier in the source
+	with different casing from that in the pattern.
+Bug fixed causing programming errors to appear at run-time when attempting
+	to push an enterable container between rooms while within it (by
+	punting down a river, perhaps).
+Bug fixed causing occasional hangs, under Glulx only, when the player
+	character in inside or on something and also has component parts.
+Bug fixed causing snippet replacement to leave the wrong number of words
+	behind, under Glulx only.
+(Windows only) Clicking on a link in a problem report that points to an
+	extension does not open a new window if the extension is already open in
+    another window.
+Problem messages added for duplicate definitions of verbs or prepositional
+	usages.
+Problem messages to do with misphrased property declarations improved.

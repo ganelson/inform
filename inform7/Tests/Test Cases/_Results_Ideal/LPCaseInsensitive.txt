@@ -1,0 +1,20 @@
+   Stage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stage
+  
+> >   Stage
+  (Testing.)
+  
+  >[1] tune to 79khz
+  You tune to 79kHz.
+  
+  >[2] tune to 79khz
+  You tune to 79kHz.
+  
+  >[3] tune to 79khz
+  You tune to 79kHz.
+  
+> >

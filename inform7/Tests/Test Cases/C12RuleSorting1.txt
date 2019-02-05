@@ -1,0 +1,127 @@
+[Adapted from the bug report "The order of things" by Lucian Smith.]
+
+Testing Room is a room. An apple and an orange are in the testing room. 
+A fruit is a kind of thing. The apple is a fruit.
+
+Looking At Things is a scene. Looking At Things begins when play begins.
+
+Nearby is a region. Testing Room is in Nearby.
+
+Part I - Forwards
+
+Instead of examining the apple: say "Instead of examining the apple."; continue the 
+action.
+
+Instead of examining the apple during Looking At Things: say "Instead of examining 
+the apple during Looking At Things."; continue the action.
+
+Instead of examining the apple in Nearby: say "Instead of examining the apple in 
+Nearby."; continue the action.
+
+Instead of examining the apple in the presence of the orange: say 
+"Instead of examining the apple in the presence of the orange."; continue the action.
+
+Instead of examining the apple when the orange is in the testing room: 
+say "Instead of examining the apple when the orange is in the testing room."; 
+continue the action.
+
+Instead of examining the apple in the Testing Room: say "Instead of examining the 
+apple in the Testing Room."; continue the action.
+
+Instead of examining something: say "Instead of examining something."; continue the 
+action.
+
+Instead of examining something during Looking At Things: say "Instead of examining 
+something during Looking At Things."; continue the action.
+
+Instead of examining something in Nearby: say "Instead of examining something in 
+Nearby."; continue the action.
+
+Instead of examining something in the presence of the orange: say 
+"Instead of examining something in the presence of the orange."; continue the action.
+
+Instead of examining something when the orange is in the testing room: 
+say "Instead of examining something when the orange is in the testing room."; 
+continue the action.
+
+Instead of examining something in the Testing Room: say "Instead of examining 
+something in the Testing Room."; continue the action.
+
+Instead of examining a fruit: say "Instead of examining a fruit."; continue the 
+action.
+
+Instead of examining a fruit during Looking At Things: say "Instead of examining a 
+fruit during Looking At Things."; continue the action.
+
+Instead of examining a fruit in Nearby: say "Instead of examining a fruit in 
+Nearby."; continue the action.
+
+Instead of examining a fruit in the presence of the orange: say 
+"Instead of examining a fruit in the presence of the orange."; continue the action.
+
+Instead of examining a fruit when the orange is in the testing room: say 
+"Instead of examining a fruit when the orange is in the testing room."; continue the 
+action.
+
+Instead of examining a fruit in the Testing Room: say "Instead of examining a fruit 
+in the Testing Room."; continue the action.
+
+Part II - Backwards
+
+Instead of eating a fruit in the Testing Room: say "Instead of eating a fruit in the 
+Testing Room."; continue the action.
+
+Instead of eating a fruit when the orange is in the testing room: say 
+"Instead of eating a fruit when the orange is in the testing room."; continue the 
+action.
+
+Instead of eating a fruit in the presence of the orange: say "Instead of eating a 
+fruit in the presence of the orange."; continue the action.
+
+Instead of eating a fruit in Nearby: say "Instead of eating a fruit in Nearby."; 
+continue the action.
+
+Instead of eating a fruit during Looking At Things: say "Instead of eating a fruit 
+during Looking At Things."; continue the action.
+
+Instead of eating a fruit: say "Instead of eating a fruit."; continue the action.
+
+Instead of eating something in the Testing Room: say "Instead of eating something in 
+the Testing Room."; continue the action.
+
+Instead of eating something when the orange is in the testing room: say 
+"Instead of eating something when the orange is in the testing room."; continue the 
+action.
+
+Instead of eating something in the presence of the orange: say "Instead of eating 
+something in the presence of the orange."; continue the action.
+
+Instead of eating something in Nearby: say "Instead of eating something in Nearby."; 
+continue the action.
+
+Instead of eating something during Looking At Things: say "Instead of eating 
+something during Looking At Things."; continue the action.
+
+Instead of eating something: say "Instead of eating something."; continue the 
+action.
+
+Instead of eating the apple in the Testing Room: say "Instead of eating the apple in 
+the Testing Room."; continue the action.
+
+Instead of eating the apple when the orange is in the testing room: say 
+"Instead of eating the apple when the orange is in the testing room."; continue the 
+action.
+
+Instead of eating the apple in the presence of the orange: say "Instead of eating 
+the apple in the presence of the orange."; continue the action.
+
+Instead of eating the apple in Nearby: say "Instead of eating the apple in Nearby."; 
+continue the action.
+
+Instead of eating the apple during Looking At Things: say "Instead of eating the 
+apple during Looking At Things."; continue the action.
+
+Instead of eating the apple: say "Instead of eating the apple."; continue the 
+action.
+
+Test me with "x apple / eat apple".

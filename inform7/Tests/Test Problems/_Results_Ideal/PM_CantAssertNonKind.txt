@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantAssertNonKind
+  >--> You wrote 'There is a banana which is something which is not a door' (source
+    text, line 3): but that seems to say what kind something doesn't have,
+    which is too vague. You must say what kind it does have.
+Inform 7 has finished: 17 centiseconds used.

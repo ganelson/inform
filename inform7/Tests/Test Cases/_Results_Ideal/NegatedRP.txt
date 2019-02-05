@@ -1,0 +1,23 @@
+   Start
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Start
+  Here are nothing.
+  
+  You can see a jewel box (closed), a broken box (closed) and a secret box (closed) here.
+  
+> >   Start
+  (Testing.)
+  
+  >[1] open jewel box
+  You open the jewel box.
+  
+  >[2] open broken box
+  It isn't something you can open.
+  
+  >[3] open secret box
+  It isn't something you can open.
+  
+> >

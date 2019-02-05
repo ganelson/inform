@@ -1,0 +1,23 @@
+   Red Door Saloon
+  Morning After
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Red Door Saloon
+  This old place is in pretty bad shape since the mine shut down. Now there's not much to see but the pair of deep gouges in the floorboards where they dragged away the Sheriff's corpse with the spurs still on.
+  
+  At 8:30 AM the only person around is old Jed, collecting his hangover cure.
+  
+  You can also see a pistol and a hangover cure here.
+  
+> >   Red Door Saloon
+  (Testing.)
+  
+  >[1] x pistol
+  It ain't too accurate, but for two dollars you can't expect much.
+  
+  >[2] get all
+  pistol: Taken.
+  hangover cure: Taken. Two yellow egg-yolks unbroken in a red-brown liquid. Yep.
+  
+> >

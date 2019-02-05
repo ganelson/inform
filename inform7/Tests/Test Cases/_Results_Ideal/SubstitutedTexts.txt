@@ -1,0 +1,32 @@
+   Grange                                                                                                                                                                                                                 15/1
+  yourself: 1 word.
+  E-bomb: 2 words.
+  green Citroen: 2 words.
+  fisherman: 1 word.
+  brace of pheasants: 3 words.
+  topiary duck: 2 words.
+  
+  Your score is 15.
+  Your scor* is t*n.
+  Unsubstituted: It's 9:00 am..
+  Substituted: I*'s 9:00 am..
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Grange
+  You can see a green Citroen, a fisherman, a brace of pheasants and a topiary duck here.
+  
+> >   Grange                                                                                                                                                                                                                 15/3
+  (Testing.)
+  
+  >[1] drop all
+  (the E-bomb)
+  There is an almighty explosion!
+  
+  >[2] look
+  Grange
+  You can see a gr**n Citro*n, a fish*rman, a brac* of ph*asants and a topiary duck here.
+  
+> >

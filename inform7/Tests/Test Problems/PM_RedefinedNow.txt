@@ -1,0 +1,15 @@
+A thing has a number called volume.
+
+A fluid container is a kind of container. A fluid container has a thing
+called fluid.
+	
+To now the volume of fluid of (C - a fluid container) is (X - number):
+	let F be the fluid of C;
+	now volume of F is X.
+
+Emptying is an action applying to one thing.
+
+Carry out emptying:
+	now the volume of fluid of the noun is 0.
+
+K is a room.

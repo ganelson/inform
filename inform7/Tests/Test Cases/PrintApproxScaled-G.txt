@@ -1,0 +1,28 @@
+[Adapted from a bug report by Dave Chapeskie. The point is that hours are
+scaled by non-power-of-10 amounts, making it impossible to print exact decimal
+expansions in all cases.]
+
+Include Metric Units by Graham Nelson.
+
+Lab is a room.
+
+Table of Tests
+input		duration
+"1.5 hr"	1.5 hr
+"90s"		90s
+"1.5 min"	1.5 min
+"60 min"	60 min
+"1 hr"		1 hr
+"90 min"	90 min
+"12 hr"		12 hr
+"1.5 days"	1.5 days
+"18 hr"		18 hr
+
+When play begins:
+	[do one without using the table]
+	let X be 1.5 hr;
+	say "1.5 hr = [X] = [X in s] = [X in min].";
+	[dump out some more]
+	repeat through Table of Tests:
+		let X be the duration entry;
+		say "[input entry] = [X] = [X in s] = [X in min] = [X in hr] = [X in days]."

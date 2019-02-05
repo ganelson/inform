@@ -1,0 +1,3 @@
+The Winter Palace is a room.
+
+The description of the Palace is closed.

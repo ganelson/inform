@@ -1,0 +1,4 @@
+Foo is a room.
+Equation 1
+	P = 1
+where P is a number.

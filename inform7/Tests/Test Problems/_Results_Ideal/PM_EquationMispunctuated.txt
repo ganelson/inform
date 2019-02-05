@@ -1,0 +1,90 @@
+Inform 7 build 6M27 has started.
+I've now read your source text, which is 67 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationMispunctuated
+  >--> In 'let F be given by F = 1 + + 1, where F is a number' (source text, line 4),
+    you define an equation 'F = 1 + + 1': but this seems to be wrongly
+    punctuated, and doesn't make sense as a mathematical formula.
+    I was trying to match one of these phrases:
+    1.  let (f - a new name) be given by (f = 1 + + 1 , where f is a
+    number - equation name) 
+    2.  let (f - a temporary named value) be given by (f = 1 + + 1 , where f is a
+    number - equation name) 
+    3.  let (f - a new name) be (given by f = 1 + + 1 , where f is a
+    number - description of relations of values) 
+    4.  let (f - a new name) be (given by f = 1 + + 1 , where f is a
+    number - name of kind) 
+    5.  let (f - a new name) be (given by f = 1 + + 1 , where f is a
+    number - value) 
+    6.  let (f - a temporary named value) be (given by f = 1 + + 1 , where f is a
+    number - value) 
+    I recognised:
+    f = 1 + + 1 , where f is a number = an equation name
+    But I didn't recognise 'given by f = 1 + + 1 , where f is a number'.
+    The name 'f' doesn't yet exist.
+Problem__ PM_EquationMispunctuated
+  >--> In 'let F be given by F = + 1, where F is a number' (source text, line 5),
+    you define an equation 'F = + 1': but this seems to be wrongly punctuated,
+    and doesn't make sense as a mathematical formula.
+    I was trying to match one of these phrases:
+    1.  let (f - a new name) be given by (f = + 1 , where f is a number - equation
+    name) 
+    2.  let (f - a temporary named value) be given by (f = + 1 , where f is a
+    number - equation name) 
+    3.  let (f - a new name) be (given by f = + 1 , where f is a number - description
+    of relations of values) 
+    4.  let (f - a new name) be (given by f = + 1 , where f is a number - name of
+    kind) 
+    5.  let (f - a new name) be (given by f = + 1 , where f is a number - value)
+    
+    6.  let (f - a temporary named value) be (given by f = + 1 , where f is a
+    number - value) 
+    I recognised:
+    f = + 1 , where f is a number = an equation name
+    But I didn't recognise 'given by f = + 1 , where f is a number'.
+    The name 'f' doesn't yet exist.
+Problem__ PM_EquationMispunctuated
+  >--> In 'let F be given by F = 1 +, where F is a number' (source text, line 6),
+    you define an equation 'F = 1 +': but this seems to be wrongly punctuated,
+    and doesn't make sense as a mathematical formula.
+    I was trying to match one of these phrases:
+    1.  let (f - a new name) be given by (f = 1 + , where f is a number - equation
+    name) 
+    2.  let (f - a temporary named value) be given by (f = 1 + , where f is a
+    number - equation name) 
+    3.  let (f - a new name) be (given by f = 1 + , where f is a number - description
+    of relations of values) 
+    4.  let (f - a new name) be (given by f = 1 + , where f is a number - name of
+    kind) 
+    5.  let (f - a new name) be (given by f = 1 + , where f is a number - value)
+    
+    6.  let (f - a temporary named value) be (given by f = 1 + , where f is a
+    number - value) 
+    I recognised:
+    f = 1 + , where f is a number = an equation name
+    But I didn't recognise 'given by f = 1 + , where f is a number'.
+    The name 'f' doesn't yet exist.
+Problem__ PM_EquationMispunctuated
+  >--> In 'let F be given by F = (1 + 1) -, where F is a number' (source text, line 7),
+    you define an equation 'F = (1 + 1) -': but this seems to be wrongly
+    punctuated, and doesn't make sense as a mathematical formula.
+    I was trying to match one of these phrases:
+    1.  let (f - a new name) be given by (f = ( 1 + 1 ) - , where f is a
+    number - equation name) 
+    2.  let (f - a temporary named value) be given by (f = ( 1 + 1 ) - , where f
+    is a number - equation name) 
+    3.  let (f - a new name) be (given by f = ( 1 + 1 ) - , where f is a
+    number - description of relations of values) 
+    4.  let (f - a new name) be (given by f = ( 1 + 1 ) - , where f is a
+    number - name of kind) 
+    5.  let (f - a new name) be (given by f = ( 1 + 1 ) - , where f is a
+    number - value) 
+    6.  let (f - a temporary named value) be (given by f = ( 1 + 1 ) - , where f
+    is a number - value) 
+    I recognised:
+    f = ( 1 + 1 ) - , where f is a number = an equation name
+    But I didn't recognise 'given by f = ( 1 + 1 ) - , where f is a
+    number'.
+    The name 'f' doesn't yet exist.
+Inform 7 has finished: 59 centiseconds used.

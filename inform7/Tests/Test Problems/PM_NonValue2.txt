@@ -1,0 +1,5 @@
+The World is a room.
+
+A food is a kind of thing that is edible.
+
+The carrying capacity is not 1.

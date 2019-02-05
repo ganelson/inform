@@ -1,0 +1,16 @@
+A container can be empty or full.
+
+Guest Bedroom is a room.
+
+The tapestry is scenery in the Guest Bedroom. The description of the
+tapestry is "It is hard to make out the story from the faded threads, but
+it appears to show a very small man, almost a dwarf, who holds on a leading
+string a very large demon, almost a god." Understand "demon" or "dwarf" or
+"god" or "man" as tapestry.
+
+[The following mustn't be read as "empty" + "Guest Bedroom".]
+
+The Empty Bedroom is southeast of the Private Parlor. "Like a monk's
+chamber compared to every other part of the palace, just bare walls now.
+Here your father stayed, when he made his ill-fated journey to the castle.
+The Beast told you this, on your first visit."

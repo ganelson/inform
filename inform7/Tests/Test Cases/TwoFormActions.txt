@@ -1,0 +1,38 @@
+[This is actually a test of how the block tying rule in the Standard Rules
+is applied, and in general of how ambiguities between one and two object
+versions of otherwise similarly named actions are handled. The source text
+below defines a two-object form of burning and a one-object form of tying,
+the opposite of those in the SR, and the block rules in the SR must not
+apply to either one.]
+
+The Kitchen is a room. "Just a small kitchen."
+
+A candle is here. A match is here. The match is lit.
+
+Burning it with is an action applying to two things.
+
+Understand the command "burn" as something new.
+Understand the command "light" as something new.
+
+Understand "burn [something] with [something]" as burning it with.
+
+Understand the command "light" as "burn".
+
+Check burning something lit with something:
+	say "[The noun] is already lit." instead.
+
+Check burning something with something unlit:
+	say "You can't light anything with something that isn't already lit itself."
+		instead.
+
+Carry out burning it with:
+	now the noun is lit.
+
+Report burning it with:
+	say "You light [the noun] with [the second noun]."
+
+In the kitchen is a rope and a string.
+
+Tying is an action applying to one thing. Understand "knot [something]" as tying.
+
+Test me with "light candle with match / burn candle with match / knot rope / tie rope to string".

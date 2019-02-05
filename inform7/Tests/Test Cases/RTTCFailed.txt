@@ -1,0 +1,10 @@
+To greet (M - a man): say "Hi, [M]."
+
+To greet (W - a woman): say "Well hello there, [W]."
+
+Before kissing someone (called the partner), greet the partner.
+
+The Arena is a room. Fred is a man in the Arena. Daphne is a woman in the Arena.
+Felix is an animal in the Arena.
+
+Test me with "kiss Fred / kiss Daphne / kiss Felix".

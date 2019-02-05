@@ -1,0 +1,15 @@
+Inform 7 build 6M36 has started.
+I've now read your source text, which is 25 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantQualifyVariableValues
+  >--> You wrote 'Foo is never 5' (source text, line 5): but a variable can
+    only be given its value straightforwardly or qualified by 'usually', not
+    with 'always', 'seldom' or 'never'.
+Problem__ PM_CantQualifyVariableValues
+  >--> You wrote 'Foo is always 16' (source text, line 5): again, a variable
+    can only be given its value straightforwardly or qualified by 'usually'.
+Problem__ PM_CantQualifyVariableValues
+  >--> You wrote 'Foo is seldom 1' (source text, line 5): again, a variable can
+    only be given its value straightforwardly or qualified by 'usually'.
+Inform 7 has finished: 25 centiseconds used.

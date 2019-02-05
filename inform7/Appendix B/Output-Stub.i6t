@@ -1,0 +1,14 @@
+B/outst: Output Stub Template.
+
+@Purpose: This is the replacement for Output used on runs where Inform 6
+is not intended to do any work, because an existing story file will be used.
+
+@-------------------------------------------------------------------------------
+
+@p Stub.
+The minimum legal program in Inform 6:
+
+@c
+[ Main; ];
+
+! --------------------------------------------------------------------------

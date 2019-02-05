@@ -1,0 +1,97 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	symbol public misc K_unchecked
+	symbol public misc K_unchecked_function
+	symbol public misc K_typeless_int
+	symbol public misc K_list_of_values
+	symbol public misc K_truth_state
+	symbol public misc VERB_DIRECTIVE_DIVIDER
+	symbol public misc VERB_DIRECTIVE_RESULT
+	symbol external misc Falsity
+	symbol public misc Falsity_B
+	symbol public misc Falsity_1
+	symbol public misc Demo_B
+	symbol public misc Demo
+	symbol public misc Banana_B
+	symbol public misc Banana
+	symbol public misc Peach_B
+	symbol public misc Peach
+	symbol public misc marmorial -> marmorial
+	symbol public misc density
+	symbol public misc DEBUG
+	symbol public misc Badger
+	symbol public misc XA
+	symbol public misc XB
+	symbol public misc XC
+	symbol public misc XD
+	symbol public misc XE
+	symbol public misc XF
+	symbol public misc Bodger
+	symbol public misc Budger
+	symbol public misc assim_verb_1
+	symbol public misc Bodger_1
+	symbol public misc Bydger
+	symbol public misc nitwit
+	kind K_unchecked unchecked
+	kind K_unchecked_function function K_unchecked -> K_unchecked
+	kind K_typeless_int int32
+	kind K_list_of_values list of K_unchecked
+	kind K_truth_state int2
+	constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
+	constant VERB_DIRECTIVE_RESULT K_unchecked = 2
+	constant DEBUG K_unchecked = 0 __assimilated=1
+	constant Badger K_unchecked = 12 __assimilated=1
+	package Falsity_B _code
+		symbol private label .begin
+		symbol private label .end
+		.begin
+			splat &"return false;"
+		.end
+	constant Falsity_1 K_unchecked_function = Falsity_B __assimilated=1
+	package Demo_B _code
+		symbol public misc x
+		symbol external misc K_unchecked == /main/K_unchecked
+		symbol public misc y
+		symbol private label .begin
+		symbol private label .end
+		local x K_unchecked
+		local y K_unchecked
+		.begin
+			splat &"return x+y;"
+		.end
+	constant Demo K_unchecked_function = Demo_B __assimilated=1
+	constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1 __miscellany
+	constant XB K_list_of_values = { &"(71 + 3)" } __assimilated=1 __miscellany
+	constant XC K_list_of_values = { 17, 91 } __assimilated=1 __miscellany __byte_array=1
+	constant XD K_list_of_values = { 8, 6 } __assimilated=1 __miscellany __byte_array=1
+	constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __miscellany __table_array=1
+	constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __miscellany __buffer_array=1
+	constant Bodger K_unchecked = 157 __assimilated=1
+	constant Budger K_unchecked = 32738 __assimilated=1
+	variable nitwit K_unchecked = 2 __assimilated=1
+	constant assim_verb_1 K_list_of_values = { dw'purloin', VERB_DIRECTIVE_DIVIDER, &"scope=testcommandnoun", VERB_DIRECTIVE_RESULT, &"##XPurloin" } __assimilated=1 __miscellany __verb=1 __meta_verb=1
+	constant Bodger_1 K_unchecked = 77 __assimilated=1
+	constant Bydger K_unchecked = 777 __assimilated=1
+	package Banana_B _code
+		symbol public misc x1
+		symbol external misc K_unchecked == /main/K_unchecked
+		symbol public misc x2
+		symbol private label .begin
+		symbol private label .end
+		local x1 K_unchecked
+		local x2 K_unchecked
+		.begin
+			splat &"rfalse;"
+		.end
+	constant Banana K_unchecked_function = Banana_B __assimilated=1
+	package Peach_B _code
+		symbol private label .begin
+		symbol private label .end
+		.begin
+			splat &"rfalse;"
+		.end
+	constant Peach K_unchecked_function = Peach_B __assimilated=1
+	property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
+	property density K_unchecked __assimilated=1

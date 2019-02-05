@@ -1,0 +1,10 @@
+Inform 7.10.1 build 6M98 has started.
+I've now read your source text, which is 67 words long.
+I've also read Standard Rules by Graham Nelson, which is 42663 words long.
+I've also read English Language by Graham Nelson, which is 2297 words long.
+Problem__ PM_DirectionTooLong
+  >--> You wrote 'Very long name 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+    21 22 23 24 25 26 27 28 29 is a direction' (source text, line 6): but
+    although direction names can be really quite long in today's Inform, they
+    can't be as long as that.
+Inform 7 has finished: 39 centiseconds used.

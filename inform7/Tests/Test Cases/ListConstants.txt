@@ -1,0 +1,45 @@
+The Brahms Conservatoire is a room. The tuba and the saxophone are in the
+Conservatoire. Sally and Frieda are women in the Conservatoire.
+
+Table of Really Hard Stuff To Do
+task		subtask
+"shopping"	{"going to shops", "choosing stuff", "paying for it"}
+"cooking"	{"preheating oven", "unwrapping", "putting in oven", "setting time"}
+
+A person has a list of objects called the revulsion list. The revulsion list
+of Sally is {Frieda, the tuba}. The revulsion list of Frieda is {the saxophone}.
+
+Instead of examining a person (called the subject): say "[The subject] is
+clearly revolted by [revulsion list of the subject with definite articles]."
+
+Instead of waiting:
+	let S be {2, 4, 8, 16, 32, 64};
+	let T be {2, 4, 6, 10};
+	let U be {"genius", "brilliance", "ineffability"};
+	let V be {{1, 2}, {3, 4}};
+	say "Begin with the sets S = [S in brace notation], T = [T in brace notation],
+		U = [U in brace notation], V = [V in brace notation].";
+	let Z be entry 2 of V;
+	say "Z is [Z in brace notation].";
+	add {6, 7, 8} to V;
+	say "V is now [V in brace notation].";
+	repeat with W running through V
+	begin;
+		say "In this repetition, W is [W in brace notation].";
+	end repeat;
+	let X be {the tuba, the saxophone};
+	say "X is [X in brace notation].";
+	repeat through the Table of Really Hard Stuff To Do
+	begin;
+		say "Task [task entry] involves [subtask entry].";
+	end repeat;
+	repeat through the Table of Really Hard Stuff To Do
+	begin;
+		sort the subtask entry;
+	end repeat;
+	repeat through the Table of Really Hard Stuff To Do
+	begin;
+		say "Reexamined, task [task entry] involves [subtask entry].";
+	end repeat.
+
+Test me with "z/x frieda/x sally".

@@ -1,0 +1,20 @@
+Inform 7 build 6M55 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42526 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RoomInIgnoredSource
+  >--> This is supposed to be a source text which only contains release
+    instructions to bind up an existing story file (for instance, one produced
+    using Inform 6). That's because the instruction 'Release along with an
+    existing story file' is present. So the source text must not contain rooms
+    or other game design - these would be ignored.
+Problem__ PM_UnreleasedRelease
+  >--> This is supposed to be a source text which only contains release
+    instructions to bind up an existing story file (for instance, one produced
+    using Inform 6). That's because the instruction 'Release along with an
+    existing story file' is present. So the only way to build the project is to
+    use the Release option - not, for instance, Go or Replay, because it would
+    make no sense to translate the source text into something to play. (Of
+    course, you can play the released story file using an interpreter such as
+    Zoom or Windows Frotz, etc.: just not here, within Inform.)
+Inform 7 has finished: 28 centiseconds used.

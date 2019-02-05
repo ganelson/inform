@@ -1,0 +1,23 @@
+"The Of Of Fear"
+
+The Duke of Clarence is a room. "A fine public house in the 18th-century
+style."
+
+In the Duke of Clarence are a pack of cards and a set of wine glasses. The
+description of the pack of cards is "A crudely-printed deck, stamped with a
+cheap woodcut dipped in cheaper ink."
+
+Instead of waiting in the presence of the pack of cards, say "You feel an
+irresistable urge to gamble."
+
+East of the Duke of Clarence is the Back of the Duke of Clarence.
+
+The Back of the Duke of Clarence is north of the Garden of the Duke of
+Clarence.
+
+A Queen of England is a kind of woman. Eleanor of Aquitaine is a Queen of
+England in the Garden of the Duke of Clarence. A Queen of England has a
+text called point of view. The point of view of Eleanor of Aquitaine is
+"That the Old French of 'of', the OF of 'of' so to speak, is 'de'."
+
+Test me with "showme / east / south / showme eleanor".

@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadPropertyList
+  >--> You wrote 'An antique is a kind of thing with an age' (source text, line 1):
+    but this looked to me as if it might be trying to create something which
+    has certain properties, and that made no sense on investigation. This
+    sometimes happens if a sentence uses 'with' a little too liberally, or to
+    specify a never-declared property. For instance, 'An antique is a kind of
+    thing with an age.' would not be the right way to declare the property
+    'age' (because it does not tell Inform what kind of value this would be).
+    Instead, try 'An antique is a kind of thing. An antique has a number called
+    age.' It would then be all right to say 'The Louis Quinze chair is an
+    antique with age 241.'
+Inform 7 has finished: 16 centiseconds used.

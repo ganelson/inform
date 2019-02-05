@@ -1,0 +1,87 @@
+*** The preamble of a rule
+(Backus-Naur form for rules)
+The full grammar Inform uses to parse rule definitions, in a standard computer-science notation.
+
+Backus-Naur form, or BNF, is a standard notation used by computer scientists to specify more or less precisely what the valid programs are for a given programming language. It tends to provide a good description for a language such as C or Pascal, where contextual rules are limited, but the authors of Inform are doubtful that it is such a good tool for a natural-language system. For those who are interested, though, the following gives a formal specification for Inform's rules.
+
+	&lt;rule&gt; ::=
+		Definition : A/an &lt;kind&gt; is &lt;new adjectival name&gt; if/unless &lt;definition&gt;
+		| &lt;preamble&gt; : &lt;phrases&gt;
+		| &lt;preamble&gt; , &lt;phrase&gt;    (* only allowed for a few cases: see below)
+	
+	&lt;definition&gt; ::=
+		&lt;condition&gt;
+		| its/his/her/their &lt;value property name&gt; is/are &lt;value&gt; or less/more
+		| : &lt;phrases&gt;
+	
+	&lt;preamble&gt; ::=
+		To &lt;phrase template&gt;
+		| To decide if/whether &lt;phrase template&gt;
+		| To decide which/what &lt;kind of value&gt; is &lt;phrase template&gt;
+		| This is the &lt;rule name&gt;
+		| [[A] Rule for] &lt;circumstances&gt; [(this is the &lt;rule name&gt;)]
+	
+	&lt;circumstances&gt; ::=
+		At &lt;time&gt;
+		| When &lt;event name&gt;
+		| [&lt;placement&gt;] &lt;rulebook reference&gt; [while/when &lt;condition&gt;] [during &lt;scene name&gt;]
+	
+	&lt;rulebook reference&gt; ::=
+		&lt;rulebook name&gt; [about/for/of/on/rule] [&lt;action pattern&gt;]
+		| &lt;object-based-rulebook name&gt; [about/for/of/on/rule] [&lt;description&gt;]
+	
+	&lt;placement&gt; ::=
+		a/an
+		| [the] first
+		| [the] last
+	
+	&lt;phrases&gt; ::=
+		&lt;phrase&gt;
+		| &lt;phrases&gt; ; &lt;phrase&gt;
+
+
+The following examples show how Inform breaks down some typical rules using the system above:
+
+	&lt;rule&gt; = At 2:09 PM: increase the score by 2; say "Progress!"
+		&lt;preamble&gt; = At 2:09 PM
+			&lt;circumstances&gt; = At 2:09 PM
+				At
+				&lt;time&gt; = 2:09 PM
+		:
+		&lt;phrases&gt; = increase the score by 2; say "Progress!"
+			&lt;phrase&gt; = increase the score by 2
+			;
+			&lt;phrase&gt; = say "Progress"	
+
+	&lt;rule&gt; = Instead of eating the ostrich during Formal Dinner (this is the cuisine rule), say "It's greasy!"
+		&lt;preamble&gt; = Instead of eating the ostrich during Formal Dinner (this is the cuisine rule)
+			&lt;circumstances&gt; = Instead of eating the ostrich during Formal Dinner
+				&lt;rulebook reference&gt; = Instead of eating the ostrich
+					&lt;rulebook name&gt; = Instead
+					of
+					&lt;action pattern&gt; = eating the ostrich
+				during
+				&lt;scene name&gt; = Formal Dinner
+			(
+			this
+			is
+			the
+			&lt;rule name&gt; = cuisine rule
+			)
+		,
+		&lt;phrases&gt; = say "It's greasy!"
+			&lt;phrase&gt; = say "It's greasy!"
+
+	&lt;rule&gt; = After printing the name of a container: say "!"
+		&lt;preamble&gt; = After printing the name of a container
+			&lt;circumstances&gt; = After printing the name of a container
+				&lt;rulebook reference&gt; = After printing the name of a container
+					&lt;object-based-rulebook name&gt; = After printing the name
+					of
+					&lt;description&gt; = a container
+		:
+		&lt;phrases&gt; = say "!"
+			&lt;phrase&gt; = say "!"
+		
+
+(*) The colon dividing a rule preamble from its definition can be replaced by a comma only if the preamble begins with the words "Instead of", "Before", "After", "Every turn" or "When", and if the definition consists only of a single phrase.

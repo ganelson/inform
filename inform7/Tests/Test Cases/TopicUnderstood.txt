@@ -1,0 +1,6 @@
+The Hidden Library is a room.
+
+The Tome of Celestial Secrets is a thing in the Hidden Library.
+
+Instead of consulting the Tome of Celestial Secrets about the topic understood:
+	say "That's insufficiently celestial."

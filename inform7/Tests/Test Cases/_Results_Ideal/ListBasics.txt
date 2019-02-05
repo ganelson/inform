@@ -1,0 +1,37 @@
+   Brahms Conservatoire
+  L is initially {}.
+  L is now {11}.
+  L is now {11, 7, 200, 5, -6, 0}.
+  Adding 5 if absent should make no difference: {11, 7, 200, 5, -6, 0}.
+  L reverses to {0, -6, 5, 200, 7, 11}.
+  L sorts to {-6, 0, 5, 7, 11, 200}.
+  L then reverses to {200, 11, 7, 5, 0, -6}.
+  Entry 2 of L is 11.
+  After changing entry 3 to 104, L is now {200, 11, 104, 5, 0, -6}.
+  After changing entry 3 to 208, L is now {200, 11, 208, 5, 0, -6}.
+  After changing the two end entries, L is now {1, 11, 208, 5, 0, 6}.
+  These, however, should fail as being out of range.
+  *** Couldn't write to list entry 0 of a list which has entries numbered from 1 to 6 ***
+  
+  *** Run-time problem P50: Attempt to use list item which does not exist.
+  
+  *** Couldn't write to list entry 7 of a list which has entries numbered from 1 to 6 ***
+  L now contains two instances of 208: {1, 11, 208, 5, 0, 6, 208}.
+  Both of which go after removing this value: {1, 11, 5, 0, 6}.
+  Adding {2, 3, 5, 7, 11} to L gives {1, 11, 5, 0, 6, 2, 3, 5, 7, 11}.
+  Removing the same set then gives {1, 0, 6}.
+  Extending M to 5 entries should not change it: {2, 3, 5, 7, 11}.
+  Extending M to 7 entries should add two 0s: {2, 3, 5, 7, 11, 0, 0}.
+  Truncating M to 8 entries should make no difference: {2, 3, 5, 7, 11, 0, 0}.
+  Truncating M to 4 entries should change it: {2, 3, 5, 7}.
+  Truncating M to the last 2 entries should certainly change it: {5, 7}.
+  Adding {7, 11, 5, 16} to M, if absent, gives {5, 7, 11, 16}.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  
+> >   Brahms Conservatoire
+> Are you sure you want to quit? 

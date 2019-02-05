@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NotInOldSyntax
+  >--> The construction 'if N is begin' (source text, line 3), in the rule or
+    phrase definition 'When play begins' (source text, line 3), is only allowed
+    if the rule is written in the 'new' format, that is, with the phrases
+    written one to a line with indentation showing how they are grouped
+    together, and with colons indicating the start of such a group.
+Inform 7 has finished: 14 centiseconds used.

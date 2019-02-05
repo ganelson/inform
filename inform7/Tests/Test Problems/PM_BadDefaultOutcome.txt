@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+The cavern measuring rules are a rulebook. The cavern measuring rules have
+default mitigated failure.

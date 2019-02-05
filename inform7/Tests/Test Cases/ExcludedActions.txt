@@ -1,0 +1,11 @@
+The Cave is a room. A creature is an animal in the Cave.
+
+Talking to is an action applying to one visible thing.
+Understand "talk to [someone]" as talking to.
+Understand "talk to [something]" as talking to. 
+
+Before doing something other than listening to or talking to or examining the creature: say "Something other than listening to or talking to or examining the creature."
+
+Before doing something other than taking or dropping to the creature: say "Something other than taking or dropping to the creature.".
+
+Test me with "look / take creature / drop creature / examine me / examine creature / listen to creature / push creature".

@@ -1,0 +1,40 @@
+   Corinth
+  Odyssey
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Corinth
+  
+> >   Thebes
+  (Testing.)
+  
+  >[1] east
+  
+  Athens
+  You can see Athena here.
+  
+  Athena heads to Thebes.
+  
+  >[2] northwest
+  
+  Thebes
+  You can see Athena here.
+  
+  Athena heads to Delphi.
+  
+  >[3] wait
+  Time passes.
+  
+  Athena arrives from Delphi.
+  
+  >[4] examine athena
+  Athena waits around patiently, though you can tell she would like to leave...
+  
+  You see nothing special about Athena.
+  
+  >[5] wait
+  Time passes.
+  
+  Athena heads to Athens.
+  
+> >

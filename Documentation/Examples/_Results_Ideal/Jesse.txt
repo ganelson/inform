@@ -1,0 +1,14 @@
+   Entrance to Devil's Canyon                                                                                                                                                                                             0/1
+  There's a bit of a drive over from Anaconda, Montana, and then through a couple or three ghost towns, but finally you find what you're looking for, and strike out on foot...
+  
+  Big Sky Country
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Entrance to Devil's Canyon
+  You are at the top of a steep road, which proceeds down into the canyon proper.
+  
+  An ominous sign has been put up by the local sheriff's office.
+  
+> >   Entrance to Devil's Canyon                                                                                                                                                                                             0/1
+> Are you sure you want to quit? 

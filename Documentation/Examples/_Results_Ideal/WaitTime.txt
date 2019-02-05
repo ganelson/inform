@@ -1,0 +1,35 @@
+   Empty Field
+  Delayed Gratification
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empty Field
+  It's an ordinary empty field. Nothing to see here at all-- yet. Wait until 11:45 PM, though.
+  
+> >   Empty Field
+  (Testing.)
+  
+  >[1] look
+  Empty Field
+  It's an ordinary empty field. Nothing to see here at all-- yet. Wait until 11:45 PM, though.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] wait until 11:45 pm
+  You yawn until 11:45 pm.
+  
+  Suddenly the air is filled with light and the sounds of an approaching band. Over the crest of the hill comes a parade of singing, stomping, hooting people: and not just people, but dogs, horses, elephants, giraffes... There are banners, and candles, and a flag that glows eerie-green in the dark; there is a float shaped like an enormous turtle, its shell covered with winking green lights; there is an old man dressed as a skeleton, carried in a litter, his neck garlanded with dried chiles. There are small girls throwing rose petals from a basket, and grown women half-naked carrying the emblems of Bacchic revelry, and two little boys each with a silver basin of clear water. All these go by in procession, and you join on at the end.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

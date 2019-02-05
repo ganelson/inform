@@ -1,0 +1,3 @@
+The Test is a room.
+The artifact is a thing.
+Understand "" as the artifact.

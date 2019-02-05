@@ -1,0 +1,72 @@
+   Hexagonal Room                                                                                                                                                                                                         1/10
+  Maze of Gloom
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+> >   Hexagonal Room                                                                                                                                                                                                         7/10
+  (Testing.)
+  
+  >[1] in
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[2] out
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[3] up
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[4] down
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[5] n
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[6] ne
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[7] nw
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[8] e
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[9] w
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[10] sw
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[11] se
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+  >[12] s
+  
+  Hexagonal Room
+  Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners.
+  
+> >

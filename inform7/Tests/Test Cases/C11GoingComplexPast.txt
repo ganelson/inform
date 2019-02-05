@@ -1,0 +1,17 @@
+The Dome is a room. The striplamp is in the Dome. The striplamp is not lit.
+The Dome is south from the Dome.
+
+Before going south from the Dome: if the striplamp has been dark for at
+least two turns, say "if condition."
+
+Before going south from the Dome when the striplamp has been dark for at
+least two turns: say "when condition."
+
+Before going south from the Dome [when the striplamp has been dark] for at
+least two turns: say "when condition without."
+
+Every turn: if the striplamp has been dark, say "It has been dark."
+
+Every turn when the striplamp has been dark, say "It has really been dark."
+
+Test me with "actions/z/z/s".

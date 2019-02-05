@@ -1,0 +1,75 @@
+Home is a room.
+
+Foo relates various numbers to various numbers. The verb to foo (it foos, they foo, it is fooing, it 
+is fooed) implies the foo relation.
+
+1 foos 2.
+2 foos 3.
+3 foos 4.
+4 foos 5.
+5 foos 6.
+6 foos 7.
+11 foos 22.
+22 foos 33.
+33 foos 44.
+44 foos 55.
+55 foos 66.
+66 foos 77.
+31 foos 32.
+32 foos 33.
+33 foos 34.
+34 foos 35.
+35 foos 36.
+36 foos 37.
+41 foos 42.
+42 foos 43.
+43 foos 44.
+44 foos 45.
+45 foos 46.
+46 foos 47.
+51 foos 52.
+52 foos 53.
+53 foos 54.
+54 foos 55.
+55 foos 56.
+56 foos 57.
+61 foos 62.
+62 foos 63.
+63 foos 64.
+64 foos 65.
+65 foos 66.
+66 foos 67.
+71 foos 72.
+72 foos 73.
+73 foos 74.
+74 foos 75.
+75 foos 76.
+76 foos 77.
+81 foos 82.
+82 foos 83.
+83 foos 84.
+84 foos 85.
+85 foos 86.
+86 foos 87.
+91 foos 92.
+92 foos 93.
+93 foos 94.
+94 foos 95.
+95 foos 96.
+96 foos 97.
+101 foos 102.
+102 foos 103.
+103 foos 104.
+104 foos 105.
+105 foos 106.
+106 foos 107.
+111 foos 112.
+112 foos 113.
+113 foos 114.
+114 foos 115.
+115 foos 116.
+116 foos 117.
+
+Bar relates various numbers to various numbers.
+
+Test me with "relations".

@@ -1,0 +1,14 @@
+Inform 7 build 6M14 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PastSubordinate
+  >--> You wrote 'if the player is someone female who was in the Home' (source
+    text, line 4): but subordinate clauses have to be in the present tense, so
+    'the Black Door was open' is fine, but not 'something which was open'. Only
+    the main verb can be in the past tense.
+    I was trying to match this phrase:
+      if (player is someone female who was in the home - a condition): 
+    I recognised:
+    player is someone female who was in the home = a condition
+Inform 7 has finished: 57 centiseconds used.

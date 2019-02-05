@@ -1,0 +1,90 @@
+   Testing Room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Testing Room
+  You can see an apple and an orange here.
+  
+> >   Testing Room
+  (Testing.)
+  
+  >[1] x apple
+  Instead of examining the apple in the Testing Room.
+  
+  Instead of examining a fruit in the Testing Room.
+  
+  Instead of examining something in the Testing Room.
+  
+  Instead of examining the apple in Nearby.
+  
+  Instead of examining a fruit in Nearby.
+  
+  Instead of examining something in Nearby.
+  
+  Instead of examining the apple in the presence of the orange.
+  
+  Instead of examining a fruit in the presence of the orange.
+  
+  Instead of examining something in the presence of the orange.
+  
+  Instead of examining the apple when the orange is in the testing room.
+  
+  Instead of examining the apple during Looking At Things.
+  
+  Instead of examining a fruit when the orange is in the testing room.
+  
+  Instead of examining a fruit during Looking At Things.
+  
+  Instead of examining something when the orange is in the testing room.
+  
+  Instead of examining something during Looking At Things.
+  
+  Instead of examining the apple.
+  
+  Instead of examining a fruit.
+  
+  Instead of examining something.
+  
+  You see nothing special about the apple.
+  
+  >[2] eat apple
+  Instead of eating the apple in the Testing Room.
+  
+  Instead of eating a fruit in the Testing Room.
+  
+  Instead of eating something in the Testing Room.
+  
+  Instead of eating the apple in Nearby.
+  
+  Instead of eating a fruit in Nearby.
+  
+  Instead of eating something in Nearby.
+  
+  Instead of eating the apple in the presence of the orange.
+  
+  Instead of eating a fruit in the presence of the orange.
+  
+  Instead of eating something in the presence of the orange.
+  
+  Instead of eating the apple when the orange is in the testing room.
+  
+  Instead of eating the apple during Looking At Things.
+  
+  Instead of eating a fruit when the orange is in the testing room.
+  
+  Instead of eating a fruit during Looking At Things.
+  
+  Instead of eating something when the orange is in the testing room.
+  
+  Instead of eating something during Looking At Things.
+  
+  Instead of eating the apple.
+  
+  Instead of eating a fruit.
+  
+  Instead of eating something.
+  
+  That's plainly inedible.
+  
+> >

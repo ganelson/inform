@@ -1,0 +1,103 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see a red apple, a red tomato, a microwave oven (empty) and a brick oven (empty) here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] get apple and tomato
+  red apple: Taken.
+  red tomato: Taken.
+  
+  >[2] trace 2
+  [Parser tracing set to level 2.]
+  
+  >[3] put red in microwave
+  [ "put" put / "red" red / "in" in / "microwave" microwave ]
+  [Parsing for the verb 'put' (7 lines)]
+  
+  [line 0 * 'on' held -> Wear]
+   [line 0 token 1 word 2 : 'on']
+  
+  [line 1 * held 'on' -> Wear]
+  [line rejected for not ending with correct preposition]
+  
+  [line 2 * 'down' multiheld -> Drop]
+   [line 2 token 1 word 2 : 'down']
+  
+  [line 3 * multiheld 'down' -> Drop]
+  [line rejected for not ending with correct preposition]
+  
+  [line 4 * multiheld 'aside' / 'elsewhere' -> Drop]
+  [line rejected for not ending with correct preposition]
+  
+  [line 5 * multiexcept 'in' / 'inside' / 'into' noun -> Insert]
+   [Trying look-ahead]
+   [Advanced to "noun" token: the microwave oven]
+   [line 5 token 1 word 2 : multiexcept]
+  
+  n=red tomato s=microwave oven.
+  inserting the red tomato into the microwave oven
+  
+  n=red apple s=microwave oven.
+  inserting the red apple into the microwave oven
+  
+   [line 5 token 2 word 3 : 'in']
+   [line 5 token 3 word 4 : 'inside']
+   [line 5 token 4 word 4 : 'into']
+   [line 5 token 5 word 4 : noun]
+   [line 5 token 6 word 5 : END]
+  [Line successfully parsed]
+  (the red apple in the microwave oven)
+  You put the red apple into the microwave oven.
+  
+  >[4] put tomato in oven
+  [ "put" put / "tomato" tomato / "in" in / "oven" oven ]
+  [Parsing for the verb 'put' (7 lines)]
+  
+  [line 0 * 'on' held -> Wear]
+   [line 0 token 1 word 2 : 'on']
+  
+  [line 1 * held 'on' -> Wear]
+  [line rejected for not ending with correct preposition]
+  
+  [line 2 * 'down' multiheld -> Drop]
+   [line 2 token 1 word 2 : 'down']
+  
+  [line 3 * multiheld 'down' -> Drop]
+  [line rejected for not ending with correct preposition]
+  
+  [line 4 * multiheld 'aside' / 'elsewhere' -> Drop]
+  [line rejected for not ending with correct preposition]
+  
+  [line 5 * multiexcept 'in' / 'inside' / 'into' noun -> Insert]
+   [Trying look-ahead]
+  n=nothing s=microwave oven.
+  inserting nothing into the microwave oven
+  
+  n=nothing s=brick oven.
+  inserting nothing into the brick oven
+  
+   [Advanced to "noun" token: the microwave oven]
+   [line 5 token 1 word 2 : multiexcept]
+   [line 5 token 2 word 3 : 'in']
+   [line 5 token 3 word 4 : 'inside']
+   [line 5 token 4 word 4 : 'into']
+   [line 5 token 5 word 4 : noun]
+  
+  n=red tomato s=microwave oven.
+  inserting the red tomato into the microwave oven
+  
+  n=red tomato s=brick oven.
+  inserting the red tomato into the brick oven
+  
+   [line 5 token 6 word 5 : END]
+  [Line successfully parsed]
+  (the brick oven)
+  You put the red tomato into the brick oven.
+  
+> >

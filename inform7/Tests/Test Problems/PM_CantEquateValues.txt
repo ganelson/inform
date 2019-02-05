@@ -1,0 +1,5 @@
+The Brahms Conservatoire is a room. The Rostrum is a room.
+
+When play begins:
+	now 1 is 2;
+	now the Conservatoire is the Rostrum.

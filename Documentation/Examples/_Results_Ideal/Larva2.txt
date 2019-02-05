@@ -1,0 +1,30 @@
+   Beekeeper's Palace
+  Fifty Times Fifty Ways
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Beekeeper's Palace
+  You can see Wasp and Drone here.
+  
+> >   Beekeeper's Palace
+  (Testing.)
+  
+  >[1] kiss wasp
+  "You must not, small one! I have ferocious allies!"
+  
+  >[2] hit wasp
+  "Get away, Larva!"
+  
+  >[3] kiss wasp
+  "Stand back, Larva! I have ferocious allies!"
+  
+  >[4] kiss drone
+  "You must not, small one! I have ferocious allies!"
+  
+  >[5] hit drone
+  "Get away, Grasshopper!"
+  
+  >[6] kiss drone
+  "You forget yourself, Grasshopper! I have ferocious allies!"
+  
+> >

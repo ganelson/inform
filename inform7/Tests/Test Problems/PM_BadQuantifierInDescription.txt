@@ -1,0 +1,8 @@
+The Lab is a room.
+
+To foo (X - a description of rooms):
+	showme whether or not the location matches X.
+
+When play begins:
+	showme whether or not the Lab is nowhere;
+	foo three rooms;

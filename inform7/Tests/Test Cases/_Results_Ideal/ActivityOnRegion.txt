@@ -1,0 +1,27 @@
+   Decontamination Station
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Decontamination Station
+  Three buttons -- red, blue, and green -- adorn the control panel in front of you. A sign above the buttons reads: CAUTION: RADIATION PURGE.
+  
+> >   Decontamination Station
+  (Testing.)
+  
+  >[1] push red
+  Initiating purge protocols in the lower levels...
+  The lower levels have been purged.
+  Purge complete.
+  
+  >[2] push blue
+  Initiating purge protocols in the residential bays...
+  The residential bays have been purged.
+  Purge complete.
+  
+  >[3] push green
+  Initiating purge protocols in the access tunnels...
+  The access tunnels have been purged.
+  Purge complete.
+  
+> >

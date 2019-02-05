@@ -1,0 +1,6 @@
+There is room.
+
+Instead of jumping (this is the abject failure rule): do nothing.
+
+The abject failure rule is listed before the abject failure rule
+in the instead rulebook.

@@ -1,0 +1,16 @@
+The Arena is a room. Bob is a man in the Arena.
+
+To decide what room is spong:
+	decide on the Arena;
+	decide on Bob;
+	decide on "kettle";
+	decide on 11.
+
+To decide what number is spang:
+	decide on the Arena;
+	decide on Bob;
+	decide on "fridge";
+	decide on 11.
+
+When play begins:
+	say "You admire the decor of [spong]."

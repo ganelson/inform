@@ -1,0 +1,9 @@
+The Desert is a room. "These new optical-reflection-triggered bombs
+are a nightmare. Be careful." The mysterious object is a thing in the
+desert. The description is "Oh n---".
+
+Dangerous Times is a scene. Dangerous Times begins when play begins.
+Dangerous Times ends when we have examined the mysterious object.
+When Dangerous Times ends: end the story saying "You have died".
+
+Test me with "scenes/z/z/x object".

@@ -1,0 +1,23 @@
+   spotlight
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  spotlight
+  You can see Clark here.
+  
+> >   spotlight
+  (Testing.)
+  
+  >[1] look
+  spotlight
+  You can see Clark here.
+  
+  >[2] wait
+  >[3] jump
+  Clark vanishes with a surprised expression.
+  
+  >[4] wait
+  After the thrill of the spotlight, life seems not to exist.
+  
+> >

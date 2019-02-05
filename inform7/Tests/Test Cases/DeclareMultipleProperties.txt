@@ -1,0 +1,9 @@
+A tennis court is a kind of room. A tennis court has numbers called length and
+width.
+
+Court 9 is a tennis court.
+
+The length of Court 9 is 22. The width of Court 9 is 35.
+
+The description of a tennis court is usually "You stand on a court measuring
+[length] by [width]."

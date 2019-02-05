@@ -1,0 +1,33 @@
+Pisa is a Room.
+
+The pen is here. The blotter is here. The ball is here.
+
+a1 is a list of objects that varies. a1 is {pen, blotter}.
+
+Before taking something interesting:
+	say "(an interesting choice of object) ".
+
+Definition: a thing is interesting if it is listed in {pen, blotter}.
+
+Leonardo Fibonacci is a man in Pisa.
+
+Sequencing is an action applying to one number. Understand "sequence [number]" as sequencing.
+
+Persuasion rule for asking Leonardo to try sequencing: persuasion succeeds.
+
+Report Leonardo sequencing:
+	let N be the number understood;
+	say "Leonardo offers [the first N terms of the Fibonacci sequence]."
+
+ To decide what list of numbers is the first (F - a number) terms of the Fibonacci sequence:
+	let the Fibonacci sequence be {1, 1};
+	let N be 3;
+	while N < F:
+		let the last term be entry (N - 1) of the Fibonacci sequence;
+		let the penultimate term be entry (N - 2) of the Fibonacci sequence;
+		let the next term be the last term plus the penultimate term;
+		add the next term to the Fibonacci sequence;
+		increase N by 1;
+	decide on the Fibonacci sequence.
+
+Test me with "leonardo, sequence 20 / get all".

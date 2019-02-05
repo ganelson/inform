@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TestContainsUndo
+  >--> You wrote 'Test me with "eat fudge/undo"' (source text, line 3): but
+    this test script contains an UNDO command, which the story file has no way
+    to automate the running of. (An UNDO is such a complete reversion to the
+    previous state that it would necessarily lose where it had got to in the
+    script, and might even go round in circles indefinitely.)
+Inform 7 has finished: 18 centiseconds used.

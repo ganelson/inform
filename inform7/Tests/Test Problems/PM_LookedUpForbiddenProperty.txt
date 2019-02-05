@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+When play begins:
+    let M be the carrying capacity of the Entire Game.

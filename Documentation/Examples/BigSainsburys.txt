@@ -1,0 +1,32 @@
+* Implicitly taking something
+(Implicit takes require time; The Big Sainsbury's)
+Making implicit takes add a minute to the clock, just as though the player had typed TAKE THING explicitly.
+
+Implicit takes are a convenience to players; in general, we would like to avoid asking players to type any more obvious commands than strictly necessary, while allowing the computer to guess as much as it safely can.
+
+Occasionally, though, we have designed a timed puzzle in which the player has a limited number of moves in which to accomplish his objectives. In that case, the implicit take complicates matters, because it means that a player who types
+
+	>EAT GATEAU
+	(first taking the gateau...)
+
+gets away with a spare move compared to the precise but naïf dupe who types
+
+	>TAKE GATEAU
+	>EAT GATEAU
+
+...and really, that doesn't seem quite fair. The way to fix this problem is to fill in the extra minute on the clock during the implicit take; and that is indeed what we do in the following example.
+
+	{*}"The Big Sainsbury's"
+	
+	Sainsbury's is a room.
+
+	The crispy duck and the Guinness steak pie are edible things in Sainsbury's.
+	
+	Rule for implicitly taking something:
+		follow the advance time rule;
+		continue the activity.
+	
+	When play begins:
+		now the right hand status line is "[time of day]".
+	
+	Test me with "take crispy duck / eat crispy duck / eat steak pie".

@@ -1,0 +1,12 @@
+The spotlight is a room.
+
+Instead of requesting the pronoun meanings, say "No pronouns for you!"
+
+Before doing something: say "Yeah?"
+
+Before taking something: say "Yeah?"
+
+Before requesting the pronoun meanings: say "Yeah?"
+
+Check requesting the pronoun meanings: say "Yeah?"
+

@@ -1,0 +1,265 @@
+   Priority Lab
+  Priority Lab
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Priority Lab
+  Locale Priority list:
+    yourself: 5
+    early bird: 1
+    worm: 5
+    leaf: 5
+    pebble: 5
+    twig: 5
+    late edition: 10
+    afterthought: 5
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  A worm inches along the ground.
+  
+  Look, there's a leaf!
+  
+  Finally, the late edition lies at your feet.
+  
+  You can also see a pebble, a twig and a bar stool here.
+  
+  Oh! And also an afterthought.
+  
+> >   Priority Lab
+  (Testing.)
+  
+  >[1] get leaf
+  Taken.
+  
+  >[2] drop leaf
+  Dropped.
+  
+  >[3] look
+  Priority Lab
+  Locale Priority list:
+    leaf: 5
+    yourself: 5
+    early bird: 1
+    worm: 5
+    pebble: 5
+    twig: 5
+    late edition: 10
+    afterthought: 5
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  Finally, the late edition lies at your feet.
+  
+  You can also see a pebble, a twig and a bar stool here.
+  
+  Oh! And also an afterthought.
+  
+  >[4] x unseen object
+  You see nothing special about the unseen object.
+  
+  >[5] get pebble
+  Taken.
+  
+  >[6] look
+  Priority Lab
+  Locale Priority list:
+    leaf: 5
+    yourself: 5
+    early bird: 1
+    worm: 5
+    twig: 5
+    late edition: 10
+    afterthought: 5
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  Finally, the late edition lies at your feet.
+  
+  You can also see a twig and a bar stool here.
+  
+  Oh! And also an afterthought.
+  
+  >[7] get twig
+  Taken.
+  
+  >[8] look
+  Priority Lab
+  Locale Priority list:
+    leaf: 5
+    yourself: 5
+    early bird: 1
+    worm: 5
+    late edition: 10
+    afterthought: 5
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  Finally, the late edition lies at your feet.
+  
+  You can also see a bar stool here.
+  
+  Oh! And also an afterthought.
+  
+  >[9] get afterthought
+  Taken.
+  
+  >[10] look
+  Priority Lab
+  Locale Priority list:
+    leaf: 5
+    yourself: 5
+    early bird: 1
+    worm: 5
+    late edition: 10
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  Finally, the late edition lies at your feet.
+  
+  You can also see a bar stool here.
+  
+  >[11] drop twig
+  Dropped.
+  
+  >[12] look
+  Priority Lab
+  Locale Priority list:
+    twig: 5
+    leaf: 5
+    yourself: 5
+    early bird: 1
+    worm: 5
+    late edition: 10
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  Finally, the late edition lies at your feet.
+  
+  You can also see a twig and a bar stool here.
+  
+  >[13] get late edition
+  Taken.
+  
+  >[14] look
+  Priority Lab
+  Locale Priority list:
+    twig: 5
+    leaf: 5
+    yourself: 5
+    early bird: 1
+    worm: 5
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  You can also see a twig and a bar stool here.
+  
+  >[15] drop late edition
+  Dropped.
+  
+  >[16] sit on bar stool
+  You get onto the bar stool.
+  
+  Locale Priority list:
+    yourself: 5
+  
+  >[17] look
+  Priority Lab (on the bar stool)
+  Locale Priority list:
+    late edition: 10
+    twig: 5
+    leaf: 5
+    early bird: 1
+    worm: 5
+    high window: 5
+    bar stool: 5
+  
+  The early bird always appears first, and here it is.
+  
+  Look, there's a leaf!
+  
+  A worm inches along the ground.
+  
+  There's a tiny high window up near the ceiling that you can't see unless you're on top of something.
+  
+  You can also see a late edition and a twig here.
+  
+  Locale Priority list:
+    yourself: 5
+  
+  >[18] get all
+  late edition: Taken.
+  twig: Taken.
+  leaf: Taken.
+  early bird: Taken.
+  worm: Taken.
+  unseen object: Taken.
+  
+  >[19] put all on stool
+  unseen object: Dropped.
+  worm: Dropped.
+  early bird: Dropped.
+  leaf: Dropped.
+  twig: Dropped.
+  late edition: Dropped.
+  afterthought: Dropped.
+  pebble: Dropped.
+  
+  >[20] look
+  Priority Lab (on the bar stool)
+  Locale Priority list:
+    high window: 5
+    bar stool: 5
+  
+  There's a tiny high window up near the ceiling that you can't see unless you're on top of something.
+  
+  Locale Priority list:
+    pebble: 5
+    afterthought: 5
+    late edition: 10
+    twig: 5
+    leaf: 5
+    early bird: 1
+    worm: 10
+    yourself: 5
+  
+  Look, there's a leaf on the bar stool!
+  
+  Ew, a worm is right next to you.
+  
+  On the bar stool you can also see a pebble, a late edition, a twig and an early bird.
+  
+  Oh! And also an afterthought.
+  
+> >

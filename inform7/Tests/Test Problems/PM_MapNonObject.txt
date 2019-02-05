@@ -1,0 +1,3 @@
+The Kitchen is a room. 
+
+The examine supporters rule is north.

@@ -1,0 +1,11 @@
+Reading "intest/Workspace/T0/Example.inform/Build/output.gblorb"...
+
+List of resources:
+Usage 'Exec' number 0: chunk 1
+Usage 'Pict' number 1: chunk 4
+Usage 'Pict' number 3: chunk 5
+Usage 'Pict' number 4: chunk 6
+Usage 'Snd ' number 5: chunk 7
+Usage 'Snd ' number 6: chunk 8
+Usage 'Snd ' number 7: chunk 9
+

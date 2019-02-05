@@ -1,0 +1,9 @@
+Home is a room.
+
+Meta relates various relations of things to various relations of
+things. The verb to meta-relate to (he meta-relates to, they
+meta-relate to) implies the meta relation.
+
+The containment relation meta-relates to the support relation.
+
+Test me with "relations".

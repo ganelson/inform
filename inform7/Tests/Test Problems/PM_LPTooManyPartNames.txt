@@ -1,0 +1,3 @@
+Foo is a room. A blorb is a kind of value.
+
+12B specifies a blorb with parts trog and wog.

@@ -1,0 +1,32 @@
+   room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  room
+  You can see a rock and Bob here.
+  
+> >   room
+  (Testing.)
+  
+  >[1] she said, x me
+  The can't see whom to talk to error happened.
+  You seem to want to talk to someone, but I can't see whom.
+  
+  >[2] rock, x me
+  The can't talk to inanimate things error happened.
+  You can't talk to the rock.
+  
+  >[3] bob foobar, x me
+  The didn't understand addressee's last name error happened.
+  To talk to someone, try "someone, hello" or some such.
+  
+  >[4] me, again
+  The can't again the addressee error happened.
+  To repeat a command like "frog, jump", just say "again", not "frog, again".
+  
+  >[5] , really
+  The comma can't begin error happened.
+  You can't begin with a comma.
+  
+> >

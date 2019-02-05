@@ -1,0 +1,47 @@
+   Dome
+  Bumping into Walls
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dome
+  
+> >   Courtyard
+  (Testing.)
+  
+  >[1] u
+  From here, the viable exits are north, northeast, northwest, south, southeast, southwest, east, west and down.
+  
+  >[2] n
+  
+  North Chapel
+  
+  >[3] n
+  From here, the viable exits are south, east and west.
+  
+  >[4] e
+  
+  Loud Corner
+  
+  >[5] n
+  From here, the viable exits are south, southwest and west.
+  
+  >[6] s
+  
+  Eastern End
+  You can see a church door here.
+  
+  >[7] u
+  From here, the viable exits are north, south, east and west.
+  
+  >[8] open door
+  You open the church door.
+  
+  >[9] e
+  
+  Courtyard
+  You can see a church door here.
+  
+  >[10] n
+  From here, the only way out is west.
+  
+> >

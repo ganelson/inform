@@ -1,0 +1,125 @@
+** Success and failure
+(THROW [something] AT [something] command enhanced--Fragile objects broken when things are thrown at them; Kyoto)
+Expanding the effects of the THROW something AT something command so that objects do make contact with one another.
+
+Suppose we want to expand the function of the existing THROW SOMETHING AT command so that a thrown object actually does make contact most of the time. A glance at the Actions index tells us that the Throwing it at rulebook currently looks like this:
+
+	Throwing something at something (past tense thrown it at)
+		"drop [something held] at/against/on/onto [something]"
+		check	an actor throwing something at	implicitly remove thrown clothing rule
+		check	an actor throwing something at	futile to throw things at inanimate objects rule
+		check	an actor throwing something at	block throwing at rule
+		
+Some of those still look useful. We want to leave the "implicitly remove thrown clothing" rule, for instance -- no fair having the player throw a hat that's on his head. On the other hand, the "futile to throw things at inanimate objects rule" is going to have to go, because that would prevent us from ever being able to complete the throwing command. So let's get rid of that:
+
+	{*}"Kyoto"
+	
+	Part 1 - Throwing Rules
+	
+	The futile to throw things at inanimate objects rule is not listed in the check throwing it at rules.
+	
+That "block throwing at" rule also looks sinister: any "block..." rule in the standard actions library is there to print a message telling the player he can't do what he's asked to do.
+
+But it's not enough to ignore it, the way we did the "futile" rule. Since we are only expanding the command to affect inanimate objects, let's replace the "block throwing at" rule with a different one which will only prevent the player throwing things at people:
+	
+	{**}The block throwing at people rule is listed instead of the block throwing at rule in the check throwing it at rules. 
+
+	This is the block throwing at people rule:
+		if the second noun is a person, say "That might be construed as an attack." instead.
+
+Now we've changed the command so that some action can sometimes be carried out here -- but we don't have any rules for what happens. It's time to create some rules for our model world.
+
+	{**}A thing can be hard or soft. A thing can be fragile or strong. Shape is a kind of value. The shapes are round, flat, and linear. A thing has shape.
+	
+If we're actually going to allow throwing, we might want to add a couple of extra checks to the rulebook to make sure that this happens when it ought:
+	 	
+	{**}Check throwing it at (this is the block juggling rule):
+		if the player is carrying the second noun, say "It would be difficult to throw at something you are yourself holding." instead.
+		
+	Check throwing it at (this is the avoid throwing things into themselves rule):
+		if the second noun is within the noun, say "That would be a nice magic trick." instead.
+
+And then the rules for the action itself:
+		
+	{**}Carry out throwing it at (this is the check aerodynamics rule): 
+		if the noun is flat:
+			move noun to location;
+			say "[The noun], unwieldy, flutters to the ground.";
+			rule succeeds.
+		
+That "rule succeeds" ends the action here, if the noun is flat. If not, Inform goes on to the next rule in the carry out throwing it at rulebook:
+	
+	{**}Carry out throwing it at (this is the contact rule):
+		say "[The noun] hits [the second noun].[paragraph break]";
+		if the second noun is fragile and the noun is hard:
+			destroy the second noun.
+
+	Carry out throwing it at (this is the landing rule):
+		let destination be the location;
+		if the second noun is on a supporter (called endtable), let destination be the endtable;
+		if the second noun is a supporter, let destination be the second noun;
+		move the noun to the destination;
+		if the noun is fragile and the second noun is hard:
+			destroy the noun;
+			rule succeeds;
+		say "[The noun] lands [if the destination is the location]nearby[otherwise]on [the destination][end if]."
+		
+These rules are assuming some backup information, so let's provide that as well:
+	
+	{**}Reliance relates a thing (called X) to a thing (called Y) when X is part of Y or X is in Y or X is on Y. The verb to be relying on means the reliance relation.
+ 
+	To destroy (item - a thing):
+		let home be the holder of the item;
+		if the item is part of something (called the superstructure), let home be the holder of the superstructure; 
+		if the item is visible: 
+			say "[The item] breaks[if something is relying on the item], leaving [a list of things which are relying on the item] behind[end if].";
+		if something is relying on the item,
+			now all the things which are relying on the item are in the home;
+		now the item is nowhere.
+			
+Now suppose we'd like to add some further cases for what happens if the player breaks a fragile door this way:
+			
+	{**}To destroy (item - a door):
+		now the item is open;
+		now the item is unopenable;
+		say "[The item] smashes."
+
+	Rule for printing the name of an unopenable open door while not throwing something at something:
+		say "open doorway".
+
+	Understand "door" or "doorway" as a door.	
+		
+This works, except that objects will continue to "strike" open, unopenable doors, with the result that the player can smash the same door over and over. What we need is another rule, after the aerodynamics rule and before the contact rule, that tells Inform how to handle throwing things at open doors.
+
+	{**}This is the flying through doorways rule:
+		if the second noun is an open door:
+			let the distant room be the other side of the second noun;
+			move the noun to the distant room;
+			say "[The noun] flies out of sight into [the distant room].";
+			rule succeeds.
+
+If the original rulebook is one we wrote ourselves, we could just add that rule in the proper spot in order. If we got it from an extension, though, we might need to put it in the right place explicitly:
+		
+	{**}The flying through doorways rule is listed before the contact rule in the carry out throwing it at rules.
+		
+The magic of rulebooks is that they allow authors to amend each other's work (or the Standard Rules) with a fair amount of freedom. A well-written extension will give individual names to its rules, to allow subsequent authors to modify the function of the extension without too much trouble.
+
+Now for an actual scenario with which to test this:
+
+	{**} Part 2 - The Study
+	
+	The sliding paper screen is a door. It is north of the Moss Garden and south of the Study. The paper screen is fragile.
+
+	The player carries a netsuke and a shamisen. The description of the netsuke is "A weight for the cord on which you wear your purse or your medicine box. This particular one has the shape of a bullfrog, carved from green stone." The netsuke is round, hard, and strong. Understand "green" or "stone" or "bullfrog" as the netsuke.
+
+	The description of the shamisen is "An instrument you have only begun to learn to play." The shamisen is linear, soft, and fragile. A neck is part of the shamisen. The neck is linear, strong, and hard. A body is part of the shamisen. The body is round, fragile, and soft. A string is part of the shamisen. The string is linear, soft, and strong. The printed name of the body is "[if the body is not part of the shamisen]shamisen [end if]body". The printed name of the neck is "[if the neck is not part of the shamisen]shamisen [end if]neck". Understand "shamisen" as the body when the body is not part of the shamisen. Understand "shamisen" as the neck when the neck is not part of the shamisen.
+
+	The description of the Study is "A restful three-tatami room." The Study contains a calligraphy box and a hanging scroll. The initial appearance of the hanging scroll is "A handsome scroll depicts two women in kimonos crossing a bridge; Mount Fuji is in the background." The calligraphy box contains a brush. The box is openable and closed. The brush is hard, linear, and strong. The calligraphy box is round, soft, and strong. The hanging scroll is flat, soft, and strong.
+
+	The description of the Moss Garden is "Earlier today, you arranged three leaves on the moss in imitation of autumn. They must not be disturbed." The leaves are scenery in the Moss Garden. Instead of throwing something at the leaves: say "You spent too long over their placement."
+
+	Test me with "test one / test two".
+
+	Test one with "open screen / throw netsuke at screen / n / get netsuke / close screen / get scroll / throw scroll at screen / throw netsuke at scroll / get netsuke / throw netsuke at shamisen / drop netsuke".
+	
+	Test two with "throw shamisen at netsuke / get all / throw netsuke at screen / get netsuke / throw netsuke at door / s / get netsuke".

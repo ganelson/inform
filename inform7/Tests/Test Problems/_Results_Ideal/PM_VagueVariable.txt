@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_VagueVariable
+  >--> You wrote 'The Afghan shepherd is a variable' (source text, line 3): but
+    'variable' is too vague a description, because it doesn't say what kind of
+    value should go into the variable. 'number variable' or 'a number that
+    varies' - whatever kind of value you need - would be much clearer.
+Inform 7 has finished: 17 centiseconds used.

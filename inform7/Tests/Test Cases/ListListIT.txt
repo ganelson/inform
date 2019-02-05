@@ -1,0 +1,11 @@
+Home is a room.
+
+When play begins:
+	let L be a list of lists of texts;
+	let L1 be a list of texts;
+	let T be text;
+	let T be "hi";
+	add T to L1;
+	say L1; say line break;
+	add L1 to L;
+	say L.

@@ -1,0 +1,11 @@
+[To check that lists of texts can be copied with deep casting to lists of
+texts.]
+
+Test is a room.
+
+My list is a list of text that varies. 
+
+When play begins:
+	now my list is {"One", "Two", "Three", "Four"};
+	say "The list contains: [my list].[paragraph break]";
+	say "My list contains [the number of entries in my list] entries."

@@ -1,0 +1,51 @@
+Stanford is a room.
+
+Figure of Woodlands is the file "Woodlands.png".
+Sound of rustling leaves is the file "Rustling leaves.ogg".
+The File of Glaciers is called "ice".
+
+LSD Experience is a scene. Bach Cantata Concert is a scene.
+
+Definition: a scene is bad if it is the LSD Experience.
+
+Definition: a scene is good if it is not the LSD Experience.
+
+Colour is a kind of value. The colours are red, blue and green.
+
+When play begins:
+	say "RANDOMNESS TEST.";
+	say "Figures: ";
+	let fig be a random figure-name;
+	say " [fig]";
+	say "[paragraph break]";
+	say "Sounds: ";
+	let fx be a random sound-name;
+	say " [fx]";
+	say "[paragraph break]";
+	say "External files: ";
+	let docket be a random external-file;
+	say " [docket]";
+	say "[paragraph break]";
+	say "Times: ";
+	let moment be a random time;
+	say " [moment]";
+	say "[paragraph break]";
+	say "Tables: ";
+	let almanac be a random table-name;
+	say " [almanac]";
+	say "[paragraph break]";
+	say "Truth states: ";
+	let parity be a random truth state;
+	say " [parity]";
+	say "[paragraph break]";
+	say "Colours: ";
+	let hue be a random colour;
+	say " [hue]";
+	say "[paragraph break]";
+	let interlude be the Entire Game;
+	let interlude be a random scene;
+	say "[interlude] is a random scene.";
+	let interlude be a random good scene;
+	say "[interlude] is a random good scene.";
+	let interlude be a random bad scene;
+	say "[interlude] is a random bad scene."

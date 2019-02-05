@@ -1,0 +1,50 @@
+Stanford is a room.
+
+Figure of Woodlands is the file "Woodlands.png".
+Sound of rustling leaves is the file "Rustling leaves.ogg".
+The File of Glaciers is called "ice".
+
+LSD Experience is a scene. Bach Cantata Concert is a scene.
+
+Definition: a scene is bad if it is the LSD Experience.
+
+Definition: a scene is good if it is not the LSD Experience.
+
+Colour is a kind of value. The colours are red, blue and green.
+
+When play begins:
+	say "ENUMERATION TEST.";
+	say "Figures: ";
+	let fig be the number of figure-names;
+	say " [fig]";
+	say "[paragraph break]";
+	say "Sounds: ";
+	let fx be the number of sound-names;
+	say " [fx]";
+	say "[paragraph break]";
+	say "External files: ";
+	let docket be the number of external-files;
+	say " [docket]";
+	say "[paragraph break]";
+	say "Times: ";
+	let moment be the number of times;
+	say " [moment]";
+	say "[paragraph break]";
+	say "Tables: ";
+	let almanac be the number of table-names;
+	say " [almanac]";
+	say "[paragraph break]";
+	say "Truth states: ";
+	let parity be the number of truth states;
+	say " [parity]";
+	say "[paragraph break]";
+	say "Colours: ";
+	let hue be the number of colours;
+	say " [hue]";
+	say "[paragraph break]";
+	let interlude be the number of scenes;
+	say "Scenes: [interlude] are the scenes.";
+	let interlude be the number of good scenes;
+	say "Good scenes: [interlude].";
+	let interlude be the number of bad scenes;
+	say "Bad scenes: [interlude]."

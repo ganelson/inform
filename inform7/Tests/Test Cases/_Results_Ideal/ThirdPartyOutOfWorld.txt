@@ -1,0 +1,75 @@
+   spot
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  spot
+  You can see bob here.
+  
+> >   spot
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] yes
+  [saying yes]
+  That was a rhetorical question.
+  [saying yes - failed the block saying yes rule]
+  
+  >[3] z
+  [waiting]
+  [(1) requesting the pronoun meanings]
+  At the moment, "it" is unset, "him" means bob, "her" is unset and "them" is unset.
+  [(1) requesting the pronoun meanings - succeeded]
+  
+  [(1) saying yes]
+  That was a rhetorical question.
+  [(1) saying yes - failed the block saying yes rule]
+  
+  [waiting - failed the block saying yes rule]
+  
+  >[4] bob, yes
+  [asking bob to try saying yes]
+  [(1) bob saying yes]
+  [(1) bob saying yes - failed the block saying yes rule]
+  
+  Bob is unable to do that.
+  [asking bob to try saying yes - succeeded]
+  
+  >[5] bob, pronouns
+  [asking bob to try requesting the pronoun meanings]
+  [That command asks to do something outside of play, so it can only make sense from you to me. Bob cannot be asked to do this.]
+  [asking bob to try requesting the pronoun meanings - failed]
+  
+  >[6] bob, z
+  [asking bob to try waiting]
+  [(1) bob waiting]
+  [(2) requesting the pronoun meanings]
+  At the moment, "it" is unset, "him" means bob, "her" is unset and "them" is unset.
+  [(2) requesting the pronoun meanings - succeeded]
+  
+  [(2) bob saying yes]
+  [(2) bob saying yes - failed the block saying yes rule]
+  
+  [(1) bob waiting - failed the block saying yes rule]
+  
+  Bob is unable to do that.
+  [asking bob to try waiting - succeeded]
+  
+  >[7] bob, jump
+  [asking bob to try jumping]
+  [(1) bob jumping]
+  [(2) bob saying yes]
+  [(2) bob saying yes - failed the block saying yes rule]
+  
+  [(2) requesting the pronoun meanings]
+  At the moment, "it" is unset, "him" means bob, "her" is unset and "them" is unset.
+  [(2) requesting the pronoun meanings - succeeded]
+  
+  [(1) bob jumping - failed]
+  
+  Bob is unable to do that.
+  [asking bob to try jumping - succeeded]
+  
+> >

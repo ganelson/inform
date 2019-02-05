@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 66 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableOfQuantifiedKind
+  >--> You wrote 'Three berries on the bush are defined by the Table of Tasty
+    Berries' (source text, line 5): but you can't use 'defined by' a table
+    while also talking about the number of things to be defined, since that
+    could too easily lead to contradictions. (So 'Six doors are defined by the
+    Table of Portals' is not allowed - suppose there are ten rows in the Table,
+    making ten doors?)
+Inform 7 has finished: 17 centiseconds used.

@@ -1,0 +1,58 @@
+! Blurb file created by Inform Inform 7.99.99 (build 9Z99)
+
+status "Internal/HTML/CblorbModel.html" "intest/Workspace/T0/Example.inform/Build/StatusCblorb.html"
+
+
+! Identification
+
+project folder "intest/Workspace/T0/Example.inform"
+release to "intest/Workspace/T0/Example.materials/Release"
+
+! Blorb instructions
+
+storyfile leafname "story.gblorb"
+storyfile "intest/Workspace/T0/Example.inform/Build/output.ulx" include
+ifiction "intest/Workspace/T0/Example.inform/Metadata.iFiction" include
+cover "Internal/Miscellany/Cover.jpg"
+picture 1 "Internal/Miscellany/Cover.jpg"
+release file "Internal/Miscellany/Cover.jpg"
+release file "Internal/Miscellany/Small Cover.jpg"
+
+! Placeholder variables
+
+placeholder [IFID] = "0B00B00D-3307-4688-B2D8-95DB962781B4"
+placeholder [RELEASE] = "1"
+placeholder [YEAR] = "2016"
+placeholder [TITLE] = "Untitled"
+placeholder [AUTHOR] = "Anonymous"
+placeholder [BLURB] = "A work of interactive fiction."
+
+! Other material to release
+
+source public
+solution
+ifiction
+auxiliary "Internal/Miscellany/IntroductionToIF.pdf" "Introduction to IF" "--"
+auxiliary "Internal/Miscellany/Postcard.pdf" "IF Postcard" "--"
+placeholder [OTHERCREDITS] = "The postcard was written by Andrew Plotkin and designed by Lea Albaugh."
+
+! Website instructions
+
+placeholder [ENCODEDSTORYFILE] = "story.gblorb.js"
+template path "intest/Workspace/T0/Example.materials/Templates"
+template path "inform7/Tests/Templates"
+template path "Internal/Templates"
+placeholder [INTERPRETERSCRIPTS] = " "
+interpreter "Quixe" "g"
+base64 "intest/Workspace/T0/Example.inform/Build/output.ulx" to "intest/Workspace/T0/Example.materials/Release/interpreter/story.gblorb.js"
+
+! Website instructions
+
+template path "intest/Workspace/T0/Example.materials/Templates"
+template path "inform7/Tests/Templates"
+template path "Internal/Templates"
+css
+website "Standard"
+status instruction ||&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a>||
+status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/doc403.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/doc401.html><img border=0 src=inform:/doc_images/help.png></a>||

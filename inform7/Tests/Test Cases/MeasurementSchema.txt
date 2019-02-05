@@ -1,0 +1,8 @@
+There is a room.
+A foo is a kind of value.  The foo is bar.
+A foo has a truth state called baz.
+Definition: a foo is bazzed if its baz is true.
+When play begins:
+	showme whether or not bar is bazzed;
+	now the baz of bar is true;
+	showme whether or not bar is bazzed;

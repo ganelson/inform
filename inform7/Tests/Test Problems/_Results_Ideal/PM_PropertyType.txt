@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 25 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyType
+  >--> In the sentence 'The carrying capacity of the bag is "roomy"' (source
+    text, line 3), it looks as if you intend 'The carrying capacity of the bag
+    is "roomy"' to be asserting something, but that tries to set the value of
+    the 'carrying capacity' property to a text - which must be wrong because
+    this property has to be a number.
+Inform 7 has finished: 17 centiseconds used.

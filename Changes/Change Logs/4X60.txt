@@ -1,0 +1,305 @@
+4X60 (23 August 2007)
+
+This build adds 19 new examples and modernises a dozen others, and presents
+a new volume of built-in documentation: the Inform Recipe Book. It also
+provides new features for variable text, improves and extends table-handling,
+allows Glulx-format games to read and write files and communicate with
+external programs, and allows extensions to create more readable and
+useful documentation.
+
+(Windows only) Added support for Glulx mouse events and hyperlinks to the
+	game tab.
+(Windows only) The justification style hint is now supported when running
+	a Glulx game in the game tab. As a result, games using Emily Short's
+	"Glulx Image Centering" will now work when run within the application.
+
+A new manual, The Inform Recipe Book, has been added to the application. It
+	sits alongside the previous manual (Writing with Inform) and presents
+	the examples thematically, with connecting advice and comparisons of
+	techniques to achieve a wide range of IF effects. This should make the
+	(now 357) examples much easier to browse and to borrow from.
+The "[one of]" text substitution previously provided by Jon Ingold's
+	extension "Text Variations", which built on code by Andrew Plotkin and
+	Roger Firth, has now been adopted into Inform's core language. Examples
+	of its use include:
+		say "You flip the coin. [one of]Heads[or]Tails[purely at random].";
+		say "[one of]The phone rings[or]The phone rings a second time[or]The
+			phone rings again[stopping].";
+		say "You turn the light switch [one of]off[or]on[cycling]. Nothing
+			happens.";
+		say "The newspaper headline is: [one of]War Casualties
+			[or]Terrorists[or]Banks[sticky random] [one of]Continue To Expand
+			[or]Lose Out[sticky random].";
+		say "The light changes randomly again; now it's [one of]green
+			[or]amber[or]red[at random].";
+		say "Zorro strides by, [one of]looking purposeful[or]grim-faced[or]deep
+			in thought[or]suppressing a yawn[or]scratching his ribs[or]trying
+			to conceal that he has cut himself shaving[as decreasingly
+			likely outcomes].";
+		say "You dip into the chapter on [one of]fish[or]mammals[or]birds
+			[or]reptiles such as the black salamander[in random order]."
+	See the new section 5.6 in the documentation: note that "[as decreasingly
+	likely outcomes]" and "[in random order]" are new options, the former
+	using a tapering probability distribution, the latter a random permutation.
+>--> It should be noted that the new implementation of this substitution is
+	completely different to the one provided by the extension. The previous
+	method involved printing all the text to a buffer array, then hash-coding
+	it and taking choices based on this hash, which meant that the same
+	sequence of choices occurring twice in the same text would be effectively
+	the same (because of having the same hash code); thus
+		"This is [one of]A[or]B[at random] versus [one of]A[or]B[at random]."
+	could never print "This is A versus A." or "This is B versus B." The new
+	implementation treats each "[one of]..." individually. To get around this,
+	define
+		To say A-or-B: say "[one of]A[or]B[at random]".
+	and then change the text to
+		"This is [A-or-B] versus [A-or-B]."
+	Furthermore, there is no buffer array, no hash code, and it is no longer
+	possible to extract state information by deliberately printing the text
+	with an incomplete "[one of]" construction. (To quote the Text Variations
+	documentation: "a terrible way to solve that kind of problem", so we don't
+	feel too bad about withdrawing it.) Thus the phrases "the index of the
+	last buffer" and "the index of the buffer" no longer exist.
+	In any case, the new implementation polices the use of the construction
+	so that leaving it incomplete is no longer possible. "[one of]" must be
+	matched by one of its possible conclusions "[purely at random]",
+	"[stopping]", ..., or problem messages will be generated; similarly,
+	"[or]" can only legally be used inside the construction. On the other
+	hand, the new implementation does allow the construction to be nested, both
+	explicitly in a single text and also implicitly (where a text substitution
+	inside one of the options itself does something which also involves a
+	"[one of]"), where the old implementation would silently have failed.
+	As an explicit example:
+		"[one of]A palace on the [one of]Nile[or]Euphrates[purely at random]
+		delta[or]A hovel by the [one of]Tigris[or]Rhine[purely at random]
+		river[purely at random]."
+	In practice, if a work in progress used "Text Variations" and did not
+	try to use "the index of the last buffer" then there is a good chance
+	that simply deleting the line
+		Include Text Variations by Jon Ingold.
+	will be the only change required.
+	We thank Jon Ingold and his collaborators for donating their design. The
+	extension "Text Variations" will continue to be available from the website
+	for the time being, but marked as no longer needed or compatible with
+	builds from here onwards. We suggest that users uninstall it once they
+	are sure that any works in progress continue to work without.
+	This change implements proposal (6.20) from the January 2007 consultation
+	document.
+The run-time code for handling tables has been rewritten to improve its
+	reliability and efficiency. A number of minor bugs have been fixed in
+	the process, notably a failure to sort correctly on tables which contain
+	mixed blank and non-blank rows, and a rarely occurring problem to do with
+	storing the number 32739 in table entries under the Z-machine.
+Table sorting is now carried out using a hybrid algorithm: insertion sort
+	from 1 to 11 rows, and in-place mergesort for 12 rows and up. This is
+	much faster on even medium-sized tables (e.g. about ten times faster on
+	tables of 200 rows), and is also stable in all cases: that is, if
+	two rows have the same value in the X column of a table, and that
+	table is then sorted (forwards or backwards) on the X column, then
+	they will stay the same side as each other. As a consequence, all sorts
+	are idempotent, that is, performing the same sort operation twice always
+	results in the second operation making no changes at all. (The previous
+	algorithm was idempotent but, owing to a bug, not in all cases stable.)
+	Insertion/in-place mergesort was chosen because we needed stability,
+	O(n log n) average running time (together with good performance
+	on nearly-sorted tables, which are the commonest usage cases in
+	actual Inform source text), O(1) storage overhead (the Z-machine is
+	extremely short of table space), and reasonably predictable stack usage.
+Projects compiled for Glulx rather than the Z-machine now have the ability
+	to make use of external files. Like sound effects and figures, these
+	are declared and given names before use:
+		The File of Glaciers is called "ice".
+	This creates a new named constant "File of Glaciers" (whose kind of value
+	is "external-file") for use in file contexts. (The prefix "binary file"
+	rather than "file" can be used to make the file binary in the Glk sense,
+	but the default is to use text files for all purposes.) Each file is
+	considered to be owned by some project, identified by its IFID. By
+	default, a newly declared file is owned by its own project, but we can
+	also specify that we want to use somebody else's file, either explicitly
+	or vaguely:
+		The file of Spectral Sequences (owned by project
+			"4122DDA8-A153-46BC-8F57-42220F9D8795") is called "adams".
+		The file of Boundaries (owned by another project) is called "milnor".
+	We can write or append to a file owned by anyone, but can only read a
+	file whose ownership matches this description.
+	External files are indexed in the Contents index, alongside figures and
+	sound effects.
+	Files sometimes exist, and sometimes do not: they are sometimes complete,
+	sometimes only partly written. (For a file shared between two games
+	running simultaneously, one might try to read a file the other is still
+	in the middle of writing.) We can test this with:
+		if the file of Invariants exists...
+		if ready to read the file of Invariants...
+	A file cannot be ready if it does not exist, so the latter is a stronger
+	condition.
+Tables can be saved to external files, and loaded them back in again, during
+	play: all file-handling is done automatically. The user only needs to use
+	the phrases:
+		read the File of Glaciers into the Table of Antarctic Features;
+		write the File of Glaciers from the Table of Antarctic Features;
+	Blank entries are preserved; it is legal to write a small file into a
+	large table, and if so, all unwritten entries are blanked; a run-time
+	problem is shown if the file contains more rows or columns than will
+	fit into the table which it is being loaded into; similarly, a run-time
+	problem is shown on trying to write a table which contains data not
+	safely exchangeable with other story files (or other compilations of
+	itself).
+Text can also be saved to a file, and again all file-handling is automatic:
+		write "Jackdaws love my big sphinx of quartz." to the file of
+			Abecedary Wisdom;
+		append "Jinxed wizards pluck ivy from the big quilt." to the file of
+			Abecedary Wisdom;
+	The quoted text can, of course, contain substitutions, so can be
+	long and complex if need be. On an append, the file is created if it does
+	not already exist.
+Text from a file is printed back with the text substitution:
+		"[text of the File of Abecedary Wisdom]"
+	To copy one file to another, for instance,
+		write "[text of the file of Abecedary Wisdom]" to the file of
+			Secondary Wisdom;
+>--> The implications to do with lockability have been improved:
+		A locked thing is usually lockable.
+		A locked container is usually closed.
+		A locked door is usually closed.
+		A lockable container is usually openable.
+		A lockable door is usually openable.
+	Thus writing "The ballot box is a locked container." will now deduce that
+	the box is probably lockable, closed but openable. These are only guesses
+	by Inform, and can be overridden by giving explicit instructions to the
+	contrary: "The ballot box is a locked unopenable container."
+Definitions of adjectives, which previously had to refer to their subjects
+	only by the pronoun "it" (or in some cases "his", "her", etc.), can now
+	make callings. For instance:
+		Definition: a direction (called thataway) is viable if the
+			room thataway from the location is a room.
+	is a good deal easier to read than
+		Definition: a direction is viable if the room it from the location
+			is a room.
+	which was previously the only way to write this. Only a single calling
+	can be made, and it must refer to the specific object to which the
+	definition applies.
+A new rule in the Standard Rules, the "can only take things rule", prevents
+	the taking of objects which are not things - for instance, rooms or
+	directions. (Such an action can never normally be generated by the
+	grammar for typed commands, but if Understand sentences are written
+	to open the possibility then the player will see ugly "programming error"
+	messages: the new rule prints a more suitable reply.)
+Extension documentation can now request "paste into the source text" icons
+	like those found in the main documentation and its examples. If an
+	indented paragraph of quoted source text begins with an asterisk and
+	then a colon, like so...
+		*: A dog is a kind of animal.
+	...then the asterisk-and-colon are replaced in the final documentation
+	by a paste icon: clicking this will insert the copy which follows into
+	the source text. The text to be pasted is considered to begin after the
+	colon, and to continue until the next unindented text, i.e., it can
+	run for many quoted paragraphs, but as soon as the quotation is broken
+	the paste extent will end. Any tables within the quoted range should
+	be safely rendered with tabs in between the columns.
+Large extensions which need to include a large amount of documentation
+	can now subdivide it using headings and/or subheadings, like so:
+		Chapter: Pesky Meddling Kids
+		Section: Dog Food
+	A suitable table of contents with navigation links will be automatically
+	added to the extension documentation, if so.
+The Extensions chapter of the documentation has, appropriately enough, been
+	extended: it now opens up a limited number of previously restricted
+	syntaxes to public use. These will only be useful to experienced Inform 6
+	programmers.
+Fixed a further namespace clash: a "let" name can now coincide with the
+	column name of a table. (This was preventing John Clemens's extension
+	"Scheduled Activities" from working in recent builds.)
+Extensions:
+	"Basic Screen Effects" very slightly updated so that the documentation
+		is clearer about the lack of colored letters in Glulx, and suggests
+		that the author turn to Glulx Text Effects for these capabilities
+		instead; also given a new example to demonstrate forcing the player
+		to type what we want him to type (since this is becoming something
+		of a frequently-asked question); chapter and section headings and
+		paste-able examples added.
+	"Basic Help Menu", "Glulx Text Effects", "Locksmith", "Menus",
+		"Punctuation Removal" tagged so that the example can be pasted.
+	"Complex Listing", "Plurality" tagged and given chapter and section
+		headings.
+Examples:
+	"Radio Daze" example from Jon Ingold's Text Variations extension brought
+		into the main documentation.
+	"Camp Bethel" added to demonstrate several other common applications of
+		text alternatives.
+	"Chanel version 1" added to demonstrate paired "[i]...[/i]" and
+		"[b]...[/b]" italic and boldface tags, similar to HTML's.
+	"Blink" added to demonstrate creating one's own text variations keyed
+		to values, using the special terminology explained in the Extensions
+		chapter.
+	"Uncommon Ground" added to demonstrate creating one's own text variations
+		keyed to the identity of the player character.
+	"Labyrinth of Ghosts" added to demonstrate recording the deaths of all
+		previous players of the story file by storing them in a file.
+	"Alien Invasion Part 23" added to demonstrate saving preference files
+		from one game in a series for use in the next episode.
+	"Flathead News Network" added to demonstrate communicating with a simple
+		Unix script running in the background, in order to provide live news
+		headlines (drawn from RSS feeds) inside a story file.
+	"Ferragamo Again", "Straw Boater" slightly cleaned up to be better filed
+		in the Recipe Book.
+	"Cinco" edited to fix a particularly bone-headed bug that vitiated the
+		whole point of the example.
+	"When?" adjusted to slightly improve the way the example is described.
+	"Modern Conveniences" added to demonstrate standard kitchen and bathroom
+		appliances.
+	"Do Pass Go" added to demonstrate a pair of dice.
+	"Mirror, Mirror" added to demonstrate remembering the current room
+		description by preserving it in an external file.
+	"The Unbuttoned Elevator Affair" added as an example of a simpler lift
+		than the elaborate one in "Dubai".
+	"Further Reasons Why All Poets Are Liars" added as an example of using
+		action variables for an action which moves a box around internal
+		positions inside a location; a much thinner version of this example,
+		"A pushable box", has been removed.
+	"M. Melmoth's Duel" added, similarly to replace "Tinted wallpaper".
+	"The Second Oldest Problem" added to demonstrate using action variables
+		to make the going action react to moving between dark rooms.
+	"Saint Eligius" added to demonstrate an additional comment added to a
+		room description when the player first enters.
+	"Baritone, Bass" added to demonstrate defining the character at the
+		start of play.
+	"Bic" added to demonstrate testing whether any defined objects are missing
+		description properties.
+	"Meet Market" added to demonstrate relations involving multiple values.
+	"Depth" rewritten to improve the simulated geometry used to test whether
+		an item could fit inside a container.
+	"Patient Zero," "Today Tomorrow," "Reporting rules for other characters'
+		behavior," "Uptown Girls", "Full Moon" edited to take advantage of
+		new text variation features.
+	"Belfry", "Bikini Atoll", "Dearth and the Maiden", "Hayes Code",
+		"Lies", "Safety", "Undertomb" and "Weathering" all made into formal
+		numbered examples rather than, as in previous builds, appearing in
+		the running text of the manual.
+Bug fixed (or, if you prefer, feature added) whereby sentences providing
+	alternative names for times of day, like:
+		Understand "lunch time" as 11:30 am.
+	...now work as might be expected.
+Bug fixed whereby Understand ... as a person would fail with I6 errors.
+	(Apologies for this: an oversight in 4W37's abolition of the
+	player-character kind, which had the same flaw, but nobody noticed
+	because it was so little used.)
+Bug fixed whereby "if S is not happening", for S a scene, would incorrectly
+	think that a completed once-only scene was still happening.
+Bug fixed whereby implications would in some cases be ignored in circumstances
+	which it would be tiresome to write out, but to do with multiple things
+	being simultaneously present, some qualifying and some not.
+Bug fixed whereby using I7 to rerelease an existing I6 story file in
+	blorbed format with bibliographic data would fail because of the lack
+	of a room (needed to initialise certain room variables).
+Bug fixed whereby a few either/or properties could not be changed in play
+	without spurious run-time problems being produced. (In particular,
+	"now X is transparent" or "now X is opaque" caused problems.)
+Bug fixed whereby declaring that the player is a person who happens to be
+	initially somewhere other than in the earliest-created room, or outside
+	the map altogether, would cause programming errors or other strange
+	phenomena at run-time.
+Bug fixed where a player attempting to UNLOCK a door which is "locked" but
+	which, unbeknownst to the player, has no matching key, would cause a
+	run-time problem complaining about the lack of a "matching key" property.
+Problem message added for trying to use "[something related by...]" to
+	understand something which can have no relations.

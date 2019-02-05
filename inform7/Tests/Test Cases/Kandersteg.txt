@@ -1,0 +1,50 @@
+"Kandersteg"
+
+A man can be stylish or unstylish. Men are usually unstylish.
+
+Hotel Alpina is a room. Rolf and Matthieu are men in the Hotel Alpina.
+Weight is a kind of value. 10kg specifies a weight. A person has a
+weight. The weight of a person is usually 50kg. Rolf is 20kg. Matthieu
+is 100kg. The carrying capacity of Rolf is 17. Matthieu is stylish.
+
+North of the Alpina is the Pfadfinder Zentrum. The Bergfuehrer is a man
+in the Zentrum. The Zentrum is dark.
+
+Definition: A man is hefty if his carrying capacity is 50 or more.
+
+To assay (selection - a description of objects):
+	say line break;
+	say "Assaying S = {[the list of the selection]}.";
+	say "N(S) is [number of members of the selection].";
+	let rnd be a random member of the selection;
+	if rnd is a thing, say "R(S) is [rnd].";
+	let tccs be the total carrying capacity of the selection;
+	say "Total carrying capacity of S is [tccs].";
+	say "Total weight of S is [total weight of selection].";
+	say "The heftiest member of S is [the heftiest member of the selection].";
+	repeat with item running through the selection
+	begin;
+		say "-- [the item].";
+	end repeat.
+
+To assay men by hand:
+	say line break;
+	say "Assaying by hand: {[the list of men]}.";
+	say "N(men) is [number of men].";
+	say "R(men) is [a random man].";
+	say "TCC(men) is [total carrying capacity of men].";
+	say "TW(men) is [total weight of men].";
+	say "Heftiest(men) is [heftiest man].";
+	repeat with item running through men
+	begin;
+		say "-- [the item].";
+	end repeat.
+
+When play begins:
+	assay men;
+	assay men by hand;
+	assay stylish men;
+	assay men in the Hotel Alpina;
+	assay stylish men in the Hotel Alpina;
+	assay stylish men in the Zentrum;
+	assay men in dark rooms.

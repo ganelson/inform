@@ -1,0 +1,16 @@
+Home is a room.
+
+To decide which number is (N - a number) squared (this is squaring):
+	decide on N * N.
+
+To decide which number is (N - a number) doubled (this is doubling):
+	decide on 2 * N.
+
+To consider (P - a phrase number -> number):
+	if P is:
+		-- squaring:
+			say "Considering squaring."
+
+When play begins:
+	consider doubling;
+	consider squaring.

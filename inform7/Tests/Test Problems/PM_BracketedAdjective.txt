@@ -1,0 +1,3 @@
+Where The Heart Is is a room.
+
+Definition: a room is home (rather than house) if it is Where The Heart Is.

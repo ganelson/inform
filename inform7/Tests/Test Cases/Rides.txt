@@ -1,0 +1,66 @@
+"Rides" by Emily Short
+
+
+ Use command line echoing.
+
+Include Rideable Vehicles by Graham Nelson.
+
+The Vehicle Testing Center is a room. "A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+
+The ground slopes down to a pond along the northern edge."
+
+A sign is a thing in the Center. "The sign advertises experimental rides in the following: [a list of vehicular things][clear vehicles]."
+
+To say clear vehicles:
+	now every vehicular thing is unmentioned.
+
+The red wagon is a vehicle in the Vehicle Testing Center. "There is a lovely red wagon here, complete with an outboard motor."
+
+The glass elevator is a vehicle in the Vehicle Testing Center. It is transparent. "A glass elevator stands in the center, a fantastically strong microfilament connecting it to... something in the sky."
+
+The swan is a rideable animal in the Vehicle Testing Center. "At the pond's edge waits a black swan of unusual size, wearing a bridle and a gold-trimmed Mexican hat." The description of the swan is "The swan looks back at you."
+
+The swan can be fed or unfed.
+
+Before going somewhere by swan:
+	say "The swan honks a lovely Mexican serenade as it paddles you about."
+
+Instead of mounting the unfed swan:
+	say "The swan gives you a look of disappointment and reproach. Apparently it doesn't work for free."
+
+The chow is carried by the player. The description is "Delicious Purina swan chow pellets!"
+
+Instead of giving the chow to the swan:
+	now the swan is fed;
+	say "The swan accepts your offering courteously."
+
+Instead of going to the Road by swan:
+	say "The swan honks indignantly at the very notion."
+	
+Instead of going to the Open Sky by swan:
+	say "The swan can swim with you aboard, but not lift off."
+
+The Pond is north of the Vehicle Testing Center. "Funny, the pond is bigger from the middle than it seemed from the shore. In fact, you can't see any edge but the testing center to the south."
+
+Instead of going to the Pond when the player is not carried by the swan: 
+	say "You forgot your water skis."
+
+Instead of exiting when the location is the Pond:
+	say "You'd fall in!"
+
+The Road is west of the Vehicle Testing Center.
+
+A rideable vehicle called a Harley is in the Road.
+
+The Open Sky is above the Vehicle Testing Center. "There's a great view from here, starting with that lovely glass floor. In fact, maybe you'd better not look that way."
+
+Instead of going a direction (called the way) when the player is in the Elevator:
+	if the way is up, continue the action;
+	if the way is down, continue the action;
+	say "The elevator ascends and descends only."
+
+Instead of going to the Open Sky when the player is not in the Elevator:
+	say "Do you plan to flap your arms, then?"
+
+Instead of exiting in the Open Sky:
+	say "It's a long way down."

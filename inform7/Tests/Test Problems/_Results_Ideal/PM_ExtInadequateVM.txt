@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Extinadequatevm Extension by Araminta Intest, which is 14 words long.
+Problem__ PM_ExtInadequateVM
+  >--> You wrote 'Include Extinadequatevm Extension by Araminta Intest' (source
+    text, line 1): but my copy of Extinadequatevm Extension by Araminta Intest
+    stipulates that it is 'for Glulx only'. That means it can only be used with
+    certain of the possible compiled story file formats, and at the moment, we
+    don't fit the requirements. (You can change the format used for this
+    project on the Settings panel.)
+Inform 7 has finished: 8 centiseconds used.

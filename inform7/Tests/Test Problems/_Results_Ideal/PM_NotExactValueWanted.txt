@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NotExactValueWanted
+  >--> In the sentence 'beep 2' (source text, line 6), I was expecting that '2'
+    would be the specific value '1'.
+    I was trying to match this phrase:
+      beep (2 - 1) 
+Inform 7 has finished: 56 centiseconds used.

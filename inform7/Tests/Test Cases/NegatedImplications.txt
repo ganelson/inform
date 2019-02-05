@@ -1,0 +1,17 @@
+Foo is a room.
+
+"Zog is edible: [whether or not Zog is edible]. Zoog is edible: [whether or not Zoog is edible]. Oog is marbled: [whether or not Oog is marbled]. Ooog is marbled: [whether or not Ooog is marbled]."
+
+Something not lit is usually edible.
+
+Zog is a thing in Foo.
+
+Zoog is a lit thing in Foo.
+
+A thing can be marbled or streaky.
+
+Something open is usually marbled.
+
+Oog is a closed container in Foo.
+
+Ooog is an open container in Foo.

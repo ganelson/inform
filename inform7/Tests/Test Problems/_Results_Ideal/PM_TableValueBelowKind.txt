@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableValueBelowKind
+  >--> In 'Table of Whoops' (source text, line 5), column 1 (fruit), the entry
+    'pear' (source text, line 8) (row 2) is a genuine, non-blank entry: it's a
+    specific value. That's fine, of course - the whole idea of a table is to
+    contain values - but this is a column which already contains a name of a
+    kind: 'thing' (source text, line 7). Names of kinds are only allowed at
+    the top of otherwise blank columns: they tell me what might eventually go
+    there. So the kind name has to go. You can replace it with a blank '--',
+    and then either let me deduce the kind by myself, working it out from the
+    actual values in the column, or you can put the kind in brackets after the
+    column's name, at the top.)
+Inform 7 has finished: 17 centiseconds used.

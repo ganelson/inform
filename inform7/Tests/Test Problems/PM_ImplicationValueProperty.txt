@@ -1,0 +1,6 @@
+The void is a room.
+
+A thing can be stashable or unstashable or variably stashable.
+
+A portable thing is usually variably stashable. 
+

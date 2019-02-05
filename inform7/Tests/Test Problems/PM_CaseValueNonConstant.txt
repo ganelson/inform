@@ -1,0 +1,9 @@
+Home is a room.
+
+When play begins:
+	let N be 13;
+	let M be 15;
+	if N is:
+		-- 1: say "1.";
+		-- 2: say "2.";
+		-- M: say "M".

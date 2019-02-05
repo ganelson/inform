@@ -1,0 +1,40 @@
+** Pattern matching
+(Phrases applying to specific things--Gestures for different characters to make during speech; Ferragamo Again)
+Using the same phrase to produce different results with different characters.
+
+Here we use phrases that match individual items where possible, and the general kind otherwise:
+
+	{*}"Ferragamo Again"
+	
+	The Break Room is a room. Vanessa, Tina, and Lisa are women in the Break Room. Mark and Holman are men in the Break Room.
+
+	Understand the commands "ask" and "tell" and "answer" as something new.
+
+	Understand "talk about [any subject]" as talking about. Talking about is an action applying to one visible thing. 
+
+	Understand "talk about [text]" as talking randomly about. Talking randomly about is an action applying to one topic. Carry out talking randomly about: say "Mostly you're interested in [the list of subjects]."
+
+	Carry out talking about something: 
+		now the previous subject is the noun.
+
+	Report talking about something:
+		say "You chat for a while about [the noun]." 
+
+	A subject is a kind of thing. Assyrian vowel sounds, designer handbags, and instant run-off voting are subjects. Understand "linguistics" and "mute" and "stop" as sounds. Understand "prada" and "tods" and "coach" and "carmen marc valvo" as designer handbags. Understand "reform" and "election" and "election fraud" and "two-party system" and "Diebold" as instant run-off voting.
+
+	To say (annoyed-person - a person) gestures in irritation:
+		say "[The annoyed-person] sighs heavily. [run paragraph on]"
+
+	To say (annoyed-person - Vanessa) gestures in irritation:
+		say "[The annoyed-person] takes off her glasses and polishes them on her sleeve. [run paragraph on]".
+
+	To say (annoyed-person - Holman) gestures in irritation:
+		say "Holman bobs his head. [run paragraph on]"
+	
+	The previous subject is a subject that varies.
+
+	Instead of talking about something for more than one turn:
+		if the noun is the previous subject, say "[a random visible person who is not the player gestures in irritation]Maybe you should let this one go.[line break][paragraph break]";
+		otherwise continue the action.
+
+	Test me with "talk about chocolate / talk about vowel sounds / g / talk about handbags / talk about prada / talk about tods".

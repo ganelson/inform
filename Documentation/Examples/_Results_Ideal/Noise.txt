@@ -1,0 +1,48 @@
+   Sharper Image
+  The Art of Noise
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sharper Image
+  You can see a pet rock, a toy car, a plastic widget, a pointless gadget and a soundproof case (closed and empty) here.
+  
+> >   Sharper Image
+  (Testing.)
+  
+  >[1] listen
+  You hear the whirring and zooming from the toy car, the bleeps and bloops from the plastic widget and the buzzbuzzbuzz from the pointless gadget.
+  
+  >[2] listen to rock
+  From the pet rock you hear silence.
+  
+  >[3] listen to car
+  From the toy car you hear whirring and zooming.
+  
+  >[4] get all
+  pet rock: Taken.
+  toy car: Taken.
+  plastic widget: Taken.
+  pointless gadget: Taken.
+  
+  >[5] open case
+  You open the soundproof case.
+  
+  >[6] put all in case
+  pointless gadget: Done.
+  plastic widget: Done.
+  toy car: Done.
+  pet rock: Done.
+  
+  >[7] listen
+  You hear the whirring and zooming from the toy car, the bleeps and bloops from the plastic widget and the buzzbuzzbuzz from the pointless gadget.
+  
+  >[8] close case
+  You close the soundproof case.
+  
+  >[9] listen
+  Nothing of note.
+  
+  >[10] listen to car
+  The soundproof case isn't open.
+  
+> >

@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+To amalgamate (N - a number) (M - a number): say "There."

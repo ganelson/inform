@@ -1,0 +1,109 @@
+   Palace
+  Zorn of Zorna
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Palace
+  The Duke is out; the way is clear. East is Saralinda's Chamber; north, a hallway zigs and zags down to the gate that leads out.
+  
+  A finely-written placard is on the wall next to this exit.
+  
+  You can also see a candle-stand (on which are three lit candles (providing light)) here.
+  
+> >   Zig-Zag Hallway
+  (Testing.)
+  
+  >[1] examine placard
+  The details of the finely-written placard are too fine to make out in the light of only three candles.
+  
+  >[2] get placard
+  Taken.
+  
+  >[3] n
+  
+  Darkness
+  In the darkness something softly gleeps.
+  
+  >[4] listen
+  In the darkness something softly gleeps.
+  
+  >[5] n
+  You stumble and cannot find your way.
+  
+  >[6] s
+  
+  Palace
+  The Duke is out; the way is clear. East is Saralinda's Chamber; north, a hallway zigs and zags down to the gate that leads out.
+  
+  You can see a candle-stand (on which are three lit candles (providing light)) here.
+  
+  >[7] examine candle-stand
+  The details of the candle-stand are too fine to make out in the light of only three candles.
+  
+  >[8] push candle-stand east
+  
+  Saralinda's Chamber
+  Now that Saralinda herself is gone, there is no real radiance in this place.
+  
+  You can see two unlit candles and a large-print romantic novel here.
+  
+  >[9] examine novel
+  "She Was Only The Chimney-Sweep's Daughter", by Marie Swelldon.
+  
+  >[10] get unlit candle
+  Taken.
+  
+  >[11] light it
+  You light the candle.
+  
+  >[12] light unlit candle
+  You light the candle.
+  
+  >[13] examine placard
+  You read: "Beware the Todal: its bite is worse than its gleep.
+  
+  No more than one candle!"
+  
+  >[14] push candle-stand west
+  
+  Palace
+  The Duke is out; the way is clear. East is Saralinda's Chamber; north, a hallway zigs and zags down to the gate that leads out.
+  
+  >[15] e
+  
+  Saralinda's Chamber
+  Now that Saralinda herself is gone, there is no real radiance in this place.
+  
+  You can see a lit candle (providing light) and a large-print romantic novel here.
+  
+  >[16] examine novel
+  The details of the large-print romantic novel are too fine to make out in the light of only two candles.
+  
+  >[17] w
+  
+  Palace
+  The Duke is out; the way is clear. East is Saralinda's Chamber; north, a hallway zigs and zags down to the gate that leads out.
+  
+  You can see a candle-stand (on which are three lit candles (providing light)) here.
+  
+  >[18] n
+  
+  Zig-Zag Hallway
+  The Hallway goes left, then right, then left again...
+  
+  You can see two unlit candles and Todal here.
+  
+  Todal sleeps fitfully, troubled by even that faint light.
+  
+  >[19] n
+  You make it out into the cool night air at last!
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

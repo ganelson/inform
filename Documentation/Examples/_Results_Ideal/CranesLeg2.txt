@@ -1,0 +1,51 @@
+   Pleasure Garden
+  The Crane's Leg, Grown Longer
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pleasure Garden
+  At the riverbank, a pleasing garden, having many curving paths and one straight.
+  
+  You can see a low table (on which is a gold nugget), a willow and a crane here.
+  
+> >   Pleasure Garden
+  (Testing.)
+  
+  >[1] examine table
+  You observe the low table:
+  
+  Unusually short at 2 feet 3 inches.
+  
+  On the low table is a gold nugget.
+  
+  >[2] examine nugget
+  You observe the gold nugget:
+  
+  Distinct mostly in being made of metal.
+  
+  >[3] examine willow
+  You observe the willow:
+  
+  Nothing special, really.
+  
+  >[4] possess crane
+  You swap bodies!
+  
+  >[5] examine table
+  You observe the low table:
+  
+  Small, like a duck.
+  
+  On the low table is a gold nugget.
+  
+  >[6] examine nugget
+  You observe the gold nugget:
+  
+  Small, like a duck; and yellow.
+  
+  >[7] examine willow
+  You observe the willow:
+  
+  Supremely tall.
+  
+> >

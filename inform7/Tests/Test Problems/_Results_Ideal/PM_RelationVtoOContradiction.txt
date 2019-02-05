@@ -1,0 +1,14 @@
+Inform 7 build 6M36 has started.
+I've now read your source text, which is 49 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RelationVtoOContradiction
+  >--> You wrote 'Every man likes a color' (source text, line 7), but in
+    another sentence 'A woman likes every color' (source text, line 9): Jack's
+    color can only relate to one other thing in this way, since the relation in
+    question is various-to-one.
+Problem__ PM_RelationVtoOContradiction
+  >--> You wrote 'Every man likes a color' (source text, line 7), but in
+    another sentence 'A woman likes every color' (source text, line 9): again,
+    Bob's color can only relate to one other thing in this way.
+Inform 7 has finished: 28 centiseconds used.

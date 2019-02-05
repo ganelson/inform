@@ -1,0 +1,17 @@
+   Level 3
+  Beverage Service
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Level 3
+  
+> >   Level 3
+  (Testing.)
+  
+  >[1] drink sparkly
+  You quaff the sparkly blue potion. It goes down beautifully.
+  
+  >[2] i
+  You are carrying nothing.
+  
+> >

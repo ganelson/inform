@@ -1,0 +1,63 @@
+   Cratered Landscape
+  The sun falls below the horizon and the temperature drops abruptly to well below zero.
+  
+  Night and Day
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cratered Landscape
+  The ground here is dim silver, with the craters visible as darker splotches. The horizon curves visibly.
+  
+> >   Cratered Landscape
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  The sun appears on the horizon.
+  
+  >[4] look
+  Cratered Landscape
+  The ground here is the color of dried blood; here and there it is also rippled by impact craters. The horizon curves visibly.
+  
+  The sun is now properly up.
+  
+  >[5] x sun
+  It is tiny and weak.
+  
+  >[6] z
+  Time passes.
+  
+  >[7] z
+  Time passes.
+  
+  The sun has passed across the sky and is on the verge of setting.
+  
+  >[8] z
+  Time passes.
+  
+  The sun falls below the horizon and the temperature drops abruptly to well below zero.
+  
+  >[9] z
+  Time passes.
+  
+  >[10] z
+  Time passes.
+  
+  >[11] z
+  Time passes.
+  
+  The sun appears on the horizon.
+  
+  >[12] z
+  Time passes.
+  
+  The sun is now properly up.
+  
+> >

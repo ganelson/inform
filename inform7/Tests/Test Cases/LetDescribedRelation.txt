@@ -1,0 +1,4 @@
+Temple is a room.
+
+When play begins:
+	let X be a one-to-one relation of numbers to men.

@@ -1,0 +1,20 @@
+Inform 7 build 6L57 has started.
+I've now read your source text, which is 54 words long.
+I've also read Standard Rules by Graham Nelson, which is 42518 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnequalValueAmbiguity
+  >--> The phrase 'splodge dummy at the dummy for 10' (source text, line 10) is
+    ambiguous in a way that I can't disentangle. It has more than one plausible
+    interpretation, such that it would only be possible to tell which is valid
+    at run-time: ordinarily that would be fine, but because the different
+    interpretations are so different (and involve different numbers of values
+    being used) there's no good way to cope. Try rewording one of the phrases
+    which caused this clash: there's a good chance the problem will then go
+    away.
+    I was trying to match one of these phrases:
+    1.  splodge dummy at (dummy - person) for (10 - number) 
+    2.  splodge (dummy - person) at (dummy - person) for (10 - number) 
+    I recognised:
+    dummy = a non-temporary variable, holding a thing
+    dummy = a non-temporary variable, holding a thing
+Inform 7 has finished: 46 centiseconds used.

@@ -1,0 +1,11 @@
+The Kitchen is a room.
+
+A person has a number called size.
+
+The player carries a banana.
+The description of the banana is "Banana size A: [size]."
+
+Instead of touching the banana:
+	say "Banana size B: [size]."
+
+Test me with "x banana / touch banana".

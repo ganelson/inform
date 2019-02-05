@@ -1,0 +1,111 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see seventy-five triangles here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] take twenty triangles
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  
+  >[2] take twenty triangles
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  triangle: Taken.
+  
+  >[3] drop my triangle
+  Dropped.
+  
+  >[4] look
+  Lab
+  You can see thirty-six triangles here.
+  
+  >[5] drop triangles
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  triangle: Dropped.
+  
+  >[6] look
+  Lab
+  You can see seventy-five triangles here.
+  
+  >[7] i
+  You are carrying nothing.
+  
+> >

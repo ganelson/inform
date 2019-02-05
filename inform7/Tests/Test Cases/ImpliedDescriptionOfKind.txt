@@ -1,0 +1,6 @@
+Test room is a room.
+A folding metal chair is a kind of supporter. "The chair looks only 
+moderately uncomfortable." 
+The small chair is a folding metal chair in test room. "The chair looks 
+painful to sit in."
+The bigger chair is a folding metal chair in test room.

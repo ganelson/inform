@@ -1,0 +1,10 @@
+Home is a room.
+
+Father-of relates one man (called the father) to various people.
+The verb to be the father of implies the father-of relation.
+
+Mother-of relates one woman (called the mother) to various people.
+The verb to be the mother of implies the mother-of relation.
+
+The problematic list is a list of relations of people which varies.
+The problematic list is {father-of relation, asdfadfaf}.

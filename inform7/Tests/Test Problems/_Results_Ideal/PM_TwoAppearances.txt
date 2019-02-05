@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TwoAppearances
+  >--> You wrote '"The Arena is the centre of the Roman world."' (source text, line 3),
+    but in another sentence '"The Arena, a steam-yacht of 45 feet, is anchored
+    here."' (source text, line 5): Arena seems to have two different
+    descriptions, perhaps because you intended the second description to apply
+    to something mentioned in between, but declared it in such a way that it
+    was never the subject of an assertion. For instance, 'The Forest Clearing
+    is northeast of the Woods.' makes the Forest Clearing the current room
+    being discussed, but 'Northeast of the Woods is the Forest Clearing.'
+    leaves the room under discussion unchanged, because the Forest Clearing is
+    not the subject of the sentence.
+Inform 7 has finished: 17 centiseconds used.

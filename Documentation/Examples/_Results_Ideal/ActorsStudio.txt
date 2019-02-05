@@ -1,0 +1,39 @@
+   Actor's Studio
+  The Actor's Studio
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Actor's Studio
+  You can see Lucas and a croissant here.
+  
+> >   Actor's Studio
+  (Testing.)
+  
+  >[1] set camera to recording
+  You set the video camera to recording.
+  
+  >[2] x lucas
+  You see nothing special about Lucas.
+  
+  >[3] lucas, take inventory
+  Lucas looks through his possessions.
+  
+  >[4] lucas, eat croissant
+  (Lucas first taking the croissant)
+  Lucas eats the croissant.
+  
+  >[5] set camera to playing back
+  You set the video camera to playing back.
+  
+  On the camera screen, you see
+   -- you examining Lucas, time stamped at 9:01 am
+   -- Lucas taking inventory, time stamped at 9:02 am
+   -- Lucas taking the croissant, time stamped at 9:03 am
+   -- Lucas eating the croissant, time stamped at 9:03 am
+  
+  >[6] z
+  Time passes.
+  
+  On the camera screen, you see only static.
+  
+> >

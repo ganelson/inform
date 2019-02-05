@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+When play begins:
+	let X be "Frankly, my dear";
+    display the boxed quotation X.

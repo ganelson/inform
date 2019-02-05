@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 7 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EnigmaticPronoun
+  >--> You wrote 'It is lighted' (source text, line 1): but I'm not sure what
+    to make of the pronoun here, since it is unclear what previously mentioned
+    thing is being referred to. In general, it's best only to use 'it' where
+    it's unambiguous, and it may be worth noting that 'they' is not allowed to
+    stand for more than one object at a time.
+Inform 7 has finished: 17 centiseconds used.

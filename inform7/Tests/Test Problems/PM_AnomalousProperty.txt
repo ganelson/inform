@@ -1,0 +1,4 @@
+That is a room.
+
+A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be
+pushable between rooms. A keyword can be banal.

@@ -1,0 +1,49 @@
+   Drawbridge
+  Van Helsing
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Drawbridge
+  
+> >   Immensely Enormous Entry Hall
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] z
+  Time passes.
+  
+  Count Dracula arrives from the north.
+  
+  >[3] n
+  
+  Immensely Enormous Entry Hall
+  Count Dracula arrives from the south.
+  
+  >[4] w
+  
+  Vast Dining Area
+  Count Dracula arrives from the east.
+  
+  >[5] e
+  
+  Immensely Enormous Entry Hall
+  Count Dracula arrives from the west.
+  
+  >[6] u
+  
+  Spooky Guano-filled Attic
+  Count Dracula arrives from below.
+  
+  >[7] z
+  Time passes.
+  
+  "Muhahaha," says Count Dracula.
+  
+  >[8] d
+  
+  Immensely Enormous Entry Hall
+  Count Dracula arrives from above.
+  
+> >

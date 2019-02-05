@@ -1,0 +1,6 @@
+Xanadu is a room.
+
+Table of Exempla
+model	model name (trade marked)
+4		"Quad XL"
+6		"Lollapalooza 6 Pro"

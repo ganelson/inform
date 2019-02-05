@@ -1,0 +1,37 @@
+   Thames Street End
+  1691
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Thames Street End
+  
+> >   Thames Street End
+  (Testing.)
+  
+  >[1] n
+  
+  Fort James
+  
+  >[2] d
+  
+  Thames Street End
+  
+  >[3] u
+  You can't go that way.
+  
+  >[4] w
+  
+  Fisher's Row
+  A waterfront street that runs south towards Chocolata Hole, where the small craft are harboured. It also continues north around the tip of the peninsula from here, turning into the east-west Thames Street.
+  
+  >[5] e
+  You can't go that way.
+  
+  >[6] n
+  
+  Thames Street End
+  
+  >[7] s
+  You can't go that way.
+  
+> >

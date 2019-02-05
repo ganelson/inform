@@ -1,0 +1,23 @@
+   Flat
+  Blink
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Flat
+  A small but cozy flat. Outside the window, the sun is shining and there is a brisk breeze through the leaves of the birch trees. It would be quite nice weather for a walk.
+  
+> >   Flat
+  (Testing.)
+  
+  >[1] look
+  Flat
+  A small but cozy flat. Outside the window, the sun is shining and there is a brisk breeze through the leaves of the birch trees. It would be quite nice weather for a walk.
+  
+  >[2] z
+  Everything stretches wide and flat for just a moment, as though all the world around you were painted on a thin rubber sheet that is being stretched. Then it snaps back into place, leaving your ears ringing. But that little glitch was enough to warn you. Someone is tampering with space-time again. Someone very close by.
+  
+  >[3] look
+  Flat
+  A small imprisoning flat. Outside the window, the sun is apparently shining and there is a brisk breeze through the leaves of the birch trees. It all looks deceptively normal.
+  
+> >

@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RedundantThatVaries
+  >--> You wrote 'A scene has a number that varies called the difficulty
+    rating' (source text, line 3), which I am reading as a request to make a
+    new named property - a value associated with an object and which has a
+    name. But you write this as if it were a variable, which is not allowed
+    because it would confuse things. For example, 'A scene has a number that
+    varies called the completion bonus.' is not allowed - it should just be 'A
+    scene has a number called the completion bonus.', that is, without the
+    'that varies'.
+Inform 7 has finished: 16 centiseconds used.

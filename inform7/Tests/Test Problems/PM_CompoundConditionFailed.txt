@@ -1,0 +1,5 @@
+The NI School for Typing is a room.
+
+When play begins:
+	if the player is in the School and arfle barfle gloop, say "Hi.";
+	if the player is male and female, say "Hi."

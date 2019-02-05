@@ -1,0 +1,12 @@
+Inform 7.10.1 build 6N55 has started.
+I've now read your source text, which is 50 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_AdjDomainDuplicated
+  >--> The definitions 'A thing is a doggie-snack if it is the newspaper' (source
+    text, line 11) and 'A thing is a doggie-snack if it is edible' (source text, line 9)
+    both try to cover the same situation: the same adjective applied to the
+    exact same range. It's okay to override a definition in an extension with
+    another one in the main source text, but it's not okay to define the same
+    adjective twice over the same domain in the same file.
+Inform 7 has finished: 160 centiseconds used.

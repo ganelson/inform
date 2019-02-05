@@ -1,0 +1,19 @@
+   Dummy
+  "wolf count" = number: 7
+  "marmot count" = number: 5
+  "preferred person" = person: Trevor
+  "badger count" = number: 12
+  "description of the fish" = text: It has a dull look to it.
+  Table of Bananas
+  (row 1)  | 10 | 11 |
+  (row 2)  | 12 | 12 |
+  list of numbers: {1, 12, 7}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dummy
+  
+> >   Dummy
+> Are you sure you want to quit? 

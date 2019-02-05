@@ -1,0 +1,9 @@
+The dome is a room.
+
+Agreeing with bong is an action applying to one thing.
+
+Jabbing wildly is an action applying to one thing.
+
+The jabbing wildly action has an object called the scarf.
+
+The agreeing with bong action has an object called the hat.

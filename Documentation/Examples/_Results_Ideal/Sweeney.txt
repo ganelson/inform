@@ -1,0 +1,27 @@
+   Mrs Lovett's Meat Pies
+  Sweeney
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mrs Lovett's Meat Pies
+  You can see Mrs Lovett here.
+  
+> >   Mrs Lovett's Meat Pies
+  (Testing.)
+  
+  >[1] ask lovett about pies
+  "What pies do you have in today, Mrs Lovett?" you ask. She starts, then smiles. "Meat pies, of course."
+  
+  >[2] ask lovett about employment
+  Do you mean (1) whether there is a job available here, or (2) what happened to that boy that worked here?
+  
+  >[3] 1
+  "Say, are you hiring?" you ask, as casually as you can manage. Mrs Lovett looks you over dubiously. "I might be hiring someone, but I can't say it would necessarily be you."
+  
+  >[4] 2
+  "Tell me, didn't you used to have a young assistant working here?" She shrugs. "Young men these days are so unstable. He left-- who knows where he's gone? I haven't seen hair or fingernail of him for weeks."
+  
+  >[5] ask lovett about pies
+  "What kind of meat goes into these pies, Mrs Lovett?" you ask pressingly. She looks shifty. "Whatever the butcher brings this week," she says. "With the price of meat what it is, when you get it, you have to be glad of what you can get. If you get it."
+  
+> >

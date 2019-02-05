@@ -1,0 +1,28 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 122 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ZMachineOverflow
+  >--> You wrote 'Scarlet is 255-0-0' (source text, line 12): but you use a
+    literal specification to make a value which is too large, at least with the
+    Settings for this project as they currently are. (Change to Glulx to be
+    allowed to use much larger numbers; meanwhile, you can see the size limits
+    for each way of writing a value on the Kinds page of the Index.)
+Problem__ PM_ZMachineOverflow
+  >--> You wrote 'Black is 1-0-0' (source text, line 13): again, you use a
+    literal specification to make a value which is too large.
+Problem__ PM_ZMachineOverflow
+  >--> You wrote 'Green is 0-128-0' (source text, line 15): again, you use a
+    literal specification to make a value which is too large.
+Problem__ PM_LiteralOverflow
+  >--> You wrote 'The canary count is 32768' (source text, line 23): but you
+    use a number which is too large, at least with the Settings for this
+    project as they currently are. (Change to Glulx to be allowed to use much
+    larger numbers.)
+Problem__ PM_LiteralOverflow
+  >--> You wrote 'The dragon count is -32769' (source text, line 24): again,
+    you use a number which is too large.
+Problem__ PM_LiteralOverflow
+  >--> You wrote 'The eggbox count is 100000' (source text, line 24): again,
+    you use a number which is too large.
+Inform 7 has finished: 19 centiseconds used.

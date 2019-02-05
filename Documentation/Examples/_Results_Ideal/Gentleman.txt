@@ -1,0 +1,71 @@
+   Limestone Cave
+  Lean and Hungry
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Limestone Cave
+  Not very big, and it doesn't go back far, but you'd hoped to find some shelter here. Outside it is raining exceptionally hard.
+  
+  Leaning against the wall is a sinister gentleman in a threadbare waistcoat.
+  
+  A broken gold locket lies on the ground, a token of your late Mama.
+  
+> >   Limestone Cave
+  (Testing.)
+  
+  >[1] get locket
+  Taken.
+  
+  >[2] i
+  You are carrying:
+    a locket
+    a coin
+    a bust of Abraham Lincoln
+    a bottle of sherry
+    a small pistol
+    a wad of Confederate cash
+  
+  >[3] drop locket
+  Dropped.
+  
+  The sinister gentleman slyly acquires the locket and tucks it into his pocket.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] drop cash
+  Dropped.
+  
+  >[6] z
+  Time passes.
+  
+  >[7] x gentleman
+  He looks as though he might once have been quite well off.
+  
+  The sinister gentleman smiles back at you in an unnerving fashion.
+  
+  >[8] drop all
+  coin: Dropped.
+  bust of Abraham Lincoln: Dropped.
+  bottle of sherry: Dropped.
+  small pistol: Dropped.
+  
+  The sinister gentleman slyly acquires the coin and tucks it into his pocket.
+  
+  >[9] z
+  Time passes.
+  
+  The sinister gentleman slyly acquires the small pistol and tucks it into his pocket.
+  
+  >[10] z
+  Time passes.
+  
+  >[11] look
+  Limestone Cave
+  Not very big, and it doesn't go back far, but you'd hoped to find some shelter here. Outside it is raining exceptionally hard.
+  
+  Leaning against the wall is a sinister gentleman in a threadbare waistcoat.
+  
+  You can also see a bottle of sherry, a bust of Abraham Lincoln and a wad of Confederate cash here.
+  
+> >

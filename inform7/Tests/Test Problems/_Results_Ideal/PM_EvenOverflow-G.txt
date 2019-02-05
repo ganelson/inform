@@ -1,0 +1,19 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 76 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EvenOverflow-G
+  >--> You wrote 'X is 16000000000:9' (source text, line 9): but you use a
+    literal specification to make a value which is too large, even for a story
+    file compiled with the Glulx setting. (You can see the size limits for each
+    way of writing a value on the Kinds page of the Index.)
+Problem__ PM_EvenOverflow-G
+  >--> You wrote 'Y is -16000000000:9' (source text, line 10): again, you use a
+    literal specification to make a value which is too large.
+Problem__ PM_EvenOverflow-G
+  >--> You wrote 'W2 is 214748364:8' (source text, line 12): again, you use a
+    literal specification to make a value which is too large.
+Problem__ PM_EvenOverflow-G
+  >--> You wrote 'Z2 is -214748364:9' (source text, line 14): again, you use a
+    literal specification to make a value which is too large.
+Inform 7 has finished: 16 centiseconds used.

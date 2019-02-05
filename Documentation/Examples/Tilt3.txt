@@ -1,0 +1,397 @@
+** Extensions and story file formats
+(Tilt: 3. Playing cards with colored unicode suits--Coloured lettering for both z-machine and Glulx)
+Displaying the card suits from our deck of cards with red and black colored unicode symbols.
+
+Books and articles about card-playing traditionally abbreviate card names into a simple two-symbol notation: a number or letter representing the card rank, followed by a symbol indicating the card suit. Suppose that we want to emulate this notation when taking inventory in our poker game.
+
+The trick here is that colored output is done in different ways by the Z-Machine and by Glulx, so we'll need two different versions of the same section in order to produce this output. The relevant source is right at the beginning:
+
+	{*}"Tilt"
+	
+	Section 0 - Colored Output in Two Forms
+	
+For the suit symbols, we'll want the Unicode extension included with Inform:
+
+	{**}Include Unicode Character Names by Graham Nelson.
+
+	Rule for printing the name of a card (called target) while grouping together:
+		say "[rank of the target as abbreviated value][suit of the target as symbol]".
+
+	To say (current suit - a suit) as symbol:
+		if current suit is diamonds, say "[red letters][unicode black diamond suit][default letters]";
+		if current suit is spades, say "[unicode black spade suit]";
+		if current suit is clubs, say "[unicode black club suit]";
+		if current suit is hearts, say "[red letters][unicode black heart suit][default letters]".
+
+	Section 0Z (for Z-machine only)
+	
+The Basic Screen Effects extension bundled with Inform includes mechanisms to change the text color, so for the Z-machine, we need only include this:
+
+	{**}Include Basic Screen Effects by Emily Short. 
+
+	Section 0G (for Glulx only)
+
+Under Glulx, we need slightly more set-up: Glulx requires that we define special user font styles when we plan to make display changes. A fuller discussion of this (and of how to define new colors) appears in the documentation of "Glulx Text Effects", but an implementation sufficient to our purposes would be
+	
+	{**}Include Glulx Text Effects by Emily Short.
+
+	Table of User Styles (continued)
+	style name	glulx color
+	special-style-1	g-pure-red
+
+	Table of Common Color Values (continued)
+	glulx color value	assigned number 
+	g-pure-red	16711680
+
+	To say red letters: say first custom style.
+	
+	To say default letters: say roman type.
+	
+From here, the rest of the source is mostly as we've seen in previous examples:
+	
+	{**}Section 1 - Cards
+
+	Suit is a kind of value. The suits are hearts, clubs, diamonds, and spades. Understand "heart" as hearts. Understand "club" as clubs. Understand "diamond" as diamonds. Understand "spade" as spades. 
+
+	A card is a kind of thing.  A card has a suit. A card has a number called rank. Understand the suit property as describing a card. Understand the rank property as describing a card. 
+
+	52 cards are in the card repository.
+	
+	To say (count - a number) as a card value:
+		choose row count in the Table of Value Names;
+		say "[term entry]".
+	
+	Rule for printing the name of a card (called target):
+		say "[rank of the target as a card value] of [suit of the target]" 
+
+	To say (count - a number) as abbreviated value:
+		choose row count in the Table of Value Names;
+		say "[abbrev entry]".
+
+	Table of Value Names
+	term	value	abbrev	topic
+	"ace"	"1"	"A"	"ace/A"
+	"deuce"	"2"	"2"	"deuce/two"
+	"three"	"3"	"3"	"three"
+	"four"	"4"	"4"	"four"
+	"five"	"5"	"5"	"five"
+	"six"	"6"	"6"	"six"
+	"seven"	"7"	"7"	"seven"
+	"eight"	"8"	"8"	"eight"
+	"nine"	"9"	"9"	"nine"
+	"ten"	"10"	"10"	"ten"
+	"jack"	"11"	"J"	"jack/knave/J"
+	"queen"	"12"	"Q"	"queen/Q"
+	"king"	"13"	"K"	"king/K"
+
+	After reading a command:
+		if the player's command includes "of [suit]":
+			while the player's command includes "of":
+				cut the matched text;
+		repeat through the Table of Value Names:
+			while the player's command includes topic entry:
+				replace the matched text with value entry.
+
+	When play begins: 
+		reconstitute deck.
+
+	To reconstitute deck:
+		let current suit be hearts;
+		now every card is in the card repository;
+		while a card is in the card repository:
+			repeat with current rank running from 1 to 13:
+				let item be a random card in card repository;
+				now rank of item is current rank;
+				now suit of item is current suit;
+				now item is in the deck of cards;
+			now current suit is the suit after the current suit.
+
+	Section 2 - The Deck and the Discard Pile
+
+	The Empty Room is a room. "Nothing to see here."
+
+	The deck of cards is in the Empty Room. It is a closed unopenable container. The description is "A standard poker deck."
+
+	The discard pile is a closed unopenable container. The description is "Cards in this game are discarded face-down, so the discard pile is not very interesting to see. All you can observe is that it currently contains [if the number of cards which are in the discard pile is less than ten][the number of cards which are in the discard pile in words][otherwise]about [the rounded number of cards which are in the discard pile in words][end if] card[s]."
+
+	To decide what number is the rounded number of (described set - a description of objects):
+		let N be the number of members of the described set;
+		let R be N divided by 5;
+		let total be R times 5;
+		decide on total.
+	
+	Rule for printing room description details of something: do nothing instead. 
+	
+	Section 3 - Drawing and Discarding Actions
+
+	Understand the commands "take" and "carry" and "hold" and "get" and "drop" and "throw" and "discard" as something new.
+
+	Understand "take [text]" or "get [text]" or "drop [text]" as a mistake ("Here, you only draw and discard. Nothing else matters at the moment.").
+
+	Understand "draw" or "draw card" or "draw a card" as drawing. Drawing is an action applying to nothing. The drawing action has an object called the card drawn.
+
+	Setting action variables for drawing:
+		now the card drawn is a random card which is in the deck of cards.
+		
+	Check drawing:
+		if the card drawn is nothing, say "The deck is completely depleted." instead.
+
+	Check drawing:
+		if the number of cards carried by the player is greater than four, 
+			say "This is a five-card game; you must discard something before drawing anything further." instead.
+
+	Carry out drawing:  
+		move the card drawn to the player.
+	
+	Report drawing:
+		say "You draw [a card drawn]."	 
+	
+
+	Understand "discard [card]" as discarding. Discarding is an action applying to one thing.
+
+	Check discarding:
+		if the player does not carry the noun, say "You can only discard cards from your own hand." instead.
+
+	Carry out discarding:
+		now the noun is in the discard pile;
+		if the discard pile is not visible, move the discard pile to the location.
+	
+	Report discarding:
+		say "You toss [the noun] nonchalantly onto the discard pile."  
+
+	Section 4 - Assessing Hands
+	
+	Before listing contents while taking inventory: group cards together.
+
+	Before grouping together cards: 
+		if the number of cards carried by the player is 5:
+			say "[run paragraph on]";
+			follow the hand-ranking rules;
+			if the rule succeeded, say "[the outcome of the rulebook]";
+			otherwise say "some random cards";
+			if the outcome of the rulebook is pair outcome, say " of [rank of the first thing held by the player as a card value]s";
+		otherwise:
+			say "[number of cards carried by the player in words] assorted cards";
+		say " (".
+
+	Rule for grouping together cards:
+		say "[list hand]".
+	
+	To say list hand:
+		let chosen card be the first thing held by the player;
+		while chosen card is a card: 
+			say "[chosen card]";
+			now chosen card is the next thing held after chosen card;
+			if chosen card is a card, say "-".
+
+	After grouping together cards:
+		say ")".
+
+	The hand-ranking rules is a rulebook. The hand-ranking rules have outcomes royal flush, straight flush, four of a kind, full house, flush, straight, three of a kind, two pairs, pair, high card.  
+
+	The hand-ranking rulebook has a truth state called the flushness.
+	The hand-ranking rulebook has a truth state called the straightness.
+
+	The hand-ranking rulebook has a number called the pair count.
+	The hand-ranking rulebook has a number called the triple count.
+	The hand-ranking rulebook has a number called the quadruple count. 
+
+	A card can be sorted or unsorted. A card is usually unsorted.
+ 	
+	Definition: a card is high if its rank is 11 or more.
+	Definition: a card is low if its rank is 4 or less.
+
+	A hand-ranking rule (this is the initial sort rule): 
+		now every card is unsorted;
+		while the player carries an unsorted card:
+			let item be the lowest unsorted card held by the player;
+			move item to the player;
+			now the item is sorted;
+		if sort-debugging is true, say "-- after initial sort: [list hand]". 
+
+	A hand-ranking rule (this is the finding flushness rule):
+		let called suit be the suit of a random card carried by the player;
+		if every card carried by the player is called suit, now flushness is true.
+	
+	A hand-ranking rule (this is the finding straightness rule): 
+		now straightness is true;
+		let N be the rank of the highest card which is carried by the player;
+		repeat with current rank running from N - 4 to N:
+			now the test rank is the current rank;
+			unless the player carries a matching card:
+				if the current rank is N - 4 and the current rank is 9 and the player carries an ace card, do nothing; 
+				otherwise now straightness is false.
+
+	A card can be quadrupled, tripled, paired or uncombined.  
+	
+	Test rank is a number that varies. Definition: a card is matching if its rank is the test rank. 
+
+	A hand-ranking rule (this is the counting multiples rule):
+		now every card is uncombined;
+		repeat with current rank running from 1 to 13:
+			now test rank is current rank;
+			let N be the number of matching cards held by the player;
+			if N is 4:
+				increment the quadruple count;
+				now every matching card held by the player is quadrupled;
+			if N is 3:
+				increment the triple count;
+				now every matching card held by the player is tripled;
+			if N is 2:
+				increment the pair count;
+				now every matching card held by the player is paired.
+
+	A hand-ranking rule (this is the move aces up unless there's a low straight rule):
+		unless the straightness is true and the lowest card carried by the player is an ace card and the rank of the highest card carried by the player is 5, 
+			now every ace card which is carried by the player is carried by the player; 
+		if sort-debugging is true, say "-- after ace movement rule: [list hand]".
+
+	A hand-ranking rule (this is the move pairs forward rule):
+		while the player carries a paired card:
+			let selection be the lowest paired card which is carried by the player;
+			move the selection to the player;
+			now the selection is uncombined;
+		if sort-debugging is true, say "-- after pairs movement: [list hand]".
+
+	A hand-ranking rule (this is the raise ace pairs rule):
+		if the player carries exactly two ace cards:
+			repeat with item running through ace cards which are carried by the player:
+				move item to the player;
+		if sort-debugging is true, say "-- after paired-ace movement: [list hand]".
+
+	A hand-ranking rule (this is the move multiples forward rule):
+		while the player carries a tripled card:
+			let selection be the lowest tripled card which is carried by the player;
+			move the selection to the player;
+			now the selection is uncombined;
+		while the player carries a quadrupled card:
+			let selection be the lowest quadrupled card which is carried by the player;
+			move the selection to the player;
+			now the selection is uncombined;
+		if sort-debugging is true, say "-- after multiples movement rule: [list hand]".
+
+	Definition: a card is ace if its rank is 1.
+	Definition: a card is king if its rank is 13.
+
+	A hand-ranking rule (this is the royal-flush rule):
+		if flushness is true and straightness is true and the highest card carried by the player is king and the lowest card carried by the player is ace, royal flush.
+
+	A hand-ranking rule (this is the straight-flushes rule):
+		if flushness is true and straightness is true, straight flush.
+	
+	A hand-ranking rule (this is the four-of-a-kind rule):
+		if the quadruple count is 1, four of a kind.
+	
+	A hand-ranking rule (this is the full-house rule):
+		if the pair count is 1 and the triple count is 1, full house.
+
+	A hand-ranking rule (this is the flushes rule):
+		if flushness is true, flush.
+
+	A hand-ranking rule (this is the straights rule):
+		if straightness is true, straight.
+	
+	A hand-ranking rule (this is the three-of-a-kind rule):
+		if triple count is 1, three of a kind.
+
+	A hand-ranking rule (this is the two-pair rule):
+		if the pair count is 2, two pairs.
+
+	A hand-ranking rule (this is the pair rule):
+		if the pair count is 1, pair.
+
+	A hand-ranking rule (this is the default rule):
+		high card.	
+
+	Sort-debugging is a truth state that varies. 
+	
+	Section 5 - Testing hand identification - Not for release
+
+	Understand "debug sorting" as debugging hand sorting. Debugging hand sorting is an action out of world.
+
+	Carry out debugging hand sorting:
+		if sort-debugging is false, now sort-debugging is true;
+		otherwise now sort-debugging is false.
+		
+	Report debugging hand sorting:
+		say "Sort debugging is now [if sort-debugging is true]on[otherwise]off[end if]."
+
+	Test me with "draw / g / g / g / g / force hand / g / g / g / g / g / g / g / g / g / g / g / g".
+	
+	Table of Testing Hands
+	set suit	set rank 
+	spades	1	[royal flush]
+	spades	13
+	spades	12
+	spades	11
+	spades	10
+	clubs	12	[straight flush]
+	clubs	11	
+	clubs	10
+	clubs	9
+	clubs	8
+	diamonds	8	[four of a kind]
+	hearts	8
+	spades	8
+	clubs	8
+	clubs	3
+	clubs	1	[full house]
+	spades	1
+	hearts	10
+	spades	10
+	clubs	10
+	hearts	2	[flush]
+	hearts	5
+	hearts	7
+	hearts	11
+	hearts	12
+	hearts	1	[straight]
+	spades	13
+	diamonds	12
+	clubs	11
+	hearts	10
+	hearts	2	[three of a kind]
+	spades	2
+	clubs	2
+	clubs	4
+	spades	3	
+	diamonds	6	[two pairs]
+	spades	6
+	clubs	7
+	diamonds	7
+	hearts	9
+	diamonds	6	[two pairs, ace high]
+	spades	6
+	clubs	1
+	diamonds	7
+	hearts	1
+	hearts	12	[pair]
+	spades	12
+	diamonds	10
+	spades	7
+	clubs	4
+	diamonds	13	[high]
+	hearts	11
+	spades	9
+	clubs	7
+	diamonds	5
+	hearts	1	[tricky sorting: low straight]
+	diamonds	2
+	spades	3
+	diamonds	4
+	diamonds	5 
+	
+	Understand "force hand" as forcing a hand. Forcing a hand is an action out of world.
+
+	Current marker is a number that varies. 
+
+	Carry out forcing a hand:
+		repeat with item running through cards which are carried by the player:	
+			increment current marker;
+			if current marker is greater than the number of filled rows in the Table of Testing Hands, now current marker is 1;
+			choose row current marker in the Table of Testing Hands;
+			now the suit of item is the set suit entry;
+			now the rank of item is the set rank entry.
+
+	Report forcing a hand:
+		try taking inventory. 

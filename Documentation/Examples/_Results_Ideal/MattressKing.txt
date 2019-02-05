@@ -1,0 +1,17 @@
+   Monica's Bedroom
+  Mattress King
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Monica's Bedroom
+  You can see a race car bed here.
+  
+> >   Living Room
+  (Testing.)
+  
+  >[1] push bed south
+  You push the race car bed south to the Living Room.
+  
+  Living Room
+  
+> >

@@ -1,0 +1,8 @@
+Figure of Duck with Hat is the file "Duck with Hat.png". Mac with Cheese is in
+the Zone.
+
+Ducks-in-a-row is a list of figure names that varies.
+
+Ducks-in-a-row is {Figure of Duck with Hat, Figure of Duck with Hat}.
+
+Test is a room.

@@ -1,0 +1,15 @@
+This is a room.
+
+After reading a command: 
+	if the player's command matches the regular expression "^\p":
+		say "'[the player's command]' matches [fixed letter spacing]^\p[variable letter spacing] [line break]";
+	if the player's command matches the regular expression "^<\p>":
+		say "'[the player's command]' matches [fixed letter spacing]^<\p>[variable letter spacing] [line break]";
+	if the player's command matches the regular expression "^<b\p>":
+		say "'[the player's command]' matches [fixed letter spacing]^<b\p>[variable letter spacing] [line break]";
+	if the player's command matches the regular expression "^(b|\p)":
+		say "'[the player's command]' matches [fixed letter spacing]^(b|\p)[variable letter spacing] [line break]".
+
+Understand "pingpong" as a mistake ("Pong ping.").
+
+Test me with ". foo / b foo / x foo / pingpong / p foo / \ foo".

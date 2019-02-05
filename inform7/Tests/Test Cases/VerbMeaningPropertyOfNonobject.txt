@@ -1,0 +1,15 @@
+The Kitchen is a room. 
+
+A material is a kind of value. The materials are metal, ceramic, and polymer.
+A resistance is a kind of value. The resistances are brittle, hard, and soft.
+
+A material has a resistance called the stiffness.
+
+The verb to feel means the stiffness property.
+Metal feels hard. Ceramic feels brittle. Polymer feels soft.
+
+When play begins:
+	if the stiffness of metal is hard:
+		say "Yes (1).";
+	if metal feels hard:
+		say "Yes (2).";

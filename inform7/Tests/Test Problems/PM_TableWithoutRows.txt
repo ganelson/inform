@@ -1,0 +1,4 @@
+The Admiralty is a room.
+
+Table of Ships
+ship		rate

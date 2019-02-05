@@ -1,0 +1,100 @@
+*** Writing and reading tables to external files
+(Scoreboard preserved between games; Rubies)
+A scoreboard that keeps track of the ten highest-scoring players from one playthrough to the next, adding the player's name if he has done well enough.
+
+The trick here is that we need a table with text in order to keep track of the players' names.
+
+Part 1 largely replicates the source from "Identity Theft"; new material starts at Part 2.
+
+	{*} "Rubies"
+
+	Use scoring.
+
+	Part 1 - Collecting Names
+	
+	The player's forename is a text that varies. The player's full name is a text that varies.
+
+	When play begins:
+		now the command prompt is "What is your name? > ".
+	
+	To decide whether collecting names:
+		if the command prompt is "What is your name? > ", yes;
+		no.
+	
+	After reading a command when collecting names:
+		if the number of words in the player's command is greater than 5:
+			say "[paragraph break]Who are you, a member of the British royal family? No one has that many names. Let's try this again.";
+			reject the player's command;
+		now the player's full name is the player's command;
+		now the player's forename is word number 1 in the player's command;
+		now the command prompt is ">";
+		say "Hi, [player's forename]!"; 
+		say "[banner text]";
+		move the player to the location;
+		reject the player's command.
+
+	Instead of looking when collecting names: do nothing.
+
+	Rule for printing the banner text when collecting names: do nothing.
+
+	Rule for constructing the status line when collecting names: do nothing.
+	
+	Part 2 - Adding the Leaderboard
+
+	File of Leaderboard is called "leaderboard".
+
+	When play begins:
+		if the File of Leaderboard exists:
+			read File of Leaderboard into the Table of Leaders;
+			sort the Table of Leaders in reverse scored amount order.
+
+	When play ends:
+		choose row 10 in the Table of Leaders; [we've sorted the table, so the lowest score will be the one at the bottom]
+		if the score is greater than scored amount entry:  
+			now name entry is the player's forename;  
+			now the scored amount entry is the score;
+		show leaderboard;
+		write the File of Leaderboard from the Table of Leaders.
+	
+	To show leaderboard:
+		sort the Table of Leaders in reverse scored amount order;
+		say "Current leading scores: [paragraph break]";
+		say fixed letter spacing;
+		repeat through Table of Leaders:
+			if scored amount entry is greater than 0:
+				say "  [name entry]";
+				let N be 25 minus the number of characters in name entry; [here we want to space out the scores so they make a neat column]
+				if N is less than 1, now N is 1;
+				say N spaces;
+				say "[scored amount entry][line break]";
+		say variable letter spacing.
+
+	To say (N - a number) spaces:
+		repeat with index running from 1 to N:
+			say " ".
+	
+	Table of Leaders
+	scored amount	name
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee"
+	0	"Smithee" 
+
+And now we introduce a scenario that allows different players to come up with different scores -- admittedly not a very interesting scenario, but it will do for now:
+
+	{**}Part 3 - Scenario
+
+	Carry out taking something which is not handled:
+		increment score.
+	
+	The Big Treasure Chamber is a room. It contains a ruby, an emerald, a gold tooth, an antique katana, and a silver coin.
+
+	Instead of waiting, end the story finally.
+	
+	Test me with "get ruby / z".

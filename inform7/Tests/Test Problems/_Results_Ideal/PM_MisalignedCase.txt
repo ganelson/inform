@@ -1,0 +1,21 @@
+Inform 7 build 6L50 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MisalignedCase
+  >--> You wrote '1' (source text, line 6): but this seems to be misplaced
+    since it is not a case within an 'if X is...', as it must be. Each case
+    must be placed one tab stop in from the 'if X is...' to which it belongs,
+    and the instructions for what to do in that case should be one tab stop
+    further in still.
+Problem__ PM_MisalignedIndentation
+  >--> The phrase or rule definition 'When play begins' (source text, line 3)
+    is written using the 'colon and indentation' syntax for its 'if's,
+    'repeat's and 'while's, where blocks of phrases grouped together are
+    indented one tab step inward from the 'if ...:' or similar phrase to which
+    they belong. But the tabs here seem to be misaligned, and I can't determine
+    the structure. The first phrase going awry in the definition seems to be
+    'say "Look!"' (source text, line 7), in case that helps. This sometimes
+    happens even when the code looks about right, to the eye, if rows of spaces
+    have been used to indent phrases instead of tabs.
+Inform 7 has finished: 15 centiseconds used.

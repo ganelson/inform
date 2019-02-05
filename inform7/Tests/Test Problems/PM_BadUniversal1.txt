@@ -1,0 +1,5 @@
+Home is a room.
+
+Every turn:
+	if "fish" relates 1 to 2:
+		say "Hi.";

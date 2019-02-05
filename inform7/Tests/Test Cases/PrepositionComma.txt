@@ -1,0 +1,19 @@
+A direction can be cardinal. A direction is usually not cardinal.
+North, south, east, west are cardinal.
+
+A direction can be planar. A direction is usually planar.
+Up, down, inside, outside are not planar.
+
+Alliance relates people to each other in groups.
+
+The Chapel is a room. Elizabeth, Wickham and Darcy are people in the Chapel. Mr Bennett and Mrs Bennett are people in the Chapel. Georgiana is a person in the Chapel.
+
+The verb to be related to means the alliance relation.
+
+Mr Bennett is related to Mrs Bennett and Elizabeth.
+
+Test is a room.
+
+When play begins:
+	showme the list of planar directions;
+	showme the list of directions which are not planar.

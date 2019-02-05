@@ -1,0 +1,62 @@
+   Garden
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160118 / Inform 7 build 6M62 (I6/v6.33 lib 6/12N) SD
+  
+  Garden
+  You can see a wheelbarrow (in which is a pile of dirt), a flower plot and three marbles here.
+  
+> >   Garden
+  (Testing.)
+  
+  >[1] me,
+  "Speak up, lad, I don't hear as well as I used to."
+  
+  >[2] push the wheelbarrow north to the yard
+  "Too much nonsense at the end of your sentence! Talk simpler!"
+  
+  >[3] examine the wiggle
+  "My eyes might not be what they used to be, sonny, but I can't make out anything remotely like that hereabouts."
+  
+  >[4] x marbles
+  "I know your mother always called you her little Houdini, but even Harry couldn't do that to more than one thing at once."
+  
+  >[5] ask her about me
+  "Not here at the moment, or are you daft?"
+  
+  >[6] ask dirt about me
+  "That ain't something you can do with inanimate objects. It's unnatural."
+  
+  >[7] wiggle
+  "What kind of action is that? Just because your friends all do it doesn't make it acceptable around here!"
+  
+  >[8] x it
+  You see nothing special about the marble.
+  
+  >[9] n
+  
+  Yard
+  
+  >[10] x it
+  "Not here at the moment, or are you daft?"
+  
+  >[11] s
+  
+  Garden
+  You can see a wheelbarrow (in which is a pile of dirt), a flower plot and three marbles here.
+  
+  >[12] get five marbles
+  "What, you seeing double? There ain't enough of those to go around."
+  
+  >[13] get all marbles
+  marble: Taken.
+  marble: Taken.
+  marble: Taken.
+  
+  >[14] get three marbles
+  "What, you seeing double? There ain't enough of those to go around."
+  
+  >[15]
+  "Come again?"
+  
+> >

@@ -1,0 +1,42 @@
+* The text token
+(HELP with a simple menu; Ish.)
+A (very) simple HELP command, using tokens to accept and interpret the player's  text whatever it might be.
+
+	{*}"Ish."
+
+	Ichiro's Dubious Sushi Hut is a room.  "Despite the allure of the dusty plastic sushi models in the window, you're beginning to have second thoughts about the selection of this particular restaurant for your rendezvous with Agent Fowler.  There are no other patrons, for one thing. Afternoon sunlight filters lazily through the window and illuminates a number of empty glass-topped tables, at each of which is a chopstick dispenser (in form of cute ceramic cat) and a pitcher of soy sauce (sticky).
+
+	The sushi bar itself is what gives the most pause, however. Behind it sits an angry-looking Japanese woman, aggressively eating a Quarter Pounder with Cheese."
+
+We can, when necessary, accept any text at all as a token:
+
+	{**}Understand "help [text]" or "help about [text]" as getting help about. Understand the commands "instructions" or "hint" or "hints" or "menu" or "info" or "about" as "help".
+	
+	Getting help about is an action applying to one topic.
+	
+After that, we can use "the topic understood" to refer to the text we read:
+
+	{**}Carry out getting help about:
+		if the topic understood is a topic listed in the Table of Standard Help:
+			say "[explanation entry][paragraph break]";
+		otherwise:
+			say "You're out of ideas."
+
+	Table of Standard Help
+	topic	title	summary	explanation
+	"sushi"	"sushi"	"Really it's just vinegary rice"	"Popular misconception says that sushi inevitably entails raw fish, but it is in fact just rice with rice vinegar on it.  It's just that the really good kinds have raw fish in."
+	"cucumber roll" or "cucumber"	"Cucumber roll"	"Sushi for people who are afraid of sushi"	"It is just rice and slivers of cucumber in the middle, and as long as you don't go too crazy with the wasabi, all should be well."
+	"california roll" or "california"	"California roll"	"Travesty of the sushi concept"	"It's. Fake. Crab."
+	"monkfish liver"	"monkfish liver"	"Expert eaters only"	"The odds of Ichiro's having this unusual delicacy is near zero."
+	"microdot"	"microdot"	"What you came here to deliver"	"There'll be time enough for that later. If Fowler ever turns up. Where is she, anyway?"
+	
+Since the player may not know what all the help options are, we might as well let him get an overview, as well.
+
+	{**}Understand "help" as summoning help.  Summoning help is an action applying to nothing.
+
+	Carry out summoning help:
+		say "Help is available about the following topics.  Typing HELP followed by the name of a topic will give further information.[paragraph break]";
+		repeat through the Table of Standard Help: 
+			say "  [title entry]: [summary entry][line break]".
+	
+	Test me with "help / help about microdot / help cucumber / help california roll".

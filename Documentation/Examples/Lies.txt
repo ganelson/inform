@@ -1,0 +1,29 @@
+* New tokens
+(Variety of postures; Lies)
+Commands to allow the player to lie down in three different ways.
+
+To set the scene, and make new actions to provide for two of these ways:
+
+	{*}"Lies"
+
+	The Laundry is a room. "An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion." The vast marble sink is here. "There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by." The sink is an enterable container, fixed in place.
+
+	Lying down is an action applying to nothing. Report lying down: say "You lie down for a while in the middle of the Laundry, wondering about the point of existence, then get up again."
+
+	Lying near is an action applying to one thing. Report lying near: say "You lie down next to [the noun] for a while, mumbling to yourself."
+
+	Instead of lying near the sink, say "Lying down close to the cool butcher's marble slabs of the sink, your attention is caught by the sight of coolie shoes through a floor-level grille for ventilation. The game is afoot!"
+
+So far, so good. Now for the grammar, where we create two new tokens: one for each of two groups of alternative prepositions.
+
+	{**}Understand "beneath/under/by/near/beside/alongside/against" or "next to" or "in front of" as "[beside]".
+
+	Understand "on/in/inside" or "on top of" as "[within]".
+
+	Understand "lie down" as lying down.
+
+	Understand "lie down [within] [something]" as entering.
+
+	Understand "lie [beside] [something]" or "lie down [beside] [something]" as lying near.
+	
+	Test me with "lie down / lie down on top of the sink / get out / lie down inside the sink / get out / lie down in front of the sink".

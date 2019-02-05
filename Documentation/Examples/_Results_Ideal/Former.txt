@@ -1,0 +1,40 @@
+   Dome
+  Polarity
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dome
+  
+> >   Eastern End
+  (Testing.)
+  
+  >[1] back
+  You haven't gone anywhere yet.
+  
+  >[2] n
+  
+  North Chapel
+  
+  >[3] go back
+  
+  Dome
+  
+  >[4] e
+  
+  Eastern End
+  You can see a church door here.
+  
+  >[5] open door
+  You open the church door.
+  
+  >[6] go through door
+  
+  Courtyard
+  You can see a church door here.
+  
+  >[7] go back
+  
+  Eastern End
+  You can see a church door here.
+  
+> >

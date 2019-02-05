@@ -1,0 +1,13 @@
+   Chapel
+  "list of planar directions" = list of directions: {north, northeast, northwest, south, southeast, southwest, east, west}
+  "list of directions which are not planar" = list of directions: {up, down, inside, outside}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Chapel
+  You can see Elizabeth, Wickham, Darcy, Mr Bennett, Mrs Bennett and Georgiana here.
+  
+> >   Chapel
+> Are you sure you want to quit? 

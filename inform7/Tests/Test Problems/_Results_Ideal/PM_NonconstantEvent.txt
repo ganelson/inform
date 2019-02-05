@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NonconstantEvent
+  >--> You wrote 'K at 10:11 AM' (source text, line 5), but 'K' isn't the name
+    of any timed event that I know of. (These need to be set up in a special
+    way, like so - 'At the time when stuff happens: ...' creates a timed event
+    called 'stuff happens'.)
+Inform 7 has finished: 42 centiseconds used.

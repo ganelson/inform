@@ -1,0 +1,39 @@
+   Humiliation Chamber
+  Xot
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Humiliation Chamber
+  A grim, grey-walled room. Cameras watch you from every angle; convex mirrors reflect your actions; and up near the ceiling, where you can't disable it, is a loudspeaker.
+  
+> >   Humiliation Chamber
+  (Testing.)
+  
+  >[1] wiggle
+  That's not a verb I recognise.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] z
+  Time passes.
+  
+  Over the loudspeaker comes some distorted nonsense. If you listen carefully, it sounds as though some fool is saying "wiggle, wiggle, wiggle!"
+  
+  >[5] z
+  Time passes.
+  
+  Over the loudspeaker comes some distorted nonsense. If you listen carefully, it sounds as though some fool is saying "wiggle, wiggle, wiggle!"
+  
+  >[6] z
+  Time passes.
+  
+  >[7] z
+  Time passes.
+  
+  Over the loudspeaker comes some distorted nonsense. If you listen carefully, it sounds as though some fool is saying "wiggle, wiggle, wiggle!"
+  
+> >

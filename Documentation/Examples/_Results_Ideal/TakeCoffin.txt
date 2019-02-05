@@ -1,0 +1,17 @@
+   Attic
+  GET AXE
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Attic
+  You can see an unused coffin (in which is Raskolnikov) here.
+  
+> >   Attic
+  (Testing.)
+  
+  >[1] raskolnikov, get coffin
+  Raskolnikov gets out of the unused coffin.
+  
+  Raskolnikov picks up the unused coffin.
+  
+> >

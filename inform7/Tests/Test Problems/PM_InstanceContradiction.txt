@@ -1,0 +1,8 @@
+A room can be roomy or cramped.
+
+A room is always roomy.
+
+The Closet is a room. The Closet is cramped.
+
+Colour is a kind of value. The colours are red, blue and green. A colour
+can be vivid or drab. A colour is always vivid. Green is drab.

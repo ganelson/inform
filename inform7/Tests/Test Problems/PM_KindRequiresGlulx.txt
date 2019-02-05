@@ -1,0 +1,4 @@
+Home is a room.
+
+When play begins:
+	let x be 1.7125;

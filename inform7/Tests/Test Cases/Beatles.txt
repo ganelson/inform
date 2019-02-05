@@ -1,0 +1,20 @@
+Paul, John, Ringo, and George are men.
+
+Table of NPC Activity
+who	activity (text)
+Paul 	"silly"
+John	"putty"
+Ringo	"walks"
+George	"sideways"
+
+when play begins:
+	let whoIsIt be a random man;
+	showme whoIsIt;
+	let tempActivity be indexed text;
+	now tempActivity is "going";
+	now the activity corresponding to a who of whoIsIt in the Table of NPC Activity is tempActivity;
+	repeat through the Table of NPC Activity:
+		say "[who entry] gets [activity entry].";
+	
+There is room.
+

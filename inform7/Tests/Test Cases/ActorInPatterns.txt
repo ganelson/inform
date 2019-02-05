@@ -1,0 +1,19 @@
+The Mysterious Void is a room. "Spooky." The Vast Nothingness is east
+of the Mysterious Void. "Empty." The Nietzschean Abyss is east of the
+Vast Nothingness. "Full of gazes."
+
+Instead of an actor going east in the Vast Nothingness, say "Only
+Ubermenschen may travel east from the Vast Nothingness."
+
+Ayn Rand is a person in the Mysterious Void.
+
+Every turn:
+	say "Ayn Rand is now in [location of Ayn Rand].";
+	if Ayn Rand is in the Mysterious Void begin;
+		try Ayn Rand going east;
+	otherwise if Ayn Rand is in the Vast Nothingness;
+		try Ayn Rand going east;
+		move Ayn Rand to the Mysterious Void;
+	end if;
+
+Test me with "actions/z/z/e/z/e".

@@ -1,0 +1,4 @@
+The Astral Plane is a room.
+
+A foo is a kind of thing. A foo has a number.
+The Bar is a room.

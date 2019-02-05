@@ -1,0 +1,12 @@
+Home is a room.
+
+Part 1
+
+Definition: a number is spacious if its carrying capacity is 10 or
+more.
+
+Part 2
+
+A person has a text called callsign.
+
+Definition: a person is cool if its callsign is "dude" or more.

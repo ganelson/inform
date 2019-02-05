@@ -1,0 +1,8 @@
+Lab is a room.
+
+Definition: a number is xunique if it is 9.
+
+When play begins:
+	let the list be { 4, 9 };
+	let the other list be the list of people;
+	showme filter to xunique [numbers] of the list;

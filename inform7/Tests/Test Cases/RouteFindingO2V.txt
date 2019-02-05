@@ -1,0 +1,21 @@
+Fatherhood relates one person to various people. The verb to engender (he
+engenders, they engender) implies the fatherhood relation. 
+
+The Study is a room.
+
+Nigel, Bill, Bob and Brian are people in the Study.
+
+Bill engenders Bob. Bob engenders Brian.
+
+Instead of attacking someone:
+	say "From [noun] to [Brian] is [the number of steps via the fatherhood
+		relation from the noun to Brian].";
+	say "From [Brian] to [noun] is [the number of steps via the fatherhood
+		relation from the Brian to noun].";
+	if the number of steps via the fatherhood relation from the noun to brian
+		is greater than 0, say "Brian steps in and stops you.
+		'None of that,' he says. 'Don't hit my ancestor.'";
+	if the number of steps via the fatherhood relation from the noun to brian
+		is -1, say "Brian waves a hand. 'Go right ahead,' he says."
+
+Test me with "hit bill / hit bob / hit brian / hit nigel".

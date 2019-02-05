@@ -1,0 +1,19 @@
+Place is a room.
+
+Bob is a man in Place.
+
+Table of Remapped Inquiries
+Topic	Alternate Action
+"home/here"	the action of asking Bob about "shack"
+"his home/shack/life"	the action of asking Bob about "shack"
+"life in shack/home"	the action of asking Bob about "shack"
+"acrobatics"	the action of jumping
+
+After asking Bob about "shack" (this is the Bob approves rule):
+	say "'I like it all right,' Bob drawls."
+
+Instead of asking Bob about a topic listed in the Table of Remapped Inquiries (this is the a different 
+approach for topic rerouting rule):
+	try the alternate action entry instead.
+
+Test me with "actions / ask bob about shack / ask bob about acrobatics / ask bob about home"

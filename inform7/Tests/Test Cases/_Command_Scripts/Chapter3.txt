@@ -1,0 +1,279 @@
+out
+out
+in. in.
+se
+nw
+sw
+ne
+ne
+sw
+nw
+se
+e
+w
+w
+n
+w
+e
+u
+d
+d
+u
+e
+n
+s
+u
+n
+n
+s
+in
+s
+in
+out
+d
+verbose
+i
+e
+take all
+w
+in
+take sack
+put all in sack
+take sack
+e
+out
+e
+take all
+put all on gentleman
+open door
+i
+w
+i
+in
+out
+w
+u
+open lekythos
+close it
+open it
+close it
+take key
+take gold key
+open lekythos
+take gold key
+i
+e
+put all on lekythos
+look
+s
+close door
+n
+open door
+close door
+s
+d
+n
+open door
+n
+close door
+take lekythos
+d
+e
+in
+unlock register
+gold key
+open register
+close it
+open it
+take all
+i
+doff jacket
+doff watch
+wear jacket
+wear watch
+i
+n
+e
+out
+e
+unlock blue door
+blue key
+open blue door
+enter blue door
+undo
+look
+w
+e
+lock blue door
+blue key
+close blue door
+lock blue door with blue key
+g
+unlock it
+key
+w
+e
+close door
+g
+g
+open door
+g
+w
+u
+in
+out
+d
+out
+out
+put all on dashboard
+take all from dashboard
+in
+take sky
+take sunligt
+take sunlight
+in
+x infernal racket
+u
+x infernal racket
+n
+x infernal racket
+s
+d
+in
+x infernal racket
+out
+w
+x infernal racket
+i
+e
+u
+n
+n
+take all
+i
+drop number
+drop colors
+drop colored
+drop color
+drop numbered
+drop number colors
+take it
+drop it
+look
+look
+take flavor
+drop it
+x flavor
+x colors
+i
+look
+d
+s
+d
+s
+d
+in
+unlock register
+i
+gold key
+unlock register with gold key
+lock register with gold key
+close register
+lock register with gold key
+out
+n
+turn on silencer
+look
+get silencer
+purloin silencer
+drop silencer
+look
+s
+out
+out
+push yugo in
+g
+look
+get in yugo
+u
+in
+i
+put all in glove compartment
+open compartment
+put all in compartment
+take sack
+put all on dashboard
+take dashboard
+move dashboard
+take compartment
+move it
+get out
+w
+out
+d
+s
+n
+se
+get in tricycle
+w
+ne
+nw
+out
+push tricycle w
+e
+e
+w
+out
+out
+s
+n
+e
+get purse
+w
+n
+in
+in
+u
+n
+n
+n
+x sinister
+ask sinister about me
+s
+d
+s
+d
+s
+d
+se
+nw
+sw
+ne
+nw
+ask girl about me
+se
+out
+x it
+kill it
+in
+d
+i
+u
+e
+n
+w
+d
+d
+u
+s
+n
+w
+e
+s
+u
+d
+nw
+se
+sw
+ne
+

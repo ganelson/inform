@@ -1,0 +1,971 @@
+   Fort James                                                                                                                                                                                                             0/1
+  You are William Pullein, a bricklayer in the year 1691.
+  
+  Chapter 15: Port Royal
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Fort James
+  The enclosure of Fort James is a large, roughly hexagonal court walled with heavy stone.  The walls face the entrance to Port Royal Harbor, and the battery of guns is prepared to destroy any enemy ship arriving.
+  
+> >   Fort James                                                                                                                                                                                                             0/2
+  ** e
+  You can't go that way.
+  
+> >   Thames Street End                                                                                                                                                                                                      0/3
+  ** s
+  
+  Thames Street End
+  The ill-named Thames Street runs from here -- at the point of the peninsula -- all the way east among houses and shops, through the Fish Market, edging by the round front of Fort Carlisle, to the point where the town stops and there is only sandy spit beyond.  Most of that stretch is full of people at all hours.  Imported goods are moved off of ships and taken to distributors; exported goods are brought to be loaded; and there is one public house and brothel for every ten inhabitants.
+  
+  Lime Street, wider and healthier but not as rich, runs directly south, and to the north the road opens up into the courtyard of Fort James.
+  
+> >   Water Lane                                                                                                                                                                                                             0/4
+  ** e
+  
+  Water Lane
+  Here Thames Street -- never very straight -- goes steeply southeast for a portion before continuing more directly to the east.
+  
+  Water Lane runs south toward Queen Street, and facing onto it is the New Prison -- which, in the way of these things, is neither.  It did serve in that capacity for a time, and in a measure of the villainy which has been usual in Port Royal from its earliest days, it is nearly the largest building in the town.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     0/5
+  ** e
+  
+  Thames Street at the Wherry Bridge
+  To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway.
+  
+> >   Thames Street by the King's House                                                                                                                                                                                      0/6
+  ** e
+  
+  Thames Street by the King's House
+  The King's House is reserved for the use of the Governor, but he does not live in it, and it is frequently being rented out to some merchant so that the government will at least derive some value from it. It is nearly the least interesting establishment on Thames Street, and the crowd -- which, to the west, is extremely dense -- here thins out a bit.
+  
+> >   Thames Street before Fort Carlisle                                                                                                                                                                                     0/7
+  ** e
+  
+  Thames Street before Fort Carlisle
+  Here Thames Street, formerly a respectable width, narrows to a footpath in order to edge around the front of Fort Carlisle, underneath the mouths of the cannon.
+  
+  There are no buildings on the harbor side of Thames Street at this point, which means that you have an unusually good view of the ships at dock, water beyond, and the Blue Mountains rising on the other side of the harbor.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/8
+  ** s
+  
+  Fort Carlisle
+  Handsomely arrayed with cannons which you could fire at any moment -- though of course there are ships at dock which might be in the way.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/8
+  ** fire left cannon
+  I only understood you as far as wanting to fire the left cannons.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/9
+  ** fire left cannons
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to sixteen. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/10
+  ** fire right cannons
+  You fire upon Captain Brenningham and his frigate, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/11
+  ** fire right cannons
+  You fire upon Captain Brenningham and his frigate, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/12
+  ** fire left cannons
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to fifteen. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/13
+  ** x dock
+  The ships currently at dock number ten, and are as follow:
+  
+  The frigate belonging to Captain Whetstone.
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Brenningham.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The brigantine belonging to Captain Morris.
+  
+  The brigantine belonging to Captain Mansfield.
+  
+  The pinke belonging to Captain Goody.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/14
+  ** out
+  But you aren't in anything at the moment.
+  
+> >   Thames Street before Fort Carlisle                                                                                                                                                                                     0/15
+  ** n
+  
+  Thames Street before Fort Carlisle
+  Here Thames Street, formerly a respectable width, narrows to a footpath in order to edge around the front of Fort Carlisle, underneath the mouths of the cannon.
+  
+  There are no buildings on the harbor side of Thames Street at this point, which means that you have an unusually good view of the ships at dock, water beyond, and the Blue Mountains rising on the other side of the harbor.
+  
+> >   Thames Street before Fort Carlisle                                                                                                                                                                                     0/16
+  ** x dock
+  The ships currently at dock number ten, and are as follow:
+  
+  The frigate belonging to Captain Whetstone.
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Brenningham.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The brigantine belonging to Captain Morris.
+  
+  The brigantine belonging to Captain Mansfield.
+  
+  The pinke belonging to Captain Goody.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/17
+  ** s
+  
+  Fort Carlisle
+  Handsomely arrayed with cannons which you could fire at any moment -- though of course there are ships at dock which might be in the way.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/18
+  ** x dock
+  The ships currently at dock number ten, and are as follow:
+  
+  The frigate belonging to Captain Whetstone.
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Brenningham.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The brigantine belonging to Captain Morris.
+  
+  The brigantine belonging to Captain Mansfield.
+  
+  The pinke belonging to Captain Goody.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/19
+  ** fire right
+  You fire upon Captain Brenningham and his frigate, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/20
+  ** g
+  You fire upon Captain Brenningham and his frigate, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          0/21
+  ** g
+  You fire upon Captain Brenningham and his frigate, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/22
+  ** g
+  You fire upon Captain Brenningham and his frigate, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The frigate of Brenningham sinks.
+  
+  [Your score has just gone up by five points.]
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/23
+  ** g
+  You fire upon Captain Hardue and his frigate, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/24
+  ** g
+  You fire upon Captain Hardue and his frigate, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/25
+  ** fire left
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to fourteen. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/26
+  ** fire right
+  You fire upon Captain Hardue and his frigate, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/27
+  ** x dock
+  The ships currently at dock number nine, and are as follow:
+  
+  The frigate belonging to Captain Whetstone.
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The brigantine belonging to Captain Morris.
+  
+  The brigantine belonging to Captain Mansfield.
+  
+  The pinke belonging to Captain Goody.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/28
+  ** fire left
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to thirteen. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/29
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to twelve. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/30
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to eleven. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/31
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to ten. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/32
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to nine. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/33
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to eight. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/34
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to seven. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/35
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to six. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/36
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/37
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/38
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/39
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/40
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/41
+  ** g
+  You fire upon Captain Whetstone and his frigate, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The frigate of Whetstone sinks.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/42
+  ** fire right
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to six. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/43
+  ** g
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/44
+  ** g
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/45
+  ** g
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/46
+  ** g
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/47
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to thirteen. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/48
+  ** fire right
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          5/49
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to twelve. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/50
+  ** fire right
+  You fire upon Captain Morris and his brigantine, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The brigantine of Morris sinks.
+  
+  [Your score has just gone up by two points.]
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/51
+  ** g
+  You fire upon Captain Mansfield and his brigantine, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/52
+  ** g
+  You fire upon Captain Mansfield and his brigantine, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/53
+  ** g
+  You fire upon Captain Mansfield and his brigantine, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/54
+  ** x dock
+  The ships currently at dock number seven, and are as follow:
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The brigantine belonging to Captain Mansfield.
+  
+  The pinke belonging to Captain Goody.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/55
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to eleven. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/56
+  ** fire right
+  You fire upon Captain Mansfield and his brigantine, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The brigantine of Mansfield sinks.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/57
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to ten. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/58
+  ** fire right
+  You fire upon Captain Goody and his pinke, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/59
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to nine. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/60
+  ** fire right
+  You fire upon Captain Goody and his pinke, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/61
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to eight. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/62
+  ** x dock
+  The ships currently at dock number six, and are as follow:
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The pinke belonging to Captain Goody.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/63
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to seven. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/64
+  ** fire right
+  You fire upon Captain Goody and his pinke, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/65
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to six. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/66
+  ** g
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/67
+  ** g
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/68
+  ** fire right
+  You fire upon Captain Goody and his pinke, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          7/69
+  ** g
+  You fire upon Captain Goody and his pinke, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/70
+  ** g
+  You fire upon Captain Goody and his pinke, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The pinke of Goody sinks.
+  
+  [Your score has just gone up by one point.]
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/71
+  ** g
+  There are no longer any ships in that direction.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/72
+  ** g
+  There are no longer any ships in that direction.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/73
+  ** g
+  There are no longer any ships in that direction.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/74
+  ** g
+  There are no longer any ships in that direction.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/75
+  ** fire right
+  There are no longer any ships in that direction.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/76
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/77
+  ** g
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/78
+  ** g
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/79
+  ** x dock
+  The ships currently at dock number five, and are as follow:
+  
+  The frigate belonging to Captain Smart.
+  
+  The frigate belonging to Captain Guy.
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/80
+  ** fire left
+  You fire upon Captain Smart and his frigate, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The frigate of Smart sinks.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/81
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to thirteen. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/82
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to twelve. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/83
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to eleven. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/84
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to ten. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/85
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to nine. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/86
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to eight. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/87
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to seven. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/88
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to six. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/89
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/90
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/91
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/92
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/93
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/94
+  ** g
+  You fire upon Captain Guy and his frigate, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The frigate of Guy sinks.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/95
+  ** look
+  Fort Carlisle
+  Handsomely arrayed with cannons which you could fire at any moment -- though of course there are ships at dock which might be in the way.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/96
+  ** x dock
+  The ships currently at dock number three, and are as follow:
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/97
+  ** fire left
+  You fire upon Captain James and his frigate, knocking the number of guns down to five. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/98
+  ** g
+  You fire upon Captain James and his frigate, knocking the number of guns down to four. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/99
+  ** g
+  You fire upon Captain James and his frigate, knocking the number of guns down to three. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/100
+  ** x ships
+  Nearby you catch the frigate belonging to Captain Hardue, which holds forty men and carries one guns. (Random output.)
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/101
+  ** x dock
+  The ships currently at dock number three, and are as follow:
+  
+  The frigate belonging to Captain James.
+  
+  The frigate belonging to Captain Hardue.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/102
+  ** fire left
+  You fire upon Captain James and his frigate, knocking the number of guns down to two. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/103
+  ** g
+  You fire upon Captain James and his frigate, knocking the number of guns down to one. There is some hullaballoo there.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/104
+  ** g
+  You fire upon Captain James and his frigate, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The frigate of James sinks.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/105
+  ** look
+  Fort Carlisle
+  Handsomely arrayed with cannons which you could fire at any moment -- though of course there are ships at dock which might be in the way.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/106
+  ** x ships
+  Nearby you catch the barque belonging to Captain Blewfield, which holds fifty men and carries three guns. (Random output.)
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/107
+  ** x dock
+  The ships currently at dock number two, and are as follow:
+  
+  The frigate belonging to Captain Hardue.
+  
+  The barque belonging to Captain Blewfield.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/108
+  ** fire left cannons
+  You fire upon Captain Hardue and his frigate, knocking the number of guns down to zero. There is some hullaballoo there.
+  
+  The frigate of Hardue sinks.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/109
+  ** fire right cannons
+  There are no longer any ships in that direction.
+  
+> >   Fort Carlisle                                                                                                                                                                                                          8/110
+  ** listen
+  Not far off is the sign of The Jamaica Arms, where a raucous party seems to be in progress.
+  
+> >   Thames Street before Fort Carlisle                                                                                                                                                                                     8/111
+  ** n
+  
+  Thames Street before Fort Carlisle
+  Here Thames Street, formerly a respectable width, narrows to a footpath in order to edge around the front of Fort Carlisle, underneath the mouths of the cannon.
+  
+  There are no buildings on the harbor side of Thames Street at this point, which means that you have an unusually good view of the ships at dock, water beyond, and the Blue Mountains rising on the other side of the harbor.
+  
+> >   Thames Street by the King's House                                                                                                                                                                                      8/112
+  ** w
+  
+  Thames Street by the King's House
+  The King's House is reserved for the use of the Governor, but he does not live in it, and it is frequently being rented out to some merchant so that the government will at least derive some value from it. It is nearly the least interesting establishment on Thames Street, and the crowd -- which, to the west, is extremely dense -- here thins out a bit.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/113
+  ** w
+  
+  Thames Street at the Wherry Bridge
+  To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway.
+  
+> >   Water Lane                                                                                                                                                                                                             8/114
+  ** w
+  
+  Water Lane
+  Here Thames Street -- never very straight -- goes steeply southeast for a portion before continuing more directly to the east.
+  
+  Water Lane runs south toward Queen Street, and facing onto it is the New Prison -- which, in the way of these things, is neither.  It did serve in that capacity for a time, and in a measure of the villainy which has been usual in Port Royal from its earliest days, it is nearly the largest building in the town.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/115
+  ** w
+  
+  Thames Street End
+  The ill-named Thames Street runs from here -- at the point of the peninsula -- all the way east among houses and shops, through the Fish Market, edging by the round front of Fort Carlisle, to the point where the town stops and there is only sandy spit beyond.  Most of that stretch is full of people at all hours.  Imported goods are moved off of ships and taken to distributors; exported goods are brought to be loaded; and there is one public house and brothel for every ten inhabitants.
+  
+  Lime Street, wider and healthier but not as rich, runs directly south, and to the north the road opens up into the courtyard of Fort James.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/116
+  ** w
+  You can't go that way.
+  
+> >   Fort James                                                                                                                                                                                                             8/117
+  ** n
+  
+  Fort James
+  The enclosure of Fort James is a large, roughly hexagonal court walled with heavy stone.  The walls face the entrance to Port Royal Harbor, and the battery of guns is prepared to destroy any enemy ship arriving.
+  
+> >   Fort James                                                                                                                                                                                                             8/118
+  ** listen
+  Several locals are loudly discussing how hot it has been the last few days.
+  
+> >   Fort James                                                                                                                                                                                                             8/119
+  ** g
+  The latest gossip about the governor comes to your ears.
+  
+> >   Fort James                                                                                                                                                                                                             8/120
+  ** g
+  You overhear two soldiers discussing the good wine to be had at the Feathers.
+  
+> >   Fort James                                                                                                                                                                                                             8/121
+  ** g
+  You hear nothing worthy of note.
+  
+> >   Fort James                                                                                                                                                                                                             8/122
+  ** g
+  You hear nothing worthy of note.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/123
+  ** s
+  
+  Thames Street End
+  The ill-named Thames Street runs from here -- at the point of the peninsula -- all the way east among houses and shops, through the Fish Market, edging by the round front of Fort Carlisle, to the point where the town stops and there is only sandy spit beyond.  Most of that stretch is full of people at all hours.  Imported goods are moved off of ships and taken to distributors; exported goods are brought to be loaded; and there is one public house and brothel for every ten inhabitants.
+  
+  Lime Street, wider and healthier but not as rich, runs directly south, and to the north the road opens up into the courtyard of Fort James.
+  
+> >   Water Lane                                                                                                                                                                                                             8/124
+  ** e
+  
+  Water Lane
+  Here Thames Street -- never very straight -- goes steeply southeast for a portion before continuing more directly to the east.
+  
+  Water Lane runs south toward Queen Street, and facing onto it is the New Prison -- which, in the way of these things, is neither.  It did serve in that capacity for a time, and in a measure of the villainy which has been usual in Port Royal from its earliest days, it is nearly the largest building in the town.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/125
+  ** e
+  
+  Thames Street at the Wherry Bridge
+  To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway.
+  
+> >   Thames Street by the King's House                                                                                                                                                                                      8/126
+  ** e
+  
+  Thames Street by the King's House
+  The King's House is reserved for the use of the Governor, but he does not live in it, and it is frequently being rented out to some merchant so that the government will at least derive some value from it. It is nearly the least interesting establishment on Thames Street, and the crowd -- which, to the west, is extremely dense -- here thins out a bit.
+  
+> >   Thames Street before Fort Carlisle                                                                                                                                                                                     8/127
+  ** e
+  
+  Thames Street before Fort Carlisle
+  Here Thames Street, formerly a respectable width, narrows to a footpath in order to edge around the front of Fort Carlisle, underneath the mouths of the cannon.
+  
+  There are no buildings on the harbor side of Thames Street at this point, which means that you have an unusually good view of the ships at dock, water beyond, and the Blue Mountains rising on the other side of the harbor.
+  
+> >   Thames Street by the King's House                                                                                                                                                                                      8/128
+  ** w
+  
+  Thames Street by the King's House
+  The King's House is reserved for the use of the Governor, but he does not live in it, and it is frequently being rented out to some merchant so that the government will at least derive some value from it. It is nearly the least interesting establishment on Thames Street, and the crowd -- which, to the west, is extremely dense -- here thins out a bit.
+  
+> >   Thames Street by the King's House                                                                                                                                                                                      8/129
+  ** s
+  You can't go that way.
+  
+> >   Thames Street by the King's House                                                                                                                                                                                      8/130
+  ** n
+  You can't go that way.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/131
+  ** w
+  
+  Thames Street at the Wherry Bridge
+  To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway.
+  
+> >   Fishmarket                                                                                                                                                                                                             8/132
+  ** sw
+  
+  Fishmarket
+  
+> >   Fishmarket                                                                                                                                                                                                             8/133
+  ** smell
+  Ah, the stink of three-day fish in a hot climate.
+  
+> >   Fishmarket                                                                                                                                                                                                             8/134
+  ** g
+  You smell nothing extraordinary.
+  
+> >   Fishmarket                                                                                                                                                                                                             8/135
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Fishmarket                                                                                                                                                                                                             8/136
+  ** n
+  You can't go that way.
+  
+> >   Fishmarket                                                                                                                                                                                                             8/137
+  ** e
+  You can't go that way.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/138
+  ** ne
+  
+  Thames Street at the Wherry Bridge
+  To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/139
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Water Lane                                                                                                                                                                                                             8/140
+  ** w
+  
+  Water Lane
+  Here Thames Street -- never very straight -- goes steeply southeast for a portion before continuing more directly to the east.
+  
+  Water Lane runs south toward Queen Street, and facing onto it is the New Prison -- which, in the way of these things, is neither.  It did serve in that capacity for a time, and in a measure of the villainy which has been usual in Port Royal from its earliest days, it is nearly the largest building in the town.
+  
+> >   Water Lane                                                                                                                                                                                                             8/141
+  ** listen
+  Not far off is the sign of The Catt and Fiddle, where a raucous party seems to be in progress.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/142
+  ** w
+  
+  Thames Street End
+  The ill-named Thames Street runs from here -- at the point of the peninsula -- all the way east among houses and shops, through the Fish Market, edging by the round front of Fort Carlisle, to the point where the town stops and there is only sandy spit beyond.  Most of that stretch is full of people at all hours.  Imported goods are moved off of ships and taken to distributors; exported goods are brought to be loaded; and there is one public house and brothel for every ten inhabitants.
+  
+  Lime Street, wider and healthier but not as rich, runs directly south, and to the north the road opens up into the courtyard of Fort James.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/143
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Lime Street                                                                                                                                                                                                            8/144
+  ** s
+  
+  Lime Street
+  
+> >   Lime Street                                                                                                                                                                                                            8/145
+  ** listen
+  Not far off is the sign of The Cheshire Cheese, where a raucous party seems to be in progress.
+  
+> >   Queen Street End                                                                                                                                                                                                       8/146
+  ** s
+  
+  Queen Street End
+  
+> >   Queen Street End                                                                                                                                                                                                       8/147
+  ** listen
+  Not far off is the sign of The Sign of the Mermaid, where a raucous party seems to be in progress.
+  
+> >   Queen Street Middle                                                                                                                                                                                                    8/148
+  ** e
+  
+  Queen Street Middle
+  
+> >   Queen Street Middle                                                                                                                                                                                                    8/149
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Queen Street East                                                                                                                                                                                                      8/150
+  ** e
+  
+  Queen Street East
+  
+> >   Queen Street East                                                                                                                                                                                                      8/151
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Queen Street at the Prison                                                                                                                                                                                             8/152
+  ** e
+  
+  Queen Street at the Prison
+  
+> >   Queen Street at the Prison                                                                                                                                                                                             8/153
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Queen Street East                                                                                                                                                                                                      8/154
+  ** w
+  
+  Queen Street East
+  
+> >   Private Alley                                                                                                                                                                                                          8/155
+  ** n
+  
+  Private Alley
+  Just west of here is the tavern the Feathers. To the north, under a pretty little archway, is the active mayhem of Thames Street, but the alley narrows down to a dead end a little distance to the south.
+  
+> >   Private Alley                                                                                                                                                                                                          8/156
+  ** listen
+  Not far off is the sign of The Feathers, where a raucous party seems to be in progress.
+  
+> >   Feathers                                                                                                                                                                                                               8/157
+  ** w
+  
+  Feathers
+  Newly built with brick, replacing the older Feathers tavern that used to stand here. It sells wines in quantity, as well as serving them directly, and the goods are always of the best quality.
+  
+  You can see Ann Mills here.
+  
+> >   Feathers                                                                                                                                                                                                               8/158
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Private Alley                                                                                                                                                                                                          8/159
+  ** e
+  
+  Private Alley
+  Just west of here is the tavern the Feathers. To the north, under a pretty little archway, is the active mayhem of Thames Street, but the alley narrows down to a dead end a little distance to the south.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/160
+  ** n
+  
+  Thames Street at the Wherry Bridge
+  To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway.
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/161
+  ** i
+  You are carrying:
+    a musket
+  
+> >   Thames Street at the Wherry Bridge                                                                                                                                                                                     8/162
+  ** eat musket
+  Ick!
+  
+> >   Private Alley                                                                                                                                                                                                          8/163
+  ** s
+  
+  Private Alley
+  Just west of here is the tavern the Feathers. To the north, under a pretty little archway, is the active mayhem of Thames Street, but the alley narrows down to a dead end a little distance to the south.
+  
+> >   Private Alley                                                                                                                                                                                                          8/164
+  ** eat musket
+  There's nothing to eat out here, but there are tantalizing smells from The Feathers.
+  
+> >   Queen Street East                                                                                                                                                                                                      8/165
+  ** s
+  
+  Queen Street East
+  
+> >   Queen Street Middle                                                                                                                                                                                                    8/166
+  ** w
+  
+  Queen Street Middle
+  
+> >   Queen Street Middle                                                                                                                                                                                                    8/167
+  ** eat musket
+  Ick!
+  
+> >   Queen Street End                                                                                                                                                                                                       8/168
+  ** w
+  
+  Queen Street End
+  
+> >   Queen Street End                                                                                                                                                                                                       8/169
+  ** eat musket
+  There's nothing to eat out here, but there are tantalizing smells from The Sign of the Mermaid.
+  
+> >   Queen Street End                                                                                                                                                                                                       8/170
+  ** jump
+  Your cavorting attracts derisive attention from the patrons coming out of The Sign of the Mermaid.
+  
+> >   Lime Street                                                                                                                                                                                                            8/171
+  ** n
+  
+  Lime Street
+  
+> >   Lime Street                                                                                                                                                                                                            8/172
+  ** jump
+  Your cavorting attracts derisive attention from the patrons coming out of The Cheshire Cheese.
+  
+> >   Lime Street                                                                                                                                                                                                            8/173
+  ** e
+  You can't go that way.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/174
+  ** n
+  
+  Thames Street End
+  The ill-named Thames Street runs from here -- at the point of the peninsula -- all the way east among houses and shops, through the Fish Market, edging by the round front of Fort Carlisle, to the point where the town stops and there is only sandy spit beyond.  Most of that stretch is full of people at all hours.  Imported goods are moved off of ships and taken to distributors; exported goods are brought to be loaded; and there is one public house and brothel for every ten inhabitants.
+  
+  Lime Street, wider and healthier but not as rich, runs directly south, and to the north the road opens up into the courtyard of Fort James.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/175
+  ** jump
+  You leap in sprightly fashion.
+  
+> >   Thames Street End                                                                                                                                                                                                      8/175
+  **
+  I beg your pardon?
+  
+> >

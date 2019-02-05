@@ -1,0 +1,3 @@
+Home is a room.
+
+Ineptness relates one person to various rooms (called the domain).

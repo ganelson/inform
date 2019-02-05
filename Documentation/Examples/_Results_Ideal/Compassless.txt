@@ -1,0 +1,78 @@
+   Plover Room
+  Misadventure
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Plover Room
+  You're in a small chamber lit by an eerie green light. An extremely narrow tunnel exits to the west. A dark corridor leads northeast.
+  
+> >   Misty Cavern
+  (Testing.)
+  
+  >[1] go to misty cavern
+  That noun did not make sense in this context.
+  
+  >[2] go to dark corridor
+  (heading northeast)
+  
+  Dark Room
+  You're in the dark-room. A corridor leading south is the only exit.
+  
+  >[3] go to plover room
+  (heading southwest)
+  
+  Plover Room
+  You're in a small chamber lit by an eerie green light. An extremely narrow tunnel exits to the west. A dark corridor leads northeast.
+  
+  >[4] go to alcove
+  (heading west)
+  
+  Alcove
+  You are in an alcove. A small northwest path seems to widen after a short distance. An extremely tight tunnel leads east. It looks like a very tight squeeze. An eerie light can be seen at the other end.
+  
+  >[5] go to dark corridor
+  (heading east)
+  Something you're carrying won't fit through the tunnel with you. You'd best take inventory and drop something.
+  
+  You'll have to stop here.
+  
+  >[6] drop pyramid
+  Dropped.
+  
+  >[7] go to dark corridor
+  (heading east)
+  
+  Plover Room
+  You're in a small chamber lit by an eerie green light. An extremely narrow tunnel exits to the west. A dark corridor leads northeast.
+  
+  You'll have to stop here.
+  
+  >[8] g
+  (heading northeast)
+  
+  Dark Room
+  You're in the dark-room. A corridor leading south is the only exit.
+  
+  >[9] go to alcove
+  (heading southwest)
+  
+  Plover Room
+  You're in a small chamber lit by an eerie green light. An extremely narrow tunnel exits to the west. A dark corridor leads northeast.
+  
+  You'll have to stop here.
+  
+  >[10] g
+  (heading west)
+  
+  Alcove
+  You are in an alcove. A small northwest path seems to widen after a short distance. An extremely tight tunnel leads east. It looks like a very tight squeeze. An eerie light can be seen at the other end.
+  
+  You can see a platinum pyramid here.
+  
+  >[11] go to misty cavern
+  (heading northwest)
+  
+  Misty Cavern
+  You are following a wide path around the outer edge of a large cavern. Far below, through a heavy white mist, strange splashing noises can be heard. The mist rises up through a fissure in the ceiling. The path exits to the south and west.
+  
+> >

@@ -1,0 +1,5 @@
+1	French
+2	Français
+3	en français
+4	fr
+5	Nathanaël Marion

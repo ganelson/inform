@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RulebookVariableAnd
+  >--> You wrote 'The every turn rulebook has a number called Trevor and a text
+    called wibbly wobbly' (source text, line 3), which I am reading as a
+    request to make a new named variable for a rulebook - a value associated
+    with a rulebook and which has a name. The request seems to say that the
+    name in question is 'Trevor and a text called wibbly wobbly', but I'd
+    prefer to avoid 'and', 'or', 'with', or 'having' in such names, please.
+Inform 7 has finished: 17 centiseconds used.

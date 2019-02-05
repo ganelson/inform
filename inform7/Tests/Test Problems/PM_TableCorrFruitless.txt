@@ -1,0 +1,11 @@
+Home is a room.
+
+Table 1 
+character	price
+Bob		4
+Mary	5
+
+Bob and Mary are people.
+
+When play begins:
+	say the price corresponding to a character of 4 in table 1.

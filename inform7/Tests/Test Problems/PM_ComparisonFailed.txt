@@ -1,0 +1,1 @@
+The Typographium is a room.When play begins:	if 23 is the Entire Game, say "No."

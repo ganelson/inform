@@ -1,0 +1,15 @@
+Include Metric Units by Graham Nelson.
+
+Equation - triangle theorem
+  a = root (b^2+c^2)
+where a is a length, b is a length, c is a length.
+
+When play begins:
+	let b be 10m;
+	let c be 2m;
+	let a be given by the triangle theorem;
+	say a;
+	showme the real square root of 4 sq m;
+	showme the real square root of 2.
+
+There is a room.

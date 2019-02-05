@@ -1,0 +1,71 @@
+   Street in Kolonaki
+  Dinner is Served
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Street in Kolonaki
+  There is a single round table out on the street here, and a window more or less at knee level looks down into the Olive Tree Gyro Shop, which is partly basement.
+  
+  On the round table is a plate (on which are a gyro and a mound of fresh potates).
+  
+  Over in Olive Tree Gyro Shop, you can see Kostis, a stand and a drinks refrigerator.
+  
+> >   Street in Kolonaki
+  (Testing.)
+  
+  >[1] examine shop
+  Over in Olive Tree Gyro Shop, you can see Kostis, a stand and a drinks refrigerator.
+  
+  >[2] open refrigerator
+  You can't reach through the closed window.
+  
+  >[3] open window
+  You open the window.
+  
+  >[4] examine shop
+  Over in Olive Tree Gyro Shop, you can see Kostis, a stand and a drinks refrigerator.
+  
+  >[5] open refrigerator
+  You open the drinks refrigerator, revealing a can of Mythos beer and a can of Coke Light.
+  
+  >[6] get beer
+  Taken.
+  
+  >[7] in
+  
+  Olive Tree Gyro Shop
+  You can see Kostis, a stand (on which is a rotating column of cooking lamb flesh) and a drinks refrigerator (in which is a can of Coke Light) here.
+  
+  Over in Street in Kolonaki, you can see a round table.
+  
+  >[8] examine street
+  Over in Street in Kolonaki, you can see a round table.
+  
+  >[9] out
+  
+  Street in Kolonaki
+  There is a single round table out on the street here, and a window more or less at knee level looks down into the Olive Tree Gyro Shop, which is partly basement.
+  
+  On the round table is a plate (on which are a gyro and a mound of fresh potates).
+  
+  Over in Olive Tree Gyro Shop, you can see Kostis, a stand and a drinks refrigerator.
+  
+  >[10] get gyro
+  (the gyro)
+  Taken.
+  
+  >[11] close window
+  You close the window.
+  
+  >[12] put gyro in refrigerator
+  (the gyro in the drinks refrigerator)
+  You can't reach through the closed window.
+  
+  >[13] open window
+  You open the window.
+  
+  >[14] put gyro in refrigerator
+  (the gyro in the drinks refrigerator)
+  You put the gyro into the drinks refrigerator.
+  
+> >

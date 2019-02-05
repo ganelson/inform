@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MapHintUnknown
+  >--> You gave as a hint in map-making: 'malice aforethought' (source text, line 3).
+    The general form for this is 'Index map with ...' and then a list of clues,
+    such as 'the Ballroom mapped east of the Terrace', or 'room-size of the
+    Ballroom set to 100'.
+Inform 7 has finished: 94 centiseconds used.

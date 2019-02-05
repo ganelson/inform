@@ -1,0 +1,26 @@
+   Hut
+  Hut
+  You can see a conch shell here.
+  
+> >   Tropical Beach
+  (Testing.)
+  
+  >[1] look
+  Hut
+  You can see a conch shell here.
+  
+  >[2] examine shell
+  You see nothing special about the conch shell.
+  
+  >[3] get shell
+  As you gather the oddly-warm conch shell into your arms, you experience a sudden flash of deja-vu...
+  Bikini Atoll
+  An Interactive Fiction by Edward Teller
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Tropical Beach
+  
+  >[4] look
+  Tropical Beach
+  
+> >

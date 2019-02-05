@@ -1,0 +1,10 @@
+Atrium is a room.
+
+The dummy is a thing that varies.
+
+To splodge dummy at (X - a person) for (N - a number): say "A."
+
+To splodge (Y - a person) at (X - a person) for (N - a number): say "B."
+
+When play begins:
+	splodge dummy at the dummy for 10;

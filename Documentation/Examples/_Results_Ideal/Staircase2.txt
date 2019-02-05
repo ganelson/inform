@@ -1,0 +1,22 @@
+   Barn
+  Hayseed
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Barn
+  You can see a ladder here.
+  
+> >   Barn
+  (Testing.)
+  
+  >[1] climb ladder
+  
+  Hayloft
+  You can see a ladder here.
+  
+  >[2] g
+  
+  Barn
+  You can see a ladder here.
+  
+> >

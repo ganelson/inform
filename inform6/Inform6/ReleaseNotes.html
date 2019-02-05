@@ -1,0 +1,1264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Inform Release Notes</title>
+</head>
+<body>
+<h1>Inform Release Notes</h1>
+<h3>Inform Compiler 6.34, 6.33, 6.32, 6.31, 6.30<br>Inform Library 6/11</h3>
+
+<h2>Introduction</h2>
+This is a maintenance release of the Inform system for creating adventure games, intended to address 
+issues that have arisen since the 6.21 compiler and 6/10 library files were released in 1999, and 
+subsequently since the 6.30 compiler was released in 2004. The focus is primarily on fixing problems,
+but a small number of enhancements are included.
+<p>
+Although just about all known bugs are fixed, the approach to enhancing Inform is more conservative. 
+The selection of suggestions to implement has been governed by three factors:
+<ul>
+<li><p>avoidance of changes which might cause existing games to misbehave;
+<li><p>minimisation of features which would require updates to the <i>Inform Designer&rsquo;s Manual</i>;
+<li><p>essential simplicity. With Graham Nelson&rsquo;s permission, this release has been produced by a 
+volunteer taskforce, whose enthusiasm has been tempered by a certain lack of familiarity with the 
+internals of Inform. Thus, we have concentrated on &lsquo;safe&rsquo; changes; the implementation of some 
+good ideas has been postponed until we are more confident that we know what we&rsquo;re doing.
+</ul>
+Having said that, this release does incorporate one major advance. It is based on Andrew Plotkin&rsquo;s 
+bi-platform &mdash; Z-machine and Glulx &mdash; compiler and library files, which were in turn derived from the 
+the 6.21 compiler and 6/10 library. The result is that the two Virtual Machine (VM) strands have 
+merged into a single compiler and library which, although continuing by default to produce Z-code, 
+can alternatively generate code for the Glulx VM if you supply the <tt>-G</tt> compiler switch. There&rsquo;s more 
+on this topic in <a href="#Glulx">Support for Glulx</a>.
+Before that, though, we&rsquo;ll summarise the changes to the compiler and to the library files.
+<p>
+If you&rsquo;ve translated the 6/10 library into another language, you may find
+<a href="#Translate">Information for translators</a> helpful.
+
+<h2>Acknowledgements</h2>
+Far too many people contributed towards this release &mdash; reporting and resolving bugs, making helpful 
+suggestions, providing support and facilities, testing, and so on &mdash; for their names to be individually 
+listed. So instead, this is a general thank-you to everybody who has made this release happen, and 
+specific ones to Graham for permitting it in the first place, and to Andrew for his pioneering work on 
+Glulx.
+There are, naturally, sure to be imperfections in the release, and these should be reported through the
+<a href="http://inform7.com/mantis/">Inform bug tracker</a>.
+
+<h2>Compiler 6.34</h2>
+These are the changes delivered in version 6.34 of the Inform compiler.
+<h3>Features added</h3>
+<ul>
+<li><p>The following system constants are now supported for Glulx:
+<tt>#highest_class_number</tt>,
+<tt>#highest_object_number</tt>,
+<tt>#lowest_attribute_number</tt>,
+<tt>#lowest_action_number</tt>,
+<tt>#lowest_routine_number</tt>,
+<tt>#lowest_array_number</tt>,
+<tt>#lowest_constant_number</tt>,
+<tt>#lowest_class_number</tt>,
+<tt>#lowest_object_number</tt>, and
+<tt>#lowest_property_number</tt>.
+<li><p>Unicode characters can now be included in Glulx word arrays as literals, e.g.
+<pre>
+  Array text1 table "A @{1c4} A";
+  Array text2 --> "A @oef A";
+</pre>
+<li><p>The new command line switch <tt><b>-V</b></tt> simply prints the version and date of the compiler and
+then exits.
+<li><p>The new setting <tt>$SERIAL</tt> sets the six digit serial number written into the header of the game,
+e.g.
+<pre>
+  $SERIAL=160305
+</pre>
+</ul>
+<h3>Bugs fixed</h3>
+Items of the form [Mantis N] quote the bug&rsquo;s reference number in Inform 7&rsquo;s Mantis bug tracker. 
+<ul>
+<li><p>It is no longer possible to cause values to be pushed onto the stack but not then pulled by evaluating
+a logical expression but not assigning or using the result of that expression. [Mantis 509]
+<li><p>The output for the <tt>$list</tt> command line argument now includes the value of the
+<tt>$MAX_ARRAYS</tt> setting. [Mantis 1355]
+<li><p>Memory settings can no longer overflow if set to very large values. These values are limited to a
+maximum of 999999999: setting them higher just results in a warning. [Mantis 1356]
+<li><p>The debugging output file now contains the correct function addresses even when the compiler has been
+told to omit unused functions. [Mantis 1515]
+<li><p>Crashes caused by over-long identifiers have been fixed. Note that as a result, the previously allowed
+(although undocumented) use of strings or dictionary words in an action-based (implicit) switch statement
+now causes an error. [Mantis 1696,1702]
+<li><p>The object table is now always generated at an even Z-Machine address, as the logic in the veneer
+routine <tt>RA__Pr()</tt> requires this. [Mantis 1712]
+<li><p>The <b>F</b> and <b>u</b> options are now explicitly disallowed with the <tt>Switches</tt> directive.
+[Mantis 1703]
+<li><p>Assigning values to system functions now leads to an error message, rather than a crash. [Mantis 1704]
+<li><p>Crashes due to over-long abbreviations have been fixed. [Mantis 1719]
+</ul>
+
+<h2>Compiler 6.33</h2>
+These are the changes delivered in version 6.33 of the Inform compiler.
+<h3>Features added</h3>
+<ul>
+<li><p>Unused routines can now be detected and omitted from the compiled game, through two
+new settings. If <tt>$WARN_UNUSED_ROUTINES</tt> is set to 1, unused routines (other than those in
+the Inform library) are reported during compilation; if it is set to 2, unused routines anywhere,
+even in the library, are reported. If <tt>$OMIT_UNUSED_ROUTINES</tt> is set to 1, unused routines
+are omitted.
+<li><p>A new command line switch <tt><b>-Cu</b></tt> can be used to specify that the source file
+character set is UTF-8, allowing source files to contain Unicode characters beyond those defined in
+ISO 8859-1 to 8859-9.
+<li><p>A new <tt>#Undef</tt> directive will cause a previously defined constant to become undefined.
+<li><p><tt>#Ifdef</tt> directives are now allowed within an object declaration.
+<li><p>Action statements can have an optional extra &lsquo;actor&rsquo; argument, allowing action
+statements of the form
+<pre>
+  &lt;Take pie, orc&gt;; ! simple form
+  &lt;&lt;Look, floyd&gt;&gt;; ! auto-returning form
+</pre>
+Note that this also requires a library change to be useful.
+<li><p>A previously declared routine can be renamed with a new form of the <tt>Replace</tt> directive.
+For example, if a source file contained
+<pre>
+  Replace Banner OriginalBanner;
+</pre>
+It could then (after including the library) contain this definion of a function:
+<pre>
+  [ Banner;
+    OriginalBanner();
+    print "Extra version info!^";
+  ];
+</pre>
+The library's banner code would then be in <tt>OriginalBanner()</tt>.
+<li><p>The previously deprecated <tt>Dictionary</tt> directive can now have the following forms:
+<pre>
+  Dictionary 'word';
+  Dictionary 'word' val1;
+  Dictionary 'word' val1 val3;
+</pre>
+The first of these forms just adds the word to the dictionary, with all flags set to zero, if it is not
+already in the dictionary. The second form also sets the <tt>dict_par1</tt> flag to the given value, or
+bitwise-or&rsquo;s the value in if the word already exists. The third form also sets the <tt>dict_par3</tt>
+in the same way as for <tt>dict_par1</tt>.
+<p>
+The values can be numeric literals or constants. They can be 0-255 for Z-code, or 0-65535 for Glulx.
+<li><p>The &ldquo;<tt>font on</tt>&rdquo; and &ldquo;<tt>font off</tt>&rdquo; statements now call the
+<tt>@set_font</tt> opcode for Z-code V5 and higher.
+<li><p>The Glulx version of the <tt>Unsigned__Compare()</tt> veneer routine has been changed to a
+more efficient implementation, using Glulx&rsquo;s unsigned comparison opcodes.
+<li><p>The debugging output file, generated when the <tt><b>-k</b></tt> is used, has been changed to a
+new, XML-based format.
+<li><p>Two new Z-code settings have been added to support the extra words in the header extension table
+specified in section 11.1.7 of the <i>Z-Machine Standards Document</i> version 1.1. <tt>$ZCODE_HEADER_EXT_WORDS</tt>
+specifies how many extra words to add (so for all three words defined in the 1.1 standard, this would
+be set to 3). <tt>$ZCODE_HEADER_FLAGS_3</tt> specifies the value to put in the first of these three words,
+which is the "flags3" field.
+<li><p>A new Glulx setting <tt>$GLULX_OBJECT_EXT_BYTES</tt> has been added, which specifies an
+amount of additional space to add to each object record. The default is 0.
+</ul>
+<h3>Bugs fixed</h3>
+Items of the form [Mantis N] quote the bug&rsquo;s reference number in Inform 7&rsquo;s Mantis bug tracker. 
+<ul>
+<li><p>Function calls of the form <tt>f(g)(h)</tt> (that is, where <tt>f()</tt> returns the address of a
+function that is called with <tt>h</tt> as its argument) are now compiled correctly: previously, such calls were
+compiled as if the code was <tt>f(g(h))</tt>. [Mantis 510]
+<li><p>The bounds checking related to internal arrays that are are sized from various compiler settings
+has been improved, so that it should not be possible to crash the compiler if these settings are too small.
+In addition, a start has been made on allowing the compiler to grow its internal buffers, rather than relying
+on these settings to specify sufficient buffer sizes. [Mantis 601,603,610,614,758,842,844]
+<li><p>The error message shown when too many global variables are declared now tells the user to
+increase the <tt>$MAX_GLOBAL_VARIABLES</tt> setting. [Mantis 611]
+<li><p>The setting <tt>$MAX_CLASS_TABLE_SIZE</tt>, which was not used anywhere, has been removed. [Mantis 612]
+<li><p>The compiler no longer crashes if run with the <tt><b>-k</b></tt> switch and passed a source file
+containing no routines at all. [Mantis 843]
+<li><p>Floating-point constants in &ldquo;<tt>#Ifdef TARGET_GLULX;</tt>&rdquo; sections do not now cause an error
+when compiling to Z-code. [Mantis 927]
+<li><p>The error message produced if an action routine is not found for an action name has been improved to include
+the action name, and a sensible line number. [Mantis 1014]
+<li><p>The compiler is now better at not producing spurious additional errors after it has encountered a directive
+that contains an error. [Mantis 1018,1035]
+<li><p>The compiler no longer crashes when reporting errors after line 65,535 in long Inform 6 source files. [Mantis 1023]
+<li><p>The compiler now reports a meaningful text compression rate when outputting statistics for Glulx with the
+<tt>-Gs</tt> switches. [Mantis 1026]
+<li><p>An error is now reported if a source file ends with an unterminated object definition. [Mantis 1036]
+<li><p>The three argument form of the <tt>read</tt> statement no longer assumes that the routine passed as the
+third argument to the statement will not change the global variable that the statement uses internally. [Mantis 1084]
+<li><p>The 'Abbreviate' statement now works with words containing non-English characters. [Mantis 1130]
+<li><p>Attempting to use <tt>@pop</tt> opcode for V5 or higher no longer results in a crash. [Mantis 1172]
+<li><p>The Glulx setting <tt>$NUM_ATTR_BYTES</tt>, which determines the number of bytes in an object set aside
+for attribute flags, now works correctly. Note that this has required a change to the veneer routines that conflicts
+with the definition of <tt>FUNC_2_CP__Tab()</tt> in the &lsquo;Accelerated Functions&rsquo; section of the Glulx 3.1.2
+specification. If you change this setting, you should take great care if you also use the Glulx accelerated functions
+feature (as Inform 7 does by default). [Mantis 1197]
+<li><p>The syntax of declaring a function so that it prints its name and arguments:
+<pre>
+  [ Whatever * x y;
+    ! Whatever function logic ...
+  ];
+</pre>
+is now supported for Glulx. [Mantis 1214]
+<li><p>The statistics produced by the <tt>-s</tt> compiler switch are now correct for Glulx. [Mantis 1267]
+</ul>
+
+<h2>Compiler 6.32</h2>
+These are the changes delivered in version 6.32 of the Inform compiler.
+<h3>Features added</h3>
+Items of the form [C63NNN] quote the feature&rsquo;s reference number in the &lsquo;Compiler&rsquo; section of the Inform 
+Patch List. 
+<ul>
+<li><p>The Z-machine opcodes for pushing and pulling values from the stack are <tt>@push</tt> and <tt>@pull</tt>, used like this:
+<pre>
+  @push x;
+  @pull x;
+</pre>
+However for Glulx the opcode syntax is different: instead the <tt>@copy</tt> opcode is used:
+<pre>
+  @copy x sp;
+  @copy sp x;
+</pre>
+The compiler now supports the <tt>@push</tt> and <tt>@pull</tt> syntax under Glulx as an alias for <tt>@copy</tt>, allowing
+the same code to be used for both the Z-machine and Glulx. [C63104]
+<li><p>Custom Glulx opcodes (such as opcodes that post-date the compiler) can now be specified with the custom opcode syntax.
+The format of this syntax is
+<pre>  @"FlagsCount:Code"
+</pre>
+<tt><i>Flags</i></tt> (which are optional) can include &ldquo;S&rdquo; for store, &ldquo;SS&rdquo; for two stores, &ldquo;B&rdquo; for branch format,
+or &ldquo;R&rdquo; if execution never continues after the opcode. <tt><i>Count</i></tt> is the number of arguments (currently limited to 0-9),
+and <tt><i>Code</i></tt> is a decimal integer representing the opcode number.<p>
+For example, <tt>@"S3:123"</tt> is the syntax for a three-argument opcode (load, load, store) whose opcode number in decimal
+is 123, and <tt>@"2:234"</tt> is the syntax for a two-argument opcode (load, load) whose number is 234. [C63107]
+<li><p>When compiling to Glulx, the Glulx format version number of the resulting story file is usually determined by which Glulx opcodes
+are used in the source code. This version number can now be over-ridden by providing a <tt><b>-v</b></tt> command line argument after the
+<tt><b>-G</b></tt> switch to select Glulx mode. For example, the arguments
+<tt><b>-G -v3.1.0</b></tt> set the Glulx version number to &ldquo;3.1.0&rdquo;. [C63108]
+<li><p>The Unicode related opcode added to the Glulx 3.0.0 specification, <tt>@streamunichar</tt>, is now supported.
+<li><p>When compiling to Glulx, characters outside of the ISO 8859-1 range can now be used in strings. The maximum number of such
+characters allowed is determined by a new memory setting, <tt>$MAX_UNICODE_CHARS</tt>.
+<li><p>When compiling to Glulx, the syntax
+<pre>  print (char) <i>value</i>;</pre>
+now works for values greater than 255, printing the appropriate Unicode character. (For such values <tt>@streamunichar</tt> is used;
+for those less than or equal to 255, <tt>@streamchar</tt> is used as before.)
+<li><p>The memory heap related opcodes added to the Glulx 3.1.0 specification (that is,
+<tt>@mzero</tt>, <tt>@mcopy</tt>, <tt>@malloc</tt> and <tt>@mfree</tt>) are now supported.
+<li><p>The acceleration related opcodes added to the Glulx 3.1.1 specification (that is,
+<tt>@accelfunc</tt> and <tt>@accelparam</tt>) are now supported. There is also a new syntax to get the address of a global variable
+<tt><i>var</i></tt>, with the expression &ldquo;<tt>#g$<i>var</i></tt>&rdquo;: this is provided so that such addresses can be provided
+to the <tt>@accelparam</tt> opcode.
+<li><p>The floating point related opcodes added to the Glulx 3.1.2 specification (that is,
+<tt>@numtof</tt>, <tt>@ftonumz</tt>, <tt>@ftonumn</tt>, <tt>@ceil</tt>, <tt>@floor</tt>, <tt>@fadd</tt>, <tt>@fsub</tt>, <tt>@fmul</tt>, 
+<tt>@fdiv</tt>, <tt>@fmod</tt>, <tt>@sqrt</tt>, <tt>@exp</tt>, <tt>@log</tt>, <tt>@pow</tt>, <tt>@sin</tt>, <tt>@cos</tt>, <tt>@tan</tt>, 
+<tt>@asin</tt>, <tt>@acos</tt>, <tt>@atan</tt>, <tt>@atan2</tt>, <tt>@jfeq</tt>, <tt>@jfne</tt>, <tt>@jflt</tt>, <tt>@jfle</tt>, 
+<tt>@jfgt</tt>, <tt>@jfge</tt>, <tt>@jisnan</tt> and <tt>@jisinf</tt>) are now supported.
+<li><p>Floating point constants can be used in the Inform source code. Thes constants are expressed in the form &ldquo;$+1.0e+1&rdquo;:
+that is, a dollar sign, followed by a plus or minus sign, followed by a floating point number, and then optionally a positive or negative
+integer exponent. Inform does not attempt anything other than converting these constants to their 32-bit integer representation: there is
+no constant folding as there is with integers, so the expression &ldquo;<tt>$+1.0 + $+1.0</tt>&rdquo; is not meaningful, and does not
+produce the floating point value &ldquo;2.0&rdquo;.<p>
+As an example of the use of these constants, the following adds together 100 and 123.45:
+<pre>  @fadd $+100 $+1.2345e+2 result;</pre>
+The compiler also defines the constants &ldquo;<tt>FLOAT_INFINITY</tt>&rdquo;, &ldquo;<tt>FLOAT_NINFINITY</tt>&rdquo;
+and &ldquo;<tt>FLOAT_NAN</tt>&rdquo; for positive infinity, negative infinity and &ldquo;not a number&rdquo;, respectively.
+<li><p>Glulx has a simple memory extension feature, where the game&rsquo;s header declares the memory space to be larger than the game file.
+The extra space is filled out with zeroes when the game starts. This is now supported by a new option <tt>$MEMORY_MAP_EXTENSION</tt>.
+This defaults to 0: if it is redefined to a larger value then the size of the game&rsquo;s memory space is extended by that amount.
+<li><p>The number of verbs allowed by the compiler when compiling to Glulx is no longer limited to fewer than 256. As part of producing
+the game file, the compiler creates a dictionary table that contains verb numbers. However, despite in Glulx there being space for a verb
+number between 0 and 65535 in this table, only one byte of it (that is, values between 0 and 255) was used. This has been fixed.<p>
+However, this also requires library changes to be useful, as the library makes use of this dictionary table. The library used by Inform 7
+has been adjusted to take advantage of this, but the Inform 6/11 library has not.
+<li><p>The dictionary of Glulx games can now contain characters outside of ISO 8859-1. There is a new
+memory setting, <tt>$DICT_CHAR_SIZE</tt>: by default this is 1, but setting it to 4 causes the compiler to create a dictionary containing
+32-bit Unicode characters.<p>
+However, this also requires library changes to be useful, as the library makes use of this dictionary table.
+</ul>
+<h3>Bugs fixed</h3>
+Items of the form [C63NNN] quote the bug&rsquo;s reference number in the &lsquo;Compiler&rsquo; section of the Inform 
+Patch List. 
+<ul>
+<li><p>Strict mode is no longer enabled by default when generating V3 and V4 Z-code files, as strict mode
+makes use of opcodes that are V5+ only. [C63007] 
+<li><p>The base unit of Inform&rsquo;s internal memory allocation for various structures (for example the buffer used
+to hold the generated code) is no longer fixed: it is now controlled by a setting <tt>$ALLOC_CHUNK_SIZE</tt>.
+This allows, for example, the maximum Glulx code size to be greater than 640Kb. [C63102] 
+<li><p>When compiling to Glulx, the stack size of the resulting story file is no longer fixed at 4096: it can be changed
+by the setting <tt>$MAX_STACK_SIZE</tt>. [C63108]
+<li><p>The compiler could crash if the size of the grammar table exceeded the size of the Z-machine readable memory: this
+is now fixed. [C63110]
+<li><p>Creating a Z-code game file with precisely 64Kb of readable memory produced an invalid file. This is now prevented,
+so that the largest readable memory size is 64Kb minus 2 bytes. [C63112]
+<li><p>Previously, under Glulx the <tt>print_to_array()</tt> function could be called with either two arguments, specifying both
+the array to print to and its length, or just one argument, the later matching what is allowed when compiling to Z-code. This
+one argument form has now been withdrawn under Glulx as a security hole, and a source to problems with writing beyond the end
+of the array: now the array length must be specified. (See also <a href="#FeaturesGlulx">Features available only in Glulx</a>.)
+<li><p>Veneer routines are no longer excluded from Inform&rsquo;s assembly output (which is accessed with the <tt><b>-a</b></tt>
+command line switch).
+<li><p>For Linux and other Unix variants the default memory settings have been increased, which should remove the need
+to change the compiler settings when building large projects on these platforms.
+<li><p>For Mac OS X, the maximum length of a file path is now 8192 characters, which should prevent any further problems with
+long paths on this platform.
+</ul>
+
+<h2>Compiler 6.31</h2>
+These are the changes delivered in version 6.31 of the Inform compiler.
+<h3>Bugs fixed</h3>
+Items of the form [C63NNN] quote the bug&rsquo;s reference number in the &lsquo;Compiler&rsquo; section of the Inform 
+Patch List. 
+<ul>
+<li><p>When individual properties are read (successfully), there is no longer a futile attempt to look up 
+the property index in the common property table. [C63016] 
+<li><p>Complex <tt>if</tt> statements, of the form <tt>if (x == 1 or 3 or 5 ... or 99),</tt> now don&rsquo;t crash the 
+compiler. [C63013] 
+<li><p>The compiler is better at handling lengthy path names. [C63009] 
+<li><p>Backpatching and other strange errors no longer occur if the code size of a V8 game exceeds 
+256K. [C63005] 
+<li><p>An Object or Class definition with more than 32 common property values now doesn&rsquo;t cause an 
+internal compiler error. [C63001]
+</ul>
+
+<h2>Compiler 6.30</h2>
+These are the changes delivered in version 6.30 of the Inform compiler.
+<h3>Features added</h3>
+<ul>
+<li><p>The compiler automatically defines a <tt>WORDSIZE</tt> constant, whose value is 2 when compiling for the 
+Z-machine, and 4 when the target is Glulx. The constant specifies the number of bytes in a VM 
+word, and we recommend that you use it in the small number of circumstances where this value is 
+significant. The compiler also defines a constant <tt>TARGET_GLULX</tt> if you supply the <tt><b>-G</b></tt> switch, or 
+<tt>TARGET_ZCODE</tt> otherwise; in both cases the constant value is 0. For more information on the use of 
+these constants, see <a href="#Glulx">Support for Glulx</a>.
+<li><p>The <tt>Switches</tt> directive, which enables certain compiler switches to be set from within the source 
+file rather than on the compiler command line, has been superseded by a more powerful 
+mechanism. The special comment characters &ldquo;!%&rdquo;, occurring on the very first line or lines of the 
+source file, enable you to specify Inform Command Language (ICL) commands to control the 
+compilation. For example:
+<pre>
+  !% -E1G                                    ! Glulx, 'Microsoft' errors 
+  !% -~S                                     ! disable Strict mode 
+  !% +include_path=./test,./,../lib/contrib  ! look in 'test' library 
+  !% $MAX_STATIC_MEMORY=20000 
+  Constant STORY "RUINS"; 
+  ...
+</pre>
+ICL is described in &sect;39 of the <i>Inform Designer&rsquo;s Manual</i>. In brief: each line specifies a single 
+command, starting with &ldquo;-&rdquo; to define one or more switches, &ldquo;+&rdquo; to define a path variable, or &ldquo;$&rdquo; to 
+define a memory setting. Comments are introduced by &ldquo;$&rdquo;. The ICL command &ldquo;<tt>compile</tt>&rdquo; is not 
+permitted at the head of a source file.
+<li><p>Two new ICL memory settings are available; both of these could previously be changed only by 
+rebuilding the compiler. <tt>$MAX_SOURCE_FILES</tt> has a default of 256, and <tt>$MAX_INCLUSION_DEPTH</tt> has a 
+default value of 5.
+<li><p>A new directive, similar to <tt>Array ... string</tt> and <tt>Array ... table</tt>, is provided:
+<pre>
+  Array array buffer N; 
+  Array array buffer expr1 expr2 ... exprN; 
+  Array array buffer "string";
+</pre>
+This creates a hybrid array of the form used by <tt><i>string</i>.print_to_array()</tt> and the new library 
+routine <tt>PrintToBuffer()</tt>, in which the first <b>word</b> <tt><i>array</i>-->0</tt>
+contains <tt><i>N</i></tt> and the following <tt><i>N</i></tt> <b>bytes</b>
+<tt><i>array</i>->WORDSIZE</tt>, <tt><i>array</i>->(WORDSIZE+1)</tt> ... <tt><i>array</i>->(WORDSIZE+<i>N</i>-1)</tt> contain the specified 
+expression values or string characters.
+<li><p>A new <tt>(A)</tt> print rule &mdash; similar to the existing <tt>(The)</tt> &mdash; prints an object&rsquo;s indirect article with its first 
+letter capitalised. The printed article is &ldquo;A&rdquo; or &ldquo;An&rdquo; by default, or else taken from the object&rsquo;s 
+article property.
+<li><p>The minimum size of the Z-code header extension table can be set using the command line switch 
+<tt><b>-W</b><i>n</i></tt>. For example, <tt><b>-W6</b></tt> makes the table at least six words long.
+<li><p>Source code in character sets other than ISO 8859-1 to 8859-9 is now supported, provided that the 
+character set can be mapped onto one of the ISO 8859 sets.<p>
+A mapping file is used to define how the source code is to be processed. This file consists of a 
+directive indicating the ISO 8859 set to be mapped to, followed by 256 numbers giving the 
+mapping. As an example, under Microsoft Windows, Russian text is encoded with the character 
+set defined as Microsoft code page 1251. The following text defines a mapping to the ISO 8859-5 
+set:
+<pre>
+  ! Windows Cyrillic (code page 1251) to ISO 8859-5
+  C5
+    0, 63, 63, 63, 63, 63, 63, 63, 63, 32, 10, 63, 10, 10, 63, 63 
+   63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63 
+   32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 
+   48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 
+   64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 
+   80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95 
+   96, 97, 98, 99,100,101,102,103,104,105,106,107,108,109,110,111 
+  112,113,114,115,116,117,118,119,120,121,122,123,124,125,126, 63 
+  162,163, 44,243, 34, 46, 63, 63, 63, 63,169, 60,170,172,171,175 
+  242, 39, 39, 34, 34, 46, 45, 45,152, 84,249, 62,250,252,251,255 
+   32,174,254,168, 36, 63,124,253,161, 67,164, 60, 63, 45, 82,167 
+   63, 63,166,246, 63, 63, 63, 46,241,240,244, 62,248,165,245,247 
+  176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191 
+  192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207 
+  208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223 
+  224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239 
+</pre>
+Lines starting with &ldquo;!&rdquo; are treated as comments. The next line, beginning with &ldquo;C&rdquo;, defines the 
+ISO set to map to in the same way as the <tt><b>-C</b><i>n</i></tt> command line switch.<p>
+To use the mapping, Inform treats each character in the source file as a number between 0 and 
+255, and uses that number as an index into the mapping table. For example, suppose that the 
+character read in from a Russian Windows text file is the Cyrillic small letter &ldquo;ya&rdquo;.This character 
+is represented in the Russian Windows character set by the number 255. Inform takes the 255th entry in 
+the mapping, which is 239. Therefore the character is regarded as being 239 in ISO 8859-5.<p>
+The name of the mapping file is specified by a new compiler path variable <tt>+charset_map</tt>. If the 
+above mapping is held in a text file <tt>win1251.map</tt>, a Russian game could be compiled with a 
+command line of the form:
+<pre>
+  inform +charset_map=win1251.map +language_name=Russian mygame.inf
+</pre>
+<li><p>The <tt>@check_unicode</tt> and <tt>@print_unicode</tt> opcodes, introduced in the <i>Z-Machine Standards 
+Document</i> version 1.0, can now be called by name rather than by using the clumsier generic 
+syntax <tt>@"EXT:11S"</tt> and <tt>@"EXT:12S"</tt>. For example:
+<pre>
+  @print_unicode $0401; ! Cyrillic capital letter IO
+</pre>
+<li><p>Strict mode (which compiles run-time integrity checks into your game) has been decoupled from 
+Debug mode (which defines debugging verbs like TRACE and SHOWOBJ). This means that it&rsquo;s 
+no longer necessary to turn off Strict checking (in order to disable the Debug verbs) before 
+releasing a game, though of course you can do so if you wish to save space and increase 
+performance. By default, Strict mode is <b>enabled</b> (turn it off with <tt><b>-~S</b></tt>) and Debug mode is 
+<b>disabled</b> (turn it on with <tt><b>-D</b></tt>).
+<li><p>The compiler now issues a warning if you use <tt><i>array->n</i></tt> on an array of words, or <tt><i>array-->n</i></tt> on an 
+array of bytes. Use the new <tt>Array ... buffer</tt> directive to create a hybrid array which can be 
+accessed without these warnings.
+<li><p>The compiler also issues a warning if you refer to an unqualified property name within a routine, 
+for example by typing <tt>(number==0)</tt> when you intended <tt>(self.number==0)</tt>.
+<li><p>Another new warning appears if you include something other than a dictionary word in an 
+object&rsquo;s <tt>name</tt> property. This is most commonly triggered if you try to add a single-letter word by 
+typing <tt>name 'g' 'string'</tt> when you intended <tt>name 'g//' 'string'</tt>.
+</ul>
+<h3>Bugs fixed</h3>
+Items of the form [C62NNN] quote the bug&rsquo;s reference number in the &lsquo;Compiler&rsquo; section of the Inform 
+Patch List. 
+<ul>
+<li><p>A problem with multiple assignment involving pointer arithmetic in Strict mode giving the wrong 
+answer has been fixed. [C62127] 
+<li><p>After using <tt>Extend only</tt> to separate off an element of an existing Verb definition, new synonyms 
+for the separated verb now work correctly; previously they were applied to the residue of the 
+original definition. [C62126] 
+<li><p>Strict mode now tests for the use of <tt>@put_prop</tt> or <tt>@get_prop</tt> opcodes when a common property is 
+longer than two bytes &mdash; the <i>Z-Machine Standards Document</i> says that this is illegal, and that the 
+result is unspecified. The error message is of the form &ldquo;[** Programming error: <i>obj</i> (object 
+number <i>N</i>) has a property <i>prop</i>, but it is longer than 2 bytes so you cannot use "." to read **]&rdquo;. This 
+means that you have used the <tt><i>obj.prop</i></tt> construct in the situation where <tt><i>prop</i></tt> is a <b>common</b> 
+property containing two or more values; typically <tt><i>prop</i></tt> is being explicitly used as an array, or it&rsquo;s 
+an additive property and both <tt><i>obj</i></tt> and its parent class have defined values for it. The problem does 
+not occur if <tt><i>prop</i></tt> is an individual property. [C62125] 
+<li><p>Handling of European quotes is (finally) correct: the &ldquo;&laquo;&rdquo; symbol is produced by any of <tt>@&lt;&lt;</tt>, <tt>@@163</tt> 
+and <tt>@{00AB}</tt>, while any of <tt>@>></tt>, <tt>@@162</tt> and <tt>@{00BB}</tt> produce the matching &ldquo;&raquo;&rdquo;. Note, however, that 
+this problem originated in an error in the previous version of the <i>Z-Machine Standards Document</i>, 
+and therefore older interpreters written to that specification, or more recent ones adjusted to work 
+with the incorrect fix introduced at Inform 6.12, may still not give the correct results. [C62124] 
+<li><p>The &ldquo;no such constant&rdquo; compilation error message now quotes the number of the appropriate 
+source line. [C62123] 
+<li><p>The <tt>metaclass()</tt> and <tt>ZRoutine()</tt> routines no longer report large unsigned values &mdash; above the 
+game&rsquo;s Static memory area &mdash; as of type String. More usefully, the constant <tt>NULL</tt> (-1) is not 
+reported as a String. [C62122] 
+<li><p>Complex expressions combining a routine call and the <tt>ofclass</tt> and <tt>or</tt> operators no longer 
+generate incorrect code. [C62121] 
+<li><p>Negative constants in assembly operations &mdash; for example, <tt>@set_colour 4 (-1);</tt> &mdash; no longer cause 
+the compiler to report an unexpected expression. [C62119] 
+<li><p>Various problems with handling ISO 8859 characters in the range 128-255, and also in the use of 
+@@ escape sequences, have been resolved. [C62117, C62115, C6211, C62003] 
+<li><p>An <tt>Abbreviate</tt> directive containing a substring of &ldquo;&lt;unknown attribute&gt;&rdquo; may crash the 
+compiler; hopefully, no more. [C62116]
+<li><p>The 320Kb size limit placed by Inform on v6 and v7 games has been raised to 512Kb. [C62114] 
+<li><p>Following a <tt>Zcharacter</tt> directive replacing the entire alphabet table, dictionary entries are no 
+longer corrupted. [C62113] 
+<li><p>The compiler now generates conditional branches spanning up to 63 bytes, lifting the previous 
+unnecessary limit of a 31-byte span and leading to slightly shorter code. [C62112]
+<li><p>Putting an object in itself doesn&rsquo;t now loop indefinitely. [C62110] 
+<li><p>Various problems with the <tt>@store</tt>, <tt>@inc_chk</tt>, <tt>@dec_chk</tt>, <tt>@not</tt> and <tt>@je</tt> opcodes have been resolved. 
+[C62109, C62108, C62105] 
+<li><p>Problems with nested conditional compilation directives <tt>#Ifndef...#Ifnot...#Endif</tt> have been 
+resolved. [C62107] 
+<li><p>A long dictionary word &mdash; such as <tt>'elephants//p'</tt> &mdash; now correctly sets the plural bit. [C62103] 
+<li><p>Problems with constant folding &mdash; that is, having the expression evaluated at compile-time &mdash; partly 
+addressed in the previous bi-platform compiler, have been fixed. [C62102] 
+<li><p>When compiling for Glulx, the compiler uses the <tt>@callf</tt>, <tt>@callfi</tt>, <tt>@callfii</tt> or <tt>@callfiii</tt> opcodes 
+where applicable for generated calls instead of always pushing arguments onto the stack and 
+using <tt>@call</tt>. 
+<li><p>The presence of a <tt>Switches G;</tt> directive no longer causes the compiler to crash.
+<li><p>An unexpected limit of 1024 labels per routine in the Z-machine assembly language generated by 
+the compiler has been raised to 32768. The most likely way to encounter this limit is by creating a 
+<tt>switch</tt> statement with an extremely large number of cases.
+<li><p>A problem with the <tt>read</tt> statement generating the wrong opcode in a version 4 game has been 
+corrected.
+<li><p>A dynamic class declaration such as <tt>Class Pebble(NUM_PEBBLES) ... ;</tt> no longer creates a 
+mysteriously large number of instances if <tt>NUM_PEBBLES</tt> isn&rsquo;t defined.
+</ul>
+
+<h2>Library 6/11</h2>
+These are the changes delivered in version 6/11 of the Inform library.
+<h3>Features added</h3>
+<ul>
+<li><p>The library automatically defines four constants: <tt>LIBRARY_PARSER</tt> at the end of Parser.h, 
+<tt>LIBRARY_VERBLIB</tt> at the end of VerbLib.h, <tt>LIBRARY_GRAMMAR</tt> at the end of Grammar.h, and 
+<tt>LIBRARY_ENGLISH</tt> at the end of English.h. Contributed library extensions can use these constants to 
+check that they have been Included in the correct location. A fifth constant <tt>LIBRARY_VERSION</tt>, 
+currently defined as the number 611, can be checked by extensions which require this particular 
+version of the library.
+<li><p>The word &ldquo;wall&rdquo; has been removed from the <tt>CompassDirection</tt> objects defined in English.h, 
+whose names are now simply &ldquo;north&rdquo;, &ldquo;south&rdquo;, etc.
+<li><p>The verbs LOOK [TO THE] NORTH, LOOK DOWN, LOOK OUT[SIDE] etc &mdash; but not 
+LOOK IN[SIDE], which is already available &mdash; have been added. By default, the response is of the 
+form &ldquo;You see nothing unexpected ...&rdquo;, but you can change this for individual directions in 
+individual rooms by providing a compass_look property:
+<pre>
+  Room   study "Your study" 
+    with description "There is a doorway to the east of this austere room.", 
+         compass_look [ obj; 
+             if (obj == e_obj) "You see a doorway."; 
+             if (obj == n_obj or s_obj or w_obj) "You see the wall."; 
+         ], 
+         e_to hallway; 
+</pre>
+This enhancement uses the mechanism described in
+<a href="http://www.firthworks.com/roger/informfaq/ww.html#1">this topic in the Inform 6 FAQ</a>
+(except that the <tt>compass_look</tt> property was previously named <tt>compasslook</tt>), and means that you 
+no longer need to make the library changes described there.
+<li><p>The verbs <tt>ASK <i>npc</i> TO <i>command</i></tt> and <tt>TELL <i>npc</i> TO <i>command</i></tt>
+&mdash; both synomymous with <tt><i>npc,command</i></tt> &mdash; 
+are provided. The new grammar is:
+<pre>
+  Verb 'ask' 
+      ...
+      * creature 'to' topic -> AskTo 
+      ...
+</pre>
+in which the <tt>creature</tt> token matches the <tt><i>npc</i></tt> and the <tt>topic</tt> token represents
+the <tt><i>command</i></tt>. <tt>AskTo</tt> isn&rsquo;t an action in the usual sense: it&rsquo;s trapped by the parser and
+converted to the original <tt><i>npc,command</i></tt> format. The <tt><i>npc</i></tt> can intercept the
+<tt><i>command</i></tt> by providing an <tt>orders</tt> property in the usual way &mdash;
+see &sect;18 of the <i>Inform Designer&rsquo;s Manual</i>.<p>
+This enhancement means that you may no longer require Irene Callaci&rsquo;s <tt>AskTellOrder.h</tt> library 
+extension.
+<li><p>The verbs RECORDING [ON|OFF] and REPLAY are now always available, irrespective of the 
+DEBUG state. This may cause compilation errors if you have already defined these verbs 
+yourself.
+<li><p>The verbs PRY, PRISE, PRIZE and LEVER have been added. This may cause compilation errors 
+if you have already defined these verbs yourself.
+<li><p>The parser treats input lines beginning with &ldquo;*&rdquo; as a comment, without attempting any further 
+parsing. The character used to introduce comments can be changed by defining 
+<tt>COMMENT_CHARACTER</tt> before you <tt>Include Parser</tt>. For example:
+<pre>  Constant COMMENT_CHARACTER '!';</pre>
+Since comments are used primarily when capturing a transcript &mdash; either of a complete game 
+(SCRIPT ON) or of input commands only (RECORDING ON) &mdash; the parser responds &ldquo;[Comment 
+recorded]&rdquo; or &ldquo;[Comment NOT recorded]&rdquo; as appropriate.
+<li><p>The <tt>selfobj</tt> object now includes an empty <tt>add_to_scope</tt> property, which you can over-ride with 
+your own routine, typically to equip the player with body parts. For a single object:
+<pre>  selfobj.add_to_scope = nose;</pre>
+or for multiple objects:
+<pre>
+  [ IncludeBodyParts; PlaceInScope(nose); PlaceInScope(hands); ];
+  selfobj.add_to_scope = IncludeBodyParts;
+</pre>
+<li><p>The task-based scoring system (&sect;22 of the <i>Inform Designer&rsquo;s Manual</i>) uses a byte array, which 
+precludes the awarding of large or negative scores. To get round this, you can <tt>Replace</tt> the 
+<tt>TaskScore()</tt> library routine as follows, and then define <tt>task_scores</tt> as a <b>word</b> array:
+<pre>
+  Replace TaskScore;
+  Array task_scores --> 100 200 300 400 (-50) 600;
+  [ TaskScore i; return task_scores-->i; ];
+</pre>
+<li><p>The scoring system is completely disabled if you define a constant <tt>NO_SCORE</tt> near the start of your 
+game.
+<pre>  Constant NO_SCORE;</pre>
+<li><p>A new <tt>before_implicit</tt> property is available; at the moment this is used only by the parser, when 
+it is about to perform an implicit TAKE (for example, EAT APPLE when you&rsquo;re not holding the 
+apple). You can give this property to an object if you wish to control the parser&rsquo;s behaviour. The 
+property&rsquo;s value should be a constant or a routine which returns: 0 to report &ldquo;(first taking the...)&rdquo; 
+and then attempt to do so (this is what currently happens); 1 to attempt the TAKE without first 
+issuing the message, 2 to proceed with the requested action without attempting the TAKE, or 3 to 
+object that &ldquo;You aren&rsquo;t holding that!&rdquo;. The object can test <tt>action_to_be</tt> to determine which action 
+has triggered the TAKE:
+<pre>
+  before_implicit [;
+    Take: if (action_to_be == ##Eat) return 2;
+  ],
+</pre>
+<li><p>A new system variable <tt>sys_statusline_flag</tt> is set to 1 initially if you have used the 
+<tt>statusline time;</tt> directive in your program to show a clock, and to 0 otherwise. It can be 
+changed by the program.
+<li><p>An object&rsquo;s <tt>invent</tt> property &mdash; if it has one &mdash; is now invoked both when displaying the player&rsquo;s 
+inventory <b>and</b> when including the object in a room description. <tt>invent</tt> is invoked in the usual 
+way (with <tt>inventory_stage</tt> first set to 1, and then set to 2) both when mentioning the object in a 
+room description, and when listing it in the player&rsquo;s inventory. By default you&rsquo;ll get the same 
+output each time. If you need to distinguish between the two occasions, you can test 
+<tt>(c_style&amp;PARTINV_BIT)</tt> &mdash; true during a room description &mdash; or <tt>(c_style&amp;FULLINV_BIT)</tt> &mdash; true 
+during an inventory. Here&rsquo;s an example:
+<pre>
+  Object  -> "sack" 
+    with  name 'sack', 
+          invent [; 
+              ! When listing objects in the player's inventory 
+              if (c_style&amp;FULLINV_BIT) rfalse; 
+
+              ! When listing objects at the end of a room description 
+              if (inventory_stage == 1) switch (children(self)) { 
+                  0: print "an empty sack"; 
+                  1: print "a sack containing ", (a) child(self); 
+                  default: print "an assortment of objects in a sack"; 
+                  } 
+              rtrue; 
+              ], 
+    has   container open; 
+</pre>
+This enhancement uses the mechanism described in
+<a href="http://www.firthworks.com/roger/informfaq/ww.html#4">this topic in the Inform 6 FAQ</a>
+and means that you no longer need to <tt>Include WriteList</tt>.
+<li><p>The <tt>turns</tt> counter is now initialised to 0, not 1. You can change this if you define a constant 
+<tt>START_MOVE</tt> near the start of your game. 
+<pre>  Constant START_MOVE 1;</pre>
+<li><p>A new <tt>LibraryExtensions</tt> object is defined, whose function is to act as a parent to initialisation 
+objects created by library extensions. These objects may provide <tt>ext_initialise</tt> and/or 
+<tt>ext_messages</tt> property routines, whose role is to help integrate the extension into a game. This is 
+best explained by example.<p>
+Consider the <tt>SmartCantGo.h</tt> extension, which replaces &ldquo;You can&rsquo;t go that way&rdquo; messages by the 
+more informative &ldquo;You can go only north, south and east&rdquo;, and can be integrated into a game by 
+adding a <tt>ChangeDefault(cant_go, SmartCantGo)</tt> statement to your <tt>Initialise()</tt> routine. Instead 
+of requiring the author to make this addition, the extension could now cause it to happen 
+automatically by defining an initialisation object as a child of <tt>LibraryExtensions</tt>, like this:
+<pre>
+  Object  "(SmartCantGo)" LibraryExtensions 
+    with  ext_initialise [; ChangeDefault(cant_go, SmartCantGo); ];
+</pre>
+Just before calling the game&rsquo;s <tt>Initialise()</tt> routine, the library loops through the children &mdash; if any 
+&mdash; of <tt>LibraryExtensions</tt>, and executes those <tt>ext_initialise</tt> properties that it finds there. The 
+property routines can perform any appropriate setup processing that would otherwise have to be 
+inserted into the <tt>Initialise()</tt> routine itself; for example, starting a daemon running.<p>
+A similar process takes place when displaying library messages. The library first checks whether 
+the author has provided a <tt>LibraryMessages</tt> object to intercept the message which it is about to 
+display. If not, it now loops through the children of <tt>LibraryExtensions</tt>, and executes 
+<tt>ext_messages</tt> properties that it finds there. If none of those routines returns true to signal that the 
+message has been dealt with, the standard library text is then printed in the usual way. For
+example, here&rsquo;s how an extension might automatically intercept Inventory messages (unless the 
+game has already handled them via <tt>LibraryMessages</tt>):
+<pre>
+  Object  "(someInventoryExtension)" LibraryExtensions 
+    with  ext_messages [;
+              Inv: switch(lm_n) {
+                1: "You are empty-handed.";
+                2: "Your possessions include";
+              } 
+          ];
+</pre>
+Note that this is an experimental feature, and may be modified or extended in the light of 
+experience.
+</ul>
+<h3>Library routines</h3>
+Several new library routines are provided to harmonise commonly-encountered differences between 
+the Z-machine and Glulx VMs (see also <a href="#LibraryGlulx">Library routines available only in Glulx</a>).
+<p><tt>KeyCharPrimitive()</tt>
+<p><blockquote>waits for a single key, and returns the character from 1-255 (or, for Glulx, one of the Glk special 
+key codes.). For Glulx only, an extended form is available &mdash;
+see <a href="#LibraryGlulx">Library routines available only in Glulx</a>.</blockquote>
+<p><tt>KeyDelay(<i>time</i>)</tt>
+<p><blockquote>waits <tt><i>time</i></tt> tenths of a second for a single key. If no key is pressed within that period it returns 
+zero; otherwise it returns the character from 1-255.</blockquote>
+<p><tt>ClearScreen()<br>
+ClearScreen(<i>selector</i>)</tt>
+<p><blockquote><tt>ClearScreen()</tt> clears both the status line and the main window. The cursor moves to the top of the 
+screen. The routine should be followed by a call to <tt>MoveCursor()</tt> or <tt>MainWindow()</tt>. Alternatively, 
+using <tt>ClearScreen(<i>selector</i>)</tt>: if <tt><i>selector</i></tt> is 0, both are cleared; if <tt><i>selector</i></tt> is 1 only the 
+status line is cleared; if <tt><i>selector</i></tt> is 2 only the main window is cleared.</blockquote>
+<p><tt>MoveCursor()<br>
+MoveCursor(<i>line</i>, <i>column</i>)</tt>
+<p><blockquote><tt>MoveCursor()</tt> selects the status line for output. <tt>MoveCursor(<i>line</i>, <i>column</i>)</tt> selects the status line 
+for output and moves the cursor to the given <tt><i>line</i></tt> and <tt><i>column</i></tt> within the status area, where line 1 
+is the top line and column 1 is the far left. (This is necessary because the Glk convention is to 
+number both lines and columns from 0 rather than 1.)</blockquote>
+<p><tt>MainWindow()</tt>
+<p><blockquote>selects the main (buffered) text window for output.</blockquote>
+<p><tt>StatusLineHeight(<i>lines</i>)</tt>
+<p><blockquote>sets the height of the status line in lines. The standard <tt>DrawStatusLine()</tt> calls this every turn, 
+which isn&rsquo;t a bad thing, since <tt>StatusLineHeight()</tt> is smart. If you replace <tt>DrawStatusLine()</tt>, 
+maintain this convention. (The library menu routines fiddle with the status line, and it&rsquo;s up to 
+<tt>DrawStatusLine()</tt> to reset it after the menus are over.)<p>
+A new library variable <tt>gg_statuswin_cursize</tt> holds the current setting (in both VMs).</blockquote>
+<p><tt>ScreenWidth()</tt>
+<p><blockquote>returns the number of characters that can be printed in a monospaced font between the left and 
+right borders of the currently selected window. For Glulx only, the extended form 
+<tt>ScreenWidth(<i>win</i>)</tt> works on a specified window id; note that the results are unreliable if the 
+normal style for that window uses a proportional font.</blockquote>
+<p><tt>ScreenHeight()</tt>
+<p><blockquote>returns the height in lines of the main window.</blockquote>
+<p><tt>SetColour(<i>fg</i>, <i>bg</i>)<br>
+SetColour(<i>fg</i>, <i>bg</i>, <i>selector</i>)</tt>
+<p><blockquote><tt>SetColour(<i>fg</i>, <i>bg</i>)</tt> sets the current foreground and background text colours, using the same codes 
+as the <tt>@set_colour</tt> opcode in the Z-machine (1=default, 2=black, 3=red, 4=green etc.). Using 
+<tt>SetColour(<i>fg</i>, <i>bg</i>, <i>selector</i>)</tt>, colours can be set separately in each window: if <tt><i>selector</i></tt> is 0, 
+both are set (the top window will have inverted colours for the Z-machine); if <tt><i>selector</i></tt> is 1 only 
+the status line is affected; if <tt><i>selector</i></tt> is 2 only the main window is affected.<p>
+All colour functions are effective only if the library variable <tt>clr_on</tt> is set to non-zero.<p>
+The advantage over <tt>@set_colour</tt> is that when the player restores a saved game or types UNDO, 
+the colours will be correct for that state of the game.<p>
+For Glulx, the routine produces an appropriate effect if style hints are enabled by the interpreter; it 
+also clears the screen. For the Z-machine, a separate call to <tt>ClearScreen()</tt> is required.<p>
+These associated constants are now provided for use with <tt>SetColour()</tt>; the final three are useful 
+also with <tt>ClearScreen()</tt>:
+<pre>
+  Constant CLR_DEFAULT 1; 
+  Constant CLR_BLACK 2; 
+  Constant CLR_RED 3; 
+  Constant CLR_GREEN 4; 
+  Constant CLR_YELLOW 5; 
+  Constant CLR_BLUE 6; 
+  Constant CLR_MAGENTA 7; 
+  Constant CLR_CYAN 8; 
+  Constant CLR_WHITE 9; 
+  Constant CLR_PURPLE 7; 
+  Constant CLR_AZURE 8; 
+  Constant WIN_ALL 0; 
+  Constant WIN_STATUS 1; 
+  Constant WIN_MAIN 2;
+</pre></blockquote>
+<p><tt>DecimalNumber(<i>num</i>)</tt>
+<p><blockquote>prints <tt><i>num</i></tt> as a decimal number (it is in fact identical to <tt>print <i>num</i>;</tt>). It may be useful in 
+conjunction with...</blockquote>
+<p><tt>PrintToBuffer(<i>array</i>, <i>arraylen</i>, <i>string</i>)<br>
+PrintToBuffer(<i>array</i>, <i>arraylen</i>, <i>obj</i>)<br>
+PrintToBuffer(<i>array</i>, <i>arraylen</i>, <i>obj</i>, <i>prop</i>)<br>
+PrintToBuffer(<i>array</i>, <i>arraylen</i>, <i>routine</i>, <i>arg1</i>, <i>arg2</i>)</tt>
+<p><blockquote>prints its arguments &mdash; a string, an object&rsquo;s name, the value of an object&rsquo;s property, or a routine 
+with up to two arguments &mdash; to the buffer <tt><i>array</i></tt>. The number of characters written to the buffer is a 
+word at <tt><i>array</i>-->0</tt> (and is the value returned by the routine); the actual characters start at 
+<tt><i>array</i>->WORDSIZE</tt>. The maximum number of characters is specified in <tt><i>arraylen</i></tt>; for the 
+Z-machine, an overrun caused by printing more than this value will produce an error message that 
+you have corrupted the contents of memory beyond the array (for Glulx, the output is 
+automatically truncated at the specified <tt><i>arraylen</i></tt>).<p>
+For Glulx, see also <tt>PrintAnyToArray()</tt> in <a href="#LibraryGlulx">Library routines available only in Glulx</a>, 
+which has slightly extended capabilities, and which returns the number of characters written 
+rather than writing them at <tt><i>array</i>-->0</tt>.</blockquote>
+<p><tt>Length(<i>string</i>)<br>
+Length(<i>obj</i>, <i>prop</i>)</tt>
+<p><blockquote>returns the number of characters in the string. Note that this prints to one of the parser arrays, and 
+therefore it is your responsibility to ensure that the length <b>cannot be greater that 160 
+characters</b>.</blockquote>
+<p><tt>UpperCase(<i>char</i>)<br>
+LowerCase(<i>char</i>)</tt>
+<p><blockquote>return <tt><i>char</i></tt> in upper or lower case (if it was alphabetic), or unchanged (otherwise). Changes 
+affecting A-Z and a-z are always reliable; changes to accented characters will not work if you 
+have supplied a compiler switch <tt>-C2</tt> through <tt>-C9</tt>, or used a <tt>Zcharacter</tt> directive to adjust the 
+standard ZSCII character set.</blockquote>
+<p><tt>PrintCapitalised(<i>obj</i>, <i>prop</i>, <i>flag</i>, <i>nocaps</i>)</tt>
+<p><blockquote>is based upon <tt>PrintOrRun(<i>obj</i>, <i>prop</i>, <i>flag</i>)</tt>. <tt>PrintOrRun()</tt> tests
+<tt><i>obj.prop</i></tt>, and either runs it (if a 
+Routine), or prints it (if a String). In the latter case, a newline is then output unless <tt><i>flag</i></tt> is <tt>true</tt>. 
+<tt>PrintCapitalised()</tt> does all that; the difference is that the first letter of any output is in upper 
+case unless <tt><i>nocaps</i></tt> is <tt>true</tt>.</blockquote>
+<p><tt>Cap(string, nocaps)</tt>
+<p><blockquote>prints the <tt><i>string</i></tt> with the first letter in upper case, unless <tt><i>nocaps</i></tt> is true. Can also be used as a 
+print rule:
+<pre>  print ..., (Cap) myString, ...;</pre></blockquote>
+<p><tt>Centre(<i>string</i>)<br>
+Centre(<i>obj</i>, <i>prop</i>)</tt>
+<p><blockquote>prints a single-line <tt><i>string</i></tt> approximately centrally between the left and right borders of the screen 
+by preceding it with an appropriate number of spaces. The routine works only for monospaced 
+fonts (that is, after <tt>font off;</tt>), and is only likely to work well in the main Glulx window if the 
+normal style for TextBuffer uses a non-proportional font. It is however useful for centring 
+information in the status line. Can also be used as a print rule:
+<pre>  print ..., (Centre) myString, ...;</pre></blockquote>
+<p><tt>PrintOrRunVal(<i>value</i>, <i>flag</i>)</tt>
+<p><blockquote>if <tt><i>value</i></tt> refers to to an object, prints that object&rsquo;s name;
+if <tt><i>value</i></tt> refers to a routine, runs that routine; if <tt><i>value</i></tt> refers to a string,
+prints that string (with a terminating newline unless <tt><i>flag</i></tt> is 
+true).</blockquote>
+<h3>Bugs fixed</h3>
+Items of the form [L610NN] quote the bug&rsquo;s reference number in the &lsquo;Library&rsquo; section of the Inform 
+Patch List.
+<ul>
+<li><p>A command like EMPTY ME no longer replies &ldquo;yourself can't contain things&rdquo;. [L61036] 
+<li><p>The commands TAKE ALL FROM X and REMOVE ALL FROM X, where X is a closed or 
+empty container, now produce sensible messages rather than &ldquo;You can&rsquo;t see any such thing&rdquo; and 
+&ldquo;You can&rsquo;t use multiple objects with that verb&rdquo; respectively. [L61035] 
+<li><p>A problem with the misbehaviour of <tt>name</tt> properties on rooms, in conjunction with THE, has been 
+corrected. [L61034] 
+<li><p>The command PUT X INTO X now correctly produces &ldquo;You can&rsquo;t put something inside itself&rdquo;, 
+rather than &ldquo;You can&rsquo;t see any such thing&rdquo;. [L61033] 
+<li><p>Run-time errors resulting from <tt>IndirectlyContains()</tt> attempting to find the parent of a Class 
+which supports dynamic creation of objects have been resolved. [L61032] 
+<li><p>Code in <tt>Parser__parse()</tt> which deals with looking ahead to the indirect object in cases like PUT 
+ALL INTO BAG (a MULTIEXCEPT token) and TAKE ALL FROM BAG (a MULTIINSIDE 
+token) now correctly sets the <tt>advance_warning</tt> global (to BAG). [L61031, L61023] 
+<li><p>The <i>Inform Designer&rsquo;s Manual</i> (p. 98) states that SHOWOBJ should accept an object number; 
+now it does. [L61030] 
+<li><p>The <tt>YesOrNo()</tt> routine now re-prompts correctly after garbage input. [L61029] 
+<li><p>The parse buffer is no longer declared and initialised incorrectly (albeit harmlessly). [L61028, 
+L60708] 
+<li><p>The <i>Inform Designer&rsquo;s Manual</i> (p. 93) defines the calling order of routines and properties for the 
+&lsquo;Before&rsquo; stage as follows:<p>
+<ol><li> <tt>GamePreRoutine()</tt>
+<li> <tt>orders</tt> of the player 
+<li> <tt>react_before</tt> of every object in scope 
+<li> <tt>before</tt> of the current room 
+<li> <tt>before</tt> of the first noun, if specified</ol><p>
+In the library, however, steps 3 and 4 are executed in reverse order. They are now as documented. 
+[L61027] 
+<li><p> A <tt>found_in</tt> floating object which the player is able to take (probably due to a coding error) is no 
+longer silently dropped when the player returns to one of the listed rooms. [L61026] 
+<li><p>A small problem with inherited <tt>describe</tt> properties has been corrected. [L61025] 
+<li><p>Standard screen-handling is now implemented in v6 games. [L61022] 
+<li><p>The handling of &ldquo;You can&rsquo;t go that way&rdquo; messages is made consistent. Also, the statement 
+<tt>ChangeDefault(cant_go,myRoutine);</tt> now works. [L61020] 
+<li><p>Attempting to place an object in/on an object where it is already now results in &ldquo;It&rsquo;s already 
+there&rdquo;, rather than &ldquo;You need to be holding it before you can put it into something else&rdquo;. [L61019] 
+<li><p>A problem with misleading inventory listing has been clarified. [L61018]
+<li><p>The command LEAVE X now correctly produces &ldquo;But you aren&rsquo;t in/on the X&rdquo;, if appropriate. 
+[L61017] 
+<li><p>The response to READ was inappropriate when an object is misspelled or out of scope. [L61016] 
+<li><p>A small bug in the choice of library messages for PUSH and TURN, which wasn&rsquo;t noticeable 
+unless you overrode the messages to be different from PULL, has been corrected. [L61015] 
+<li><p>If you are in a dark room, you cannot examine what you are holding. Yet if you open a container 
+you brought in from a lit room, the standard message &ldquo;You open the box, revealing a...&rdquo; was not 
+being suppressed. [L61014] 
+<li><p>The <tt>ScoreMatchL()</tt> routine in Parserm.h incorrectly decided which objects meet descriptors. As a 
+result, some objects that didn&rsquo;t meet descriptors were not properly removed from the match list 
+when the library is deciding which objects best match a player&rsquo;s input. [L61013] 
+<li><p>The Infix problem parsing commands containing commas and periods has been fixed. 
+[L61010] 
+<li><p>A problem when describing what&rsquo;s visible after opening a container has been corrected. [L61009] 
+<li><p>An inappropriate message after GO NORTH CIRCULAR has been corrected. [L61008] 
+<li><p>Modified foreground and background colours are now correct after RESTORE and UNDO. 
+[L61007] 
+<li><p>The <tt>grammar</tt> property now works with a large game whose dictionary lies above $8000. [L61006] 
+<li><p>A buffer conflict with disambiguation and UNDO has been resolved. [L61004] 
+<li><p>If a player is inside a closed, non-transparent container, the library prints an extra blank line 
+between the header &ldquo;The container&rdquo; and the first <tt>inside_description</tt> line it prints. No more. 
+[L61002] 
+<li><p>The list writing routines do not handle plural containers correctly. If you have two empty boxes, it 
+might list &ldquo;two boxes (which is closed)&rdquo;. Not only should it say &ldquo;are closed&rdquo;, but it will lump 
+empty containers together even if some are open and others aren&rsquo;t. Now resolved. [L61001] 
+<li><p>A conflict between <tt>DrawStatusLine()</tt> and <tt>DisplayStatus()</tt> on how to determine whether to 
+display turns or time is settled in favour of checking a header flag. [L60709]
+</ul>
+
+<h2><a name="Glulx">Support for Glulx</a></h2>
+One of the limitations of the Z-machine is the size of the largest game that it supports: 256Kb if you 
+compile a version 5 game, or 512Kb if you compile for version 8. If you find yourself up against this 
+limit and you&rsquo;ve tried all the standard tricks to save a few bytes here and there, then it&rsquo;s time to switch 
+to Glulx. That&rsquo;s easy to do: you just supply the <tt><b>-G</b></tt> compiler switch, the compiler generates Glulx code, 
+and any Glulx interpreter will be able to run it.<p>
+Actually, it isn&rsquo;t always quite that simple...
+<h3><a name="KnowingWhich">Knowing which is which</a></h3>
+As mentioned earlier, the compiler automatically defines a couple of useful constants. If you&rsquo;re 
+compiling for the Z-machine then <tt>TARGET_ZCODE</tt> is defined; if you&rsquo;re compiling for Glulx then you&rsquo;re 
+given <tt>TARGET_GLULX</tt> instead. You can use these with the <tt>Ifdef</tt> directive, like this:
+<pre>
+  #Ifdef TARGET_ZCODE; 
+  ! Z-machine code here 
+  #Endif;
+  #Ifdef TARGET_GLULX; 
+  ! Equivalent Glulx code here 
+  #Endif; 
+</pre>or more commonly like this:<pre>
+  #Ifdef TARGET_ZCODE; 
+  ! Z-machine code here 
+  #Ifnot;
+  ! Equivalent Glulx code here 
+  #Endif; 
+</pre>You&rsquo;ll find a lot of this if you look in the library files, but it&rsquo;s less frequently needed in a source file.
+<h3>Glulx differences</h3>
+The two VMs are not identical, and you need to be aware of their differences.
+<h4>Word size</h4>
+The most basic difference between Glulx and the Z-machine is that words are four bytes long instead 
+of two. All Glulx variables are 32-bit values, the stack contains 32-bit values, property entries are 
+32-bit values, and so on.<p>
+In most Inform programming, you don&rsquo;t need to worry about this change at all. For example, if you 
+have an array 
+<pre>  Array mylist --> 10;</pre>
+...then Z-code Inform allocates ten words &mdash; that is, twenty bytes &mdash; and you can access these values as 
+<tt>mylist-->0</tt> through <tt>mylist-->9</tt>. If you compile the same code under Glulx Inform, the compiler again 
+allocates ten words &mdash; now forty bytes &mdash; and you can still access them as <tt>mylist-->0</tt> through
+<tt>mylist-->9</tt>. Everything works the same, except that the array can contain values greater than the 
+Z-machine&rsquo;s limit of 65535.<p>
+<tt>Table</tt> arrays also refer to two- or four-byte word values, and the first word is the length of the array. 
+<tt>String</tt> and <tt>-></tt> arrays, and the <tt>-></tt> notation, still refer to single bytes. You should not have to modify 
+your code here, either.<p>
+There are two important cases where you <b>will</b> have to modify your code. First is the <tt>.#</tt> operator. The 
+expression <tt><i>obj</i>.#<i>prop</i></tt> returns the length of the property <b>in bytes</b>. Since properties almost always 
+contain words rather than bytes, it is very common to have Z-machine code like:
+<pre>
+  len = (obj.#prop) / 2; 
+  for (i=0 : i&lt;len : i++) 
+      print (string) (obj.&amp;prop)-->i; 
+</pre>
+In Glulx Inform programs, it is necessary to divide by 4 instead of by 2, so you should replace the 
+above code with:
+<pre>
+  len = (obj.#prop) / WORDSIZE; 
+  for (i=0 : i&lt;len : i++) 
+   print (string) (obj.&amp;prop)-->i; 
+</pre>
+This will compile and run correctly in both VMs. <p>
+The other circumstance where your code may need modifying in this manner is when using the &lsquo;print 
+to array&rsquo; feature. Code like this:
+<pre>
+  Array mybuf buffer 100; ! must be big enough for largest string you'll print 
+  mystr = "hello"; 
+  mystr.print_to_array(mybuf);
+</pre>
+results in the first <b>word</b> of <tt>mybuf</tt> containing 5 (the number of characters in <tt>mystr</tt>), and the following 
+five <b>bytes</b> containing &lsquo;h&rsquo;, &lsquo;e&rsquo;, &lsquo;l&rsquo;, &lsquo;l&rsquo; and &lsquo;o&rsquo;.
+In the Z-machine, you could then output the characters from the array with either of these code fragments:
+<pre>
+  len = 2 + mybuf-->0 
+  for (i=2 : i&lt;len : i++)
+   print (char) mybuf->i; 
+
+  len = mybuf-->0 
+  for (i=0 : i&lt;len : i++)
+   print (char) mybuf->(i+2);
+</pre>
+Again, you can make the code safe for both VMs if you change &ldquo;<tt>2</tt>&rdquo; to &ldquo;<tt>WORDSIZE</tt>&rdquo;:
+<pre>
+  len = WORDSIZE + mybuf-->0 
+  for (i=WORDSIZE : i&lt;len : i++)
+   print (char) mybuf->i; 
+
+  len = mybuf-->0 
+  for (i=0 : i&lt;len : i++)
+   print (char) mybuf->(i+WORDSIZE);
+</pre>
+See also <a href="#FeaturesGlulx">Features available only in Glulx</a> for details of <tt>print_to_array</tt> under Glulx.
+<h4>Directives</h4>
+Glulx handles the majority of Inform directives, with two exceptions:
+<ul>
+<li><p>The <tt>Zcharacter</tt> directive causes a compilation error, since Glulx does not use the ZSCII character set.
+Your best approach is to bypass the directive when compiling for Glulx:
+<pre>
+  #Ifdef TARGET_ZCODE; 
+  Zcharacter ... ; 
+  #Endif;
+</pre>
+<li><p>The (obsolete) <tt>Lowstring</tt> directive causes a run-time error when used like this:
+<pre>
+  Lowstring mystr "hello"; 
+
+  string 0 mystr; 
+  print "@00 and goodbye.";
+</pre>
+This simpler form, avoiding the use of <tt>Lowstring</tt>, works successfully:
+<pre>
+  string 0 "hello"; 
+  print "@00 and goodbye.";
+</pre>
+See also <a href="#FeaturesGlulx">Features available only in Glulx</a> for additional printing variable support.
+</ul>
+<h4>Statements</h4>
+Glulx handles the majority of Inform statements, with a few exceptions. If you try to use any of these 
+statements in Glulx, you will cause a compilation error:
+<ul>
+<li><p><tt>save, restore</tt>: These are more complicated procedures in Glulx than in Z-code, and cannot be 
+implemented without involving library variables and routines. If you want to do this sort of thing, 
+modify or copy the library <tt>SaveSub()</tt> and <tt>RestoreSub()</tt> routines.
+<li><p><tt>read</tt>: Similarly, reading a line of text in Glulx involves the library; the compiler cannot generate 
+stand-alone code to do it. See instead the library <tt>KeyboardPrimitive()</tt> routine.
+<li><p><tt>@<i>opcode</i></tt>: The Z-machine assembly language is completely different from that of Glulx. If you 
+have used any assembly instructions, you will need to conceal them when compiling for Glulx, as 
+described in <a href="#KnowingWhich">Knowing which is which</a>. See also
+<a href="#FeaturesGlulx">Features available only in Glulx</a> for details of the <tt>glk()</tt> function call.
+</ul>
+Glulx now supports the Inform <tt>style</tt> statement, mapping the Z-machine forms onto Glk styles:
+<blockquote><table width="80%" cellpadding="6pt" border="1" bordercolor="black" frame="hsides" rules="groups">
+<thead>
+<tr><td width="30%"><b>Inform statement</b></td><td><b>Equivalent Glk style</b></td></tr>
+</thead>
+<tr><td><tt>style roman;</tt></td><td><tt>style_Normal</tt></td></tr>
+<tr><td><tt>style reverse;</tt></td><td><tt>style_Alert</tt></td></tr>
+<tr><td><tt>style bold;</tt></td><td><tt>style_Subheader</tt></td></tr>
+<tr><td><tt>style underline;</tt></td><td><tt>style_Emphasized</tt></td></tr>
+<tr><td><tt>style fixed;</tt></td><td><tt>style_Preformatted</tt></td></tr>
+</table></blockquote>
+However, it is important to remember that, with Glulx, the appearance of a game is under the player&rsquo;s 
+control &mdash; Glulx interpreters enable the font parameters associated with each style to be specified 
+at run-time. Therefore, you should use styles with caution, and if necessary alert the player to the 
+settings which your game expects. 
+<h4>Character handling</h4>
+Unlike the Z-machine, which internally uses the ZSCII character set (see the <i>Inform Designer&rsquo;s 
+Manual</i> Table 2 on p. 519), Glulx uses strings consisting of either 8-bit characters in the ISO
+8859-1 (Latin-1) encoding (which is the same as ZSCII for character values 0-127, but different for
+character values 128-255), or 32-bit Unicode characters. In general you don't need to worry about
+which string representation is used: the compiler will figure it out for you. The impact is as follows:
+<ul>
+<li><p><tt>@<i>escape_sequence</i></tt>: Escape sequences such as <tt>@:a</tt> and <tt>@LL</tt>
+(for &ldquo;&auml;&rdquo; and &ldquo;&pound;&rdquo; respectively) are accepted identically by both VMs.
+<li><p><tt>@@<i>decnum</i></tt>: The number is the character&rsquo;s internal decimal value, so <tt>@@65</tt>
+is &ldquo;A&rdquo; in both VMs, but <tt>@@165</tt> is &ldquo;&iuml;&rdquo; in the Z-machine and &ldquo;&yen;&rdquo; in Glulx.
+<li><p><tt>@{<i>hexnum</i>}</tt>: The number is the character&rsquo;s Unicode value, so <tt>@{41}</tt> is &ldquo;A&rdquo;
+and <tt>@{EF}</tt> is &ldquo;&iuml;&rdquo; in both VMs. However, <tt>@{A5}</tt> is &ldquo;&yen;&rdquo; in Glulx,
+but causes a Z-machine compilation error because &ldquo;&yen;&rdquo; isn&rsquo;t a ZSCII character.
+<li><p><tt>-C<i>n</i></tt>: The compiler switches <tt><b>-C1</b></tt> through <tt><b>-C9</b></tt>
+specify that the source file uses the character set 
+defined by ISO 8859-1 through 8859-9 respectively. In the Z-machine, the switch also initialises 
+the higher ZSCII character set to appropriate values; this later feature is irrelevant when compiling for 
+Glulx.
+<li><p>Dictionaries in Glulx Inform 6 games have to consist of only ISO 8859-1 characters at present. This is
+being worked on, and the necessary compiler changes have been made, but further library work is still needed.
+</ul>
+<h4>Compiler switches</h4>
+We&rsquo;ve already mentioned the <tt><b>-G</b></tt> command line switch, which causes the compiler to output code 
+for Glulx rather than for the Z-machine. There are a few other changes in this area (see the <i>Inform 
+Designer&rsquo;s Manual</i> Table 3 on p. 521). 
+<blockquote><table width="80%" cellpadding="6pt" border="1" bordercolor="black" frame="hsides" rules="groups">
+<thead>
+<tr><td width="10%"><b>Switch</b></td><td width="10%"><b>To</b></td><td><b>Meaning</b></td></tr>
+</thead>
+<tr><td><tt>-k</tt></td><td>off/on</td><td>incompatible with <tt>-G</tt> (output debugging information)</td></tr>
+<tr><td><tt>-v*</tt></td><td>3 to 8</td><td>incompatible with <tt>-G</tt> (set Z-machine Version)</td></tr>
+<tr><td><tt>-G</tt></td><td>off/on</td><td>compile for Glulx VM</td></tr>
+<tr><td><tt>-H</tt></td><td>off/on</td><td>use Huffman compression on Glulx strings (on by default)</td></tr>
+<tr><td><tt>-X</tt></td><td>off/on</td><td>incompatible with <tt>-G</tt> (include Infix debugger)</td></tr>
+</table></blockquote>
+<h3>Glulx additions</h3>
+Glulx offers some additional capabilities above those of the Z-machine:
+<h4><a name="FeaturesGlulx">Features available only in Glulx</a></h4>
+<ul>
+<li><p>For Glulx, <tt>print_to_array</tt> function requires two arguments, the first being the array to print to,
+and the second the length of that array:
+<pre>  <i>len</i> = <i>mystr</i>.print_to_array(<i>mybuf</i>, 80);</pre>
+This example writes no more than 76 characters into the array. If <tt><i>mybuf</i></tt> is an 80-byte array, you 
+can be sure it will not be overrun. (Do not try this with the second argument less than 4.)<p>
+The value written into <tt>mybuf-->0</tt>, and the value returned, are <b>not</b> limited to the number of 
+characters written; they represent the number of characters in the complete string. This means 
+that:
+<pre>  <i>len</i> = <i>mystr</i>.print_to_array(<i>mybuf</i>, 4);</pre>
+is an ugly but perfectly legal way to find the length of a string. (And in this case, <tt>mybuf</tt> need only 
+be four bytes long.)
+<li><p>Z-code Inform supports 32 printing variables, <tt>@00</tt> to <tt>@31</tt>, which you can include in strings and 
+then set with the statement:
+<pre>  string <i>num</i> "<i>value</i>";</pre>
+In Glulx, this limit is raised to 64. Furthermore, in Glulx you can set these variables to a 
+stand-alone routine as well as a string:
+<pre>
+  [ <i>routine</i>; print "<i>value</i>"; ]; 
+
+  string <i>num routine</i>;
+</pre>
+In this case, the routine is called with no arguments and the result discarded; you should print your 
+desired output inside the routine. <p>
+In Glulx, unlike Z-code, a printing variable string can itself contain <tt>@..</tt> codes, allowing recursion. 
+You can nest this as deeply as you want. However, it is obviously a bad idea to cause an infinite 
+recursion. For example, this will certainly crash the interpreter:
+<pre>
+  string 3 "This is a @03!"; 
+  print "What is @03?"; 
+</pre>
+<li><p>Many of the things that used to be Z-code assembly are now handled by Glk function calls. 
+Making a Glk function call from Inform is slightly awkward, but not difficult.<p>
+All of Glk is handled by the built-in Inform function <tt>glk()</tt>, which takes one or more arguments. 
+The first argument is an integer; this tells <b>which</b> Glk call in being invoked. The remaining 
+arguments are just the arguments to the Glk call, in order.<p>
+Say, for example, that you want to set the text style to &ldquo;preformatted&rdquo;. The Inform code to 
+accomplish this is: 
+<pre>  glk($0086, 2);</pre>
+The hex value $0086 means <tt>glk_set_style</tt>; the value &ldquo;2&rdquo; means <tt>Preformatted</tt>.<p>
+The table of Glk calls, and the integers that refer to them, is given in Section 12.1.6 of the Glk specification
+(remember that the values given there are hexadecimal).
+<p>
+Since calls based on numeric codes are not very easy to read, we recommend that you download 
+John Cater&rsquo;s <tt>infglk.h</tt> library header, which defines wrapper functions and constants. For 
+example, you could achieve the same effect with this call:
+<pre>  glk_set_style(style_Preformatted);</pre>
+When you read the Glk specification, bear in mind that the <tt>NULL</tt> value it talks about is the C 
+language <tt>NULL</tt> (0), not the Inform Library <tt>NULL</tt> (-1). <tt>infglk.h</tt> defines a constant <tt>GLK_NULL</tt> (equal 
+to 0) which you can use where appropriate.
+<li><p>By default, arguments to routines work the same in Glulx as they do in Z-code. When you call a 
+routine, the arguments that you pass are written into the routine&rsquo;s local variables, in order. If you 
+pass too many arguments, the extras are discarded; too few, and the unused local variables are 
+filled with zeroes.<p>
+However, the Glulx VM supports a second style of routine. You can define a routine of this type 
+by naming the first argument <tt>_vararg_count</tt>. For example:
+<pre>
+  [ StackFunc _vararg_count ix pos len; 
+      !   <i>Glulx code here</i>
+  ];
+</pre>
+If you do this, the routine arguments are <b>not</b> written into the local variables. Instead, they are 
+pushed onto the stack, and you must use Glulx assembly to pull them off. All the local variables 
+are initialized to zero, except for <tt>_vararg_count</tt>, which (as you might expect) contains the number 
+of arguments that were passed in.<p>
+Note that <tt>_vararg_count</tt> is a normal local variable, aside from its useful initial value. You can 
+assign to it, increment or decrement it, use it in expressions, and so on.<p>
+Stack-argument routines are most useful if you want a routine with variable arguments, or if you 
+want to write a wrapper that passes its arguments on to another routine.
+</ul>
+<h4><a name="LibraryGlulx">Library routines available only in Glulx</a></h4>
+<p><tt>KeyCharPrimitive(<i>win</i>, <i>nostat</i>);</tt>
+<p><blockquote>If <tt><i>win</i></tt> is nonzero, the character input request goes to that Glk window
+(instead of <tt>gg_mainwin</tt>, the 
+default.) If <tt><i>nostat</i></tt> is nonzero, any window rearrangement event is returned immediately as value 
+80000000 (instead of the default behavior, which is to call <tt>DrawStatusLine()</tt> and keep waiting.)</blockquote>
+<p><tt>PrintAnything(<i>thingie</i>, ...);</tt>
+<p><blockquote>In the Z-machine, strings and routines are &ldquo;packed&rdquo; addresses, dictionary words are normal 
+addresses, and game objects are represented as sequential numbers from 1 to <tt>#top_object</tt>. These 
+ranges overlap; a string, a dictionary word, and an object could conceivably all be represented by 
+the same numeric value.<p>
+In Glulx, all those things are represented by normal addresses, so different items will always have 
+different values. Furthermore, the first byte found at the address is an identifier value, which 
+specifies what kind of item the address contains.<p>
+<tt>PrintAnything()</tt> prints any thingie &mdash; string, routine (with optional arguments), object, object 
+property (with optional arguments), or dictionary word &mdash; known to the library. 
+<blockquote><table width="80%" cellpadding="6pt" border="1" bordercolor="black" frame="hsides" rules="groups">
+<thead>
+<tr><td width="50%"><b>Calling</b></td><td><b>Is equivalent to</b></td></tr>
+</thead>
+<tr><td><tt>PrintAnything()</tt></td><td>(nothing printed)</td></tr>
+<tr><td><tt>PrintAnything(0)</tt></td><td>(nothing printed)</td></tr>
+<tr><td><tt>PrintAnything(<i>string</i>)</tt></td><td><tt>print (string) "<i>string</i>";</tt></td></tr>
+<tr><td><tt>PrintAnything(<i>dictionaryword</i>)</tt></td><td><tt>print (address) '<i>dictionaryword</i>';</tt></td></tr>
+<tr><td><tt>PrintAnything(<i>obj</i>)</tt></td><td><tt>print (name) <i>obj</i>;</tt></td></tr>
+<tr><td><tt>PrintAnything(<i>obj</i>, <i>prop</i>)</tt></td><td><tt><i>obj</i>.<i>prop</i>();</tt></td></tr>
+<tr><td><tt>PrintAnything(<i>obj</i>, <i>prop</i>, <i>args</i>...)</tt></td><td><tt><i>obj</i>.<i>prop</i>(<i>args</i>...);</tt></td></tr>
+<tr><td><tt>PrintAnything(<i>routine</i>)</tt></td><td><tt><i>routine</i>();</tt></td></tr>
+<tr><td><tt>PrintAnything(<i>routine</i>, <i>args</i>...)</tt></td><td><tt><i>routine</i>(<i>args</i>...);</tt></td></tr>
+</table></blockquote>
+Extra arguments after a <tt><i>string</i></tt> or dictionary <tt><i>word</i></tt> are safely ignored.
+The (first) argument you pass in is always interpreted as a thingie reference, not as an integer. 
+This is why none of the forms shown above print out an integer. However, you can get the same 
+effect by calling
+<pre>  PrintAnything(DecimalNumber, <i>num</i>);</pre>
+...which is where the <tt>DecimalNumber()</tt> routine comes in handy. You can also, of course, use other 
+library routines, and do tricks like
+<pre>
+  PrintAnything(EnglishNumber, <i>num</i>); 
+  PrintAnything(DefArt, <i>obj</i>);
+</pre>
+None of this may seem very useful; after all, there are already ways to print all those things. But 
+<tt>PrintAnything()</tt> is vital in implementing the following routine:</blockquote>
+<p><tt>PrintAnyToArray(<i>array</i>, <i>arraylen</i>, <i>thingie</i>, ...);</tt>
+<p><blockquote>This works the same way, except that instead of printing to the screen, the output is diverted to the 
+given array.<p>
+The first two arguments must be the array address and its maximum length. Up to that many 
+characters will be written into the array; any extras will be silently discarded. This means that you 
+do not have to worry about array overruns.<p>
+The <tt>PrintAnyToArray()</tt> routine returns the number of characters generated. (This may be greater 
+than the length of the array. It represents the entire text that was output, not the limited number 
+written into the array.)<p>
+It is safe to nest <tt>PrintAnyToArray()</tt> calls. That is, you can call <tt>PrintAnyToArray(<i>routine</i>)</tt>, where 
+<tt><i>routine</i>()</tt> itself calls <tt>PrintAnyToArray()</tt>. (However, if they try to write to the <b>same array</b>, chaos 
+will ensue.)<p>
+It is legal for <tt><i>arraylen</i></tt> to be zero (in which case <tt><i>array</i></tt> is ignored, and may be zero as well.) This 
+discards <b>all</b> of the output, and simply returns the number of characters generated. You can use this 
+to find the length of anything &mdash; even a function call.</blockquote>
+<h4>Entry points available only in Glulx</h4>
+An entry point is a routine which you can provide in your code, or leave out; the library will call it if 
+it&rsquo;s present, ignore it if not &mdash; see &sect;21 of the <i>Inform Designer&rsquo;s Manual</i>.<p>
+The library has some entry points which aid in writing more complicated interfaces &mdash; games with 
+sound, graphics, extra windows, and other fancy Glk tricks. If you&rsquo;re just writing a standard 
+Infocom-style game, <b>you can ignore this section</b>.
+<p><tt>HandleGlkEvent(<i>ev</i>, <i>context</i>, <i>abortres</i>)</tt>
+<p><blockquote>This entry point is called every time a Glk event occurs. The event could indicate nearly anything: 
+a line of input from the player, a window resize or redraw event, a clock tick, a mouse click, or so 
+on.<p>
+The library handles all the events necessary for a normal Infocom-style game. You need to supply 
+a <tt>HandleGlkEvent()</tt> routine only if you want to add extra functionality. The <tt><i>ev</i></tt> argument is a 
+four-word array which describes the event. <tt><i>ev</i>-->0</tt> is the type of the event; <tt><i>ev</i>-->1</tt> is the window 
+involved (if relevant); and <tt><i>ev</i>-->2</tt> and <tt><i>ev</i>-->3</tt> are extra information.
+The <tt><i>context</i></tt> argument is 0 if 
+the event occurred during line input (normal commands, <tt>YesOrNo()</tt>, or some other use of the 
+<tt>KeyboardPrimitive()</tt> library routine); 1 indicates that the event occurred during character input 
+(any use of the <tt>KeyCharPrimitive()</tt> library routine). The <tt><i>abortres</i></tt> argument is used only if you 
+want to cancel player input and force a particular result; see below.<p>
+If you return 2 from <tt>HandleGlkEvent()</tt>, player input will immediately be aborted. Some additional 
+code is also required:
+<ul>
+<li><p>If this was character input <tt>(<i>context</i>==1)</tt>, you must call the Glk <tt>cancel_char_event</tt> function, 
+and then set <tt><i>abortres</i>-->0</tt> to the character you want returned. Then return 2; 
+<tt>KeyCharPrimitive()</tt> will end and return the character, as if the player had hit it.
+<li><p>If this was line input <tt>(<i>context</i>==0)</tt>, you must call the Glk <tt>cancel_line_event function</tt>. (You 
+can pass an array argument to see what the player had typed so far.) Then, fill in the length of 
+the input to be returned in <tt><i>abortres</i>-->0</tt>. If this is nonzero, write the input characters 
+sequentially into the array starting at <tt><i>abortres</i>-->WORDSIZE</tt>, up to (but not including) 
+<tt><i>abortres</i>-->(WORDSIZE+len)</tt>. Do not exceed 256 characters. Then return 2; 
+<tt>KeyboardPrimitive()</tt> will end and return the line.
+</ul>
+If you return -1 from <tt>HandleGlkEvent()</tt>, player input will continue even after a keystroke (for 
+character input) or after the enter key (for line input).
+You must re-request input by calling <tt>request_char_input</tt> or <tt>request_line_input</tt>.
+Any other return value from <tt>HandleGlkEvent()</tt> (a normal return, <tt>rfalse</tt>, or <tt>rtrue</tt>) will not affect 
+the course of player input.</blockquote>
+<p><tt>InitGlkWindow(<i>winrock</i>)</tt>
+<p><blockquote>This entry point is called by the library when it sets up the standard windows: the story window, 
+the status window, and (if you use quote boxes) the quote box window. The story and status 
+windows are created when the game starts (before <tt>Initialise()</tt>). The quote window is created 
+and destroyed as necessary.<p>
+<tt>InitGlkWindow()</tt> is called in five phases: 
+<ol>
+<li><p>The library calls <tt>InitGlkWindow(0)</tt>. This occurs at the very beginning of execution, 
+even before <tt>Initialise()</tt>. You can set up any situation you want. (However, remember 
+that the story and status windows might already exist &mdash; for example, if the player has 
+just typed RESTART.) This is a good time to set <tt>gg_statuswin_size</tt> to a value other 
+than 1. Return 0 to proceed with the standard library window setup, or 1 if you&rsquo;ve 
+created all the windows yourself.
+<li><p>The library calls <tt>InitGlkWindow(GG_MAINWIN_ROCK)</tt>, before creating the story window. 
+This is a good time to set up style hints for the story window. Return 0 to let the library 
+create the window; return 1 if you have yourself created a window and stored it in 
+<tt>gg_mainwin</tt>.
+<li><p>The library calls <tt>InitGlkWindow(GG_STATUSWIN_ROCK)</tt>, before creating the status 
+window. Again, return 0 to let the library do it; return 1 if you have created a window 
+and stored it in <tt>gg_statuswin</tt>.
+<li><p>The library calls <tt>InitGlkWindow(1)</tt>. This is the end of window setup; you can take this 
+opportunity to open other windows. (Or you can do that in your <tt>Initialise()</tt> routine. 
+It doesn&rsquo;t matter much.)
+<li><p>The library calls <tt>InitGlkWindow(GG_QUOTEWIN_ROCK)</tt>, before creating the quote box 
+window. This does not occur during game initialization; the quote box window is 
+created during the game, whenever you print a quote, and destroyed one turn later. As 
+usual, return 1 to indicate that you&rsquo;ve created a window in <tt>gg_quotewin</tt>. (The desired 
+number of lines for the window can be found in <tt>gg_arguments-->0</tt>.)
+</ol>
+However you handle window initialization, remember that the library requires a <tt>gg_mainwin</tt>. If 
+you don&rsquo;t create one, and don&rsquo;t allow the library to do so, the game will shut down. Contrariwise, 
+the status window and quote windows are optional; the library can get along without them.</blockquote>
+<p><tt>IdentifyGlkObject(<i>phase</i>, <i>type</i>, <i>ref</i>, <i>rock</i>)</tt>
+<p><blockquote>This entry point is called by the library to let you know what Glk objects exist. You must supply 
+this routine if you create any windows, filerefs, file streams, or sound channels beyond the 
+standard library ones. (This is necessary because after a RESTORE, RESTART, or UNDO 
+command, your global variables containing Glk objects will be wrong.)<p>
+<tt>IdentifyGlkObject()</tt> is called in three phases:
+<ol>
+<li><p>The library calls <tt>IdentifyGlkObject()</tt> with <tt><i>phase</i>==0</tt>. You should set all your Glk 
+object references to zero. 
+<li><p>The library calls <tt>IdentifyGlkObject()</tt> with <tt><i>phase</i>==1</tt>. This occurs once for each 
+window, stream, and fileref that the library doesn&rsquo;t recognize. (The library handles the 
+two standard windows, and the files and streams that have to do with saving, 
+transcripts, and command records. You only have to deal with objects that you create.) 
+You should set whatever reference is appropriate to the object. For each object: <tt><i>type</i></tt>
+will be 0, 1, 2 for windows, streams, filerefs respectively; <tt><i>ref</i></tt> will be the object 
+reference; and <tt><i>rock</i></tt> will be the object&rsquo;s rock, by which you can recognize it.
+<li><p>The library calls <tt>IdentifyGlkObject()</tt> with <tt><i>phase</i>==2</tt>. This occurs once, after all the 
+other calls, and gives you a chance to recognize objects that aren&rsquo;t windows, streams, 
+or filerefs. If you don&rsquo;t create any such objects, you can ignore that bit. But you should 
+also take the opportunity to update all your Glk objects to the game state that was just 
+started or restored. (For example, redraw graphics, or set the right background sounds 
+playing.)
+</ol></blockquote>
+<h3><a name="Translate">Information for translators</a></h3>
+The library is designed to be easily translatable, and there are currently versions available in French, 
+German and several other languages. If you maintain one of these translations, the following 
+information may be useful to you.
+<h4>English.h</h4>
+This is the &ldquo;language definition file&rdquo;, and in translation is replaced by <tt>French.h</tt>, <tt>German.h</tt>, etc. The 
+following changes have been made:
+<ul>
+<li><p>Class <tt>CompassDirection</tt> and its objects have been extensively revised.
+<li><p>Routine <tt>LanguageVerb()</tt> has been reworked.
+<li><p>Routines <tt>LanguageVerbIsDebugging()</tt>, <tt>LanguageVerbLikesAdverb()</tt> and <tt>LanguageVerbMayBeName()</tt> 
+have been added to isolate language-specific tests previously embedded in <tt>parserm.h</tt>.
+<li><p>Constants <tt>YOU__TX</tt> and <tt>COMMA__TX</tt> have been added.
+<li><p>Routine <tt>LanguageLM()</tt> has been sorted alphabetically.
+<li><p>In that routine, <tt>CommandsOff</tt>, <tt>CommandsOn</tt> and <tt>CommandsRead</tt> have been added.
+<li><p>Also in that routine, <tt>Exit</tt>, <tt>Inv</tt>, <tt>Look</tt>, <tt>Miscellany</tt>, <tt>Places</tt>,
+<tt>Pronouns</tt> and <tt>Score</tt> have been extended, 
+and <tt>Go</tt> has been modified.
+<li><p>Constant <tt>LIBRARY_ENGLISH</tt> has been added. We suggest that translated versions instead define <tt>
+LIBRARY_DUTCH</tt>, <tt>LIBRARY_FRENCH</tt>, <tt>LIBRARY_GERMAN</tt>, <tt>LIBRARY_ITALIAN</tt>, <tt>LIBRARY_SPANISH</tt>, <tt>
+LIBRARY_SWEDISH</tt> etc, in case it becomes useful at some time to determine which language is in 
+force.
+</ul>
+<h4>Grammar.h</h4>
+This file contains grammars for English verbs like TAKE and DROP, and in translation is replaced 
+by <tt>FrenchG.h</tt>, <tt>GermanG.h</tt>, etc. The following changes have been made:
+<ul>
+<li><p>The grammars have been sorted alphabetically.
+<li><p>Verb definitions <tt>'recording'</tt> and <tt>'replay'</tt> are no longer conditional on DEBUG.
+<li><p>Verb definitions <tt>'showobj'</tt>, <tt>'ask'</tt>, <tt>'exit'</tt>, <tt>'look'</tt> and <tt>'tell'</tt> have been extended.
+<li><p>Verb definition <tt>'pry'</tt> <tt>'prise'</tt> etc has been added.
+<li><p>Constant <tt>LIBRARY_GRAMMAR</tt> has been added.
+</ul>
+</body>
+</html>
+

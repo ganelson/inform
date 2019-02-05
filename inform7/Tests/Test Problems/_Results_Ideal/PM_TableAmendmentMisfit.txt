@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableAmendmentMisfit
+  >--> Columns in 'Table of Exempla (amended)' (source text, line 8) do not
+    exactly match the original 'Table of Exempla' (source text, line 3). I can
+    only make changes to rows in an existing table if the amended versions have
+    the same columns and in the same order.
+    The old table has columns: model, model name.
+    The new table has columns: model.
+Inform 7 has finished: 15 centiseconds used.

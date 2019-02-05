@@ -1,0 +1,26 @@
+   Right here
+  Entire Game has colour white.
+  Abba Concert has colour white.
+  AC-DC Concert has colour blue.
+  Black Sabbath Concert has colour red.
+  Yes Concert has colour white.
+  Steeleye Span Concert has colour blue.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Right here
+  
+> >   Right here
+  (Testing.)
+  
+  >[1] z
+  Entire Game has colour green.
+  Abba Concert has colour green.
+  AC-DC Concert has colour green.
+  Black Sabbath Concert has colour green.
+  Yes Concert has colour green.
+  Steeleye Span Concert has colour red.
+  
+> >

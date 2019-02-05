@@ -1,0 +1,8 @@
+The Hall is a room. The emerald is in the Hall.
+
+Table of Point Values
+item		score
+emerald		10
+
+Report taking an item listed in the Table of Point Values for the first time:
+	say "Hello".

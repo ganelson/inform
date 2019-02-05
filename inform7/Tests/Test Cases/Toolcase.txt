@@ -1,0 +1,14 @@
+"Toolcase"
+
+The Kitchen is a room. "The kitchen is nice."
+
+The toolcase is an openable container in the kitchen.
+To recite (something - closed container):
+    Say "The [noun] is closed."
+To recite (something - open container):
+    Say "The [noun] is open."
+Instead of searching the toolcase, recite the toolcase.
+
+
+Test me with "open toolcase / search toolcase / close toolcase / search toolcase".
+

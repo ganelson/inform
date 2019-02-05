@@ -1,0 +1,362 @@
+"Chapter 17: Vanity" by Emily Short
+
+
+ Use command line echoing.
+
+Chapter 1
+
+Section 1 - What are activities?
+
+A beverage is a kind of thing.
+
+Instead of drinking a beverage:
+	now the noun is nowhere;
+	say "Mm, glug."
+
+
+The silver platter is a portable supporter carried by the player. 
+
+A Coke is a kind of beverage. Seven Cokes are on the platter. A Sprite is a kind of beverage. Two Sprites are on the platter. A root beer is a kind of beverage. Three root beers are on the platter. A ginger ale is a kind of beverage. Five ginger ales are on the platter.
+
+The souvenir hat is worn by the player.
+
+
+The Exhibition Room is a room. The Storage Closet is a dark room. It is west of the Exhibition Room. A broom is in the Storage Closet.
+
+
+The Simon Says Room is north of the Exhibition Room.
+
+A picture is a kind of container. A picture is usually enterable, open, unopenable, and fixed in place. Before printing the name of a picture, say "[italic type]". After printing the name of a picture, say "[roman type]".
+
+Bronzino is a picture in the Exhibition Room. Instead of entering the Bronzino, move the player to Bronzino Interior. The printed name of the Bronzino is "Venus, Cupid, Folly and Time". Understand "venus" or "cupid" or "folly" or "time" or "bronzino" as the Bronzino. 
+
+Holbein is a picture in the Exhibition Room. Instead of entering the Holbein, move the player to the Holbein interior. The printed name of the Holbein is "The Ambassadors".
+
+The corkscrew is carried by the player.
+
+
+A painting is a kind of room.
+
+Understand "zip" as returning to home.
+
+Returning to home is an action applying to nothing.
+
+Carry out returning to home:
+	move the player to the Exhibition Room.
+	
+Holbein Interior is a painting. "You're on display. 'Look at me, look at my goods.' That's what the other two are thinking, anyway.  You don't know whether you come out as well as they do: prosperous, successful, men of power and the world."
+
+The blur is a thing in the Holbein Interior. "There's something at your feet, obscuring the neat pattern of the rug. A grey-brown blur that won't resolve into a shape no matter how you stare at it. Looking at it makes your stomach go askew." The description of the blur is "There's something wrong with it. Something wrong not just in the way it looks, but in the fact of its existence at all. It both frightens and offends."
+
+	
+Bronzino Interior is a painting. "The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+
+Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+
+You redirect your attention to more pleasant things. The shining ball in the hand of Venus. [if the mask is in Bronzino Interior]The mask on the floor. [end if]Cupid's ruddy cheek, smoother than mortal flesh could be."
+
+Cupid is a man in Bronzino Interior. He is scenery. The description of Cupid is "He has all his mother's attention. In fact, there's something a little incestuous about his hand on her breast. Or is that just infant innocence? It's hard to make sense of gestures in the usual way because, after all, these people aren't people but constructs."
+
+The mask is a wearable thing in the Bronzino Interior. The description is "It looks about your size."
+
+Venus is a woman in Bronzino Interior. She is scenery. The description of Venus is "Despite the careful rendering there's something slickly repellent about her. She doesn't notice the others, the lurkers pressing around you."
+
+Venus is carrying a shining golden ball. The description of the ball is "It shares the primitive appeal of all things that gleam. But it stubbornly refuses to reflect its context."
+
+Father Time is a man in Bronzino Interior. He is scenery. The description is "An old man with a long grasp."
+
+Folly is a woman in Bronzino Interior. She is scenery. Understand "girl" or "snake" as Folly. The description of Folly is "She's got a nice face.  The rest is better not considered."
+
+Instead of doing something except examining to Folly:
+	say "She doesn't look at you, but her mind touches yours, and it is an experience you would prefer not to repeat. All the things you have done and regretted, all the petty cruelties, all the embarrassing moments driven by an ill-considered desire come back in a tide of chagrin."
+	
+Instead of asking Folly to try taking the golden ball when the ball is carried by Venus:
+	say "'Who do you think gave it to her in the first place?'"
+	
+
+
+
+Section 2 - How activities work
+
+Section 3 - Rules applied to activities
+
+Rule for printing the name of the blur when we have taken the blur:
+	say "skull"
+
+After printing the name of something which is carried by the player when the player is in a painting:
+	say " (in paint)"	
+
+Section 4 - While clauses
+
+Rule for printing the name of the player while the player is in a painting:
+	say "your painted self"
+
+Rule for printing the name of the blur while listing contents:
+	say "sinister skull"
+
+Section 5 - Printing the name of something
+
+Before printing the name of a person who is in a painting:
+	say "Painted "
+	
+Instead of attacking a person:
+	say "[The noun] avoids you."
+
+Rule for printing the name of the silver platter while not putting or removing: 
+	if something is on the platter, say "platter supporting [the list of things on the platter]"; otherwise say "empty platter"; omit contents in listing.
+
+After printing the name of a picture:
+	omit contents in listing.
+
+Section 6 - Listing contents of something
+
+Rule for printing the name of the corkscrew while listing contents of a room:
+	say "dangerous corkscrew".
+	
+Before listing contents:
+	group beverages together as "drinks".
+	
+Before listing contents:
+	group things worn by the player together.
+
+Section 7 - Grouping together something
+[Stealing the example once again]
+
+A Scrabble piece is a kind of thing. The X, the Y and the Z are Scrabble pieces in the Exhibition Room.
+
+Before listing contents: group Scrabble pieces together.
+
+Before printing the name of a Scrabble piece while not grouping together, say "tile ". After printing the name of a Scrabble piece while not grouping together, say " from a Scrabble set".
+
+Before grouping together Scrabble pieces, say "the tiles ". After grouping together Scrabble pieces, say " from a Scrabble set".
+
+Rule for grouping together things worn by the player while listing contents:
+	say "your clothing"
+
+Section 8 - Constructing the status line
+
+Rule for printing the name of west while constructing the status line: say "W".
+
+Rule for printing the name of southwest while constructing the status line: say "SW".
+
+Rule for printing the name of east while constructing the status line: say "E".
+
+Rule for printing the name of southeast while constructing the status line: say "SE".
+
+Rule for printing the name of south while constructing the status line: say "S".
+
+Rule for printing the name of northwest while constructing the status line: say "NW".
+
+Rule for printing the name of north while constructing the status line: say "N".
+
+Rule for printing the name of northeast while constructing the status line: say "NE".
+
+Rule for printing the name of up while constructing the status line: say "U".
+
+Rule for printing the name of down while constructing the status line: say "D".
+
+Rule for printing the name of inside while constructing the status line: say "IN".
+
+Rule for printing the name of outside while constructing the status line: say "OUT".
+
+Before constructing the status line while the location is a painting:
+	now the left hand status line is "[location]";
+	now the right hand status line is "Room: [number of visited paintings]/[number of paintings]".
+	
+Before constructing the status line while the location is not a painting:
+	now the right hand status line is "[location]";
+	now the left hand status line is "Exits: [Exit list]"
+
+Understand "dirs" or "directions" or "exits" as listing exits.
+
+Listing exits is an action applying to nothing.
+
+Carry out listing exits:
+	let place be location;
+	say "You can go: [line break]";
+	repeat with way running through directions
+	begin;
+		let place be the room way from the location;
+		if place is a room, say "  [way][if place is visited] to [the place][end if][line break]"; 
+	end repeat;
+	say line break.
+ 
+To say exit list:
+	let place be location;
+	repeat with way running through directions
+	begin;
+		let place be the room way from the location;
+		if place is a room, say " [way]"; 
+	end repeat.
+
+Rule for constructing the status line while the mask is worn: do nothing.
+
+Section 9 - Writing a Paragraph About
+
+Rule for writing a paragraph about the ball:
+	say "A golden ball on the floor reflects [a list of non-ball things in the location]."
+
+Definition: a thing is non-ball if it is not the ball.
+
+Rule for writing a paragraph about a Scrabble piece (called the item) while the location contains a supporter (called the obstruction) and the number of Scrabble pieces in the location is 1:
+	say "[The item] has fallen under [the obstruction]."
+
+
+Section 10 - Listing nondescript items of something
+
+Before listing nondescript items: 
+	if the blur is marked for listing 
+	begin; 
+		say "[The blur] catches your eye."; now the blur is not marked for listing; 
+	end if.
+
+Rule for listing nondescript items of a painting: 
+	say "Sketched on the floor"; 
+	list the contents of the location, as a sentence,  tersely, listing marked items only, prefacing with is/are,  including contents and giving brief inventory information; 
+	say "."
+
+Section 11 - Deciding the scope of something
+
+After deciding the scope of the player while the location is the Exhibition Room:
+	repeat with view running through paintings:
+		place view in scope.
+	
+After deciding the scope of the player while in darkness:
+	place the location in scope.
+
+Section 12 - Supplying a missing noun / second noun
+
+Understand "sit" as entering.
+
+A chair is a kind of supporter. A chair is always enterable. A chair is usually fixed in place. The bench is a chair in the exhibition room.
+
+[Since this only arises when the player has typed "sit" (and not other entering verbs) we know that a chair is a reasonable choice to supply.]
+Rule for supplying a missing noun while entering:
+	if a chair (called the seat) is visible, now the noun is the seat;
+	otherwise say "What, on the floor? No." instead.
+
+Understand "unlock [something]" as unlocking it with.
+
+Rule for supplying a missing second noun while unlocking: 
+	if the skeleton key is carried by the player, now the second noun is the skeleton key; 
+	otherwise say "You will have to specify what to unlock [the noun] with."
+
+The safe is a locked lockable openable closed container in the Closet. It is fixed in place. It contains a beverage called Jolt. The skeleton key is carried by the player. It unlocks the safe.
+
+The description of Jolt is "A cola product of special potency, which carries the slogan: 'ALL THE SUGAR * TWICE THE CAFFEINE!'"
+
+Section 13 - Reading a command
+
+Before reading a command while the turn count is 1, say "(This is your chance to say what the protagonist should do next. After the '>', try typing 'take inventory'.)"
+
+After reading a command: 
+	if the player's command includes "thank" 
+	begin; 
+		say "No thanks."; 
+		reject the player's command; 
+	end if.
+
+After reading a command: 
+	if the player's command includes "please" begin; 
+		say "(Quelle politesse! But no need to say please.)"; 
+		cut the matched text; 
+	end if.
+
+After reading a command: 
+	if the player's command matches "grab", replace the player's command with "take all".
+
+Understand "want to" or "wish to" or "would like to" or "will" or "need to" or "should" as "[want to]".
+
+Understand "foot" or "feet" or "hand" or "hands" or "finger" or "fingers" or "fist" or "fists" as "[body part]".
+
+Understand "with" or "using" or "with my" or "using my" as "[using]".
+
+Understand  "twice" or "thrice" as "[iteration]".
+
+Understand "quickly" or "slowly" or "suddenly" or "secretly" or "sneakily" or "quietly" or "loudly" as "[adverb]".
+
+Understand "annually" or "daily" or "monthly" or "soon" or "eventually" or "promptly" or "then" or "next" as "[temporal adverb]".
+
+Understand "am going to" or "am about to" or "start to" or "begin to" or "will" as "[future tense]".
+
+Understand "score" and "full score" and "full" as "[score]".
+
+Understand "tell [someone] that/how [text]" as telling it about;
+
+
+After reading a command: 
+	if the player's command includes "[using] [body part]"
+	begin; 
+		cut the matched text; 
+	end if;
+	if the player's command includes "[iteration]"
+	begin; 
+		say "(You must issue a separate command each time you wish to do something.)[line break]";
+		cut the matched text; 
+	end if;
+	if the player's command includes "[number] times"
+	begin; 
+		say "(You must issue a separate command each time you wish to do something.)[line break]";
+		cut the matched text; 
+	end if;
+	if the player's command includes "[adverb]"
+	begin; 
+		cut the matched text; 
+	end if; 
+	if the player's command includes "[temporal adverb]"
+	begin; 
+		cut the matched text; 
+	end if; 
+	if the player's command includes "[future tense]"
+	begin; 
+		cut the matched text; 
+	end if; 
+	if the player's command includes "[want to]"
+	begin; 
+		cut the matched text; 
+	end if;
+	if the player's command includes "try to"
+	begin; 
+		cut the matched text; 
+	end if;
+
+After reading a command: 
+	if the player is not in the Simon Says Room, make no decision;
+	if player's command does not include "simon says" 
+	begin; 
+		say "Simon didn't say!"; 
+		reject the player's command;
+	otherwise; 
+		if the player's command includes "simon says",
+			cut the matched text;
+	end if.
+
+
+Section 14 - Deciding whether all includes
+
+Rule for deciding whether all includes scenery: it does not.
+
+Rule for deciding whether all includes a fixed in place thing: it does not. 
+
+[Rule for deciding whether all includes something carried by the player while taking: it does not.]
+
+Section 15 - Printing the player's obituary
+
+Instead of attacking the player:
+	say "Success!";
+	end the story saying "You have died".
+	
+[Yeah, utterly arbitrary. Sue me.]
+Instead of eating the ball:
+	end the story finally saying "You have won".
+
+The print final score rule does nothing.
+
+After printing the player's obituary: say "And you visited the interior of [number of visited paintings in words] painting[s]."
+
+Section 16 - Amusing a victorious player
+
+Rule for amusing a victorious player:
+	say "Most of the descriptive content of this one is taken from my first experiment in Inform, ca 1999. The code is amazingly bad. I also misspelled pomegranate."
+	
+Use the serial comma.

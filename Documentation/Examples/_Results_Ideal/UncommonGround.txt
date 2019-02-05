@@ -1,0 +1,38 @@
+   Mud Village
+  Uncommon Ground
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mud Village
+  You stand at the center of a quaint mud village.
+  
+  You can see Leforge and Lolita here.
+  
+> >   Mud Village
+  (Testing.)
+  
+  >[1] look
+  Mud Village
+  You stand at the center of a quaint mud village.
+  
+  You can see Leforge and Lolita here.
+  
+  >[2] z
+  You jump bodies. Whoops!
+  
+  >[3] look
+  Mud Village
+  You stand at the center of a thrilling mud village.
+  
+  You can see your former self and Leforge here.
+  
+  >[4] z
+  You jump bodies. Whoops!
+  
+  >[5] look
+  Mud Village
+  You stand at the center of a squalid mud village.
+  
+  You can see your former self and Lolita here.
+  
+> >

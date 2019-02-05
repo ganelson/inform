@@ -1,0 +1,12 @@
+Home is a room.
+
+To waste time (this is wasting time): do nothing.
+
+To disregard (P - a phrase nothing -> nothing): say "General case."
+To disregard (P - wasting time): say "Specific case."
+
+When play begins:
+	disregard wasting time;
+	let P be wasting time;
+	disregard P;
+	showme P;

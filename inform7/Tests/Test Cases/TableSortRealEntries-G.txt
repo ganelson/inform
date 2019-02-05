@@ -1,0 +1,12 @@
+Foo is a room.
+
+Table of Zoggle
+zog
+3.5
+-2.6
+4.4
+-1.1
+
+When play begins:
+	sort Table of Zoggle in zog order;
+	showme the contents of Table of Zoggle.

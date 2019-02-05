@@ -1,0 +1,2 @@
+In a room called Test Room is a wearable thing called a hat.
+After taking off:  if something (called x) was worn, say "hi".

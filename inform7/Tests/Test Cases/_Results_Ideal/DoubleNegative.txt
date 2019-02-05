@@ -1,0 +1,31 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see Bobbette here.
+  
+> >   Home
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  There is a hat which is not worn by a person.
+  No hat is not enclosed by a person.
+  
+  >[2] drop homberg
+  Dropped.
+  
+  There is a hat which is not worn by a person.
+  There is a hat which is not enclosed by a person.
+  
+  >[3] wear homberg
+  (first taking the homberg)
+  You put on the homberg.
+  
+  No hat is not worn by a person.
+  No hat is not enclosed by a person.
+  
+> >

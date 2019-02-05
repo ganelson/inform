@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_IndefiniteTextMeaningless
+  >--> You wrote '"He's green."' (source text, line 3): but the property
+    indefinite appearance text for the Kermit is not allowed, i.e., you can't
+    write a double-quoted piece of text as a sentence all by itself here. Some
+    kinds or kinds of value are allowed this - objects and scenes, for instance
+    - but most are not. (They would need to provide a 'description' property.)
+Inform 7 has finished: 17 centiseconds used.

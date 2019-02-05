@@ -1,0 +1,36 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  You can see a table (on which are seven red rough square blocks and a blue rough square block) here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] take blue
+  Taken.
+  
+  >[2] take red
+  Oooh, a red one!
+  
+  Taken.
+  
+  >[3] inventory
+  You are carrying:
+    a red rough square block
+    a blue rough square block
+  
+  >[4] drop red cube
+  Dropped.
+  
+  >[5] drop cube
+  (the blue rough square block)
+  Dropped.
+  
+  >[6] look
+  Lab
+  You can see a blue rough square block, a red rough square block and a table (on which are six red rough square blocks) here.
+  
+> >

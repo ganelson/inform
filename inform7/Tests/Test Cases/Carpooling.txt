@@ -1,0 +1,12 @@
+Southwest Corner is a room. Northwest Corner is north of southwest corner.
+
+The truck is a vehicle in Southwest Corner. Bob is a man in truck. The player is in truck.
+
+Every turn:
+	showme the location;
+	if location of Bob is Southwest Corner:
+		try Bob going north;
+	otherwise if location of Bob is Northwest Corner:
+		try Bob going south.
+		
+Test me with "wait / wait".

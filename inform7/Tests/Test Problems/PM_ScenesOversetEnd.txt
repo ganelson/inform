@@ -1,0 +1,5 @@
+Eynforme Halt is a room. Train Stop is a scene. Explosion is a scene.
+
+Explosion begins when the player is in Train Stop.
+
+Explosion begins when the score is 45.

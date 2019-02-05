@@ -1,0 +1,19 @@
+The Cave is a room.
+
+A large stone is here. "There's a very large stone here, in a small
+clearing." The description is "It's a very large rock, with a thin,
+slot-like opening in the top of it." The stone is a fixed in place,
+opaque container.
+
+A bead is in the stone. An axehead is in the Cave.
+
+The taking action has an object called the former position (matched as "from").
+
+Setting action variables for taking:
+	now the former position is the holder of the noun.
+
+
+After taking something from the large stone:
+	say "Done."
+
+Test me with "get all".

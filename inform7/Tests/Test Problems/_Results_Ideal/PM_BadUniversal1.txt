@@ -1,0 +1,15 @@
+Inform 7 build 6L48 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42569 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadUniversal1
+  >--> In the sentence 'if "fish" relates 1 to 2' (source text, line 4), it
+    looks as if you intend '"fish" relates 1 to 2' to be a condition, but that
+    asks whether something relates something, and in Inform 'to relate' means
+    that a particular relation applies between two things. Here, though, we
+    have a text rather than the name of a relation.
+    I was trying to match this phrase:
+      if ("fish" relates 1 to 2 - a condition): 
+    I recognised:
+    "fish" relates 1 to 2 = a condition
+Inform 7 has finished: 50 centiseconds used.

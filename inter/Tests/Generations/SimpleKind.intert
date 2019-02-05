@@ -1,0 +1,7 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_colour enum
+	instance I_green K_colour = 1
+	instance I_red K_colour = 17

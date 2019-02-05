@@ -1,0 +1,24 @@
+Inform 7 build 6L65 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_APClauseIndefinite
+  >--> You wrote 'Check counting value (called N)' (source text, line 6): but
+    that action seems to involve a value which is unclear about its kind, and
+    that's not allowed. For example, you're not allowed to just say 'Instead of
+    taking a value: ...' because the taking action applies to objects; the
+    vaguest you're allowed to be is 'Instead of taking an object: ...'.
+Problem__ PM_Unknown
+  >--> In the sentence 'showme N' (source text, line 7), I was expecting to
+    read a value, but instead found some text that I couldn't understand - 'N'.
+    I was trying to match this phrase:
+      showme (n - value) 
+    But I didn't recognise 'n'.
+Problem__ PM_SayUnknown
+  >--> In the line 'say "Count [N]."' (source text, line 8), I was expecting
+    that 'N' would be something to 'say', but it didn't look like any form of
+    'say' that I know. So I tried to read 'N' as a value of some kind (because
+    it's legal to say values), but couldn't make sense of it that way either.
+    Sometimes this happens because punctuation has gone wrong - for instance,
+    if you've omitted a semicolon or full stop at the end of the 'say' phrase.
+Inform 7 has finished: 47 centiseconds used.

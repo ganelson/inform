@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 8 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ActionEquated
+  >--> You wrote 'Taking something is Xanadu' (source text, line 3): but an
+    action can't be the same as a thing, so my guess is that this is an attempt
+    to categorise an action which went wrong because there was already
+    something of that name in existence. For instance, 'Taking something is
+    theft' would fail if 'theft' was already a value. (But it can also happen
+    with a sentence which tries to set several actions at once to a named kind
+    of action, like 'Taking and dropping are manipulation.' - only one can be
+    named at a time.)
+Inform 7 has finished: 17 centiseconds used.

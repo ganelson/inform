@@ -1,0 +1,131 @@
+   Fitting Room                                                                                                                                                                                                           10/1
+  Things are already going so well this morning.
+  
+  Chapter 11: The Midas Touch
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Fitting Room
+  You can see a round door, Florence, a silver handbag (made of silk) (empty) and a pearl brooch (made of silk) here.
+  
+> >   Fitting Room                                                                                                                                                                                                           10/2
+  ** e
+  You can't go that way.
+  
+  "1," mutters Florence, counting on her fingers.
+  "2," mutters Florence, counting on her fingers.
+  "3," mutters Florence, counting on her fingers.
+  "4," mutters Florence, counting on her fingers.
+  "5," mutters Florence, counting on her fingers.
+  
+  Florence picks up the silver handbag (made of silk).
+  Florence picks up the pearl brooch (made of silk).
+  
+> >   Candy Room                                                                                                                                                                                                             10/3
+  ** w
+  (first opening the round door)
+  
+  Candy Room
+  You can see a round door, a pair of snake-skin shoes (made of silk), a lavender suit (made of silk), a chicken mask (made of silk) and a counter (on which is a vase (in which is a rubber chicken)) here.
+  
+  Florence dons the silver handbag (made of silk).
+  Florence dons the pearl brooch (made of silk).
+  
+> >   Candy Room                                                                                                                                                                                                             10/4
+  ** touch door
+  The round door is already just gaping space.
+  
+> >   Candy Room                                                                                                                                                                                                             10/5
+  ** w
+  You can't go that way.
+  
+> >   Candy Room                                                                                                                                                                                                             10/6
+  ** touch vase
+  The vase cracks, dumping out the rubber chicken!
+  
+> >   Candy Room                                                                                                                                                                                                             10/7
+  ** look
+  Candy Room
+  You can see a rubber chicken, a round door, a pair of snake-skin shoes (made of silk), a lavender suit (made of silk), a chicken mask (made of silk) and a counter (on which is a broken vase (empty)) here.
+  
+> >   Candy Room                                                                                                                                                                                                             10/8
+  ** touch counter
+  The broken counter goes away in a puff of smoke!
+  
+> >   Candy Room                                                                                                                                                                                                             10/9
+  ** look
+  Candy Room
+  You can see a broken vase (empty), a rubber chicken, a round door, a pair of snake-skin shoes (made of silk), a lavender suit (made of silk), a chicken mask (made of silk) and a broken counter here.
+  
+> >   Candy Room                                                                                                                                                                                                             10/9
+  ** take the chickent
+  You can't see any such thing.
+  
+> >   Candy Room                                                                                                                                                                                                             10/9
+  ** take the chicken
+  Which do you mean, the rubber chicken or the chicken mask (made of silk)?
+  
+> >   Candy Room                                                                                                                                                                                                             10/10
+  ** rubber
+  Taken.
+  
+> >   Candy Room                                                                                                                                                                                                             10/11
+  ** put the chicken in the vase
+  (the rubber chicken in the broken vase)
+  The broken vase lacks the structural integrity required.
+  
+> >   Candy Room                                                                                                                                                                                                             10/12
+  ** touch the suit
+  The lavender suit (made of sow ear) is now hideous!
+  
+> >   Candy Room                                                                                                                                                                                                             10/13
+  ** wear suit
+  (first taking the lavender suit (made of sow ear))
+  You put on the lavender suit (made of sow ear).
+  
+> >   Candy Room                                                                                                                                                                                                             10/14
+  ** touch me
+  You drop the rubber chicken. The lavender suit (made of sow ear) wind up on the floor also.
+  *** Run-time problem P43: Attempt to remove the player from play.
+  
+  You vanish!
+  
+> >   Candy Room                                                                                                                                                                                                             10/13
+  ** undo
+  Candy Room
+  [Previous turn undone.]
+  
+> >   Candy Room                                                                                                                                                                                                             10/14
+  ** look
+  Candy Room
+  You can see a broken vase (empty), a round door, a pair of snake-skin shoes (made of silk), a chicken mask (made of silk) and a broken counter here.
+  
+> >   Fitting Room                                                                                                                                                                                                           10/15
+  ** e
+  
+  Fitting Room
+  You can see a round door and Florence (looking splendid) here.
+  
+> >   Fitting Room                                                                                                                                                                                                           10/16
+  ** touch florence
+  Florence (looking splendid) drops the daisy. The pearl brooch (made of silk), the silver handbag (made of silk), the hat (made of silk) and the pair of lace gloves (made of silk) wind up on the floor also. Florence vanishes.
+  
+> >   Fitting Room                                                                                                                                                                                                           10/17
+  ** take all
+  pearl brooch (made of silk): Taken.
+  silver handbag (made of silk): Taken.
+  pair of lace gloves (made of silk): Taken.
+  hat (made of silk): Taken.
+  daisy: Taken.
+  
+> >   Candy Room                                                                                                                                                                                                             10/18
+  ** w
+  
+  Candy Room
+  You can see a round door, a broken vase (empty), a pair of snake-skin shoes (made of silk), a chicken mask (made of silk) and a broken counter here.
+  
+> >   Candy Room                                                                                                                                                                                                             10/18
+  **
+  I beg your pardon?
+  
+> >

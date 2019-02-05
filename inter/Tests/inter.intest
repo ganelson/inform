@@ -1,0 +1,128 @@
+-cases [Valid] 'inter/Tests/Valid'
+-cases [Invalid] 'inter/Tests/Invalid'
+-cases [Generations] 'inter/Tests/Generations'
+-cases [Graph] 'inter/Tests/Graph'
+-cases [RCC] 'inter/Tests/RCC'
+-cases [PLM] 'inter/Tests/PLM'
+-cases [Assimilate] 'inter/Tests/Assimilate'
+
+-recipe [Valid]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Textual/$CASE.intert
+	set: $B = $PATH/_Binary/$CASE.interb
+	set: $T = $PATH/_Console/$CASE.txt
+
+	step: inter/Tangled/inter $O -binary $B >$T 2>&1
+	or: 'produced errors in inter' $T
+
+	step: inter/Tangled/inter $B -textual $A >$T 2>&1
+	or: 'produced errors in inter' $T
+
+	show: $A
+
+	match text: $A $O
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [Invalid]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	fail step: inter/Tangled/inter $O >$A 2>&1
+	or: 'failed to produce error message' $A
+	show: $A
+	exists: $I
+	or: 'produced error(s), but no ideal transcript existed'
+	match text: $A $I
+	or: 'produced the wrong error message(s)'
+
+-end
+
+-recipe [Generations]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, assimilate, generate-i6:$A' >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [RCC]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, generate-inter:$A' >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [Graph]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	step: inter/Tangled/inter $O -inter 'show-dependencies:$A' >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [PLM]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, generate-inter:$A' >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [Assimilate]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, assimilate, generate-inter:$A' >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end

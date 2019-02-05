@@ -1,0 +1,8 @@
+Home is a room.
+
+Understand "bug [any thing]" as examining.
+
+Rule for printing a parser error when latest parser error is noun did not make sense in that context error:
+	say "Oh, if you must use 'any thing', you deserve all you get." instead.
+
+Test me with "bug me / bug home".

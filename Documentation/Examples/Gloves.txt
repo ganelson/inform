@@ -1,0 +1,127 @@
+*** New actions
+(Contact with objects detected--Liquid which soaks into porous items; Frizz)
+Liquid flows within containers and soaks objects that are not waterproof; any contact with a wet object can dampen our gloves.
+
+Suppose we have some items that get wet in contact with other damp things; in particular, if we touch anything wet while wearing a pair of gloves, the gloves too get damp. This requires that we be systematic about detecting all cases where contact occurs. So:
+
+	{*}"Frizz"
+
+	A thing can be waterproof or porous. A container is usually waterproof. An animal is usually waterproof.
+
+	A thing can be sodden or dry.
+
+	A container can be waterfilled or empty.
+
+	Before printing the name of a sodden thing: say "sodden ". Understand the sodden property as describing a thing.
+
+	The player wears a pair of woolly gloves. Instead of wearing a sodden thing: say "You dubiously contemplate [the noun], and decide it's best to wear dry clothing."
+
+	Every turn:
+		follow the liquid distribution rules.
+
+	The liquid distribution rules is a rulebook.
+
+	A liquid distribution rule:
+		repeat with item running through containers:
+			if the item is open and the item is empty and the item is in a waterfilled container:
+				now the item is waterfilled;
+				if the player can see the item, say "[The item] fills up with water, of course.".
+
+	A liquid distribution rule:
+		repeat with item running through things in a waterfilled container:
+			if the item is porous and the item is dry:
+				if the player can see the item, say "[The item] soaks through.";
+				now the item is sodden.
+
+	A liquid distribution rule:
+		repeat with item running through sodden things in the airing cupboard:
+			if the item is not The Last Man, now the item is dry.
+
+	The last liquid distribution rule:
+		if the player carries a dry copy of The Last Man, end the story finally.
+
+	Instead of examining a waterfilled container:
+		say "[The noun] is full of water[if the noun contains something visible]; it also contains [the list of things in the noun][end if]."
+
+	Instead of examining a container:
+		say "Dry inside[if the noun contains something visible], and containing [a list of things in the noun]."
+
+	A book is a kind of thing. Instead of examining a sodden book, say "[The noun] is too soaked to read, thanks to someone's carelessness." Understand "book" as a book.
+
+	The copy of The Last Man is a book. The description of The Last Man is "Mary Shelley's very own original copy, loaned to you under the strictest of agreements[if the pond encloses the copy]. How it came to be in its present position is a long story, and not important at the moment: the critical thing is not to blame oneself - who could have anticipated the cricket bat, anyway? - but to fix it immediately, before anything worse occurs[end if]." The The Last Man is in the ziploc bag. The ziploc bag is waterproof and empty. It is openable, transparent, and closed.
+
+	The Back Garden is a room. The Back Garden contains a pond. The pond is a waterfilled container. In the pond is the ziploc bag. A carp is in the pond. The carp is an animal. Instead of taking the carp, say "You're not fast enough."
+
+	Rule for writing a paragraph about the pond:
+		if the pond encloses the Last Man:
+			say "It is a beautiful day just at the end of spring and beginning of summer. The sun shines, the trees blossom, the world conspires in Edenic cheerfulness. You can take in none of it. Your eye is on [the Last Man].";
+		otherwise:
+			say "The pond[if something is in the pond] (containing [the list of things in the pond])[end if] remains a figure of menace in an otherwise lushly verdant landscape."
+
+	Before printing the name of the Last Man when the Last Man is enclosed by the Pond: if the Last Man is dry, say "delicate, valuable ".
+	
+	After printing the name of something (called the target) while writing a paragraph about something:
+		if the Last Man is enclosed by the Pond:
+			if the target is in something (called the parent), say " - which is in [the parent]".
+
+	The Kitchen is west of the Back Garden. "Not in any sense your province: Mrs Peaswell gets agitated if anyone besides herself so much as boils a kettle. In general it is best to sneak through, disturbing as little as possible and preserving the cosy domestic fiction that academics cannot cook. 
+
+	The nearby stairwell leads up to the second floor."
+
+	The Stairwell is above the Kitchen. "Halfway up and halfway down." The airing cupboard is a container in the Stairwell. "An airing cupboard here contains the heating system, and is the ideal place for restoring wet items to a dry state." The airing cupboard is fixed in place.
+
+Now: whenever the player definitely touches something, we want to follow certain rules about the transfer of liquid. These rules need to come after an action's check rules (to make sure the action really occurs) and before the carry out rules (so that nothing has moved or changed yet). So we'll borrow from the chapter on rulebooks to create a whole new stage to the action, occurring between the check and the carry out phases:
+
+	{**}The post-check rules are a rulebook.
+
+	This is the post-check stage rule:
+		abide by the post-check rules.
+
+	The post-check stage rule is listed before the carry out stage rule in the specific action-processing rules.
+
+	A post-check rule (this is the dry glove rule):
+		if we get wet:
+			if the player wears the gloves and the gloves are dry:
+				now the gloves are sodden;
+				say "(soaking your gloves in the process)";
+		continue the action.
+
+	A post-check rule (this is the wet glove rule):
+		if the player wears the sodden gloves:
+			if the The Last Man must be touched and the Last Man is not sodden:
+				say "(soaking the parched pages of The Last Man with the rude touch of your sodden gloves)";
+				now the The Last Man is sodden;
+			continue the action.
+
+	Before doing something when the player does not wear the gloves:
+		if The Last Man must be touched:
+			if The Last Man is dry, say "[The The Last Man] is too precious to endanger when you are not wearing gloves." instead;
+			otherwise say "You hesitate instinctively, then recollect that you can hardly harm [The The Last Man] any more than it has already been harmed...".
+
+	To decide whether we get wet:
+		if the noun is not a thing, no;
+		if the noun dampens us, yes;
+		if the second noun is not a thing, no;
+		if the second noun dampens us, yes;
+		no.
+
+	To decide whether (item - a thing) dampens us:
+		if the item is not liquiferous, no;
+		if item must be touched, yes;
+		no.
+
+	To decide whether (item - a thing) must be touched:
+		if the item is the noun and the action requires a touchable noun, yes;
+		if the item is the second noun and the action requires a touchable second noun, yes;
+		no.
+
+	Definition: a thing is liquiferous:
+		if it is sodden, yes;
+		if it is in a waterfilled container, yes;
+		no.
+
+	Test me with "x book / x bag / get bag / take off gloves / w / u / put gloves in cupboard / z / open bag / touch book / push book / turn book / get gloves / wear gloves / get book".
+
+	Test disaster with "open bag".
+
+	Test mishandling with "get bag / open bag / get book".

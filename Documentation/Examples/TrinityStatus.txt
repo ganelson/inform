@@ -1,0 +1,39 @@
+* Longer extracts of Inform 6 code
+(Status line with centered text, the hard way)
+A status line which has only the name of the location, centered.
+
+Making major changes to display features, such as the construction of the status line, sometimes requires that we rely on Inform 6 in bulk; here is how we might produce the Trinity-style status line, with the location centered at the top center of the screen.
+
+	{*}"Corner of No and Where"
+	
+	No is a room. Where is west of No.
+	
+	Rule for constructing the status line:
+		print the location in the center of the status line;
+		rule succeeds.
+	
+	To print the location in the center of the status line:
+		(- PrintCenteredStatus(); -).
+
+	Include (-
+
+	Array printed_text --> 64;
+
+	[ PrintCenteredStatus i j;
+		@set_cursor 1 0;
+		i = 0->33;
+		spaces(i);
+		@output_stream 3 printed_text;
+		print (name) location;
+		@output_stream -3;
+		j = (i - (printed_text-->0))/2;
+		@set_cursor 1 j;
+		print (name) location;
+		spaces j-1; 
+	];
+
+	-)
+	
+	Test me with "w / e".
+
+In fact, as we've already seen, many extra modifications to the display behavior are possible using Basic Screen Effects.

@@ -1,0 +1,17 @@
+The Trampolinium is a room.
+
+Before jumping: say "Before jumping."
+
+Before jumping for the third time: say "Before jumping for the third time."
+
+Before jumping for the second to third time: say "Before jumping for the second to third time."
+
+Before jumping for at most the second time: say "Before jumping for at most the second time."
+
+Before jumping for more than the second time: say "Before jumping for more than the second time."
+
+Before jumping for less than the third time: say "Before jumping for less than the third time."
+
+Before jumping for at least the third time: say "Before jumping for at least the third time."
+
+Test me with "jump / jump / jump / jump".

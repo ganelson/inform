@@ -1,0 +1,8 @@
+There is a room called The Spot.
+
+Report an actor jumping (this is the blameless rule):
+	anonymously abide by the report jumping rule.
+
+The blameless rule is listed instead of the report jumping rule in the report jumping rulebook.
+
+Test me with "actions / jump".

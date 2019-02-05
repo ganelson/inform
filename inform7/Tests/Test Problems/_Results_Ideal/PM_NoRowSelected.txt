@@ -1,0 +1,14 @@
+Inform 7 build 6L65 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NoRowSelected
+  >--> You wrote '"[flavour entry]"' (source text, line 9): but no row seems to
+    have been chosen at this point, so it doesn't make sense to talk about the
+    entries within it. (By 'at this point', I mean the point when the table
+    will have to be looked at. This might be at another time altogether if we
+    are storing away instructions for later in a text substitution, e.g.,
+    writing 'now the description of the player is "Thoroughly [vanity
+    entry].";' - remember that the substitution is acted on when the text is
+    printed, which could be at any time, and no row will be chosen then.)
+Inform 7 has finished: 65 centiseconds used.

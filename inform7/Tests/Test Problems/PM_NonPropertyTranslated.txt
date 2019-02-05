@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+The wholly bogus property translates into I6 as "initial".

@@ -1,0 +1,5 @@
+The Train Yard is a room.
+
+The power line is a backdrop. The power line is in the Train Yard.
+
+The description of the power line in the Train Yard is "This is a power line."

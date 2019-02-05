@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LPTooManyElements
+  >--> You wrote '2-2-2-2-2-2-2-2-2-2-2-2-2-2-2-2-2 specifies a weight' (source
+    text, line 5): but that specification contains too many numerical elements,
+    and is too complicated for Inform to handle.
+Inform 7 has finished: 16 centiseconds used.

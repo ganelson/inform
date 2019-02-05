@@ -1,0 +1,38 @@
+   Foo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foo
+  
+> >   Foo
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] z
+  Time passes.
+  
+  You have been granted a reprieve!
+  
+  >[3] look
+  Foo
+  
+  >[4] z
+  Time passes.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] z
+  Time passes.
+  
+  
+  
+      *** Your privileges have been revoked ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

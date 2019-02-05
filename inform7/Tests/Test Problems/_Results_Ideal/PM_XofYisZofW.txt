@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_XofYisZofW
+  >--> You wrote 'The printed name of the Palace is the printed name of the
+    Hills' (source text, line 3): but this seems to say two different
+    properties are not simply equal but somehow the same thing, like saying
+    that 'the printed name of the millpond is the printed name of the village
+    pond'. This puts me in a quandary: which should be changed to match the
+    other, and what if I am unable to work out the value of either one?
+Inform 7 has finished: 18 centiseconds used.

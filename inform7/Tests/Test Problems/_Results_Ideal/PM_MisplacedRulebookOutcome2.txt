@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 9 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MisplacedRulebookOutcome2
+  >--> You wrote 'it is unlikely' (source text, line 4), but this is a rulebook
+    outcome which can only be used within rulebooks which recognise it. You've
+    used it in a definition which isn't for use in rulebooks at all, so it must
+    be wrong here.
+Inform 7 has finished: 55 centiseconds used.

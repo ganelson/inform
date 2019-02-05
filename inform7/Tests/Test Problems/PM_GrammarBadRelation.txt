@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+A box is a kind of container. Understand "box of [something related by grobble]"
+as a box.

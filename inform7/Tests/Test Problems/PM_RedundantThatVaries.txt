@@ -1,0 +1,3 @@
+The Dome is a room.
+
+A scene has a number that varies called the difficulty rating.

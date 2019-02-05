@@ -1,0 +1,9 @@
+Inform 7 build 6M41 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42472 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NegativeCreation
+  >--> You wrote 'In Foo is never a device' (source text, line 2): but
+    sentences are only allowed to say that things do exist, not that they
+    don't.
+Inform 7 has finished: 27 centiseconds used.

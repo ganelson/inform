@@ -1,0 +1,31 @@
+   Frog
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Frog
+  
+> >   Frog
+  (Testing.)
+  
+  >[1] x he
+  "masculine" triggered.
+  "if includes" triggered.
+  You can't see any such thing.
+  
+  >[2] x guy
+  "masculine" triggered.
+  "if includes" triggered.
+  You can't see any such thing.
+  
+  >[3] guy
+  "masculine" triggered.
+  "if includes" triggered.
+  That's not a verb I recognise.
+  
+  >[4] male
+  "masculine" triggered.
+  "if includes" triggered.
+  That's not a verb I recognise.
+  
+> >

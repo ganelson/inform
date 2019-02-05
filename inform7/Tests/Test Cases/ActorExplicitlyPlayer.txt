@@ -1,0 +1,17 @@
+Over the River is a room. East is Through the Woods.
+
+The horse is an animal in Over the River.
+
+Instead of the horse going: say "Not without the sleigh!"
+
+Instead of the player going: say "Not without the horse!"
+
+Before going when the player can see horse: try horse going noun.
+
+Instead of the horse jumping: say "Not without the sleigh!"
+
+Instead of yourself jumping: say "Not without the horse!"
+
+Before jumping when the player can see horse: try horse jumping.
+
+Test me with "e / jump".

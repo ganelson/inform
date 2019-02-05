@@ -1,0 +1,16 @@
+After reading a command:
+	if the player's command is a topic listed in the Table of Test Words  
+	begin;
+		say "Match.";
+		rule succeeds;
+	end if.
+
+Table of Test Words
+topic
+"sofa"
+"breadbox"
+"counter"
+
+The Lab is a room.
+
+Test me with "jump / go east / sofa / counter / breadbox me".

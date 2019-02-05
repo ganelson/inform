@@ -1,0 +1,11 @@
+Slope is a number that varies.
+
+Equation - Slope-Intercept Formula
+	y=mx+b
+where y is a number, x is a number, m is the slope, and b is a number. 
+
+when play begins:
+	let m be given by the Slope-Intercept Formula where x is 1, y is 0, and b is 3;
+	showme m.
+
+There is a room.

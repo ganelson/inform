@@ -1,0 +1,24 @@
+When play begins:
+	repeat with X running from 1 to 10:
+		if X is 4, next;
+		say "X is [X].";
+		if X is 7, break;
+	repeat with Y running through people:
+		if Y is Blakeney, next;
+		say "Y is [Y].";
+		if Y is St Just, break;
+	let Z be 23;
+	while Z is less than 90:
+		increase Z by 7;
+		if Z is 37, next;
+		say "Z is [Z].";
+		if Z is greater than 70, break.
+
+When play begins:
+	if 1 is 2:
+		say "1 is 2".
+
+Pere Blanchard's Hut is a room. Percival Blakeney is a man in the Hut.
+Marguerite is a woman in the Hut. Outside from the Hut is the Garden.
+Louise is a woman in the Garden. The Road to Paris is west of the Garden.
+Armand St Just is a man in the Road. Monsieur St Just is a man.

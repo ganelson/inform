@@ -1,0 +1,17 @@
+Noplace is a room.
+
+A pebble is here.
+
+Every turn:
+	if we have examined the pebble for less than 1 turn, say "The pebble has been examined for less than one turn. "
+
+Every turn:
+	say "The pebble has been examined for ";
+	if we have examined the pebble for 0 turns, say "zero";
+	if we have examined the pebble for 1 turn, say "one";
+	if we have examined the pebble for 2 turns, say "two";
+	if we have examined the pebble for 3 turns, say "three";
+	if we have examined the pebble for more than 3 turns, say "many";
+	say " turns."
+
+Test me with "z / x pebble / z / z / z / z".

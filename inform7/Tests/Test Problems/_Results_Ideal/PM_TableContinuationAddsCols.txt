@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 22 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableContinuationAddsCols
+  >--> The table 'Table of Ships (continued)' (source text, line 7) won't work
+    as a continuation, because it contains a column not found in the original
+    'Table of Ships' (source text, line 3).
+    The old table has columns: ship, rate.
+    The new table has columns: ship, rate, broadside.
+Inform 7 has finished: 15 centiseconds used.

@@ -1,0 +1,29 @@
+** Report rules for actions by other people
+(Reporting rules for other characters' behavior; The Man of Steel Excuses Himself)
+Elaborating the report rules to be more interesting than "Clark goes west."
+
+Report rules can be a good point at which to add local color: while Inform provides default descriptions of character behavior, these are rather generic and can stand to be customized.
+
+For instance, if we wanted to liven up our previous Clark Kent example:
+	
+	{*}Report Clark Kent going a direction (called the way):
+		say "[one of]With a particularly weak excuse[or]Muttering[at random] about [random excuse subject], Clark heads [way]." instead.
+
+	To say random excuse subject:
+		choose a random row in the Table of Lame Excuses; say "[reply entry]".
+
+	Table of Lame Excuses
+	reply 
+	"needing a paper-clip"
+	"wanting an English-Tuvalu dictionary"
+	"walking a neighbor's dog"
+	"hearing air-raid sirens"
+	"having drunk too much coffee"
+	"thinking he smells smoke"
+	"wondering where Lois got to"
+	"needing to speak to Jimmy"
+	"noticing the Good Year blimp"
+	
+It's good to be careful, as the library report rules have been designed and tested to describe every contingency (going through doors, going in vehicles, etc.): so when replacing a report rule, we should try to consider all the possible variations of the action that we might want to describe. 
+
+However, in this case, our scenario is so simple that there are no doors, vehicles, or pushable objects, so we're safe in giving Clark a very simple reporting scheme.

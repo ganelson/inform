@@ -1,0 +1,5 @@
+Place is a room.
+Here is a brock.
+A person called Bob is in Place.
+Understand "[Bob] s" as the brock.
+Test me with "x bob s / x brock / x bob".

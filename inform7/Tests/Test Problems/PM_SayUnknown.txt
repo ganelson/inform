@@ -1,0 +1,5 @@
+The NI School for Typing is a room.
+
+When play begins:
+	say flibble flobble;
+	say "Frogs ate my [arfle barfle gloop] for tea."

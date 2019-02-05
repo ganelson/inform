@@ -1,0 +1,36 @@
+   Herb Garden
+  Tiny Garden
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Herb Garden
+  Along this side of the house run your great-aunt's herb beds.
+  
+> >   Lawn
+  (Testing.)
+  
+  >[1] w
+  
+  Lawn
+  The grass underfoot is thick and green. The lawn extends to the south, the southwest and the west from here.
+  
+  You can see a picnic table and a wicker basket here.
+  
+  >[2] s
+  
+  Lawn
+  The grass underfoot is thick and green. The lawn extends to the north, the northwest and the west from here.
+  
+  >[3] w
+  
+  Lawn
+  The grass underfoot is thick and green. The lawn extends to the north, the northeast and the east from here.
+  
+  >[4] n
+  
+  Lawn
+  The grass underfoot is thick and green. The lawn extends to the south, the southeast and the east from here.
+  
+  You can see a birdbath here.
+  
+> >

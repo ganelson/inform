@@ -1,0 +1,7 @@
+Smudge is a room.
+
+To banana:
+	let smudge be 6.
+
+The Test Room is a Room.  "This is a test room."
+The player has a number called target.

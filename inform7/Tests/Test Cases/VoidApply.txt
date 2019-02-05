@@ -1,0 +1,15 @@
+Home is a room.
+
+To greet the world (this is greeting): say "Hello world!"
+
+To greet the world with (N - number) (this is greeting again): say "Hello world! It's [N]."
+
+To greet the world with (N - number) and (M - number) (this is greeting again and again): say "Hello world! It's [N] and [M]."
+
+To greet the world with (N - number) and (M - number) and (O - number) (this is greeting again and again and again): say "Hello world! It's [N] and [M] and [O]."
+
+When play begins:
+	apply greeting;
+	apply greeting again to 5;
+	apply greeting again and again to 5 and 6;
+	apply greeting again and again and again to 5 and 6 and 7;

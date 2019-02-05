@@ -1,0 +1,5 @@
+Park is a room. A blanket is an enterable supporter in the Park.
+
+The player wears a watch. The player is on the blanket.
+
+The player is a woman called Terry.

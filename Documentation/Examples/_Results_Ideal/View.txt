@@ -1,0 +1,31 @@
+   Sahara
+  Waterworld 1
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sahara
+  
+> >   Yet Further Sahara
+  (Testing.)
+  
+  >[1] x sun
+  A blazing sun makes you wish you had never been born.
+  
+  >[2] get sun
+  You are too far from the sun to do anything but look.
+  
+  >[3] n
+  
+  More Sahara
+  
+  >[4] x sun
+  A blazing sun makes you wish you had never been born.
+  
+  >[5] n
+  
+  Yet Further Sahara
+  
+  >[6] x sun
+  A blazing sun makes you wish you had never been born.
+  
+> >

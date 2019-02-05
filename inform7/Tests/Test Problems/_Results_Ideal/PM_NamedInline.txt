@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NamedInline
+  >--> The declaration 'To decide which number is the bitwise or of (I - a
+    number) and (J - a number) (this is bitwise oring)' (source text, line 2)
+    tries to give a name to a phrase which is defined using inline Inform 6
+    code in (- markers -). Such phrases can't be named and used as constants
+    because they have no independent existence, being instead made fresh each
+    time they are used.
+Inform 7 has finished: 43 centiseconds used.

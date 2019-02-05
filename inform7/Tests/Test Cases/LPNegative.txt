@@ -1,0 +1,7 @@
+Test is a room.
+
+A weight is a kind of value. -99.999 kg specifies a weight.
+
+After looking in Test:
+	let temp be -10.123 kg;
+	say "[temp]";

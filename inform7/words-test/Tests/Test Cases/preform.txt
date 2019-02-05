@@ -1,0 +1,11 @@
+[This is some sample text for Preform parsing.]
+
+proclaim 1956
+
+invade Upper and Lower Egypt
+
+declare India independent
+
+declare Malaya independent
+
+announce "Attention all planets of the Solar Federation"

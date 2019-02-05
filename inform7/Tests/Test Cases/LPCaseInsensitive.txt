@@ -1,0 +1,10 @@
+Stage is a room.
+
+A frequency is a kind of value. 100kHz specifies a frequency.
+
+Tuning is an action applying to one frequency. Understand "tune to
+[frequency]" as tuning.
+
+Carry out tuning: say "You tune to [the frequency understood]."
+
+Test me with "tune to 79kHz / TUNE TO 79KHZ / tune to 79khz".

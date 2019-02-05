@@ -1,0 +1,37 @@
+* Writing and reading tables to external files
+(Preferences file loaded on replaying; Alien Invasion Part 23)
+Keeping a preference file that could be loaded by any game in a series.
+
+Suppose that we have a series of games each of which allows the player to select a puzzle difficulty level. When the player plays a new game in the series, we want him to start out by default with the same difficulty level he faced earlier on, so we store this information in a small preferences file, as follows:
+
+	{*}"Alien Invasion Part 23"
+
+	A difficulty is a kind of value. The difficulties are easy, moderate, hard, and fiendish.
+
+	Understand "use [difficulty] puzzles" as selecting difficulty. Selecting difficulty is an action out of world, applying to one difficulty.
+
+	Carry out selecting difficulty:
+		choose row 1 in the Table of Preference Settings;
+		now challenge level entry is difficulty understood;
+		say "Puzzles will be [challenge level entry] from now on."
+
+	The File of Preferences is called "prefs".
+
+	When play begins:
+		if File of Preferences exists:
+			read File of Preferences into the Table of Preference Settings;
+			choose row 1 in the Table of Preference Settings;
+			say "(The current puzzle difficulty is set to [challenge level entry].)"
+
+	Check quitting the game:
+		write File of Preferences from the Table of Preference Settings.
+
+	Table of Preference Settings
+	challenge level
+	easy
+
+	The Sewer Junction is a room.
+
+Our preference file is restricted to a single option here for simplicity's sake, but we could keep track of more information -- whether the player preferred verbose or brief room descriptions, screen configurations, and so on.
+	
+If we were disposed to be somewhat crueler, we could use a similar method to make the player finish each episode of the series in order to "unlock" the next. All we would need to do is store a numerical password in our preferences file when the player finished a given level; the next level would check, say, the Table of Completed Levels for that password, and refuse to play unless the right number were present.

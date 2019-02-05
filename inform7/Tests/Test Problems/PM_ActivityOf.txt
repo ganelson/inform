@@ -1,0 +1,4 @@
+The NI School for Typing is a room.
+
+When play begins:
+	carry out the printing the name of activity.

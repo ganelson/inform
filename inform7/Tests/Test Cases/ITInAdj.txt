@@ -1,0 +1,13 @@
+Home is a room.
+A pot is a kind of thing. A pot has an text called label.
+Definition: a pot is blank if its label exactly matches the text "".
+
+The red pot and the blue pot are pots in Home.
+
+The label of the red pot is "Poison".
+
+When play begins:
+	say "The pots are: [a list of pots].";
+	say "The blank pots are: [a list of blank pots].";
+	repeat with P running through pots:
+		say "Pot [P] has label [label of P]."

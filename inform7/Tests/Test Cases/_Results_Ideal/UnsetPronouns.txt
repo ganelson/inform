@@ -1,0 +1,119 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] pronouns
+  At the moment, "it" is unset, "him" is unset, "her" is unset, "them" is unset and "me" means Kate.
+  
+  >[2] trace 5
+  [Parser tracing set to level 5.]
+  
+  >[3] x it
+  [ "x" x / "it" it ]
+  [Parsing for the verb 'x' (1 lines)]
+  
+  [line 0 * noun -> Examine]
+   [line 0 token 1 word 2 : noun]
+    [Object list from word 2]
+    [Stop: unset pronoun]
+    [token resulted in failure with error type 10]
+  I'm not sure what 'it' refers to.
+  
+  >[4] pronouns
+  [ "pronouns" pronouns ]
+  [Parsing for the verb 'pronouns' (1 lines)]
+  
+  [line 0 * -> Pronouns]
+   [line 0 token 1 word 2 : END]
+  [Line successfully parsed]
+  At the moment, "it" is unset, "him" is unset, "her" is unset, "them" is unset and "me" means Kate.
+  
+  >[5] x him
+  [ "x" x / "him" him ]
+  [Parsing for the verb 'x' (1 lines)]
+  
+  [line 0 * noun -> Examine]
+   [line 0 token 1 word 2 : noun]
+    [Object list from word 2]
+    [Stop: unset pronoun]
+    [token resulted in failure with error type 10]
+  I'm not sure what 'him' refers to.
+  
+  >[6] x her
+  [ "x" x / "her" her ]
+  [Parsing for the verb 'x' (1 lines)]
+  
+  [line 0 * noun -> Examine]
+   [line 0 token 1 word 2 : noun]
+    [Object list from word 2]
+    [Calling NounDomain on location and actor]
+     [NounDomain called at word 3
+     seeking indefinite object: owner:(Inform Parser)
+     number wanted: 0
+     most likely GNAs of names: 4095
+      Trying yourself (43) at word 3
+      Matched (0)
+     [ND made 1 matches]
+    [ND returned yourself]
+    [Calling NounDomain on location and actor]
+     [NounDomain called at word 2
+     seeking definite object
+      Trying the north (29) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the northeast (30) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the northwest (31) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the south (32) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the southeast (33) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the southwest (34) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the east (35) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the west (36) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the up (37) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the down (38) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the inside (39) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying the outside (40) at word 2
+  Parse_name called
+  Pass 1: 0 Pass 2: 0 Pass 3: 0
+      Trying yourself (43) at word 2
+     [ND made 0 matches]
+    [token resulted in failure with error type 14]
+  I'm not sure what 'her' refers to.
+  
+  >[7] x them
+  [ "x" x / "them" them ]
+  [Parsing for the verb 'x' (1 lines)]
+  
+  [line 0 * noun -> Examine]
+   [line 0 token 1 word 2 : noun]
+    [Object list from word 2]
+    [Stop: unset pronoun]
+    [token resulted in failure with error type 10]
+  I'm not sure what 'them' refers to.
+  
+> >

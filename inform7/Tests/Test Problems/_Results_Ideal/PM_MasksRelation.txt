@@ -1,0 +1,20 @@
+Inform 7.10.1 build 6P93 has started.
+I've now read your source text, which is 84 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_MasksRelation
+  >--> I don't want you to define a phrase with the wording you've used in in
+    'To decide whether (X - testval) is beyond (Y - testval)' (source text, line 7)
+    because it could be misunderstood. There is already a definition of what it
+    means for something to be 'beyond' something else, so this phrase
+    definition would look too much like testing whether 'X is beyond Y'. ('The
+    verb to be beyond means the containment relation' (source text, line 5).)
+Problem__ PM_MasksRelation
+  >--> I don't want you to define a phrase with the wording you've used in in
+    'To decide whether (X - testval) is less than (Y - testval)' (source text, line 11)
+    because it could be misunderstood. There is already a definition of what it
+    means for something to be 'less than' something else, so this phrase
+    definition would look too much like testing whether 'X is less than Y'.
+    ('The verb to be less than means the numerically-less-than relation' (the
+    Standard Rules, line 456).)
+Inform 7 has finished: 53 centiseconds used.

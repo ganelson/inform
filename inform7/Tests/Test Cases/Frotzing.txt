@@ -1,0 +1,11 @@
+The Kitchen is a room.
+
+This is the frotzing rule:
+	say "Original frotz." (A)
+
+Instead of jumping:
+	follow the frotzing rule;
+	now the frotzing rule response (A) is "Replacement frotz.";
+	follow the frotzing rule.
+
+Test me with "jump / jump".

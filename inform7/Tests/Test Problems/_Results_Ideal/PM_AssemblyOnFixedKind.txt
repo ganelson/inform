@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 33 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AssemblyOnFixedKind
+  >--> You wrote 'Every number is associated with 11' (source text, line 6):
+    but this generalisation can't be made, because I only use generalisations
+    to talk about values which can be created as needed, like things or scenes
+    - not about those always existing in fixed ranges, like numbers or times.
+Problem__ PM_AssemblyOnFixedKind
+  >--> You wrote 'Every number is less than 10' (source text, line 6): again,
+    this generalisation can't be made.
+Inform 7 has finished: 16 centiseconds used.

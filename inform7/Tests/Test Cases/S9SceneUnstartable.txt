@@ -1,0 +1,12 @@
+The dome is a room.
+
+The dog is a thing in the dome.
+
+Scene1 is a scene. Scene2 is a scene.
+Scene2 begins when the player is holding the dog.
+Scene2 ends when the player is not holding the dog.
+Scene1 ends when Scene2 ends.
+
+When Scene1 ends, say "But this scene cannot start!"
+
+Test me with "scenes/take dog/drop dog".

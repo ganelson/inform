@@ -1,0 +1,3 @@
+Include version 3/070628 of ExtVersionTooLow Extension by Araminta Intest.
+
+Beachy Head is a room.

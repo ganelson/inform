@@ -1,0 +1,38 @@
+   Veranda
+  Costa Rican Ornithology
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Veranda
+  From here you can see a considerable expanse of dense-growing jungle plants, and eventually the open water beyond.
+  
+  A vibrantly-colored red-orange bird of unknown species perches on the rail.
+  
+> >   Veranda
+  (Testing.)
+  
+  >[1] look up penguins in the guide
+  You flip through the Guide to Central American Birds, but find no reference to penguins.
+  
+  >[2] look up quetzal in guide
+  The entry on the quetzal is quite lyrical, describing its brilliant plumage, flashing and igniting in the sunshine, which is supposedly sufficient to lure birdwatchers from all over the world. Unfortunately, the quetzal is described as being bright emerald in color, with a pink fuzz on its head and a long soft tail "like a feather boa". None of these describes your visitor.
+  
+  >[3] look up silver nuthatches in the guide
+  You flip through the Guide to Central American Birds, but find no reference to silver nuthatches.
+  
+  >[4] look
+  Veranda
+  From here you can see a considerable expanse of dense-growing jungle plants, and eventually the open water beyond.
+  
+  A vibrantly-colored red-orange bird of unknown species perches on the rail.
+  
+  >[5] look up red bird in the book
+  You flip through the Guide for a while and eventually discover a reference to the scarlet macaw, which appears to correspond with what you see before you.
+  
+  >[6] look
+  Veranda
+  From here you can see a considerable expanse of dense-growing jungle plants, and eventually the open water beyond.
+  
+  A vibrantly-colored scarlet macaw perches on the rail.
+  
+> >

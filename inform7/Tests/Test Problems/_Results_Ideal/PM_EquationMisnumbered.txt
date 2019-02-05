@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 9 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationMisnumbered
+  >--> You wrote 'Equation X F = ma' (source text, line 3): but the top line of
+    this equation declaration seems not to be a legal equation number or name,
+    and should read something like 'Equation 6', or 'Equation - Newton's Second
+    Law', or 'Equation 41 - Coulomb's Law'.
+Inform 7 has finished: 14 centiseconds used.

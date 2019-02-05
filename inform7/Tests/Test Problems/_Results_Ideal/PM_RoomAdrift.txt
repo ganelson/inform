@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RoomAdrift
+  >--> You wrote 'A room is a kind of door' (source text, line 1): but 'room'
+    is not allowed to be a kind of anything (other than 'object'), because it's
+    too fundamental to the way Inform uses rooms and things to model the
+    physical world.
+Inform 7 has finished: 16 centiseconds used.

@@ -1,0 +1,12 @@
+   Foo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150630 / Inform 7 build 6M43 (I6/v6.33 lib 6/12N) SD
+  
+  Foo
+  Zog is edible: true. Zoog is edible: false. Oog is marbled: false. Ooog is marbled: true.
+  
+  You can see Zog, Zoog, Oog (closed) and Ooog (empty) here.
+  
+> >   Foo
+> Are you sure you want to quit? 

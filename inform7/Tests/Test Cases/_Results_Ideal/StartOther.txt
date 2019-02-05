@@ -1,0 +1,19 @@
+   second spot
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  second spot
+  This is the second room.
+  
+> >   second spot
+  (Testing.)
+  
+  >[1] look
+  second spot
+  This is the second room.
+  
+  >[2] e
+  You can't go that way.
+  
+> >

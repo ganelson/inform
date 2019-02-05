@@ -1,0 +1,13 @@
+The Brahms Conservatoire is a room. The piano, the oboe, the bassoon,
+the French horn, the clarinet, the xylophone, the tuba, the trombone,
+the case and the triangle are in the Conservatoire. The violin is in the case.
+
+The most-recently-taken list is a list of objects that varies.
+Carry out taking something (called the item):
+	truncate the most-recently-taken list to the last 6 entries;
+	add the item to the most-recently-taken list.
+
+After taking:
+	say "Taken. (So, your recent acquisitions: [most-recently-taken list].)"
+
+Test me with "take all".

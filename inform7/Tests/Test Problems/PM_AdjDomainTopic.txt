@@ -1,0 +1,14 @@
+Someplace is a room.
+
+A key, a book, and a golden apple are in Someplace. The apple is edible.
+
+Table of Legend
+topic	script
+"ancients" or "ancient ones" or "three"	"'Trust in The Ancient Ones, 
+those Three who showed mankind the way of Balance and Harmony.'"
+"harmony"	"'Things in harmony combine to greater beauty than the sum of each considered 
+alone.'"
+"balance"	"Balance is required to prevent a disruption of the Pattern.'"
+"pattern"	"The Pattern is All. All is the Pattern.'"
+
+Definition: a topic is legendary rather than mundane if it is a topic listed in the Table of Legend.

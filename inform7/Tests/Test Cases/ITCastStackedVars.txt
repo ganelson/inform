@@ -1,0 +1,26 @@
+Home is a room.
+
+Exhibiting success is an action applying to nothing. The exhibiting
+success action has a number called bar.
+Exhibiting failure is an action applying to nothing. The exhibiting
+failure action has a number called foo.
+
+To announce (T - text): say T.
+
+Carry out exhibiting success:
+	now bar is 12.
+
+Carry out exhibiting failure:
+	now foo is 13.
+
+Report exhibiting success:
+	let B be bar;
+	announce "Reporting [B]."
+Report exhibiting failure:
+	announce "Reporting [foo]."
+
+Understand "good" as exhibiting success.
+Understand "bad" as exhibiting failure.
+
+Test me with "good / bad".
+

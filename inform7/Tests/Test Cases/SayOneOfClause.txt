@@ -1,0 +1,6 @@
+The Lab is a room.
+
+Every turn:
+	say "[one of][if the location is Lab]Lab[end if][or]blah[at random]";
+
+Test me with "z / z / z / z".

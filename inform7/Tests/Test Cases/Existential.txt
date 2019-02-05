@@ -1,0 +1,9 @@
+Foo is a room.
+
+There is a vehicle.
+
+There are a man and a woman.
+
+There are a man and a woman in Foo.
+
+When play begins, say "Things: [the list of all things in brace notation]."

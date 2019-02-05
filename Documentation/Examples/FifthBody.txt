@@ -1,0 +1,96 @@
+** Writing, reading and appending text to files
+(WRITE IN command that will open a free-text mode--Notebooks that can be written in as a separate command line; The Fifth Body)
+An expansion on the notebook, allowing the player somewhat more room in which to type his recorded remark.
+
+The implementation here is much like that of the previous example, except that we allow the player to write his notebook input as a separate command, leading to an exchange such as
+
+	>write in my notebook
+	You open your notebook and prepare to write in it.
+
+	>>Am beginning to think that HT and BGG are in this together.
+	You finish writing and fold your notebook away.
+
+	>read my notebook
+	You read: 
+
+	Wednesday morning
+
+	Am beginning to think that HT and BGG are in this together.
+
+The opening is much as before:
+	
+	{*}"The Fifth Body"
+
+	A jotter is a kind of thing. A jotter has an external file called the text file. A jotter can be fresh or used. A jotter is usually fresh. A jotter has a text called the heading.
+
+	The currently erased jotter is an object that varies.
+	
+	To erase (pad - a jotter):
+		now the currently erased jotter is the pad;
+		write "[heading of the currently erased jotter][paragraph break]" to the text file of the pad;
+		now the pad is fresh.
+
+	To write in (pad - a jotter):
+		append "[the time of day]: [player's command][line break]" to the text file of the pad;
+		now the pad is used.
+
+	To read (pad - a jotter):
+		say "You read: [paragraph break][text of the text file of the pad]".
+
+	When play begins:
+		repeat with pad running through jotters:
+			erase the pad.
+
+	Instead of examining a used jotter (called the pad):
+		read the pad.
+
+	Instead of examining a fresh jotter (called the pad):
+		say "There is nothing of note in [the pad]."
+
+	Target jotter is an object that varies. The target jotter is usually nothing.
+
+	Understand "write in [something preferably held]" as writing in. Writing in is an action applying to one thing. 
+
+	Check writing in:
+		if the noun is not a jotter, say "It would be better to write in a notebook." instead.
+
+	Carry out writing in:
+		now the command prompt is ">>";
+		now the target jotter is the noun.
+
+	Report writing in:
+		say "You open [the noun] and prepare to write in it." 
+
+Now what happens is that the player, having typed WRITE IN NOTEBOOK, will be faced with a ">>" prompt instead of the usual ">": a sign that the input mode has changed. 
+
+The next code is to react to reading a command. Whatever the player types at the >> prompt when the target jotter is set will now be recorded in the notebook, though with a character limit of about 60-100 characters depending on how much upper-case and punctuation he uses. (There are ways to lift the character length restriction as well, but they would take us into deeper waters.)
+	
+	{**}After reading a command when target jotter is a jotter:
+		now the command prompt is ">";
+		write in target jotter;
+		now target jotter is used;
+		say "You finish writing and fold your notebook away.";
+		now the target jotter is nothing;
+		reject the player's command.
+
+	Understand "erase [something preferably held]" as erasing. Erasing is an action applying to one carried thing.
+
+	Check erasing:
+		if the noun is not a jotter, say "It's hard to see how." instead.
+
+	Carry out erasing:
+		erase the noun.
+
+	Report erasing:
+		say "You scrub out all the entries in [the noun]."
+
+	The player carries a jotter called your notebook. The file of Player's Observations is called "notebook". The text file of your notebook is the file of Player's Observations. The heading of your notebook is "Sunday Morning".
+
+	The Vestry is a room. "[Havers] hangs back by the door: the forensics expert is not finished with a preliminary examination of the body. From here you can't see much, except that the expert has peeled back and laid to one side a liturgical vestment that someone at the church used to cover the corpse until the police came. What was once a cream silk with festive Easter embroidery is now stained with blood-colored handprints."
+
+	Detective Havers is a woman in the Vestry. The description is "She looks glumly back. There's still a purple-ish bruise on her cheekbone from the disaster Thursday afternoon." Havers is scenery.
+
+	Havers is carrying a jotter called Barbara's notebook. The file of Barbara's Observations is called "barbara". The text file of Barbara's notebook is the file of Barbara's Observations. The heading of Barbara's notebook is "Sun. AM".
+
+	The time of day is 9:11 AM. 
+

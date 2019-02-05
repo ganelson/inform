@@ -1,0 +1,1 @@
+Laboratory is a room.When play begins:	if 1 is everywhere, say "Yes".

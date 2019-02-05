@@ -1,0 +1,24 @@
+* Going from, going to
+(Regions, traveling from--Message on leaving a region; Veronica)
+An effect that occurs only when the player leaves a region entirely.
+
+Suppose that we want to have something happen when the player leaves a region we've defined. "Instead of going from (the region)..." will not suffice for this, because this rule will be invoked every time the player successfully leaves a room within the region, whether or not he is going to a room that is also in the same region.
+
+Instead we need a rule that is a bit more specific, like this:
+
+	{*}"Veronica"
+
+	Neptune is a region.
+
+	Tijuana is a room.
+
+	High School is north of Tijuana. It is in Neptune.
+
+	Detective Offices is west of High School. It is in Neptune.
+
+	The player is in High School.
+
+	Instead of going from Neptune to a room which is not in Neptune:
+		say "It's a bad time to leave Neptune."
+
+	Test me with "s / w / e".

@@ -1,0 +1,98 @@
+** Repeating through tables
+(Port Royal: 4. Character names--Random characters seen through a window)
+A cell window through which the player can see people who were in Port Royal in the current year of game-time.
+
+Our protagonist is imprisoned in Port Royal, waiting out his years, and sometimes through the window of his cell he is able to see someone. 
+
+We are, however, obsessive about historical accuracy, so we provide a table of people who really lived in the city, together with the year in which their existence is attested. We want these people to appear in the description only in the year when they are known to have been present. (After all, mortality was high in Port Royal and new people were constantly arriving, so someone's presence one year is no guarantee of their continued existence the next.)
+
+	{*}"Waiting for Godot, Chyrurgeon"
+
+	New New Prison is a room. "You have a not very interesting room. Through the window you see passing [current denizen]."
+
+	Instead of waiting:
+		increment the current year;
+		say "It is now the year [the current year].";
+		try looking.
+	
+	When play begins: now the right hand status line is "[current year]".
+
+	Every turn:
+		if the current year is 1692:
+			say "It turns out you have remained imprisoned until the great earthquake of 1692! Oops.";
+			end the story.
+
+	Current year is a number that varies. The current year is 1664.
+
+	To say current denizen: 
+		repeat through the Table of Occupations and People:
+			if the date attested entry is the current year:
+				say "[nickname entry] [family entry], [trade entry]";
+				blank out the whole row;
+				rule succeeds;
+		say "absolutely no one".
+
+It is possible to look up a row corresponding to, say, a specific year value using "listed in", but repeat through is convenient here because we know that we will never wind up trying to print entries when no row can be successfully selected.		
+
+	{**}Table of Occupations and People
+	Trade	nickname	family	Date attested	
+	"architect"	"Robert"	"Snead"	1684
+	"baker"	"William"	"Wingar"	1683
+	"barber"	"William"	"Alcocke"	1676
+	"blacksmith"	"William"	"Davidson"	1679
+	"bricklayer"	"Samuel"	"Richardson"	1683
+	"butcher"	"John"	"Dennis"	1676
+	"carpenter"	"John"	"Albert"	1675
+	"cabinet-maker"	"Robert"	"Avis"	1666
+	"joiner"	"Peter"	"Bartaboa"	1666
+	"chandler"	"William"	"Bates"	1674
+	"chyrurgeon"	"William"	"Axtell"	1674
+	"chyrurgeon"	"Thomas"	"Trapham"	1678
+	"combmaker"	"Paul"	"Bennett"	1673
+	"cooper"	"James"	"Hall"	1676
+	"cooper"	"Henry"	"Pullein"	1675
+	"cordwainer"	"George"	"Barnard"	1675
+	"cordwainer"	"Edward"	"Skannon"	1680
+	"cordwainer"	"John"	"Wilmott"	1675
+	"drugster"	"William"	"Mathews"	1682
+	"fisherman"	"Richard"	"Collingwood"	1674
+	"glazier"	"Thomas"	"Hudson"	1684
+	"goldsmith"	"Richard"	"Lord"	1677
+	"gunsmith"	"Stephen"	"Massey"	1664
+	"hatmaker"	"John"	"Rosewell"	1683
+	"ivory turner"	"William"	"Clifton"	1691
+	"labourer"	"John"	"Dennis"	1674
+	"limeburner"	"John"	"Hardwick"	1675
+	"mariner"	"Alexander"	"Bailing"	1680
+	"mariner"	"Thomas"	"Bowtell"	1675
+	"mariner"	"Peter"	"Claiton"	1675
+	"mariner"	"Joseph"	"Cupid"	1672
+	"mariner"	"Michael"	"Dunn"	1675
+	"mason"	"John"	"Stone"	1673
+	"merchant"	"John"	"Agard"	1680
+	"merchant"	"David Lopez"	"Narbona"	1674
+	"merchant"	"Abraham"	"Langford"	1675
+	"merchant"	"John"	"Sweeting"	1675
+	"merchant"	"Charles"	"Knight"	1680
+	"merchant"	"Cornelius"	"Vandananker"	1670
+	"merchant"	"Moses Jesurum"	"Cordova"	1675
+	"pewterer"	"Simon"	"Benning"	1667
+	"pipemaker"	"John"	"Pope"	1680
+	"porter"	"George"	"Paul"	1670
+	"poulterer"	"Richard"	"Jeffreys"	1677
+	"sailmaker"	"Adam"	"Brewer"	1671
+	"schoolmaster"	"Peter"	"Bird"	1677
+	"shipwright"	"William"	"Cavell"	1676
+	"tailor"	"William"	"Case"	1676
+	"tailor"	"Pewter"	"Ebden"	1683
+	"waterman"	"William"	"Brocke"	1674
+	"waterman"	"Joel"	"Clements"	1668
+	"wherryman"	"John"	"Grant"	1669
+	"victualler"	"Barnaby"	"Adams"	1675
+	"vintner"	"Gabriel"	"Adkins"	1668
+	"tavern-keeper"	"John"	"Baldwin"	1670
+	"tavern-keeper"	"Mary"	"Dayton"	1664
+	"tavern-keeper"	"James"	"Turpin"	1679
+	"tavern-keeper"	"Christopher"	"Mayham"	1664
+	
+	Test me with "wait / wait / wait / wait / wait / wait / wait / wait / wait / wait".

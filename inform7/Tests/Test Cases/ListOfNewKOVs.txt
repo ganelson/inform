@@ -1,0 +1,11 @@
+The Place is a room.
+
+A temperature is a kind of value.
+
+The temperatures are freezing, cold, and hot.
+
+ZZ is a list of temperature that varies.
+
+ZZ is { cold, freezing, hot  }.
+
+When play begins: say "ZZ is [ZZ]."

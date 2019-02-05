@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ValueEverywhere
+  >--> You wrote '101 is everywhere' (source text, line 3): but 'everywhere'
+    can only be used to place individual backdrops, so although 'The mist is a
+    backdrop. The mist is everywhere.' would be fine, 'Corruption is
+    everywhere.' would not.
+Inform 7 has finished: 17 centiseconds used.

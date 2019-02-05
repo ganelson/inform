@@ -1,0 +1,32 @@
+   Storage Unit
+  Shipping Trunk
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Storage Unit
+  You can see a shipping trunk (closed) here.
+  
+> >   Storage Unit
+  (Testing.)
+  
+  >[1] open trunk
+  Better remove the small card.
+  
+  >[2] examine card
+  "Please, please do not open this trunk."
+  
+  >[3] get card
+  Taken.
+  
+  >[4] open trunk
+  There roils up from inside an indescribable funk, which, when you can see straight, you have no trouble attributing to the presence of some garlic, a loaf of moldy sourdough, a mildewy bathtowel, a pair of unwashed socks and two dead trout. You also note a completely ineffective box of baking powder in the corner.
+  
+  >[5] get powder
+  Taken.
+  
+  >[6] inventory
+  You are carrying:
+    a box of baking powder
+    a small card
+  
+> >

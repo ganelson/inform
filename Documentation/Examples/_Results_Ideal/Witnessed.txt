@@ -1,0 +1,40 @@
+   Thirtieth Street Station
+  Witnessed
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Thirtieth Street Station
+  A huge, high, rectangular room with coffered ceilings, which looks grand but mostly makes you feel lonely and small. There are long benches in rows down the middle of the room, and an information desk with the train times, and a series of ticket windows, none of which matters very much at the moment.
+  
+  At the north side of the station is a particularly pointless and empty annex to the main room. It is dominated by a huge relief of sorts, and this is what you remember.
+  
+  Carefully attached to the wall with a piece of duct tape and a hook is a light-weight set of wind chimes. Someone else has been here before you, it seems.
+  
+> >   Thirtieth Street Station
+  (Testing.)
+  
+  >[1] turn on alarm
+  You switch the Tone Alarm on.
+  
+  >[2] turn on meter
+  You turn on the meter. The needle steadies at 0.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] z
+  Time passes.
+  
+  You shiver with some sort of presence.
+  
+  >[5] z
+  Time passes.
+  
+  The Tone Alarm shrieks.
+  
+  >[6] x figure
+  You see nothing special about the pale figure.
+  
+  The Tone Alarm shrieks.
+  
+> >

@@ -1,0 +1,43 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150704 / Inform 7 build 6M45 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  
+> >   Place
+  (Testing.)
+  
+  >[1] conjure fork
+  You can't recall seeing anything like that to conjure.
+  
+  >[2] conjure elephant
+  You can't recall seeing anything like that to conjure.
+  
+  >[3] e
+  
+  Other Place
+  You can see a table (on which are a napkin, a fork, a knife, a spoon, a plate and a basket (in which are three crackers)) here.
+  
+  >[4] w
+  
+  Place
+  
+  >[5] conjure fork
+  With a puff of magical smoke, a fork appears!
+  
+  >[6] conjure cracker
+  With a puff of magical smoke, a cracker appears!
+  
+  >[7] conjure crackers
+  With a puff of magical smoke, a cracker appears!
+  
+  >[8] actions
+  Actions listing on.
+  
+  >[9] conjure crackers
+  [conjuring the cracker]
+  With a puff of magical smoke, a cracker appears!
+  [conjuring the cracker - succeeded]
+  
+> >

@@ -1,0 +1,11 @@
+Inform 7 build 6M32 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PhraseNamedI6Failed
+  >--> You wrote 'To rhomb (this is the foo function)' (source text, line 2),
+    defining the phrase 'rhomb' with a piece of Inform 6 code, but also giving
+    it a name as a function to be used in an equation, or in some functional
+    programming context. That's only allowed if the I6 definition consists
+    simply of a call to an I6 function - and this doesn't, so far as I can see.
+Inform 7 has finished: 81 centiseconds used.

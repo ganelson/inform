@@ -1,0 +1,17 @@
+The asking it about action has an object called the active node (matched as "located near").
+
+Setting action variables for asking someone about something:
+  now the active node is the node of the noun.
+
+The place is a room.
+
+A man called Fred is in the place.
+
+first-node is a thing.
+
+A person has an object called a node.
+
+The node of Fred is the first-node.
+
+After asking Fred about "inform" located near first-node:
+	say "'It's a bug', he tells you."

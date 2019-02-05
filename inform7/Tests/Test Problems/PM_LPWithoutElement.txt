@@ -1,0 +1,5 @@
+Home is a room.
+
+Weight is a kind of value.
+
+A tonne specifies a weight.

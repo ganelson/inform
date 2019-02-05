@@ -1,0 +1,7 @@
+Home is a room. East of Home is Garden.
+
+The air is a backdrop which is everywhere.
+
+The ground is a backdrop. The ground is everywhere.
+
+Test me with "x air / x ground / e / x air / x ground".

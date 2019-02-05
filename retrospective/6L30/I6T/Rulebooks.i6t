@@ -1,0 +1,274 @@
+B/rbt: Rulebooks Template.
+ 
+@Purpose: To work through the rules in a rulebook until a decision is made.
+ 
+@-------------------------------------------------------------------------------
+
+@p Latest Rule Result.
+This used to be a large data structure which kept track of the effect of
+procedural rules, but in January 2011 procedurals were abolished. It retains
+only one purpose: as a place to record the result of the most recently
+completed rule. This used to sit on the top of the stack, and is now the
+only thing which ever sits on it. So the "stack" has just one 3-word
+record now. The meanings of these are as follows. The first word is one of
+the following:
+
+(1) |RS_SUCCEEDS| indicates that the most recent rule or rulebook processed
+ended in success. Word 2 is |false| if there's no value, or the kind if there
+is, in which case word 3 contains the value itself.
+(2) |RS_FAILS| is similar, but for a failure. Note that failures can also
+return values.
+(3) |RS_NEITHER| is similar except that it cannot return any value, so that
+words 2 and 3 are meaningless.
+
+@c
+Constant RS_NEITHER		= 0;
+Constant RS_SUCCEEDS	= 1;
+Constant RS_FAILS		= 2;
+
+Array latest_rule_result --> 3;
+
+[ RecordRuleOutcome usage rule1 rule2;
+	if ((latest_rule_result-->0 == RS_SUCCEEDS or RS_FAILS) &&
+		(KOVIsBlockValue(latest_rule_result-->1)))
+		BlkValueFree(latest_rule_result-->2);
+	if ((usage == RS_SUCCEEDS or RS_FAILS) && (KOVIsBlockValue(rule1)))
+		rule2 = BlkValueCopy(BlkValueCreate(rule1), rule2);
+	latest_rule_result-->0 = usage;
+	latest_rule_result-->1 = rule1;
+	latest_rule_result-->2 = rule2;
+];
+
+@p Following.
+Until January 2011, there were two ways to invoke a rulebook: to "follow" it
+or simply "process" it. With the demise of procedural rules, these became
+equivalent.
+
+In the early days of Inform 7, stack usage became a serious issue since
+some forms of the Frotz Z-machine interpreter provided only 4K of stack
+by default. ("Only" 4K. In the mid-1980s, one of the obstacles facing
+IF authors at Infocom was the need to get the stack usage down to fewer
+than 600 bytes in order that the story file could be run on the smaller
+home computers of the day.) |FollowRulebook| was the major consumer of
+stack space, on average, because of its frequent recursion. Now that the
+process is simpler, this has become less problematic, since the routine
+now has fewer local variables.
+
+|FollowRulebook| takes three arguments, of which only the first is
+compulsory:
+
+(a) The |rulebook| is an I7 value of kind "rule", which means it can be
+either the ID number of a rulebook -- from 0 up to $N-1$, where $N$ is the
+number of rulebooks compiled by Inform, typically about 600 -- or else the
+address of a routine representing an individual rule.
+(b) The |parameter| supplied to the rulebook. Much as arguments can be supplied
+to a function in a conventional language's function call, so a parameter can be
+supplied whenever a rulebook is invoked.
+(c) |no_paragraph_skips| is a flag: if explicitly set |true|, then the rulebook
+is run with paragraph breaking suppressed. This is the process by which
+paragraph division points are placed between rules, so that if two rules both
+print text then a paragraph break appears between. While that is appropriate
+for rulebooks attached to actions or for "every turn" rules, it is disastrous
+for rulebooks attached to activities such as "printing the name of
+something".
+
+|FollowRulebook| returns |R| if rule |R| in the rulebook (or rule) chose to
+"succeed" or "fail", and |false| if it made no choice. (To repeat: if
+the rule explicitly fails, then |FollowRulebook| returns |true|. It's easy
+to write plausible-looking code which goes wrong because it assumes that the
+return value is success vs. failure.) The outcome of |FollowRulebook| is
+stored as described above: thus the most recent rule or rulebook succeeded
+or failed if --
+
+	|(latest_rule_result-->0 == RS_SUCCEEDS)|
+	|(latest_rule_result-->0 == RS_FAILS)|
+
+and otherwise there was no decision.
+
+@c
+Global process_rulebook_count; ! Depth of processing recursion
+Global debugging_rules = false; ! Are we tracing rule invocations?
+
+[ FollowRulebook rulebook parameter no_paragraph_skips
+	rv ss spv;
+	ss = self;
+	if ((Protect_I7_Arrays-->0 ~= 16339) || (Protect_I7_Arrays-->1 ~= 12345)) {
+		print "^^*** Fatal programming error: I7 arrays corrupted ***^^";
+		@quit;
+	}
+	if (parameter) { self = parameter; parameter_object = parameter; }
+	spv = parameter_value; parameter_value = parameter;
+	! we won't need parameter again, so can reuse it
+	parameter = debugging_rules;
+	#ifndef MEMORY_ECONOMY;
+	if (debugging_rules) {
+		DebugRulebooks(rulebook, parameter);
+		process_rulebook_count = process_rulebook_count + debugging_rules;
+	}
+	#endif;
+	if ((rulebook >= 0) && (rulebook < NUMBER_RULEBOOKS_CREATED)) {
+		rv = rulebooks_array-->rulebook;
+		if (rv ~= EMPTY_RULEBOOK) {
+			if (rulebook ~= ACTION_PROCESSING_RB) MStack_CreateRBVars(rulebook);
+			if (say__p) RulebookParBreak(no_paragraph_skips);
+			rv = rv(no_paragraph_skips);
+			if (rulebook ~= ACTION_PROCESSING_RB) MStack_DestroyRBVars(rulebook);
+		} else {
+			rv = 0;
+		}
+	} else {
+		if (say__p) RulebookParBreak(no_paragraph_skips);
+		rv = indirect(rulebook);
+		if (rv == 2) rv = reason_the_action_failed;
+		else if (rv) rv = rulebook;
+	}
+	if (rv) {
+		#ifndef MEMORY_ECONOMY;
+		if (debugging_rules) {
+			process_rulebook_count = process_rulebook_count - debugging_rules;
+			if (process_rulebook_count < 0) process_rulebook_count = 0;
+			spaces(2*process_rulebook_count);
+	  	    if (latest_rule_result-->0 == RS_SUCCEEDS) print "[stopped: success]^";
+	  	    if (latest_rule_result-->0 == RS_FAILS) print "[stopped: fail]^";
+		}
+		#endif;
+	} else {
+		if (debugging_rules)
+			process_rulebook_count = process_rulebook_count - debugging_rules;
+		latest_rule_result-->0 = RS_NEITHER;
+	}
+	debugging_rules = parameter;
+	self = ss; parameter_value = spv;
+	return rv;
+];
+
+[ RulebookParBreak no_paragraph_skips;
+	if ((no_paragraph_skips == false) && (say__pc & PARA_NORULEBOOKBREAKS == 0))
+		DivideParagraphPoint();
+];
+
+@p Specifying Outcomes.
+The following provide ways for rules to succeed, fail or decline to do
+either.
+
+|SetRulebookOutcome| is a little different: it changes the outcome state
+of the most recent rule completed, not the current one. (It's used only
+when saving and restoring this in the actions machinery: rules should not
+call it.)
+
+@c
+[ ActRulebookSucceeds rule_id;
+	if (rule_id) reason_the_action_failed = rule_id;
+	RulebookSucceeds();
+];
+
+[ ActRulebookFails rule_id;
+	if (rule_id) reason_the_action_failed = rule_id;
+	RulebookFails();
+];
+
+[ RulebookSucceeds weak_kind value;
+	RecordRuleOutcome(RS_SUCCEEDS, weak_kind, value);
+];
+
+[ RulebookFails weak_kind value;
+	RecordRuleOutcome(RS_FAILS, weak_kind, value);
+];
+
+[ RuleHasNoOutcome;
+	RecordRuleOutcome(RS_NEITHER, 0, 0);
+];
+
+[ SetRulebookOutcome a;
+	latest_rule_result-->0 = a;
+];
+
+@p Discovering Outcomes.
+And here is how to tell what the results were.
+
+@c
+[ RulebookOutcome a;
+	a = latest_rule_result-->0;
+	if ((a == RS_FAILS) || (a == RS_SUCCEEDS)) return a;
+	return RS_NEITHER;
+];
+
+[ RulebookFailed;
+	if (latest_rule_result-->0 == RS_FAILS) rtrue; rfalse;
+];
+
+[ RulebookSucceeded;
+	if (latest_rule_result-->0 == RS_SUCCEEDS) rtrue; rfalse;
+];
+
+[ ResultOfRule RB V F K a;
+	if (RB) FollowRulebook(RB, V, F);
+	a = latest_rule_result-->0;
+	if ((a == RS_FAILS) || (a == RS_SUCCEEDS)) {
+		a = latest_rule_result-->1;
+		if (a) return latest_rule_result-->2;
+	}
+	if (K) return DefaultValueOfKOV(K);
+	return 0;
+];
+
+@p Printing Rule Names.
+This is the I6 printing rule used for a value of kind "rule", which as
+noted above can either be rulebook ID numbers in the range 0 to $N-1$ or
+are addresses of individual rules.
+
+Names of rules and rulebooks take up a fair amount of space, and one of the
+main memory economies enforced by the "Use memory economy" option is to
+omit the necessary arrays. (It's not the text which is the problem so
+much as the table of addresses pointing to that text, which has to live in
+precious readable memory on the Z-machine.)
+
+@c
+#IFNDEF MEMORY_ECONOMY;
+{-array:Phrases::Manager::RulebookNames}
+#ENDIF; ! MEMORY_ECONOMY
+
+[ RulePrintingRule R p1;
+#ifndef MEMORY_ECONOMY;
+	if ((R>=0) && (R<NUMBER_RULEBOOKS_CREATED)) {
+		print (string) (RulebookNames-->R);
+	} else {
+{-call:Phrases::Manager::compile_rule_printing_switch}
+		print "(nameless rule at address ", R, ")";
+	}
+#ifnot;
+	if ((R>=0) && (R<NUMBER_RULEBOOKS_CREATED)) {
+		print "(rulebook ", R, ")";
+	} else {
+		print "(rule at address ", R, ")";
+	}
+#endif;
+];
+
+@p Casting.
+Nothing needs to be done to a rulebook value to make it a rule value.
+
+@c
+[ RULEBOOK_TY_to_RULE_TY r;
+	return r;
+];
+
+@p Debugging.
+Two modest routines to print out the names of rules and rulebooks when they
+occur, in so far as memory economy allows this.
+
+@c
+[ DebugRulebooks subs parameter i;
+	spaces(2*process_rulebook_count);
+	print "[", (RulePrintingRule) subs;
+	if (parameter) print " / on O", parameter;
+	print "]^";
+];
+
+[ DB_Rule R N blocked;
+	if (R==0) return;
+	print "[Rule ~", (RulePrintingRule) R, "~ ";
+	#ifdef NUMBERED_RULES; print "(", N, ") "; #endif;
+	if (blocked == false) "applies.]";
+	print "does not apply (wrong ", (address) blocked, ").]^";
+];

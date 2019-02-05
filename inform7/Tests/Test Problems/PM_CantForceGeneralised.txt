@@ -1,0 +1,9 @@
+Stanford is a room. 25 things are in Stanford.
+
+When play begins:
+	now at most three people are in Stanford;
+	now all things are edible;
+	now almost all things are edible;
+	now exactly one thing is edible;
+	now 10 things are edible;
+	now none of the things is edible.

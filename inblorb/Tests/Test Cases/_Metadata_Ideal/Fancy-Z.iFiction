@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ifindex version="1.0" xmlns="http://babel.ifarchive.org/protocol/iFiction/">
+    <story>
+        <identification>
+            <ifid>0B00B00D-3307-4688-B2D8-95DB962781B4</ifid>
+            <format>zcode</format>
+        </identification>
+        <bibliographic>
+            <title>Mansfield Perk</title>
+            <author>Janet Austen</author>
+            <headline>An Interactive Romance</headline>
+            <genre>Romance</genre>
+            <firstpublished>2005</firstpublished>
+            <description>In Miss Austen's new interactive novella, Miss Henrietta Pollifax is adopted by the tempestuous landowner Sir Tankerley Mordant, and must make a new life for herself on the rugged moors.</description>
+            <language>en</language>
+            <group>Inform</group>
+        </bibliographic>
+        <releases>
+            <attached>
+                <release>
+                    <releasedate>2016-04-28</releasedate>
+                    <version>7</version>
+                    <compiler>Inform 7</compiler>
+                    <compilerversion>Inform 7.99.99 (build 9Z99)</compilerversion>
+                </release>
+            </attached>
+        </releases>
+        <colophon>
+            <generator>Inform 7</generator>
+            <generatorversion>Inform 7.99.99 (build 9Z99)</generatorversion>
+            <originated>2016-04-28</originated>
+        </colophon>
+        <zcode>
+            <serial>160428</serial>
+            <release>7</release>
+            <compiler>Inform Inform 7.99.99 (build 9Z99)</compiler>
+        </zcode>
+    </story>
+</ifindex>

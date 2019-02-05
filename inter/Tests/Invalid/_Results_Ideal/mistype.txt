@@ -1,0 +1,2 @@
+inter: inter/Tests/Invalid/mistype.intert, line 5: no such data type: 'int32768'
+>--> kind K_number int32768

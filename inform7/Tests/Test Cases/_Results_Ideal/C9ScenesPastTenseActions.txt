@@ -1,0 +1,37 @@
+   Desert
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Desert
+  These new optical-reflection-triggered bombs are a nightmare. Be careful.
+  
+  You can see a mysterious object here.
+  
+> >   Desert
+  (Testing.)
+  
+  >[1] scenes
+  Scene 'Entire Game' playing (for 0 mins now)
+  Scene 'Dangerous Times' playing (for 0 mins now)
+  (Scene monitoring now switched on. Type "scenes off" to switch it off again.)
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] x object
+  Oh n---
+  
+  [Scene 'Dangerous Times' ends]
+  [Scene 'Entire Game' ends]
+  
+  
+      *** You have died ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

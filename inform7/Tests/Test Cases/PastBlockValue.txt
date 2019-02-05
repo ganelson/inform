@@ -1,0 +1,9 @@
+Home is a room.
+
+The message is an text which varies.
+
+Every turn when the message was "send more money": say "Just checking."
+
+Instead of jumping: now the message is "send more money".
+
+Test me with "wait / jump / wait".

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+unique-identifier="bookid" version="2.0">
+    <metadata>
+        <dc:title>The Indoc Test Case Book</dc:title>
+        <dc:language>en-UK</dc:language>
+        <dc:creator>Graham Nelson</dc:creator>
+        <dc:subject>Interactive Fiction</dc:subject>
+        <dc:type>Text</dc:type>
+        <dc:publisher>www.inform7.com</dc:publisher>
+        <dc:rights>http://creativecommons.org/licenses/by/3.0/</dc:rights>
+        <dc:identifier id="bookid">urn:www.inform7.com:indoc</dc:identifier>
+        <dc:date>2016-04-28</dc:date>
+        <meta name="cover" content="cover-image" />
+    </metadata>
+    <manifest>
+        <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+        <item id="css1" href="indoc_IM.css" media-type="text/css"/>
+        <item id="css2" href="indoc_SV.css" media-type="text/css"/>
+        <item id="cover" href="cover.html" media-type="application/xhtml+xml"/>
+        <item id="IM_1" href="IM_1.html" media-type="application/xhtml+xml"/>
+        <item id="IM_2" href="IM_2.html" media-type="application/xhtml+xml"/>
+        <item id="SV_1" href="SV_1.html" media-type="application/xhtml+xml"/>
+        <item id="examples_alphabetical" href="examples_alphabetical.html" media-type="application/xhtml+xml"/>
+        <item id="examples_numerical" href="examples_numerical.html" media-type="application/xhtml+xml"/>
+        <item id="examples_thematic" href="examples_thematic.html" media-type="application/xhtml+xml"/>
+        <item id="general_index" href="general_index.html" media-type="application/xhtml+xml"/>
+        <item id="combined_cover" href="images/combined_cover.png" media-type="image/png"/>
+        <item id="ovoid" href="images/ovoid.png" media-type="image/png"/>
+        <item id="grey-ovoid" href="images/grey-ovoid.png" media-type="image/png"/>
+        <item id="arrow-right" href="images/arrow-right.png" media-type="image/png"/>
+        <item id="arrow-down" href="images/arrow-down.png" media-type="image/png"/>
+        <item id="arrow-down-right" href="images/arrow-down-right.png" media-type="image/png"/>
+        <item id="arrow-up-left" href="images/arrow-up-left.png" media-type="image/png"/>
+        <item id="arrow-up" href="images/arrow-up.png" media-type="image/png"/>
+        <item id="asterisk" href="images/asterisk.png" media-type="image/png"/>
+        <item id="skt1" href="images/skt1.png" media-type="image/png"/>
+        <item id="arrow-left" href="images/arrow-left.png" media-type="image/png"/>
+    </manifest>
+    <spine toc="ncx">
+        <itemref idref="cover" linear="no"/>
+        <itemref idref="IM_1"/>
+        <itemref idref="IM_2"/>
+        <itemref idref="SV_1"/>
+        <itemref idref="examples_alphabetical" linear="no"/>
+        <itemref idref="examples_numerical" linear="no"/>
+        <itemref idref="examples_thematic" linear="no"/>
+        <itemref idref="general_index" linear="no"/>
+    </spine>
+    <guide>
+        <reference href="cover.html" type="cover" title="Cover"/>
+        <reference href="examples_alphabetical.html" type="index" title="Alphabetical Index of Examples"/>
+        <reference href="examples_numerical.html" type="index" title="Examples in Numerical Order"/>
+        <reference href="examples_thematic.html" type="index" title="Examples in Thematic Order"/>
+        <reference href="general_index.html" type="index" title="General Index"/>
+    </guide>
+</package>

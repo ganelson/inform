@@ -1,0 +1,22 @@
+   Pleasure Garden
+  The Crane's Leg
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pleasure Garden
+  At the riverbank, a pleasing garden, having many curving paths and one straight.
+  
+  You can see a low table (on which is a gold nugget) here.
+  
+> >   Pleasure Garden
+  (Testing.)
+  
+  >[1] x table
+  Unusually short at 2 feet 3 inches.
+  
+  On the low table is a gold nugget.
+  
+  >[2] x nugget
+  Distinct mostly in being made of metal.
+  
+> >

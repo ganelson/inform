@@ -1,0 +1,20 @@
+   Grand Central Station
+  Trying Taking Manhattan
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Grand Central Station
+  Here you are in New York, New York. Any minute now someone is going to burst into song.
+  
+  Kermit the Frog stands nearby, enjoying being green.
+  
+> >   Grand Central Station
+  (Testing.)
+  
+  >[1] inventory
+  You are carrying nothing.
+  
+  >[2] kermit, inventory
+  Kermit the Frog says, "I seem to be carrying a microphone and wearing a hat and a trenchcoat."
+  
+> >

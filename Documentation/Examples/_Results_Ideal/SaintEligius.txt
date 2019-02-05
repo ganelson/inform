@@ -1,0 +1,32 @@
+   Cobbled Alley
+  Saint Eligius
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cobbled Alley
+  The Alley has never been made into a proper street: the buildings on either side are simply too important to tear down. For all that, there isn't much sign of the magnificence nearby. The entrance you seek is set below street level, four grimy steps down to a half-basement.
+  
+> >   Diamond Market
+  (Testing.)
+  
+  >[1] d
+  You descend the steps quickly and step into the small foyer, allowing yourself to be searched for weapons, before going on to...
+  
+  Diamond Market
+  The roof is vaulted and painted in allegorical images representing Plenty, the Riches of the Earth, and Saint Eligius, patron of goldsmiths and jewelers.
+  
+  Under their watchful eye, dozens of men in sober black robes sit; and on the tables before them are rubies, emeralds, sapphires from oversea, but most of all diamonds, both raw and cut.
+  
+  A burly guard patrols quite close to you, but even he is more sumptuously dressed than the average burly guard, and his buttons shine.
+  
+  Your throat closes and your eyes begin to sting. You have long disdained pomp and luxury, and railed against the oppression that brings such wealth to some men at the cost of the lives of others; you were not prepared for the magnificence.
+  
+  >[2] look
+  Diamond Market
+  The roof is vaulted and painted in allegorical images representing Plenty, the Riches of the Earth, and Saint Eligius, patron of goldsmiths and jewelers.
+  
+  Under their watchful eye, dozens of men in sober black robes sit; and on the tables before them are rubies, emeralds, sapphires from oversea, but most of all diamonds, both raw and cut.
+  
+  A burly guard patrols quite close to you, but even he is more sumptuously dressed than the average burly guard, and his buttons shine.
+  
+> >

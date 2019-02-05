@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_QuantityKindNothing
+  >--> The sentence 'The just-released item is nothing' (source text, line 1)
+    tells me that 'just-released item', which should be a thing that varies, is
+    to have the initial value 'nothing'. This is allowed as an 'object which
+    varies', but the rules are stricter for a thing.
+Inform 7 has finished: 23 centiseconds used.

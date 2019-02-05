@@ -1,0 +1,21 @@
+
+
+
+1.5 hr = 1.5 hr = 5400.0s = 90.0 min.
+1.5 hr = 1.5 hr = 5400.0s = 90.0 min = 1.5 hr = 0.0625 days.
+90s = 1.5 min = 90.0s = 1.5 min = 0.025 hr = 0.00104 days.
+1.5 min = 1.5 min = 90.0s = 1.5 min = 0.025 hr = 0.00104 days.
+60 min = 1.0 hr = 3600.0s = 60.0 min = 1.0 hr = 0.04167 days.
+1 hr = 1.0 hr = 3600.0s = 60.0 min = 1.0 hr = 0.04167 days.
+90 min = 1.5 hr = 5400.0s = 90.0 min = 1.5 hr = 0.0625 days.
+12 hr = 12.0 hr = 43200.0s = 720.0 min = 12.0 hr = 0.5 days.
+1.5 days = 1.5 days = 129600.0s = 2160.0 min = 36.0 hr = 1.5 days.
+18 hr = 18.0 hr = 64800.0s = 1080.0 min = 18.0 hr = 0.75 days.
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+
+Lab
+
+>Are you sure you want to quit? 

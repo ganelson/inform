@@ -1,0 +1,36 @@
+Garden is a room. Joe is a person in the garden. Beth is a person in the garden. 
+
+Hitting is an action applying to one thing.
+
+Understand "hit [person]" as hitting.
+Understand "hit joe" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit joey" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit a" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit b" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit c" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit d" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit e" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit f" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit g" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit h" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit i" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit j" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit k" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit l" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit m" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit n" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit o" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit p" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit q" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit r" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit s" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit t" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit u" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit v" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit w" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit x" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit y" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit z" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit 1" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 
+Understand "hit 2" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth.
+Understand "hit 3" as a mistake ("You shouldn't hit someone while Beth is in the room.") when the location of the player is the location of Beth. 

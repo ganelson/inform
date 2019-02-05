@@ -1,0 +1,35 @@
+   Lexis
+  The rucksack is an odd thing.
+  The tourist map is an odd thing.
+  The rucksack is an odd container.
+  Among containers, the rucksack is odd.
+  1 is an odd number.
+  1 is odd.
+  I proclaim 1 the odd!
+  I proclaim 2 the even!
+  3 is an odd number.
+  3 is odd.
+  I proclaim 3 the odd!
+  I proclaim 4 the even!
+  5 is an odd number.
+  5 is odd.
+  I proclaim 5 the odd!
+  I proclaim 6 the even!
+  7 is an odd number.
+  7 is odd.
+  I proclaim 7 the odd!
+  I proclaim 8 the even!
+  9 is an odd number.
+  9 is odd.
+  I proclaim 9 the odd!
+  I proclaim 10 the even!
+  9:00 am is odd.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lexis
+  
+> >   Lexis
+> Are you sure you want to quit? 

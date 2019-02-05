@@ -1,0 +1,48 @@
+   Beneath Roxane's Balcony
+  Panache
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Beneath Roxane's Balcony
+  Christian stands in a spot of moonlight and tries to avoid too obviously glancing at the shadows that conceal you.
+  
+  Above you in the night is Roxane.
+  
+> >   Empty Street
+  (Testing.)
+  
+  >[1] christian, ask roxane about love
+  "So," says Christian nervously to Roxane. "Did you know about love?" But Roxane merely seems puzzled.
+  
+  >[2] christian, say your breath smells like ripe taleggio to roxane
+  "Roxane, your breath smells like ripe taleggio."
+  
+  Roxane, deeply moved by this sentiment, invites Christian up to her balcony. He scrambles up the ivy and disappears into her bedroom; the last thing you hear is a girlish giggle from above.
+  
+  Empty Street
+  No one is about at this hour, all alone under a pale moon.
+  
+  You find yourself kicking fenceposts quite without thinking about it.
+  
+  >[3] score
+  The Plot So Far:
+  
+    Act 1: A Duel of Insults
+    Act 2: Seduction by Proxy
+  
+  >[4] z
+  Time passes.
+  
+  You find yourself kicking fenceposts quite without thinking about it.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] score
+  The Plot So Far:
+  
+    Act 1: A Duel of Insults
+    Act 2: Seduction by Proxy
+    Act 3: Wandering the Streets, Sulking
+  
+> >

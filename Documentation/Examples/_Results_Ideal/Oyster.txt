@@ -1,0 +1,145 @@
+   Curved Beach
+  Oyster Wide Shut
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Curved Beach
+  White sand stretches away both northeast and northwest, enclosing this attractive little bay. Gentle waves lap at the beach.
+  
+> >   Curved Beach
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a glowing plastic sack (open and gently glowing)
+      a rock
+    a flashlight lanyard (being worn)
+    an oyster
+      a pearl
+  
+  >[2] close oyster
+  You close the oyster.
+  
+  >[3] i
+  You are carrying:
+    a glowing plastic sack (open and gently glowing)
+      a rock
+    a flashlight lanyard (being worn)
+    an oyster (clamped shut)
+  
+  >[4] turn on flashlight
+  You switch the flashlight lanyard on.
+  
+  >[5] i
+  You are carrying:
+    a glowing plastic sack (open and gently glowing)
+      a rock
+    a flashlight lanyard (being worn and providing light)
+    an oyster (clamped shut)
+  
+  >[6] take off flashlight
+  You take off the flashlight lanyard.
+  
+  >[7] i
+  You are carrying:
+    a glowing plastic sack (open and gently glowing)
+      a rock
+    a flashlight lanyard (providing light)
+    an oyster (clamped shut)
+  
+  >[8] turn off flashlight
+  You switch the flashlight lanyard off.
+  
+  >[9] i
+  You are carrying:
+    a glowing plastic sack (open and gently glowing)
+      a rock
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[10] close sack
+  You close the glowing plastic sack.
+  
+  >[11] i
+  You are carrying:
+    a glowing plastic sack (closed and gently glowing)
+      a rock
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[12] open sack
+  You open the glowing plastic sack.
+  
+  >[13] i
+  You are carrying:
+    a glowing plastic sack (open and gently glowing)
+      a rock
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[14] take all from sack
+  Taken.
+  
+  >[15] i
+  You are carrying:
+    a rock
+    a glowing plastic sack (open, empty and gently glowing)
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[16] close sack
+  You close the glowing plastic sack.
+  
+  >[17] i
+  You are carrying:
+    a rock
+    a glowing plastic sack (closed, empty and gently glowing)
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[18] wear sack
+  You put on the glowing plastic sack.
+  
+  >[19] i
+  You are carrying:
+    a rock
+    a glowing plastic sack (closed, empty, being worn and gently glowing)
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[20] enchant sack
+  Ding! You turn the glowing plastic sack magical.
+  
+  >[21] i
+  You are carrying:
+    a rock
+    a glowing plastic sack (closed, empty, being worn, gently glowing and enchanted)
+    a flashlight lanyard
+    an oyster (clamped shut)
+  
+  >[22] open sack
+  You open the glowing plastic sack.
+  
+  >[23] put all in sack
+  rock: Done.
+  flashlight lanyard: Done.
+  oyster: Done.
+  
+  >[24] i
+  You are carrying:
+    a glowing plastic sack (open, being worn, gently glowing and enchanted)
+      an oyster (clamped shut)
+      a flashlight lanyard
+      a rock
+  
+  >[25] close sack
+  You close the glowing plastic sack.
+  
+  >[26] i
+  You are carrying:
+    a glowing plastic sack (closed, being worn, gently glowing and enchanted)
+      an oyster (clamped shut)
+      a flashlight lanyard
+      a rock
+  
+> >

@@ -1,0 +1,11 @@
+Xanadu is a room.
+
+Equation 1
+	G = F
+where G is a number and F is a number.
+
+When play begins:
+    let E be an equation-name;
+    let F be 7;
+    let G be given by E.
+

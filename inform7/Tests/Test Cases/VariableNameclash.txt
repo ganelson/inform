@@ -1,0 +1,14 @@
+Home is a room.
+
+The target is a number that varies.
+
+The target is 17.
+
+When play begins:
+	say "The target is [target]."
+
+When play begins:
+	let the target be "fish pie";
+	say "This target is [target]."
+
+

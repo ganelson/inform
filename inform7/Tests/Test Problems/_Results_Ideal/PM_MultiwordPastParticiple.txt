@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 34 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MultiwordPastParticiple
+  >--> You wrote 'Hanging around until is an action with past participle hung
+    around until, applying to one time' (source text, line 3): but a past
+    participle must be given as a single word, even if the action name itself
+    is longer than that. (For instance, the action name 'hanging around until'
+    should have past participle given just as 'hung'; I can already deduce the
+    rest.)
+Inform 7 has finished: 17 centiseconds used.

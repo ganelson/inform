@@ -1,0 +1,12 @@
+Home is a room. Bobbette is a woman in Home.
+
+A hat is a kind of thing. A hat is wearable. Bobbette wears a hat.
+The homberg is a hat. The player carries the homberg.
+
+Every turn:
+	if no hat is not worn by a person, say "No hat is not worn by a person.";
+	if a hat is not worn by a person, say "There is a hat which is not worn by a person.";
+	if no hat is not enclosed by a person, say "No hat is not enclosed by a person.";
+	if a hat is not enclosed by a person, say "There is a hat which is not enclosed by a person."
+
+Test me with "z / drop homberg / wear homberg".

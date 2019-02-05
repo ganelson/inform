@@ -1,0 +1,9 @@
+The Church is a room. The player is in The Church.
+
+An apple is a kind of thing.
+
+A banana is a kind of thing.
+
+The player carries a vehicle. The player carries an apple and a banana.
+
+Test me with "i".

@@ -1,0 +1,29 @@
+[The point is to check that activities do not apply the "region implicitly
+means a room in the region" convention which actions do.]
+
+The Decontamination Station is a room. A control panel is here. "Three
+buttons -- red, blue, and green -- adorn the control panel in front of you.
+A sign above the buttons reads: CAUTION: RADIATION PURGE."
+
+A red button is part of the control panel. A green button is part of the
+control panel. A blue button is part of the control panel.
+
+The lower levels is a region. The access tunnels is a region. The
+residential bays is a region.
+ 
+Purging something is an activity.
+ 
+Before purging a region (called the purged area), say "Initiating purge
+protocols in [the purged area]..."
+ 
+Rule for purging the lower levels: say "The lower levels have been purged."
+Rule for purging the access tunnels: say "The access tunnels have been purged."
+Rule for purging the residential bays: say "The residential bays have been purged."
+ 
+After purging a region: say "Purge complete."
+ 
+Instead of pushing the red button, carry out the purging activity with the lower levels.
+Instead of pushing the green button, carry out the purging activity with the access tunnels.
+Instead of pushing the blue button, carry out the purging activity with the residential bays. 
+ 
+Test me with "push red / push blue / push green".

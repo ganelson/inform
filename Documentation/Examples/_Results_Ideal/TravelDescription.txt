@@ -1,0 +1,22 @@
+   Plain of the Skull
+  Up and Up
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Plain of the Skull
+  A vast and trackless plain, enlivened only by the bones of those who have previously tried and failed to cross. Above you is the Endless Tower, which rises half-way to the moon.
+  
+> >   Endless Tower
+  (Testing.)
+  
+  >[1] look
+  Plain of the Skull
+  A vast and trackless plain, enlivened only by the bones of those who have previously tried and failed to cross. Above you is the Endless Tower, which rises half-way to the moon.
+  
+  >[2] up
+  You climb... and climb... and climb... The sun sets. The moon rises. The wind begins to blow. You continue to climb...
+  
+  Endless Tower
+  From up here the Plain of the Skull seems only a small bald patch: the world is round and most of it is covered with trees. Far off to the southwest is a shimmering surface that might be water; but there are no signs of cities or civilizations, only the lizard-skeletons.
+  
+> >

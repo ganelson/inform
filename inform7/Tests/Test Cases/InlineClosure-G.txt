@@ -1,0 +1,8 @@
+The Kitchen is a room.
+
+When play begins:
+	let X be the absolute value of -5.1;
+	say "X is [X].";
+	let F be the abs function;
+	let Y be the abs function applied to -5.2;
+	showme Y;

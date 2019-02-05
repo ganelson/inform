@@ -1,0 +1,15 @@
+To decide if (portal - a door) is north-facing:
+	let dir be the direction of portal from location;
+	if dir is north, decide yes;
+	decide no.
+
+Ballroom is a room. Hall is a room. Marble door is north of Ballroom and
+south of Hall. Marble door is a door.
+
+Instead of waiting:
+	repeat with D running through doors
+	begin;
+		say "D is [if D is north-facing]n-f[otherwise]not n-f[end if].";
+	end repeat.
+
+Test me with "z / open door / n / z".

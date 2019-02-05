@@ -1,0 +1,25 @@
+   Wide Open Field
+  Pot of Petunias
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wide Open Field
+  A big field under a big sky. The clouds are puffy, the trees are handsome.
+  
+  You can see a rock here.
+  
+> >   Wide Open Field
+  (Testing.)
+  
+  >[1] x it
+  It looks like it's been here from the dawn of time.
+  
+  >[2] x it
+  It looks like it's been here from the dawn of time.
+  
+  Quite unexpectedly, a flower pot falls from the sky and breaks open on the ground. Good thing you weren't standing six inches to the left.
+  
+  >[3] x it
+  It contains the remains of some abused petunias.
+  
+> >

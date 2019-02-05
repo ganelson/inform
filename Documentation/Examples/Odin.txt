@@ -1,0 +1,30 @@
+* Degrees of certainty
+(You see nothing special... message replaced; Odin)
+Replacing "You see nothing special..." with a different default message for looking at something nondescript.
+
+In recent years there has been a strong trend towards providing unique descriptions for all implemented objects. Often this is a good idea, but there are also contexts in which we may want to discourage the player from looking too closely at some things and concentrate his attention on just a few interesting ones.
+
+The trick here is that leaving items completely undescribed leads to rather dull exchanges like this:
+
+	>x table
+	You see nothing special about the table.
+	
+...which can leave the player with the impression that the author was simply too lazy to describe everything. So it can be a good idea to replace that default message with a different one more appropriate to the game. For instance:
+
+	{*}"Odin"
+
+	The House of a Mortal Farmer is a room. "Having two separate rooms, this house testifies to considerable wealth and success at agriculture."
+
+	The Bedroom is inside from the House.
+
+	A chair is a kind of supporter. A chair is always enterable.
+
+	In the House are a table, two chairs, a basket, and a hearth. On the table is a loaf of bread. 
+
+	The description of a thing is usually "You give [the noun] a glance, but it is plainly beneath your attention."
+	
+Because the description is attached to a whole kind ("thing"), it is really a blanket instruction about many objects at once. More specific instructions always override less specific ones, so we can easily make exceptions. For instance, the following will work correctly:
+	
+	{**}The infant is a man in the basket. The description of the infant is "So strong and fat that you wonder whether one of your fellow gods is acquainted with the mistress of the house-- but it's no concern of yours, of course."
+	
+	Test me with "x table / x chair / x infant".

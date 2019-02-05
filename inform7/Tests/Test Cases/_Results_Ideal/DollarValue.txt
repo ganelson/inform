@@ -1,0 +1,12 @@
+   Home
+  Value: 5.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150701 / Inform 7 build 6M44 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see a bill here.
+  
+> >   Home
+> Are you sure you want to quit? 

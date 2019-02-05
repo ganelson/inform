@@ -1,0 +1,73 @@
+   Turret
+  Yolk of Gold
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Turret
+  A cramped little room distinguished chiefly by the spiral staircase that descends from it. The windows look out over the rooftop.
+  
+> >   Turret
+  (Testing.)
+  
+  >[1] d
+  
+  Library
+  Here, it seems, you have found your mark: books line both walls, a dark carpet lies on the floor, and a strange dress hangs up in a presentation case. And the thing you were told to look for, a desk with three drawers.
+  
+  A spiral staircase leads up and out.
+  
+  >[2] x case
+  The case is taller than you are, framed in wood, with large panels of glass, the better to display the remarkable contents.
+  
+  In the glass presentation case is a strange dress.
+  
+  >[3] x dress
+  Not the sort of dress that anyone wears now: such elaboration would be ludicrous.  It drips gold -- gilt lace, ruffles of trimmed gold, shimmering golden tracery -- dulled here and there by the sinister black of faceted jet.
+  
+  >[4] x carpet
+  It is too dark for you to make out details of the antique design, which seems dimly to represent an early voyage to the moon, with ships and the travelling stars.
+  
+  >[5] look under carpet
+  You peel up a corner of the rug gingerly; nothing results. A perfectly ordinary rug, then.
+  
+  >[6] look under desk
+  You carefully survey the ground around the desk.  There don't seem to be any hidden tripwires or traps to prevent you from having a look in the drawers.
+  
+  >[7] x desk
+  A deep, satin-lustrous cherry, with scrollwork legs and gilt touches. The years have not been kind, and it has cracked and split in several places; the finish is damaged, and where there is inlaid mother of pearl, it is beginning to come up from its bed.  But it is still a sound piece, and features three drawers.
+  
+  (Your employers were able to tell you to look for it, but not which drawer to look in. Typical.)
+  
+  >[8] open top drawer
+  There is a tremendous screech, but nothing whatsoever inside, not even dust.
+  
+  >[9] close top drawer
+  There is a racket of wood protesting against wood as you do so, which makes you wonder if you hadn't better just leave them open from now on.  The unhappy owner is probably going to catch on soon enough anyway.
+  
+  >[10] look under desk
+  Nothing there either.  Thoroughness is a virtue with tedium as a side effect, as your mother used to say -- but they always counted her a trifle slapdash.
+  
+  >[11] open bottom drawer
+  You struggle to open this one a bit more quietly, conscious all the time of noise...  but no, it's empty.  Just stands to reason.
+  
+  >[12] close bottom drawer
+  There is a racket of wood protesting against wood as you do so, which makes you wonder if you hadn't better just leave them open from now on.  The unhappy owner is probably going to catch on soon enough anyway.
+  
+  >[13] open middle drawer
+  You open the middle drawer, revealing a mysterious thing.
+  
+  >[14] get thing
+  Taken.
+  
+  >[15] look under carpet
+  No time for that kind of nonsense. You'd better get out and away while you can.
+  
+  >[16] look under desk
+  There's nothing down there, but this doesn't come as a great surprise.
+  
+  >[17] up
+  
+  Turret
+  A cramped little room distinguished chiefly by the spiral staircase that descends from it. The windows look out over the rooftop.
+  
+> >

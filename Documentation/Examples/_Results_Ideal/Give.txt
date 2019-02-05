@@ -1,0 +1,89 @@
+   Leafy Branch
+  Bribery
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Leafy Branch
+  You stand on smooth bark dappled by sunlight. The scent-trail runs forward to home.
+  
+  The branch continues forward and backward from here, and a stem extends forward-up.
+  
+  The Very Hungry Caterpillar looks hostile.
+  
+> >   Twig
+  (Testing.)
+  
+  >[1] forward
+  The Very Hungry Caterpillar moves to block your exit, glaring down at you with all the bristles on its skin extended to full size.
+  
+  >[2] give crumb to caterpillar
+  You give the peanut crumb to the Very Hungry Caterpillar, who appears mollified and is now merely suspicious.
+  
+  >[3] forward
+  The Very Hungry Caterpillar moves to block your exit, though it might allow you past if you offered further tribute.
+  
+  >[4] forward-up
+  
+  Leaf Face
+  The smooth and shiny surface of the leaf extends forward from here, but you have lost the scent-trail. This is not the way home.
+  
+  You can see a pear fragment and a dead aphid here.
+  
+  >[5] get aphid
+  You lift the dead aphid, though it is nearly your own size.
+  
+  >[6] get fragment
+  You're carrying too many things already.
+  
+  >[7] down
+  
+  Leafy Branch
+  You stand on smooth bark dappled by sunlight. The scent-trail runs forward to home.
+  
+  The branch continues forward and backward from here, and a stem extends forward-up.
+  
+  The Very Hungry Caterpillar looks suspicious.
+  
+  >[8] give aphid to caterpillar
+  The Very Hungry Caterpillar disdainfully refuses the dead aphid.
+  
+  >[9] drop aphid
+  Dropped.
+  
+  >[10] forward-up
+  
+  Leaf Face
+  The smooth and shiny surface of the leaf extends forward from here, but you have lost the scent-trail. This is not the way home.
+  
+  You can see a pear fragment here.
+  
+  >[11] get fragment
+  You lift the pear fragment, though it is nearly your own size.
+  
+  >[12] down
+  
+  Leafy Branch
+  You stand on smooth bark dappled by sunlight. The scent-trail runs forward to home.
+  
+  The branch continues forward and backward from here, and a stem extends forward-up.
+  
+  The Very Hungry Caterpillar looks suspicious.
+  
+  You can also see a dead aphid here.
+  
+  >[13] give fragment
+  (to the Very Hungry Caterpillar)
+  You give the pear fragment to the Very Hungry Caterpillar, who appears mollified and is now merely indifferent.
+  
+  >[14] forward
+  The scent-trail is weak but not entirely gone, and you pursue it faithfully...
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

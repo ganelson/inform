@@ -1,0 +1,29 @@
+   Drawing Room
+  Being Peter
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Drawing Room
+  The company is assembled here for champagne. Most of it, anyway: Mary is on the phone to her babysitter, Roger is keeping her anxious company, and Carol doesn't drink. But everyone else.
+  
+  You can see Maggie here.
+  
+> >   Drawing Room
+  (Testing.)
+  
+  >[1] ask maggie about love
+  Everyone waits to see what the reaction will be: she gets angry.
+  Everyone is pointedly silent.
+  
+  >[2] ask maggie about income
+  Everyone waits to see what the reaction will be: she gets angry.
+  Everyone is pointedly silent.
+  
+  >[3] take off hat
+  You take off the top hat.
+  
+  >[4] ask maggie about income
+  Everyone waits to see what the reaction will be: she is only mildly annoyed.
+  There is general relief.
+  
+> >

@@ -1,0 +1,35 @@
+   Starting Room
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Starting Room
+  This is the starting room.
+  
+  You can see Chimpy here.
+  
+> >   Starting Room
+  (Testing.)
+  
+  >[1] x chimpy's fur
+  You see nothing special about Chimpy's tail.
+  
+  >[2] x chimpy's tail
+  You see nothing special about Chimpy's tail.
+  
+  >[3] x fur
+  You see nothing special about Chimpy's tail.
+  
+  >[4] x tail
+  You see nothing special about Chimpy's tail.
+  
+  >[5] x appendage
+  You see nothing special about Chimpy's tail.
+  
+  >[6] x chimpy's appendage
+  You see nothing special about Chimpy's tail.
+  
+  >[7] x appendage fur
+  You see nothing special about Chimpy's tail.
+  
+> >

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AdjectiveIsObject
+  >--> You wrote 'Lighted is the Winter Palace' (source text, line 3): but that
+    seems to say that an adjective is a noun, like saying 'Open are the doubled
+    doors': which I'm picky about, preferring it written the other way about
+    ('The doubled doors are open'). Less poetic, but clearer style.
+Inform 7 has finished: 16 centiseconds used.

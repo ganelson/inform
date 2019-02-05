@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 29 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantChangeNamedConstant
+  >--> You wrote 'now red is blue' (source text, line 6): but I can't change
+    that, because it is a name for a constant value. Some named values, like
+    'the score', can be changed, because they were defined as values that vary.
+    But others are fixed. If we write 'The oak tree can be sturdy,
+    lightning-struck or leaning.', for instance, then 'sturdy' is a name for a
+    value which is fixed, just as the number '7' is fixed.
+Inform 7 has finished: 43 centiseconds used.

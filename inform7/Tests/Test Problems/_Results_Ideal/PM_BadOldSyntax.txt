@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadOldSyntax
+  >--> The rule or phrase definition 'When play begins' (source text, line 3)
+    seems to use indentation and colons to group phrases together into 'if',
+    'repeat' or 'while' blocks. That's fine, but then this phrase seems to be
+    missing some punctuation - '-- 0 say "Okay."' (source text, line 6).
+    Perhaps a colon is missing?
+Inform 7 has finished: 14 centiseconds used.

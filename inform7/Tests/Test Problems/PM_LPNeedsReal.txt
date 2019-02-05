@@ -1,0 +1,6 @@
+Lab is a room.
+
+A weight is a kind of value. 10kg specifies a weight.
+
+1 tonne (singular) specifies a weight scaled up by 1000.56.
+

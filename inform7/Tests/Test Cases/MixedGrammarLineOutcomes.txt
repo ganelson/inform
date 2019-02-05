@@ -1,0 +1,15 @@
+Room 1 is a room.
+
+Color is a kind of value. The color are red and blue.
+
+Dolor is a kind of value. The dolor are sad and sadder.
+
+A cube is a kind of thing. A cube has a color. The color of a cube is usually red.
+
+In Room 1 is a cube. In Room 1 is a supporter called the table.
+
+Test me with "x cube / x sadder / put box on table".
+
+Understand "[dolor]" as a cube.
+Understand "[color]" as a cube.
+Understand "box" as a cube.

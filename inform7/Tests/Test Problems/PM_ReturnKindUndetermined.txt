@@ -1,0 +1,9 @@
+To decide which K is a random (name of kind of arithmetic value J)
+	between (first value - J) and (second value - J)
+	(documented at ph_randombetween):
+	(- R_{-printing-routine:J}({first value}, {second value}) -).
+
+To decide which M is blobby:
+	do nothing.
+
+There is a room.

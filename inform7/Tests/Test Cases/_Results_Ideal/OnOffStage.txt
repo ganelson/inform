@@ -1,0 +1,25 @@
+   Schoolhouse
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Schoolhouse
+  You can see a frog and a toad here.
+  
+> >   Schoolhouse
+  (Testing.)
+  
+  >[1] wait
+  Time passes.
+  
+  Admire yourself, frog and toad.
+  It's too late for nothing.
+  
+  >[2] eat frog
+  (first taking the frog)
+  You eat the frog. Not bad.
+  
+  Admire yourself and toad.
+  It's too late for frog.
+  
+> >

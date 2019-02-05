@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 32 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LocalMismatch
+  >--> You wrote 'award tally points' (source text, line 8), but 'tally' is a
+    temporary name for a text (created by 'let' or 'repeat'), whereas I was
+    expecting to find a number there.
+    I was trying to match this phrase:
+      award (tally - number) points 
+    I recognised:
+    tally = a temporary named value, holding a text
+Inform 7 has finished: 44 centiseconds used.

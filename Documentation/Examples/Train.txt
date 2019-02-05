@@ -1,0 +1,72 @@
+** Future events
+(Train that makes station stops; Empire)
+A train which follows a schedule, stopping at a number of different locations.
+
+Suppose we want to have a train which, at fixed times, arrives at and leaves stations. It should be possible for the player to get on and off the train when it is stopped, but not while the train is in motion.
+
+	{*}"Empire"
+
+	The Empire Builder Train is a room. The Train has a room called the station. The station of the Train is Seattle.  
+
+	The description of the Empire Builder is "One of the (relatively) plush long-distance Amtrak trains. You're in a two-story car with toilets and a cafe at one end, not having sprung for a sleeper.
+
+	[if the station of the Train is the train]Outside the window there is rapidly-passing countryside.[otherwise]Through the windows you can see the [station of the Train] train station.[end if]"
+
+	Instead of exiting when the player is in the Train:
+		if the station of the Train is the Train:
+			say "The train is not stopped at a station." instead;
+		otherwise:
+			move the player to the station of the train instead.
+
+	Before going outside when the player is in the Train:
+		try exiting instead.
+		
+	Before going inside when the player is in the station of the Train:
+		move the player to the Train instead.
+
+	Seattle, Edmonds, Everett, Wenatchee, and Spokane are rooms. The description of a room is usually "The scenic train station of [the location][if the location is the station of the train].
+
+	The pompously-titled Empire Builder train is pulled up here, soon to continue its journey towards Chicago[end if]."
+	
+And now our schedule for the train -- somewhat truncated, admittedly, since the full three-day journey from Seattle to Chicago is a bit long even for an ambitious example.
+
+	{**}At 4:45 PM:
+		if the player is in the train or the player is in the station of the train, say "The train pulls out of [the station of the Train]!";
+		now the station of the Train is the Train.
+
+	At 5:10 PM:
+		now the station of the Train is Edmonds;
+		if the player is in the train or the player is in the station of the train, say "The train pulls into Edmonds and comes to a stop."
+
+	At 5:17 PM:
+		if the player is in the train or the player is in the station of the train, say "The train pulls out of [the station of the Train], running north along the shore towards Everett.";
+		now the station of the Train is the Train.
+
+	At 5:39 PM:
+		now the station of the Train is Everett;
+		if the player is in the train or the player is in the station of the train, say "The train arrives in scenic Everett, WA: the last stop before it turns east and heads over the mountains."
+
+	At 5:44 PM:
+		if the player is in the train or the player is in the station of the train, say "The train pulls out of [the station of the Train] and turns east.";
+		now the station of the Train is the Train.
+
+	At 8:39 PM:
+		if the player is in the train or the player is in the station of the train, say "In darkness the train rolls into Wenatchee; which is just fine, considering that there is nothing to see here at all.";
+		now the station of the Train is Wenatchee.
+
+	At 8:44 PM:
+		if the player is in the train or the player is in the station of the train, say "The train pulls out of [the station of the Train] and continues east through the darkness towards Spokane.";
+		now the station of the Train is the Train.
+	 
+Playing this out would of course require near inhuman patience. Let's set things up so that the player at least doesn't have to wait too long for his first departure:
+
+	{**}The time of day is 4:43 PM.
+	
+...and provide fair warning of how slowly time is elapsing.
+	
+	{**}When play begins:
+		now the right hand status line is "[time of day]".
+		
+	Test me with "out / in / z/ z / z / out / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / out / in / out / z / z".
+
+	Test more with "out / z/ z / z  / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z".

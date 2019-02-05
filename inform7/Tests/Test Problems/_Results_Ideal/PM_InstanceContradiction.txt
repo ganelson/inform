@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 49 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InstanceContradiction
+  >--> You wrote 'The Closet is cramped' (source text, line 5), but in another
+    sentence 'A room is always roomy' (source text, line 3): Closet therefore
+    has to have two contradictory states of the same property at once, which is
+    impossible. When a kind's definition says that something is 'always' true,
+    there is no way to override that for particular things of the kind.
+Problem__ PM_InstanceContradiction
+  >--> You wrote 'Green is drab' (source text, line 8), but in another sentence
+    'A colour is always vivid' (source text, line 8): again, green therefore
+    has to have two contradictory states of the same property at once.
+Inform 7 has finished: 17 centiseconds used.

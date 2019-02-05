@@ -1,0 +1,5 @@
+The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
+
+Understand "button [something held]" as taking.
+
+Understand "lever [things held]" as taking.

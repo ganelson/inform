@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Extmiswordedbeginshere Extension by Araminta Intest, which is 12 words long.
+Problem__ PM_ExtMiswordedBeginsHere
+  >--> has a misworded 'begins here' sentence ('Extmiswordedbeginshere
+    Extension'), which contains no 'by'. Recall that every extension should
+    begin with a sentence such as 'Quantum Mechanics by Max Planck begins
+    here.', and end with a matching 'Quantum Mechanics ends here.', perhaps
+    with documentation to follow.
+Inform 7 has finished: 8 centiseconds used.

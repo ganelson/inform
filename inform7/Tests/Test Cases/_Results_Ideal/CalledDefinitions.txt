@@ -1,0 +1,20 @@
+   Sooty Room
+  Viable directions: east.
+  Viable rooms: the Sooty Room and the China Room.
+  Viable things: the box.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sooty Room
+  You can see a crate (empty) here.
+  
+> >   Sooty Room
+  (Testing.)
+  
+  >[1] look
+  Sooty Room
+  You can see a crate (empty) here.
+  
+> >

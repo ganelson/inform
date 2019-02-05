@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableMisnamed
+  >--> You wrote 'Table Itemising Ships' (source text, line 3): but this isn't
+    allowed as the name of a Table, since a table is required either to have a
+    number, or to be a table 'of' something (or both). For example: 'Table 5',
+    'Table of Blue Meanies', and 'Table 2 - Submarine Hues' are all allowed,
+    but 'Table concerning Pepperland' is not.
+Inform 7 has finished: 15 centiseconds used.

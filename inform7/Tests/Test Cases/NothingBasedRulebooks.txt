@@ -1,0 +1,7 @@
+Lab is a room.
+
+When play begins, follow the after reading a command rules.
+
+Foo is a nothing based rulebook producing numbers.
+When play begins:
+	showme the number produced by foo.

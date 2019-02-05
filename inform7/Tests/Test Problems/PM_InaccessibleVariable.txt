@@ -1,0 +1,9 @@
+spot is room.
+
+Include (- Global foobar; -) after "Definitions.i6t".
+
+Foo is a number that varies.
+The foo variable translates into I6 as "foobar".
+Foo is usually 5.
+
+when play begins, say "Foo is [foo]."

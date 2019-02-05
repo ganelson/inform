@@ -1,0 +1,82 @@
+* New rules
+(Food with ingredients affecting the player; Stone)
+A soup to which the player can add ingredients, which will have different effects when the player eats.
+
+A thing can have a rule as a property, if we like. Here we are going to allow the player to make a soup whose effects will depend on its ingredients. Each ingredient will have its own "food effect" rule, to be followed when the food is eaten. 
+
+Note that there are other, slightly less cumbersome ways to do the same thing -- we will see in the chapter on Rulebooks that we could make a "food effects rulebook" and then write a number of rules such as "food effects rule for carrots" or "food effects rule for the stone". Nonetheless, we demonstrate rules-as-properties here for the sake of thoroughness.
+
+So:
+
+	{*}"Stone"
+
+	A food is a kind of thing that is edible. A food has a rule called the food effect.
+
+	Carry out eating a food:
+		if a food is part of the noun:
+			repeat with item running through things which are part of the noun:
+				if item is a food, follow the food effect of the item;
+		follow the food effect of the noun.
+	
+	Report eating a food:
+		say "You eat [the noun]. [diagnosis of the player]";
+		stop the action.
+
+	To say diagnosis of (victim - a person):
+		if the victim is ill:
+			say "You are ill.";
+			rule succeeds;
+		otherwise:
+			say "You are healthy. ";
+		if the victim is awake, say "You are wide awake. ";
+		otherwise say "You are sleepy. ";
+		if the victim is bright-eyed, say "Your eyesight is clear. ";
+		otherwise say "Your eyesight is dim. ";
+		if the victim is weak, say "You are weak. ";
+		otherwise say "You are strong. ";
+		if the victim is hungry, say "You are hungry.";
+		otherwise say "You are well-fed."
+		
+And now to provide some particular foods:
+	
+	{**}Some carrots are a food. The food effect of carrots is the bright-eye rule. This is the bright-eye rule: now the player is bright-eyed.
+
+	Some potatoes are a food. The food effect of the potatoes is the sleepiness rule. This is the sleepiness rule: now the player is sleepy.
+
+	The broth is a food. The indefinite article of the broth is "some". The food effect of broth is the filling rule. This is the filling rule: now the player is full.
+
+	The hambone is a food. The food effect of the hambone is the heartiness rule. This is the heartiness rule: now the player is strong. Instead of eating the hambone: say "You cannot just eat a bone!"
+
+	The poison ivy is a food. "Poison ivy grows nearby." The food effect of poison is the illness rule. This is the illness rule: now the player is ill.
+
+	A person can be bright-eyed or blind. The player is blind.
+
+	A person can be well or ill. The player is well.
+
+	A person can be hungry or full. The player is full.
+
+	A person can be strong or weak. The player is weak.
+
+	A person can be awake or sleepy. The player is sleepy.
+
+	The broth is in the kettle. The kettle is on the fire. The fire is in the Clearing. The Clearing is a room.
+
+	The player carries the hambone, the potatoes, and the carrots. The ivy is in the clearing.
+
+	Instead of examining the broth:
+		if something is part of the broth, say "In the broth, [a list of things that are part of the broth] float[if exactly one thing is part of the broth]s[end if].";
+		otherwise say "It is just a thin broth with no other ingredients."
+	
+	Instead of inserting something into the broth: try inserting the noun into the holder of the broth.
+
+	Instead of taking the broth: say "You cannot take the broth in your bare hands."
+
+And the following is a relatively unimportant nicety:
+	
+	{**}To sink is a verb.
+
+	After inserting a food which is not the broth into a container which contains the broth:
+		now the noun is part of the broth;
+		say "[The noun] [sink] into [the second noun], making the broth richer."
+	
+	Test me with "x broth / eat hambone / put hambone in kettle / x broth / put potatoes in broth / x broth / eat carrots / eat broth / put ivy in kettle / eat ivy".

@@ -1,0 +1,22 @@
+"Tiny Forest"
+
+Include rulebook compilation and rule attachments in the debugging log.
+
+A forest room is a kind of room.
+
+To avoid briars:
+	if going inside or going up or going down,
+		say "You can't go that way.";
+	otherwise
+		say "The briars in that direction are impassable."
+
+Instead of going nowhere from a forest room, avoid briars.
+
+The Clearing is a forest room. "You are in the middle of an ancient forest, much overgrown by briars. There is a nasty-looking bog to your south. A path heads east." East is the Mighty Oak. Instead of going south in the Clearing, say "You take another look at the bog and reconsider."
+
+The Mighty Oak is a forest room. "There is a tremendous old oak here. A path heads west to the clearing. There is a greasy-looking bog to your north." Up is the Treetop. Instead of going north in the Mighty Oak, say "You take another look at the bog and reconsider."
+
+The Treetop is a room. "Now you are here, you can see the forest stretches out to the horizon."
+
+
+Test me with "north / south / east / north / south".

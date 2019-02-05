@@ -1,0 +1,7 @@
+Globular Cluster is a room.
+
+Mass is a kind of value.
+
+1kg specifies a mass scaled at 100.
+
+1Xg specifies a mass scaled at 1300.

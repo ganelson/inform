@@ -1,0 +1,22 @@
+A restricted-container is a kind of container.
+
+A restricted-container has a list of things called the allowed-contents.
+
+The allowed-contents of a restricted-container is usually {}.
+
+Check inserting something (called the to-be-inserted) into a restricted-container (called the receptacle):
+	if the to-be-inserted is not listed in the allowed-contents of the receptacle:
+		say "[The noun] doesn't seem to fit in [the second noun].";
+		stop the action;
+	otherwise:
+		continue the action.
+
+The Living Room is a room.
+
+The diamond ring is wearable [thing].
+
+The player carries the little red box and the diamond ring.
+
+The little red box is a restricted-container.
+
+The allowed-contents of the little red box is {diamond ring}.

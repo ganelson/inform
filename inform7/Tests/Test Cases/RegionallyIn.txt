@@ -1,0 +1,20 @@
+The Mysterious Void, the Unknowable Vastness, and the Nothingness are
+rooms. The Empty Space is a region. The Mysterious Void, Unknownable
+Vastness, and Nothingness are in the Empty Space.
+
+Every turn:
+	if the location provides the property map region begin;
+		let R be the map region of the location;
+		say "This is iteration over region [R] with the region stored as a variable.";
+		repeat with P running through the rooms regionally in R begin;
+			say "  [P] is in that region.";
+		end repeat;
+	end if;
+	say "This is the iteration over region Empty Space with the region referred to directly.";
+	repeat with P running through the rooms regionally in the Empty Space
+	begin;
+		say "  [P] is in that region.";
+	end repeat.
+
+Test me with "z".
+

@@ -1,0 +1,111 @@
+   Summoning Room
+  Locks
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Summoning Room
+  You can see a protected door and a goat-headed key here.
+  
+> >   Summoning Room
+  ** i
+  You are carrying:
+    a passcard
+  
+> >   Summoning Room
+  ** drop passcard
+  Dropped.
+  
+> >   Summoning Room
+  ** e
+  (first opening the protected door)
+  (first unlocking the protected door)
+  You lack a key that fits the protected door.
+  
+> >   Summoning Room
+  ** open door
+  (first unlocking the protected door)
+  You lack a key that fits the protected door.
+  
+> >   Summoning Room
+  ** take key
+  Taken.
+  
+> >   Summoning Room
+  ** e
+  (first opening the protected door)
+  (first unlocking the protected door)
+  You lack a key that fits the protected door.
+  
+> >   Summoning Room
+  ** open door
+  (first unlocking the protected door)
+  You lack a key that fits the protected door.
+  
+> >   Summoning Room
+  ** unlock door with the key
+  The goat-headed key does not fit the protected door.
+  
+> >   Summoning Room
+  ** i
+  You are carrying:
+    a goat-headed key
+  
+> >   Summoning Room
+  ** take passcard
+  Taken.
+  
+> >   Abattoir
+  ** e
+  (first opening the protected door)
+  (first unlocking the protected door)
+  (with the passcard)
+  
+  Abattoir
+  You can see a protected door and a safe (closed) here.
+  
+> >   Abattoir
+  ** i
+  You are carrying:
+    a passcard
+    a goat-headed key
+  
+> >   Abattoir
+  ** x safe
+  You see nothing special about the safe.
+  
+> >   Abattoir
+  ** open safe
+  (first unlocking the safe)
+  (with the goat-headed key)
+  You open the safe, revealing an amphora.
+  
+> >   Abattoir
+  ** i
+  You are carrying:
+    a passcard
+    a goat-headed key (which opens the safe)
+  
+> >   Abattoir
+  ** lock the door
+  (first closing the protected door)
+  (with the passcard)
+  You lock the protected door.
+  
+> >   Abattoir
+  ** lock safe
+  (first closing the safe)
+  (with the goat-headed key)
+  You lock the safe.
+  
+> >   Abattoir
+  ** unlockall
+  Unlocking the protected door.
+  Unlocking the safe.
+  
+  A loud stereophonic click assures you that everything in the game has been unlocked.
+  
+> >   Abattoir
+  **
+  I beg your pardon?
+  
+> >

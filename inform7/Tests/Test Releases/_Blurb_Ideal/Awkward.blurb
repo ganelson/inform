@@ -1,0 +1,38 @@
+! Blurb file created by Inform Inform 7.99.99 (build 9Z99)
+
+status "Internal/HTML/CblorbModel.html" "intest/Workspace/T0/Example.inform/Build/StatusCblorb.html"
+
+
+! Identification
+
+project folder "intest/Workspace/T0/Example.inform"
+release to "intest/Workspace/T0/Example.materials/Release"
+
+! Blorb instructions
+
+storyfile leafname "It Is An Awkward & <Difficult> .gblorb"
+storyfile "intest/Workspace/T0/Example.inform/Build/output.ulx" include
+ifiction "intest/Workspace/T0/Example.inform/Metadata.iFiction" include
+cover "Internal/Miscellany/Cover.jpg"
+picture 1 "Internal/Miscellany/Cover.jpg"
+
+! Placeholder variables
+
+placeholder [IFID] = "0B00B00D-3307-4688-B2D8-95DB962781B4"
+placeholder [RELEASE] = "1"
+placeholder [YEAR] = "2016"
+placeholder [TITLE] = "It Is An Awkward &amp; &lt;Difficult&gt; Title But With Élan And Naïveté"
+placeholder [AUTHOR] = "Halldór Ásgrímsson"
+placeholder [BLURB] = "A framed photograph of Icelandic Prime Minister Halldór Ásgrímsson, a ruler measuring Ångströms, a Bokmål-Lëtzebuergesch Lëtzebuergesch-Bokmål dictionary and a ticket to Tromsø via Østfold are in the Íslendingabók. A paper by Karl Weierstraß, a general feeling of Ärger, an old Österreich passport and the Bach Clavier-Übung open at the fugue à 4 are in the Bücherei. The painting of École normale superiéure students singing Ça ira, the frankly lesser-known journal of Niccolò Polo, Così fan tutte on CD, an extract of Herodotus concerning Artaÿctes and the exit sign reading À BIENTÔT are in the Bibliothèque. A wicker basket marked CHLOË is in the Bibliothèque. A ginger cat is in the basket. A guide to Æsop for naïve æsthetes, Lönnrot's Kalevala, a creed according to the Bahá'ís, FALARÃO magazine, an Estonian poem by Tõnu Trubetsky, a Portuguese-Italian recipe for macarrão, a stripy hanging CANDY PIÑATA bag, a ¿¡Punctuation Turned Upside Down¿¡ pamphlet, an Italian brewers' anti-violence poster declaring BÓTTE NON BÒTTE, a map of È and a dusty book titled The Parnasum of Luís Vaz bearing CAMÕES on its spine are in Miscellany Mañana. In Mañana is something called ÂÊÎÔÛ - The Official Journal of the Society for Vowels bearing Circumflexes. In Mañana is something called âêîôû comic - the youth edition."
+
+! Other material to release
+
+status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/doc403.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a website'&nbsp;<a href=inform:/doc405.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with an interpreter', for in-browser play on your website&nbsp;<a href=inform:/doc406.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/doc401.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the source text'&nbsp;<a href=inform:/doc412.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a solution'&nbsp;<a href=inform:/doc411.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the library card'&nbsp;<a href=inform:/doc412.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the introductory booklet'&nbsp;<a href=inform:/doc404.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the introductory postcard'&nbsp;<a href=inform:/doc404.html><img border=0 src=inform:/doc_images/help.png></a>||

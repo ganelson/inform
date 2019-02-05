@@ -1,0 +1,4 @@
+The Taj Mahal and the Grassy Slope are rooms.
+
+Index map with rubric "Here Be Wyverns" size 16 font "Helvetica-Oblique"
+	colour "Distressingly Puce" at 150&0 from Taj Mahal.

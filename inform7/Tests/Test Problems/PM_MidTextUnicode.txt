@@ -1,0 +1,11 @@
+Include Unicode Character Names by Graham Nelson.
+
+[The problem here arises from the Greek letter lambda actually being
+known to Unicode as lamda.]
+
+The Temple of Eris is a room.
+
+To admire (U - a unicode-character): say "I admire [U]."
+
+To provoke dissent:
+	admire unicode Greek capital letter lambda.

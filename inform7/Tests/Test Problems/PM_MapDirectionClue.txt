@@ -1,0 +1,7 @@
+Xanadu is a room.
+
+Turnwise is a direction. The opposite of turnwise is widdershins.
+Widdershins is a direction. The opposite of widdershins is turnwise.
+
+Index map with turnwise mapped as 20.
+Index map with 20 mapped as turnwise.

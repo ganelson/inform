@@ -1,0 +1,21 @@
+   Plant Cell Wall
+  Xylan
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Plant Cell Wall
+  You can see a xylan sample here.
+  
+> >   Plant Cell Wall
+  (Testing.)
+  
+  >[1] x xylan
+  A polysaccharide. Totally useless. If only you had some xylose, instead!
+  
+  >[2] hydrolyze xylan
+  At once the xylan becomes xylose.
+  
+  >[3] x xylose
+  Awesome!
+  
+> >

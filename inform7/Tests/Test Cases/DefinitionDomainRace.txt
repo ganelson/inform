@@ -1,0 +1,11 @@
+Test is a room.
+
+A vessel is a kind of thing. A vessel can be full or empty.
+
+The shot glass is full vessel in Test.
+
+The handbag is a container with carrying capacity 1.
+
+It is carried by the player. 
+
+Definition: The handbag is full rather than empty if it contains something.

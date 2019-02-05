@@ -1,0 +1,11 @@
+The Typographium is a room.
+
+Weight is a kind of value. 100kg specifies a weight. A thing has a weight.
+Definition: a thing is heavy if its weight is 50kg or more.
+
+Height is a kind of value. 100cm specifies a height. A thing has a height.
+Definition: a thing is tall if its height is 120cm or more.
+
+When play begins:
+	if the player is heavier than 70kg, say "Heavens to Betsy!";
+	if the player is heavier than 70cm, say "Heavens to Betsy!"

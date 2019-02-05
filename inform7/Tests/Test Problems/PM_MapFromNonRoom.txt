@@ -1,0 +1,5 @@
+The Taj Mahal and the Grassy Slope are rooms.
+
+The Cyberman is a device.
+
+Index map with Cyberman mapped southeast of the Taj Mahal.

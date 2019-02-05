@@ -1,0 +1,992 @@
+4S08 (25 March 2007)
+
+This build represents a substantial update in five respects: it fixes all
+known bugs - some 335 bug reports have been acted on since 4K41 and the
+database of open bug report forms is now empty for the first time since
+the public beta was released as 3K27; it introduces the first batch of
+improvements proposed in the January 2007 consultation document (called
+simply "the January document" below); it makes the first real reform of
+paragraph-spacing since 3K27; it makes the first tentative steps towards
+Inform 7 for Linux, though at present as a command-line system without the
+graphical user interface; and it is accompanied by more supporting
+materials than previous builds, notably free-standing documentation and a
+formal grammar.
+
+Inevitably it has a lengthy change log, which is grouped thematically below.
+Enough minor changes have been made to the interpretations of syntax that
+authors of any large work in progress will find at least one or two things
+they need to change. Possible trouble-spots are marked with an arrow >-->.
+
+
+INFORM 7 FOR LINUX
+
+Inform 7 is now available for Linux for the i386, ppc, armv5tel, and s390
+	architectures. All compilers and interpreters supplied as part of the
+	Inform 7 package are statically linked and should have no dependencies
+	beyond stdio. The i7 shell itself is written in Perl, but does not
+	require any modules not customarily shipped as part of the Perl
+	distribution. The only additional dependency is the uuidgen program;
+	this is part of the ext2tools package and has so far been present as
+	part of the default installation on all systems we have examined.
+	Installation instructions can be found in the file INSTALL, and
+	operational instructions in README or the manual page installed by
+	the Inform installer.
+Users on Intel 386-and-descendants machines should download the package
+	I7_4S01_Linux_i386.tar.gz. All users on other architectures
+	should download I7_4S01_Linux_all.tar.gz. The difference between
+	these two is simply whether or not non-i386 compilers and interpreters
+	are bundled - the "all" version will function perfectly well for Intel
+	users, but it is substantially larger to download. The correct set for
+	your architecture will be detected at installation time.
+
+
+INFORM 7 FOR MAC OS X
+
+The OS X application contains a number of bug fixes in the CocoaGlk layer,
+	that is, to the underlying interpreters used in the Game panel.
+
+
+INFORM 7 FOR WINDOWS
+
+Pasting text into the source panel should no longer lose any trailing
+	carriage returns.
+Echo streams are supported in the game panel's Glk implementation.
+Skein and transcript improvements:
+	Knots that have been played in a game session are coloured
+		yellow, and all other knots are coloured green.
+	Knots with blessed text are lighter than those without.
+	If the last played text for a knot does not match the blessed text,
+		the node is shown with a red badge. Double clicking the red badge
+		goes to the appropriate point in the transcript tab.
+	The skein's context menu has been reworked to match the OS X
+		application.
+	A confirmation dialog appears when deleting a locked knot.
+	Threads are automatically locked when blessed or when a label is added
+		or changed.
+Bug fixed whereby blue "link to documentation" icons were, in the most recent
+	Windows build, in some cases off by one or two sections.
+
+
+SUPPORTING DOCUMENTATION
+
+As from this build, we are uploading the "Writing with Inform" documentation
+	in two plainer formats than those already available: plain text, and
+	a zipped archive of minimally-tagged HTML files. We hope that this will
+	make reference easier for those using screen-reading software, in
+	particular. (This was (6.7) in the January document.)
+We are also uploading a PDF document extracted from the NI source code which
+	specifies the formal grammar read by NI (or rather, that part of it not
+	already specified in the Phrasebook index): in the January document we
+	expressed scepticism that this would really be useful, but responders
+	disagreed. We continue to be sceptical, but it wasn't too hard to generate
+	the document, so here it is.
+
+
+EXAMPLES AND EXTENSIONS INCLUDED WITH INFORM
+
+Examples:
+	Added "Apples" to demonstrate "asking which do you mean" rules.
+	Added "Ahem" to demonstrate phrases with alternate elements
+		(the 300th example to be written).
+	Added "Pages" to demonstrate phrases pertaining to specific values
+	Added "Hover" to demonstrate interior descriptions of vehicles placed
+		before the rest of a room description.
+	Added "Walls and Noses" to demonstrate advanced modification of the
+		disambiguation question.
+	Added "Electrified" to demonstrate modification of the action-processing
+		rule sequence.
+	Added "Straw Boater" to demonstrate testing for the default text "".
+	Added "Ferragamo Again" to demonstrate phrases applying to specific objects.
+	Added "Mattress King" to demonstrate modifying the action to push things
+		between rooms.
+	Added "Lollipop Guild" to demonstrate turning off implicit takes when
+		eating an object that is fixed in place.
+	Modified "Abolition" to reflect changes in the handling of "to" in
+		action names.
+	Corrected "Neighborhood Watch" to add a check for cases where the door
+		is already locked or unlocked.	
+	Assorted minor changes to examples to handle spacing changes.
+Extensions:
+	Locksmith: advanced to version 3 and made modifications due to the new
+		spacing mechanisms.
+	Glulx Image Centering: Corrected documentation.
+	Rideable Vehicles: advanced to version 2. Rules added for people other
+		than the player to mount and dismount vehicles; rule names given to
+		the existing rules, so that they may be more easily revised or
+		replaced by the user of the extension.
+>--> Plurality: advanced to version 5, and forms of phrases changed to is-are
+		(etc) rather than is/are. This will require authors using Plurality
+		to do a search and replace to change formats. (Sorry.)
+>--> Complex Listing: advanced to version 4, and forms of phrases change to
+		is-are (etc) rather than is/are. This will require authors using
+		Complex Listing to do a search and replace to change formats. (Sorry.)
+		Behavior of "[prepared list]" changed to use no articles, just as
+		"[list..." uses no articles now in Inform by default. More flexible
+		phrasings added to several phrases, so that "prepare list..." is
+		accepted as well as "prepare a list...", and "register the things..."
+		is accepted alongside "register things...".
+	Menus: advanced to version 2. Added options allowing up and down arrows
+		to function properly under Glulx.
+
+
+KINDS OF VALUE
+
+When Inform has to initialise variables or property values, but the source
+	gives no value, it uses a default value for the appropriate kind of value.
+	For instance, a number is 0 unless otherwise specified, and a text is
+	the empty text "". The Kinds index (in which a number of minor bugs have
+	been fixed) now tabulates the default values used for each kind of value
+	which can be stored in variables or properties. (This and related changes
+	following cover (6.34) in the January document.)
+It is now legal to declare a "specification text" for a kind of value,
+	analogously with kinds of object, and this is used in the Kinds index.
+New scene "Entire Game" created which, as the name implies, contains the
+	whole of play except for the posthumous restart, restore or quit
+	conversation. (This is the default value for scenes.)
+The constant "nothing" now means the absence of an object, in the context
+	of testing an object-valued variable or property to see if it holds the
+	default value for "object", and is also useful when looking at the
+	result of things like "best route from the Drawbridge to the Keep"
+	(if there is in fact no route).
+Problem message added to explain more fully when an action name is used as a
+	new value (for instance, if we write "Lamp strength is a kind of value.
+	The lamp strengths are burning and gone out.", then "burning" would clash
+	with the name of the action).
+Bug fixed (in consequence of above) whereby creating but not initialising a
+	scene variable or property caused an internal error.
+Bug fixed whereby comparison of a text with "" often gave false negatives.
+
+
+NAMED VALUES
+
+>--> When ambiguous values occur, local variable names (created by 'called'
+	or by 'let') are now given priority over other possibilities.
+When a "(called...)" name appears in a rule, any article used will not be
+	taken as an immutable part of the name. For instance, "Instead of examining
+	a door (called the portal): ..." will now create a temporary value called
+	just "portal", not "the portal". Of course, "the portal" can still be
+	used to describe this value, but now being parsed as "the" + "portal",
+	and this means that text substitutions "[a portal]" and "[the portal]"
+	can differ.
+Problem message added to forbid the use of "(called ...)" when giving a
+	complex range of things to be repeated through: this was accidentally
+	allowed in previous builds, and produced subtly incorrect results.
+Problem message added (in place of internal error) to catch attempts to use
+	local values created by 'let' or 'repeat' or 'called' in past-tense
+	references which pertain to times when they did not exist.
+Problem message added to report contradictions of kind when a variable is
+	declared more than once and each time as a kind of object.
+Bug fixed whereby conditions involving negated existential quantifiers, and
+	giving called names to the results, would sometimes incorrectly fail.
+	(For instance, "a person who is not wearing anything" would work but
+	"a person (called the extrovert) who is not wearing anything" would fail.
+	The negated existential here is the clothing being worn - which is
+	required not to exist.)
+Bug fixed whereby "a random D", where D is a description including a
+	"(called ...)" clause, would (although legal) cause I6 errors.
+Bug fixed whereby variables set up with non-existent kinds ("Z is a
+	bogosity that varies") would sometimes produce internal errors rather
+	than a problem message.
+
+
+TEXT
+
+>--> Inform has a fairly delicate mechanism for placing paragraph breaks
+	automatically at "the right" points in text produced by various different
+	rules. Its aim is to save the writer from having to think about this.
+	Four main defects have been found in the original Public Beta algorithm,
+	and in this build we address all of them. We believe the result is a
+	better system, but it does mean that the dodges people have used up to
+	now to compensate for faults of the old algorithm will need to be
+	removed or changed. (We had to remove a dozen or so spurious
+	"[line break]"s from the Examples, for instance: the end result was
+	much less intervention in how paragraphs were being broken, and this
+	suggests that the automatic system is now more trustworthy.) This
+	addresses proposal (6.45) in the January document.
+When defining a new text substitution, it is now legal to add "-- running on"
+	as a note at the end of the preamble. The effect of this is that any
+	newline implied by the immediately preceding text is ignored. Thus
+		To say note -- running on: say "(1)".
+	can be used in text such as
+		"I prefer to avoid footnotes.[note]"
+	without a newline being forced after the full stop under the "sentence
+	ending punctuation at the end of literal passages of text implies a
+	newline" convention.
+This has been applied to the following character-level text substitutions in
+	the Standard Rules:
+		[unicode N]
+		[bracket]  [close bracket]  [apostrophe]  [']  [quotation mark]
+		[line break]
+		[conditional paragraph break]  [paragraph break]  [run paragraph on]
+		[bold type]  [italic type]  [roman type]
+		[fixed letter spacing]  [variable letter spacing]
+As a result, [line break] now does just and only what it suggests: prints a
+	line break, regardless of circumstances, and with no side-effects for
+	subsequent paragraph breaking. [paragraph break] is now the better way
+	to force a paragraph break, and various bugs have been fixed so that it
+	can more reliably be used in mid-string, in table entries, in values,
+	more than once in the same quoted text, etc.
+A new form of paragraph break has been created for one special circumstance:
+	printing clarificatory text after a command, when we are guessing what
+	was meant. For instance:
+		> N
+		(first opening the Wicket Gate)
+	Conventional spacing here is that text should immediately follow on the
+	next line, unless we are going to a different room and looking around,
+	in which case a line break should be added. We can get this spacing
+	convention using the text substitution "[command clarification break]";
+	for instance:
+		say "(first opening [the noun])[command clarification break]";
+Another change made to the paragraph breaking mechanism removes the previous
+	discrepancy between the effect of printing an object property which does
+	contain a text substitution, and one that doesn't; and similarly for texts
+	used as values in miscellaneous other circumstances.
+Finally, the text substitution "[no line break]" suppresses a line break
+	which might otherwise arise under the sentence-ending punctuation rule
+	as it applies to literal text in a "say", so:
+		say "This is not the end![no line break]";
+	leaves the printing position after the exclamation mark.
+>--> The meaning of the text substitution "[list of ...]" has been changed so
+	that it now lists the items referred to without articles: for instance,
+	it might produce "apple, orange and nectarine" rather than "an apple,
+	an orange and a nectarine". (Which is what would have been produced in
+	previous builds: to obtain the articled list, use "[a list of ...]"
+	or "[the list of ...]" according to whether indefinite or definite
+	articles are wanted. This was (6.21) in the January document.)
+The text substitution ['] is now synonymous with [apostrophe], and makes
+	extended runs of Cockney dialogue easier to type ("put down that bleedin[']
+	[']eavy Joanna", and so forth).
+Problem message added for using 'say' (or a text substitution) to print a
+	value of a kind which cannot be printed up (such as a parsing topic).
+	(This already produced a problem message, but a generic unhelpful one.)
+Problem message added for using a comma inside a text substitution, which
+	in previous builds concatenated the items in the substitution - but that
+	was almost invariably not what people expected, and it was being reported
+	as a bug. (Thus previously "[1, 3]" was a legal substitution and printed
+	up "13", for example.)
+Bug fixed whereby text substitutions which ended with one digit and were
+	immediately followed by another digit in literal text would be corrupted.
+	(For instance, in "[if x is 2]2".)
+Bug fixed whereby the little-used but legal "say X, Y, Z" comma-separated list
+	form of "say" would lose some text substitutions occurring in terms in the
+	list before the final one.
+Bug fixed whereby replacing or cutting snippets in the player's command could
+	cause spurious line breaks to be printed if the new text contained text
+	substitutions.
+Bug fixed whereby long texts containing almost the maximum legal number of
+	text substitutions could crash NI.
+Bug fixed whereby improperly closed double-quoted text, e.g., "'fish"' (note
+	the mismatch of quotation marks) could produce I6 errors rather than a
+	problem message.
+Bug fixed whereby specifying literals involving double-quotes could cause
+	I6 errors (e.g., writing: 5'10" specifies a height). Still not a good
+	idea since it throws syntax-colouring, but it's not meant to be illegal.
+Bug fixed whereby the activity "printing the name of something" now applies
+	to the player - previously, it applied to everything except the player.
+
+
+PROPERTIES
+
+>--> The ability to create a property without specifying its kind (by writing,
+	say, "A room has a property called history.") has been withdrawn. This
+	was an undocumented syntax which gave the property the kind
+	"miscellaneous-value", whose use has for some time been deprecated.
+	(In almost all cases, the property will be storing either objects or text,
+	and should be given a kind accordingly. The Standard Rules no longer
+	use properties or variables of this kind, and this change improves the
+	reporting of problems in assertions using the properties in question.)
+>--> We can now test to see if an object provides a property using the syntax
+		if O provides the property P
+	so for instance "if the noun provides the property lockable" - which a
+	container or door would pass, but which a person would not, and so on.
+	This was previously allowed as "if O has a/an P", but that was too
+	ambiguous and has been withdrawn. (It made grammatical sense only for
+	value properties P. "if the noun has a lockable" not only read badly,
+	but due to a bug (now fixed) it also compiled to an incorrect test.)
+An indefinite article is now permitted in a negated assertion which sets the
+	converse of an either/or property: thus "X is not a P" is permitted,
+	just as "X is not P" would be. Grammatically this is incorrect if P is
+	an adjective, which is what the original design of Inform intended, but
+	people occasionally use nouns in an adjectival sort of way - for instance,
+	"A monkey can be a hairy critter. The ape is a monkey in the Serengeti.
+	The ape is not a hairy critter." (Here P is "hairy critter".) We continue
+	to think this is poor style, but since the assertion would be allowed
+	if in the positive sense, it seemed better to legalise it in the negative
+	sense as well.
+Problem message added for writing 'X can have P' rather than 'X has P' to
+	create a property, since this is a common mistake and currently produces
+	rather unhelpful problem messages.
+Problem message rather than I6 errors for using a non-constant value (say,
+	a variable) as the initial value of a property.
+Problem message rather than I6 errors for creating a property with a name
+	consisting solely of an article (e.g.: "A thing has a number called the."),
+	and similarly for property names containing commas or quoted text.
+Problem message added to clarify what kind of contradiction has occurred
+	when the same property is set to different values in different sentences.
+Problem message added to report that new either/or properties or possible
+	conditions (created by 'X can be Y or Z'-style sentences) clash with
+	existing meanings - something which previously led to peculiar errors.
+Run-time problem messages now result from attempting to change (with "now")
+	either/or properties for objects which are not permitted to have them.
+Run-time problem messages now result from attempting to read or write value
+	properties for the "nothing" non-object. (Previously writes were ignored
+	and reads produced 0, but this was unsafe for kinds of value where 0 was
+	not valid, and in any case allowing people to treat "nothing" as an
+	object seems unwise.)
+Bug fixed whereby "now X is Y" would compile I6 code which failed at run-time
+	if X is a K that varies (K being some new kind of value) and Y is one
+	possible value of K, in circumstances where K is also a property of objects.
+	For instance, suppose we have colours blue and red, and colour is a
+	property of cars. Suppose "jalopy" is a car that varies, "hue" a colour
+	that varies. Then "now the jalopy is blue" and "now the hue is blue" are
+	semantically very different - one changes a property, the other assigns
+	a value - and this difference was being missed, hence the bug.
+Bug fixed whereby tests of whether something has an either/or property would
+	compile to code failing at run-time (whereas value properties would work).
+Bug fixed whereby I6 errors might result from heavily ambiguous source texts
+	where confusion could occur between wording of one phrase which does not
+	include a property and another which does, where that property usage is
+	itself incorrect.
+Bug fixed whereby giving a property of something with an additional clause
+	requiring it to be somewhere (e.g. "the Portable Lamp in the Yard")
+	would cause an internal error rather than produce a problem message.
+Bug fixed (see KINDS OF VALUE) whereby creating but not initialising a
+	scene property caused an internal error.
+
+
+DEFINED ADJECTIVES
+
+In "Definition:" sentences, it's now possible to refer to the object to which
+	the definition applies as "he", "she" or "they", or indeed "him", "her"
+	or "them", and no longer only as "it". Thus "Definition: a person is other
+	if he is not the player." is legal, as is, and let's not squabble over the
+	rightness of this, "Definition: a person is other if they are not the
+	player." The accusative forms mean that "Definition: a person is a target
+	if the player can see him.", etc., should also work now.
+A problem message has been added to forbid ambiguous settings of
+	properties for adjective-qualified kinds, as in "The description of an
+	open door is ...": such a sentence looks as if it might create a rule
+	which would dynamically check the door during play, but in fact being
+	an assertion it only looks at the initial state. (In previous builds,
+	a bug caused this to set the description for every door, initially open
+	or not: rather than fix this, it seemed better to forbid this form of
+	assertion entirely, since if it worked it would still not do what it
+	looked as if it did.)
+Similarly, a problem message has been added to forbid assertions at compile
+	time about adjective-qualified kinds where the adjective cannot be
+	determined until run-time (because it is created with "Definition:" and
+	involves some computation to decide whether an object satisfies it or not).
+Problem message rather than I6 errors for using "change O to P" where O is
+	an object and P is a defined adjective (rather than a property), so that
+	it is not logically possible to change P by merely saying so.
+Run-time problem messages now result from attempting to change (with "now")
+	adjectival properties which cannot be forced to come true, since their
+	truth is governed by a fixed definition.
+Bug fixed whereby definitions of adjectives based on testing a property to
+	see if it equals some specific value (e.g. "Definition: A container is
+	standard if its carrying capacity is 7.") would in fact test a range
+	of values with this as boundary (e.g. capacity <= 7).
+Bug fixed whereby definitions of adjectives with a specific object as domain
+	(e.g. "Definition: the Ballroom is dusty if...") would not always be given
+	priority over definitions with a more general kind as domain (e.g.
+	"Definition: a room is dusty if...").
+
+
+HEADINGS
+
+Problem message added to report that a heading stops before the end of its
+	line, something which generally happens when a full stop has been misread.
+Bug fixed whereby an author name including a comma would be mis-spaced in the
+	banner (for instance if the first line is: "Trio" by Rod, Jane and Freddy).
+Bug fixed whereby a heading which followed a long comment without an intervening
+	skipped line would sometimes wrongly be rejected as containing a line break.
+
+
+ASSERTION SYNTAX
+
+When ambiguous assertion sentences occur, where more than one word is in
+	principle valid as the primary verb, we now assume that "to have" is the
+	most likely verb, followed by "to be", and then the other built-in verbs.
+	This replaces the previous doctrine that the earliest valid verb in the
+	sentence was the true one. For instance, "The last support is a thing
+	that varies." is now read with "is" as the primary verb, not "support".
+Problem message added to catch what look like mistaken uses of the pronoun
+	"they". (E.g., in "A and B are things. They are portable.", I7 can't
+	cope with "they" as meaning the collection of A and B, and would previously
+	latch onto some other meaning, e.g., either A or B alone.)
+Problem message added for using 'every' on the wrong side of the verb in an
+	assertion sentence (mostly to take the opportunity to explain how to
+	reword such a sentence so that it works).
+Problem message added (in place of internal error) to catch misreadings of
+	'of' leading to misunderstood property values in assertions, e.g. in
+	"The dining room is a room in the house east of the kitchen."
+Problem message added (in place of internal error) to catch relative clauses
+	which seem to express a location in a way too complicated to follow, e.g.
+	"Sleeping Beauty is a woman who is asleep in the Spinning Tower."
+Bug fixed whereby listing complicated descriptions of things which involved
+	at least one negated property would cause I6 errors.
+Bug fixed whereby negated relative phrases would mistakenly be read as
+	positive, so that for instance "The broken box is a container which is
+	not openable." would, very unfortunately, make an openable container.
+Bug fixed whereby implications in the form of "An X is usually Y", where X
+	involves a kind and also properties, would in fact cause all things of
+	that kind to be Y, whether they matched or not. (For instance, "an open
+	container is usually lockable" would cause all containers not otherwise
+	described to be lockable.)
+Bug fixed whereby "some" as an article would be confused with "some" as a
+	determiner in such a way that the actual object being referred to was
+	lost: this especially happened with singular mass nouns, e.g. "some clay",
+	where "if the player is carrying some clay" would be misread as "if the
+	player is carrying something" if the clay was a single thing, not a kind.
+Bug fixed whereby the assertion "X is here." might fail if X had already
+	been defined before the room denoted by "here" had been declared; and
+	also another case in which the room, having been mentioned long ago,
+	is only recently made the subject of discussion again.
+Bug fixed whereby descriptions with multiple relative clauses, some of them
+	ambiguous, could result in an interpretation which is none of the
+	possibilities an English speaker would choose. (This is difficult to
+	define, but for instance, "a random woman who is not Zoe in the location
+	of Zoe" was being interpreted in such a way that "in the location of Zoe"
+	was being applied neither to the random woman, nor to Zoe. Inform now
+	applies it to Zoe. This affects only a handful of sentences - e.g., it
+	makes no difference to any sentence in any of the examples - and only
+	to sentences which are fairly evidently risky in the first place.)
+Bug fixed whereby object names containing "with" could, in the middle of
+	lists, crash NI.
+
+
+PLURALS
+
+The previous requirement that a plural definition sentence had to appear before
+	it could be used has been lifted. Such definitions now apply throughout
+	the source text, wherever they appear. This avoids traps like the following:
+	"Clothing is a kind of thing. The plural of clothing is clothes. Clothes
+	are wearable." In previous builds, this would have created an object called
+	"Clothes", which is wearable but is not of the kind "clothing", and a
+	kind called "clothing" with the plural "clothings".
+Bug fixed whereby non-specific references to properties in "every turn" rules
+	would be taken to be properties of the I6 library placeholder object,
+	usually leading to strange I6 veneer errors: they are now assumed to be
+	properties of the player. Thus for instance
+		A person can be poised or flustered. Before jumping: now the player
+		is flustered. Before waiting: now the player is poised.
+		Every turn when flustered: say "You feel flustered."
+	...now works as expected.
+Bug fixed whereby ordinal numbers were being taken as counting determiners
+	for noun phrases, so for instance "2nd Room" was being read as if it
+	had the same meaning as "two rooms". This led to confusion when room
+	names (in particular) began with an ordinal, e.g., "2nd Floor Balcony".
+Bug fixed whereby words which indicate plurals will not always be recognised
+	as such if the object whose name is being parsed has a complex range of
+	possible names (i.e., if I7 is obliged to compile a parse_name routine to
+	handle it).
+
+
+RELATIONS, PARTS AND REGIONS
+
+>--> Some people have had problems with the relation "in", when applying it
+	to regions. Inside Inform, there are two forms of "in": there is object
+	containment - the ball is in the box, the box is in the Summer House -
+	and also region containment - the ball is in the Garden Area, the
+	Summer House is in the Garden Area. These two forms of "in" are not
+	as similar as they look - object containment has the property that a given
+	X can be "in" Y for at most one possible Y, and Inform makes heavy use
+	of this in optimising searches and loops; but region containment does
+	not, becase the Summer House could be in the Garden Area and also in
+	the super-region the Outside World, say. In practice, Inform always
+	reads "X in Y" as object containment except when Y is the literal name
+	of a region. Up to now, there has been no way to describe the hidden
+	internal relation for region containment: in this build, we provide
+	"regionally in" to allow users to clarify what sense they mean. Thus
+	"repeat with P running through the rooms regionally in R begin; ..."
+	makes clear that we are talking about all rooms in R (and not, for
+	instance, rooms immediately in R rather than in some subregion of R).
+"A part of" is now synonymous with "part of": for instance, one can now write
+	"if the tail is a part of the fish", with the same effect as "if the tail
+	is part of the fish".
+Problem message added to prevent foundational errors involving an object being
+	indirectly a part of itself ("X is a part of Y. Y is a part of X.", and
+	so on).
+Problem message added to report that a region has been placed inside more than
+	one other region. (This is forbidden because it could lead to configurations
+	whereby regions overlap, whereas they are required always to include each
+	other or else be disjoint.)
+Problem message added for an attempt to declare an already-existing object as
+	a region. (This is never necessary, and when it occurs it is almost always
+	a symptom of an inadvertent clash of names.)
+Run-time problem message added for attempts to find routes or count steps
+	through relations not permitting this. (Previously such attempts would
+	be allowed but, not very helpfully, invariably come back as finding no
+	possible route. This was misleading.)
+Bug fixed whereby finding best routes through the map from A to B would fail
+	with a programming error at run-time if A or B were nothing: Inform now
+	works in these cases, returning the information that no route exists.
+	(Similarly for counting steps, and for finding routes through relations.)
+Bug fixed whereby the built-in relations were not being given names as values,
+	so that for instance Inform would fail to understand "containment
+	relation" even though there is a relation called "containment".
+Bug fixed whereby relations defined by a condition would, if defined between
+	different kinds of thing, sometimes lose track of what kinds they were
+	defined over: so that run-time type-checking errors could be produced
+	because the definition was applied to objects of the wrong kind.
+Bug fixed whereby some tests amounting to seeing whether a given room is in
+	a given region, in the course of a condition, would fail.
+Bug fixed whereby a backdrop asserted as being in more than one region would
+	only appear in the first region asserted (though also in any rooms it was
+	asserted as being in: the bug applied only to multiple regions).
+
+
+TABLES
+
+"Increment" and "decrement" are now synonyms for "increase" and "decrease".
+	Moreover, they can now also be used on table entries (e.g. "increase
+	pollen count entry by 2").
+"Choose the row with..." is now synonymous with "choose row with...".
+Problem message added for placing blank entries in the first column of a table
+	which is creating named objects or values, something which makes no sense
+	since the first column provides the names.
+Problem message added to report duplicated table names (which are not
+	continuations of each other).
+Problem message for using a table reference at a time when no row has been
+	selected has been clarified to explain why text substitution can make
+	this time not the time which several users thought.
+Problem message for using a table reference in a condition set in the past
+	tense and thus relating to a time when no row had been chosen.
+Problem message for using a table reference in a complex condition which
+	requires loops over objects in ways very likely resulting from a
+	misunderstanding (and which in any case can't be compiled safely if
+	taken at their literal meanings).
+Problem message added for "Some X are defined by the Table of T" where X is
+	something unrecognised, and another for where X describes a specific
+	object rather than a kind. (It needs to be a kind of object or value.)
+Bug fixed whereby repeating through a table "in reverse order" (not in reverse
+	order of any specific column, just in reverse order of its natural order)
+	would produce I6 errors.
+Bug fixed whereby sorting a table would (almost) always move blank rows to
+	the top: it now invariably moves blank rows to the bottom, regardless of
+	the direction or column of sorting, as the documentation implies it should.
+Bug fixed whereby any continuation of a table was being treated as if written
+	under the same heading in the source text as the start of the table:
+	which meant that any problem messages, and also any object name
+	disambiguation, would be handled at the wrong position.
+Bug fixed whereby "change TE to V", where TE is a table entry and V is some
+	value to be put there, was not being type-checked - so that one could,
+	for instance, change a textual entry to a number, with subsequently
+	unfortunate results. (This is particularly insidious in the case of
+	changing a topic entry to a textual string, which can't safely be done
+	at run-time, and will crash the interpreter during later parsing.)
+Bug fixed whereby the condition "if S is a topic listed in T", where S is a
+	snippet (e.g. "the player's command") and T has a topic column, would
+	produce programming errors at run-time rather than perform the necessary
+	matching.
+Bug fixed whereby the condition "if there is an X of Y in T", to see if the
+	X column of table T ever contains Y, failed to compile if T was
+	expressed in a way not using the word "table" (for instance, if T was
+	a table-name which varies).
+Bug fixed whereby naming a table in such a way that the first word of the
+	name was an article (e.g. "Table of A Students") would make that table
+	subsequently difficult to refer to.
+Bug fixed whereby some properties given by columns in tables which define
+	a batch of objects would, if they seemed always to contain other objects,
+	sometimes cause an internal error and so fail to compile.
+Bug fixed whereby references to entries in tables in the past could produce
+	internal errors.
+Bug fixed whereby defining a quoted text as an enumerated value of a kind of
+	value using a table (a foolish but just about legal thing to do) caused
+	I6 errors.
+
+
+TO... PHRASES
+
+>--> Phrase declarations can also now give literal values as the only possible
+	match. For instance, defining:
+		To hazard (N - a number): say "[N]! That's Numberwang."
+		To hazard (N - 14): say "[N]... oh, sorry, Julie, that's NOT Numberwang."
+	means that using a phrase like
+		hazard X;
+	will produce the exceptional message if X is 14, and the standard one
+	otherwise. For instance, if we tried this with X repeating through a
+	loop, we might see:
+		13! That's Numberwang.
+		14... oh, sorry, Julie, that's NOT Numberwang.
+		15! That's Numberwang.
+	If we had not defined the general case ("To hazard (N - a number)"), then
+	attempting to use
+		hazard X;
+	for any value of X other than 14 would have produced a run-time problem.
+	(This was (6.29) in the January document.)
+Phrase declarations can now give alternatives for any single literal word
+	using slashes (using the same convention that grammar tokens follow).
+	For instance,
+		To pour (N - a number) gallon/gallons: ...
+	makes the phrase match with either "gallon" or "gallons" as the last
+	word; except that "say" is never permitted as the first word of a
+	phrase, just as now, because "To say ..." declares a text substitution
+	instead. (This was (6.26) in the January document.)
+>--> Because of this, all existing To... definitions containing words with
+	a slash in them, such as "and/or", will need to be changed. In particular
+	the text substitution "[is/are a list of...]" and similar forms have been
+	changed to "[is-are a list of...]", and the same principle (exchanging
+	slashes for hyphens) has also been followed for the extensions: see above.
+Problem message added to prevent source text trying to redefine "now ..." by
+	creating "To now X is 2" and similar constructions - these tend not to
+	work, and are highly misleading when they do.
+
+
+IF AND OTHERWISE
+
+An additional problem message has been added to catch a subtle syntax mistake
+	which previously led in some cases to I6 errors. This is to do with the
+	possible interpretations of "otherwise if", as shown by the following:
+		Report going from Alpha to Omega:
+			if Omega is visited begin;
+				say "You retrace your steps, but it's just not the same.";
+				otherwise if turn count < 2, say "Unhesitatingly, you set out.";
+			end if.
+	This is actually illegal, because "otherwise (phrase)" can only occur
+	immediately following an "if (condition), (phrase)": the form of otherwise
+	used to divide up cases within a blocked if (such as the "Omega is visited"
+	one) is just "otherwise if (condition)". The new problem message intercepts
+	this mistake. The correct text would be:
+		Report going from Alpha to Omega:
+			if Omega is visited begin;
+				say "You retrace your steps, but it's just not the same.";
+			otherwise if turn count < 2;
+				say "Unhesitatingly, you set out.";
+			end if.
+	(While at first sight the incorrect syntax looks innocuous enough - why not
+	simply allow both forms? - this becomes ambiguous if the statement does
+	indeed follow a simple "if" within the larger "if" block.)
+The problem message arising from "if C", where C is not recognised as a
+	condition, has been made more helpful in the case where C is a compound
+	condition. (For instance: "I was expecting that 'score is 1 or 2 or lemon
+	sherbet explodes in the dark' would be a condition, but I couldn't make
+	sense of it that way. 'score is 1' was okay; '2' only made sense as a
+	value, which can't be used as a condition; 'lemon sherbet explodes in the
+	dark' did not make sense; and nor did the condition make sense as all
+	one text.")
+Problem message rather than I6 errors for using "otherwise ..." as following
+	immediately on an "if ... begin" block opening. (It would be legal to
+	use "otherwise", or to use "otherwise ..." after a non-blocked "if".)
+Bug fixed whereby "if ..." might fail to yield problem messages where a
+	complicated condition included arithmetic performed on named values
+	which do not exist.
+Bug fixed whereby giving more than one "otherwise;" clause in an "if" block
+	did not provoke any problem message. (It now does.)
+
+
+CONDITION SYNTAX
+
+When a phrase can be used as a condition (i.e. when it is a phrase "to decide
+	if..."), "not" followed by that phrase can also be used as a condition.
+	In particular, "when not in darkness", "if not using the memory economy
+	option", etc., now work.
+"Can not" is now synonymous with "cannot": for instance, "if the player can
+	not see the fish" is equivalent to "if the player cannot see the fish",
+	and similarly for "if the player can not be seen by the fish".
+Problem message added to catch accidental omissions of verbs in some
+	descriptive conditions (say, writing "if small key inside box" instead
+	of "if small key is inside box": it would open the door to too many
+	ambiguities to allow these customary omissions in general).
+Bug fixed whereby tests of whether "A is unable to B" would be parsed as if
+	they were "A is able to B", i.e., with the negation lost: for instance,
+	"...when Peter is unable to see the bridge" would be read as if "...when
+	Peter is able to see the bridge".
+Bug fixed whereby testing whether something unlocks something else would
+	compile through I7 but then cause I6 errors.
+
+
+MISCELLANEOUS SYNTAX
+
+An explanatory problem message, rather than an internal error, now results
+	from using 'total ... of' in a way too complicated to handle.
+Bug fixed whereby clashes of names as between ordinary phrases and arithmetic
+	phrases could result in unhelpful problem messages on legal source text:
+	for instance, creating a property called "times played" and then
+	evaluating "total times played of all tracks" would be confused with
+	trying to multiply "total" by "played of all tracks", even though this
+	interpretation made no sense.
+A name-space clash causing the Standard Rules to conflict with any kind whose
+	name included the word "item" has been removed.
+
+
+RULES AND RULEBOOKS
+
+Problem message rather than internal error for the case of a rule which
+	happens when an activity is being applied to X, but X is not a
+	description of something.
+Problem message rather than I6 errors for attempting to write an inline
+	I6 definition of a rule. (Only allowed when defining "To..." phrases.)
+Problem message added for a rule whose name contains a comma. (No, really.
+	People have tried to do this.)
+Bug fixed whereby saying that a named rule is listed first, in a rulebook
+	already containing other named rules, would sometimes have no effect.
+Bug fixed whereby declaring that a new named rule should be listed instead
+	of an existing (and built-in) action rule, e.g. the "can't go that way
+	rule", would sometimes cause the new rule not to have the same implied
+	actor conventions as the old one - for instance, even though the "can't
+	go that way rule" applies to all actors, its replacement might only
+	apply to the player, so that NPCs were able to walk through walls.
+Bug fixed whereby the result of a rule was not allowed to be another rule,
+	so that "rule succeeds with result X" would fail in the case of X being
+	a rule - while printing a problem message explicitly claiming that a rule
+	was one of the legal alternatives here.
+Bug fixed whereby rules attached to actions happening "for the first time"
+	(or with similar stipulations) would sometimes, in the case of complex
+	actions, fire more than once during the same turn. This bug has been
+	seen particularly in response to "After going from X to Y for the first
+	time", where the rule fired both after the going, and then also after
+	the subsequent looking action in the same turn.
+Typo fixed in Rules index: it should be "action-processing rules", not
+	"action processing rules". (Some people thought this rulebook could not
+	legally be referred to as a value - actually it can, but this typo
+	caused them to get the name wrong. Apologies.)
+
+
+ACTIONS
+
+>--> The relationship between the actions "getting off" and "exiting" has been
+	reversed. Suppose the player is on a chair, a supporter. In previous
+	builds, EXIT would cause the exiting action directly, but GET OFF CHAIR
+	would cause the getting off action, which would quickly convert into an
+	exiting action. This worked fine, but meant that a rule like:
+		Instead of getting off the sticky chair, say "You can't! It's too
+			sticky."
+	would only apply to one of the two commands, anomalously. In this build,
+	it is exiting which converts to getting off (provided that the actor is
+	indeed on a supporter). (This also fixes a bug to do with NPCs and the
+	convert get off to exit where possible rule, which no longer exists.)
+The problem message for mis-describing an action with the form "A or B or ..."
+	now itemises the listed actions to say which are valid and which not,
+	and also warns if one of these is a named kind of action (which is not
+	allowed in a list like this). It also handles the case of "doing something
+	except A or B or ...".
+Problem message added for past-tense references to the "noun" or "second
+	noun" which certainly will not do what their authors intend, because
+	the values of these quantities have changed over time.
+Problem message added for complicated past-tense references to the "going"
+	action. (The old problem message amounted to "I don't understand this",
+	the new one "I do understand this, but I'm still not going to do it".)
+Problem message added for describing a "going" action in terms of objects
+	which are of the wrong kind to make sense - going from or to a non-room-
+	or-region, through a non-door, with or by a non-thing. This only catches
+	cases which the compiler can spot, involving specific named items, but
+	this is more useful than it sounds (especially if a room name includes
+	the word "by" in lower case, and Inform has wrongly taken this as a
+	preposition).
+Bug fixed whereby moving the player during the course of a rule attached
+	to an action being carried out by somebody else would cause any resultant
+	looking action to apply to that other person, rather than the player,
+	so that instead of a description of the player's new room we might either
+	see nothing or something like "Miss Marple looks around.", depending
+	on where the third party is at that point in the action.
+Bug fixed whereby somebody arriving in the player's room as a result of a
+	"going" action would always be described as arriving from the opposite
+	direction as that of initial travel - so if he had gone east, he would
+	now be said to have arrived from the west, for instance. This is fine
+	for untwisted, two-way routes, but not otherwise. Inform now only does
+	this where the reverse journey can be made in the reverse direction,
+	possibly via a two-way door; and otherwise simply says that the person
+	"arrives".
+Bug fixed whereby a spurious "You must name an object." error would be printed
+	in response to a command requesting somebody to carry out an action which
+	applied only to a single topic.
+Bug fixed whereby "try looking" would sometimes fail with a spurious "You
+	must name an object." error if it occurred during an action which applied
+	to a value rather than a thing.
+Bug fixed whereby an action caused by "try" would sometimes not have the
+	appropriate "... understood" values correct if the action applied to a
+	value rather than a thing.
+Bug fixed whereby an action whose name takes the form "... to something"
+	could be referred to without the "to". As a special case and because
+	of its status as an optionally-nouned action, this is still allowed
+	for "listening" (properly speaking the action is called "listening to"),
+	but forbidden for new actions.
+Bug fixed whereby lists of actions would sometimes, in certain orders and
+	where ambiguity between different length actions occurred, wrongly cause
+	problem messages. For instance, "Instead of taking off or dropping the
+	jodhpurs" would fail (note ambiguity between "taking" and "taking off")
+	whereas "Instead of dropping or taking off the jodhpurs" would work.
+Bug fixed whereby ambiguities caused by abbreviation of action names
+	(for instance if we have actions "weighing" and "weighing it with",
+	what do we say that the rule "Before weighing" applies to?) are now
+	resolved in favour of the least abbreviated name (here, "weighing").
+Bug fixed whereby tests of intransitive past tense actions (e.g. "we have
+	woken up", no object, rather than "we have taken the box") were
+	performed incorrectly, usually producing false negatives.
+Bug fixed whereby action reporting would suddenly cease after a NPC tried
+	an action involving a door or backdrop. (The mystically-named "untouchable
+	silence" bug, which Khelwood posted a (correct) fix to RAIF for.)
+Bug fixed in the implementation of the ACTIONS testing command whereby
+	the information that a tried action had just failed would sometimes be
+	destroyed by the act of printing things information out.
+Bug fixed whereby some complicated check, carry out or report rules would
+	fail to appear in the Actions index.
+Bug fixed whereby check rules applying to the final action performed would be
+	posthumously applied also to the attempt at restoring the game produced
+	by typing RESTORE in reply to the post-game question "Would you like to
+	RESTART, RESTORE a saved game or QUIT?"
+
+
+SCENES
+
+>--> A small but quite important change has been made to the scene changing
+	mechanism which affects the order in which things happen when there are
+	multiple scene endings. For instance:
+		Home is a room. The cube and the ball are here.
+		Shape Choice is a scene. Shape Choice begins when play begins.
+		Shape Choice ends roundly when the player carries the ball.
+		Shape Choice ends squarely when the player carries the cube.
+		Consequence is a scene. Consequence begins when Shape Choice ends.
+		When Consequence begins:
+			if Shape Choice ended roundly, say "Roundly.";
+			if Shape Choice ended squarely, say "Squarely."
+	Suppose the cube is taken. This used to cause the following sequence of
+	events:
+		Shape Choice ended
+		Consequence began
+		Shape Choice ended roundly
+	It was necessary for Shape Choice to end the regular way before the exotic
+	way, so that consequent rules could happen, but the ordering was unfortunate,
+	because it meant that the rule in the source above happened at a time when
+	it wasn't known whether the scene had ended roundly or squarely - only that
+	it had ended. Since it's very useful to know how the previous scene ended
+	in order to begin the next one, this is unfortunate. The change means that
+	the sequence is now:
+		Shape Choice ended
+		Shape Choice ended roundly
+		Consequence began
+	and so the rule above works after all, printing "Roundly."
+It is now possible (optional, that is) to use a "the" in giving a rule for
+	a scene beginning or ending: thus "When the Afternoon begins:" is now
+	synonymous with "When Afternoon begins:".
+Two new phrases for scenes have been added: "the time since S ended" and "the
+	time when S ended", exactly parallel to "the time since S began" and "the
+	time when S began". (Previously, the "began" time was being interpreted as
+	the most recent time at which S either ended or began - this was a bug, and
+	has been fixed.)
+New scene "Entire Game" created: see KINDS OF VALUE.
+Bug fixed whereby a scene which begins "when play begins" and also when a
+	condition holds now begins in either case (previously, the condition was
+	being ignored, and some users thought it was illegal to specify a condition
+	in this case - actually it was a bug).
+Bug fixed whereby begin/end conditions of scenes would not be properly
+	disambiguated if relying on an ambiguously phrased phrase to decide
+	the outcome, resulting in I6 errors for what was correct source text.
+Bug fixed whereby begin/end conditions of certain forms, such as past tense
+	actions, were rejected altogether with spurious problem messages.
+Bug fixed whereby if scene A is set to end when scene B ends, but in fact
+	B ends at a time when A has never started, ending rules for A would be
+	erroneously run anyway.
+Bug fixed whereby creating a scene that varies called X could sometimes also
+	create a scene called X. (Except for cluttering the index, this would
+	only be harmful if the name of X happened to end with "scene", but of
+	course people do tend to name such things "current scene", etc., so...)
+Bug fixed (see KINDS OF VALUE) whereby creating but not initialising a
+	scene property or variable caused an internal error.
+
+
+WHEN PLAY BEGINS
+
+Bug fixed whereby attempting to enter a closed container which in fact
+	already enclosed the actor (but indirectly so) would fail the "can't enter
+	closed containers rule" rather than the "can't enter what's already
+	entered rule", resulting in a slightly misleading reply.
+Bug fixed whereby calculations of visibility made during "when play begins"
+	rules would be incorrect because the player object had not yet been put
+	into its starting position.
+Bug fixed whereby changing the player to a new player-character and then
+	moving that PC during "when play begins" rule to a container or supporter
+	would have the final movement disregarded.
+
+
+OBJECT MOVEMENTS
+
+>--> Scenery is now usually "fixed in place". This makes little difference
+	since it can't normally be taken, but in previous builds it usually had the
+	"portable" property, and this meant that (for instance) "repeat with the
+	item running through the portable things in the location ..." would
+	unexpectedly include scenery.
+Bug fixed whereby moving an object from room to room (say, by writing "now
+	the row-boat is in the Rapids") would cause the location to be wrongly
+	set internally if the object contained the player (because an I6 PlayerTo
+	call would never occur), which would make certain room descriptions print
+	wrongly.
+Bug fixed whereby "remove D from play", where D is only a vague description
+	of things, would compile I6 code which failed at run-time rather then
+	produce a problem message.	
+
+
+LIGHT
+
+Bug fixed whereby another person in the same room, openly carrying a light
+	source, was not counted as lighting that room.
+
+
+UNDERSTANDING
+
+In previous builds, the activity "reading a command" has happened only around
+	the original command being typed. If the player types TAKE POLISH, the
+	activity winds up: if, later, the parser asks a follow-up question such
+	as "Which do you mean, the Polish sausage or the shoe polish?", this
+	question is not framed by the activity. That remains the case, but if
+	the question results in a rewritten command, Inform now - exceptionally -
+	follows the "after reading a command" rulebook for a second time.
+Problem message rather than internal error for confusing an activity with an
+	action in an "Understand ... as ..." sentence.
+Bug fixed whereby, if we give define a noun as a legal command by writing e.g.
+	"Understand "[something]" as examining." and then the player types
+	something unrecognisable, the parser replies "You can't see any such
+	thing." (presuming we were intending to type a noun) rather than "That's
+	not a verb I recognise." (presuming a verb - which seems more likely).
+Bug fixed whereby the message "** Warning: grammar properties might not work
+	correctly **" would occasionally appear when a game began playing (but
+	not in a released version).
+
+
+USE OPTIONS
+
+The "the" in the condition "using the ...option name... option" has been
+	made optional: for instance, "if using no scoring option" is now allowed.
+Bug fixed whereby using memory economy did not suppress all the RULES ALL text,
+	thus not economising as much as it might.
+
+
+EXTENSIONS
+
+Problem message added to explain that extension names should be unquoted
+	in Include sentences.
+Bug fixed whereby extensions ending without documentation would sometimes
+	produce a spurious problem message on their end lines, unless these
+	were followed by at least one one blank line.
+
+
+PUBLISHING
+
+Bug fixed whereby releasing along with a website stopped working in 4K40/1.
+	Particular apologies for this.
+Bugs fixed whereby Unicode translations were not properly preserved in
+	released websites, notably in title, blurb and source text when written
+	as HTML.
+
+
+WORLD INDEX
+
+Problem message added to clarify that mapping hints can only be given laterally
+	(so e.g. "Index map with Overlook mapped above Great Plain" does not work).
+Bug fixed causing "yourself" (the player) to appear twice in the World index
+	in some situations.
+Bug fixed whereby disconnected areas of map would sometimes appear on vastly
+	distant vertical levels from each other, with peculiar resulting map
+	legends. (See e.g. the map for "Port Royal 2" under 4K41 or earlier.)
+
+
+PROBLEM MESSAGES
+
+Bug fixed whereby some problem messages concerning phrases would be reported
+	as being in the text under the final heading in the source text, rather
+	than the headings under which they actually occurred.
+Bug fixed whereby problems occurring in text substitutions inside quoted text
+	which forms a whole sentence (e.g., as an implicit room description)
+	were reported as being at peculiar sentences.
+A number of problem messages which users reported as unclear have been reworded.

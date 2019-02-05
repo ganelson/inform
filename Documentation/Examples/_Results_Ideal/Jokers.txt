@@ -1,0 +1,38 @@
+   Empty Room
+  Jokers Wild
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empty Room
+  It has come to this: sitting on the bare floor of Lulu's apartment with nothing to amuse you but a deck of cards and the top hat from last year's act. You reckon fifty-two cardtosses are all that stand between you and the utter pointlessness of existence.
+  
+  Once again you curse Lulu for running off with that joker.
+  
+> >   Empty Room
+  (Testing.)
+  
+  >[1] toss
+  You throw the five of hearts at the top hat, and miss.
+  
+  >[2] again
+  You throw the three of diamonds at the top hat, and miss.
+  
+  >[3] again
+  You throw the ace of spades at the top hat, and miss.
+  
+  >[4] again
+  You throw the three of spades at the top hat, and miss.
+  
+  >[5] again
+  You throw the ten of hearts at the top hat, and miss.
+  
+  >[6] again
+  You throw the four of clubs at the top hat, and miss.
+  
+  >[7] again
+  You throw the ten of diamonds at the top hat, and hit.
+  
+  >[8] again
+  You throw the eight of spades at the top hat, and hit.
+  
+> >

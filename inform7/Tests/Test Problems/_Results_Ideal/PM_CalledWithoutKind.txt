@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 8 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CalledWithoutKind
+  >--> You wrote 'In the tank is a fish called Wanda' (source text, line 1):
+    but I can only make 'a something called whatever' when the something is a
+    kind I know, possibly qualified with adjectives. For instance, 'an open
+    door called the Marble Door' is fine because 'door' is the name of a kind
+    and 'open' is an adjective which means something for doors. But 'a grand
+    archway called the Great Gates' would not normally mean anything to me,
+    because 'archway' is not one of the standard kinds in Inform. (Try
+    consulting the Kinds index.)
+Inform 7 has finished: 17 centiseconds used.

@@ -1,0 +1,85 @@
+   Sand-Floored Chamber
+  The Eye of the Idol
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sand-Floored Chamber
+  The constant wind has filled this chamber with a layer of fine red sand, as soft as powder snow. Something sparkling is half-buried in the corner. A doorway lies open to the north.
+  
+> >   Hexagonal Temple
+  (Testing.)
+  
+  >[1] get diamond
+  Taken.
+  
+  >[2] look
+  Sand-Floored Chamber
+  The constant wind has filled this chamber with a layer of fine red sand, as soft as powder snow. A doorway lies open to the north.
+  
+  >[3] n
+  
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory. A prayer mat at the idol's feet, and an incense stick still burning on the pedestal, indicate that someone was only recently consigning her grievances to the care of the deity.
+  
+  >[4] get mat
+  Taken.
+  
+  >[5] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory. At the idol's side is a pedestal, on which incense still smolders.
+  
+  >[6] drop diamond
+  Dropped.
+  
+  >[7] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory. At the idol's side is a pedestal, on which incense still smolders.
+  
+  You can see a sparkling diamond here.
+  
+  >[8] get diamond
+  Taken.
+  
+  >[9] put diamond in eye
+  You put the sparkling diamond into the idol's eye.
+  
+  >[10] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory, in whose single eye a vast diamond gleams. At the idol's side is a pedestal, on which incense still smolders.
+  
+  >[11] get incense
+  Taken.
+  
+  >[12] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory, in whose single eye a vast diamond gleams.
+  
+  >[13] drop mat
+  Dropped.
+  
+  >[14] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory, in whose single eye a vast diamond gleams. At the idol's feet, some worshipper has left a prayer mat.
+  
+  >[15] get mat
+  Taken.
+  
+  >[16] put mat on pedestal
+  You put the mat on the pedestal.
+  
+  >[17] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory, in whose single eye a vast diamond gleams.
+  
+  On a pedestal is a mat.
+  
+  >[18] put incense on pedestal
+  You put the incense stick on the pedestal.
+  
+  >[19] look
+  Hexagonal Temple
+  The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory, in whose single eye a vast diamond gleams. At the idol's side is a pedestal, on which incense still smolders.
+  
+  On the pedestal, in addition to the incense stick, is a mat.
+  
+> >

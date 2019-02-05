@@ -1,0 +1,6 @@
+The Kitchen is a room.
+
+Storage is a kind of thing.
+Foo is a storage.
+
+To bar (X - storage): do nothing.

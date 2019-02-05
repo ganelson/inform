@@ -1,0 +1,15 @@
+   Brahms Conservatoire
+  Begin with the sets S = {2, 4, 8, 16, 32, 64}, T = {2, 4, 6, 10}.
+  Adding 8 to T gives T = {2, 4, 6, 8, 10}.
+  The intersection I = {2, 4, 8}.
+  The union U = {2, 4, 6, 8, 10, 16, 32, 64}.
+  The set difference S\T = {16, 32, 64}.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  
+> >   Brahms Conservatoire
+> Are you sure you want to quit? 

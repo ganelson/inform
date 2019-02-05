@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 906 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnitSequenceOverflow
+  >--> You wrote 'A b9 times a b10 specifies a b11' (source text, line 95): but
+    reading that sentence led me into calculating such a complicated kind of
+    value that I ran out of memory, which my programmer really didn't expect to
+    happen. I think you must have made an awful lot of numerical kinds of
+    value, and then specified how they multiply so that one of them became
+    weirdly tricky. Can you simplify?
+Inform 7 has finished: 18 centiseconds used.

@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OldVerbUsage
+  >--> You wrote 'Understand the verb "wibble" as "push"' (source text, line 3):
+    but this is an outdated form of words, and Inform now prefers 'Understand
+    the command ...' rather than 'Understand the verb ...'. (Since this change
+    was made in beta-testing, quite a few old source texts still use the old
+    form: the authors of Inform apologise for any nuisance incurred.)
+Inform 7 has finished: 18 centiseconds used.

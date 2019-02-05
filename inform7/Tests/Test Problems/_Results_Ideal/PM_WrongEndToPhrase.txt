@@ -1,0 +1,25 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_WrongEndToPhrase
+  >--> The line 'yes' (source text, line 4) seems to be a way that the phrase
+    you're defining can come to an end, with a phrase to make a decision, but
+    it should always end up with a phrase to decide a room.
+Problem__ PM_WrongEndToPhrase
+  >--> The line 'yes' (source text, line 7) seems to be a way that the phrase
+    you're defining can come to an end, with a phrase to make a decision, but
+    it should always end up with no value resulting.
+Problem__ PM_RedundantReturnKOV
+  >--> You wrote 'decide on 12' (source text, line 8) as the outcome of a
+    phrase, a number, but in the definition of something which was not a phrase
+    to decide a value.
+Problem__ PM_WrongEndToPhrase
+  >--> The line 'continue the action' (source text, line 11) seems to be a way
+    that the phrase you're defining can come to an end, with no value
+    resulting, but it should always end up with a phrase to make a decision.
+Problem__ PM_ReturnWrongKind
+  >--> You wrote 'decide on 1' (source text, line 12) as the outcome of a
+    phrase to decide a value, but this was the wrong kind of value: a number
+    rather than a truth state.
+Inform 7 has finished: 57 centiseconds used.

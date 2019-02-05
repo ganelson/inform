@@ -1,0 +1,64 @@
+   Lab
+  present tense.
+  That leads to spills.
+  That can lead to spills. That cannot lead to spills. That can't lead to spills.
+  That might lead to spills. That might not lead to spills. That mightn't lead to spills.
+  That could lead to spills. That could not lead to spills. That couldn't lead to spills.
+  That would lead to spills. That would not lead to spills. That wouldn't lead to spills.
+  That should lead to spills. That should not lead to spills. That shouldn't lead to spills.
+  That must lead to spills. That must not lead to spills. That mustn't lead to spills.
+  That may lead to spills. That may not lead to spills. That mayn't lead to spills.
+  
+  
+  past tense.
+  That led to spills.
+  That could lead to spills. That could not lead to spills. That couldn't lead to spills.
+  That might have led to spills. That might not have led to spills. That mightn't have led to spills.
+  That could have led to spills. That could not have led to spills. That couldn't have led to spills.
+  That would have led to spills. That would not have led to spills. That wouldn't have led to spills.
+  That should have led to spills. That should not have led to spills. That shouldn't have led to spills.
+  That must have led to spills. That must not have led to spills. That mustn't have led to spills.
+  That may have led to spills. That may not have led to spills. That mayn't have led to spills.
+  
+  
+  perfect tense.
+  That has led to spills.
+  That has been able to lead to spills. That has not been able to lead to spills. That hasn't been able to lead to spills.
+  That might have led to spills. That might not have led to spills. That mightn't have led to spills.
+  That could have led to spills. That could not have led to spills. That couldn't have led to spills.
+  That would have led to spills. That would not have led to spills. That wouldn't have led to spills.
+  That should have led to spills. That should not have led to spills. That shouldn't have led to spills.
+  That must have led to spills. That must not have led to spills. That mustn't have led to spills.
+  That may have led to spills. That may not have led to spills. That mayn't have led to spills.
+  
+  
+  past perfect tense.
+  That had led to spills.
+  That had been able to lead to spills. That had not been able to lead to spills. That hadn't been able to lead to spills.
+  That might have led to spills. That might not have led to spills. That mightn't have led to spills.
+  That could have led to spills. That could not have led to spills. That couldn't have led to spills.
+  That would have led to spills. That would not have led to spills. That wouldn't have led to spills.
+  That should have led to spills. That should not have led to spills. That shouldn't have led to spills.
+  That must have led to spills. That must not have led to spills. That mustn't have led to spills.
+  That may have led to spills. That may not have led to spills. That mayn't have led to spills.
+  
+  
+  future tense.
+  That will lead to spills.
+  That will be able to lead to spills. That will not be able to lead to spills. That won't be able to lead to spills.
+  That might lead to spills. That might not lead to spills. That mightn't lead to spills.
+  That could lead to spills. That could not lead to spills. That couldn't lead to spills.
+  That would lead to spills. That would not lead to spills. That wouldn't lead to spills.
+  That should lead to spills. That should not lead to spills. That shouldn't lead to spills.
+  That must lead to spills. That must not lead to spills. That mustn't lead to spills.
+  That may lead to spills. That may not lead to spills. That mayn't lead to spills.
+  
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  
+> >   Lab
+> Are you sure you want to quit? 

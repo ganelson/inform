@@ -1,0 +1,34 @@
+   Linear Algebra Class
+  Change of Basis
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Linear Algebra Class
+  The blackboard is covered with square arrangements of numbers. These are supposed to convey something to you, but mostly you're finding them soporific.
+  
+> >   Linear Algebra Class
+  (Testing.)
+  
+  >[1] wake up
+  You'd really rather just sleep through this.
+  
+  >[2] sleep
+  You drop off.
+  
+  >[3] look
+  Ssh! You're sleeping!
+  
+  >[4] z
+  Time passes.
+  
+  >[5] sleep
+  Zzzz.
+  
+  >[6] wake up
+  You come to suddenly, wiping drool from your lips.
+  
+  >[7] look
+  Linear Algebra Class
+  The blackboard is covered with square arrangements of numbers. These are supposed to convey something to you, but mostly you're finding them soporific.
+  
+> >

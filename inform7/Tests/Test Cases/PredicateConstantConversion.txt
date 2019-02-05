@@ -1,0 +1,27 @@
+Home is a room.
+
+A posture is a kind of value. The postures are standing, sitting and lying.
+
+A person has a posture.
+
+Posture-allowance relates various things to various postures.
+
+The verb to allow (he allows, they allow, he allowed, it is allowed) implies
+the posture-allowance relation.
+
+The armchair is in Home. The table is in Home.
+
+The armchair allows sitting. The table allows lying.
+
+
+Sitting on is an action applying to one thing.
+
+Before sitting on something which does not allow sitting:
+	say "That's not something you can sit on." instead.
+
+Before sitting on something which allows sitting:
+	say "That's something you can sit on." instead.
+
+Understand "sit down on [thing]" as sitting on.
+
+Test me with "sit down on armchair / sit down on table".

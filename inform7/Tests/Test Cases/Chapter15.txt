@@ -1,0 +1,379 @@
+"Chapter 15: Port Royal" by Emily Short
+
+Chapter 15
+
+Use command line echoing. Use scoring.
+
+Fort James is a room. "The enclosure of Fort James is a large, roughly hexagonal court walled with heavy stone.  The walls face the entrance to Port Royal Harbor, and the battery of guns is prepared to destroy any enemy ship arriving."
+
+Thames Street End is south of Fort James. "The ill-named Thames Street runs from here -- at the point of the peninsula -- all the way east among houses and shops, through the Fish Market, edging by the round front of Fort Carlisle, to the point where the town stops and there is only sandy spit beyond.  Most of that stretch is full of people at all hours.  Imported goods are moved off of ships and taken to distributors; exported goods are brought to be loaded; and there is one public house and brothel for every ten inhabitants.
+
+Lime Street, wider and healthier but not as rich, runs directly south, and to the north the road opens up into the courtyard of Fort James."
+
+ Water Lane is east of Thames Street End. "Here Thames Street -- never very straight -- goes steeply southeast for a portion before continuing more directly to the east.
+
+Water Lane runs south toward Queen Street, and facing onto it is the New Prison -- which, in the way of these things, is neither.  It did serve in that capacity for a time, and in a measure of the villainy which has been usual in Port Royal from its earliest days, it is nearly the largest building in the town."
+
+East of Water Lane is a room called Thames Street at the Wherry Bridge.  Thames Street at the Wherry Bridge has the description "To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway."
+
+The Fishmarket is southwest of Thames Street at the Wherry Bridge.
+
+The Private Alley is south of Thames Street at the Wherry Bridge. "Just west of here is the tavern the Feathers. To the north, under a pretty little archway, is the active mayhem of Thames Street, but the alley narrows down to a dead end a little distance to the south."
+
+The overhanging balcony is in the Private Alley.  It is scenery.
+
+The Feathers is west of the Private Alley.  "Newly built with brick, replacing the older Feathers tavern that used to stand here. It sells wines in quantity, as well as serving them directly, and the goods are always of the best quality."
+
+Thames Street by the King's House is east of Thames Street at the Wherry Bridge.  "The King's House is reserved for the use of the Governor, but he does not live in it, and it is frequently being rented out to some merchant so that the government will at least derive some value from it. It is nearly the least interesting establishment on Thames Street, and the crowd -- which, to the west, is extremely dense -- here thins out a bit."
+
+Thames Street before Fort Carlisle is east of Thames Street by the King's House. "Here Thames Street, formerly a respectable width, narrows to a footpath in order to edge around the front of Fort Carlisle, underneath the mouths of the cannon.
+
+There are no buildings on the harbor side of Thames Street at this point, which means that you have an unusually good view of the ships at dock, water beyond, and the Blue Mountains rising on the other side of the harbor."
+
+Lime Street is south of Thames Street End.
+
+Queen Street End is south of Lime Street.
+
+South of Thames Street before Fort Carlisle is a room called Fort Carlisle. The description of Fort Carlisle is "Handsomely arrayed with cannons which you could fire at any moment -- though of course there are ships at dock which might be in the way."
+
+Some left cannons are scenery in Fort Carlisle. Some right cannons are scenery in Fort Carlisle.
+
+The ships are a backdrop. They are in Thames Street before Fort Carlisle  and Fort Carlisle.
+
+The dock is a backdrop. It is in Thames Street before Fort Carlisle and Fort Carlisle.
+
+Understand "fire [something]" as firing. 
+
+Firing is an action applying to one thing.
+
+Carry out firing:
+	say "[The noun] is not something that can be fired."
+
+Queen Street Middle is east of Queen Street End. 
+
+Queen Street East is east of Queen Street Middle and south of Private Alley.
+
+Queen Street at the Prison is east of Queen Street East.
+
+Section 1 - Laying out tables
+
+[Table 1.1 - Private Ships of War belonging to Jamaica and Tortuga in 1663]
+
+Table 1.1 - Private Ships of War
+Type	Commander	Men	Guns
+frigate	"Whetstone"	60	17
+frigate	"Smart"	100	14
+frigate	"Guy"	90	14
+frigate	"James"	70	6
+brigantine	"Morris"	60	7
+frigate	"Brenningham"	70	6
+brigantine	"Mansfield"	60	4
+pinke	"Goody"	60	6
+barque	"Blewfield"	50	3
+frigate	"Hardue"	40	4
+
+
+Ship type is a kind of value. The ship types are frigate, brigantine, pinke, and barque.
+
+Section 2 - Looking up entries
+
+Before entering the ships:
+	say "The closest is a [Type in row 3 of Table 1.1], but Captain [Commander in row 3 of the Table of Private Ships of War] does not need anyone new aboard." instead.
+
+Instead of examining the ships:
+	[choose a random row in Table 1.1;]
+	choose a random row in the table of Private Ships of War;
+	say "Nearby you catch the [Type entry] belonging to Captain [Commander entry], which holds [Men entry in words] men and carries [Guns entry in words] guns. (Random output.)"
+
+
+Instead of examining the dock:
+	sort the Table of Private Ships of War in type order;
+	say "The ships currently at dock number [the number of filled rows in the Table of Private Ships of War in words], and are as follow:[line break]";
+	repeat with N running from 1 to the number of rows in the Table of Private Ships of War 
+	begin; 
+		if there is a commander in row N of the Table of Private Ships of War, 
+			say "[line break]The [Type in row N of the Table of Private Ships of War] belonging to Captain [Commander in row N of the Table of Private Ships of War]."; 
+	end repeat.
+
+Section 3 - Corresponding entries
+
+Instead of listening to the ships:
+	if there is a Type corresponding to a Men of 100 in the Table of Private Ships of War,
+		say "The loudest is the [the Type corresponding to a Men of 100 in the Table of Private Ships of War] belonging to [the Commander corresponding to a Men of 100 in the Table of Private Ships of War].";
+	otherwise say "They all sound about the same."
+
+Instead of smelling the ships:
+	if there is a Type of pinke in the Table of Private Ships of War,
+		say "The stinkiest is the pinke belonging to [the Commander corresponding to a Type of pinke in the Table of Private Ships of War].";
+	otherwise say "You can't make out individual smells."
+
+Section 4 - Changing entries
+
+Instead of firing the left cannons:
+	repeat with N running from 1 to the number of rows in the Table of Private Ships of War 
+	begin; 
+		if there is a commander in row N of the Table of Private Ships of War 
+		begin;
+			choose row N in the Table of Private Ships of War;
+			decrease guns entry by 1;
+			say "You fire upon Captain [Commander entry] and his [Type entry], knocking the number of guns down to [guns entry in words]. There is some hullaballoo there.";
+			stop the action;
+		end if;
+	end repeat.
+	
+Section 5 - Choosing rows
+
+Instead of firing the right cannons:
+	choose row 5 in the Table of Private Ships of War;
+	decrease guns entry by 1;
+	say "You fire upon Captain [Commander entry] and his [Type entry], knocking the number of guns down to [guns entry in words]. There is some hullaballoo there.";
+	
+The musket is a thing carried by the player.
+
+Instead of firing the musket in Fort Carlisle when there is a Type of frigate in the Table of Private Ships of War:
+	choose row with a type of frigate in the Table of Private Ships of War;
+	decrease men entry by 1;
+	say "With unnerving accuracy, you shoot a man from the deck of the frigate of [commander entry]."
+
+Section 6 - Repeating through tables
+
+Every turn:
+	repeat through the Table of Private Ships of War
+	begin;
+		if (guns entry) is 0 or (men entry) is 0
+		begin;
+			say "The [Type entry] of [Commander entry] sinks.[line break]";
+			if type entry is brigantine, record "sinking a brigantine" as achieved;
+			if type entry is frigate, record "sinking a frigate" as achieved;
+			if type entry is pinke, record "sinking a pinke" as achieved;
+			if type entry is barque, record "sinking a barque" as achieved;
+			blank out the whole row;
+		end if;
+	end repeat;
+	sort the Table of Private Ships of War in type order;
+
+
+Table of Overheard Conversation
+remark
+"You overhear two soldiers discussing the good wine to be had at the Feathers."
+"The latest gossip about the governor comes to your ears."
+"Several locals are loudly discussing how hot it has been the last few days."
+
+Instead of listening to Fort James:
+	sort the Table of Overheard Conversation in remark order;
+	repeat through the Table of Overheard Conversation
+	begin;
+		say "[remark entry][paragraph break]";
+		blank out the whole row;
+		stop the action;
+	end repeat;
+	say "You hear nothing worthy of note."
+	
+
+Table of Smells
+scent
+"Ah, the stink of three-day fish in a hot climate."
+
+Instead of smelling Fishmarket:
+	repeat through the Table of Smells
+	begin;
+		say "[scent entry][paragraph break]";
+		blank out the whole row;
+		stop the action;
+	end repeat;
+	say "You smell nothing extraordinary."
+
+Section 7 - Blank entries
+
+Table of Port Royal Taverns
+Sign	Date attested	Site
+"The Catt and Fiddle"	1676	Water Lane
+"The Black Dogg"	1682	--
+"The Blue Anchor"	1679	--
+"The Cheshire Cheese"	1684	Lime Street
+"The Feathers"	1681	Private Alley
+"The Green Dragon"	--	--
+"The Jamaica Arms"	1677	Fort Carlisle
+"The Sugar Loaf"	1667	--
+"The Sign of the Mermaid"	--	Queen Street End
+
+
+Section 8 - Blank columns
+
+Table of Tasks Achieved
+Points	Citation	Time
+2	"sinking a brigantine"	a time
+1	"sinking a pinke"
+5	"sinking a frigate"
+3	"sinking a barque"
+
+Section 9 - Blank rows
+
+Table of Occupations and People
+Trade	First name	Last name	Date attested
+"architect"	"Robert"	"Snead"	1684
+"baker"	"William"	"Wingar"	1683
+"barber"	"William"	"Alcocke"	1676
+"blacksmith"	"William"	"Davidson"	1679
+"bricklayer"	"Samuel"	"Richardson"	1683
+"butcher"	"John"	"Dennis"	1676
+"carpenter"	"John"	"Albert"	1675
+"cabinet-maker"	"Robert"	"Avis"	1666
+"joiner"	"Peter"	"Bartaboa"	1666
+"chandler"	"William"	"Bates"	1674
+"chyrurgeon"	"William"	"Axtell"	1674
+"chyrurgeon"	"Thomas"	"Trapham"	1678
+"combmaker"	"Paul"	"Bennett"	1673
+"cooper"	"James"	"Hall"	1676
+"cooper"	"Henry"	"Pullein"	1675
+"cordwainer"	"George"	"Barnard"	1675
+"cordwainer"	"Edward"	"Skannon"	1680
+"cordwainer"	"John"	"Wilmott"	1675
+"drugster"	"William"	"Mathews"	1682
+"fisherman"	"Richard"	"Collingwood"	1674
+"glazier"	"Thomas"	"Hudson"	1684
+"goldsmith"	"Richard"	"Lord"	1677
+"gunsmith"	"Stephen"	"Massey"	1664
+"hatmaker"	"John"	"Rosewell"	1683
+"ivory turner"	"William"	"Clifton"	--
+"labourer"	"John"	"Dennis"	1674
+"limeburner"	"John"	"Hardwick"	1675
+"mariner"	"Alexander"	"Bailing"	1680
+"mariner"	"Thomas"	"Bowtell"	1675
+"mariner"	"Peter"	"Claiton"	1675
+"mariner"	"Joseph"	"Cupid"	1672
+
+
+Table of Occupations and People (continued)
+Trade	First name	Last name	Date attested
+"mariner"	"Michael"	"Dunn"	1675
+"mason"	"John"	"Stone"	1673
+"merchant"	"John"	"Agard"	1680
+"merchant"	"David Lopez"	"Narbona"	1674
+"merchant"	"Abraham"	"Langford"	1675
+"merchant"	"John"	"Sweeting"	1675
+"merchant"	"Charles"	"Knight"	1680
+"merchant"	"Cornelius"	"Vandananker"	1670
+"merchant"	"Moses Jesurum"	"Cordova"	1675
+"pewterer"	"Simon"	"Benning"	1667
+"pipemaker"	"John"	"Pope"	1680
+"porter"	"George"	"Paul"	1670
+"poulterer"	"Richard"	"Jeffreys"	1677
+"sailmaker"	"Adam"	"Brewer"	1671
+"schoolmaster"	"Peter"	"Bird"	1677
+"shipwright"	"William"	"Cavell"	1676
+"tailor"	"William"	"Case"	1676
+"tailor"	"Pewter"	"Ebden"	1683
+"waterman"	"William"	"Brocke"	1674
+"waterman"	"Joel"	"Clements"	1668
+"wherryman"	"John"	"Grant"	1669
+"victualler"	"Barnaby"	"Adams"	1675
+"vintner"	"Gabriel"	"Adkins"	1668
+"tavern-keeper"	"John"	"Baldwin"	1670
+"tavern-keeper"	"Mary"	"Dayton"	1664
+"tavern-keeper"	"James"	"Turpin"	1679
+"tavern-keeper"	"Christopher"	"Mayham"	1664
+with 2 blank rows.
+
+
+Instead of firing the left cannons when the number of filled rows in the Table of Private Ships of War is 0:
+	say "There is nothing left to sink."
+
+Instead of firing the right cannons when the number of filled rows in the Table of Private Ships of War is less than 6:
+	say "There are no longer any ships in that direction."
+	
+Instead of examining the ships when the number of filled rows in the table of Private Ships of War is 0:
+	say "All the ships have sunk!"
+	
+Instead of examining the dock when the number of blank rows in the table of Private Ships of War is 10:
+	say "All the ships have sunk!"
+
+Section 10 - Adding and removing rows
+
+To supply a new character:
+	choose row 5 in the Table of Occupations and People;
+	let the new profession be the trade entry;
+	choose row 10 in the Table of Occupations and People;
+	let the new personal name be the first name entry;
+	choose row 15 in the Table of Occupations and People;
+	let the new surname be the last name entry;
+	let the year be 1691;
+	choose a blank row in the Table of Occupations and People;
+	now trade entry is the new profession;
+	now first name entry is the new personal name;
+	now last name entry is the new surname;
+	now the date attested entry is the year;
+	say "You are [first name entry] [last name entry], a [trade entry] in the year [date attested entry]."
+
+When play begins:
+	supply a new character;
+
+[Removing rows is explored elsewhere above]
+
+Section 11 - Sorting
+
+When play begins:
+	sort the Table of Private Ships of War in type order.
+	
+Section 12 - Listed in
+
+Instead of listening to a site listed in the Table of Port Royal Taverns:
+	say "Not far off is the sign of [sign entry], where a raucous party seems to be in progress."
+	
+Instead of eating something inedible:
+	if the location is a site listed in the Table of Port Royal Taverns
+	begin; 
+		say "There's nothing to eat out here, but there are tantalizing smells from [sign entry].";
+	otherwise;
+		say "Ick!";
+	end if.
+	
+Instead of jumping:
+	if the location is a site listed in the Table of Port Royal Taverns, 
+		say "Your cavorting attracts derisive attention from the patrons coming out of [sign entry].";
+	otherwise say "You leap in sprightly fashion."
+
+Section 13 - Topic columns
+
+Ann Mills is a woman in the Feathers.
+
+Instead of asking Ann about a topic listed in the Table of Ann's Replies:
+	say "[response entry][paragraph break]";
+
+Instead of telling Ann about a topic listed in the Table of Ann's Replies:
+	try asking Ann about it.
+
+Table of Ann's Replies
+Topic	Response
+"wine"	"'Yes, we have wine!' Ann answers with alacrity."
+"sack"	"'Certainly, plenty of sack here.'"
+"sherry"	"'Why, of course.'"
+"beer"	"'Plenty of beer, indeed.'"
+"ale"	"'We have many good ales.'"
+"rum"	"'Naturally.'"
+"water"	"Ann looks at you as though she thinks you might have gone off your head."
+
+
+Understand "remember [text]" as remembering. [Understand "think about [text]" as remembering.]
+
+Remembering is an action applying to one topic.
+
+Carry out remembering:
+    say "Nothing comes to mind.".
+
+Instead of remembering a topic listed in the Table of Recollections:
+    say "[response entry][paragraph break]".
+
+Table of Recollections
+Topic	response
+"weather"	"It's warm, but then it has always been warm around here."
+
+Section 14 - Another scoring example
+
+To record (T - text) as achieved: 
+	choose row with a citation of T in the Table of Tasks Achieved; 
+	if there is no time entry begin; 
+		now time entry is the time of day; 
+		increase the score by (Points entry); 
+	end if.
+	

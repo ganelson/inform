@@ -1,0 +1,89 @@
+   Spinning Tower
+  Pine
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Spinning Tower
+  A remote corner of the old castle, reserved for spinning and weaving tasks.
+  
+  Sleeping Beauty lies here, oblivious to your presence.
+  
+> >   Spinning Tower
+  (Testing.)
+  
+  >[1] x beauty
+  She is even more magnificent than the rumors suggested.
+  
+  >[2] wake beauty
+  Yes, but how?
+  
+  >[3] pour water on beauty
+  You pour out the jug of water on Sleeping Beauty.
+  
+  Sleeping Beauty wakes, shuddering. "Agh! I had a terrible dream about drowning and then-- Hey!"
+  
+  Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken.
+  
+  >[4] ask beauty about sleep
+  "Sleep well?" you ask solicitously.
+  
+  "Not really," she replies, edging away from you. So much for that angle.
+  
+  >[5] tell beauty about poverty
+  "I wish you'd give some thought to marrying me. You see," you say, your jaw tensing. "I wouldn't ask if it weren't for my family circumstances..."
+  
+  Woodcutter's Shack
+  Your family lives in a shack in the forest. There are holes in the roof, and in the winter the snow comes in -- rain, too, for that matter. The walls aren't very well-boarded, and don't keep out the wind, and even though you live in the middle of dense woods, you can never gather enough fuel to keep this place fully heated. And then there's the stench. Pigs wander freely in and out, and your three youngest brothers play on the floor.
+  
+  On the untidy bed are Mother and a folded letter.
+  
+  >[6] smell pigs
+  They smell the way animals do, when they live among their own refuse.
+  
+  >[7] x mother
+  She is wasting away of a slow disease, her skin stretched tautly over bone. She hasn't been the same since your father left.
+  
+  >[8] x letter
+  Many times read over and creased, the letter explains how your father has gone away with a wealthy countess and will not return. Your mother was not able to read it herself, of course, and had to have it explained to her by the parish priest. Now she keeps it by the bed and crumples it in her fits of delirium.
+  
+  >[9] kiss mother
+  You place a gentle kiss on her feverish brow. She looks up at you, her oldest -- yes, never mind that bit -- with a look of sincere trust and admiration.
+  
+  "You'll find a way through this for us," she says, squeezing your fingers. "I know you will."
+  
+  ...you finish describing the miserable circumstances of your home life, and allow your attention to return to the present.
+  
+  Spinning Tower
+  A remote corner of the old castle, reserved for spinning and weaving tasks.
+  
+  Sleeping Beauty stands beside you, looking distressed on your behalf.
+  
+  "Oh dear!" she says. "What a dreadful life!" She wrings her hands. "No wonder you are eager to improve your lot...! But --" Her brow clears, a new thought occurring. "You needn't marry me, you know! We could arrange it differently! I am certain that my father would give you a large reward, instead, and then I would not be separated from my current boyfriend!"
+  
+  >[10] ask beauty about marriage
+  "So," you say. "This is a little weird since we just met, but, um. Would you like to get married?"
+  
+  She looks at you nervously. "Do I have to?"
+  
+  >[11] z
+  Time passes.
+  
+  "Do you think I could go look for someone? I'm seeing him, you see, and I think I've been... sick... for a while, so he might be worried."
+  
+  You try to think how to point out that it's been a hundred years since she last saw her boyfriend. And try not to think how awkward things would be in your family if she refuses to marry you.
+  
+  >[12] z
+  Time passes.
+  
+  She goes to the window and looks out at the now-fading thicket of briar. "That took a while to grow," she observes. "I've been up here longer than I thought."
+  
+  You shrug, uncomfortable.
+  
+  
+  
+      *** This is going to take some explaining. ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

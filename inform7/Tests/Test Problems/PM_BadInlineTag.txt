@@ -1,0 +1,6 @@
+Xanadu is a room.
+
+To blow up (N - a number): (- score = 0; {-strange:N} -).
+
+When play begins:
+	blow up 1.

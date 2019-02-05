@@ -1,0 +1,14 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	symbol public misc K_number
+	symbol public misc x
+	symbol public misc sub
+	symbol public misc y
+	kind K_number int32
+	constant x K_number = 11
+	package sub _plain
+		symbol public misc y
+		symbol external misc K_number == /main/K_number
+		constant y K_number = 17

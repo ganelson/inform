@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableColumnBrackets
+  >--> In 'Table of Exempla' (source text, line 3), I can't use the column
+    heading 'model name (trade marked)' (source text, line 4). Brackets are
+    only allowed in table column names when giving the kind of value which will
+    be stored in the column. So 'poems (text)' is legal, but not 'poems
+    (chiefly lyrical)'.
+Inform 7 has finished: 17 centiseconds used.

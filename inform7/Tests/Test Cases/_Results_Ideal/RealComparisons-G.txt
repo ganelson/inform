@@ -1,0 +1,15 @@
+
+
+
+"whether or not 1 < 5" = truth state: true
+"whether or not 0.1 < 5" = truth state: true
+"whether or not 1 < 0.5" = truth state: false
+"whether or not 0.1 < 0.5" = truth state: true
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+
+Math lab
+Let's consider some numbers.
+
+>Are you sure you want to quit? 

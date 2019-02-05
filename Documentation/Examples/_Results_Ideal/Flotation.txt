@@ -1,0 +1,61 @@
+   Pumping House
+  Flotation
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pumping House
+  The chief feature of the room is a concrete-sided well full of water.
+  
+  A big switch labelled "MAKE EVERYTHING SINK" is mounted on one wall. It is currently switched off and silent.
+  
+  You can also see a cork, an inflated rubber ring and a lead ingot here.
+  
+> >   Pumping House
+  (Testing.)
+  
+  >[1] get all
+  cork: Taken.
+  inflated rubber ring: Taken.
+  lead ingot: Taken.
+  
+  >[2] put cork in well
+  The cork bobs on the surface.
+  
+  >[3] put ring in well
+  The inflated rubber ring bobs on the surface.
+  
+  >[4] put ingot in well
+  The lead ingot sinks out of sight.
+  
+  >[5] x well
+  On the surface of the water you can see an inflated rubber ring and a cork.
+  
+  >[6] get cork
+  Taken.
+  
+  >[7] get ring
+  Taken.
+  
+  >[8] switch switch on
+  You switch the big switch on.
+  
+  >[9] put cork in well
+  The cork sinks out of sight.
+  
+  >[10] put ring in well
+  The inflated rubber ring sinks out of sight.
+  
+  >[11] x well
+  There is nothing on the surface of the water, nor can you see into the depths.
+  
+  >[12] switch switch off
+  You switch the big switch off.
+  
+  The inflated rubber ring and the cork rise to the surface of the well.
+  
+  >[13] switch switch on
+  You switch the big switch on.
+  
+  The inflated rubber ring and the cork sink out of sight.
+  
+> >

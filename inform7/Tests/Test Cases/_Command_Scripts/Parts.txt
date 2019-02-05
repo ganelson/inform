@@ -1,0 +1,140 @@
+x tightrope
+x bicycle
+get on bicycle
+get out
+x sky
+x geese
+ask geese about geese
+x balloon
+get in balloon
+get all
+out
+put all in satchle
+put all in satchel
+get satchel
+get in balloon
+get all
+get out
+get on saucer
+drop all
+get out
+take all from saucer
+i
+turn on the kettle
+turn it off
+look
+x unicycle
+get on it
+look in carrier basket
+put leash in basket
+carrier
+take leash. put it in carrier basket.
+get out
+get leash
+x car
+put coin on dashboard
+take it
+put it on dashboard
+x dashboard
+look in cup holder
+look in ashtray
+open it
+take ash
+close ashtray
+put ash in ashtray
+put ash in cup holder
+open ashtray
+put the fru in the ashtray
+put the bottle in the ashtray
+take it
+put it in the ashtray
+put the satchel in the glove compartment
+take satchel
+look
+x driver
+ask the driver about hot night spots
+look
+x door
+turn the door on
+turn the control on
+e
+x bobo
+x lion
+x rug
+x sheep
+x kangaroo
+x elephant
+get in howdah
+n
+get out
+look in pouch
+get baby
+put satchel in outer compartment
+put kangaroo in pouch
+open glass door
+enter it
+wear rug
+turn on lion switch
+x lion
+put satchel on monkey's back
+get it
+purloin it
+look
+w
+w
+z
+put all on trapdoor
+d
+open trapdoor
+take all from surface
+open trapdoor
+d
+u
+x reflecting
+x doppelganger
+say hi to doppelganger
+ask it about Tories
+ask doppelganger about tories
+n
+open door
+reflecting
+n
+open platform
+d
+u
+put all in bucket
+get all from bucket
+w
+s
+w
+e
+n
+take key
+open box
+x key
+take all from box
+wear apron
+put apron in the pocket
+take hat
+tall
+x tall hat
+search crown
+take rabbit
+i
+put whip on crown
+take it
+put it on crown
+wear hat
+tall
+put whip on crown
+take whip
+put whip on crown
+i
+put hat on crown
+look
+i
+wear tights
+wear left leg
+wear right leg
+i
+

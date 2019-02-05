@@ -1,0 +1,22 @@
+   Room 1
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Room 1
+  You can see a cube and the table here.
+  
+> >   Room 1
+  (Testing.)
+  
+  >[1] x cube
+  You see nothing special about the cube.
+  
+  >[2] x sadder
+  You see nothing special about the cube.
+  
+  >[3] put box on table
+  (first taking the cube)
+  You put the cube on the table.
+  
+> >

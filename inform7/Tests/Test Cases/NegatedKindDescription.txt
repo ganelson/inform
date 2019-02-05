@@ -1,0 +1,11 @@
+Kitchen is a room.
+
+A closed openable container called a cupboard is in Kitchen.
+
+A baseball is in the cupboard.
+A dish is kind of thing.
+The player carries a plate. The plate is a dish.
+
+When play begins:
+	say "in the cupboard (not dishes): [a list of things in the cupboard
+		which are not dishes]."

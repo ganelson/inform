@@ -1,0 +1,6 @@
+The Northern Zone is a room. "You are standing in the north end of the
+park. There is grass, and some ivy and bushes on the ground."
+
+The Tree is in the Northern Zone. The Tree can be climbed "There is a tree
+in the middle of the northern area." The description is "There is not much
+of interest about any of the vegetation in the northern area."

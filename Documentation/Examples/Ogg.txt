@@ -1,0 +1,32 @@
+* Spontaneous actions by other people
+(Person who opens a container before trying to get something from it; IQ Test)
+Introducing Ogg, a person who will unlock and open a container when the player tells him to get something inside.
+
+We have already seen how Before... rules can generate implicit actions for the player, so that the player will, for instance, open doors before trying to walk through them. The same can be done for characters other than the player; so for instance:
+
+	{*} "IQ Test"
+	
+	The Donut Shop is a room. "Vibrantly decorated in donut colors: pink, brown, and cream."
+
+	Ogg is a man in the Donut Shop. "Ogg is slumped in the corner[if Ogg carries something] with [a list of things carried by Ogg][end if]. He wears a nametag which says 'HELLO MY NAME IS OG.'" Understand "og" as Ogg. Ogg wears a nametag. The description of the nametag is "Sadly misspelled."
+
+	The Donut Shop contains a transparent closed openable locked lockable container called a case. The case contains some cake donuts. The donuts are edible.
+
+	The matching key of the case is a silver key. The silver key is carried by Ogg.
+
+	A persuasion rule for asking someone to try doing something:
+		persuasion succeeds.
+
+	Before someone opening a locked thing (called the sealed chest):
+		if the person asked is carrying the matching key of the sealed chest, try the person asked unlocking the sealed chest with the matching key of the sealed chest; 
+		if the sealed chest is locked, stop the action.
+	
+	Before someone taking something which is in a closed container (called the shut chest):
+		try the person asked opening the shut chest;
+		if the shut chest is closed, stop the action.
+		
+	The block giving rule is not listed in the check giving it to rules.
+
+	Test me with "open case / get donuts / og, get donuts / og, give me the donuts / eat donuts".
+		
+(A more detailed set of before rules for people using doors and locks is provided in Emily Short's Locksmith extension.) 

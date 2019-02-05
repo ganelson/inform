@@ -1,0 +1,17 @@
+Lab is a room.
+
+When play begins:
+	repeat with T running through grammatical tenses:
+		now the story tense is T;
+		say "[T].";
+		say "That [lead] to spills.";
+ 		say "That [can lead] to spills. That [cannot lead] to spills. That [can't lead] to spills.";
+		say "That [might lead] to spills. That [might not lead] to spills. That [mightn't lead] to spills.";
+		say "That [could lead] to spills. That [could not lead] to spills. That [couldn't lead] to spills.";
+		say "That [would lead] to spills. That [would not lead] to spills. That [wouldn't lead] to spills.";
+		say "That [should lead] to spills. That [should not lead] to spills. That [shouldn't lead] to spills.";
+		say "That [must lead] to spills. That [must not lead] to spills. That [mustn't lead] to spills.";
+		say "That [may lead] to spills. That [may not lead] to spills. That [mayn't lead] to spills.";
+		say paragraph break.
+
+To lead is a verb.

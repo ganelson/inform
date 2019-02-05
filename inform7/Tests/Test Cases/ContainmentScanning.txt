@@ -1,0 +1,19 @@
+Lab is a room. It contains a box. The box contains a newspaper. The wallchart is scenery in the Lab.
+
+Instead of examining something:
+	say relations for the noun. 
+	
+To say relations for (item - a thing):
+	describe the containment relation for item;
+	showme the meaning of the verb contain;
+	showme the containment relation;
+
+To describe (R - a relation of objects) for (item - a thing):
+	say "[item]: [the list of things to which item relates by R with indefinite articles].";
+	if a thing to which item relates by R is a thing: 
+		say "[The item] [verb rendering applied to a random verb that means R] [the list of things to which item relates by R with indefinite articles]. [run paragraph on]"
+
+To decide which text is the rendering of (V - verb) (this is verb rendering):
+	decide on "[adapt V]".  
+
+Test me with "x box / x newspaper".

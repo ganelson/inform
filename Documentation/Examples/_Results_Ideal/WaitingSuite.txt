@@ -1,0 +1,38 @@
+   Waiting Suite
+  Entrapment
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Waiting Suite
+  You find yourself in a narrow room, more cozy than is really comfortable, with dark paneling on all the walls. Underfoot is a thick carpet the color of dried blood. The head of a dragon kit is mounted on the wall.
+  
+  You can see a small table (on which is a copy of Dragon Pursuit Today) here.
+  
+> >   Waiting Suite
+  (Testing.)
+  
+  >[1] switch paneling
+  First you'll have to locate any switches or catches with a careful search.
+  
+  >[2] touch paneling
+  You run your hands over the paneling with a methodical touch, knowing exactly what you're looking for but never quite feeling anything that gives or twists; then thump lightly, looking for hollow spaces.
+  
+  >[3] g
+  With increased vigor, you run your fingers along the borders between panels, then smack each panel sharply at the center. No luck yet, but if you keep at it, you're bound to turn up anything that's there to find.
+  
+  >[4] g
+  Before you can act, you hear movement from the inner office. You freeze, not quite ready to be discovered in this situation. But no one comes out, and you begin to breathe more easily.
+  
+  >[5] g
+  Having polished off all the panels within easy reach, you now have to contort yourself around furniture here and crawl along the floorboards there, hitting each panel three times quite solidly before moving on.
+  
+  Just at this inopportune moment, you hear a throat being cleared behind you. "We can see you now within," says a dry voice.
+  
+  
+  
+      *** To be continued... ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

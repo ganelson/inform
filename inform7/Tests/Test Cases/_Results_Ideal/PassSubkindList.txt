@@ -1,0 +1,15 @@
+   Africa
+  "L" = list of people: {David Attenborough}
+  I'm randomising in list David Attenborough.
+  My rnd is 1.
+  "E" = object: David Attenborough
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Africa
+  You can see David Attenborough here.
+  
+> >   Africa
+> Are you sure you want to quit? 

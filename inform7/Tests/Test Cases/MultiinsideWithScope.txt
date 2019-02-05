@@ -1,0 +1,17 @@
+The Balcony is a room. "Overlooking the great fountain below."
+The bench is an enterable supporter in the balcony. 
+
+The Garden is down from the balcony. The fountain is fixed in place in the
+garden. The grass is in the garden.
+
+After deciding the scope of the player when the player is in the balcony:
+	if we have jumped:
+		place the grass in scope;
+	place the fountain in scope.
+
+The player carries a key.
+
+Test me with "get all from bench / get all from key / put key on bench / get
+all from bench / put key on bench / get key from bench / jump / get all from
+bench / get all from key / put key on bench / get all from bench / put key on
+bench / get key from bench / put key on key".

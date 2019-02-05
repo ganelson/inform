@@ -1,0 +1,14 @@
+
+Foo is a room.
+
+At 9:01 am:
+	end the story saying "You have died".
+
+At 9:04 am:
+	end the story finally saying "Your privileges have been revoked".
+
+When play ends when the story has not ended finally:
+	say "You have been granted a reprieve!";
+	resume the story.
+
+Test me with "z / z / look / z / z / z".

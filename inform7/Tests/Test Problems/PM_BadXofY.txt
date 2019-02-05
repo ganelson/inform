@@ -1,0 +1,3 @@
+The Winter Palace is a room.
+
+"Chilly" is the description of the Winter Palace.

@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_FilenameUnsafe
+  >--> You wrote 'The File of Glaciers is called "ice, Kodiak bears and other
+    hazards.txt"' (source text, line 3): but filenames must be very
+    conservatively chosen, in order to be viable on a wide range of computers.
+    They must consist of 3 to 23 English letters or digits, with the first
+    being a letter. Spaces are not allowed, and nor are periods. (A file
+    extension, such as '.glkdata', may be added on some platforms
+    automatically: this is invisible to Inform.)
+Inform 7 has finished: 17 centiseconds used.

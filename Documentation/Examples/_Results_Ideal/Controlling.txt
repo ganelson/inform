@@ -1,0 +1,32 @@
+   Model Shop
+  Model Shop
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Model Shop
+  You can see a model train and a toy elephant here.
+  
+> >   Model Shop
+  (Testing.)
+  
+  >[1] push model train's button
+  You switch the model train on.
+  
+  The model train circles your feet, blowing small puffs of steam.
+  
+  >[2] push elephant's button
+  You switch the toy elephant on.
+  
+  The model train circles your feet, blowing small puffs of steam.
+  
+  The toy elephant waves its trunk at you.
+  
+  >[3] g
+  You switch the toy elephant off.
+  
+  The model train circles your feet, blowing small puffs of steam.
+  
+  >[4] switch off model train's button
+  You switch the model train off.
+  
+> >

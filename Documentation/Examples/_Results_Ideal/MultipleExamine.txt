@@ -1,0 +1,37 @@
+   Treasury
+  Shawn's Bad Day
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Treasury
+  A massive vault fills up one wall.
+  
+  You can also see a security guard here.
+  
+> >   Treasury
+  (Testing.)
+  
+  >[1] examine all
+  vault: The vault's system includes a little green light, a little blue light, a little red light, a thin black pane of glass, a laser beam, a retinal scanner, a thumbprint ID plate, a dial and a large lever.
+  
+  security guard: His name is Shawn, and he doesn't look happy.
+  
+  little green light: Off.
+  
+  little blue light: Tranquilly on.
+  
+  little red light: Angrily flashing.
+  
+  thin black pane of glass: You see nothing special about the thin black pane of glass.
+  
+  laser beam: You see nothing special about the laser beam.
+  
+  retinal scanner: You see nothing special about the retinal scanner.
+  
+  thumbprint ID plate: You see nothing special about the thumbprint ID plate.
+  
+  dial: You see nothing special about the dial.
+  
+  large lever: You see nothing special about the large lever.
+  
+> >

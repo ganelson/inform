@@ -1,0 +1,13 @@
+   Kitchen
+  Steak confirmed as on the grill.
+  Steak confirmed as on top of the grill.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see a grill (on which are a steak and a sausage) here.
+  
+> >   Kitchen
+> Are you sure you want to quit? 

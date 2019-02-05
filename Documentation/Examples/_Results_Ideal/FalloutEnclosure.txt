@@ -1,0 +1,24 @@
+   SuperDuperMart
+  Fallout Enclosure
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  SuperDuperMart
+  You can see some shelves (on which are a bottle of Buffout and a container of Jet) and a cash register (closed) here.
+  
+> >   SuperDuperMart
+  (Testing.)
+  
+  >[1] zap shelves
+  You zap the shelves, destroying them and leaving a bottle of Buffout and a container of Jet behind.
+  
+  >[2] zap buffout
+  You zap the bottle of Buffout, destroying it.
+  
+  >[3] zap register
+  You zap the cash register, destroying it and leaving some prewar money, a coin purse and a bottle cap behind.
+  
+  >[4] zap purse
+  You zap the coin purse, destroying it and leaving a prewar nickel behind.
+  
+> >

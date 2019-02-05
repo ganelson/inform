@@ -1,0 +1,29 @@
+   Trail Shelter
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Trail Shelter
+  You can see Fred and George here.
+  
+> >   Trail Shelter
+  (Testing.)
+  
+  >[1] relations
+  Suspecting relates various people to various people:
+    Earl  >=>  the possum
+  
+  >[2] z
+  A sinister odour begins to make itself felt.
+  
+  >[3] relations
+  Suspecting relates various people to various people:
+    You  >=>  the skunk
+    You  >=>  the weasel
+    Fred  >=>  the skunk
+    Fred  >=>  the weasel
+    George  >=>  the skunk
+    George  >=>  the weasel
+    Earl  >=>  the possum
+  
+> >

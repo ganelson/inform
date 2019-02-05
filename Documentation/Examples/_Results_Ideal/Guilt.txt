@@ -1,0 +1,24 @@
+   Billiards Room
+  Clueless
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Billiards Room
+  You can see Colonel Mustard, Professor Plum, Miss Scarlet and Mrs White here.
+  
+> >   Billiards Room
+  (Testing.)
+  
+  >[1] x mustard
+  You see nothing special about Colonel Mustard.
+  
+  >[2] x plum
+  Professor Plum certainly looks fiendish!
+  
+  >[3] x scarlet
+  You see nothing special about Miss Scarlet.
+  
+  >[4] x white
+  You see nothing special about Mrs White.
+  
+> >

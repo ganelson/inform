@@ -1,0 +1,49 @@
+   Safehouse
+  Paddington
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Safehouse
+  You can see a teddy bear and a quilt here.
+  
+> >   Safehouse
+  (Testing.)
+  
+  >[1] cut quilt with bear
+  The teddy bear has not got enough of a blade.
+  
+  >[2] cut quilt with switchblade
+  You slash the quilt with the switchblade.
+  
+  >[3] examine quilt
+  Horribly tattered.
+  
+  You see one rip in the quilt.
+  
+  >[4] cut bear with switchblade
+  You slash the teddy bear with the switchblade.
+  
+  Visible within is a large wad of stuffing.
+  
+  >[5] again
+  You slash the teddy bear with the switchblade.
+  
+  Visible within is a large wad of stuffing.
+  
+  >[6] examine bear
+  Fluffy, with an outsized head.
+  
+  You see two rips in the teddy bear, revealing a large wad of stuffing.
+  
+  >[7] cut head with switchblade
+  You slash the head with the switchblade.
+  
+  Visible within are a small wad of stuffing and a packet of smuggled diamonds.
+  
+  >[8] get diamonds
+  Taken.
+  
+  >[9] mourn loss of innocence
+  That's not a verb I recognise.
+  
+> >

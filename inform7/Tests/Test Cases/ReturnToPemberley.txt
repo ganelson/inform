@@ -1,0 +1,57 @@
+Big House is a room.
+
+Elizabeth and Lydia are women in the Big House. Darcy, Wickham and Mr Bennett are men in the Big House.
+
+Loving relates one person to one person. The verb to love (he loves, they
+love, he loved, he is loved) implies the loving relation.
+
+Elizabeth loves Darcy.
+
+Noticing relates various people to one person. The verb to notice (he
+notices, they notice, he noticed, he is noticed) implies the noticing
+relation.
+
+Elizabeth notices Darcy. Lydia notices Mr Wickham. Mr Bennett notices Mr Wickham.
+
+Impressing relates one person to various people. The verb to impress (he
+impresses, they impress, he impressed, he is impressed) implies the
+impressing relation.
+
+Elizabeth impresses Darcy. Darcy impresses Mr Bennett.
+
+Fancying relates various people to various people. The verb to fancy (he
+fancies, they fancy, he fancied, he is fancied) implies the fancying
+relation.
+
+Elizabeth fancies Darcy. Lydia fancies Darcy. Wickham fancies Lydia.
+
+Marriage relates one person to another. The verb to be married to implies
+the marriage relation.
+
+Elizabeth is married to Darcy.
+
+Acquaintance relates people to each other. The verb to know (he knows, they
+know, he knew, he is known) implies the acquaintance relation.
+
+Elizabeth knows Darcy. Wickham knows Darcy. Elizabeth knows Mr Bennett.
+
+Alliance relates people to each other in groups. The verb to be related to
+implies the alliance relation.
+
+Elizabeth is related to Darcy. Lydia is related to Elizabeth.
+
+When play begins:
+	diagnose the loving relation;
+	diagnose the noticing relation;
+	diagnose the impressing relation;
+	diagnose the fancying relation;
+	diagnose the acquaintance relation;
+	diagnose the marriage relation;
+	diagnose the alliance relation;
+
+To diagnose (R - relation):
+	say "[line break]Diagnosing [R]...";
+	repeat with P running through people:
+		say "[person who relates to P by R] --> [P]; [P] --> [person to whom P relates by R]; [list of people who relate to P by R in brace notation].";	
+	showme the list of people whom R relates;
+	showme the list of people to whom R relates;

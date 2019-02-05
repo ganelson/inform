@@ -1,0 +1,21 @@
+   chamber
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  chamber
+  
+> >   chamber
+  (Testing.)
+  
+  >[1] lookup 1
+  Ok, let's try looking up "1".
+  Which, as text, is "1".
+  One.
+  
+  >[2] lookup 3
+  Ok, let's try looking up "3".
+  Which, as text, is "3".
+  Three.
+  
+> >

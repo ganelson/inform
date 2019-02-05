@@ -1,0 +1,1099 @@
+6F95 (25 October 2010)
+
+This maintenance release fixes every core Inform issue logged on the Inform
+bug tracker up to today, which means that it resolves around 180 issues;
+this change log lists most of them, but omits a few which were simple
+corrections of typos, and of course doesn't list the small number of issues
+closed as being misunderstandings. Though there are no significant new
+features, two additional resources have been added to the core Inform
+distribution: Andrew Plotkin's Quixe interpreter, allowing Glulx story files
+to be released as playable websites (something up to now allowed only for
+Z-machine story files); and Eric Eve's extension "Epistemology", which
+joins the built-in set for the first time.
+
+
+Contents:
+	1. INFORM FOR OS X
+	2. INFORM FOR WINDOWS
+	3. INFORM FOR GNOME ON LINUX
+	4. MINOR NEW FEATURES
+	5. CORE INFORM MAINTENANCE
+	6. EXAMPLES
+	7. BUILT-IN EXTENSIONS
+
+
+1. INFORM FOR OS X
+
+Problems in running Inform on OS 10.4 (Tiger) and 10.5 (non-Snow Leopard)
+have been addressed.
+
+The Glulx interpreters for the Game pane have been updated to the latest
+versions: Glulxe 0.4.6 and Git 1.2.8.
+
+The "Find" dialog box input focus now works better.
+
+Extensions are now created as .i7x files, and an issue with installing
+extensions has been fixed; similarly with showing errors in extensions.
+
+The "Recipe book" menu item (on the Help menu) now directs to the correct page.
+
+Fixed an issue displaying the "out of readable memory" page on overflowing
+Z-machine compilations.
+
+Fixed an issue with identifying words when searching.
+
+Fixed problem with custom font sets.
+
+
+2. INFORM FOR WINDOWS
+
+When a project is saved, in order to keep the size of the skein under
+control, only a limited number of unlocked skein nodes are written out
+(currently 100). The user is warned of this the first time they open a
+project with more unlocked skein nodes in it than this. The user should lock
+any skein threads they want to keep.
+
+The "Open Extensions" item in the File menu is now a sub-menu of the
+available extensions, matching the OS X front end. Extensions built into
+Inform 7 are shown in smaller text.
+
+The old behaviour of the Home and End keys has been restored: they move to
+the start and end of the line on display, rather than the start and end of
+the current paragraph.
+
+The items on the Format menu now all have keyboard shortcuts.
+
+To match the OS X front end, the Transcript pane now has further buttons:
+"Next in Skein", "Next diff" and "Prev diff". These duplicate functionality
+from the Replay menu.
+
+The Glulx interpreters for the Game pane have been updated to the latest
+versions: Glulxe 0.4.6 and Git 1.2.8.
+
+
+3. INFORM FOR GNOME ON LINUX
+
+Bug fixed (0000120) which made elastic tabstops work slowly.
+
+Updated the interpreters in the Game panel to Glulxe 0.4.6 (plus a patch),
+Frotz 2.50, and Git 1.2.8.
+
+
+4. MINOR NEW FEATURES
+
+The last major release of Inform (6E59) led with an important new feature: an
+integrated way to publish IF to a website allowing the story file to be
+played in-browser. This was done by constructing the site to use the Parchment
+interpreter, which ships as part of the Inform distribution. However, since
+Parchment is an interpreter for the Z-machine VM, this meant that only projects
+with the format setting set to "Z-code" could be released in this way. The new
+release comes with not only Parchment but also Quixe, Andrew Plotkin's
+in-browser interpreter for the Glulx VM. In response to the instruction:
+
+	Release along with an interpreter.
+
+Inform will automatically choose Parchment for a Z-machine project, or
+Quixe for a Glulx one.
+
+The "Standard" template for websites has been updated to make in-browser play
+easier to style. The interpreter body is now wrapped in a div called "gameport",
+and the CSS stylesheet in "Standard" contains explicit layout information for
+the in-browser play page. This layout automatically simplifies on iPhone-sized
+displays; the left-hand column disappears.
+
+"Parchment" has also been updated. There are minor bug fixes, and command
+input is now done with an invisible form field, so that standard line-editing
+conventions now all work. (Mouse selection, all the usual control keys, etc.)
+
+
+The extension Epistemology by Eric Eve has been added to the built-in set in
+the standard Inform distribution. (The version used is version 6, identical
+to the one available at the Inform website since 19 June 2010.) This is a
+simple and stable extension, providing facilities to keep track of what the
+protagonist knows; we're including it in the built-in set because it is so
+widely used, and has become a de facto standard. Our thanks to Eric, of course.
+
+
+Temporary "let" variables are now allowed to have names clashing with non-local
+ones; as in languages like C, these temporary definitions override the existing
+ones, but last only while the variable lasts. Thus:
+
+	The target is 17.
+	When play begins:
+		say "The target is [target]."
+	When play begins:
+		let the target be "brainz";
+		say "This target is [target]."
+
+prints up "The target is 17.", and then "This target is brainz." This should
+reduce name-clash problems where it's tricky to define global variables with
+the same name as any local ones existing in the Standard Rules (such as, in
+fact, the name "target").
+
+
+The rules on how temporary "let" variables are have been enforced better in this
+new build. This does cause some existing source text to fail. For example, in
+the example "Nickel and Dimed", previous builds included this:
+
+	if the total price of underpayment money is less than the cost:
+		let the desired bill be the cheapest money which is overpayment;
+	otherwise:
+		let the desired bill be the costliest money which is underpayment;
+	decide on the desired bill.
+
+This is now rejected because "desired bill" is a name given to two different
+temporary values, each of which expires at the end of a branch of the "if";
+so that nothing called "desired bill" still exists at the "decide on..." line.
+While the above source looks (and is) harmless enough, consider this:
+
+	if the total price of underpayment money is less than the cost:
+		let the desired bill be the cheapest money which is overpayment;
+	decide on the desired bill.
+
+This is clearly unfortunate if the condition fails, as then "desired bill" is
+a temporary value never brought into existence at all. Past builds of Inform
+would have allowed the usage, giving "desired bill" its default value in that
+case (albeit failing badly if the kind was such that no default value existed),
+but this was not a good idea. So we are now enforcing the rules more strictly.
+The same applies to the branches of an "if X is: ...", too. The relevant
+passage in "Nickel and Dimed" now reads:
+
+	if the total price of underpayment money is less than the cost:
+		decide on the cheapest money which is overpayment;
+	otherwise:
+		decide on the costliest money which is underpayment.
+
+
+The handling of the "described/undescribed" either/or property has been
+made more consistent, and the documentation now says this:
+
+	There is also an either/or property called "described"/"undescribed",
+	intended to be used only as a last resort, but which has the ability
+	to hide something from room descriptions. This not really hiding: the
+	idea is that "undescribed" should be used only for cases where some
+	other text already reveals the item, or where its presence is
+	implicit. Even then, it should only be used when the item is intended
+	to be taken or moved by the player at some point - if the item isn't
+	intended to move, it's much better to make it "scenery". (There's only
+	one commonly-found example - the player's own body, the "yourself", is
+	undescribed.)
+	
+	Note that the "undescribed" property is automatically removed from
+	anything carried by, worn by or part of the player, even indirectly;
+	and that nothing on top of an "undescribed" supporter will be visible
+	in a room description, even if it itself is "described". (Scenery
+	supporters don't suffer from that restriction, which is one reason
+	scenery is a better option when possible.)
+
+
+The rule on when punctuation in the source text divides up sentences has been
+slightly refined.
+
+(a) Where a single punctuation mark other than "[" or "]" occurs in between
+two digits, or between a digit and a minus sign, or (in the case of full
+stops) between two lower-case alphanumeric characters, no division is made.
+This is done so that, for instance, "0.91" does not split into three words.
+
+(b) Where the character following the punctuation mark is a slash, no
+division is made. This is done essentially to make most common URLs glue up
+as single words; otherwise "http://" would be broken up.
+
+
+The clauses in an action definition ("requiring light", "applying to...", and
+so on) previously had to appear in a specific order; now they can appear in
+any order.
+
+
+Implementing suggestion 1015949: RULES ON and SCENES ON are now synonymous
+with RULES and SCENES. (Previously OFF worked, but ON didn't, which was
+inconsistent with the behaviour of the ACTIONS command. This is all now
+consistent.)
+
+
+5. CORE INFORM MAINTENANCE
+
+5.1. Source text and punctuation
+
+Bug fixed (0000345) whereby "To" phrase could be defined with quoted text as
+part of the fixed wording, even though this isn't allowed and doesn't work.
+There's now a problem message to cover it.
+
+(See also "Spacing and Printing" below, and see the notes above about
+word-breaking conventions.)
+
+5.2. Headings
+
+Bug fixed (0000231) whereby a title which contains a paragraph break (why,
+why, would anyone do this?) would have it appearing with HTML tags printed
+up as part of the title when the story file begins play.
+
+Bug fixed (0000161) whereby sections with quotation marks in their headings
+can't be replaced by "in place of" headings.
+
+5.3. Extensions
+
+Bug fixed (0000225) whereby spacing around punctuation, when extension
+documentation is being pretty-printed, would sometimes be excessive.
+
+Bug fixed (0000132) whereby extension documentation containing examples with
+text containing literal paragraph breaks would fail to set up the "paste
+source" button correctly.
+
+Bug fixed (0000205) whereby extension documentation containing examples with
+text containing a (- ... -) I6 escape sequence would fail to set up the "paste
+source" button correctly.
+
+Bug fixed (0000167) whereby tooltips (i.e. explanation text appearing above the
+mouse arrow when it hovers) over a link icon to extension documentation would
+name the extension and author with Each Word Capitalisation, instead of
+respecting the capitalisation actually used by the extension, e.g., "CrAzYcApS
+by UNUSUALLY caPitAlized namE" as "Crazycaps By Unusually Capitalized Name".
+
+Bug fixed (0000230) whereby the wording used on the warning for an incorrectly
+installed extension implied that extensions aren't allowed to have filename
+extensions - whereas they now can, and indeed should, end in ".i7x".
+
+Bug fixed (0000217) whereby extensions with prodigiously large quantities of
+documentation (say 500,000 words or more) would, in some circumstances, crash
+Inform when used.
+
+5.4. Assertions and creations
+
+Bug fixed (0000339) whereby an internal error rather than a problem message
+would result from trying to set properties of a "kind", like so:
+
+	The printed name of a kind is usually "xyzzy."
+
+Bug fixed (0000340) whereby a rather vague problem message would be issued
+in response to (also rather vague!) sentences such as:
+
+	A kind has a number called X.
+
+Bug fixed (0000341) whereby attempts to create a "kind of kind" do not lead
+to problem messages.
+
+Bug fixed (0000343a) whereby attempts to create a "kind of every X" do not
+lead to problem messages.
+
+Bug fixed (0000343b) whereby attempts to create a kind uncertainly do not
+lead to problem messages.
+
+Bug fixed (0000254) whereby creations of rulebooks no longer lead to
+misreadings of "it". For example,
+
+	The Test rules is a rulebook.
+	It has a number called the test number.
+
+now produces a problem message; previously, "it" would have been taken to
+refer to something prior to the first sentence here, with disastrous
+consequences.
+
+Bug fixed (0000109) whereby no problem message is issued if the source tries
+to create an object using an adjective which is an antonym; e.g.,
+
+	Definition: A device is complex rather than simple if its CPU power is
+	50 or more.
+	A simple device called a netbook is in the lab.
+
+was previously accepted but created the netbook as a complex device; it now
+produces a problem message, since Inform doesn't know what CPU power to
+assign to the netbook.
+
+Bug fixed (0000138) whereby an unhelpful problem message was produced in
+reply to ambiguities such as this one:
+
+	The kitchen is a room. The player carries no tea.
+	Every turn: if the player carries no tea, say "Still no tea."
+
+where an object called "no tea" is created, but this clashes against "no" as
+a determiner. A somewhat better problem message is now produced.
+
+Bug fixed (0000195) whereby a nameless room passively created could not always
+be referred to implicitly by "here", as in this example:
+
+	There is a dark room. The player is here.
+
+Bug fixed (0000139) whereby Inform silently ignored assertions about the value
+of a variable which aliases an I6 variable, as here:
+
+	Foo is a number that varies. The foo variable translates into I6 as "foobar".
+	Foo is usually 5.
+
+Inform now issues a problem message. (It's impossible because Inform 7 doesn't
+control this variable, and can't create or initialise it.)
+
+Bug fixed (0000276) whereby names could clash against local variable names;
+see "minor new features" above.
+
+Bug fixed (0000174) whereby sounds, figures and external files could be
+created implicitly without using the special syntax provided for this (but
+the results wouldn't always work); for example
+
+	A tag is a kind of value.
+	Tagging relates various tags to various figure names. The verb to tag
+	(he tags, they tag) implies the tagging relation.
+	Outdoors is a tag. Outdoors tags Figure of Forest.
+
+would cause Inform to create the figure, since it knows from the relation that
+this is what "Figure of Forest" must be, but the result is unhappy because
+there's no way to know the filename for the image. Inform now issues an
+explanatory problem message for cases like this.
+
+Bug fixed (0000218) whereby contradiction problems arising from assemblies
+were not being reported very clearly. It takes quite a while to realise what
+is wrong with the following, for instance:
+
+	There is a room.
+	A hairstyle is a kind of thing.
+	A hairspray is a kind of thing.
+	Every hairstyle incorporates a hairspray.
+	Every hairspray incorporates a propellant.
+	There is a hairstyle.
+	There is a hairstyle.
+
+The problem here is that there is only a single "propellant" object, yet
+Inform tries to incorporate it in both of the hairsprays created by the
+hairstyles; a contradiction since it can't be in two places at once. What has
+really happened, of course, is that the source forgot to say "A propellant
+is a kind of thing". Inform previously reported this, correctly but rather
+unhelpfully, as a contradiction between "There is a hairstyle" and "There is
+a hairstyle"; it now diagnoses the fault much better.
+
+Bug fixed (0000209) whereby an unhelpful problem message was produced in
+response to:
+
+	A hairstyle is a kind of thing. A hairspray is part of every hairstyle.
+
+where the use of "every" on this side of the relationship implicitly puts
+the same item in an unlimited number of places; a better objection is now
+made to this. (Compare the related 0000218.)
+
+Bug fixed (0000134) whereby an unhelpful problem message would result from:
+
+	Instead of exiting when the location is lounge and when Rob is in location
+
+where the actual problem is the spurious second usage of "when", which is
+now explained.
+
+Bug fixed (0000333) whereby assertions such as
+
+	Foo is a number that varies. Foo is never 5.
+
+would apparently be allowed, but have no practical effect except to prevent
+"foo" from being properly created. "Always", "seldom" and "never" are now
+prohibited in such sentences. ("Usually" remains allowed, so that extensions
+can set default values for variables which can be overridden by the main
+source text.)
+
+Bug fixed (0000332) whereby contradictory assertions about the initial value
+of a variable produce a problem message about contradictory values of a
+property, confusingly. (Internally, initial values of variables are stored
+as the values of a property called "initial value" which belongs to
+variables, y'see. But this is purely an implementation convenience.) The
+problem message has been clarified.
+
+
+5.5. Model world
+
+Bug fixed (0000202) whereby inventory listings could under rare circumstances
+print incorrectly with translation extensions such as Spanish by Sebastian Arg.
+
+Bug fixed (0000278) whereby the player's holdall, if in use, would sometimes
+be called "nothing" if it was being used in a turn when it hadn't been held
+at the start of the turn.
+
+5.6. Properties
+
+Bug fixed (0000329) whereby a property created both explicitly and as a column
+in a table used to create objects would have the kind implied by the table
+column, even if that contradicted what the explicit declaration said; e.g.,
+
+	A foo is a kind of thing. A foo has a number called the fooness.
+	Some foos are defined by the Table of Goodies.
+
+	Table of Goodies
+	foo		fooness
+	Foo 1	"very foo indeed"
+
+would not detect that "fooness" seems to be a number and a text at the same
+time. Inform now reports this with a problem message.
+
+Bug fixed (0000287) whereby attempts to use properties which don't exist were
+not always picked up run-time problem messages. For instance, this passed
+without problems:
+
+	Home is a room. A direction has a number called the compass heading.
+	When play begins: say the compass heading of Home.
+
+Bug fixed (0000124) whereby defining a property of an individual non-object
+value did not always work; for example,
+
+	Pool Game is a scene. Pool Game has a number called target score.
+
+would leave a "target score" property which produced spurious run-time problem
+messages when used.
+
+5.7. Relations
+
+Bug fixed (0000160) whereby phrases like "list of K that R relates", where
+K is a kind and R a relation, did not work with statically defined relations.
+
+Bug fixed (0000169) whereby dynamic relations would be corrupted in some
+circumstances if they grew beyond a certain (actually quite small) size.
+
+Bug fixed (0000247) whereby testing some asymmetric relations with verbs
+would produce spurious I6 errors; for example,
+
+	A language is a kind of value. The languages are English and Perplexish. 
+	Speaking relates one person to various languages. The verb to speak (he
+	speaks, they speak, he spoke, it is spoken, he is speaking) implies the
+	speaking relation.
+	When play begins: if Zora speaks English, say "Huzzah!"
+
+is clearly correct source text, but would compile incorrect code to test
+"Zora speaks English".
+
+Bug fixed (0000103) whereby lists created by relationships would sometimes
+have the wrong kinds, resulting in odd failures at run-time. For example:
+
+	Partnership relates various lists of numbers to various lists of numbers.
+	The verb to belong with (he belongs with, they belong with) implies the
+	partnership relation.
+	{3} belongs with {7}.
+
+would not correctly initialise the relationship, so that "if {3} belongs with
+{7}" would then fail at run-time.
+
+Bug fixed (0000080) whereby properties and variables with unsafe kinds could
+be created when their values were relations; for example,
+
+	Foo is a relation that varies.
+	A thing has a relation of values to values called bar.
+
+are both unsafe because the relationships are too vaguely defined to be safe
+in usage. ("Foo is a relation of numbers that varies" would be fine.) This
+now results in a problem message.
+
+Bug fixed (0000096) whereby dynamic relations of block values would be
+incorrectly tested at run-time, with e.g.
+
+	Partnership relates various indexed texts to various indexed texts.
+	When play begins: now the partnership relation relates "apples" to "bananas".
+
+producing spurious "deep copy failed" messages.
+
+Bug fixed (0000095) whereby valency changes to newly created relations were
+not taking effect for one-to-one relations (or equivalence relations), so
+that they sometimes came out as asymmetric when they should have been
+symmetric.
+
+Bug fixed (0000185) whereby multiple-word verbs wouldn't always be conjugated
+correctly; for example,
+
+	Liking relates various people to various things.
+	The verb to really like (he really likes, they really like, he really
+	liked, it is really liked, he is really liking) implies the liking relation.
+	Definition: a thing is popular if it is really liked by all people.
+
+was rejected because Inform didn't recognise "it is really liked" in the
+definition. This now works as intended.
+
+Bug fixed (0000241) whereby relationships to "nothing" produced crashes in
+some cases instead of problem messages; for example,
+
+	Requirement relates various things to various things. The verb to require
+	(he requires, they require, he required, it is required, he is requiring)
+	implies the requirement relation. 
+	The sufficiency is a thing. It requires nothing.
+
+5.8. Actions
+
+Bug fixed (0000303) whereby "undescribed" caused various infelicities: see
+"minor new features" above.
+
+Bug fixed (0000321) whereby describing an action could fail if it included
+"that", since there would then be an ambiguity with a relative clause:
+
+	Answering someone that is unmaidenly behavior.
+
+This used to cause a problem message, but is now accepted.
+
+Bug fixed (0000177) whereby the use of action variables in the past tense
+caused "unavailable" run-time errors. This now causes a compile-time problem
+message. (It's wrong because action variables have only temporary existence;
+in the past, they were not alive to have a value.)
+
+Bug fixed (0000193) whereby actions applying to lists (or other pointer values)
+could not have constant stored actions created; for example,
+
+	Extrapolating is an action applying to one list of numbers.
+	The best idea yet is a stored action which varies. The best idea yet is
+	the action of extrapolating {1, 2, 3}.
+
+(This is highly dubious since such an action can never arise from a typed
+command, but we haven't actually prohibited it. If such actions cause further
+trouble, we may simply ban them.)
+
+Bug fixed (0000216) whereby use of UNDO on the opening turn produced the
+wrong complaint.
+
+Bug report (0000286) wasn't strictly a bug, but led to the syntax for creating
+actions being improved: see "minor new features" above.
+
+5.9. Activities
+
+Bug fixed (0000289) whereby an unhelpful problem message was given in reply to
+
+	A colour is a kind of value. The colours are red, green, blue.
+	Painting is an activity on colours.
+
+when the only actual problem is that it should have been "painting something".
+
+5.10. Rules and rulebooks
+
+Bug fixed (0000354) whereby a rule with no name whose premiss included literal
+text which contained a backslash character would cause I6 errors.
+
+Bug fixed (0000336) whereby the implied owner of a property mentioned in a
+rule would not always be the noun of the action to which the rule applied,
+depending on the sequence of prior rules.
+
+Bug fixed (0000157) whereby use of constant values of certain kinds would not
+work if they were needed to determine a condition which involves an implicit
+search, for example, in the following search through all people implied by
+the word "someone":
+
+	Gambling relates various people to various lists of numbers. The verb to
+	bet on (he bets on, they bet on) implies the gambling relation.
+	Every turn when someone bets on {1, 2, 3, 4, 5}: say "Just checking."
+
+Bug fixed (0000306) whereby rules such as this one, explicitly mentioning
+"an actor":
+
+	Report an actor painting when tint is red:
+
+would fail because Inform wasn't reading "when" correctly.
+
+Bug fixed (0000322) whereby rule-sorting did not detect that a "when" condition
+with two or more clauses divided by "and" was more specific than one with
+fewer clauses.
+
+Bug fixed (0000125) whereby rule-sorting did not detect that a specific action
+like "examining the apple tree" was more specific than "doing something to the
+apple tree".
+
+Bug fixed (0000176) whereby rule preambles naming bare kinds (rather than
+qualifying them with adjectives) would fail with spurious problems. For
+example,
+
+	Dialing is an action applying to one number.
+	Carry out dialing a number: say "There's no answer."
+
+Bug fixed (0000072) whereby rulebooks producing pointer values (indexed texts,
+say, or lists) would not work. For example:
+
+	Scribbling is a rulebook producing an indexed text.
+	When play begins: let T be the indexed text produced by the scribbling
+	rulebook.
+
+would produce a spurious "deep copy failed" error at run-time.
+
+Bug fixed (0000264) whereby the use of the word "rulebook" wasn't always
+consistent with "rules", e.g., creating
+
+	The alpha rules is a rulebook.
+	The beta rulebook is a rulebook.
+
+would allow rules to begin "Alpha:" but not "Beta:"; this contradicted the
+documentation, and has been put right.
+
+Bug fixed (0000248) whereby callings in rules for object based rulebooks
+did not always work.
+
+Bug fixed (0000179) whereby "anonymously abide by R", for some rule R, would
+sometimes abide by it but not anonymously - the circumstances are a little
+complicated to go into here, so see the tracker.
+
+5.11. Lists
+
+Bug fixed (0000137) whereby nested list variables were not always correctly
+initialised; for example,
+
+	The grid is a list of lists of indexed texts which varies. The grid is
+	{{"foo", "bar"}}.
+
+Bug fixed (0000293) whereby constant lists containing indexed texts which
+themselves were initialised with text substitutions would not work, under
+some eldritch circumstances: see the tracker.
+
+Bug fixed (0000108) whereby comparing a newly-created empty list against
+a constant empty list would fail:
+
+	let L be a list of numbers;
+	if L is {}, say "Test succeeded.";
+
+(because Inform wrongly considered these lists to have different kinds of
+entries).
+
+Bug fixed (0000224) whereby constant lists including as entries constants
+which themselves had names including the word "with" would be misunderstood.
+For example,
+
+	Ducks-in-a-row is a list of figure names that varies. Ducks-in-a-row is
+	{Figure of Duck with Hat, Figure of Duck with Hat}.
+
+5.12. Tables
+
+Bug fixed (0000304) whereby nested "repeat through the table..." loops would
+sometimes fail, iterating incorrectly.
+
+Bug fixed (0000188) whereby tables which begin entirely empty of rows, and
+where the kinds of the columns are therefore given in brackets after the
+column names, could not be created.
+
+Bug fixed (0000228) whereby testing for the existence of an entry in a blank
+table would result in spurious "programming error" messages at run-time.
+
+Bug fixed (0000189) whereby excessively large numbers of table entries would
+cause I6 errors on the Z-machine setting, rather than a problem message.
+(Memory is very limited in the Z-machine.)
+
+5.13. Scenes
+
+Bug fixed (0000294) whereby scenes were not allowed to be joined circularly
+end-to-end like so:
+
+	Repetition begins when Repetition ends.
+
+Bug fixed (0000187) whereby scenes beginning based on what encloses the player
+would sometimes hang at run-time on the opening turn:
+
+	Importance is a scene. Importance begins when Current Place encloses the
+	player for the first turn.
+
+Bug fixed (0000337) whereby an attempt to write a condition for a scene
+beginning or ending, for something which isn't in fact a scene, would
+sometimes produce an internal error rather than a problem message.
+
+5.14. Kinds and typechecking
+
+Bug fixed (0000346) whereby attempts to rearrange the kinds hierarchy so as
+to introduce a circularity, like so:
+
+	A person is a kind of animal.
+
+(i.e., when the reverse is already true) caused Inform to hang. There's now a
+problem message.
+
+Bug fixed (0000221) whereby attempts to create an unsafe variable which
+contains a list of table columns would be rejected with an unhelpful problem
+message.
+
+Bug fixed (0000335) whereby internal errors would sometimes result from unsafe
+use of mismatching descriptions, e.g., using a description of things where
+a description of people was needed.
+
+Bug fixed (0000222) whereby the wrong problem message would arise from a
+let variable being created like so:
+
+	let C be a table column;
+
+(This is incorrect because unsafe; C can't be used unless we know the kind
+of the entries in the column.)
+
+Bug fixed (0000129) whereby assignments to variables were not always checked
+properly at run-time for the correct kind of object, e.g.:
+
+	The place of origin is a room that varies.
+	The shadows are scenery.
+	When play begins:
+		let a dim spot be the shadows;
+		now the place of origin is a dim spot.
+
+is unsafe because it assigns "shadows", a thing, to "place of origin", which
+is supposed to contain a room. This is now caught.
+
+Bug fixed (0000302) whereby changing a text property to an indexed text value,
+for example, with
+
+	To rename to (Y - some indexed text):
+		now the printed name of location is Y.
+
+would be allowed but then crash at run-time. There's now a problem message at
+compile time.
+
+Bug fixed (0000327) whereby assigning a value of the wrong kind to a property
+belonging to a constant value (which is not an object) would throw an internal
+error instead of a problem message.
+
+Bug fixed (0000173) whereby spurious problem messages would be produced by
+a description used as a value which was written with a relative clause, for
+example,
+
+	To disregard (D - a description of numbers): do nothing.
+	When play begins: disregard numbers which are even.
+
+where "numbers which are even" would be rejected as a description of numbers,
+even though that's what it is.
+
+Bug fixed (0000184a) whereby definitions about "actions", like this one:
+
+	Definition: an action is gluttonous if it is eating.
+
+were rejected with an unhelpful problem message - the problem is that "action
+name" and "stored action" are kinds but "action" is not. This is now better
+explained.
+
+Bug fixed (0000184b) whereby attempts to use "action" as a token in a phrase
+definition were not being rejected:
+
+	To disregard (act - an action): ...
+
+(This is legal if the phrase has an I6 inline definition, and the Standard
+Rules uses this to define "try", for instance, but it's otherwise illegal
+because "action" is not a kind of value.)
+
+Bug fixed (0000181) whereby in some circumstances "now P is V", changing the
+property P of some implied property-holder to a given value V, would be
+rejected as if it were an attempt to compare a property (as a value in its
+own right) with V.
+
+Bug fixed (0000186) whereby indexed text would not work when accessed only
+indirectly and with a value which was originally text; for example:
+
+	To decide which number is the length of (T - an indexed text) (this is
+	length extraction): decide on the number of characters in T.
+	When play begins: showme length extraction applied to "Hello world!"
+
+would fail with various different symptoms depending on other source text.
+
+Bug fixed (0000331) whereby "provides" used with implicit searches would
+behave incorrectly for kinds of value other than kinds of object.
+
+5.15. Phrases and functional programming
+
+Bug fixed (0000342) whereby phrases with spurious "(called ...)" clauses in
+their definitions would not always produce problem messages.
+
+Bug fixed (0000324) whereby temporary "let" variables remained in scope after
+the end of an "if" branch in which they were created; see "minor new features"
+above.
+
+Bug fixed (0000220) whereby spurious problem messages appeared after an "if"
+which was malformed, complaining about the lack of an "end if".
+
+Bug fixed (0000311) whereby a phrase definition which used too many "let"
+and "repeat" variables on the Z-machine setting would not always produce
+a helpful problem message if it also repeated through tables.
+
+Bug fixed (0000314) whereby "repeat" variables were allowed to be changed
+by "let", which is unsafe. For example,
+
+	repeat with x running from 1 to 10:
+		let x be 1000;
+		say "[x]."
+
+used to produce the output "1000.", but now produces a problem message instead;
+the "x" value is protected from changes inside the body of the "repeat".
+
+Bug fixed (0000105b) whereby phrases defined to apply to specific values
+which are themselves constant phrase names do not work; for example,
+
+	To waste time (this is wasting time): do nothing.
+	To disregard (P - wasting time): do nothing.
+
+caused "disregard wasting time" to fail to work.
+
+Bug fixed (0000229) whereby phrases were forbidden to have two-word names
+with first word "end", like so:
+
+	To end all: end the story saying "It is all over!"
+
+(A hangover to the pre-Pythonesque days when "end ..." phrases were reserved
+for closing blocks of code; there's no longer any need to reserve these.)
+
+Bug fixed (0000119) whereby descriptions wouldn't work when applied to
+values stored in the Z-machine as negative numbers between -6 and -1
+inclusive. So, for example,
+
+	filter to negative numbers of {-2, -1, 0, 1, 2};
+
+would produce a spurious run-time problem instead of {-2, -1}.
+
+Bug fixed (not registered on tracker) whereby definitions like this one:
+
+	Definition: a weight (called S) is possible: ...
+
+would result in the temporary value "S" having the kind "object" rather than
+"weight", making the definition very unlikely to translate properly.
+
+Bug fixed (0000183) whereby use of an undeclared object in a (+ ... +) I6
+escape could report a problem at the wrong place, or in some cases crash.
+
+Bug fixed (0000158) whereby references to indexed text values in the past
+tense, compared against literal ones, would sometimes produce I6 errors. For
+example,
+
+	The message is an indexed text which varies.
+	Every turn when the message was "send more money": say "Just checking."
+
+Bug fixed (0000219) whereby definitions referring to temporary values in the
+past tense would result in multiple reports of the same problem message.
+
+5.16. Equations, units and arithmetic
+
+Bug fixed (0000328) whereby a value of 0 is printed using the "natural" unit
+for a given kind even when that natural unit is for use in the singular only.
+For example,
+
+	Population is a kind of value. 1 person (singular) specifies a population.
+	3 people (plural) specifies a population.
+
+resulted in "0 person", not "0 people".
+
+Bug fixed (0000319) whereby comparisons of truth states with the value "true"
+would sometimes result in false negatives.
+
+5.17. Understanding
+
+Bug fixed (0000208) whereby DROP ... ON ... would be understood as a throwing
+action rather than a putting action. The Standard Rules now have
+
+	Understand "drop [something preferably held] at/against [something]" as
+	throwing it at.
+
+rather than
+
+	Understand "drop [something preferably held] at/against/on/onto [something]"
+	as throwing it at.
+
+Bug fixed (0000168) whereby problem messages arising from "Understand ... when
+C" for some invalid condition C would be reported at the wrong sentence, often
+somewhere in the Standard Rules.
+
+Bug fixed (0000280) whereby multiple Understand lines giving one-word names
+to things would sometimes allow these words to be combined, and sometimes
+not, depending on what order they were given in in the source text. For
+example,
+
+	Understand "brass" as the key.
+	Understand "fob" as the key.
+
+would permit BRASS FOB, BRASS and FOB but not FOB BRASS. This is contrary to
+a strict reading of the documentation, and (which is more serious) introduces
+an unnecessary dependency on the order of writing sentences. All four forms of
+the name now work. 
+
+Bug fixed (0000162) whereby, because of names being parsed overly fussily (see
+0000280), disambiguation questions would sometimes have the answer refused.
+An example would be lengthy; see the tracker.
+
+Bug fixed (0000325) whereby spurious problems were generated by attempts to
+use tokens which gave qualified descriptions of non-object values, e.g.,
+
+	A spell is a kind of value. Xyzzy is a spell.
+	Casting is an action applying to one spell. Understand "cast [possible spell]"
+	as casting.
+	Definition: a spell is possible: yes.
+
+Bug fixed (0000292) whereby a test like:
+
+	if the player's command matches "[something visible]"...
+
+did not work. (This is a very dubious practice: visibility depends on who is
+looking, which is not certainly known at this stage in parsing. So it is
+really best to be more explicit, e.g., "[something which the player can see]".)
+
+Bug fixed (0000192) whereby the parser's response to an odd use of pronouns
+like this:
+
+	Locating is an action applying to one thing.
+	Understand "locate [a device]" as locating.
+	Test me with "locate me."
+
+...has been improved.
+
+Bug fixed (0000207) whereby the parser's response to HER, when it can't see
+the last known female in scope, is improved in cases where the source text
+also loads the word "HER" with an adjectival meaning, e.g.,
+
+	Understand "her" as a thing when the item described is enclosed by a woman.
+
+Bug fixed (0000282) whereby an answer to a disambiguation question which is
+a fresh request made to somebody else (i.e. ignoring the question) is instead
+misread as an attempt to disambiguate, with odd consequences, e.g.,
+
+	>BOB, GIVE ME THE HAT
+	Which do you mean, the small red hat or the large yellow hat?
+
+	>CAITLIN, GIVE ME THE BOX
+	There is no reply.
+
+actually not resulting in Caitlin having been asked anything, but from a
+command BOB, GIVE ME THE CAITLIN, GIVE ME THE BOX HAT - to which, not
+unreasonably, Bob doesn't know what to say.
+
+Bug fixed (0000191) whereby unnecessary clarification messages would be printed
+by the parser in certain cases when the choice was made between
+indistinguishable alternatives. (There's no perfect way to do this, but we
+found that the new method produced fewer false positives, so to speak, on the
+corpus of Inform test cases; it usually, but not quite always, reads more
+naturally than the old way.)
+
+Bug fixed (0000236) whereby the following:
+
+	Understand "nothing" as nothing.
+
+produced an internal error instead of a problem message.
+
+5.18. Glulx issues, file I/O, figures, sounds
+
+Bug fixed (not on tracker) whereby running Inform on Unix where the "HOME"
+environment variable is unset, as for instance when running it in a
+CGI environment, would cause Inform to crash. (It now tries to write files
+to the root folder, which almost certainly won't work unless it's being
+run by the root user - madness for CGI usage - and the net effect is that
+it will fail more gracefully in this case.)
+
+5.19. Spacing and printing
+
+Bug fixed (0000305) whereby text with nested, or mismatched, "[" and "]"
+was allowed, and treated these (usually) as literals; this was bad because
+it caused syntax-colouring hassles for the user interface applications,
+made source text more difficult to release to websites, and so on. There
+are now explanatory problem messages for misuse of "[" and "]".
+
+Bug fixed (0000308) whereby the problem message for an empty text substitution
+"... [] ..." misleading mentioned use of a comma.
+
+Bug fixed (0000196) whereby lists of objects including closed, empty,
+light-providing containers did not respect the "Use the serial comma." option.
+
+Bug fixed (0000194) whereby the "[is-are a list...]" and similar text
+substitutions would wrongly omit "is" when forced to print "nothing" because
+no objects made the list. This resulted in text like "On the table nothing"
+instead of "On the table is nothing".
+
+Bug fixed (0000277) whereby the phrase "replace the text X in Y with Z" would
+always replace using regular-expression matching, rather than literal matching,
+so that something like this:
+
+	replace the text "a" in t with "\(";
+
+would behave unexpectedly because the "\" in the replacement text would be
+read as a literal marker, and so "banana" would become "b(n(n(" not "b\(n\(n\(".
+
+Bug fixed (0000114) whereby the "[one of]...[or]..." text substitution would
+fail on some cycles if there were large numbers of alternatives present.
+
+5.20. Indexing
+
+Bug fixed (0000309) whereby the Actions index omitted "during" clauses.
+
+Bug fixed (0000279) whereby the Actions index omitted commands from the
+list of "Typed commands leading to this action" when they were verbless
+commands of the form
+
+	Understand "[any room]" as asking for navigation help.
+
+Bug fixed (0000148) whereby, when an optional section is present in the source
+text, the Contents index displays the "for use with" line, but the Phrasebook
+index does not, when indexing the contents of the section.
+
+Bug fixed (0000147) whereby the "X understood" variables were unhelpfully
+spread across the Contents index.
+
+Bug fixed (0000149) whereby relations taking up memory would be incorrectly
+shown, with garbled names, in the memory usage table at the foot of the
+Contents index.
+
+Bug fixed (0000255) whereby the Phrasebook index would show the kinds of
+the terms of relations unhelpfully in the case of some of the built-in ones.
+
+5.21. Testing commands
+
+----
+
+5.22. Releasing, bibliographic data, and cBlorb
+
+Bug fixed (not actually registered on bug tracker, though referred to in
+passing by other reports) whereby the page numbering on released source text
+websites would be off by one.
+
+Bugs fixed (0000290 and 0000281) whereby projects whose titles include
+an apostrophe would be difficult to release in various ways. (It's
+worse if the filename of the Inform project also has an apostrophe in,
+but that too ought to work in most cases; it seems to be best avoided
+if releasing along with an interpreter, though. Since there's no
+requirement for the Inform project to have the same filename as its
+story title, it may be simplest just to remove any apostrophe used in
+the filename.)
+
+Bug fixed (0000180) whereby tables in the source text which contained text
+which contained explicit line and paragraph breaks would be formatted
+incorrectly in a release of the source text as part of the website.
+
+Bug fixed (0000100) whereby a funny thing happened with headings appearing
+in the wrong places in a release of the source text as a website, but only
+on Windows, and... oh, see the Tracker for more.
+
+Bug fixed (0000258) whereby various minor snags with footnotes appeared
+when releasing the source text as a website.
+
+Bug fixed (0000223) whereby the "Standard" release template resulted in
+an in-browser interpreter page "play.html" with links assuming that the
+cover art was in JPEG format, when in fact it might be PNG.
+
+
+6. EXAMPLES
+
+Numerous typos have been removed from both manuals. In "Writing with Inform",
+description of "handling an activity" tweaked to be clearer, since explanations
+added during the creation of the phrase book misleadingly suggested this phrase
+was equivalent to checking whether the activity was happening.
+
+In the "Recipe Book", a new section on "Timed Input" has been added, pointing
+users to the extensions capable of handling realtime.
+
+"Ant-Sensitive Sunglasses" added to help explain the function of activities,
+and demonstrate how to hook activities into room and object descriptions.
+
+"Unexamined Life" updated to include the different Test me required when
+running the example under Glulx.
+
+"Blankness", "Walls and Noses", "Paddington", "Facts Were These", "A Day for
+Fresh Sushi", "Control Center": typos removed.
+
+"Newbie": bug in the newbie triggering removed; example simplified, since it
+is no longer trying to demonstrate procedural rules.
+
+"GET AXE", "Gelato", "Muppets": procedural rules stripped out of examples.
+
+"IQ Test": removed explanation text that no longer applies now that procedural
+rules have been removed from the example.
+
+"Timeless", "We": removed explanation about not using procedural rules, since
+these are now deprecated anyway.
+
+"A Day for Fresh Sushi": minor tweak to deal with the bug that >GIVE FOOD TO FISH
+was accepted as a winning move even though some code was included to encourage
+the player to FEED FISH instead.
+
+
+7. BUILT-IN EXTENSIONS
+
+"Locksmith": Version 11 removes a double-printing of the items on a keyring,
+	arising because of changes to the Standard Rules for describing examined
+	supporters.
+
+"Plurality": Version 9 re-includes some phrases that were introduced (including
+	's/'re and more rational capitalization schemes); and also names several
+	previously unnamed rules, and moves pronoun-noticing rules to a more
+	appropriate place in the turn sequence.
+
+"Glulx Entry Points": Version 9 adds new wrappers for glk gestalts to detect
+	whether char input and specific types of mouse input (graphics windows vs
+	text-grid windows) are supported, and divides up the code with section
+	headers to make it easier to surgically replace sections of the extension.
+
+And, as noted above, "Epistemology" has been added, at version 6.

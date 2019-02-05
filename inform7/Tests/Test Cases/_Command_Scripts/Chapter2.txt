@@ -1,0 +1,45 @@
+look in pots
+x pots
+look in tart
+x dentures
+x mitts
+take mitts
+wear mitts
+x trousers
+wear trousers
+wear sock
+i
+x florence
+x lucy
+x matilda
+x fido
+x harris
+x susanna
+eat tart
+hit tart
+touch tart
+taste tart
+listen to tart
+i
+look in refrigerator
+put mitt in jars
+i
+put mitts in jars
+put tart in bowl
+put sock on platter
+put trousers on plates
+s
+n
+vebrose
+oops verbose
+verbose
+s
+n
+take all
+s
+i
+n
+w
+superbrief
+look
+e

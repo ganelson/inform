@@ -1,0 +1,9 @@
+The NI School for Typing is a room.
+
+Table of Exempla
+flavour
+"rum and raisin"
+"Neapolitan"
+
+When play begins:
+	now the description of the player is "[flavour entry]".

@@ -1,0 +1,3 @@
+Eynforme Halt is a room. Train Stop is a scene. Explosion is a scene.
+
+Explosion begins when the cows come home.

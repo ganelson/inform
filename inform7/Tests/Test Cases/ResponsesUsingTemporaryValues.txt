@@ -1,0 +1,11 @@
+Lab is a room. Mobile home is a room. The table is in the lab. The table is an enterable supporter.
+
+The chair is in the lab. The chair is an enterable supporter.
+
+The implicitly pass through other barriers rule response (A) is "(getting the hell off [the current home])[command clarification break]".
+
+After waiting:
+	now implicitly pass through other barriers rule response (A) is "(getting, my goodness, off [the current home])[command clarification break]";
+	say "You resolve to be more civil."
+
+Test me with "get on table / get on chair / wait / get on table / get on chair".

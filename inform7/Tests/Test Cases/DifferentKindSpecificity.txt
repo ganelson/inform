@@ -1,0 +1,11 @@
+Home is a room. Cellar is a room.
+
+A staircase is a kind of door. A staircase is always open and unopenable.
+
+The dark stairway is a staircase. It is below Home and above Cellar.
+
+Instead of examining an open door, say "Looks like any other open door."
+
+Instead of examining a staircase, say "Looks like any other staircase."
+
+Test me with "x stairway".

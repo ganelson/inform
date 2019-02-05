@@ -1,0 +1,34 @@
+   Lounge
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lounge
+  You can see four gold coins, a red chair (on which is a gold coin), a blue chairs and three supporters here.
+  
+> >   Lounge
+  (Testing.)
+  
+  >[1] get coins
+  gold coin: Taken.
+  gold coin: Taken.
+  gold coin: Taken.
+  gold coin: Taken.
+  gold coin: Taken.
+  
+  >[2] x supporters
+  Which do you mean, the red chair, the blue chairs or a supporter?
+  
+  >[3] get all supporters
+  There are none at all available!
+  
+  >[4] get chairs
+  That's fixed in place.
+  
+  >[5] x chairs
+  You see nothing special about the blue chairs.
+  
+  >[6] get chair
+  That's fixed in place.
+  
+> >

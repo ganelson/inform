@@ -1,0 +1,13 @@
+Home is a room.
+
+Understand "note: [text]" as a mistake ("Noted.").
+
+Understand "note? [text]" as a mistake ("Noted.").
+
+Understand "note! [text]" as a mistake ("Noted.").
+
+Understand "note, [text]" as a mistake ("Noted.").
+
+Understand "note. [text]" as a mistake ("Noted.").
+
+Test me with "note: this is a note / note : this is another note".

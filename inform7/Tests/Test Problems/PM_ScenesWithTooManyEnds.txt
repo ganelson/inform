@@ -1,0 +1,20 @@
+Danger Zone is a room.
+
+Frogmarch is a scene.
+
+Frogmarch begins when play begins.
+
+Frogmarch ends in manner 1 when the player is in Danger Zone.
+Frogmarch ends in manner 2 when the player is in Danger Zone.
+Frogmarch ends in manner 3 when the player is in Danger Zone.
+Frogmarch ends in manner 4 when the player is in Danger Zone.
+Frogmarch ends in manner 5 when the player is in Danger Zone.
+Frogmarch ends in manner 6 when the player is in Danger Zone.
+Frogmarch ends in manner 7 when the player is in Danger Zone.
+Frogmarch ends in manner 8 when the player is in Danger Zone.
+Frogmarch ends in manner 9 when the player is in Danger Zone.
+Frogmarch ends in manner 10 when the player is in Danger Zone.
+Frogmarch ends in manner 11 when the player is in Danger Zone.
+Frogmarch ends in manner 12 when the player is in Danger Zone.
+Frogmarch ends in manner 13 when the player is in Danger Zone.
+Frogmarch ends in manner 14 when the player is in Danger Zone.

@@ -1,0 +1,15 @@
+Inform 7 build 6M32 has started.
+I've now read your source text, which is 9 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_VariableCantHaveProperties
+  >--> The sentence 'The player can be lackadaisical' (source text, line 3)
+    looked to me as if it might be trying to create an either/or property which
+    would be held by a variable ('The player'). But because 'The player' can
+    have different values at different times, it's not clear who or what should
+    have the property. The most common case of this is saying something like
+    'The player can be ambitious'. 'The player' is actually a variable, because
+    the perspective of play can change. Instead either say 'A person can be
+    ambitious' or, if you really only want the default player to be involved,
+    'Yourself can be ambitious'.
+Inform 7 has finished: 19 centiseconds used.

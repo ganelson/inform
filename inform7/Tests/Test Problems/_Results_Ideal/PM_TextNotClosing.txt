@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TextNotClosing
+  >--> You wrote '"The Palace is open" The Palace is a room' (source text, line 3):
+    but it looks as if perhaps you did not intend that to read as a single
+    sentence, and possibly the text in quotes was supposed to stand as as a
+    sentence on its own? (The convention is that if text ends in a full stop,
+    exclamation or question mark, perhaps with a close bracket or quotation
+    mark involved as well, then that punctuation mark also closes the sentence
+    to which the text belongs: but otherwise the words following the quoted
+    text are considered part of the same sentence.)
+Inform 7 has finished: 17 centiseconds used.

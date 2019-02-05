@@ -1,0 +1,168 @@
+"Chapter 14: Market" by Emily Short.
+
+Chapter 14 - Units
+
+Use command line echoing. Use scoring.
+
+The Market is a room. 
+
+Section 2 - Numbers
+[A phenomenally tedious test of the various permitted syntaxes for arithmetic.]
+
+When play begins:
+	now the score is the score + 10;
+	report the current score;
+	now the score is 100 - the score;
+	report the current score;
+	now the score is the score * 21;
+	report the current score;
+	now the score is the score / 3;
+	report the current score;
+	now the score is the score divided by 7;
+	report the current score;
+	now the score is the score times 2;
+	report the current score;
+	now the score is the score multiplied by 2;
+	report the current score;
+	now the score is the score plus 2;
+	report the current score;
+	now the score is the remainder after dividing the score by 10;
+	report the current score;
+	now the score is the score minus 2;
+	report the current score;
+	
+To report the current score:
+	say "Your score is now [the score][if the score is less than 10]. That's not so great[end if][if the score < 2]. In fact, it's pathetic[end if][if the score > 20]. Well, could be worse[end if][if the score is greater than 100]. A lot worse[end if][if the score is 0]. Nice work, sparky[end if].";
+	if the score is at least 300, say "You'll be famous soon!";
+	if the score is at most 10, say "Your mom would be really disappointed.";
+	if the score <= 360, say "360 is kind of a break-even point here.";
+	if the score >= 360, say "Good thing you're at or above 360.";
+	say "[paragraph break]".
+	
+
+A unit price is a kind of value. $1.99 per oz specifies a unit price.
+
+A weight is a kind of value. 2lb 15oz specifies a weight with parts pounds and ounces (optional, without leading zeros). 
+
+A cost is a kind of value. $1.99 specifies a cost with parts dollars and cents (optional, preamble optional). A unit price times a weight specifies a cost.
+
+Section 3 - Whereabouts on a scale?
+
+A spice is a kind of thing. A spice has a unit price. A spice has a weight.
+
+Definition: a spice is heavy if its weight is 3lb 00oz or more.
+
+Definition: a spice is light if its weight is 0lb 5oz or less.
+
+Some saffron is a spice in the market. Saffron has weight 0lb 5oz. Saffron has unit price $35.95 per oz.
+
+Some oregano is a spice in the market. Oregano has weight 3lb 1oz. Oregano has unit price $5.50 per oz.
+
+Some cayenne pepper is a spice in the market. Cayenne pepper has weight 0lb 3oz. Cayenne pepper has unit price $2.00 per oz.
+
+Section 4 - Comparing objects
+
+Definition: a spice is costly if its unit price is $10.00 per oz or more.
+
+Definition: a spice is moderate if its unit price is $8.75 per oz.
+
+Definition: a spice is cheap if its unit price is $7.00 per oz or less.
+
+
+Some rosemary is a cheap spice in the market. Rosemary has weight 0lb 3oz. 
+
+Section 5 - Superlatives
+
+Definition: something is unowned if the player does not have it.
+
+Instead of taking a spice which is in the market:
+	say "You have to buy things here."
+
+Instead of buying a costly spice:
+	say "Wouldn't you prefer some [cheapest unowned spice]?"
+	
+Instead of buying the cheapest spice which is in the market:
+	now the player is carrying the noun;
+	say "Good choice!"
+	
+Instead of buying a spice:
+	now the player is carrying the noun;
+	say "Done."
+
+Instead of dropping the costliest spice carried by the player:
+	say "Hey! You paid good money for that!"
+	
+Before dropping a spice when the weight of the noun is the weight of the heaviest spice carried by the player:
+	say "Yeah, [the noun] is getting heavy..."
+
+Section 6 - Units
+[see above]
+
+Section 7 - More on Specifications
+
+2 pounds 15 ounces specifies a weight. 2 lb 15 oz specifies a weight.
+
+Some fennel is a spice in the market. Fennel has weight 0lb 5oz. Fennel has unit price $8.35 per oz.
+
+Section 8 - Multiple-number specifications
+[See above.]
+
+Section 9 - The parts of a number specification
+
+Section 10 - Understanding specified numbers
+
+Understand "price [weight] of [something]" as estimating.
+
+Estimating is an action applying to one weight and one visible thing.
+
+Check estimating:
+	let available amount be the weight of the second noun;
+	if the weight understood is greater than the available amount, say "Only [available amount] of [the second noun] is available for purchase." instead.
+
+Carry out estimating:
+	let total be the unit price of the second noun times the weight understood;
+	say "[weight understood] of [the second noun] at [unit price of the second noun] would come to [total]."
+
+Understand "pay [cost]" as paying.
+
+Paying is an action applying to a cost.
+ 
+	
+Report paying:
+	say "You fork over [the cost understood]."
+
+[Section 11 - Limits on the size of numbers]
+
+Section 12 - Arithmetic with units
+
+Instead of examining a spice:
+	say "[The noun] weighs [weight] and costs [unit price], or [unit price times 1lb 0oz] for a pound. The total price of the stock here would be [unit price times weight]."
+
+Instead of smelling a spice:
+	say "It smells like something that costs [weight  times unit price]!"
+
+
+Section 13 - Multiplication of units
+[See above also]
+
+Section 14 - Totals
+
+Before taking inventory when something is carried by the player:
+	say "You are carrying [the total weight of spices carried by the player] worth of spices, for an average weight of [the total weight of spices carried by the player divided by the number of spices carried by the player]."
+	
+After printing the name of a heavy spice:
+	say " (a generous quantity)"
+	
+After printing the name of a costly spice:
+	say " (quite valuable)"
+
+Section 15 - Making the verb "to weigh"
+
+The verb to weigh (it weighs, they weigh, it is weighing) implies the weight property.
+
+Some green tea is a spice in the market. It has unit price $8.75 per oz. It weighs 0lb 10oz.
+
+The verb to cost (it costs, they cost, it is costing) implies the unit price property.
+
+Some chicory is a spice in the market. Chicory weighs 0lb 4oz. It costs $1.99 per oz.
+ 

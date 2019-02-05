@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NonDimensional
+  >--> You wrote 'Frequency times length specifies a velocity' (source text, line 7):
+    but multiplication rules can only be given between kinds of value which are
+    known to be numerical, and not all of these are. Saying something like
+    'Pressure is a kind of value.' is not enough - you may think 'pressure'
+    ought to be numerical, but Inform doesn't know that yet. You need to add
+    something like '100 Pa specifies a pressure.' before Inform will realise.
+Inform 7 has finished: 16 centiseconds used.

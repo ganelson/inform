@@ -1,0 +1,12 @@
+Home is a room.
+
+A posture is a kind of value.
+The postures are standing, sitting and lying.
+
+Posture-allowance relates various things to various postures.
+The verb to allow (he allows, they allow, he allowed, it is
+allowed) implies the posture-allowance relation.
+
+A chair is a kind of thing.
+
+A chair usually allows sitting.

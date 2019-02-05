@@ -1,0 +1,24 @@
+Stage is a room.
+
+Understand "wait for [a time period]" as waiting for. Waiting for is an
+action applying to one time.
+
+Understand "wait until [a time]" as waiting until. Waiting until is an
+action applying to one time.
+
+Carry out waiting for:
+       increase the time of day by the time understood;
+       say "You wait around until [the time of day].";
+       follow the turn sequence rules;
+       try looking.
+
+Carry out waiting until:
+       now the time of day is the time understood;
+       say "You wait around until [the time of day].";
+       follow the turn sequence rules;
+       try looking.
+
+Every turn: say "The time is now [the time of day]."
+
+Test me with "wait for 4 hours / wait for 6 minutes / wait for half an hour /
+wait until 4 PM / wait for 1 hour 15 minutes / wait for quarter of an hour".

@@ -1,0 +1,7 @@
+The arena is a room. A blue ball is in the arena.
+
+A concept is a kind. Honor is a concept.
+
+Globbing relates various people to various values.
+
+Knowing relates various people to various objects.

@@ -1,0 +1,32 @@
+   Foothills                                                                                                                                                                                                              0/1
+  Formicidae
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foothills
+  The land has become hilly; though the soil is still mostly coarse yellow sand, clumps of grass are able to grow in the shadier places. Deep wagon ruts running from the southwest towards the mountains in the northeast show where generations of caravans have already passed.
+  
+  You can see a water flask, a tent peg, a trading permit, an innocent-looking rock and a rusty nail here.
+  
+> >   Foothills                                                                                                                                                                                                              -2/5
+  (Testing.)
+  
+  >[1] get peg
+  Taken.
+  
+  >[2] drop peg
+  Dropped.
+  
+  >[3] get all
+  tent peg: Taken.
+  water flask: Taken.
+  trading permit: Taken.
+  rusty nail: Taken.
+  innocent-looking rock: You reach for the rock and turn it over to reveal a thriving colony of flesh-eating ants. Needless to say, you drop the rock and jump back with a decidedly effeminate scream. They can probably hear you all the way back in the base camp.
+  
+  [Your score has just gone down by two points.]
+  
+  >[4] get rock
+  It might still have a stray ant or two on it.
+  
+> >

@@ -1,0 +1,10 @@
+Home is a room.
+
+A fruit bowl and a plinth are in Home. An apple is in the fruit bowl. An orange is on the plinth.
+
+Martina is in the Home. Martina is wearing a coat.
+
+When play begins:
+	say "Containment test [if the containment relation relates the fruit bowl to the apple]succeeded[otherwise]failed[end if].";
+	say "Wearing test [if the wearing relation relates Martina to the coat]succeeded[otherwise]failed[end if].";
+	say "Support test [if the support relation relates the plinth to the orange]succeeded[otherwise]failed[end if].";

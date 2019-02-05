@@ -1,0 +1,5 @@
+The Dock is a room. Some vending machines are containers in the dock.
+
+To break the vending machines, by superpower or by brute force:
+	now by brute force;
+	say "Your heat-vision prangs open the machine."

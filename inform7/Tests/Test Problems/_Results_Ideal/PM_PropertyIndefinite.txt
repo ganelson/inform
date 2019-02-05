@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 15 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyIndefinite
+  >--> In the sentence 'A thing has a relation of values to values called bar' (source
+    text, line 3), I am unable to create the property 'bar', because it has too
+    vague a kind ('a relation of values'). I need to know exactly what kind of
+    value goes into each property: for instance, it's not enough to say 'A door
+    has a list of values called the access list', because I don't know what the
+    entries in this list would have to be - 'A door has a list of people called
+    the access list' would be better.
+Inform 7 has finished: 17 centiseconds used.

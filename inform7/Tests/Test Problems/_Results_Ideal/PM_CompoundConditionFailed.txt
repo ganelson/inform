@@ -1,0 +1,37 @@
+Inform 7 build 6L84 has started.
+I've now read your source text, which is 33 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CompoundConditionFailed
+  >--> In the sentence 'if the player is in the School and arfle barfle gloop' (source
+    text, line 4), I was expecting that 'player is in the School and arfle
+    barfle gloop' would be a condition. It didn't make sense as one long
+    phrase, but because it was divided up by 'and'/'or', I tried breaking it
+    down into smaller conditions, but that didn't work either. 'player is in
+    the School' was okay; 'arfle barfle gloop' did not make sense; so I ran out
+    of ideas.
+    I was trying to match this phrase:
+      if (player is in the school and arfle barfle gloop - a condition): 
+    But I didn't recognise 'player is in the school and arfle barfle
+    gloop'.
+Problem__ PM_CompoundConditionFailed
+  >--> In the sentence 'if the player is male and female' (source text, line 5),
+    I was expecting that 'player is male and female' would be a condition. It
+    didn't make sense as one long phrase, but because it was divided up by
+    'and'/'or', I tried breaking it down into smaller conditions, but that
+    didn't work either. 'player is male' was okay; 'female' was okay; but that
+    combination of conditions isn't allowed to be joined together with 'and' or
+    'or', because that would just be too confusing. For example, 'if the
+    player is carrying a container or a supporter' has an obvious meaning in
+    English, but Inform reads it as two different conditions glued together:
+    'if the player is carrying a container', and also 'a supporter'. The
+    meaning of the first is obvious. The second part is true if the current
+    item under discussion is a supporter - for instance, the noun of the
+    current action, or the item to which a definition applies. Both of these
+    conditions are useful in different circumstances, but combining them in one
+    condition like this makes a very misleading line of text. So Inform
+    disallows it.
+    I was trying to match this phrase:
+      if (player is male and female - a condition): 
+    But I didn't recognise 'player is male and female'.
+Inform 7 has finished: 62 centiseconds used.

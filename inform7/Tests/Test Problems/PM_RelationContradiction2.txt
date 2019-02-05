@@ -1,0 +1,8 @@
+Foo is a room.
+A color is a kind of value.
+Red is a color.
+Liking relates one thing to various colors.
+The verb to like means the liking relation.
+Jack is a man. Jill is a woman.
+A woman likes every color.
+Every man likes a color.

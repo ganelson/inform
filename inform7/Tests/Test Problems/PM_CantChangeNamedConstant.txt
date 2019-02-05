@@ -1,0 +1,6 @@
+The Brahms Conservatoire is a room. The Rostrum is a room.
+
+Colour is a kind of value. Red and blue are colours.
+
+When play begins:
+	now red is blue.

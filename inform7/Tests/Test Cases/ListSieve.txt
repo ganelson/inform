@@ -1,0 +1,28 @@
+The Brahms Conservatoire is a room.
+
+To sieve primes up to (N - a number):
+	let the primes be a list of numbers;
+	let the composites be a list of numbers;
+	let I be 2;
+	while I times I is at most N
+	begin;
+		if I is not listed in the composites
+		begin;
+			let J be I times 2;
+			while J is at most N
+			begin;
+				add J to the composites, if absent;
+				increase J by I;
+			end while;
+		end if;
+		increase I by 1;
+	end while;
+	sort the composites;
+	repeat with P running from 2 to N
+	begin;
+		if P is not listed in the composites, add P to the primes;
+	end repeat;
+	say "The primes up to [N] are [the primes]. The composites are [the composites]."
+
+When play begins:
+	sieve primes up to 100.

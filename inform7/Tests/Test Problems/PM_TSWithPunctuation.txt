@@ -1,0 +1,9 @@
+Home is a room.
+
+When play begins: say "Hello [.]"; say "Goodbye [;] and"; say "Farewell [:]".
+
+Table 1.1 - Bogus
+hello	there
+10		12
+
+When play begins: say "Hello [Table 1.1]".

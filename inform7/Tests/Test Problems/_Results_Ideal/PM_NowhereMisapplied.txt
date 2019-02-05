@@ -1,0 +1,16 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NowhereMisapplied
+  >--> In the sentence 'if 21 is nowhere' (source text, line 4), it looks as if
+    you intend '21 is nowhere' to be a condition, but that seems to say that a
+    value - specifically, a number - is nowhere. To Inform, nowhere means 'in
+    no room', and only things can be nowhere. (For instance, 'Godot is
+    nowhere.' is allowed - it means Godot exists, but is not initially part of
+    the drama.)
+    I was trying to match this phrase:
+      if (21 is nowhere - a condition): 
+    I recognised:
+    21 is nowhere = a condition
+Inform 7 has finished: 54 centiseconds used.

@@ -1,0 +1,9 @@
+   Fragment of a Greek Tragedy                                                                                                                                                                                            A. E. Housman
+  Fragment of a Greek Tragedy
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  CHORUS: O suitably-attired-in-leather-boots Head of a traveller, wherefore seeking whom Whence by what way how purposed art thou come To this well-nightingaled vicinity? My object in inquiring is to know. But if you happen to be deaf and dumb And do not understand a word I say, Then wave your hand, to signify as much.
+  
+> YOU:    Fragment of a Greek Tragedy                                                                                                                                                                                            A. E. Housman
+> Are you sure you want to quit? 

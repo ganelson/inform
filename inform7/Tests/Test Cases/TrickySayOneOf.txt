@@ -1,0 +1,10 @@
+When play begins, seed the random-number generator with 1234.
+
+Home is a room.
+
+Instead of waiting:
+	repeat with N running from 1 to 72:
+		say "[N] - ";
+		say "[one of]a[or]b[or]c[or]d[or]e[or]f[or]g[or]h[or]i[or]j[or]k[or]l[or]m[or]n[or]o[or]p[or]q[or]r[or]s[or]t[in random order]."
+
+Test me with "z".

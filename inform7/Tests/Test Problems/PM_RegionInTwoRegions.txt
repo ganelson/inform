@@ -1,0 +1,11 @@
+The Center is a room. North of the Center is a room called
+the North Room. East of the Center is a room called the East Room.
+
+The CR is a region.
+The NS is a region.
+The EW is a region.
+The Center is in the CR.
+The CR is in the NS.
+The North Room is in the NS.
+The CR is in the EW.
+The East Room is in the EW.

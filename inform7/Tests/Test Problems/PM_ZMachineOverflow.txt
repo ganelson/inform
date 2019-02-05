@@ -1,0 +1,24 @@
+[This throws problems on all some assignments if compiled to Z-machine,
+but everything should pass on Glulx.]
+
+Home is a room.
+
+An RGB value is a kind of value. 255-255-255 specifies an RGB value.
+
+Scarlet is an RGB value which varies.
+Black is an RGB value which varies.
+Purple is an RGB value which varies.
+Green is an RGB value which varies.
+Scarlet is 255-0-0.
+Black is 1-0-0.
+Purple is 0-127-255.
+Green is 0-128-0.
+
+The abacus count is a number which varies.
+The banana count is a number which varies.
+The canary count is a number which varies.
+The dragon count is a number which varies.
+The eggbox count is a number which varies.
+
+The abacus count is 32767. The banana count is -32768. The canary count is 32768.
+The dragon count is -32769. The eggbox count is 100000.

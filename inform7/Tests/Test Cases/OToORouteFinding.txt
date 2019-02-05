@@ -1,0 +1,12 @@
+Afterness relates one thing to one thing.  The verb to be placed after
+implies the afterness relation.
+
+B, C, and D are things. C is placed after B. D is placed after C.
+
+Instead of waiting: say "[the number of steps via the afterness relation
+from D to B] [the number of steps via the afterness relation from D to
+C] [the number of steps via the afterness relation from C to B].";
+
+The Void is a room.
+
+Test me with "relations / z".

@@ -1,0 +1,798 @@
+   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  Chapter 17: Vanity
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150831 / Inform 7 build 6M54 (I6/v6.33 lib 6/12N) SD
+  
+  Exhibition Room
+  You can see Venus, Cupid, Folly and Time, The Ambassadors, the tiles X, Y, and Z from a Scrabble set, and a bench here.
+  
+  (This is your chance to say what the protagonist should do next. After the ">", try typing "take inventory".)
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take inventory
+  You are carrying:
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
+    a souvenir hat (being worn)
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take x
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a tile X from a Scrabble set
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
+    a souvenir hat (being worn)
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take y
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    the tiles Y and X from a Scrabble set
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
+    a souvenir hat (being worn)
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take z
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    the tiles Z, Y, and X from a Scrabble set
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
+    a souvenir hat (being worn)
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take off hat
+  You take off the souvenir hat.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** open coke
+  It isn't something you can open.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x cokes
+  You can't use multiple objects with that verb.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x coke
+  You see nothing special about the Coke.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take all from platter
+  There are none at all available!
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x platter
+  On the platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) are seventeen drinks (seven Cokes, two Sprites, three root beers, and five ginger ales).
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take root beer
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** look
+  Exhibition Room
+  You can see Venus, Cupid, Folly and Time, The Ambassadors, and a bench here.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a root beer
+    the tiles Z, Y, and X from a Scrabble set
+    a platter supporting sixteen drinks (the seven Cokes, the two Sprites, the two root beers, and the five ginger ales)
+    a souvenir hat
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** put all on platter
+  root beer: Done.
+  tile Z from a Scrabble set: Done.
+  tile Y from a Scrabble set: Done.
+  tile X from a Scrabble set: Done.
+  souvenir hat: Done.
+  corkscrew: Done.
+  skeleton key: Done.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a platter supporting the skeleton key, the corkscrew, the souvenir hat, the tiles X, Y, and Z from a Scrabble set, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** drop platter
+  Dropped.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** put all on platter
+  There are none at all available!
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** look
+  Exhibition Room
+  You can see a platter supporting the skeleton key, the dangerous corkscrew, the souvenir hat, the tiles X, Y, and Z from a Scrabble set, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales), Venus, Cupid, Folly and Time, The Ambassadors, and a bench here.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take key and corkscrew and tiles
+  You can't see any such thing.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take key
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take corkscrew
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take x
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take y
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take z
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take platter
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a platter supporting the souvenir hat and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    the tiles Z, Y, and X from a Scrabble set
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** take hat
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a souvenir hat
+    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    the tiles Z, Y, and X from a Scrabble set
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** wear hat
+  You put on the souvenir hat.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a souvenir hat (being worn)
+    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    the tiles Z, Y, and X from a Scrabble set
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** drop y
+  Dropped.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** look
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i
+  You are carrying:
+    a souvenir hat (being worn)
+    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    the tiles Z and X from a Scrabble set
+    a corkscrew
+    a skeleton key
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x bench
+  You see nothing special about the bench.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x blur
+  There's something wrong with it. Something wrong not just in the way it looks, but in the fact of its existence at all. It both frightens and offends.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** sit on bench
+  You get onto the bench.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x cupid
+  (Venus, Cupid, Folly and Time)
+  Venus, Cupid, Folly and Time is empty.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x mask
+  It looks about your size.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x venus
+  (Venus, Cupid, Folly and Time)
+  Venus, Cupid, Folly and Time is empty.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** x father
+  An old man with a long grasp.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** enter venus
+  (Venus, Cupid, Folly and Time)
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. The mask on the floor. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the flooris a mask.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** x girl
+  She's got a nice face.  The rest is better not considered.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** touch girl
+  She doesn't look at you, but her mind touches yours, and it is an experience you would prefer not to repeat. All the things you have done and regretted, all the petty cruelties, all the embarrassing moments driven by an ill-considered desire come back in a tide of chagrin.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** x ball
+  It shares the primitive appeal of all things that gleam. But it stubbornly refuses to reflect its context.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** folly, take ball
+  "Who do you think gave it to her in the first place?"
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** x cupid
+  He has all his mother's attention. In fact, there's something a little incestuous about his hand on her breast. Or is that just infant innocence? It's hard to make sense of gestures in the usual way because, after all, these people aren't people but constructs.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** out
+  But you aren't in anything at the moment.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** i
+  You are carrying:
+    a souvenir hat (being worn)
+    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    the tiles Z (in paint) and X (in paint) from a Scrabble set
+    a corkscrew (in paint)
+    a skeleton key (in paint)
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** drop all
+  platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint): Dropped.
+  tile Z (in paint) from a Scrabble set: Dropped.
+  tile X (in paint) from a Scrabble set: Dropped.
+  corkscrew (in paint): Dropped.
+  skeleton key (in paint): Dropped.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** look
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. The mask on the floor. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the floorare a skeleton key, a dangerous corkscrew, the tiles X and Z from a Scrabble set, a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales), and a mask.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** take all
+  skeleton key: Taken.
+  corkscrew: Taken.
+  tile X from a Scrabble set: Taken.
+  tile Z from a Scrabble set: Taken.
+  platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales): Taken.
+  mask: Taken.
+  root beer: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Sprite: Taken.
+  Sprite: Taken.
+  root beer: Taken.
+  root beer: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  shining golden ball: That seems to belong to Painted Venus.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** drop corkscrew
+  Dropped.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** drop platter
+  Dropped.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** look
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the floorare an empty platter and a dangerous corkscrew.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** i
+  You are carrying:
+    seventeen drinks:
+      five ginger ales
+      three root beers
+      two Sprites
+      seven Cokes
+    a mask (in paint)
+    the tiles Z (in paint) and X (in paint) from a Scrabble set
+    a skeleton key (in paint)
+    a souvenir hat (being worn)
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** put drinks on platter
+  You can't see any such thing.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** put ginger ale on platter
+  Painted your painted self put the ginger ale on the silver platter.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** look
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the floorare a platter supporting the ginger ale and a dangerous corkscrew.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** put coke on platter
+  Painted your painted self put the Coke on the silver platter.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** look
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the floorare a platter supporting two drinks (the Coke and the ginger ale) and a dangerous corkscrew.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** put root beer on platter
+  Painted your painted self put the root beer on the silver platter.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** look
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the floorare a platter supporting three drinks (the root beer, the Coke, and the ginger ale) and a dangerous corkscrew.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** take corkscrew
+  Taken.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** look
+  Bronzino Interior
+  The first thing you notice is how little room there is in here. You're pushed right out at the edge, near the frame. There's not so much light where you are. It's hard not to resent those careless happy figures in the center when you're pushed back here in obscurity, elbow to elbow with...
+  
+  Yes. It's not an illusion. The girl's body does taper off into a snake. Though she's smiling, though she's not looking at you, you know she knows you're staring and she hates you for it.
+  
+  You redirect your attention to more pleasant things. The shining ball in the hand of Venus. Cupid's ruddy cheek, smoother than mortal flesh could be.
+  
+  Sketched on the flooris a platter supporting three drinks (the root beer, the Coke, and the ginger ale).
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** take platter
+  Taken.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** i
+  You are carrying:
+    a platter supporting three drinks (the root beer, the Coke, and the ginger ale) (in paint)
+    a corkscrew (in paint)
+    fourteen drinks:
+      four ginger ales
+      two root beers
+      two Sprites
+      six Cokes
+    a mask (in paint)
+    the tiles Z (in paint) and X (in paint) from a Scrabble set
+    a skeleton key (in paint)
+    a souvenir hat (being worn)
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** put all on platter
+  corkscrew (in paint): Done.
+  ginger ale (in paint): Done.
+  ginger ale (in paint): Done.
+  ginger ale (in paint): Done.
+  ginger ale (in paint): Done.
+  root beer (in paint): Done.
+  Sprite (in paint): Done.
+  Sprite (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  root beer (in paint): Done.
+  mask (in paint): Done.
+  tile Z (in paint) from a Scrabble set: Done.
+  tile X (in paint) from a Scrabble set: Done.
+  skeleton key (in paint): Done.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** i
+  You are carrying:
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a souvenir hat (being worn)
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** drop platter
+  Dropped.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** put all on platter
+  There are none at all available!
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** i
+  You are carrying:
+    a souvenir hat (being worn)
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** take platter
+  Taken.
+  
+> >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
+  ** i
+  You are carrying:
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a souvenir hat (being worn)
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** zip
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Exits:  S                                                                                                                                                                                                              Simon Says Room
+  ** n
+  
+  Simon Says Room
+  
+> >   Exits:  S                                                                                                                                                                                                              Simon Says Room
+  ** s
+  Simon didn't say!
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** simon says s
+  
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** enter holbein
+  (The Ambassadors)
+  Holbein Interior
+  You're on display. "Look at me, look at my goods." That's what the other two are thinking, anyway.  You don't know whether you come out as well as they do: prosperous, successful, men of power and the world.
+  
+  There's something at your feet, obscuring the neat pattern of the rug. A grey-brown blur that won't resolve into a shape no matter how you stare at it. Looking at it makes your stomach go askew.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** x blur
+  There's something wrong with it. Something wrong not just in the way it looks, but in the fact of its existence at all. It both frightens and offends.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** get blur
+  Taken.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** x i
+  You can't see any such thing.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** i
+  You are carrying:
+    a skull (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a souvenir hat (being worn)
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** x skull
+  You can't see any such thing.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** x me
+  As good-looking as ever.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** attack ambassadors
+  You can't see any such thing.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** i
+  You are carrying:
+    a skull (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a souvenir hat (being worn)
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** take coke
+  Taken.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** put coke on platter
+  Painted your painted self put the Coke on the silver platter (in paint).
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** drop platter
+  Dropped.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** drop platter
+  The platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the three root beers, the two Sprites, and the five ginger ales) are already here.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** put coke on platter
+  (first taking the Coke)
+  Painted your painted self put the Coke on the silver platter.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** take platter
+  Taken.
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** i
+  You are carrying:
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the three root beers, the two Sprites, and the five ginger ales) (in paint)
+    a skull (in paint)
+    a souvenir hat (being worn)
+  
+> >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
+  ** out
+  But you aren't in anything at the moment.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** zip
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** w
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** sit
+  What, on the floor? No.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** out
+  But you aren't in anything at the moment.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** e
+  
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** sit
+  You get onto the bench.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** w
+  (first getting off the bench)
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** get up
+  But you aren't in anything at the moment.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** enter
+  What, on the floor? No.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** w
+  You can't go that way.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** w
+  You can't go that way.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** unlock safe
+  You will have to specify what to unlock the safe with.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** unlock safe with key
+  (first taking the skeleton key)
+  You unlock the safe.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** take jolt
+  You can't see any such thing.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** open safe
+  You open the safe, revealing Jolt.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** take jolt
+  Taken.
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** take all
+  There are none at all available!
+  
+> >   Exits:  E                                                                                                                                                                                                              Storage Closet
+  ** take broom
+  Taken.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** e
+  
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i wish to get in the holbein
+  I only understood you as far as wanting to take inventory.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** score
+  There is no score in this story.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** i am going to
+  You are carrying:
+    a broom
+    Jolt
+    a skeleton key
+    a platter supporting the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the three root beers, the two Sprites, and the five ginger ales)
+    a skull
+    a souvenir hat (being worn)
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** [hm]
+  That's not a verb I recognise.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** quickly sit
+  You get onto the bench.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** attack me
+  Success!
+  
+  
+  
+      *** You have died ***
+  
+  
+  And you visited the interior of two paintings.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT, or UNDO the last command?
+> >    Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** undo
+  Exhibition Room
+  [Previous turn undone.]
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** purloin ball
+  [Purloined.]
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** eat it
+  
+  
+      *** You have won ***
+  
+  
+  And you visited the interior of two paintings.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, see some suggestions for AMUSING things to do, QUIT, or UNDO the last command?
+> >    Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** amusing
+  Most of the descriptive content of this one is taken from my first experiment in Inform, ca 1999. The code is amazingly bad. I also misspelled pomegranate.
+  
+  Would you like to RESTART, RESTORE a saved game, see some suggestions for AMUSING things to do, QUIT, or UNDO the last command?
+> >    Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** undo
+  Exhibition Room
+  [Previous turn undone.]
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** sit twice
+  (You must issue a separate command each time you wish to do something.)
+  
+  But you're already on the bench.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** sit using feet
+  But you're already on the bench.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** get up
+  You get off the bench.
+  
+  Exhibition Room
+  The tile Y from a Scrabble set has fallen under the bench.
+  
+  You can also see Venus, Cupid, Folly and Time and The Ambassadors here.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** e
+  You can't go that way.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** drop ball
+  Dropped.
+  
+> >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
+  ** look
+  Exhibition Room
+  A golden ball on the floor reflects yourself, a tile Y from a Scrabble set, Venus, Cupid, Folly and Time, The Ambassadors, and a bench.
+  
+> >

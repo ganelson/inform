@@ -1,0 +1,99 @@
+   Treasure Room
+  Claims Adjustment
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Treasure Room
+  Despite the fancy name, this is no more than a closet -- albeit a closet with its own special circuit on the house alarm.
+  
+  You can see a small Degas, a Ming vase and a collection of South African krugerrands here.
+  
+> >   Treasure Room
+  (Testing.)
+  
+  >[1] photograph degas
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of a small Degas.
+  
+  >[2] i
+  You are carrying:
+    a photograph of a small Degas
+    a cheap instant camera
+    insurance forms
+    a first-class stamp
+    a security envelope
+  
+  >[3] photograph degas
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of a small Degas.
+  
+  >[4] i
+  You are carrying:
+    two photographs of a small Degas
+    a cheap instant camera
+    insurance forms
+    a first-class stamp
+    a security envelope
+  
+  >[5] x photograph of degas
+  It shows a small Degas.
+  
+  >[6] photograph me
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of yourself.
+  
+  >[7] x photograph of me
+  It shows yourself.
+  
+  >[8] i
+  You are carrying:
+    three photographs of yourself and a small Degas (variously)
+    a cheap instant camera
+    insurance forms
+    a first-class stamp
+    a security envelope
+  
+  >[9] photograph vase
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of a Ming vase.
+  
+  >[10] photograph camera
+  (with the cheap instant camera)
+  Sadly impossible.
+  
+  >[11] photograph collection
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of a collection of South African krugerrands.
+  
+  >[12] g
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of a collection of South African krugerrands.
+  
+  >[13] i
+  You are carrying:
+    six photographs of yourself, a small Degas, a Ming vase and a collection of South African krugerrands (variously)
+    a cheap instant camera
+    insurance forms
+    a first-class stamp
+    a security envelope
+  
+  >[14] test more
+  (Testing.)
+  
+  >[15] x photograph of collection
+  It shows a collection of South African krugerrands.
+  
+  >[16] x photograph of krugerrands
+  It shows a collection of South African krugerrands.
+  
+  >[17] x photograph of collection of south african krugerrands
+  It shows a collection of South African krugerrands.
+  
+  >[18] photograph photograph of degas
+  (with the cheap instant camera)
+  Your camera instantly spits out a photograph of a photograph of a small Degas.
+  
+  >[19] x photograph of photograph of degas
+  It shows a photograph of a small Degas.
+  
+> >

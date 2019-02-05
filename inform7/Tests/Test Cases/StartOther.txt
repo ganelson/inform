@@ -1,0 +1,4 @@
+The first spot is a room. "This is the first room."
+The second spot is east of the first spot. "This is the second room."
+Bob is a person in the second spot.  The player is Bob. 
+Test me with "look / e".

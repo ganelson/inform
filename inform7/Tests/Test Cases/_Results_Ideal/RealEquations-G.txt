@@ -1,0 +1,14 @@
+
+
+
+x is 0.9093.
+x is 1.41421.
+x is 0.9093.
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+
+Frog
+
+>Are you sure you want to quit? 

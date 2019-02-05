@@ -1,0 +1,47 @@
+To shimmer is a verb. The world is a thing.
+
+Adopting is an action applying to one grammatical tense.
+
+Carry out adopting:
+	say "The [world] [shimmer] into the [grammatical tense understood].";
+	now the story tense is the grammatical tense understood.
+
+Understand "adopt [grammatical tense]" as adopting.
+
+Regarding as is an action applying to one narrative viewpoint.
+
+Carry out regarding as:
+	say "[We] [shimmer] into the [narrative viewpoint understood].";
+	now the story viewpoint is the narrative viewpoint understood.
+
+Understand "regard as [narrative viewpoint]" as regarding as.
+
+The Conjugation Lounge is a room.
+
+The swagger stick is in the Lounge.
+
+The verb to grace means to be worn by.
+
+A feather boa graces Miss Kelly. Miss Kelly is a woman in the Lounge. Fred
+Astaire is a man in the Lounge. Some shoes are in the lounge. A pair of socks
+is in the lounge. The pair is ambiguously plural.
+
+To seem is a verb.
+
+Before taking:
+	say "[We]['re not] sure about that. [We]['ve] thought better. [regarding
+		the noun][Those] [are] unlikely to be in [our] possession; [regarding the
+		noun][those in the nominative] [are not] what [they] [seem]. [They]
+		[are] best in [their] original location. [Their] home; [theirs].";
+	stop the action.
+
+Test me with "get me / get stick / get kelly / get fred / get shoes / adopt
+past tense / get me / get stick / get kelly / get fred / get shoes / adopt
+future tense / get me / get stick / get kelly / get fred / get shoes / regard
+as first person singular / adopt present tense / get me / get stick / get
+kelly / get fred / get shoes / adopt past tense / get me / get stick / get
+kelly / get fred / get shoes / adopt future tense / get me / get stick / get
+kelly / get fred / get shoes / regard as third person plural / adopt present
+tense / get me / get stick / get kelly / get fred / get shoes / adopt past
+tense / get me / get stick / get kelly / get fred / get shoes / adopt future
+tense / get me / get stick / get kelly / get fred / get shoes".

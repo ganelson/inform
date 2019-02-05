@@ -1,0 +1,4 @@
+Home is a room.
+
+When play begins:
+	if the player is someone female who was in the Home, say "Hi."

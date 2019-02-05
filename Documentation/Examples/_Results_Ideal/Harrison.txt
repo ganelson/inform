@@ -1,0 +1,54 @@
+   Customs House
+  Search and Seizure
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Customs House
+  You can see a smuggler and a tourist here.
+  
+> >   Customs House
+  (Testing.)
+  
+  >[1] x smuggler
+  He has a bestubbled chin and a sinister eye.
+  
+  The smuggler looks nervous. You can just tell.
+  
+  The smuggler is wearing a leather jacket and carrying a laser pistol.
+  
+  >[2] search smuggler
+  The smuggler is revealed to be carrying a bottle of Altairan rum, some raspberries and a laser pistol.
+  
+  >[3] x smuggler
+  He has a bestubbled chin and a sinister eye.
+  
+  Your eye goes at once to the bottle of Altairan rum and the raspberries which the smuggler is unable to hide, though he also has a leather jacket and a laser pistol.
+  
+  >[4] confiscate jacket
+  Through the authority vested in you by the power of the Sovereign of Centauri Proxima, you make the leather jacket your own.
+  
+  >[5] x smuggler
+  He has a bestubbled chin and a sinister eye.
+  
+  Your eye goes at once to the bottle of Altairan rum and the raspberries which the smuggler is unable to hide, though he also has a laser pistol.
+  
+  >[6] confiscate rum
+  Through the authority vested in you by the power of the Sovereign of Centauri Proxima, you make the bottle of Altairan rum your own.
+  
+  >[7] confiscate pistol
+  Through the authority vested in you by the power of the Sovereign of Centauri Proxima, you make the laser pistol your own.
+  
+  >[8] x smuggler
+  He has a bestubbled chin and a sinister eye.
+  
+  Your eye goes at once to the raspberries which the smuggler is unable to hide.
+  
+  >[9] confiscate raspberries
+  Through the authority vested in you by the power of the Sovereign of Centauri Proxima, you make the raspberries your own.
+  
+  >[10] x smuggler
+  He has a bestubbled chin and a sinister eye.
+  
+  The smuggler is carrying nothing.
+  
+> >

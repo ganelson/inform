@@ -1,0 +1,13 @@
+   Kitchen
+  "list of things regionally in Interior" = list of things: {yourself, sandwich, screen door, seagull}
+  "list of things regionally in Exterior" = list of things: {screen door, croquet hoop}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see a seagull, a screen door and a sandwich here.
+  
+> >   Kitchen
+> Are you sure you want to quit? 

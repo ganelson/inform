@@ -1,0 +1,41 @@
+   International Convention of Mimes
+  Mimicry
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  International Convention of Mimes
+  You can detect, from the way people keep leaning on it, an invisible box in the middle of the room.
+  
+  You can also see Lester, Harold, Geoff, Kwame, Peter and Elouise here.
+  
+> >   International Convention of Mimes
+  (Testing.)
+  
+  >[1] ask lester about work
+  You nod hello to Lester, Harold, Geoff, Kwame, Peter and Elouise.
+  
+  You attempt to convey your meaning with gesture and interpretive dance, but Lester, Harold, Geoff, Kwame, Peter and Elouise scorn your performance, refusing to respond.
+  
+  >[2] lester, east
+  You attempt to convey your meaning with gesture and interpretive dance, but Lester, Harold, Geoff, Kwame, Peter and Elouise scorn your performance, refusing to respond.
+  
+  A mime called Phineas appears from the non-existent bathroom.
+  
+  >[3] ask lester for bowler
+  You nod hello to Phineas.
+  
+  You attempt to convey your meaning with gesture and interpretive dance, but Phineas, Lester, Harold, Geoff, Kwame, Peter and Elouise scorn your performance, refusing to respond.
+  
+  >[4] lester, nice not talking to you
+  You attempt to convey your meaning with gesture and interpretive dance, but Phineas, Lester, Harold, Geoff, Kwame, Peter and Elouise scorn your performance, refusing to respond.
+  
+  >[5] get in box
+  You get into the Invisible Box.
+  
+  >[6] ask lester for hat
+  Everyone convulses with silent laughter as you try to shout from within the invisible box.
+  
+  >[7] phineas, east
+  Everyone convulses with silent laughter as you try to shout from within the invisible box.
+  
+> >

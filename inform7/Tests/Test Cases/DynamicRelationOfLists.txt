@@ -1,0 +1,10 @@
+Home is a room.
+
+Partnership relates various lists of numbers to various lists of numbers. The verb to belong with (he 
+belongs with, they belong with) implies the partnership relation.
+
+{3} belongs with {7}.
+
+When play begins:
+	if {3} belongs with {7}, say "Test succeeded.";
+	otherwise say "Test failed."

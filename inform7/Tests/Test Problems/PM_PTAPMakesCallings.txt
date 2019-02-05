@@ -1,0 +1,9 @@
+Blue test chamber is a room.
+
+A transport mirror is a kind of thing.
+
+Instead of touching a transport mirror (called the mirror) for the first time:
+       say "You cautiously touch [the mirror]. ";
+       try entering the mirror.
+
+The test mirror is a transport mirror in the blue test chamber.

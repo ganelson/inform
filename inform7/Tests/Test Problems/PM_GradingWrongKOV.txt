@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Definition: a thing is stately if its carrying capacity is 10:15 AM or more.

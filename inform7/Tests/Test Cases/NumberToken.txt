@@ -1,0 +1,13 @@
+"Ah, Spring"
+
+Ranking it as is an action applying to one visible thing and one number.
+Understand "give [something] [number]" as ranking it as.
+
+Carry out ranking it as: say "You mentally give [the noun] a rating of
+[the number understood]."
+
+The Park is a room.  A woman called Elaine is here.  The player is
+carrying some flowers.
+
+Test me with "give Elaine 10 / give Elaine flowers / give Elaine ring
+/ give flowers 8 / give flowers Elaine".

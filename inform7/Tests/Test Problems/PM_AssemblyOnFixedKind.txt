@@ -1,0 +1,6 @@
+Home is a room.
+
+Partnership relates various numbers to various numbers. The verb to
+be associated with implies the partnership relation.
+
+Every number is associated with 11. Every number is less than 10.

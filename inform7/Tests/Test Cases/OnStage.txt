@@ -1,0 +1,13 @@
+Stage is a room. A meteor, a stone, and a long glass of sherbet are in Stage. 
+
+Instead of waiting:
+	now the stone is off-stage.
+
+Instead of jumping:
+	now the stone is on-stage.
+
+Every turn:
+	if the stone is on-stage, say "The stone is on-stage.";
+	if the stone is off-stage, say "The stone is off-stage.";
+
+Test me with "look / z / look / jump / get stone / jump / look / i".

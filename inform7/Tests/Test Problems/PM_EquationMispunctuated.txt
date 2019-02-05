@@ -1,0 +1,7 @@
+Laboratory is a room.
+
+When play begins:
+	let F be given by F = 1 + + 1, where F is a number;
+	let F be given by F = + 1, where F is a number;
+	let F be given by F = 1 +, where F is a number;
+	let F be given by F = (1 + 1) -, where F is a number.

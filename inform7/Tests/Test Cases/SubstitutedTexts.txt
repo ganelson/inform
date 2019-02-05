@@ -1,0 +1,43 @@
+The Grange is a room. A green Citroen, a fisherman, a brace of pheasants and
+a topiary duck are here.
+
+The player carries an E-bomb.
+
+After dropping the E-bomb:
+	say "There is an almighty explosion!";
+	now the E-bomb is nowhere;
+	repeat with item running through things:
+		replace the text "e" in the printed name of the item with "*".
+
+Use scoring.
+
+When play begins:
+	repeat with item running through things:
+		say "[item]: [number of words in the printed name of the item] word[s]."
+
+When play begins:
+	now the score is 10;
+	let X be "Your score is [score].";
+	increase the score by 5;
+	say X.
+
+When play begins:
+	now the score is 10;
+	let X be "Your score is [score in words].";
+	replace the text "e" in X with "*";
+	increase the score by 5;
+	say X;
+
+When play begins:
+	let X be "It's [time of day].";
+	if X is substituted:
+		say "Substituted: [X].";
+	otherwise:
+		say "Unsubstituted: [X].";
+	replace the text "t" in X with "*";
+	if X is substituted:
+		say "Substituted: [X].";
+	otherwise:
+		say "Unsubstituted: [X].";
+
+Test me with "drop all / look".

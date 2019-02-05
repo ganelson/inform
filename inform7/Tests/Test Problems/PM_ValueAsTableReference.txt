@@ -1,0 +1,6 @@
+There is a room.
+
+To judge (T - table-reference): (- ; -).
+
+Every turn:
+	judge 3.

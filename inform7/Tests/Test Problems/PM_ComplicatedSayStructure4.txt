@@ -1,0 +1,1 @@
+Boz is a room. "This is Boz, the [if 1 is 2]leading [one of]pet shop[or]haberdashery[end if] and milliner[or]bakery[purely at random] in the Kidlington area."

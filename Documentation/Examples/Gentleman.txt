@@ -1,0 +1,33 @@
+*** To be able to see and touch
+(Person who picks up treasures; Lean and Hungry)
+A thief who will identify and take any valuable thing lying around that he is able to touch.
+
+	{*}"Lean and Hungry"
+
+	Substance is a kind of value. The substances are silver, gold, and lead. Everything has a substance. A thing is usually lead.
+
+	Definition: a thing is valuable if it is not lead.
+
+	The Limestone Cave is a room. "Not very big, and it doesn't go back far, but you'd hoped to find some shelter here. Outside it is raining exceptionally hard."
+
+	The sinister gentleman is a man in the Cave. "Leaning against the wall is a sinister gentleman in a threadbare waistcoat." The description is "He looks as though he might once have been quite well off."
+
+	After examining the gentleman:
+		say "[The noun] smiles back at you in an unnerving fashion."
+		
+Now we make the rule that governs the gentleman's behavior. Here we're going to invoke the rules that allow characters besides the player to do actions. More about this can be found in the Advanced Actions chapter:
+	
+	{**}Every turn:
+		if the sinister gentleman can touch something valuable (called the treasure) which is not carried by a person:
+			try the gentleman taking the treasure.
+
+	Report the gentleman taking something:
+			say "[The gentleman] slyly acquires [the noun] and tucks it into his pocket." instead.
+		
+That "not carried by a person" prevents the gentleman from stealing from the player (or, less plausibly, from himself). If we did want him to pick pockets, we could just have said "which is not carried by the gentleman".
+	
+	{**}The player is carrying a coin, a bust of Abraham Lincoln, a bottle of sherry, a small pistol, and a wad of Confederate cash. The coin is gold. The pistol is silver.
+
+	A locket is in the Cave. The locket is gold. "A broken gold locket lies on the ground, a token of your late Mama."
+	
+	Test me with "get locket / i / drop locket / z / drop cash / z / x gentleman / drop all / z / z / look".

@@ -1,0 +1,2363 @@
+6E35/36 (test builds for April 2010 release of Inform)
+
+Contents:
+	1. INFORM FOR OS X
+	2. INFORM FOR WINDOWS
+	3. INFORM FOR GNOME ON LINUX
+	4. RELEASING
+	5. RELATIONS
+	6. ASSEMBLIES
+	7. KINDS
+	8. MAP, FILTER AND REDUCE
+	9. GENERIC PHRASES
+	10. PROPERTIES
+	11. SCENES
+	12. RULEBOOKS
+	13. INFLECTIONS
+	14. MINOR NEW FEATURES
+	15. WORD LIMITS ON RELATIONS, VERBS, PREPOSITIONS AND DIRECTIONS
+	16. ACTIONS IN THE STANDARD RULES
+	17. MAINTENANCE
+	18. EXAMPLES
+	19. BUILT-IN EXTENSIONS
+	20. A NOTE ABOUT FIGURE AND SOUND NAMES
+
+
+1. INFORM FOR OS X
+
+The user interface has been tidied up in a number of small but, we hope,
+pleasing ways, and the menu structure should be easier to navigate,
+especially for newcomers:
+
+	File  Edit  Format  Play  Replay  Release  Window  Help
+
+The preferences have similarly been reorganised, and the Settings panel is
+more explanatory. Numerous features useful only for I6 projects are now
+invisible for I7 projects, which makes the system much easier to learn.
+(But it won't take experienced users long to find everything again.)
+
+A new setting, for Randomness, makes it possible to fix the random numbers
+generated within Inform so that repeat runs produce the same "random" outcomes,
+which sometimes makes testing easier. (This only applies within the application,
+and it's switched off by default; it never affects a Released story file.)
+
+2. INFORM FOR WINDOWS
+
+The code for the source tabs has been rewritten to make use of the open
+source text editing component "Scintilla". This allows a number of missing
+features to be implemented, and will allow further changes to support all
+of the features available in the OS X version of the application.
+
+Making a selection in the contents pane now causes the source pane to show
+that selection only. The old behaviour, of showing the whole source but
+going to the selection, can be obtained by holding down the shift key when
+selecting.
+
+Wrapped lines are now slightly indented by default, and new lines start
+auto-indented to the same extent as the line above: both these options can
+be disabled from the preferences dialog.
+
+The new Format menu allows lines to be indented left and right.
+
+Editing the skein now marks the project as being changed.
+
+The background colours in the transcript now follow the same logic as
+for the OS X application. The left hand column, showing the output
+from the game, is coloured light blue if the output is the same as the
+previous run-through of the game, and light red if the output now differs.
+The right hand column, showing the "blessed" transcript, is coloured blue
+if the transcript matches the game's output, red if it differs, and
+yellow if it differs but only due to trivial whitespace changes.
+
+The "Replay Commands Blessed in Transcript" option, which is on the new
+Replay menu, now plays all skein threads that contain at least one blessed
+knot. After playing, if any blessed knots fail to match, the skein shows
+the first such knot.
+
+On the new Replay menu are commands to show the last played command in
+the skein and the transcript, and to change the selected knot in the
+transcript to step through changed commands and commands for which the
+transcript does not match the blessed text.
+
+The new Release menu has commands to open the Materials folder in a new
+Explorer window, and to export the game's iFiction record to a new file.
+
+The Window menu has been re-arranged so that access to all tabs, and all
+the Index sub-tabs, is available from sub-menus and shortcut keys.
+
+3. INFORM FOR GNOME ON LINUX
+
+(to follow)
+
+4. RELEASING
+
+Feedback after clicking the "Release" button has been much improved, with
+Inform either producing a report on what has happened or a legible list of
+problems. Inform has always been able to release a project with supplementary
+material added, right up to a mini-website for housing it, and in this build
+we add the ability to create a web page making the project playable
+in-browser. The new syntax:
+
+	Release along with an interpreter.
+
+causes Inform to bundle up a customised copy of a Javascript interpreter,
+along with a suitably encoded story file, so that the eventual player can
+just visit the page in any modern browser and begin playing. We believe that
+giving Inform a one-click way to make such web pages will help IF authors
+to reach out to casual gamers on the web.
+
+There has been great interest in browser-based story file interpretation
+recently; as recently as a few years ago this would have been prohibitively
+slow, but continuing increases in processor speed - and intensive work by
+browser manufacturers in optimising Javascript performance - have made this
+a genuinely workable option today. Projects such as "Silverglulxe", "Leaflet"
+and "Parchment" have made considerable progress, and we would like Inform to
+help this development.
+
+Inform ships with "Parchment" built in. At present this supports only
+projects using the Z-machine story file format, but we have made every effort
+to help Inform to accommodate future developments, and to enable it to be
+used with other interpreters, too:
+
+(a) Interpreters are stored by Inform in almost exactly the same way as
+website templates are. Each must have a name; the default is "Parchment",
+just as the default website template is called "Standard", but it's easy
+to specify something different:
+
+	Release along with the "Urbzig" interpreter.
+
+(b) Exactly as with website templates, Inform looks for these first in the
+"Templates" subfolder of the current project's "Materials" folder; then in
+the "Templates" subfolder of the Inform folder on the user's computer (the
+details vary with platform, but for instance on Mac OS X this is the folder
+"~/Library/Inform", where "~" is the user's home folder); and lastly in its
+own built-in stock, hidden away inside the Inform application. "Parchment"
+is undergoing rapid development; placing any new copy of it in one of the
+two locations above enables the user to get its benefits straight away,
+without having to wait for some future build of Inform to incorporate the
+update.
+
+(c) An interpreter is stored as a folder of Javascript and/or CSS files
+and/or images, together with a file called "(manifest).txt" which describes
+it and how Inform should put together a story file for it to play. The
+manifest for "Parchment" is heavily commented, and should help provide a
+model for other interpreter-writers to use. We very much hope that authors
+of other Javascript-based interpreters will find it straightforward to use
+this system, and we will be very happy to look at any problems they have.
+
+Another notable change is that "Release" now always releases the story
+file into the "Release" subfolder of the project's "Materials" folder -
+creating these if they do not already exist. In previous builds, it almost
+always did so; but would put up a Save... dialogue box if the release
+contained only the story file and nothing else. In practice, most
+serious releases are going to involve at least some material beyond the
+story file, and for consistency's sake we've got rid of the Save...
+dialogue box and gone for the "Release" folder in all cases.
+
+Miscellaneous small changes have been made to the "Release" mechanism
+throughout; for example, a problem to do with Skein files which have lines
+over 10K in length has been removed (the threshold was raised to 50K and
+warnings about trimming have replaced errors), and a more serious bug to
+do with projects containing around 500 or more images (which affected
+Windows users but not OS X or Linux) has been fixed.
+
+
+5. RELATIONS
+
+Relations are central to Inform. Every verb's meaning is a relation, and
+Inform's model of the world is based on relationships holding between objects
+and/or other values.
+
+This build makes it possible to define relations on any kinds of value (not,
+as before, only on finite kinds and even then with petty restrictions); to
+use relations as first-class values in their own right; and to create
+relations on a temporary basis.
+
+(a) Relations on any kinds of value:
+
+We can now define relations between more or less anything:
+	
+	Partnership relates various texts to various texts.
+	
+	The verb to belong with (he belongs with, they belong with) implies the
+	partnership relation.
+	
+	"cheese" belongs with "crackers".
+	"clam" belongs with "chowder".
+
+And this allows us to create large and varied data structures. A relation is a
+natural generalisation of an associative array (an "associative hash" in Perl,
+a "dictionary" in Python, a "table" in Lua, and so on - the idea goes back
+at least to Smalltalk and the mid-1970s). In fact, an associative array is
+exactly a various-to-one relation in Inform terms.
+
+There are two caveats:
+
+	(i) Previous builds would have rejected this because the domain
+	(texts) is simply too big. The new build makes use of hash tables
+	dynamically built in allocated memory to cope with this (using
+	run-time code generously contributed by Jesse McGrew) - as such it
+	really only works efficiently when the Settings for the project
+	are set to the Glulx virtual machine.
+
+	(ii) Inform isn't good at reasoning with relations when the domains
+	are too big to make search loops practicable, so some constructions
+	like "if 5 tallies with an even number" - where "tallies with" means
+	a various-to-various relation of numbers to numbers - aren't allowed.
+	But see below.
+
+(b) Extracting values from relations:
+
+Suppose we've defined the example partnership relation above. How could we
+find out what, if anything, "caviar" belongs with? It would be impractical
+to keep trying
+
+	if "caviar" belongs with "aardvarks", ...
+	if "caviar" belongs with "abacuses", ...
+	...
+
+Instead:
+
+	if "caviar" relates to a text by the partnership relation, ...
+
+tests whether or not it relates to anything; and if it does,
+
+	a text which "caviar" relates to by the partnership relation
+
+will produce one such text. Of course, there might be many: so
+
+	list of texts which "caviar" relates to by the partnership relation
+
+will produce them all. And we can also look at this the other way round:
+
+	if a text relates to "caviar" by the partnership relation, ...
+	a text which relates to "caviar" by the partnership relation
+	list of texts which relate to "caviar" by the partnership relation
+
+Still more interesting are the slightly tongue-twister-like:
+
+	list of texts which the partnership relation relates
+	list of texts which the partnership relation relates to
+
+If we had written:
+
+	"cheese" belongs with "crackers".
+	"clam" belongs with "chowder".
+
+then these lists might be { "cheese", "clam" } and { "crackers", "chowder" }
+respectively. (For efficiency reasons, there are no guarantees about what
+order the lists have - but they can of course always be sorted when found.)
+
+(c) Relations as themselves values:
+
+Relations have always been values, but in past builds their kind was simply
+"relation", which made it impossible to distinguish, say, the visibility
+relation (can one person see another?) from, say, these:
+	
+	Parity relates a number (called N) to a number (called M) when N minus M
+	is even.
+
+	Joint magnitude relates a number (called N) to a number (called M) when
+	N plus M is greater than 7.
+
+In any case, little could usefully be done with relations as values, because
+there was no good way to test or assert them other than explicitly.
+
+In this build, a relation has the kind "relation of K to L", where K and L are
+the kinds of the two things it relates. For instance, "joint magnitude relation"
+has the kind "relation of numbers to numbers"; though it's also allowed to
+write just "relation of numbers", because Inform assumes both kinds are the
+same if only one is given. We can now write, say:
+
+	To chart (R - a relation of numbers):
+		repeat with N running from 1 to 5:
+			repeat with M running from 1 to 5:
+				if R relates N to M, say "[N] <=> [M]   ";
+			say "[line break]";
+
+and now "chart parity relation" will work nicely, but "chart visibility
+relation" will be rejected (as it should be). More ambitiously:
+
+	When play begins:
+		let L be { parity relation, joint magnitude relation };
+		repeat with R running through L:
+			chart R;
+
+Here the kind of L is "list of relations of numbers to numbers".
+
+In general, we can write
+
+	if R relates X to Y, ...
+	now R relates X to Y;
+	now R does not relate X to Y;
+
+to test, set and unset a relation R between two values, though of course
+Inform checks that the values have the right kind and produces a problem
+message if not.
+
+(d) Adjectives applying to relations:
+
+The following are now defined:
+
+	"empty" - nothing relates to anything else
+	"symmetric" - by definition X relates to Y if and only if Y relates to X
+	"equivalence" - this is a relation "in groups", or an "equivalence relation"
+	"one-to-one" - it relates one K to one L
+	"one-to-various" - similarly
+	"various-to-one" - similarly
+	"various-to-various" - similarly
+
+So for example it's possible to ask
+
+	if R is a symmetric one-to-one relation of texts, ...
+
+With some relations, it's possible to clear them out by writing:
+
+	now R is empty;
+
+and with temporary relations (see below), it's even possible to change their
+valencies (one-to-one vs. one-to-various, etc.) using "now", but only when
+they are empty. The exceptions where "empty" can't be used are those which
+can't be changed at all, and a few built-in cases such as "support",
+"containment" and "incorporation", where emptying would dissolve the model
+world in a disastrous way.
+
+(e) Making temporary relations:
+
+In past builds of Inform, the relations were all created explicitly by the
+source text. The stock of relations which exist at the start of play could
+not be changed; the relationships might change - sometimes Red Riding Hood
+would be in the Woodcutter's Cottage, sometimes not - but the relations
+themselves (in this case, containment) were eternal.
+
+This is no longer true, and it's now easy to create relations as dynamic
+data structures, like lists or indexed texts. For example:
+
+	let the password dictionary be a relation of texts;
+
+This makes a purely temporary various-to-various relation between texts,
+which lasts as long as the temporary value "password dictionary" lasts.
+By default, relations are various-to-various, but we could instead write,
+say:
+
+	let the nicknames catalogue be a various-to-one relation of texts;
+
+Such a relation exists only in the current phrase, and is destroyed when
+the phrase finishes, like any other "let". Of course there's no verb whose
+meaning in this relation, but that's no obstacle, because we can manipulate
+it using "relates":
+
+	now the nicknames catalogue relates "Trudy" to "Snake-eyes";
+
+(At present such a relation cannot be used outside its own phrase, but we
+hope to enable this in future builds by means of closures.)
+
+
+6. ASSEMBLIES
+
+Up to now, assemblies like this:
+
+	A signpost is a kind of thing. Every room contains a signpost.
+
+have been deprecated as not always reliable - it was a bad idea to make
+constructions on the basic kinds "room", "container", "supporter", "door"
+or "thing", the above being an example of an assembly on "room". That
+restriction is now lifted, and the above works as it looks as if it should.
+
+Assemblies can now involve values as well as objects. For example, if we
+start from:
+
+	A colour is a kind of value. The colours are red, green and blue.
+	Liking relates various people to various colours.
+	The verb to like (he likes, they like, it is liked) implies the liking relation.
+
+then the assembly:
+
+	Every person likes a colour.
+
+will produce an initial situation like so:
+
+	>relations
+	Liking relates various people to various colours:
+	  You  >=>  your colour
+	  Daphne  >=>  Daphne's colour
+
+Here the assembly process has created two new colour values. Had the assembly
+instead been written:
+
+	A person likes every colour.
+
+then the result would be:
+
+	Liking relates various people to various colours:
+	  The person  >=>  red
+	  The person  >=>  green
+	  The person  >=>  blue
+
+where this time three new people have been created. Note that these people have
+no fancy names. But we can arrange for that with another new feature:
+
+	A person (called its fan) likes every colour.
+
+Which would instead produce:
+
+	Liking relates various people to various colours:
+	  Red's fan  >=>  red
+	  Green's fan  >=>  green
+	  Blue's fan  >=>  blue
+
+Similarly,
+
+	Every person likes a colour (called his favourite colour).
+
+produces:
+
+	Liking relates various people to various colours:
+	  You  >=>  your favourite colour
+	  Daphne  >=>  Daphne's favourite colour
+
+Just as "its" (or "his" or "her" or "their") expands out to a possessive form
+of the name of the owner, so to speak, so "it" (or "he" or "she" or "they" or
+"him" or "them") expands out to the name itself. Thus:
+
+	A person (called the world's leading fan of it) likes every colour.
+
+produces:
+
+	Liking relates various people to various colours:
+	  World's leading fan of red  >=>  red
+	  World's leading fan of green  >=>  green
+	  World's leading fan of blue  >=>  blue
+
+All of these callings can of course be made for standard assemblies of
+objects too; for example,
+
+	Every room contains a vehicle (called its buggy).
+
+would make a whole lot of suitably named buggies.
+
+The rule on what happens if there's no "(called ...)" text might be worth
+spelling out exactly:
+
+	(1) If we are assembling a value of kind K, then the calling text is
+		taken as if it were "(called its K)" - for instance, "(called its
+		colour)" in the first example above, which resulted in names like
+		"your colour" and "Daphne's colour".
+		
+		However, if that results in a name which already exists, a number
+		is suffixed to make it a unique name; for instance, if there were
+		six anonymous people, then "Every person likes a colour" would
+		result in names like "person's colour 2", "person's colour 3", and
+		so forth. (It's a bad idea to write assemblies where this could
+		ever matter.)
+
+	(2) If we are assembling an object of kind K, then no name is attached
+		unless the relationship is incorporation - i.e., being a part of
+		something - and the object being attached to already has a name;
+		in that case, the calling text is again "(called its K)".
+
+The reason that the convention differs between objects and values is that
+objects are allowed to have names clashing with other objects, or no name at
+all, whereas values have to have names belonging to themselves alone.
+
+
+7. KINDS
+
+As a convenience for debugging awkward phrases, the following:
+
+	showme V;
+	
+works for any value V, and prints out V, its kind, and then (unless it is a
+constant) its current value. For example:
+
+	When play begins:
+		showme indigo;
+		showme location;
+		showme the list of vivid colours;
+
+might open play by printing up:
+
+	colour: indigo
+	"location" = object: Lille Conservatoire
+	"list of vivid colours" = list of colours: {red, indigo, chartreuse}
+
+This is intended purely for testing. In a Release version, "showme" is always
+silent, so that if any "showme" phrases are left in by accident, they'll never
+be seen by anyone else.
+
+
+Almost every kind has a "default value", that is, a value used when Inform
+knows that a variable or table entry should contain something of this kind,
+but doesn't know what it is. The phrase
+
+	default value of K
+
+evaluates to this value, for any named kind K. For example,
+
+	showme default value of time;
+
+produces the output:
+
+	"default value of time" = time: 9:00 am
+
+This can be useful when the default value is needed, but has no convenient
+natural-language name; for example, "default value of table name", or
+"default value of sound name".
+
+
+Enumerated kinds have always had phrases to make it easier to trawl through
+their values: for instance,
+
+	the colour after C
+	the colour before C
+	a random colour
+	a random colour between orange and blue
+	a random colour from orange to blue
+
+(The last two are synonymous.) To these, we now add:
+
+	the first value of colour
+	the last value of colour
+
+If, for example:
+
+	Colour is a kind of value. The colours are red, orange, yellow, green,
+	blue, indigo and violet.
+
+then "the first value of colour" produces "red", and "the last value of colour"
+produces "violet".
+
+
+It is now possible to change how kinds relate to each other, but only if no
+previous statements are contradicted by doing so. For example, the Standard
+Rules say that "container" and "supporter" are kinds of "thing"; now supposing
+we type:
+
+	An enclosure is a kind of thing.
+	A container is a kind of enclosure. A supporter is a kind of enclosure.
+
+This is now allowed. Containers and supporters are still things; they have
+merely become more specialised, and there is no contradiction. On the other
+hand, this is incorrect:
+
+	An enclosure is a kind of region.
+	A container is a kind of enclosure. A supporter is a kind of enclosure.
+
+This is a contradiction, since regions are not things, and Inform rejects
+it with a problem message.
+
+
+The "description" kind has been removed. In its place is a more expressive
+one: "description of K" for any kind K - for example, "description of numbers",
+which would be matched by "even numbers".
+
+This may mean changing a small amount of existing source text; the change
+should be as simple as replacing "description" by "description of objects".
+(We apologise for the nuisance, but "description" was always a poor choice
+of name, clashing with the property called "description", for instance.)
+
+
+Given any two kinds K and L, the kind "relation of K to L" is now a kind.
+More concisely, "relation of K" means the same as "relation of K to K".
+
+
+Given any two kinds K and L, the kind "phrase K -> L" is now a kind. (This
+is meant to look like a mathematical function arrow.) For example, the
+phrase defined by
+
+	To decide which number is the square of (N - a number): ...
+
+has the kind "phrase number -> number". Brackets and commas are used if the
+phrase combines several values: thus
+
+	To decide which indexed text is (T - text) repeated (N - a number) times: ...
+
+would have kind "phrase (text, number) -> indexed text". The word "nothing"
+is used if there are no values in, or no value out - thus
+
+	To decide which number is the magic target: ...
+
+has kind "phrase nothing -> number", and
+
+	To dig (eastward - length) by (northward - length): ...
+
+has the kind "phrase (length, length) -> nothing".
+
+Thus phrases can be stored in variables, properties and so on. We can give
+any phrase a name like so:
+
+	To decide what number is double (N - a number) (this is doubling):
+		decide on N plus N.
+
+This is the same syntax used to name rules, and the idea is the same. If we
+try "showme doubling", the result is
+
+	phrase number -> number: doubling
+
+But there's no advantage to storing a phrase if it can't be used, so:
+
+	showme doubling applied to 2;
+
+produces
+
+	"doubling applied to 2" = number: 4
+
+There are versions of "applied to" for phrases applied to 0 to 3 arguments:
+
+	F applied
+	F applied to V
+	F applied to V and W
+	F applied to V and W and X
+
+For phrases which do not produce a value, we use "apply":
+
+	apply F;
+	apply F to V;
+	apply F to V and W;
+	apply F to V and W and X;
+
+The default value for "phrase K -> L" is a phrase which, no matter what value
+of K it applies to, always produces the default value of L. It's a sort of
+equivalent of the zero function in mathematics - indeed that's exactly what
+it is, if L is "number". These trivial phrases have no names, but can be
+referred to using "default value of...". Thus:
+
+	let Q be a phrase numbers -> times;
+	showme Q;
+	showme Q applied to 4;
+	showme Q applied to -7;
+
+might produce:
+
+	"q" = phrase number -> time: default value of phrase number -> time
+	"q applied to 4" = time: 9:00 am
+	"q applied to -7" = time: 9:00 am
+
+Here Q is set to the default phrase because we didn't give it any other
+value; it has the name we might expect ("default value of phrase number -> time")
+and it works as advertised, producing 9:00 am no matter what number is fed in.
+
+More ambitiously:
+
+	let R be a phrase numbers -> (phrase numbers -> colours);
+	showme R;
+	showme R applied to 3;
+	showme (R applied to 3) applied to 2;
+
+might produce:
+
+	"r" = phrase number -> (phrase number -> colour): default value of phrase
+	number -> (phrase number -> colour)
+	"r applied to 3" = phrase number -> colour: default value of phrase number
+	-> colour
+	"( r applied to 3 ) applied to 2" = colour: red
+
+In the case where L is "nothing", we get a phrase which does nothing and
+produces no value. For example, if we write:
+
+	let S be a phrase numbers -> nothing;
+
+then
+
+	apply S to 17;
+
+does nothing at all, but it's perfectly legal.
+
+
+Just as phrases now have kinds, the same is true of the other "active" gadgets
+within Inform: activities, rules and rulebooks.
+
+For any kind K, "activity on K" is a kind. If we write:
+
+	Tweaking the nose of something is an activity.
+	Refreshing the screen is an activity.
+
+then the first is an "activity on objects", and the second an "activity on
+nothing". That was true in previous builds of Inform, too, though there was
+no way to express the difference, and so Inform didn't typecheck it. (Indeed,
+it turned out that a minor error in the Standard Rules was going uncaught as a
+result.) But we can now write, say:
+
+	Announcing something is an activity on numbers.
+	Rule for announcing a number (called N): say "Ladies and gentlemen, [N]."
+
+and then
+
+	carry out the announcing activity with 12.
+
+This won't be useful for many people, but it's more flexible and consistent,
+and activities on pictures and sound effects may be a nice interface for
+multimedia extensions to provide.
+
+(The word "activity" is now an abbreviation for "activity on value", that is,
+any kind of activity. It's unlikely that anyone will need to change existing
+source text.)
+
+Rules and rulebooks now have kinds which can be written as follows:
+
+	rulebook
+	K based rulebook
+	rulebook producing L
+	K based rulebook producing L
+
+(and similarly for "rule"). See the RULEBOOKS section below for more; if you
+have source text which makes use of values produced by rulebooks, you will need
+to modify it, as those are now typechecked for the first time, and some syntax
+changes have been necessary to make this reliable.
+
+
+Finally, two of Inform's ways to store values are similarly extended, though
+in practice it's rare to mention kinds of either sort explicitly in source
+text, so people will mainly not notice.
+
+	K valued property
+	K valued table column
+
+As a piece of syntactic sugar, writing "either/or property" is equivalent to
+writing "truth state valued property".
+
+
+Given that Inform now has seven constructions on kinds - lists, descriptions,
+relations, activities, rules, rulebooks and phrases - some interesting
+combinations are now open:
+
+	phrase (relation of numbers to colours, number) -> list of colours
+
+Brackets can be used to clarify matters:
+
+	phrase (phrase number -> (phrase number -> number)) -> nothing
+
+Nothing will make that a simple idea, but it's unambiguous and can be puzzled
+out with practice.
+
+
+The following sentences now have identical effect:
+
+	Concept is a kind.
+	Concept is a kind of object.
+
+Previously Inform rejected the second form, but it's now being allowed for the
+sake of consistency of syntax. Similarly:
+
+	The green leather sofa is an object.
+
+is now allowed; previously Inform would have demanded that it be said to be
+a thing, a door, etc. (In the absence of other information, it will come out
+as a thing, in fact.)
+
+
+The kind "table name" can now be the kind of a variable whose value is not
+explicitly declared.
+
+
+The kind "action name" can now be repeated through, which means it's now
+legal to form, say, "the list of action names".
+
+
+The kind "use option" can similarly now be repeated through, and can be said,
+for the first time. Two new adjectives have been defined for use options:
+"active" and "inactive", with the obvious meanings. This means it's possible
+to describe the current options with something like:
+
+	say "We're currently using: [list of active use options].";
+
+The result might be, say,
+
+	We're currently using: dynamic memory allocation option [8192], maximum 
+	indexed text length option [1024], maximum things understood at once
+	option [100], American dialect option and fast route-finding option.
+
+This may be useful for testing purposes.
+
+The former condition "using O", true if the option O is active, false
+if not, has not yet been withdrawn but is now deprecated, and may be
+removed in future builds, since it is redundant and less flexible; please
+write "if O is active" instead of "if using O".
+
+
+In the early days of Inform, built-in kinds of value had to have single word
+names. That has long ceased to be true, but some of those awkward names
+remained - for example, we had "indexed text" (two words) but "table-name"
+(hyphenated to make it one word). All of those hyphenated kinds of value
+are now written out in words, with the hyphens removed: thus
+
+	table name    figure name    sound name    action name    equation name
+	external file    Unicode character    use option    table column
+
+The traditional hyphenated names are still recognised (table-name, figure-name
+and so on), except for the hardly ever used "table-column", but the documentation
+and Index pages always prefer the new unhyphenated forms.
+
+
+The following kinds, always intended for internal use only, have been withdrawn:
+
+	domain-description    miscellaneous-value    text-routine    boxed-quotation
+	rule-outcome    abstract-relation
+
+
+8. MAP, FILTER AND REDUCE
+
+When a mass of computations has to be done, the traditional approach is to work
+through them in a "repeat" loop. One modern alternative, growing in popularity,
+is to form a list of inputs; then apply the same computation to each input in
+turn to form a list of results (this is called "mapping"); throw out any
+bad or unwanted results ("filtering"); and then combine the surviving results
+into a single composite answer ("reducing", though some programming languages
+call this "folding" or "accumulation"; it's a much-reinvented idea).
+
+Inform provides all three of these fundamental list-processing operations. There
+is no special term for a "map", because Inform treats it as another case of
+"applied to". Thus:
+
+	doubling applied to {2, 3, 4};
+
+produces the list {4, 6, 8}. More divertingly, suppose we define:
+
+	To decide what indexed text is the longhand form of (N - a number)
+		(this is spelling out):
+		decide on "[N in words]".
+
+	To decide what indexed text is the consonant form of (T - indexed text)
+		(this is txtng):
+		replace the regular expression "<aeiou>" in T with "";
+		decide on T.
+
+Then we can write a chain:
+
+	txtng applied to spelling out applied to doubling applied to {3, 8, 4, 19, 7}
+
+to produce the value {"sx", "sxtn", "ght", "thrty-ght", "frtn"}.
+
+Next, filtering. Here we make use of descriptions, in order to say what values
+will be allowed through the filter. Thus:
+
+	filter to even numbers of {3, 8, 4, 19, 7}
+
+produces {8, 4}, with the values 3, 19, and 7 failing to make it through. (A
+sufficiently fine filter may well thin out a list to a single entry, or even
+no entries at all, but the result is always a list.) To get the full effect of
+filtering, we probably need to define an adjective or two:
+
+	Definition: an indexed text (called T) is lengthy if the number of
+		characters in it is greater than 6.
+
+so that we can then write, say:
+
+	filter to lengthy indexed texts of spelling out applied to {15, 2, 20, 29, -4}
+
+which produces {"fifteen", "twenty-nine", "minus four"}.
+
+Lastly, reduction. In order to combine a whole list of values, we need a phrase
+to combine any two. Here are some samples:
+
+	To decide what number is the larger of (N - number) and (M - number)
+		(this is maximizing):
+		if N > M, decide on N;
+		decide on M.
+	
+	To decide what number is the sum of (N - number) and (M - number)
+		(this is summing):
+		decide on N + M.
+	
+	To decide what indexed text is the concatenation of (X - indexed text) and
+		(Y - indexed text) (this is concatenation):
+		decide on "[X][Y]".
+
+And here are some sample reductions:
+
+	let X be the maximization reduction of {3, 8, 4, 19, 7};
+	let Y be the summing reduction of {3, 8, 4, 19, 7};
+	let Z be the concatenation reduction of txtng applied to spelling out
+		applied to doubling applied to {3, 8, 4, 19, 7};
+
+sets X to 19, the highest of the values, Y to 41, their sum, and Z to the
+indexed text "sxsxtnghtthrty-ghtfrtn". In each case a list has been reduced
+to a single value which somehow combines the contents.
+
+Is map/filter/reduce always a good idea? Devotees point out that almost any
+computation can be thought of in this way, and in systems where the work has
+to be distributed around multiple processors it can be a very powerful tool.
+(There are programming languages without loops where it's essentially the only
+tool.) At its best, it reads very elegantly: one assembles all of the tools
+needed - definitions of doubling, lengthy, spelling out, concatenation and
+so on - and then each actual task is expressed in a single line at the end.
+
+On the other hand, there are also times when this is a needlessly complicated
+disguise for what could more easily be done with a "repeat" loop, and also
+more efficiently since assembling and dismantling lists in memory does take
+some overhead time. So these list operations are not a panacea, but it's good
+to have them available.
+
+
+9. GENERIC PHRASES
+
+The following looks quite innocent:
+
+	To say (V - value) twice: say "[V]. [V], I say!";
+
+It's clear what we intend it to do, but previous builds of Inform would have
+rejected it. "Value" is not itself a kind - it's too big and unspecific. For
+instance, if we were to allow a variable to be just "a value", we could freely
+set it to 12 one minute and to "dahlias" the next, and such a variable would
+be dangerously useless since we would never know what could safely be done
+with it.
+
+So "value" is not a kind, but a kind of kind. Inform has quite a few of these:
+
+	value, pointer value, word value, arithmetic value, enumerated value,
+	sayable value
+
+Most Inform users never notice these, since they belong to the eight-tenths
+of the iceberg which is underwater, but they act as ways to say "a value of
+any kind matching this can go here". For example, "value" is a way to say
+"any kind at all"; "arithmetic value" is any kind which arithmetic can be
+performed on (any kind with the little calculator icon in the Kinds index);
+and so on. If we write:
+
+	To double (V - arithmetic value): say "[V times 2].";
+
+the restriction to "arithmetic value" means that although "double 3", "double
+6 kg", etc., would be matched, "double the Entire Game" would not - you can't
+perform arithmetic on scenes. Similarly, it would have been tidier to write:
+
+	To say (V - sayable value) twice: say "[V]. [V], I say!";
+
+because then Inform will make it clearer why "say X twice" won't work if X
+is one of those rare values which it can't say (an activity, for instance).
+
+Inform has always used generic definitions like these to set up the built-in
+stock of phrases (though only with so-called inline bodies, that is, with
+direct translations to Inform 6 code). In this build, it's now possible to
+write generic definitions using proper Inform source text - so that both of
+the above definitions are accepted, and they work just as they look as if
+they should.
+
+
+But those are toy examples. Notice the way "double" just said the answer,
+instead of returning it - the trouble was that, not knowing the kind of V,
+we couldn't say what the kind of its double would be. We needed a way of
+saying "the same kind comes out as went in". This is how Inform expresses that:
+
+	To decide which K is triple (original - arithmetic value of kind K):
+		decide on 3 times the original.
+
+Here, K stands for any kind which matches "arithmetic value". Inform supports
+exactly 26 of these symbols, which are written A to Z, but it's customary to
+use K and L. (They can be written in the plural if we like: e.g., "list of
+Ks". But they must always use a capital letter: "list of k" is not allowed.)
+
+Each symbol we use has to be declared in exactly one of the bracketed
+ingredients for the phrase - here, the declaration is "arithmetic value of
+kind K". That creates K and says that it has to be arithmetic; if we'd just
+said "value of kind K", it could have been anything.
+
+For a more ambitious example, here is the definition in the Standard Rules
+of the mapping operation described above:
+
+	To decide what list of L is (function - phrase K -> value of kind L)
+		applied to (original list - list of values of kind K):
+		let the result be a list of Ls;
+		repeat with item running through the original list:
+			let the mapped item be the function applied to the item;
+			add the mapped item to the result;
+		decide on the result.
+
+Here we needed two symbols to explain the complicated way that the values
+going in and out have to match up to each other. Note also the way that the
+temporary variable "result" is created:
+
+	let the result be a list of Ls;
+
+Ordinarily, of course, "L" is not a kind. But within the body of a phrase
+definition, it means the kind which L matched. For instance, if we try
+
+	showme spelling out applied to {3, 7, 11};
+
+then in this usage "L" becomes "indexed text", because spelling out is a
+phrase whose kind is "phrase number -> indexed text".
+
+
+Sometimes a phrase needs to know what kind it's to work on, but isn't going
+to be given any particular value of it. For example:
+
+	To assay (name of kind of value K):
+		repeat with item running through Ks:
+			say "There's [item]."
+
+Note that there's no hyphen, and no name for the bracketed token - it only
+sets K. We can then have, say:
+
+	assay colours;
+	assay vehicles;
+
+(But "assay texts;" would throw a problem message, because we can't repeat
+through all possible texts.)
+
+
+When a symbol occurs several times in the same definition, subtle differences
+can arise according to which appearance is the declaration. These are not
+quite the same:
+
+	To hunt for (V - value of kind K) in (L - list of Ks): ...
+	To hunt for (V - K) in (L - list of values of kind K): ...
+
+Consider:
+
+	let T be "[location]" in title case;
+	hunt for T in {"Greater London", "Greater Basildon"};
+
+Here T is an indexed text, but the list is of texts; and a text can be used in
+place of an indexed text, but not vice versa. This will match the first
+definition, because K is set to "indexed text", but it won't match the second,
+where K is set to "text".
+
+
+10. PROPERTIES
+
+The handling of properties has been simplified and made more systematic in
+this build, removing a number of tiresome exceptions. In particular, eight
+ways in which "object" differed from other kinds have been removed:
+
+(a) It's possible to give properties to "object", and indeed the Standard
+Rules now include:
+
+	An object has a text called printed name.
+	An object can be plural-named or singular-named. An object is usually
+	singular-named.
+
+Previously one had to specify them each time for each of the fundamental kinds
+in turn (thing, room, direction, region), which was tiresome. The problem
+was essentially that "object" did not behave as if it were a property-owning
+kind; now it does.
+
+(b) Relations in groups, one to various relations, various to one relations,
+and one to one relations are no longer restricted to objects - they can be
+defined over all kinds. Again, objects are no longer a special case.
+
+(c) Properties have always been able to be held by several kinds of object
+independently - for example "matching key" is held by both doors and
+containers - but in previous builds that wasn't true for more general kinds.
+A property of a scene couldn't be a property of anything else. This is no
+longer true. (Indeed, scenes now have the "description" property, just as
+objects do.)
+
+(d) Any value which can have properties at all can now have a condition
+property, e.g., thus:
+
+	Colour is a kind of value. The colours are red, green and white.
+	A colour can be bright, neutral or flat. Green is neutral.
+
+Condition properties were previously restricted to objects only.
+
+(e) Implications can now be written for any values capable of holding
+properties, not only for objects. Thus:
+
+	Colour is a kind of value. The colours are red, green and blue.
+	A colour can be zesty or flat. A colour can be bright or dull.
+	Red and blue are bright. Blue is flat.
+	
+	A bright colour is usually zesty.
+
+results in red being zesty, but blue and green being flat; blue because the
+source text explicitly says so (which trumps the "usually"), and green because
+this isn't a bright colour, so the implication doesn't arise. Again, all of
+this works exactly as it does already for objects.
+
+(f) Inform has always allowed a piece of double-quoted text, as a complete
+sentence all by itself, to set a description for the object currently being
+talked about. This now works for a named value, too, provided that the
+value is of a kind which has the "description" property. For example,
+the Standard Rules now include the following:
+
+	A scene has a text called description.
+	When a scene (called the event) begins:
+		if the description of the event is not "",
+			say "[the description of the event][paragraph break]".
+
+which enables any scene to have a description text, which is printed when it
+begins. For example, we could write:
+	
+	Arrival is a scene. "There's a flourish of trumpets."
+
+(g) Adjectives can now be given specific definitions for named values.
+(Previously they could be defined for any kind and for any specific object,
+but not for specific values in general.) This allows, e.g.:
+
+	A colour is a kind of value. The colours are red, green and blue.
+	Definition: red is subtle if the player is a woman.
+	Definition: a colour is subtle if it is blue.
+
+The first definition here takes precedence, of course, since it has the
+more specific domain. If the player's a woman, the subtle colours are red
+and blue; if not, just blue.
+
+(h) The pronoun "it" can now mean either an object or a named value, whereas
+previously it could only be an object. Thus:
+
+	Colour is a kind of value. A colour can be zesty or flat.
+	Mauve is a colour. It is zesty.
+
+makes mauve a zesty colour. (The restriction to named values is because we
+really don't want "it" to mean 63, or the text "frog", etc., just because
+such a value has been mentioned in a previous sentence.)
+
+
+The kinds "figure name", "sound name" and "external file" can all now have
+properties. For example:
+
+	File format is a kind of value. The file formats are plain
+	text, HTML and CSS. An external-file has a file format.
+	
+	The File of Ghosts is HTML.
+
+Similarly, all three can be understood in commands. This is likely to be
+useful only for testing purposes, but that's a good enough reason to
+provide it.
+
+
+The either/or property "initially carried" is withdrawn, though sentences
+such as:
+	
+	The umbrella is initially carried.
+	
+continue to work, so it's likely that nobody will notice any difference. (The
+word "initially" is redundant here; this property goes back to the early
+days of Inform, when sentences mentioning the player were more restricted.)
+
+
+Previously, certain core Inform properties had the anomalous behaviour that
+if they were not explicitly defined then they could be read but not written,
+and would show up as not provided - for instance, the "description" of a
+thing, or the "carrying capacity" of a container. The same wasn't true for
+new properties created within the source text. This anomaly, which came out
+of Inform 6 memory economies now of very little purpose, is revoked. For
+example, a thing with nothing special about it now has the description ""
+(an empty text) rather than not providing a description at all; this means
+that, for example, the test
+
+	if the description of R is "", ...
+
+will now work correctly in the case where R is a room whose description has
+never been specified.
+
+
+It used to be legal, but deprecated, to create a property like so:
+
+	An elevator has a number that varies called maximum capacity.
+
+The "that varies" is redundant here, and confusingly similar to the syntax
+for creating variables. None of the Examples has ever used this syntax, and
+most users probably weren't aware it was allowed. Well, it isn't any more.
+
+
+Inconsistencies to do with inherited properties of values are now more
+consistently checked: e.g.,
+
+	Colour is a kind of value. The colours are red, blue and green. A colour
+	can be vivid or drab. A colour is always vivid. Green is drab.
+
+now produces a problem message, as it clearly should.
+
+
+11. SCENES
+
+Up to now, every scene has had a "when S begins" and "when S ends" rulebook,
+but there has been no way to express rules generalising about scenes. We
+can now write, e.g.:
+
+	A scene can be bright or dim. A scene is usually dim. Dawn is a bright scene.
+
+	When a scene which is bright ends: say "So passes the bright [scene being changed]."
+
+	When a recurring scene begins: say "Groundhog Day!"
+
+
+Scenes can now be understood in commands, which may be useful for testing. 
+
+
+12. RULEBOOKS
+
+"When... begins" and "when... ends" are scene based rulebooks, meaning that they
+take a parameter which is a scene. Inform has always had object based rulebooks,
+but in the past that's been the only kind allowed here; Inform now allows, e.g.:
+
+	Grading is a number based rulebook.
+	
+	Grading 5: say "It's five. What can I say?" instead.	
+	Grading an odd number (called N): say "There's something odd about [N]." instead.
+	Grading a number (called N): say "Just [N]." instead.
+	
+	When play begins:
+	repeat with N running from 1 to 10:
+		say "Grading [N]: ";
+		consider the grading rulebook for N.
+
+which produces:
+
+	Grading 1: There's something odd about 1.
+	Grading 2: Just 2.
+	Grading 3: There's something odd about 3.
+	Grading 4: Just 4.
+	Grading 5: It's five. What can I say?
+	Grading 6: Just 6.
+	Grading 7: There's something odd about 7.
+	Grading 8: Just 8.
+	Grading 9: There's something odd about 9.
+	Grading 10: Just 10.
+
+(A technicality: The familiar IF rulebooks like "instead" are all based on
+actions, not values, so it looks as if they can't fit into this system; but
+they can, because the Inform kinds system treats that as being based on
+the kind "action name".)
+
+
+There used to be three ways to describe rulebooks:
+
+	rulebook    object-based rulebook   action-based rulebook
+
+(though the last two could only be used at the moment of creation). But now
+we ought to use one of these forms:
+
+	rulebook
+	K based rulebook
+	rulebook producing L
+	K based rulebook producing L
+
+Here K is the kind of value we're basing the rulebook on. If this is omitted,
+a test like "(R - rulebook)" will match any basis; and a creation like
+"Drum summons rules is a rulebook." will use the basis "action name" - in other
+words, will make an action-based rulebook. L is the kind of value produced
+(see below) - again if this is unspecified in matching, it can be anything;
+if it's unspecified at creation time, it will be "nothing". Thus
+
+	Drum summons rules is a rulebook.
+
+is equivalent to
+
+	Drum summons rules is an action name based rulebook producing nothing.
+
+The old syntaxes "object-based rulebook" and "action-based rulebook", with
+hyphens, are still allowed, to avoid breaking existing source text. But
+"object based rulebook" and simply "rulebook" are now preferred.
+
+
+The other kind associated with a rulebook is the kind of value it produces,
+though for the great majority of rulebooks this is "nothing" - they don't
+produce values. (None of the rulebooks created by the Standard Rules do, and
+there's only one such across the whole of the Examples.) In past builds, this
+produced value has to be an object, but that wasn't checked, making this
+little-used feature decidedly rickety.
+
+Making it safe has meant changing the syntax, and that will mean altering
+any existing source text which uses such rulebooks. The one Example we had
+to change ("Feline Behavior") read, in part:
+
+	The cat behavior rules is a rulebook.
+	[...]
+
+	Every turn:
+		consider the cat behavior rules;
+		if rule succeeded:
+			let the destroyed object be the result of the rule;
+			[...]
+
+It now reads:
+
+	The cat behavior rules is a rulebook producing an object.
+	[...]
+	
+	Every turn:
+		let the destroyed object be the object produced by the cat behavior rules;
+		if the destroyed object is not nothing:
+			[...]
+
+Put more formally, the following phrases have been withdrawn:
+
+	rule fails with result (O - an object)
+	rule succeeded with result (O - an object)
+	rule failed with result (O - an object)
+	result of the rule
+
+A rulebook can now only produce a value if it succeeds; and only if it was
+declared as producing a value; that value can have any kind, and this is
+enforced by Inform; and it can only be obtained if the rulebook is considered
+using the new phrases
+
+	the K produced by RB
+	the K produced by RB for V
+
+(the second being used if the rulebook RB is based on some value, and V is
+the one being supplied here).
+
+
+Finally, and unrelatedly, the logic Inform uses to decide what order to place
+rules into rulebooks has been slightly improved. This is something we're
+always wary of tinkering with, but the change means that a domain consisting
+of a kind K together with one or more adjectives will now be considered
+more specific than a kind L together with the same adjectives, if K is itself
+a kind of L. For example, suppose we write:
+
+	An envelope is a kind of container.
+
+We then write:
+
+	[R1] Before printing the name of a closed envelope while listing contents:
+		do nothing instead.
+
+	[R2] Before printing the name of a closed container while listing contents:
+		say "closed ".
+
+In previous builds of Inform, [R1] and [R2] were considered to have equal
+specificity, so that the order of their effect would be the order in which
+they were defined; in other words, they will only have the effect intended
+by the writer of the above (Kathleen Fischer, as it happens) one way around.
+In this build, [R1] is considered more specific than [R2], and always takes
+precedence over it, regardless of definition order in the source text.
+
+
+13. INFLECTIONS
+
+(a) Previous builds generated plurals with a very crude algorithm (for instance,
+"day" pluralised as "daies"); this sloppiness was mitigated by the face that
+the user can specify plurals explicitly:
+
+	The plural of ox is oxen.
+
+Inform's default pluralisation method is now a form of Conway's algorithm,
+and this should make most uses of "The plural of..." redundant now. For
+example, the following now work:
+
+	A wolf is a kind of animal. Two wolves are in the Stable.
+
+and similarly for oxen, geese (but mongooses), sheep, wildebeest, bream and so
+forth among animals alone; Inform constructs plurals such as vertebrae, quartos,
+wharves, phenomena, jackanapes and smallpox correctly. In cases where a noun has
+both a modern and classical plural, Inform prefers the modern form, so brothers,
+not brethren, and cows, not kine. In the spirit of old-school interactive
+fiction, Inform uses Tolkien's invention dwarves, not dwarfs, as plural of dwarf.
+
+"The plural of..." continues to work, of course, and is still useful for
+cases such as:
+
+	The plural of brother in law is brothers in law.
+
+(b) In similar vein, a more careful algorithm derived from a pronunciation
+dictionary is now used for choosing between "a" and "an" when Inform has to
+make a guess; thus an honorary doctorate, an FBI windcheater, a U-boat,
+a ouija board, a ukiyo-e print, among many others. But this change will be
+less visible since Inform doesn't often have to guess; it will mainly show
+in problem messages (where Inform will no longer complain that a value
+should have been "an use option" or "an Unicode character", for example).
+
+(c) Finally, the method used to guess past participles from present participles
+has been improved by the inclusion of some 460 irregular verbs; for example,
+catching to caught, fleeing to fled, crossbreeding to crossbred. This means
+that the "with past participle..." syntax in action definitions now won't
+be needed anywhere near so often, though of course it still works. For
+example,
+
+	Weaving is an action with past participle woven, applying to one thing.
+
+can now simply be
+
+	Weaving is an action applying to one thing.
+
+A few cases are ambiguous; Inform prefers "got" to "gotten", but it's unlikely
+to arise since in most IF situations "getting" is not an action - instead
+"get" is synonymous with "take" and "taking" is the action.
+
+
+14. MINOR NEW FEATURES
+
+The interpretation of conditions which combine Inform's two past-tense syntaxes
+has been changed. Thus,
+
+	Every turn when we have waved the candle at least twice: ...
+
+is legal, but - reading strictly by the specification, as previous builds did -
+"we have waved the candle at least twice" could never be true; it implied
+two or more distinct periods in which it was true that "we have waved the
+candle" was true, with at least one intervening period in which it was false.
+Such a situation can never come about. In this build of Inform, we read the
+condition "we have waved the candle at least twice" to be counting actions,
+not counting periods, which is far, far more likely to be what was meant.
+
+
+It has always been possible to indicate map connections using the direction
+alone (the origin being understood as the room being discussed), but up to
+now, only in the form "Direction is Target", like the second sentence here:
+
+	The Temple is a room. North is the Approach. The Sphinx is east.
+
+The third sentence now works as expected: the Sphinx being east of the Temple.
+
+
+The serial comma is now allowed in sentences like:
+
+	A room can be lofty, regular, or poky.
+
+
+Inform provides two ways to make headings hold source text whose use relates
+to an extension. One is to say something like
+
+	Part 1a - Alternative Leaps (in place of Part 1 - Leaps in Jumping by Eric Eve)
+
+which says that what follows should be used instead of what's in the extension;
+the other is
+
+	Chapter 1P - Sidling (for use with Plurality by Emily Short)
+	...
+	Chapter 1NP - Sidling (for use without Plurality by Emily Short)
+	...
+
+giving source text to be used depending on whether the extension is being
+included or not. In past builds, these two features were forbidden to "nest";
+in this build, it's only the first kind which can't "nest". (That is, once
+a chunk of text has been used in place of an extension's text, it can still
+contain subheadings "for use with" or "for use without"; but it can't contain
+subheadings "in place of".)
+
+
+In previous builds, the "Options.txt" file (if present) was allowed only to
+contain use options - that is, sentences such as "Use American dialect."
+It is now allowed also to contain "Test ..."s and release instructions, so
+for example the following is now a valid "Options.txt":
+
+	Use American dialect.
+	Test fish with "fish/fish with pole/angle".
+	Release along with source text.
+
+To recap, "Options.txt" is intended mainly for classroom use, in setting
+up a standard configuration on multiple machines. Here the instructor can
+make sure the Release button will do what she would like, and can arrange
+for each student's copy of Inform to respond to given Test commands: for
+instance, if the class has an assignment to create a simulation of a camera,
+the instructor could set up "Options.txt" so that TEST CAMERA would run
+through some commands the camera ought to respond to.
+
+(The bug causing "Options.txt" to obstruct the bibliographic titling sentence
+at the top of the visible source text has also been fixed; and a problem
+message has been added for trying to do forbidden things with "Options.txt".)
+
+
+The participles "worn", "carried" and "held" are now given additional
+definitions in the Standard Rules as adjectives applying to things:
+
+	Definition: a thing is worn if the player is wearing it.
+	Definition: a thing is carried if the player is carrying it.
+	Definition: a thing is held if the player is holding it.
+
+Previous builds allowed some adjectival uses but not others, a little
+inconsistently; for example, the following now works, but previously did not:
+
+	A diamond bracelet is here. It is wearable. The description is
+	"It sparkles [if worn]on your wrist[otherwise if carried]in your
+	hand[end if]."
+
+
+The adjectives "on-stage" and "off-stage" can now be made true using "now",
+so, for instance, "now the diamonds are off-stage" is equivalent to "remove
+the diamonds". (If we say "now the diamonds are on-stage" and they already
+were, nothing happens; if they weren't, they are moved to the current
+location.)
+
+
+Inform, like Python and some other languages, uses indentation from the left
+margin to show how phrases are grouped. In past builds, the practical limit
+was 9 tab stops in, though this wasn't very clearly explained and the problem
+message if exceeded was cryptic. The limit is now raised to 25 and a better
+problem message has been created.
+
+
+The phrases for altering the length of a list are worded using "entries";
+for example, "truncate L to 10 entries". It's now legal to use the singular,
+"truncate L to 1 entry", too.
+
+
+In the startup rulebook, the first two rules - in fact, the first two rules
+every Inform story file runs - have been transposed. So the initialise memory
+rule now happens before the virtual machine startup rule, not vice versa.
+Because the latter rule runs the "starting the virtual machine" activity, the
+effect is that we sacrifice a little bit of that activity's ability to be
+the very first thing run; but we gain the ability for this activity to use
+indexed text, stored actions, and similarly complex data, since those depend
+on memory having been initialised.
+
+
+There is now a way to define an adjective in terms of an Inform 6 routine
+which is more capable, since it can not only be tested, but also made true
+or false using "now". For example:
+
+	Definition: a scene is crucial if I6 routine "SceneCrucial" makes it so
+		(it is essential to winning).
+
+This is very similar to the existing syntax:
+
+	Definition: a scene is vital if I6 routine "SceneVital" says so
+		(it is essential to winning).
+
+(a) Whereas "SceneVital" is just a test, "SceneCrucial" is called with two
+arguments: SceneCrucial(S, -1) tests whether the scene is crucial or not and
+returns true or false; SceneCrucial(S, true) must make it true; and
+SceneCrucial(S, false) must make it false.
+
+(b) If the adjective is defined over a kind of values stored in block form
+on the heap, S is passed as a pointer to the block, not as a fresh copy.
+
+
+The Contents index now includes links to the documentation for any extensions
+included in the project being indexed.
+
+Inform's automatically generated documentation on included extensions has
+always listed names of kinds, objects, variables and so on; it now also lists
+names of use options.
+
+
+The maximum complexity of a single "say" - basically, the maximum number of
+chunks it can contain, some being fixed text, others being substitutions -
+has been increased from about 400 to about 4000. (In practice this removes the
+limit altogether, since the maximum length of a single quoted text gets in
+the way first. Having any maxima at all is unfortunate, of course, but it
+enables the compiler to run faster, and makes it easier to catch punctuation
+mistakes in the source.)
+
+
+When Problem messages are reported inside an extension, Inform typically says
+under what headings they occur, but doesn't make clear which extension is
+involved, which can be a nuisance if many extensions are in use. In this build,
+Inform explicitly names the extension.
+
+
+15. WORD LIMITS ON RELATIONS, VERBS, PREPOSITIONS AND DIRECTIONS
+
+Most constructions in Inform can have quite long names. But in previous
+builds, much tighter limits were placed on relation names, parts of verbs,
+the wording of prepositions, and the names of directions.
+
+					Example         Old maximum     New maximum
+Relation name       containment     1               X - 1
+Part of verb        wears           1               X - 4
+Preposition         across from     3               X - 2
+Direction           northwest       3               X - 2
+
+The intention is that there should be no practical limit in any of these
+cases; the current value of X is 32, which it's very difficult to see any
+plausible source text ever needing to exceed.
+
+For example, this is now allowed:
+
+	The verb to cover oneself with (he covers himself with, they cover themselves
+	with, he covered himself with, he is covering himself with) implies the
+	wearing relation.
+
+	Peter is covering himself with a tent-like raincoat.
+
+Here each part of the verb is three words long; the maximum is now 28.
+Similarly:
+
+	The verb to be very far away from implies...
+
+is a preposition four words long, which previous builds would have rejected.
+The limit is now 30.
+
+	Adept sensitivity relates one person to one vehicle.
+	The verb to imagine (he imagines, they imagine) implies the adept sensitivity
+	relation.
+	Peter imagines the Astral Chariot.
+
+Here we have a relation, "adept sensitivity", which is two words long; the
+limit is now 31.
+
+And if you should want:
+
+	Just the tiniest smidge off magnetic north is a direction. The opposite of
+	just the tiniest smidge off magnetic north is just the tiniest smidge
+	off magnetic south.
+	Just the tiniest smidge off magnetic south is a direction. The opposite of
+	just the tiniest smidge off magnetic south is just the tiniest smidge
+	off magnetic north.
+
+then knock yourself out.
+
+>--> Note that when a direction is created, a relation is automatically created
+to represent being in that direction; for instance, "north" creates what is
+now called the "mapping north relation". It used to be called the "mapping-north
+relation", with a hyphen, to squeeze into the former requirement that relations
+have one-word names. It's unlikely that much source text makes direct use of
+these relations by name, so the change will probably not be noticed.
+
+
+16. ACTIONS IN THE STANDARD RULES
+
+Some of the small design decisions about actions in the Standard Rules go back
+to accidents of implementation in the early 1990s (if not earlier still), and
+have no rationale except custom and practice. We are very conservative about
+changing them, all the same, since anything done here will affect essentially
+every source text compiled with Inform. But for this build we have made a
+systematic search for small changes, unlikely to cause much disruption, but
+which will improve the playing experience.
+
+(a) In its earliest works, Infocom introduced the now-traditional commands
+VERBOSE, BRIEF and SUPERBRIEF for the player to choose how much detail to
+see in room descriptions: the whole thing, even for a room revisited; the
+whole thing the first time, but an abbreviated form after that; or always
+only the abbreviated form. The default mode was BRIEF, the middle of these
+positions.
+
+In 1993, when Inform made its debut, this was still conventional, but since
+then authors and players have increasingly found VERBOSE mode more natural.
+Even a tiny iPhone screen shows more text that a 1980s micro did, and printing
+time is now essentially zero, whereas a long description could take five to
+ten seconds to print back then. Inform's fellow IF development system TADS
+has long since used VERBOSE as the default; from this build, Inform is finally
+following suit. So, farewell to default BRIEF mode (1981-2010).
+
+Three new use options exist to set the default behaviour:
+
+	Use VERBOSE room descriptions.
+	Use BRIEF room descriptions.
+	Use SUPERBRIEF room descriptions.
+
+So if this change causes problems, simply add "Use BRIEF room descriptions."
+to restore the old behaviour. For us, it changed the blessed transcripts of
+45 out of about 440 examples, but never such that we minded the change.
+
+(b) Inform has always been liberal in how it reads the word ALL in commands
+typed by players - TAKE ALL really does mean all - but has given authors
+the option to change this by writing rules for the "deciding whether all
+includes" activity. As from this build, the Standard Rules include three
+such rules to strike out people, scenery and things fixed in place. Thus:
+
+	Studio is a room. Jenna is a woman in the Studio. Kenneth is a man in the
+	Studio. The peacock, the script and the stage set are in the Studio.
+	The stage set is fixed in place. The curtains are scenery in Studio.
+
+the traditional reply to TAKE ALL would be:
+
+	Jenna: I don't suppose Jenna would care for that.
+	Kenneth: I don't suppose Kenneth would care for that.
+	peacock: Taken.
+	script: Taken.
+	stage set: That's fixed in place.
+	curtains: That's hardly portable.
+
+With the new default conventions, it's just:
+
+	peacock: Taken.
+	script: Taken.
+
+The new rules are named, of course, and can be cancelled if unwanted (see the
+Rules index):
+
+	exclude scenery from take all rule
+	exclude people from take all rule
+	exclude fixed in place things from take all rule
+
+(c) In this release, the Inform parser changes the default way in which it
+asks what is meant by an ambiguous noun such as FROST. It can ask the
+question in two different forms:
+
+	(1) Who do you mean, Jack Frost or Jill Frost?
+	(2) Which do you mean, Jack Frost or Jill Frost?
+
+In the past it has used form (1) if the token being parsed was "[someone]",
+and (2) otherwise. This wasn't very accurate, as plenty of other tokens might
+expect a person rather than a thing to be typed; but in English, it didn't
+matter very much, because "which" wasn't too bad for people. In German, it
+made a bigger difference, and at Christian Blümke's suggestion we are
+incorporating a change worked out by German Inform users: message (1) is used
+if all of the possible meanings refer to people, and message (2) otherwise.
+
+(d) We have withdrawn the:
+
+	examine undescribed containers rule
+
+and replaced it with two new rules:
+
+	examine containers rule
+	examine supporters rule
+
+The original rule converted the action of examining a container which had
+no description text into a searching action instead. Sometimes this was a
+sensible idea, but not always. Examining and searching are different actions,
+and why should it make a difference whether there's any description or not?
+(The original idea was to avoid a misleading "You see nothing special about..."
+reply about a container which, in fact, contained interesting items. But
+however pragmatic that is, it's not very convincing as a reason.) Moreover,
+examining something requires only a line of sight to it, whereas searching
+requires that the actor can touch the item in question; so converting one
+into the other violates the spatial world model in some cases.
+
+The new rules are (equivalent to) this:
+
+	Carry out examining (this is the examine containers rule):
+		if the noun is a container:
+			if the noun is open or the noun is transparent:
+				if something is in the noun:
+					if the description of the noun is not "":
+						say "[the description of the noun][paragraph break]";
+					say "In [the noun] [is-are a list of things in the noun].";
+					stop the action.
+
+and similarly for supporters, but without transparency being an issue.
+
+(e) We have withdrawn the:
+
+	examine described devices rule
+	examine undescribed devices rule
+
+and replaced them with the:
+
+	examine devices rule
+
+which works much as the rules for containers and supporters do: the
+description paragraph first, if there is one, then the status of the device
+("The hot tap is switched on.").
+
+(f) The command "switch [something]" is now understood as switching off if the
+item in question is currently a device switched on, and vice versa. (Previously
+it would always be understood as switching on.)
+
+(g) The command "fix" is no longer a synonym for "tie". (There is too much
+confusion of the two senses - "fix" in the sense of affix may mean "tie", but
+"fix" in the sense of repair does not.)
+
+(h) The command "get down" is now understood as exiting. (A natural thing to
+type when, say, at the top of a library stepladder.)
+
+(i) The command "get in" is now understood as equivalent to typing just
+"enter". In general "enter" requires a noun - there could well be a choice
+of enterable things available - but a rule new in this build, the
+
+	find what to enter rule
+
+automatically infers an enterable noun in the current location, if one is
+available. (It has no effect if the player has typed something explicit, such
+as "enter cage".)
+
+(j) The command "look [something]" is understood as examining, as if it had
+read "look at [something]". (This is not so much aimed at retro gaming fans
+who want to recreate the full 1982 experience, but at novices, who often seem
+to type commands like this.)
+
+(k) In previous builds, the going action would be stopped by the
+
+	can't go through closed doors rule
+
+if the actor would need to pass through a closed door. That remains true, but
+if the door is openable then the rule now tries opening the door first - thus
+allowing players to walk through ordinary doors without having to type
+explicit "open door" commands. (The popular "Locksmith" extension has always
+provided this; anyone using that extension will see no change.)
+
+(l) A new rule for the going action, the
+
+	stand up before going rule
+
+causes an actor to try getting off a supporter before going in a given
+direction. (A rule which was previously an optional extra, demonstrated by the
+"Hagia Sophia" Example. Use of the "Rideable Vehicles" extension unlists this
+rule, i.e., abolishes it, since this extension makes supporters into mobile
+things which can indeed be used to go from place to place.)
+
+(m) The "putting it on" and "inserting it into" actions require the item
+being put or inserted to be held by the actor; if it isn't, one of the rules:
+
+	can't put what's not held rule
+	can't insert what's not held rule
+
+will stop the action. In this build, they first try to take the item, and
+only stop the action if that fails.
+
+(n) A quaint convention going back to the mid-1980s is that an inventory
+listing changes the meaning of pronouns like "it". Thus
+
+	> INV
+	You are carrying a pineapple.
+	> EAT IT
+
+...would result in "it" meaning the pineapple. We think it's time to give up
+on this convention, which causes nothing but confusion. Accordingly, we have
+deleted the rule responsible:
+
+	use inventory to set pronouns rule
+
+(o) The run-time parser's handling of commands with commas in has been
+changed; previously, a command such as
+
+	> FRED, GO NORTH
+
+would be parsed as an instruction for Fred to do something only because
+FRED was not recognisable as a verb. This turned out to be unfortunate for
+story files with Japanese characters called Takemoto ("Take" for short), or
+for anyone called Don (a verb for putting on clothes), and so on. The
+parser now considers the command to be an instruction provided that the
+text up to the comma matches the name of a possible actor; this avoids
+(most) false positives such as
+
+	> TAKE BELL, BOOK AND CANDLE
+
+(p) The "exiting" action has long had a variable called the "container
+exited from", so that it's possible to write rules depending on what is
+being got out of. This can now be referred to using "from", as in the
+following example:
+
+	After exiting from the Mini Cooper:
+		say "You painstakingly unpack your limbs from the tiny car."
+
+
+
+(Translators may need to note that as a result of these changes three library
+messages, going action number 3, 4 and 5, have been removed; but there are
+also two new ones, going action number 27 and 28.)
+
+
+17. MAINTENANCE
+
+Perhaps this was a bug fix, perhaps a small new feature, but it likely won't
+be controversial: local variable names (created by "let", and such) now take
+precedence over global names of physical objects even in descriptions of
+essentially physical situations. For example, in the fragment
+
+	To sweep (staircase - a supporter):
+		let the debris be a random thing that is supported on the staircase;
+
+...Inform now reads "staircase" as the supporter appearing as a token in the
+expansion of "sweep", even if there is an object in the world called "the
+staircase".
+
+Bug fixed whereby the "Use predictable randomisation." option caused I6
+errors in build 5Z71; it works again now.
+
+Bogus times of day such as "minus 6:23 PM" are no longer recognised; "minus"
+can only be used with relative times, as in "minus six minutes".
+
+Bug fixed whereby nested bracketed compound phrases failed to be read
+properly. It's often poor prose style to write messy phrases full of brackets
+to disambiguate them, but it ought to work, and it seems that this long-standing
+bug made Inform a little unpredictable here.
+
+Bug fixed whereby "There are ..." sentences might fail if a number of things
+were created with some modifying adjective, e.g. "There are four closed doors."
+
+Bug fixed whereby Inform confuses a property of an object with a use of a
+value phrase containing the word "of" - for example, misreading "room
+illustration of the location" as an attempt to use the phrase "room D of R"
+(for looking up the map) rather than an attempt to access a property called
+"room illustration".
+
+Bug fixed whereby compound conditions which included spurious additional
+"when" or "while" words could cause Inform to hang, or crash; for example,
+
+	Test Scene begins when the player is in the First Room or when the
+	player is in the Second Room.
+
+(It should be just "or the player...", not "or when the player...". Inform
+now catches this with a more on-point problem message.)
+
+Bug fixed whereby variable declarations for actions whose names include the
+words "with" or "having" (either not at the end, or not after "it") would
+produce spurious problem messages.
+
+Bug fixed whereby an action in which the player asks someone else to do
+something, which then fails because the persuasion rules halt the process,
+would result in "reason the action failed" not properly being set. (It's now
+set to the identity of the persuasion rule which stopped the action.)
+
+Bug fixed whereby rules using "going nowhere in R" for some room R, or
+"going somewhere in R", would fail to be matched correctly; so that this, for
+example, wouldn't work:
+
+	Instead of going nowhere in the Home: say "You'd just get homesick."
+
+Bug fixed whereby property declarations such as "A room that is dark can be
+dangerous." would wrongly be accepted, but would have adjectives or qualifiers
+such as "that is dark" ignored. (It's incorrect to make a declaration like
+this because the owner of a property has to own it all of the time, no
+matter what; it can't have it only when it's dark.)
+
+Bug fixed whereby generalising about the "map region" property could cause
+an internal error; for instance,
+
+	The map region of a room is usually Jaguar Creek Valley.
+
+Setting "map region" is not the preferred way to put rooms into regions,
+but the above did work in past builds (and the "Permission to Visit" extension
+apparently made use of that); the practice is hereby legalised, and the World
+index now properly maps the result.
+
+Bug fixed whereby defining more than 50 new kinds could sometimes cause
+Inform 6 errors or other aberrant behaviour, in a not-very-repeatable way.
+
+Bug fixed whereby the fast route-finding algorithm for finding routes through
+the map (the default route-finder in Glulx, but only used if the "Use fast
+route-finding" option is chosen in the Z-machine) would always use doors,
+even when not allowed to, and would return 0 rather than -1 for a count of
+the number of steps of an impossible route.
+
+Bug fixed whereby the fast route-finding algorithm for finding routes through
+the map would sometimes return "north" as the "best route from X to Y" in cases
+where no route exists, rather than returning "nothing".
+
+Bug fixed whereby sudden movements of the player from a dark room into a
+lighted one, which happen other than by the usual actions, could result in
+the new room's description being shown twice over.
+
+Bug fixed whereby lists of lists of indexed texts (and similar constructions)
+could lose their identities when printed.
+
+The maximum number of tables per column has been raised from 20 to 99.
+(There are run-time implementation reasons why a maximum has to exist, but
+99 ought to be enough.)
+
+Bug fixed whereby table entries containing literal values would sometimes be
+confused with names of objects, if they could also be read as part of an
+object's name: for example, if an object called False Door existed, then the
+table entry "false" might be misread as this object rather than as the
+truth state for falsity.
+
+Bug fixed whereby, on Glulx only and then only sometimes, looking up a
+value corresponding to another value would produce spurious "programming
+errors" on screen in cases where the column looked at included blank entries.
+
+Bug fixed whereby the "number of rows in T" would produce a more or less
+random answer if T were the empty table used as a default value of the
+"table name" kind; and this could cause "number of filled rows in T" to
+hang, in unlucky cases.
+
+Bug fixed whereby increasing or decreasing a table entry by a given amount
+in fact set it to that amount (but only in cases where the entry was looked
+up with "corresponding to").
+
+Bug fixed whereby various sorting tricks with tables would fail if the
+column sorted on contained indexed text. Inform now requires such tables
+to be sorted before being iterated through using "repeat through T in
+C order", where C is a column holding indexed text, and issues a helpful
+run-time problem message explaining what to do; previously it simply gave
+incorrect results.
+
+Bug fixed whereby, similarly, sorting a list of objects using "sort L in P
+order", where P is a property whose value is an indexed text, would produce
+incorrect results.
+
+Bug fixed whereby sorting a table on a column which contained some blank
+entries (other than as part of blank rows) would move these to the top,
+rather than to the bottom, of the table.
+
+Bug fixed whereby implicit attempts to repeat through a domain which can't
+be iterated through would produce incorrect results at run-time. What now
+happens is that a run-time problem message is generated. For example,
+"let L be the list of action names" can't be done because the action names
+can't be iterated through. (In general not all descriptions are used for
+iteration, which is why this isn't caught with a problem message in the
+compiler.)
+
+Bug fixed whereby spurious problem messages would sometimes be produced
+when matching adjective-qualified descriptions in the tokens for a phrase;
+for instance, in matching "analyse X" against
+
+	To analyse (N - even number): ...
+
+...in cases where X is clearly a number, but may or may not be even.
+
+Bug fixed whereby peculiar messages about being unable to cast or copy block
+values would sometimes appear when passing a list of K to a phrase which
+expects its token to have kind "list of objects", but where K is something
+more specific; for example, passing a list of rooms where a list of objects
+was expected.
+
+Bug fixed whereby a small number of obviously true conditions would produce
+Inform 6 errors in compilation: for example,
+
+	if 1 is a number, say "Hi."
+
+would fail. (What happens here is that Inform simplifies the proposition
+until it becomes universal truth, then compiles that to an empty string of
+Inform 6 code; which is correct for doing nothing, but not for testing nothing,
+since it isn't a valid I6 condition. It now tests universal truth as "if (true)".)
+
+Bug fixed whereby using "whether or not..." in a "now" would sometimes
+cause a spurious internal error: e.g., setting a truth state variable "T" with
+
+	now T is whether or not location is Stage.
+
+Bug fixed whereby Inform would fail to recognise actions involving actors
+whose names include words with an "-ing" suffix, and where the longhand
+"trying" syntax isn't being used. Thus if somebody's full name is "Regional
+Training Officer Tina", Inform was failing to recognise "Tina examining the
+clipboard" as an action, simply because of the word "Training" in her full
+name. Inform now allows such readings in any case except where the action
+verb is itself part of the actor's full name; thus, if there were an action
+called "training", Inform wouldn't like "Tina training Kevin", which would
+look to Inform like a row of names of people; and the author would have
+to rephrase in the longhand form, "Tina trying training Kevin".
+
+Bug fixed whereby actions out of world applying to a topic would have the
+topic noun empty, rather than containing the text of the topic as they
+should; for instance, in this combination:
+
+	Helping is an action out of world applying to one topic.
+	Understand "help [text]" as helping.
+
+the command HELP RICHARD STRAUSS would fail to have the noun set to the
+snippet RICHARD STRAUSS of the command, as would happen for an action
+in world. This wasn't a deliberate restriction - it was a bug.
+
+Bug fixed whereby commands using numbers spelled out in digits as noun
+phrase determiners wouldn't always work: e.g., TAKE FIFTEEN PLANTS would
+be recognised, but not TAKE 15 PLANTS.
+
+Bug fixed whereby the Understand token "[any ...]" would ignore any
+constraint made about visibility in the "..." part; for example, "[any
+person who is not visible]" would be read as "[any person]".
+
+Bug fixed whereby the pronoun IT would sometimes wrongly be set during
+play to the identity of a backdrop item which, though present, was not
+explicitly mentioned; for instance, IT might be set to the sun in some
+outdoor room.
+
+Bug fixed whereby a serial comma would wrongly be used when saying a list
+which contained exactly two items, if the "Use the serial comma." option
+is in force - thus "Starsky, and Hutch".
+
+Bug fixed whereby links to extension documentation inside the application
+would be broken if the extension's name or author included an apostrophe
+(as in the case of "Poor Man's Mistype by Aaron Reed").
+
+Bug fixed whereby it's impossible to use a heading to replace an existing
+heading in an extension if that existing heading contains the words "in"
+or "by" in its name; and problem messages related to heading tricks made
+more explanatory.
+
+Bug fixed whereby printing numbers in excess of 1,000,000 "in words" would
+describe them in thousands; Inform now uses the words "million" and "billion"
+as necessary. (This only affects Glulx games, since the Z-machine can't hold
+numbers that high.)
+
+Bug fixed whereby printing units scaled by factors which aren't powers of 10
+tended to produce somewhat wildly approximate results - for example, that
+printing the value "90 min" in the unit "hours" would produce "1.36 hr".
+Integer arithmetic makes this necessarily only an approximation, but the
+new algorithm is better; for example, 90 seconds is rendered as 0.0010418
+days, the true figure being 0.0010416666...
+
+Bug fixed whereby an attempt to really violate dimensional rules about the
+way numerical values combine could, in some circumstances, throw an internal
+error; for example, using the Metric Units extension to set up standard SI
+units, but then adding "A force times a mass specifies a force.", thus making
+mass dimensionless. (Newton's Laws become not just invalid but inexpressible
+in such a universe... but that's no reason for Inform to fold up its tent.)
+
+Bug fixed whereby understanding units which contained mixed case lettering
+in their notations didn't always work on the Z-machine; for instance,
+
+	100kHz specifies a frequency.
+
+would lead to commands like "tune to 79kHz" not being recognised.
+
+Bug fixed whereby units given in singular and plural forms would sometimes
+have only the singular form used in saying, e.g.,
+
+	An age is a kind of value. 1 year old (singular) or 2 years old (plural)
+	specifies an age. Every person has an age. Suzie is a woman. Suzie is
+	8 years old.
+
+would result in "[the age of Suzie]" being "8 year old", not "8 years old".
+
+Two bugs fixed whereby Inform would be picky about whether or not the contents
+of, say, a constant list of things were valid, in cases where the entries
+were not obviously things but would be proved to be by the end of compilation;
+this affected initial values of properties and of global variables. For
+example, the following threw a spurious problem message in earlier builds:
+
+	The Place is a room. Hall is south of the Place.
+	The destination wishlist is a list of rooms that varies.
+	The destination wishlist is { the Place, the Hall }.
+
+The problem here was that the Hall wasn't known to be a room at the time when
+the constant list was read; this has now been resolved.
+
+Bug fixed whereby adjectives declared in the form "...if its P is V" (which
+check that a property P has value V) would always be false for text properties;
+thus, "Definition: a childhood memory is forgotten if its recollection is ""."
+would fail to work.
+
+Bug fixed whereby antonyms of adjectives declared in a way which laid them
+out as phrases, like so...
+
+	Definition: A thing (called the item) is handy rather than useless:
+		if the item is openable, decide yes;
+		decide no.
+
+...would fail to work: "handy" would work perfectly, but not "useless", which
+would in some circumstances produce I6 errors.
+
+Bug fixed (if it was really a bug) whereby the "maximum score" could not be
+changed during play.
+
+Bug fixed whereby an I7 name given to a rule defined by an I6 routine would
+sometimes be confused with the name of a new object, if used as the value
+of a property, or in some other assertion sentence contexts.
+
+Bug fixed whereby the literal Inform 6-to-7 escape "(+ V +)", where V is a
+value stored on the heap, produced an attempt to block-copy an independent
+instance of V, rather than producing a pointer to the existing instance;
+this, in particular, making it difficult to use the notation for global
+variables holding indexed text, and the like.
+
+Bug fixed whereby the literal Inform 6-to-7 escape "(+ A +)", where A is an
+adjective, would produce I6 code which failed to compile, rather than the
+name of the routine to test the adjective. Since Inform 6 is typeless,
+there's no good way to choose which sense of the adjective is meant, if
+several exist for different kinds of value (as for instance with the
+adjective "empty"). The convention is: the meaning for objects, if there
+is one; and otherwise the first-declared meaning.
+
+For clarity's sake: rules written thus...
+
+	Instead of yourself going: ...
+
+where the actor is explicitly named as "yourself" (or "the player"), now work
+as the writer might expect (i.e., as if it just read "Instead of going: ...").
+Hard to know whether this is a bug fix or not - arguably it's less consistent
+this way, because the convention is that an action is by the player unless
+a specific actor is named. But what matters is that the sense should
+be right for the reader.
+
+Bug fixed (or perhaps it's really that Inform's specification has been
+clarified) so that a rule like this:
+
+	Every turn jumping for three turns: say "A demon appears!"
+
+does take effect if the player jumps twice, types SAVE, and then jumps a
+third time; that is, the saving the game action does not interrupt the
+count up to three. (Because saving the game is out-of-world, and so doesn't
+take up a turn.) On the other hand, a rule like this is fine:
+
+	Check requesting the pronoun meanings for the first time:
+		say "The PRONOUNS command is very useful. To explain: ...";
+		continue the action.
+
+since although "requesting the pronoun meanings" happens out-of-world and
+can't take place for a number of turns, it does take place for a number
+of times.
+
+Bug fixed whereby references to things having happened "for exactly 0 turns"
+would fail to work, e.g.:
+
+	if the rose has been visible for exactly 0 turns
+
+Bug fixed whereby "try", when used to cause an out-of-world action by the
+player during an existing action by somebody else, could sometimes cause a
+consecutive in-world action by that other person to be misconstrued as
+being out-of-world. For example:
+
+	Instead of an actor waiting:
+		try requesting the pronoun meanings;
+		try the actor saying yes.
+
+might result in the "saying yes" action being rejected as out-of-world and
+thus unavailable to an actor other than the player.
+
+Bug fixed whereby global variables could not appear in "... while ..." clauses
+to do with activities, so that this for instance would not work:
+
+	For printing the name of the banana while listing contents of the player:
+		say "yummy banana".
+
+...whereas the same thing with "yourself" instead of "the player" would work.
+They now both do.
+
+Bug fixed whereby before, instead or after rules would sometimes be included
+on the Index pages for out-of-world actions, despite the fact that they
+cannot affect these.
+
+Bug fixed whereby certain built-in adjectives would have their indexed
+Phrasebook definitions truncated by one word, though surprisingly often they
+still made sense that way.
+
+Bug fixed whereby tool-tips displayed when the mouse arrow hovers above a
+map connection in the World index would show garbled names of rooms or
+directions when these included accented characters.
+
+Bug fixed whereby, similarly, pasted code from extension documentation
+examples would come out with accented characters garbled in the paste process.
+Sorry about this: it was particularly bad for examples like "Cursillo Mini
+Juego", supplied with the documentation for Sebastian Arg's Spanish extension.
+
+Bug fixed whereby releasing with a website would sometimes produce web pages
+with the wrong character encoding; typically with UTF-8 for the source text,
+but with ISO Latin-1 headings.
+
+Bug fixed whereby releasing with template websites was not working unless
+the template was placed inside the application, which users should never
+have to do.
+
+Bug fixed whereby the "Runtime problems" pages displayed in the user interface
+have title numbers which are out by one. Thus the explanation page for
+"P17 - Can't divide by zero" was headed "P18 - Can't divide by zero"; which
+was needlessly confusing, though it did no harm otherwise.
+
+Problem message added (in place of sometimes mysterious other problem
+message(s)) to catch attempts to use "called" to make a name which already
+has another meaning and where confusion may occur. For example, an attempt
+to write:
+
+	Instead of giving something (called the number): ...
+
+cannot possibly end well, but Inform would previously allow the calling, then
+throw problem messages later on when it was used.
+
+Problem message added (in place of Inform 6 errors) to catch attempts to
+change the bibliographic data for a story during play. A shame, this; it
+would be coolly interactive to be able to change the story's title and
+author halfway through, but it would make the Library Card, the IFDB entry,
+and so on, wrong.
+
+Problem message added (in place of internal error) when attempting to solve
+an equation which is given as the result of some further calculation, rather
+than being explicitly named.
+
+Problem message added (in place of internal error) when the title, author,
+or other bibliographic data for a project contains a text substitution -
+again, these have to be fixed text.
+
+Problem message added (in place of internal error) when a door is said to
+be "south of nowhere", or for other such formulations involving "nowhere" as
+the source of a map connection.
+
+Problem message added (in place of what was in some circumstances an internal
+error) when an either/or property is assigned using "has" instead of "is",
+e.g., "The teddy bear has fuzzy."
+
+Problem message added for misunderstandings like "When the play begins..."
+instead of "When play begins...".
+
+Problem message added (in place of internal error) when a declaration
+contains only variables, e.g., "To (N - a number): ...".
+
+Problem message added (in place of run-time problem) when a variable is
+created with kind "list of topics", or other such constructions. (Variables
+of kind "topic" are forbidden; it was an oversight that these more complex
+variations weren't rejected at compile-time in earlier builds. They were let
+through, but didn't work at run-time.)
+
+Problem message added for non-thing objects being created inside or on top
+of other objects. (The world model requires that the contents of a room must
+be things, but earlier builds didn't check this; at run-time, strange things
+could then occur.)
+
+Problem message added to explain oddball mistakes like "A thing is a waiting
+receptacle if it is an open container.", which in previous builds were met
+with a rather vague and unhelpful complaint.
+
+Problem message added (in place of internal error) for understanding a
+property in the description of something, when the property is one whose
+value is an object of a kind outside the usual spatial model (i.e., neither
+room, thing, region nor direction).
+
+Problem message added (in place of internal error) for making a direction
+whose opposite does exist, but isn't a direction.
+
+Problem message added for attempts to release along with an existing story
+file when in Glulx mode: Inform supports this for Z-machine story files, but
+not Glulx, at present. (There are so few Glulx story files not generated by
+I7 that it's never seemed worth it, but get in touch if you do need this.)
+
+Problem message added (in place of internal error) for a malformed inline
+Inform 6 phrase definition with redundant text after the "-)" marker.
+
+The I6 template reader has been made more forgiving of what it considers
+malformed headings - marked by the use of an "@" character in the leftmost
+column; some users ran into this by accidentally placing Z-machine or Glulx
+assembly language, also marked by an "@" in I6, unindented on the left
+margin of material included using "(-" and "-)". The template reader will
+now handle any such material correctly, and a more helpful problem message
+is produced if it nevertheless runs into trouble because of a stray "@".
+
+Part 3 of the Standard Rules now has slightly better section divisions,
+making it easier to replace smaller chunks.
+
+Formatting improved on the Problems page for the case of running out of
+readable memory in the Z-machine. In 5Z71 the message for this was, due to
+a text editor accident, full of words run together without spaces; which
+"creates the alarming impression of a nervous breakdown" (Eric Eve).
+
+
+18. EXAMPLES
+
+"Entrevaux" added to demonstrate a system of scenes where each scene has a
+	list of props, a location, and some starting text, and scenes are set up
+	and struck automatically.
+"Wainwright Acts" added to demonstrate a quirk of using doors with NPCs.
+"Bic" modified to reflect the new behavior of description properties.
+"Kiwi" revised to be more accurate about when it prints its parser error.
+"Waterworld" extended to show how to add new accessibility rules. (The old
+	version of this example was simple but not the most trustworthy 
+	implementation.)
+"Stately Gardens" revised to handle "look towards [something]" better, and
+	to print a response to looking towards a room that contains nothing notable.
+"Paddington", "Sushi" and "Crusoe" slightly rewritten to account for changes
+	to the carry out examining rulebook (see above).
+
+
+19. BUILT-IN EXTENSIONS
+
+The definition of kHz in "Metric Units" was wrong: it thought 1 kHz was a
+	thousandth of a Hz, not a thousand Hz.
+"Locksmith" advanced to version 9:
+	Additional rules so that the player can learn the function of a passkey
+		by using it to lock or observing it being used to lock. (Formerly only
+		unlocking identified the passkey.)
+	Name given to one rule for which a name had been omitted. (Sorry about that.)
+Tweak to "Basic Screen Effects" to get rid of a bug to do with the styles of
+	status text in Glulx when an extended status bar was employed (thanks to
+	Erik Temple for the patch). Version advanced to 6.
+"Plurality": a couple of minor bugs expunged and the extension documentation
+	improved to show how to check the plural status of objects. Version number
+	advanced to 7.
+"Glulx Text Effects": minor changes to the documentation to clear up some
+	confusion in the discussion of colors as rendered in hex; and revised to
+	allow the user to modify the built-in styles. Version number advanced to 4.
+
+
+20. A NOTE ABOUT FIGURE AND SOUND NAMES
+
+Figure names and sound names are the standard Inform kinds for representing
+pictures and sound effects. In this build they gain in functionality (they
+can have properties now, can be repeated through, and so on), but to achieve
+this we needed to change their data representation at the Inform 6 level.
+
+This only affects I6 code included into I7 source text, but the practical
+side-effects run wider, because many people use Glulx extensions for doing
+ingenious things with (especially) images; and those extensions tend to rely
+on the old representation.
+
+This means they will need to be updated in order to work with this new build
+of Inform.
+
+Previously, a figure name and a sound name were each represented in I6 by
+the resource ID number of the picture or sound resource inside the blorbed
+story file. These would usually be small numbers, and would be different from
+each other (i.e. no picture would have the same ID number as a sound).
+
+From this build, figure name and sound name are enumerated kinds, meaning
+that they are each independently stored as the I6 level as 1, 2, 3, ... in
+order of creation. These are typically off by one, or some other small amount,
+from resource ID numbers, but don't rely on that. To convert to a resource
+ID number, indirect through the word arrays:
+
+	ResourceIDsOfFigures-->N
+	ResourceIDsOfSounds-->N
+
+In other words, whereas in an I6 inclusion
+
+	(+ figure of Space Shuttle +)
+
+would previously have produced the resource ID number as an I6 value, you
+now need to say
+
+	ResourceIDsOfFigures-->((+ figure of Space Shuttle +))
+
+and similarly for sounds. We apologise for the inconvenience of changing
+this, but from the long-term point of view, it's the right thing to do.

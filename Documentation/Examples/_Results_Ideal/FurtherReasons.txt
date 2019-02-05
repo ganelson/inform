@@ -1,0 +1,104 @@
+   Nook Obscure
+  Further Reasons Why All Poets Are Liars
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Nook Obscure
+  Above the College kitchens, which make a humming sound, less tuneable than bees, but hardly less industrious, with shrill notes of sharp command and scolding intermixed: and below Trinity's loquacious clock, who never lets the quarters, night or day, slip by him unproclaimed, and tells the hours twice over with a male and female voice. In short, the kind of rubbish room they give to a northern villager. But you get a bed and a high shelf all of your own. And you long to find some Romantic way to look out of the window.
+  
+  On the shelf is Euclid's Elements.
+  
+  Your packing case, stamped W. WORDSWORTH (KENDAL), is near the bed.
+  
+> >   Nook Obscure
+  (Testing.)
+  
+  >[1] get on bed
+  You get onto the bed.
+  
+  >[2] x window
+  Just a blank patch of chapel wall.
+  
+  >[3] get off
+  You get off the bed.
+  
+  Nook Obscure
+  Above the College kitchens, which make a humming sound, less tuneable than bees, but hardly less industrious, with shrill notes of sharp command and scolding intermixed: and below Trinity's loquacious clock, who never lets the quarters, night or day, slip by him unproclaimed, and tells the hours twice over with a male and female voice. In short, the kind of rubbish room they give to a northern villager. But you get a bed and a high shelf all of your own. And you long to find some Romantic way to look out of the window.
+  
+  On the shelf is Euclid's Elements.
+  
+  Your packing case, stamped W. WORDSWORTH (KENDAL), is near the bed.
+  
+  >[4] x window
+  This window opens rather unpromisingly onto the chapel wall opposite, so even granted the moonlight it is dark in here. Still, surely there's a poem here somewhere?
+  
+  >[5] get elements
+  You cannot reach Euclid's Elements, which is up on the shelf.
+  
+  >[6] get on box
+  You get onto the box.
+  
+  >[7] x window
+  Tantalisingly, you are not quite able to spy the statue.
+  
+  >[8] get elements
+  You cannot reach Euclid's Elements, which is up on the shelf.
+  
+  >[9] push box to shelf
+  Not while you are standing on the box.
+  
+  >[10] get off
+  You get off the box.
+  
+  Nook Obscure
+  Above the College kitchens, which make a humming sound, less tuneable than bees, but hardly less industrious, with shrill notes of sharp command and scolding intermixed: and below Trinity's loquacious clock, who never lets the quarters, night or day, slip by him unproclaimed, and tells the hours twice over with a male and female voice. In short, the kind of rubbish room they give to a northern villager. But you get a bed and a high shelf all of your own. And you long to find some Romantic way to look out of the window.
+  
+  On the shelf is Euclid's Elements.
+  
+  Your packing case, stamped W. WORDSWORTH (KENDAL), is near the bed.
+  
+  >[11] push box to shelf
+  With some effort, you shove the box from near the bed to under the shelf.
+  
+  >[12] get on box
+  You get onto the box.
+  
+  >[13] get elements
+  Taken.
+  
+  >[14] x window
+  All you can see is the antechapel wall, and the dull silver gleam of the pealing organ.
+  
+  >[15] get off
+  You get off the box.
+  
+  Nook Obscure
+  Above the College kitchens, which make a humming sound, less tuneable than bees, but hardly less industrious, with shrill notes of sharp command and scolding intermixed: and below Trinity's loquacious clock, who never lets the quarters, night or day, slip by him unproclaimed, and tells the hours twice over with a male and female voice. In short, the kind of rubbish room they give to a northern villager. But you get a bed and a high shelf all of your own. And you long to find some Romantic way to look out of the window.
+  
+  Your packing case, stamped W. WORDSWORTH (KENDAL), is under the shelf.
+  
+  >[16] push box to window
+  With some effort, you shove the box from under the shelf to over by the window.
+  
+  >[17] get on box
+  You get onto the box.
+  
+  >[18] x window
+  At last! You can just, standing on tiptoes on the box right up at the window, make out the top of the statue! Of such epiphanies are Poesy born. Let's see now... oh yes...
+  
+  And from my pillow, looking forth by light
+  Of moon or favouring stars, I could behold
+  The antechapel where the statue stood
+  Of Newton with his prism and silent face,
+  The marble index of a mind for ever
+  Voyaging through strange seas of Thought, alone.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

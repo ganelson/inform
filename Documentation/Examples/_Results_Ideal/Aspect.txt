@@ -1,0 +1,21 @@
+   Office
+  Aspect
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Office
+  You can see a widescreen TV and a fifties TV here.
+  
+> >   Office
+  (Testing.)
+  
+  >[1] examine european standard tv
+  The widescreen TV is currently switched off.
+  
+  >[2] x 16:9 tv
+  The widescreen TV is currently switched off.
+  
+  >[3] x 4:3 tv
+  The fifties TV is currently switched off.
+  
+> >

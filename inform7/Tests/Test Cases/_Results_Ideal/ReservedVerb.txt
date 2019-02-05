@@ -1,0 +1,18 @@
+   Laboratory
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Laboratory
+  You can see a bat here.
+  
+> >   Laboratory
+  (Testing.)
+  
+  >[1] purloin bat
+  You see nothing special about the bat.
+  
+  >[2] !purloin bat
+  [Purloined.]
+  
+> >

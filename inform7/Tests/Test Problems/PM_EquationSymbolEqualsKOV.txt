@@ -1,0 +1,5 @@
+Laboratory is a room.
+
+Equation 2
+F = ma
+where F is a number, m = a number, a is a number.

@@ -1,0 +1,87 @@
+   Steep Hill
+  Zorb
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Steep Hill
+  The Zorb is here.
+  
+  You can also see a flat rock here.
+  
+> >   Steep Hill
+  (Testing.)
+  
+  >[1] d
+  
+  Valley
+  The Zorb rolls ponderously but inevitably into the vicinity.
+  
+  >[2] push zorb up
+  Lucy whoops delightedly as she rides along in the Zorb.
+  
+  Steep Hill
+  You can see a flat rock here.
+  
+  >[3] look
+  Steep Hill
+  The Zorb rests here, kept from further rolling by your support.
+  
+  You can also see a flat rock here.
+  
+  >[4] push zorb up
+  Lucy whoops delightedly as she rides along in the Zorb.
+  
+  Crest
+  
+  >[5] wave
+  You let go of the Zorb.
+  
+  You wave.
+  
+  The Zorb succumbs to gravity and rolls down toward the Steep Hill.
+  
+  >[6] d
+  
+  Steep Hill
+  The Zorb is here.
+  
+  You can also see a flat rock here.
+  
+  The Zorb succumbs to gravity and rolls down toward the Valley.
+  
+  >[7] d
+  
+  Valley
+  The Zorb is here.
+  
+  >[8] push zorb up
+  Lucy whoops delightedly as she rides along in the Zorb.
+  
+  Steep Hill
+  You can see a flat rock here.
+  
+  >[9] release zorb
+  You let go of the Zorb.
+  
+  The Zorb succumbs to gravity and rolls down toward the Valley.
+  
+  >[10] d
+  
+  Valley
+  The Zorb is here.
+  
+  >[11] push zorb up
+  Lucy whoops delightedly as she rides along in the Zorb.
+  
+  Steep Hill
+  You can see a flat rock here.
+  
+  >[12] touch rock
+  You feel nothing unexpected.
+  
+  The Zorb succumbs to gravity and rolls down toward the Valley.
+  
+  >[13] push the flat rock south
+  The flat rock is not amenable to being pushed from place to place.
+  
+> >

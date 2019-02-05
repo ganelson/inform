@@ -1,0 +1,18 @@
+Office is a room. "Let's consider some candidates." The player is here.
+Jack is a man. Jack is in the offfice.
+
+Table of Suitable Rooms
+Candidate	Room Score
+a room	a number
+with 30 blank rows
+
+
+Table of Suitable People
+Candidate	Person Score
+a person	a number
+with 30 blank rows
+
+When play begins:
+	repeat with guy running through people:
+		choose a blank row in Table of Suitable people;
+		now candidate entry is guy.

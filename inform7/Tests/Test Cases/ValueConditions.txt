@@ -1,0 +1,14 @@
+Workshop is a room.
+
+Colour is a kind of value. The colours are red, green and white.
+
+A colour can be bright, neutral or flat. Green is neutral.
+
+When play begins:
+	repeat with C running through colours:
+		say "[C] is [colour condition of C].";
+	now red is flat;
+	repeat with C running through colours:
+		say "[C] is [colour condition of C].";
+	if red is flat, say "Red is flat.";
+	otherwise say "Red isn't flat."

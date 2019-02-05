@@ -1,0 +1,9 @@
+Inform 7 build 6M26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DirectionSubkinded
+  >--> You wrote 'A rotation is a kind of direction' (source text, line 2): but
+    'direction' is not allowed to have more specific kinds, because it's too
+    fundamental to the way Inform maps out the geography of the physical world.
+Inform 7 has finished: 20 centiseconds used.

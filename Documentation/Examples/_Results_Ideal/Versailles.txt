@@ -1,0 +1,23 @@
+   Hall of Plywood Boards
+  Versailles
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hall of Plywood Boards
+  The Hall of Mirrors is under reconstruction: it is currently a dank tunnel enlivened only by short placards about the history of the room.
+  
+  As though to mock tourists such as yourself who bought their tickets without knowing this, the officials have left uncovered a single panel of mirror.
+  
+> >   Hall of Plywood Boards
+  (Testing.)
+  
+  >[1] x mirror
+  Lovingly restored to shimmering brilliance, it suggests how marvelous this room would be if you had had the good sense to arrive after the renovations were complete.
+  
+  >[2] look in mirror
+  You see some tourists reflected back at you.
+  
+  >[3] g
+  You see some tourists reflected back at you.
+  
+> >

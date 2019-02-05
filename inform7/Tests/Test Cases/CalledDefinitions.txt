@@ -1,0 +1,18 @@
+The Sooty Room is a room. East of the Sooty Room is the China Room.
+The box is in the China Room. In the box is a doll. The crate is in the
+Sooty Room. The crate is a container.
+
+Definition: a direction (called thataway) is viable if the room thataway
+from the location is a room.
+
+Definition: a room (called venue) is viable if the venue is lighted.
+
+Definition: a container (called the receptacle) is viable if something is
+in the receptacle.
+
+When play begins:
+	say "Viable directions: [list of viable directions].";
+	say "Viable rooms: [the list of viable rooms].";
+	say "Viable things: [the list of viable things]."
+
+Test me with "look".

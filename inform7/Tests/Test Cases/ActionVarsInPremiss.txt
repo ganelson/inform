@@ -1,0 +1,10 @@
+The Mysterious Void is a room. The frog is in the Void.
+
+Trevor is a man in the Void. Persuasion rule: persuasion succeeds.
+
+Check an actor waving when the noun is not held by the actor:
+	if the actor is the player, say "(first taking [the noun])[command clarification break]";
+	silently try the actor taking the noun;
+	if the actor is not holding the noun, stop the action.
+
+Test me with "actions / wave frog / wave frog / drop frog / trevor, wave frog / trevor, wave frog".

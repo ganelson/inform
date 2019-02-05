@@ -1,0 +1,5 @@
+Home is a room.
+
+When play begins:
+	if 1 is 2:
+	say "1 is 2".

@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 46 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableReplacementMissesCols
+  >--> The table 'Table 21 - Selected Elements (replaced)' (source text, line 10)
+    won't work as a replacement, because it's missing a column found in the
+    original 'Table 21 - Selected Elements' (source text, line 3).
+    The old table has columns: Element, Symbol, Atomic number, Atomic weight.
+    The new table has columns: Element, Atomic number, Atomic weight.
+Inform 7 has finished: 15 centiseconds used.

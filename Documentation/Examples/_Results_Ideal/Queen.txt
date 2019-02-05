@@ -1,0 +1,34 @@
+   Hall of Almug Tree Pillars
+  "Oh, you've arrived," says Solomon.
+  
+  The Queen of Sheba
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hall of Almug Tree Pillars
+  The pillars of the room are made of almug tree, the ceiling made of silk and the floor of glass.
+  
+  You can see Solomon here.
+  
+> >   Hall of Almug Tree Pillars
+  (Testing.)
+  
+  >[1] ask solomon about himself
+  "As you see," he says, holding out his arms to each side.
+  
+  >[2] ask solomon what rain is
+  "Clouds are a disturbance made by the paths of birds," Solomon replies. "The air beaten by their wings becomes agitated, as when a river is stirred and the mud churns up."
+  
+  >[3] ask solomon about himself
+  "I am an ordinary man," he answers.
+  
+  Truly, Solomon has answered all your questions, and his wisdom is even as great as you had heard!
+  
+  
+  
+      *** Your heart beats strangely fast ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

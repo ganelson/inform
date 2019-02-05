@@ -1,0 +1,81 @@
+   Empty Room
+  Tilt
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empty Room
+  Nothing to see here.
+  
+  You can see a deck of cards here.
+  
+> >   Empty Room
+  (Testing.)
+  
+  >[1] draw
+  You draw a three of hearts.
+  
+  >[2] g
+  You draw a five of hearts.
+  
+  >[3] g
+  You draw a ten of spades.
+  
+  >[4] g
+  You draw a queen of diamonds.
+  
+  >[5] g
+  You draw a seven of diamonds.
+  
+  >[6] force hand
+  You are carrying:
+    royal flush (A?-K?-Q?-J?-10?)
+  
+  >[7] g
+  You are carrying:
+    straight flush (Q?-J?-10?-9?-8?)
+  
+  >[8] g
+  You are carrying:
+    four of a kind (8?-8?-8?-8?-3?)
+  
+  >[9] g
+  You are carrying:
+    full house (10?-10?-10?-A?-A?)
+  
+  >[10] g
+  You are carrying:
+    flush (Q?-J?-7?-5?-2?)
+  
+  >[11] g
+  You are carrying:
+    straight (A?-K?-Q?-J?-10?)
+  
+  >[12] g
+  You are carrying:
+    three of a kind (2?-2?-2?-4?-3?)
+  
+  >[13] g
+  You are carrying:
+    two pairs (7?-7?-6?-6?-9?)
+  
+  >[14] g
+  You are carrying:
+    two pairs (A?-A?-6?-6?-7?)
+  
+  >[15] g
+  You are carrying:
+    pair of queens (Q?-Q?-10?-7?-4?)
+  
+  >[16] g
+  You are carrying:
+    high card (K?-J?-9?-7?-5?)
+  
+  >[17] g
+  You are carrying:
+    straight (5?-4?-3?-2?-A?)
+  
+  >[18] g
+  You are carrying:
+    royal flush (A?-K?-Q?-J?-10?)
+  
+> >

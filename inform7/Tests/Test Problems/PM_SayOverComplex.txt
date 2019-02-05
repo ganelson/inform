@@ -1,0 +1,6 @@
+Foo is a room.
+When play begins:
+	say "[first time][first time][first time][first time][first time][first time][first time][first 
+time][first time][first time][first time][first time][first time][first time][first time][first time][first 
+time][first time][first time][first time][first time][first time][first time][first time][first time][first 
+time][first time][first time][first time][first time][first time][first time][first time]Z[only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only][only]."

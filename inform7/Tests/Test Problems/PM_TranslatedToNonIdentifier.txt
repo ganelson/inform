@@ -1,0 +1,8 @@
+Home is a room.
+
+The Home object translates into I6 as your "home".
+The Home object translates into I6 as "home sweet home".
+The Home object translates into I6 as "0home".
+The Home object translates into I6 as "y012345678901234567890123456789". [Works.]
+The Home object translates into I6 as "nn012345678901234567890123456789". [Doesn't.]
+The Home object translates into I6 as "home" from home.

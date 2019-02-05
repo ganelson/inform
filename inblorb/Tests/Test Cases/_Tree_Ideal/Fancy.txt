@@ -1,0 +1,2 @@
+intest/Workspace/T3/Example.materials/Release
+intest/Workspace/T3/Example.materials/Release/Cover.jpg

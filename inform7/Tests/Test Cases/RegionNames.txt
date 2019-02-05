@@ -1,0 +1,16 @@
+Zone is a room. Nigel is in the Zone.
+
+Area 51 is a region. 
+Roswell is a region.   
+HQ is a region.    
+The RV is a region. 
+
+When play begins, say a list of every region.
+
+When play begins, say a list of things.
+
+When play begins, say "Try visiting [a list of regions which are not HQ]."
+
+Understand "take [any region]" as a mistake ("You already own [the noun].").
+
+Test me with "take roswell / take HQ / take the RV".

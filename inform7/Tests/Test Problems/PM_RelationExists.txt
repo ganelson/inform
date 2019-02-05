@@ -1,0 +1,2 @@
+Proximity relates various things to various things.
+Proximity relates various rooms to various rooms.

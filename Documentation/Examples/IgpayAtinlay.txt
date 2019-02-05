@@ -1,0 +1,18 @@
+* Replacements
+(Pig Latin for the player's commands; Igpay Atinlay)
+A pig Latin filter for the player's commands.
+
+For the sake of argument, suppose we want to parrot back all the player's commands in pig Latin:
+
+	{*} "Igpay Atinlay"
+	
+	Armfay is a room.
+
+	After reading a command:
+		let N be "[the player's command]";
+		replace the regular expression "\b(<aeiou>+)(\w*)" in N with "\1\2ay";
+		replace the regular expression "\b(<bcdfghjklmnpqrstvwxz>+)(\w*)" in N with "\2\1ay";
+		say "[N][paragraph break]";
+		reject the player's command.
+		
+	Test me with "nix on the stupid".

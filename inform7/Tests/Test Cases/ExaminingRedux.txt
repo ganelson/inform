@@ -1,0 +1,11 @@
+The Lounge is a room. "Ah, the Lounge! How relaxing."
+
+The comfy green chair is an enterable scenery supporter in the Lounge. The description is "The comfy chair is green."
+
+The player is on the chair.
+
+The big basket is a container in the lounge.  The big basket is enterable. 
+
+The player carries a ball and a box. The box is a container.
+
+Test me with "x chair / enter basket / x basket / drop ball / x basket / get ball / put ball on chair / x chair / exit / x chair / get ball / put ball in basket / x basket / put box in basket / x basket / get ball / put ball in box / x basket / put box on chair / x chair".

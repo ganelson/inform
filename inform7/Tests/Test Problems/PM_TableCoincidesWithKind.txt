@@ -1,0 +1,5 @@
+The Admiralty is a room. Vessel is a kind.
+
+Table of Vessels
+ship		rate
+"Euryalus"	6

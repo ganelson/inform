@@ -1,0 +1,84 @@
+** Counting while comparing
+(Drawers where thing is always in the last opened; Yolk of Gold)
+Set of drawers where the item the player seeks is always in the last drawer he opens, regardless of the order of opening.
+
+Suppose that for dramatic effect we would like the player to find the thing he is looking for always in the last drawer he opens...
+
+	{*}"Yolk of Gold"
+
+	The Turret is a room. "A cramped little room distinguished chiefly by the spiral staircase that descends from it. The windows look out over the rooftop."
+
+	The Rooftop is outside from the Turret.
+	
+	The staircase is an open unopenable door. It is scenery. It is below the Turret and above the Library. The description is "A winding stair carved out of the single trunk of a massive tree, all in a dark wood; the outside of the stairs left unfinished with the bark still on, but the treads worn smooth by long and constant use."
+
+	The description of the Library is "Here, it seems, you have found your mark: books line both walls, a dark carpet lies on the floor, and a strange dress hangs up in a presentation case. And the thing you were told to look for, a desk with three drawers.
+
+	A spiral staircase leads up and out."
+	
+	The cherry desk is scenery in the library. The description is "A deep, satin-lustrous cherry, with scrollwork legs and gilt touches. The years have not been kind, and it has cracked and split in several places; the finish is damaged, and where there is inlaid mother of pearl, it is beginning to come up from its bed.  But it is still a sound piece, and features three drawers."
+
+	After examining the desk for the first time, say "(Your employers were able to tell you to look for it, but not which drawer to look in. Typical.)"
+
+	A drawer is a kind of container. A drawer is always openable and closed. The description of a drawer is "The usual drawer of heavy wood, inadequately smoothed for ease of use."
+
+	The top drawer is a drawer. The middle drawer is a drawer. The bottom drawer is a drawer. The top drawer, the middle drawer, and the bottom drawer are part of the desk. A drawer can be explored or unexplored. A drawer is usually unexplored. Instead of searching a closed drawer, try opening the noun.
+
+	After opening a drawer when no drawers are explored:
+		now the noun is explored;
+		say "There is a tremendous screech, but nothing whatsoever inside, not even dust."
+	
+	After opening an unexplored drawer when exactly one drawer is explored:
+		now the noun is explored;
+		say "You struggle to open this one a bit more quietly, conscious all the time of noise...  but no, it's empty.  Just stands to reason."
+	
+	After closing a drawer:
+		say "There is a racket of wood protesting against wood as you do so, which makes you wonder if you hadn't better just leave them open from now on.  The unhappy owner is probably going to catch on soon enough anyway."
+	
+	Before opening an unexplored drawer when exactly two drawers are explored:
+		move the mysterious thing to the noun;
+		now the noun is explored.
+	
+	There is a mysterious thing. The description is "A very familiar-looking hemispherical weight of metal, goldish in tone though perhaps not made of gold.  This one has a slight stickiness about the bottom surface."
+
+	Instead of opening the desk when at least one drawer is unexplored:
+		let the next drawer be a random unexplored drawer;
+		say "(starting with [the next drawer])[line break]";
+		try opening the next drawer.
+	
+	Instead of looking under the desk when no drawers are explored:
+		say "You carefully survey the ground around the desk.  There don't seem to be any hidden tripwires or traps to prevent you from having a look in the drawers."
+	
+	Instead of looking under the desk when at least one drawer is unexplored:
+		say "Nothing there either.  Thoroughness is a virtue with tedium as a side effect, as your mother used to say -- but they always counted her a trifle slapdash."
+
+	Instead of looking under the desk when all drawers are explored:
+		say "There's nothing down there, but this doesn't come as a great surprise."
+	
+	Instead of searching the desk when at least one drawer is unexplored:
+		move the mysterious thing to the player;
+		say "You perform a hasty, squeaky search of ";
+		if no drawer is explored, say "all three drawers, discovering nothing and nothing in rapid succession.  But on the third drawer you ";
+		if exactly two drawers are unexplored, say "the remaining two drawers.  There's nothing in the second, but in the third you ";
+		if exactly one drawer is unexplored, say "the last drawer.  In it, you ";
+		say "turn up a promising hemispherical object.";
+		now all the drawers are explored.
+		
+Perhaps, just for fun, we have all the other scenery draw the player's attention back to the main point, as well.
+
+	{**}The carpet is scenery in the Library. The description is "It is too dark for you to make out details of the antique design, which seems dimly to represent an early voyage to the moon, with ships and the travelling stars." Understand "rug" as carpet.
+
+	Instead of looking under the carpet:
+		if none of the drawers are explored, say "You peel up a corner of the rug gingerly; nothing results. A perfectly ordinary rug, then." instead;
+		if all of the drawers are explored, say "No time for that kind of nonsense. You'd better get out and away while you can." instead;
+		if some of the drawers are explored, say "No time for that nonsense. The desk's what you want now; what you came for won't be embedded in the flooring." instead.
+	
+	The glass presentation case is transparent scenery in the Library. The description is "The case is taller than you are, framed in wood, with large panels of glass, the better to display the remarkable contents." 
+		
+	Instead of attacking the glass presentation case:
+		say "The glass pane of the presentation case shatters, throwing fine glass everywhere, including over the delicate museum-piece inside. Nor does the noise pass unnoted: only a second passes before there are footsteps in the hall, and though you make for the concealing darkness and escape of the turret, you are not swift enough. The servants are soon on you, and you are made to regret, quite painfully, this casual act of vandalism.";
+		end the story saying "You have lost your opportunity."
+	
+	The strange dress is a wearable thing in the glass case. The description is "Not the sort of dress that anyone wears now: such elaboration would be ludicrous.  It drips gold -- gilt lace, ruffles of trimmed gold, shimmering golden tracery -- dulled here and there by the sinister black of faceted jet."	
+
+	Test me with "d / x case / x dress / x carpet / look under carpet / look under desk / x desk / open top drawer / close top drawer / look under desk / open bottom drawer / close bottom drawer / open middle drawer / get thing / look under carpet / look under desk / up".

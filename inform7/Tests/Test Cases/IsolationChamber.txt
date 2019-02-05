@@ -1,0 +1,4 @@
+Treatment Lab is a room. The isolation chamber is a closed, openable, enterable container in the 
+Treatment Lab. The player is in the isolation chamber.
+
+Test me with "actions / listen / smell / open chamber / exit / listen / smell".

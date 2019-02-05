@@ -1,0 +1,58 @@
+   North Pole
+  The Night Before
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  North Pole
+  Here it is: the famous Pole. From here you can go south (or south-south, or south-south-by-south); or, alternatively, take refuge inside a red-and-white-striped cabin.
+  
+  Santa is pacing around in the snow and trying to psych himself up for the big night.
+  
+> >   Ice Shelf
+  (Testing.)
+  
+  >[1] x nose
+  (Santa's nose)
+  It's a bit ruddy. You don't like to mention it, but Santa's been dipping heavily into the Grey Goose since Mrs. Santa left town.
+  
+  >[2] x my nose
+  You cross your eyes, but can't get a good look.
+  
+  >[3] x santa's nose
+  It's a bit ruddy. You don't like to mention it, but Santa's been dipping heavily into the Grey Goose since Mrs. Santa left town.
+  
+  >[4] in
+  
+  Candy Cane Cabin
+  
+  >[5] x nose
+  Not terribly exciting.
+  
+  >[6] out
+  
+  North Pole
+  Here it is: the famous Pole. From here you can go south (or south-south, or south-south-by-south); or, alternatively, take refuge inside a red-and-white-striped cabin.
+  
+  Santa is pacing around in the snow and trying to psych himself up for the big night.
+  
+  >[7] s
+  
+  Ice Shelf
+  The ice here has been smoothed into a kind of runway for easy take-off, and ends in a cliff and cold arctic sea.
+  
+  The reindeer are already harnessed and waiting impatiently. The brilliance of Rudolph's nose casts an eerie red glow over Donner, Vixen and Blixen.
+  
+  >[8] x my nose
+  You cross your eyes, but can't get a good look.
+  
+  >[9] x nose
+  (Rudolph's nose)
+  See how it glows!
+  
+  >[10] x rudolph's nose
+  See how it glows!
+  
+  >[11] x donner's nose
+  Not terribly exciting.
+  
+> >

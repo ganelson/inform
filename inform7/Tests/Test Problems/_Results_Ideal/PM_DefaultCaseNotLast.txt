@@ -1,0 +1,9 @@
+Inform 7 build 6L52 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42518 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DefaultCaseNotLast
+  >--> You wrote '21' (source text, line 7): but 'otherwise' must be the last
+    clause if an 'if ... is:', and in particular it has to come after all the
+    '-- V:' case values supplied.
+Inform 7 has finished: 14 centiseconds used.

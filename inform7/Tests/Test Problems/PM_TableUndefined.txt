@@ -1,0 +1,6 @@
+The Admiralty is a room. Ship is a kind of value. Some ships are defined
+by osmosis.
+
+Table 1 - Admirals
+admiral				rank
+"St Vincent"		

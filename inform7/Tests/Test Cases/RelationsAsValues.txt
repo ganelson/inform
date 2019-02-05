@@ -1,0 +1,17 @@
+The Brahms Conservatoire is a room.
+
+To judge (R - a relation of numbers to numbers):
+	repeat with N running from 1 to 5:
+		repeat with M running from 1 to 5:
+			if R relates N to M, say "[N] <=> [M]   ";
+		say "[line break]";
+
+Parity relates a number (called N) to a number (called M) when N minus M is even.
+
+Joint magnitude relates a number (called N) to a number (called M) when N plus M
+is greater than 7.
+
+When play begins:
+	let L be { parity relation, joint magnitude relation };
+	repeat with R running through L:
+		judge R;

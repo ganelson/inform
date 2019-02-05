@@ -1,0 +1,8 @@
+Home is a room.
+
+To decide which list of K is (L1 - a list of values of kind K) next
+to (L2 - a list of K):
+	add L2 to L1;
+	decide on L1.
+
+When play begins: showme {1, 2, 3} next to {4, 5, 6}.

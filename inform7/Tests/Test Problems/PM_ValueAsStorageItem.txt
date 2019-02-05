@@ -1,0 +1,8 @@
+There is a room.
+To decide what number is the zork: decide on 3.
+
+Every turn:
+	increment the zork.
+
+Every turn:
+	increment 3.

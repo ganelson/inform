@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 40 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PTAPTooComplex
+  >--> You wrote 'Every turn when we have taken a utensil' (source text, line 7):
+    but that is too complex a past tense action, at least for this version of
+    Inform to handle: we may improve matters in later releases. The restriction
+    is that the actions used in the past tense may take at most one object, and
+    that this must be a physical thing (not a value, in other words). And no
+    details of where or what else was then happening can be specified.
+Inform 7 has finished: 44 centiseconds used.

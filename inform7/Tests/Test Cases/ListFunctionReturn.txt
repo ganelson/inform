@@ -1,0 +1,17 @@
+The Brahms Conservatoire is a room.
+
+To decide what list of numbers is the first (F - a number) terms of the Fibonacci sequence:
+	let the Fibonacci sequence be {1, 1};
+	let N be 3;
+	while N < F
+	begin;
+		let the last term be entry (N - 1) of the Fibonacci sequence;
+		let the penultimate term be entry (N - 2) of the Fibonacci sequence;
+		let the next term be the last term plus the penultimate term;
+		add the next term to the Fibonacci sequence;
+		increase N by 1;
+	end while;
+	decide on the Fibonacci sequence.
+
+When play begins:
+	say "The Fibonacci sequence is [the first 20 terms of the Fibonacci sequence]."

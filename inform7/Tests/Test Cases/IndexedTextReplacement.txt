@@ -1,0 +1,63 @@
+[Blob replacement test.]
+
+The Outer Solar System is a room.
+
+Instead of going north:
+	let Neptune be text;
+	let Neptune be "The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
+	say "The original text: [Neptune][line break]";
+	replace word number 7 in Neptune with "banana"; 
+	say "The intermediate text: [Neptune][line break]";
+	replace word number 22 in Neptune with "pineapple daiquiri"; 
+	say "The intermediate text: [Neptune][line break]";
+	replace character number 5 in Neptune with "z"; 
+	say "The intermediate text: [Neptune][line break]";
+	replace character number 50 in Neptune with "(abcdef)"; 
+	say "The redacted text: [Neptune][line break]".
+
+Instead of going south:
+	let Neptune be text;
+	let Neptune be "The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
+	say "The original text: [Neptune][line break]";
+	replace the text "the" in Neptune with "potato"; 
+	replace the text "giants." in Neptune with "turtles?"; 
+	say "The redacted text: [Neptune][line break]".
+
+Instead of going east:
+	let Neptune be text;
+	let Neptune be "the capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
+	say "The original text: [Neptune][line break]";
+	replace the word "the" in Neptune with "potato"; 
+	replace the word "system" in Neptune with "frog"; 
+	say "The redacted text: [Neptune][line break]".
+
+Instead of going west:
+	let Neptune be text;
+	let Neptune be "The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
+	say "The original text: [Neptune][line break]";
+	replace the punctuated word "system," in Neptune with "toad";
+	replace the punctuated word "." in Neptune with "!"; 
+	say "The redacted text: [Neptune][line break]".
+
+To test matching (t1 - text) in (t2 - text):
+	if t2 matches the regular expression t1
+	begin;
+		say "matching [t1] in [t2] --> [text matching regular expression][line break]";
+	otherwise;
+		say "matching [t1] in [t2] --> --[line break]";
+	end if.
+
+To test counting (t1 - text) in (t2 - text):
+	let N be the number of times t2 matches the regular expression t1;
+	say "counting [t1] in [t2] --> [N] time[s][line break]".
+
+To test replacing (t1 - text) in (t2 - text):
+	test replacing t1 with "!" in t2.
+
+To test replacing (t1 - text) with (t3 - text) in (t2 - text):
+	let Neptune be text;
+	let Neptune be t2;
+	replace the regular expression t1 in Neptune with t3; 
+	say "[line break][t2]: replacing [t1] with [t3] --> [Neptune][line break]".
+
+Test me with "n/s/e/w".

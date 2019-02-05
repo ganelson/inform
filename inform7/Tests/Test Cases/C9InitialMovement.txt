@@ -1,0 +1,6 @@
+Nirvana is a room.  A stool is an enterable supporter in Nirvana. A cat is an
+animal on the stool.
+
+When play begins:
+	now the player is the cat;
+	move the cat to the stool.

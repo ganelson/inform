@@ -1,0 +1,5 @@
+The Chapel is a room. The Antechapel is a room.
+
+The lectern is in the Chapel.
+
+The lectern is here.

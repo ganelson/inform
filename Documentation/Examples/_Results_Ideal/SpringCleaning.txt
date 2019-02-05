@@ -1,0 +1,32 @@
+   Parlor
+  Spring Cleaning
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Parlor
+  You can see Granny Blue, a china lamb, a porcelain milkmaid, a frolicking Dutch cow and a crystal unicorn here.
+  
+> >   Parlor
+  (Testing.)
+  
+  >[1] break lamb
+  You smash the china lamb to smithereens!
+  
+  "Ohh," whimpers Granny to herself softly. "How I will miss the china lamb!"
+  
+  >[2] break milkmaid
+  You smash the porcelain milkmaid to smithereens!
+  
+  "Ohh," whimpers Granny to herself softly. "How I will miss the china lamb and the porcelain milkmaid!"
+  
+  >[3] break cow
+  You smash the frolicking Dutch cow to smithereens!
+  
+  "Ohh," whimpers Granny to herself softly. "How I will miss the china lamb, the porcelain milkmaid and the frolicking Dutch cow!"
+  
+  >[4] break unicorn
+  You smash the crystal unicorn to smithereens!
+  
+  "Ohh," whimpers Granny to herself softly. "How I will miss the china lamb, the porcelain milkmaid, the frolicking Dutch cow and the crystal unicorn!"
+  
+> >

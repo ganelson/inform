@@ -1,0 +1,28 @@
+   Upper Cave
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Upper Cave
+  
+> >   Ledge
+  (Testing.)
+  
+  >[1] x stream
+  You can't see any such thing.
+  
+  >[2] d
+  
+  Rock Pool
+  
+  >[3] x stream
+  You see nothing special about the stream.
+  
+  >[4] e
+  
+  Ledge
+  
+  >[5] x stream
+  You see nothing special about the stream.
+  
+> >

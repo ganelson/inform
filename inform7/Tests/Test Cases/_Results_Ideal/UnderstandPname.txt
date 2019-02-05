@@ -1,0 +1,38 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] x open box
+  You can't see any such thing.
+  
+  >[2] x closed box
+  You see nothing special about the box.
+  
+  >[3] x shut box
+  You see nothing special about the box.
+  
+  >[4] x sealed box
+  You see nothing special about the box.
+  
+  >[5] x tightly sealed box
+  You see nothing special about the box.
+  
+  >[6] open box
+  You open the box.
+  
+  >[7] x shut box
+  You can't see any such thing.
+  
+  >[8] x open box
+  The box is empty.
+  
+  >[9] x opened box
+  The box is empty.
+  
+> >

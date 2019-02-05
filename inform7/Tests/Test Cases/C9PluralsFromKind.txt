@@ -1,0 +1,13 @@
+The Lounge is a room.
+
+A gold coin is a kind of thing. Four gold coins are in the Lounge.
+
+
+A red chair is an enterable supporter in the Lounge. A blue chairs are an
+enterable supporter in the Lounge.
+
+On the red chair is a gold coin.
+Three supporters are in the Lounge.
+
+Test me with "get coins / x supporters / get all supporters / get chairs /
+x chairs / get chair".

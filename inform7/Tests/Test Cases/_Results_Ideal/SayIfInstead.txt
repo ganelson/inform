@@ -1,0 +1,21 @@
+   lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  lab
+  You can see a bench (on which are an apple, a sandwich and a can of cola) here.
+  
+> >   lab
+  (Testing.)
+  
+  >[1] take apple
+  You really shouldn't eat in the lab.
+  
+  >[2] take cola
+  Oh, no! too much fizzing!
+  
+  >[3] take sandwich
+  The sandwich should really stay on the bench.
+  
+> >

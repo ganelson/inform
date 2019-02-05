@@ -1,0 +1,18 @@
+There is a room. The rock is here.
+
+When play begins:
+	let foob be the action of the player attacking the player;
+	if foob is an actor attacking a person (called the victim):
+		showme the victim;
+	if foob is an actor attacking a device (called the mechanism):
+		showme the mechanism;
+	showme the mechanism;
+	if the rock is in a container (called B):
+ 		showme B;
+	showme B;
+
+Foo is a kind of value. Bar is a foo. A foo can be notable.
+
+When play begins:
+	showme whether or not a foo (called quux) is notable;
+	say "[quux].";

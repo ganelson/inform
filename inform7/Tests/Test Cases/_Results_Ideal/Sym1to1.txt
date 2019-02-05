@@ -1,0 +1,35 @@
+   Mysterious Void
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mysterious Void
+  
+> >   Mysterious Void
+  (Testing.)
+  
+  >[1] n
+  Red does not scratch green.
+  
+  >[2] relations
+  Affinity relates one colour to another:
+    red  ==  blue
+  >[3] z
+  >[4] n
+  Red scratches green.
+  
+  >[5] relations
+  Affinity relates one colour to another:
+    red  ==  green
+  Disaffinity relates one thing to another:
+    You  ==  the fish
+  
+  >[6] jump
+  >[7] n
+  Red does not scratch green.
+  
+  >[8] relations
+  Disaffinity relates one thing to another:
+    You  ==  the fish
+  
+> >

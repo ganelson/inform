@@ -1,0 +1,7 @@
+"Quotations"
+
+The Kitchen is a room.
+
+When play begins: say "[The Kitchen]'s [apostrophe]decor[quotation mark] is awful."
+
+When play begins: say "Lucy says, 'Oh my, the Kitchen looks frightful!'"

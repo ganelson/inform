@@ -1,0 +1,198 @@
+   Bar
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Bar
+  You can see a counter (on which is a glass jar) and an obvious item here.
+  
+> >   Bar
+  (Testing.)
+  
+  >[1] x jar
+  The glass jar is empty.
+  
+  >[2] x hidden object
+  You see nothing special about the hidden object.
+  
+  >[3] look
+  Bar
+  You can see a counter (on which is a glass jar) and an obvious item here.
+  
+  >[4] take all
+  obvious item: Taken.
+  glass jar: Taken.
+  trophy: Taken.
+  
+  >[5] take hidden object
+  Taken.
+  
+  >[6] x hidden object
+  You see nothing special about the hidden object.
+  
+  >[7] i
+  You are carrying:
+    a hidden object
+    a trophy
+    a glass jar
+      three scraps of paper
+    an obvious item
+  
+  >[8] drop hidden object
+  Dropped.
+  
+  >[9] look
+  Bar
+  You can see a hidden object and a counter here.
+  
+  >[10] x counter
+  You see nothing special about the counter.
+  
+  >[11] x unnoticed change
+  You see nothing special about the unnoticed change.
+  
+  >[12] get unnoticed change
+  Taken.
+  
+  >[13] x change
+  You see nothing special about the unnoticed change.
+  
+  >[14] i
+  You are carrying:
+    some unnoticed change
+    a trophy
+    a glass jar
+      three scraps of paper
+    an obvious item
+  
+  >[15] look
+  Bar
+  You can see a hidden object and a counter here.
+  
+  >[16] put change on counter
+  You put the unnoticed change on the counter.
+  
+  >[17] look
+  Bar
+  You can see a hidden object and a counter (on which is some unnoticed change) here.
+  
+  >[18] x counter
+  On the counter is some unnoticed change.
+  
+  >[19] drop all
+  trophy: Dropped.
+  glass jar: Dropped.
+  obvious item: Dropped.
+  
+  >[20] look
+  Bar
+  You can see an obvious item, a glass jar (in which are three scraps of paper), a trophy, a hidden object and a counter (on which is some unnoticed change) here.
+  
+  >[21] get all
+  obvious item: Taken.
+  glass jar: Taken.
+  trophy: Taken.
+  hidden object: Taken.
+  scrap of paper: Taken.
+  scrap of paper: Taken.
+  scrap of paper: Taken.
+  unnoticed change: Taken.
+  
+  >[22] drop glass jar
+  Dropped.
+  
+  >[23] x glass jar
+  The glass jar is empty.
+  
+  >[24] search glass jar
+  The glass jar is empty.
+  
+  >[25] get scrap
+  You already have that.
+  
+  >[26] i
+  You are carrying:
+    some unnoticed change
+    three scraps of paper
+    a hidden object
+    a trophy
+    an obvious item
+  
+  >[27] get scrap
+  You already have that.
+  
+  >[28] i
+  You are carrying:
+    some unnoticed change
+    three scraps of paper
+    a hidden object
+    a trophy
+    an obvious item
+  
+  >[29] get scrap
+  You already have that.
+  
+  >[30] i
+  You are carrying:
+    some unnoticed change
+    three scraps of paper
+    a hidden object
+    a trophy
+    an obvious item
+  
+  >[31] drop all
+  unnoticed change: Dropped.
+  scrap of paper: Dropped.
+  scrap of paper: Dropped.
+  scrap of paper: Dropped.
+  hidden object: Dropped.
+  trophy: Dropped.
+  obvious item: Dropped.
+  
+  >[32] look
+  Bar
+  You can see an obvious item, a trophy, a hidden object, three scraps of paper, some unnoticed change, a glass jar (empty) and a counter here.
+  
+  >[33] get all
+  obvious item: Taken.
+  trophy: Taken.
+  hidden object: Taken.
+  scrap of paper: Taken.
+  scrap of paper: Taken.
+  scrap of paper: Taken.
+  unnoticed change: Taken.
+  glass jar: Taken.
+  
+  >[34] put all on the table of invisibility
+  glass jar: Done.
+  unnoticed change: Done.
+  scrap of paper: Done.
+  scrap of paper: Done.
+  scrap of paper: Done.
+  hidden object: Done.
+  trophy: Done.
+  obvious item: Done.
+  
+  >[35] look
+  Bar
+  You can see a counter here.
+  
+  >[36] wear dress
+  (first taking the secret sequined dress)
+  You put on the secret sequined dress.
+  
+  >[37] i
+  You are carrying:
+    a secret sequined dress (being worn)
+  
+  >[38] take off dress
+  You take off the secret sequined dress.
+  
+  >[39] drop dress
+  Dropped.
+  
+  >[40] look
+  Bar
+  You can see a secret sequined dress and a counter here.
+  
+> >

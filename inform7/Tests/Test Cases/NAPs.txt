@@ -1,0 +1,18 @@
+The arena is a room. "You're here to fight." The player is here.
+
+The lounge is east of the arena.
+
+Include action pattern parsing in the debugging log.
+
+Attacking is attacklike behaviour.
+
+Before attacklike behaviour or taking yourself:
+	say "That's the spirit!"
+	
+Before doing something other than attacklike behaviour:
+	say "No, you're here to FIGHT!"
+
+Before attacklike behaviour in the lounge:
+	say "A gentleman wouldn't."
+
+Test me with "look / x me / take me / attack me / east / x me / take me / attack me".

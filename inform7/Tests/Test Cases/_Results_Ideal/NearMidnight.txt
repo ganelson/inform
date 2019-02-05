@@ -1,0 +1,21 @@
+   Temporal Hot Spot                                                                                                                                                                                                      11:45 pm
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150628 / Inform 7 build 6M41 (I6/v6.33 lib 6/12N) SD
+  
+  Temporal Hot Spot
+  
+> >   Temporal Hot Spot                                                                                                                                                                                                      12:15 am
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  Two turtles run by, almost too fast to see.
+  
+  >[2] z
+  Time passes.
+  
+  The grass grows.
+  
+> >

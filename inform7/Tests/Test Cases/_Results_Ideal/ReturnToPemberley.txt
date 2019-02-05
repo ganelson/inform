@@ -1,0 +1,87 @@
+   Big House
+  Diagnosing loving relation...
+  nothing --> yourself; yourself --> nothing; {}.
+  nothing --> Elizabeth; Elizabeth --> Darcy; {}.
+  nothing --> Lydia; Lydia --> nothing; {}.
+  Elizabeth --> Darcy; Darcy --> nothing; {Elizabeth}.
+  nothing --> Wickham; Wickham --> nothing; {}.
+  nothing --> Mr Bennett; Mr Bennett --> nothing; {}.
+  nothing --> Mr Wickham; Mr Wickham --> nothing; {}.
+  "list of people whom R relates" = list of people: {Elizabeth}
+  "list of people to whom R relates" = list of people: {Darcy}
+  
+  Diagnosing noticing relation...
+  nothing --> yourself; yourself --> nothing; {}.
+  nothing --> Elizabeth; Elizabeth --> Darcy; {}.
+  nothing --> Lydia; Lydia --> Mr Wickham; {}.
+  Elizabeth --> Darcy; Darcy --> nothing; {Elizabeth}.
+  nothing --> Wickham; Wickham --> nothing; {}.
+  nothing --> Mr Bennett; Mr Bennett --> Mr Wickham; {}.
+  Lydia --> Mr Wickham; Mr Wickham --> nothing; {Lydia, Mr Bennett}.
+  "list of people whom R relates" = list of people: {Elizabeth, Lydia, Mr Bennett}
+  "list of people to whom R relates" = list of people: {Darcy, Mr Wickham}
+  
+  Diagnosing impressing relation...
+  nothing --> yourself; yourself --> nothing; {}.
+  nothing --> Elizabeth; Elizabeth --> Darcy; {}.
+  nothing --> Lydia; Lydia --> nothing; {}.
+  Elizabeth --> Darcy; Darcy --> Mr Bennett; {Elizabeth}.
+  nothing --> Wickham; Wickham --> nothing; {}.
+  Darcy --> Mr Bennett; Mr Bennett --> nothing; {Darcy}.
+  nothing --> Mr Wickham; Mr Wickham --> nothing; {}.
+  "list of people whom R relates" = list of people: {Elizabeth, Darcy}
+  "list of people to whom R relates" = list of people: {Darcy, Mr Bennett}
+  
+  Diagnosing fancying relation...
+  nothing --> yourself; yourself --> nothing; {}.
+  nothing --> Elizabeth; Elizabeth --> Darcy; {}.
+  Wickham --> Lydia; Lydia --> Darcy; {Wickham}.
+  Elizabeth --> Darcy; Darcy --> nothing; {Elizabeth, Lydia}.
+  nothing --> Wickham; Wickham --> Lydia; {}.
+  nothing --> Mr Bennett; Mr Bennett --> nothing; {}.
+  nothing --> Mr Wickham; Mr Wickham --> nothing; {}.
+  "list of people whom R relates" = list of people: {Elizabeth, Lydia, Wickham}
+  "list of people to whom R relates" = list of people: {Darcy, Lydia}
+  
+  Diagnosing acquaintance relation...
+  nothing --> yourself; yourself --> nothing; {}.
+  Darcy --> Elizabeth; Elizabeth --> Darcy; {Darcy, Mr Bennett}.
+  nothing --> Lydia; Lydia --> nothing; {}.
+  Elizabeth --> Darcy; Darcy --> Elizabeth; {Elizabeth, Wickham}.
+  Darcy --> Wickham; Wickham --> Darcy; {Darcy}.
+  Elizabeth --> Mr Bennett; Mr Bennett --> Elizabeth; {Elizabeth}.
+  nothing --> Mr Wickham; Mr Wickham --> nothing; {}.
+  "list of people whom R relates" = list of people: {Elizabeth, Darcy, Wickham, Mr Bennett}
+  "list of people to whom R relates" = list of people: {Darcy, Mr Bennett, Elizabeth, Wickham}
+  
+  Diagnosing marriage relation...
+  nothing --> yourself; yourself --> nothing; {}.
+  Darcy --> Elizabeth; Elizabeth --> Darcy; {Darcy}.
+  nothing --> Lydia; Lydia --> nothing; {}.
+  Elizabeth --> Darcy; Darcy --> Elizabeth; {Elizabeth}.
+  nothing --> Wickham; Wickham --> nothing; {}.
+  nothing --> Mr Bennett; Mr Bennett --> nothing; {}.
+  nothing --> Mr Wickham; Mr Wickham --> nothing; {}.
+  "list of people whom R relates" = list of people: {Elizabeth, Darcy}
+  "list of people to whom R relates" = list of people: {Darcy, Elizabeth}
+  
+  Diagnosing alliance relation...
+  yourself --> yourself; yourself --> yourself; {yourself}.
+  Elizabeth --> Elizabeth; Elizabeth --> Elizabeth; {Elizabeth, Lydia, Darcy}.
+  Elizabeth --> Lydia; Lydia --> Elizabeth; {Elizabeth, Lydia, Darcy}.
+  Elizabeth --> Darcy; Darcy --> Elizabeth; {Elizabeth, Lydia, Darcy}.
+  Wickham --> Wickham; Wickham --> Wickham; {Wickham}.
+  Mr Bennett --> Mr Bennett; Mr Bennett --> Mr Bennett; {Mr Bennett}.
+  Mr Wickham --> Mr Wickham; Mr Wickham --> Mr Wickham; {Mr Wickham}.
+  "list of people whom R relates" = list of people: {yourself, Elizabeth, Lydia, Darcy, Wickham, Mr Bennett, Mr Wickham}
+  "list of people to whom R relates" = list of people: {yourself, Elizabeth, Lydia, Darcy, Wickham, Mr Bennett, Mr Wickham}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Big House
+  You can see Elizabeth, Lydia, Darcy, Wickham and Mr Bennett here.
+  
+> >   Big House
+> Are you sure you want to quit? 

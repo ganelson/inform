@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantForceCalling
+  >--> You wrote 'now all scenes (called Fred) are recurring' (source text, line 4):
+    but a 'now' is not allowed to call names, and it wouldn't really make sense
+    to do so anyway. 'if a person (called the victim) is in the Trap Room'
+    makes sense, because it gives a name - 'victim' - to someone whose identity
+    we don't know. But 'now a person (called the victim) is in the Trap Room'
+    won't be allowed, because 'now' can only talk about people or things whose
+    identities we do know.
+Inform 7 has finished: 43 centiseconds used.

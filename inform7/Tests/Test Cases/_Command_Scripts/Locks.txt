@@ -1,0 +1,19 @@
+i
+drop passcard
+e
+open door
+take key
+e
+open door
+unlock door with the key
+i
+take passcard
+e
+i
+x safe
+open safe
+i
+lock the door
+lock safe
+unlockall
+

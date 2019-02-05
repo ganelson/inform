@@ -1,0 +1,8 @@
+The Armoury is a room.
+
+The player holds a knife. The player holds a book.
+
+Definition:  An object is weaponlike if it is the knife.
+
+When play begins:
+	say "The weaponlike stuff: [a list of weaponlike things]."

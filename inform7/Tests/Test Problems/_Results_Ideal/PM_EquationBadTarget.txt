@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationBadTarget
+  >--> In 'let F be given by m=1, where m = 2' (source text, line 4), you asked
+    to let F be given by the equation 'm=1', but 'F' isn't a symbol in that
+    equation.
+Inform 7 has finished: 43 centiseconds used.

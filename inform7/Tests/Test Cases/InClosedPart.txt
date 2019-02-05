@@ -1,0 +1,16 @@
+The Garden is a room.
+ 
+A fruit dispenser is here.
+ 
+A container called the glass box is part of the fruit dispenser. It is
+closed and transparent.
+
+An apple is in the glass box.
+
+The sky is a backdrop. It is in the Garden. The flock of geese is part of
+the sky. It is an animal.
+
+The hot air balloon is part of the sky. It is a vehicle. The picnic basket
+is a container in the hot air balloon.
+
+Test me with "push apple / push basket / enter balloon / push basket".

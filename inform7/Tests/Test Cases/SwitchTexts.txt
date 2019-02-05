@@ -1,0 +1,20 @@
+Someplace is a room.
+
+Joe is a man in Someplace.
+
+The player carries a sign.
+
+Test string is a text that varies.
+
+Before doing something when Joe can see the player:
+	now test string is "[the action name part of the current action]";
+	say "(test string = '[test string]')";
+	continue the action.
+
+Instead of doing something:
+	if test string is:
+		-- "jumping": say "'Oh, go jump in a lake!'";
+		-- "waving": say "'Oh, wave off!'";
+		-- otherwise: say "No idea."		
+	
+Test me with "x sign / give sign to joe / jump / wave sign".

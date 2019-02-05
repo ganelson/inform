@@ -1,0 +1,18 @@
+herr --> nominative: der herr, accusative: den herrn, dative: dem herrn, genitive: des herrn
+pl --> nominative: die herren, accusative: die herren, dative: den herren, genitive: der herren
+
+herz --> nominative: der herz, accusative: den herz, dative: dem herzen, genitive: des herzens
+pl --> nominative: die herzen, accusative: die herzen, dative: den herzen, genitive: der herzen
+
+hund --> nominative: der hund, accusative: den hund, dative: dem hund, genitive: des hundes
+pl --> nominative: die hunder, accusative: die hunder, dative: den hundern, genitive: der hunder
+
+frau --> nominative: das frau, accusative: das frau, dative: dem frau, genitive: des frau
+pl --> nominative: die frauen, accusative: die frauen, dative: den frauen, genitive: der frauen
+
+katze --> nominative: das katze, accusative: das katze, dative: dem katze, genitive: des katze
+pl --> nominative: die katzen, accusative: die katzen, dative: den katzen, genitive: der katzen
+
+kind --> nominative: die kind, accusative: die kind, dative: der kind, genitive: der kindes
+pl --> nominative: die kinder, accusative: die kinder, dative: den kindern, genitive: der kinder
+

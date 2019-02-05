@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 38 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantRelateNothing
+  >--> You wrote 'It requires nothing' (source text, line 6): but the
+    relationship you describe seems to be with nothing, which does not really
+    make sense. 'Nothing' looks like a noun, but really Inform uses it to mean
+    the absence of one, so it's against the rules to say something like 'Mr
+    Cogito disputes nothing' to try to put 'Mr Cogito' and 'nothing' into a
+    relationship.
+Inform 7 has finished: 17 centiseconds used.

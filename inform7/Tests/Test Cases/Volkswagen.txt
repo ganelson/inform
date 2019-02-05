@@ -1,0 +1,13 @@
+
+The Park is a room. The Volkswagen is a vehicle.
+
+Infatuation relates various people to one thing. The verb to be infatuated with
+implies the infatuation relation.
+
+The player is infatuated with the Volkswagen.
+
+Every turn when the player is infatuated with something:
+	showme the thing to which the player relates by the infatuation relation;
+	showme the person who relates to the Volkswagen by the infatuation relation;
+
+Test me with "relations / z".

@@ -1,0 +1,53 @@
+   Farewell Bend Cafe
+  Farewell
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Farewell Bend Cafe
+  Beautiful Farewell Bend, Idaho -- or is it Oregon? An almost-abandoned truckstop, in any case, on one of those interminable American east-west highways.
+  
+  Tina the waitress is slowly pouring coffee from the pot with a black neck into the pot with an orange neck.
+  
+  There is also a large man at table five. The tattoo on his arm says George. For the moment we will assume that it is his own name and not someone else's.
+  
+> >   Farewell Bend Cafe
+  (Testing.)
+  
+  >[1] recap
+  Tina has so far told you:
+    absolutely nothing
+  
+  George has so far told you:
+    absolutely nothing
+  
+  >[2] ask tina about aasvogel
+  "Oh, it's a vulture."
+  
+  >[3] recap
+  Tina has so far told you:
+    that an aasvogel is a vulture
+  
+  George has so far told you:
+    absolutely nothing
+  
+  >[4] ask george about baccaceous
+  "Something that has or bears berries," says George, without looking up.
+  
+  >[5] ask tina about absorptiometer
+  "It's a thing that measures the solubility of gases in a liquid," she explains gently, as to a child.
+  
+  >[6] recap
+  Tina has so far told you:
+    that an aasvogel is a vulture
+    that an absorptiometer measures solubility of gasses in a liquid
+  
+  George has so far told you:
+    that baccaceous means berry-bearing or berry-like
+  
+  >[7] ask tina about advertisement
+  Tina looks embarrassed. "Of course! I almost forgot." She hands you a brochure.
+  
+  >[8] read brochure
+  A glossy flyer indicating that you can receive a free Volume A-Aalto of the New Idahoan Encyclopedia Set if you send back the business reply card, and then have the option of purchasing the remaining volumes at a very very reasonable price.
+  
+> >

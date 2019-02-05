@@ -1,0 +1,66 @@
+*** Printing a refusal to act in the dark
+(Light levels variable depending on the number of candles the player has lit; Zorn of Zorna)
+Light levels vary depending on the number of candles the player has lit, and this determines whether or not he is able to examine detailed objects successfully.
+
+	{*}"Zorn of Zorna"
+
+	Visibility rule:
+		if examining:
+			if the detail of the noun is fine and the number of visible lit candles is less than 5, there is insufficient light;
+			if the detail of the noun is ordinary and the number of visible lit candles is less than 3, there is insufficient light;
+		there is sufficient light.
+	
+	Detail is a kind of value. The details are fine, ordinary, and gross. A thing has detail.
+
+	A candle is a kind of thing. Before printing the name of a candle while not burning or blowing out: say "[if lit]lit [otherwise]unlit [end if]". A candle is usually lit. Before printing the plural name of a candle while not burning or blowing out: say "[if lit]lit [otherwise]unlit [end if]". A candle is usually lit. Understand the lit property as describing a candle. A candle is usually gross.
+
+	Instead of burning a candle: now the noun is lit; say "You light [the noun]."
+
+	Understand "blow out [something]" or "extinguish [something]" or "put out [something]" as blowing out. Understand the command "snuff" as "extinguish". Blowing out is an action applying to one thing.
+
+	Understand "burn [unlit candle]" as burning.
+
+	Instead of blowing out a candle:
+		now the noun is unlit;
+		say "You put out [the noun]."
+ 
+
+	Rule for printing a refusal to act in the dark:
+		if we are examining something, say "The details of [the noun] are too fine to make out in the light of only [the number of visible lit candles in words] candle[s]." instead.
+	
+
+	Every turn when the Todal is visible:
+		if the number of visible lit candles is greater than 1:
+			say "The brightness of the room wakens the Todal from slumber, and with you unarmed...";
+			end the story;
+		otherwise:
+			say "Todal sleeps fitfully, troubled by even that faint light."
+	
+	A room is usually dark.
+
+	The Palace is a room. "The Duke is out; the way is clear. East is Saralinda's Chamber; north, a hallway zigs and zags down to the gate that leads out." A finely-written placard is in the Palace. "A finely-written placard is on the wall next to this exit." The placard is fine. The description of the placard is "You read: 'Beware the Todal: its bite is worse than its gleep.
+
+	No more than one candle!'"
+
+	The candle-stand is a supporter in the Palace. Understand "stand" as the candle-stand. The description of the candle-stand is "The candle-stand is a tall metal branch for holding lights, but someone has quite practically added casters to the bottom." It is pushable between rooms. Three candles are on the candle-stand. Instead of removing something from the candle-stand: say "[The noun] is fixed quite firmly in place." Instead of taking something which is on the candle-stand: say "[The noun] won't come out of the holder." Instead of putting something on the candle-stand: say "[The candle-stand] is full."
+
+	Saralinda's Chamber is east of the Palace. "Now that Saralinda herself is gone, there is no real radiance in this place." Two unlit candles are in Saralinda's Chamber.
+
+	A large-print romantic novel is in Saralinda's Chamber. The novel is ordinary. The description of the novel is "'She Was Only The Chimney-Sweep's Daughter', by Marie Swelldon."
+
+	The Zig-Zag Hallway is north of the Palace. "The Hallway goes left, then right, then left again..." Two unlit candles are in the Hallway.
+
+	Todal is an animal in the Zig-Zag Hallway. 
+
+	Rule for printing the description of a dark room when the Todal is in the location:
+		try listening.
+
+	Instead of listening when in darkness and the Todal is in the location:
+		say "In the darkness something softly gleeps."
+	
+	Instead of going north from the Hallway when in darkness:
+		say "You stumble and cannot find your way."
+	
+	North of the Hallway is Freedom. Instead of going to Freedom: say "You make it out into the cool night air at last!"; end the story finally.
+	
+	Test me with "examine placard / get placard / n / listen / n / s / examine candle-stand / push candle-stand east / examine novel / get unlit candle / light it / light unlit candle / examine placard / push candle-stand west / e / examine novel / w / n / n".

@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadRulebookRef
+  >--> You wrote 'Every turn has a number called Trevor' (source text, line 3):
+    but a rulebook has to be formally referred to in a way making clear that it
+    is indeed a rulebook when we give it named values, to reduce the risk of
+    ambiguity. So 'The every turn rulebook has a number called the accumulated
+    bonus' is fine, but 'Every turn has a number called...' is not. (I'm
+    insisting on the presence of the word 'rulebook' because the syntax is so
+    close to that for giving properties to objects, and it's important to avoid
+    mistakes here.)
+Inform 7 has finished: 16 centiseconds used.

@@ -1,0 +1,18 @@
+The Library is a room.
+
+The catalog card is in the Library. It has a list of text called
+the note. The description of the catalog card is "It is yellowed with age."
+
+The note of the catalog card is {"Rumpelstiltskin","Jacob and Wilhelm
+Grimm","1812","Fairy Tales","398.21 GRI"}.
+
+When play begins:
+	say "N of the CC is [note of the catalog card]."
+
+Instead of examining something (called the item):
+	say "[description of item][paragraph break]On the catalog card you read:[line break][the note of the item vertically]".
+
+To say (chosen list - a list of text) vertically:
+	say "Cl is [chosen list].";
+	repeat with current entry running through chosen list:
+		say "[current entry][line break]".

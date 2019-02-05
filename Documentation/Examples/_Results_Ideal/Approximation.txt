@@ -1,0 +1,27 @@
+   Stadium
+  Ballpark
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stadium
+  You observe lots and lots of people here.
+  
+> >   Women's Restroom
+  (Testing.)
+  
+  >[1] w
+  
+  Hot Dog Stand
+  You observe a few people here.
+  
+  >[2] e
+  
+  Stadium
+  You observe lots and lots of people here.
+  
+  >[3] s
+  
+  Women's Restroom
+  You observe lots and lots of people here.
+  
+> >

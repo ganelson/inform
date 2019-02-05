@@ -1,0 +1,10 @@
+The NI School for Typing is a room. The typewriter is in the School.
+
+To award (T - some text) points: say "You deserve at least [T] points."
+
+To award (N - number) points:
+	increase the score by N.
+
+When play begins:
+	let X be the typewriter;
+	award X points.

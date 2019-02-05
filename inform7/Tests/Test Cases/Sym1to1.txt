@@ -1,0 +1,28 @@
+The Mysterious Void is a room.
+
+Colour is a kind of value. The colours are red, blue and green.
+
+Affinity relates one colour to another.
+
+The verb to scratch (he scratches, they scratch, he scratched, it is scratched, he is scratching) implies the affinity relation.
+
+Disaffinity relates one thing to another.
+
+The verb to clash (he clashes, they clash, he clashed, it is clashed, he is clashing) implies the disaffinity relation.
+
+Red scratches blue.
+
+The fish is a thing.
+
+Instead of waiting:
+	now the player clashes the fish;
+	now red scratches green.
+
+Instead of jumping:
+	now red does not scratch green.
+
+Instead of going north:
+	if red scratches green, say "Red scratches green.";
+	otherwise say "Red does not scratch green."
+
+Test me with "n/relations/z/n/relations/jump/n/relations".

@@ -1,0 +1,4 @@
+The Assembly Point is a room. Fred and Jim are men in the Assembly Point.
+
+When play begins:
+	let N be the total transparent of the men.

@@ -1,0 +1,225 @@
+   Right here
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game, Abba Concert and AC-DC Concert.
+  List of vivid scenes: Black Sabbath Concert.
+  List of tiresome scenes: Abba Concert.
+  List of fine scenes: Entire Game, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is dull.
+  Abba Concert is not vivid.
+  Abba Concert is tiresome.
+  Abba Concert is not fine.
+  AC-DC Concert is dull.
+  AC-DC Concert is not vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now Abba Concert is dull.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game, Abba Concert and AC-DC Concert.
+  List of vivid scenes: Black Sabbath Concert.
+  List of tiresome scenes: Abba Concert.
+  List of fine scenes: Entire Game, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is dull.
+  Abba Concert is not vivid.
+  Abba Concert is tiresome.
+  Abba Concert is not fine.
+  AC-DC Concert is dull.
+  AC-DC Concert is not vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now Abba Concert is vivid.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game and AC-DC Concert.
+  List of vivid scenes: Abba Concert and Black Sabbath Concert.
+  List of tiresome scenes: Abba Concert.
+  List of fine scenes: Entire Game, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is tiresome.
+  Abba Concert is not fine.
+  AC-DC Concert is dull.
+  AC-DC Concert is not vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now AC-DC Concert is dull.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game and AC-DC Concert.
+  List of vivid scenes: Abba Concert and Black Sabbath Concert.
+  List of tiresome scenes: Abba Concert.
+  List of fine scenes: Entire Game, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is tiresome.
+  Abba Concert is not fine.
+  AC-DC Concert is dull.
+  AC-DC Concert is not vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now AC-DC Concert is vivid.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game.
+  List of vivid scenes: Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  List of tiresome scenes: Abba Concert.
+  List of fine scenes: Entire Game, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is tiresome.
+  Abba Concert is not fine.
+  AC-DC Concert is not dull.
+  AC-DC Concert is vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now Abba Concert is tiresome.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game.
+  List of vivid scenes: Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  List of tiresome scenes: Abba Concert.
+  List of fine scenes: Entire Game, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is tiresome.
+  Abba Concert is not fine.
+  AC-DC Concert is not dull.
+  AC-DC Concert is vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now Abba Concert is fine.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game.
+  List of vivid scenes: Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  List of tiresome scenes: .
+  List of fine scenes: Entire Game, Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is not tiresome.
+  Abba Concert is fine.
+  AC-DC Concert is not dull.
+  AC-DC Concert is vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  now AC-DC Concert is tiresome.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game.
+  List of vivid scenes: Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  List of tiresome scenes: AC-DC Concert.
+  List of fine scenes: Entire Game, Abba Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is not tiresome.
+  Abba Concert is fine.
+  AC-DC Concert is not dull.
+  AC-DC Concert is vivid.
+  AC-DC Concert is tiresome.
+  AC-DC Concert is not fine.
+  
+  
+  now AC-DC Concert is fine.
+  List of lurid colours: red.
+  List of pale colours: white, blue and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game.
+  List of vivid scenes: Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  List of tiresome scenes: .
+  List of fine scenes: Entire Game, Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is not tiresome.
+  Abba Concert is fine.
+  AC-DC Concert is not dull.
+  AC-DC Concert is vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  Test complete.
+  now blue is lurid.
+  List of lurid colours: red and blue.
+  List of pale colours: white and Mauve.
+  List of recurring scenes: Entire Game and AC-DC Concert.
+  List of dull scenes: Entire Game.
+  List of vivid scenes: Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  List of tiresome scenes: .
+  List of fine scenes: Entire Game, Abba Concert, AC-DC Concert and Black Sabbath Concert.
+  Abba Concert is not dull.
+  Abba Concert is vivid.
+  Abba Concert is not tiresome.
+  Abba Concert is fine.
+  AC-DC Concert is not dull.
+  AC-DC Concert is vivid.
+  AC-DC Concert is not tiresome.
+  AC-DC Concert is fine.
+  
+  
+  red has wavelength 195.
+  white has wavelength 195.
+  blue has wavelength 124.
+  Mauve has wavelength 316.
+  red has wavelength 195.
+  white has wavelength 195.
+  blue has wavelength 21.
+  Mauve has wavelength 316.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Right here
+  You can see a guitar here.
+  
+> >   Right here
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] get guitar
+  Taken.
+  
+  Twang!
+  
+  >[3] z
+  Time passes.
+  
+  Twang!
+  
+  >[4] drop guitar
+  Dropped.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] get guitar
+  Taken.
+  
+  Twang!
+  
+> >

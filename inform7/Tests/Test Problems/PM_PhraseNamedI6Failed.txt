@@ -1,0 +1,3 @@
+Foo is a room.
+To rhomb (this is the foo function): (- ; -).
+Every turn: apply the foo function.

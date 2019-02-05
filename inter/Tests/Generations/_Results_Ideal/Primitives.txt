@@ -1,0 +1,6 @@
+[ MyRoutine x y;
+    return x;
+    return (x+y);
+    return (x-y);
+    return (x%y);
+];

@@ -1,0 +1,17 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 40 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationSymbolVague
+  >--> In 'let F be given by Equation 2 where m is a number, a = 2' (source
+    text, line 8), you define an equation which mentions the symbol 'm': but
+    when an equation is named for use in a 'let' phrase, any variables listed
+    under 'where...' have to be given definite values, not just vaguely said to
+    have particular kinds. Otherwise, I can't do any calculation with them.
+Problem__ PM_EquationSymbolMissing
+  >--> In 'let F be given by Equation 2 where m is a number, a = 2' (source
+    text, line 8), you asked to let F be given by the equation 'F = ma', but I
+    can't see what to use for 'm'. The usual idea is to set the other variables
+    in the equation using 'let': so adding 'let m be ...' before trying to find
+    'F' should work.
+Inform 7 has finished: 42 centiseconds used.

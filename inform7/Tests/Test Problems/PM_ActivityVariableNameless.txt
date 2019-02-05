@@ -1,0 +1,10 @@
+Sinning is an activity.
+Vice is a kind of value.
+The vices are Lust, Gluttony, Greed, Sloth, Wrath, Envy, and Pride.
+The Sinning activity has a vice.
+ 
+The Indulgence Chamber is a room. "Every vice is catered for here."
+ 
+Every turn: carry out the sinning activity.
+ 
+For sinning: say "I fancy a little bit of [a random vice]."

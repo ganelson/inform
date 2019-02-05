@@ -1,0 +1,137 @@
+3R85 (26 June 2006, a rapid replacement for a mis-uploaded 3R84)
+
+(Mac OS X only) Direct "Install Extension..." option added to the File menu.
+(Mac OS X only) Extension documentation auto-updated when any file added to
+	the extensions area, even if dragged by hand in the Finder.
+(Mac OS X only) Bug fixed that was causing Inform projects sometimes to appear
+	as directories, and to fail to open on double-clicking.
+(Windows only) Differences between the game's current text and the blessed
+	text in the transcript tab are now underlined.
+(Windows only) The transcript is now saved in the same format as the OS X
+	application. (This means that any blessed transcript text saved from an
+	earlier version will have to be recreated.)
+(Windows only) The source tab now correctly colours nested comments.
+(Windows only) Entering a carriage return with the shift key held down no
+	longer results in text that the compiler rejects.
+(Windows only) Setting the focus on the game tab by clicking in it with the
+	mouse now keeps the input cursor on the input line being edited.
+(Windows only) Added a warning dialog to the "Bless All" button on the
+	transcript tab.
+(Windows only) The bless buttons on the transcript tab are now disabled if
+	there is nothing to do.
+(Windows only) If the registry DWORD value
+	"HKCU\Software\David Kinder\Inform\Start\Open Last Project"
+	exists and is not set to zero, then when starting the application just
+	opens the last project, rather than displaying the splash screen. If the
+	registry DWORD value
+	"HKCU\Software\David Kinder\Inform\Window\Clean Up Indexes"
+	exists and is set to zero, then when closing a project the index files are
+	not deleted. (Based on patches by Dan Shiovitz.)
+Documentation on newly installed extensions, not yet used, is now much
+	fuller. This breaks the impasse of "can't use this until I read the
+	documentation, can't read the documentation until I use this".
+Examples:
+	"Abolition of love": removed comment that shouldn't have been there
+	"Bruneseau's Journey" slightly modified for tidiness
+	Minor errors exposed by the improved type-checker fixed in "Prague",
+		"Glass", "Crusoe", and "Underlying"
+	Extra commentary and new material added to "Laura" to explain parsing of
+		complex phrases better
+	"Would you...?" added to demonstrate checking for the existence of a
+		property
+	"First Name Basis" added to demonstrate how to assign synonyms to objects
+	"Tiny Garden" added to demonstrate a very simple implementation of
+		continuous space
+	"Equipment List" added to demonstrate and explain variant inventory styles
+	"Tense Boxing" added to demonstrate past and present tense rules more
+		completely
+	"Grilling" added to demonstrate a supporter from which the player cannot
+		take things
+	"Removal" added to demonstrate a revised taking report
+	"Nameless" added to demonstrate an ASK verb that works on objects, like
+		SHOW
+	"Stone" added to demonstrate rules used as properties of things
+Extensions:
+	"Basic Screen Effects": minor errors exposed by the new type-checker fixed 
+	"Locksmith": added yet more rule names; substantially updated to provide
+		better defaulting and add a "keychain" kind; advanced to Version 2.
+	"Rideable Vehicles": added rules to prevent mounting when already mounted,
+		and to convert the exiting action to dismounting; added example.
+Two new adjectives, "on-stage" and "off-stage", have been added to the stock
+	of those built in to Inform. See 7.9 in the documentation, "Removing
+	things from play", for more on this; in particular, note that the
+	previous reference in 7.9 to testing whether a thing is "somewhere"
+	has been withdrawn. (This led to numerous difficulties with ambiguity,
+	and in any case was not very explanatory.) We now test whether a thing
+	is "on-stage" or "off-stage".
+Type-checking for conditions has been substantially rewritten. This mainly
+	affects "if", "when" and "now", but other phrases too, and generally
+	makes Inform stricter: for instance, "if the time since Escalating Danger
+	began is greater than 1" used to work - but now I7 points out that a
+	time cannot be compared with a number, and insists on "1 minute"
+	rather than "1". This picked up minor errors in "Glass", "Reliques of
+	Tolti-Aph" and the examples "Underlying" and "The Prague Job".
+The check removing rules have been rewritten. Previously, these duplicated
+	the check taking rules, almost right down the line: in effect the two
+	actions did the same thing, though being reported slightly differently.
+	In the new version, a new rule called the "convert remove to take rule"
+	actually converts the action from removing into taking at an early
+	stage: the practical effect of this is that any before or instead
+	rules written to cover taking now also cover removing. This is good
+	because it means one no longer needs to remember to cover both these
+	actions to be sure of handling the case of an actor picking something up.
+The scope of the "removing" action is changed so that if something is part
+	of X, then it is in scope for "remove -- from X": previously, only
+	the things inside X qualified. Being in scope for the action does not
+	mean that the attempt to remove the part will succeed, of course, and
+	it will normally fail the "can't take component parts rule": but being
+	in scope does mean that the designer can write rules to allow removal
+	after all.
+Problem messages improved for mysterious problems arising from trying to
+	use local "let" variables in substituted text which turns up elsewhere
+	in the source, i.e., in places where those variables do not exist.
+Problem message added if two rules are being added with the same name.
+Fixed bug which caused negated conditions in the past and perfect tenses to
+	fail: I7 would read, e.g., "if the box had not been open" as "if the box
+	had been not open", which would generally be true much more easily.
+Fixed bug whereby actions declared without any mention of what they applied
+	to (e.g., "Requesting help is an action out of world." rather than
+	"Requesting help is an action out of world applying to nothing.")
+	would sometimes lead to spurious incompatibility Problem messages when
+	grammar is defined for the action. To clarify: from now on, an action
+	which does not say what it applies to, applies to nothing. (This is
+	tacitly assumed by some of the extensions source text already.)
+Fixed bug in which I7 allowed names with double-quoted text in, only to
+	crash at the I6 stage; when the cause was actually a misunderstanding of
+	the punctuation rules by the user.
+Fixed bug to do with names beginning with the word "kind", such as "kind
+	gentleman".
+Fixed bug which caused properties declared by the "(called ...)" text in a
+	new relation to have not quite the right type, causing odd type-checking
+	problems elsewhere.
+Fixed bug in which negatively phrased implications would sometimes be read
+	as if positive (e.g., "Scenery is never cold" is an implication not an
+	inference because it concerns all things which have a given property
+	at the start of play, not all things of a known kind; and it was being
+	misread as if "Scenery is always cold").
+Fixed bug to do with initialising variables whose kind of value is
+	"miscellaneous-value" or "string-of-text" (though the author of Inform
+	wishes people wouldn't use hacky internal kinds of value with hyphens
+	in the name, really).
+Fixed bug in which spurious problem messages occasionally occur when
+	giving grammar which specifies only one of two required things to
+	which an action will apply; and generally improved the previously
+	uninformative "not compatible" grammar Problem message.
+Fixed bug in which "now" does not always set properties correctly.
+Fixed bug whereby Problems in the final chunk of a text with substitutions
+	used explicitly as a value were not always reported.
+Fixed bug to do with relative clauses in property values (which are not
+	allowed, but used to cause an internal error rather than a proper problem.)
+Fixed bug in which errors on grammar verbs were sometimes reported quoting
+	the previous Understand... sentence in the source, not the one in which
+	the error occurred.
+Fixed bug in sentence-breaking, whereby text ending with sentence-closing
+	punctuation, immediately followed by a single word sentence in which the
+	word was capitalised, would cause that single word to be ignored.
+Fixed bug whereby "else" was not always equivalent to "otherwise".
+Fixed bug to do with permissions for the "initially carried" property.

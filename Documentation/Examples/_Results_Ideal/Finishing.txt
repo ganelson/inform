@@ -1,0 +1,22 @@
+   Hall
+  Finishing School
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Hall
+  You can see Miss Wicket here.
+  
+> >   Dormitory
+  (Testing.)
+  
+  >[1] eat apple
+  Your mannerly upbringing prevents you from eating without a fork or knife in front of someone.
+  
+  >[2] south
+  
+  Dormitory
+  
+  >[3] eat apple
+  You eat the apple. Not bad.
+  
+> >

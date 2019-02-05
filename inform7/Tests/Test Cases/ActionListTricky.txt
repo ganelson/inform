@@ -1,0 +1,7 @@
+Frozen in Solid Ice is a room.
+
+Instead of doing something other than waiting or examining or taking
+inventory or looking:
+	say "You're not really at liberty to do that." instead.
+
+Test me with "i / take me".

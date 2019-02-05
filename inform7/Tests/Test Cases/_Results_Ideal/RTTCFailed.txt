@@ -1,0 +1,28 @@
+   Arena
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Arena
+  You can see Fred, Daphne and Felix here.
+  
+> >   Arena
+  (Testing.)
+  
+  >[1] kiss fred
+  Hi, Fred.
+  
+  Fred might not like that.
+  
+  >[2] kiss daphne
+  Well hello there, Daphne.
+  
+  Daphne might not like that.
+  
+  >[3] kiss felix
+  
+  *** Run-time problem P47 (at paragraph 5 in the source text): Phrase applied to an incompatible kind of value.
+  
+  Felix might not like that.
+  
+> >

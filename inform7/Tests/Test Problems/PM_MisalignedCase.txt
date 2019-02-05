@@ -1,0 +1,7 @@
+Home is a room.
+
+When play begins:
+	let N be 13;
+	say "Ooh!";
+	-- 1:
+		say "Look!";

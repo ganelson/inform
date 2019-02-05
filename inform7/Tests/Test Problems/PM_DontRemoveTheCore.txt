@@ -1,0 +1,3 @@
+Use no core language element.
+
+Home is a room.

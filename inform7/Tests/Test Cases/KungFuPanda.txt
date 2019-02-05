@@ -1,0 +1,26 @@
+[From the pen of Mike Gentry. The interesting point is "add Panda at entry
+6 in the Furious Five, if absent.]
+
+The Jade Temple Dojo is a room. "Here is where the great kung fu masters --
+[Furious Five] -- practice their ancient fighting arts."
+
+Tiger is an animal, here. Snake is an animal, here. Mantis is an animal,
+here. Crane is an animal, here. Monkey is an animal, here.
+ 
+The Furious Five is a list of animals that varies.
+ 
+When play begins:
+	repeat with kung fu master running through animals in the Jade Temple Dojo:
+		add the kung fu master to the Furious Five.
+ 
+Panda is an animal.
+ 
+The dragon scroll is carried by the player.
+ 
+Instead of examining the dragon scroll:
+	say "What is this? According to the scroll, a humble Panda is destined to
+		defeat the mighty Tai Lung!";
+	move Panda to the Jade Temple Dojo;
+	add Panda at entry 6 in the Furious Five, if absent.
+ 
+Test me with "x scroll / l / x scroll / l".

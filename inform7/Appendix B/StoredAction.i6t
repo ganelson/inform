@@ -1,0 +1,382 @@
+B/stact: StoredAction Template.
+ 
+@Purpose: Code to support the stored action kind of value.
+ 
+@-------------------------------------------------------------------------------
+
+@p Block Format.
+The short block of a stored action is simply a pointer to a long block. The
+long block always has a length of 6 words.
+
+An action which involves a topic -- such as the one produced by the command
+LOOK UP JIM MCDIVITT IN ENCYCLOPAEDIA -- cannot be tried without the text
+of that topic (JIM MCDIVITT) being available. That's no problem if the action
+is tried in the same turn in which it is generated, because the text will
+still be in the command buffer. But once we store actions up for future
+use it becomes an issue. So when we store an action involving a topic,
+we record the actual text typed at the time when it is stored, and this
+goes into array entry 5 of the block. Because that in turn is text,
+and therefore a block value on the heap in its own right, we have to be a
+little more careful about destroying and copying stored actions than we
+otherwise would be.
+
+Note that entries 1 and 2 are values whose kind depends on the action in
+entry 0: but they are never block values, because actions are not allowed
+to apply to block values. This simplifies matters considerably.
+
+@c
+Constant STORA_ACTION_F = 0;
+Constant STORA_NOUN_F = 1;
+Constant STORA_SECOND_F = 2;
+Constant STORA_ACTOR_F = 3;
+Constant STORA_REQUEST_F = 4;
+Constant STORA_COMMAND_TEXT_F = 5;
+
+@p KOV Support.
+See the "BlockValues.i6t" segment for the specification of the following
+routines.
+
+@c
+[ STORED_ACTION_TY_Support task arg1 arg2 arg3;
+	switch(task) {
+		CREATE_KOVS:      return STORED_ACTION_TY_Create(arg2);
+		DESTROY_KOVS:     STORED_ACTION_TY_Destroy(arg1);
+		MAKEMUTABLE_KOVS: return 1;
+		COPYQUICK_KOVS:   rtrue;
+		COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);
+		KINDDATA_KOVS:    return 0;
+		EXTENT_KOVS:      return 6;
+		COPY_KOVS:        STORED_ACTION_TY_Copy(arg1, arg2);
+		COMPARE_KOVS:     return STORED_ACTION_TY_Compare(arg1, arg2);
+		HASH_KOVS:        return STORED_ACTION_TY_Hash(arg1);
+		DEBUG_KOVS:       print " = ", (STORED_ACTION_TY_Say) arg1;
+	}
+	! We choose not to respond to: CAST_KOVS, COPYKIND_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
+	rfalse;
+];
+
+@p Creation.
+A stored action block has fixed size, so this is a single-block KOV: its
+data consists of six words, laid out as shown in the following routine.
+Note that it initialises to the default value for this KOV, an action
+in which the player waits.
+
+@c
+[ STORED_ACTION_TY_Create sb stora;
+	stora = FlexAllocate(6*WORDSIZE, STORED_ACTION_TY, BLK_FLAG_WORD);
+	BlkValueWrite(stora, STORA_ACTION_F, ##Wait, true); ! action
+	BlkValueWrite(stora, STORA_NOUN_F, 0, true); ! noun
+	BlkValueWrite(stora, STORA_SECOND_F, 0, true); ! second
+	BlkValueWrite(stora, STORA_ACTOR_F, player, true); ! actor
+	BlkValueWrite(stora, STORA_REQUEST_F, false, true); ! whether a request
+	BlkValueWrite(stora, STORA_COMMAND_TEXT_F, 0, true); ! text of command if necessary, 0 if not
+	return BlkValueCreateSB1(sb, stora);
+];
+
+@p Setting Up.
+In practice it's convenient for NI to have a routine which creates a stored
+action with a given slate of action variables, rather than have to set them
+all one at a time, so the following is provided as a shorthand form.
+
+@c
+[ STORED_ACTION_TY_New a n s ac req  stora;
+	if (stora == 0) stora = BlkValueCreate(STORED_ACTION_TY);
+	BlkValueWrite(stora, STORA_ACTION_F, a);
+	BlkValueWrite(stora, STORA_NOUN_F, n);
+	BlkValueWrite(stora, STORA_SECOND_F, s);
+	BlkValueWrite(stora, STORA_ACTOR_F, ac);
+	BlkValueWrite(stora, STORA_REQUEST_F, req);
+	BlkValueWrite(stora, STORA_COMMAND_TEXT_F, 0);
+	return stora;
+];
+
+@p Destruction.
+Entries 0 to 4 are forgettable non-block values: only the optional text
+requires destruction.
+
+@c
+[ STORED_ACTION_TY_Destroy stora toc;
+	toc = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+	if (toc) BlkValueFree(toc);
+];
+
+@p Copying.
+The only entry needing attention is, again, entry 5: if this is non-zero in
+the source, then we need to create a new text block to hold a duplicate
+copy of the text.
+
+@c
+[ STORED_ACTION_TY_Copy storato storafrom tocfrom tocto;
+	tocfrom = BlkValueRead(storafrom, STORA_COMMAND_TEXT_F);
+	if (tocfrom == 0) return;
+	tocto = BlkValueCreate(TEXT_TY);
+	BlkValueCopy(tocto, tocfrom);
+	BlkValueWrite(storato, STORA_COMMAND_TEXT_F, tocto);
+];
+
+@p Comparison.
+There is no very convincing ordering on stored actions, but we need to
+devise a comparison which will exhaustively determine whether two actions
+are or are not different.
+
+@c
+[ STORED_ACTION_TY_Compare storaleft storaright delta itleft itright;
+	delta = BlkValueRead(storaleft, STORA_ACTION_F) - BlkValueRead(storaright, STORA_ACTION_F);
+	if (delta) return delta;
+	delta = BlkValueRead(storaleft, STORA_NOUN_F) - BlkValueRead(storaright, STORA_NOUN_F);
+	if (delta) return delta;
+	delta = BlkValueRead(storaleft, STORA_SECOND_F) - BlkValueRead(storaright, STORA_SECOND_F);
+	if (delta) return delta;
+	delta = BlkValueRead(storaleft, STORA_ACTOR_F) - BlkValueRead(storaright, STORA_ACTOR_F);
+	if (delta) return delta;
+	delta = BlkValueRead(storaleft, STORA_REQUEST_F) - BlkValueRead(storaright, STORA_REQUEST_F);
+	if (delta) return delta;
+	itleft = BlkValueRead(storaleft, STORA_COMMAND_TEXT_F);
+	itright = BlkValueRead(storaright, STORA_COMMAND_TEXT_F);
+	if ((itleft ~= 0) && (itright ~= 0))
+		return TEXT_TY_Support(COMPARE_KOVS, itleft, itright);
+	return itleft - itright;
+];
+
+[ STORED_ACTION_TY_Distinguish stora1 stora2;
+	if (STORED_ACTION_TY_Compare(stora1, stora2) == 0) rfalse;
+	rtrue;
+];
+
+@p Hashing.
+
+@c
+[ STORED_ACTION_TY_Hash stora  rv it;
+	rv = BlkValueRead(stora, STORA_ACTION_F);
+	rv = rv * 33 + BlkValueRead(stora, STORA_NOUN_F);
+	rv = rv * 33 + BlkValueRead(stora, STORA_SECOND_F);
+	rv = rv * 33 + BlkValueRead(stora, STORA_ACTOR_F);
+	rv = rv * 33 + BlkValueRead(stora, STORA_REQUEST_F);
+	it = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+	if (it ~= 0)
+		rv = rv * 33 + TEXT_TY_Support(HASH_KOVS, it);
+	return rv;
+];
+
+@p Printing.
+We share some code here with the routines originally written for the ACTIONS
+testing command. (The |DB| in |DB_Action| stands for "debugging".) When
+printing a topic, it prints the relevant words from the player's command:
+so if our stored action is one which contains an entry 5, then we have to
+temporarily adopt this as the player's command, and restore the old player's
+command once printing is done. To do this, we need to save the old player's
+command, and we do that by creating a text for the duration.
+
+@c
+[ STORED_ACTION_TY_Say stora text_of_command saved_command saved_pn saved_action K1 K2 at cf cw;
+	if ((stora==0) || (BlkValueWeakKind(stora) ~= STORED_ACTION_TY)) return;
+	text_of_command = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+	if (text_of_command) {
+		saved_command = BlkValueCreate(TEXT_TY);
+		BlkValueCast(saved_command, SNIPPET_TY, players_command);
+		SetPlayersCommand(text_of_command);
+	}
+	saved_pn = parsed_number; saved_action = action;
+	action = BlkValueRead(stora, STORA_ACTION_F);
+	cf = consult_from; cw = consult_words;
+	at = FindAction(-1);
+	K1 = ActionData-->(at+AD_NOUN_KOV);
+	K2 = ActionData-->(at+AD_SECOND_KOV);
+	if (K1 ~= OBJECT_TY) {
+		parsed_number = BlkValueRead(stora, STORA_NOUN_F);
+		if ((K1 == UNDERSTANDING_TY) && (text_of_command == 0)) {
+			if (saved_command == 0) saved_command = BlkValueCreate(TEXT_TY);
+			BlkValueCast(saved_command, SNIPPET_TY, players_command);
+			text_of_command = BlkValueCreate(TEXT_TY);
+			BlkValueCopy(text_of_command, parsed_number);
+			SetPlayersCommand(text_of_command);
+			parsed_number = players_command;
+			consult_from = parsed_number/100; consult_words = parsed_number%100;
+		}
+	}
+	if (K2 ~= OBJECT_TY) {
+		parsed_number = BlkValueRead(stora, STORA_SECOND_F);
+		if ((K2 == UNDERSTANDING_TY) && (text_of_command == 0)) {
+			if (saved_command == 0) saved_command = BlkValueCreate(TEXT_TY);
+			BlkValueCast(saved_command, SNIPPET_TY, players_command);
+			text_of_command = BlkValueCreate(TEXT_TY);
+			BlkValueCopy(text_of_command, parsed_number);
+			SetPlayersCommand(text_of_command);
+			parsed_number = players_command;
+			consult_from = parsed_number/100; consult_words = parsed_number%100;
+		}
+	}	
+	DB_Action(
+		BlkValueRead(stora, STORA_ACTOR_F),
+		BlkValueRead(stora, STORA_REQUEST_F),
+		BlkValueRead(stora, STORA_ACTION_F),
+		BlkValueRead(stora, STORA_NOUN_F),
+		BlkValueRead(stora, STORA_SECOND_F), true);
+	parsed_number = saved_pn; action = saved_action;
+	consult_from = cf; consult_words = cw;
+	if (text_of_command) {
+		SetPlayersCommand(saved_command);
+		BlkValueFree(saved_command);
+	}
+];
+
+@p Involvement.
+That completes the compulsory services required for this KOV to function:
+from here on, the remaining routines provide definitions of stored action-related
+phrases in the Standard Rules.
+
+An action "involves" an object if it appears as either the actor or the first
+or second noun.
+
+@c
+[ STORED_ACTION_TY_Involves stora item at;
+	at = FindAction(BlkValueRead(stora, STORA_ACTION_F));
+	if (at) {
+		if ((ActionData-->(at+AD_NOUN_KOV) == OBJECT_TY) &&
+			(BlkValueRead(stora, STORA_NOUN_F) == item)) rtrue;
+		if ((ActionData-->(at+AD_SECOND_KOV) == OBJECT_TY) &&
+			(BlkValueRead(stora, STORA_SECOND_F) == item)) rtrue;
+	}
+	if (BlkValueRead(stora, STORA_ACTOR_F) == item) rtrue;
+	rfalse;
+];
+
+@p Nouns.
+Extracting the noun or second noun from an action is a delicate business
+because simply returning the values in entries 1 and 2 would not be type-safe;
+it would fail to be an object if the stored action did not apply to objects.
+So the following returns |nothing| if requested to produce noun or second
+noun for such an action.
+
+@c
+[ STORED_ACTION_TY_Part stora ind at ado;
+	if (ind == STORA_NOUN_F or STORA_SECOND_F) {
+		if (ind == STORA_NOUN_F) ado = AD_NOUN_KOV; else ado = AD_SECOND_KOV;
+		at = FindAction(BlkValueRead(stora, STORA_ACTION_F));
+		if ((at) && (ActionData-->(at+ado) == OBJECT_TY)) return BlkValueRead(stora, ind);
+		return nothing;
+	}
+	return BlkValueRead(stora, ind);
+];
+
+@p Pattern Matching.
+In order to apply an action pattern such as "doing something with the kazoo"
+to a stored action, it needs to be the current action, because the code which
+compiles conditions like this looks at the |action|, |noun|, ..., variables.
+We don't want to do anything as disruptive as temporarily starting the stored
+action and then halting it again, so instead we simply "adopt" it, saving
+the slate of action variables and setting them from the stored action: almost
+immediately after -- the moment the condition has been tested -- we "unadopt"
+it again, restoring the stored values. Since the action pattern cannot itself
+refer to a stored action, the following code won't be nested, and we don't
+need to worry about stacking up saved copies of the action variables.
+
+|SAT_Tmp-->0| stores the outcome of the condition, and is set in code
+compiled by NI.
+
+@c
+Array SAT_Tmp-->7;
+[ STORED_ACTION_TY_Adopt stora at;
+	SAT_Tmp-->1 = action;
+	SAT_Tmp-->2 = noun;
+	SAT_Tmp-->3 = second;
+	SAT_Tmp-->4 = actor;
+	SAT_Tmp-->5 = act_requester;
+	SAT_Tmp-->6 = parsed_number;
+	action = BlkValueRead(stora, STORA_ACTION_F);
+	at = FindAction(-1);
+	if (ActionData-->(at+AD_NOUN_KOV) == OBJECT_TY)
+		noun = BlkValueRead(stora, STORA_NOUN_F);
+	else {
+		parsed_number = BlkValueRead(stora, STORA_NOUN_F);
+		noun = nothing;
+	}
+	if (ActionData-->(at+AD_SECOND_KOV) == OBJECT_TY)
+		second = BlkValueRead(stora, STORA_SECOND_F);
+	else {
+		parsed_number = BlkValueRead(stora, STORA_SECOND_F);
+		second = nothing;
+	}
+	actor = BlkValueRead(stora, STORA_ACTOR_F);
+	if (BlkValueRead(stora, STORA_REQUEST_F)) act_requester = player; else act_requester = nothing;
+];
+
+[ STORED_ACTION_TY_Unadopt;
+	action = SAT_Tmp-->1;
+	noun = SAT_Tmp-->2;
+	second = SAT_Tmp-->3;	
+	actor = SAT_Tmp-->4;	
+	act_requester = SAT_Tmp-->5;
+	parsed_number = SAT_Tmp-->6;
+	return SAT_Tmp-->0;
+];
+
+@p Current Action.
+Although we never cast other values to stored actions, because none of them
+really imply an action (not even an action name, since that gives no help
+as to what the nouns might be), there is of course one action almost always
+present within a story file at run-time, even if it is not a single value
+as such: the action which is currently running. The following routine
+translates that into a stored action -- thus allowing us to store it.
+
+This is the place where we look to see if the action applies to a topic as
+either its noun or second noun, and if it does, we copy the player's
+command into a text block-value in entry 5.
+
+@c
+[ STORED_ACTION_TY_Current stora at text_of_command;
+	if ((stora==0) || (BlkValueWeakKind(stora) ~= STORED_ACTION_TY)) return 0;
+	BlkValueWrite(stora, STORA_ACTION_F, action);
+	at = FindAction(-1);
+
+	if (ActionData-->(at+AD_NOUN_KOV) == OBJECT_TY)
+		BlkValueWrite(stora, STORA_NOUN_F, noun);
+	else
+		BlkValueWrite(stora, STORA_NOUN_F, parsed_number);
+	if (ActionData-->(at+AD_SECOND_KOV) == OBJECT_TY)
+		BlkValueWrite(stora, STORA_SECOND_F, second);
+	else
+		BlkValueWrite(stora, STORA_SECOND_F, parsed_number);
+	BlkValueWrite(stora, STORA_ACTOR_F, actor);
+	if (act_requester) BlkValueWrite(stora, STORA_REQUEST_F, true);
+	else BlkValueWrite(stora, STORA_REQUEST_F, false);
+
+	if ((at) && ((ActionData-->(at+AD_NOUN_KOV) == UNDERSTANDING_TY) ||
+			(ActionData-->(at+AD_SECOND_KOV) == UNDERSTANDING_TY))) {
+		text_of_command = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+		if (text_of_command == 0) {
+			text_of_command = BlkValueCreate(TEXT_TY);
+			BlkValueWrite(stora, STORA_COMMAND_TEXT_F, text_of_command);
+		}
+		BlkValueCast(text_of_command, SNIPPET_TY, players_command);
+	} else BlkValueWrite(stora, STORA_COMMAND_TEXT_F, 0);
+
+	return stora;
+];
+
+@p Trying.
+Finally: having stored an action for perhaps many turns, we now let it happen,
+either silently or not.
+
+@c
+[ STORED_ACTION_TY_Try stora ks  text_of_command saved_command;
+	if ((stora==0) || (BlkValueWeakKind(stora) ~= STORED_ACTION_TY)) return;
+	if (ks) { @push keep_silent; keep_silent=1; }
+	text_of_command = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+	if (text_of_command) {
+		saved_command = BlkValueCreate(TEXT_TY);
+		BlkValueCast(saved_command, SNIPPET_TY, players_command);
+		SetPlayersCommand(text_of_command);
+	}
+	TryAction(
+		BlkValueRead(stora, STORA_REQUEST_F),
+		BlkValueRead(stora, STORA_ACTOR_F),
+		BlkValueRead(stora, STORA_ACTION_F),
+		BlkValueRead(stora, STORA_NOUN_F),
+		BlkValueRead(stora, STORA_SECOND_F));
+	if (text_of_command) {
+		SetPlayersCommand(saved_command);
+		BlkValueFree(saved_command);
+	}
+	if (ks) { @pull keep_silent; }
+];

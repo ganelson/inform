@@ -1,0 +1,10 @@
+Inform 7 build 6L96 has started.
+I've now read your source text, which is 29 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyObj2
+  >--> In 'The printed name of a button is the text' (source text, line 5) you
+    give a value of a property as 'text', but it seems to be a general
+    description of a value (a text) rather than nailing down exactly what the
+    value should be.
+Inform 7 has finished: 19 centiseconds used.

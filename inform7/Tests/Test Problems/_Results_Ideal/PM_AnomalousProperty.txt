@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AnomalousProperty
+  >--> Sorry, but I'm going to have to disallow the sentence 'A keyword can be
+    pushable between rooms' (source text, line 3), even though it asks for
+    something reasonable. A very small number of either-or properties with
+    meanings special to Inform, like 'pushable between rooms', are restricted
+    so that only kinds of object can have them. Since a keyword isn't a kind of
+    object, it can't be said to be pushable between rooms. Probably you only
+    need to call the property something else. The built-in meaning would only
+    make sense if it were a kind of object in any case, so nothing is lost.
+    Sorry for the inconvenience, all the same; there are good implementation
+    reasons.
+Inform 7 has finished: 25 centiseconds used.

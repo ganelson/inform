@@ -1,0 +1,5 @@
+packagetype _plain
+
+package main _plain
+	kind K_number int32
+	kind K_number int2

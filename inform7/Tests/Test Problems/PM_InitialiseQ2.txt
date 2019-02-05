@@ -1,0 +1,5 @@
+The One Room is a room.
+
+Sunrise is a time variable. Sunrise is 5:34 am.
+
+Dawn is a time variable. Dawn is Dawn.

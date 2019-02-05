@@ -1,0 +1,13 @@
+Home is a room.
+
+To decide which number is (N - a number) unchanged (this is wasting
+time): decide on N.
+
+The SOP is a list of phrases number -> number which varies.
+
+The SOP is {wasting time}.
+
+When play begins:
+	showme SOP;
+	repeat with P running through SOP:
+		showme P applied to 3.

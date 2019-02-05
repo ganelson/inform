@@ -1,0 +1,38 @@
+! Blurb file created by Inform Inform 7.99.99 (build 9Z99)
+
+status "Internal/HTML/CblorbModel.html" "intest/Workspace/T0/Example.inform/Build/StatusCblorb.html"
+
+
+! Identification
+
+project folder "intest/Workspace/T0/Example.inform"
+release to "intest/Workspace/T0/Example.materials/Release"
+
+! Blorb instructions
+
+storyfile leafname "story.gblorb"
+storyfile "intest/Workspace/T0/Example.inform/Build/output.ulx" include
+ifiction "intest/Workspace/T0/Example.inform/Metadata.iFiction" include
+cover "Internal/Miscellany/Cover.jpg"
+picture 1 "Internal/Miscellany/Cover.jpg"
+
+! Placeholder variables
+
+placeholder [IFID] = "0B00B00D-3307-4688-B2D8-95DB962781B4"
+placeholder [RELEASE] = "1"
+placeholder [YEAR] = "2016"
+placeholder [TITLE] = "Untitled"
+placeholder [AUTHOR] = "Anonymous"
+placeholder [BLURB] = "A work of interactive fiction."
+
+! Other material to release
+
+status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/doc403.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a website'&nbsp;<a href=inform:/doc405.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with an interpreter', for in-browser play on your website&nbsp;<a href=inform:/doc406.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/doc401.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the source text'&nbsp;<a href=inform:/doc412.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a solution'&nbsp;<a href=inform:/doc411.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the library card'&nbsp;<a href=inform:/doc412.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the introductory booklet'&nbsp;<a href=inform:/doc404.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with the introductory postcard'&nbsp;<a href=inform:/doc404.html><img border=0 src=inform:/doc_images/help.png></a>||

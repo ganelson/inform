@@ -1,0 +1,73 @@
+   Backstage, feeling incompetent                                                                                                                                                                                         Budget: $60.00
+  Introduction to Juggling
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Backstage
+  A muffled black room with felt on the floors and walls. A glowing sign over the stage door says SHOW IN PROGRESS.
+  
+  You can see a Juggling Equipment Catalog here.
+  
+> >   Backstage, feeling moderately skilled                                                                                                                                                                                  Budget: $9.00
+  (Testing.)
+  
+  >[1] read catalog
+  You read through the offerings, including:
+  
+  economy bounce ball set: A fairly ordinary rubber ball, solid color. $10.00, comes in set of three.
+  
+  acrylic contact ball: A large clear ball, not for throwing but for using in various hand tricks. $14.00, should be bought with ball polish.
+  
+  UV-reactive contact ball: Similar to the ordinary acrylic contact ball, but UV-reactive. $55.00, appears to glow in dark rooms.
+  
+  ball polish set: Three bottles of polish and a rag for keeping acrylic contact balls scratch-free. $10.00, useful only with acrylic contact balls.
+  
+  teaching beanbag set: Soft, easily-juggled bag. $8.00, set of three.
+  
+  stage ball set: Not much different in appearance from the economy bounce ball, but larger so as to be visible from a stage. $13.50, comes in set of three.
+  
+  fireball set: A ball has wicking and a fuel-source inside so that it will burn while being juggled. $33.00, will not be sold to minors.
+  
+  >[2] buy economy
+  You order an economy bounce ball set, which is delivered instantly.
+  
+  >[3] buy beanbag
+  You order a teaching beanbag set, which is delivered instantly.
+  
+  >[4] juggle economy
+  You're not quite ready to juggle something like the economy bounce ball set. Better to start with an easier toy.
+  
+  >[5] juggle beanbag
+  You juggle the beanbags with basic competence.
+  
+  >[6] juggle beanbag
+  You juggle the beanbags with basic competence.
+  
+  >[7] juggle beanbag
+  You juggle the beanbags with basic competence.
+  
+  >[8] juggle beanbag
+  You juggle the beanbags with basic competence.
+  
+  >[9] juggle beanbag
+  You juggle the beanbags with basic competence.
+  
+  >[10] juggle beanbag
+  You juggle the beanbags with basic competence.
+  
+  >[11] juggle economy
+  You create of the balls a cascade of moving color.
+  
+  >[12] juggle economy
+  You create of the balls a cascade of moving color.
+  
+  >[13] juggle economy
+  You create of the balls a cascade of moving color.
+  
+  >[14] buy fireball set
+  You order a fireball set, which is delivered instantly.
+  
+  >[15] juggle fireball
+  You're not quite ready to juggle something like the fireball set. Better to start with an easier toy.
+  
+> >

@@ -1,0 +1,14 @@
+   You: 0                                                                                                                                                                                                                 Joey: 0
+  Text Foosball
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lounge
+  The Lounge is appointed with everything necessary to rest and relaxation: a vending machine, a potted palm, a stack of Entertainment Weekly issues from 1993, and -- your pride and joy -- a foosball game.
+  
+  On the foosball game is a small white ball (still).
+  
+  Joey is hunkered over the foosball handles on his side of the table.
+  
+> >   You: 0                                                                                                                                                                                                                 Joey: 0
+> Are you sure you want to quit? 

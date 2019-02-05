@@ -1,0 +1,34 @@
+   Cinco de Mayo Fundraiser
+  Cinco
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cinco de Mayo Fundraiser
+  You can see a taco shell here.
+  
+> >   Cinco de Mayo Fundraiser
+  (Testing.)
+  
+  >[1] x taco
+  The taco shell is empty.
+  
+  >[2] put shredded beef in taco
+  You put shredded beef into the taco shell.
+  
+  >[3] get taco
+  Taken.
+  
+  >[4] i
+  You are carrying:
+    a shredded beef taco
+  
+  >[5] x shredded beef taco
+  In the shredded beef taco is shredded beef.
+  
+  >[6] get shredded beef
+  You gingerly pick shredded beef out of the taco shell.
+  
+  >[7] x shredded beef taco
+  I only understood you as far as wanting to examine shredded beef.
+  
+> >

@@ -1,0 +1,8 @@
+Inform 7 build 6M41 has started.
+I've now read your source text, which is 44 words long.
+I've also read Standard Rules by Graham Nelson, which is 42472 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RegionRelation2
+  >--> You wrote 'Zog is in Foo' (source text, line 2): but regions can only be
+    contained in other regions, and not for example in rooms.
+Inform 7 has finished: 27 centiseconds used.

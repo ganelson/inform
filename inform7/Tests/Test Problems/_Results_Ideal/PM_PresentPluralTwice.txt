@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PresentPluralTwice
+  >--> You wrote 'The verb to occlude (he occludes, they occlude, they
+    occluded) implies the concealment relation' (source text, line 1): but the
+    present plural has been given twice, since two of the principal parts of
+    this verb begin with 'they'.
+Inform 7 has finished: 13 centiseconds used.

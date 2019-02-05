@@ -1,0 +1,53 @@
+   Wedding Chapel Dressing Room
+  From the other side of the door, you hear the organist move on from his instrumental interpretation of "I Wanna Hold Your Hand" to a somewhat more spirited rendition of "Help! I Need Somebody!". Okay, okay, but you've been rushing things along since the 16th fairway, and you can't be more than a half-hour late... Surely that mother of hers can't blame you for that?
+  
+  Get Me to the Church on Time
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wedding Chapel Dressing Room
+  The bride's dressing room is a lavish suite with closets, hangers, dressmaker's dummies, boxes of straight pins and sewing notions, combs, lotions, brushes, and hair fixatives, plus room for  fifteen female attendants and a photographer. Before they shoved you out of the room you even got a glimpse of a small reference library including "1001 French Braids" and "Corset-Lacing For Beginners."
+  
+  This is the groom's dressing room. You get a framed photograph of Elvis, a dusty mirror, and the floor space of an average toilet stall.
+  
+> >   Wedding Chapel Dressing Room
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    some golf pants (being worn)
+    some tuxedo trousers
+    a frilly shirt
+    a polo shirt (being worn)
+  
+  >[2] x trousers
+  Black, pressed, and slimming.
+  
+  >[3] wear trousers
+  You'll have to take off the golf pants first.
+  
+  >[4] x golf pants
+  Checked in red and green, with tiny frolicking gophers every few inches.
+  
+  >[5] take off golf pants
+  You take off the golf pants.
+  
+  >[6] wear trousers
+  You put on the tuxedo trousers.
+  
+  >[7] x frilly shirt
+  She insisted.
+  
+  >[8] x polo shirt
+  Turquoise and bright yellow, the colors selected by your golfing buddies.
+  
+  >[9] wear frilly shirt
+  You'll have to take off the polo shirt first.
+  
+  >[10] doff polo shirt
+  You take off the polo shirt.
+  
+  >[11] wear frilly shirt
+  You put on the frilly shirt.
+  
+> >

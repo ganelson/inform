@@ -1,0 +1,27 @@
+[A case by Kathleen Fischer. The point here is for the size property to be
+available even to the unseen former player.]
+
+Singing is an action applying to nothing. Understand "sing" as singing.
+
+Check singing: say "Your singing is abominable."
+
+A size is a kind of value. The sizes are small, medium, and large. A
+thing has a size. A thing is usually medium.
+
+The Junk Shop is a room.
+
+A super bouncy ball, a tin soldier, and a stuffed mongoose are things
+in the Junk Shop. The ball and soldier are small. The mongoose is
+medium.
+
+Lou is a person. He is large. He has description "A green hulking
+brute with a heart of gold." The player is Lou.
+
+Before singing:
+	say "Everything, including [the list of things in The Junk Shop], cringe[s]
+		at your pathetic efforts." instead.
+
+Before jumping:
+	say "[The list of small things in The Junk Shop] jump on the floor as well." instead.
+
+test me with "x me / sing / jump".

@@ -1,0 +1,9 @@
+Inline Arena is a room.
+
+To go awry (N - a number): (-
+		{-unprotect:N};
+		{-show-me:blobby};
+	-).
+
+When play begins:
+	go awry 21.

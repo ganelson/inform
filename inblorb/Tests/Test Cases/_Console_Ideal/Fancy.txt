@@ -1,0 +1,5 @@
+! inblorb 99.99 [executing on Thursday 28 April 2016 at 11:00.00]
+! The blorb spell (safely protect a small object as though in a strong box).
+! Release folder: <intest/Workspace/T3/Example.materials/Release>
+Copy blorb to: [[intest/Workspace/T3/Example.materials/Release/Mansfield Perk.gblorb]]
+! Completed: wrote blorb file with 1 picture(s), 0 sound(s)

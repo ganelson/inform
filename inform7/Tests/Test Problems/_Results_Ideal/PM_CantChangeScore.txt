@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantChangeScore
+  >--> You wrote 'now the score is 7' (source text, line 4): but this is a
+    story with no scoring, so it makes no sense to change the 'score' value.
+    You can add scoring to the story by including the sentence 'Use scoring.',
+    in which case this problem message will go away; or you can remove it with
+    'Use no scoring.' (Until 2011, the default was to have scoring, but now
+    it's not to have scoring.)
+Inform 7 has finished: 43 centiseconds used.

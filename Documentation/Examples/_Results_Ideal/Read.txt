@@ -1,0 +1,18 @@
+   Archive
+  The Trouble with Printing
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Archive
+  You can see Berkeley's report here.
+  
+> >   Archive
+  (Testing.)
+  
+  >[1] examine report
+  A report from Governor Sir William Berkeley of Virginia, in 1671, in answer to the queries sent by the Commissioners of Plantations the year previous. Of this report the better part is burned and only a tail fragment remains.
+  
+  >[2] read report
+  You read: I thank God, there are no free schools nor printing, and I hope we shall not have these hundred years; for learning has brought disobedience, and heresy, and sects into the world, and printing has divulged them...
+  
+> >

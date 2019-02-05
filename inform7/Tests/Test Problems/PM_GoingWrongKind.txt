@@ -1,0 +1,9 @@
+Ledge by Bridge is a Room. Nirvana is a region. The ball of string is in
+Ledge.
+
+Instead of going from the ball of string:
+	say "Hey, watch you don't unwind!"
+
+Instead of going nowhere from Ledge by Bridge:
+	say "Hey, watch where you're going!"
+

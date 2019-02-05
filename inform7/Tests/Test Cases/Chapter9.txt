@@ -1,0 +1,208 @@
+"Chapter 9: Minutiae" by Emily Short
+
+Chapter 9
+
+Use command line echoing. Use scoring.
+
+Low Noon is a room. The sun is in Low Noon.
+
+Early Morning is north of Late Morning. A lunar clock is a device in Early Morning. "A mechanical lunar clock is built into the face of cold stone."
+
+Late Morning is northeast of Low Noon.
+
+Early Afternoon is northwest of Low Noon.
+
+The moon is in Early Afternoon. "The [moon condition] moon is in the sky just overhead." The moon can be new, waxing crescent, waxing gibbous, full, waning gibbous, or waning crescent. The moon has the description "It is [moon condition], very pale in this light."
+
+Late Afternoon is north of Early Afternoon. A giant button is in Late Afternoon. "Set into the ground is a button large enough for a person to stand on."
+
+The book of hours is carried by the player. The description is "No larger than you can easily hold in your two open hands, and illustrated to display the activities proper to every era of man: first hunters in winter, tracking mastodons, with dogs; then women with arms full of illuminated sheaves, outside a razed city; then men on horseback with a far-seeing gaze on land; then the silver ships; and so on."
+
+Night is northeast of Late Afternoon. Night is northwest of Early Morning.
+
+Section 1 - When play begins
+
+When play begins: 
+	say "Things have gone somewhat wrong.
+	
+	".
+	
+Section 2 - Awarding points
+
+After taking the moon for the first time:
+	increase the score by five;
+	say "The moon hangs neatly in your palm."
+
+After taking the sun for the first time:
+	increase the score by five;
+	say "The sun resents your interference."
+	
+The maximum score is 12.
+
+Section 3 - Introducing tables, rankings
+
+Table 2 - Rankings
+Score	Rank
+0	"Visitor Running Late"
+5	"Student of Time"
+10	"Expert in Eternity"
+
+Section 4 - Displaying quotations
+
+After looking in Low Noon,
+	display the boxed quotation
+	"Higher and higher every day,
+	Till over the mast at noon--"
+
+Section 5 - When play ends
+
+Instead of eating the moon,
+	end the story saying "You have swallowed next month".
+	
+Instead of eating the sun,
+	end the story saying "You have died".
+
+When play ends:
+	say "Time stutters-- stops-- clicks backward. That most recent folly erases itself as though it had never been.";
+	resume the story.
+
+Section 6 - Every turn
+
+Every turn:
+	if the player has the sun and the player has the moon, end the story saying "You have won".
+	 
+Every turn when the lunar clock is switched on:
+	advance the phase of the moon.
+
+After switching on the lunar clock: 
+	say "The clock starts up ever so slowly, making a noise like distant tide."
+	
+After switching off the lunar clock: 
+	say "The clock's action dies.".
+
+Section 7 - The time of day
+
+The time of day is 10:13 AM.
+
+To reset the time:
+	now the time of day is 10:13 AM;
+	say "Thick shadows collect around you, prod your skin, and then disperse.
+	
+Back to the beginning..."
+
+Instead of pushing the giant button:
+	reset the time.
+
+Section 8 - Telling the time
+
+When play begins: 
+	now the right hand status line is "Time: [time of day]";
+
+
+Section 9 - Approximate times, lengths of time
+
+A water clock is in Night. "A slow-dripping water-clock stands at the center of a stone circle, now showing the approximate time to be [the time of day to the nearest 30 minutes in words]."
+
+Section 10 - Comparing and shifting times
+
+A sand clock is in Early Afternoon. "There is a vast bowl of sand, almost a miniature desert; the bowl is black stone on columns. From the center of the bowl a thin trickle of sand runs into a heap on the ground. The height of the heap tells you that it is now [nine minutes before the time of day to the nearest ten minutes in words]."
+
+Instead of waiting in Early Afternoon when the time of day is after 3:30 PM:
+	say "It feels wrong to be here. Late Afternoon has a better claim..."
+	
+Instead of waiting in Night when the time of day is before 6:30 PM:
+	say "You feel an imposter being here, of course. It isn't time yet."
+	
+Instead of waiting in Low Noon when the time of day is not 12:00 PM:
+	say "A finicky location this, one that needs adjustment just so. You don't belong here now. It doesn't care for you."
+
+Section 11 - Calculating times
+[Uninventively this mostly recapitulates the manual's example]
+
+The clock error is a number that varies. To thump the mechanism: now the clock error is a random number from -10 to 10.
+
+Instead of attacking the broken clock: thump the mechanism; say "You thump the clock, which now reads [clock error minutes after the time of day].".
+
+The broken clock is in the Late Morning. "A primitive clock ticks angrily in the corner, showing the time as [clock error minutes after the time of day]." The player is in Late Morning.
+
+Section 12 - Future events 
+
+At 12:00 PM:
+	say "Noon! All your nerves stand on end and the hairs prickle on your neck.";
+	if the player is in Low Noon, end the story saying "You have won". 
+
+The tiny brass timer is a device. It is carried by the player.
+
+After switching on the tiny brass timer:
+	say "You set the brass timer again. It will ding in fifteen minutes.";
+	the timer dings in 15 turns from now.
+	
+At the time when the timer dings:
+	if the timer is visible, say "Ding! says the timer decorously."
+
+The golden rod is a thing in Night. The description is "It brings sleep, or it wakes those who are sleeping; it sends dreams; it directs the dead."
+
+At the time when the penumbra appears: say "The moon draws shyly near the sun, which does not move away." 
+
+At the time when the eclipse begins: say "The moon begins to move across the disc of the sun."; 
+
+At the time when the eclipse ends: say "The moon slides away from the sun again, slowly and with regret.". 
+
+At the time when normal sunlight returns: say "The sun shines affectionately on the moon."
+
+Understand "point [something preferably held] at [something]" as pointing it at.
+
+Pointing it at is an action applying to one carried thing and one visible thing.
+
+Report pointing it at:
+	say "Nothing results."
+
+After pointing the golden rod at the moon when the sun is in the location:
+	say "With the golden rod you convey your command to the moon."; 
+	now the moon is new;
+	schedule an eclipse for three minutes after the time of day.
+
+To schedule an eclipse for (totality - a time): the penumbra appears at two minutes before totality; the eclipse begins at totality; the eclipse ends at three minutes after totality; normal sunlight returns at five minutes after totality. 
+	
+Section 13 - Actions as conditions
+
+Instead of waiting when we have pushed the giant button:
+	say "Why not? You can always push the giant button again."
+	
+Instead of listening to the clock when we have attacked the clock:
+	say "Its ticking seems angrier than ever."
+
+Section 14 - The past and perfect tenses
+
+To advance the phase of the moon:
+	if the moon was waxing gibbous, now the moon is full;
+	if the moon was waxing crescent, now the moon is waxing gibbous;
+	if the moon was new, now the moon is waxing crescent;
+	if the moon was waning crescent, now the moon is new;
+	if the moon was waning gibbous, now the moon is waning crescent;
+	if the moon was full, now the moon is waning gibbous.
+
+Section 15 - How many times?
+
+Every turn:
+	if the player is in Low Noon for the third time, say "The passage through here gets narrower every time you come by."; [this works]
+
+After switching on the lunar clock when the lunar clock has been switched on for more than five times:
+	say "The clock groans at being called into action again." [this also works]
+	
+Instead of attacking the broken clock when the broken clock has been in Low Noon exactly twice:
+	say "The clock sets itself exactly to noon, avoiding your swing. Then it springs back, afterward." [this seems not to]
+	
+Instead of attacking the broken clock when the broken clock has been in Low Noon only 3 times:
+	say "The clock's arms pull up to a noon-like shape. You shouldn't take it there so often; it gets ideas, even if it goes back afterward." [this seems not to]
+	
+Instead of attacking the broken clock when the broken clock has been in Low Noon for more than the fourth time:
+	say "The clock turns self-defensively noonish for a minute. You can't hit it; it's too narrow."
+
+Section 16 - How many turns?
+
+Every turn:
+	if the player has been in Night for three turns, say "You shiver. It's easy to get complacent here, but the air is cold."
+	
+Every turn while listening:
+	if the lunar clock has been switched on for more than two turns, say "The background tidal noise of the lunar clock is there, and you've been hearing it for some time without even thinking about it."

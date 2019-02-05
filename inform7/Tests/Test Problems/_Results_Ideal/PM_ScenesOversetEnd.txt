@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 30 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ScenesOversetEnd
+  >--> You wrote 'Explosion begins when the score is 45' (source text, line 5):
+    but you have already told me a condition for when that happens, and
+    although a scene can be linked to the beginning or ending of any number of
+    other scenes, it can only have a single condition such as 'when the player
+    is in the Dining Car' to trigger it from outside the scene machinery.
+Inform 7 has finished: 17 centiseconds used.

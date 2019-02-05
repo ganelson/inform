@@ -1,0 +1,3 @@
+The Taj Mahal and the Grassy Slope are rooms.
+
+Index map with EPS file and cyberman-population of the Taj Mahal set to 28.

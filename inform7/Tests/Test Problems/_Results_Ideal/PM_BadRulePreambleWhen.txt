@@ -1,0 +1,20 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadRulePreambleWhen
+  >--> The punctuation makes me think 'When the badger runs' (source text, line 3)
+    should be a definition of a phrase or a rule, but it doesn't begin as it
+    should, with either 'To' (e.g. 'To flood the riverplain:'), 'Definition:',
+    a name for a rule (e.g. 'This is the devilishly cunning rule:'), 'At' plus
+    a time (e.g. 'At 11:12 PM:' or 'At the time when the clock chimes:') or the
+    name of a rulebook. As your rule begins with 'When', it may be worth
+    noting that in December 2006 the syntax used by Inform for timed events
+    changed: the old syntax 'When the sky falls in:' to create a named event,
+    the sky falls in, became 'At the time when the sky falls in:'. This was
+    changed to avoid confusion with rules relating to when scenes begin or end.
+    Or perhaps you meant to say that something would only happen when some
+    condition held. Inform often allows this, but the 'when...' part tends to
+    be at the end, not up front - for instance, 'Understand "blue" as the deep
+    crevasse when the location is the South Pole.'
+Inform 7 has finished: 19 centiseconds used.

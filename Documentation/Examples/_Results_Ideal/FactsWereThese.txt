@@ -1,0 +1,107 @@
+   Morgue Office
+  The Facts Were These
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Morgue Office
+  This is not the Morgue itself; this is only its outer office. The familiar room full of silver drawers and cold air lies beyond.
+  
+  The Attendant has seen you come through a number of times, and is becoming suspicious of your abiding interest in dead people.
+  
+> >   Morgue Office
+  (Testing.)
+  
+  >[1] test dollars
+  (Testing.)
+  
+  >[2] drop all
+  dollar: Dropped.
+  dollar: Dropped.
+  dollar: Dropped.
+  miniature rhubarb pie: Dropped.
+  knitted cap: Dropped.
+  
+  >[3] give dollar to morgue attendant
+  (first taking the dollar)
+  The Morgue Attendant angrily rejects your piffling bribe.
+  
+  >[4] give dollars to morgue attendant
+  The Morgue Attendant angrily rejects your piffling bribe.
+  
+  >[5] get dollars
+  dollar: Taken.
+  dollar: Taken.
+  
+  >[6] give dollars to morgue attendant
+  The Morgue Attendant rather shamefacedly tucks the three dollars away into a pocket.
+  
+  >[7] purloin three dollars
+  [Purloined.]
+  [Purloined.]
+  [Purloined.]
+  
+  >[8] drop dollars
+  dollar: Dropped.
+  dollar: Dropped.
+  dollar: Dropped.
+  
+  >[9] give dollars to morgue attendant
+  You pick up the three dollars and make your offer. The Morgue Attendant rather shamefacedly tucks the three dollars away into a pocket.
+  
+  >[10] purloin three dollars
+  [Purloined.]
+  [Purloined.]
+  [Purloined.]
+  
+  >[11] test multi-line
+  (Testing.)
+  
+  >[12] give dollar and pie to attendant. give dollars and cap to attendant
+  You pick up the miniature rhubarb pie and make your offer. The Morgue Attendant rather shamefacedly tucks the miniature rhubarb pie and the dollar away into a pocket.
+  
+  You pick up the knitted cap and make your offer. The Morgue Attendant rather shamefacedly tucks the knitted cap and the two dollars away into a pocket.
+  
+  >[13] purloin three dollars
+  [Purloined.]
+  [Purloined.]
+  [Purloined.]
+  
+  >[14] purloin pie
+  [Purloined.]
+  
+  >[15] purloin cap
+  [Purloined.]
+  
+  >[16] test specificity
+  (Testing.)
+  
+  >[17] give three dollars to morgue attendant
+  The Morgue Attendant rather shamefacedly tucks the three dollars away into a pocket.
+  
+  >[18] purloin three dollars
+  [Purloined.]
+  [Purloined.]
+  [Purloined.]
+  
+  >[19] test largesse
+  (Testing.)
+  
+  >[20] give pie to morgue attendant
+  The Morgue Attendant rather shamefacedly tucks the miniature rhubarb pie away into a pocket.
+  
+  >[21] test mixed-gift
+  (Testing.)
+  
+  >[22] give dollar and cap to morgue attendant
+  The Morgue Attendant rather shamefacedly tucks the knitted cap and the dollar away into a pocket.
+  
+  >[23] get cap
+  That seems to belong to the Morgue Attendant.
+  
+  >[24] give dollar and cap to morgue attendant
+  The knitted cap isn't yours to give.
+  
+  >[25] give me and dollar to attendant
+  Slavery is illegal.
+  
+> >

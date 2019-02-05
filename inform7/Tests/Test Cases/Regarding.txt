@@ -1,0 +1,8 @@
+Foo is a room. The torch and the banana and the grapes are here. The grapes are plural-named.
+
+To look is a verb.
+
+Every turn:
+	say "Every possession is a worry. I wonder if [regarding things carried by the player][they] still [look] okay? [regarding the banana]And speaking of fruit, [are] [they] still edible?"
+
+Test me with "z / take torch / take banana / drop all / get grapes".

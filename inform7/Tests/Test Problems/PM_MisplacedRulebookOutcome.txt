@@ -1,0 +1,13 @@
+Kandersteg is a room.
+
+Emma rules is a rulebook. Emma rules has outcomes emma succeeds or emma fails.
+
+When play begins:
+	follow the emma rules.
+
+Emma:
+	say "A.";
+	emma fails.
+
+When play ends:
+	emma succeeds.

@@ -1,0 +1,16 @@
+Foo is a room.
+
+To grub (this is grubbing): say "Grubbing."
+
+To flub (this is flubbing): say "Flubbing."
+
+When play begins:
+	repeat through the Table of Phrases:
+		apply the func entry.
+
+Include table construction in the debugging log.
+
+Table of Phrases
+func
+grubbing
+flubbing

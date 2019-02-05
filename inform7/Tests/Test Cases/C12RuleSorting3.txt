@@ -1,0 +1,20 @@
+The Kitchen is a room.
+
+Foo is a number that varies. Bar is a number that varies. Foo is 1. Bar is 2.
+Derek is a man in the Kitchen. The crate is a container in the Kitchen.
+
+Before inserting: say "Before inserting."
+Before inserting when the noun is a man:
+	say "Before inserting when the noun is a man."
+Before inserting when the second noun is a container:
+	say "Before inserting when the second noun is a container."
+Before inserting when the noun is a man and the second noun is a container:
+	say "Before inserting when the noun is a man and the second noun is a container."
+
+Before examining: say "Before examining."
+Before examining when foo is 1: say "Before examining when foo is 1."
+Before examining when foo is 1 and bar is 2:
+	say "Before examining when foo is 1 and bar is 2."
+Before examining when bar is 2: say "Before examining when bar is 2."
+
+Test me with "examine me / put Derek in the crate".

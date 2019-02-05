@@ -1,0 +1,11 @@
+The Overall Plot is a scene.
+
+The Place is a room.
+
+A plot device is a kind of value.
+The plot devices are prologue, shocking reveal and epilogue.
+
+The overall plot has a plot device.
+
+When play begins:
+	showme the plot device of the overall plot.

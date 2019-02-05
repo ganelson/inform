@@ -1,0 +1,86 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  You can see Bob, Sally, Rick and a goggles here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] wear goggles
+  [wearing the goggles]
+  (first taking the goggles)
+  [(1) taking the goggles - silently]
+  [(1) taking the goggles - silently - succeeded]
+  
+  You put on the goggles.
+  [wearing the goggles - succeeded]
+  
+  >[3] jump
+  [jumping]
+  You prepares to leap.
+  [jumping - failed]
+  
+  >[4] bob, jump
+  [asking Bob to try jumping]
+  "No way!" Bob declares.
+  [asking Bob to try jumping - failed the Persuasion rule for asking Bob to try jumping]
+  
+  >[5] bob, look
+  [asking Bob to try looking]
+  Bob has better things to do.
+  [asking Bob to try looking - failed]
+  
+  >[6] sally, jump
+  [asking Sally to try jumping]
+  ""Right," says Sally.
+  [(1) Sally jumping]
+  Sally prepares to leap.
+  [(1) Sally jumping - failed]
+  
+  Sally is unable to do that.
+  [asking Sally to try jumping - succeeded]
+  
+  >[7] sally, look
+  [asking Sally to try looking]
+  ""Right," says Sally.
+  [(1) Sally looking]
+  Sally looks around.
+  [(1) Sally looking - succeeded]
+  
+  [asking Sally to try looking - succeeded]
+  
+  >[8] dance
+  [dancing street salsa]
+  You dance a few steps of street salsa.
+  [dancing street salsa - succeeded]
+  
+  >[9] dance samba
+  [dancing samba]
+  You dance a few steps of samba.
+  [dancing samba - succeeded]
+  
+  >[10] rick, dance
+  [asking Rick to try dancing street salsa]
+  [(1) Rick dancing street salsa]
+  Rick dances a few steps of street salsa for you.
+  
+  [(1) Rick dancing street salsa - succeeded]
+  
+  [asking Rick to try dancing street salsa - succeeded]
+  
+  >[11] rick, dance merengue
+  [asking Rick to try dancing merengue]
+  [(1) Rick dancing merengue]
+  Rick dances a few steps of merengue for you.
+  
+  [(1) Rick dancing merengue - succeeded]
+  
+  [asking Rick to try dancing merengue - succeeded]
+  
+> >

@@ -1,0 +1,3 @@
+Burrow is a room. The cabinet is a container in the Burrow.
+
+Rule for reaching inside the cobinot: say "Gosh! With that spelling?"

@@ -1,0 +1,16 @@
+Moon is a room. A rock is a thing.
+
+An astronaut is a kind of person.
+
+Neil Armstrong is an astronaut in the Moon.
+Buzz Aldrin is an astronaut in the Moon.
+
+After looking:
+	say "[List of astronauts who are not carrying something] are carrying nothing.";
+	say "In other words: [list of astronauts who are carrying nothing] are empty-handed.";
+
+Instead of waiting:
+	say "Buzz picks up a rock.";
+	now Buzz is carrying the rock.
+
+Test me with "look / z / look".

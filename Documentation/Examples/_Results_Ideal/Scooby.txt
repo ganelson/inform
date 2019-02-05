@@ -1,0 +1,55 @@
+   Haunted House
+  If It Hadn't Been For...
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Haunted House
+  You can see a squeaky cupboard (closed) here.
+  
+> >   Haunted House
+  (Testing.)
+  
+  >[1] open cupboard
+  The cupboard stubbornly refuses to open.
+  
+  >[2] drop recorder
+  Dropped.
+  
+  >[3] switch it on
+  You switch the digital recorder on.
+  
+  >[4] eat chips
+  You eat chips. Not bad.
+  
+  >[5] out
+  
+  Lawn
+  
+  >[6] wait
+  Time passes.
+  
+  >[7] wait
+  Time passes.
+  
+  >[8] wait
+  Time passes.
+  
+  >[9] in
+  
+  Haunted House
+  You can see a digital recorder and a squeaky cupboard (closed) here.
+  
+  >[10] switch recorder off
+  You switch the digital recorder off.
+  
+  >[11] play recorder
+  
+  9:03 am: An incredible racket of a packet being opened.
+  9:03 am: Distant muffled chewing sounds.
+  9:04 am: Footsteps, fading out.
+  9:04 am: A creaking noise, as of something being opened.
+  9:05 am: A creaking followed by a slam.
+  9:08 am: A creaking noise, as of something being opened.
+  9:08 am: A creaking followed by a slam.
+  
+> >

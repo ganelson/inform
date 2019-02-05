@@ -1,0 +1,63 @@
+* Implicitly taking something
+(Near-infinite supply of pizza; Pizza Prince)
+Providing a pizza buffet from which the player can take as many pieces as he wants.
+
+Suppose we want the player to have a pizza buffet from which he can take a number of slices. But we don't want to actually put the slices there in front of him, because "you can see 17 slices of pizza here" is not the descriptive effect we want, and because we want to pretend, at least, that the pizza supply is nearly infinite. In fact, we're going to replenish the supply by allowing eaten slices to return to the buffet table (safer in IF than in real life).
+
+To do this, we create one object to stand in for the pizza supply, but whenever the player tries to take it, we give him a different "pizza slice" object instead. Thus:
+
+	{*}"Pizza Prince"
+	
+	The Pizza Prince is a room. 
+
+	The buffet table is a supporter in Pizza Prince. 
+
+	The pizza selection is a thing on the buffet table. Understand "slice" as the pizza selection. The description is "They are all cheese-only, and all luke-warm." 
+
+	Rule for writing a paragraph about the buffet table:
+		say "On [the buffet table] is [a pizza selection]. [description of the pizza selection][line break]".
+	
+Now we introduce our actual pizza slices, which are retained in a container out of play until they're needed:
+
+	{**}A pizza slice is a kind of thing. 10 pizza slices are in Pizza Limbo. A pizza slice is always edible. [After a fashion, anyway.]
+
+In this example we've set that supply to be artificially small, to make it easier to test what happens when the player reaches the limit; but we could provide many more slices to start with in Pizza Limbo, and the aim in practice would be to pick a number high enough (such as 50 or 100) that the average player will get bored of TAKE PIZZA long before he reaches the limit. 
+
+The main thing to be aware of is that objects consume memory in the game file, so creating a large number of pizza slices might bulk the game out. This is more of a concern if we're compiling for the Z-machine than if we're compiling for Glulx.
+
+Whenever the player tries to take the selection, we want him to wind up holding an individual slice instead; but of course we need to check and make sure that he hasn't exhausted the pizza slice supply. 
+
+	{**}Instead of taking the pizza selection:
+		let chosen slice be a random pizza slice in Pizza Limbo;
+		if chosen slice is nothing: [That is, there were no slices remaining]
+			say "[manager refusal]";
+		otherwise:
+			move the chosen slice to the player;
+			say "Taken (gingerly)." 
+		
+	To say manager refusal:
+		say "[one of]'Hey!' barks a hitherto-unseen manager from behind you. 'It's an 'all you can eat' buffet, not an 'all you can stuff down your pants' buffet.'[or]You are conscious of a disapproving huff from the manager, so you refrain.[stopping]"
+
+That's fine for the case where the player is taking a new slice of pizza explicitly, but we need to handle it a little differently if the taking action is generated in response to EAT PIZZA. In that case, we need to take the slice and also change the identity of the noun, because after the implicit take action happens, the game will test whether the player is holding the noun before attempting to eat it. So we need to refocus its attention:
+
+	{**}Rule for implicitly taking the pizza selection:
+		let chosen slice be a random pizza slice in Pizza Limbo;
+		if chosen slice is nothing: [That is, there were no slices remaining]
+			say "[manager refusal]";
+		otherwise:
+			move the chosen slice to the player;
+			say "(helping yourself from the selection)";
+			now the noun is the chosen slice.
+
+And finally, a bit of touch-up:
+
+	{**}Rule for clarifying the parser's choice of the pizza selection while taking:
+		say "(from the magnificent selection before you)[line break]"
+
+For tidiness, we should probably also return the consumed pizza slices to Pizza Limbo so that they can be re-used later:
+
+	{**}After eating a pizza slice:
+		move the noun to Pizza Limbo;
+		continue the action. 
+	
+	Test me with "i / get pizza / g / i / get pizza / drop pizza / look / get pizza / g / look / eat pizza / g / g / g / g / get pizza / g / g / g / g / g / g / g / g / g / g / g / g / i / eat pizza / take pizza / g".

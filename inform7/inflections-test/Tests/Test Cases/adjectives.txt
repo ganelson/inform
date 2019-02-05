@@ -1,0 +1,14 @@
+big
+tall
+short
+svelte
+polite
+close
+happy
+fit
+flip
+long
+strong
+fey
+low
+cheap

@@ -1,0 +1,6 @@
+Xanadu is a room.
+
+To blow up: (- score = {utter drivel}; -).
+
+When play begins:
+	blow up.

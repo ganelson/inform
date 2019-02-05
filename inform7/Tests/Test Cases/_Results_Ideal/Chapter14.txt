@@ -1,0 +1,187 @@
+   Market                                                                                                                                                                                                                 0/1
+  Your score is now 10.
+  Your mom would be really disappointed.
+  360 is kind of a break-even point here.
+  
+  
+  Your score is now 90. Well, could be worse.
+  360 is kind of a break-even point here.
+  
+  
+  Your score is now 1890. Well, could be worse. A lot worse.
+  You'll be famous soon!
+  Good thing you're at or above 360.
+  
+  
+  Your score is now 630. Well, could be worse. A lot worse.
+  You'll be famous soon!
+  Good thing you're at or above 360.
+  
+  
+  Your score is now 90. Well, could be worse.
+  360 is kind of a break-even point here.
+  
+  
+  Your score is now 180. Well, could be worse. A lot worse.
+  360 is kind of a break-even point here.
+  
+  
+  Your score is now 360. Well, could be worse. A lot worse.
+  You'll be famous soon!
+  360 is kind of a break-even point here.
+  Good thing you're at or above 360.
+  
+  
+  Your score is now 362. Well, could be worse. A lot worse.
+  You'll be famous soon!
+  Good thing you're at or above 360.
+  
+  
+  Your score is now 2. That's not so great.
+  Your mom would be really disappointed.
+  360 is kind of a break-even point here.
+  
+  
+  Your score is now 0. That's not so great. In fact, it's pathetic. Nice work, sparky.
+  Your mom would be really disappointed.
+  360 is kind of a break-even point here.
+  
+  
+  Chapter 14: Market
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Market
+  You can see some saffron (quite valuable), some oregano (a generous quantity), some cayenne pepper, some rosemary, some fennel, some green tea and some chicory here.
+  
+> >   Market                                                                                                                                                                                                                 0/2
+  ** x rosemary
+  The rosemary weighs 0lb 3oz and costs $7.00 per oz, or $112 for a pound. The total price of the stock here would be $21.
+  
+> >   Market                                                                                                                                                                                                                 0/3
+  ** x oregano
+  The oregano (a generous quantity) weighs 3lb 1oz and costs $5.50 per oz, or $88 for a pound. The total price of the stock here would be $269.50.
+  
+> >   Market                                                                                                                                                                                                                 0/4
+  ** buy saffron
+  Wouldn't you prefer some chicory?
+  
+> >   Market                                                                                                                                                                                                                 0/3
+  ** undo
+  Market
+  [Previous turn undone.]
+  
+> >   Market                                                                                                                                                                                                                 0/4
+  ** buy saffron
+  Wouldn't you prefer some chicory?
+  
+> >   Market                                                                                                                                                                                                                 0/5
+  ** buy chicory
+  Good choice!
+  
+> >   Market                                                                                                                                                                                                                 0/6
+  ** buy saffron
+  Wouldn't you prefer some cayenne pepper?
+  
+> >   Market                                                                                                                                                                                                                 0/7
+  ** buy cayenne
+  Good choice!
+  
+> >   Market                                                                                                                                                                                                                 0/8
+  ** i
+  You are carrying 0lb 7oz worth of spices, for an average weight of 0lb 3oz.
+  
+  You are carrying:
+    some cayenne pepper
+    some chicory
+  
+> >   Market                                                                                                                                                                                                                 0/9
+  ** x saffron
+  The saffron (quite valuable) weighs 0lb 5oz and costs $35.95 per oz, or $-80.0-16 for a pound. The total price of the stock here would be $179.75.
+  
+> >   Market                                                                                                                                                                                                                 0/10
+  ** smell saffron
+  It smells like something that costs $179.75!
+  
+> >   Market                                                                                                                                                                                                                 0/11
+  ** smell chicory
+  It smells like something that costs $7.96!
+  
+> >   Market                                                                                                                                                                                                                 0/12
+  ** smell oregano
+  It smells like something that costs $269.50!
+  
+> >   Market                                                                                                                                                                                                                 0/13
+  ** i
+  You are carrying 0lb 7oz worth of spices, for an average weight of 0lb 3oz.
+  
+  You are carrying:
+    some cayenne pepper
+    some chicory
+  
+> >   Market                                                                                                                                                                                                                 0/14
+  ** buy oregano
+  Good choice!
+  
+> >   Market                                                                                                                                                                                                                 0/15
+  ** drop oregano
+  Yeah, the oregano (a generous quantity) is getting heavy...
+  
+  Hey! You paid good money for that!
+  
+> >   Market                                                                                                                                                                                                                 0/16
+  ** buy fennel
+  Done.
+  
+> >   Market                                                                                                                                                                                                                 0/17
+  ** drop oregano
+  Yeah, the oregano (a generous quantity) is getting heavy...
+  
+  Dropped.
+  
+> >   Market                                                                                                                                                                                                                 0/18
+  ** take oregano
+  You have to buy things here.
+  
+> >   Market                                                                                                                                                                                                                 0/19
+  ** buy oregano
+  Good choice!
+  
+> >   Market                                                                                                                                                                                                                 0/20
+  ** i
+  You are carrying 3lb 13oz worth of spices, for an average weight of 0lb 15oz.
+  
+  You are carrying:
+    some oregano (a generous quantity)
+    some fennel
+    some cayenne pepper
+    some chicory
+  
+> >   Market                                                                                                                                                                                                                 0/21
+  ** look
+  Market
+  You can see some saffron (quite valuable), some rosemary and some green tea here.
+  
+> >   Market                                                                                                                                                                                                                 0/22
+  ** buy rosemary
+  Good choice!
+  
+> >   Market                                                                                                                                                                                                                 0/23
+  ** drop oregano
+  Yeah, the oregano (a generous quantity) is getting heavy...
+  
+  Dropped.
+  
+> >   Market                                                                                                                                                                                                                 0/24
+  ** x tea
+  The green tea weighs 0lb 10oz and costs $8.75 per oz, or $140 for a pound. The total price of the stock here would be $87.50.
+  
+> >   Market                                                                                                                                                                                                                 0/25
+  ** buy tea
+  Done.
+  
+> >   Market                                                                                                                                                                                                                 0/25
+  **
+  I beg your pardon?
+  
+> >

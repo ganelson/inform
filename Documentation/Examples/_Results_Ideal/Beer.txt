@@ -1,0 +1,41 @@
+   Ginger Beer Factory
+  Ginger Beer
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ginger Beer Factory
+  In the center of the room is an enormous pot filled with crushed ginger, which seems to be bubbling slightly on its own.  The fumes are overwhelming.
+  
+  There is a large glass lense propped against the wall, in which are reflected all the contents of the room.
+  
+> >   Ginger Beer Factory
+  (Testing.)
+  
+  >[1] examine lense
+  You see nothing special about the large end of the telescope.
+  
+  >[2] south
+  
+  Storeroom
+  The walls here are lined with a prodigious number of small, rounded bottles, each with a screw top and a smiling pirate on the label.
+  
+  There is a small glass lense sitting on the floor.  Due to some curious effect of the optics, it appears to be giving a view of somewhere else entirely.
+  
+  >[3] examine lense
+  A gleaming lense about the size of a pound coin.
+  
+  >[4] look through lense
+  (first picking up the small end of the telescope and holding it to your eye)
+  You peer into the little lense and through it see, in the Ginger Beer Factory, the pot.
+  
+  >[5] north
+  
+  Ginger Beer Factory
+  In the center of the room is an enormous pot filled with crushed ginger, which seems to be bubbling slightly on its own.  The fumes are overwhelming.
+  
+  There is a large glass lense propped against the wall, in which are reflected all the contents of the room.
+  
+  >[6] look through small lense
+  You peer into the little lense and through it see, in the Ginger Beer Factory, yourself and the pot.
+  
+> >

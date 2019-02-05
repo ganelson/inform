@@ -1,0 +1,7 @@
+There is a room.
+To decide what number is my special value: decide on 4.
+To decide what number is my special (banana - a number) value: decide on 4.
+To decide what person is my special value: decide on the player.
+When play begins:
+	let x be a number;
+	now x is my special value;

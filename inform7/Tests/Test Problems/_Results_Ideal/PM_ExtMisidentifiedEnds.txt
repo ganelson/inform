@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Extmisidentifiedends Extension by Araminta Intest, which is 15 words long.
+Problem__ PM_ExtMisidentifiedEnds
+  >--> The extension Extmisidentifiedends Extension by Araminta Intest, which
+    your source text makes use of, seems to be malformed: its 'begins here'
+    sentence correctly identifies it, but then the 'ends here' sentence calls
+    it 'Soggy Dishcloths' instead. (They need to be a matching pair except that
+    the end does not name the author: for instance, 'Hocus Pocus by Jan
+    Ackerman begins here.' would match with 'Hocus Pocus ends here.')
+Inform 7 has finished: 8 centiseconds used.

@@ -1,0 +1,26 @@
+   Garden
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Garden
+  You can see a fruit dispenser here.
+  
+> >   Garden
+  (Testing.)
+  
+  >[1] push apple
+  The glass box isn't open.
+  
+  >[2] push basket
+  Nothing obvious happens.
+  
+  >[3] enter balloon
+  You get into the hot air balloon.
+  
+  In the hot air balloon you can see a picnic basket (empty).
+  
+  >[4] push basket
+  Nothing obvious happens.
+  
+> >

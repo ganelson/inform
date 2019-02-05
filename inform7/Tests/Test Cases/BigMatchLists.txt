@@ -1,0 +1,4 @@
+The Lab is a room.  A triangle is a kind of thing. 75 triangles are here.
+
+Test me with "take twenty triangles / take twenty triangles / drop my
+triangle / look / drop triangles / look / i".

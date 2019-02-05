@@ -1,0 +1,5 @@
+Parlour is a room.
+
+When the play begins: say "Hi!"
+
+When the play ends: say "Bye!"

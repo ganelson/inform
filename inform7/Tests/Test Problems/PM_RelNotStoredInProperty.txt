@@ -1,0 +1,8 @@
+Home is a room.
+
+Partnership relates one number to another (called the partner). The
+verb to be partnered with implies the partnership relation.
+
+5 is partnered with 7.
+
+When play begins: showme the partner of 7.

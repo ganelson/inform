@@ -1,0 +1,2 @@
+There is a room. There is a foo here.
+Understand "in [something related by reversed room-containment]" as a thing.

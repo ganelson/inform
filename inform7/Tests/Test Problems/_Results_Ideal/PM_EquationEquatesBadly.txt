@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationEquatesBadly
+  >--> In 'Equation 2 m (F = a) where F is a number, m is a number, a is a
+    number' (source text, line 3), you define an equation 'm (F = a)': but the
+    equals sign '=' here seems to be buried inside the formula, not at the
+    surface. For instance, 'F = ma' is fine, but 'F(m=a)' would not make sense
+    - the '=' would be inside brackets.
+Inform 7 has finished: 20 centiseconds used.

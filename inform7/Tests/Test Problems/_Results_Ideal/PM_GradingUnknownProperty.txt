@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_GradingUnknownProperty
+  >--> You gave as a definition 'a thing is stately if its banana is 10 or
+    more' (source text, line 3): but that definition involves an unknown
+    property, assuming it was meant to be a definition in the form 'Definition:
+    a container is large if its carrying capacity is 10 or more.'
+Inform 7 has finished: 17 centiseconds used.

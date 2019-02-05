@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnusedTimedEvent
+  >--> You wrote 'At the time when supply of the air tank is -4' (source text, line 3):
+    but this sets up a timed event which is never used, since you never use any
+    of the phrases which could cause it. (A timed event is just a name, and it
+    needs other instructions elsewhere before it can have any effect.)
+Inform 7 has finished: 59 centiseconds used.

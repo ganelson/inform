@@ -1,0 +1,31 @@
+   Study
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Study
+  You can see Nigel, Bill, Bob and Brian here.
+  
+> >   Study
+  (Testing.)
+  
+  >[1] hit bill
+  From Bill to Brian is 2.
+  From Brian to Bill is -1.
+  Brian steps in and stops you. "None of that," he says. "Don't hit my ancestor."
+  
+  >[2] hit bob
+  From Bob to Brian is 1.
+  From Brian to Bob is -1.
+  Brian steps in and stops you. "None of that," he says. "Don't hit my ancestor."
+  
+  >[3] hit brian
+  From Brian to Brian is 0.
+  From Brian to Brian is 0.
+  
+  >[4] hit nigel
+  From Nigel to Brian is -1.
+  From Brian to Nigel is -1.
+  Brian waves a hand. "Go right ahead," he says.
+  
+> >

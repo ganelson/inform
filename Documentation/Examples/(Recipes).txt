@@ -1,0 +1,707 @@
+Going Going == OMIT
+Streaming == OMIT
+Sackcloth == OMIT
+Polygons == OMIT
+Winds of Change == OMIT
+America Stands Tall == OMIT
+Studious == OMIT
+Buttons == OMIT
+Waiting Room == OMIT
+Tour des Maillots == OMIT
+Terracotta == OMIT
+Appraisal == OMIT
+
+>INTRODUCTION
+	*PREFACE
+	About the examples
+	Basic room, container, and supporter descriptions
+
+	*DISENCHANTMENT BAY
+	1. The charter boat
+	Basic scenery
+	Basic backdrop
+	Basic descriptions
+	Basic door
+	Basic locked container
+	Radar aboard ship
+	Basic pushable object
+	Basic character
+	Basic clothing
+	Basic holdall
+	12. Complete playable scenario
+	
+	*INFORMATION ONLY
+	Backus-Naur form for rules
+	Formal syntax of sentences
+	Mathematical view of relations
+	Graph-theory view of relations
+	About Inform's regular expression support
+
+>ADAPTIVE PROSE
+	*VARYING WHAT IS WRITTEN
+	Random variations within text
+	Phrase to let us say things some number of times
+	Substituting insults and boasts
+	To say rules for insults and boasts
+	Cyclical randomization of named objects
+	Names of objects change with player's diction
+	Say rules for is-are and it/them
+	Saying a number in round numbers
+	Otherwise if demonstrated
+	Exact numbers replaced with vague quantifiers
+	Creating our own text variations rules
+	Filtering text output in room names
+	Paragraphs of flexible descriptions
+	Case change for text produced by to say phrases
+	An example bouquet of flowers
+	Describing ongoing character behavior with participles
+	Describing relations using a random choice of verb
+	Describing action outcomes using a random choice of verb or describing the world state that results
+	Identifying nouns by the last thing done to them
+	Describing action outcomes using a random choice of verb
+	Inventory standard response changed
+	Describing action outcomes using an adaptive random choice of verb
+	Altering response text programmatically
+
+	*VARYING WHAT IS READ
+	Printed names for complex-named objects
+	Kinds given new singular and plural synonyms
+	Understanding names of things, basic
+	Questions asked of the player
+	Handling the nine-character limit
+	Setting pronouns to respond to sudden changes
+	
+	*USING THE PLAYER'S INPUT
+	Understanding text
+	Fish of ambiguous species
+	Player's erroneous command recorded for later
+	Pig Latin for the player's commands
+
+>PLACE
+	*ROOM DESCRIPTIONS
+	Varying room description text
+	Testing the locale description order
+	Levels of lighting
+	Supporters that don't list contents in room descriptions
+	Incorporating changeable objects into the body of the room description
+	LOOK mentions only currently useful objects
+	Room description changes after first visit
+	Room description changes at each of several visits
+	Room description changes after note is read
+
+	*MAP
+	1. A landscape from Jamaica, 1691
+	2. With one-way connections added
+	3. Divided into regions
+	Region off-limits to a player without VIP pass
+	Maze with randomized room links
+	Carousel Room from which exits lead to random locations
+	Exits added to a room
+	Map rearranged as player wanders so he finds rooms in order
+	Compass directions renamed
+	A hexagonal map grid for movement
+	
+	*DOORS, STAIRCASES, AND BRIDGES
+	Door described differently depending on where it is
+	Door kind that describes the destination
+	Door described and parsed differently depending on where it is
+	Doors that open automatically
+	An automatically closing door
+	Deadbolted door unlockable without a key on one side
+	Readout showing status of all doors
+	Doors as seen by NPCs
+	Staircase kind of door, always open and unopenable
+	Staircase kind of door which diverts the CLIMB command
+	Plank bridge breaks on being crossed when the player is carrying something
+	
+	*POSITION WITHIN ROOMS
+	Rooms with visible exteriors
+	Pushing a box between named internal positions in a room
+	
+	*CONTINUOUS SPACES AND THE OUTDOORS
+	Large objects visible from distant rooms
+	Lighthouse whose light can shine in different directions
+	Backdrops which can only be examined
+	LOOK [direction] command
+	Continuous space, simple
+	Continuous space with distant objects visible
+	Continuous space with distant objects visible and automatic room description
+	Signposts to distant rooms
+	
+	*WINDOWS
+	Basic window similar to a door
+	Window that can be opaque or transparent
+	Random characters seen through a window
+	Window connecting two rooms
+	Windows in high places
+
+	*LIGHTING
+	Rooms with light effects
+	Light levels variable depending on the number of candles the player has lit
+	Torch understood as flaming or extinguished
+	Basic switchable light for a room
+	Electric light kind of device
+	Shiny items are described as reflecting torchlight
+	Dark rooms given non-standard description
+	Dark room which relies on other senses when light is off
+	Scope approaches compared
+	Light-filled rooms as a route through a space
+	Cloak that makes a room dark
+	
+	*SOUNDS
+	Rooms with sounds of nearby water
+	Noisemaking gadgets which can be heard with LISTEN
+	Scope for listening different from scope for seeing
+	
+	*PASSERS-BY, WEATHER AND ASTRONOMICAL EVENTS
+	Clouds with random descriptions
+	Randomized pedestrian passer-by
+	Atmospheric background events that occur randomly during a scene
+	Backdrops that move conditionally
+	Cycle of day and night scenes
+	Scheduling an eclipse
+
+>TIME AND PLOT
+	*THE PASSAGE OF TIME
+	Time told in 24-hour military style
+	Time expressed in units other than minutes
+	Turns take 15 minutes each
+	Turns take a quarter day each
+	Instant EXAMINE and LOOK
+	All actions given different durations
+	Implicit takes require time
+	
+	*SCRIPTED SCENES
+	Sequence of background events that plays out in order
+	Triggering a new scene when the player does any of several things
+	Hurrying the player on a specific task
+	Scenes which restrict movement
+	
+	*EVENT SCHEDULING
+	Shops open and close at specific hours
+	People who follow a schedule of activities
+	Appointments at future times
+	
+	*SCENE CHANGES
+	Moving props on and off-stage as scenes start and end
+	Moving a backdrop during play
+	Scenes with props lists and location properties
+	Commercial break
+	
+	*FLASHBACKS
+	Flashback scenes, simple
+	Flashbacks with multiple outcomes
+	
+	*PLOT MANAGEMENT
+	Goal-seeking plot manager, simple
+
+>THE VIEWPOINT CHARACTER
+	*THE HUMAN BODY
+	Disambiguating body parts
+	Height of player affects descriptions
+	Postures for sitting, standing, and lying down
+	
+	*TRAITS DETERMINED BY THE PLAYER
+	Name of player character selected at start of play
+	Asking the player to choose a gender
+	Allowing the player to describe his character before starting play
+
+	*CHARACTERIZATION
+	Another, distinct from the player
+	Restrictions preventing inappropriate behavior
+	Examining the player
+	
+	*BACKGROUND
+	REMEMBER command keyed to topics
+	FIND command
+	
+	*MEMORY AND KNOWLEDGE
+	Characters referred to when absent
+	Box reports whether it has been open
+	Horribly heavy box described differently after being taken
+	Narration which changes as the player learns new facts
+	
+	*VIEWPOINT
+	Player controls multiple player-characters in turn
+	Different player characters that see different things
+	Description related to player preconceptions
+	Description varying depending on which avatar the player uses
+
+>COMMANDS
+	*DESIGNING NEW COMMANDS
+	
+	*WRITING NEW COMMANDS
+	
+	*MODIFYING EXISTING COMMANDS
+	LOCK and UNLOCK with altered carrying requirements
+	
+	*LOOKING
+	Brief descriptions by default
+	Full-length descriptions mandatory
+	
+	*EXAMINING
+	EXAMINE always lists contents of containers and supporters
+	Adding to descriptions without using "after examining"
+	You see nothing special... message replaced
+	EXAMINE produces special results for a group of objects
+	Examining everything at once
+	
+	*LOOKING UNDER AND HIDING
+	Evidence hidden until item is searched
+	Hiding things under other things
+	LOOK UNDER shows nothing unless the player has a light
+	SEARCH [room] action that opens every visible unlocked container
+	
+	*INVENTORY
+	Wide and divided variations on inventory
+	INVENTORY listing with separate carried and worn items
+	INVENTORY handling of properties made more flexible
+	INVENTORY revised for other characters
+	
+	*TAKING, DROPPING, INSERTING AND PUTTING
+	Scenery taking with a new message
+	TAKE action reports where the noun came from
+	DROPPING into and onto things
+	DROP applies even to objects the player carries indirectly
+	TAKE prints a description
+	PUT and INSERT automatically TAKE first
+	PUT and INSERT automatically TAKE first even with multiples
+	Object the player can show off without taking it first
+	
+	*GOING, PUSHING THINGS IN DIRECTIONS
+	Pushable ball that rolls on its own
+	Exits listed when the player tries a wrong direction
+	Travel to a room described
+	Message on leaving a region
+	Falling into a pit when going from darkness to darkness
+	Travel with a pushed object given a new description
+	First look text added for a newly entered room
+	Traveling by room name rather than compass direction
+	Traveling by room name, opening doors on the way
+	PUSH something A DIRECTION modified
+	GO BACK command
+	GO equivalent to GO OUT
+	GO OUT and GO IN determine most appropriate direction if none is defined
+	GO UP and GO DOWN determined by room altitude
+	
+	*ENTERING AND EXITING, SITTING AND STANDING
+	Variety of postures
+	GET DOWN and DOWN understood as EXIT
+	Automatically leaving an object before trying to travel
+	Automatically leaving an object before trying to take it
+	
+	*OPENING, CLOSING, LOCKING AND UNLOCKING
+	
+	*WAITING, SLEEPING
+	WAIT [number] MINUTES command
+	WAIT UNTIL [time] command
+	Sleep and waking
+
+	*MAGIC WORDS
+	Joke command added
+	
+	*ADDITIONAL COMMAND SETS
+	
+	*REMEMBERING, CONVERTING AND COMBINING ACTIONS
+	Redirecting actions to new objects
+	ASKing about a conversation topic other than the one the player typed
+	Characters killed off by trigger actions
+	Using lists as sets
+	Maze escaped by performing an exact sequence of actions
+	Device to remember and play back actions
+	
+	*ACTIONS ON MULTIPLE OBJECTS
+	EXAMINE multiple things at once
+	Multiple-object actions given modified descriptions
+	Controlling the order in which multiple-object actions occur
+	GIVE extended to multiple objects at once
+	Allowing EXAMINE to see multiple objects with a single command
+	Reordering multiple objects for dramatic effect
+	
+	*ALTERNATE DEFAULT MESSAGES
+
+	*CLARIFICATION AND CORRECTION
+	USE action which divines rational behavior for a wide range of possible nouns
+	Disambiguation question giving items more explicit names
+	Disambiguation question worded in a new way entirely
+	Modifying and re-parsing an entered command
+	Parser errors involving the any token
+	
+	*ALTERNATIVES TO STANDARD PARSING
+	Adverbs used in commands
+	Keywords in place of ordinary commands
+	Menu of numerical options
+
+>OTHER CHARACTERS
+	*GETTING ACQUAINTED
+	Characters and objects with titles and special articles
+	Characters renamed in play
+	People changing their titles during play
+	People introduced by relative
+	Relations applying to multiple values of the same kind
+	Murderer chosen randomly at start of play
+	
+	*LIVELINESS
+	People who do new things each time the player looks
+	Child who asks if we're there yet
+	Person who picks up treasures
+	Every turn an opponent plays
+	
+	*REACTIVE CHARACTERS
+	Actions prohibited in the presence of a dangerous character
+	Disorderly conduct
+	Observation stage after report
+	Smuggler carrying hidden items
+	Sleeping person who can be woken in various ways
+	Person who comments on the player's every action
+	Furniture, resentment of
+	
+	*BARTER AND EXCHANGE
+	GIVE command extended
+	GIVE action for other characters
+	
+	*COMBAT AND DEATH
+	DIAGNOSE command
+	Simple Randomized Combat
+	Randomized Combat with Weapons
+	Corpses left behind when a character dies
+	Multipart objects broken into components by gun blast
+	Command prompt changing to reflect state of combat
+	
+	*GETTING STARTED WITH CONVERSATION
+	People who must be greeted before conversation
+	TALK TO usage corrected
+	
+	*SAYING SIMPLE THINGS
+	ASK, TELL, and ANSWER commands rolled into one
+	YES and NO handled as conversation
+	Asking the player a Yes/No question
+	ASK made like SHOW when applied to objects
+	
+	*SAYING COMPLICATED THINGS
+	Conversation system with recap of past exchanges
+	Conversation with multiple options for each conversation topic
+	TALK TO command used with scenes 
+	Conversation based on keyword recognition
+	
+	*CHARACTER EMOTION
+	Gestures for different characters to make during speech
+	Person with emotions about what is said
+	
+	*CHARACTER KNOWLEDGE AND REASONING
+	People attempting to detect the murderer
+	Person who answers questions based on a common pool of knowledge
+	Person who answers what, where, and when questions differently
+	Conversation where characters seek logical connection to foregoing topics
+	Hints leading the player through conversation
+	
+	*CHARACTERS FOLLOWING A SCRIPT
+	Princess who makes various remarks
+	Robot who records, then replays, the player's actions
+	Robot who tracks up to fifteen separate command scripts
+	Using lists as stacks
+
+	*TRAVELING CHARACTERS
+	Person who moves randomly
+	Person who moves on a pre-determined path
+	Person who finds a path to a destination specified by player
+	FOLLOW command
+	Person who follows the player
+	Multiple people's movements are collated into paragraphs
+	
+	*OBEDIENT CHARACTERS
+	People commanded to obey
+	Character who learns new actions by watching the player
+	Person who gets fed up after being asked to do many implausible things
+	People who reject categories of instruction
+	Person who obeys almost all instructions
+	Issuing vague commands to characters
+	ASK person TO do something, understood
+
+	*GOAL-SEEKING CHARACTERS
+	Escape action for non-player characters only
+	Reporting rules for other characters' behavior
+	Person who opens a container before trying to get something from it
+	Person who pursues his own goals each turn
+	
+	*SOCIAL GROUPS
+	People who interact with each other each turn
+	People listed as a group, with their possessions afterward
+	Shifting alliances among people
+	Shifting alliances demonstrating all relation types
+	People who move around a party on their own
+	Using lists as queues
+
+>VEHICLES, ANIMALS AND FURNITURE
+	*BICYCLES, CARS AND BOATS
+	Vehicles that make noise
+	Car which can only be driven on roads
+	Travel requiring a vehicle
+	Description from inside a vehicle
+
+	*SHIPS, TRAINS AND ELEVATORS
+	An elevator operated simply by walking in and out
+	An elevator which takes the player to alternate floors
+	Shipboard directions
+	Train that makes station stops
+
+	*ANIMALS
+	Cat interacting with toys
+	Concealed pet who would yip at you if it could see you
+	Name of a dog set by the player
+	
+	*FURNITURE
+	Drawers where thing is always in the last opened
+	Finding the bottom of a pile
+	Chest with a supporting lid
+	Stool, from which dropped objects fall to the floor
+	Raised supporter kind that conceals its contents
+	Basic enterable containers and supporters
+	Using lists as rings
+
+	*KITCHEN AND BATHROOM
+	Kitchen appliances
+	Mirror into which the player can look
+
+>PROPS: FOOD, CLOTHING, MONEY, TOYS, BOOKS, ELECTRONICS
+	*FOOD
+	Food the player can eat without taking it first
+	Sanity-check stage before the Before rules
+	Foods with flavor
+	Food with ingredients affecting the player
+	Poisoned candy chosen randomly
+	Hunger eventually killing the player
+	
+	*BAGS, BOTTLES, BOXES AND SAFES
+	Safe that can be opened with a combination
+	Safe with a multi-number combination
+	Bottles with removable stoppers
+	Containers referred to by contents
+	Object named differently if next to specific things
+	Object named differently if alone in its container
+	Letters described as a group
+	Containers and supporters given a common kind
+
+	*CLOTHING
+	Clothing kinds
+	Clothing that layers
+	Clothing with layering and regions of the body
+	Concealing clothing for other characters
+	Pocket added to every jacket
+	Shirts constructed from component parts
+	
+	*MONEY
+	Money system with simple tracking of player wealth
+	Catalog of juggling equipment with prices
+	OFFER price FOR command allowing player to bargain
+	Money system including denominations of bills and coins
+	Clothes made of priced fabrics
+	Equation used for price curves
+	
+	*DICE AND PLAYING CARDS
+	Deck of cards
+	Deck of cards with individual card objects
+	Deck of cards with identified poker hands
+	Shuffling the arrangement of items in a container
+	Pair of dice for rolling
+	
+	*READING MATTER
+	Book with various contents
+	Book with numbered pages
+	Bookshelf with numerous books
+	Encyclopedia set
+	READ command separate from EXAMINE
+	Notebooks that can be written in
+	Notebooks that can be written in as a separate command line
+	
+	*PAINTING AND LABELING DEVICES
+	Colour names for exotic pigments
+	Paint that colours blocks
+	Red sticky label
+	
+	*SIMPLE MACHINES
+	Computer with numerous components
+	On/off button for devices
+	Signpost that can be turned
+	Fishing pole assembled from parts
+	
+	*TELEVISIONS AND RADIOS
+	Radios and other devices active when switched on
+	Radio producing cycling programming
+	Television with aspect ratio
+	Television with channels, simple
+	Television with channels, advanced
+	
+	*TELEPHONES
+	Telephones reaching distant parties
+	Telephones with standard American-length phone numbers
+	
+	*CLOCKS AND SCIENTIFIC INSTRUMENTS
+	Clocks that can be SET TO any time
+	Telescope allowing view of another room
+	EMF Meter for ghost detection
+	
+	*CAMERAS AND RECORDING DEVICES
+	Recorder that records sounds made by player and non-player actions
+	Camera producing instant photographs
+	Model objects referred to by the thing modeled
+	Mirror remembering a room description from the past
+	Video camera that records all actions
+	
+>PHYSICS: SUBSTANCES, ROPES, ENERGY AND WEIGHT
+	*GASES
+	Smoke which spreads, not tracking concentration
+	Diffusion of gas through the map, with concentrations
+	Diffusion of gas through the map, where gas sinks
+	
+	*LIQUIDS
+	Liquid container removed when drunk
+	SHAKE command
+	Liquid which soaks into porous items
+	Flotation of objects
+	Command applying to an object added to the story
+	Liquid container that can be full, depleted, or empty
+	Liquid containers with measured contents
+	Fire put out by liquid
+	Liquids in mixtures, identified by recipe
+	Liquid model with large bodies of liquid added
+	
+	*DISPENSERS AND SUPPLIES OF SMALL OBJECTS
+	Faux-infinite supply of red pens
+	Near-infinite supply of pizza
+	
+	*GLASS AND OTHER DAMAGE-PRONE SUBSTANCES
+	Fragile things that break when attacked
+	Fragile things, basic
+	Fragile objects broken when things are thrown at them
+	Broken and unbroken flowerpots
+	Soft objects able to be cut open
+	
+	*VOLUME, HEIGHT, WEIGHT
+	Weighbridge 
+	Unit conversions
+	Containers that calculate internal volume and available room
+	Containers which have a breaking strain
+	Sloping landscape on which round things roll away
+	
+	*ROPES
+	Strings referred to by their length
+	String that can be divided and tied together again
+	Rope, able to be tied to things and dragged betwixt rooms
+	
+	*ELECTRICITY AND MAGNETISM
+	Batteries that can power devices and eventually run down
+	Electrified objects
+	Magnet which picks up nearby metal objects
+	
+	*FIRE
+	Candle that changes as it burns down
+	Camp fire which can be lit using tinder
+	Matches that set fires
+	Fire that spreads
+	
+	*HEAT
+	Supporter from which the player cannot take things
+	Disambiguating based on properties
+	Infrared goggles affect what player can see and refer to
+	Hot and cold objects approach room temperature
+ 
+	*MAGIC (BREAKING THE LAWS OF PHYSICS)
+	Machine that transmutes objects
+	Person capable of reaching through solid objects
+	The Pointy Hat of Liminal Transgression
+	Wand which reveals a person's concealed possessions
+	
+	*MATHEMATICS
+	Using lists as arrays
+	Using lists as sieves
+	Numbers in relations
+	
+>PUZZLES
+	*EXPLORATION
+	
+	*RESTRICTED AREAS AND LOCKED CONTAINERS
+	
+	*MAZES, CHANGING EXITS, AND RANDOM EXITS
+	
+	*RESOURCE MANAGEMENT
+	
+	*TIMED PUZZLES
+	
+	*PEOPLE AS BARRIERS
+	
+	*REPLAYABLE AND RANDOMIZING ELEMENTS
+	
+	*COMMUNICATING GOALS AND DIRECTION
+
+>OUT OF WORLD ACTIONS AND EFFECTS
+	*START-UP FEATURES
+	Banner printing at appropriate times
+	Preferences file loaded on replaying
+	Random distribution at the start of play
+
+	*SAVING AND UNDOING
+	A point for never saving the game
+	A room where the game cannot be saved
+	
+	*HELPING AND HINTING
+	HELP command is recommended if the player seems lost
+	Novice mode offers suggestions before each prompt
+	Responding to questions starting with WHO, WHAT, etc.
+	Hint access able to be turned off for the duration of the game
+	HELP menu from extension, with added content
+	HELP with a simple menu 
+	HELP command with specific set of topics
+	Hints leading the player through physical puzzles 
+
+	*SCORING
+	Scored items listed in a table
+	FULL SCORE using a list of stored actions
+	Awarding points for visiting a room
+	FULL SCORE with achievements table and rankings
+	Plot summary in place of a score
+	Scoreboard preserved between games
+	
+	*ENDING THE STORY
+	Death message replaced
+	UNDO not mentioned in the final question
+	AMUSING menu shown at the endgame
+	Changing the final question after victory
+	Histories of previous games saved to external file
+	Resuming play after an accidental death
+
+>TYPOGRAPHY, LAYOUT, AND MULTIMEDIA EFFECTS
+	*SCREEN EFFECTS (GENERAL)
+	
+	*TYPOGRAPHY
+	HTML-style italic and boldface tags
+	Accented and exotic letters and symbols
+	Coloured letters on screen
+	Coloured lettering for both z-machine and Glulx
+	
+	*THE STATUS LINE
+	Blanking the status line before play
+	Capitalised status line
+	Status line with centered text, the easy way
+	Status line with centered text, the hard way
+	Exits only listed in the status line
+	Exits and rooms listed in the status line
+	Map region listed in status line
+	
+	*MENUS
+	
+	*FOOTNOTES
+	Footnote system 
+	
+	*GLULX MULTIMEDIA EFFECTS
+	An RSS reader connecting to the Internet
+
+>TESTING AND PUBLISHING
+	*TESTING
+	Checking for missed properties
+	Testing command
+
+	*PUBLISHING
+	Producing an EPS floorplan
+	Producing an EPS map of Greece
+	Producing an EPS map of Port Royal

@@ -1,0 +1,8 @@
+Test is a room.
+
+Use My First Thing translates as (- Constant FOO; -)
+Use My Second Thing translates as (- Constant BAR; -)
+
+Use My First Thing.
+
+Use My Second Thing.

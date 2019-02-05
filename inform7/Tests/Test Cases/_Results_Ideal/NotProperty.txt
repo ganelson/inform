@@ -1,0 +1,70 @@
+   Start
+  Not Visited
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Start
+  You start here.
+  
+> >   Room 2
+  (Testing.)
+  
+  >[1] verbose
+  Not Visited is now in its "verbose" mode, which always gives long descriptions of locations (even if you've been there before).
+  
+  >[2] n
+  
+  Room 3
+  This is Room 3 and (Self is: Room 3) (NV) .
+  
+  >[3] s
+  
+  Start
+  You start here.
+  
+  >[4] n
+  
+  Room 3
+  This is Room 3 and (Self is: Room 3) (V) .You have been here before.
+  
+  >[5] s
+  
+  Start
+  You start here.
+  
+  >[6] w
+  
+  Room 1
+  This is Room 1 and (Self is: Room 1) (NV) .You haven't been here before.
+  
+  >[7] e
+  
+  Start
+  You start here.
+  
+  >[8] w
+  
+  Room 1
+  This is Room 1 and (Self is: Room 1) (V) .
+  
+  >[9] e
+  
+  Start
+  You start here.
+  
+  >[10] s
+  
+  Room 2
+  This is Room 2 and (Self is: Room 2) (NV) .You haven't been here before.
+  
+  >[11] n
+  
+  Start
+  You start here.
+  
+  >[12] s
+  
+  Room 2
+  This is Room 2 and (Self is: Room 2) (V) .
+  
+> >

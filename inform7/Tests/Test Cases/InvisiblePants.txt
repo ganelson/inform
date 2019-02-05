@@ -1,0 +1,6 @@
+Foo is a room. "A nice room."
+
+The table is in Foo. "A cool table is here." 
+
+The pair of invisible pants is on the table. "Invisible pants! What a time to be alive." The 
+pair is undescribed.

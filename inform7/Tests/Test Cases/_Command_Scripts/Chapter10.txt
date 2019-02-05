@@ -1,0 +1,83 @@
+take kettle
+put kettle on stove
+peel onions
+take knife
+dice onions
+cut onions
+put onions in pan
+take onions
+put onions in pan
+z
+x kettle
+open kettle
+take kettle
+put kettle on counter
+wash sage
+slice sage
+x onions
+z
+smell
+put sage in pan
+undo
+take sage
+put sage in pan
+x pan
+open cabinet
+take bowl
+take apricots
+take water
+put water in bowl
+put apricots in bowl
+look
+put kettle on stove
+take kettle
+put kettle on stove
+z
+z
+take kettle
+look
+z
+x apricots
+g
+take apricots
+put apricots in pan
+look
+smell
+i
+look
+open refrigerator
+take all from refrigerator
+open goat cheese
+open drawer
+take scissors
+oops shears
+cut goat cheese with scissors
+cut goat cheese
+unrwap cheese
+oops unwrap
+unwrap cheese
+put cheese in pan
+look in pan
+i
+x breast
+get mallet
+hit breast with mallet
+hit breast
+x chicken
+i
+look
+open wine
+x wine
+x thurston
+break egg
+i
+open oven
+turn on oven
+open oven
+z
+z
+open oven
+z
+open oven
+look in oven
+

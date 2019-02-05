@@ -1,0 +1,15 @@
+Inform 7 build 6M31 has started.
+I've now read your source text, which is 36 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ActivityWithFor
+  >--> In the sentence 'carry out the peering for activity with 2' (source text, line 7),
+    I was expecting to read an activity on values, but instead found some text
+    that I couldn't understand - 'peering for'. Were you by any chance meaning
+    to refer to an activity by name, and used the word 'for' at the end of that
+    name? If so, try removing just the word 'for'.
+    I was trying to match this phrase:
+      carry out the (peering for - activity on values) activity with (2 - value)
+    
+    But I didn't recognise 'peering for'.
+Inform 7 has finished: 58 centiseconds used.

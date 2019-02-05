@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UseTextNotTopic
+  >--> The grammar token 'a topic' in the sentence 'Understand "t [a person]
+    about [a topic]" as telling it about' (source text, line 3) would in some
+    ways be the right logical way to suggest 'any words at all here', but
+    Inform in actually uses the special syntax '[text]' for that. This is
+    partly for historical reasons, but also because '[text]' is a token which
+    can't be used in every sort of Understand grammar - for example, it can't
+    be used with 'matches' or in descriptions of actions or in table columns;
+    it's really intended only for defining new commands.
+Inform 7 has finished: 44 centiseconds used.

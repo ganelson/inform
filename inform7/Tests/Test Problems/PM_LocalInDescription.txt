@@ -1,0 +1,13 @@
+Home is a room. A ball is here.
+
+After examining something: elaborate on the noun.
+
+To elaborate on (item - thing): enumerate things in the location of the
+item.
+
+To enumerate (collection - a description of objects): 
+  say "Near it, you see: [line break]";
+    repeat with the item running through the collection 
+    begin; 
+        say "-- [The item]."; 
+    end repeat.

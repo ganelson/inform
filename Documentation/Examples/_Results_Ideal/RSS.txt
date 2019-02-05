@@ -1,0 +1,12 @@
+   Newsroom
+  Flathead News Network
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Newsroom
+  This is the secret nerve-centre of FNN, the Flathead News Network.
+  
+  You can see a BBC button, a NASA button, a WHO button and a screen here.
+  
+> >   Newsroom
+> Are you sure you want to quit? 

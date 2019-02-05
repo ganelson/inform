@@ -1,0 +1,7 @@
+Chapter I. Home is a room
+
+Chapter I.2 - This breaks
+
+Chapter 1.2 - This is OK
+
+Chapter 1.2.1 - This is also OK

@@ -1,0 +1,72 @@
+   New New Prison                                                                                                                                                                                                         1664
+  Waiting for Godot, Chyrurgeon
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Stephen Massey, gunsmith.
+  
+> >   New New Prison                                                                                                                                                                                                         1674
+  (Testing.)
+  
+  >[1] wait
+  It is now the year 1665.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing absolutely no one.
+  
+  >[2] wait
+  It is now the year 1666.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Robert Avis, cabinet-maker.
+  
+  >[3] wait
+  It is now the year 1667.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Simon Benning, pewterer.
+  
+  >[4] wait
+  It is now the year 1668.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Joel Clements, waterman.
+  
+  >[5] wait
+  It is now the year 1669.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing John Grant, wherryman.
+  
+  >[6] wait
+  It is now the year 1670.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Cornelius Vandananker, merchant.
+  
+  >[7] wait
+  It is now the year 1671.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Adam Brewer, sailmaker.
+  
+  >[8] wait
+  It is now the year 1672.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Joseph Cupid, mariner.
+  
+  >[9] wait
+  It is now the year 1673.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing Paul Bennett, combmaker.
+  
+  >[10] wait
+  It is now the year 1674.
+  
+  New New Prison
+  You have a not very interesting room. Through the window you see passing William Bates, chandler.
+  
+> >

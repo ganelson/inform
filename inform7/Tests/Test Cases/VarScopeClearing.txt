@@ -1,0 +1,9 @@
+There is a room.
+When play begins:
+	repeat with a counter running from one to two:
+		let x be some text;
+		say "At loop start: ";
+		showme x;
+		now x is "nonempty";
+		say "At loop end: ";
+		showme x.

@@ -1,0 +1,41 @@
+   Yesterday
+  Whither?
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Yesterday
+  Nearby a temporal vortex leads west.
+  
+> >   Today
+  (Testing.)
+  
+  >[1] examine west door
+  You see nothing special about the temporal vortex.
+  
+  >[2] x east door
+  There is no door in that direction.
+  
+  >[3] w
+  
+  Today
+  Nearby a temporal vortex leads east to Yesterday.
+  
+  >[4] x w door
+  There is no door in that direction.
+  
+  >[5] x e door
+  You see nothing special about the temporal vortex.
+  
+  >[6] tie me to the west door
+  There is no door in that direction.
+  
+  >[7] tie the west door to me
+  There is no door in that direction.
+  
+  >[8] push the west door east
+  There is no door in that direction.
+  
+  >[9] push the east door west
+  The temporal vortex cannot be pushed from place to place.
+  
+> >

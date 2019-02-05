@@ -1,0 +1,37 @@
+   Lighthouse
+  Eddystone
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lighthouse
+  A lonely place, but in these tense times, no one but the lighthouse keeper and a few trusted agents are allowed on the grounds at all, for fear of sabotage.
+  
+  At the center of the room is the light itself, a 1000-Watt tungsten halogen light powered by diesel generator, and having a visible range of twenty-six nautical miles.
+  
+> >   Train Trestle
+  (Testing.)
+  
+  >[1] turn lamp
+  Try turning the light to the direction of your choice.
+  
+  >[2] turn lamp down
+  The light only points in compass directions.
+  
+  >[3] turn lamp east
+  The light now points east, spotlighting Train Trestle.
+  
+  >[4] e
+  You're heading downhill now...
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+  >[5] e
+  It's an uphill climb...
+  
+  Train Trestle
+  The now-abandoned track of the Bush Pacific Railway runs here, above Stanley Creek.
+  
+  Brilliant light from the lighthouse floods the whole area.
+  
+> >

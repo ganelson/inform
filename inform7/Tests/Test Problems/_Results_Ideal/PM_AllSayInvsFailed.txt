@@ -1,0 +1,9 @@
+Inform 7 build 6M41 has started.
+I've now read your source text, which is 60 words long.
+I've also read Standard Rules by Graham Nelson, which is 42472 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AllSayInvsFailed
+  >--> You wrote 'say topic entry' (source text, line 8), but that only works
+    for sayable values, that is, values which I can display in text form. This
+    isn't one of those values: it's a topic, a kind which isn't sayable.
+Inform 7 has finished: 74 centiseconds used.

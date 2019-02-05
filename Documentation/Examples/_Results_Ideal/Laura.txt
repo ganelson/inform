@@ -1,0 +1,59 @@
+   City of Angels
+  Laura
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  City of Angels
+  
+> >   City of Angels
+  (Testing.)
+  
+  >[1] test one
+  (Testing.)
+  
+  >[2] x photograph
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[3] x incriminating photograph of a woman with blonde hair
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[4] x hair
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[5] x blonde
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[6] x woman with blonde hair
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[7] x incriminating photograph of a woman
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[8] test two
+  (Testing.)
+  
+  >[9] x drawing
+  You see nothing special about the drawing of a man with brown eyes.
+  
+  >[10] x man
+  You see nothing special about the drawing of a man with brown eyes.
+  
+  >[11] x of
+  You see nothing special about the incriminating photograph of a woman with blonde hair.
+  
+  >[12] x drawing of man
+  You see nothing special about the drawing of a man with brown eyes.
+  
+  >[13] x drawing of a man
+  You see nothing special about the drawing of a man with brown eyes.
+  
+  >[14] x drawing of a man with brown eyes
+  You see nothing special about the drawing of a man with brown eyes.
+  
+  >[15] x drawing of a brown-eyed man
+  You see nothing special about the drawing of a man with brown eyes.
+  
+  >[16] x brown eyes
+  You can't see any such thing.
+  
+> >

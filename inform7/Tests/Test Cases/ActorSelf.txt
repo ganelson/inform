@@ -1,0 +1,16 @@
+The spotlight is a room. Clark is here. Clark is a man.
+
+Instead of doing something while off-stage:
+	say "After the thrill of the spotlight, life seems not to exist."
+
+Instead of Clark doing something while off-stage:
+	say "After the thrill of the spotlight, life seems not to exist."
+
+Instead of jumping:
+	now Clark is off-stage;
+	say "Clark vanishes with a surprised expression."
+
+Instead of waiting:
+	try Clark going east.
+
+Test me with "look / wait / jump / wait".

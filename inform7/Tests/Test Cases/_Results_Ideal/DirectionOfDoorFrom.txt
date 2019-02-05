@@ -1,0 +1,26 @@
+   Ballroom
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ballroom
+  You can see Marble door here.
+  
+> >   Hall
+  (Testing.)
+  
+  >[1] z
+  D is n-f.
+  
+  >[2] open door
+  You open Marble door.
+  
+  >[3] n
+  
+  Hall
+  You can see Marble door here.
+  
+  >[4] z
+  D is not n-f.
+  
+> >

@@ -1,0 +1,1 @@
+Laboratory is a room.Colour is a kind of value. The colours are blue and pink. A person has acolour called hue.Grokking relates various people to various colours. The verb to grok (he groks)implies the grokking relation.Peter groks blue.Peter groks pink which is the hue of the player.

@@ -1,0 +1,5 @@
+Home is a room.
+
+When play begins:
+	let K be 10;
+	let N be entry 3 of K.

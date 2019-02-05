@@ -1,0 +1,5 @@
+East of Eden is a region. On the Prairie is a region.
+
+[The Land of Nod is in a region called East of Eden.]
+
+Small Room is a room in East of Eden.

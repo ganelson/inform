@@ -1,0 +1,7 @@
+Home is a room.
+
+To splodge:
+	(- ; -) and so forth.
+
+When play begins:
+	splodge.

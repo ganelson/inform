@@ -1,0 +1,17 @@
+* Scenery
+(TAKE scenery producing a custom response--Scenery taking with a new message; Replanting)
+Changing the response when the player tries to take something that is scenery.
+
+By default, "TAKE OAK" in the example above will produce the response "That's hardly portable." This is fine under many circumstances, but also a bit generic, so we might want to override it for a specific game.
+
+	{*}"Replanting"
+	
+	The Orchard is a room. "Within this quadrille of pear trees, a single gnarled old oak remains as a memory of centuries past." The gnarled old oak tree is scenery in the Orchard.
+
+	Instead of taking some scenery: say "You lack the hulk-like strength."
+	
+	Test me with "take oak".
+
+Here we've used an "instead" rule; we will learn more about these in the section on actions. This allows us to define our own results for taking an object.
+	
+Note: "scenery" is a property of an object (about which we will hear more later). So when we use it in rules, we can talk about "some scenery", "something that is scenery", or even "a scenery thing" -- the last one doesn't sound much like English, but is a more plausible construction with other adjectives.

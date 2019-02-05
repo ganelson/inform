@@ -1,0 +1,30 @@
+   Outer Solar System
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Outer Solar System
+  
+> >   Outer Solar System
+  (Testing.)
+  
+  >[1] n
+  The join is: Neptunein retrograde motion about Neptune.
+  
+  >[2] s
+  Double.
+  Double.
+  Double.
+  Octupled, Neptune becomes NeptuneNeptuneNeptuneNeptuneNeptuneNeptuneNeptuneNeptune.
+  
+  >[3] e
+  Neptune is now Neptune, Triton is in retrograde motion about Neptune.
+  
+  >[4] w
+  Double.
+  Doubled, Triton becomes in retrograde motion about Neptunein retrograde motion about Neptune.
+  
+  >[5] u
+  Moon of the moment is: Dione at 9:04 am.
+  
+> >

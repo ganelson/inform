@@ -1,0 +1,5 @@
+Place is a room.
+
+When play begins:
+	let S be 3;
+	say "(num = [S][s])".

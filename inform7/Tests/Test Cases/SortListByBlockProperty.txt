@@ -1,0 +1,19 @@
+Test is a room.
+
+A thing has an text called the of-type. The of-type of a thing is usually "standard".
+
+A thing has a text called the noni-of-type. The noni-of-type of a thing is usually "standard".
+
+The violin is in Test. The of-type is "special". The noni-of-type is "special".
+The viola is in Test.
+The mustard is in Test.
+The travesty is in Test. The of-type is "special". The noni-of-type is "special".
+The fang is in Test.
+
+After looking in Test:
+	let L be the list of things;
+	sort L in of-type order;
+	say "The list with text in sorts to: [L].";
+	let L be the list of things;
+	sort L in noni-of-type order;
+	say "The list with text in sorts to: [L].";

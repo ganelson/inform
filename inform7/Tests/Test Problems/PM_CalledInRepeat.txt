@@ -1,0 +1,5 @@
+Wharf is a room.
+
+When play begins:
+	repeat with R running through rooms (called domain):
+		say "Look at [R]."

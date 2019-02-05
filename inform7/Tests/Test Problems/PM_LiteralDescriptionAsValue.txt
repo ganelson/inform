@@ -1,0 +1,6 @@
+There is room.
+
+When play begins:
+	let D be a description of numbers;
+	let D be even numbers;
+	say the time.

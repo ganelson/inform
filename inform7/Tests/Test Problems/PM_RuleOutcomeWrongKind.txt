@@ -1,0 +1,6 @@
+Xanadu is a room.
+
+Splodge is a rulebook producing a number.
+
+Splodge:
+    rule succeeds with result "fish".

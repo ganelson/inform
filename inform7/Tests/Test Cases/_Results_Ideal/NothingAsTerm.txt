@@ -1,0 +1,26 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] get banana
+  Taken.
+  
+  >[3] get peach
+  Taken.
+  
+  Nothing is in the box.
+  Nothing is in the box.
+  
+  >[4] put banana in box
+  You put the banana into the box.
+  
+> >

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 77 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PrepositionLong
+  >--> You wrote 'The verb to be very long preposition 4 5 6 7 8 9 10 11 12 13
+    14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 implies the
+    concealment relation' (source text, line 4): but prepositions can be very
+    long indeed in today's Inform, but not as long as this.
+Inform 7 has finished: 13 centiseconds used.

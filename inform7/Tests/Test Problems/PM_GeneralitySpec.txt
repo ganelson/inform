@@ -1,0 +1,10 @@
+The Aquarium is a room.
+
+A fish is a kind of thing. A fish can be coarse or freshwater.
+
+The cod and the dab are fish in the Aquarium. The dab is freshwater. The
+cod is coarse.
+
+The specification of fish is "Aquatic animal."
+
+The description of a freshwater fish is "Red."

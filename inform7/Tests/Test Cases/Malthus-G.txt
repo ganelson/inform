@@ -1,0 +1,15 @@
+Foo is a room.
+
+Equation 1 - Malthus
+	R = 2.0^T
+where R is a number, T is a real number.
+
+Equation 2 - Grandmalthus
+	R = 2^T
+where R is a number, T is a real number.
+
+When play begins:
+	let R be given by Malthus where T is 6.0;
+	say "[R].";
+	let R be given by Grandmalthus where T is 6.0;
+	say "[R]."

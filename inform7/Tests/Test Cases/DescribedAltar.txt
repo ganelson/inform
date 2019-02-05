@@ -1,0 +1,15 @@
+Place is a room.
+
+A fixed in place supporter called a stone altar is in Place. A statuette is on the altar. A container 
+called an ancient basket is on the altar. A mysterious book is on the altar.
+
+Some straw and some loose rocks are in Place.
+
+A thing called a crystal is on the stone altar. "A beautiful, glowing crystal lies upon [a stone 
+altar]."
+
+test me with "look / x altar / jump / look"
+
+After jumping:
+	now the stone altar is scenery;
+	say "(Altar is now given scenery property.)[line break]".

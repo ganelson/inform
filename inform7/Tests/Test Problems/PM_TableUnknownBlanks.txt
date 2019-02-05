@@ -1,0 +1,5 @@
+Foo is a room.
+
+Table of Blogg
+bloggle (a number)
+with polyhedral blank rows

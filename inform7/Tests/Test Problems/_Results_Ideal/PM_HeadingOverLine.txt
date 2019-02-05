@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 17 words long.
+Problem__ PM_HeadingOverLine
+  >--> The text 'Chapter 1 On Certain Magnetic Phenomena Et Their Explanation
+    In Terms Of The Divine Spirit Of Potatoes' (source text, line 1) seems to
+    be a heading, but contains a line break, which is not allowed: so I am
+    reading it as just 'Chapter 1 On Certain Magnetic Phenomena Et Their
+    Explanation In Terms' (source text, line 1) and ignoring the continuation
+    'Of The Divine Spirit Of Potatoes' (source text, line 2). The rule is that
+    a heading must be a single line which is the only sentence in its
+    paragraph, so there must be a skipped line above and below.
+Inform 7 has finished: 3 centiseconds used.

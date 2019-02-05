@@ -1,0 +1,10 @@
+Home is a room.
+
+A bill is a kind of thing.
+A bill has a number called dollar value.
+
+Home contains a bill with dollar value 5.
+
+When play begins:
+	let B be a random bill;
+	say "Value: [dollar value of B]."

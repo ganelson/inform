@@ -1,0 +1,16 @@
+[Tests whether dynamically allocated relations can be
+used as constants to initialise variables.]
+
+Home is a room.
+
+Bijection relates various numbers to various numbers.
+
+R1 is a relation of numbers which varies.
+R1 is the bijection relation.
+
+When play begins:
+	showme bijection relation;
+	showme R1;
+	now R1 relates 45 to 17;
+
+Test me with "relations".

@@ -1,0 +1,7 @@
+Laboratory is a room.
+
+Velocity is a kind of value.
+Frequency is a kind of value.
+Length is a kind of value.
+
+Frequency times length specifies a velocity.

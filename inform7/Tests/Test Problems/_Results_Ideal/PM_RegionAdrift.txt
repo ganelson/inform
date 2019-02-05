@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RegionAdrift
+  >--> You wrote 'A region is a kind of thing' (source text, line 3): but
+    'region' is not allowed to be a kind of anything (other than 'object'),
+    because it's too fundamental to the way Inform maps out the geography of
+    the physical world.
+Inform 7 has finished: 16 centiseconds used.

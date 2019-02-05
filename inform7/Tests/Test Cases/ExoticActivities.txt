@@ -1,0 +1,8 @@
+The Activision is a room.
+
+Stringing out something is an activity on numbers.
+
+For stringing out a number (called N): say "Well, I string out [N]."
+
+When play begins:
+	carry out the stringing out activity with 12.

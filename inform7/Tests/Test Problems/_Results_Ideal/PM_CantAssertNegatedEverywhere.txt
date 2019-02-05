@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantAssertNegatedEverywhere
+  >--> You wrote 'The travelator is a backdrop which is not everywhere' (source
+    text, line 3): but that seems to say that something isn't everywhere, which
+    is too vague. You must say where it is.
+Inform 7 has finished: 17 centiseconds used.

@@ -1,0 +1,2 @@
+A doorway is a door. It is west from the Treasure room.
+The Passageway is east from the doorway.

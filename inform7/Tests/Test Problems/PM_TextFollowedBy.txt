@@ -1,0 +1,14 @@
+Lab is a room.
+Frizzling is an action applying to one thing. Understand "frizzle [something]" as frizzling. 
+
+Frozzling is an action applying to one topic and one thing. Understand "[text] [something]" 
+as frozzling. 
+
+The grunion is in the lab.
+Carry out frizzling:
+	say "You frizzle [the noun]."
+Carry out frozzling:
+	if the topic understood matches "boo":
+		try frizzling the noun;
+	otherwise:
+		say "I didn't follow that."

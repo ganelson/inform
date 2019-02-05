@@ -1,0 +1,13 @@
+A person has a number called IQ.
+
+The Lab is a room. John is a man in the Lab.
+
+To say foo (C - sayable value):
+	say "Foo [C]".
+To say foo (C - sayable value that provides the property IQ):
+	say "Other Foo [C]".
+When play begins:
+	let X be an object;
+	let Y be the Lab;
+	let Z be John;
+	say "[foo seven], [foo yourself], [foo John], [foo X], [foo Y], [foo Z].";

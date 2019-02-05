@@ -1,0 +1,35 @@
+   Back Yard
+  Fido
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Back Yard
+  You can see a dog here.
+  
+> >   Back Yard
+  (Testing.)
+  
+  >[1] name the dog fido
+  The dog is now known as fido.
+  
+  >[2] name the dog lawrence
+  The dog is now known as lawrence.
+  
+  >[3] look
+  Back Yard
+  You can see lawrence here.
+  
+  >[4] x lawrence
+  You see nothing special about lawrence.
+  
+  >[5] name lawrence nothing
+  You revoke your choice of dog-name.
+  
+  >[6] look
+  Back Yard
+  You can see a dog here.
+  
+  >[7] x lawrence
+  You can't see any such thing.
+  
+> >

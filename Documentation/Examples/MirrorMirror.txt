@@ -1,0 +1,28 @@
+* Making new text with text substitutions
+(Mirror remembering a room description from the past; Mirror, Mirror)
+The sorcerer's mirror can, when held up high, form an impression of its surroundings which it then preserves.
+
+	{*}"Mirror, Mirror"
+
+	The Sorcerer's Workshop is a room. "The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads [the time of day in words]. The floorboards are stained where that porridge just wouldn't come out."
+
+	The Apprentice's Pantry is east of the Workshop. "This is where the aproned apprentice traditionally makes the camomile tea, cleans out the jackdaw cages and furtively examines purloined artefacts."
+
+	When play begins: erase the mirror.
+
+	The player carries a magic mirror. The magic mirror has a text called the mirror vision.
+
+	To erase the mirror: now mirror vision of the mirror is "The mirror is polished clean, and has no impression upon it."
+
+	To say current room description: try looking.
+	To expose the mirror:
+		say "The mirror shines momentarily with a dazzling light.[paragraph break]";
+		now mirror vision of the mirror is the substituted form of "The hazy image in the mirror preserves a past sight:[line break][current room description]All is distorted and yet living, as though the past and present are coterminous in the mirror."
+
+	Understand "hold up [something preferably held]" or "hold [something preferably held] up" as holding aloft. Holding aloft is an action applying to one carried thing. Report holding aloft: say "You hold [the noun] aloft."
+
+	Instead of rubbing the mirror: erase the mirror; try examining the mirror. Instead of holding aloft the mirror: expose the mirror.
+
+	The description of the mirror is "[mirror vision of the mirror]".
+
+	Test me with "look / examine mirror / hold up mirror / z / look / x mirror / rub mirror / east / hold mirror up / west / x mirror".

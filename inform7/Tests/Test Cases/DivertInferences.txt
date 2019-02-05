@@ -1,0 +1,7 @@
+Stage is a room.
+
+The player is a woman called Edna Marsh.
+
+The player holds a wrench.
+
+Test me with "inv".

@@ -1,0 +1,55 @@
+   Brahms Conservatoire
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  You can see a tuba and a trombone here.
+  
+> >   Brahms Conservatoire
+  (Testing.)
+  
+  >[1] look
+  (Oh, not again!)
+  
+  Brahms Conservatoire
+  You can see a tuba and a trombone here.
+  
+  >[2] wait
+  Time passes.
+  
+  >[3] wait
+  (Oh, not again!)
+  
+  Time passes.
+  
+  >[4] take all
+  tuba: Taken.
+  trombone: Taken.
+  
+  >[5] drop tuba
+  Dropped.
+  
+  >[6] take me
+  You are always self-possessed.
+  
+  >[7] take tuba
+  (Oh, not again!)
+  
+  Taken.
+  
+  >[8] i
+  You have thus far tried the actions: taking yourself, taking the tuba, taking the trombone, dropping the tuba, looking and waiting.
+  
+  You are carrying:
+    a tuba
+    a trombone
+  
+  >[9] i
+  You have thus far tried the actions: taking yourself, taking the tuba, taking the trombone, dropping the tuba, looking and waiting.
+  
+  You are carrying:
+    a tuba
+    a trombone
+  
+> >

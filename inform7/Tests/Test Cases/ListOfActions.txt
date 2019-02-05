@@ -1,0 +1,5 @@
+Lab is a room. 
+Action list is a list of stored actions that varies.
+When play begins:
+	now action list is {waiting, jumping, taking the Lab};
+	showme the action list.

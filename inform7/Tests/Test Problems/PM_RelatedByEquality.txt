@@ -1,0 +1,5 @@
+Church is a room.
+
+John is in the Church. John is a person.
+
+Understand "[something related by equality]'s" as a person.

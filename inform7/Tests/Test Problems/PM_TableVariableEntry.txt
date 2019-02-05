@@ -1,0 +1,5 @@
+The Admiralty is a room. Mr Byng is in the Admiralty.
+
+Table 1 - Admirals
+admiral		rank
+Byng		score

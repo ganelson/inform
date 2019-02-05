@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 25 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RuleWithComma
+  >--> You wrote 'Instead of jumping (this is the don't jump, don't tell rule)'
+    (source text, line 3): but a rule name is not allowed to contain
+    punctuation, or to consist only of an article like 'a' or 'an', or to
+    contain double-quoted text, because this leads to too much ambiguity later
+    on.
+Problem__ PM_RuleWithComma
+  >--> You wrote 'This is the (mostly) useless rule' (source text, line 5):
+    again, a rule name is not allowed to contain punctuation, or to consist
+    only of an article like 'a' or 'an', or to contain double-quoted text.
+Inform 7 has finished: 15 centiseconds used.

@@ -1,0 +1,119 @@
+   Idyllic
+  Stately Gardens
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Here the lawn gives way to a circle of raked gravel, which crunches pleasingly beneath you.
+  
+  A sort of child's-toy version of a Bentley is parked close at hand.
+  
+  From here, you make out a black sheep some distance north. Meanwhile, to the south is a stone bench. To the southeast, a lily pond shimmers in the sunlight. To the east, you can't help noticing the obelisk of black granite, which is much larger than any object really needs to be.
+  
+> >   Idyllic
+  (Testing.)
+  
+  >[1] look east
+  To the east, you can't help noticing the obelisk of black granite, which is much larger than any object really needs to be.
+  
+  >[2] look toward obelisk
+  You gaze off east at the obelisk of black granite...
+  
+  It stands ridiculously tall, and has an inscription on the face.
+  
+  >[3] s
+  
+  You drift south across the open lawn. An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction.
+  
+  There is a stone bench here -- a sort of stone sofa, really, with nymphs disporting themselves on the arms and back.
+  
+  To the north there is a half-size Bentley. To the northeast, you can't help noticing the obelisk of black granite, which is much larger than any object really needs to be. If you turn south, you see a thicket of red roses some way off. And to the southeast a marble anteater. To the east, a lily pond shimmers in the sunlight. The obelisk of black granite is proudly visible on the northeast horizon.
+  
+  >[4] s
+  
+  You drift south across the open lawn. An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction.
+  
+  Half trampled into the grass, and easy to miss, is a discarded champagne cork. To the north there is a stone bench. To the northeast, a lily pond shimmers in the sunlight. Immediately south is the thicket of red roses. And to the east a marble anteater. The obelisk of black granite is proudly visible on the northeast horizon.
+  
+  >[5] e
+  
+  You climb east up a small hillock.
+  
+  A marble anteater stands on a pedestal at the top of the hill. In the bright sunlight the white marble makes a striking contrast with the obelisk of black granite in the distance.
+  
+  A lily pond, north, patchily reflects an obelisk of black granite on the far side. Meanwhile, to the northwest is a stone bench. Immediately southwest is the thicket of red roses. The obelisk of black granite is proudly visible on the northwest horizon.
+  
+  >[6] sw
+  
+  You slip southwest into the enclosure of the rose garden. The rest of the park, and the world, seems muted and quiet.
+  
+  Heavy red roses grow over a roughly horseshoe-shaped wall around you. Over this barrier, the head of the marble anteater is visible to the northwest, and the tip of the obelisk of black granite in the distance.
+  
+  Otherwise, you are quite cut off.
+  
+  >[7] ne
+  
+  You climb northeast up a small hillock.
+  
+  A marble anteater stands on a pedestal at the top of the hill. In the bright sunlight the white marble makes a striking contrast with the obelisk of black granite in the distance.
+  
+  A lily pond, north, patchily reflects an obelisk of black granite on the far side. Meanwhile, to the northwest is a stone bench. Immediately southwest is the thicket of red roses. The obelisk of black granite is proudly visible on the northwest horizon.
+  
+  >[8] n
+  
+  You drift north across the open lawn, drawn towards the obelisk of black granite. An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction.
+  
+  You come to the north edge of a perfectly round lily pond, bordered with stones. Its surface patchily reflects the marble anteater on the south bank.
+  
+  Half trampled into the grass, and easy to miss, are a tent peg and a wilted orchid. To the north, you can't help noticing the obelisk of black granite, which is much larger than any object really needs to be. Meanwhile, to the northwest is a half-size Bentley. Roughly south is a marble anteater. Meanwhile, to the west is a stone bench. The obelisk of black granite is proudly visible on the north horizon.
+  
+  >[9] n
+  
+  You drift north across the open lawn, as though drawn magnetically to the foot of the monument. An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction.
+  
+  Now that you are at the foot of it, you can properly appreciate the stupid immensity of the obelisk, pointing stonily at heaven.
+  
+  A lily pond, south, patchily reflects a marble anteater on the far side. Meanwhile, to the southwest is a stone bench. Roughly west is a half-size Bentley.
+  
+  >[10] w
+  
+  You head west until the lawn thins and gives way to a circle of raked gravel, which crunches pleasingly beneath you.
+  
+  A sort of child's-toy version of a Bentley is parked close at hand.
+  
+  From here, you make out a black sheep some distance north. Meanwhile, to the south is a stone bench. To the southeast, a lily pond shimmers in the sunlight. To the east, you can't help noticing the obelisk of black granite, which is much larger than any object really needs to be.
+  
+  >[11] n
+  
+  The land dips here so suddenly that you do not know the dip is there until you're in it; but it prevents livestock from crossing barriers, and that is the important thing.
+  
+  The tip of the obelisk of black granite is the only thing you can make out from this depression, off to the southeast.
+  
+  >[12] n
+  It's a bit of a scramble to get back up the side of the depression, and you keep slipping in the damp grass. But you manage at last.
+  
+  You drift north across the open lawn, keeping the obelisk of black granite more or less at your back. An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction.
+  
+  A black sheep grazes placidly nearby.
+  
+  >[13] examine obelisk
+  You gaze off south into the distance at the obelisk of black granite...
+  
+  It stands ridiculously tall, and has an inscription on the face.
+  
+  >[14] touch obelisk
+  (first going over to the obelisk of black granite)
+  
+  It's a bit of a scramble to get back up the side of the depression, and you keep slipping in the damp grass. But you manage at last.
+  
+  You drift southeast across the open lawn, as though drawn magnetically to the foot of the monument. An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction.
+  
+  Now that you are at the foot of it, you can properly appreciate the stupid immensity of the obelisk, pointing stonily at heaven.
+  
+  A lily pond, south, patchily reflects a marble anteater on the far side. Meanwhile, to the southwest is a stone bench. Roughly west is a half-size Bentley.
+  
+  Though it is black stone in sunlight, the obelisk is very cold to the touch.
+  
+  >[15] read inscription
+  You can't read the squirming, pointed letters, but they make you uneasy.
+  
+> >

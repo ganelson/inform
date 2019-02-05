@@ -1,0 +1,7 @@
+The Admiralty is a room. Admiral Byng is a man in the Admiralty.
+
+To decide which vehicle is the next vessel to launch:
+	say "Hmmm...";
+
+When play begins:
+	showme the next vessel to launch.

@@ -1,0 +1,58 @@
+   Library
+  Pages
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Library
+  
+> >   Library
+  (Testing.)
+  
+  >[1] read from the sinister book
+  You flip the pages randomly and arrive at page 48:
+  
+  Page 48 appears to be blank.
+  
+  >[2] read the book
+  You flip the pages randomly and arrive at page 24:
+  
+  Page 24 appears to be blank.
+  
+  >[3] read the next page
+  (in the sinister book)
+  Page 25 appears to be blank.
+  
+  >[4] read page 2
+  (in the sinister book)
+  You read: "dhuma jyotih salila marutam / samnipatah kva meghah / samdes arthah kva patukaranaih / pranibhih prapaniyah"
+  
+  >[5] read previous page
+  (in the sinister book)
+  Page 1 appears to be blank.
+  
+  >[6] g
+  (in the sinister book)
+  The page numbering begins with 1.
+  
+  >[7] read the first page
+  (in the sinister book)
+  Page 1 appears to be blank.
+  
+  >[8] read the last page of the book
+  You read: "Rrgshilz maplot..."
+  
+  >[9] read the next page
+  (in the sinister book)
+  There are only fifty pages in the book.
+  
+  >[10] read 47 in book
+  Your eyes burn; your ears ring. Beneath your gaze, the dreadful sigils writhe, reminding you of that which lies outside the edges of the universe...
+  
+  
+  
+      *** You have lost your remaining sanity ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

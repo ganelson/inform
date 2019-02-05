@@ -1,0 +1,46 @@
+   Fur-Lined Maze
+  Leopard-skin
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Fur-Lined Maze
+  This seemingly endless sequence of rooms is decorated in a tasteful selection of exotic furs and gilded fixtures.
+  
+> >   Fur-Lined Maze
+  (Testing.)
+  
+  >[1] hop
+  You jump on the spot.
+  
+  >[2] clap
+  You clap.
+  
+  >[3] clap
+  You clap.
+  
+  >[4] hop
+  You jump on the spot.
+  
+  >[5] kweepa
+  You holler "KWEEPA!" triumphantly.
+  
+  >[6] hop
+  You jump on the spot.
+  
+  >[7] clap
+  You clap.
+  
+  >[8] kweepa
+  You holler "KWEEPA!" triumphantly.
+  
+  That does it! You are instantly transported from the maze!
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

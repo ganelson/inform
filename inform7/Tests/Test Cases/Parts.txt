@@ -1,0 +1,236 @@
+
+ Use command line echoing.
+
+The player is carrying a plastic daisy and a whip. The carrying capacity of the player is 2.
+
+Volume 1 - Vehicles with parts
+
+The Circus Backlot is a room. "Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good."
+
+A pedal is a kind of thing.
+
+Part 1 - Container, supporter on a vehicle
+[Problem: items which are part of the unicycle are not accessible from on the unicycle.]
+
+In the Circus Backlot is a unicycle. The unicycle is a vehicle. Two pedals are part of the unicycle. A carrier basket is part of the unicycle. It is an open unopenable container. In the carrier basket is a leash. The unicycle is pushable between rooms.
+
+Part 2 - Container, supporter, person, device, and player's holdall on an enterable vehicle
+[Problem: items which are part of the car are not accessible from on the unicycle.]
+
+In the Circus Backlot is a vehicle called a clown car. A dashboard, a glove compartment, an inflatable driver, a start switch, and a small spatial anomaly are part of the clown car. The clown car is transparent, openable and closed.
+
+The dashboard is a supporter. On the dashboard is a very very small pair of sunglasses. A cup holder is an open unopenable container. It is part of the dashboard. It contains a container called a Fru-Yo bottle. An ashtray is a closed openable container. It is part of the dashboard. It contains cigar ash.
+
+The glove compartment is a container. The glove compartment contains a tollbooth coin.
+
+[Problem: attempts to leave the spatial anomaly fail terribly. This may be accurate.]
+The small spatial anomaly is an enterable player's holdall. In the spatial anomaly is a squashed clown hat and an outsized green shoe.
+
+The start switch is a device. Instead of going by the clown car when the start switch is not switched on, say "The car is not on." Instead of switching on the car, try switching on the start switch. Instead of switching off the car, try switching off the start switch.
+
+The inflatable driver is a man. The description of the inflatable driver is "He wears rosy grease paint and a permanent smile."
+
+
+Volume 2 - Clothes with parts
+
+A chest is a kind of container. A chest is always openable. A chest is usually fixed in place. The specification of a chest is "Represents a container with a separately implemented lid; the lid is itself a supporter."
+
+A lid is a kind of supporter. A lid is part of every chest. The specification of a lid is "A supporter attached to a chest, which can only support things when the chest is closed."
+
+Instead of examining a closed chest when something is on a lid (called the top) which is part of the noun:
+	say "[The noun] is closed, and there [is-are a list of things on the top] on top.";
+
+Before opening a lid which is part of a chest (called the box):
+	try opening the box instead.
+
+Before closing a lid which is part of a chest (called the box):
+	try closing the box instead.
+	
+Before opening a chest when something is on a lid (called the top) which is part of the noun:
+	say "You'd have to remove [the list of things on the top] from the lid first." instead.
+	
+Instead of looking under a lid which is part of a chest (called the box):
+	try opening the box.
+	
+Before putting something on a lid which is part of an open chest (called the box):
+	say "(first closing [the box])[line break]";
+	try closing the box.
+	
+Instead of putting something on a lid which is part of an open chest (called the box):
+	say "[The box] would need to be closed first.";
+
+Before inserting something into a lid which is part of a chest (called the box):
+	try inserting the noun into the box instead.
+	
+Before putting something on a chest when a lid (called the top) is part of the second noun:
+	try putting the noun on the top instead.	
+
+After printing the name of a chest (called the box) while listing contents:
+	if a lid (called the top) which supports something is part of the box, say " (on which [is-are a list of things on the top])";
+
+
+North of the Circus Backlot is the Wardrobe Trailer. The description of the Wardrobe Trailer is "Paneled inside and out in seductively hideous faux-walnut veneer."
+
+In the Wardrobe Trailer is a chest called a painted box. The painted box is closed. On the box's lid is a silver key. A tiger is part of the box's lid. 
+
+In the box is a pair of spangled tights. The right leg is a wearable thing. It is part of the tights. The left leg is a wearable thing. It is part of the tights. 
+	 
+Instead of wearing the spangled tights, say "Can't you put your spangled tights on one leg at a time like any other man?"
+
+In the box is a busker's apron. It is a wearable thing. The pocket is a container. It is part of the busker's apron. In the pocket are a ten-dollar bill and a packet of breath mints.
+
+In the box is a tall hat. It is a wearable container. The crown is a supporter. The crown is part of the tall hat. On crown is frightened-looking rabbit.
+
+
+Volume 3 - Characters with parts
+
+The Striped Tent is east of the Circus Backlot. "Dusty light, filtered into alternating bars of red and yellow; sand and straw on the ground failing to entirely soak up the leavings from the performing animals; rows of flimsy benches without spectators."
+
+Instead of examining something when something is part of the noun:
+	say "[The noun] features [a list of things which are part of the noun]."
+
+An eye is a kind of thing. Two eyes are part of every person. Instead of touching an eye which is part of someone (called the Cyclops): say "[The cyclops] roars in distress."
+
+
+Part 1 - Supporter
+
+The monkey is an animal in the Striped Tent. "Bobo is hanging from one of the supports. He gives you a look of consternation." The monkey's back is a supporter. It is part of the monkey. Understand "Bobo" as the monkey.
+
+Part 2 - Container
+
+The mother kangaroo is an animal in the Striped Tent. The pouch is part of the kangaroo. It is an open unopenable container. The pouch contains a baby kangaroo.
+
+Part 3 - Vehicle
+
+[Problem: attempts to leave the howdah fail terribly. See above under spatial anomaly.]
+The elephant is an animal in the Striped Tent. The howdah is a vehicle. It is part of the elephant.
+
+Part 4 - Device
+
+The robot lion is an animal in the Striped Tent. "The Circus is too poor, or perhaps too nervous, to own a real lion. Instead it possesses a robot." The lion switch is a device. It is part of the lion. Instead of doing something to the lion when the lion switch is switched off: say "The lion pathetically fails to respond."
+
+Part 5 - Clothing
+
+[Not quite sure whether this technically works or not.]
+The Living Rug is an animal in the Striped Tent. "The Living Rug is lying around in a funk. It resembles a bearskin rug, but is in fact a freak of natur-- oh, well, that's just what you tell the guests. It's a big fur costume which someone puts on and walks around in." The costume is part of the Living Rug. Instead of wearing the Rug, try wearing the costume. The costume is wearable.
+
+Part 6 - Door
+
+[Weird but functionally acceptable, though of course one cannot go through the door.]
+The Visible Sheep is an animal in the Striped Tent. "The Visible Sheep is a purchase from an agricultural college. A door in the side of the sheep opens to reveal (through glass) all the sheep organs doing their assorted business." The glass door is a door. It is in the Striped Tent. It is outside of the Striped Tent.
+
+
+
+Volume 4 - Doors with parts
+
+Part 1 - Vehicle
+
+[Bicycle claims not to exist at all.]
+The tightrope is a door. "There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really." It is south of the Backlot and north of the Dusty Slope. A bicycle is part of the tightrope. It is a vehicle.
+
+[alternate, single-location door, which however does not work either]
+[The tightrope is a door. "There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really." It is south of the Backlot. Through it is the Dusty Slope. A bicycle is part of the wire. It is a vehicle.]
+
+The description of the tightrope is "A tightrope extended between two poles, which can be traversed via a handy bicycle."
+
+
+Part 2 - Device
+[Works fine.]
+
+The rotating door is west of the Circus Backlot and east of the Mirror Funhouse. It is a door. The control is part of the rotating door. It is a device.
+
+Instead of going through the rotating door when the control is switched off:
+	say "The door is currently not rotating, so you can't go through."
+
+After switching on the control:
+	now the rotating door is open;
+	say "You turn on the control on the rotating door; it begins to spin dizzily, but you could go through, if you wanted."
+
+After switching off the control:
+	now the rotating door is closed;
+	say "The door whines to a stop."
+	
+Instead of opening or closing the rotating door:
+	say "It doesn't open or close -- it's one of those spinning things that you have to walk through when it's turned on."
+
+Part 3 - Supporter
+[Mostly okay.]
+
+The trapdoor is below the Mirror Funhouse and above the Oubliette. It is a closed openable door. The surface is part of the trapdoor. It is a supporter.
+
+Instead of opening or entering the trapdoor when something (called the obstruction) is on the surface: 
+	say "[The obstruction] is in your way."
+	
+Instead of putting something on the surface when the trapdoor is open:
+	say "The trapdoor is open."
+	
+[Possibly I'm being stupid, but this doesn't catch properly. Actually... I bet I know why; because I'm trying to catch an action involving the surface as a second noun. Hm. Should doing something with... catch, in that case?]
+Instead of doing something with the surface when the location is the Oubliette:
+	say "You can't reach the top of the trapdoor from here."
+	
+Instead of putting something on the trapdoor:
+	try putting the noun on the surface.
+	
+Part 4 - Creature
+
+[Okay.]
+The reflecting door is north of the Mirror Funhouse and south of the esouhnuF rorriM. It is a door. A doppelganger is part of the reflecting door. It is a person. It is carrying an ysiad.
+
+Instead of doing something to the doppelganger:
+	say "Your image responds in kind."
+
+Part 5 - Container
+[Fine.]
+
+The platform is a door. It is below the esouhnuF and above the Bottom of the Well. The bucket is a container. It is part of the platform.
+	
+Volume 5 - Containers with parts
+
+Part 1  - Container, clothing
+
+[Exciting weirdness wherein the player can put something into a pocket or onto a supporter which is part of itself, with wacky, object-tree-leaving results.]
+ In the Backlot is a satchel. The satchel is a player's holdall. The outer compartment is an openable open container. It is part of the satchel. The strap is part of the satchel. The strap is wearable.
+
+Part 2 - Supporter
+[see tall hat]
+
+
+Volume 6 - Supporters with parts
+
+Part 1 - Container
+[See dashboard]
+
+Part 2 - Supporter
+[see chests]
+
+Volume 7 - Backdrops with parts
+[Seem to generate no special problems due to being backdrops, though there are all the same-as-usual problems with vehicles/enterable containers that are part of other things.]
+
+Part 1 - Creature
+
+The sky is a backdrop. It is in the Dusty Slope and the Backlot. The flock of geese is part of the sky. It is an animal.
+
+Part 2 - Vehicle/Container
+
+The hot air balloon is part of the sky. It is a vehicle. The picnic basket is a container in the hot air balloon.
+
+Part 3 - Supporter
+
+The flying saucer is part of the sky. It is a supporter. It is enterable.
+
+Part 4 - Device
+
+The flying kettle is part of the sky. It is a device.
+
+Volume 8 - Esoterica
+
+[Doesn't compile: good.]
+[An incomparable feeling of freedom is part of west.
+
+A tentpole is part of the Tent.]
+
+[This *does* compile, and should presumably not do so:]
+The Outdoors is a region. The Backlot and the Trailer are in the Outdoors.
+
+The sun is part of the Outdoors.
+

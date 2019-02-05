@@ -1,0 +1,40 @@
+*** The parts of a number specification
+(Time expressed in units other than minutes; Zqlran Era 8)
+Creating an alternative system of time for our game, using new units.
+
+Suppose that our game takes place on an alien planet that does not follow Earth time. On this planet, we want to track time with different units. We also want time to advance in those units, and we want to be able to set a schedule of timed events.
+
+	{*}"Zqlran Era 8"
+	
+	The Barren Lavender Surface of Zql is a room. "It is late twilight on Zql. Overhead, two crescent moons, both green, mark the sluggish passage of time. A cold wind is blowing over the pale purplish ground cover, but it does not penetrate your airtight suit." 
+
+	A Zqlran date is a kind of value. 14-88 specifies a Zqlran date with parts zqls and frbs. Current zqlran date is a zqlran date that varies. The current zqlran date is 8-22. Previous zqlran date is a zqlran date that varies. The previous zqlran date is 8-20. 
+
+	When play begins: 
+		now left hand status line is "[current zqlran date], or [current zqlran date in words]". 
+		
+	To say (Zqlra - a Zqlran date) in words: 
+		say "[zqls part of Zqlra] Z, [frbs part of Zqlra] f."
+		
+Inform automatically supplies a way to say a new unit, which will look similar to the format in which we defined that unit in the first place. But we can (as shown here) create our own alternative say phrases to express the units in other ways as well.
+
+Next, we need to meddle with time advancement so that time is tracked in Zqlran date rather than in minutes. This requires borrowing a trick from a later chapter, to replace Inform's built-in time handling with an alternative time handling rule of our own:
+
+	{**}The Zqlran time rule is listed instead of the advance time rule in the turn sequence rules. 
+
+	This is the Zqlran time rule: 
+		increment turn count; 
+		now the previous zqlran date is current zqlran date; 
+		increase the current zqlran date by 0-02; 
+		repeat through the Table of Zql Schedule: 
+			if era entry is greater than previous zqlran date and era entry is not greater than current zqlran date: 
+				say event entry; 
+				say paragraph break; 
+				blank out the whole row.
+
+	Table of Zql Schedule 
+	era	event 
+	8-24	"A wisp-thin cloud blows rapidly across the face of Nepenthe, the lesser of the two green moons." 
+	8-28	"The cloud across Nepenthe clears."
+	
+Note that we could if we wished use a different device for scheduling events: this one simply prints text at scheduled eras, but we might also (for instance) make the event entry be a rule for Inform to follow, and tell Inform to carry out that rule at the scheduled time.

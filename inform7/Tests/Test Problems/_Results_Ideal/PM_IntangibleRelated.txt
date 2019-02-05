@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 5 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_IntangibleRelated
+  >--> You wrote 'In the box is closed' (source text, line 1): but this seems
+    to give a worldly relationship to something intangible, like saying that
+    'in the box is a text'. Perhaps it came to this because you gave something
+    physical a name which was accidentally something meaningful to me in
+    another context? If so, you may be able to get around it by rewording ('In
+    the box is a medieval text') or in extremis by using 'called' ('In the box
+    is a thing called text').
+Inform 7 has finished: 16 centiseconds used.

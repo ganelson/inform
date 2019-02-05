@@ -1,0 +1,23 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] x banana
+  Banana size A:
+  *** Run-time problem P10: Since the banana is not allowed the property "size", it is against the rules to try to use it.
+  
+  0.
+  
+  >[2] touch banana
+  Banana size B:
+  *** Run-time problem P10: Since the banana is not allowed the property "size", it is against the rules to try to use it.
+  
+  0.
+  
+> >

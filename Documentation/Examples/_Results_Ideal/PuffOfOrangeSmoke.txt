@@ -1,0 +1,62 @@
+   Paraguay
+  Puff of Orange Smoke
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Paraguay
+  Lydia is, as usual, here.
+  
+> >   Bolivia
+  (Testing.)
+  
+  >[1] x body
+  Which do you mean, your body or Lydia's body?
+  
+  >[2] x lydia's body
+  Long, long legs and a sarcastic attitude.
+  
+  >[3] touch lydia's body
+  "Watch it, sailor," she snaps.
+  
+  >[4] x corpse
+  You can't see any such thing.
+  
+  >[5] kill lydia
+  With a single blow, you rid the world of Lydia.
+  
+  >[6] look
+  Paraguay
+  Lydia's corpse is sprawled at your feet.
+  
+  >[7] x lydia's body
+  Long, long legs and no attitude at all.
+  
+  >[8] x lydia's corpse
+  Long, long legs and no attitude at all.
+  
+  >[9] x corpse
+  Long, long legs and no attitude at all.
+  
+  >[10] x lydia
+  Long, long legs and no attitude at all.
+  
+  >[11] touch lydia
+  Lydia's body is grotesquely inert.
+  
+  >[12] lydia, hello
+  There is no reply.
+  
+  >[13] n
+  
+  Bolivia
+  
+  >[14] x lydia
+  Lydia is dead; or had you blocked that out?
+  
+  >[15] touch lydia
+  Lydia is dead; or had you blocked that out?
+  
+  >[16] lydia, hello
+  Lydia is dead; or had you blocked that out?
+  
+> >

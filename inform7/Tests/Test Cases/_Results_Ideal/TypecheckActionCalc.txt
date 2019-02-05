@@ -1,0 +1,17 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] wait 10 minutes
+  All right. The time is now 9:10 am.
+  
+  >[2] wait 5 minutes
+  All right. The time is now 9:16 am.
+  
+> >

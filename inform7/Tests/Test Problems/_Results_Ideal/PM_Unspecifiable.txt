@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_Unspecifiable
+  >--> You wrote 'The specification of 12 is "A dozen."' (source text, line 3):
+    but this tries to set specification text for a particular value, rather
+    than a kind of value. 'Specification' is a special property used only to
+    annotate the Index, and it makes no sense to set this property for anything
+    other than a kind of value, a kind of object or an action.
+Inform 7 has finished: 17 centiseconds used.

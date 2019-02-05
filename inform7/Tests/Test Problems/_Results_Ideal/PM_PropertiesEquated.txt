@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertiesEquated
+  >--> In the sentence 'The description is the printed name' (source text, line 1),
+    it looks as if you intend 'The description is the printed name' to be
+    asserting something, but that seems to say that two different properties
+    are the same - like saying 'The indefinite article is the printed name':
+    that might be true for some things, some of the time, but it makes no sense
+    in a general statement like this one.
+Inform 7 has finished: 16 centiseconds used.

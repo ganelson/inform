@@ -1,0 +1,36 @@
+   U-Stor-It Facility
+  U-Stor-It
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  U-Stor-It Facility
+  You can see a sea trunk (closed), a shipping crate (closed) and a metal box (on which is a small card) here.
+  
+> >   U-Stor-It Facility
+  (Testing.)
+  
+  >[1] open trunk
+  You open the sea trunk.
+  
+  >[2] x card
+  It reads, "Back in 5 mins - Pandora."
+  
+  >[3] open metal box
+  (first removing the small card)
+  Taken.
+  
+  You open the metal box, revealing a sapphire, a gold coin and a signed photograph of Babe Ruth.
+  
+  >[4] put all in metal box
+  small card: Done.
+  
+  >[5] get card
+  Taken.
+  
+  >[6] put card on box
+  (first closing the metal box)
+  You close the metal box.
+  
+  You put the small card on the metal box's lid.
+  
+> >

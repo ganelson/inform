@@ -1,0 +1,12 @@
+Inform 7 build 6M62 has started.
+I've now read your source text, which is 54 words long.
+I've also read Standard Rules by Graham Nelson, which is 42655 words long.
+I've also read English Language by Graham Nelson, which is 2297 words long.
+Problem__ PM_KindRelatedToValue
+  >--> You wrote 'A chair usually allows sitting' (source text, line 12): but
+    relations between objects and values have to be made one object at a time,
+    not using kinds of object to make multiple relationships in a single
+    sentence. (Sorry for this restriction. It's sometimes possible to get
+    around it using words like 'every': for example, 'Every person is in the
+    Ballroom.' is allowed.)
+Inform 7 has finished: 27 centiseconds used.

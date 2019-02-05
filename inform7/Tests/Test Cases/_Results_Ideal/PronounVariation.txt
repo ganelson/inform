@@ -1,0 +1,177 @@
+   Conjugation Lounge
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Conjugation Lounge
+  You can see a swagger stick, Miss Kelly, Fred Astaire, some shoes and a pair of socks here.
+  
+> >   Conjugation Lounge
+  (Testing.)
+  
+  >[1] get me
+  You're not sure about that. You've thought better. You are unlikely to be in your possession; you are not what you seem. You are best in your original location. Your home; yours.
+  
+  >[2] get stick
+  You're not sure about that. You've thought better. That is unlikely to be in your possession; that is not what it seems. It is best in its original location. Its home; its.
+  
+  >[3] get kelly
+  You're not sure about that. You've thought better. She is unlikely to be in your possession; she is not what she seems. She is best in her original location. Her home; hers.
+  
+  >[4] get fred
+  You're not sure about that. You've thought better. He is unlikely to be in your possession; he is not what he seems. He is best in his original location. His home; his.
+  
+  >[5] get shoes
+  You're not sure about that. You've thought better. Those are unlikely to be in your possession; those are not what they seem. They are best in their original location. Their home; theirs.
+  
+  >[6] adopt past tense
+  The world shimmers into the past tense.
+  
+  >[7] get me
+  You weren't sure about that. You had thought better. You were unlikely to be in your possession; you were not what you seemed. You were best in your original location. Your home; yours.
+  
+  >[8] get stick
+  You weren't sure about that. You had thought better. That was unlikely to be in your possession; that was not what it seemed. It was best in its original location. Its home; its.
+  
+  >[9] get kelly
+  You weren't sure about that. You had thought better. She was unlikely to be in your possession; she was not what she seemed. She was best in her original location. Her home; hers.
+  
+  >[10] get fred
+  You weren't sure about that. You had thought better. He was unlikely to be in your possession; he was not what he seemed. He was best in his original location. His home; his.
+  
+  >[11] get shoes
+  You weren't sure about that. You had thought better. Those were unlikely to be in your possession; those were not what they seemed. They were best in their original location. Their home; theirs.
+  
+  >[12] adopt future tense
+  The world shimmered into the future tense.
+  
+  >[13] get me
+  You'll not be sure about that. You'll have thought better. You will be unlikely to be in your possession; you will not be what you will seem. You will be best in your original location. Your home; yours.
+  
+  >[14] get stick
+  You'll not be sure about that. You'll have thought better. That will be unlikely to be in your possession; that will not be what it will seem. It will be best in its original location. Its home; its.
+  
+  >[15] get kelly
+  You'll not be sure about that. You'll have thought better. She will be unlikely to be in your possession; she will not be what she will seem. She will be best in her original location. Her home; hers.
+  
+  >[16] get fred
+  You'll not be sure about that. You'll have thought better. He will be unlikely to be in your possession; he will not be what he will seem. He will be best in his original location. His home; his.
+  
+  >[17] get shoes
+  You'll not be sure about that. You'll have thought better. Those will be unlikely to be in your possession; those will not be what they will seem. They will be best in their original location. Their home; theirs.
+  
+  >[18] regard as first person singular
+  You will shimmer into the first person singular.
+  
+  >[19] adopt present tense
+  The world will shimmer into the present tense.
+  
+  >[20] get me
+  I'm not sure about that. I've thought better. I am unlikely to be in my possession; I am not what I seem. I am best in my original location. My home; mine.
+  
+  >[21] get stick
+  I'm not sure about that. I've thought better. That is unlikely to be in my possession; that is not what it seems. It is best in its original location. Its home; its.
+  
+  >[22] get kelly
+  I'm not sure about that. I've thought better. She is unlikely to be in my possession; she is not what she seems. She is best in her original location. Her home; hers.
+  
+  >[23] get fred
+  I'm not sure about that. I've thought better. He is unlikely to be in my possession; he is not what he seems. He is best in his original location. His home; his.
+  
+  >[24] get shoes
+  I'm not sure about that. I've thought better. Those are unlikely to be in my possession; those are not what they seem. They are best in their original location. Their home; theirs.
+  
+  >[25] adopt past tense
+  The world shimmers into the past tense.
+  
+  >[26] get me
+  I wasn't sure about that. I had thought better. I was unlikely to be in my possession; I was not what I seemed. I was best in my original location. My home; mine.
+  
+  >[27] get stick
+  I wasn't sure about that. I had thought better. That was unlikely to be in my possession; that was not what it seemed. It was best in its original location. Its home; its.
+  
+  >[28] get kelly
+  I wasn't sure about that. I had thought better. She was unlikely to be in my possession; she was not what she seemed. She was best in her original location. Her home; hers.
+  
+  >[29] get fred
+  I wasn't sure about that. I had thought better. He was unlikely to be in my possession; he was not what he seemed. He was best in his original location. His home; his.
+  
+  >[30] get shoes
+  I wasn't sure about that. I had thought better. Those were unlikely to be in my possession; those were not what they seemed. They were best in their original location. Their home; theirs.
+  
+  >[31] adopt future tense
+  The world shimmered into the future tense.
+  
+  >[32] get me
+  I'll not be sure about that. I'll have thought better. I will be unlikely to be in my possession; I will not be what I will seem. I will be best in my original location. My home; mine.
+  
+  >[33] get stick
+  I'll not be sure about that. I'll have thought better. That will be unlikely to be in my possession; that will not be what it will seem. It will be best in its original location. Its home; its.
+  
+  >[34] get kelly
+  I'll not be sure about that. I'll have thought better. She will be unlikely to be in my possession; she will not be what she will seem. She will be best in her original location. Her home; hers.
+  
+  >[35] get fred
+  I'll not be sure about that. I'll have thought better. He will be unlikely to be in my possession; he will not be what he will seem. He will be best in his original location. His home; his.
+  
+  >[36] get shoes
+  I'll not be sure about that. I'll have thought better. Those will be unlikely to be in my possession; those will not be what they will seem. They will be best in their original location. Their home; theirs.
+  
+  >[37] regard as third person plural
+  I will shimmer into the third person plural.
+  
+  >[38] adopt present tense
+  The world will shimmer into the present tense.
+  
+  >[39] get me
+  They're not sure about that. They've thought better. They are unlikely to be in their possession; they are not what they seem. They are best in their original location. Their home; theirs.
+  
+  >[40] get stick
+  They're not sure about that. They've thought better. That is unlikely to be in their possession; that is not what it seems. It is best in its original location. Its home; its.
+  
+  >[41] get kelly
+  They're not sure about that. They've thought better. She is unlikely to be in their possession; she is not what she seems. She is best in her original location. Her home; hers.
+  
+  >[42] get fred
+  They're not sure about that. They've thought better. He is unlikely to be in their possession; he is not what he seems. He is best in his original location. His home; his.
+  
+  >[43] get shoes
+  They're not sure about that. They've thought better. Those are unlikely to be in their possession; those are not what they seem. They are best in their original location. Their home; theirs.
+  
+  >[44] adopt past tense
+  The world shimmers into the past tense.
+  
+  >[45] get me
+  They weren't sure about that. They had thought better. They were unlikely to be in their possession; they were not what they seemed. They were best in their original location. Their home; theirs.
+  
+  >[46] get stick
+  They weren't sure about that. They had thought better. That was unlikely to be in their possession; that was not what it seemed. It was best in its original location. Its home; its.
+  
+  >[47] get kelly
+  They weren't sure about that. They had thought better. She was unlikely to be in their possession; she was not what she seemed. She was best in her original location. Her home; hers.
+  
+  >[48] get fred
+  They weren't sure about that. They had thought better. He was unlikely to be in their possession; he was not what he seemed. He was best in his original location. His home; his.
+  
+  >[49] get shoes
+  They weren't sure about that. They had thought better. Those were unlikely to be in their possession; those were not what they seemed. They were best in their original location. Their home; theirs.
+  
+  >[50] adopt future tense
+  The world shimmered into the future tense.
+  
+  >[51] get me
+  They'll not be sure about that. They'll have thought better. They will be unlikely to be in their possession; they will not be what they will seem. They will be best in their original location. Their home; theirs.
+  
+  >[52] get stick
+  They'll not be sure about that. They'll have thought better. That will be unlikely to be in their possession; that will not be what it will seem. It will be best in its original location. Its home; its.
+  
+  >[53] get kelly
+  They'll not be sure about that. They'll have thought better. She will be unlikely to be in their possession; she will not be what she will seem. She will be best in her original location. Her home; hers.
+  
+  >[54] get fred
+  They'll not be sure about that. They'll have thought better. He will be unlikely to be in their possession; he will not be what he will seem. He will be best in his original location. His home; his.
+  
+  >[55] get shoes
+  They'll not be sure about that. They'll have thought better. Those will be unlikely to be in their possession; those will not be what they will seem. They will be best in their original location. Their home; theirs.
+  
+> >

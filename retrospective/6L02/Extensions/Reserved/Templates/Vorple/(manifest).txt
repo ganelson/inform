@@ -1,0 +1,125 @@
+! This the manifest file for the Parchment in-browser interpreter, and gives
+! the necessary details to Inform's release component (called cBlorb) so that
+! the interpreter can be bundled into a released website, all set up ready
+! to play the IF story file being released.
+
+! Manifest files have a simple format. They are allowed to set the value of
+! any cBlorb placeholders that they would like to, but the ones below are the
+! only ones they will likely want to set. These two are needed for the footer
+! of the play page:
+
+[INTERPRETERVERSION]
+Vorple
+[]
+
+[INTERPRETERURL]
+http://vorple-if.com
+[]
+
+! Note that we don't set [INTERPRETER]: cBlorb has already set that to the
+! name of the interpreter, in this case, to "Vorple".
+
+! This declares whether the interpreter can handle blorbed Z-machine files
+! ("z"), blorbed Glulx files ("g") or both ("zg" or "gz"). No other values
+! are legal; note lower case.
+
+[INTERPRETERVM]
+z
+[]
+
+! [INTERPRETERHEAD] provides code to go into the <head> ... </head> of the
+! web page playing the work. (Placeholder text starts on the line after the
+! name, and continues until a line reads just []. Line breaks are included
+! between lines, though not at the end of the final line; white space is
+! stripped out at the left and right hand edges of each line.)
+
+! In writing the head and body, note that the structure of the site being
+! constructed is:
+!     play.html  <-- page on which the interpreter runs
+!     interpreter
+!         ...the base64-encoded story file...
+!         ...any files copied over according to the manifest below...
+! The placeholder [ENCODEDSTORYFILE] expands to the leafname of the base64
+! version of the story file, which might be (but should not be assumed
+! to be) "story.zblorb.js".
+
+[INTERPRETERHEAD]
+    <script type="text/javascript" src="interpreter/vorple.parchment.min.js"></script>
+	<script type="text/javascript">
+	    // The loading message can be changed by setting a global variable
+	    // vorpleLoaderMessage in a custom JavaScript file
+    	$( function() {
+    		$( '#vorpleLoader' ).html(
+    		    typeof vorpleLoaderMessage === 'string' ? vorpleLoaderMessage : 'Loading...'
+            );
+    	});
+	</script>
+    
+	<link rel="stylesheet" href="interpreter/vorple.css">
+	
+	<script type="text/javascript">
+		parchment.options.lib_path = 'interpreter/';
+		parchment.options.default_story = [ "[STORYFILE]", "interpreter/[ENCODEDSTORYFILE]" ];
+		parchment.options.lock_story = 1;
+
+
+		vorple.media.defaults.swfPath = 'interpreter/';
+		vorple.media.defaults.audioPath = '.';
+		vorple.media.defaults.imagePath = '.';
+		vorple.media.defaults.musicPath = '.';
+		vorple.media.defaults.videoPath = '.';
+
+		$( function() {
+			$( '.coverimage, .links, .interpretercredit' ).detach();
+			$( '#vorpleContainer' ).unwrap();
+
+            vorple.core.init( parchment );
+            parchment.init();
+		});
+	</script>
+[]
+
+! [INTERPRETERBODY] provides the part of the page where the window
+! or gadget actually appears.
+
+[INTERPRETERBODY]
+<div id="vorpleContainer">
+    <div id="vorple"><div id="vorpleLoader"></div></div>
+    <div id="vorpleInput"></div>
+    <div id="parchment"></div>
+    <div class="clearAll"></div>
+</div>
+[]
+
+! The following footnote is added to the small print about how to play IF
+! on the game's main page:
+
+[INBROWSERPLAY]
+Or you can play without downloading anything by following the 'Play In-Browser'
+link, using the [INTERPRETER] interpreter. You'll need to have Javascript enabled
+on your web browser.
+[]
+
+! cBlorb encodes the story file into base64 so that it can be loaded in
+! Javascript despite being binary data. The encoding is topped and tailed
+! with the following, in order to make the result a valid Javascript function
+! call with a string argument:
+
+[BASESIXTYFOURTOP]
+processBase64Zcode('
+[]
+
+[BASESIXTYFOURTAIL]
+')
+[]
+
+! Outside of the placeholder parts of the manifest, lines beginning '!', or
+! lines which contain only white space, are thrown away; so this is a comment.
+
+! Non-comment lines are the names of files which are copied across when the
+! release is made. Anything not listed here won't be copied.
+
+vorple.parchment.min.js
+vorple.css
+zvm.min.js
+soundmanager2.swf

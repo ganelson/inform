@@ -1,0 +1,11 @@
+B is west of C.  Magnet Man is a man in B.
+
+Persuasion rule for asking Magnet Man to try going: persuasion succeeds.
+
+After Magnet Man trying going:
+	if the location of Magnet Man is not the location of the player begin;
+		say "You find yourself mysteriously drawn along.";
+		move the player to the location of Magnet Man;
+	end if.
+
+test me with "magnet man, go east".

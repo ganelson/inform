@@ -1,0 +1,3 @@
+Home is a room. Kate is a woman. The player is Kate.
+
+Test me with "pronouns / trace 5 / x it / pronouns / x him / x her / x them".

@@ -1,0 +1,65 @@
+   Our Household Kitchen
+  Modern Conveniences
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Our Household Kitchen
+  
+> >   Tiny Bathroom
+  (Testing.)
+  
+  >[1] x refrigerator
+  It is baby blue and has the contours of a 50's chevy. One of these days it really will break down, but it's been serving your family faithfully since your grandmother's honeymoon.
+  
+  >[2] open fridge
+  You open the refrigerator.
+  
+  >[3] x freezer
+  You see nothing special about the freezer compartment.
+  
+  >[4] look in freezer
+  You can't see inside, since the freezer compartment is closed.
+  
+  >[5] open freezer
+  You open the freezer compartment.
+  
+  >[6] turn on stove
+  You switch the stove switch on.
+  
+  >[7] turn on oven
+  You switch the oven switch on.
+  
+  >[8] x oven switch
+  The oven switch is currently switched on.
+  
+  >[9] turn off oven switch
+  You switch the oven switch off.
+  
+  >[10] turn off stove switch
+  You switch the stove switch off.
+  
+  >[11] turn on taps
+  You turn on the sink tap.
+  
+  >[12] x sink
+  The sink is empty.
+  
+  The water is flowing from the sink tap.
+  
+  >[13] w
+  
+  Tiny Bathroom
+  
+  >[14] x sink
+  The sink is empty.
+  
+  >[15] turn on sink
+  You turn on the sink tap.
+  
+  >[16] take bath
+  You haven't time for a bath.
+  
+  >[17] use toilet
+  You have no need at the moment.
+  
+> >

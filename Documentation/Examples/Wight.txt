@@ -1,0 +1,223 @@
+*** Defining new assertion verbs
+(Hints leading the player through physical puzzles; The Unexamined Life)
+An adaptive hint system that tracks what the player needs to have seen or to possess in order to solve a given puzzle, and doles out suggestions accordingly. Handles changes in the game state with remarkable flexibility, and allows the player to decide how explicit a nudge he wants at any given moment.
+
+Hint systems in IF come in a variety of flavors: some are a static, prewritten set of guidelines (which might exist in a menu or outside the game entirely); others are built in as part of the program, and attempt to adapt to the situation the player currently faces. Adaptive hints have the advantage that they are less likely to reveal information for which the player is not ready, and the disadvantage that they are more work for the author.
+
+The exercise here is to write an adaptive hint system that will both respond in agile ways to the state of the world model and require a minimum of authorial fussing. We also want the player to be able to ask for a hint about any object he encounters in the game world: this will let him be specific and avoid accidentally receiving hints about the wrong puzzles.
+
+Our baseline assumption is that a player may find a puzzle unsolvable for one of two reasons: he either hasn't seen the relevant clue, or he hasn't got the relevant equipment. If these are true, then he should be given hints about how to find this information, and then once he has it, more specific hints about the puzzle itself -- ending, as a last resort, with the exact command(s) he will need to use in order to bring about the solution.
+
+In practice, there are other possibilities, but this will do for an example. 
+
+We begin by defining our relations:
+
+	{*}"The Unexamined Life"
+
+	Use scoring.
+
+	Explaining relates one thing to various things. The verb to explain means the explaining relation. 
+
+	Instead of hinting about something when something unexamined (called the clue) explains the noun:
+		say "You're still missing some information that might be useful to understanding the problem. [More]";
+		if player consents, try hinting about the clue.
+		
+	Requiring relates one thing to various things. The verb to require means the requiring relation.
+
+	Instead of hinting about something when the noun requires something (called the implement) which is not carried by the player: 
+		say "You're missing an object that might be useful to resolving this problem. [More]";
+		if player consents, try hinting about the implement.
+
+	Hinting about is an action applying to one visible thing. Understand "hint about [any thing]" as hinting about. 
+
+This allows us to create the most absolutely generic sort of hint -- boring, perhaps, but in practice the player often just needs a nudge about what part of the game world he should be examining for a solution:
+
+	{**}Carry out hinting about:
+		if something explains the noun, say "You might want to review [the list of things which explain the noun]. ";
+		if the noun requires something:
+			say "You should be sure that you have [the list of things required by the noun]. ";
+		otherwise:
+			say "Sorry, I can't advise you further on that.".
+
+These things cover hinting about objects that are themselves puzzles. But what if the player asks for hints about a tool or piece of information because he doesn't know how to apply it yet? We might want to give some guidance there, as well.
+	
+	{**}Carry out hinting about something which explains something (called target):
+		if target is unseen, say "[The noun] might prove useful information, sooner or later." instead;
+		otherwise say "You could examine [the noun]." instead.
+	
+	Carry out hinting about something which is required by something:
+		say "[The noun] might be useful to have. [More]";
+		if player consents:
+			if a seen thing requires the noun, say "[The noun] may help with [the list of seen things which require the noun]." instead;
+			otherwise say "There are [number of things which require the noun in words] problems for which [the noun] might come in handy." instead.
+
+Now we have these general hints written, but we want to pre-empt them if the player has not yet fulfilled all the prerequisites.
+		
+	{**}Instead of hinting about something unseen:
+		if the noun is visible:
+			now the noun is seen;
+			continue the action;
+		say "Perhaps you should explore further. ";
+		if the ultimate location of the noun is an unvisited room:
+			try hinting about the ultimate location of the noun;
+		otherwise:
+			if the ultimate location of the noun is the location:
+				say "You're in the correct room right now[if the visible shell of the noun is a thing]. Try further exploring [the visible shell of the noun][end if].";
+			otherwise:
+				try hinting about the ultimate location of the noun.
+
+	Instead of hinting about a visited room:
+		say "There's a room you've visited, but you haven't exhausted all there is to see there. [More]";
+		if player consents: 
+			say "Try going back to [the noun]. [More]";
+			if player consents, direct player to the noun.
+
+	Instead of hinting about an unvisited room:
+		say "There's a room you haven't yet visited.  [More]";
+		if player consents, direct player to the noun.
+	
+	To direct player to (goal - a room):
+		let way be the best route from location to the goal, using even locked doors;
+		if way is a direction, say "Try going [way] to start your explorations.";
+		otherwise say "Sorry, the route is an indirect one.".
+
+	Instead of hinting about a portable seen thing which is not visible:
+		if the noun is scenery, continue the action;
+		say "You have seen the item you need to solve this problem, but it's not in sight at the moment.  [More]";
+		if player consents: 
+			try hinting about the ultimate location of the noun.
+
+And this business of "seen" things requires, of course, that we keep track:
+
+	{**}A thing can be seen or unseen. A thing is usually unseen. The player is seen. After printing the name of something (called target): now the target is seen.
+	
+That "After printing..." rule means that as soon as the game automatically prints the name of an object, it tags that object as having been "seen" by the player. This requires just a little care on our part, that we never mention an object without using the game's printing rules. Still, it is much easier than most other possible forms of bookkeeping.
+
+We also need to deal with the question of whether the player has examined an object, for those objects whose descriptions carry vital information:
+
+	{**}A thing can be examined or unexamined. A thing is usually unexamined. Carry out examining something: now the noun is examined.
+	
+In practice, there might be other ways of getting vital facts, and in a more sophisticated puzzle game we might need a more sophisticated model to track this. But examined or unexamined will do for now.
+
+	{**}To decide what room is the ultimate location of (item - a thing):
+		let place be the holder of the item;
+		while the place is a thing:
+			let the place be the holder of the place;
+		if the place is a room, decide on the place.
+	
+	To decide what thing is the visible shell of (item - a thing):
+		if item is visible, decide on the item;
+		let place be the holder of the item;
+		while place is a thing and place is not visible:
+			let place be the holder of the place;
+		if the place is visible, decide on the place.
+	
+	To say more:
+		say "[paragraph break]Shall I go on? > ".
+
+That covers most of the generic hints, but let's also add some slightly more precise hints about a few kinds of objects that are especially important in the model world. These hints will probably not be very interesting to a seasoned IF veteran, but a novice player who does not know the wording or cannot guess what something might be for may still find them useful:
+
+	{**}Carry out hinting about a locked lockable thing:
+		say "You could unlock [the noun] with [the matching key of the noun]." instead.
+	
+	Instead of hinting about a locked thing when the matching key of the noun is not carried by the player:
+		if the player can see the matching key of the noun:
+			say "Perhaps [the matching key of the noun] would help.";
+		otherwise:
+			say "[The noun] is locked. There must be a key around somewhere. [More]";
+			if player consents, try hinting about the matching key of the noun.
+
+	Carry out hinting about a closed openable unlocked thing:
+		say "You could open [the noun]." instead.
+		
+	Carry out hinting about an open door:
+		say "You could enter [the noun]." instead.
+	
+	Carry out hinting about an unexamined thing:
+		say "You might find out something if you examine [the noun]." instead.
+	
+	Carry out hinting about an edible thing:
+		say "You could eat [the noun]." instead.
+	
+	Carry out hinting about a wearable thing:
+		say "You could wear [the noun]." instead.
+	
+	Carry out hinting about a pushable between rooms thing:
+		say "You could push [the noun] some direction." instead.
+		
+Now to the actual objects in the game:
+	
+	{**}The Crypt is a room. "This squat, barrel-vaulted chamber runs roughly north-south. Along either side are the graves of Saxon kings and early bishops of the church long since gone to dust -- one [tomb] in particular looks undisturbed."
+	
+Notice that we used the bracketed tomb here: the tomb is scenery, and if we do not use the name-printing function, Inform will not register that we have mentioned it to the player.
+
+	{**}The tomb is scenery in the Crypt. The tomb is openable and closed. The silver dagger is a thing in the tomb. Understand "tombs" as the tomb. The description of the silver dagger is "Gleaming in a soft light all its own. Its blade is figured with running deer and its hilt is made of horn." The wight requires the silver dagger. The tomb requires the pry bar.
+	
+	Instead of opening the tomb when the player does not carry the pry bar:
+		say "The lids are stone, too heavy for you to raise without some implement."
+	
+Now we can add specific hints to replace the generic ones:
+
+	{**}Carry out hinting about the tomb:
+		say "The lids are heavy, but you can open them when you carry the pry bar."
+		
+The rest of the hint system ensures that the player will not see this final suggestion until he has the pry bar, since the tomb "requires" the pry bar. Having the hint there doesn't excuse us from providing some alternate wording in case the player solves this not-very-difficult conundrum on his own, though:
+
+	{**}Understand "pry [something] with [something preferably held]" as unlocking it with. Understand the commands "lever" or "prise" as "pry".
+
+	Instead of unlocking something with the pry bar, try opening the noun.
+
+	The wight is a man in the Crypt. "[The wight] lurks near the south exit." The description of wight is "Old English [italic type]wiht[roman type]: a thing, a creature. It is little more than the memory of a life ill-lived, but it lingers here." Understand "wiht" or "creature" or "ghost" as the wight.
+	
+	Instead of going south in the presence of wight:
+		say "The wight breathes chill into your face. 
+	
+	Your head swims, and you are aware that you no longer have the willpower to go in that direction."
+		
+	Fresh Air is south from the Crypt.
+	
+	After going to Fresh Air:
+		increment the score;
+		say "Congratulations, you have escaped!";
+		end the story finally.
+
+	The inscription is fixed in place in the Crypt. "Someone has painstakingly carved [an inscription] into the wall above the door." The description is "Squinting, you decipher the Latin text: [italic type]Silver causes harm to those that live though dead[roman type]." The inscription explains wight.
+	
+	The Treasure Chamber is north of the Crypt. "The walls are thick, the high windows promisingly barred with iron. But for all this there is no hint of any valuable stores remaining."
+
+	The pry bar is in the Treasure Chamber. "One of the window bars, rusted from its place, lies in a puddle of water." Understand "window" or "bars" as the pry bar. The description of the pry bar is "A few feet long, and not entirely rusted into uselessness yet."
+
+	Instead of giving the dagger to wight:
+		say "The wight recoils, appalled."
+	
+	Carry out hinting about wight:
+		say "You will have to find some way to get wight to come in physical contact with the silver dagger, which he will certainly not do willingly. [More]";
+		if player consents, say "You could, for instance, throw it at him." instead;
+		otherwise stop the action.
+	
+	Understand "touch [something] with [something]" as putting it on (with nouns reversed). Understand "hit [someone] with [something]" as putting it on (with nouns reversed).
+
+	Instead of attacking the wight:
+		say "You can't force yourself to approach close enough for hand to hand combat: if, indeed, the wight has hands."
+
+	Instead of putting the dagger on wight:
+		say "The wight fades out of your way without ever coming into contact with the dagger. Perhaps a more projectile method would work better."
+	
+	Instead of putting something on wight:
+		say "The wight dodges you."
+	
+	Instead of throwing the dagger at wight:
+		now the wight is nowhere;
+		move the dagger to the location;
+		increment the score;
+		say "The dagger passes through its airy form with a rending like the rip of silk. The fragments dissipate at once."
+	
+	The maximum score is 2.
+	
+	Test me with "hint about wight / north / get bar / south / open tomb / get dagger / south / hint about wight / read inscription / hint about wight / attack wight / throw dagger at wight / south".
+
+Note that, if using TEST ME to run through the solution on the Z-machine, we will have to answer a few yes/no questions along the way.
+
+For Glulx, the code should instead read something like
+
+	{*} Test me with "hint about wight / y / north / get bar / south / open tomb / get dagger / south / hint about wight / y / read inscription / hint about wight / y / attack wight / throw dagger at wight / south".

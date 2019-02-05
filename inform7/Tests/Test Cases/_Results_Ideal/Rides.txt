@@ -1,0 +1,200 @@
+   Vehicle Testing Center
+  Rides
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Vehicle Testing Center
+  A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+  
+  The ground slopes down to a pond along the northern edge.
+  
+  The sign advertises experimental rides in the following: a red wagon, a glass elevator, a swan and a Harley.
+  
+  There is a lovely red wagon here, complete with an outboard motor.
+  
+  A glass elevator stands in the center, a fantastically strong microfilament connecting it to... something in the sky.
+  
+  At the pond's edge waits a black swan of unusual size, wearing a bridle and a gold-trimmed Mexican hat.
+  
+> >   Vehicle Testing Center
+  ** mount swan
+  The swan gives you a look of disappointment and reproach. Apparently it doesn't work for free.
+  
+> >   Vehicle Testing Center
+  ** give chow to swan
+  The swan accepts your offering courteously.
+  
+> >   Vehicle Testing Center
+  ** n
+  You forgot your water skis.
+  
+> >   Vehicle Testing Center
+  ** mount swan
+  You mount the swan.
+  
+> >   Vehicle Testing Center
+  ** get off
+  You dismount the swan.
+  
+  Vehicle Testing Center
+  A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+  
+  The ground slopes down to a pond along the northern edge.
+  
+  The sign advertises experimental rides in the following: a red wagon, a glass elevator, a swan and a Harley.
+  
+  There is a lovely red wagon here, complete with an outboard motor.
+  
+  A glass elevator stands in the center, a fantastically strong microfilament connecting it to... something in the sky.
+  
+  At the pond's edge waits a black swan of unusual size, wearing a bridle and a gold-trimmed Mexican hat.
+  
+> >   Vehicle Testing Center
+  ** get on swan
+  You mount the swan.
+  
+> >   Pond
+  ** n
+  The swan honks a lovely Mexican serenade as it paddles you about.
+  
+  Pond (on the swan)
+  Funny, the pond is bigger from the middle than it seemed from the shore. In fact, you can't see any edge but the testing center to the south.
+  
+> >   Pond
+  ** swan, e
+  You can't go that way.
+  
+> >   Vehicle Testing Center
+  ** swan, s
+  The swan honks a lovely Mexican serenade as it paddles you about.
+  
+  Vehicle Testing Center (on the swan)
+  A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+  
+  The ground slopes down to a pond along the northern edge.
+  
+  The sign advertises experimental rides in the following: a red wagon, a glass elevator, a swan and a Harley.
+  
+  There is a lovely red wagon here, complete with an outboard motor.
+  
+  A glass elevator stands in the center, a fantastically strong microfilament connecting it to... something in the sky.
+  
+> >   Vehicle Testing Center
+  ** dismount
+  You dismount the swan.
+  
+  Vehicle Testing Center
+  A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+  
+  The ground slopes down to a pond along the northern edge.
+  
+  At the pond's edge waits a black swan of unusual size, wearing a bridle and a gold-trimmed Mexican hat.
+  
+  The sign advertises experimental rides in the following: a red wagon, a glass elevator, a swan and a Harley.
+  
+  There is a lovely red wagon here, complete with an outboard motor.
+  
+  A glass elevator stands in the center, a fantastically strong microfilament connecting it to... something in the sky.
+  
+  You can also see a swan here.
+  
+> >   Vehicle Testing Center
+  ** get on swan
+  You mount the swan.
+  
+> >   Vehicle Testing Center
+  ** w
+  The swan honks a lovely Mexican serenade as it paddles you about.
+  
+  The swan honks indignantly at the very notion.
+  
+> >   Vehicle Testing Center
+  ** get in wagon
+  (getting off the swan)
+  You get into the red wagon.
+  
+> >   Vehicle Testing Center
+  ** n
+  You forgot your water skis.
+  
+> >   Vehicle Testing Center
+  ** e
+  You can't go that way.
+  
+> >   Road
+  ** w
+  
+  Road (in the red wagon)
+  You can see a Harley here.
+  
+> >   Road
+  ** mount harley
+  (getting out of the red wagon)
+  You mount the Harley.
+  
+> >   Road
+  ** mount wagon
+  You are already riding the Harley.
+  
+> >   Vehicle Testing Center
+  ** e
+  
+  Vehicle Testing Center (on the Harley)
+  A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+  
+  The ground slopes down to a pond along the northern edge.
+  
+  At the pond's edge waits a black swan of unusual size, wearing a bridle and a gold-trimmed Mexican hat.
+  
+  The sign advertises experimental rides in the following: a red wagon, a glass elevator, a swan and a Harley.
+  
+  A glass elevator stands in the center, a fantastically strong microfilament connecting it to... something in the sky.
+  
+  You can also see a swan here.
+  
+> >   Vehicle Testing Center
+  ** get in elevator
+  (getting off the Harley)
+  You get into the glass elevator.
+  
+> >   Vehicle Testing Center
+  ** e
+  The elevator ascends and descends only.
+  
+> >   Vehicle Testing Center
+  ** d
+  You can't go that way.
+  
+> >   Vehicle Testing Center
+  ** n
+  You forgot your water skis.
+  
+> >   Open Sky
+  ** u
+  
+  Open Sky (in the glass elevator)
+  There's a great view from here, starting with that lovely glass floor. In fact, maybe you'd better not look that way.
+  
+> >   Open Sky
+  ** get out
+  It's a long way down.
+  
+> >   Vehicle Testing Center
+  ** d
+  
+  Vehicle Testing Center (in the glass elevator)
+  A large square of field surrounded by a wall of hay bales. There's a driveway that leads out to the west.
+  
+  The ground slopes down to a pond along the northern edge.
+  
+  At the pond's edge waits a black swan of unusual size, wearing a bridle and a gold-trimmed Mexican hat.
+  
+  The sign advertises experimental rides in the following: a red wagon, a glass elevator, a swan and a Harley.
+  
+  You can also see a Harley and a swan here.
+  
+> >   Vehicle Testing Center
+  **
+  I beg your pardon?
+  
+> >

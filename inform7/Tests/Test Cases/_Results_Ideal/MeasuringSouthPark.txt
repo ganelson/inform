@@ -1,0 +1,14 @@
+   Schoolyard
+  "list of fooey things" = list of things: {Kenny (goose)}
+  "list of ducky people" = list of people: {yourself (duck), Stan (duck), Kyle (duck), Eric (duck)}
+  "list of nifty people" = list of people: {Stan (duck), Kenny (goose)}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Schoolyard
+  You can see Stan (duck), Kyle (duck), Eric (duck) and Kenny (goose) here.
+  
+> >   Schoolyard
+> Are you sure you want to quit? 

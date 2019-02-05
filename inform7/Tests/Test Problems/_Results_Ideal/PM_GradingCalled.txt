@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_GradingCalled
+  >--> You gave as a definition 'a thing (called the dome) is stately if its
+    carrying capacity is 19 or more' (source text, line 3): but callings are
+    not allowed when defining grading adjectives, so 'Definition: a container
+    is large if its carrying capacity is 10 or more.' is fine, but so
+    'Definition: a container (called the bag) is large if its carrying capacity
+    is 10 or more.' is not - then again, there's very little call for it.
+Inform 7 has finished: 15 centiseconds used.

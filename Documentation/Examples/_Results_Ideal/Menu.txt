@@ -1,0 +1,32 @@
+   Ichiro's Dubious Sushi Hut
+  Ish.
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ichiro's Dubious Sushi Hut
+  Despite the allure of the dusty plastic sushi models in the window, you're beginning to have second thoughts about the selection of this particular restaurant for your rendezvous with Agent Fowler.  There are no other patrons, for one thing. Afternoon sunlight filters lazily through the window and illuminates a number of empty glass-topped tables, at each of which is a chopstick dispenser (in form of cute ceramic cat) and a pitcher of soy sauce (sticky).
+  
+  The sushi bar itself is what gives the most pause, however. Behind it sits an angry-looking Japanese woman, aggressively eating a Quarter Pounder with Cheese.
+  
+> >   Ichiro's Dubious Sushi Hut
+  (Testing.)
+  
+  >[1] help
+  Help is available about the following topics.  Typing HELP followed by the name of a topic will give further information.
+  
+    sushi: Really it's just vinegary rice
+    Cucumber roll: Sushi for people who are afraid of sushi
+    California roll: Travesty of the sushi concept
+    monkfish liver: Expert eaters only
+    microdot: What you came here to deliver
+  
+  >[2] help about microdot
+  There'll be time enough for that later. If Fowler ever turns up. Where is she, anyway?
+  
+  >[3] help cucumber
+  It is just rice and slivers of cucumber in the middle, and as long as you don't go too crazy with the wasabi, all should be well.
+  
+  >[4] help california roll
+  It's. Fake. Crab.
+  
+> >

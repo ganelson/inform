@@ -1,0 +1,55 @@
+Aleph and Beth are rooms. Beth is dark. Alephland is a region. Aleph is in
+Alephland. Bethland is a region. Beth is in Bethland.
+
+The air is a backdrop. The air is everywhere.
+The rain is a backdrop. The rain is nowhere.
+
+The marble is nowhere.
+
+When play begins:
+	say "At this point the marble is nowhere.";
+	diagnose the marble;
+	say "At this point the marble is in Aleph.";
+	now the marble is in Aleph;
+	diagnose the marble;
+	say "At this point the marble is in Beth.";
+	now the marble is in Beth;
+	diagnose the marble;
+	say "At this point the rain is nowhere.";
+	diagnose the rain;
+	say "At this point the rain is in Alephland.";
+	now the rain is in Alephland;
+	diagnose the rain;
+	say "At this point the rain is in Bethland.";
+	now the rain is in Bethland;
+	diagnose the rain;
+	say "At this point the rain is nowhere.";
+	now the rain is nowhere;
+	diagnose the rain;
+	say "At this point the rain is everywhere.";
+	now the rain is everywhere;
+	diagnose the rain;
+	now the marble is everywhere.
+
+To diagnose (X - an object):
+	say "X = [X].";
+	if X is in Aleph, say "[X] is in Aleph.";
+	if X is in Beth, say "[X] is in Beth.";
+	showme whether or not Aleph is somewhere lighted;
+	showme whether or not Beth is somewhere lighted;
+	showme whether or not the X is in Aleph;
+	showme whether or not the X is everywhere which is Aleph;
+	showme whether or not the X is somewhere which is Aleph;
+	showme whether or not the X is somewhere;
+	showme whether or not the X is not somewhere;
+	showme whether or not the X is somewhere lighted;
+	showme whether or not the X is in somewhere lighted;
+	showme whether or not the X is somewhere which is lighted;
+	showme whether or not the X is somewhere which is not lighted;
+	showme whether or not the X is nowhere;
+	showme whether or not the X is not nowhere;
+	showme whether or not the X is in every room;
+	showme whether or not the X is everywhere;
+	showme whether or not the X is not in every room;
+	showme whether or not the X is not everywhere;
+	say "[paragraph break]".

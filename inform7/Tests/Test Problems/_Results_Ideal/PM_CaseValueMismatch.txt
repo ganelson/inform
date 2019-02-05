@@ -1,0 +1,8 @@
+Inform 7 build 6M53 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42477 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CaseValueMismatch
+  >--> The case '2' (source text, line 6) has the wrong kind of value for the
+    possibilities being chosen from: a number instead of a thing.
+Inform 7 has finished: 73 centiseconds used.

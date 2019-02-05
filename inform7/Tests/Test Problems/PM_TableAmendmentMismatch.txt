@@ -1,0 +1,16 @@
+The Kitchen is a room. 
+
+Table 21 - Selected Elements
+Element	Symbol	Atomic number	Atomic weight
+"Hydrogen"	"H"	1	1
+"Hydrogen"	"H"	1	1
+"Iron"	"Fe"	--	56
+"Zinc"	--	30	65
+"Uranium"	"U"	92	238
+"Uranium"	"U"	64	238
+
+Table 21 - Selected Elements (amended)
+Element	Symbol	Atomic number	Atomic weight
+"Hydrogen"	"H"	1	1
+"Cheese"	"Bn"	1	1
+"Uranium"	"U"	31	238

@@ -1,0 +1,21 @@
+   Russian Gift Shop
+  Matreshka
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Russian Gift Shop
+  You can see a large wooden doll (closed) here.
+  
+> >   Russian Gift Shop
+  (Testing.)
+  
+  >[1] search gift shop
+  large wooden doll: You open the large wooden doll, revealing a medium wooden doll.
+  
+  medium wooden doll: You open the medium wooden doll, revealing a small wooden doll.
+  
+  small wooden doll: You open the small wooden doll, revealing a tiny solid wooden doll.
+  
+  You can see nothing further worth searching.
+  
+> >

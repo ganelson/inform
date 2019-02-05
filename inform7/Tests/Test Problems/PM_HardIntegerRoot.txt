@@ -1,0 +1,4 @@
+Home is a room.
+
+When play begins:
+	let x be given by x^4 = 17 where x is a number;

@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+A thing can be a number, the Entire Game or "this".

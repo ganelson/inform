@@ -1,0 +1,11 @@
+Home is a room. Susan and Elizabeth are women in the Home. A pot plant is in the Home.
+
+Acquaintance relates various people to each other.
+
+Instead of examining a person when the acquaintance relation relates
+the player to the noun: say "An acquaintance of yours."
+
+When play begins:
+	now the acquaintance relation relates the player to Susan;
+
+Test me with "x susan / x elizabeth / x me / x plant".

@@ -1,0 +1,6 @@
+There is room.
+Considering something is an activity on things.
+
+After printing the name of something while considering a thing (called X):
+	Say paragraph break;
+	Showme X.

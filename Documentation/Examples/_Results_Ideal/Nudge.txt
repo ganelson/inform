@@ -1,0 +1,57 @@
+   Yurt
+  Y ask Y?
+  or: Bad Author, No Biscuit
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Yurt
+  You can see a yam, a dish of yakitori and a yapok here.
+  
+> >   Yurt
+  (Testing.)
+  
+  >[1] x yam
+  Well, at least it's not a dish of yakitori.
+  
+  Your eye is attracted by some kind of surreptitious movement from the yam.
+  
+  >[2] x yam
+  Well, at least it's not a dish of yakitori.
+  
+  Your eye is attracted by some kind of surreptitious movement from the yam.
+  
+  >[3] look
+  Yurt
+  You can see a yam, a dish of yakitori and a yapok here.
+  
+  Your eye is attracted by some kind of surreptitious movement from the yam.
+  
+  >[4] x yam
+  Well, at least it's not a dish of yakitori.
+  
+  Your eye is attracted by some kind of surreptitious movement from the yam.
+  
+  >[5] i
+  You are carrying:
+    a yukata (being worn)
+    a yataghan
+  
+  The yataghan tries to slip from your grasp.
+  
+  >[6] look
+  Yurt
+  You can see a yam, a dish of yakitori and a yapok here.
+  
+  The yataghan tries to slip from your grasp.
+  
+  >[7] i
+  You are carrying:
+    a yukata (being worn)
+    a yataghan
+  
+  (If you are feeling lost, try typing HELP for suggestions.)
+  
+  >[8] help
+  You're doing fine! Just keep at what you're doing now.
+  
+  >[9] quit
+> You're sure? 

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationMisnamed
+  >--> The equation name 'Six' (source text, line 3) will have to be disallowed
+    as it is text which already has a meaning to Inform. For instance, creating
+    an equation called 'Equation - 2 + 2' would be disallowed because Inform
+    would read '2 + 2' as arithmetic, not a name.
+Inform 7 has finished: 15 centiseconds used.

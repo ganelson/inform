@@ -1,0 +1,12 @@
+The Upper Cave is above the Rock Pool.
+
+The stream is a backdrop. It is in the Upper Cave and the Ledge.
+
+The Ledge is east of the Pool.
+
+Definition: A room is wet if it is the Rock Pool or it is the Ledge.
+
+When play begins:
+	move the stream backdrop to all wet rooms.
+
+Test me with "x stream / d / x stream / e / x stream".

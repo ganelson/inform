@@ -1,0 +1,10 @@
+Xanadu is a room.
+
+Table of Mysteries
+jewel
+12
+7
+
+When play begins:
+	repeat through the Table of Mysteries:
+		if the jewel entry was 12, say "Hello."

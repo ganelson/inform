@@ -1,0 +1,264 @@
+   Kitchen                                                                                                                                                                                                                0/1
+  Goat-Cheese and Sage Chicken
+  An interactive recipe
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  Equipped with many familiar friends: refrigerator, stove, oven; countertop; cabinet for pans and bowls, and a drawer for your tools.
+  
+  On the stove is a frying pan (empty).
+  
+  On the counter are a kettle (closed), some unpeeled onions, some dried apricots, some unwashed sage and a can of chicken broth (closed).
+  
+> >   Kitchen                                                                                                                                                                                                                7/44
+  (Testing.)
+  
+  >[1] full score
+  You have achieved nothing towards supper.
+  
+  >[2] test sautee
+  (Testing.)
+  
+  >[3] peel onions
+  You tear away the shining outer skin of the onions, leaving them pale and nekkid. Poor things.
+  
+  >[4] cut onions
+  You dice the onions neatly. Your own skill brings tears to your eyes.
+  
+  >[5] get onions
+  Taken.
+  
+  >[6] put onions in pan
+  You put the diced onions into the frying pan.
+  
+  The onions sizzle in the pan.
+  
+  >[7] get sage
+  It needs to be washed off.
+  
+  The onions sizzle in the pan.
+  
+  >[8] wash sage
+  You rinse off the sage. There -- ready to slice.
+  
+  The onions sizzle in the pan.
+  
+  >[9] cut sage
+  You slice the sage into thin strips.
+  
+  The onions sizzle in the pan.
+  
+  >[10] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  >[11] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  >[12] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  >[13] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  >[14] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  >[15] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  >[16] wait
+  Time passes.
+  
+  The onions sizzle in the pan.
+  
+  The onions are starting to look ready.
+  
+  >[17] get pan
+  Taken.
+  
+  You've got the onions off heat before they can scorch -- a good sign.
+  
+  [Your score has just gone up by three points.]
+  
+  >[18] full score
+  9:14 am: sauteeing onions (3).
+  
+  >[19] test apricots
+  (Testing.)
+  
+  >[20] get kettle
+  Taken.
+  
+  >[21] open kettle
+  You open the kettle, revealing some cool water.
+  
+  >[22] get apricots
+  Taken.
+  
+  >[23] put apricots in kettle
+  You put the dried apricots into the kettle.
+  
+  >[24] put kettle on stove
+  You put the hot kettle on the stove.
+  
+  The kettle begins to heat up.
+  
+  >[25] wait
+  Time passes.
+  
+  >[26] wait
+  Time passes.
+  
+  >[27] wait
+  Time passes.
+  
+  >[28] wait
+  Time passes.
+  
+  >[29] wait
+  Time passes.
+  
+  >[30] wait
+  Time passes.
+  
+  The kettle begins to burble and whistle shrilly.
+  
+  The apricots slowly begin to plump up again.
+  
+  >[31] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[32] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[33] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[34] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[35] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[36] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[37] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[38] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[39] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[40] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  >[41] wait
+  Time passes.
+  
+  The kettle continues to whistle.
+  
+  The apricots have turned plump(ish).
+  
+  [Your score has just gone up by three points.]
+  
+  >[42] full score
+  9:36 am: reconstituting apricots (3).
+  9:14 am: sauteeing onions (3).
+  
+  >[43] test chicken
+  (Testing.)
+  
+  >[44] open refrigerator
+  You open the refrigerator, revealing a whole chicken breast, an egg, wrapped goat cheese, a bottle of white cooking wine and a bottle of Thurston Wolfe PGV.
+  
+  The kettle continues to whistle.
+  
+  >[45] get chicken
+  Which do you mean, the can of chicken broth or the whole chicken breast?
+  
+  >[46] open drawer
+  You open the drawer, revealing a spatula, a spoon, a wooden mallet, some shears and a ball of twine.
+  
+  The kettle continues to whistle.
+  
+  >[47] get mallet
+  Taken.
+  
+  The kettle continues to whistle.
+  
+  >[48] hit breast
+  You hammer away at the chicken breast, turning all your aggressions into culinary goodness. Several minutes pass. When you are done you have a broad flat chickeny pancake suitable for wrapping about a stuffing.
+  
+  The kettle continues to whistle.
+  
+  [Your score has just gone up by one point.]
+  
+  >[49] full score
+  9:40 am: flattening chicken (1).
+  9:36 am: reconstituting apricots (3).
+  9:14 am: sauteeing onions (3).
+  
+  >[50] test cheese
+  (Testing.)
+  
+  >[51] get scissors
+  Taken.
+  
+  The kettle continues to whistle.
+  
+  >[52] get cheese
+  Taken.
+  
+  The kettle continues to whistle.
+  
+  >[53] unwrap cheese
+  You neatly snip through the packaging with the shears.
+   Kitchen                                                                                                                                                                                                                8/45
+  Ah, success. The goat cheese is now free of its packet.
+  
+  The kettle continues to whistle.
+  
+  [Your score has just gone up by one point.]
+  
+  >[54] full score
+  9:43 am: unwrapping goat cheese (1).
+  9:40 am: flattening chicken (1).
+  9:36 am: reconstituting apricots (3).
+  9:14 am: sauteeing onions (3).
+  
+> >

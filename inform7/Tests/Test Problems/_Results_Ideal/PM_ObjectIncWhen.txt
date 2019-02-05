@@ -1,0 +1,20 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 37 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ObjectIncWhen
+  >--> The sentence 'Jumping when the actor is on the trampoline is
+    high-jumping' (source text, line 5) seems to be talking about a previously
+    unknown room or thing called Jumping when the actor. Ordinarily, I would
+    create this, but because the name contains the word 'when' or 'while' I'm
+    going to say no. That's because this far more often happens by mistake
+    than deliberately. For instance, people sometimes type lines like 'Jumping
+    when the actor is on the trampoline is high-jumping.' But in fact although
+    'jumping' is an action, 'Jumping when...' is not - 'when' can't be used
+    here (though it can be used in rule preambles). So the sentence is instead
+    read as making an object 'jumping when the actor' and putting it on top of
+    another one, 'trampoline is high-jumping'. This can lead to a lot of
+    confusion. If you genuinely do want an object whose name contains the word
+    'when', try something like: 'In the box is a thing called When worlds
+    collide.'
+Inform 7 has finished: 16 centiseconds used.

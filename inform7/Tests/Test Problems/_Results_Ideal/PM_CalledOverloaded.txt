@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 44 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CalledOverloaded
+  >--> In 'Instead of giving something (called the number) to Tom' (source text, line 5),
+    it looks as if 'number' is going to be a temporary name which something
+    will be called. But I can't allow that, because it already has a meaning as
+    a kind.
+Inform 7 has finished: 19 centiseconds used.

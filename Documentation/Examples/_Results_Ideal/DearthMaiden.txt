@@ -1,0 +1,25 @@
+   Chequers Inn
+  Dearth and the Maiden
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Chequers Inn
+  The room is panelled and ceilinged in oak, with blue curtains to the windows and blue cushions on the high-backed settle by the fire.
+  
+  An oil painting hangs upon one wall, a lascivious work from the Indies in which a very bendy, sloe-eyed courtesan - but no.
+  
+  Standing bashfully aside is one Mr Carr, who we have been led to understand is by profession a Highwayman (yet whose visage oddly recalls Lord John Carstares, disgraced eldest son of the Earl of Wyncham).
+  
+> >   Chequers Inn
+  (Testing.)
+  
+  >[1] examine painting
+  How unmaidenly! Why, one might just as wantonly strip a rose of its petals, letting each fragrant leaf flutter slowly to the ground.
+  
+  >[2] take painting
+  How unmaidenly! Why, one might just as wantonly strip a rose of its petals, letting each fragrant leaf flutter slowly to the ground.
+  
+  >[3] kiss mr carr
+  How unmaidenly! Why, one might just as wantonly strip a rose of its petals, letting each fragrant leaf flutter slowly to the ground.
+  
+> >

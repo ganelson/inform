@@ -1,0 +1,10 @@
+There is a room.
+To dispatch based on (X - a thing): say "Fail."
+To dispatch based on (X - a thing that is yourself): say "Pass."
+When play begins:
+	dispatch based on yourself;
+	dispatch based on yourself;
+
+When play begins:
+	dispatch based on yourself;
+	dispatch based on yourself;

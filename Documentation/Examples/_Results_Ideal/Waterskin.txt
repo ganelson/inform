@@ -1,0 +1,32 @@
+   Campsite
+  Thirst
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Campsite
+  It is solid night now, and the stars have come out. Unfamiliar stars. On the other side of the valley -- a valley round-bottomed but shallow, like a soup bowl -- burn other campfires, most likely bandits. Their voices do not carry, but the smoke rises and obscures the starlight over that way.
+  
+  Your sleepsack is laid out in a pocket of sandy soil and coarse grass.
+  
+> >   Campsite
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a waterskin (full)
+  
+  >[2] drink water
+  You drink a long draught.
+  
+  >[3] i
+  You are carrying:
+    a waterskin (partly drained)
+  
+  >[4] drink water
+  You drink a long draught.
+  
+  >[5] i
+  You are carrying:
+    a waterskin (empty)
+  
+> >

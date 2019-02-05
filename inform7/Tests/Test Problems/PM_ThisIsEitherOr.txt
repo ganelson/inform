@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+A book is a kind of thing.
+
+A book can be mint or foxed (this is the cover state).

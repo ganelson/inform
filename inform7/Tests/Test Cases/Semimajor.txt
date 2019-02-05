@@ -1,0 +1,28 @@
+The Astral Plane is a room.
+
+Solar distance is a kind of value. 1000 AU specifies a solar distance.
+Planet is a kind of value. The planets are defined by the Table of Outer
+Planets.
+
+Table of Outer Planets
+planet			semimajor axis
+Jupiter			5 AU
+Saturn			10 AU
+Uranus			19 AU
+Neptune			30 AU
+Pluto			40 AU
+
+Asteroid is a kind of value. The asteroids are defined by the Table of
+Minor Planets.
+
+Table of Minor Planets
+asteroid		semimajor axis
+Ceres		3 AU
+Arthur Dent		3 AU
+
+A woman has a solar distance called semimajor axis. Traci is a woman. The semimajor axis of Traci is 2000 AU.
+
+When play begins:
+	say "SMA of Ceres is [semimajor axis of Ceres].";
+	say "SMA of Uranus is [semimajor axis of Uranus].";
+	say "SMA of Traci is [semimajor axis of Traci].";

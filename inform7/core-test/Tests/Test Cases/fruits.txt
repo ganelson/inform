@@ -1,0 +1,3 @@
+"IF-Less Inform"
+
+A fruit is a kind. The apple, the banana and the peach are fruits.

@@ -1,0 +1,2 @@
+Constant I_green = 1;
+Constant I_red = 17;

@@ -1,0 +1,13 @@
+Eugene's Axe Workshop is a room.
+
+To assay (name of kind of enumerated value K):
+	repeat with item running through Ks:
+		say "There's [item]."
+
+Colour is a kind of value. The colours are red, blue and purple.
+
+When play begins:
+	say "People...";
+	assay people;
+	say "Colours...";
+	assay colours;

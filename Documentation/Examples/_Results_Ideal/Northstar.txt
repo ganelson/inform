@@ -1,0 +1,23 @@
+   Northstar Cafe
+  Northstar
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Northstar Cafe
+  The Northstar is crammed with its usual brunch crowd, and you were lucky to get a table at all. You are now awaiting the arrival of your ricotta pancakes.
+  
+  Josh is on his way past your table.
+  
+> >   Northstar Cafe
+  (Testing.)
+  
+  >[1] ask josh to take inventory
+  Josh looks through his possessions.
+  
+  >[2] tell josh to take inventory
+  Josh looks through his possessions.
+  
+  >[3] order josh to take inventory
+  Josh looks through his possessions.
+  
+> >

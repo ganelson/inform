@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MapFromNowhere
+  >--> You wrote 'A door called the bedroom door is north of the bedroom and
+    south of nowhere' (source text, line 3): but the source of a map connection
+    can't be nowhere, so sentences like 'The pink door is south of nowhere.'
+    are not allowed.
+Inform 7 has finished: 16 centiseconds used.

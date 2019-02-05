@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+The Understand token squiggle translates into I6 as "SQUIGGLE_TOKEN".
+
+The Understand token squiggle translates into I6 as "SQUAGGLE_TOKEN".

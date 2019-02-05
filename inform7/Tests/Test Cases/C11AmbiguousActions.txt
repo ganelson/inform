@@ -1,0 +1,16 @@
+The starting room is a room. "Starting room."
+
+Foobling is an action applying to one visible thing. Understand "fooble
+[something]" as foobling.
+Foobling it with is an action applying to two visible things.
+
+Rule for printing the name of something when foobling something with:
+   say "fwoobled"
+
+Rule for printing the name of something when foobling:
+   say "foobled"
+
+Carry out foobling:
+   say "You see nothing unfoobly about [the noun]."
+
+Test me with "fooble me".

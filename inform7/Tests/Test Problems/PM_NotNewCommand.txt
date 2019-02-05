@@ -1,0 +1,3 @@
+The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
+
+Understand the command "take" as "drop".

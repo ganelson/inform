@@ -1,0 +1,24 @@
+   Room of Hidden Objects
+  Beneath the Surface
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Room of Hidden Objects
+  You can see a sofa (on which are a lime-green pillow and an innocent-looking Chinese finger toy), an easy chair and a rug here.
+  
+> >   Room of Hidden Objects
+  (Testing.)
+  
+  >[1] look under the sofa
+  You find the skeleton!
+  
+  >[2] look under the rug
+  You find the blueprint of Atlantis, the lexicon of Linear A and the key to Jimmy Hoffa's Mausoleum!
+  
+  >[3] look under the easy chair
+  You find the treasure map!
+  
+  >[4] hide lexicon under rug
+  You shove the lexicon of Linear A out of sight beneath the rug.
+  
+> >

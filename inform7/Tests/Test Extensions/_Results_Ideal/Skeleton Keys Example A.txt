@@ -1,0 +1,35 @@
+   Vault
+  Vault
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Vault
+  
+> >   Vault
+  (Testing.)
+  
+  >[1] unlock casket with silver
+  You unlock the casket.
+  
+  >[2] unlock box with silver key
+  You unlock the box.
+  
+  >[3] open casket
+  You open the casket.
+  
+  >[4] i
+  You are carrying:
+    a casket (open but empty)
+    a box (closed)
+    a silver key
+  
+  >[5] lock casket with silver
+  First you would have to close the casket.
+  
+  >[6] close casket
+  You close the casket.
+  
+  >[7] lock casket with silver
+  You lock the casket.
+  
+> >

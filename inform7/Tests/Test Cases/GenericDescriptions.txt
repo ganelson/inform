@@ -1,0 +1,19 @@
+To decide which time is the time since (D - a description of scenes) began:
+	let max T be 0 minutes;
+	repeat with Scn running through D:
+		let T be the time since Scn began;
+		if T > max T, now max T is T;
+	decide on max T.
+
+Definition: a scene is new if it is happening and it is not the Entire Game.  
+
+Stage is a room.
+
+Concert is a scene. Concert begins when play begins.
+
+Every turn when the time since a new scene began is greater than 5 minutes (this is the cure slow pacing issue rule): 
+	say "Get a move on."
+
+Space is a room.
+
+Test me with "z / z / z / z / z / z / z / z".

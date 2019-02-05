@@ -1,0 +1,23 @@
+   Apartment
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Apartment
+  You can see a table, a chair and Alice here.
+  
+> >   Apartment
+  (Testing.)
+  
+  >[1] x alice
+  You see nothing special about Alice.
+  
+  >[2] ask her about alice
+  (Alice about that)
+  There is no reply.
+  
+  >[3] ask her about bob
+  (Alice about that)
+  There is no reply.
+  
+> >

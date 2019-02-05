@@ -1,0 +1,13 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	splat &"#ifdef DEBUG;\n"
+	splat &"Constant DEBUG;\n"
+	splat &"#ifnot;\n"
+	splat &"[ Demo x y; return x+y; ];\n"
+	splat &"#ENDIF;\n"
+	splat &"Array XA --> 2 4 56;\n"
+	splat &"#ifdef wallpaper_shade;\n"
+	splat &"Global nitwit = 2;\n"
+	splat &"  #ENDif ; \n"

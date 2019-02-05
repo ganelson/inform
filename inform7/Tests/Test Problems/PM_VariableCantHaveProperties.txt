@@ -1,0 +1,3 @@
+Place is a room.
+
+The player can be lackadaisical.

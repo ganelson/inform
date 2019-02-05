@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+Problem__ PM_UnexpectedSemicolon
+  >--> The text 'Refrigtop is a room' (source text, line 3) is followed by a
+    semicolon ';', which only makes sense to me inside a rule or phrase (where
+    there's a heading, then a colon, then a list of instructions divided by
+    semicolons). Perhaps you want a full stop '.' instead?
+Problem__ PM_UnexpectedSemicolon
+  >--> The text '"f"' (source text, line 3) is followed by a semicolon ';',
+    which only makes sense to me inside a rule or phrase (where there's a
+    heading, then a colon, then a list of instructions divided by semicolons).
+    Perhaps you want a full stop '.' instead?
+Inform 7 has finished: 3 centiseconds used.

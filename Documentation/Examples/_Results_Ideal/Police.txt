@@ -1,0 +1,55 @@
+   Seventh Avenue
+  Police State
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Seventh Avenue
+  The bars are all closed now, and there aren't any good clubs to go to, so you're on your own for open-air entertainment.
+  
+  It's just five of you now: yourself, Charles, Thomas, Larry and Patricia. But it sure has been a rip-roaring evening.
+  
+  A policeman with a very guarded expression is watching you.
+  
+> >   Seventh Avenue
+  (Testing.)
+  
+  >[1] charles, look
+  Charles looks around.
+  
+  >[2] charles, jump
+  The policeman arrests Charles!
+  
+  >[3] look
+  Seventh Avenue
+  The bars are all closed now, and there aren't any good clubs to go to, so you're on your own for open-air entertainment.
+  
+  It's just four of you now: yourself, Thomas, Larry and Patricia. But it sure has been a rip-roaring evening.
+  
+  A policeman with a very guarded expression is watching you.
+  
+  >[4] policeman, sing
+  The policeman has better things to do.
+  
+  >[5] thomas, taste policeman
+  The policeman arrests Thomas!
+  
+  >[6] patricia, sing
+  The policeman arrests Patricia!
+  
+  >[7] look
+  Seventh Avenue
+  The bars are all closed now, and there aren't any good clubs to go to, so you're on your own for open-air entertainment.
+  
+  It's just two of you now: yourself and Larry. But it sure has been a rip-roaring evening.
+  
+  A policeman with a very guarded expression is watching you.
+  
+  >[8] jump
+  
+  
+      *** The policeman arrests you! ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

@@ -1,0 +1,335 @@
+4W37 (27 July 2007)
+
+This build adds 21 new examples and provides miscellaneous new features.
+Chief among these are substantial improvements to the parsing of names:
+nouns can now be recognized by their number or unit properties, and also by
+their relations, so that 'Understand "bottle of [something related by
+containment]" as the bottle' will parse BOTTLE OF SAND if and only if the
+sand is contained in the bottle. We have also made a tentative beginning on
+support for sound effects to match the existing support for illustrations.
+As usual a number of bugs are fixed, and although a few issues still remain
+(the current tally of open issues stands at 13, as compared with a peak of
+about 330 earlier this year) none are severe and most users seem to find
+that Inform is fairly reliable, so recent effort has gone into advancing
+the language rather than maintaining the compiler.
+
+INFORM FOR WINDOWS
+
+All tabs (save the settings tab) have a row of buttons at the top of the
+	tab, allowing navigation and access to common functionality,
+	similar to the OS X application.
+Fixed a bug preventing the installation of an extension with brackets in
+	its name.
+Added support for multiple windows to the game tab. Any combination of
+	text, grid and graphics windows can be opened by a game running
+	within the application.
+Added support for graphics windows to the game tab. As a result, games
+	using Emily Short's "Simple Graphical Window" and "Location Images"
+	extensions will now work when run within the application.
+Added support for timer events to the game tab. Combined with the above,
+	games using the "Graphical Window Animation" extension will now work
+	when run within the application.
+If saving a project fails, the application now shows an error message.
+	If the project was being saved as part of being closed, then
+	after the error you get a chance to save to a different place.
+
+GENERAL
+
+>--> The kind "player-character" has been abolished. Previously, this was a
+	kind of person able to be the player's persona in the model world: for
+	most games, there was only one player-character in existence, the one
+	automatically created by Inform and called "yourself". From this point
+	onwards, any "person" can be the player, and indeed "player" is now
+	a person variable, not a player-character variable. This means that the
+	player object can now be any man, woman or animal in the source text,
+	and these can be switched between freely in play. Moreover, we can
+	much more simply specify who the protagonist is:
+		Lord Bowler is a man in the Pavilion. The player is Lord Bowler.
+	If we do not specify the player's identity, the "yourself" is still
+	created and used as before.
+	This change will affect only works which create "player-characters" in
+	their source text: to adapt them to work again, it should be enough
+	simply to change every usage of the kind name "player-character" to
+	"person", "man", "woman" or "animal" as appropriate.
+	This change implements proposal (6.56) from the January 2007 consultation
+	document.
+>--> Up to now, all scenes have been able to take place many times: if a
+	scene ends, and then later on its starting conditions once again hold,
+	then it will start all over again. This is sometimes very useful, but
+	also a source of confusion, and it has led to people writing "S begins
+	when ... for the first time" over and over to stop S from recurring.
+	As from this build, a scene can be declared either as recurring or not
+	when it is first created. So for instance:
+		Hourly Patrol is a recurring scene.
+		Apocalyptic End is a scene.
+	makes one of each kind of scene. (An ordinary scene can also be declared
+	as a "non-recurring scene" for clarity's sake.) Note that any scene
+	declared as just "scene", and in particular any scene declared in
+	source text for previous builds of Inform, is now non-recurring: so if
+	you need a scene to recur in a work-in-progress, you need to insert the
+	word "recurring" into its definition.
+	This change implements proposal (6.52) from the January 2007 consultation
+	document, though in a slightly different way from that proposed.
+Partial sound support has been added to Inform: see the new sections 19.6
+	and 19.7 of the documentation. As with picture support, Inform provides
+	the groundwork and leaves it for more sophisticated extensions to go into
+	more elaborate facilities. The present state of completion is that Inform
+	can, on all platforms, read Ogg Vorbis or AIFF sound files from the
+	Materials/Sounds folder for a project, and embed them correctly into a
+	Blorbed Glulx story file, compiling correct code for the Glulx machine
+	to play the sounds back at the appropriate moment. However, these
+	sounds will only be audible in Windows Inform, or when playing a
+	released Glulx story file in Windows Glulxe or Spatterlight for OS X:
+	Glulx support for sound has been implemented in the glulx interpreter
+	used in both Inform and Zoom for OS X, so that placeholder text is
+	printed instead.
+	Sound support was proposal (6.61) from the January 2007 document.
+Up to now, the only properties which could be used as part of an object's
+	name for parsing purposes were either/or properties and enumerated named
+	properties. This restriction has been almost completely lifted: we
+	can now understand properties whose kind is number, time, or a unit.
+	For example:
+		An aspect ratio is a kind of value. 16:9 specifies an aspect ratio.
+		A television is a kind of thing. A television has an aspect ratio.
+		The widescreen TV is a television in the Office. The fifties TV is
+		a television in the Office. The widescreen TV is 16:9. The fifties
+		TV is 4:3. Understand the aspect ratio property as referring to
+		a television.
+	...allows us to type EXAMINE 16:9 TV, for instance.
+	In addition, further grammar used to specify unusual values is now
+	recognised in such situations: for instance if we wrote...
+		Understand "European standard" as 16:9.
+	the EXAMINE EUROPEAN STANDARD TV would also work. (Previously this did
+	not work, because the implementation was incomplete.)
+	Finally, a problem message has been added for the (now fairly few) cases
+	where the property still does have a kind which cannot be parsed:
+	previously no problem was issued in cases Inform could not handle, and
+	the feature simply did not work.
+	(This change did not appear in the January document, but has been much
+	requested since.)
+A new form of grammar token has been added to enable names of objects (and
+	rooms) to include names of other objects (and rooms) related to them.
+	For instance, if we write:
+		A box is a kind of container. Understand "box of [something related
+		by containment]" as a box. The Toyshop is a room. The red box is a
+		box in the Toyshop. Some crayons are in the red box.
+	then TAKE BOX OF CRAYONS will work, because CRAYONS matches against
+	"[something related by containment]" for the red box - or it does for
+	as long as the crayons are there. We can have similar matches against
+	relations of all kinds, but have to name the relation explicitly, using
+	its one-word name. We can also reverse the sense:
+		A box is a kind of container. Understand "box in [something related
+		by reversed containment]" as a box. The Toyshop is a room. The crate
+		and the hammock are in the Toyshop. In the crate is a box. In the
+		hammock is a box.
+	makes TAKE THE BOX IN THE HAMMOCK work. (Where more than one object
+	matches the criterion, for instance if the original box contained both
+	crayons and chalk, any of the names can be used.)
+Inform normally decides whether an object has a singular or plural name,
+	or whether it has a proper name, by looking at how it is first
+	introduced. This mainly works well, but people have also asked for
+	more explicit control, especially to cope with changes in an object
+	during play. Accordingly, there are now two new either/or properties
+	for all things:
+		A thing can be plural-named or singular-named.
+		A thing can be proper-named or improper-named.
+	This change implements proposal (6.46) from the January 2007 document.
+The phrase for changing the exits of a room can now accept "nothing" or,
+	equivalently, "nowhere" as the new exit, thus allowing map connections
+	to be explicitly deleted in play. For instance:
+		change the east exit of Stage to nowhere;
+	Bugs in type-checking to do with the handling of "nothing" have been
+	removed.
+Some authors have recently asked for the facility to make extensions go
+	uncredited in the VERSION command output, since this might give away
+	story details, or generally produce verbosely self-laudatory output.
+	A new "authorial modesty" use option has been created for this purpose.
+	Inform has to tread a careful line here, because people make extensions
+	available under a Creative Commons licence which requires that they be
+	credited: so you can only be modest about your own work. If the sentence:
+		Use authorial modesty.
+	is found in an extension, then its credit line is omitted from the VERSION
+	output of any game using it. If the same sentence is found in the main
+	source text of a work, then credits are omitted for every extension with
+	the same author's name as the work itself. (In other words, it credits
+	everyone else's extensions, but suppresses mention of your own.)
+	The "say" phrase "[list of extension credits]" uses the same convention,
+	but the new "say" phrase:
+		"[complete list of extension credits]"
+	ignores all these efforts at modesty and prints the whole list. (An
+	otherwise modest author might want to print this posthumously after the
+	end of play, for instance, or in response to a secret debugging command.)
+The the ambient odour rule, the ambient sound rule and the block vaguely
+	going rule now apply to actions by all actors, not just the player, so
+	that (for instance) the command XERXES, LISTEN will be read as a
+	request to listen to the ambient location, rather than printing out a
+	parseresque objection such as "What do you want Xerxes to listen to?"
+The grammar "switch on [something]" has been added to the standard rules,
+	and has the same effect as "switch [something] on". This is more consistent
+	with switching off.
+The maximum length for an extension rubric has been increased from 250 to
+	500 characters. (Rubrics exceeding that length are silently truncated
+	in extension documentation.)
+It is now allowed to create a temporary value (i.e., a local variable) with
+	"let" whose name coincides with that of a thing, room or property.
+	Previously this triggered problem messages, and was a particular problem
+	for extensions and the Standard Rules, which had to avoid "let" names
+	that might hit any of the things created by the user. (For instance,
+	several people reported it as a bug that creating a property called
+	"target" caused problems - this was because the Standard Rules use a
+	"let" variable called "target" in places.)
+The resolution of noun phrases has been slightly changed so that a single-word
+	kind of value name will take precedence over the name of a thing or room
+	in an assertion sentence. For instance:
+		The scene script is in the wardrobe.
+		Grand Finale is a scene.
+	would previously have read "scene" as a reference to the scene script,
+	a physical thing, not the kind of value "scene". (This in practice makes
+	it easier to have rooms and things whose names include the names of
+	kinds such as "number", "time" and so on.)
+Examples:
+	"Lanista" parts 1 and 2 added to demonstrate randomized combat, first in
+		a simple form and then with weaponry and an ATTACKING IT WITH action
+	"Night and Day" added to demonstrate recurring sequences of scenes
+	"Candy" added to demonstrate making a randomly selected item poisonous
+	"Puff of Orange Smoke" added to demonstrate redirecting all actions from
+		one object to another
+	"Disappointment Bay" examples changed to the more geographically accurate
+		Disenchantment Bay; typo fixed in the final, finished example
+	"Entrapment" modified to correct a bug due to changed handling of actions
+		in recent releases of Inform
+	"Terror of the Sierra Madre", which demonstrates player-switching,
+		greatly simplified as a result of the abolition of player-character
+	"Exit Strategy", demonstrating how to set up non-recurring scenes, removed
+		(since all scenes are now non-recurring unless otherwise stated)
+	"Pine 3", "Pine 4", "The Prague Job", and "Space Patrol" modified to
+		reflect the usage of "recurring" scenes
+	"Snip" modified to remove bugs and make use of the new ability to
+		understand unit properties; "Snip Snip" withdrawn, as the hack it
+		demonstrates is no longer needed and the same functionality was
+		achieved instead by a single line added to "Snip"
+	"Totality" (example about scheduling an eclipse) given a "test me" script,
+		and a syntax bug removed
+	"Dinner is Served" revised to work better when the object reached for
+		is the second noun rather than the noun, and also to have less
+		cryptic syntax; the test for the example has been extended
+	"Tilt" added to demonstrate an implementation of a deck of cards using
+		individual card objects, in which ranks and suits of cards are
+		automatically parsed
+	"Tilt 2" added to demonstrate an implementation of poker hands, where
+		the cards in a player's inventory are described according to their
+		value; illustrates use of a complex rulebook
+	"Tilt 3" added to demonstrate use of text colors to make poker suit
+		symbols appear in red, under both Glulx and the Z-machine
+	"Aspect" added to demonstrate the automatic parsing of unit properties
+	"Channel" added to demonstrate the automatic parsing of number properties
+	"Channel 2" added to demonstrate a combination of advanced parsing
+		features, in the creation of tunable televisions
+	"Cheese-makers" added to demonstrate a TALK TO action tied to a
+		scene-structured plot
+	"Alias" added to demonstrate telephone-number-sized units functioning
+		under Glulx
+	"Claims Adjustment" added to demonstrate a camera that produces instant
+		photographs of things; the photographs can then be referred to as
+		in X PHOTOGRAPH OF APPLE
+	"Puncak Jaya" added to demonstrate characters who can be referred to in
+		their absence
+	"Cinco" added to demonstrate containers referred to by their contents
+	"Originals" added to demonstrate disambiguating objects from models of
+		those objects
+	"Removal" simplified to use action variables rather than the more
+		complicated source
+	"Gopher-wood" added to demonstrate the use of the proper-named attribute
+		to change someone's name during play
+	"Carnivale" added to demonstrate the simple scoping case of a large object
+		that should be visible from other rooms
+	"Rock Garden" added to demonstrate the simple scoping case of multiple
+		rooms that can see into one another (as opposed to the rather more
+		complex "Stately Gardens" which autogenerates a lot of room
+		description as well)
+	"Latin Lessons" added to demonstrate supplying a missing noun when the
+		action is being performed by someone other than the player
+	"Uber-Complete Clavier" (the big Unicode test) slightly changed so that
+		it can now be compiled for Glulx as well as the Z-machine
+	Paragraph breaking adjusted in "In Fire or in Flood", "Misadventure",
+		"Goat-Cheese and Sage Chicken", "Owen's Law"
+	Minor typos removed from "Wight", "Alpaca Farm", "Apples"
+Extensions:
+	"Glulx Text Effects" modified to make it easier to set custom colors
+		for text in Glulx; this appropriates the color-management source from
+		the extension "Simple Graphical Window" by Emily Short, so those
+		using Simple Graphical Window should update to version 4 of the
+		extension in order to avoid overlap. Advanced to version 2.
+	"Punctuation Removal" revised to include a phrase that corrects
+		instances of "mr.", "mrs.", etc., to "mr", "mrs", and the like, to get
+		around parsing frustrations commonly encountered with these titles.
+		Also added the means to remove apostrophes as well as the other
+		punctuation marks; example added for parsing such phrases as "Jack's
+		tie" if and only if Jack is currently wearing the tie object. Version
+		number advanced to 3.
+	A bug fixed in "Complex Listing to deal with the marking of regions";
+		version number advanced to version 5.
+	Bug fixed in the screen-width-determining routine of "Basic Screen Effects".
+Bug fixed whereby past tense conditions in the form "in ... for the first time"
+	would sometimes have the temporal requirement ignored, particular in the
+	preambles to rules like:
+		Every turn when in the Hall of Mists for the first time;
+Bug fixed whereby rules which depend on action taking place at the same time
+	as a compound condition would sometimes produce spurious problem messages:
+	for instance,
+		Check turning the dial to  when the number understood < 0 or the
+		number understood > 99:
+	...is valid but generated a problem message in 4U67.
+Bug fixed whereby "otherwise if ... begin" (which is incorrect since otherwise
+	if divides the existing code block, rather than beginning a new one) led
+	to I6 errors rather than a problem message.
+Bug fixed whereby using "(called ...)" to create temporary named values at
+	a time in the past such that they could not survive to the present
+	would lead to I6 errors rather than a problem message.
+Bug fixed whereby rules taking effect if "doing something to ..." and some
+	description would sometimes false take effect when the action took a
+	non-object as its noun, when the value which happened to have been
+	typed coincided with the internal object number of an item matching
+	the description.
+Bug fixed whereby changing player to someone else and then back again, and
+	then using the short name of the player, would crash both the Z and
+	Glulx virtual machines at run-time.
+Bug fixed whereby I7 would crash if told to understand empty text as something.
+	(This is not allowed, and a problem message has been added.)
+Bug fixed whereby scenes predicated on past tense actions ("Mayhem begins when
+	we have waited") would cause an internal error.
+Bug fixed whereby the condition "we have taken inventory" gave false positives
+	after the first turn.
+Bug fixed whereby nameless variables attached to activities gave internal
+	errors rather than a problem message.
+Bug fixed whereby creating an object called "nowhere" caused a crash rather
+	than a problem message.
+Bug fixed whereby grammar introducting alternative textual names for numbers
+	(e.g. 'Understand "a/b/c" as 2.') could lead to I6 errors.
+Bug fixed whereby vaguely named properties in adjective definitions would
+	result in internal errors rather than a problem message.
+Bug fixed whereby naming actions which happen to include "with" can create
+	spurious out-of-play things (doing no harm, but doing no good either):
+	for instance, "Unlocking the box with the key is bizarre behaviour."
+	would create an object called "Unlocking the box", in addition to doing
+	what it was supposed to do.
+Bug fixed whereby matching the player's command against text rather than a
+	topic would cause an interpreter crash at run-time.
+Bug fixed whereby verbs defined as auxiliaries required participles to be
+	named unnecessarily, contrary to the documentation: thus "The verb to be
+	able to approach implies the approachability relation." would fail for
+	no good reason.
+A bug introduced by the actions rewrite in 4U65 caused player's holdall
+	objects not to work properly if they were being worn rather than carried
+	(as in the documentation's example "Sackcloth"). This is fixed: apologies.
+In past builds the grammar token "[a number]", in Understand sentences, has
+	required the number in question to be something which can be stored in
+	a signed 16-bit variable, that is, to be between -32768 and 32767. This
+	is correct for story files running on all versions of the Z-machine, but
+	the Glulx virtual machine has 32-bit variables, so for Glulx the
+	restriction is unnecessary. It has now been lifted: thus on Glulx, we
+	can parse numbers in the range -2147483648 to 2147483647 inclusive.
+The Inform 6 debugging verb DAEMONS (aka TIMERS), which is undocumented and
+	meaningless in I7 since this lacks either daemons or timers in the crude
+	I6 sense, could under some circumstances crash if tried in an I7 game.
+	The verb is now removed altogether.

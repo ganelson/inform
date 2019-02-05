@@ -1,0 +1,17 @@
+The Place is a room.
+
+Hall is south of the Place.
+
+The banana is in the Hall.
+
+foo is a list of rooms that varies.
+
+foo is { the Place, the Hall }.
+
+bar is a room that varies.
+
+bar is the Hall.
+
+filfre is a room that varies.
+
+filfre is the banana.

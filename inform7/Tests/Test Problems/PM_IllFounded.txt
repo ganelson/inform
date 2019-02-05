@@ -1,0 +1,5 @@
+Escheresque is a room. OA and OB are things.
+
+A red thing is part of OA. A blue thing is part of OB.
+
+OA is part of the red thing. OB is part of the blue thing.

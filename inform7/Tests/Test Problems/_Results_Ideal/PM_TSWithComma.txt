@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 10 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TSWithComma
+  >--> You wrote 'say "Hello [,]"' (source text, line 3): but a substitution
+    contains a comma ',', which is against the rules, because 'say' is a
+    special phrase in which the comma divides items in a list of things to say,
+    and so it loses its ordinary meanings. Because of this, no text
+    substitution can contain a comma. (If you're trying to use a value produced
+    by a phrase with a phrase option - say 'the best route from A to B, using
+    even locked doors' - you'll need to put this in a 'let' variable first and
+    then say that, or else define a better text substitution to do the job for
+    you.)
+Inform 7 has finished: 43 centiseconds used.

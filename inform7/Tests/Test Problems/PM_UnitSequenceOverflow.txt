@@ -1,0 +1,95 @@
+Laboratory is a room.
+
+An a1 is a kind of value. 1a1 specifies an a1.
+An a2 is a kind of value. 1b2 specifies an a2.
+An a3 is a kind of value. 1c3 specifies an a3.
+An a4 is a kind of value. 1d4 specifies an a4.
+An a5 is a kind of value. 1e5 specifies an a5.
+An a6 is a kind of value. 1f6 specifies an a6.
+An a7 is a kind of value. 1g7 specifies an a7.
+An a8 is a kind of value. 1h8 specifies an a8.
+An a9 is a kind of value. 1i9 specifies an a9.
+An a10 is a kind of value. 1j10 specifies an a10.
+An a11 is a kind of value. 1k11 specifies an a11.
+An a12 is a kind of value. 1l12 specifies an a12.
+An a13 is a kind of value. 1m13 specifies an a13.
+An a14 is a kind of value. 1n14 specifies an a14.
+An a15 is a kind of value. 1o15 specifies an a15.
+An a16 is a kind of value. 1p16 specifies an a16.
+An a17 is a kind of value. 1q17 specifies an a17.
+An a18 is a kind of value. 1r18 specifies an a18.
+An a19 is a kind of value. 1s19 specifies an a19.
+An a20 is a kind of value. 1t20 specifies an a20.
+An a21 is a kind of value. 1u21 specifies an a21.
+An a22 is a kind of value. 1v22 specifies an a22.
+An a23 is a kind of value. 1w23 specifies an a23.
+An a24 is a kind of value. 1x24 specifies an a24.
+An a25 is a kind of value. 1y25 specifies an a25.
+An a26 is a kind of value. 1z26 specifies an a26.
+An a27 is a kind of value. 1aa27 specifies an a27.
+An a28 is a kind of value. 1ab28 specifies an a28.
+An a29 is a kind of value. 1ac29 specifies an a29.
+An a30 is a kind of value. 1ad30 specifies an a30.
+An a31 is a kind of value. 1ae31 specifies an a31.
+An a32 is a kind of value. 1af32 specifies an a32.
+An a33 is a kind of value. 1ag33 specifies an a33.
+
+An b1 is a kind of value. 1a1xxx specifies an b1.
+An b2 is a kind of value. 1b2xxx specifies an b2.
+An b3 is a kind of value. 1c3xxx specifies an b3.
+An b4 is a kind of value. 1d4xxx specifies an b4.
+An b5 is a kind of value. 1e5xxx specifies an b5.
+An b6 is a kind of value. 1f6xxx specifies an b6.
+An b7 is a kind of value. 1g7xxx specifies an b7.
+An b8 is a kind of value. 1h8xxx specifies an b8.
+An b9 is a kind of value. 1i9xxx specifies an b9.
+An b10 is a kind of value. 1j10xxx specifies an b10.
+An b11 is a kind of value. 1k11xxx specifies an b11.
+An b12 is a kind of value. 1l12xxx specifies an b12.
+An b13 is a kind of value. 1m13xxx specifies an b13.
+An b14 is a kind of value. 1n14xxx specifies an b14.
+An b15 is a kind of value. 1o15xxx specifies an b15.
+An b16 is a kind of value. 1p16xxx specifies an b16.
+An b17 is a kind of value. 1q17xxx specifies an b17.
+An b18 is a kind of value. 1r18xxx specifies an b18.
+An b19 is a kind of value. 1s19xxx specifies an b19.
+An b20 is a kind of value. 1t20xxx specifies an b20.
+An b21 is a kind of value. 1u21xxx specifies an b21.
+An b22 is a kind of value. 1v22xxx specifies an b22.
+An b23 is a kind of value. 1w23xxx specifies an b23.
+An b24 is a kind of value. 1x24xxx specifies an b24.
+An b25 is a kind of value. 1y25xxx specifies an b25.
+An b26 is a kind of value. 1z26xxx specifies an b26.
+An b27 is a kind of value. 1aa27xxx specifies an b27.
+An b28 is a kind of value. 1ab28xxx specifies an b28.
+An b29 is a kind of value. 1ac29xxx specifies an b29.
+An b30 is a kind of value. 1ad30xxx specifies an b30.
+An b31 is a kind of value. 1ae31xxx specifies an b31.
+An b32 is a kind of value. 1af32xxx specifies an b32.
+An b33 is a kind of value. 1ag33xxx specifies an b33.
+
+An a1 times an a2 specifies an a3.
+An a4 times an a5 specifies an a6.
+An a7 times an a8 specifies an a9.
+An a10 times an a11 specifies an a12.
+An a13 times an a14 specifies an a15.
+An a16 times an a17 specifies an a18.
+An a19 times an a20 specifies an a21.
+An a22 times an a23 specifies an a24.
+An a25 times an a26 specifies an a27.
+An a28 times an a29 specifies an a30.
+An a31 times an a32 specifies an a33.
+
+An a3 times an a6 specifies a b1.
+An a9 times an a12 specifies a b2.
+An a15 times an a18 specifies a b3.
+An a21 times an a24 specifies a b4.
+An a27 times an a30 specifies a b5.
+An a33 times an a33 specifies a b6.
+
+A b1 times a b2 specifies a b7.
+A b3 times a b4 specifies a b8.
+A b5 times a b6 specifies a b9.
+
+A b7 times a b8 specifies a b10.
+A b9 times a b10 specifies a b11.

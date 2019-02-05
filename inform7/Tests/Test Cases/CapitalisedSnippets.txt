@@ -1,0 +1,12 @@
+[The point here is the capital A in Athenians.]
+
+Limbo is a room.  Guy is a man in Limbo. 
+
+Understand "Athenians/Spartans/Greeks" as "[Greeks]". 
+
+Instead of asking Guy about "[Greeks]": say "He tells you about the Greeks." 
+Instead of asking Guy about: say "He grunts." 
+
+Instead of examining Guy: try asking Guy about "Athenians". 
+
+Test me with "actions/ask guy about greeks/x guy" 

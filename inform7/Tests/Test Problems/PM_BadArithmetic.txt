@@ -1,0 +1,5 @@
+The NI School for Typing is a room.
+
+When play begins:
+	let Y be 23 + "frog";
+	let X be 23 + 11:10 AM.

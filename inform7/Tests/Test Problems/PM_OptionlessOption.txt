@@ -1,0 +1,8 @@
+The NI School for Typing is a room.
+
+To decide whether using (U - use option):
+	if U is active, yes;
+	no.
+
+When play begins:
+	if using the American dialect, say "Hi.".

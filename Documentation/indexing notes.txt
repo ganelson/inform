@@ -1,0 +1,220 @@
+(1) What the index contains
+
+Some generalities first. The index consists of "headwords", the terms being
+indexed (which may or may not be just one word). Each headword is followed
+by a comma-separated list of links to sections of the books - both books
+are indexed, not just one. Links to WWI have the form "5.4"; links to RB
+the same, but italicised. The list of links is always ordered numerically
+within WWI and then within RB. Headwords are alphabetised in a way which
+excludes initial "a", "an" or "the"; if the first word is a number from
+1 to 12, it's replaced by the spelled version (thus "3 A.M." appears as
+if "three A.M."); other numbers are sorted numerically - thus "Zone 10"
+appears after "Zone 9", not after "Zone 1"; and any bracketed text is
+ignored for alphabetisation purposes - so "(leaf) tea" is alphabetised as
+if it were "tea".
+
+Each headword has a "category". The categories are defined in the indoc
+instructions file. An index entry is defined by both headword and category
+in combination, so "description" with category "property" is different
+from "description" with category "standard", and they appear on different
+lines in the index.
+
+In terms of CSS, Index entries occupy paragraphs of class "indexentry".
+Text of an entry of category C is in a span of class "indexC" (so for example,
+an entry of category "name" is in a span of class "indexname"). The links
+are in spans of class "indexlink" for WWI, "indexlinkalt" for RB.
+
+(2) Defining notations
+
+If no categories are defined, there's no index. The indoc-instructions.txt
+command to create a category is in general:
+
+	index: notation = name (options)
+
+Notation is how indoc should recognise material to index; name is the name
+of the category; the options, which are optional, specify anything special
+about the category. There are three sorts of notation. The first is the
+caret-and-brace form (I'd like to call it caret-and-stick, but there we
+are). What I've so far defined in the instructions file for Inform 7 is:
+
+	index: ^{`headword} = name (invert)
+	index: ^{headword} = standard
+
+With these notations in place, a sentence in the documentation can be
+marked up like so:
+
+	The inventor of ^{literate programming} is ^{`Donald Knuth}.^^{archaisms}
+
+Indexable terms always start with one or two carets and then material in
+braces. One caret means the copy in braces is part of the book; two means
+it isn't. Thus the above sentence typesets as
+
+	The inventor of literate programming is Donald Knuth.
+
+A few points to note. The notations are sought in definition order, which
+is why I defined ^{`headword} before ^{headword}. In general, the notation
+has to be given in the form
+
+	^{LheadwordR}
+
+where L and R are clumps of 0 or more characters; for example, "^{+headword+}"
+would be legal, as would "^{''headword---}". (Please avoid using _ and *
+because those are already used in the I7 documentation to define italics and
+boldface.)
+
+For various reasons the catch-all ^{headword} notation has to refer to the
+category called "standard". The idea is that this is for plainest vanilla
+index entries.
+
+Notations can be inserted in the body text of "Writing with Inform.txt",
+"The Recipe Book.txt", or any of the examples in Documentation/Examples.
+However, they can't be placed in headings of any kind, or in indented
+sample code paragraphs. In general the index hyperlinks are to the top of
+the section cited, e.g., a link to 3.2 goes to the top of section 3.2;
+or to the example cited, usually at the bottom of some section; but
+links to a phrase definition go straight to its tinted box. We could
+make all links direct to the para being referenced; but actually I think
+this might be less friendly.
+
+(3) Options for categories
+
+(i) Because the name category is marked "(invert)", its entries are inverted.
+Thus ^{Donald Knuth} actually indexes as "Knuth, Donald", alphabetised
+under K not D.
+
+Note that inversion is not performed if the text already contains a comma.
+This can override wrong guesses. Thus
+
+	Extensions are managed by ^{`Justin de Vesine}.
+
+indexes "Vesine, Justin de" (file under V); but
+
+	Extensions are managed by Justin de Vesine.^^{`de Vesine, Justin}
+
+indexes "de Vesine, Justin" (file under D).
+
+(ii) An option in double-quotes becomes a gloss text for the category. What
+that means is that this text is added as a gloss, in small type, after
+every index entry of that category, using the CSS span "indexgloss". (By
+default, a category doesn't have a gloss.)
+
+Thus we might get index entries like
+
+	grouping together something  activity  18.14
+
+with "activity" being the gloss text.
+
+(iii) "(bracketed)" causes the index entry to be rendered with bracketed
+material in a CSS span called "indexCbracketed", where C is the category name.
+For example, the I7 indoc instructions go on to say
+
+	css: span.indexphrasebracketed ++ {
+		color: #8080ff;
+	}
+
+The practical effect is that the index entry:
+
+	(name of kind) after (enumerated value)  phrase  11.18
+
+has the bracketed parts tinted in a light blue for de-emphasis.
+
+(iv) "(under {lemma})" causes all entries for this category to be subentries
+of {lemma} - see below.
+
+(4) Index entries generated from cross-reference tags
+
+The second sort of notation is by documentation tag. I've set up I7 with
+just one of these:
+
+	index: {act_} = activity ("activity")
+
+The meaning of the notation is a bit obscure. In WWI, every activity has its
+own section, whose title is the name of the section. Each of these is marked
+with a cross-referencing tag like "{act_gt}", used to make links work from
+the Inform indexes and problem messages; they're pretty cryptic. What indoc
+does is to look for any tag beginning "{act_" and to make an index entry
+of category "activity" for the section in question, using the title of the
+section as the text of the entry, flattened in case. The practical effect,
+then, is that all activities are automatically indexed.
+
+(5) Automatically generated index entries
+
+There are also two built-in sources of index entries, though they have
+to be activated to appear. I've set I7 up to activate both:
+
+	index: definition = phrase ("phrase") (bracketed)
+	index: example = example ("example")
+
+"definition" isn't really a notation; it tells indoc to make an index entry
+out of every phrase definition in the manual. Similarly, "example" makes
+an index entry for every example.
+
+You may want to comment out the three automatic notations (for activities,
+phrases and examples) while you're working, since that slims down the index
+to just the stuff put in by hand. Or you may not.
+
+(6) Sub-entries
+
+If an entry's text contains a colon (with substantive material either side),
+that's taken as a marker that something is a subentry. Thus:
+
+	^{reptiles: snakes}
+
+creates something like
+
+	reptiles
+		snakes 3.7
+
+while typesetting just "snakes". For example,
+
+	"Why did it have to be ^{reptiles: snakes}?" mused Indy.
+
+comes out as
+
+	"Why did it have to be snakes?" mused Indy.
+
+Sub-entries can be arbitrarily deep; there can be, but need not be, index
+entries for the super-entry (in this case "reptiles").
+
+We can also force every entry of a given category to fall as a subentry.
+For example:
+
+	index: ^{~headword} = reptilian (under {reptiles})
+
+means that
+
+	"Why did it have to be ^{~snakes}?" mused Indy.
+
+once again makes "snakes" a subentry of "reptiles".
+
+Note the difference between these two examples:
+
+	^{people: `Donald Knuth}
+
+makes
+
+	people    (category "standard")
+		Knuth, Donald    (category "name")
+
+whereas
+
+	^{`Donald Knuth: literate programming}
+
+makes
+
+	Knuth, Donald    (category "name")
+		literate programming    (category "standard")
+
+This is because indoc parses {A:B} as if it were parsing {A} and {B}
+individually, to determine the categories of the superentry and subentry.
+
+(7) Cross-references
+
+An entry in the form
+
+	^{reptiles <-- crocodiles <-- alligators}
+
+tells indoc to index "reptiles" here, in the usual way, but also to add
+cross-references "crocodiles, see reptiles" and "alligators, see reptiles"
+at the appropriate places under C and A.
+

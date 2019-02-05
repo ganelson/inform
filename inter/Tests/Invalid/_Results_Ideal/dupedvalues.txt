@@ -1,0 +1,8 @@
+inter: inter/Tests/Invalid/dupedvalues.intert, line 15: permission already given: 'P_lingeringness'
+>--> permission P_lingeringness K_odour
+inter: inter/Tests/Invalid/dupedvalues.intert, line 18: property already given: 'P_lingeringness'
+>--> propertyvalue P_lingeringness I_leather = 6
+inter: inter/Tests/Invalid/dupedvalues.intert, line 19: not a kind which can have property values: 'K_number'
+>--> permission P_lingeringness K_number
+inter: inter/Tests/Invalid/dupedvalues.intert, line 22: no permission to have this property: 'I_green'
+>--> propertyvalue P_lingeringness I_green = 27

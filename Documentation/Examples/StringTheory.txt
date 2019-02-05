@@ -1,0 +1,80 @@
+*** Understanding specified numbers
+(CUT and TIE for lengths of string--String that can be divided and tied together again; Snip)
+A string which can be cut into arbitrary lengths, and then tied back together.
+
+	{*}"Snip!"
+
+	Length is a kind of value. 30 inch specifies a length. 20 in specifies a length. 50 inches specifies a length.
+
+	A string is a kind of thing. A string has a length. The length of a string is usually 36 inches.  
+
+	Before printing the name of a string, say "[length] piece of ". Rule for printing the plural name of a string: say "[length] pieces of string".
+
+	Understand the command "cut" as something new. Understand "cut [length] from/off [something]" as trimming it by (with nouns reversed). Understand "cut [something] by [length]" as trimming it by. Understand the command "trim" as "cut".
+
+	Trimming it by is an action applying to one thing and one length.
+
+	Check trimming it by:
+		if the length understood is 0 inches, say "You're approaching Zeno's string at this point." instead;
+		if the length understood is greater than the length of the noun, say "[The noun] is only [length of the noun] long to start with." instead;
+		if the length understood is the length of the noun, say "[The noun] is already exactly [length of the noun] long." instead.
+
+	Carry out trimming it by:
+		now the length of the noun is the length of the noun minus the length understood;
+		let the other half be a random string in the string repository;
+		now the length of the other half is the length understood;
+		move the other half to the player.
+	
+	Report trimming it by:
+		reset string lengths; [we will define this in a moment; it helps guarantee that our descriptions of the strings are correct when we write the output list]
+		say "You now have [a list of strings carried by the player]."
+		
+	Understand "cut [something] in half" as halving. Halving is an action applying to one thing.
+
+	Carry out halving:
+		let half measure be the length of the noun divided by 2;
+		now the length understood is half measure;
+		try trimming the noun by half measure.
+		
+This fudges slightly, since an odd-length string will be divided into uneven halves. Keeping track of fractional inches would complicate matters, though, so let's assume for now that this doesn't matter.
+	
+	{**}The player carries a string.
+
+	The Scissors Room is a room. 
+
+	The string repository contains 35 strings.
+
+Since our initial string is 36 inches long and it is impossible for the player to divide it into pieces smaller than an inch each, we need a total of 36 items to represent all the string-bits: one that the player carries at the outset, and 35 others. We should bear in mind that it is usually a good idea to use the smallest number of spare objects we can get away with: writing a game that required 1000 strings in the string repository would place silly demands on the resources of the system, so it's best to avoid that sort of thing if possible.
+
+Now with a bit of fiddling we can also teach Inform to recognize descriptors such as "the shortest string":
+
+	{**}Ordinariness is a kind of value. The ordinarinesses are longest, medium, shortest. A string has an ordinariness. Understand the ordinariness property as referring to a string.
+
+	Definition: a string is small if its length is 2 in or less. Definition: a string is large if its length is 20 in or more.
+
+	Before reading a command:
+		reset string lengths.	
+
+	To reset string lengths:
+		let upper measure be the length of the largest visible string;
+		let lower measure be the length of the smallest visible string;
+		repeat with item running through strings:
+			now the ordinariness of the item is medium;
+			if the length of the item is the upper measure, now the item is longest;
+			if the length of the item is the lower measure, now the item is shortest.
+
+	After reading a command:
+		if the player's command includes "shorter", replace the matched text with "shortest";
+		if the player's command includes "longer", replace the matched text with "longest".
+	
+	Instead of tying a string to a string:
+		move the second noun to the string repository;
+		now the length of the noun is the length of the noun plus the length of the second noun;
+		decrease the length of the noun by 1 inch;
+		say "You end up with [a noun], as some is taken up by the knot." 
+	
+This is still a little incomplete because we cannot refer to strings by their lengths, as in "the 2 inch string" and so on. To do this, we borrow a line from the chapter on Understanding:
+	
+	{**}Understand the length property as referring to a string.
+
+	Test me with "trim string by 4 in / cut longer string in half / cut longest string in half / cut shortest string in half / g / g / tie longest string to shortest string / tie longest string to medium string / i / x 16 inch string / drop 8 inch string / i".

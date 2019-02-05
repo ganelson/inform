@@ -1,0 +1,18 @@
+Inform 7 build 6L55 has started.
+I've now read your source text, which is 26 words long.
+I've also read Standard Rules by Graham Nelson, which is 42518 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EmptySubstitution
+  >--> You wrote '"[]"' (source text, line 4): but the text here contains an
+    empty substitution '[]', which is not allowed. To say nothing - well, say
+    nothing.
+Problem__ PM_EmptySubstitution
+  >--> You wrote '"[ ]frpg"' (source text, line 5): again, the text here
+    contains an empty substitution '[]'.
+Problem__ PM_EmptySubstitution
+  >--> You wrote '"asasdf[ ]frpg"' (source text, line 6): again, the text here
+    contains an empty substitution '[]'.
+Problem__ PM_EmptySubstitution
+  >--> You wrote '"asasdf[ ]"' (source text, line 7): again, the text here
+    contains an empty substitution '[]'.
+Inform 7 has finished: 80 centiseconds used.

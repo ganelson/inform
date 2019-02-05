@@ -1,0 +1,244 @@
+CheapGlk: Cheapass Implementation of the Glk API.
+
+CheapGlk Library: version 0.9.2###.
+Glk API which this implements: version 0.7.0.
+Designed by Andrew Plotkin <erkyrath@eblong.com>
+http://eblong.com/zarf/glk/index.html
+
+This is source code for the simplest possible implementation of the Glk
+API. It uses stdio.h calls (fopen, putc, getc), but not any of the
+curses.h calls (which handle cursor movement and unbuffered keyboard
+input.) So there's no way it can support multiple windows, or a status
+bar. In fact, this library only allows you to create *one* window at a
+time, and that must be a TextBuffer. Fortunately -- well, deliberately
+-- TextBuffer windows are very simple; all the library has to be able to
+do is printf() straight to stdout.
+
+* Command-line arguments:
+
+CheapGlk can accept command-line arguments both for itself and on behalf
+of the underlying program. These are the arguments the library accepts
+itself:
+
+    -w NUM, -h NUM: These set the screen width and height manually. This
+is only used when trying to "clear" the screen (by printing a bunch of
+newlines.)
+
+    -ui: Assume that stdin contains UTF-8 encoded text.
+    -uo: Generate UTF-8 encoded text on stdout.
+    -u: Both of the above.
+
+* Notes on building this mess:
+
+See the top of the Makefile for comments on installation.
+
+When you compile a Glk program and link it with GlkTerm, you must supply
+one more file: you must define a function called glkunix_startup_code(),
+and an array glkunix_arguments[]. These set up various Unix-specific
+options used by the Glk library. There is a sample "glkstart.c" file
+included in this package; you should modify it to your needs.
+
+The glkunix_arguments[] array is a list of command-line arguments that
+your program can accept. The library will sort these out of the command
+line and pass them on to your code. The array structure looks like this:
+
+typedef struct glkunix_argumentlist_struct {
+    char *name;
+    int argtype;
+    char *desc;
+} glkunix_argumentlist_t;
+
+extern glkunix_argumentlist_t glkunix_arguments[];
+
+In each entry, name is the option as it would appear on the command line
+(including the leading dash, if any.) The desc is a description of the
+argument; this is used when the library is printing a list of options.
+And argtype is one of the following constants:
+
+    glkunix_arg_NoValue: The argument appears by itself.
+    glkunix_arg_ValueFollows: The argument must be followed by another
+argument (the value).
+    glkunix_arg_ValueCanFollow: The argument may be followed by a value,
+optionally. (If the next argument starts with a dash, it is taken to be
+a new argument, not the value of this one.)
+    glkunix_arg_NumberValue: The argument must be followed by a number,
+which may be the next argument or part of this one. (That is, either
+"-width 20" or "-width20" will be accepted.)
+    glkunix_arg_End: The glkunix_arguments[] array must be terminated
+with an entry containing this value.
+
+To accept arbitrary arguments which lack dashes, specify a name of ""
+and an argtype of glkunix_arg_ValueFollows.
+
+If you don't care about command-line arguments, you must still define an
+empty arguments list, as follows:
+
+glkunix_argumentlist_t glkunix_arguments[] = {
+    { NULL, glkunix_arg_End, NULL }
+};
+
+Here is a more complete sample list:
+
+glkunix_argumentlist_t glkunix_arguments[] = {
+    { "", glkunix_arg_ValueFollows, "filename: The game file to load."
+},
+    { "-hum", glkunix_arg_ValueFollows, "-hum NUM: Hum some NUM." },
+    { "-bom", glkunix_arg_ValueCanFollow, "-bom [ NUM ]: Do a bom (on
+the NUM, if given)." },
+    { "-goo", glkunix_arg_NoValue, "-goo: Find goo." },
+    { "-wob", glkunix_arg_NumberValue, "-wob NUM: Wob NUM times." },
+    { NULL, glkunix_arg_End, NULL }
+};
+
+This would match the arguments "thingfile -goo -wob8 -bom -hum song".
+
+After the library parses the command line, it does various occult
+rituals of initialization, and then calls glkunix_startup_code().
+
+int glkunix_startup_code(glkunix_startup_t *data);
+
+This should return TRUE if everything initializes properly. If it
+returns FALSE, the library will shut down without ever calling your
+glk_main() function.
+
+The data structure looks like this:
+
+typedef struct glkunix_startup_struct {
+    int argc;
+    char **argv;
+} glkunix_startup_t;
+
+The fields are a standard Unix (argc, argv) list, which contain the
+arguments you requested from the command line. In deference to custom,
+argv[0] is always the program name.
+
+You can put other startup code in glkunix_startup_code(). This should
+generally be limited to finding and opening data files. There are a few
+Unix Glk library functions which are convenient for this purpose:
+
+strid_t glkunix_stream_open_pathname(char *pathname, glui32 textmode, 
+    glui32 rock);
+
+This opens an arbitrary file, in read-only mode. Note that this function
+is *only* available during glkunix_startup_code(). It is inherent
+non-portable; it should not and cannot be called from inside glk_main().
+
+void glkunix_set_base_file(char *filename);
+
+This sets the library's idea of the "current directory" for the executing
+program. The argument should be the name of a file (not a directory).
+When this is set, fileref_create_by_name() will create files in the same
+directory as that file, and create_by_prompt() will base default filenames
+off of the file. If this is not called, the library works in the Unix
+current working directory, and picks reasonable default defaults.
+
+* Notes on the source code:
+
+Functions which begin with glk_ are, of course, Glk API functions. These
+are declared in glk.h.
+
+Functions which begin with gli_ are internal to the CheapGlk library
+implementation. They don't exist in every Glk library, because different
+libraries implement things in different ways. (In fact, they may be
+declared differently, or have different meanings, in different Glk
+libraries.) These gli_ functions (and other internal constants and
+structures) are declared in cheapglk.h.
+
+The files gi_dispa.c and gi_dispa.h are the Glk dispatch layer.
+
+As you can see from the code, I've kept a policy of catching every error
+that I can possibly catch, and printing visible warnings.
+
+This code should be portable to any C environment which has an ANSI
+stdio library. The likely trouble spots are glk_fileref_delete_file()
+and glk_fileref_does_file_exist() -- I've implemented them with the
+Unix calls unlink() and stat() respectively.
+
+The character-encoding problem is pretty much ignored here (like most
+of the more complicated Glk issues.) By default, this source code
+assumes that players can only type the standard ASCII characters (32
+to 126), and also that the display (wherever stdout goes) can only
+display the same. It tells these facts to the game via the character
+I/O Gestalt selectors. So really, if the player *can* type accented
+characters, you'll have to modify this code to transform them to
+Latin-1 encoding (if necessary) and also change the Gestalt responses.
+Similarly, if displaying accented characters is possible, you'll have
+to write code to transform Latin-1 to the platform-native encoding (if
+necessary) and again change Gestalt.
+
+(The Gestalt step is important! A well-written game will not even try to
+print an accented character unless Gestalt reassures it that the output
+capacity is there.)
+
+New in version 0.9 is the "-u" argument. This tells CheapGlk that its
+stdin and stdout are attached to a terminal (or other device) which
+does UTF-8 encoding and decoding. (For example, the MacOSX Terminal
+app. Be sure to *uncheck* the "Use option key as meta key" preference,
+or Unicode input will fail.) In "-u" mode, CheapGlk declares that it
+can input and output all Unicode characters.
+
+* Version History
+
+0.9.2###:
+    Added glkunix_stream_open_pathname_gen(), a more general form of
+    the pathname opening function in the startup code. (This is needed
+    for profiling improvements.)
+
+0.9.1:
+    Fixed file-creation bug in glk_stream_open_file().
+    Fixed readcount bug in gli_get_line().
+    Fixed argument parsing bug ("-w 120" was handled wrong).
+    Fixed potential buffer overflow in glk_fileref_create_by_name().
+
+0.9.0:
+    Upgraded to Glk API version 0.7.0; added the Unicode functions.
+    Added the -u option.
+
+0.8.7:
+    Upgraded to Glk API version 0.6.1; i.e., a couple of new gestalt
+    selectors.
+    Fixed dispatch bug for glk_get_char_stream.
+
+0.8.6:
+    Upgraded to Glk API version 0.6.0; i.e., stubs for hyperlinks.
+
+0.8.5:
+    Added a fflush(stdout) before input. This shouldn't be necessary in
+    ANSI C, according to Stevens, but it seems to be on the Acorn.
+    Added glkunix_set_base_file().
+
+0.8.4:
+    Added the ability to open a Blorb file, although the library never
+    makes use of it. (This allows an interpreter to read a game file
+    from Blorb.)
+
+0.8.3:
+    Upgraded to Glk API version 0.5.2; i.e., stubs for sound code.
+    Made the license a bit friendlier.
+
+0.8.2:
+    Fixed a leak (stream objects were never unregistered).
+    Added more consistency-checking to the disprock values.
+
+0.8.1:
+    Upgraded to Glk API version 0.5.1; i.e., stubs for graphics code.
+
+0.8:
+    Upgraded to Glk API version 0.5; added dispatch layer code.
+
+0.7:
+    The one true Unix Glk Makefile system.
+    Startup code and command-line argument system.
+
+0.5: Alpha release.
+
+* Permissions
+
+The source code in this package is copyright 1998-2000 by Andrew Plotkin. You
+may copy and distribute it freely, by any means and under any conditions,
+as long as the code and documentation is not changed. You may also
+incorporate this code into your own program and distribute that, or modify
+this code and use and distribute the modified version, as long as you retain
+a notice in your program or documentation which mentions my name and the
+URL shown above.
+

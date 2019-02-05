@@ -1,0 +1,3 @@
+A thing is a kind of room.
+
+Foo is a room.

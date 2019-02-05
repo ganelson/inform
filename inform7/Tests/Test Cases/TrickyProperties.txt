@@ -1,0 +1,27 @@
+Stage is a room.
+
+Brightness is a kind of value. The brightnesses are guttering, weak,
+radiant and blazing.
+
+The player carries a candle lantern. The lantern has a brightness. The
+lantern is blazing.
+
+Temperature is a kind of value. 70C specifies a temperature.
+
+A brightness has a temperature. The temperature of a brightness is
+usually 700C. The temperature of blazing is 1400C. The temperature of
+radiant is 1100C.
+
+A brightness can be adequate or inadequate. A brightness is usually
+adequate. Guttering is inadequate.
+
+The player carries a book. The description of the book is "[if the
+brightness of the lantern is adequate]Many secrets are now
+yours.[otherwise]No, the print's too tiny by this awful light."
+
+Instead of jumping, now the lantern is guttering.
+
+The description of the lantern is "The lantern shines with a flame at
+[temperature of the brightness of the lantern]."
+
+Test me with "x lantern / read book / jump / x lantern / read book".

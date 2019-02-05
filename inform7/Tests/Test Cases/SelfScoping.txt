@@ -1,0 +1,24 @@
+Pavilion is a room.
+
+A thing has a text called contained-description.
+
+The box is a container in the Pavilion.  "A box is here. [if the widget is in the box]The [contained-description of the widget][end if]".
+
+The widget is a thing in the box.  The contained-description of the widget is "[The printed name] is in [the holder of the item described]."
+
+A thing has text called the material. The material of a thing is usually "ones and zeros".
+
+A trophy is a kind of thing. The description of a trophy is usually "It's a trophy made of [material]."
+
+The trophy case is in the Pavilion. The material of the trophy case is "wood and glass".
+
+In the trophy case is a trophy called the gold trophy. The material of the gold trophy is "gold". In the trophy case is a trophy called the silver trophy. The material of the silver trophy is "silver".
+
+Instead of examining the trophy case when the trophy case contains something:
+	say "The trophy case contains:[line break]";
+	repeat with x running through things in the trophy case
+	begin;
+		say "  [x] - [description of x][line break]";
+	end repeat.
+
+Test me with "examine case".

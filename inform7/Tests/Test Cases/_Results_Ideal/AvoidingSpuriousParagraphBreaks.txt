@@ -1,0 +1,14 @@
+   Garden
+  You sit.
+  
+  "text produced by the N0123 rules" = text: dummy
+  it works
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Garden (on the chair)
+  
+> >   Garden
+> Are you sure you want to quit? 

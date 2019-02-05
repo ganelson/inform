@@ -1,0 +1,74 @@
+* Changing reachability
+(Backdrops which can only be examined; Waterworld)
+A backdrop which the player can examine, but cannot interact with in any other way.
+
+It's tempting to handle the player's inability to interact with something with a simple instead rule:
+
+	{*}"Waterworld 1"
+
+	A view is a kind of backdrop. Instead of doing something other than examining to a view, say "You are too far from [the noun] to do anything but look."
+
+	The sun is a view. It is everywhere. The description is "A blazing sun makes you wish you had never been born."
+
+	The Sahara is a room. North of the Sahara is More Sahara. North of More Sahara is Yet Further Sahara.
+	
+	Test me with "x sun / get sun / n / x sun / n / x sun".
+
+Unfortunately, the rule does not address the case where the object in question is the second noun; so for instance the following example reveals the difficulty:
+	
+	{*}"Waterworld 2"
+
+	A view is a kind of backdrop. Instead of doing something other than examining to a view, say "You are too far from [the noun] to do anything but look."
+
+	The player carries a rope.
+
+	The sun is a view. It is everywhere. The description is "A blazing sun makes you wish you had never been born."
+
+	The Sahara is a room. North of the Sahara is More Sahara. North of More Sahara is Yet Further Sahara.
+	
+	Test me with "x sun / get sun / n / x sun / n / x sun / tie rope to the sun".
+	
+...where the response here behaves as though the sun is in reach. If we had a fully implemented tying action, the player would (even more disastrously) be allowed to lasso celestial objects.
+
+We could add a second instead rule as well:
+	
+	{*}"Waterworld 3"
+
+	A view is a kind of backdrop. 
+
+	Instead of doing something other than examining when the noun is a view:
+		say "You are too far from [the noun] to do anything but look."
+	Instead of doing something other than examining when the second noun is a view:
+		say "You are too far from [the second noun] to do anything but look."
+
+	The player carries a rope.
+
+	The sun is a view. It is everywhere. The description is "A blazing sun makes you wish you had never been born."
+
+	The Sahara is a room. North of the Sahara is More Sahara. North of More Sahara is Yet Further Sahara.
+
+	Test me with "x sun / get sun / n / x sun / n / x sun / tie rope to sun".
+
+This produces acceptable output again, but there is a more elegant way, one that works better with Inform's existing world model. Currently the default model assumes that accessibility -- whether the player can reach something or not -- is checked between the Before... rules and the Instead... rules. We can add our own accessibility rules, including this one to govern whether views are accessible. So for instance:
+
+	{*}"Waterworld 4"
+
+	A view is a kind of backdrop. 
+
+	The can't touch views rule is listed before the access through barriers rule in the accessibility rulebook.
+
+	Accessibility rule (this is the can't touch views rule):
+		if the action requires a touchable noun and the noun is a view:
+			say "You are too far from [the noun] to do anything but look." instead;
+		if the action requires a touchable second noun and the second noun is a view:
+			say "You are too far from [the second noun] to do anything but look." instead; 
+
+	The player carries a rope.
+
+	The sun is a view. It is everywhere. The description is "A blazing sun makes you wish you had never been born."
+
+	The Sahara is a room. North of the Sahara is More Sahara. North of More Sahara is Yet Further Sahara.
+
+	Test me with "x sun / get sun / n / x sun / n / x sun / tie rope to sun".
+
+Now our new accessibility rule fits into its proper stage.

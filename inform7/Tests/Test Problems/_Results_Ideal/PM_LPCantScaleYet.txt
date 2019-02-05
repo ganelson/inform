@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LPCantScaleYet
+  >--> You wrote '1kg specifies a mass scaled up by 100' (source text, line 5):
+    but this tries to scale up or down a value which so far has no point of
+    reference to scale from, which is impossible.
+Inform 7 has finished: 17 centiseconds used.

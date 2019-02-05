@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 8 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindRelated
+  >--> You wrote 'A door is in the Hall of Infinity' (source text, line 1): but
+    something described only by its kind should not be given a specific place
+    or role in the world, to avoid ambiguity. For instance, suppose 'car' is a
+    kind. Then we are not allowed to say 'a car is in the garage': there's too
+    much risk of confusion between whether an individual (but nameless) car is
+    referred to, or whether cars are generically to be found there. Sentences
+    of this form are therefore prohibited, though more specific ones like 'a
+    car called Genevieve is in the garage' are fine, as is the reverse, 'In the
+    garage is a car.'
+Inform 7 has finished: 16 centiseconds used.

@@ -1,0 +1,7 @@
+Lab is a room.
+
+Peering for something is an activity on numbers.
+
+Rule for peering for a number (called n): say "Yep, [n] is there."
+
+When play begins: carry out the peering for activity with 2.

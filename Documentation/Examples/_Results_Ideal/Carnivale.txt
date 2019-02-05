@@ -1,0 +1,29 @@
+   Park Entrance
+  Carnivale
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Park Entrance
+  You are now just inside the gates. Behind you snakes a triple line of fairgoers all the way down the length of the valley to the railway station. Roughly southeast of here is the ferris wheel, towering over the other attractions.
+  
+> >   By the Wheel
+  (Testing.)
+  
+  >[1] x ferris wheel
+  It is extravagantly tall and carries several dozen glass gondolas for riders.
+  
+  >[2] touch ferris wheel
+  You can only look from this distance.
+  
+  >[3] se
+  
+  By the Wheel
+  You stand at the foot of an enormous ferris wheel, which turns far too quickly and never seems to stop for new riders.
+  
+  >[4] x ferris wheel
+  It is extravagantly tall and carries several dozen glass gondolas for riders.
+  
+  >[5] touch ferris wheel
+  You don't dare: it's spinning too fast.
+  
+> >

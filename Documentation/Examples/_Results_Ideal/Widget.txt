@@ -1,0 +1,29 @@
+   Widget Stand
+  Widget Enterprises
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Widget Stand
+  
+> >   Widget Stand
+  (Testing.)
+  
+  >[1] set price to $0.00
+  You set the price of your widgets to $0.00, resulting in sales of 18 units and a loss of $196.88.
+  
+  >[2] set price to $100.00
+  You set the price of your widgets to $100.00, resulting in sales of 0 units and a loss of $5.00.
+  
+  >[3] set price to $15.00
+  You set the price of your widgets to $15.00, resulting in sales of 7 units and a profit of $25.38.
+  
+  >[4] set price to $8.00
+  You set the price of your widgets to $8.00, resulting in sales of 18 units and a loss of $52.88.
+  
+  >[5] set price to $25.00
+  You set the price of your widgets to $25.00, resulting in sales of 2 units and a profit of $23.68.
+  
+  >[6] set price to $14.99
+  You set the price of your widgets to $14.99, resulting in sales of 15 units and a profit of $59.95.
+  
+> >

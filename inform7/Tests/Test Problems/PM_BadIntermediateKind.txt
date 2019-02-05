@@ -1,0 +1,5 @@
+There is a room.
+To decide what number is foo (X - a number): (- {X} -).
+To decide what time is bar (X - an object): (- {X} -).
+
+Every turn: if foo bar yourself is odd, say "Yep".

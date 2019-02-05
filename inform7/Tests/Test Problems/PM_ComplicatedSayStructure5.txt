@@ -1,0 +1,1 @@
+Mab is a room. "This is Mab, the [if 1 is 2]leading [one of]pet shop[or]haberdashery[otherwise] and milliner[or]bakery[purely at random] in the Kidlington area."

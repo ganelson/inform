@@ -1,0 +1,14 @@
+Inform 7 build 6L48 has started.
+I've now read your source text, which is 45 words long.
+I've also read Standard Rules by Graham Nelson, which is 42569 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NoMoreRonNewcombMoment
+  >--> You wrote 'if we have examined the grail for the fifth time' (source
+    text, line 5): but a condition like 'we have X', where X is an action, has
+    either happened for one spell or never happened at all, so it can't make
+    sense to ask if it has happened two or more times. For instance, at the
+    start of play 'we have jumped' is false, but once the player types JUMP,
+    'we have jumped' will then be true for the rest of time. 'We have jumped
+    for the second time' doesn't mean the jumping happened twice, it means the
+    having-jumped has happened twice, which is impossible.
+Inform 7 has finished: 49 centiseconds used.

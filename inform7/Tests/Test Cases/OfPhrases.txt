@@ -1,0 +1,11 @@
+Nirvana is a room.
+
+The currently shown picture is a figure-name that varies.
+
+A room has a figure-name called room illustration. 
+	
+The image-setting rule is listed in the carry out looking rules. 
+
+This is the image-setting rule:
+	now currently shown picture is the room illustration of the location;
+	increase the carrying capacity of the player by 1.

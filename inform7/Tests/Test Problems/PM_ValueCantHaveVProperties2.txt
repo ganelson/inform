@@ -1,0 +1,3 @@
+Indoors is a room. Outdoors is a room. 
+
+Dojo is a room. An action name has a number called difficulty.

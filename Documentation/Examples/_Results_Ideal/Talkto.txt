@@ -1,0 +1,23 @@
+   Dusty Lot
+  Gorge at George
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dusty Lot
+  A few miles up the road from the concert venue, but at least it's cheap to park here.
+  
+  A man clad in a black leather jacket and shades leans against his Harley and watches you without saying anything.
+  
+> >   Dusty Lot
+  (Testing.)
+  
+  >[1] talk to motorcyclist
+  To start a conversation, try to ASK the motorcyclist ABOUT something or TELL the motorcyclist ABOUT something.
+  
+  >[2] ask motorcyclist about himself
+  He smirks cryptically.
+  
+  >[3] tell motorcyclist about me
+  This does not seem to interest him much.
+  
+> >

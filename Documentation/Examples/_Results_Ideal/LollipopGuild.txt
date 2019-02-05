@@ -1,0 +1,50 @@
+   Candyland
+  Lollipop Guild
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Candyland
+  A fizzing, popping wonderland of sugary delights. A path tiled with butterscotch sweets leads to the horizon.
+  
+  Growing right next to the path, on a trunk of white paper, is a giant lollipop colored green and red and white.
+  
+  Right beside you is a guardian in a mint-colored uniform.
+  
+> >   Candyland
+  (Testing.)
+  
+  >[1] x guardian
+  A killjoy wielding a gigantic toothbrush.
+  
+  >[2] x toothbrush
+  Bristles as long as your hand. Firm bristles, too, not those soft ones. The guardian doesn't care about your tender gums.
+  
+  >[3] show gumdrop to guardian
+  The guardian shrieks! You don't understand its language, but from its ululations you understand the idea of decay. There may have been a bit in there about a root canal.
+  
+  >[4] show path to guardian
+  The guardian shrieks! You don't understand its language, but from its ululations you understand the idea of decay. There may have been a bit in there about a root canal.
+  
+  >[5] show tuna to guardian
+  The guardian nods approvingly at the unsweetened can of tuna.
+  
+  >[6] look
+  Candyland
+  A fizzing, popping wonderland of sugary delights. A path tiled with butterscotch sweets leads to the horizon.
+  
+  Growing right next to the path, on a trunk of white paper, is a giant lollipop colored green and red and white.
+  
+  Right beside you is a guardian in a mint-colored uniform.
+  
+  >[7] eat gumdrop
+  (first taking the licorice gumdrop)
+  The guardian looks mournful, but unholsters his tube of paste and begins applying it to the toothbrush, as though to say that he really did not want to have to do this...
+  
+  
+  
+      *** Everything goes minty ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

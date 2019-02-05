@@ -1,0 +1,4 @@
+The Taj Mahal is a room. The Great Gate is a door.
+The Great Gate is south of the Taj Mahal.
+The Great Gate is east of the Grassy Slope.
+The Great Gate is west of the Temple.

@@ -1,0 +1,11 @@
+The Lab is a room.
+
+Object X with the printed name "Object A" is a thing.
+Object Y is a thing with the printed name "Object Z".
+
+Object B is a thing.
+Object C is a thing.
+
+When play begins:
+	repeat with T running through things:
+		say "[T]."

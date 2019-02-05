@@ -1,0 +1,179 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150831 / Inform 7 build 6M54 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  1. 1
+  The subkind relation on (base) kinds:
+  pointer value <= value
+  word value <= value
+  arithmetic value <= value
+  real arithmetic value <= value
+  enumerated value <= value
+  sayable value <= value
+  combined value of any arity <= value
+  object <= value, word value, sayable value
+  number <= value, word value, arithmetic value, sayable value
+  real number <= value, word value, arithmetic value, real arithmetic value, sayable value
+  truth state <= value, word value, sayable value
+  text <= value, pointer value, sayable value
+  unicode character <= value, word value, sayable value
+  use option <= value, word value, sayable value
+  response <= value, word value, sayable value
+  verb <= value, word value, sayable value
+  snippet <= value, word value, sayable value
+  table name <= value, word value, sayable value
+  equation name <= value, word value
+  rulebook outcome <= value, word value, sayable value
+  topic <= value, word value
+  nothing <= value, word value
+  phrase value -> value <= value, word value, sayable value
+  value, value <= value, word value
+  values variable-pointer <= value, word value
+  relation of values <= value, pointer value, sayable value
+  values based rule producing values <= value, word value, sayable value
+  values based rulebook producing values <= value, word value, sayable value
+  activity on values <= value, word value
+  list of nothing <= value, pointer value
+  description of values <= value, word value
+  property <= value, word value
+  table column <= value, word value
+  combination value and value <= value, pointer value, sayable value, combined value of any arity
+  described action <= value, word value
+  action <= value, pointer value, sayable value
+  action name <= value, word value, sayable value
+  time <= value, word value, arithmetic value, sayable value
+  scene <= value, word value, enumerated value, sayable value
+  figure name <= value, word value, enumerated value, sayable value
+  sound name <= value, word value, enumerated value, sayable value
+  external file <= value, word value, enumerated value, sayable value
+  room <= value, word value, sayable value, object
+  thing <= value, word value, sayable value, object
+  direction <= value, word value, sayable value, object
+  door <= value, word value, sayable value, object, thing
+  container <= value, word value, sayable value, object, thing
+  supporter <= value, word value, sayable value, object, thing
+  backdrop <= value, word value, sayable value, object, thing
+  person <= value, word value, sayable value, object, thing
+  region <= value, word value, sayable value, object
+  man <= value, word value, sayable value, object, thing, person
+  woman <= value, word value, sayable value, object, thing, person
+  animal <= value, word value, sayable value, object, thing, person
+  device <= value, word value, sayable value, object, thing
+  vehicle <= value, word value, sayable value, object, thing, container
+  player's holdall <= value, word value, sayable value, object, thing, container
+  natural language <= value, word value, enumerated value, sayable value
+  command parser error <= value, word value, enumerated value, sayable value
+  grammatical tense <= value, word value, enumerated value, sayable value
+  narrative viewpoint <= value, word value, enumerated value, sayable value
+  grammatical case <= value, word value, enumerated value, sayable value
+  grammatical gender <= value, word value, enumerated value, sayable value
+  
+  2. 2
+  The (always) compatibility relation on (base) kinds, where it differs from <=:
+  number --> real number
+  text --> topic
+  snippet --> text
+  values based rulebook producing values --> values based rule producing values
+  
+  3. 3
+  The superkind function applied to base kinds:
+  value ->
+  pointer value ->
+  word value ->
+  arithmetic value ->
+  real arithmetic value ->
+  enumerated value ->
+  sayable value ->
+  combined value of any arity ->
+  object ->
+  number ->
+  real number ->
+  truth state ->
+  text ->
+  unicode character ->
+  use option ->
+  response ->
+  verb ->
+  snippet ->
+  table name ->
+  equation name ->
+  rulebook outcome ->
+  topic ->
+  nothing ->
+  phrase value -> value ->
+  value, value ->
+  values variable-pointer ->
+  relation of values ->
+  values based rule producing values ->
+  values based rulebook producing values ->
+  activity on values ->
+  list of nothing ->
+  description of values ->
+  property ->
+  table column ->
+  combination value and value ->
+  described action ->
+  action ->
+  action name ->
+  time ->
+  scene ->
+  figure name ->
+  sound name ->
+  external file ->
+  room -> object ->
+  thing -> object ->
+  direction -> object ->
+  door -> thing -> object ->
+  container -> thing -> object ->
+  supporter -> thing -> object ->
+  backdrop -> thing -> object ->
+  person -> thing -> object ->
+  region -> object ->
+  man -> person -> thing -> object ->
+  woman -> person -> thing -> object ->
+  animal -> person -> thing -> object ->
+  device -> thing -> object ->
+  vehicle -> container -> thing -> object ->
+  player's holdall -> container -> thing -> object ->
+  natural language ->
+  command parser error ->
+  grammatical tense ->
+  narrative viewpoint ->
+  grammatical case ->
+  grammatical gender ->
+  
+  4. 4
+  Looking for partially ordered set violations.
+  
+  5. 5
+  Looking for maximum violations.
+  Fail maximality(A): max(number, real number) = real number
+  Fail maximality(B): max(real number, number) = real number
+  
+  6. 6
+  max(container, door) = thing
+  container <= thing
+  max(container, thing) = thing
+  door <= thing
+  max(door, thing) = thing
+  max(list of containers, list of doors) = list of things
+  max(list of containers, list of people) = list of things
+  list of containers <= list of things
+  max(list of containers, list of things) = list of things
+  max(list of doors, list of people) = list of things
+  list of doors <= list of things
+  max(list of doors, list of things) = list of things
+  list of people <= list of things
+  max(list of people, list of things) = list of things
+  phrase object -> door <= phrase door -> object
+  max(phrase door -> object, phrase object -> door) = phrase door -> object
+  phrase object -> object <= phrase door -> object
+  max(phrase door -> object, phrase object -> object) = phrase door -> object
+  phrase object -> door <= phrase object -> object
+  max(phrase object -> door, phrase object -> object) = phrase object -> object
+  
+  
+> >   Home
+> Are you sure you want to quit? 

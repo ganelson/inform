@@ -1,0 +1,7 @@
+There is a room.
+Here is a thing called the shoe.
+Here is a person called Sam.
+The shoe has a number called the flop.
+The flop of the shoe is two.
+Understand the flop property as describing the shoe.
+Test me with "show two shoe to sam / show two shoe filler to sam".

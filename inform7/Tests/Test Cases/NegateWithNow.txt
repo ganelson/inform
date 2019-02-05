@@ -1,0 +1,9 @@
+"Negate the Unnegateable"
+
+The Town Square is a room. "The only item of interest in this Town Square is the tall, unstable-looking statue [if the statue is upright]at its centre[otherwise]fallen across the cobbles[end if]."
+
+The tall unstable statue is here. The statue is scenery. The description is "A statue of some ancient worthy from a bygone era, too faded to be recognizable." The statue can be upright. The statue is upright.
+
+Instead of pushing the statue: now the statue is not upright; say "The statue topples over even more easily than you thought it would."
+
+Test me with "push statue / look".

@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+The printing the name activity has an open door called the portal.

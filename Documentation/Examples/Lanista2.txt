@@ -1,0 +1,119 @@
+** Overriding existing commands
+(Lanista: 2. Randomized Combat with Weapons--Randomized Combat with Weapons)
+Randomized combat in which the damage done depends on what weapons the characters are wielding, and in which an ATTACK IT WITH action is created to replace regular attacking. Also folds a new DIAGNOSE command into the system.
+
+Back in the chapter on randomization, we explored a way to create a randomized combat system. That system didn't allow for multiple weapons, though. Here we explore how to create an ATTACK IT WITH action that will let the player choose between weapons with different maximum powers.
+
+We're also going to rewrite that original "instead of attacking:" rule into an attacking it with action that can be performed equally by the player or by any of the player's enemies. 
+
+	{*}"Lanista, Part Two" 
+
+	The Arena is a room. "Sand, blood, iron. These festivals are normally held on hot days, but the sun has gone behind a cloud and fat drops of rain now and then spatter the arena floor." The gladiator is a man in the Arena. "A bare-chested Scythian gladiator faces you, wielding [a list of weapons carried by the gladiator]."
+	
+	Section 1 - Hit Points
+
+	A person has a number called maximum hit points. A person has a number called current hit points.
+
+	The maximum hit points of the player is 35. The maximum hit points of the gladiator is 25.
+	
+In our simpler version of this example we set the current hit points by hand, but in a game with many characters this would get dull and repetitive, so here we'll use a "when play begins" to set all current hit point values automatically to maximum:
+
+	{**}When play begins:
+		repeat with victim running through people:
+			now the current hit points of the victim is the maximum hit points of the victim.
+
+	Definition: a person is dead if his current hit points are less than 0.
+	
+	Section 2 - Diagnosis
+		
+	Diagnosing is an action applying to one visible thing. Understand "diagnose [something]" as diagnosing.
+	
+	Check diagnosing: 
+		if the noun is not a person, say "Only people can have diagnoses." instead.
+		
+	Carry out diagnosing: 
+		say "[if the noun is the player]You have[otherwise][The noun] has[end if] [current hit points of the noun] out of a possible [maximum hit points of the noun] hit points remaining."
+		
+	Section 3 - Weapons
+
+	A weapon is a kind of thing. A weapon has a number called the maximum damage. The maximum damage of a weapon is usually 4.
+	
+	The gladiator carries a weapon called a trident. The maximum damage of the trident is 5. The gladiator carries a weapon called a net. The maximum damage of the net is 1.
+	
+	The player carries a weapon called a mace. The maximum damage of the mace is 3.
+	
+	Section 4 - Attacking it with
+	
+In our new system, we want to specify what is being used for an attack. This means that we need to create a new "attacking it with" action, and also that we should disable the existing "attacking..." command. 
+
+Here's why: If we leave the default attack command in place, Inform will continue to accept commands like >ATTACK GLADIATOR, but reply foolishly with the default "Violence is not the answer..." response. 
+
+A somewhat better approach would be to change the reply of >ATTACK GLADIATOR to say something like "You must specify a weapon to attack with." But this is still less than ideal, because it means that the player has to then rewrite his entire command. If, on the other hand, we take out "ATTACK GLADIATOR" entirely, the game will always prompt "What do you want to attack the gladiator with?" -- which teaches the player the correct command structure for this particular game, and avoids pretending to understand any command that is not meaningful within this game.
+
+This is a little bit of work because ATTACK has a lot of synonyms in the default library, but if we look through the actions index we can find them all:
+
+	{**}Understand the commands "attack" and "punch" and "destroy" and "kill" and "murder" and "hit" and "thump" and "break" and "smash" and "torture" and "wreck" as something new. 
+	
+Now we make our new command:
+	
+	{**}Attacking it with is an action applying to one visible thing and one carried thing. Understand "attack [someone] with [something preferably held]" as attacking it with. 
+
+Note that we've specified "one carried thing", because we want the player to pick up a weapon to use if necessary. And now we assign all the old attack vocabulary to apply to the new command:
+	
+	{**}Understand the commands "punch" and "destroy" and "kill" and "murder" and "hit" and "thump" and "break" and "smash" and "torture" and "wreck" as "attack". 
+
+This may seem counter-intuitive, but order of source code matters here: we first get rid of the old, default vocabulary, then define our new action, then make the vocabulary apply to that new action. Inform will now understand >HIT GLADIATOR WITH TRIDENT, >BREAK GLADIATOR WITH TRIDENT, and so on.
+
+Our new action is also a perfect place to use an action variable: we're going to need to choose an amount of damage done and refer to that several times in our action rules. So let's set that up first:
+
+	{**}The attacking it with action has a number called the damage inflicted.
+	
+	Setting action variables for attacking something with something:
+		if the second noun is a weapon:
+			let the maximum attack be the maximum damage of the second noun;
+			now the damage inflicted is a random number between 1 and the maximum attack.
+
+	Check an actor attacking something with something (this is the can't attack with something that isn't a weapon rule):
+		if the second noun is not a weapon:
+			if the actor is the player, say "[The second noun] does not qualify as a weapon.";
+			stop the action.
+
+	Check an actor attacking something with something (this is the can't attack a non-person rule):
+		if the noun is not a person:
+			if the actor is the player, say "[The noun] has no life to lose.";
+			stop the action.
+
+	Carry out an actor attacking something with something (this is the standard attacking it with a weapon rule):
+		decrease the current hit points of the noun by the damage inflicted;
+		if the noun is dead:
+			now the noun is nowhere. 
+	
+Though our checks and carry-out rules are similar regardless of who is acting, we're going to want actions to be described differently for different actors, so we'll use separate "report attacking" and "report someone attacking" rules. We'll also make some special cases for when the character has died as a result of the attack:
+	
+	{**}Report attacking a dead person with something (this is the death-report priority rule):
+		say "You attack with [the second noun], killing [the noun]!" instead.
+	
+	Report attacking someone with something (this is the normal attacking report rule):
+		say "You attack [the noun] with [the second noun], causing [damage inflicted] point[s] of damage!" instead.
+	
+	Report someone attacking the player with something when the player is dead (this is the player's-death priority rule):
+		say "[The actor] attacks you with [the second noun], finishing you off!";
+		end the story;
+		stop the action
+	
+	Report someone attacking the player with something (this is the standard report someone attacking the player with rule):
+		say "[The actor] attacks you with [the second noun], causing [damage inflicted] point[s] of damage!" instead.
+	
+	Report someone attacking something with something (this is the standard report attacking it with rule):
+		say "[The actor] attacks [the noun] with [the second noun], causing [damage inflicted] point[s] of damage!" instead.
+		
+	When play begins:
+		now the left hand status line is "You: [current hit points of player]";
+		now the right hand status line is "Gladiator: [current hit points of gladiator]".
+	
+	Every turn (this is the gladiator-attack rule):
+		if the gladiator is not dead, try the gladiator attacking the player with a random weapon which is carried by the gladiator.  
+	
+	Test me with "hit gladiator with mace / kill gladiator / drop mace / attack gladiator / attack gladiator with mace / g / g".
+
+Those devoted to role-playing will note that our form of randomization is still pretty naive: most RPG systems use multiple dice in order to create more interesting probability curves. For a system that simulates actual dice-rolling, see the full "Reliques of Tolti-Aph" game.

@@ -1,0 +1,44 @@
+   Zeta Proximan Dig Field
+  You have, at last, loaded your illicit cargo without setting off any of the many and sensitive alarms set here; now it remains only to sneak out of the area, under the light of Zeta Proxima's lone green moon.
+  
+  Provenance Unknown
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Zeta Proximan Dig Field
+  During the day, the field is massed with sweating native workers, overseers, and officials from central command. Now the spades, trowels, brushes, metal detectors, ground probes, plumb lines, and sighting tripods have been laid aside.
+  
+  All that remains are the trenches and the fine grey dust that blows slowly across them; the moonlight; and the just-emerging outlines of an ancient and alien wall.
+  
+  You can see a hovercraft (on which is a roller board (on which is a heavy golden idol)) here.
+  
+> >   Zeta Proximan Dig Field
+  (Testing.)
+  
+  >[1] push idol west
+  
+  Hover-Road
+  A long road hastily laid down, stretching east to west, from the dig site toward the safety of the city.
+  
+  >[2] look
+  Hover-Road
+  A long road hastily laid down, stretching east to west, from the dig site toward the safety of the city.
+  
+  You can see a hovercraft (on which is a roller board (on which is a heavy golden idol)) here.
+  
+  >[3] push roller board east
+  
+  Zeta Proximan Dig Field
+  During the day, the field is massed with sweating native workers, overseers, and officials from central command. Now the spades, trowels, brushes, metal detectors, ground probes, plumb lines, and sighting tripods have been laid aside.
+  
+  All that remains are the trenches and the fine grey dust that blows slowly across them; the moonlight; and the just-emerging outlines of an ancient and alien wall.
+  
+  >[4] look
+  Zeta Proximan Dig Field
+  During the day, the field is massed with sweating native workers, overseers, and officials from central command. Now the spades, trowels, brushes, metal detectors, ground probes, plumb lines, and sighting tripods have been laid aside.
+  
+  All that remains are the trenches and the fine grey dust that blows slowly across them; the moonlight; and the just-emerging outlines of an ancient and alien wall.
+  
+  You can see a hovercraft (on which is a roller board (on which is a heavy golden idol)) here.
+  
+> >

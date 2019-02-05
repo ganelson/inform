@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 9 words long.
+Problem__ PM_NoSuchLanguageElement
+  >--> You wrote 'Use no coreasdfa language element' (source text, line 1): but
+    this seems to ask to include or exclude a language feature which I don't
+    recognise the name of, possibly because you've borrowed it from a different
+    version of Inform, or forgotten what these are called? You can see the
+    current configuration at the bottom of the Contents index.
+Inform 7 has finished: 3 centiseconds used.

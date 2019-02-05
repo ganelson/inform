@@ -1,0 +1,10 @@
+   Place
+  "plot device of the overall plot" = plot device: prologue
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150616 / Inform 7 build 6M34 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  
+> >   Place
+> Are you sure you want to quit? 

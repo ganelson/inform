@@ -1,0 +1,7 @@
+Wine Cellar is a room.
+
+A barrel is a kind of thing. Understand "cask" as a barrel.
+Five barrels are in the wine cellar.
+
+Test me with "get barrel/get cask/get casks/get barrels".
+

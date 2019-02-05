@@ -1,0 +1,283 @@
+   Burning: 2                                                                                                                                                                                                             Time: 9:00 am
+  Chapter 8: Ragnarok
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Great Hall
+  You can see Surt, Loki, Freya, a table (on which are a twig and a box (in which are a stone, a length of linen and a yellow piece of paper)), a hearth and a flaming torch here.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:01 am
+  ** z
+  Time passes.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:02 am
+  ** z
+  Time passes.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:03 am
+  ** z
+  Time passes.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:04 am
+  ** z
+  Time passes.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:05 am
+  ** e
+  You can't go that way.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:06 am
+  ** w
+  
+  Kennel
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:07 am
+  ** wait
+  One of the dogs begins to bark at you, whereupon you become nervous and return to the Great Hall.
+  
+  Great Hall
+  You can see Surt, Loki, Freya, a table (on which are a twig and a box (in which are a stone, a length of linen and a yellow piece of paper)), a hearth and a flaming torch here.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:08 am
+  ** w
+  
+  Kennel
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:09 am
+  ** listen
+  The sound of baying begins to bother you; unthinkingly you revert to the Great Hall.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:10 am
+  ** look
+  Great Hall
+  You can see Surt, Loki, Freya, a table (on which are a twig and a box (in which are a stone, a length of linen and a yellow piece of paper)), a hearth and a flaming torch here.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:11 am
+  ** get torch
+  Taken.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:12 am
+  ** burn stone
+  The stone is not the sort of thing that catches fire.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:13 am
+  ** burn paper
+  You light the yellow piece of paper with the flaming torch.
+  
+  Surt attacks Loki with a great blow.
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:14 am
+  ** z
+  Time passes.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+  The box catches from the flaming yellow piece of paper.
+  
+  The yellow piece of paper burns away completely.
+  
+> Surt >    Burning: 4                                                                                                                                                                                                             Time: 9:15 am
+  ** burn surt
+  Surt is not the sort of thing that catches fire.
+  
+  Surt attacks Loki with a great blow.
+  
+  The table catches from the flaming box.
+  
+> Loki >    Burning: 5                                                                                                                                                                                                             Time: 9:16 am
+  ** burn loki
+  Loki is not the sort of thing that catches fire.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+  Flames engulf the length of linen.
+  
+> Surt >    Burning: 6                                                                                                                                                                                                             Time: 9:17 am
+  ** look
+  Great Hall
+  You can see Surt, Loki, Freya, a flaming table (on which are a twig and a flaming box (in which are a stone and a flaming length of linen)) and a hearth here.
+  
+  Surt attacks Loki with a great blow.
+  
+  Flames engulf the twig.
+  
+> Loki >    Burning: 6                                                                                                                                                                                                             Time: 9:18 am
+  ** get stone
+  You don't quite dare reach into the flaming box.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 5                                                                                                                                                                                                             Time: 9:19 am
+  ** z
+  Time passes.
+  
+  Surt attacks Loki with a great blow.
+  
+  The box burns away completely.
+  
+> Loki >    Burning: 4                                                                                                                                                                                                             Time: 9:20 am
+  ** x twig
+  Hm, the twig appears to be flaming.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+  The table burns away completely.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:21 am
+  ** get the sword
+  Surt does not look eager to permit that.
+  
+  Surt attacks Loki with a great blow.
+  
+  The length of linen burns away completely.
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:21 am
+  ** purloin sword
+  [Purloined.]
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:21 am
+  ** hit loki with sword
+  I only understood you as far as wanting to hit Loki.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:22 am
+  ** hit loki
+  Surt looks as though he'd like to do something to Loki too, if only he had the sword.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+  The twig burns away completely.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:23 am
+  ** hit surt
+  The sword cuts through the god, killing him and sending fire everywhere.
+  
+  The table burns away completely.
+  The twig burns away completely.
+  The box burns away completely.
+  The length of linen burns away completely.
+  The yellow piece of paper burns away completely.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:24 am
+  ** z
+  Time passes.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:25 am
+  ** z
+  Time passes.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:25 am
+  ** hit lock
+  You can't see any such thing.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:26 am
+  ** hit loki
+  The sword makes contact with the mask and suddenly the blade seems to be in a different place than you thought, several inches to the left.
+  
+  Loki smiles.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:27 am
+  ** hit hearth
+  The sword makes even the hearth vulnerable to fire.
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:28 am
+  ** burn hearth
+  You light the hearth with the flaming sword.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:28 am
+  ** score
+  There is no score in this story.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:29 am
+  ** look
+  Great Hall
+  You can see a stone, Loki, Freya and a flaming hearth here.
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:30 am
+  ** hit freya
+  Loki looks jealously in your direction, making you unwilling to pursue matters further.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:30 am
+  ** hit ston
+  You can't see any such thing.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:31 am
+  ** hit stone
+  The sword makes even the stone vulnerable to fire.
+  
+> Loki >    Burning: 4                                                                                                                                                                                                             Time: 9:32 am
+  ** burn stone
+  You light the stone with the flaming sword.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:33 am
+  ** z
+  Time passes.
+  
+  The hearth burns away completely.
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:34 am
+  ** z
+  Time passes.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 3                                                                                                                                                                                                             Time: 9:35 am
+  ** z
+  Time passes.
+  
+> Loki >    Burning: 3                                                                                                                                                                                                             Time: 9:36 am
+  ** look
+  Great Hall
+  You can see a flaming stone, Loki and Freya here.
+  
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 2                                                                                                                                                                                                             Time: 9:37 am
+  ** blow stone
+  (first taking the flaming stone)
+  There's no portion of the flaming stone sufficiently cool for you to pick up.
+  
+  The stone burns away completely.
+  
+> Loki >    Burning: 2                                                                                                                                                                                                             Time: 9:38 am
+  ** blow torch
+  Loki mocks Surt with taunting words and gestures.
+  
+> Surt >    Burning: 0                                                                                                                                                                                                             Time: 9:39 am
+  ** deluge
+  All fires are out.
+  
+> Loki >    Burning: 0                                                                                                                                                                                                             Time: 9:39 am
+  **
+  I beg your pardon?
+  
+> Loki > 

@@ -1,0 +1,79 @@
+** Arithmetic with units
+(OFFER price FOR command allowing player to bargain; Money for Nothing)
+An OFFER price FOR command, allowing the player to bargain with a flexible seller.
+
+	{*}"Money for Nothing"
+
+	Section 1 - Prices and Bargaining
+	
+	Price is a kind of value. $10.99 specifies a price with parts dollars and cents (optional, preamble optional).
+
+	A person has a price called wealth. The wealth of the player is $15. 
+	
+	A thing has a price called minimum value. The minimum value of a thing is usually $0.50. 
+	
+	A thing has a price called desired value. The desired value of a thing is usually $5.00.
+
+	Offering it for is an action applying to one price and one visible thing.
+
+	Understand "offer [price] for [something]" as offering it for. 
+
+	After taking inventory, say "You have [the wealth of the player]."
+
+	Check offering it for:
+		if the price understood is greater than the wealth of the player, say "You don't have that kind of cash." instead;
+		if the second noun is not carried by someone, say "There's no one in a position to sell you [the second noun]." instead;
+		if the second noun is carried by the player, say "[The second noun] is already yours." instead;
+		if the minimum value of the second noun is greater than the price understood, say "[The holder of the second noun] cackles disdainfully. 'If yer just here to insult me you can take your business elsewhere!' he says." instead;
+		if the desired value of the second noun is greater than the price understood:
+			let difference be the desired value of the second noun minus the price understood;
+			let difference be difference divided by two;
+			decrease the desired value of the second noun by difference;
+			now the last object offered is the second noun;
+			say "'How about [desired value of the second noun]?' suggests [the holder of the second noun]." instead;
+		otherwise:
+			unless the desired value of the second noun is the price understood:
+				say "From the avaricious gleam in the eye of [the holder of the second noun], you guess you could've gotten this purchase for less..."
+
+	Carry out offering it for:
+		increase the wealth of the holder of the second noun by the price understood;
+		decrease the wealth of the player by the price understood;
+		move the second noun to the player.
+	
+	Report offering it for:
+		say "You spend [the price understood], and now you possess [the second noun]."
+	
+	When play begins: now right hand status line is "Your funds: [wealth of the player]".
+		
+Now, since the man does make counter-offers, it would be reasonable to let the player accept or reject those, as well:
+	
+	{**}The last object offered is a thing that varies.
+
+	Instead of saying yes when the last object offered is carried by a person (called seller) who is not the player:
+		if the seller is not visible:
+			continue the action;
+		otherwise:
+			now the price understood is the desired value of the last object offered;
+			try offering the desired value of the last object offered for the last object offered.
+
+	Instead of saying no when the last object offered is carried by a person (called seller) who is not the player:
+		if the seller is not visible:
+			continue the action;
+		otherwise:
+			now the last object offered is the player;
+			say "You reject the offer firmly."
+	
+And we borrow just a line or two from a later chapter to take care of some alternate syntax the player might try:
+
+	{**}Understand "offer [price] to [someone]" as a mistake ("You'll need to specify what you want to buy -- try OFFER $1000.00 FOR BROOKLYN BRIDGE."). Understand "offer [someone] [price]" as a mistake ("You'll need to specify what you want to buy -- try OFFER $1000.00 FOR BROOKLYN BRIDGE."). 
+	
+	Understand "buy [something]" as a mistake ("You'll have to name your price: try OFFER $1000.00 FOR BROOKLYN BRIDGE.").
+	
+	Section 2 - The Scenario
+	
+	The Flea Market is a room. The crotchety man is a man in the Market. "A crotchety man here is selling [the list of things carried by the crotchety man]." The crotchety man carries a broken television set, a Victorian rhinestone brooch, and a cracked shaving mug.
+
+	The minimum value of the brooch is $2.50.
+	
+	Test me with "offer $0.50 for mug / offer $0.50 to man / offer $6.00 for mug / offer $50.00 for brooch / offer $1.50 for brooch / offer $4.50 for brooch / no / offer $4.50 for brooch / yes".
+	

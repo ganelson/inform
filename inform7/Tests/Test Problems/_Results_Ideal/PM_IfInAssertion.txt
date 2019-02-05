@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 9 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_IfInAssertion
+  >--> I am reading the sentence 'If the box is open then award 4 points' (source
+    text, line 1) as a declaration of the initial state of the world, so I'm
+    expecting that it will be definite. The only way I can construe it that way
+    is by thinking that 'If the box' and 'open then award 4 points' are two
+    different things, but that doesn't make sense, and the 'if' makes me think
+    that perhaps you did not mean this as a definite statement after all.
+    Although 'if...' is often used in rules and definitions of what to do in
+    given circumstances, it shouldn't be used in a direct assertion.
+Inform 7 has finished: 16 centiseconds used.

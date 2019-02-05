@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BareProperty
+  >--> You wrote 'A foo has a number' (source text, line 3): but this would
+    create a property called 'number' or 'text', and although bare names of
+    kinds are usually allowed as properties, these aren't. Instead, try '...
+    has a number called position.' or something like that, to give the property
+    a name.
+Inform 7 has finished: 16 centiseconds used.

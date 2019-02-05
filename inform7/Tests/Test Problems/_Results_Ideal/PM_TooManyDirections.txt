@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 405 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TooManyDirections
+  >--> I have run out of memory for different directions - there's room for
+    100, but no more. This is a 'hard limit', hard in the sense of deadlines,
+    or luck: there is no getting around it. You will need to rewrite your
+    source text so that it needs fewer different directions.

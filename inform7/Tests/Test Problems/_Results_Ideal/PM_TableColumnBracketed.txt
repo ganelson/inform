@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 23 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableColumnBracketed
+  >--> In 'Table of Splodge' (source text, line 3), the column name '(rule)' (source
+    text, line 4) cannot be used, because it is in brackets. (Perhaps you
+    intended to use the brackets to give the kind of the entries, but forgot to
+    put a name before the opening bracket.)
+Problem__ PM_TableRowFull
+  >--> In row 1 of the table 'Table of Splodge' (source text, line 3), the
+    entry 'the evil rule' (source text, line 5) won't fit, because its row is
+    already full. (This entry would be in column 2 and the table has only 1.)
+Inform 7 has finished: 15 centiseconds used.

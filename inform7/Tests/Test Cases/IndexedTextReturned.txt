@@ -1,0 +1,40 @@
+[Concatenation test.]
+
+The Outer Solar System is a room.
+
+To decide which text is the moon of the moment:
+	decide on "Dione at [time of day]".
+
+To decide which text is double (TB - text):
+	say "Double.";
+	decide on TB & TB.
+
+To decide which text is (TB1 - text) & (TB2 - text):
+	(- TEXT_TY_Concatenate({-by-value:TB1}, {-by-reference:TB2}) -).
+
+Instead of going east:
+	let Neptune be "Neptune";
+	let Triton be "in retrograde motion about " & Neptune;
+	say "Neptune is now [Neptune], Triton is [Triton]."
+
+Instead of going west:
+	let Neptune be "Neptune";
+	let Triton be "in retrograde motion about " & Neptune;
+	now Triton is double Triton;
+	say "Doubled, Triton becomes [Triton]."
+
+Instead of going north:
+	let Neptune be "Neptune";
+	let Triton be "in retrograde motion about " & Neptune;
+	say "The join is: [Neptune & Triton]."
+
+Instead of going south:
+	let Neptune be an text;
+	let Neptune be "Neptune";
+	now Neptune is double double double Neptune;
+	say "Octupled, Neptune becomes [Neptune]."
+
+Instead of going up:
+	say "Moon of the moment is: [moon of the moment]."
+
+Test me with "n/s/e/w/u".

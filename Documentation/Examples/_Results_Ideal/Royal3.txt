@@ -1,0 +1,10 @@
+   Fort James
+  1691
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Fort James
+  The enclosure of Fort James is a large, roughly hexagonal court walled with heavy stone.  The walls face the entrance to Port Royal Harbour, and the battery of guns is prepared to destroy any enemy ship arriving.
+  
+> >   Fort James
+> Are you sure you want to quit? 

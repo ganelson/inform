@@ -1,0 +1,8 @@
+An outcome is a kind of value. Some outcomes are defined by the Table of outcomes.
+		
+Table of Outcomes
+outcome	description
+boring lack of results	""
+generic reusable event	""
+
+Combat hit is an outcome.

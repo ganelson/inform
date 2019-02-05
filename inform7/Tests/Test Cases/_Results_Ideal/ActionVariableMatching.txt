@@ -1,0 +1,18 @@
+   Cave
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cave
+  There's a very large stone here, in a small clearing.
+  
+  You can also see an axehead here.
+  
+> >   Cave
+  (Testing.)
+  
+  >[1] get all
+  axehead: Taken.
+  bead: Done.
+  
+> >

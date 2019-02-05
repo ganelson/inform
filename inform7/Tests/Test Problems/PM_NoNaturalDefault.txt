@@ -1,0 +1,4 @@
+Xanadu is a room.
+
+When play begins:
+    let N be a number valued table column.

@@ -1,0 +1,556 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Play Some Interactive Fiction</title>
+<style type="text/css">
+   
+body {
+  background: #F0F0F8;
+}
+
+#card {
+  position: relative;
+  background: white;
+  width: 790px;
+  height: 575px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 14px;
+}
+
+#zork {
+  position: absolute;
+  left: 0px;
+  top: 155px;
+  width: 520px;
+
+  background: inherit;
+  z-index: 1;
+  border: double black 3px;
+  padding: 6px 12px;
+
+  font-size: 19px;
+  line-height: 25px;
+}
+
+#mailbox {
+  position: absolute;
+  right: 8px;
+  bottom: 0px;
+  font-size: 12px;
+}
+
+.highlight {
+  border: dotted black 1px;
+  padding: 0px 1px;
+}
+
+.bullets {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+#col1a {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  width: 250px;
+  text-indent: -14px;
+}
+
+#cursor {
+  float: right;
+}
+
+#cursorparen {
+  font-size: 42px;
+}
+
+#cursorprompt {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  color: #00A1F0;
+}
+
+#started {
+  margin-right: 60px;
+  font-size: 15px;
+}
+
+#uncle {
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: bold;
+}
+
+#col1b {
+  position: absolute;
+  left: 20px;
+  top: 217px;
+  width: 250px;
+  text-indent: -14px;
+}
+
+#col1b div {
+  margin-bottom: 4px;
+}
+
+#try {
+  font-size: 16px;
+}
+
+#sense {
+  font-size: 16px;
+}
+
+#arefor {
+  font-size: 14px;
+}
+
+#areforpie {
+  font-size: 12px;
+  font-style: italic;
+}
+
+#eachgame {
+  margin-top: 8px;
+  font-size: 15px;
+  font-style: italic;
+}
+
+#living {
+  text-indent: 0px;
+  font-size: 13px;
+}
+
+#col2a {
+  position: absolute;
+  left: 280px;
+  top: 0px;
+  width: 240px;
+  padding: 4px 8px;
+  border: dashed black 1px;
+}
+
+#col2b {
+  position: absolute;
+  left: 280px;
+  top: 208px;
+  width: 240px;
+  padding: 4px 8px;
+  border: dashed black 1px;
+}
+
+table.commands {
+  width: 100%;
+  border-spacing: 0px;
+}
+
+td {
+  padding: 0px;
+}
+
+.leftcell {
+  vertical-align: top;
+  width: 140px;
+}
+.rightcell {
+  vertical-align: top;
+  width: 100px;
+}
+.bothcell {
+  vertical-align: top;
+}
+
+.cmdheader {
+  margin: 4px 0px;
+}
+
+.verb {
+  font-weight: bold;
+}
+
+.noun {
+  font-style: italic;
+  padding: 0px 1px;
+}
+
+#doubt {
+  margin: 4px 0px;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  color: #00A1F0;
+}
+
+#handy {
+  margin: 4px 0px;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.dagger {
+  font-size: 9px;
+  vertical-align: super;
+  font-style: normal;
+  color: #00A1F0;
+}
+
+.asterisk {
+  color: #00A1F0;
+}
+
+#col3a {
+  position: absolute;
+  left: 560px;
+  top: 0px;
+  width: 230px;
+}
+
+table.tryfirst {
+  border-spacing: 0px;
+}
+
+.bracecell {
+  font-size: 60px;
+}
+
+.trycell {
+  padding-top: 8px;
+  text-align: center;
+}
+
+.compass {
+  margin-left: 20px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.comcell {
+  text-align: center;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.dircell {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+
+.subdircell {
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+
+.gonorth {
+  font-style: italic;
+  font-size: 12px;
+}
+
+.alsocell {
+  vertical-align: top;
+  padding-left: 10px;
+  font-size: 12px;
+}
+
+#letters {
+  font-size: 16px;
+  line-height: 18px;
+  margin-top: 4px;
+  margin-left: 14px;
+  text-indent: -12px;
+}
+
+.lettersquote {
+  font-size: 22px;
+}
+
+.verbdesc {
+  font-style: italic;
+  margin-left: 14px;
+}
+
+#service {
+  font-size: 12px;
+  font-style: italic;
+}
+
+#service a {
+  color: #00A1F0;
+  font-weight: bold;
+}
+
+</style>
+<body>
+
+<div id="card">
+
+<div id="zork">
+You are standing in an open 
+<span class="highlight">field</span>
+west of a white 
+<span class="highlight">house,</span>
+with a boarded front 
+<span class="highlight">door.</span>
+There is a small 
+<span class="highlight">mailbox</span><span class="asterisk">*</span>
+here.
+<div id="mailbox"><span class="asterisk">*</span>Try opening!</div>
+</div>
+
+<div id="col1a">
+
+<div id="cursor"><span id="cursorparen">(</span><span id="cursorprompt">&gt;|</span><span id="cursorparen">)</span></div>
+<div id="started">
+You just started up a game and now you&#x2019;re staring at <i>text</i>
+and a <i>blinking cursor</i> and you <i>don&#x2019;t know what to do!</i>
+</div>
+
+<div id="uncle">
+Don&#x2019;t panic kids&#x2014;<br>
+Crazy Uncle Zarf is here to help you get started...
+</div>
+
+</div>
+
+<div id="col1b">
+
+<div>&nbsp;</div>
+
+<div id="try">
+You can try all sorts of commands on the 
+<span class="highlight">things</span> you see.
+</div>
+<div id="sense">
+Try the commands that make sense!
+</div>
+<div id="arefor">
+Doors are for opening; buttons are for pushing; pie is for eating.
+<span id="areforpie">(Mmm, pie.)</span>
+</div>
+<div class="bullets">&#x25C7;&#x25C7;&#x25C7;&#x25C7;</div>
+<div id="person">
+If you meet a person, these should work:
+</div>
+<div id="living">
+<span class="verb">TALK TO</span> <span class="noun">name</span><br>
+<span class="verb">ASK</span> <span class="noun">name</span>
+<span class="verb">ABOUT</span> <span class="noun">something</span><br>
+<span class="verb">TELL</span> <span class="noun">name</span>
+<span class="verb">ABOUT</span> <span class="noun">something</span><br>
+<span class="verb">GIVE</span> <span class="noun">something</span>
+<span class="verb">TO</span> <span class="noun">name</span><br>
+<span class="verb">SHOW</span> <span class="noun">something</span>
+<span class="verb">TO</span> <span class="noun">name</span><br>
+</div>
+<div id="eachgame">
+Each game has slightly different commands, but they all look
+<b>pretty much like these.</b>
+</div>
+</div>
+
+
+<div id="col2a">
+<div class="cmdheader"><u>These commands are very common</u>:</div>
+
+<table class="commands" id="cmd1">
+<tr>
+<td class="leftcell">
+<span class="verb">EXAMINE</span> <span class="noun">it</span><br>
+<span class="verb">TAKE</span> <span class="noun">it</span><br>
+<span class="verb">DROP</span> <span class="noun">it</span><br>
+<span class="verb">OPEN</span> <span class="noun">it</span><br>
+<span class="verb">PUT</span> <span class="noun">it</span>
+<span class="verb">IN</span> <span class="noun">something</span><br>
+<span class="verb">PUT</span> <span class="noun">it</span>
+<span class="verb">ON</span> <span class="noun">something</span><br>
+</td>
+<td class="rightcell">
+<span class="verb">PUSH</span> <span class="noun">it</span><br>
+<span class="verb">PULL</span> <span class="noun">it</span><br>
+<span class="verb">TURN</span> <span class="noun">it</span><br>
+<span class="verb">FEEL</span> <span class="noun">it</span><br>
+</td>
+</tr>
+</table>
+
+<div id="doubt">
+When in doubt, examine more.
+</div>
+
+<div>&nbsp;</div>
+
+</div>
+
+<div id="col2b">
+
+<div>&nbsp;</div>
+
+<div class="cmdheader"><u>You could also try</u>:</div>
+
+<table class="commands" id="cmd2">
+<tr>
+<td class="leftcell">
+<span class="verb">EAT</span> <span class="noun">it</span><br>
+<span class="verb">DRINK</span> <span class="noun">it</span><br>
+<span class="verb">FILL</span> <span class="noun">it</span><br>
+<span class="verb">SMELL</span> <span class="noun">it</span><br>
+<span class="verb">LISTEN TO</span> <span class="noun">it</span><br>
+<span class="verb">BREAK</span> <span class="noun">it</span><br>
+<span class="verb">BURN</span> <span class="noun">it</span><br>
+<span class="verb">LOOK UNDER</span> <span class="noun">it</span><br>
+</td>
+<td class="rightcell">
+<span class="verb">CLIMB</span> <span class="noun">it</span><br>
+<span class="verb">WAVE</span> <span class="noun">it</span><br>
+<span class="verb">WEAR</span> <span class="noun">it</span><br>
+<span class="verb">TAKE</span> <span class="noun">it</span>
+<span class="verb">OFF</span><br>
+<span class="verb">TURN</span> <span class="noun">it</span>
+<span class="verb">ON</span><br>
+<span class="verb">DIG IN</span> <span class="noun">it</span><br>
+<span class="verb">ENTER</span> <span class="noun">it</span><br>
+<span class="verb">SEARCH</span> <span class="noun">it</span><br>
+</td>
+</tr>
+<tr>
+<td class="bothcell" colspan="2">
+<span class="verb">UNLOCK</span> <span class="noun">it</span>
+<span class="verb">WITH</span> <span class="noun">something</span><br>
+</td>
+</tr>
+</table>
+
+<div class="cmdheader"><u>Or even</u>:</div>
+
+<table class="commands" id="cmd3">
+<tr>
+<td class="leftcell">
+<span class="verb">LISTEN</span><br>
+<span class="verb">SLEEP</span><br>
+<span class="verb">WAKE UP</span><br>
+<span class="verb">UNDO</span><span class="dagger">&#x2020;</span><br>
+</td>
+<td class="rightcell">
+<span class="verb">JUMP</span><br>
+<span class="verb">PRAY</span><br>
+<span class="verb">CURSE</span><br>
+<span class="verb">SING</span><br>
+</td>
+</tr>
+</table>
+
+<div id="handy">
+<span class="dagger">&#x2020;</span>Take back one move &#x2014; handy!
+</div>
+
+</div>
+
+<div id="col3a">
+
+<table class="tryfirst">
+<tr>
+<td class="bracecell">{</td>
+<td class="trycell">
+<span class="noun">Does the game intro suggest</span><br>
+<span class="verb">ABOUT, INFO, HELP</span><span class="noun">?</span><br>
+<span class="noun">Try them first!</span>
+</td>
+<td class="bracecell">}</td>
+</tr>
+</table>
+
+<table class="compass">
+<tr>
+<td></td>
+<td></td>
+<td class="dircell">N</td>
+<td class="gonorth" colspan="3">(&#x201C;Go north.&#x201D;)</td>
+</tr>
+<tr>
+<td class="subdircell">NW</td>
+<td></td>
+<td class="comcell">&#x2503;</td>
+<td></td>
+<td class="subdircell">NE</td>
+</tr>
+<tr>
+<td></td>
+<td class="comcell">&#x2572;</td>
+<td class="comcell">&#x2503;</td>
+<td class="comcell">&#x2571;</td>
+<td></td>
+</tr>
+<tr>
+<td class="dircell">W</td>
+<td class="comcell">&#x2501;</td>
+<td class="comcell">&#x254B;</td>
+<td class="comcell">&#x2501;</td>
+<td class="dircell">E</td>
+<td class="alsocell" rowspan="3">
+Also:<br>
+<span class="verb">Up, Down,</span><br>
+<span class="verb">IN,</span>
+and <span class="verb">OUT</span>
+</td>
+</tr>
+<tr>
+<td></td>
+<td class="comcell">&#x2571;</td>
+<td class="comcell">&#x2503;</td>
+<td class="comcell">&#x2572;</td>
+<td></td>
+</tr>
+<tr>
+<td class="subdircell">SW</td>
+<td></td>
+<td class="dircell">S</td>
+<td></td>
+<td class="subdircell">SE</td>
+</tr>
+</table>
+
+<div id="letters">
+<span class="lettersquote">&#x201C;</span>What if I only want to<br>
+type one or two letters?<span class="lettersquote">&#x201D;</span>
+</div>
+
+<div class="bullets">&#x25C7;&#x25C7;&#x25C7;&#x25C7;</div>
+
+<div class="verbline"><span class="verb">N/E/S/W/NE/SE/NW/SW: GO</span></div>
+<div class="verbdesc">in the indicated compass direction.</div>
+
+<div class="verbline"><span class="verb">L: LOOK</span></div>
+<div class="verbdesc">around to see what is nearby.</div>
+
+<div class="verbline"><span class="verb">X: EXAMINE</span></div>
+<div class="verbdesc">a thing in more detail.</div>
+
+<div class="verbline"><span class="verb">I:</span> <span class="noun">take</span> <span class="verb">INVENTORY</span></div>
+<div class="verbdesc">of what you posess.</div>
+
+<div class="verbline"><span class="verb">Z: WAIT</span></div>
+<div class="verbdesc">a turn without doing anything.</div>
+
+<div class="verbline"><span class="verb">G:</span> <span class="noun">do the same thing</span> <span class="verb">AGAIN</span></div>
+
+<div class="bullets">&#x25C7;&#x25C7;&#x25C7;&#x25C7;</div>
+
+<div id="service">
+A service of the People&#x2019;s Republic of<br>
+Interactive Fiction:
+<a href="http://pr-if.org/">http://pr-if.org/</a>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

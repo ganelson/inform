@@ -1,0 +1,42 @@
+   Laundry
+  Lies
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+> >   Laundry
+  (Testing.)
+  
+  >[1] lie down
+  You lie down for a while in the middle of the Laundry, wondering about the point of existence, then get up again.
+  
+  >[2] lie down on top of the sink
+  You get into the vast marble sink.
+  
+  >[3] get out
+  You get out of the vast marble sink.
+  
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+  >[4] lie down inside the sink
+  You get into the vast marble sink.
+  
+  >[5] get out
+  You get out of the vast marble sink.
+  
+  Laundry
+  An old Limehouse haunt, the Chinese laundry used by the down-trodden wives of the Tong of the Black Scorpion.
+  
+  There is nothing obviously oriental about the vast marble sink, which is large enough to lie down inside. A wooden-rack floor, equipped for easy drainage, turns out also to be equipped for snagging the shoes of passers-by.
+  
+  >[6] lie down in front of the sink
+  Lying down close to the cool butcher's marble slabs of the sink, your attention is caught by the sight of coolie shoes through a floor-level grille for ventilation. The game is afoot!
+  
+> >

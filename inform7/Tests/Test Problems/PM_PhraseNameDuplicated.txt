@@ -1,0 +1,7 @@
+Home is a room.
+
+To decide which number is (N - a number) doubled (this is doubling):
+decide on two times N.
+
+To decide which indexed text is (T - indexed text) doubled (this is
+doubling): decide on "[T][T]".

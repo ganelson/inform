@@ -1,0 +1,16 @@
+A phonodisk is a kind of thing. A phonodisk has a text called song.
+A subject is a kind of thing.
+
+The Study is a room.
+The black box is an openable container in the Study.
+The black button is part of the black box.
+
+The record is a phonodisk in the Study. The song is "God Save the Queen".
+
+After pushing the black button when the black box contains a phonodisk
+(called the source):
+	say "The black box plays [the song of the source]."
+
+The two source hypothesis is a subject.
+
+Test me with "take record/put it in black box/push button".

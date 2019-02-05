@@ -1,0 +1,38 @@
+   room
+  First.
+  "gadget" = relation of things: anonymous relation of things
+  an anonymous relation:
+  "gadget" = relation of things: anonymous relation of things
+  an anonymous relation:
+    raincoat >=> umbrella
+  
+  Second.
+  "gadget" = relation of things: anonymous relation
+  an anonymous relation:
+    yourself >=> umbrella
+  "thing that relates to the umbrella by the gadget" = thing: yourself
+  
+  Third.
+  For yourself, yourself ~ raincoat.
+  For Susie, Susie ~ raincoat.
+  
+  Fourth.
+  "gadget" = relation of things: anonymous relation
+  an anonymous relation:
+    yourself >=> umbrella
+  For yourself: "association of X" = relation of things: anonymous relation of things
+  an anonymous relation:
+    yourself >=> raincoat
+  For Susie: "association of X" = relation of things: anonymous relation of things
+  an anonymous relation:
+    Susie >=> raincoat
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  room
+  You can see an umbrella, a raincoat and Susie here.
+  
+> >   room
+> Are you sure you want to quit? 

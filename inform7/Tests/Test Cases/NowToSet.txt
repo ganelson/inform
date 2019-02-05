@@ -1,0 +1,34 @@
+"Now to Set Torne's Variables"
+
+World is a room. Include predicate calculus workings in the debugging log.
+
+Cheese is a kind of value. The cheeses are parmesan and cheddar.
+
+The wobbly number is a number which varies.
+
+The cheese de jour is a cheese which varies.
+
+The rhetorical yes rule is a rule which varies. The rhetorical yes rule 
+is the hmm rule. 
+
+This is the hmm rule:
+	say "Hmm.";
+	now the carrying capacity of the player is 6;
+	now the wobbly number is 6;
+	now the cheese de jour is parmesan;
+	now the rhetorical yes rule is the ahh rule;
+	say "CCOP: [carrying capacity of the player]; WN: [wobbly number];
+		RYR: [rhetorical yes rule]; CDJ: [cheese de jour]."
+
+This is the ahh rule:
+	say "Ahh.";
+	now the carrying capacity of the player is 7;
+	now the wobbly number is 5;
+	now the cheese de jour is cheddar;
+	now the rhetorical yes rule is the hmm rule;
+	say "CCOP: [carrying capacity of the player]; WN: [wobbly number];
+		RYR: [rhetorical yes rule]; CDJ: [cheese de jour]."
+
+Instead of saying yes, abide by the rhetorical yes rule. 
+
+Test me with "yes / yes / yes". 

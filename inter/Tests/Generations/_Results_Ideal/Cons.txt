@@ -1,0 +1,6 @@
+Constant Bidger = 20;
+Constant Badger = 12;
+Constant Bodger = 157;
+Constant Budger = 32738;
+Constant Danza = 2 + 34;
+Constant Sahara = Danza + Bidger + 1;

@@ -1,0 +1,90 @@
+   Mysterious Void
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mysterious Void
+  
+> >   Mysterious Void
+  (Testing.)
+  
+  >[1] showme fish
+  fish - thing
+  location: out of play
+  singular-named, improper-named; unlit, inedible, portable
+  list grouping key: none
+  printed name: "fish"
+  printed plural name: none
+  indefinite article: none
+  description: none
+  initial appearance: none
+  
+  >[2] n
+  Red does not scratch green.
+  
+  >[3] relations
+  Affinity relates one colour to another:
+    red  ==  blue
+  Afterness relates one thing to one thing:
+    C  >=>  B
+    D  >=>  C
+  Brighterness relates one colour to one colour:
+    red  >=>  green
+    blue  >=>  red
+  Codedness relates one thing to one colour:
+    You  >=>  yellow
+    The fish  >=>  blue
+  Decodedness relates one colour to one thing:
+    red  >=>  the fish
+  
+  >[4] z
+  >[5] n
+  Red scratches green.
+  
+  >[6] relations
+  Affinity relates one colour to another:
+    red  ==  green
+  Disaffinity relates one thing to another:
+    You  ==  the fish
+  Afterness relates one thing to one thing:
+    C  >=>  B
+    D  >=>  C
+  Brighterness relates one colour to one colour:
+    red  >=>  green
+    blue  >=>  red
+  Codedness relates one thing to one colour:
+    You  >=>  yellow
+    The fish  >=>  blue
+  Decodedness relates one colour to one thing:
+    red  >=>  yourself
+  
+  >[7] jump
+  >[8] n
+  Red does not scratch green.
+  
+  >[9] relations
+  Disaffinity relates one thing to another:
+    You  ==  the fish
+  Afterness relates one thing to one thing:
+    C  >=>  B
+    D  >=>  C
+  Brighterness relates one colour to one colour:
+    red  >=>  green
+    blue  >=>  red
+  Codedness relates one thing to one colour:
+    You  >=>  yellow
+  Decodedness relates one colour to one thing:
+    red  >=>  yourself
+  
+  >[10] showme fish
+  fish - thing
+  location: out of play
+  singular-named, improper-named; unlit, inedible, portable
+  list grouping key: none
+  printed name: "fish"
+  printed plural name: none
+  indefinite article: none
+  description: none
+  initial appearance: none
+  
+> >

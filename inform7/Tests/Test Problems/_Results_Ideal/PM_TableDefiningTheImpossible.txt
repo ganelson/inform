@@ -1,0 +1,10 @@
+Inform 7 build 6L83 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableDefiningTheImpossible
+  >--> You wrote 'Some 475 are defined by Table 1' (source text, line 1): but
+    you can only use 'defined by' to set up values and things, as created with
+    sentences like 'The tree species are defined by Table 1.' or 'Some men are
+    defined by the Table of Eligible Bachelors.'
+Inform 7 has finished: 19 centiseconds used.

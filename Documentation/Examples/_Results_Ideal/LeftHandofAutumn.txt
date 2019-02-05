@@ -1,0 +1,47 @@
+   Eight-Walled Chamber
+  The Left Hand of Autumn
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Eight-Walled Chamber
+  A perfectly octagonal room whose walls are tinted in various hues.
+  
+  You can see a display table (on which is a twig of rowan wood) here.
+  
+> >   Eight-Walled Chamber
+  (Testing.)
+  
+  >[1] x apple and pear
+  Just a couple of fruits.
+  
+  >[2] x left and right
+  It's a matched pair of fuzzy blue gloves.
+  
+  >[3] put pear on table
+  You put the pear on the display table.
+  
+  >[4] put left glove on table
+  You put the left glove on the display table.
+  
+  >[5] x all on table
+  To anyone else it might look like a random collection of objects, but these three things -- the pear, the left glove and the twig of rowan wood -- constitute a mystic key known as the Left Hand of Autumn. They practically hum with power.
+  
+  >[6] put all on table
+  apple: Done.
+  right glove: Done.
+  
+  >[7] examine all on table
+  You see an apple, a pear, a left glove, a right glove and a twig of rowan wood.
+  
+  >[8] get apple, twig, pear
+  apple: You pick up the apple.
+  twig of rowan wood: You pick up the twig of rowan wood.
+  pear: You pick up the pear.
+  
+  >[9] x all on table
+  It's a matched pair of fuzzy blue gloves.
+  
+  >[10] search table
+  It's a matched pair of fuzzy blue gloves.
+  
+> >

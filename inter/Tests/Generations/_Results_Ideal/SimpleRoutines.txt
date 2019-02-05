@@ -1,0 +1,6 @@
+[ Falsity;
+    return false;];
+[ Demo x y;
+    return x+y;];
+[ Prop_Falsity reason obj;
+    return 0;];

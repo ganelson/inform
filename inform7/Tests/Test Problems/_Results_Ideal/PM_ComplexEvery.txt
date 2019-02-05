@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 7 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ComplexEvery
+  >--> You wrote 'A coin is in every open container' (source text, line 1): but
+    in an assertion 'every' or 'all' can only be used with a kind, so for
+    instance 'A coin is in every container' is all right, because 'container'
+    is a kind, but not 'A coin is in every open container', because 'open
+    container' is now a kind qualified by a property which may come or go
+    during play. (This problem sometimes happens because a thing has been
+    called something like an 'all in one survival kit' - if you need that sort
+    of name, try using 'called' to set it.)
+Inform 7 has finished: 16 centiseconds used.

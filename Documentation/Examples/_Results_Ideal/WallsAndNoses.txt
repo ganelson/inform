@@ -1,0 +1,26 @@
+   Eight-Walled Chamber
+  Walls and Noses
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Eight-Walled Chamber
+  A perfectly octagonal room whose walls are tinted in various hues.
+  
+  You can see Wilma, Betty and Frederica here.
+  
+> >   Eight-Walled Chamber
+  (Testing.)
+  
+  >[1] x wall
+  In which direction?
+  
+  >[2] north
+  You see nothing unexpected in that direction.
+  
+  >[3] x nose
+  Whose nose do you mean, your own, Wilma's, Betty's or Frederica's?
+  
+  >[4] mine
+  You see nothing special about your nose.
+  
+> >

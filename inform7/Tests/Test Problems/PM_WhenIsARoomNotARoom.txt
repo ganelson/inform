@@ -1,0 +1,2 @@
+Foo is a room.
+Every person wears a room.

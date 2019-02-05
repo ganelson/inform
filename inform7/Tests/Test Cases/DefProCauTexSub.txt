@@ -1,0 +1,11 @@
+[Tests whether a deferred proposition can create a new text substitution.]
+
+The Kitchen is a room.
+The sack is an openable container in the Kitchen.
+The rock is in the sack.
+
+The verb to indef-article-refer (it indef-article-refers, they indef-article-refer, it is indef-article-referring) 
+implies the indefinite article property.
+
+When play begins:
+	now all openable containers indef-article-refer "[if the item described is open]an[else]a[end if]".

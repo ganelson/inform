@@ -1,0 +1,2 @@
+Colour is a kind of value. 10A specifies a colour.
+Green is a colour.

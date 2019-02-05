@@ -1,0 +1,19 @@
+There is a room.
+This is the foo rule:
+	let bar be the foo rule;
+	do nothing.
+
+This is the zoonk rule:
+	do nothing.
+
+The dramatic rulebook is a number based rulebook producing a time.
+
+The foo rule is listed in the carry out taking rulebook.
+
+The foo rule is listed in the carry out dropping rulebook.
+
+The foo rule is listed in the dramatic rulebook.
+
+When play begins:
+	showme the foo rule;
+	showme the zoonk rule.

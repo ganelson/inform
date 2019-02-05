@@ -1,0 +1,29 @@
+   Control Center
+  Control Center
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Control Center
+  Here you are at the Control Center of the universe.
+  
+  The Universe Management Computer sits directly before you, unguarded.
+  
+  Because the computer is too large for you to reach all of the front panel from a standing position, there is a command chair on casters which allows you to push back and forth.
+  
+> >   Control Center
+  (Testing.)
+  
+  >[1] x chair
+  Quite ordinary, really, but for the heady rush of power that comes of sitting in it.
+  
+  The command chair includes some casters.
+  
+  >[2] x computer
+  The computer is so large that you would be unable to operate it all from one position. Alas, it does not come with a manual.
+  
+  The Universe Management Computer includes a chartreuse indicator light, an ennui meter, a golden knob settable to 15,000 positions, a toothpick dispenser and a button labeled RESTART.
+  
+  >[3] x ennui meter
+  You can't be bothered.
+  
+> >

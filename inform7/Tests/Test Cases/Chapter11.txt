@@ -1,0 +1,230 @@
+"Chapter 11: The Midas Touch" by Emily Short
+
+Chapter 11
+
+Use command line echoing.  Use scoring.
+
+Section 1 - Fitting values into phrases
+
+The Fitting Room is a room. The round door is west of the Fitting Room and east of the Candy Room. It is a door.
+
+Florence is a woman in the Fitting Room. She is carrying a daisy. She is wearing a hat and a pair of lace gloves.
+
+The pair of snake-skin shoes, a lavender suit, and a chicken mask are wearable things in the Candy Room.
+
+The silver handbag is a wearable container in the Fitting Room. The pearl brooch is a wearable thing in the Fitting Room.
+
+When play begins:
+	say "Things are already going so well this morning."; 
+	increase the score by 10.
+	
+A thing can be fragile or sturdy. A thing can be broken or whole. 
+
+The Candy Room contains a counter.
+
+The vase is a fragile container. It is on the counter. The vase contains a rubber chicken.
+
+Instead of touching something:
+	destroy the noun.
+	
+Before printing the name of a broken thing: say "broken "
+
+Section 2 - The phrasebook
+
+To cause trouble:
+	say "Then things go horribly wrong!";
+	end the story saying "You have died".
+
+Section 3 - Pattern matching
+
+Instead of putting something on a broken supporter:
+	say "[The second noun] is no longer up to supporting things."
+	
+Instead of inserting something into a broken container:
+	say "[The second noun] lacks the structural integrity required."
+
+To destroy (box - a container): 
+	say "[The box] cracks[if something is in the box], dumping out [the list of things in the box][end if]!";
+	now all the things in the box are in the location;
+	now the box is broken.
+
+To destroy (table - a supporter):
+	now all the fragile things on the table are broken;
+	now all the things on the table are in the location;
+	now the table is broken;
+	say "[The table] goes away in a puff of smoke[if something is on the table], letting fall [the list of things on the table][end if]!"
+
+To destroy (crushable item - a fragile thing):
+	now the crushable item is broken;
+	say "[The crushable item] breaks colorfully."
+
+To destroy (trash - a thing):
+	now the trash is broken;
+	say "[The trash] vanishes."
+
+Section 4 - If
+
+Instead of examining a person:
+	if the noun is carrying something or the noun is wearing something,
+		say "[The noun] is wearing [a list of things worn by the noun] and carrying [a list of things carried by the noun].";
+	otherwise continue the action.
+
+Section 5 - While
+
+Every turn:
+	while Florence is holding a wearable thing (called the attire) which is not worn by Florence 
+	begin;
+		say "Florence dons [the attire].[line break]";
+		now the attire is worn by Florence;
+	end while.
+
+Section 6 - Begin and end
+
+To destroy (victim - a person):
+	if the victim is carrying something
+	begin;
+		if the victim is the player, say "You drop [the list of things carried by the victim]. ";
+		otherwise say "[The victim] drops [the list of things carried by the victim]. ";
+		now all the things carried by the victim are in the location;
+	end if;
+	if the victim is wearing something
+	begin;
+		say "[The list of things worn by the victim] wind up on the floor also. ";
+		now all the things worn by the victim are in the location;
+	end if;
+	now the victim is nowhere;
+	if the victim is the player, say "You vanish!";
+	otherwise say "[The victim] vanishes."
+
+Every turn:
+	while Florence is in the location and something wearable is in the location
+	begin;
+		if a wearable thing (called the new acquisition) is in the location, move the new acquisition to Florence;
+		say "Florence picks up [the new acquisition].[line break]";
+	end while.
+
+Section 7 - Otherwise
+
+To destroy (portal - a door):
+	if the portal is closed
+	begin;
+		now the portal is open;
+		now the portal is unopenable;
+		say "[The portal] breaks from its hinges, becoming permanently open.";
+	otherwise;
+		say "[The portal] is already just gaping space.";
+	end if.
+
+Section 8 - Repeat
+
+Every turn when Florence is visible:
+	if the turn count < 2
+	begin;
+		cause irritation, extensively;
+	otherwise;
+		if the turn count < 5
+		begin;
+			cause irritation;
+		otherwise;
+			if the turn count < 7, cause irritation, in a minor way;
+		end if;
+	end if.
+
+Section 9 - Repeat running through
+
+Instead of jumping:
+	say "You leap up in the air and come down again, bringing yourself into new contact with the room.";
+	destroy the location.
+	
+To destroy (place - a room):
+	now the place is broken;
+	let refuge be a random whole room;
+	if the refuge is not a room
+	begin;
+		cause trouble;
+	otherwise;	
+		[The following is entirely unnecessary since there are nicer ways now, but just as an exercise...]
+		repeat with refugee running through things in the place
+		begin;
+			move the refugee to the refuge;
+		end repeat;
+	end if;
+	
+Section 10 - Phrase options
+
+To cause irritation, in a minor way or extensively: 
+	let the maximum be 4;
+	if in a minor way:
+		now the maximum is 3;
+	if extensively:
+		now the maximum is 5;
+	repeat with my counter running from 1 to the maximum:
+		say "'[my counter],' mutters Florence, counting on her fingers.[line break]".
+
+
+
+Section 11 - Temporary variables 
+
+Section 14 - New conditions, new adjectives
+
+To decide whether Florence feels wrath:
+	if fewer than four things are worn by Florence:
+		yes;
+	no.
+
+Instead of waiting when Florence is visible and Florence feels wrath:
+	say "Florence clears her throat in an annoyed way."
+
+Definition: a person is well-clad if it is wearing at least three things.
+
+After printing the name of a well-clad person, say " (looking splendid)".
+ 
+
+Section 15 - Phrases to decide other things
+
+To decide which thing is the prettiest clothing:
+	if the silver handbag is handled:
+		decide on the silver handbag;
+	decide on the hat.
+	
+Every turn:
+	if Florence can see the prettiest clothing and Florence is not wearing the prettiest clothing, say "Florence looks [if Florence has the handbag]eagerly[otherwise]longingly[end if] at [the prettiest clothing]."
+
+Section 16 - Arithmetic on new kinds of value
+
+Material is a kind of value. The materials are silk, velvet, and sow ear. A thing has a material. 
+
+To destroy (nice clothing - a wearable thing):
+	now the nice clothing is sow ear;
+	say "[The nice clothing] is now hideous!"
+
+To recycle (bad clothing - a wearable thing), forward or backward:
+	if forward, now the material of the bad clothing is the material before the material of the bad clothing;
+	if backward, now the material of the bad clothing is the material after the material of the bad clothing.
+	
+Blowing is an action applying to one thing. Understand "blow [something]" as blowing.
+
+Instead of blowing a wearable thing:
+	recycle the noun, forward;
+	say "You blow, and now have [a noun]."
+
+Instead of waving a wearable thing:
+	recycle the noun, backward;
+	say "You wave, and now have [a noun]."
+
+After printing the name of a wearable thing (called the substance):
+	say " (made of [material of the substance])".
+
+Section 17 - Making new kinds of arithmetic 
+
+To decide which material is (first matter - a material) + (second matter - a material):
+	while second matter is not silk 
+	begin; 
+		let first matter be the material after first matter; 
+		let second matter be the material before second matter;
+	end while; 
+	decide on first matter.
+
+[Section 18 - In what order?]
+
+[Section 19 - Ambiguities]

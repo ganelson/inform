@@ -1,0 +1,13 @@
+There is a room.
+
+A testval is a kind of value. 1tv99 specifies a testval with parts firstpart and secondpart.
+
+The verb to be beyond means the containment relation.
+
+To decide whether (X - testval) is beyond (Y - testval):
+	if the firstpart part of X is greater than the secondpart part of Y, yes;
+	no.
+
+To decide whether (X - testval) is less than (Y - testval):
+	if the firstpart part of X is greater than the secondpart part of Y, yes;
+	no.

@@ -1,0 +1,22 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_number int32
+	kind K_odour enum
+	instance I_citrus K_odour
+	instance I_leather K_odour
+	property P_strength K_number
+	permission P_strength K_odour
+	propertyvalue P_strength I_citrus = 20
+	propertyvalue P_strength I_leather = 7
+	property P_lingeringness K_number
+	permission P_lingeringness K_odour
+	permission P_lingeringness K_odour
+	propertyvalue P_lingeringness I_citrus = 1
+	propertyvalue P_lingeringness I_leather = 3
+	propertyvalue P_lingeringness I_leather = 6
+	permission P_lingeringness K_number
+	kind K_colour enum
+	instance I_green K_colour
+	propertyvalue P_lingeringness I_green = 27

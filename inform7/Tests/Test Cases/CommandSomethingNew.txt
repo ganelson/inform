@@ -1,0 +1,27 @@
+The Kitchen is a room. "Just a small kitchen."
+
+A candle is here. A match is here. The match is lit.
+
+Burning it with is an action applying to two things.
+
+Understand the command "burn" as something new.
+Understand the command "light" as something new.
+
+Understand "burn [something] with [something]" as burning it with.
+
+Understand the command "light" as "burn".
+
+Check burning something lit with something:
+	say "[The noun] is already lit." instead.
+
+Check burning something with something unlit:
+	say "You can't light anything with something that isn't already lit itself."
+		instead.
+
+Carry out burning it with:
+	now the noun is lit.
+
+Report burning it with:
+	say "You light [the noun] with [the second noun]."
+
+Test me with "light candle with match / burn candle with match".

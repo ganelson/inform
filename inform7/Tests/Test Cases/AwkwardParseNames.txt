@@ -1,0 +1,28 @@
+After reading a command:
+	let X be text;
+	let X be the player's command;
+	replace the text "'s" in X with " [']s";
+	change the text of the player's command to X.
+
+Understand "[something related by reversed possession] 's" as a thing.
+
+Lab is a room. Chris is a person in the Lab.
+
+A hat is a kind of thing. Understand "chapeau/hat" as a hat.
+
+The Stetson is a hat in lab. The fedora is a hat in lab.
+
+Color is a kind of value. The colors are brown, red, and purple. A hat has a color. A hat is usually brown. 
+
+Chris carries a red box. Chris carries a blue box.
+
+Understand the color property as describing a hat. 
+
+A key is here. It is privately-named.
+Understand "house" or "car" as the key.
+Understand "key" or "kee" as the key.
+
+Test me with "x house / x car / x key / x kee / x house key / x house kee /
+x car key / x car kee / x house car / x car house / x key kee / x kee key /
+x key house / x key car / x kee house / x kee car / x brown chapeau /
+stetson / take brown stetson hat / x chris's box / red".

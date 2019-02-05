@@ -1,0 +1,43 @@
+   Home
+  You factor 16339.
+  
+  You consider factoring 15.
+  
+  You factor 15.
+  
+  You then turn your mind to asking Bob about "melon clusters".
+  
+  There is no reply.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see Bob here.
+  
+> >   Home
+  (Testing.)
+  
+  >[1] think
+  You consider factoring 15.
+  
+  You factor 15.
+  
+  >[2] i
+  >[3] think
+  You consider asking Bob about "grapefruit pith".
+  
+  There is no reply.
+  
+  >[4] jump
+  >[5] think
+  You consider factoring 15.
+  
+  You factor 15.
+  
+  >[6] e
+  >[7] think
+  You consider going east.
+  
+> >

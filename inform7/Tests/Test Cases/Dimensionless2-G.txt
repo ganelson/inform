@@ -1,0 +1,8 @@
+The Debugging Room is a room.
+
+Include Metric Units by Graham Nelson.
+
+When play begins:
+	let X be a real number;
+	let X be 150cm divided by 1cm;
+	say "[X]".

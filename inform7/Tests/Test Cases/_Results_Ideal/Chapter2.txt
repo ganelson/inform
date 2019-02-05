@@ -1,0 +1,265 @@
+   Kitchen
+  Chapter 2
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  You can see a red vase (in which are some flowers and a silver card), a refrigerator (in which are a jug (empty), some jars (empty), a bowl (empty), a butter dish, a platter, and some plates), a stove (on which are some dirty pots (in which are some unidentifiable lumps)), a table (on which are a treacle tart (in which are some broken dentures), some oven mitts, a pair of unironed trousers, and a lone grey sock), Florence, Lucy, Matilda, Harris, and Susanna here.
+  
+> >   Kitchen
+  ** look in pots
+  In the dirty pots are some unidentifiable lumps.
+  
+> >   Kitchen
+  ** x pots
+  Covered by a thin, mysteriously sticky golden film.
+  
+  In the dirty pots are some unidentifiable lumps.
+  
+> >   Kitchen
+  ** look in tart
+  In the treacle tart are some broken dentures.
+  
+> >   Kitchen
+  ** x dentures
+  Someone will be missing these.
+  
+> >   Kitchen
+  ** x mitts
+  You see nothing special about the oven mitts.
+  
+> >   Kitchen
+  ** take mitts
+  Taken.
+  
+> >   Kitchen
+  ** wear mitts
+  You put on the oven mitts.
+  
+> >   Kitchen
+  ** x trousers
+  You see nothing special about the pair of unironed trousers.
+  
+> >   Kitchen
+  ** wear trousers
+  (first taking the pair of unironed trousers)
+  You put on the pair of unironed trousers.
+  
+> >   Kitchen
+  ** wear sock
+  (first taking the lone grey sock)
+  You put on the lone grey sock.
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    a lone grey sock (being worn)
+    a pair of unironed trousers (being worn)
+    some oven mitts (being worn)
+  
+> >   Kitchen
+  ** x florence
+  You see nothing special about Florence.
+  
+> >   Kitchen
+  ** x lucy
+  You see nothing special about Lucy.
+  
+> >   Kitchen
+  ** x matilda
+  You see nothing special about Matilda.
+  
+> >   Kitchen
+  ** x fido
+  You can't see any such thing.
+  
+> >   Kitchen
+  ** x harris
+  You see nothing special about Harris.
+  
+> >   Kitchen
+  ** x susanna
+  You see nothing special about Susanna.
+  
+> >   Kitchen
+  ** eat tart
+  It is of a startling hardness, akin to the ceramics used to protect spacecraft on re-entry.
+  
+> >   Kitchen
+  ** hit tart
+  Tempting, but does it seem a good idea to offend Lucy?
+  
+> >   Kitchen
+  ** touch tart
+  Lucy snaps, "What's the matter? You don't trust my cookin"?"
+  
+> >   Kitchen
+  ** taste tart
+  Harris looks nervous. "Oh, I wouldn't do that, if I were you..."
+  
+> >   Kitchen
+  ** listen to tart
+  "I can interpret its transmissions, if you like," remarks Susanna. ""Greetings from the planet Klaxor.""
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    a lone grey sock (being worn)
+    a pair of unironed trousers (being worn)
+    some oven mitts (being worn)
+  
+> >   Kitchen
+  ** look in refrigerator
+  In the refrigerator are a jug, some jars, a bowl, a butter dish, a platter, and some plates.
+  
+> >   Kitchen
+  ** put mitt in jars
+  You can't see any such thing.
+  
+> >   Kitchen
+  ** i
+  You are carrying:
+    a lone grey sock (being worn)
+    a pair of unironed trousers (being worn)
+    some oven mitts (being worn)
+  
+> >   Kitchen
+  ** put mitts in jars
+  (first taking them off)
+  You put the oven mitts into the jars.
+  
+> >   Kitchen
+  ** put tart in bowl
+  (first taking the treacle tart)
+  You put the treacle tart into the bowl.
+  
+> >   Kitchen
+  ** put sock on platter
+  (first taking it off)
+  You put the lone grey sock on the platter.
+  
+> >   Kitchen
+  ** put trousers on plates
+  (first taking it off)
+  You put the pair of unironed trousers on the plates.
+  
+> >   South of Kitchen
+  ** s
+  
+  South of Kitchen
+  You can see Fido here.
+  
+> >   Kitchen
+  ** n
+  
+  Kitchen
+  You can see a red vase (in which are some flowers and a silver card), a refrigerator (in which are a jug (empty), some jars (in which are some oven mitts), a bowl (in which is a treacle tart (in which are some broken dentures)), a butter dish, a platter (on which is a lone grey sock), and some plates (on which is a pair of unironed trousers)), a stove (on which are some dirty pots (in which are some unidentifiable lumps)), a table, Florence, Lucy, Matilda, Harris, and Susanna here.
+  
+> >   Kitchen
+  ** vebrose
+  That's not a verb I recognize.
+  
+> >   Kitchen
+  ** oops verbose
+  Sorry, that can't be corrected.
+  
+> >   Kitchen
+  ** verbose
+  Chapter 2 is now in its "verbose" mode, which always gives long descriptions of locations (even if you've been there before).
+  
+> >   South of Kitchen
+  ** s
+  
+  South of Kitchen
+  An area for eating in!
+  
+  You can see Fido here.
+  
+> >   Kitchen
+  ** n
+  
+  Kitchen
+  The kitchen is for cooking in.
+  
+  You can see a red vase (in which are some flowers and a silver card), a refrigerator (in which are a jug (empty), some jars (in which are some oven mitts), a bowl (in which is a treacle tart (in which are some broken dentures)), a butter dish, a platter (on which is a lone grey sock), and some plates (on which is a pair of unironed trousers)), a stove (on which are some dirty pots (in which are some unidentifiable lumps)), a table, Florence, Lucy, Matilda, Harris, and Susanna here.
+  
+> >   Kitchen
+  ** take all
+  red vase: Taken.
+  refrigerator: Taken.
+  flowers: Taken.
+  silver card: Taken.
+  jug: Taken.
+  jars: Taken.
+  oven mitts: Taken.
+  bowl: Taken.
+  treacle tart: Taken.
+  broken dentures: Taken.
+  lone grey sock: Taken.
+  pair of unironed trousers: Taken.
+  dirty pots: Taken.
+  unidentifiable lumps: Taken.
+  bucket of french fries: That seems to belong to Florence.
+  spatula: That seems to belong to Lucy.
+  
+> >   South of Kitchen
+  ** s
+  
+  South of Kitchen
+  An area for eating in!
+  
+  You can see Fido here.
+  
+> >   South of Kitchen
+  ** i
+  You are carrying:
+    some unidentifiable lumps
+    some dirty pots
+    a pair of unironed trousers
+    a lone grey sock
+    some broken dentures
+    a treacle tart
+    a bowl
+    some oven mitts
+    some jars
+    a jug
+    a silver card
+    some flowers
+    a refrigerator
+      a butter dish
+      a platter
+      some plates
+    a red vase
+  
+> >   Kitchen
+  ** n
+  
+  Kitchen
+  The kitchen is for cooking in.
+  
+  You can see a stove, a table, Florence, Lucy, Matilda, Harris, and Susanna here.
+  
+> >   Breakfast Nook
+  ** w
+  
+  Breakfast Nook
+  Sunlight streams through the open window, illuminating this cheery nook and its windowseat.
+  
+  You can see a telegram from Klaxor here.
+  
+> >   Breakfast Nook
+  ** superbrief
+  Chapter 2 is now in its "superbrief" mode, which always gives short descriptions of locations (even if you haven't been there before).
+  
+> >   Breakfast Nook
+  ** look
+  Breakfast Nook
+  You can see a telegram from Klaxor here.
+  
+> >   Kitchen
+  ** e
+  
+  Kitchen
+  You can see a stove, a table, Florence, Lucy, Matilda, Harris, and Susanna here.
+  
+> >

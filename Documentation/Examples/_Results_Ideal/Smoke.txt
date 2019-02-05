@@ -1,0 +1,38 @@
+   Industrial Pantry
+  Only You...
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Industrial Pantry
+  Awe-inspiring quantities of food line every shelf, from the three-gallon tub of mayonnaise to the 50-pound tub of rice. Perhaps the most astonishing item is a bag of marshmallows big enough to double as a futon.
+  
+> >   Industrial Pantry
+  (Testing.)
+  
+  >[1] x smoke
+  You can't see any such thing.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] z
+  Time passes.
+  
+  The Industrial Pantry is filling rapidly with smoke.
+  
+  >[6] x smoke
+  A thick layer of smoke lies just under the ceiling.
+  
+  >[7] look
+  Industrial Pantry
+  Awe-inspiring quantities of food line every shelf, from the three-gallon tub of mayonnaise to the 50-pound tub of rice. Perhaps the most astonishing item is a bag of marshmallows big enough to double as a futon.
+  
+  A thick layer of smoke has gathered under the ceiling.
+  
+> >

@@ -1,0 +1,5 @@
+The NI School for Typing is a room. The typewriter is in the School.
+
+When play begins:
+	let the stanza be the NI School for Typing;
+	let the stanza be 123.

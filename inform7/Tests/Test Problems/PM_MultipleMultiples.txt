@@ -1,0 +1,6 @@
+The lab is a room. The jar and the bottle are containers in the lab. The player carries a pebble 
+and a feather. 
+
+Understand "put [things] in [things]" as inserting it into.
+
+test me with "put pebble and feather in jar and bottle".

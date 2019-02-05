@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NestedUSubstitution
+  >--> You wrote 'say "NEW YORK. 1832.[[unicode 182]]I had just..."' (source
+    text, line 3): but the text here contains one substitution '[...]' inside
+    another, which is not allowed. Actually, it looks as if you might have got
+    into this by typing an exotic character as part of the name of a text
+    substitution - those get rewritten automatically as '[unicode N]' for the
+    appropriate Unicode character code number N. Either way - this isn't
+    allowed.
+Inform 7 has finished: 44 centiseconds used.

@@ -1,0 +1,5 @@
+Include text substitutions in the debugging log.
+
+There is a room.
+When play begins:
+	say "foo the player] bar".

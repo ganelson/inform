@@ -1,0 +1,7 @@
+Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing. 
+The lantern has a brightness. The lantern is blazing.
+The Lab is a room.  The lantern is here.
+
+When play begins:
+	if the player provides the property brightness, say "Player does.";
+	if the lantern provides the property brightness, say "Lantern does."

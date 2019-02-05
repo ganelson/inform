@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 41 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ReturnKindUndetermined
+  >--> The declaration 'To decide which K is a random (name of kind of
+    arithmetic value J) between (first value - J) and (second value - J)
+    (documented at ph_randombetween)' (source text, line 1) tries to set up a
+    phrase which decides a value which is too vaguely described, because it
+    involves a kind variable (K) which it can't determine through usage.
+Problem__ PM_ReturnKindUndetermined
+  >--> The declaration 'To decide which M is blobby' (source text, line 6)
+    tries to set up a phrase which decides a value which is too vaguely
+    described, because it involves a kind variable (M) which it can't determine
+    through usage.
+Inform 7 has finished: 43 centiseconds used.

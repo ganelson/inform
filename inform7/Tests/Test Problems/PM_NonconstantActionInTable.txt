@@ -1,0 +1,14 @@
+The Kitchen is a room.
+
+The desk is in the Kitchen.
+
+Steve is a person.
+
+The moron is a person that varies.
+
+Table of Test Actions
+Commands
+examining the desk
+Steve examining the desk
+Steve examining the moron
+the moron examining the desk

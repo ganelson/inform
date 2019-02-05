@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DoorUnconnected
+  >--> The Great Gate seems to be a door with no way in or out, so either you
+    didn't mean it to be a door or you haven't specified what's on each side.
+    You could do this by writing something like 'The blue door is east of the
+    Library and west of the Conservatory'.
+Inform 7 has finished: 16 centiseconds used.

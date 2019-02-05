@@ -1,0 +1,13 @@
+Home is a room.
+
+Table 1
+character	bricks
+"Mario"	5
+"Luigi"	3
+
+To smash (N - a number) bricks for (reason - a text): say "Oh, [N] bricks smashed.".
+
+Every turn when "Mario" is a character listed in Table 1:
+	smash bricks entry bricks for "fun".
+
+Test me with "z".

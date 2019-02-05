@@ -1,0 +1,20 @@
+The English-Inform Phrasebook Editorial Building is a room.
+
+To speak in tongues,
+	in French,
+	in German,
+	in Dutch,
+	in Italian,
+	in Swedish,
+	in Norwegian,
+	in Danish,
+	in Spanish,
+	in Portuguese,
+	in Romanian,
+	in Bulgarian,
+	in Serbo-Croat,
+	in Hungarian,
+	in Latvian,
+	in Estonian,
+	in Russian, or
+	in Georgian: say "You babble, heedless of tongue."

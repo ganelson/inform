@@ -1,0 +1,220 @@
+take boots
+take stoo
+take stool
+sit on it
+look under it
+get up
+listen
+take all
+x sign
+take sign
+liste
+listen
+u
+push pyramid
+look under sofa
+say hello to jim
+jim, turn on the television
+jim, give me the beer
+turn on the television
+listen
+x television
+i
+shake beer
+open it
+undo
+z
+z
+open it
+undo
+z
+z
+open it
+undo
+z
+z
+z
+listen to root beer
+open it
+drink soda
+drink beer
+give beer to jim
+i
+s
+open the doro
+open the door
+go through door
+hide
+open wardrobe
+out
+look under the bed
+out
+go north
+kiss jim
+d
+out
+x truck
+get in truck
+go south
+push wheelbarrow n
+pete, e
+pete, in
+push wheelbarrow n
+go east
+get on stick
+push wheelbarrow d
+go d
+push ball up
+go u
+push wheelbarrow w
+d
+push ball e
+u
+get in truck
+push wheelbarrow w
+look
+i
+go n
+n
+get out
+verbose
+n
+take all
+show the book to janet
+janet, give me the card
+ask janet for the card
+i
+listen
+think
+smeel
+smell
+listen
+out
+w
+w
+n
+take tabs
+sing
+g
+g
+i
+x tabs
+x pull-tabs
+kiss jake
+g
+g
+g
+i
+e
+w
+drink shot glass
+take it
+n
+take cheeseburger
+eat it
+s
+eat cheeseburger
+undo
+n
+e
+n
+e
+s
+e
+n
+e
+x maps
+get maps
+u
+e
+s
+e
+w
+se
+s
+s
+w
+s
+w
+n
+n
+s
+n
+s
+look
+i
+ne
+s
+ne
+sw
+w
+w
+w
+e
+i
+u
+e
+e
+e
+e
+in
+u
+eat cheeseburger
+undo
+n
+d
+n
+out
+n
+
+n
+n
+eat cheeseburger
+i
+s
+get in truck
+s
+s
+w
+w
+w
+w
+get out
+e
+e
+n
+ride stick
+s
+w
+w
+w
+w
+e
+x gate
+jump
+shake the backpack
+i
+put all in backpack
+shake it
+shake backpack
+i
+listen
+smell
+e
+e
+e
+pete, jump
+e
+u
+in
+u
+jim, jump
+out
+d
+out
+n
+n
+n
+larry, jump
+janet, jump
+

@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Definition: a thing (called the dome) is stately if its carrying capacity is 19 or more.

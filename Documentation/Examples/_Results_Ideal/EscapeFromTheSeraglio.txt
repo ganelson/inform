@@ -1,0 +1,54 @@
+   Palm Chamber
+  Escape from the Seraglio
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Palm Chamber
+  You can see Sarissa, a bottle of ink, a quill pen, a tangerine, a bunch of grapes, a length of silken rope, some perfume, a cake of incense, a fitted leather bodice, a sapphire anklet, an illustrated novel, a whip and a heavy iron key here.
+  
+> >   Palm Chamber
+  (Testing.)
+  
+  >[1] take all
+  First the bottle of ink: Taken.
+  And then the quill pen: Taken.
+  And I suppose also the tangerine: Taken.
+  And the bunch of grapes: Taken.
+  And the length of silken rope: Taken.
+  And the perfume: Taken.
+  And on we wearily go with the cake of incense: Taken.
+  And the fitted leather bodice: Taken.
+  Oh, and not forgetting the sapphire anklet: Taken.
+  And the illustrated novel: Taken.
+  And the whip: Taken.
+  And the heavy iron key: Taken.
+  
+  >[2] drop all
+  heavy iron key: Dropped.
+  whip: Dropped.
+  illustrated novel: Dropped.
+  sapphire anklet: Dropped.
+  fitted leather bodice: Dropped.
+  cake of incense: Dropped.
+  perfume: Dropped.
+  length of silken rope: Dropped.
+  bunch of grapes: Dropped.
+  tangerine: Dropped.
+  quill pen: Dropped.
+  bottle of ink: Dropped.
+  
+  >[3] sarissa, take all
+  bottle of ink: Sarissa picks up the bottle of ink.
+  quill pen: Sarissa picks up the quill pen.
+  tangerine: Sarissa picks up the tangerine.
+  bunch of grapes: Sarissa picks up the bunch of grapes.
+  length of silken rope: Sarissa picks up the length of silken rope.
+  perfume: Sarissa picks up the perfume.
+  cake of incense: Sarissa picks up the cake of incense.
+  fitted leather bodice: Sarissa picks up the fitted leather bodice.
+  sapphire anklet: Sarissa picks up the sapphire anklet.
+  illustrated novel: Sarissa picks up the illustrated novel.
+  whip: Sarissa picks up the whip.
+  heavy iron key: Sarissa nervously demurs, knowing that it is forbidden.
+  
+> >

@@ -1,0 +1,19 @@
+[The point of interest here is that L, a list of people, is passed to a
+phrase which expects a list of objects.]
+
+Africa is a room.
+
+David Attenborough is a person in Africa.
+
+To decide what object is a random entry in (L - a list of objects):
+	say "I'm randomising in list [L].";
+	let I be a random number from 1 to the number of entries in L;
+	say "My rnd is [I].";
+	decide on entry I of L.
+
+When play begins:
+	let L be a list of people;
+	add David Attenborough to L;
+	showme L;
+	let E be a random entry in L;
+	showme E.

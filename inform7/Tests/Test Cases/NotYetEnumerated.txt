@@ -1,0 +1,12 @@
+A behavior is a kind of value.
+A behavior has a number called stuff.
+
+Aimless is a behavior with stuff 6.
+Happy is a behavior with stuff 2.
+Sad is a behavior.
+
+The place is a room.
+
+When play begins:
+	repeat with B running through behaviors:
+		say "[B] has [stuff of B].".

@@ -1,0 +1,35 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] showme thing 1
+  thing 1 - thing
+  location: out of play
+  singular-named, proper-named; unlit, inedible, portable
+  list grouping key: none
+  printed name: "thing 1"
+  printed plural name: none
+  indefinite article: none
+  description: "This is
+  
+  the first thing."
+  initial appearance: none
+  
+  >[2] showme thing 2
+  thing 2 - thing
+  location: out of play
+  singular-named, proper-named; unlit, inedible, portable
+  list grouping key: none
+  printed name: "thing 2"
+  printed plural name: none
+  indefinite article: none
+  description: "This is the second thing."
+  initial appearance: none
+  
+> >

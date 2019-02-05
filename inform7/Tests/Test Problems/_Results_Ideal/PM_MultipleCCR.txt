@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MultipleCCR
+  >--> You wrote 'Check taking or dropping' (source text, line 3), but the
+    situation this refers to ('taking or dropping') is not a single action.
+    Rules in the form of 'check', 'carry out' and 'report' are tied to specific
+    actions, and must give a single explicit action name - even if they then go
+    on to very complicated conditions about any nouns also involved. So 'Check
+    taking something: ...' is fine, but not 'Check taking or dropping
+    something: ...' or 'Check doing something: ...' - the former names two
+    actions, the latter none.
+Inform 7 has finished: 20 centiseconds used.

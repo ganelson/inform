@@ -1,0 +1,9 @@
+The Lab is a room. The shelf system is a backdrop in the Lab.
+
+The clear case is a transparent closed fixed in place container. It is part of the shelf system.
+
+The stand is a supporter in the clear case.
+
+On the stand is a chocolate. The chocolate is edible.
+
+Test me with "eat chocolate".

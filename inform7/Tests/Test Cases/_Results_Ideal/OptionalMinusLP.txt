@@ -1,0 +1,35 @@
+   Test
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Test
+  
+> >   Test
+  (Testing.)
+  
+  >[1] scale element at 0:8000
+  Scaled to 0:8000!
+  
+  >[2] scale element at 1:2500
+  Scaled to 1:2500!
+  
+  >[3] scale 0:8000
+  Scaled to 0:8000!
+  
+  >[4] scale 1:2500
+  Scaled to 1:2500!
+  
+  >[5] scale -1:0000
+  Scaled to -1:0000!
+  
+  >[6] scale -0:9000
+  Scaled to -0:9000!
+  
+  >[7] scale 0:9999
+  Scaled to 0:9999!
+  
+  >[8] scale 1:0000
+  Scaled to 1:0000!
+  
+> >

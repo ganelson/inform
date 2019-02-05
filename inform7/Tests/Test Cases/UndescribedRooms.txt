@@ -1,0 +1,15 @@
+The testing room is a room.
+
+When play begins:
+	if the description of the testing room is "":
+		say "Equal (A).";
+	otherwise:
+		say "Not equal (A).";
+	if the description of the testing room exactly matches the text "":
+		say "Equal (B).";
+	otherwise:
+		say "Not equal (B).";
+	if "" exactly matches the text the description of the testing room:
+		say "Equal (C).";
+	otherwise:
+		say "Not equal (C)."

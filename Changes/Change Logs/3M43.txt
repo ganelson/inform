@@ -1,0 +1,79 @@
+3M43 (21 May 2006)
+
+(Windows only) Search highlighting in the documentation tab doesn't keep
+	applying to further pages as you nagivate around.
+(Windows only) If nothing is found when searching, a dialog appears as feedback.
+(Windows only) Replacing text in the source tab no longer goes into an
+	infinite loop if the new text contains the old text as a substring.
+(Windows only) If the registry string value
+	"HKCU\Software\David Kinder\Inform\Window\Font Name"
+    is set, its value is used as the application font.
+(Windows only) If the registry DWORD value
+	"HKCU\Software\David Kinder\Inform\Window\Font Size"
+    is set, its value is used as the application font point size.
+Fixed example "Pink or Blue" to deal correctly with one-letter inputs.
+Added a few words of explanation to example "Crusoe" to help people find the
+	bit of the action that needs replacing.
+Twelve new Examples added, as straightforward demonstrations:
+	"Escape" - the most basic imaginable window.
+	"Down Below" - the most basic light switch.
+	"Replanting" - changing the results of trying to take an immovable object.
+	"Up and Up" - a travel description printed before moving between rooms.
+	"Neighborhood Watch" - a door lockable without a key but only on one side.
+	"Slightly Wrong" - a room whose description is unusual on the first visit.
+	"Laura" - use of a printed name and understand to get around particularly
+		awkward-named objects.
+	"Tamed" - enterable containers and supporters and to explain a few details
+		of when we might say something was transparent.
+	"Grace" - preventing the player from traveling to a distant location
+		without a vehicle.
+	"Verbosity" - using full-length room descriptions.
+	"Infiltration" - how to change a room description on each of several visits.
+	"MRE" - various timing things, heavily commented.
+Minor changes to examples "Finishing School" and "Lean and Hungry" to address
+	the complaint that general rules were being written but only really made
+	sense for specific individual NPCs.
+Minor changes to "Garibaldi" examples to correct a terrible error (the Medlab
+	being called Sickbay, in violation of the game's nominal setting).
+Typo removed from example "Get Me to the Church on Time".
+Correction of "Hagia Sophia" example to try exiting the chair silently.
+Review sections added to chapters 3 and 17 of the documentation.
+By popular demand (two people asked for this) "now X is not P" is now legal,
+	where P is an either/or property: thus "now the four-poster bed is not
+	scenery", for instance.
+Extended "let" to allow "rule" as one of the kinds of value allowed.
+Changed rules on the ' character so that it is not translated into " when it
+	begins text and is immediately followed by s and a space. (This so that
+	the apostrophe in "[The Kitchen]'s decor is awful." is not converted to
+	a double-quote.)
+Improved behaviour of "called", so that sentences involving relationships
+	with objects which are "called" now work: for instance, "The white door
+	is north of a room called the Hot and Cold Room."
+Unexpectedly capitalised articles following "called" are now no longer read
+	as articles. Thus, "South of the Passageway is a room called The Great
+	Hall of Infinity." will preserve the capitalised "The" in the room's name.
+Adjusted priorities in parsing so that table column names are considered less
+	likely to be intended than kind names. (This affects works where a kind
+	has its instances created by a table, since column 1 of that table will
+	quite likely have the same name as the kind.)
+When things are created by table (as in the example to do with Tour de France
+	jerseys), any articles in front of their names are now recognised, just
+	as if they had been created by regular sentences.
+Fixed crash on "Yourself is nowhere" (sic).
+Fixed crash sometimes occurring in indexing of rulebooks attached to scenes.
+Fixed crash (or sometimes other misbehaviour) on an over-complicated say.
+Fixed compiler hang when complicated assemblies never end.
+Fixed failure to check incorrect usage of 'called' in defining one-to-one
+	relations which are not reciprocated.
+Fixed failure to report improper usages of the (supposedly internal use only!)
+	syntax "...an action corresponding to...".
+Fixed failure to reject matches of vague descriptions against specific
+	ones in type checking, so that (e.g.) "an open door" would be accepted
+	against "(D - a door)" in a phrase definition.
+Fixed a bug in which complicated creations of kinds sometimes ignored their
+	adjectives: e.g., 'A radiant panel is a kind of backdrop which is lit.'
+	would sometimes silently ignore the "lit" part.
+Fixed a bug - well, arguably clarified an ambiguous specification - so that a
+	printed name for a kind is now inherited by things (or rooms) of that kind.
+Restored the (nowhere documented and theoretically unofficial) debugging
+	command RULES to working again.

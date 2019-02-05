@@ -1,0 +1,120 @@
+   Spinning Tower
+  Pine
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Spinning Tower
+  A remote corner of the old castle, reserved for spinning and weaving tasks.
+  
+  Sleeping Beauty lies here, oblivious to your presence.
+  
+> >   Spinning Tower
+  (Testing.)
+  
+  >[1] x beauty
+  She is even more magnificent than the rumors suggested.
+  
+  >[2] pour water on beauty
+  You pour out the jug of water on Sleeping Beauty.
+  
+  Sleeping Beauty wakes, shuddering. "Agh! I had a terrible dream about drowning and then-- Hey!"
+  
+  Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken.
+  
+  >[3] ask beauty about sleep
+  "Sleep well?" you ask solicitously.
+  
+  "Not really," she replies, edging away from you. So much for that angle.
+  
+  >[4] tell beauty about poverty
+  "I wish you'd give some thought to marrying me. You see," you say, your jaw tensing. "I wouldn't ask if it weren't for my family circumstances..."
+  
+  Woodcutter's Shack
+  Your family lives in a shack in the forest. There are holes in the roof, and in the winter the snow comes in -- rain, too, for that matter. The walls aren't very well-boarded, and don't keep out the wind, and even though you live in the middle of dense woods, you can never gather enough fuel to keep this place fully heated. And then there's the stench. Pigs wander freely in and out, and your three youngest brothers play on the floor.
+  
+  On the untidy bed are Mother and a folded letter.
+  
+  >[5] smell pigs
+  They smell the way animals do, when they live among their own refuse.
+  
+  >[6] x mother
+  She is wasting away of a slow disease, her skin stretched tautly over bone. She hasn't been the same since your father left.
+  
+  >[7] x letter
+  Many times read over and creased, the letter explains how your father has gone away with a wealthy countess and will not return. Your mother was not able to read it herself, of course, and had to have it explained to her by the parish priest. Now she keeps it by the bed and crumples it in her fits of delirium.
+  
+  >[8] kiss mother
+  You place a gentle kiss on her feverish brow. She looks up at you, her oldest -- yes, never mind that bit -- with a look of sincere trust and admiration.
+  
+  "You'll find a way through this for us," she says, squeezing your fingers. "I know you will."
+  
+  ...you finish describing the miserable circumstances of your home life, and allow your attention to return to the present.
+  
+  Spinning Tower
+  A remote corner of the old castle, reserved for spinning and weaving tasks.
+  
+  Sleeping Beauty stands beside you, looking distressed on your behalf.
+  
+  "Oh dear!" she says. "What a dreadful life!" She wrings her hands. "No wonder you are eager to improve your lot...! But --" Her brow clears, a new thought occurring. "You needn't marry me, you know! We could arrange it differently! I am certain that my father would give you a large reward, instead, and then I would not be separated from my current boyfriend!"
+  
+  >[9] ask beauty about marriage
+  "So," you say. "This is a little weird since we just met, but, um. Would you like to get married?"
+  
+  She looks at you nervously. "Do I have to? I mean, I'd rather not."
+  
+  Well, this could get prickly fast.
+  
+  >[10] tell beauty about identity
+  You clear your throat and allow your voice to stray upward, into its natural register and out of this husky false tenor you've been affecting. "There's, er, something you should know about my secret," you say...
+  
+  You reminisce about one of the many stops on the way here: you had a long journey from your homeland, and it wasn't made any easier by your poverty, the inability to afford decent inns or plentiful food or any kind of ride along the way.
+  
+  Forest Clearing
+  It's mid-autumn in your memory, the pool clear and cold, gold and red leaves floating on the surface.
+  
+  >[11] x me
+  You cannot see yourself without reflection, but you can feel your hair loose and unbound over your shoulders.
+  
+  >[12] look in water
+  You lean over the pool and look carefully at your reflection, your hair loose and unbound, falling around your face in waves. (That should surely give it away!)
+  
+  >[13] i
+  You are carrying:
+    a shirt (being worn)
+    a trousers (being worn)
+    a pack
+      ale
+      food
+      one skirt you have not been able to bring yourself to part with
+  
+  Spinning Tower
+  A remote corner of the old castle, reserved for spinning and weaving tasks.
+  
+  Sleeping Beauty stands beside you, looking distressed on your behalf.
+  
+  "You're -- a girl? Like me?"
+  
+  "Not much like you," you say, glancing over her petite frame and pert nose. "But female, at any rate."
+  
+  >[14] z
+  Time passes.
+  
+  "Girls can't rescue people."
+  
+  "Wrong," you say, feeling a little annoyed. "But you see why marrying me wouldn't be an interference. You could carry on whatever romances you wished, without your father even noticing."
+  
+  >[15] ask beauty about marriage
+  "So," you say. "What do you think?"
+  
+  She considers the matter silently for some minutes, then says: "I will do it. My beloved William will be so glad!" You imagine that William's feelings on the matter will be a tad more complex than that, but do not bother quashing her exuberance...
+  
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

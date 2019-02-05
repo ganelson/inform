@@ -1,0 +1,13 @@
+The Brahms Conservatoire is a room. The tuba and the trombone are in the Conservatoire.
+
+The tally is a list of stored actions that varies.
+
+Before doing something other than taking inventory:
+	if the current action is listed in the tally, say "(Oh, not again!)";
+	otherwise add the current action to the tally.
+
+Before taking inventory:
+	sort the tally;
+	say "You have thus far tried the actions: [the tally]."
+
+Test me with "look / wait / wait / take all / drop tuba / take me / take tuba / i / i".

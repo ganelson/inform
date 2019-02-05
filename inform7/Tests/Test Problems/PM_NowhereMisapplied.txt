@@ -1,0 +1,4 @@
+Home is a room.
+
+When play begins:
+	if 21 is nowhere, say "!".

@@ -1,0 +1,9 @@
+The retro T-shirt is a thing.
+
+Table 1 - Player's Clothing
+name				description
+a retro T-shirt		"Depicts a character who rose and fell before you were born."
+
+Darcy's Bedroom is a room.
+
+The retro T-shirt are defined by the Table of Player's Clothing.

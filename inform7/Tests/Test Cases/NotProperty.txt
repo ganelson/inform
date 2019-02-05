@@ -1,0 +1,19 @@
+"Not Visited"
+
+Include expressions and predicate calculus workings in the debugging log.
+
+Start is a room. "You start here."
+
+Room 1 is west of Start. "This is Room 1 and [self].[if not visited]You haven't
+been here before.[end if]"
+
+Room 3 is north of Start. "This is Room 3 and [self].[if visited]You have been
+here before.[end if]"
+
+Room 2 is south of Start. "This is Room 2 and [self].[if unvisited]You haven't
+been here before.[end if]"
+
+Test me with "verbose / n / s / n / s / w / e / w / e / s / n / s"
+
+To say self: (- print "(Self is: ", (the) self, ") ";
+	if (self has visited) print "(V) "; else print "(NV) "; -).

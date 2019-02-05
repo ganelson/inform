@@ -1,0 +1,11 @@
+Math Department is a room.
+Physics Department is west of Math Department.
+
+After going:
+	let var be the room gone to;
+	say "var is [var].";
+	now var is the room gone to;
+	say "var is [var].";
+	continue the action.
+
+Test me with "go west".

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 36 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyNonConstant
+  >--> In 'The x of the hat is v' (source text, line 4) you give a value of the
+    x property as 'v', and while this does make sense as a number, it is a
+    value which exists and changes during play, and which doesn't make sense to
+    use when setting up the initial state of things.
+Inform 7 has finished: 17 centiseconds used.

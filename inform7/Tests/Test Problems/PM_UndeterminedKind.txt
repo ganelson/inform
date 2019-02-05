@@ -1,0 +1,8 @@
+There is a room.
+When play begins:
+	showme Foo {{1}} bar {};
+To decide which K is foo (L - a value of kind K) bar (Q - a value of kind Z):
+	add 0 to Q;
+	add "" to Q;
+	add Q to L;
+	decide on L.

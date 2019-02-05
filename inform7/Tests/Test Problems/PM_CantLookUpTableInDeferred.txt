@@ -1,0 +1,9 @@
+Home is a room.
+
+Table of Exempla
+flavour
+"rum and raisin"
+"Neapolitan"
+
+When play begins:
+	if an empty text is a flavour listed in the Table of Exempla, say "Yes."

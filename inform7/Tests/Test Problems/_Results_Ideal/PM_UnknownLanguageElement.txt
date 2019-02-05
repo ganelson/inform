@@ -1,0 +1,8 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+Problem__ PM_UnknownLanguageElement
+  >--> You wrote 'Section 1 (for Parnassian language element only)' (source
+    text, line 3): but this heading contains a stipulation about the current
+    Inform language definition which I can't understand, and should be
+    something like '(for Glulx external files language element only)'.
+Inform 7 has finished: 3 centiseconds used.

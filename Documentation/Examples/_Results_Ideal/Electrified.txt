@@ -1,0 +1,29 @@
+   Open Field
+  Electrified
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Open Field
+  At this end of the field is a wire fence separating farm country from the government testing grounds beyond.
+  
+> >   Open Field
+  (Testing.)
+  
+  >[1] touch fence
+  You fear touching the wire fence.
+  
+  >[2] touch box
+  You can't help noticing a bright red sticker on the surface of the box.
+  
+  You fear touching the scary box.
+  
+  >[3] open box
+  You fear touching the scary box.
+  
+  >[4] wear glove
+  You put on the very thick rubber glove.
+  
+  >[5] open box
+  The scary box seems to be super-glued shut.
+  
+> >

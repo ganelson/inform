@@ -1,0 +1,35 @@
+   Gallery
+  Western Art History 305
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Gallery
+  Various paintings hang on the walls of this gallery, awaiting critical attention. A side chamber to the north contains smaller works.
+  
+  You can see an abstract painting, a pointilist painting and a French academic painting here.
+  
+> >   Side Chamber
+  (Testing.)
+  
+  >[1] x paintings
+  There's an abstract painting, a pointilist painting and a French academic painting.
+  
+  >[2] x all
+  small notebook: It contains the notes you've taken so far towards a paper for Western Art History 305. So far you're still feeling a bit uninspired.
+  
+  paintings: There's an abstract painting, a pointilist painting and a French academic painting.
+  
+  >[3] n
+  
+  Side Chamber
+  You can see a handsome miniature here.
+  
+  >[4] x paintings
+  The miniature depicts a uniformed soldier of the late 18th century, with braid on his shoulders and a curl in his beard.
+  
+  >[5] x all
+  small notebook: It contains the notes you've taken so far towards a paper for Western Art History 305. So far you're still feeling a bit uninspired.
+  
+  handsome miniature: The miniature depicts a uniformed soldier of the late 18th century, with braid on his shoulders and a curl in his beard.
+  
+> >

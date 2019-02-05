@@ -1,0 +1,28 @@
+   Empty Field
+  North by Northwest
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empty Field
+  In the distance is a standard crop-dusting plane.
+  
+  From here you can run to the south-southeast.
+  
+> >   Empty Field
+  (Testing.)
+  
+  >[1] sse
+  
+  Deserted Road
+  Approaching faster and faster is a standard crop-dusting plane.
+  
+  From here you can run to the north-northwest.
+  
+  >[2] north-northwest
+  
+  Empty Field
+  Flying ominously low and directly towards you is a standard crop-dusting plane.
+  
+  From here you can run to the south-southeast.
+  
+> >

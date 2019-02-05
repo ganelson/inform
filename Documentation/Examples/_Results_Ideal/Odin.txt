@@ -1,0 +1,25 @@
+   House of a Mortal Farmer
+  Odin
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  House of a Mortal Farmer
+  Having two separate rooms, this house testifies to considerable wealth and success at agriculture.
+  
+  You can see a table (on which is a loaf of bread), a basket (in which is an infant), a hearth and two chairs here.
+  
+> >   House of a Mortal Farmer
+  (Testing.)
+  
+  >[1] x table
+  You give the table a glance, but it is plainly beneath your attention.
+  
+  On the table is a loaf of bread.
+  
+  >[2] x chair
+  You give the chair a glance, but it is plainly beneath your attention.
+  
+  >[3] x infant
+  So strong and fat that you wonder whether one of your fellow gods is acquainted with the mistress of the house-- but it's no concern of yours, of course.
+  
+> >

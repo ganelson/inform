@@ -1,0 +1,13 @@
+Temperature is a kind of value. The temperatures are hot and cold.
+
+A thing has a temperature. 
+
+Temperature Lab is a room. "The perfect place to HEAT or COOL things!"
+
+The very mysterious substance is a cold thing, here. The description of the substance is "Very mysterious 
+and [temperature]."
+
+Possibilizing relates one thing to various temperatures. The verb to be possibly implies the possibilizing 
+relation.
+The substance is possibly hot. The substance is possibly cold.
+Understand "[something related by possibilizing]" as a thing.

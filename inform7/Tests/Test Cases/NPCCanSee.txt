@@ -1,0 +1,9 @@
+Darkroom is a dark room.
+
+One Hour Photo is south of Darkroom. Robin is here. A cash register is here.
+
+Instead of waiting:
+	if Robin can see the cash register, say "Robin can see it.";
+	otherwise say "Whoops!"
+
+Test me with "z / s / z".

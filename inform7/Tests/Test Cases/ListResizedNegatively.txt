@@ -1,0 +1,4 @@
+Foo is a room.
+When play begins:
+	let L be {1};
+	change L to have -2 entries.

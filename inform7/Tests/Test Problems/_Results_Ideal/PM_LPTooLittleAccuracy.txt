@@ -1,0 +1,18 @@
+Inform 7 build 6M27 has started.
+I've now read your source text, which is 25 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LPTooLittleAccuracy
+  >--> In the sentence 'let X be 0.004kg' (source text, line 8), you use the
+    notation '0.004kg' to write a constant value. But to store that, I would
+    need greater accuracy than this kind of value has - see the Kinds page of
+    the Index for the range it has.
+    I was trying to match one of these phrases:
+    1.  let (x - a new name) be (0.004kg - description of relations of
+    values) 
+    2.  let (x - a new name) be (0.004kg - name of kind) 
+    3.  let (x - a new name) be (0.004kg - value) 
+    4.  let (x - a temporary named value) be (0.004kg - value) 
+    But I didn't recognise '0.004kg'.
+    The name 'x' doesn't yet exist.
+Inform 7 has finished: 57 centiseconds used.

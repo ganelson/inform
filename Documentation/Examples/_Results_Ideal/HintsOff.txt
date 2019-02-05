@@ -1,0 +1,12 @@
+   Realm of Terribly Unjust Puzzles
+  Real Adventurers Need No Help
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Realm of Terribly Unjust Puzzles
+  
+> >   Realm of Terribly Unjust Puzzles
+  (Testing.)
+  
+  >[1] hint
+> Sometimes the temptation to rely on hints becomes overwhelming, and you may prefer to turn off hints now. If you do so, your further requests for guidance will be unavailing. Turn off hints? >

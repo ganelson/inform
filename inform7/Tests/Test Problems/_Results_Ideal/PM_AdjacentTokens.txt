@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AdjacentTokens
+  >--> You wrote 'To amalgamate (N - a number) (M - a number)' (source text, line 3):
+    but phrases can't be defined so that they have two bracketed varying
+    elements immediately next to each other, but instead need at least one
+    fixed word in between. Thus 'To combine (X - a number) (Y - a number)' is
+    not allowed, but 'To combine (X - a number) with (Y - a number)' works
+    because of the 'with' dividing the bracketed terms X and Y.
+Inform 7 has finished: 19 centiseconds used.

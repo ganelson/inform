@@ -1,0 +1,53 @@
+   Toilet
+  The Prague Job
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Toilet
+  The walls are painted an unattractive green; the fixtures are a bit old. But it is the only place in the hostel with any privacy.
+  
+> >   Long Hallway
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a lockpick
+    a smoke bomb
+    a grappling hook
+    a pair of gloves
+  
+  >[2] x lockpick
+  Effective on most kinds of key locks, it is a gift from your mentor in the discipline, old Wheezy.
+  
+  >[3] out
+  You need to go over your equipment first, and make sure you're ready here.
+  
+  >[4] x bomb
+  Your last of these, so you should rely on it only when other modes of escape have vanished. It takes effect when dropped, producing a cloud of purple haze sufficient to fill a medium-sized room.
+  
+  Someone pounds on the door of your hideout and yells at you in Czech.
+  
+  >[5] out
+  You're not done checking over your materials.
+  
+  >[6] x hook
+  Good for shooting at balconies and other sorts of overhang.
+  
+  Impatient footsteps pass your door again.
+  
+  >[7] x gloves
+  Black and shiny, with gripping material on the palms. Batman would be jealous.
+  
+  There -- nothing damaged or torn. You're ready to go.
+  
+  >[8] out
+  
+  Long Hallway
+  
+  
+      *** The game is afoot ***
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

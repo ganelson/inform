@@ -1,0 +1,34 @@
+   Unimplemented Room
+  Hi, Larry! Thanks for testing my game!!
+  
+  Alpha
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Unimplemented Room
+  Room description goes here...
+  
+  You can see a scary troll here.
+  
+> >   Unimplemented Room
+  (Testing.)
+  
+  >[1] x me
+  As good-looking as ever.
+  
+  >[2] x troll
+  You see nothing special about the scary troll.
+  
+  >[3] !this game is a bit dull so far
+  (Noted.)
+  
+  >[4] kiss troll
+  The scary troll might not like that.
+  
+  >[5] ? does this troll do anything?
+  (Noted.)
+  
+  >[6] :yawn
+  (Noted.)
+  
+> >

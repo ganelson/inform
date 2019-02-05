@@ -1,0 +1,19 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InlineNoSuch
+  >--> You wrote 'go awry 21' (source text, line 9), which I read as making use
+    of the phrase 'To go awry (N - a number)' (source text, line 3). This in
+    turn has what's called an 'inline' definition, written in a technical
+    notation usually needed only by the Standard Rules or other low-level
+    extensions. The definition here is '{-unprotect:N}; {-show-me:blobby};' but
+    it seems to be broken. I don't know any local variable called 'N'.
+Problem__ PM_InlineNoSuch
+  >--> You wrote 'go awry 21' (source text, line 9), which I read as making use
+    of the phrase 'To go awry (N - a number)' (source text, line 3). This in
+    turn has what's called an 'inline' definition, written in a technical
+    notation usually needed only by the Standard Rules or other low-level
+    extensions. The definition here is '{-unprotect:N}; {-show-me:blobby};' but
+    it seems to be broken. I don't know any local variable called 'blobby'.
+Inform 7 has finished: 43 centiseconds used.

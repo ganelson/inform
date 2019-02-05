@@ -1,0 +1,10 @@
+Home is a room.
+
+The grid is a list of lists of texts which varies. The grid is {{"foo", "bar"}}.
+
+When play begins:
+	showme the grid;
+	showme entry 1 of the grid;
+	showme entry 1 of entry 1 of the grid; [***]
+	let L be entry 1 of the grid;
+	showme entry 1 of L.

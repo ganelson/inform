@@ -1,0 +1,9 @@
+The Science Room is a room. The description is "This is where the bug occurs."
+
+The large crack is an open unopenable fixed in place container in the
+Science Room. "The floor underneath you has a large crack in it."
+
+The length of chain is in the large crack.
+
+The gas line is a scenery supporter in the Science Room.
+The gas line can be closed or gopen.

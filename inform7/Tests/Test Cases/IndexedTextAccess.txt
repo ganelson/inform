@@ -1,0 +1,90 @@
+[Blob access test.]
+
+The Outer Solar System is a room.
+
+To say (string - text) in a drunken fashion:
+	let L be the number of characters in string;
+	repeat with N running from 1 to L
+	begin;
+		let C be character number N in string;
+		say C;
+		if C is "s", say "h";
+	end repeat.
+
+When play begins:
+	now the left hand status line is "[crossword clue of printed name of location]".
+
+To say crossword clue of (string - text):
+	let NW be the number of words in string;
+	say "[NW] word[s]: ";
+	repeat with WN running from 1 to NW
+	begin;
+		if WN is greater than 1, say ",";
+		say the number of characters in word number WN in string;
+	end repeat.
+
+Instead of going east:
+	let Neptune be "Neptunian System";
+	say "Neptune is now [Neptune], and has [number of characters in Neptune] characters and [number of words in Neptune] words."
+
+Instead of going west:
+	let Neptune be "Neptunian System with Rings and Moons";
+	let W be the number of words in Neptune;
+	repeat with N running from 1 to W
+	begin;
+		say "Word [N] is [word number N in Neptune].";
+	end repeat.
+
+Instead of going north:
+	let Neptune be "Neptunian System";
+	let C be the number of characters in Neptune;
+	repeat with N running from 1 to C
+	begin;
+		say "Character [N] is [character number N in Neptune].";
+	end repeat.
+
+Instead of going south:
+	let Neptune be "Neptunian System with Rings and Moons";
+	say "You look drunkenly at [Neptune in a drunken fashion]."
+
+Instead of going up:
+	let Neptune be "Neptunian (Quasi-System), with Rings; -- and Moons! 'Ice-hot... don't you think?'";
+	let W be the number of punctuated words in Neptune;
+	repeat with N running from 1 to W
+	begin;
+		say "Punctuated word [N] is [punctuated word number N in Neptune].";
+	end repeat.
+
+Instead of going down:
+	let Neptune be "Neptunian (Quasi-System), with Rings; -- and Moons! 'Ice-hot... don't you think?'";
+	let W be the number of words in Neptune;
+	repeat with N running from 1 to W
+	begin;
+		say "Word [N] is [word number N in Neptune].";
+	end repeat.
+
+Instead of going northeast:
+	let Neptune be "This is a sensational fact.[paragraph break]The Martians have invaded Miranda.[line break](One of the moons of Uranus, that is.)";
+	let W be the number of paragraphs in Neptune;
+	repeat with N running from 1 to W
+	begin;
+		say "Paragraph [N] is [paragraph number N in Neptune].";
+	end repeat.
+
+Instead of going northwest:
+	let Neptune be "This is a sensational fact.[paragraph break]The Martians have invaded Miranda.[line break](One of the moons of Uranus, that is.)";
+	let W be the number of lines in Neptune;
+	repeat with N running from 1 to W
+	begin;
+		say "Line [N] is [line number N in Neptune].";
+	end repeat.
+
+Instead of going southeast:
+	let Neptune be "Neptunian (Quasi-System), with Rings; -- and Moons! 'Ice-hot... don't you think?'";
+	let W be the number of unpunctuated words in Neptune;
+	repeat with N running from 1 to W
+	begin;
+		say "Unpunctuated word [N] is [unpunctuated word number N in Neptune].";
+	end repeat.
+
+Test me with "n/s/e/w/u/d/ne/nw/se".

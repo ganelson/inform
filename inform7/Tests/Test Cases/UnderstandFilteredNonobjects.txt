@@ -1,0 +1,23 @@
+A spell is a kind of value. Xyzzy is a spell. Plugh is a spell.
+
+Casting is an action applying to one spell.
+
+Understand "acast [spell]" as casting.
+
+Understand "bcast [possible spell]" as casting.
+
+Understand "ccast [passible spell]" as casting.
+
+Understand "dcast [plausible spell]" as casting.
+
+Carry out casting: say "You cast [spell understood]."
+
+Definition: a spell (called S) is possible: if S is xyzzy, yes; no.
+
+Definition: a spell is passible: if it is xyzzy, yes; no.
+
+Definition: a spell is plausible if it is xyzzy.
+
+Place is a room.
+
+Test me with "acast xyzzy / acast plugh / bcast xyzzy / bcast plugh / ccast xyzzy / ccast plugh / dcast xyzzy / dcast plugh".

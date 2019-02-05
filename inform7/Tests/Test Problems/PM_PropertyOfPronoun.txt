@@ -1,0 +1,5 @@
+Test room is a room.
+A toll booth is fixed in place in the test room.  The toll booth can be 
+pointing up.
+A broken toll booth is fixed in place in the test room. It is opaque. It can be 
+pointing down. 

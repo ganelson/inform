@@ -1,0 +1,72 @@
+   Doctor's Cabin
+  Trachypachidae Maturin 1803
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Doctor's Cabin
+  A dark, cramped triangle, like a slice of cake, except that its sharp end has been cut off: and so low that a moderately tall man would strike his head on the deck above if he were to stand upright. Every free surface is covered with sheets of best Venetian looking-glass, to increase the light filtering in. Long use and the carpenter's ingenuity have packed in a folding cot and table, and lockers are built into unlikely places: lockers filled with specimens, skeletons, sketches, drafts and serial letters.
+  
+  You can see a sealed jug containing a beetle here.
+  
+> >   Doctor's Cabin
+  (Testing.)
+  
+  >[1] get jug
+  Taken.
+  
+  >[2] x jug
+  The sealed jug contains a beetle.
+  
+  >[3] open jug
+  You pull the cork from the jug containing a beetle.
+  
+  >[4] x jug
+  The now open jug contains a beetle.
+  
+  >[5] i
+  You are carrying:
+    a cork
+    a now open jug containing a beetle
+  
+  >[6] x cork
+  You see nothing special about the cork.
+  
+  >[7] cork jug
+  You stopper the jug with the cork.
+  
+  >[8] i
+  You are carrying:
+    a sealed jug containing a beetle
+  
+  >[9] uncork jug
+  You pull the cork from the jug containing a beetle.
+  
+  >[10] i
+  You are carrying:
+    a cork
+    a now open jug containing a beetle
+  
+  >[11] x jug
+  The now open jug contains a beetle.
+  
+  >[12] get beetle
+  Taken.
+  
+  >[13] i
+  You are carrying:
+    a beetle
+    a cork
+    a now open jug
+  
+  >[14] close jug
+  You stopper the jug with the cork.
+  
+  >[15] i
+  You are carrying:
+    a beetle
+    a sealed jug
+  
+  >[16] x jug
+  The sealed jug contains nothing.
+  
+> >

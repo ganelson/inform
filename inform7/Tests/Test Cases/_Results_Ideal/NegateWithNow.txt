@@ -1,0 +1,19 @@
+   Town Square
+  Negate the Unnegateable
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Town Square
+  The only item of interest in this Town Square is the tall, unstable-looking statue at its centre.
+  
+> >   Town Square
+  (Testing.)
+  
+  >[1] push statue
+  The statue topples over even more easily than you thought it would.
+  
+  >[2] look
+  Town Square
+  The only item of interest in this Town Square is the tall, unstable-looking statue fallen across the cobbles.
+  
+> >

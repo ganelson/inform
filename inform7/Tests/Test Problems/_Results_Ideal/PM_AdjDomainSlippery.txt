@@ -1,0 +1,14 @@
+Inform 7 build 6M32 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AdjDomainSlippery
+  >--> In 'Definition' (source text, line 3) you defined an adjective by 'An
+    open door is wibbly if it is 100 years old' intending that it would apply
+    to 'An open door': but this is slippery, because it can change during play.
+    Definitions can only be made in cases where it's clear for any given value
+    or object what definition will apply. For instance, 'Definition: a door is
+    shiny if ...' is fine, but 'Definition: an open door is shiny if ...' is
+    not allowed - Inform wouldn't know whether or not to apply it to the Big
+    Blue Door (say), since it would only apply some of the time.
+Inform 7 has finished: 57 centiseconds used.

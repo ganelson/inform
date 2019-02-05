@@ -1,0 +1,133 @@
+take inventory
+take x
+i
+take y
+i
+take z
+i
+take off hat
+open coke
+x cokes
+x coke
+take all from platter
+x platter
+take root beer
+look
+i
+put all on platter
+i
+drop platter
+put all on platter
+look
+take key and corkscrew and tiles
+take key
+take corkscrew
+take x
+take y
+take z
+take platter
+i
+take hat
+i
+wear hat
+i
+drop y
+look
+i
+x bench
+x blur
+sit on bench
+x cupid
+x mask
+x venus
+x father
+enter venus
+x girl
+touch girl
+x ball
+folly, take ball
+x cupid
+out
+i
+drop all
+look
+take all
+drop corkscrew
+drop platter
+look
+i
+put drinks on platter
+put ginger ale on platter
+look
+put coke on platter
+look
+put root beer on platter
+look
+take corkscrew
+look
+take platter
+i
+put all on platter
+i
+drop platter
+put all on platter
+i
+take platter
+i
+zip
+n
+s
+simon says s
+enter holbein
+x blur
+get blur
+x i
+i
+x skull
+x me
+attack ambassadors
+i
+take coke
+put coke on platter
+drop platter
+drop platter
+put coke on platter
+take platter
+i
+out
+zip
+w
+sit
+out
+e
+sit
+w
+get up
+enter
+w
+w
+unlock safe
+unlock safe with key
+take jolt
+open safe
+take jolt
+take all
+take broom
+e
+i wish to get in the holbein
+score
+I am going to
+[hm]
+quickly sit
+attack me
+undo
+purloin ball
+eat it
+amusing
+undo
+sit twice
+sit using feet
+get up
+e
+drop ball
+look

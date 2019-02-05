@@ -1,0 +1,17 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 5 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NoNewInstances
+  >--> The sentence 'The badger is a text' (source text, line 1) reads to me as
+    if 'badger' refers to something I should create as brand new - a text. But
+    that can't be right, because this is a kind of value where I can't simply
+    invent new values. (Just as the numbers are ..., 1, 2, 3, ... and I can't
+    invent a new one called 'Susan'.) Perhaps you wanted not to invent a
+    constant but to make a variable - that is, to give a name for a value which
+    will change during play. If so, try something like 'The bonus is a number
+    which varies'. Or perhaps you wanted to create a name as an alias for a
+    constant value. If so, try something like 'The lucky number is always 8.'
+    But this only makes a new name for the existing number 8, it doesn't invent
+    a new number.
+Inform 7 has finished: 16 centiseconds used.

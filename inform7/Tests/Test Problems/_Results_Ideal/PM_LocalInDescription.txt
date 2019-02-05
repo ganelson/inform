@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 59 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LocalInDescription
+  >--> You wrote 'enumerate things in the location of the item' (source text, line 5),
+    but descriptions used as values are not allowed to contain references to
+    temporary values (defined by 'let', or by loops, or existing only in
+    certain rulebooks or actions, say) - unfortunately 'item' is just such a
+    temporary value. The problem is that it may well not exist any more when
+    the description needs to be used, in another time and another place.
+Inform 7 has finished: 56 centiseconds used.

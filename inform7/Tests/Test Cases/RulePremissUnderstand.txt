@@ -1,0 +1,11 @@
+Place is a room.
+ 
+Graham is a man in the Place.
+ 
+Understand "i7" or "inform" or "inform 7" as "[inform]".
+ 
+After asking Graham about "[inform]":
+	say "It's really rather good."
+
+Test me with "ask graham about inform / ask graham about inform 7 / ask graham
+about inform 6 / ask graham about i7".

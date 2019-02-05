@@ -1,0 +1,12 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 30 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantLookUpTableInDeferred
+  >--> You wrote 'if an empty text is a flavour listed in the Table of Exempla'
+    (source text, line 9): but I am not able to look up table entries in this
+    complicated condition, which seems to involve making a potentially large
+    number of checks in rather few words (and may perhaps result from a
+    misunderstanding such as writing the name of a kind where an individual
+    object is intended?).
+Inform 7 has finished: 70 centiseconds used.

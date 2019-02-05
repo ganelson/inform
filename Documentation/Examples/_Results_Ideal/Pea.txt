@@ -1,0 +1,71 @@
+   Topmost Turret
+  Princess and the Pea
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Topmost Turret
+  You can see a large mattress, a medium mattress and a small mattress here.
+  
+> >   Topmost Turret
+  (Testing.)
+  
+  >[1] sleep
+  You can't sleep standing up!
+  
+  >[2] enter small
+  You get onto the small mattress.
+  
+  >[3] sleep
+  You can still feel something very uncomfortable under the small mattress.
+  
+  >[4] get up
+  You get off the small mattress.
+  
+  Topmost Turret
+  You can see a large mattress, a medium mattress and a small mattress here.
+  
+  >[5] get small
+  Taken.
+  
+  >[6] put small on medium
+  You put the small mattress on the medium mattress.
+  
+  >[7] get on small
+  (getting onto the medium mattress)
+  You get onto the small mattress.
+  
+  >[8] sleep
+  You can still feel something very uncomfortable under the medium mattress.
+  
+  >[9] get up
+  You get off the small mattress.
+  
+  Topmost Turret (on the medium mattress)
+  You can see a large mattress here.
+  
+  On the medium mattress you can see a small mattress.
+  
+  >[10] g
+  You get off the medium mattress.
+  
+  Topmost Turret
+  You can see a large mattress and a medium mattress (on which is a small mattress) here.
+  
+  >[11] get medium
+  Taken.
+  
+  >[12] put medium on large
+  You put the medium mattress on the large mattress.
+  
+  >[13] get on small
+  (getting onto the large mattress)
+  (getting onto the medium mattress)
+  You get onto the small mattress.
+  
+  >[14] look
+  Topmost Turret (on the small mattress) (on the medium mattress) (on the large mattress)
+  
+  >[15] sleep
+  You can still feel something very uncomfortable under the large mattress.
+  
+> >

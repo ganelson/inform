@@ -1,0 +1,25 @@
+The Garden is a room. A wheelbarrow is here. It contains a pile of dirt. The Garden contains a flower plot. The plot is fixed in place. A marble is a kind of thing. Three marbles are in the Garden.
+
+The Yard is north of the Garden.
+
+Rule for printing a parser error:
+	[x] if the latest parser error is didn't understand error, say "'Speak up, lad, I don't hear as well as I used to.'";
+	[x] if the latest parser error is only understood as far as error, say "'Too much nonsense at the end of your sentence! Talk simpler!'";
+	if the latest parser error is didn't understand that number error, say "'What's the matter with you, son? Can't you count?'";
+	[x] if the latest parser error is can't see any such thing error, say "'My eyes might not be what they used to be, sonny, but I can't make out anything remotely like that hereabouts.'";
+	if the latest parser error is said too little error, say "'Well? Go on, don't just stop in the middle.'";
+	if the latest parser error is aren't holding that error, say "'Look, you ain't carrying any such thing!'";
+	[x] if the latest parser error is can't use multiple objects error, say "'I know your mother always called you her little Houdini, but even Harry couldn't do that to more than one thing at once.'";
+	if the latest parser error is can only use multiple objects error, say "'What are you, thick? You can't do that one at a time.'";
+	[x] if the latest parser error is the not sure what it refers to error, say "'C'd you be more specific, runtling?'";
+	if the latest parser error is excepted something not included error, say "'Well, now, I wasn't planning on including that anyway, boyo.'";
+	[x] if the latest parser error is can only do that to something animate error, say "'That ain't something you can do with inanimate objects. It's unnatural.'";
+	[x] if the latest parser error is the not a verb I recognise error, say "'What kind of action is that? Just because your friends all do it doesn't make it acceptable around here!'";
+	[-] if the latest parser error is the not something you need to refer to error, say "'I don't want to ever hear you refer to that again.'";
+	[x] if the latest parser error is can't see it at the moment error, say "'Not here at the moment, or are you daft?'";
+	if the latest parser error is didn't understand the way that finished error, say "'Elocution ain't your strong suit, is it?'";
+	[x] if the latest parser error is the not enough of those available error, say "'What, you seeing double? There ain't enough of those to go around.'";
+	if the latest parser error is nothing to do error, say "'Lazy bum.'";
+	[x] if the latest parser error is I beg your pardon error, say "'Come again?'";
+	
+Test me with "me, / push the wheelbarrow north to the yard / examine the wiggle / x marbles / ask her about me / ask dirt about me / wiggle / x it / n / x it / s / get five marbles / get all marbles / get three marbles / / ".

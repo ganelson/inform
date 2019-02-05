@@ -1,0 +1,61 @@
+Sparta is a room. Pais is a man in Sparta. Pais carries a fox. Pais wears
+sandals, a chiton, and a cloak.
+
+A weight is a kind of value. 9 kg specifies a weight. A thing has weight.
+Understand the weight property as describing a thing.
+
+The weight of the fox is 2 kg. The weight of the boy is 30 kg.
+
+A thing has a number called serial number. The serial number of pais is
+393. The serial number of the fox is 22. Understand the serial number
+property as describing a thing.
+
+Bravery is a kind of value. A person has bravery. The braveries are timid
+and stalwart. Pais is stalwart. Understand the bravery property as
+referring to a [person] man.
+
+Understand "brave" as stalwart.
+
+Color is a kind of value. The colors are silver and red. The fox has color.
+The fox is silver. Understand the color property as referring to the fox.
+Before printing the name of the fox: say "[color] ".
+
+Understand "carrying [something related by carrying]" as a man. Understand
+"boy" as a man.
+
+Understand "in/wearing [something related by wearing]" as a man.
+
+Test me with "test one / test two / test three / test four / test five /
+test six / test seven / test eight / test nine".
+
+Test one with "x boy carrying a fox / x carrying a fox boy / x pais
+carrying a fox / x carrying a fox pais".
+
+Test two with "x stalwart boy / x stalwart boy carrying a fox / x stalwart
+pais carrying a fox / x stalwart carrying a fox pais/ x carrying a fox
+stalwart pais".
+
+Test three with "x brave boy / x brave boy carrying a fox / x brave
+carrying a fox boy / x carrying a fox brave boy / x boy brave carrying a
+fox".
+
+Test four with "x silver fox / x boy carrying silver fox / x brave boy
+carrying a silver fox / x brave carrying a silver fox boy".
+
+Test five with "x 2 kg fox / x boy carrying 2 kg fox / x brave boy carrying
+2 kg fox / x carrying 2 kg fox boy / x stalwart boy carrying silver 2 kg
+fox".
+
+Test six with "x 393 / x 393 carrying a fox / x brave 393 carrying a 2 kg
+fox / x brave 393 carrying silver fox".
+
+Test seven with "x boy in a chiton / x boy wearing a chiton / x boy wearing
+a chiton carrying a silver fox / x boy carrying a silver fox wearing a
+chiton ".
+
+Test eight with "x 393 wearing a chiton / x 393 wearing a chiton carrying a
+silver fox / x brave boy wearing a chiton / x brave wearing a chiton boy".
+
+Test nine with "x 393 carrying 22 / x 30 kg boy carrying 2 kg fox / x boy
+carrying 22".
+

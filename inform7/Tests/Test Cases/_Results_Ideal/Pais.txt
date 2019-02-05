@@ -1,0 +1,153 @@
+   Sparta
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sparta
+  You can see Pais here.
+  
+> >   Sparta
+  (Testing.)
+  
+  >[1] test one
+  (Testing.)
+  
+  >[2] x boy carrying a fox
+  You see nothing special about Pais.
+  
+  >[3] x carrying a fox boy
+  You see nothing special about Pais.
+  
+  >[4] x pais carrying a fox
+  You see nothing special about Pais.
+  
+  >[5] x carrying a fox pais
+  You see nothing special about Pais.
+  
+  >[6] test two
+  (Testing.)
+  
+  >[7] x stalwart boy
+  You see nothing special about Pais.
+  
+  >[8] x stalwart boy carrying a fox
+  You see nothing special about Pais.
+  
+  >[9] x stalwart pais carrying a fox
+  You see nothing special about Pais.
+  
+  >[10] x stalwart carrying a fox pais
+  You see nothing special about Pais.
+  
+  >[11] x carrying a fox stalwart pais
+  You see nothing special about Pais.
+  
+  >[12] test three
+  (Testing.)
+  
+  >[13] x brave boy
+  You see nothing special about Pais.
+  
+  >[14] x brave boy carrying a fox
+  You see nothing special about Pais.
+  
+  >[15] x brave carrying a fox boy
+  You see nothing special about Pais.
+  
+  >[16] x carrying a fox brave boy
+  You see nothing special about Pais.
+  
+  >[17] x boy brave carrying a fox
+  You see nothing special about Pais.
+  
+  >[18] test four
+  (Testing.)
+  
+  >[19] x silver fox
+  You see nothing special about the silver fox.
+  
+  >[20] x boy carrying silver fox
+  You see nothing special about Pais.
+  
+  >[21] x brave boy carrying a silver fox
+  You see nothing special about Pais.
+  
+  >[22] x brave carrying a silver fox boy
+  You see nothing special about Pais.
+  
+  >[23] test five
+  (Testing.)
+  
+  >[24] x 2 kg fox
+  You see nothing special about the silver fox.
+  
+  >[25] x boy carrying 2 kg fox
+  You see nothing special about Pais.
+  
+  >[26] x brave boy carrying 2 kg fox
+  You see nothing special about Pais.
+  
+  >[27] x carrying 2 kg fox boy
+  You see nothing special about Pais.
+  
+  >[28] x stalwart boy carrying silver 2 kg fox
+  You see nothing special about Pais.
+  
+  >[29] test six
+  (Testing.)
+  
+  >[30] x 393
+  You see nothing special about Pais.
+  
+  >[31] x 393 carrying a fox
+  You see nothing special about Pais.
+  
+  >[32] x brave 393 carrying a 2 kg fox
+  You see nothing special about Pais.
+  
+  >[33] x brave 393 carrying silver fox
+  You see nothing special about Pais.
+  
+  >[34] test seven
+  (Testing.)
+  
+  >[35] x boy in a chiton
+  You see nothing special about Pais.
+  
+  >[36] x boy wearing a chiton
+  You see nothing special about Pais.
+  
+  >[37] x boy wearing a chiton carrying a silver fox
+  You see nothing special about Pais.
+  
+  >[38] x boy carrying a silver fox wearing a chiton
+  You see nothing special about Pais.
+  
+  >[39] test eight
+  (Testing.)
+  
+  >[40] x 393 wearing a chiton
+  You see nothing special about Pais.
+  
+  >[41] x 393 wearing a chiton carrying a silver fox
+  You see nothing special about Pais.
+  
+  >[42] x brave boy wearing a chiton
+  You see nothing special about Pais.
+  
+  >[43] x brave wearing a chiton boy
+  You see nothing special about Pais.
+  
+  >[44] test nine
+  (Testing.)
+  
+  >[45] x 393 carrying 22
+  You see nothing special about Pais.
+  
+  >[46] x 30 kg boy carrying 2 kg fox
+  You can't use multiple objects with that verb.
+  
+  >[47] x boy carrying 22
+  You see nothing special about Pais.
+  
+> >

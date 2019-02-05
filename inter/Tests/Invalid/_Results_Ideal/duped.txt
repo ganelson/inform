@@ -1,0 +1,2 @@
+inter: inter/Tests/Invalid/duped.intert, line 5: symbol already exists: 'K_number'
+>--> kind K_number int2

@@ -1,0 +1,18 @@
+   Pisa
+  The Fibonacci Sequence
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pisa
+  The modest Italian mathematician, Leonardo Fibonacci (1170-1250), beams at you.
+  
+> >   Pisa
+  (Testing.)
+  
+  >[1] sequence 20
+  You make a feeble attempt, sketching in the sand, but it goes nowhere. Leonardo is sympathetic. "Often goes wrong for me, too, actually. I didn't even invent the thing - the ancient Indians knew about it first."
+  
+  >[2] leonardo, sequence 20
+  Leonardo scratches his head and makes self-deprecating remarks, before coming up with 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584 and 4181.
+  
+> >

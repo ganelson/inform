@@ -1,0 +1,14 @@
+Frog is a room.
+
+To decide if masculine:
+	decide on whether or not the player's command includes "male/guy/he/man".
+
+After reading a command when masculine:
+	say "'masculine' triggered.";
+	continue the activity.
+
+After reading a command when the player's command includes "male/guy/he/man":
+	say "'if includes' triggered.";
+	continue the activity.
+
+Test me with "x he / x guy / guy / male".

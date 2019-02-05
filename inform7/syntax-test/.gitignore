@@ -1,0 +1,12 @@
+# This gitignore was automatically written by inweb -gitignore
+# and is not intended for human editing
+
+debug-log.txt
+Woven/
+Tangled/
+!Tangled/*.preform
+Tests/intest-history.txt
+Tests/Transient/
+Tests/hashes.intest
+Tests/_Results_Actual/
+

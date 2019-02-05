@@ -1,0 +1,24 @@
+The Brahms Conservatoire is a room.
+
+When play begins:
+	let S be a list of numbers;
+	add 2 to S; add 4 to S; add 8 to S; add 16 to S; add 32 to S; add 64 to S;
+	let T be a list of numbers;
+	add 2 to T; add 4 to T; add 6 to T; add 10 to T;
+	say "Begin with the sets S = [S in brace notation], T = [T in brace notation].";
+	add 3 at entry 3 in S;
+	say "S is now [S in brace notation].";
+	add 2 at entry 8 in S;
+	say "S is now [S in brace notation].";
+	add 2 at entry 0 in S;
+	add 2 at entry 10 in S;
+	add T at entry 3 in S;
+	say "S is now [S in brace notation].";
+	rotate S;
+	say "S rotated is now [S in brace notation].";
+	rotate S;
+	say "S rotated is now [S in brace notation].";
+	rotate S backwards;
+	say "S rotated is now [S in brace notation].";
+	rotate S backwards;
+	say "S rotated is now [S in brace notation].";

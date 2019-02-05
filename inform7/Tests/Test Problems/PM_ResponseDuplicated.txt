@@ -1,0 +1,5 @@
+The Temple is a room.
+
+This is the banana split rule:
+	say "Yellow!" (A);
+	say "Creamy!" (A).

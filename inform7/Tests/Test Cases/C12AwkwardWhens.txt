@@ -1,0 +1,15 @@
+Home is a room. John is a man in Home. James is a man in Home.
+
+Check telling it about when the noun is not John:
+  say "Only speak to John." instead.
+
+A flask is in Home. A parchment is in the flask.
+
+The player is wearing a magic glove.
+
+A rule for reaching inside the flask when the player is wearing the
+magic glove: say "Your hand passes through the glass as if it were
+not there, chilling you to the bone."; allow access.
+
+Test me with "tell james about when / tell john about when /
+push parchment / remove glove / push parchment".

@@ -1,0 +1,9 @@
+Home is a room.
+
+Definition: a number (called N) is large:
+	if N is at least 10000, yes;
+	otherwise no.
+
+When play begins:
+	if 9999 is large, say "Ouch.";
+	if 10000 is large, say "Yum.".

@@ -1,0 +1,17 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 64 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableAmendmentMismatch
+  >--> I'm currently trying to amend rows in 'Table 21 - Selected Elements' (source
+    text, line 3) according to the instructions in 'Table 21 - Selected
+    Elements (amended)' (source text, line 12). To do that, I have to match
+    each amendment row in turn, which I do by trying to match up entries in the
+    leftmost column(s).
+    But I ran into problems:
+    (Amendment 2). I can't match this to any row - there's nothing with an entry
+    of '"Cheese"' (source text, line 15) in the lefthand column (Element).
+    (Amendment 3). I can't decide which row this should replace. It matches 2
+    rows until I get up to column 3 (Atomic number), but then it reads '31' (source
+    text, line 16), which is different from either of them.
+Inform 7 has finished: 25 centiseconds used.

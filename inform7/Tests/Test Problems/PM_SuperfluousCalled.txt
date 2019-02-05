@@ -1,0 +1,5 @@
+Sanitarium is a room.
+
+Theme is a kind of value.
+
+Movie is a thing. Movie has a theme called theme.

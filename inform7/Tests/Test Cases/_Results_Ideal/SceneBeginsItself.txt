@@ -1,0 +1,35 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] scenes
+  Scene 'Entire Game' playing (for 0 mins now)
+  Scene 'Repetition' playing (for 0 mins now)
+  (Scene monitoring now switched on. Type "scenes off" to switch it off again.)
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] z
+  Time passes.
+  
+  [Scene 'Repetition' ends]
+  [Scene 'Repetition' begins]
+  >[5] z
+  Time passes.
+  
+  >[6] scenes
+  Scene 'Entire Game' playing (for 4 mins now)
+  Scene 'Repetition' playing (for 1 mins now)
+  (Scene monitoring now switched on. Type "scenes off" to switch it off again.)
+  
+> >

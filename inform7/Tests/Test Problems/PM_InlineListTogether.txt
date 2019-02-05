@@ -1,0 +1,8 @@
+Inline Arena is a room.
+
+To go awry: (-
+		{-list-together:brief};
+	-).
+
+When play begins:
+	go awry.

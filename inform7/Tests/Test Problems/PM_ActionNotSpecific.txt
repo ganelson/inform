@@ -1,0 +1,6 @@
+The NI School for Typing is a room.
+
+When play begins:
+	try taking something;
+	try doing something;
+	try taking or dropping the player.

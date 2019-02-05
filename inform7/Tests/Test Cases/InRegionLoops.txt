@@ -1,0 +1,9 @@
+Floor Six is a region.
+
+Room 601 is a room in floor six. Room 602 is a room in floor six.
+
+When play begins: pick a room in floor six.
+
+To pick a room in (R - a region):
+	say "Today's random room is [a random room in R]. There are
+		[number of rooms in R] rooms in [R]."

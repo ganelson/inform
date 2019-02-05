@@ -1,0 +1,15 @@
+[To check that replacing rule X by rule Y when both are in the same rulebook
+moves rather than copies X.]
+
+The Lab is a room. The player carries a bat.
+
+Check an actor dropping (this is the replaced rule):
+	say "Replaced rule firing.";
+	if the noun is in the holder of the actor:
+		say "[The noun] is already here.";
+		stop the action.
+
+The replaced rule is listed instead of the can’t drop what’s already dropped
+rule in the check dropping rules.
+
+Test me with "drop bat".

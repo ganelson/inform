@@ -1,0 +1,20 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see an apple here.
+  
+> >   Home
+  (Testing.)
+  
+  >[1] x apple
+  - What can you do with an apple?
+  - It's a kind of fruit, isn't it?
+  - It could perhaps provide nutrition.
+  - Just eat apple.
+  And L is This doesn't work.
+  .
+  
+> >

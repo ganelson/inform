@@ -1,0 +1,3 @@
+Stage is a room.
+
+To say (V - value) twice (this is double-saying): say "[V]. [V], I say!"

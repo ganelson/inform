@@ -1,0 +1,28 @@
+   Daily Planet
+  For Demonstration Purposes
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Daily Planet
+  You can see Clark here.
+  
+  Clark watches your behavior with interest. Seems like he is learning.
+  
+> >   Daily Planet
+  (Testing.)
+  
+  >[1] clark, inventory
+  Clark looks through his possessions.
+  
+  >[2] clark, x me
+  Clark looks confused. Maybe a demonstration would help.
+  
+  >[3] x me
+  As good-looking as ever.
+  
+  Clark watches your behavior with interest. Seems like he is learning.
+  
+  >[4] clark, x me
+  Clark looks closely at yourself.
+  
+> >

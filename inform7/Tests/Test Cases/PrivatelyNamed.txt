@@ -1,0 +1,23 @@
+The Wabe is a room.
+
+The blue peacock and the sundial are in the Wabe.
+
+The blue peacock is privately-named. Understand "bird" as the peacock.
+
+The drawer is in the Wabe.
+
+The secret document is a privately-named thing in the drawer.
+
+The printed name of the secret document is "[if the secret document is
+handled]secret document[otherwise]dusty paper".
+
+Understand "dusty" and "paper" as the secret document.
+
+Understand "secret" and "document" as the secret document when the
+secret document is handled.
+
+After taking the secret document for the first time: say "Heavens! It
+is the secret document!"
+
+Test me with "x blue / x peacock / x sundial / x bird / x dusty paper
+/ x secret document / get dusty paper / x secret document".

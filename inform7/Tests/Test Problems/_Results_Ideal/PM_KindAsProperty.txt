@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindAsProperty
+  >--> You wrote ''A splurge is a kind of thing' (source text, line 3)', but
+    that seems to say that a property ('splurge' (source text, line 5)) has to
+    be a kind as well. It is sometimes okay for a property to have the same
+    name as a kind, but only when that kind is what it stores, and there
+    shouldn't be a sentence like this one to declare the kind - it will be made
+    when the property is made, and doesn't need to be made again.
+Inform 7 has finished: 16 centiseconds used.

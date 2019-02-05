@@ -1,0 +1,7 @@
+Home is a room.
+
+To consider (L - a list of numbers): say "Just some list."
+
+To consider (L - {3}): say "A specific list."
+
+When play begins: consider {3}; consider {2, 5}.

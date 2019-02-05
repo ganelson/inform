@@ -1,0 +1,15 @@
+   Anonymous B613 Cell
+  Responsive
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Anonymous B613 Cell
+  There isn't much to see in this bare room. What there is, you've already seen sometime in the last twenty years.
+  
+> >   Anonymous B613 Cell
+  (Testing.)
+  
+  >[1] i
+  You have absolutely nothing.
+  
+> >

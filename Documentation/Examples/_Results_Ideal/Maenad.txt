@@ -1,0 +1,25 @@
+   Awning
+  Slightly Wrong
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Awning
+  A tan awning is stretched on tent poles over the dig-site, providing a little shade to the workers here; you are at the bottom of a square twenty feet on a side, marked out with pegs and lines of string. Uncovered in the south face of this square is an awkward opening into the earth.
+  
+> >   Slightly Wrong Chamber
+  (Testing.)
+  
+  >[1] look
+  Awning
+  A tan awning is stretched on tent poles over the dig-site, providing a little shade to the workers here; you are at the bottom of a square twenty feet on a side, marked out with pegs and lines of string. Uncovered in the south face of this square is an awkward opening into the earth.
+  
+  >[2] s
+  
+  Slightly Wrong Chamber
+  When you first step into the room, you are bothered by the sense that something is not quite right: perhaps the lighting, perhaps the angle of the walls. A mural on the far wall depicts a woman with a staff, tipped with a pine-cone. She appears to be watching you.
+  
+  >[3] look
+  Slightly Wrong Chamber
+  A mural on the far wall depicts a woman with a staff, tipped with a pine-cone. She appears to be watching you.
+  
+> >

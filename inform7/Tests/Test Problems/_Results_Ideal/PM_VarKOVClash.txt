@@ -1,0 +1,23 @@
+Inform 7.10.1 build 6P93 has started.
+I've now read your source text, which is 46 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_VarKOVClash
+In Part SR2 - Variables and Rulebooks, Section SR2/3 - Used when ruling on
+  accessibility in the extension Standard Rules by Graham Nelson:
+  >--> You wrote 'The container in question is an object that varies' (the
+    Standard Rules, line 848): but the name supplied for this new variable is a
+    piece of text which is not available because it has a rival meaning
+    already, as a result of definitions made elsewhere. (Sometimes these are
+    indirect: for instance, defining a column in a table called 'question' can
+    make a name like 'container in question' suddenly ambiguous and thus
+    unsuitable to be a variable name.) If you're getting this Problem message
+    in the Standard Rules or some other extension you need to use, then your
+    only option is to hunt through your own source text to see what you have
+    defined which might cause this clash.
+Problem__ PM_VarKOVClash
+  >--> You wrote 'The supporter in question is an object that varies' (the
+    Standard Rules, line 849): again, the name supplied for this new variable
+    is a piece of text which is not available because it has a rival meaning
+    already.
+Inform 7 has finished: 44 centiseconds used.

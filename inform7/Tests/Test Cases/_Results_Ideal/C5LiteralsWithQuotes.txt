@@ -1,0 +1,15 @@
+   Formless Void
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Formless Void
+  This is where I do dangerous coding.
+  
+> >   Formless Void
+  (Testing.)
+  
+  >[1] jump
+  You jump to the maximum safe height of 28'06".
+  
+> >

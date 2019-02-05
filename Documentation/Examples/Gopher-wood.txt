@@ -1,0 +1,20 @@
+** Articles and proper names
+(Characters renamed in play; Gopher-wood)
+Changing the name of a character in the middle of play, removing the article.
+
+Suppose that we want a character who starts out with a general epithet ("the bearded man") but is later introduced to the player properly ("Japheth"). In that case, we want to be able to tell Inform to stop using an article once the character has been given a proper name. We can do this like so:
+
+	{*}"Gopher-wood"
+	
+	The Ark is a room. A bearded man is in the Ark.
+
+	Instead of examining the bearded man for the first time:
+		now the printed name of the bearded man is "Japheth";
+		now the bearded man is proper-named;
+		say "You peer at him a bit more closely and realize that it's Japheth."
+
+Finally, we need to tell Inform to understand the man's name, but only when he's been introduced. For this purpose, we borrow from the chapter on Understanding:
+
+	{**}Understand "Japheth" as the bearded man when the bearded man is proper-named.
+
+	Test me with "x japheth / x man / look / x japheth".

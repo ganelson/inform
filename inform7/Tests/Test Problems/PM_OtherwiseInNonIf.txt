@@ -1,0 +1,9 @@
+The NI School for Typing is a room. The typewriter is in the School.
+
+When play begins:
+	while in darkness
+	begin;
+		say "Oh, it's dark.";
+	otherwise;
+		say "Is that a light?";
+	end while.

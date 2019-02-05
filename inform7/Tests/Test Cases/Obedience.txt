@@ -1,0 +1,133 @@
+ Use command line echoing.
+
+A hand is a kind of thing. A hand is part of every person.
+
+The Sound Stage is a room. Clark Gable is a man in the Sound Stage. "Clark is here, carrying [the list of things carried by Clark][if Clark wears anything] and wearing [the list of things worn by Clark][end if]." Clark carries a swagger stick. Clark carries an open openable player's holdall called a briefcase. The briefcase contains a signed contract. [The carrying capacity of Clark is 2.] Clark wears a fedora and a pair of pants. Clark carries a portable supporter called a tray. A handle is part of the briefcase.
+
+The stage door is west of the Sound Stage and east of the Lot. It is a door. A fixed in place container called a cage is in the Sound Stage. It is openable, transparent, pushable between rooms, enterable, and closed. In the cage is a lion. The lion is an animal. A bone is in the cage.  A seat is fixed in place in the cage. The seat is an enterable supporter.
+
+A persuasion rule for asking Clark to try doing something: persuasion succeeds.	
+
+The foam boulder is a thing in the Sound Stage. The automobile is a vehicle in the Sound Stage. The steering wheel is part of the automobile. The trunk is part of the automobile. It is a closed openable container. The carrying capacity of the trunk is 1. 
+
+The ignition is part of the automobile. It is a device. The dais is an enterable supporter in the Sound Stage. A folding chair is an enterable supporter on the dais. The carrying capacity of the chair is 1. A canvas deckchair is an enterable supporter on the dais. 
+
+The rubber mat is on the dais. The rubber mat is fixed in place. 
+
+
+A boom microphone is scenery in the Sound Stage. Some chains are scenery in the cage.
+	
+The player carries a small key, a tent, and Variety Magazine. The stage door is lockable and locked. The small key unlocks the stage door. The player carries an open openable player's holdall called a frilly bag. The carrying capacity of the player is 2. The player wears a sparkly scarf and a slinky dress. The player carries a portable supporter called a clipboard. A strap is part of the bag. The tent is a portable enterable container. 
+
+Instead of taking off the slinky dress: say "Rowr! Not that kind of movie, babe."
+	
+Instead of taking off the pants: say "That's not your job, whatever the society pages might suggest."	 
+
+Instead of Clark trying taking off the pants: stop the action.
+
+The dumpster is an enterable openable open container in the Lot. The flashlight is a device in the dumpster. Carry out switching on flashlight: now the flashlight is lit. Carry out switching off flashlight: now the flashlight is unlit.
+
+The candy bracelet is a thing in the dumpster. It is wearable and edible. The chocolate underwear is worn by Clark. It is edible. Instead of Clark trying taking off the underwear: stop the action. The licorice choker is worn by the player. It is edible. Instead of taking off the choker: say "No, it looks charming.".
+
+
+Unsuccessful attempt by Clark trying doing something:
+	repeat through table of Clark Retorts
+	begin;
+		if the reason the action failed is the cause entry
+		begin;
+			say "[response entry][paragraph break]";
+			rule succeeds;
+		end if;
+	end repeat;
+	say "'I don't think that's in the script,' says Clark dubiously."
+
+Table of Clark Retorts
+cause	response
+can't take yourself rule	"'I'm always self-possessed,' Clark remarks. You've heard that line before, but it sounds so much more convincing from him."
+can't take other people rule	"'I don't think it would be appreciated if I tried to do that to [the noun],' he rumbles."
+can't take component parts rule	"'I don't want to rip [the noun] out,' Clark remarks."
+can't take people's possessions rule	"'I don't cotton to acting like a thief,' Clark replies. 'It ain't proper.'"
+can't take what you're inside rule	"'Do you see where I am, babe?' Clark demands."
+can't take what's already taken rule	"[already done]"
+can't take scenery rule	"'I'm not the stunt man, darling,' he says with a wry twinkle."
+can't take what's fixed in place rule	"'I'm not the stunt man, darling,' he says with a wry twinkle."
+can't exceed carrying capacity rule	"Clark grins. 'I've only got so many hands, darling,' he says."
+can't insert into closed containers rule	"[physical impossibility]"
+can't go that way rule	"[physical impossibility]"
+can't go through closed doors rule	"[physical impossibility]"
+can't enter closed containers rule	"[physical impossibility]"
+can't exit closed containers rule	"[physical impossibility]"
+can't drop yourself rule	"'We're inseparable, me and me,' Clark replies, with a smile."
+can't drop what's already dropped rule	"[already done]"
+can't drop what's not held rule	"'Not under my control, [the noun],' replies Clark."
+can't drop clothes being worn rule	"[salacious retort]"
+can't put something on itself rule	"'I lack the dexterity,' says Clark. Oh, he's so modest."
+can't put onto what's not a supporter rule	"'[The second noun] won't support a thing,' says Clark reprovingly."
+can't put clothes being worn rule	"[salacious retort]"
+can't insert clothes being worn rule	"[salacious retort]"
+can't wear what's not clothing rule	"'Costuming just gets stranger every year,' says Clark. 'In short: no.'"
+can't wear what's already worn rule	"[already done]"
+can't eat unless edible rule	"'What're you trying to do, poison me?'"
+can't eat clothing without removing it first rule	"[salacious retort]"
+can't take off what's not worn rule	"[already done]"
+can't close what's already closed rule	"[already done]"
+can't open what's already open rule	"[already done]"
+can't switch off what's already off rule	"[already done]"
+can't switch on what's already on rule	"[already done]"
+can't unlock what's already unlocked rule	"[already done]"
+can't lock what's already locked rule	"[already done]"
+
+To say already done:
+	repeat through Table of Clark's Bored Remarks
+	begin;
+		say "[response entry]";
+		blank out the whole row;
+		rule succeeds;
+	end repeat;
+	say "'Already done.' "
+	
+Table of Clark's Bored Remarks
+response
+"'Check,' says Clark."
+"'Check check,' says Clark."
+"'I have anticipated your every demand.'"
+"'We've been through this part of the script already,' Clark remarks, with just a hint of creeping tedium."
+"'Right right, already taken care of...'"
+"'I'm a believer in rehearsal,' Clark says, sounding more bored than ever, 'but we really have got all this done already.'"
+
+To say salacious retort:
+	repeat through Table of Clark's Flirtatious Remarks
+	begin;	
+		say "[response entry]";
+		blank out the whole row;
+		rule succeeds;
+	end repeat;
+	say "Clark, driven past the point of endurance, seizes you in his arms and kisses you. "; 
+
+Table of Clark's Flirtatious Remarks
+response
+"Clark allows his mustache to quirk at the suggestion."
+"Clark wiggles his eyebrows at you."
+"'That kind of thing isn't in my contract, sweetie,' says Clark. 'If you're interested you'll have to ask off-camera.'"
+"'I'd feel so... bare,' Clark says, with a sidelong look at you."
+"'You first,' says Clark."
+"Clark's stare is intense. You may be on the verge of breaking him."
+
+
+To say physical impossibility:
+	repeat through Table of Clark's Frustrated Denials
+	begin;	
+		say "[response entry]";
+		blank out the whole row;
+		rule succeeds;
+	end repeat;
+	say "Clark makes a helpless gesture about his ability to move himself, or parts of himself, through solid objects. "
+	
+Table of Clark's Frustrated Denials
+response
+"Clark frowns. 'I can't reach through things -- unless you were planning a special effect?'"
+ "'Look,' says Clark. 'If you want a stage magician, hire one.'"
+"Clark just groans."
+"Clark says drily, 'Is this in the script, or are we doing improvisation now?'"
+
+The block giving rule is not listed in any rulebook.

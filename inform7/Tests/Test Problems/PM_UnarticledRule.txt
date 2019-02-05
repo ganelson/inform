@@ -1,0 +1,5 @@
+There is room.
+
+Every turn when true is true (this is a ridiculous rule): say "True."
+
+This is bonkers rule: do nothing.

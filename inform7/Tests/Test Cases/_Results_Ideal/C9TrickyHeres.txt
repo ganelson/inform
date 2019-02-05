@@ -1,0 +1,28 @@
+   Ruined Chapel
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ruined Chapel
+  One room.
+  
+  You can see a nose and an eye here.
+  
+> >   Final Darkness
+  (Testing.)
+  
+  >[1] s
+  
+  By the Waterfall
+  Another room.
+  
+  You can see a mouth here.
+  
+  >[2] s
+  
+  Final Darkness
+  Boy, it sure is dark in here.
+  
+  You can see an ear here.
+  
+> >

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LPMultipleOptional
+  >--> You wrote '1 tonne 999 kg 6 scr specifies a weight with parts tonnes,
+    kilograms (optional) and scruples (optional)' (source text, line 5): but
+    only one part can be called optional, since if any part is omitted then so
+    are all subsequent parts.
+Inform 7 has finished: 17 centiseconds used.

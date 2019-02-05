@@ -1,0 +1,3 @@
+Xanadu is a room. The Dome is in Xanadu.
+
+The Big Door is a door. The Big Door is part of the Dome.

@@ -1,0 +1,14 @@
+Grocery is a room.
+
+Fruit is a kind of thing.  Apple, banana, and cherry are fruits.
+
+To say appearance of (F - a fruit):
+   if F is an apple begin;
+	 say "Apples are red.";
+   otherwise if F is banana;
+	say "Bananas are yellow.";
+   otherwise;
+           say "Cherries are red.";
+   otherwise;
+	 say "You can see a tasty fruit, [F] here.";
+   end if;

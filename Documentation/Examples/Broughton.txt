@@ -1,0 +1,82 @@
+*** Indirect relations
+(Conversation where characters seek logical connection to foregoing topics; The Problem of Edith)
+A conversation in which the main character tries to build logical connections between what the player is saying now and what went immediately before.
+
+Suppose that we have a core set of issues we want to be able to bring up with all the characters, and we want characters to draw intelligent connections between different conversation topics. We will need some model of how things relate to one another, so:
+
+	{*}"The Problem of Edith"
+
+	Suggestion relates things to each other. The verb to suggest means the suggestion relation.
+
+	A subject is a kind of thing. The current subject is a thing that varies. greeting is a subject.
+	
+	Understand "ask [someone] about [any subject]" as asking it about the subject. Understand "tell [someone] about [any subject]" as asking it about the subject.
+
+	Asking it about the subject is an action applying to one thing and one visible thing.   
+
+	Carry out asking it about the subject: 
+		say "'Hmm, [the second noun],' says [the noun]. ";
+		relate the current subject with the second noun;
+		now the current subject is the second noun.
+
+And if we wanted to offer the player some hints about angles he could pursue:
+	
+	{**}Instead of thinking:
+		say "You contemplate [a list of things suggested by the current subject]."
+		
+For that matter, we could use the same system to have characters make sense of any physical evidence the character shows them:
+	
+	{**}Instead of showing something which suggests the current subject to someone:
+		say "[The second noun] nods impatiently."
+
+	Instead of showing something to someone: 
+		let the next subject be the next step via the suggestion relation from the noun to the current subject;  
+		if the next subject is a subject:
+			try asking the second noun about the subject the next subject;
+		otherwise:
+			say "[The second noun] shrugs."
+		
+	When play begins:
+		now the left hand status line is "Discussing: [current subject]";
+		now the right hand status line is " ".
+	
+	Broughton Hall is a room. Lady Uckfield is a woman in Broughton Hall. "Lady Uckfield sits at her desk, looking wholly composed."
+	
+	The nasty letter is a thing carried by the player. The nasty letter suggests infidelity and penmanship. The ten-pound note is carried by the player. It suggests money.
+
+	Infidelity is a subject. Infidelity suggests marriage and divorce. Marriage suggests love. Marriage, love, and divorce are subjects. 
+
+	Penmanship is a subject. Penmanship suggests education. Education is a subject. Class status and money are subjects. Class status suggests education. Money suggests class status and marriage.
+
+	The current subject is divorce. 
+
+Now we can define what gets said when the subject is changed, regardless of whether the segue was introduced in speech or by a shown object. Since rows are blanked after use, the speaker will never repeat herself; if we provide more than one line about the same pair of topics, the first one will be used, then the second, and so on, until the table runs out:
+
+	{**}To relate (initial - a subject) with (next - a subject):
+		repeat through Table of Remarks:
+			if the initial is starting entry and the next is the final entry:
+				say "[comment entry][paragraph break]";
+				blank out the whole row;
+				rule succeeds;
+		say paragraph break.
+
+	Table of Remarks
+	starting	final	comment
+	divorce	love	"'As it seems to me, all the love is on one side,' she says crisply. 'And that rarely works.'"
+	divorce	love	"'Stop making that plea: it won't work.'"
+	divorce	infidelity	"'Frankly, I rather think there would have been cause enough for divorce without the perversely plentiful evidence of unfaithfulness.'"
+	divorce	money	"'If you mean that the divorce will be expensive, I know it,' she says. 'But I can think of no happier investment.'"
+	marriage	money	"'If you wish me to understand that it was a marriage for money, you could have spared your energy. That was patent from the outset.'"
+	infidelity	money	"'I'm sorry, but I don't see how having married for money excuses a subsequent infidelity.'"
+	
+If we had more than one character in the scenario, we could provide multiple tables, but this will do to demonstrate the idea.
+	
+Of course, we can override specific instances, if we want the character always to say the same thing regardless of how we came to this point:
+
+	{**}Instead of asking Lady Uckfield about the subject penmanship:
+		now the current subject is penmanship;
+		say "She sighs. 'So few people write really beautifully these days.'"
+	
+	Test me with "think / ask lady about infidelity / show nasty letter to lady / show note to lady / think / ask lady about divorce / ask lady about love / ask lady about marriage / ask lady about divorce / ask lady about love / ask lady about penmanship".
+		
+We would have to be careful about this system, since we have applied a various-to-various relation to every single object in the game. In practice it would probably be wisest to restrict it a bit, with judicious definitions of kind and so on.

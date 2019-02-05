@@ -1,0 +1,7 @@
+Home is a room.
+
+To disregard (act - an existing variable): showme act.
+
+When play begins:
+	let X be 17;
+	disregard X.

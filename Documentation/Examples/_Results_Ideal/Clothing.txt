@@ -1,0 +1,42 @@
+   Trailer
+  Bogart
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Trailer
+  A full-length mirror is the main amenity in here, and that suits you just fine.
+  
+> >   Trailer
+  (Testing.)
+  
+  >[1] x mirror
+  You're empty-handed. You are wearing a fedora, a jacket, some slacks and a pair of shoes.
+  
+  >[2] remove fedora
+  You are now wearing a jacket, some slacks and a pair of shoes.
+  
+  >[3] remove jacket
+  You are now wearing a shirt, some slacks and a pair of shoes.
+  
+  >[4] remove shirt
+  You are now wearing an undershirt, some slacks and a pair of shoes.
+  
+  >[5] remove slacks
+  You are now wearing some undershorts, an undershirt and a pair of shoes.
+  
+  >[6] remove undershirt
+  You are now wearing some undershorts and a pair of shoes.
+  
+  >[7] remove shoes
+  You are now wearing some undershorts and a pair of socks.
+  
+  >[8] remove socks
+  You are now wearing some undershorts.
+  
+  >[9] remove shorts
+  You can't see any such thing.
+  
+  >[10] remove undershorts
+  You are now wearing nothing.
+  
+> >

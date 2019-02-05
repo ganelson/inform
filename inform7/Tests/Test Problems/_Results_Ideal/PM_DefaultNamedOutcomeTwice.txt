@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 33 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DefaultNamedOutcomeTwice
+  >--> You wrote 'The cavern measuring rules have outcomes man from Porlock
+    visits (failure - the default) and poem is completed (success - the
+    default)' (source text, line 5): but at most one of the named outcomes from
+    a rulebook can be the default, and here we seem to have two.
+Inform 7 has finished: 17 centiseconds used.

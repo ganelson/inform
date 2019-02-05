@@ -1,0 +1,81 @@
+
+
+
+Gelato's Syndrome. It's struck, and it's struck hard. In these sticky summer months, there's no telling who will contract the disease next.
+
+Patient Zero
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+
+Alfred Cralle Pool Hall
+The town's most popular gathering-place, the pool hall is decorated in honor of the inventor of the ice cream scoop.
+
+An air conditioner sits in the corner, unhappily inert.
+
+You can see Lewis and Linnea here. 
+
+>(Testing.)
+
+>[1] go to cold comfort
+
+Nancy Johnson Memorial Square
+Waves of August heat rise from the pavement: more than once you've had the fancy that your shoes are simply going to stick. At the center of the square, rubbed to a brownish polish by many adoring hands, is the statue of Mrs. Nancy Johnson of New Jersey.
+
+You can see Gene here. 
+
+From here you can head into the Post Office, or go through the iron gate and the felt door. You could also go southeast to Marciony Street. 
+
+(heading to Cold Comfort Ice Cream) >[2] z
+(first opening the iron gate)
+
+Hamwi Street
+A U-shaped street running from Main Street around to the Memorial Square, Hamwi Street was recently added by ambitious city planners. The small and straggly line of trees has yet to grow enough to provide perceptible shade, so the street is even hotter and more unforgiving than the other parts of town.
+
+You could go southeast to Main Street. Also available are the metal door and the open iron gate.
+
+(heading to Cold Comfort Ice Cream) >[3] z
+(first opening the metal door)
+You step into the mercifully air-conditioned surroundings of...
+
+Cold Comfort Ice Cream
+A poster fills one wall with the blazing promise of treats to come.
+
+You can see Vanessa here. 
+
+Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
+
+>[4] z
+Time passes.
+
+>[5] z
+Time passes.
+
+The metal door opens from the other side. Antony comes through.
+
+Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
+
+>[6] ask vanessa for french vanilla
+"Do you have a coupon?" Vanessa demands. You admit you do not. "No french vanilla for you!"
+
+Antony trades in the coupon and receives a chocolate chip ice cream cone from Vanessa.
+
+>[7] ask vanessa for chocolate
+"Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate for you!"
+
+Antony opens the metal door. He goes through.
+
+Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
+
+>[8] ask vanessa about flavors
+"The flavors are french vanilla, whole-bean vanilla, mint, chocolate, dark chocolate, chocolate chip, chocolate fudge, mint chocolate chip, chocolate chocolate chip, triple chocolate, white chocolate, white chocolate chip, aztec cocoa-chili, raspberry ripple, neapolitan, rum raisin, dulce de leche, strawberry chunk, rocky road, blackberry sorbet, lemon sherbet, lime ice, caramel swirl, mango, saffron silk, and cookie dough cream," she responds promptly, without needing to draw breath.
+
+The metal door opens from the other side. Martin comes through.
+
+Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
+
+>[9] ask vanessa for chocolate chocolate chip
+"Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate chocolate chip for you!"
+
+Martin trades in the coupon and receives a dulce de leche ice cream cone from Vanessa.
+
+>Are you sure you want to quit? 

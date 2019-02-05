@@ -1,0 +1,6 @@
+The Back Lot is a room.
+ 
+A direction can be brass or marble.
+
+Gobbledy is a brass direction. The opposite of gobbledy is gook.
+Gook is a direction. The opposite of gook is gobbledy.

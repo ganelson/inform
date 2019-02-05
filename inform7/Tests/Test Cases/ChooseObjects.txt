@@ -1,0 +1,30 @@
+Home is a room. In Home are a can of shoe polish, a shoe polish
+vending machine, a Polish sausage, and a Polish man. The sausage is
+edible. The Polish man is a man.
+
+Hallway is north of Home.
+
+Does the player mean throwing the can of shoe polish at the vending
+machine: it is very likely.
+
+Does the player mean throwing the sausage at anything: it is possible.
+
+Does the player mean throwing anything at anything: it is very
+unlikely.
+
+A nose is a kind of thing. A nose is part of every person.
+
+Definition: a person is other if it is not the player.
+
+Definition: a thing is selfish if it is part of the player and the
+player can see an other person.
+
+Does the player mean doing something when the noun is a selfish nose
+or the second noun is a selfish nose: it is very unlikely.
+
+Does the player mean tying something to the noun: it is unlikely.
+
+Test me with "throw polish at polish / drop all / throw polish at man /
+drop all / throw sausage at polish / x nose / get can and sausage /
+n / x nose / tie can to polish / tie polish to sausage / tie polish to
+polish".

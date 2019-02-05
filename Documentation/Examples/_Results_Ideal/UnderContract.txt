@@ -1,0 +1,54 @@
+   Sound Stage
+  Under Contract
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sound Stage
+  A somewhat creaky and unconvincing reproduction of the docks of San Francisco.
+  
+  Clark is here, carrying the swagger stick and the briefcase and wearing the fedora and the pair of pants.
+  
+> >   Sound Stage
+  (Testing.)
+  
+  >[1] give dress to clark
+  (first taking the slinky dress off)
+  Rowr! Not that kind of movie, babe.
+  
+  >[2] clark, take off pants
+  He gives you a look of mocking exasperation. Apparently you'll have to take a (slightly) more subtle approach.
+  
+  >[3] clark, eat pants
+  "What're you trying to do, poison me?"
+  
+  >[4] clark, give me the pants
+  Clark allows his mustache to quirk at the suggestion.
+  
+  >[5] clark, drop pants
+  Clark wiggles his eyebrows at you.
+  
+  >[6] clark, put the pants in the briefcase
+  "That kind of thing isn't in my contract, sweetie," says Clark. "If you're interested you'll have to ask off-camera."
+  
+  >[7] again
+  "I'd feel so... bare," Clark says, with a sidelong look at you.
+  
+  >[8] g
+  "You first," says Clark.
+  
+  >[9] g
+  Clark's stare is intense. You may be on the verge of breaking him.
+  
+  >[10] g
+  Clark, driven past the point of endurance, seizes you in his arms and kisses you.
+  
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

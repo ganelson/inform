@@ -1,0 +1,92 @@
+*** More general linkages
+(Scenes with props lists and location properties; Entrevaux)
+Organizing the game by scenes, where each scene has a location and prop lists so that it can be set up automatically.
+
+For some games, it makes sense to organize the entire game around scenes rather than around locations, moving the player when a new scene begins and laying out new props.
+
+To this end, we might extend Inform's default handling of scenes so that each scene has properties to indicate prop lists and locations, and move objects in and out of play automatically as the scenes change. For instance:
+
+	{*}"Entrevaux"
+
+	Part 1 - Procedure
+
+	A scene has a room called the starting location.
+
+	A scene has a list of objects called the scenery props.
+
+	A scene has a list of objects called the inventory props.
+
+The starting location is the room to which the player should be moved; scenery props are things that need to be put there when the scene begins; inventory props, things that are given to the player when the scene begins; and the description some printed text to introduce the new scene. We may still occasionally need to have recourse to special "When the Dancing-Lesson begins..." rules for individual scenes, but for the most part this allows us to set scenes up in a consistent and predictable way.
+
+Another point that might be slightly less obvious: sometimes we want to announce a change of location to the player when the scene starts, and sometimes we don't. In particular any scene that starts "when play begins" should probably not explicitly describe the entered room, since that would duplicate the description automatically produced on the first turn of play. So we add a property to track whether any given scene should be announcing its location:
+
+	{**}A scene can be location-silent or location-loud.
+
+And let's say that we also want to announce each new scene as another "chapter" of the game in play, with a pause before the scene begins.
+
+Here we include "Basic Screen Effects" because it will allow us to pause the game for a keypress, then clear the screen before each new chapter:
+
+	{**}Include Basic Screen Effects by Emily Short.
+
+	The chapter counter is a number that varies.
+
+	First when a scene (called the current scene) which is not the Entire Game begins:
+		if chapter counter is greater than 0:
+			pause the game;
+		increment chapter counter;
+		say "[bold type]Chapter [chapter counter]: [current scene][roman type]"; 
+		
+	Last when a scene (called the current scene) which is not the Entire Game begins:
+		repeat with item running through the scenery props of the current scene:
+			move the item to the starting location of the current scene;
+		repeat with item running through the inventory props of the current scene:
+			move the item to the player;
+		if the location is not the starting location of the current scene:
+			if the current scene is location-loud:
+				move the player to the starting location of the current scene;
+			otherwise:
+				move the player to the starting location of the current scene, without printing a room description.
+
+At the end of each scene, we strike the set and remove all the loose objects from play.
+
+	{**}When a scene (called the current scene) ends:
+		repeat with item running through things which are not fixed in place:
+			if the item is not the player:
+				now the item is nowhere.
+			
+	Part 2 - Scenario
+
+	Entrevaux Station is a room. "The station building consists of a waiting room and a ticket-selling office so small that only one person can buy a ticket at a time. On the outside wall is a clock that runs twelve minutes late; but since the trains also run twelve minutes, give or take, behind their published schedule, this clock is helpful in establishing reasonable expectations. [paragraph break]Painted on the door is the logo of the Chemin de Fer de Provence, the only railway in France that is not part of the SNCF."
+
+	The Hillside Tower is a room. "It's very dark in here, lacking artificial lighting, but from the rough rectangular window you can see a slice of hillside and a little of the river Var."
+
+	The window is scenery in the Hillside Tower. The description is "Through it can be seen a slice of wooded hillside and exposed grey-brown cliff. You are in the southern French foothills of the Alps, and the territory is dry. The only respite is the river Var, a milky blue at this time of year, running shallowly over mud and large stones far below your window." Understand "view" or "slice of hillside" or "hillside" or "hill" or "river" or "var" or "mud" or "stones" or "large stones" as the window.
+
+	A used ticket is a thing. The description is "A piece of receipt paper indicating that you have paid the one-way fare of 9 euros from Nice. There is a hole punched through it."
+
+	A one-euro coin is a thing. The description is "It's a bimetal coin, brassy around the rim and silvery in the center. One side shows western Europe, with unusual prominence given to the UK, and the other side Leonardo da Vinci's four-armed, four-legged man having a nice stretch. It's dated 2002."
+
+	Some re-enactors are a person. "Milling about one end of the station is a crowd of medieval re-enactors." The description is "They're dressed in a somewhat aimless range of styles roughly honoring the period of 900-1500 AD. One gentleman is wearing a knobby leather cap; which is a good thing, because there is a rooster standing on his head." Understand "men" or "man" or "gentleman" or "rooster" or "reenactors" or "crowd" or "medieval" or "woman" or "women" as the re-enactors.
+
+	A kidnapper is a person. "Your kidnapper is watching you from the corner with his arms folded. You have the impression he's just marking time until someone more important arrives." The description is "He does not look at all like the kidnapping sort, but more like a sommelier at a superior restaurant: he wears a black pinstriped suit and has nicely-manicured hands." 
+
+	The trolley is an enterable fixed in place container. "The 'train' on which you arrived is really just a single car, more like a trolley than a proper train." Understand "car" or "train" as the trolley. The description is "It has a glass front, so you can see ahead while riding: an innovation among trains."
+
+
+	Arrival is a location-silent scene. "After many days['] journey, you have arrived at last in Entrevaux, a walled medieval town now chiefly of interest to tourists and crusade re-enactors."
+		The starting location of Arrival is the Entrevaux Station. 
+		The scenery props of Arrival are { re-enactors, trolley }. 
+		The inventory props of Arrival are { the used ticket, one-euro coin }.  
+	
+	Arrival begins when play begins. Arrival ends when the time since Arrival began is 2 minutes.
+
+
+	Abduction is a location-loud scene. "You check into the Hotel Vauban and sleep deeply enough; it was a long and sticky trip to get here.
+	
+	Then in the middle of the night something confusing happens. You have the impression of strangers in your room, and then a searing pain, and you don't come back to yourself until midmorning of the following day..."
+		The starting location of Abduction is the Hillside Tower.
+		The scenery props of Abduction are { kidnapper }. 
+	
+	Abduction begins when Arrival ends.
+
+	Test me with "i / x re-enactors / z / z / i / x him".

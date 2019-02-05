@@ -1,0 +1,105 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 4 fires.
+  
+  Rule 5 fires.
+  
+  Kitchen
+  You can see a small pillar here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] drop banana
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 4 fires.
+  
+  Rule 5 fires.
+  
+  Dropped.
+  
+  >[2] get banana
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 5 fires.
+  
+  Taken.
+  
+  >[3] drop apple
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 3 fires.
+  
+  Rule 4 fires.
+  
+  Rule 5 fires.
+  
+  Dropped.
+  
+  >[4] get apple
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 5 fires.
+  
+  Taken.
+  
+  >[5] i
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 4 fires.
+  
+  You are carrying:
+    an apple
+    a banana
+    a pear
+  
+  >[6] put banana on pillar
+  Rule 2 fires.
+  
+  Rule 1 fires.
+  
+  Rule 4 fires.
+  
+  Rule 5 fires.
+  
+  You put the banana on the small pillar.
+  
+  >[7] touch pear
+  Rule 2 fires.
+  
+  Rule 4 fires.
+  
+  Rule 5 fires.
+  
+  You feel nothing unexpected.
+  
+  >[8] put apple on pillar
+  Rule 1 fires.
+  
+  Rule 3 fires.
+  
+  Rule 4 fires.
+  
+  Rule 5 fires.
+  
+  You put the apple on the small pillar.
+  
+> >

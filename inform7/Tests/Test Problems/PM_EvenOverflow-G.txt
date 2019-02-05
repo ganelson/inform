@@ -1,0 +1,14 @@
+[This throws problems on all six assignments if compiled to Z-machine,
+but the W and Z assignments should pass on Glulx - this can be tested
+by running intest --glulx.]
+
+Aspect ratio is a kind of value. -16:9 specifies an aspect ratio.
+
+Home is a room.
+
+X is an aspect ratio that varies. X is 16000000000:9.
+Y is an aspect ratio that varies. Y is -16000000000:9.
+W is an aspect ratio that varies. W is 214748364:7.
+W2 is an aspect ratio that varies. W2 is 214748364:8.
+Z is an aspect ratio that varies. Z is -214748364:8.
+Z2 is an aspect ratio that varies. Z2 is -214748364:9.

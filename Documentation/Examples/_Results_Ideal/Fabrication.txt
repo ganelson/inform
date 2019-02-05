@@ -1,0 +1,24 @@
+   Joanne's Fabrics
+  Fabrication
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Joanne's Fabrics
+  You can see a pattern bin (in which are a cape pattern and a bodice pattern) here.
+  
+> >   Joanne's Fabrics
+  (Testing.)
+  
+  >[1] plan silk bodice
+  You lay plans for a silk bodice, running $11.50 for materials and $11.99 for the pattern itself, for a total of $23.49.
+  
+  >[2] plan velvet bodice
+  You lay plans for a velvet bodice, running $19.00 for materials and $11.99 for the pattern itself, for a total of $30.99.
+  
+  >[3] plan velvet cape
+  You lay plans for a velvet cape, running $85.50 for materials and $9.99 for the pattern itself, for a total of $95.49.
+  
+  >[4] plan wool cape
+  You lay plans for a wool cape, running $42.75 for materials and $9.99 for the pattern itself, for a total of $52.74.
+  
+> >

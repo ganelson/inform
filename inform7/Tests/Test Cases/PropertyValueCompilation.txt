@@ -1,0 +1,30 @@
+Home is a room. A signpost is in Home.
+
+The signpost is either slightly crooked, very crooked, or straight.
+
+The printed name of the signpost is "[signpost condition] signpost".
+
+A colour is a kind of value. The colours are defined by the Table of Colours.
+
+Table of Colours
+Colour		Complement
+black		white
+white		black
+red			cyan
+green		magenta
+blue		yellow
+cyan		red
+magenta		green
+yellow		blue
+
+When play begins: say "Today's colour is [complement of green]."
+
+Instead of waiting:
+	now the complement of green is black;
+	say "Tomorrow's colour is [complement of green]."
+
+Every turn:
+	if the signpost is visible, say "The signpost is still [signpost
+		condition], but who knows for how long?"
+
+Test me with "z".

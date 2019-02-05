@@ -1,0 +1,52 @@
+The Mysterious Void is a room.
+
+Colour is a kind of value. The colours are red, blue and green.
+
+Affinity relates one colour to another.
+
+The verb to scratch (he scratches, they scratch, he scratched, it is
+scratched, he is scratching) implies the affinity relation.
+
+Disaffinity relates one thing to another.
+
+The verb to clash (he clashes, they clash, he clashed, it is clashed, he is
+clashing) implies the disaffinity relation.
+
+Red scratches blue.
+
+The fish is a thing.
+
+Instead of waiting:
+	now the player clashes the fish;
+	now red scratches green;
+	now red is decoded as the player.
+
+Instead of jumping:
+	now red does not scratch green;
+	now the fish is not coded blue.
+
+Instead of going north:
+	if red scratches green, say "Red scratches green.";
+	otherwise say "Red does not scratch green."
+
+Afterness relates one thing to one thing.  The verb to be placed after
+implies the afterness relation.
+
+B, C, and D are things. C is placed after B. D is placed after C.
+
+Brighterness relates one colour to one colour.  The verb to be brighter than
+implies the brighterness relation.
+
+Blue is brighter than red. Red is brighter than green.
+
+Codedness relates one thing to one colour.  The verb to be coded
+implies the codedness relation.
+
+The player is coded yellow. The fish is coded blue.
+
+Decodedness relates one colour to one thing.  The verb to be decoded as
+implies the decodedness relation.
+
+Red is decoded as the fish.
+
+Test me with "showme fish/n/relations/z/n/relations/jump/n/relations/showme fish".

@@ -1,0 +1,12 @@
+   Château Bibliothèque Français
+  The Über-complète clavier
+  Pushing the Limits of Unicode in IF
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Château Bibliothèque Français
+  From this Borgesian construction, doorways lead into anterooms in each of the four cardinal directions.
+  
+  You can see a painting of École normale superiéure students singing Ça ira, a frankly lesser-known journal of Niccolò Polo, Così fan tutte on CD, an extract of Herodotus concerning Artaÿctes, an exit sign reading À BIENTÔT and a wicker basket marked CHLOË (in which is a ginger cat) here.
+  
+> >   Château Bibliothèque Français
+> Are you sure you want to quit? 

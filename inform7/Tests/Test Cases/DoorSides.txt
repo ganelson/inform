@@ -1,0 +1,11 @@
+The red rock stair is a door.
+The red rock stair is east of the Orchard and south of the Undertomb.
+
+The yellow thang is a door.
+The yellow thang is south of the Orchard and above the Undertomb.
+
+When play begins:
+	showme the front side of the stair;
+	showme the back side of the stair;
+	showme the front side of the thang;
+	showme the back side of the thang.

@@ -1,0 +1,32 @@
+   Moe's Tavern
+  Swigmore U.
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Moe's Tavern
+  You can see a bar (on which is a flaming Homer) and a stool here.
+  
+> >   Moe's Tavern
+  (Testing.)
+  
+  >[1] sit on stool
+  You get onto the stool.
+  
+  >[2] drop mouse
+  Dropped.
+  
+  >[3] look
+  Moe's Tavern (on the stool)
+  You can see a dead field mouse and a bar (on which is a flaming Homer) here.
+  
+  >[4] get up
+  You get off the stool.
+  
+  Moe's Tavern
+  You can see a dead field mouse, a bar (on which is a flaming Homer) and a stool here.
+  
+  >[5] look
+  Moe's Tavern
+  You can see a dead field mouse, a bar (on which is a flaming Homer) and a stool here.
+  
+> >

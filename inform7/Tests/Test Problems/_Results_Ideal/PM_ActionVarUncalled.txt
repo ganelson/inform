@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ActionVarUncalled
+  >--> You wrote 'The removing it from action has an object' (source text, line 2),
+    which I am reading as a request to make a new named variable for an action
+    - a value associated with a action and which has a name. But since you only
+    give a kind, not a name, I'm stuck. ('The taking action has a number called
+    tenacity' is right, 'The taking action has a number' is too vague.)
+Inform 7 has finished: 17 centiseconds used.

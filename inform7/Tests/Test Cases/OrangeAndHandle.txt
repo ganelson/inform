@@ -1,0 +1,6 @@
+The dome is a room. 
+
+The brass door is in the dome. The brass handle is part of the brass door.
+The brass orange is in the dome.
+
+Test me with "take orange and handle".

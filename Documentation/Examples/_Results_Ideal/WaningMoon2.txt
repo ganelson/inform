@@ -1,0 +1,80 @@
+   Waning Moon Resort
+  You have at last escaped from the airport and gotten through customs; survived an unnerving taxi ride over icy highways; stared down the impertinent concierge; endured the bellhop's catalog of features in your room; and achieved, finally, a moment of peace. Time for a good night's slumber!
+  
+  Four Stars
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Waning Moon Resort (on the king-size bed)
+  A spacious room with a flagstone floor, and a dreamcatcher hung over the king-size bed.
+  
+  You can see a suitcase (closed), a solar lamp (providing light) and a bedside table (on which are a potted plant and a Bose speaker) here.
+  
+  On the king-size bed you can see a Lindt chocolate.
+  
+> >   Darkness
+  (Testing.)
+  
+  >[1] listen
+  You hear the soothing whalesong from the Bose speaker.
+  
+  >[2] x dreamcatcher
+  The usual web of threads and crystals, feathers and beads.
+  
+  >[3] switch lamp off
+  You switch the solar lamp off.
+  
+  It is now pleasantly lightless in here.
+  
+  >[4] look
+  Noisy Perfumed Darkness
+  You hear the soothing whalesong from the Bose speaker and the yowling from the tomcat outside on the balcony.
+  
+  You smell the chocolate-hazelnut smell from the Lindt chocolate and the rosemary from the potted plant.
+  
+  >[5] sleep
+  The steady soothing whalesong from the Bose speaker prevents your slumber.
+  
+  >[6] eat chocolate
+  (first taking the Lindt chocolate)
+  You eat the Lindt chocolate. Not bad.
+  
+  >[7] sleep
+  The steady soothing whalesong from the Bose speaker prevents your slumber.
+  
+  >[8] get plant
+  Taken.
+  
+  >[9] examine plant
+  You grope about...
+  
+  The brush of your fingers stirs loose a fresh cloud of rosemary smell.
+  
+  >[10] open suitcase
+  You open the suitcase.
+  
+  >[11] put plant in suitcase
+  You unceremoniously dump the potted plant into the suitcase, hoping it sustains no important damage thereby.
+  
+  >[12] close suitcase
+  You close the suitcase.
+  
+  >[13] sleep
+  The steady soothing whalesong from the Bose speaker prevents your slumber.
+  
+  >[14] look
+  Noisy Darkness
+  You hear the soothing whalesong from the Bose speaker and the yowling from the tomcat outside on the balcony.
+  
+  The place is blissfully odorless.
+  
+  >[15] examine bose
+  From the Bose speaker you hear soothing whalesong.
+  
+  >[16] switch bose off
+  You switch off the Bose speaker, silencing the soothing whalesong.
+  
+  >[17] sleep
+  The steady yowling from the tomcat outside on the balcony prevents your slumber.
+  
+> >

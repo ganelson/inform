@@ -1,0 +1,5 @@
+Home is a room.
+
+Alpha is a value that varies.
+
+Beta is a relation that varies.

@@ -1,0 +1,12 @@
+Inform 7 build 6M53 has started.
+I've now read your source text, which is 50 words long.
+I've also read Standard Rules by Graham Nelson, which is 42477 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_AllInvsFailed
+  >--> You wrote 'award X points' (source text, line 10), which I tried to
+    match against several possible phrase definitions. None of them worked.
+    1.  award (x - text) points 
+    2.  award (x - number) points 
+    I recognised:
+    x = a temporary named value, holding a thing
+Inform 7 has finished: 73 centiseconds used.

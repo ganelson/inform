@@ -1,0 +1,151 @@
+4F59 (21 December 2006)
+The main purpose of this build is to publish a redesigned system for
+phrase and rule declarations, fixing a number of miscellaneous bugs,
+removing some exceptions and clarifying ambiguities in the existing design.
+Chapter 18 of the documentation is substantially rewritten as a result, and
+the Rules page of the index has been redesigned. We believe that the new
+design is much less ambiguous and, as a result, more fully explained than
+the old, but the removal of some of these ambiguities does mean that minor
+changes to some existing source text will be needed. If you have a work in
+progress nearing its completion, you may need to test that the new rules
+system does not change its behaviour.
+
+Phrases can be defined by "To ...:" (declaring a new phrase to be used in
+	the definitions of other phrases), by "Definition:" (defining adjectives),
+	by "At ...:" (declaring events to happen at given times) or as rules
+	to go into rulebooks (for instance, "Instead of taking:" goes into the
+	"instead" rulebook). In order to make it easier to tell immediately
+	which of these four forms is intended:
+		(i) Rulebook names are now forbidden to begin with the words
+			"To", "At" or "Definition". (So far as we are aware, nobody
+			has ever done this, so this should not cause inconvenience.)
+		(ii) Events happening at a fixed time are written "At 3:02 AM:" or
+			similar: events happening at some time not yet determined are
+			now written "At the time when the clock chimes:" rather than,
+			as in previous builds, just "When the clock chimes:". This
+			removes the confusing ambiguity with scene start/end rules
+			(e.g. "When Scene IV begins:") and with "When play begins:", etc.
+When Inform adds rules to rulebooks, it sorts them so that more specifically
+	applicable rules (say, "instead of taking the fish") come before vaguer
+	ones ("instead of taking or dropping something"). The method of sorting
+	used was largely unchanged from 3K27 to 4B91, but has now sharpened
+	in the following ways:
+		(i) being "in" a room is considered more specific than in a region,
+		(ii) and in a subregion more specific than in a super-region,
+		(iii) "during..." clauses are now taken account of,
+		(iv) "in the presence of..." clauses are now taken account of,
+		(v) rules attached to a wider range of actions ("taking or dropping")
+			are less specific than rules attached to a narrower range
+			("taking"),
+		(vi) rules with longer or more complicated "when" conditions are
+			considered more specific than those with shorter,
+		(vii) rules applying in a limited range of turns or for a limited
+			number of times are considered more specific than other such
+			rules if the number of turns in which the rule could apply
+			is smaller.
+	Though these changes may change the effect of some complicated source
+	texts now standing, they should only really affect cases where rules
+	were previously considered equally applicable.
+When the Index shows the contents of a rulebook, it now uses a graphical
+	notation to show which rules are considered more specific than which
+	others. Hovering the mouse over one of the icons used in this notation
+	causes a "tool tip" to be displayed which explains on what basis the
+	decision was taken.
+The special verb "to be listed", used to specify how named rules are listed
+	in rulebooks, is now more flexible. The existing syntax remains:
+		The summer breeze rule is listed in the every turn rules.
+		The summer breeze rule is listed after the chirping magpie rule
+			in the every turn rules.
+		The summer breeze rule is listed before the chirping magpie rule
+			in the every turn rules.
+	And the following possibilities are added:
+		The summer breeze rule is listed first in the every turn rules.
+		The summer breeze rule is listed last in the every turn rules.
+		The can't eat unless edible rule is not listed in the check eating rules.
+		The can't eat unless edible rule is not listed in any rulebook.
+		The refined palate rule is listed instead of the can't eat unless
+			edible rule in the check eating rules.
+	The last three possibilities allow rules to be abolished for the whole
+	game without the need for procedural rules. (A rule abolished in this way
+	still exists, it merely isn't found in rulebooks at the start of play.)
+	This will make extensions which carry out large-scale library changes
+	more efficient.
+A "when/while" clause can now be attached to a rule in an object-based
+	rulebook not derived from an activity. (These used to be the only
+	rulebooks whose rules were not allowed a "when" clause, so the change
+	removes an unnecessary exception.)
+The synonym "final" for "last", in the context of rulebook placements, has
+	been withdrawn - it was an unnecessary complication. Thus "The last
+	chirping magpie rule:" still works, but "The final chirping magpie rule:"
+	does not.
+The new text substitution "[otherwise if ...]" has been added: this can be
+	used in text, between "[if ...]" and "[end if]" substitutions, in just
+	the same way that the phrase "otherwise if ..." can be used between
+	"if ..." and "end if" phrases.
+A new rulebook, "does the player mean", has been added to give the parser
+	clues on how to disambiguate commands. (This offers facilities analogous
+	to those provided by ChooseObjects in Inform 6, but applying to whole
+	actions and not to nouns alone.) See the new section 16.16 in the
+	documentation.
+Changes to the examples are as follows:
+	Masochism Deli added to demonstrate "does the player mean..." rules.
+	Flotation added to demonstrate an object-based rulebook and named outcomes.
+	Being Peter added to demonstrate an action-based rulebook with named
+		outcomes.
+	Bronze, 3 AM, MRE, Mr Spruce's Non-Modal Question, Chronic Hinting
+		Syndrome, Fifty Times Fifty Ways, Happy Hour, Lakeside Living,
+		Lemonade, Noisy Cricket, Patient Zero, Y Ask Y modified to show
+		"otherwise if" better.
+	Barter Barter, Bribery, Bruneseau's Journey, The Dark Ages Revisited,
+		Emma, Fragment of a Greek Tragedy, Mimicry, Minimal Movement,
+		Nickel and Dimed, Stately Gardens, Under Contract, Waning Moon
+		modified to get rid of now-unnecessary procedural rules and use
+		"is not listed..." instead.
+	Aftershock, Crusoe, Get Axe, The Hang of Thursdays, Panache, Swigmore U,
+		Uptempo, Zqlran Era 8 modified to get rid of now-unnecessary
+		procedural rules and use "is listed instead of..." instead.
+	Instant Examine and Look modified to get rid of procedural rule in favor
+		of a first rule in the turn sequence rules. Commentary added to
+		explain how the procedural rule might be used and why the first-rule
+		method might be preferable.
+	No Place Like Home reassigned to the Awarding Points section, as being
+		more relevant there.
+	Strictly Ballroom corrected for a missing word.
+	Up and Up modified to use after going rather than before, as this is more
+		reliable.
+	Beneath the Surface improved to make the chair a supporter.
+	Witnessed 1 expanded to include new "does the player mean..." rules,
+		improving parsing behavior of the example.
+	The Night Before added to demonstrate "does the player mean..." rules to
+		lower the parsing significance of body parts belonging to the player
+		compared to those of other people;
+	Hudsucker Industries substantially updated to simplify logic, provide
+		better parsing behavior using "does the player mean..." rules, and
+		allow the player to refer to sorted letters by property.
+	Costa Rican Ornithology given slightly more explanation of the topic
+		column, since this appears before the format has been fully introduced.
+	We, and the two gas diffusion examples, moved to a new location.
+	We given slightly more commentary to point users at extensions for
+		changing library messages if they want to do so wholesale.
+	No Relation edited to discuss how Instead of going by... applies to
+		vehicles and other objects.
+	Morning After edited for a typo in the commentary.
+	Uptown Girls edited for a typo in the source text.
+File extension for blorbed Glulx-format releases changed from ".zblorb"
+	to ".gblorb". (Apologies: an oversight.)
+The horizontal compass directions can no longer automatically be referred to
+	by the word "wall", so that "examine the north wall" no longer generates
+	the action of examining north. This was an old Infocom convention, carried
+	over into Inform 6 for some years, but which causes problems more often
+	than it confers benefits.
+Bug fixed by which (on Windows only) accented letters sometimes caused
+	confusion with digits.
+Bug fixed by which a rule which applied e.g. "for the third to eighth time"
+	(an explicit range of iterations) would generate code which failed to
+	compile in I6.
+Bug fixed in which rules "listed after" or "listed before" might give
+	spurious problems if the rulebook named had a name including the
+	word "with".
+Bug fixed whereby the Glulx interpreter was not checked to see if it could
+	provide pictures before being instructed so to do, which produced
+	problems with some text-only Glulx interpreters.

@@ -1,0 +1,9 @@
+Laboratory is a room.
+
+Frequency is a kind of value. 40/min specifies a frequency.
+Bus frequency is a frequency that varies. Bus frequency is 2/min.
+
+A frequency times a time specifies a number.
+
+When play begins:
+	say "You can expect [bus frequency times 10 minutes] buses to turn up in the next ten minutes."

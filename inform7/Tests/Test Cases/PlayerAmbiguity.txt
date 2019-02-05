@@ -1,0 +1,10 @@
+There is a room.
+Player Alice is a person.
+Instead of examining the player:
+	say "Examining rule fires."
+
+Test me with "x me".
+
+When play begins:
+	showme the player;
+	showme the action of examining the player.

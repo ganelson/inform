@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 112 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OneToOneMiscalled
+  >--> You wrote 'Transmission relates one remote to one trigger (called the
+    target)' (source text, line 7): but with a one-to-one relation which is not
+    symmetrical only the left-hand item can be given a name using 'called', so
+    this needs rephrasing to name the left in terms of the right rather than
+    vice versa. For instance, 'Transmission relates one remote to one gadget
+    (called the target).' should be rephrased as 'Transmission relates one
+    gadget (called the target) to one remote.' It will then be possible to talk
+    about 'the gadget of' any given remote.
+Inform 7 has finished: 17 centiseconds used.

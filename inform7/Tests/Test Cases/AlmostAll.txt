@@ -1,0 +1,9 @@
+The Tool Room is a room.
+
+A switched on device called a blue button is here.
+
+A switched off device called a red button is here.
+
+When play begins:
+     if all but one of the devices are switched on, say "All but one of the devices are switched on.";
+     if all except one of the devices are switched on, say "All except one of the devices are switched on."

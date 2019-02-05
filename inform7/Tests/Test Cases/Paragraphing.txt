@@ -1,0 +1,15 @@
+The Foreshore is a room. "This is the Foreshore."
+
+The bucket, the ball and the starfish are in the Foreshore.
+
+After taking the ball, say "It bounces up to your hand."
+
+The Beach is south of the Foreshore. "A further sandy room."
+
+The Sea is south of the Beach.
+
+Every turn while the player is in the Sea, say "The wave washes up to your feet."
+
+Every turn while the player is in the Sea, say "A crab scuttles by."
+
+Test me with "LOOK / S / N / S / N / TAKE ALL / S / S / WAIT / LOOK".

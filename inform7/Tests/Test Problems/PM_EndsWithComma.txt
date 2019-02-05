@@ -1,0 +1,5 @@
+Test is a room.
+
+Color is a kind of value. The colors are red, white, and blue.
+
+The chosen color is a color variable. The chosen color is red,

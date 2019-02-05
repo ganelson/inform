@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadMapCell
+  >--> You wrote 'The piano is a thing' (source text, line 1), but in another
+    sentence 'East of the Conservatoire is the piano' (source text, line 1):
+    piano appears to be something which can be reached via a map connection,
+    but it seems to be neither a room nor a door, and these are the only
+    possibilities allowed by Inform.
+Inform 7 has finished: 17 centiseconds used.

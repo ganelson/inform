@@ -1,0 +1,38 @@
+* Printing the player's obituary
+(Changing the final question after victory; Jamaica 1688)
+Adding a feature to the final question after victory, so that the player can choose to reveal notes about items in the game.
+
+The options offered to the player at the end of the game are listed in the Table of Final Question Options, which means that we can add to them simply by continuing the table; what's more, the table gives us the opportunity to create a "final response rule", a rule that the game should follow in order to parse the player's input at this point.
+
+So, for instance, if we wanted the player to be allowed to ask for notes about any of the rooms, characters, or objects in a historical game:
+
+	{*}"Jamaica 1688"
+
+	Use scoring.
+
+	Section 1 - Procedure
+
+	Table of Final Question Options (continued)
+	final question wording	only if victorious	topic	final response rule	final response activity
+	"REVEAL the inspiration for something or somewhere"	true	"reveal [any thing]"	investigate something rule	--
+	--	true	"reveal [any room]"	investigate something rule	--
+
+	This is the investigate something rule:
+		repeat through the Table of Footnotey Stuff: 
+			if the player's command matches the topic entry:
+				say "[revelation entry][paragraph break]";
+				rule succeeds;
+		say "I'm afraid I have no revelation to vouchsafe there."
+
+	Section 2 - Scenario
+
+	The Upper Deck is a room. Lucius is a man in the Upper Deck.
+
+	The maximum score is 501.
+
+	When play begins: now the score is 501; end the story finally.
+
+	Table of Footnotey Stuff
+	topic			revelation
+	"reveal [Lucius]"	"Lucius is based on a historical buccaneer who sailed with William Dampier. The original did carry a Greek New Testament, from which he read aloud when the men were stranded in the jungles near Panama."
+	"reveal [Upper Deck]"	"The Callisto is a simplified and tidied representation of a pirate sloop ca. 1688."  

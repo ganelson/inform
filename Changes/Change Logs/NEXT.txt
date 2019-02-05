@@ -1,0 +1,16 @@
+Inform build 6M62 (14 December 2015)
+
+Command line: -log=X is now -log X
+
+Limit on quoted text length raised to 8K
+
+Limit on object name length removed
+
+Options.txt now encoded as UTF-8, not ISO Latin-1
+
+Adjective grading improved:
+	big -> bigger, biggest
+And "long" to "length"
+
+In text substitutions, a local variable name is preferred over an adaptive
+verb; e.g. if "index" is both.

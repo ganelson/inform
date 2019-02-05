@@ -1,0 +1,21 @@
+Inform 7 build 6L64 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42486 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyOfKind2
+  >--> In the sentence 'decrease the carrying capacity of a container by 1' (source
+    text, line 4), it looks as if you intend 'carrying capacity of a container'
+    to be a property, but 'a container' is not specific enough about who or
+    what the owner is. Sometimes this mistake is made because Inform mostly
+    doesn't understand the English language habit of referring to something
+    indefinite by a common noun - for instance, writing 'change the carrying
+    capacity of the container to 10' throws Inform because it doesn't
+    understand that 'the container' means one which has been discussed
+    recently.
+    I was trying to match this phrase:
+      decrease (carrying capacity of a container - a stored value) by (1 - value)
+    
+    I recognised:
+    carrying capacity of a container = a property whose value is a number,
+    holding a number
+Inform 7 has finished: 47 centiseconds used.

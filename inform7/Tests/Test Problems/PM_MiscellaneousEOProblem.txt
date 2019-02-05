@@ -1,0 +1,10 @@
+Xanadu is a room.
+
+A thing can be carrying capacity.
+
+A thing can be 10.
+
+A thing can be open or unlocked.
+
+A thing can be open or not open.
+

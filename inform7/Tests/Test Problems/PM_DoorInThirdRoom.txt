@@ -1,0 +1,4 @@
+The Taj Mahal is a room. The Temple is a room. The Grassy Slope is a room.
+
+The Great Gate is a door. East of the Taj Mahal is the Great Gate. West of
+the Temple is the Great Gate. The Great Gate is in the Grassy Slope.

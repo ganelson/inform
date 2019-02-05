@@ -1,0 +1,53 @@
+   Emerald City
+  Hover
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Emerald City
+  All the buildings are spires and none of them have doors.
+  
+  Your hover-bubble awaits.
+  
+> >   Emerald City
+  (Testing.)
+  
+  >[1] get in bubble
+  You get into the hover-bubble.
+  
+  >[2] look
+  Emerald City (in the hover-bubble)
+  The hover-bubble is transparent, but tints everything outside very faintly lavender. Beside you you can see a chocolate wrapper and a parking ticket.
+  
+  All the buildings are spires and none of them have doors.
+  
+  >[3] west
+  
+  Vast Desert (in the hover-bubble)
+  The hover-bubble is transparent, but tints everything outside very faintly lavender. Beside you you can see a chocolate wrapper and a parking ticket.
+  
+  Outside, a trackless waste stretches as far as the eye can see in every direction.
+  
+  >[4] take all
+  chocolate wrapper: Taken.
+  parking ticket: Taken.
+  
+  >[5] look
+  Vast Desert (in the hover-bubble)
+  The hover-bubble is transparent, but tints everything outside very faintly lavender.
+  
+  Outside, a trackless waste stretches as far as the eye can see in every direction.
+  
+  >[6] get out
+  You get out of the hover-bubble.
+  
+  Vast Desert
+  A trackless waste stretches as far as the eye can see in every direction.
+  
+  Your hover-bubble awaits.
+  
+  >[7] east
+  
+  Emerald City
+  All the buildings are spires and none of them have doors.
+  
+> >

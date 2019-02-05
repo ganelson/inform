@@ -1,0 +1,4 @@
+Beginning is a room.
+A chair is here.
+Finale is north of Beginning.
+A chair is here.

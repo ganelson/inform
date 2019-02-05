@@ -1,0 +1,54 @@
+   Nearly Empty Living Room
+  Zero
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Nearly Empty Living Room
+  Nearly everything is out, all of Helen's possessions and most of yours.
+  
+  Mr Zero, despite being heavily paid to assist in this operation, is giving you a look that clearly conveys his lack of interest in budging even one more item.
+  
+  You can also see a book box, a clothing box, a broom, a dustpan, some packing tape and a discarded newspaper here.
+  
+> >   Nearly Empty Living Room
+  (Testing.)
+  
+  >[1] get clothing
+  Taken.
+  
+  >[2] look
+  Nearly Empty Living Room
+  Nearly everything is out, all of Helen's possessions and most of yours.
+  
+  Mr Zero, despite being heavily paid to assist in this operation, is giving you a look that clearly conveys his lack of interest in budging even one more item.
+  
+  You can also see a book box, a broom, a dustpan, some packing tape and a discarded newspaper here.
+  
+  >[3] get book box
+  Taken. (Oof.)
+  
+  >[4] look
+  Nearly Empty Living Room
+  Nearly everything is out, all of Helen's possessions and most of yours.
+  
+  Mr Zero, despite being heavily paid to assist in this operation, is giving you a look that clearly conveys his lack of interest in budging even one more item.
+  
+  You can also see a broom, a dustpan, some packing tape and a discarded newspaper here.
+  
+  >[5] i
+  You are carrying:
+    a horribly heavy book box
+    a clothing box
+  
+  >[6] drop book box
+  Dropped.
+  
+  >[7] look
+  Nearly Empty Living Room
+  Nearly everything is out, all of Helen's possessions and most of yours.
+  
+  Mr Zero, despite being heavily paid to assist in this operation, is giving you a look that clearly conveys his lack of interest in budging even one more item.
+  
+  You can also see a horribly heavy book box, a broom, a dustpan, some packing tape and a discarded newspaper here.
+  
+> >

@@ -1,0 +1,10 @@
+Inform 7 build 6L48 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42569 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CalledInRepeat
+  >--> You wrote 'repeat with R running through rooms (called domain)' (source
+    text, line 4): but this tries to use '(called ...)' to give names to values
+    arising in the course of working out what to repeat through, but this is
+    not allowed. (Sorry: it's too hard to get right.)
+Inform 7 has finished: 49 centiseconds used.

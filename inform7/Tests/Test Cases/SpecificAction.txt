@@ -1,0 +1,9 @@
+Orchard is a room. An apple tree is here.
+
+Instead of examining the apple tree:
+	say "specific."
+
+Instead of doing something to the apple tree:
+	say "general."
+
+Test me with "x apple".

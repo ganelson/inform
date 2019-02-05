@@ -1,0 +1,5 @@
+Dis is a room.
+
+Fieryness is a kind of value.  The fierynesses are unburnt, cinders,
+flames, burning, scorching, searing, frying, igniting, inferno, subsiding,
+flickering, and burnt.

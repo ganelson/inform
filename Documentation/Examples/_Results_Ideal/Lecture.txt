@@ -1,0 +1,70 @@
+   Classroom
+  Day One
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Classroom
+  Dr Freitag paces before the blackboard.
+  
+> >   Classroom
+  (Testing.)
+  
+  >[1] listen
+  You hear nothing unexpected.
+  
+  "Welcome to Precolumbian Archaeology 101," thunders Dr Freitag from the front of the class. "Miss-- yes, you in the back. If you can't find a free seat, how are you going to find Atlantis? Sit down or leave. Now. Thank you."
+  
+  >[2] x dr
+  You see nothing special about Dr Freitag.
+  
+  Freitag stands behinds his desk and lines up the pile of books there more neatly. "It has come to my attention over previous years that there are two sorts of person who enroll in my class," he says.
+  
+  "Some of you will be members of the swim team or women's lacrosse players who have a distribution requirement to fulfill and are under the mistaken impression that archaeology must be easier than psychology. If that description applies to you, I advise you to drop the class now rather than at the midterm break. Under absolutely no circumstances will I ever sign a withdrawal form for someone who is crying at the time. Make a note of that, please."
+  
+  >[3] x me
+  As good-looking as ever.
+  
+  "The second sort of person," Dr Freitag says, getting another wind. "Yes, the second sort of person takes this class because she imagines that it is going to lead to adventure or possibly to new age encounters with dolphins."
+  
+  His eye moves over the class, lingering an especially long time on a girl in a patchwork skirt.
+  
+  "You should also leave now, but since you are probably lying to yourself about the reasons you're here, you will probably not heed my warning and we will be doomed to a semester of one another's company nonetheless."
+  
+  >[4] jump
+  Dr Freitag glares at you so fiercely that you are frozen into inaction.
+  
+  "Whatever you may tell yourself, you are not here to gain a deeper understanding of the world or get in touch with yourself or experience another culture."
+  
+  He paces before the first row of desks, hammering on them one at a time. "I know you probably wrote an admissions statement saying that that is what you hoped to do. Well, too bad. It is not inconceivable that some of you, somehow, will muddle towards a deeper understanding of something thanks to this class, but I am not holding my breath, and neither should you."
+  
+  >[5] z
+  Time passes.
+  
+  Freitag takes a breath. "No, my dear freshwomen, what you are here to do is learn facts. FACTS. Facts are unpopular in this university and, I am unhappily aware, at most of the institutions of inferior preparation from which you have come. Nonetheless, facts it will be. I will expect you to learn names. I will expect you to learn dates. I will expect you to study maps and I will expect you to produce evidence of exacting geographical knowledge on the exams. I will expect you to learn shapes of pottery and memorize masonry designs. There are no principles you can learn which are more important or more useful than a truly colossal bank of facts right there in your own head."
+  
+  >[6] z
+  Time passes.
+  
+  "I do not ever want to hear that you do not need to learn things because you will be able to look them up. This is the greatest fallacy of your computer-semi-literate generation, that you can get anything out of Google if you need it. Not only is this demonstrably false, but it overlooks something phenomenally important: you only know to look for something if you already know it EXISTS. In short there is no way to fake knowledge, and I am not going to pretend there is." He smiles in lupine fashion.
+  
+  "This class is likely to be the most miserable experience of your four years in university. Clear?"
+  
+  >[7] z
+  Time passes.
+  
+  Everyone is silent.
+  
+  >[8] z
+  Time passes.
+  
+  The lecture is interrupted by the shrill of a bell.
+  
+  There is a flurry of movement as your fellow students begin to put away their books. Dr Freitag makes his way to the door and is gone before anyone can ask him anything.
+  
+  >[9] z
+  Time passes.
+  
+  >[10] x dr
+  You can't see any such thing.
+  
+> >

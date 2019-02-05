@@ -1,0 +1,3 @@
+Colour is a kind of value. The colours are red and black.
+
+Red is a number.

@@ -1,0 +1,50 @@
+   Desert Isle
+  Crusoe
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Desert Isle
+  A pale expanse of sand, here and there developing into hillocks of grass, and a small clump of palms. The water is shallow here, and there are other islands within swimming distance -- or even wading distance, perhaps -- but none of them is any larger than your island, so it doesn't seem worth the trouble of visiting.
+  
+  A few hundred feet out, the water turns darker blue, the sea floor drops away, and there is nothing to be seen all the way down to the horizon, except a couple of fluffy clouds, and an occasional bird.
+  
+  The remains of your fire smolder in the stone-lined pit.
+  
+> >   Desert Isle
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    a stick
+    a glass bottle (open)
+      a grain of sand
+    a piece of paper
+  
+  >[2] x stick
+  A strip of palm from the woodiest part of the leaf, about a foot and a half long.
+  
+  >[3] x bottle
+  You see nothing special about the glass bottle.
+  
+  >[4] x sand
+  You see nothing special about the grain of sand.
+  
+  >[5] x paper
+  A single blank sheet.
+  
+  >[6] x me
+  You are sunburned and there is sand in cracks you didn't know existed.
+  
+  >[7] burn stick
+  You hold the stick to the fire until it flares and chars.
+  
+  >[8] x stick
+  A strip of palm from the woodiest part of the leaf, about a foot and a half long. It is charred.
+  
+  >[9] burn paper
+  You hold the piece of paper to the fire until it flares and chars.
+  
+  >[10] x paper
+  A single blank sheet. It is charred.
+  
+> >

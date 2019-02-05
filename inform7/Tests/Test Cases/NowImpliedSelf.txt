@@ -1,0 +1,15 @@
+A testing-entity is a kind of thing. A testing-entity has a number called X1.
+
+The test-object is a testing-entity. The X1 is 12.
+
+When play begins:
+	follow the testing rules for the test-object.
+	
+The testing rules are an object-based rulebook.
+	
+A testing rule for a testing-entity (called the subject):
+	let dx be the X1 - 6;
+	now the X1 is the X1 - dx;
+	say "X1: [X1 of the subject].";
+	
+Test is a room.

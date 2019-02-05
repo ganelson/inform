@@ -1,0 +1,61 @@
+   College of Mixology
+  When you decided to try Mixology WS102 (*cross-listed with Women's Studies), you envisioned yourself writing essays about gender discrimination during the Prohibition, say, or reading essays on male vs. female metabolism of alcohol. But no: MxWS102 turns out to be about... mixing the perfect chocolate mint martini.
+  
+  Noisy Cricket
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  College of Mixology
+  You can see a bar (on which is a decanter of pure creme de menthe) here.
+  
+> >   College of Mixology
+  (Testing.)
+  
+  >[1] i
+  You are carrying:
+    an empty cocktail glass
+    a flask of pure vodka
+    an empty jigger
+    an empty small measure
+    a bottle of pure creme de cacao
+  
+  >[2] pour flask in jigger
+  The flask now contains about three fluid ounces of vodka; the jigger contains about one fluid ounce of pure vodka, and is now full.
+  
+  >[3] pour jigger in glass
+  The jigger is now empty; the cocktail glass contains about one fluid ounce of pure vodka.
+  
+  >[4] pour bottle in jigger
+  The bottle now contains about nine fluid ounces of creme de cacao; the jigger contains about one fluid ounce of pure creme de cacao, and is now full.
+  
+  >[5] pour jigger in glass
+  The jigger is now empty; the cocktail glass contains about two fluid ounces of chocolatey chocolate martini.
+  
+  >[6] pour bottle in jigger
+  The bottle now contains about eight fluid ounces of creme de cacao; the jigger contains about one fluid ounce of pure creme de cacao, and is now full.
+  
+  >[7] pour jigger in glass
+  The jigger is now empty; the cocktail glass contains about three fluid ounces of strong creme de cacao.
+  
+  >[8] pour decanter in jigger
+  The decanter now contains about nineteen fluid ounces of creme de menthe; the jigger contains about one fluid ounce of pure creme de menthe, and is now full.
+  
+  >[9] pour jigger in glass
+  The jigger is now empty; the cocktail glass contains about four fluid ounces of chocolatey grasshopper, and is now full.
+  
+  >[10] drink glass
+  You take a sip of grasshopper.
+  
+  >[11] g
+  You take a sip of grasshopper.
+  
+  >[12] g
+  You take a sip of grasshopper.
+  
+  >[13] x glass
+  The cocktail glass contains about three fluid ounces of chocolatey grasshopper.
+  
+  >[14] pour flask in glass
+  The flask now contains about two fluid ounces of vodka; the cocktail glass contains about four fluid ounces of perfect chocolate mint martini, and is now full.
+  
+> >

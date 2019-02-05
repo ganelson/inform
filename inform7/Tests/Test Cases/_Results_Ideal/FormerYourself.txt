@@ -1,0 +1,10 @@
+   Junk Shop
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Junk Shop
+  You can see a super bouncy ball, a tin soldier and a stuffed mongoose here.
+  
+> >   Junk Shop
+> Are you sure you want to quit? 

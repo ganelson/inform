@@ -1,0 +1,36 @@
+   School for Gifted Youngsters
+  Magneto's Revenge
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  School for Gifted Youngsters
+  Kitty Pryde waits for you to say why you summoned her out of class.
+  
+  You can also see a glass box (closed) (in which are a quantity of poisonous gas and the message from Magneto) here.
+  
+> >   School for Gifted Youngsters
+  (Testing.)
+  
+  >[1] get message
+  The glass box isn't open.
+  
+  >[2] kitty, get message
+  Kitty Pryde picks up the message from Magneto.
+  
+  >[3] open box
+  You're deterred by the swirling bottle-green mist within.
+  
+  >[4] kitty, open box
+  Kitty Pryde opens the glass box.
+  
+  The gas has reached your lungs!
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

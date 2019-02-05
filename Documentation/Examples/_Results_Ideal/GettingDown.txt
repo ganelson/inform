@@ -1,0 +1,37 @@
+   Solitary Place
+  Anchorite
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Solitary Place (on the pillar)
+  A glittering, shimmering desert without either locusts or honey.
+  
+> >   Solitary Place
+  (Testing.)
+  
+  >[1] down
+  You get off the pillar.
+  
+  Solitary Place
+  A glittering, shimmering desert without either locusts or honey.
+  
+  The broken pillar is short enough to climb and sit on.
+  
+  >[2] enter pillar
+  You get onto the pillar.
+  
+  >[3] get down
+  You get off the pillar.
+  
+  Solitary Place
+  A glittering, shimmering desert without either locusts or honey.
+  
+  The broken pillar is short enough to climb and sit on.
+  
+  >[4] down
+  You can't go that way.
+  
+  >[5] get down
+  But you aren't in anything at the moment.
+  
+> >

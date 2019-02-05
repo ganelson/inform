@@ -1,0 +1,11 @@
+   room
+  nothing based rulebook: response to foo rulebook
+  nothing based rulebook: in xresponse to foo rulebook
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  room
+  
+> >   room
+> Are you sure you want to quit? 

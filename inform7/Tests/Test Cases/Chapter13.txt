@@ -1,0 +1,180 @@
+"Chapter 13: An Exercise in Concealment" by Emily Short
+
+Chapter 1
+
+
+ Use command line echoing.
+
+Section 1 - Sentence Verbs
+
+The Spire of Hidden Objects is a room. The chaise is a supporter in the Spire of Hidden Objects. The chaise supports a green pillow.
+
+Section 2 - What sentences are made up from 
+
+Section 3 - What are relations? 
+
+Section 4 - To carry, to wear, to have
+
+The player carries a book. The player wears a watch.
+
+Instead of examining something had by the player:
+	say "That's your favorite [noun]."
+
+Section 5 - Making new relations
+
+Underlying relates various things to one thing.
+
+Section 6 - Reciprocal relations
+
+Contacting relates things to each other.
+
+The verb to contact (he contacts, they contact, he contacted, it is contacted, he is contacting) implies the contacting relation.
+
+The pillow contacts the chaise.
+
+Instead of pushing something which contacts something:
+	say "[The noun] moves fractionally with respect to [the random thing which contacts the noun]."
+
+Section 7 - Relations in groups
+
+Section 8 - The built-in verbs and their meanings
+
+A leg is a kind of thing. Four legs are part of the chaise.
+
+Section 9 - Defining new assertion verbs
+
+The verb to underlie (he underlies, they underlie, he underlaid, it is underlaid, he is underlying) implies the underlying relation.
+
+The catalog of exotic cooking supplies underlies the chaise. The description of the catalog is "Oh, dormice (raised all winter on nuts); lark tongues; that sort of thing."
+
+Instead of looking under a thing which is underlaid by something (called the lost object):
+	now the lost object is carried by the player;
+	now the lost object does not underlie the noun;
+	say "You find [a lost object]!"
+
+Hiding it under is an action applying to one carried thing and one thing.
+
+Understand "put [something preferably held] under [something]" as hiding it under.
+
+Check hiding it under:
+	if the second noun is not fixed in place, say "[The second noun] wouldn't be a very effective place of concealment." instead.
+
+Carry out hiding it under:
+	now the noun is nowhere;
+	now the noun underlies the second noun;
+
+Report hiding it under:
+	say "You shove [the noun] out of sight beneath [the second noun]."
+ 
+
+Section 10 - Defining new prepositions
+
+The verb to be under implies the underlying relation.
+
+The gold ball is under the chaise. The description of the gold ball is "It has an irritating habit of never being where you look for it, and you begin to suspect it loses itself on purpose."
+
+Section 11 - Indirect Relations
+
+Overlooking relates various rooms to various rooms. 
+
+The Hedge Maze, the Middle Terrace, and the Lower Terrace are rooms. 
+
+The spiral maze is scenery in the Hedge Maze. 
+
+The lily pond is scenery in the Middle Terrace. The lily pond contains a frog and a waterlily. The description of the lily pond is "A neat round pond.".
+
+The reproduction Venus de Milo is scenery in the Lower Terrace. The Lower Terrace contains a discarded silver banner, a wilting corsage, a tent peg. The description of the Venus is "She has been given a pair of plaster arms, for decency."
+
+The verb to overlook (it overlooks, they overlook, it overlooked, it is overlooked, it is overlooking) implies the overlooking relation.
+
+The Spire of Hidden Objects overlooks the Hedge Maze and the Middle Terrace. The Middle Terrace overlooks the Lower Terrace.
+
+After looking: 
+    say "From here you have a spectacular view of [the list of rooms overlooked by the location].";  
+
+To decide whether (space - a room) offers a view of (target - a room):
+	let way be the next step via the overlooking relation from the space to the target;
+	if the way is a room, yes;
+	no.
+
+After deciding the scope of the player:
+	repeat with space running through rooms
+	begin;
+		if the location offers a view of space,
+			place the contents of the space in scope;
+	end repeat.
+
+Instead of examining something which is in a room (called the space) which is not the location:
+	if the location overlooks the space
+	begin;
+		say "You gaze down into [the space]...";
+		continue the action;
+	otherwise;
+		if the noun is not scenery, say "It is too far from here to [the space] for you to make out much detail about [the noun]." instead;
+		let way be the next step via the overlooking relation from the location to the space;
+		let x be the number of steps via the overlooking relation from the location to the space;
+		if the way is a room, say "You gaze down across [the way] towards [the space], a good [x times 50] feet...";
+		continue the action;
+	end if.
+ 	
+Understand "examine [any room]" as distance viewing.
+
+Distance viewing is an action applying to one thing.
+
+Check distance viewing:
+	if the location offers a view of the noun
+	begin;
+		do nothing;
+	otherwise;
+		say "You can't see any such thing." instead;
+	end if.
+	
+Carry out distance viewing:
+	if the noun contains something scenery,
+		say "Off in [the noun], you can see [a list of scenery things in the noun].";
+	otherwise say "From here it's hard to see much of interest in [the noun].".
+	
+Section 13 - Relations that express conditions
+
+Marriage relates one person to another (called the spouse). The verb to be married to implies the marriage relation.
+
+Fatherhood relates one person (called father) to various people. The verb to engender (he engenders, they engender) implies the fatherhood relation.
+ 
+
+Siblinghood relates a person (called A) to a person (called B) when a person who engenders A engenders B. The verb to be sibling to implies the siblinghood relation.
+
+Family relates a person (called A) to a person (called B) when A is married to B or A engenders B or B engenders A or A is sibling to B. The verb to be related to implies the family relation.
+
+A person can be known or unknown. After printing the name of an unknown person (called the alien): 
+    if a known person (called the contact) is related to the alien 
+    begin; 
+        say " ([relation between alien and contact] of [the contact])";
+        now the alien is known; 
+        rule succeeds; 
+    end if.
+
+To say relation between (first party - a person) and (second party - a person): 
+    if the first party is married to the second party 
+    begin; 
+        if the first party is female, say "wife"; 
+        otherwise say "husband"; 
+        rule succeeds; 
+    end if; 
+    if the first party is sibling to the second party 
+    begin; 
+        if the first party is female, say "sister"; 
+        otherwise say "brother"; 
+        rule succeeds; 
+    end if; 
+    if the first party engenders the second party 
+    begin; 
+        say "father"; rule succeeds; 
+    end if; 
+    if the second party is the father of the first party 
+    begin; 
+        if the first party is female, say "daughter"; 
+        otherwise say "son"; 
+        rule succeeds; 
+    end if.
+
+Percival Blakeney is a known man in the Spire. Marguerite is a woman in the Spire. Percival is married to Marguerite.  Louise is a woman in the Maze. Armand St Just is a man in the Lower Terrace. Louise is married to Armand. Monsieur St Just is a man. He engenders Armand and Marguerite.

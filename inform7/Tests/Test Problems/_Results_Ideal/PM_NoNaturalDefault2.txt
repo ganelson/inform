@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NoNaturalDefault2
+  >--> To achieve 'let Q be the default value of number valued table column' (source
+    text, line 4), we'd need to be able to store a default value of the kind 'a
+    numbers valued table column', but there's no natural choice for this.
+Inform 7 has finished: 43 centiseconds used.

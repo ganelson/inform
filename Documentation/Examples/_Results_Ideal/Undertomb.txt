@@ -1,0 +1,42 @@
+   Undertomb
+  The Undertomb
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Undertomb
+  You can see a lantern (providing light) here.
+  
+> >   Undertomb
+  (Testing.)
+  
+  >[1] get lantern
+  Taken.
+  
+  >[2] e
+  
+  Dead End
+  This is a dead end. You'll have to go back the way you came, consoled only by a faint whispering of running water.
+  
+  >[3] w
+  
+  Undertomb
+  
+  >[4] s
+  
+  Collapsed Dead End
+  This is a dead end. You'll have to go back the way you came, consoled only by a faint whispering of running water.
+  
+  >[5] n
+  
+  Undertomb
+  
+  >[6] nw
+  
+  Dead End
+  This is a dead end. You'll have to go back the way you came, consoled only by a gurgle of running water.
+  
+  >[7] se
+  
+  Undertomb
+  
+> >

@@ -1,0 +1,11 @@
+Inform 7.10.1 build 6N69 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 43240 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+Problem__ PM_TemplateError
+  >--> In an explicit Inform 6 code insertion, I recognise a few special
+    notations in the form '{-command}'. This time, though, the unknown notation
+    {-callv} has been used, and this is an error. (It seems very unlikely
+    indeed that this could be legal Inform 6 which I'm misreading, but if so,
+    try adjusting the spacing to make this problem message go away.)
+Inform 7 has finished: 38 centiseconds used.

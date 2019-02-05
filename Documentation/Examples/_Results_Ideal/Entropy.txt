@@ -1,0 +1,39 @@
+   Equilibrium
+  Entropy
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Equilibrium
+  A perfectly smooth chamber sealed from the outside world. You can't at this moment work out where the exit is, though possibly that is just because the lighting is so very very even and diffuse. And doesn't come from anywhere that you can see, either.
+  
+  Maxwell perches awkwardly on a stool across from you, holding a scalding box of Chinese food.
+  
+> >   Equilibrium
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  Maxwell takes a bite, and swears.
+  
+  >[2] z
+  Time passes.
+  
+  Maxwell takes a bite, and swears.
+  
+  >[3] open thermos
+  You open the room temperature vacuum thermos, revealing a frosty ice cube.
+  
+  Maxwell eats as fast as he can, enjoying the food while it's at just the right temperature.
+  
+  >[4] close thermos
+  You close the room temperature vacuum thermos.
+  
+  Maxwell sadly stabs at his leftovers with a chopstick, but does not try to eat any more.
+  
+  >[5] open thermos
+  You open the room temperature vacuum thermos, revealing a cold ice cube.
+  
+  The ice cube melts! "HA ha," says Maxwell, in a very unsporting, some might say demonic, way.
+  
+> >

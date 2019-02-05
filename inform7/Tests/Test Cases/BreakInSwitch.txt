@@ -1,0 +1,11 @@
+There is a room.
+
+When play begins:
+	repeat with the counter running from one to five:
+		say "[the counter]";
+		if the counter is:
+			-- one:
+				next;
+			-- three:
+				break;
+		say "-".

@@ -1,0 +1,7 @@
+The NI School for Typing is a room.
+
+Mass is a kind of value.
+
+1 kg specifies a mass.
+
+2 rels specifies a mass equivalent to "Fish.".

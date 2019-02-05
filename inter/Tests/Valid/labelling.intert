@@ -1,0 +1,27 @@
+packagetype _plain
+packagetype _code
+
+primitive !if val code -> void
+primitive !goto lab -> void
+
+package main _plain
+	symbol public misc K_number
+	symbol public misc K_func
+	symbol public misc R_101_B
+	symbol public misc R_101
+	kind K_number int32
+	kind K_func function K_number -> K_number
+	package R_101_B _code
+		symbol private label .begin
+		symbol private label .end
+		symbol private misc x
+		symbol external misc K_number == /main/K_number
+		local x K_number __call_parameter
+		.begin
+			inv !if
+				val K_number 1
+				code _ _
+					inv !goto
+						lab .begin
+		.end
+	constant R_101 K_func = R_101_B

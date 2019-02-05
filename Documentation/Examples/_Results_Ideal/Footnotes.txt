@@ -1,0 +1,30 @@
+   Ship Inn
+  Ibid.
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ship Inn
+  Here you are in a lovely pub which your guidebook assures you is extremely authentic. (1).
+  
+  To your left sits a party of Italians, with their guidebook.
+  
+  To your right is a silent, but not unappealing, young man.
+  
+  You can see a table (on which is a mysterious pie) here.
+  
+> >   Ship Inn
+  (Testing.)
+  
+  >[1] footnote 1
+  (1): Francis Drake ate here, if the sign on the door is to be believed.
+  
+  >[2] examine pie
+  Your waitress told you it was the specialty of the day, Steak and Owl Pie. (2).
+  
+  >[3] footnote 2
+  (2): this is unlikely, considering that owls are protected animals in England these days (3).
+  
+  >[4] footnote 3
+  (3): moreover, you can't imagine that owl would be very tasty.
+  
+> >

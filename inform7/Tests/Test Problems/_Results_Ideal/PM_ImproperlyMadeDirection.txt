@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 34 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ImproperlyMadeDirection
+  >--> You wrote 'Gook is a direction' (source text, line 6): but directions
+    must be created by only the simplest possible sentences, in the form
+    'North-north-west is a direction' only. Using adjectives, 'called',
+    'which', and so on is not allowed. (In practice this is not too much of a
+    restriction. I won't allow 'Clockwise is a privately-named direction.', but
+    I will allow 'Clockwise is a direction. Clockwise is privately-named.')
+Inform 7 has finished: 17 centiseconds used.

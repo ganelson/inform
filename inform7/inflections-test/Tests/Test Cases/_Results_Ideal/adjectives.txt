@@ -1,0 +1,14 @@
+big --> comparative: bigger than, superlative: biggest, quiddity: bigness
+tall --> comparative: taller than, superlative: tallest, quiddity: tallness
+short --> comparative: shorter than, superlative: shortest, quiddity: shortness
+svelte --> comparative: svelter than, superlative: sveltest, quiddity: svelteness
+polite --> comparative: politer than, superlative: politest, quiddity: politeness
+close --> comparative: closer than, superlative: closest, quiddity: closeness
+happy --> comparative: happier than, superlative: happiest, quiddity: happiness
+fit --> comparative: fitter than, superlative: fittest, quiddity: fitness
+flip --> comparative: flipper than, superlative: flippest, quiddity: flipness
+long --> comparative: longer than, superlative: longest, quiddity: length
+strong --> comparative: stronger than, superlative: strongest, quiddity: strength
+fey --> comparative: feyer than, superlative: feyest, quiddity: feyness
+low --> comparative: lower than, superlative: lowest, quiddity: lowness
+cheap --> comparative: cheaper than, superlative: cheapest, quiddity: cheapness

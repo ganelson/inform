@@ -1,0 +1,4 @@
+Apartment is a room.  A table and a chair are here.
+A woman called Alice is here.  Alice is wearing a dress and some shoes.
+
+Test me with "x Alice / ask her about Alice / ask her about Bob".

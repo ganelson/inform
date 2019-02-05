@@ -1,0 +1,15 @@
+The Paris Theatre is a room.
+
+The big box is a container in the Theatre. The box is open and openable.
+The box is enterable and transparent. A red button is here.
+
+Standard report waiting rule response (A) is "Jeepers, this is dull.".
+The can't exit closed containers rule response (A) is "Wretched [cage].".
+
+Instead of pushing the button:
+	now the standard report waiting rule response (A) is "Gosh, this is dull.";
+	now can't exit closed containers rule response (A) is "Pesky [cage].";
+	say "Clunk!"
+
+Test me with "z / enter box / close box / exit / open box / exit / push button /
+z / enter box / close box / exit".

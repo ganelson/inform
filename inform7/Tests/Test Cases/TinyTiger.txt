@@ -1,0 +1,13 @@
+"Tiny Tiger"
+
+A ball is a kind of thing. A ball has a number called size. The size
+of a ball is usually 50.
+
+Definition: A ball is tiny if its size is 10.
+
+A golf ball is a kind of ball which is tiny.
+
+After printing the name of a ball (called B), say " ([the size of B])".
+
+The Example is a room. In the Example is a golf ball called Tiger
+Woods golf ball.

@@ -1,0 +1,106 @@
+   Kitchen                                                                                                                                                                                                                0/1
+  Copper River
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
+  
+  Aunt Fiona stands nearby. Or perhaps "stands" is the wrong word: she has been sort of puffed up in her own skin like a balloon, and is now propped in a corner of the room with her head lolling back.
+  
+  On the shelf is a tin of deflating powder.
+  
+> >   Kitchen                                                                                                                                                                                                                4/18
+  (Testing.)
+  
+  >[1] look
+  Kitchen
+  Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
+  
+  Aunt Fiona stands nearby. Or perhaps "stands" is the wrong word: she has been sort of puffed up in her own skin like a balloon, and is now propped in a corner of the room with her head lolling back.
+  
+  On the shelf is a tin of deflating powder.
+  
+  >[2] get powder
+  Taken.
+  
+  >[3] drop powder
+  Dropped.
+  
+  >[4] look
+  Kitchen
+  Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
+  
+  Aunt Fiona stands nearby. Or perhaps "stands" is the wrong word: she has been sort of puffed up in her own skin like a balloon, and is now propped in a corner of the room with her head lolling back.
+  
+  You can also see a tin of deflating powder here.
+  
+  >[5] look in cabinet
+  There's nothing very useful here, only assorted dull items.
+  
+  Aunt Fiona's eyes follow you, wide and desperate, but it doesn't look like she's able to do anything.
+  
+  >[6] get powder
+  Taken.
+  
+  Aunt Fiona is still looking reproachful.
+  
+  >[7] put powder on fiona
+  You toss some of the powder in Aunt Fiona's direction, and with a sudden gaseous HUFF! she returns to her usual shape and size.
+  
+  "Well!" she says, brushing herself off. "That was bracing!"
+  
+  You give her an embarrassed smile, to apologize for not curing her faster.
+  
+  "At least they didn't get this," she says, producing from somewhere on her person a fresh-caught salmon. An odd pattern around its eye sockets makes it looks comically as though it wears spectacles. "It's the Salmon of Knowledge," she explains casually. "We just need to scale and cook it."
+  
+  [Your score has just gone up by two points.]
+  
+  >[8] look
+  Kitchen
+  Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
+  
+  On the counter is a very scaly salmon.
+  
+  Aunt Fiona stands -- on her own two slender legs -- at the center of the room.
+  
+  >[9] open cabinet
+  You open the cabinet, revealing a bottle of descaling solution and assorted dull items.
+  
+  >[10] look in cabinet
+  A bottle of descaling solution is in the cabinet (alongside assorted dull items).
+  
+  >[11] get solution
+  Taken.
+  
+  >[12] open fridge
+  You open the refrigerator, revealing assorted dull items.
+  
+  >[13] put solution in fridge
+  You put the bottle of descaling solution into the refrigerator.
+  
+  >[14] look
+  Kitchen
+  Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
+  
+  On the counter is a very scaly salmon.
+  
+  Aunt Fiona stands -- on her own two slender legs -- at the center of the room.
+  
+  You can also see a refrigerator (in which are a bottle of descaling solution and assorted dull items) here.
+  
+  >[15] get solution
+  Taken.
+  
+  >[16] put solution on salmon
+  With just a single squirt of the descaling solution (which confusingly has a picture of bathroom tiles on the label), you remove the scales from the salmon, leaving its pink flesh ready for preparation.
+  
+  [Your score has just gone up by two points.]
+  
+  >[17] look
+  Kitchen
+  Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
+  
+  Aunt Fiona stands -- on her own two slender legs -- at the center of the room.
+  
+> >

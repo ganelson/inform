@@ -1,0 +1,17 @@
+Place is a room. Otherwhere is east of Place.
+
+The jumping action has an object called the current place (matched as "at").
+
+Setting action variables for jumping:
+	now the current place is the location.
+
+Check jumping at the Place:
+	say "You can be bothered."
+
+Report jumping at the Place:
+	say "You were bothered."
+
+Instead of jumping at the Place:
+	say "You can't be bothered."
+
+Test me with "jump / e / jump".

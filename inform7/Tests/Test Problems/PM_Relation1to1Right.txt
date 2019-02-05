@@ -1,0 +1,4 @@
+Pairing relates one person to one person. The verb to like (he likes,
+they like) implies the pairing relation.
+
+The Taj Mahal is a room. Aman likes Indira. Aman likes Geetha.

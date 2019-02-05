@@ -1,0 +1,39 @@
+   Red Spot                                                                                                                                                                                                               0/1
+  Instant Ralstons and Regular Ralstons, the hot whole-wheat cereals in the red and white checkerboard packages present... SPACE PATROL... High adventure in the wild vast reaches of space... Missions of daring in the name of interplanetary justice... Travel into the future as Buzz Corey, Commander-in-Chief of the...
+  
+  Space Patrol #57 - 1953-10-31 - Stranded on Jupiter!
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Red Spot
+  You are in the middle of a vast red oval plain. Overhead, the thick Jovian clouds swirl menacingly, and a fine acrid dust falls instead of rain.
+  
+> >   Red Spot                                                                                                                                                                                                               0/5
+  (Testing.)
+  
+  >[1] n
+  As you once told Cadet Lucky, Jupiter's a mighty big planet, maybe bigger than Iowa. Why, the Red Spot alone stretches out almost to the horizon.
+  
+  >[2] i
+  You are carrying:
+    a silver uniform (being worn)
+    rubber boots (being worn)
+    a shovel
+    an Analscope
+  
+  >[3] x me
+  Your hair clumps together stickily, thanks to the dustfall.
+  
+  >[4] x dust
+  The rust-colored dust coats every surface. You've no idea how deep it goes.
+  
+  >[5] dig dust
+  You brush aside the dust underfoot and -- what were the odds? -- it turns out that you landed just where the previous landing party did, thirteen ill-fated years ago. Here is the metal plate that covers their original well.
+  
+  But wait! Called by the clanging of your shovel on the plate, a band of Jovian pterodactyls swoop down to attack! You're totally defenceless! You don't have a hope! You're absolutely finished!
+  
+  
+                                                                                                 *** We'll be back in just a moment! ***
+  
+  Please press SPACE to continue.
+) 

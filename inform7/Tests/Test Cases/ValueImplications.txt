@@ -1,0 +1,17 @@
+The Mysterious Void is a room.
+
+Colour is a kind of value.
+
+The colours are red, green and blue.
+
+A colour can be zesty or flat.
+
+A colour can be bright or dull.
+
+Red and blue are bright.
+
+A bright colour is usually zesty.
+
+Blue is flat.
+
+When play begins: say "Zesty: [list of zesty colours]; Flat: [list of flat colours]."

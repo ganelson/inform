@@ -1,0 +1,5 @@
+Place is a room.
+
+When play begins:
+	let changed subject be a topic;
+	now changed subject is "fish".

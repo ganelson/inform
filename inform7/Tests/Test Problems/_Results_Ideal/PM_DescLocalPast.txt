@@ -1,0 +1,16 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DescLocalPast
+  >--> You wrote 'if T had been the School' (source text, line 5): but
+    conditions written in the past tense cannot refer to temporary values,
+    because they have no past. For instance, the name given in a 'repeat...'
+    can't be talked about as having existed before, and similarly the pronoun
+    'it' changes its meaning often, so we can't safely talk about 'it' in the
+    past.
+    I was trying to match this phrase:
+      if (t had been the school - a condition): 
+    I recognised:
+    t had been the school = a condition
+Inform 7 has finished: 53 centiseconds used.

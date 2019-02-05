@@ -1,0 +1,29 @@
+   Cabin
+  Disenchantment Bay
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cabin
+  The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
+  
+  Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company.
+  
+> >   Cabin
+  (Testing.)
+  
+  >[1] examine instruments
+  You see nothing special about the navigational instruments.
+  
+  >[2] x windows
+  You see nothing special about the scratched windows.
+  
+  >[3] x sign
+  You see nothing special about the sign.
+  
+  >[4] x display
+  You see nothing special about the radar display.
+  
+  >[5] x radios
+  You see nothing special about the radios.
+  
+> >

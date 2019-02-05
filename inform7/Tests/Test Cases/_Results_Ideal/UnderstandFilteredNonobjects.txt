@@ -1,0 +1,35 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Place
+  
+> >   Place
+  (Testing.)
+  
+  >[1] acast xyzzy
+  You cast Xyzzy.
+  
+  >[2] acast plugh
+  You cast Plugh.
+  
+  >[3] bcast xyzzy
+  You cast Xyzzy.
+  
+  >[4] bcast plugh
+  I didn't understand that sentence.
+  
+  >[5] ccast xyzzy
+  You cast Xyzzy.
+  
+  >[6] ccast plugh
+  I didn't understand that sentence.
+  
+  >[7] dcast xyzzy
+  You cast Xyzzy.
+  
+  >[8] dcast plugh
+  I didn't understand that sentence.
+  
+> >

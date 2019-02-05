@@ -1,0 +1,106 @@
+   3 words: 5,5,6
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Outer Solar System
+  
+> >   3 words: 5,5,6
+  (Testing.)
+  
+  >[1] n
+  Character 1 is N.
+  Character 2 is e.
+  Character 3 is p.
+  Character 4 is t.
+  Character 5 is u.
+  Character 6 is n.
+  Character 7 is i.
+  Character 8 is a.
+  Character 9 is n.
+  Character 10 is  .
+  Character 11 is S.
+  Character 12 is y.
+  Character 13 is s.
+  Character 14 is t.
+  Character 15 is e.
+  Character 16 is m.
+  
+  >[2] s
+  You look drunkenly at Neptunian Syshtem with Ringsh and Moonsh.
+  
+  >[3] e
+  Neptune is now Neptunian System, and has 16 characters and 2 words.
+  
+  >[4] w
+  Word 1 is Neptunian.
+  Word 2 is System.
+  Word 3 is with.
+  Word 4 is Rings.
+  Word 5 is and.
+  Word 6 is Moons.
+  
+  >[5] u
+  Punctuated word 1 is Neptunian.
+  Punctuated word 2 is (.
+  Punctuated word 3 is Quasi.
+  Punctuated word 4 is -.
+  Punctuated word 5 is System.
+  Punctuated word 6 is ).
+  Punctuated word 7 is ,.
+  Punctuated word 8 is with.
+  Punctuated word 9 is Rings.
+  Punctuated word 10 is ;.
+  Punctuated word 11 is --.
+  Punctuated word 12 is and.
+  Punctuated word 13 is Moons.
+  Punctuated word 14 is !.
+  Punctuated word 15 is ".
+  Punctuated word 16 is Ice.
+  Punctuated word 17 is -.
+  Punctuated word 18 is hot.
+  Punctuated word 19 is ....
+  Punctuated word 20 is don't.
+  Punctuated word 21 is you.
+  Punctuated word 22 is think.
+  Punctuated word 23 is ?.
+  Punctuated word 24 is ".
+  
+  >[6] d
+  Word 1 is Neptunian.
+  Word 2 is Quasi.
+  Word 3 is System.
+  Word 4 is with.
+  Word 5 is Rings.
+  Word 6 is and.
+  Word 7 is Moons.
+  Word 8 is Ice.
+  Word 9 is hot.
+  Word 10 is don't.
+  Word 11 is you.
+  Word 12 is think.
+  
+  >[7] ne
+  Paragraph 1 is This is a sensational fact..
+  Paragraph 2 is The Martians have invaded Miranda.
+  (One of the moons of Uranus, that is.).
+  
+  >[8] nw
+  Line 1 is This is a sensational fact..
+  Line 2 is The Martians have invaded Miranda..
+  Line 3 is (One of the moons of Uranus, that is.).
+  
+  >[9] se
+  Unpunctuated word 1 is Neptunian.
+  Unpunctuated word 2 is (Quasi-System),.
+  Unpunctuated word 3 is with.
+  Unpunctuated word 4 is Rings;.
+  Unpunctuated word 5 is --.
+  Unpunctuated word 6 is and.
+  Unpunctuated word 7 is Moons!.
+  Unpunctuated word 8 is "Ice-hot....
+  Unpunctuated word 9 is don't.
+  Unpunctuated word 10 is you.
+  Unpunctuated word 11 is think?".
+  
+> >

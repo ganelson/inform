@@ -1,0 +1,13 @@
+Interior is a region.
+The Kitchen is a room in Interior.
+The screen door is a door.
+The screen door is east of the Kitchen and west of the Garden.
+A seagull is a backdrop. It is not scenery. It is in Interior.
+
+Exterior is a region. Garden is in Exterior.
+
+The sandwich is in the kitchen. The croquet hoop is in the Garden.
+
+When play begins:
+	showme the list of things regionally in Interior;
+	showme the list of things regionally in Exterior.

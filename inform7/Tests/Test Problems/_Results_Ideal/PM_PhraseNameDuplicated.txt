@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 39 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PhraseNameDuplicated
+  >--> You wrote 'To decide which indexed text is (T - indexed text) doubled
+    (this is doubling)' (source text, line 6): but that name for this new
+    phrase is not allowed, because it already has a meaning.
+Inform 7 has finished: 14 centiseconds used.

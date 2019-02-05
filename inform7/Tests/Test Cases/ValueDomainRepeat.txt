@@ -1,0 +1,56 @@
+Stanford is a room.
+
+Figure of Woodlands is the file "Woodlands.png".
+Sound of rustling leaves is the file "Rustling leaves.ogg".
+The File of Glaciers is called "ice".
+
+LSD Experience is a scene. Bach Cantata Concert is a scene.
+
+Definition: a scene is bad if it is the LSD Experience.
+
+Definition: a scene is good if it is not the LSD Experience.
+
+Colour is a kind of value. The colours are red, blue and green.
+
+When play begins:
+	say "REPETITION TEST.";
+	say "Figures: ";
+	repeat with fig running through figure-names:
+		say " [fig]";
+	say "[paragraph break]";
+	say "Sounds: ";
+	repeat with fx running through sound-names:
+		say " [fx]";
+	say "[paragraph break]";
+	say "External files: ";
+	repeat with docket running through external-files:
+		say " [docket]";
+	say "[paragraph break]";
+	say "Times: ";
+	repeat with moment running through times:
+		say " [moment]";
+	say "[paragraph break]";
+	say "Tables: ";
+	repeat with almanac running through table-names:
+		say " [almanac]";
+	say "[paragraph break]";
+	say "Truth states: ";
+	repeat with parity running through truth states:
+		say " [parity]";
+	say "[paragraph break]";
+	say "Colours: ";
+	repeat with hue running through colours:
+		say " [hue]";
+	say "[paragraph break]";
+	say "Scenes: ";
+	repeat with interlude running through scenes:
+		say " [interlude]";
+	say "[paragraph break]";
+	say "Good scenes: ";
+	repeat with interlude running through good scenes:
+		say " [interlude]";
+	say "[paragraph break]";
+	say "Bad scenes: ";
+	repeat with interlude running through bad scenes:
+		say " [interlude]";
+	say "[paragraph break]".

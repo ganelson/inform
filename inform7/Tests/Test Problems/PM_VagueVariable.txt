@@ -1,0 +1,3 @@
+The Steppe is a room.
+
+The Afghan shepherd is a variable.

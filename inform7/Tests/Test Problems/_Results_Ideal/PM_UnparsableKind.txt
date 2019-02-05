@@ -1,0 +1,12 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 17 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_UnparsableKind
+  >--> The grammar token 'snippet' in the sentence 'Understand "blob [snippet]"
+    as examining' (source text, line 3) invites me to understand values typed
+    by the player during play but for a kind of value which is beyond my
+    ability. Generally speaking, the allowable kinds of value are number, time,
+    text and any new kind of value you may have created - but not, for
+    instance, scene or rule.
+Inform 7 has finished: 44 centiseconds used.

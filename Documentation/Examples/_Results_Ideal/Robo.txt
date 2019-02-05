@@ -1,0 +1,116 @@
+   Experimentation Chamber
+  Robo
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Experimentation Chamber
+  Robo, your prototype tin companion, stands awkwardly beside you. In the middle of his chest is a red enamel button, currently un-depressed.
+  
+  You can also see a red block and a blue cylinder here.
+  
+  Robo watches you looking. In his metal head, gears whirr.
+  
+> >   Experimentation Chamber
+  (Testing.)
+  
+  >[1] z
+  Robo watches you waiting impassively.
+  
+  Time passes.
+  
+  >[2] take cylinder
+  Robo watches you taking the blue cylinder, his brushed-copper handlebar moustaches twitching.
+  
+  Taken.
+  
+  >[3] take block
+  Robo watches you taking the red block impassively.
+  
+  Taken.
+  
+  >[4] put cylinder on counter
+  Robo watches you putting the blue cylinder on the counter, his brushed-copper handlebar moustaches twitching.
+  
+  You put the blue cylinder on the counter.
+  
+  >[5] put block on counter
+  Robo watches you putting the red block on the counter, his yellow eyes lamp-like and observant.
+  
+  You put the red block on the counter.
+  
+  >[6] x robo
+  You see nothing special about Robo.
+  
+  Robo watches you examining Robo, his brushed-copper handlebar moustaches twitching.
+  
+  >[7] x me
+  As good-looking as ever.
+  
+  Robo watches you examining yourself, his yellow eyes lamp-like and observant.
+  
+  >[8] get block
+  Robo watches you taking the red block, his brushed-copper handlebar moustaches twitching.
+  
+  Taken.
+  
+  >[9] drop block
+  Robo watches you dropping the red block, his yellow eyes lamp-like and observant.
+  
+  Dropped.
+  
+  >[10] press red button
+  CLICK! Robo is now in play-back mode.
+  
+  Robo looks around.
+  
+  >[11] z
+  Time passes.
+  
+  Robo waits.
+  
+  >[12] z
+  Time passes.
+  
+  Robo needs several attempts to get his metal fingers around the blue cylinder -- they are not designed for grasping small objects elegantly. But at last he succeeds.
+  
+  >[13] z
+  Time passes.
+  
+  Robo picks up the red block.
+  
+  >[14] z
+  Time passes.
+  
+  Robo puts the blue cylinder on the counter.
+  
+  >[15] z
+  Time passes.
+  
+  Robo puts the red block on the counter.
+  
+  >[16] z
+  Time passes.
+  
+  Robo examines each of his hands in turn, then each of his legs (bending over mostly double in the middle to do this).
+  
+  >[17] z
+  Time passes.
+  
+  Robo stares at you, unblinkingly, for several seconds together.
+  
+  >[18] z
+  Time passes.
+  
+  Robo picks up the red block.
+  
+  >[19] z
+  Time passes.
+  
+  Robo puts down the red block.
+  
+  >[20] z
+  Time passes.
+  
+  Robo has run out of behavior and grinds to an (expectant) halt.
+  
+> >

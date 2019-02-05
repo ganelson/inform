@@ -1,0 +1,8 @@
+Home is a room.
+
+Weight is a kind of value.
+
+10aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa8
+20bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb9
+30cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc10
+specifies a weight.

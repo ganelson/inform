@@ -1,0 +1,22 @@
+A flowerpot is a kind of thing. Understand "pot" as a flowerpot.
+
+A flowerpot can be unbroken or broken. A flowerpot is usually unbroken.
+After dropping an unbroken flowerpot: say "Crack!"; now the noun is broken.
+
+Understand the broken property as describing a flowerpot.
+
+Before printing the name of a broken flowerpot, say "broken ". Before
+printing the name of an unbroken flowerpot: if a flowerpot is broken,
+say "unbroken ".
+
+Before printing the plural name of a broken flowerpot, say "broken ".
+Before printing the plural name of an unbroken flowerpot: if a flowerpot
+is broken, say "unbroken ".
+
+A Ming vase is a kind of flowerpot.
+
+The Herb Garden is a room. In the Herb Garden are six flowerpots and ten Ming vases.
+
+Test me with "get three Ming vases / get four flowerpots / drop all / look /
+get two broken ming vases / get two broken flowerpots /
+get two unbroken ming vases / get two unbroken flowerpots".

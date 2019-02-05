@@ -1,0 +1,17 @@
+Stanford is a room. A status display is here. The status display has a
+truth state called parity. "The sober status display reads '[parity of the
+status display]'."
+
+Judging is an action applying to one truth state.
+
+Understand "yeah" as true.
+
+Carry out judging:
+	now the parity of the status display is the truth state understood.
+
+Report judging:
+	say "A bell pings, and the status display reads [parity of the status display]."
+
+Understand "judge [truth state]" as judging.
+
+Test me with "judge true / judge false / judge yeah / judge maybe".

@@ -1,0 +1,23 @@
+   Cliff Edge
+  Finality
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cliff Edge
+  This narrow strip overlooks a gorge many hundreds of feet deep, at whose bottom is a river of molten lava. The walls of the gorge are lined with poison-tipped spikes. Furthermore, the birds that inhabit this valley spit balls of fire. Good thing you're safe up here.
+  
+> >   Cliff Edge
+  (Testing.)
+  
+  >[1] jump
+  If you insist.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game or QUIT?
+> > 

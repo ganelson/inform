@@ -1,0 +1,19 @@
+   Pharmacy
+  Removal
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pharmacy
+  You can see a desk (on which are a pill-counter (in which are some Vicodin), a prescription and a computer) and a trash can (in which is an empty box) here.
+  
+> >   Pharmacy
+  (Testing.)
+  
+  >[1] get all
+  trash can: You pick up the trash can from the ground.
+  pill-counter: You take the pill-counter from the desk.
+  Vicodin: You take the Vicodin from the pill-counter.
+  prescription: You take the prescription from the desk.
+  empty box: You take the empty box from the trash can.
+  
+> >

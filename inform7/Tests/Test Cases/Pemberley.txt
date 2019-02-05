@@ -1,0 +1,161 @@
+Big House is a room.
+
+Elizabeth is a woman in the Big House. Darcy is a man in the Big House.
+
+Loving relates one person to one person. The verb to love (he loves, they
+love, he loved, he is loved) implies the loving relation.
+
+Elizabeth loves Darcy.
+
+Understand "man infatuated with [something related by loving]" as a man.
+Understand "woman infatuated with [something related by loving]" as a
+woman.
+
+Understand "man loved by [something related by reversed loving]" as a man.
+Understand "woman loved by [something related by reversed loving]" as a
+woman.
+
+Test love with "x woman infatuated with Darcy/ x man loved by elizabeth / x
+man infatuated with elizabeth / x woman loved by Darcy".
+
+
+Noticing relates various people to one person. The verb to notice (he
+notices, they notice, he noticed, he is noticed) implies the noticing
+relation.
+
+Elizabeth notices Darcy.
+
+Understand "man noticed by [something related by reversed noticing]" as a
+man. Understand "woman noticed with [something related by reversed
+noticing]" as a woman.
+
+Understand "man who notices [something related by noticing]" as a man.
+Understand "woman who notices [something related by noticing]" as a woman.
+
+Test noticing with "x man noticed by elizabeth / x woman who notices Darcy
+/ x man who notices elizabeth / x woman noticed by darcy".
+
+
+Impressing relates one person to various people. The verb to impress (he
+impresses, they impress, he impressed, he is impressed) implies the
+impressing relation.
+
+Elizabeth impresses Darcy.
+
+Understand "man impressed by [something related by reversed impressing]" as
+a man. Understand "woman impressed with [something related by reversed
+impressing]" as a woman.
+
+Understand "man who impresses [something related by impressing]" as a man.
+Understand "woman who impresses [something related by impressing]" as a
+woman.
+
+Test impressing with "x woman who impresses darcy / x man impressed by
+elizabeth / x man who impresses Elizabeth / x woman impressed by darcy".
+
+
+Fancying relates various people to various people. The verb to fancy (he
+fancies, they fancy, he fancied, he is fancied) implies the fancying
+relation.
+
+Elizabeth fancies Darcy.
+
+Understand "man who fancies [something related by fancying]" as a man.
+Understand "woman who fancies [something related by fancying]" as a woman.
+
+Understand "man fancied by [something related by reversed fancying]" as a
+man. Understand "woman fancied by [something related by reversed fancying]"
+as a woman.
+
+Test fancying with "x woman who fancies darcy / x man fancied by elizabeth
+/ x man who fancies elizabeth / x woman fancied by darcy".
+
+
+Marriage relates one person to another. The verb to be married to implies
+the marriage relation.
+
+Elizabeth is married to Darcy.
+
+Understand "wife of [something related by marriage]" as a woman. Understand
+"husband of [something related by marriage]" as a man.
+
+Understand "spouse of [something related by reversed marriage]" as a woman.
+Understand "spouse of [something related by reversed marriage]" as a man.
+
+Test marriage with "x wife of Darcy / x husband of Elizabeth / x spouse of
+Darcy / x spouse of Elizabeth".
+
+
+Acquaintance relates people to each other. The verb to know (he knows, they
+know, he knew, he is known) implies the acquaintance relation.
+
+Elizabeth knows Darcy.
+
+Understand "man acquainted with [something related by acquaintance]" as a
+man. Understand "woman acquainted with [something related by acquaintance]"
+as a woman.
+
+Understand "man known by [something related by reversed acquaintance]" as a
+man. Understand "woman known by [something related by reversed
+acquaintance]" as a woman.
+
+Test acquaintance with "x woman acquainted with darcy / x man acquainted
+with elizabeth / x woman known by darcy / x man known by elizabeth".
+
+
+
+Alliance relates people to each other in groups. The verb to be related to
+implies the alliance relation.
+
+Elizabeth is related to Darcy.
+
+Understand "man allied to [something related by alliance]" as a man.
+Understand "woman allied to [something related by alliance]" as a woman.
+
+Understand "man connected to [something related by reversed alliance]" as a
+man. Understand "woman connected to [something related by reversed
+alliance]" as a woman.
+
+Test alliance with "x man allied to elizabeth / x woman allied to darcy / x
+man connected to elizabeth / x woman connected to darcy".
+
+
+Instead of jumping:
+	show relation the loving relation;
+	if the loving relation is empty, say "Which is empty.";
+	now the loving relation is empty;
+	show relation the loving relation;
+	if the loving relation is empty, say "Which is empty.";
+	show relation the noticing relation;
+	if the noticing relation is empty, say "Which is empty.";
+	now the noticing relation is empty;
+	show relation the noticing relation;
+	if the noticing relation is empty, say "Which is empty.";
+	show relation the impressing relation;
+	if the impressing relation is empty, say "Which is empty.";
+	now the impressing relation is empty;
+	show relation the impressing relation;
+	if the impressing relation is empty, say "Which is empty.";
+	show relation the fancying relation;
+	if the fancying relation is empty, say "Which is empty.";
+	now the fancying relation is empty;
+	show relation the fancying relation;
+	if the fancying relation is empty, say "Which is empty.";
+	show relation the marriage relation;
+	if the marriage relation is empty, say "Which is empty.";
+	now the marriage relation is empty;
+	show relation the marriage relation;
+	if the marriage relation is empty, say "Which is empty.";
+	show relation the acquaintance relation;
+	if the acquaintance relation is empty, say "Which is empty.";
+	now the acquaintance relation is empty;
+	show relation the acquaintance relation;
+	if the acquaintance relation is empty, say "Which is empty.";
+	show relation the alliance relation;
+	if the alliance relation is empty, say "Which is empty.";
+	now the alliance relation is empty;
+	show relation the alliance relation;
+	if the alliance relation is empty, say "Which is empty.";
+
+Test me with "test love / test noticing / test impressing / test fancying /
+test marriage /test acquaintance / test alliance / jump".

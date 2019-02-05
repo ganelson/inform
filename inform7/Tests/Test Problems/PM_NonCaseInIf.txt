@@ -1,0 +1,14 @@
+Home is a room.
+
+When play begins:
+	let N be 13;
+	if N is:
+		say "Ooh!";
+		-- 1:
+			say "Look!";
+		-- 11:
+			say "Blob!";
+		-- 12:
+			say "Grup!";
+		-- anything else:
+			say "Boggle!";

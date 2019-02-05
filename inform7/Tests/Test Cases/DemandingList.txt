@@ -1,0 +1,10 @@
+[This is a surprisingly demanding test, because different versions of the syntax
+analyser have varied greatly in how quickly they parse it. It would be trivial
+if the list entries were numbers, but they are easily confusable with lists of
+actions in an action pattern, and also contain numerous prepositions hinting
+incorrectly at relative clauses.]
+
+X is a room.
+
+When play begins:
+	showme {taking action, removing it from action, taking off action, dropping action, putting it on action, inserting it into action, searching action, touching action, waving action, pulling action, pushing action, turning action, squeezing action, eating action, consulting it about action, locking it with action, unlocking it with action, switching on action, switching off action, opening action, closing action, wearing action, attacking action, showing it to action, throwing it at action, cutting action, tying it to action, drinking action, swinging action, rubbing action, setting it to action}.

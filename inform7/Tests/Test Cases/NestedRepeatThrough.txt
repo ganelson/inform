@@ -1,0 +1,15 @@
+The Church is a room.
+
+Table of Combat Order
+Combatant
+"First"
+"Second"
+"Third"
+"Fourth"
+
+Every turn:
+	repeat through the Table of Combat Order:
+		say "[Combatant entry] goes now.";
+		repeat through the Table of Combat Order:
+			say "Trying [Combatant entry].";  
+		say "That's it for [Combatant entry].[paragraph break]"

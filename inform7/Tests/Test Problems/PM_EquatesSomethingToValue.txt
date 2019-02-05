@@ -1,0 +1,5 @@
+Xanadu is a room.
+
+Colour is a kind of value.
+
+Something called mauve is a colour.

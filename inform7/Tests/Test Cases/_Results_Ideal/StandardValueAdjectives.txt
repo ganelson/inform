@@ -1,0 +1,53 @@
+   Stanford
+  -5 is odd.
+  -5 is negative.
+  -4 is even.
+  -4 is negative.
+  -3 is odd.
+  -3 is negative.
+  -2 is even.
+  -2 is negative.
+  -1 is odd.
+  -1 is negative.
+  0 is even.
+  1 is odd.
+  1 is positive.
+  2 is even.
+  2 is positive.
+  3 is odd.
+  3 is positive.
+  4 is even.
+  4 is positive.
+  5 is odd.
+  5 is positive.
+  "Knowing Me, Knowing You" is non-empty.
+  "" is empty.
+  "Voulez Vous" is non-empty.
+  "" is empty.
+  Table of Vacancy is empty.
+  Table of Vacancy is non-full.
+  Table of Plenitude is full.
+  Table of Plenitude is non-empty.
+  Table of Middlingness is non-empty.
+  Table of Middlingness is non-full.
+  Abba Concert is happening.
+  AC-DC Concert is not happening.
+  Abba Concert is not recurring.
+  AC-DC Concert is recurring.
+  "{2, 3, 4}" is non-empty.
+  "{}" is empty.
+  Reading a command activity is empty.
+  adjective testing activity is not empty.
+  Reading a command activity is not going on.
+  adjective testing activity is going on.
+  turn sequence rulebook is not empty.
+  every turn rulebook is empty.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stanford
+  
+> >   Stanford
+> Are you sure you want to quit? 

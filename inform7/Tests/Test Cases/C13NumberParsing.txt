@@ -1,0 +1,29 @@
+The Living Room is a room.
+
+The remote control is in the living room. "A multi function remote control."
+
+Tuning is an action applying to a number.
+
+Understand "tune to [a number]" as tuning. 
+
+Number punching is an action applying to one number and one visible thing.
+
+Understand "punch [a number] on [the thing]" as number punching.
+Understand "dial [a number] on [the thing]" as number punching. 
+
+Check number punching:
+	say "** check: [the number understood] on [the second noun] **".
+
+Carry out number punching:
+	say "** carry out: [the number understood] on [the second noun] **"; 
+	try tuning the number understood.
+
+Check tuning:
+	say "** check: [the number understood] **".
+
+Carry out tuning:
+	say "** carry out: [the number understood] **".
+
+Test me with "punch 50 / punch -17 / punch 0 / punch 9999 / punch 10000 /
+punch 10001 / punch -32768 / punch 32767 / dial one / punch eleven".
+

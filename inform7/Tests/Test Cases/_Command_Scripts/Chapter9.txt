@@ -1,0 +1,55 @@
+n
+turn on the lunar clock
+s
+se
+s
+n
+turn on the clock
+n
+turn off the clock
+turn on the clock
+n
+s
+sw
+x sun
+nw
+x moon
+g
+g
+g
+g
+g
+g
+se
+nw
+se
+ne
+n
+turn off clock
+se
+s
+se
+sw
+nw
+x moon
+g
+g
+g
+n
+press button
+score
+sw
+s
+s
+se
+get sun
+score
+drop sun
+ne
+sw
+nw
+get moon
+drop moon
+score
+i
+

@@ -1,0 +1,81 @@
+   Empty Room
+  Tilt
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empty Room
+  Nothing to see here.
+  
+  You can see a deck of cards here.
+  
+> >   Empty Room
+  (Testing.)
+  
+  >[1] draw
+  You draw a three of hearts.
+  
+  >[2] g
+  You draw a five of hearts.
+  
+  >[3] g
+  You draw a ten of spades.
+  
+  >[4] g
+  You draw a queen of diamonds.
+  
+  >[5] g
+  You draw a seven of diamonds.
+  
+  >[6] force hand
+  You are carrying:
+    royal flush (ace of spades, king of spades, queen of spades, jack of spades, ten of spades)
+  
+  >[7] g
+  You are carrying:
+    straight flush (queen of clubs, jack of clubs, ten of clubs, nine of clubs, eight of clubs)
+  
+  >[8] g
+  You are carrying:
+    four of a kind (eight of spades, eight of diamonds, eight of clubs, eight of hearts, three of clubs)
+  
+  >[9] g
+  You are carrying:
+    full house (ten of hearts, ten of spades, ten of clubs, ace of clubs, ace of spades)
+  
+  >[10] g
+  You are carrying:
+    flush (queen of hearts, jack of hearts, seven of hearts, five of hearts, deuce of hearts)
+  
+  >[11] g
+  You are carrying:
+    straight (ace of hearts, king of spades, queen of diamonds, jack of clubs, ten of hearts)
+  
+  >[12] g
+  You are carrying:
+    three of a kind (deuce of spades, deuce of hearts, deuce of clubs, four of clubs, three of spades)
+  
+  >[13] g
+  You are carrying:
+    two pairs (seven of diamonds, seven of clubs, six of diamonds, six of spades, nine of hearts)
+  
+  >[14] g
+  You are carrying:
+    two pairs (ace of clubs, ace of hearts, six of diamonds, six of spades, seven of diamonds)
+  
+  >[15] g
+  You are carrying:
+    pair of queens (queen of hearts, queen of spades, ten of diamonds, seven of spades, four of clubs)
+  
+  >[16] g
+  You are carrying:
+    high card (king of diamonds, jack of hearts, nine of spades, seven of clubs, five of diamonds)
+  
+  >[17] g
+  You are carrying:
+    straight (five of diamonds, four of diamonds, three of spades, deuce of diamonds, ace of hearts)
+  
+  >[18] g
+  You are carrying:
+    royal flush (ace of spades, king of spades, queen of spades, jack of spades, ten of spades)
+  
+> >

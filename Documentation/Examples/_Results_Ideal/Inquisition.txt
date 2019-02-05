@@ -1,0 +1,25 @@
+   Interrogation Chamber
+  Interrogation
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Interrogation Chamber
+  Despite its gothic name, this room is a rather civilized place for your work, with large plate-glass windows and a fitted carpet.
+  
+  Brian lounges against the wall.
+  
+  Janine toys nervously with a laptop bag.
+  
+> >   Interrogation Chamber
+  (Testing.)
+  
+  >[1] wave wand
+  The wand glows green. Immediately you see on the monitor a quantity of plastic explosive (carried by Brian) and a microfilm (carried by Janine).
+  
+  >[2] examine janine
+  Janine is openly carrying a chocolate biscuit and a laptop bag.
+  
+  >[3] examine brian
+  Brian is openly carrying nothing.
+  
+> >

@@ -1,0 +1,8 @@
+Mathematical laboratory is a room.
+
+Table of Splodge
+type		(rule)
+living		the evil rule
+
+This is the evil rule:
+	say "Pretty evil, huh?".

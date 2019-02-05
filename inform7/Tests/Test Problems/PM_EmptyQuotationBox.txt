@@ -1,0 +1,2 @@
+Foo is a room.
+When play begins: display the boxed quotation "".

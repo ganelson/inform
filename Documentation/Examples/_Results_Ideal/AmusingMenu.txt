@@ -1,0 +1,23 @@
+   Athens                                                                                                                                                                                                                 10001/1
+  Xerxes
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Athens
+  
+> >   Athens                                                                                                                                                                                                                 10001/1
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  
+  
+      *** The End ***
+  
+  
+  In that game you scored 10001 out of a possible 0, in 1 turn.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, see some suggestions for AMUSING things to do, QUIT or UNDO the last command?
+> > 

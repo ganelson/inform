@@ -1,0 +1,5 @@
+Tomb of Rassilon is a room.  High Council Chamber is a room.  Dark Tower is
+a room.  Transmat is a door.
+
+Transmat is north of Tomb of Rassilon.  High Council Chamber is north of
+Transmat.  Dark Tower is south of Transmat.

@@ -1,0 +1,47 @@
+The Place is a room. The box and the crate are in the Place. A coin is a
+kind of thing. There is a room called the Shadow World. There is a coin in
+the box. There is a double-bladed axe in the box. There are three coins in
+the Shadow World. There are two coins on the crate. There is a jigsaw
+puzzle which is in the box. Four coins are in the Shadow World.
+
+Incrimination relates various things to various people. The verb to
+incriminate (he incriminates, they incriminate, he incriminated, it is
+incriminated, he is incriminating) implies the incrimination relation.
+
+There is a man called Mr Darcy. There is a pair of boxer shorts which
+incriminates Mr Darcy. There is a fishing rod incriminating Mr Darcy.
+
+There is a woman.
+
+Test me with "showme / showme Shadow / relations / z / get axe / z / get
+coin from crate / put axe in box / put coin in box / z / get all from box /
+z / jump / z".
+
+Instead of jumping:
+	now nothing incriminates Mr Darcy;
+	say "By jumping, you destroy the evidence."
+
+Instead of waiting:
+	if there is a man, say "There is a man.";
+	if there are men, say "There are men.";
+	if there is a vehicle, say "There is a vehicle.";
+	if there are vehicles, say "There are vehicles.";
+	if there is no vehicle, say "There is no vehicle.";
+	if there are no vehicles, say "There are no vehicles.";
+	if nothing is in the box, say "Nothing is in the box.";
+	if there is nothing in the box, say "There is nothing in the box.";
+	if a thing is in the box, say "A thing is in the box.";
+	if there is something in the box, say "There is something in the box.";
+	if there is something which is in the box, say "There is something which is in the box.";
+	if three things are in the box, say "Three things are in the box.";
+	if there are three things in the box, say "There are three things in the box.";
+	if fewer than three things are in the box, say "Fewer than three things are in the box.";
+	if there are fewer than three things in the box, say "There are fewer than three things in the box.";
+	if exactly three things are in the box, say "Exactly three things are in the box.";
+	if there are exactly three things in the box, say "There are exactly three things in the box.";
+	if at least three things are in the box, say "At least three things are in the box.";
+	if there are at least three things in the box, say "There are at least three things in the box.";
+	if something incriminates Mr Darcy, say "Something incriminates Mr Darcy.";
+	if there is something incriminating Mr Darcy, say "There is something incriminating Mr Darcy.";
+	if nothing incriminates Mr Darcy, say "Nothing incriminates Mr Darcy.";
+	if there is nothing incriminating Mr Darcy, say "There is nothing incriminating Mr Darcy."

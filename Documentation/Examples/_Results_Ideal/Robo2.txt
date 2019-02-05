@@ -1,0 +1,147 @@
+   Experimentation Chamber
+  Robo 2
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Experimentation Chamber
+  Robo, your prototype tin companion, stands awkwardly beside you.
+  
+  You can also see a red block and a blue cylinder here.
+  
+> >   Experimentation Chamber
+  (Testing.)
+  
+  >[1] test chocolate
+  (Testing.)
+  
+  >[2] learn chocolate
+  You have already learned all you need to know. Robo, however, remains to be trained.
+  
+  >[3] stop
+  The command is useful only for Robo.
+  
+  >[4] list programs
+  You will have to ask Robo to list programs.
+  
+  >[5] robo, learn chocolate
+  "Learning CHOCOLATE," Robo replies.
+  
+  >[6] take red
+  Robo watches you taking the red block. In his metal head, gears whirr.
+  
+  Taken.
+  
+  >[7] put all on counter
+  red block: Robo watches you putting the red block on the counter impassively.
+  
+  Done.
+  
+  >[8] robo, stop
+  "Stored CHOCOLATE."
+  
+  Robo is now standing by.
+  
+  >[9] robo, list programs
+  "The available program is CHOCOLATE."
+  
+  >[10] robo, run chocolate
+  "Running CHOCOLATE," Robo confirms.
+  
+  Robo picks up the red block.
+  
+  >[11] z
+  Time passes.
+  
+  Robo puts the red block on the counter.
+  
+  Robo's program ends, and he reverts to stand-by mode.
+  
+  >[12] robo, run chocolate
+  "Running CHOCOLATE," Robo confirms.
+  
+  Robo picks up the red block.
+  
+  >[13] robo, stop
+  Robo is now standing by.
+  
+  >[14] z
+  Time passes.
+  
+  >[15] test vanilla
+  (Testing.)
+  
+  >[16] robo, learn vanilla
+  "Learning VANILLA," Robo replies.
+  
+  >[17] take all
+  blue cylinder: Robo watches you taking the blue cylinder, his brushed-copper handlebar moustaches twitching.
+  
+  Taken.
+  red block: That seems to belong to Robo.
+  
+  >[18] i
+  You are carrying:
+    a blue cylinder
+  
+  Robo watches you taking inventory impassively.
+  
+  >[19] drop all
+  (the blue cylinder)
+  Robo watches you dropping the blue cylinder, his brushed-copper handlebar moustaches twitching.
+  
+  Dropped.
+  
+  >[20] x robo
+  You see nothing special about Robo.
+  
+  Robo watches you examining Robo, his yellow eyes lamp-like and observant.
+  
+  >[21] x me
+  As good-looking as ever.
+  
+  Robo watches you examining yourself, his brushed-copper handlebar moustaches twitching.
+  
+  >[22] robo, stop
+  "Stored VANILLA."
+  
+  Robo is now standing by.
+  
+  >[23] robo, list programs
+  "The available programs are VANILLA and CHOCOLATE."
+  
+  >[24] robo, list vanilla
+  The script of VANILLA is: Robo taking the blue cylinder, Robo taking inventory, Robo dropping the blue cylinder, Robo examining Robo and Robo examining yourself.
+  
+  >[25] robo, run vanilla
+  "Running VANILLA," Robo confirms.
+  
+  Robo needs several attempts to get his metal fingers around the blue cylinder -- they are not designed for grasping small objects elegantly. But at last he succeeds.
+  
+  >[26] z
+  Time passes.
+  
+  Robo looks through his possessions.
+  
+  >[27] z
+  Time passes.
+  
+  Robo puts down the blue cylinder.
+  
+  >[28] robo, delete vanilla
+  "ERROR: programs may only be deleted while Robo is in stand-by mode."
+  
+  Robo examines each of his hands in turn, then each of his legs (bending over mostly double in the middle to do this).
+  
+  >[29] robo, stop
+  Robo is now standing by.
+  
+  >[30] robo, list vanilla
+  The script of VANILLA is: Robo taking the blue cylinder, Robo taking inventory, Robo dropping the blue cylinder, Robo examining Robo and Robo examining yourself.
+  
+  >[31] robo, delete vanilla
+  "Program deleted."
+  
+  >[32] robo, list programs
+  "The available program is CHOCOLATE."
+  
+> >

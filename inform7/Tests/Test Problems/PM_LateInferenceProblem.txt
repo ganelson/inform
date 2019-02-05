@@ -1,0 +1,5 @@
+There is a room.
+A person has a room called the home.
+The home of yourself is House.
+When play begins:
+	showme whether or not the home of yourself is a room.

@@ -1,0 +1,16 @@
+Home is a room.
+
+A foobar is a kind of thing.
+
+The generic foobar and the special foobar are foobars in Home.
+
+Definition: a foobar is satisfied if it is held by the player.
+
+Definition: the special foobar is satisfied if it is not held by
+the player.
+
+The description of a foobar is usually "[The noun] is
+[if not satisfied]un[end if]satisfied."
+
+Test me with "x generic foobar / x special foobar / take all /
+x generic foobar / x special foobar".

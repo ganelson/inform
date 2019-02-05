@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PluralIsQuoted
+  >--> You wrote 'The plural of coin is "monies"' (source text, line 5): but
+    declares a plural for a phrase using quoted text, which is forbidden.
+    Sentences like this are supposed to declare plurals without quotation
+    marks: for instance, 'The plural of procurator fiscal is procurators
+    fiscal.'
+Inform 7 has finished: 13 centiseconds used.

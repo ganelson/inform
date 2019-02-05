@@ -1,0 +1,16 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_InstanceNowKind
+  >--> You wrote ''A palace is a kind of room' (source text, line 3)', but that
+    seems to say that some room or thing already created ('Winter Palace',
+    created by ''The Winter Palace is a room' (source text, line 1)') is now to
+    become a kind. To prevent a variety of possible misunderstandings, this is
+    not allowed: when a kind is created, the name given has to be a name not so
+    far used. (Sometimes this happens due to confusion between names. For
+    instance, if a room called 'Marble archway' exists, then Inform reads 'An
+    archway is a kind of thing', Inform will read 'archway' as a reference to
+    the existing room, not as a new name. To solve this, put the sentences the
+    other way round.)
+Inform 7 has finished: 16 centiseconds used.

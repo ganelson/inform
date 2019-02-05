@@ -1,0 +1,15 @@
+   Home
+  The pots are: a red pot and a blue pot.
+  The blank pots are: a blue pot.
+  Pot red pot has label Poison.
+  Pot blue pot has label .
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see a red pot and a blue pot here.
+  
+> >   Home
+> Are you sure you want to quit? 

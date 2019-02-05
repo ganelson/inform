@@ -1,0 +1,47 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150901 / Inform 7 build 6M55 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] wait
+  Before removing X2 from L3, X2 is 2.
+  After removing X2 from L3, X2 is 2.
+  1,2,3.
+  1,2,4.
+  Before removing X2 from L3, X2 is 3.
+  After removing X2 from L3, X2 is 3.
+  1,3,4.
+  Before removing X2 from L3, X2 is 4.
+  After removing X2 from L3, X2 is 4.
+  Before removing X2 from L3, X2 is 3.
+  After removing X2 from L3, X2 is 3.
+  2,3,4.
+  Before removing X2 from L3, X2 is 4.
+  After removing X2 from L3, X2 is 4.
+  Before removing X2 from L3, X2 is 4.
+  After removing X2 from L3, X2 is 4.
+  
+  >[2] jump
+  Before removing X2 from L3, X2 is b.
+  After removing X2 from L3, X2 is b.
+  a,b,c.
+  a,b,d.
+  Before removing X2 from L3, X2 is c.
+  After removing X2 from L3, X2 is c.
+  a,c,d.
+  Before removing X2 from L3, X2 is d.
+  After removing X2 from L3, X2 is d.
+  Before removing X2 from L3, X2 is c.
+  After removing X2 from L3, X2 is c.
+  b,c,d.
+  Before removing X2 from L3, X2 is d.
+  After removing X2 from L3, X2 is d.
+  Before removing X2 from L3, X2 is d.
+  After removing X2 from L3, X2 is d.
+  
+> >

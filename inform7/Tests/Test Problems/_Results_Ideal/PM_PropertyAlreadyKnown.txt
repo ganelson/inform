@@ -1,0 +1,9 @@
+Inform 7 build 6L79 has started.
+I've now read your source text, which is 15 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyAlreadyKnown
+  >--> In 'A thing can be a number, the Entire Game or "this"' (source text, line 3),
+    one of the values you supply as a possibility is 'a number', but this
+    already has a meaning (as a description of numbers).
+Inform 7 has finished: 21 centiseconds used.

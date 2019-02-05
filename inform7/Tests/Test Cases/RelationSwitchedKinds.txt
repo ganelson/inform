@@ -1,0 +1,15 @@
+Institute is a room. Zora is a woman in the institute. Chloe is a woman.
+
+A language is a kind of value. The languages are English, Zubian, and Perplexish. 
+
+Speaking relates one person to various languages. The verb to speak (he speaks, they speak, he spoke, 
+it is spoken, he is speaking) implies the speaking relation.
+
+Knowing relates one person to various people. The verb to know (he knows, they know, he knew, 
+it is known, he is knowing) implies the knowing relation.
+
+Zora speaks English. Zora knows Chloe.
+
+When play begins:
+	if Zora speaks English, say "Huzzah!";
+	if Zora knows Chloe, say "Huzzah again!"

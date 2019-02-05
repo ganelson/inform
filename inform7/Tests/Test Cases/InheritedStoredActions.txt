@@ -1,0 +1,15 @@
+The voting booth is a room. Bill is a person, here. Andy is a person, here.
+
+A person has a stored action called order. The order of a person is
+usually the action of waiting.
+
+A person has a text called croz. The croz of a person is
+usually "Splodgo [number of people]."
+
+When play begins:
+	say "Bill has [the croz of Bill] and Andy has [the croz of Andy].";
+	say "Bill has [the order of Bill] and Andy has [the order of Andy].";
+	now the order of Bill is the action of going up;
+	say "Bill has [the order of Bill] and Andy has [the order of Andy].";
+	now the order of Andy is the action of going down;
+	say "Bill has [the order of Bill] and Andy has [the order of Andy].";

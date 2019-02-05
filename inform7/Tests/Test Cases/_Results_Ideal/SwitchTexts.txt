@@ -1,0 +1,28 @@
+   Someplace
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150901 / Inform 7 build 6M55 (I6/v6.33 lib 6/12N) SD
+  
+  (test string = "looking")
+  No idea.
+  
+> >   Someplace
+  (Testing.)
+  
+  >[1] x sign
+  (test string = "examining")
+  No idea.
+  
+  >[2] give sign to joe
+  (test string = "giving it to")
+  No idea.
+  
+  >[3] jump
+  (test string = "jumping")
+  "Oh, go jump in a lake!"
+  
+  >[4] wave sign
+  (test string = "waving")
+  "Oh, wave off!"
+  
+> >

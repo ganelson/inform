@@ -1,0 +1,45 @@
+   Masochism Deli
+  Masochism Deli
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Masochism Deli
+  Recent restructurings of corporate policy restrict the "lunch hour" to exactly thirty-two minutes, which means that no one has time to go out. Instead, you and your coworkers eat here, in the company's very own themed lunch room.
+  
+> >   Masochism Deli
+  (Testing.)
+  
+  >[1] inventory
+  You are carrying:
+    two cold potatoes
+    a hot potato
+  
+  >[2] drop potato
+  (the hot potato)
+  The guy from Cube B sneers at your lack of potato-holding stamina.
+  
+  >[3] g
+  (the cold potato)
+  Dropped.
+  
+  >[4] g
+  (the cold potato)
+  Dropped.
+  
+  >[5] get potato
+  (the cold potato)
+  Taken.
+  
+  >[6] g
+  (the cold potato)
+  Taken.
+  
+  >[7] i
+  You are carrying:
+    two cold potatoes
+  
+  >[8] get potato
+  (the hot potato)
+  Taken.
+  
+> >

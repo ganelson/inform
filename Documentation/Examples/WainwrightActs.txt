@@ -1,0 +1,41 @@
+* Relations which express conditions
+(Doors as seen by NPCs; Wainwright Acts)
+A technical note about checking the location of door objects when characters other than the player are interacting with them.
+
+Suppose we wanted to write rules for a character who will interact with doors in other locations even when the player is not present. This poses a little challenge: doors are actually single objects, and -- with the same shuffling of stage properties that applies to backdrops -- they are moved as needed to represent the door object in whatever room contains the player. 
+
+That means that it isn't safe to rely on a phrase like
+
+	if an open door is in the location of Bernard
+
+because, even if Bernard's location is connected by doors to other places, the actual representation of that door may not be "in" Bernard's location, from the model's point of view, at this exact moment. 
+
+This does not, of course, mean that we can't ask this question; just that we have to be a little cleverer about how we phrase it. Every door has properties that correspond to the two locations
+linked:
+	
+	the front side of the blue door (a room, which is arbitrarily one side of the door)
+	the back side of the blue door (arbitrarily the other side)
+
+We can make this information easier to check with a conditional relation, like so:
+
+	Liminality relates a door (called X) to a room (called Y) when the front side of X is Y or the back side of X is Y. The verb to be a threshold of means the liminality relation.
+	
+And this allows us to write rules that have characters interacting with doors even in the player's absence:
+
+	{*}"Wainwright Acts"
+
+	The Waiting Room is a room. The waiting room door is west of the Waiting Room and east of the Gents' Loo. The Waiting Room door is an open door. "The waiting room door [if open]stands open[otherwise]is shut firmly[end if]."
+
+	Sir Humphrey is a man in the Gents' Loo.
+	
+	Liminality relates a door (called X) to a room (called Y) when the front side of X is Y or the back side of X is Y. The verb to be a threshold of means the liminality relation.
+
+	Definition: a person is other if he is not the player.
+
+	Every turn:
+		repeat with indiscreet one running through other people:
+			repeat with port running through open doors that are a threshold of the location of the indiscreet one:
+				if the port is a threshold of the location and the indiscreet one is not in the location:
+					say "Through [the port], you overhear [the indiscreet one] discussing [one of]his hopes for your imminent resignation[or]your wife's infidelity[or]your financially straitened circumstances[or]ways to avoid attending your birthday party[or]your halitosis[as decreasingly likely outcomes]."
+
+	Test me with "z / z / z / w / z / e / close door / z".

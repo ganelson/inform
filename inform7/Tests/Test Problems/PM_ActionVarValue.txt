@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+The taking action has a value called the Mystery Quantity.

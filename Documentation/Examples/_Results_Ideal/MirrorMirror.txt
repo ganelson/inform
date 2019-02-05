@@ -1,0 +1,61 @@
+   Sorcerer's Workshop
+  Mirror, Mirror
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sorcerer's Workshop
+  The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads nine o'clock. The floorboards are stained where that porridge just wouldn't come out.
+  
+> >   Sorcerer's Workshop
+  (Testing.)
+  
+  >[1] look
+  Sorcerer's Workshop
+  The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads nine o'clock. The floorboards are stained where that porridge just wouldn't come out.
+  
+  >[2] examine mirror
+  The mirror is polished clean, and has no impression upon it.
+  
+  >[3] hold up mirror
+  The mirror shines momentarily with a dazzling light.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] look
+  Sorcerer's Workshop
+  The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads four minutes past nine. The floorboards are stained where that porridge just wouldn't come out.
+  
+  >[6] x mirror
+  The hazy image in the mirror preserves a past sight:
+  
+  Sorcerer's Workshop
+  The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads two minutes past nine. The floorboards are stained where that porridge just wouldn't come out.
+  
+  All is distorted and yet living, as though the past and present are coterminous in the mirror.
+  
+  >[7] rub mirror
+  The mirror is polished clean, and has no impression upon it.
+  
+  >[8] east
+  
+  Apprentice's Pantry
+  This is where the aproned apprentice traditionally makes the camomile tea, cleans out the jackdaw cages and furtively examines purloined artefacts.
+  
+  >[9] hold mirror up
+  The mirror shines momentarily with a dazzling light.
+  
+  >[10] west
+  
+  Sorcerer's Workshop
+  The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads nine minutes past nine. The floorboards are stained where that porridge just wouldn't come out.
+  
+  >[11] x mirror
+  The hazy image in the mirror preserves a past sight:
+  
+  Apprentice's Pantry
+  This is where the aproned apprentice traditionally makes the camomile tea, cleans out the jackdaw cages and furtively examines purloined artefacts.
+  
+  All is distorted and yet living, as though the past and present are coterminous in the mirror.
+  
+> >

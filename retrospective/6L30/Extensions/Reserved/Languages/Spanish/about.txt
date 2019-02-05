@@ -1,0 +1,5 @@
+1	Spanish
+2	español
+3	en español
+4	es
+5	Sebastian Arg

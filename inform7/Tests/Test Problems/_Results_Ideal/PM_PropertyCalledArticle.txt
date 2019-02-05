@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 7 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyCalledArticle
+  >--> You wrote 'A person has a level called the' (source text, line 1): but a
+    property name cannot consist only of an article, which this one seems to.
+    It would lead to awful ambiguities. More likely, the end of the sentence
+    has been lost somehow?
+Inform 7 has finished: 14 centiseconds used.

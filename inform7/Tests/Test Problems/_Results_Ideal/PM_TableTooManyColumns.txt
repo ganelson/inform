@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 112 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableTooManyColumns
+  >--> There are 99 columns in 'Table of Ships' (source text, line 3) already,
+    and that's the absolute limit, so the column 'L8' (source text, line 4)
+    can't be added.
+Inform 7 has finished: 15 centiseconds used.

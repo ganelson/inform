@@ -1,0 +1,9 @@
+* Text with variations
+(Door described differently depending on where it is; When?)
+A door whose description says "...leads east" in one place and "...leads west" in the other.
+
+Very simple, but quite frequently useful:
+
+	{*}"When?"
+
+	The temporal vortex is an open door. It is west of Yesterday and east of Today. "A whirling temporal vortex leads [if the player is in Yesterday]west[otherwise]east[end if]."

@@ -1,0 +1,13 @@
+Include Metric Units by Graham Nelson.
+
+Equation - triangle theorem
+  a = root (b+c)
+where a is a length, b is a length, c is a length.
+
+When play begins:
+	let b be 10m;
+	let c be 2m;
+	let a be given by the triangle theorem;
+	say a.
+
+There is a room.

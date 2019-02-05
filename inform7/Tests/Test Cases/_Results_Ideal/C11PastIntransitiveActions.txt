@@ -1,0 +1,64 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] i
+  [taking inventory]
+  You are carrying nothing.
+  
+  [taking inventory - succeeded]
+  
+  You sure are glad that your inventory is in order!
+  
+  >[3] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  You sure are glad that your inventory is in order!
+  
+  Time keeps dragging on.
+  
+  >[4] wake up
+  [waking up]
+  You are now wide awake.
+  [waking up - succeeded]
+  
+  You sure are glad that your inventory is in order!
+  
+  Time keeps dragging on.
+  
+  It's good that you're awake too.
+  
+  >[5] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  You sure are glad that your inventory is in order!
+  
+  Time keeps dragging on.
+  
+  It's good that you're awake too.
+  
+  >[6] z
+  [waiting]
+  Time passes.
+  [waiting - succeeded]
+  
+  You sure are glad that your inventory is in order!
+  
+  Time keeps dragging on.
+  
+  It's good that you're awake too.
+  
+> >

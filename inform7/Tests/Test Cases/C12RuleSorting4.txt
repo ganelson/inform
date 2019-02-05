@@ -1,0 +1,19 @@
+The Empty Room is a room.
+
+An every turn rule (this is the bell rule):
+	say "The bell rule."
+
+An every turn rule (this is the foo rule):
+	say "The foo rule."
+
+Every turn:
+	say "This is neither the foo nor the bar rule."
+
+This is the bar rule:
+	say "The bar rule."
+
+The bar rule is listed before the foo rule in the every turn rulebook.
+
+The bell rule is listed after the foo rule in the every turn rulebook.
+
+Test me with "wait".

@@ -1,0 +1,75 @@
+   Doghouse
+  Olfactory Settings
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Doghouse
+  Not so much a place as a state of being.
+  
+> >   Doghouse
+  (Testing.)
+  
+  >[1] x ticket
+  You see nothing special about the ticket to the opera.
+  
+  >[2] eat it
+  The ticket to the opera doesn't seem likely to agree with you at all. You'd be wiser to leave it alone.
+  
+  >[3] eat them
+  I'm not sure what 'them' refers to.
+  
+  >[4] touch it
+  That is all prickly.
+  
+  >[5] touch them
+  I'm not sure what 'them' refers to.
+  
+  >[6] smell it
+  Your nose is too weak to get much smell from that.
+  
+  >[7] smell them
+  I'm not sure what 'them' refers to.
+  
+  >[8] taste it
+  Whew, is that ever nasty!
+  
+  >[9] taste them
+  I'm not sure what 'them' refers to.
+  
+  >[10] x papers
+  You see nothing special about the papers.
+  
+  >[11] eat it
+  The ticket to the opera doesn't seem likely to agree with you at all. You'd be wiser to leave it alone.
+  
+  >[12] eat them
+  The papers don't seem likely to agree with you at all. You'd be wiser to leave them alone.
+  
+  >[13] touch them
+  Those are all prickly.
+  
+  >[14] smell them
+  Your nose is too weak to get much smell from those.
+  
+  >[15] taste them
+  Whew, are those ever nasty!
+  
+  >[16] x bouquet
+  You see nothing special about the bouquet of flowers.
+  
+  >[17] eat it
+  The bouquet of flowers doesn't seem likely to agree with you at all. You'd be wiser to leave it alone.
+  
+  >[18] eat them
+  The bouquet of flowers doesn't seem likely to agree with you at all. You'd be wiser to leave it alone.
+  
+  >[19] touch them
+  That is all prickly.
+  
+  >[20] smell them
+  It's lovely.
+  
+  >[21] taste them
+  Whew, is that ever nasty!
+  
+> >

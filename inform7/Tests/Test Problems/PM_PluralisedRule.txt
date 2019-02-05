@@ -1,0 +1,4 @@
+Place is a room.
+
+Every turn when the current action is jumping (this is the jumping rules):
+	say "Whee!"

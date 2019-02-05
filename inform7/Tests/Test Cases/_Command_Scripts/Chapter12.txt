@@ -1,0 +1,45 @@
+sing
+igg, sing
+igg, jump
+sing
+igg, push dolly w
+w
+w
+sing
+hit ogg
+open window
+hit ogg
+igg, open case
+ogg, open basket
+open window
+e
+
+ogg, open basket
+ogg, take me
+z
+ogg, take me
+ogg, take case
+ogg, drop case
+i
+ogg, drop key
+g
+get key
+get in case
+close case
+lock case
+drop key
+z
+look
+igg, hi
+igg, e
+igg, w
+igg, e
+igg, push forklift w
+igg, push dolly w
+igg, push dolly e
+i
+unlock case
+get key
+unlock case
+open case
+ 

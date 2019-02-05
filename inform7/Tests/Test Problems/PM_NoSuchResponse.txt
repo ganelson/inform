@@ -1,0 +1,4 @@
+The Temple is a room.
+
+When play begins:
+	now the print empty inventory rule response (Q) is "Your hands ...";

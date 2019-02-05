@@ -1,0 +1,8 @@
+The Starting Room is a room. "This is the starting room."
+
+A monkey is a kind of thing. A monkey can be a hairy critter. A monkey is 
+a hairy critter.
+
+An ape is a monkey in the starting room. A hairless chimp is a monkey in 
+the starting room. A hairless chimp is not hairy critter. A hairless chimp
+is not a hairy critter.

@@ -1,0 +1,65 @@
+volume: Changes to Inform
+images: Imagery/doc_images/
+cover: changes_cover.png
+
+dc:title: Changes to Inform
+dc:creator: Graham Nelson and Emily Short
+dc:subject: Interactive Fiction
+dc:identifier: inform-changes
+
+contents_expandable = yes
+treat_code_as_verbatim = no
+inform_definitions_mode = yes
+alphabetization = word-by-word
+
+css: p.quoted + {
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+}
+
+css: td.midnightrighthalfpage ++ {
+	background-color: #ffffe5;
+}
+
+css: <i>text</i> = italic
+css: <b>text</b> = boldface
+
+css: body.paper ++ {
+	overflow-y: visible;
+}
+
+ebook {
+	granularity = 2
+	examples_mode = open
+	navigation = unsigned
+}
+
+test {
+	# test HTML for the I7 website
+	format = HTML
+	navigation = midnight
+	examples_mode = openable
+	images_copy = yes
+}
+
+website {
+	# HTML for the I7 website
+	destination = Website/content/learn/man/
+	images_copy = no
+	examples_mode = openable
+#	examples_mode = external
+#	top_and_tail = Website/models/www-inform7-com-model.html
+#	top_and_tail_sections = Website/models/www-inform7-com-model.html
+}
+
+html_for_chm {
+	# Minimally tagged HTML for CHM
+	html_light = yes
+	destination = Website/content/learn/man/Inform-manuals/
+	top_and_tail = Website/models/HTMLModel.html
+	top_and_tail_sections = Website/models/HTMLModel.html
+}
+
+plain {
+	# Plain text for screenreaders
+	destination = Website/content/learn/man/ChangesToInform.txt
+}

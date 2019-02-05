@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantContainAndSupport
+  >--> You wrote 'On the table is a flower' (source text, line 3), but in
+    another sentence 'In the table is a petal' (source text, line 3): table
+    cannot both contain things and support things, which is what you're
+    implying here. If you need both, the easiest way is to make it either a
+    supporter with a container attached or vice versa. For instance: 'A desk is
+    here. On the desk is a newspaper. An openable container called the drawer
+    is part of the desk. In the drawer is a stapler.'
+Inform 7 has finished: 16 centiseconds used.

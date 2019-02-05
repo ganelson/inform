@@ -1,0 +1,13 @@
+Foo is a room.
+
+A flob is a kind of thing.
+
+Some flobs are defined by the Table of Flobs.
+
+Table of Flobs
+flob		age
+Mervyn		100
+
+Table of Flobs (amended)
+flob		age
+Mervyn		91 

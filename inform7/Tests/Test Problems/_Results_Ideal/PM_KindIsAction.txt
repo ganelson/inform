@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 26 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindIsAction
+  >--> You wrote 'The fierynesses are unburnt, cinders, flames, burning,
+    scorching, searing, frying, igniting, inferno, subsiding, flickering, and
+    burnt' (source text, line 3): unfortunately 'burning' (source text, line 4)
+    is already the name of an action, and it would only confuse things if we
+    used it for a value as well.
+Inform 7 has finished: 16 centiseconds used.

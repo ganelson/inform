@@ -1,0 +1,9 @@
+The Test Room is a room.
+
+Before touching: say "Touching".
+Before doing anything other than looking or eating: say "Not looking or eating".
+Before touching or pushing: say "Touching or pushing".
+Before touching something: say "Touching something".
+Before doing anything other than looking: say "Not looking".
+
+Test me with "touch me".

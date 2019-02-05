@@ -1,0 +1,20 @@
+   Brahms Conservatoire
+  "default value of number" = number: 0
+  "default value of time" = time: 9:00 am
+  "default value of table name" = table name: (the empty table)
+  "default value of colour" = colour: red
+  "default value of weight" = weight: 0kg
+  "Q" = phrase number -> time: default value of phrase number -> time
+  "Q applied to 4" = time: 9:00 am
+  "R" = phrase number -> (phrase number -> colour): default value of phrase number -> (phrase number -> colour)
+  "R applied to 3" = phrase number -> colour: default value of phrase number -> colour
+  "(R applied to 3) applied to 2" = colour: red
+  "S" = phrase number -> nothing: default value of phrase number -> nothing
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Brahms Conservatoire
+  
+> >   Brahms Conservatoire
+> Are you sure you want to quit? 

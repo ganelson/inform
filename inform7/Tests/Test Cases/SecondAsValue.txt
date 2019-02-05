@@ -1,0 +1,34 @@
+Shoe Store is a room.
+
+A color is a kind of value. The colors are white, lavender, lilac, light purple, and pale grape.
+
+A thing has a color. A thing is usually white.
+
+Dyeing it to is an action applying to one thing and one color. 
+
+Understand "dye [something] [color]" as dyeing it to. 
+
+Check dyeing something to the color understood when the color understood is white:
+	if the color understood is white, say "yes";
+	showme the color understood;
+	say "You have dyes, but not bleach." instead.
+		
+Check dyeing something to the color understood when the color of the noun is not white:
+	showme the color understood;
+	say "[The noun] is already dyed [color of the noun]." instead.
+
+Check dyeing something to the color understood [when the color of the noun is not white]:
+	showme the color understood;
+	say "[The noun] is already dyed [color of the noun]." instead.
+
+Carry out dyeing something to:
+	showme the color understood;
+	now the color of the noun is the color understood;
+	showme the color of the noun;
+
+Report dyeing something to:
+	say "There! [The noun] is now [the color understood]. Perfect."
+
+The satin shoe and the dress are carried by the player.   
+
+Test me with "actions / rules all / dye shoe white / dye dress lilac / dye shoe light purple / g".

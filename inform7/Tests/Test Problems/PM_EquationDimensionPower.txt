@@ -1,0 +1,13 @@
+Elapsed time is a kind of value. 1s specifies an elapsed time scaled at 100.
+
+Electric current is a kind of value. 1A specifies an electric current. 1mA
+specifies an electric current scaled down by 1000.
+
+Electric charge is a kind of value. 1C specifies an electric charge scaled at 1000.
+Elapsed time times electric current specifies an electric charge.
+
+Laboratory is a room.
+
+Equation 1
+Q = I^n
+where Q is an electric charge, I is an electric current, n is a number.

@@ -1,0 +1,57 @@
+   Addams Wine Cellar
+  Eyes, Fingers, Toes
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Addams Wine Cellar
+  You can see a safe (closed) here.
+  
+> >   Addams Wine Cellar
+  (Testing.)
+  
+  >[1] x safe
+  You haven't dialed the safe to any combination yet.
+  
+  >[2] set safe to 10
+  You dial 10 on the safe.
+  
+  >[3] x safe
+  You have dialed the safe to 10.
+  
+  >[4] set safe to 29
+  You dial 29 on the safe.
+  
+  >[5] x safe
+  You have dialed the safe to 10 and 29.
+  
+  >[6] set safe to 2
+  You dial 2 on the safe.
+  
+  >[7] x safe
+  You have dialed the safe to 10, 29 and 2.
+  
+  >[8] set safe to 10
+  You dial 10 on the safe.
+  
+  >[9] x safe
+  You have dialed the safe to 29, 2 and 10.
+  
+  >[10] set safe to 11
+  You dial 11, and the safe gives a joyous CLICK.
+  
+  >[11] open safe
+  You open the safe.
+  
+  >[12] set safe to 14
+  You dial 14 on the safe.
+  
+  >[13] close safe
+  You close the safe.
+  
+  >[14] set safe to 15
+  You spin the dial, and the safe snicks locked.
+  
+  >[15] open safe
+  It seems to be locked.
+  
+> >

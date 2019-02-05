@@ -1,0 +1,3 @@
+The Winter Palace is a room.
+
+A palace is a kind of room.

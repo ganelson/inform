@@ -1,0 +1,8 @@
+Inline Arena is a room.
+
+To go awry (N - a number): (-
+		{-primitive-definition:function-application};
+	-).
+
+When play begins:
+	go awry 21.

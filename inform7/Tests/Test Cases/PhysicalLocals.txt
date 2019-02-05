@@ -1,0 +1,16 @@
+The climbing room is a room.
+
+The Magician's staircase is a supporter.  The Magician's staircase is here.
+The Wizard's staircase is a supporter.  The Wizard's staircase is here.
+
+A black hat is on the Magician's staircase.
+A pointy silver hat is on the Wizard's staircase.
+
+To sweep (staircase - a supporter):
+	let the debris be a random thing that is supported on the staircase;
+	if debris is not nothing:
+		say "I am sweeping [the debris] off [the staircase]."
+
+When play begins:
+	repeat with item running through supporters:
+		sweep the item.

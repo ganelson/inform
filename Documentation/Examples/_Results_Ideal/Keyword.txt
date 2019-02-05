@@ -1,0 +1,25 @@
+   Empyrean Shuttle Bay
+  Complimentary Peanuts
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Empyrean Shuttle Bay
+  From here you have an excellent view of the colony world, which looks... well, it looks discouragingly orange. But terraforming is in progress.
+  
+  Your shuttle awaits.
+  
+  You can also see Aunt Martha and a stack of rations here.
+  
+> >   Empyrean Shuttle Bay
+  (Testing.)
+  
+  >[1] martha, get in the shuttle
+  "Shuttles! I hate shuttles," Aunt Martha grumbles. "Give me an airplane! AIRPLANE."
+  
+  >[2] martha, for pity's sake, do you see an airplane around here?
+  "Those were the days," Aunt Martha agrees, plainly reliving the days when she wore a blue-and-white uniform and passed out packets of salted pretzels.
+  
+  >[3] martha, pass me the rations
+  "Do you think there are any peanuts in there?" she asks in a wistful tone.
+  
+> >

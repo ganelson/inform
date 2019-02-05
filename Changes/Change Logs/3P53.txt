@@ -1,0 +1,125 @@
+3P53 (9 June 2006)
+
+(Windows only) The Transcript tab is now added - a major feature, and the
+	only one omitted from the Windows application in the first public
+	beta release. (There is one caveat: the transcript does not yet underline
+	differences when the game text does not match the blessed text.)
+(Windows only) Switched to using the NullSoft Installer System to create the
+	installer. If you have a previous version installed, you should uninstall
+	it from "Add or Remove Programs" in the Control Panel before installing
+	this version.
+(Windows only) The "Install Extension" menu item no longer rejects extensions
+	with Unix-style line endings.
+(Windows only) The "Install Extension" menu item shows the installed extensions
+	documentation page after a successful install of an extension.
+(Windows only) Clicking on an item in the search results window now always
+	brings the appropriate tab to the front.
+(Windows only) Compiling a game no longer steals the input focus from the
+	Source tab.
+(Windows only) It is no longer possible to put the edit windows into "smart
+	quotes" mode.
+(Windows only) The Game and Build menus have been merged.
+(Mac OS X only) Mechanism for installing extensions now added: simply click
+	the [+] button in the Extensions panel of the application Preferences.
+	Installed extensions may also be edited using "Open Extension >" in
+	the File menu.
+(Mac OS X only) The 'Standard' library is now standard for Inform 6 projects.
+(Mac OS X only) Projects with a setting for a version of the Inform 6 compiler
+	that is not installed no longer crash the application (and choose a
+	sensible alternative version).
+(Mac OS X only) I6 compiler used internally is now bi-platform 6.31, not 6.30.
+Improved "Help" menu offers short-cuts to the Recipe Book and the Installed
+	Extensions documentation.
+Examples:
+	"The Abolition of Love" added, as a thorough exploration of all the kinds
+		of relations which can be set and unset.
+	"Beachfront" added to demonstrate finding an object in a room which was
+		not there before;
+	"Van Helsing" added to demonstrate a character who follows the player
+		from room to room.
+	"Exit Strategy" added to demonstrate the beginning of scenes once in more
+		detail, and to describe what it means when the scene change machinery
+		is stuck (and how to diagnose and fix the problem).
+	"Otranto": dealt with a bug such that a rope tied to a door did not
+		restrict the player's movement appropriately.
+	"Tamed": typo fixed.
+	"Up and Up": minor fix for a description assigned to the wrong object.
+	"Day One": waiting added to the selection of acceptable activities for
+		which Freitag will not glare at the player.
+	"Stately Gardens": typo fixed.
+	"Sybil 1": additional comments and code to demonstrate some expanded
+		forms of keyword matching.
+	"Port Royal 3": fixed a typo that was causing part of the source not to
+		copy properly into the code window.
+	"Odyssey": minor syntax improvement to get rid of ugly legacy form.
+Extensions:
+	Basic Screen Effects (now version 2):
+		modified so that local variable names are less likely ever to conflict
+			with globals or other names in the author's work;
+		"clear only the status line" added;
+		"left alignment depth" variable added, allowing the author to print
+			status elements at a different spacing than 14 spaces from the
+			left edge of the screen;
+	Menus:
+		added arrow and escape keys as viable means of input;
+		rule names added to several rules to make modification easier;
+		local variable names made less likely to conflict.
+	Plurality:
+		changed "acts plural" phrase to apply to all objects, not just "things".
+	Complex Listing (now version 2):
+		corrected erroneous documentation;
+		added "enumerated listing" option.
+Made a general rewrite of the type-checking machinery: the new version is
+	more extensively tested than the old (and produces slightly better
+	Problem messages), but otherwise there should be no perceptible change.
+Made it possible to unset a wider range of relations with "now". For
+	instance, if "loving" is a one-to-one relation, then "now Elizabeth
+	does not love Darcy" is now allowed, if sad.
+Added a new text substitution "[conditional paragraph break]".
+Problem message added for tables defined with names which already have a
+	meaning, leading to ambiguity (e.g., "Table of Three", since "three"
+	is a number), with specific checking for clashes between table and kind
+	named (e.g. "Table of Rooms").
+Problem message added for use of 'either' on a list of 3 or more possibilities.
+Problem message added where "number of ..." or "total ...", etc., are used
+	with a determiner which makes this nonsensical ("number of at least three
+	rooms", etc.).
+Problem message added for contradictory redefinition of global variables.
+	(Non-contradictory redefinitions are superfluous but legal.)
+Problem message added for incorrect uses of "with", and an explanation
+	supplied (where previously an internal error would sometimes occur).
+Fixed bug whereby '(called ...)' used incorrectly in a scene beginning
+	or ending condition could cause an internal error, and added a
+	suitable Problem message.
+New phrase option for "list the contents of...": "with extra indentation",
+	which increases the left margin by 1 level of indentation - which
+	simulates the way that the standard inventory listing looks.
+References to tables can now refer to the table in question using a local
+	or global variable, or a phrase to decide which table to look at.
+Fixed bug whereby certain names consisting only of an article would lead
+	to an internal error (thus producing the record-holder for shortest
+	source text breaking I7: "A is a room."); and similarly for a name
+	which includes parentheses "(" or ")", also not allowed.
+Fixed bug: it's now possible to release a game with a website and cover
+	art in PNG format, where previously the website assumed JPGs were
+	used (although the compiled game itself was fine all along).
+Fixed bug to do with return values from activities being lost (with thanks
+	to Jesse McGrew, who provided the solution).
+Fixed bug whereby a complex listing early in a "say" would cause a
+	conditional [if] to go wrong later in the "say".
+Fixed bug in the debugging command RELATIONS causing it to print some
+	relations the wrong way round, and to omit some relationships with
+	reciprocal various-to-various relations.
+Fixed bug whereby released story files still contained some debugging verbs.
+Also accidentally left in was the I6 verb FULLSCORE: this no longer works,
+	and is deprecated now that there are better ways to achieve the same
+	effect. In this build, the action and corresponding grammar are removed,
+	leaving it open for designers to provide their own versions if they
+	choose to do so.
+Fixed bug in which "X are not Y" would sometimes complain of unproductive
+	negative even if Y is such that not-Y is unambiguous, whereas "X is not
+	Y" would work in similar circumstances.
+Fixed bug where attempts to unlock something with the wrong key produced
+	the wrong pronouns in the failure message.
+Fixed bug where "each turn" and "check" rules were confused in the Rules
+	index, and straightened out the spacing of this index.

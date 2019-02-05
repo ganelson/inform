@@ -1,0 +1,5 @@
+The Admiralty is a room.
+
+Table 1 - Admirals
+admiral		rank
+player		1

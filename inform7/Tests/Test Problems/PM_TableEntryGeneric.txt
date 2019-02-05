@@ -1,0 +1,16 @@
+Right Here is a room.
+
+An idea is a kind.
+
+The piper is a person.
+The piper's plan is an idea.
+The piper's other plan is an idea.
+
+A skill is a kind of thing. 
+
+Some skills are defined by the Table of Machiavelli.
+
+Table of Machiavelli
+skill	performer 	instrument			result (an object)
+object	piper		piper's plan		--
+sk02	piper		piper's other plan	--

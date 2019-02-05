@@ -1,0 +1,34 @@
+** Devices and descriptions
+(Basic switchable light for a room; Down Below)
+A light switch which makes the room it is in dark or light.
+
+Suppose we want to have a room with a light switch. Turning the switch off makes the room go dark; turning it on restores the light. This kind of switch is an obvious candidate as a device.
+
+	{*}"Down Below"
+
+	Terrifying Basement is a room. The light switch is a switched on device in the Terrifying Basement. It is fixed in place.
+	
+Here we define our light switch, and we also make it start out as "switched on". The Terrifying Basement will also start out lit (as all rooms do, by default, unless we specifically say that they are dark). We further say that it is fixed in place to avoid the ludicrous possibility of the player picking it up and carrying it away.
+
+Next we add some instructions to control how turning the light switch on and off affects the room light. These borrow from later chapters on actions, but the gist may be obvious anyway:
+
+	{**}Carry out switching off the light switch: now the Terrifying Basement is dark. 
+	
+	Carry out switching on the light switch: now the Terrifying Basement is lighted.
+
+Inform already has the idea of light and darkness built in; we will see more about this later, and the Phrasebook (in the Index tab) also contains a list of all the adjectives (lighted, dark, etc) which are important to use here.
+
+Speaking of the Index, the Actions tab contains a list of all the grammar that can be used to activate a given command: for instance, the switching action responds to "switch [something]" or "turn on [something]". In this case, we may want to give the player an extra option or two. It would be pretty natural for a player to try >FLIP SWITCH, so let's add that in:
+
+	{**}Understand "flip [something switched off]" as switching on. Understand "flip [something switched on]" as switching off. Understand "flip [something]" as switching on.
+
+The nuances of this will be explored in the chapter on Understanding. What is useful to know here is that we have taught Inform to understand that >FLIP LIGHT SWITCH means to turn it on when the switch is already off; if the switch is already on, FLIP SWITCH means to turn the switch off. Depending on the kind of device we are modeling (button? lever? dial?), we might want to write similar lines for commands such as PUSH, PRESS, PULL, TURN, and so on.
+
+Finally, we need to deal with a special case. In general, the player cannot interact with other things in a dark room because he can't see them, but if we adhered strictly to this it would be impossible for him to find the light switch to turn it back on. So we need something from the chapter on Activities to change this:
+
+	{**}After deciding the scope of the player when the location is the Terrifying Basement:
+		place the light switch in scope.
+	
+	Upstairs is above the Terrifying Basement.
+
+	Test me with "turn off light / look / flip light switch".

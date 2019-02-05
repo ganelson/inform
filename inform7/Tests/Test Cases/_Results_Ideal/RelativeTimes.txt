@@ -1,0 +1,59 @@
+   Stage
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stage
+  
+> >   Stage
+  (Testing.)
+  
+  >[1] wait for 4 hours
+  You wait around until 1:00 pm.
+  
+  The time is now 1:00 pm.
+  
+  Stage
+  The time is now 1:01 pm.
+  
+  >[2] wait for 6 minutes
+  You wait around until 1:08 pm.
+  
+  The time is now 1:08 pm.
+  
+  Stage
+  The time is now 1:09 pm.
+  
+  >[3] wait for half an hour
+  You wait around until 1:40 pm.
+  
+  The time is now 1:40 pm.
+  
+  Stage
+  The time is now 1:41 pm.
+  
+  >[4] wait until 4 pm
+  You wait around until 4:00 pm.
+  
+  The time is now 4:00 pm.
+  
+  Stage
+  The time is now 4:01 pm.
+  
+  >[5] wait for 1 hour 15 minutes
+  You wait around until 5:17 pm.
+  
+  The time is now 5:17 pm.
+  
+  Stage
+  The time is now 5:18 pm.
+  
+  >[6] wait for quarter of an hour
+  You wait around until 5:34 pm.
+  
+  The time is now 5:34 pm.
+  
+  Stage
+  The time is now 5:35 pm.
+  
+> >

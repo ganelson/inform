@@ -1,0 +1,21 @@
+   Stage
+  AAA -> BBB - count = 1
+  BBB -> AAA - count = 1
+  CCC -> DDD - count = 1
+  DDD -> CCC - count = 1
+  
+  Stepping Through Changed Reciprocal V-to-V Relation
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stage
+  
+> >   Stage
+  (Testing.)
+  
+  >[1] relations
+  Linking relates things to each other:
+    BBB  <=>  AAA
+    DDD  <=>  CCC
+  
+> >

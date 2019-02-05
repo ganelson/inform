@@ -1,0 +1,39 @@
+   Wharf
+  Mr. Burns' Repast
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wharf
+  You can see an unknown fish here.
+  
+> >   Wharf
+  (Testing.)
+  
+  >[1] get swordfish
+  You're not sure you're seeing any such thing.
+  
+  >[2] look
+  Wharf
+  You can see a swordfish(?) here.
+  
+  >[3] touch monkfish
+  You're not sure you're seeing any such thing.
+  
+  >[4] look
+  Wharf
+  You can see a monkfish(?) here.
+  
+  >[5] listen to tunafish
+  You're not sure you're seeing any such thing.
+  
+  >[6] x fish
+  The victim of heavy mutagens, this thing is not really recognizable as any species you know.
+  
+  >[7] x salmon
+  You're not sure you're seeing any such thing.
+  
+  >[8] look
+  Wharf
+  You can see a salmon(?) here.
+  
+> >

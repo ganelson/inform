@@ -1,0 +1,10 @@
+Inform 7 build 6M57 has started.
+I've now read your source text, which is 35 words long.
+I've also read Standard Rules by Graham Nelson, which is 42665 words long.
+I've also read English Language by Graham Nelson, which is 2297 words long.
+Problem__ PM_TableCantDefineAndAmend
+  >--> You wrote 'Some flobs are defined by the Table of Flobs' (source text, line 5):
+    but you can't use 'defined by' to define objects using a table which is
+    amended by another table, since that could too easily lead to ambiguities
+    about what the property values are.
+Inform 7 has finished: 27 centiseconds used.

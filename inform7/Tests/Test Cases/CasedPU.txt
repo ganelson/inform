@@ -1,0 +1,15 @@
+Room called In Hallway is north of the Foyer.
+
+An apple is in the Foyer. The description of the apple is "Looks yummy."
+
+After deciding the scope of the player:
+	if the location is In Hallway, place apple in scope;
+	now Mike is Cahoots alongside Susie.
+
+Cahooting relates one person to one person.
+
+The verb to be Cahoots alongside implies the cahooting relation.
+
+Mike and Susie are people in the Foyer.
+
+Test me with "x apple / s / x apple".

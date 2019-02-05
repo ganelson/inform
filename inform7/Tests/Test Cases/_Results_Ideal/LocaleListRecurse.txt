@@ -1,0 +1,31 @@
+   Mrs Luxor's Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mrs Luxor's Home
+  To sit might be to squish the Boston Krispy Kreme Donut.
+  
+  You can see a high shelf and a chair (on which are a Versace clutch and a Guitar Hero CD) here.
+  
+> >   Mrs Luxor's Home
+  (Testing.)
+  
+  >[1] look
+  Mrs Luxor's Home
+  To sit might be to squish the Boston Krispy Kreme Donut.
+  
+  You can see a high shelf and a chair (on which are a Versace clutch and a Guitar Hero CD) here.
+  
+  >[2] get on chair
+  You get onto the chair.
+  
+  On the chair you can see a Versace clutch, a Boston Krispy Kreme Donut and a Guitar Hero CD.
+  
+  >[3] look
+  Mrs Luxor's Home (on the chair)
+  You can see a high shelf (on which are a ceramic dog and a carved walrus) here.
+  
+  On the chair you can see a Versace clutch, a Boston Krispy Kreme Donut and a Guitar Hero CD.
+  
+> >

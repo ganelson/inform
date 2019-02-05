@@ -1,0 +1,45 @@
+   Dark Side
+  Hohmann Transfer
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dark Side
+  It's night on this side of the planet, so you can make out only the glow of urbanized areas along the seacoasts.
+  
+> >   Dark Side
+  (Testing.)
+  
+  >[1] e
+  You fire the thrusters and loop around to the other side of the planet before settling into a new geosynchronous orbit. Six months and one minute later...
+  
+  Eastern Hemisphere
+  This side of the planet is more ocean than land, with only two continents worthy of the name, and a volcanic archipelago in the north seas.
+  
+  >[2] z
+  Time passes.
+  
+  >[3] z
+  Time passes.
+  
+  >[4] w
+  You fire the thrusters and loop around to the other side of the planet before settling into a new geosynchronous orbit. Six months and one minute later...
+  
+  Dark Side
+  It's night on this side of the planet, so you can make out only the glow of urbanized areas along the seacoasts.
+  
+  >[5] z
+  Time passes.
+  
+  >[6] z
+  Time passes.
+  
+  Western Hemisphere
+  The cloud mass covers much of the land on this side of the planet, and a particularly nasty storm is brewing off to the south.
+  
+  >[7] e
+  You fire the thrusters and loop around to the other side of the planet before settling into a new geosynchronous orbit. Six months and one minute later...
+  
+  Dark Side
+  It's night on this side of the planet, so you can make out only the glow of urbanized areas along the seacoasts.
+  
+> >

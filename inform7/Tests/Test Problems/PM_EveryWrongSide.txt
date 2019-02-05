@@ -1,0 +1,15 @@
+The plural of gentleman is gentlemen. A gentleman is a kind of man.
+
+A blonde is a kind of woman. A brunette is a kind of woman.
+
+Lorelei is a blonde. Dorothy is a brunette. Sir Francis is a gentleman.
+
+Shipboard is a room. Lorelei, Dorothy and Sir Francis are in Shipboard.
+
+Preference relates various people to various people.
+
+The verb to prefer (he prefers, they prefer, he preferred, he is preferred)
+implies the preference relation.
+
+Every blonde prefers Sir Francis.
+Sir Francis prefers every blonde.

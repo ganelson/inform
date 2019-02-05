@@ -1,0 +1,23 @@
+   Wilkie Memorial Research Wing
+  Verbosity
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wilkie Memorial Research Wing
+  The research wing was built onto the science building in 1967, when the college's finances were good but its aesthetic standards at a local minimum. A dull brown corridor recedes both north and south; drab olive doors open onto the laboratories of individual faculty members. The twitchy fluorescent lighting makes the whole thing flicker, as though it might wink out of existence at any moment.
+  
+  The Men's Restroom is immediately west of this point.
+  
+> >   Wilkie Memorial Research Wing
+  (Testing.)
+  
+  >[1] west
+  
+  Men's Restroom
+  Well, yes, you really shouldn't be in here. But the nearest women's room is on the other side of the building, and at this hour you have the labs mostly to yourself. All the same, you try not to read any of the things scrawled over the urinals which might have been intended in confidence.
+  
+  >[2] east
+  
+  Wilkie Memorial Research Wing
+  
+> >

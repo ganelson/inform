@@ -1,0 +1,7 @@
+Burrow is a room.
+
+Instead of jumping when Orinoco asdl lkjhlkjhlkh: say "Red."
+
+Instead of jumping when Orinoco is nowhere: say "Blue."
+
+Instead of jumping when Orinoco has nothing: say "Green."

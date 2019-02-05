@@ -1,0 +1,22 @@
+** Replacements
+(ASK person TO do something, understood; Northstar)
+Making Inform understand ASK JOSH TO TAKE INVENTORY as JOSH, TAKE INVENTORY. This requires us to use a regular expression on the player's command, replacing some of the content.
+
+Most of the time, Inform understands commands to other characters when they take the form "JOSH, TAKE INVENTORY" or "JOAN, WEAR THE ARMOR". But novice players might also try commands of the form ASK JOSH TO TAKE INVENTORY or ORDER JOAN TO WEAR THE ARMOR. 
+
+The easiest way to make Inform understand such commands is to meddle directly with the player's command, changing it into the format that the game will understand, as here:
+
+	{*}"Northstar"
+
+	The Northstar Cafe is a room. "The Northstar is crammed with its usual brunch crowd, and you were lucky to get a table at all. You are now awaiting the arrival of your ricotta pancakes."
+	
+	Josh is a man in The Northstar Cafe. "Josh is on his way past your table." The description of Josh is "He is a waiter here, but you also know him socially, so he tends to be more chatty than the other waiters." A persuasion rule: persuasion succeeds.
+
+	After reading a command:
+		let N be "[the player's command]";
+		replace the regular expression "\b(ask|tell|order) (.+?) to (.+)" in N with "\2, \3";
+		change the text of the player's command to N.
+		
+	Test me with "ask Josh to take inventory / tell Josh to take inventory / order Josh to take inventory".
+	
+Note that we have to copy N back explicitly to replace the player's command.

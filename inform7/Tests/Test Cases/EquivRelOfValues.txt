@@ -1,0 +1,12 @@
+Home is a room.
+
+Friendship relates various numbers to each other in groups. The
+verb to be friends with implies the friendship relation.
+
+6 is friends with 28.
+28 is friends with 496.
+30 is friends with 140.
+80 is friends with 200.
+40 is friends with 224.
+
+Test me with "relations".

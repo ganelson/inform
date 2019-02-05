@@ -1,0 +1,14 @@
+"Rules as Properties"
+
+A document is a kind of thing. A document has a rule called the submission.
+
+The player is in a room called Starter Room. A document called the license registration is in Starter Room.
+
+This is the license submission rule:
+	say "License has been submitted!"
+
+The submission of the license registration is the license submission rule.
+
+Instead of taking a document, follow the submission of the noun.
+
+Test me with "wait / get registration".

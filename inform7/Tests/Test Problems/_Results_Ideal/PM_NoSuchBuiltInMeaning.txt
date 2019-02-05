@@ -1,0 +1,9 @@
+Inform 7.10.1 build 6N09 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 43038 words long.
+I've also read English Language by Graham Nelson, which is 2297 words long.
+Problem__ PM_NoSuchBuiltInMeaning
+  >--> You wrote 'The verb to explode means the built-in blow-up meaning' (source
+    text, line 3): but that's not one of the built-in meanings I know, and
+    should be one of the ones used in the Preamble to the Standard Rules.
+Inform 7 has finished: 33 centiseconds used.

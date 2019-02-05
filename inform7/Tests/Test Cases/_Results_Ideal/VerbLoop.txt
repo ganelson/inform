@@ -1,0 +1,18 @@
+   Foo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foo
+  You can see a ball and a bar here.
+  
+> >   Foo
+  (Testing.)
+  
+  >[1] get ball
+  Yeah, yourself.
+  Yeah, bar.
+  1: verb take.
+  2: verb snatch.
+  
+> >

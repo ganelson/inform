@@ -1,0 +1,7 @@
+Math lab is a room. "Let's consider some numbers." The player is here.
+
+When play begins:
+	showme whether or not 1 < 5;
+	showme whether or not 0.1 < 5;
+	showme whether or not 1 < 0.5;
+	showme whether or not 0.1 < 0.5;

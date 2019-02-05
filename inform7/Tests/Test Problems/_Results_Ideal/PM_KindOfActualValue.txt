@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindOfActualValue
+  >--> You wrote 'A twentynine is a kind of 29' (source text, line 1): but I
+    don't recognise that as a kind, such as 'room' or 'door': it would need to
+    be straightforwardly the name of a kind, and not be qualified with
+    adjectives like 'open'.
+Problem__ PM_KindOfActualValue
+  >--> You wrote 'A gentian is a kind of flower' (source text, line 3): again,
+    I don't recognise that as a kind.
+Inform 7 has finished: 17 centiseconds used.

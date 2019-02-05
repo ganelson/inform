@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 24 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableIncompatibleEntry2
+  >--> In 'Table of Testing One' (source text, line 3), column 1 (subject), the
+    entry 'yourself' (source text, line 5) (row 1) has the wrong kind to be in
+    the 'subject' column - it's an object, whereas I think every entry ought to
+    be a text. The entries under a given column name must be blanks or values
+    of the same kind as each other, and this applies even to columns in
+    different tables if they have the same name. Compare the table 'Table of
+    Testing Two' (source text, line 8), where there's also a column called
+    'subject'.
+Inform 7 has finished: 19 centiseconds used.

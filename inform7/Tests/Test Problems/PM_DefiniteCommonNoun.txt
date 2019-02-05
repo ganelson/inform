@@ -1,0 +1,3 @@
+Home is a room.
+
+Instead of opening a door when the door is closed: say "X."

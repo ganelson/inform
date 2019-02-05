@@ -1,0 +1,53 @@
+   Mysterious Void
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Mysterious Void
+  You can see a frog and Trevor here.
+  
+> >   Mysterious Void
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] wave frog
+  [waving the frog]
+  (first taking the frog)
+  [(1) taking the frog - silently]
+  [(1) taking the frog - silently - succeeded]
+  
+  You wave the frog.
+  [waving the frog - succeeded]
+  
+  >[3] wave frog
+  [waving the frog]
+  You wave the frog.
+  [waving the frog - succeeded]
+  
+  >[4] drop frog
+  [dropping the frog]
+  Dropped.
+  [dropping the frog - succeeded]
+  
+  >[5] trevor, wave frog
+  [asking Trevor to try waving the frog]
+  [(1) Trevor waving the frog]
+  [(2) Trevor taking the frog - silently]
+  [(2) Trevor taking the frog - silently - succeeded]
+  
+  Trevor waves the frog.
+  [(1) Trevor waving the frog - succeeded]
+  
+  [asking Trevor to try waving the frog - succeeded]
+  
+  >[6] trevor, wave frog
+  [asking Trevor to try waving the frog]
+  [(1) Trevor waving the frog]
+  Trevor waves the frog.
+  [(1) Trevor waving the frog - succeeded]
+  
+  [asking Trevor to try waving the frog - succeeded]
+  
+> >

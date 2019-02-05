@@ -1,0 +1,29 @@
+Test me with "bob/privacy/look/bob/south".
+
+Northside is north of Southside. Aaron, Bob, and Charlie
+are men in Northside. Player is Aaron. 
+
+Definition: a person is NPC if it is not the player. 
+
+Following relates people to each other. The verb to be
+following implies the following relation. 
+
+The last carry out going: now every person following player
+is in the location.
+
+Understand "[person]" as toggling follow. Toggling follow
+is an action applying to one thing. 
+
+Carry out toggling follow:
+	if noun is following player:
+		now noun is not following player;
+	otherwise:
+		now noun is following player;
+	say "[list of NPC people following player] will attend you.
+	[list of NPC people not following player] will not."
+
+Understand "privacy" as ostracizing. Ostracizing is an
+action applying to nothing. Carry out ostracizing: now
+every NPC person not following player is in a random room
+which is not the location; say "[list of every NPC person
+not following the player] leaves the room."

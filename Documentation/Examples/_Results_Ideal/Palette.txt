@@ -1,0 +1,29 @@
+   Atelier
+  Palette
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Atelier
+  The floridly untidy loft space used by a moderately unsuccessful artist (you, that is).
+  
+  You can see a largely white canvas, palette and paint brush here.
+  
+> >   Atelier
+  (Testing.)
+  
+  >[1] examine canvas
+  You see nothing special about the largely white canvas.
+  
+  >[2] paint canvas red
+  You splash away at the now largely red canvas.
+  
+  >[3] examine canvas
+  You see nothing special about the largely red canvas.
+  
+  >[4] paint canvas cerulean
+  You splash away at the now largely blue canvas.
+  
+  >[5] examine canvas
+  You see nothing special about the largely blue canvas.
+  
+> >

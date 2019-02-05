@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+Problem__ PM_WordTooLong
+  >--> Word too long:
+    Abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx.
+    (Individual words of unquoted text can run up to 128 letters long, which
+    ought to be plenty. The longest recognised place name in the English
+    speaking world is a hill in New Zealand called
+    Taumatawhakatang-ihangakoauauot-amateaturipukaka-pikimaunga-horonuku-pokaiwhenuak-itanatahu.
+    (You say tomato, I say taumatawhakatang-...) The longest word found in a
+    classic novel is
+    bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk,
+    creation's thunderclap from Finnegan's Wake. And both of those words are
+    fine.)
+I've now read your source text, which is 4 words long.
+Inform 7 has finished: 3 centiseconds used.

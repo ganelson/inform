@@ -1,0 +1,23 @@
+   Stanford
+  Materials: The player can see a thing made of a strong material.
+  Scenes:
+  
+  Scene Entire Game features the player.
+  More than two scenes feature the player.
+  Fewer than two scenes feature Knuth.
+  Number of scenes featuring the player: 3.
+  Number of scenes featuring Knuth: 0.
+  Number of bad scenes featuring the player: 1.
+  Number of bad scenes featuring Knuth: 0.
+  Number of good scenes featuring the player: 2.
+  Number of good scenes featuring Knuth: 0.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stanford
+  You can see a desk, lamp and Don Knuth here.
+  
+> >   Stanford
+> Are you sure you want to quit? 

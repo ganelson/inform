@@ -1,0 +1,12 @@
+   Library
+  N of the CC is Rumpelstiltskin, Jacob and Wilhelm Grimm, 1812, Fairy Tales and 398.21 GRI.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Library
+  You can see a catalog card here.
+  
+> >   Library
+> Are you sure you want to quit? 

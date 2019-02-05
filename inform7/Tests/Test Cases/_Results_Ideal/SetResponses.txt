@@ -1,0 +1,48 @@
+   Paris Theatre
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Paris Theatre
+  You can see a big box (empty) and a red button here.
+  
+> >   Paris Theatre
+  (Testing.)
+  
+  >[1] z
+  Jeepers, this is dull.
+  
+  >[2] enter box
+  You get into the big box.
+  
+  >[3] close box
+  You close the big box.
+  
+  >[4] exit
+  Wretched big box.
+  
+  >[5] open box
+  You open the big box.
+  
+  >[6] exit
+  You get out of the big box.
+  
+  Paris Theatre
+  You can see a big box (empty) and a red button here.
+  
+  >[7] push button
+  Clunk!
+  
+  >[8] z
+  Gosh, this is dull.
+  
+  >[9] enter box
+  You get into the big box.
+  
+  >[10] close box
+  You close the big box.
+  
+  >[11] exit
+  Pesky big box.
+  
+> >

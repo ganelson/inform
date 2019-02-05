@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DefinitionBadCondition
+  >--> You gave as a definition 'A room is roomy if arfle barfle gloop' (source
+    text, line 3): but that condition makes no sense to me, although the
+    preamble to the definition was properly written. There must be something
+    wrong after 'if'.
+Inform 7 has finished: 43 centiseconds used.

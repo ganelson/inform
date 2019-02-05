@@ -1,0 +1,5 @@
+King Solomon's Mine is a room.
+
+Volcano cup size is a kind of value.
+
+The specification of volcano cup size is 10.

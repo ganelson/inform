@@ -1,0 +1,10 @@
+Lab is a room.
+The frozzle-text is an indexed text that varies.
+The grunion-list is a list of indexed texts that varies.
+Booing is an action applying to one topic. Understand "boo [text]" as booing. 
+Carry out booing: 
+   Now the frozzle-text is the topic understood;
+   Add the frozzle-text to the grunion-list;
+   say "'[The topic understood]' is now a synonym for the grunion."	
+The grunion is in the lab. Understand "[text]" as the grunion when the topic understood is listed in the grunion-list.
+test me with "boo bam/x bam/show bam to me".

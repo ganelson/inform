@@ -1,0 +1,27 @@
+   Sewer Beneath St Denis
+  Bruneseau's Journey
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sewer Beneath St Denis
+  A narrow, stone-lined passageway, with only a little ledge to walk above the level of the refuse that flows down towards the Seine.
+  
+> >   Sewer Beneath St Denis
+  (Testing.)
+  
+  >[1] x candle
+  A candle, still in pristine condition with untouched wick.
+  
+  >[2] light candle
+  You light the candle for the first time.
+  
+  >[3] x candle
+  It burns with a pure heart.
+  
+  >[4] blow out candle
+  You blow out the candle.
+  
+  >[5] x candle
+  A candle, partially burnt.
+  
+> >

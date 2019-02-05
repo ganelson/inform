@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+Problem__ PM_UnendingQuote
+  >--> Some source text ended in the middle of quoted text: main source text.
+    This probably means that a quotation mark is missing somewhere. If you are
+    using Inform with syntax colouring, look for where the quoted-text colour
+    starts. (Sometimes this problem turns up because a piece of quoted text
+    contains a text substitution in square brackets which in turn contains
+    another piece of quoted text - this is not allowed, and causes me to lose
+    track.)
+I've now read your source text, which is 0 words long.
+Inform 7 has finished: 3 centiseconds used.

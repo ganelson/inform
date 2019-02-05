@@ -1,0 +1,18 @@
+The Kitchen is a room. "Just a small kitchen."
+
+A bottle is a transparent open openable container in the kitchen.
+
+In the bottle is the whisky. The indefinite article of the whisky is "some".
+
+Before doing something other than examining to the whisky when the bottle is
+	closed and the whisky is in the bottle:
+	say "(first opening the bottle)";
+	silently try opening the bottle.
+
+Instead of drinking the whisky for the first time:
+	say "You take one sip, and feel it burn your tongue."
+
+Instead of drinking the whisky:
+	say "One sip was enough."
+
+Test me with "close bottle / drink whisky / drink whisky".

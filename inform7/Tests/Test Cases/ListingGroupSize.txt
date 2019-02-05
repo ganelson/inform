@@ -1,0 +1,20 @@
+Ludus is a room.
+
+A Scrabble piece is a kind of thing. The X, the W, the F, the Y and the Z are
+Scrabble pieces in Ludus.
+
+Before listing contents: group Scrabble pieces together.
+
+Before grouping together Scrabble pieces when the listing group size is greater than 3:
+	say "some [listing group size in words] tiles (".
+After grouping together Scrabble pieces when the listing group size is greater than 3:
+	say ") from a Scrabble set".
+
+A block is a kind of thing. Three blocks are in Ludus.
+
+Before listing contents: group blocks together.
+
+Rule for printing a number of blocks when the listing group size is 3:
+	say "a mystic triad of blocks".
+
+Test me with "get x / get w / get two blocks / i / look / get f / i / get z / i".

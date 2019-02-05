@@ -1,0 +1,10 @@
+Stage is a room.
+Every turn:
+	if 1 is 1 begin;
+		say "hi";
+	otherwise if 2 is 2;
+		say "hi";
+		otherwise; say "hi";
+	otherwise if 4 is 4;
+		say "hi";
+	end if.

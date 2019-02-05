@@ -1,0 +1,48 @@
+   Foo
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foo
+  A hovel by the Rhine river.
+  
+> >   Foo
+  (Testing.)
+  
+  >[1] look
+  Foo
+  A palace on the Nile delta.
+  
+  >[2] look
+  Foo
+  A hovel by the Tigris river.
+  
+  >[3] look
+  Foo
+  A palace on the Nile delta.
+  
+  >[4] look
+  Foo
+  A palace on the Nile delta.
+  
+  >[5] look
+  Foo
+  A palace on the Nile delta.
+  
+  >[6] look
+  Foo
+  A palace on the Euphrates delta.
+  
+  >[7] look
+  Foo
+  A hovel by the Rhine river.
+  
+  >[8] look
+  Foo
+  A palace on the Euphrates delta.
+  
+  >[9] look
+  Foo
+  A palace on the Nile delta.
+  
+> >

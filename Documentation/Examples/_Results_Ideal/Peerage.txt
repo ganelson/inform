@@ -1,0 +1,25 @@
+   House of Lords
+  Peers
+  An Interactive Fiction by Elizabeth II R
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  House of Lords
+  You can see Baron Maltravers, Baron Pollifax, Duke Omnium and Earl St Vincent here.
+  
+> >   House of Lords
+  (Testing.)
+  
+  >[1] dub st vincent a baron
+  As he is already of the rank of Earl, any such letters patent are liable to be deemed invalid, following the precedent of the Buckhurst Peerage Case (1876). Best not.
+  
+  >[2] dub maltravers a marquess
+  "Whereas Our Parliament for arduous and urgent affairs concerning Us the state and defence of Our United Kingdom and the Church is now met at Our City of Westminster We strictly enjoining Command you upon the faith and allegiance by which you are bound to Us that the weightness of the said affairs and imminent perils considered (waiving all excuses) you be at the said day and place personally present with Us and with the said Prelates Great Men and Peers to treat and give your counsel upon the affairs aforesaid And this as you regard Us and Our honour and the safety and defence of the said Kingdom and Church and dispatch of the said affairs in nowise do you omit Witness Ourself at Westminster the Fifth day of November in the 43rd year of Our Reign," you say, with unpunctuated serenity. The new Marquess Maltravers bows stiffly.
+  
+  >[3] look
+  House of Lords
+  You can see Marquess Maltravers, Baron Pollifax, Duke Omnium and Earl St Vincent here.
+  
+  >[4] examine marquess
+  You see nothing special about Marquess Maltravers.
+  
+> >

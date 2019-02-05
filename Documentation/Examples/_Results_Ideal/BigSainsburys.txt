@@ -1,0 +1,22 @@
+   Sainsbury's                                                                                                                                                                                                            9:00 am
+  The Big Sainsbury's
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Sainsbury's
+  You can see a crispy duck and a Guinness steak pie here.
+  
+> >   Sainsbury's                                                                                                                                                                                                            9:04 am
+  (Testing.)
+  
+  >[1] take crispy duck
+  Taken.
+  
+  >[2] eat crispy duck
+  You eat the crispy duck. Not bad.
+  
+  >[3] eat steak pie
+  (first taking the Guinness steak pie)
+  You eat the Guinness steak pie. Not bad.
+  
+> >

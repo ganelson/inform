@@ -1,0 +1,45 @@
+   Downstairs Hallway                                                                                                                                                                                                     3:47 am
+  Aftershock
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Downstairs Hallway
+  The only room in the house with no furniture and almost nothing on the walls. At times like this you always notice the crack in the plaster, originating near the light fixture and running almost all the way to the wall.
+  
+  You can see a plastic jug of filtered water here.
+  
+> >   Downstairs Hallway                                                                                                                                                                                                     3:53 am
+  (Testing.)
+  
+  >[1] examine light
+  A plain globe of frosted glass containing the light bulb. Nothing special, and you never think about it except when, as now, you are forced to spend hours in this room.
+  
+  The light fixture is lit.
+  
+  >[2] switch light off
+  You switch the light fixture off.
+  
+  It is now pitch dark in here!
+  
+  >[3] switch flashlight on
+  You flip a switch. A strong, narrow beam of light shines from the flashlight.
+  
+  Downstairs Hallway
+  The only room in the house with no furniture and almost nothing on the walls. At times like this you always notice the crack in the plaster, originating near the light fixture and running almost all the way to the wall.
+  
+  You can see a plastic jug of filtered water here.
+  
+  >[4] switch radio on
+  You flip a switch. Through the static, you pick up pieces of discussion: a 6.7 on the Richter scale, epicenter... something about Topanga... but it crackles out again.
+  
+  >[5] examine radio
+  A small battery-operated radio which you received for free with your subscription to US News & World Report. It has served you well through many earthquakes past.
+  
+  Through the static, you pick up pieces of discussion: a 6.7 on the Richter scale, epicenter... something about Topanga... but it crackles out again.
+  
+  >[6] examine flashlight
+  A shiny red flashlight.
+  
+  A strong, narrow beam of light shines from the flashlight.
+  
+> >

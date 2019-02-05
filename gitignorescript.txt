@@ -1,0 +1,24 @@
+# This is the script from which the core-Inform .gitignore file is generated
+# by inweb. This is human-editable: that generated form is not.
+
+.DS_Store
+gameinfo.dbg
+Changes/Output/
+Changes/Output/META-INF/
+Changes/Output/OEBPS/
+Changes/Output/OEBPS/Images/
+Documentation/Output/
+Documentation/Output/META-INF/
+Documentation/Output/OEBPS/
+Documentation/Output/OEBPS/Images/
+Documentation/Examples/_Results_Actual/
+*/_Results_Actual/
+
+Internal/Extensions/Graham Nelson/Standard Rules.i7x
+Internal/I6T/
+Internal/Languages/English/Syntax.preform
+Internal/Miscellany/definitions.html
+
+retrospective/*/cBlorb
+retrospective/*/ni
+retrospective/*/*.o

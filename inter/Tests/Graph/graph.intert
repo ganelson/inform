@@ -1,0 +1,119 @@
+# This is a miscellany of tests.
+
+version 7
+
+packagetype _plain
+packagetype _code
+
+primitive !return val -> void
+primitive !modulo val val -> val
+primitive !plus val val -> val
+
+pragma target_I6 "$MAX_STATIC_DATA=180000"
+
+package main _plain
+	kind K_number int32
+	defaultvalue K_number = 47
+	variable V_banana K_number = 100
+	constant C_death K_number = -5
+	constant C_taxes K_number = 14
+	variable V_anxiety K_number = C_death
+	kind K_other_number int32
+	constant C_i K_other_number = 2
+	defaultvalue K_other_number = C_i
+	constant C_x K_number = 0x7f2a __hex
+	link early "alpha" "beta" "gamma" "delta"
+	link before "alpha" "" "" ""
+	link instead "" "beta" "" ""
+	link after "" "" "gamma" ""
+	constant cornelius K_number = dw'frogs'
+	constant gaius K_number = dw'toads'
+	marker mark_my_words
+	symbol external misc peach
+	splat &"Sing a song of \"six splats\"...\nand don't wait up"
+	# Spong.
+	kind K_colour enum
+	instance I_green K_colour = 1
+	instance I_red K_colour = 17
+	variable V_shade K_colour = I_red
+	kind K_list_of_number list of K_number
+	constant C_primes K_list_of_number = { 2, 3, 5, 7, 11, 13, 17, 19 }
+	constant C_concealed K_list_of_number = C_primes
+	variable V_watch_list K_list_of_number = C_concealed
+	marker 718_varieties
+	kind K_text text
+	constant C_complaint K_text = "This is already quite a long test case."
+	constant C_raw K_number = &"SOME_I6_DRIVEL"
+	kind K_odour enum
+	instance I_citrus K_odour = 5
+	instance I_leather K_odour = 10
+	property P_strength K_number __name="strength"
+	permission P_strength K_odour
+	propertyvalue P_strength I_citrus = 20
+	propertyvalue P_strength I_leather = 7
+	property P_lingeringness K_number
+	permission P_lingeringness K_odour
+	propertyvalue P_lingeringness I_citrus = 1
+	propertyvalue P_lingeringness I_leather = 3
+	propertyvalue P_lingeringness K_odour = 2
+	kind K_table table
+	kind K_column_of_number column of K_number
+	kind K_column_of_colour column of K_colour
+	constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }
+	constant C_egtable_col2 K_column_of_colour = { I_green, undef, I_red }
+	constant C_egtable K_table = { C_egtable_col1, C_egtable_col2 }
+	kind K_object enum
+	instance I_board K_object = 1
+	kind K_piece <= K_object
+	instance I_bishop K_piece = 2
+	instance I_rook K_piece = 3
+	kind K_list_of_objects list of K_object
+	constant C_majors K_list_of_objects = { I_bishop, I_rook }
+	permission P_lingeringness I_bishop
+	kind K_func function K_colour K_number -> K_odour
+	kind K_rule rule void -> void
+	kind K_rulebook rulebook of K_rule
+	kind K_stuff struct K_number K_colour K_odour
+	constant S_stuff K_stuff = { 5, I_red, I_citrus }
+	package R_after1_B _code
+	package R_after2_B _code
+	constant R_after1 K_rule = R_after1_B
+	constant R_after2 K_rule = R_after2_B
+	constant RB_after K_rulebook = { R_after1, R_after2 }
+	kind K_colour____colour function K_colour -> K_colour
+	package R_101_B _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc K_colour == /main/K_colour
+		symbol external misc K_number == /main/K_number
+		symbol external misc I_green == /main/I_green
+		symbol external misc R_102 == /main/R_102
+		local x K_colour __call_parameter
+		.begin
+			inv R_102
+				val K_colour I_green
+			inv !return
+				inv !modulo
+					inv !plus
+						cast K_number <- K_colour
+							val K_colour x
+						val K_number 1
+					val K_number 3
+			splat &"return R_101(C_majors);"
+		.end
+	constant R_101 K_colour____colour = R_101_B
+	package R_102_B _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc K_colour == /main/K_colour
+		symbol external misc I_red == /main/I_red
+		local x K_colour __call_parameter
+		.begin
+			inv !return
+				val K_colour I_red
+		.end
+	constant R_102 K_colour____colour = R_102_B
+	constant amount K_number = sum{ 2, C_taxes }
+	response R_101_A R_101 0 = C_taxes

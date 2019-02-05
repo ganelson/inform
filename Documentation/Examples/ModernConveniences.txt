@@ -1,0 +1,150 @@
+** A simple example extension
+(Extension design advice--Kitchen appliances; Modern Conveniences)
+Exemplifying the kind of source we might use in writing extensions for kitchen and bathroom appliances.
+
+Suppose we want to write an extension or other portable code which defines a "kitchen" kind of room and a "bathroom" kind of room. All kitchen rooms we create in the future will automatically contain standard kitchen appliances: fridge, freezer, sink with taps, counters, cabinets, and a stovetop with built-in oven. Similarly, all bathrooms will have sinks, baths, cabinets, and toilets, and respond to some standard interactions.
+
+We would do this with a standard assembly:
+
+	{*}"Modern Conveniences"
+
+	Section 1 - Kitchens
+
+	A kitchen is a kind of room.
+
+	A refrigerator is a kind of container. A refrigerator is usually closed and openable. A refrigerator is usually fixed in place. A refrigerator is usually scenery. Understand "fridge" as a refrigerator.
+
+	A freezer compartment is a kind of container. A freezer compartment is usually closed and openable. A freezer compartment is part of every refrigerator.
+
+Now: we're going to want many of the items in our kitchen to have switches, and to handle input sensibly regardless of whether the player types TURN ON STOVE or TURN ON STOVE SWITCH. (This is apparently a stove with only one burner.) For convenience, we'll define an "includes" relation:
+
+	{**}Inclusion relates a thing (called X) to a thing (called Y) when Y is part of X. The verb to include means the inclusion relation.
+
+	A stove is a kind of supporter. It is usually scenery.
+	An oven is a kind of container. An oven is usually openable and closed. One oven is a part of every stove.
+	A switch is a kind of device. A switch is part of every stove. A switch is part of every oven.
+	Understand "[something related by reversed incorporation] switch" as a switch.
+
+What follows is fairly straightforward, but notice that we are somewhat obsessively naming every rule. This is much more important in extensions (where someone else may need to manipulate our code from within their own source) than it is when we are simply composing source text for ourselves.
+
+	{**}Setting action variables for opening a stove (this is the stove-opening rule):
+		let relevant oven be a random oven which is part of the noun;
+		now the noun is the relevant oven.
+
+	Setting action variables for switching on something which includes a switch (this is the redirecting switches for switching on rule):
+		let relevant switch be a random switch which is part of the noun;
+		now the noun is the relevant switch.
+
+	Setting action variables for switching off something which includes a switch (this is the redirecting switches for switching off rule):
+		let relevant switch be a random switch which is part of the noun;
+		now the noun is the relevant switch.
+
+	Before printing the name of a switch (called target) (this is the switch identification rule):
+		say "[random thing which includes the target] ".
+
+	A sink is a kind of container. A sink is usually fixed in place and scenery. A tap is a kind of switch. A tap is part of every sink. Understand "faucet" or "taps" as a tap. Understand "[something related by reversed incorporation] tap/faucet/taps" as a tap.
+
+	Instead of opening a tap, try switching on the noun. Instead of closing a tap, try switching off the noun.
+
+	Report switching on a tap (this is the standard report switching taps on rule):
+		say "You turn on [the noun]." instead. [since "switch on" sounds weird in this context.]
+
+	Report switching off a tap (this is the standard report switching taps off rule):
+		say "You turn off [the noun]." instead. 
+
+	After examining something which includes a switched on tap (called relevant tap) (this is the report flowing water rule):
+		say "The water is flowing from [the relevant tap]."
+
+	A drain is a kind of container. A drain is part of every sink. Understand "plughole" as the drain. Understand "[something related by reversed incorporation] drain/plughole" as a drain.
+	
+	 Instead of inserting something into a drain (this is the no clogging drains rule), say "Pointless."
+
+This is probably about as far as we want to go in a generic simulation: it is tempting to code up water, drains down which the player can lose objects, sinks that get clogged and overflow, and so on; but the more we embellish in these ways, the more likely the end result would be disruptive to individual games. For right now what we're aiming for is something simple which provides the basic interactions a player might expect in this kind of room, but which does not have any significant implications for the surrounding world model. 
+
+A particularly conservative author might even want to make it turn out that the water has been shut off and nothing flows from the taps: in the extension documentation, we might want to include a line or two of example showing how this might be done by changing or removing the relevant rules of our extension.
+
+	{**}A cabinet is a kind of container. A cabinet is usually openable and closed. It is scenery.
+		Understand "cupboard" or "cupboards" or "cabinets" as a cabinet.
+
+	A counter is a kind of supporter. It is scenery.
+		Understand "countertop" as a counter.
+
+	A cabinet is in every kitchen.
+	A counter is in every kitchen.
+	A refrigerator is in every kitchen.
+	A sink is in every kitchen.
+	A stove is in every kitchen.
+
+	Section 2 - Bathrooms
+
+	A bathroom is a kind of room.
+
+	A toilet is a kind of supporter. Understand "john" as a toilet. A toilet is usually fixed in place and enterable and scenery.
+
+	A bath is a kind of container. A bath is usually a fixed in place and enterable and scenery. A tap is part of every bath. A drain is part of every bath. Understand "bathtub" or "shower" as a bath.
+
+	A sink is in every bathroom.
+	A toilet is in every bathroom.
+	A bath is in every bathroom.
+	A cabinet is in every bathroom.
+
+If we were feeling particularly ambitious and inclined toward interior decoration, we could add bath mats, mirrors, plungers, toilet brushes, overhead lighting, towel racks, scented candles, boxes of facial tissue, shampoo bottles, scrubbing loofahs, etc. ad nauseam; but we'll keep it relatively simple for now. Of course, if we have a toilet, we pretty much have to accept that the player will try to make use of it:
+
+	{**}Understand "flush [toilet]" or "use [toilet]" as a mistake ("You have no need at the moment.").
+
+	Understand "take shower" or "take bath" or "bathe" or "wash" as bathing. Bathing is an action applying to nothing.
+
+	Check bathing (this is the restrict baths to bathrooms rule):
+		if the location is not a bathroom, say "This isn't the place." instead.
+
+	Check bathing (this is the block bathing rule):
+		say "You haven't time for a bath." instead.
+
+	Washing is an action applying to one thing. Understand "clean [something]" or "wet [something]" or "wash [something]" as washing.
+
+	Instead of washing the player, try bathing.
+
+	Check washing (this is the restrict washing to the proximity of sinks rule):
+		unless the player can touch a sink, say "This isn't the place." instead.
+
+	Check washing (this is the block washing rule):
+		say "It doesn't seem worth the bother." instead.
+
+Now we might put this to work in a short example. 
+
+One slight challenge lies in giving these assembled pieces separate descriptions. When we have an assembly that adds parts to objects, we can then talk about (for instance) "the stove's switch" elsewhere in the code. But items that have been assigned rooms are not named in the same way, so we cannot talk about "the Industrial Kitchen's stove" in our code as a way to assign it a description or special behavior. In quite a simple example, we could make the descriptions of the kind simply be the descriptions we want for the individual items:
+
+	{**}Section 3 - An Example We Might Offer
+	
+	Our Household Kitchen is a kitchen.
+
+	The Tiny Bathroom is a bathroom. It is west of Our Household Kitchen.
+
+	The description of a stove is "Scrupulously polished."
+
+	The description of a refrigerator is "It is baby blue and has the contours of a 50[']s chevy. One of these days it really will break down, but it's been serving your family faithfully since your grandmother's honeymoon."
+
+	Test me with "x refrigerator / open fridge / x freezer / look in freezer / open freezer / turn on stove / turn on oven / x oven switch / turn off oven switch / turn off stove switch / turn on taps / x sink / w / x sink / turn on sink / take bath / use toilet".
+
+In a game that featured multiple bathrooms and kitchens, this wouldn't be enough; our author might give the stove kind (say) a description that checked its location, as in
+
+	The description of a stove is "[if in Industrial Kitchen]A massive stainless steel stove-top with six burners[otherwise]Your standard four-burner item[end if]."
+
+or create an 
+
+	Instead of examining the stove in the Industrial Kitchen: ...
+	
+sort of rule for those objects he wanted to describe specially; or he might use a when play begins rule to initialize a few things:
+
+	When play begins:
+		let N be a random stove in the Industrial Kitchen;
+		move the boiling pot to N;
+		change the description of N to...
+		
+Or we might even (if we anticipate lots of these kinds of amendments) want to rig up something more complex that finds the descriptions of appliances in a table, rather than relying on their individual description properties. This can all be done, but it is only interesting as long as it remains genuinely labor-saving: that is, as long as the convenience of having the assembly is greater than the annoyance of writing special rules to cover for the automation. In the end, the "kitchen" and "bathroom" room types are likely to be most useful for authors who want to include the standard props but not actually make them a critical part of the game; if stoves and sinks have more of a starring role in the production, authors may be better off coding them or at the very least placing them by hand, as in
+
+	The Industrial Kitchen is a room.
+	
+	Thor is a stove in the Industrial Kitchen. It supports a boiling pot.
+	
+All these quirks are things that we (as the extension author) want to think out in advance: we should ideally warn authors about possible pitfalls in using our extension (if we can think of them) and point out ways of customizing the behavior (if there are interesting ways).

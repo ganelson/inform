@@ -1,0 +1,82 @@
+Inform 7 build 6L28 has started.
+I've now read your source text, which is 179 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of dropping the CD or inserting the CD into the jewel
+    box' (source text, line 5), which seems to introduce a rule taking effect
+    only 'dropping the CD or inserting the CD into the jewel box'. But this is
+    a combination of actions which cannot be mixed. The only alternatives where
+    'or' is allowed are cases where a choice of actions is given but applying
+    to the same objects in each case. (So 'taking or dropping the CD' is
+    allowed, but 'dropping the CD or inserting the CD into the jewel box' is
+    not, because the alternatives there would make different use of objects
+    from each other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of inserting the CD into the jewel box or dropping
+    the CD' (source text, line 8), which seems to introduce a rule taking
+    effect only 'inserting the CD into the jewel box or dropping the CD'. But
+    this is a combination of actions which cannot be mixed. The only
+    alternatives where 'or' is allowed are cases where a choice of actions is
+    given but applying to the same objects in each case. (So 'taking or
+    dropping the CD' is allowed, but 'dropping the CD or inserting the CD into
+    the jewel box' is not, because the alternatives there would make different
+    use of objects from each other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of inserting the CD into the jewel box or looking' (source
+    text, line 11), which seems to introduce a rule taking effect only
+    'inserting the CD into the jewel box or looking'. But this is a combination
+    of actions which cannot be mixed. The only alternatives where 'or' is
+    allowed are cases where a choice of actions is given but applying to the
+    same objects in each case. (So 'taking or dropping the CD' is allowed, but
+    'dropping the CD or inserting the CD into the jewel box' is not, because
+    the alternatives there would make different use of objects from each
+    other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of looking or inserting the CD into the jewel box' (source
+    text, line 14), which seems to introduce a rule taking effect only 'looking
+    or inserting the CD into the jewel box'. But this is a combination of
+    actions which cannot be mixed. The only alternatives where 'or' is allowed
+    are cases where a choice of actions is given but applying to the same
+    objects in each case. (So 'taking or dropping the CD' is allowed, but
+    'dropping the CD or inserting the CD into the jewel box' is not, because
+    the alternatives there would make different use of objects from each
+    other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of examining or inserting the CD into the jewel box' (source
+    text, line 17), which seems to introduce a rule taking effect only
+    'examining or inserting the CD into the jewel box'. But this is a
+    combination of actions which cannot be mixed. The only alternatives where
+    'or' is allowed are cases where a choice of actions is given but applying
+    to the same objects in each case. (So 'taking or dropping the CD' is
+    allowed, but 'dropping the CD or inserting the CD into the jewel box' is
+    not, because the alternatives there would make different use of objects
+    from each other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of looking or examining the CD' (source text, line 20),
+    which seems to introduce a rule taking effect only 'looking or examining
+    the CD'. But this is a combination of actions which cannot be mixed. The
+    only alternatives where 'or' is allowed are cases where a choice of actions
+    is given but applying to the same objects in each case. (So 'taking or
+    dropping the CD' is allowed, but 'dropping the CD or inserting the CD into
+    the jewel box' is not, because the alternatives there would make different
+    use of objects from each other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of examining the CD or looking' (source text, line 23),
+    which seems to introduce a rule taking effect only 'examining the CD or
+    looking'. But this is a combination of actions which cannot be mixed. The
+    only alternatives where 'or' is allowed are cases where a choice of actions
+    is given but applying to the same objects in each case. (So 'taking or
+    dropping the CD' is allowed, but 'dropping the CD or inserting the CD into
+    the jewel box' is not, because the alternatives there would make different
+    use of objects from each other.)
+Problem__ PM_APWithImmiscible
+  >--> You wrote 'Instead of saving the game or looking' (source text, line 26),
+    which seems to introduce a rule taking effect only 'saving the game or
+    looking'. But this is a combination of actions which cannot be mixed. The
+    only alternatives where 'or' is allowed are cases where a choice of actions
+    is given but applying to the same objects in each case. (So 'taking or
+    dropping the CD' is allowed, but 'dropping the CD or inserting the CD into
+    the jewel box' is not, because the alternatives there would make different
+    use of objects from each other.)
+Inform 7 has finished: 22 centiseconds used.

@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 15 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EmptyIndentedBlock
+  >--> The phrase or rule definition 'When play begins' (source text, line 3)
+    is written using the 'colon and indentation' syntax for its 'if's,
+    'repeat's and 'while's, where blocks of phrases grouped together are
+    indented one tab step inward from the 'if ...:' or similar phrase to which
+    they belong. But the phrase 'if 1 is 2' (source text, line 4), which ought
+    to begin a block, is immediately followed by 'say "1 is 2"' (source text, line 5)
+    at the same or a lower indentation, so the block seems to be empty - this
+    must mean there has been a mistake in indenting the phrases.
+Inform 7 has finished: 14 centiseconds used.

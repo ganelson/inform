@@ -1,0 +1,6 @@
+Inform 7 build 6M25 has started.
+I've now read your source text, which is 4 words long.
+Problem__ PM_SentenceEndsInSemicolon
+  >--> The text 'Rog is a room; .' (source text, line 1) seems to have a
+    semicolon followed by a full stop, which is punctuation I don't understand.
+Inform 7 has finished: 3 centiseconds used.

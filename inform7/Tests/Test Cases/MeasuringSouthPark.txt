@@ -1,0 +1,28 @@
+Schoolyard is a room.
+
+A person has text called the animal type. The animal type of a person is usually "duck".
+A person has a number called the animal count.
+
+Stan, Kyle, Eric, and Kenny are people in Schoolyard.
+The animal type of Kenny is "goose".
+
+Definition: a person is nifty if its animal count is 25 or more.
+
+The animal count of Eric is 24.
+The animal count of Kenny is 25.
+The animal count of Stan is 26.
+
+Definition: a person is ducky if its animal type is "duck".
+
+A thing has a list of numbers called the foo.
+
+Definition: a thing is fooey if its foo is {28, 34}.
+The foo of Kenny is {28, 34}.
+
+After printing the name of someone ducky, say " (duck)".
+After printing the name of someone not ducky, say " (goose)".
+
+When play begins:
+	showme the list of fooey things;
+	showme the list of ducky people;
+	showme the list of nifty people;

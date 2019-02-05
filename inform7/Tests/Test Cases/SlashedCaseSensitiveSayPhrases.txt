@@ -1,0 +1,16 @@
+To say that (item - an object): say "that".
+To say That (item - an object): say "That".
+
+To say these of/for (item - an object): say "these".
+To say These of/for (item - an object): say "These".
+
+To say those of (item - an object): say "those".
+To say Those of (item - an object): say "Those".
+
+Understand "lower" as a mistake ("[that the player] [these for the player] [those of player].").
+
+Understand "upper" as a mistake ("[That the player] [These for the player] [Those of player].").
+
+Test me with "lower/upper".
+
+There is room.

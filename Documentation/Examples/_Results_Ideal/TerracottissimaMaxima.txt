@@ -1,0 +1,22 @@
+   Herb Garden
+  Terracottissima Maxima
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Herb Garden
+  You can see a blue willow flowerpot and two striped flowerpots here.
+  
+> >   Herb Garden
+  (Testing.)
+  
+  >[1] x blue willow
+  You see nothing special about the blue willow flowerpot.
+  
+  >[2] get striped
+  Taken.
+  
+  >[3] look
+  Herb Garden
+  You can see a blue willow flowerpot and a striped flowerpot here.
+  
+> >

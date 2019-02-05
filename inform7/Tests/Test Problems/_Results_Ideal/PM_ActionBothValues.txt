@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 15 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ActionBothValues
+  >--> You wrote 'Decreeing is an action applying to one text and one number' (source
+    text, line 3): but this action definition asks to have a single action
+    apply to two different things which are not objects, and unfortunately a
+    fundamental restriction is that an action can apply to two objects, or one
+    object and one value, but not to two values. Sorry about that.
+Inform 7 has finished: 16 centiseconds used.

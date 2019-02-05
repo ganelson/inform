@@ -1,0 +1,9 @@
+The Cell is a room.
+
+Robert is a man in the Cell. The player is Robert. Julian is a man in the cell.
+
+A tattoo is a kind of thing. A tattoo is part of every man.
+
+A nose is a kind of thing. A nose is part of every person.
+
+Test me with "showme".

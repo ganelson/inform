@@ -1,0 +1,5 @@
+Place is a room.
+
+Finale is a scene.
+
+Every turn: now Place is lighted; now action requires a carried noun.

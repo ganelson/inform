@@ -1,0 +1,26 @@
+Foo is a room. "This is Foo, the leading [one of]pet
+shop[or]haberdashery[or]bakery[purely at random] in the Kidlington area."
+
+Every turn:
+	say "You flip the coin. [one of]Heads[or]Tails[purely at random].";
+	say "[one of]The phone rings[or]The phone rings a second time[or]The phone
+		rings again[stopping].";
+	say "You turn the light switch [one of]off[or]on[cycling]. Nothing happens.";
+	say "The newspaper headline is:
+		[one of]War Casualties[or]Terrorists[or]Banks[sticky random]
+		[one of]Continue To Expand[or]Lose Out[sticky random].";
+	say "The light changes randomly again; now it's
+		[one of]green[or]amber[or]red[at random].";
+	say "George Bush [one of]yawns[or]scratches[or]bombs
+		somebody[or]inappropriately touches a monarch[or]eats fried
+		chicken[or]reads a Dr Seuss book[or]reads a Tom Clancy book[or]reads a
+		Jean-Paul Sartre book[as decreasingly likely outcomes].";
+	say "Trumps are [one of]hearts[or]clubs[or]diamonds[or]spades[in random order]."
+
+Instead of waiting:
+	repeat with w running from 1 to 4 begin;
+		say "[one of]hearts[or]clubs[or]diamonds[or]spades[in random order] - ";
+	end repeat;
+	say "are trumps.".
+
+Test me with "z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z / z".

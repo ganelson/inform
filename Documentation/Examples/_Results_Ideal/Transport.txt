@@ -1,0 +1,134 @@
+   Garage
+  Air Conditioning is Standard
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The machinist is making some adjustments to the horn with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
+  
+  The Victorian Car is here. It also features, in addition to the horn, a cast-iron steering wheel, a leather bucket seat and a combustion engine.
+  
+> >   Garage
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] look
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The machinist is making some adjustments to the horn with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
+  
+  The Victorian Car is here. It also features, in addition to the horn, a cast-iron steering wheel, a leather bucket seat and a combustion engine.
+  
+  >[3] look
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The machinist is making some adjustments to the horn with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
+  
+  The Victorian Car is here. It also features, in addition to the horn, a cast-iron steering wheel, a leather bucket seat and a combustion engine.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] look
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The machinist is making some adjustments to the combustion engine with his screwdriver. He is wearing a grimy pair of overalls and carrying a wrench.
+  
+  The Victorian Car is here. It also features, in addition to the combustion engine, a cast-iron steering wheel, a leather bucket seat and a horn.
+  
+  The machinist wanders into the Office to get some paperwork.
+  
+  >[6] west
+  
+  Office
+  The machinist rifles through the papers on the desk. He is wearing a grimy pair of overalls.
+  
+  A desk with several dozen drawers stands in the center of the room. Besides the papers, it holds a screwdriver and a wrench.
+  
+  >[7] east
+  
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The bemused young lady is running a gloved finger along the chassis of the Victorian Car. She is wearing a sober grey gown (buttoned almost to the chin) and a pair of black boots.
+  
+  >[8] z
+  Time passes.
+  
+  With a not-quite-convincing air of innocence, the young lady happens to lean upon the horn, which bleats loudly.
+  
+  >[9] look
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The bemused young lady is running a gloved finger along the chassis of the Victorian Car. She is wearing a sober grey gown (buttoned almost to the chin) and a pair of black boots.
+  
+  The machinist strolls from the Office into the Garage to find out what is going on.
+  
+  >[10] z
+  Time passes.
+  
+  >[11] look
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The machinist is chatting with the bemused young lady. He seems to be demonstrating the various features of the Victorian Car, including the combustion engine. He is wearing a grimy pair of overalls.
+  
+  >[12] z
+  Time passes.
+  
+  The machinist gives the young lady his arm to climb into the leather bucket seat.
+  
+  >[13] look
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The machinist is leaning on the door of the Victorian Car, pointing out features to the rapt young lady. He is wearing a besotted expression and a grimy pair of overalls.
+  
+  You are beginning to feel a little unnecessary in this scene.
+  
+  >[14] west
+  
+  Office
+  A desk with several dozen drawers stands in the center of the room. It holds a screwdriver, a wrench and some papers.
+  
+  There's no sound at all from the other room, not even conversation.
+  
+  >[15] east
+  There is a flurry of movement as you enter the room.
+  
+  Garage
+  Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
+  
+  The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
+  
+  The blushing young lady stands near the door, tapping her foot nervously. She is wearing a sober grey gown (tellingly dishevelled) and a pair of black boots.
+  
+  The machinist is leaning against the Victorian Car, looking smug. He is wearing a grimy pair of overalls.
+  
+  The young lady murmurs something about the wilting heat, and undoes a button or two of her gown. The machinist's expression is comical, or would be, if you weren't annoyed.
+  
+> >

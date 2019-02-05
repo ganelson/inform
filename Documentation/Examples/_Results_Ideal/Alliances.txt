@@ -1,0 +1,32 @@
+   Unthinkable Solutions
+  Unthinkable Alliances
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Unthinkable Solutions
+  You can see Sophie, Daisy, Ryan and Owen here.
+  
+> >   Unthinkable Solutions
+  (Testing.)
+  
+  >[1] relations
+  Alliance relates people to each other in groups:
+    { yourself and Owen }
+    { Sophie, Daisy and Ryan }
+  
+  >[2] kiss sophie
+  Smack!
+  
+  >[3] relations
+  Alliance relates people to each other in groups:
+    { yourself, Sophie, Daisy, Ryan and Owen }
+  
+  >[4] hit ryan
+  Smack!
+  
+  >[5] relations
+  Alliance relates people to each other in groups:
+    { Sophie, Daisy, Ryan and Owen }
+    and yourself in a single-member group
+  
+> >

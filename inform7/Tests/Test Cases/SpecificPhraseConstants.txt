@@ -1,0 +1,10 @@
+Home is a room.
+
+To waste time (this is wasting time): do nothing.
+To waste more time (this is wasting more time): do nothing.
+To disregard (P - phrase nothing -> nothing): say "Generic: "; showme P.
+To disregard (P - wasting time): say "Specific: "; showme P.
+
+When play begins:
+	disregard wasting time;
+	disregard wasting more time.

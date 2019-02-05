@@ -1,0 +1,27 @@
+Home is a room. A container called the box of porcupines is here.
+
+The player carries a container called the jewel box. The player carries a CD.
+
+Instead of dropping the CD or inserting the CD into the jewel box:
+	say "It'll get scratched if you leave it there."
+
+Instead of inserting the CD into the jewel box or dropping the CD:
+	say "It'll get scratched if you leave it there."
+
+Instead of inserting the CD into the jewel box or looking:
+	say "It'll get scratched if you leave it there."
+
+Instead of looking or inserting the CD into the jewel box:
+	say "It'll get scratched if you leave it there."
+
+Instead of examining or inserting the CD into the jewel box:
+	say "It'll get scratched if you leave it there."
+
+Instead of looking or examining the CD:
+	say "It'll get scratched if you leave it there."
+
+Instead of examining the CD or looking:
+	say "It'll get scratched if you leave it there."
+
+Instead of saving the game or looking:
+	say "It'll get scratched if you leave it there."

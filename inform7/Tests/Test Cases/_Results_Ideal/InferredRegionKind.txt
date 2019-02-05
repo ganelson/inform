@@ -1,0 +1,32 @@
+   Room 1
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150830 / Inform 7 build 6M53 (I6/v6.33 lib 6/12N) SD
+  
+  Room 1
+  
+> >   Room 2
+  (Testing.)
+  
+  >[1] showme
+  Room 1 - room
+      yourself - person
+      Crowd 1 - crowd
+      Crowd 2 - crowd
+  
+  >[2] n
+  
+  Room 2
+  "R" = region: Region 1
+  R is Region 1...
+  Check (1a).
+  Check (1b).
+  Check (1c).
+  Check (1d).
+  Check (1e).
+  
+  >[3] showme
+  Room 2 - room
+      yourself - person
+  
+> >

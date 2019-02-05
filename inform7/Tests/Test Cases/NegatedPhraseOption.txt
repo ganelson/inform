@@ -1,0 +1,11 @@
+Stage is a room.
+
+To hunt the wumpus, fiendishly:
+	if fiendishly, say "Hunting fiendishly.";
+	if not fiendishly, say "Hunting normally."
+
+When play begins:
+	say "First...";
+	hunt the wumpus;
+	say "Second...";
+	hunt the wumpus, fiendishly.

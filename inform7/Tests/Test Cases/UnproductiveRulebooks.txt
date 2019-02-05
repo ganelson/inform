@@ -1,0 +1,17 @@
+Home is a room.
+
+Flobbling is a rulebook producing a time.
+
+When play begins:
+	showme the time produced by the flobbling rulebook.
+
+Scribbling is a rulebook producing an text.
+
+When play begins:
+	let T be the text produced by the scribbling rulebook;
+	showme T.
+
+Dribbling is a rulebook producing a stored action.
+
+When play begins:
+	showme the stored action produced by the dribbling rulebook.

@@ -1,0 +1,14 @@
+The Kitchen is a room. 
+A red apple is in the Kitchen.
+A red tomato is in the Kitchen. 
+The microwave oven is an open, unopenable container, in the kitchen.
+The brick oven is an open, unopenable container, in the kitchen.
+Does the player mean inserting the apple into something: it is likely.
+Does the player mean inserting something into the brick oven: it is likely.
+
+Understand "put [things preferably held] aside/elsewhere" as dropping.
+
+To foo bar: (- DB_Action_Details(action, noun, second); print "^"; -).
+First does the player mean rule: say "n=[noun] s=[second noun]."; foo bar; make no decision.
+
+Test me with "get apple and tomato / trace 2 / put red in microwave / put tomato in oven".

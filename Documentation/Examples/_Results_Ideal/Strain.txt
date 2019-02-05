@@ -1,0 +1,33 @@
+   Metallurgy Workshop
+  Lead Cuts Paper
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Metallurgy Workshop
+  You can see a lead pig, a feather, a silver coin and a paper bag (empty) here.
+  
+> >   Metallurgy Workshop
+  (Testing.)
+  
+  >[1] get bag
+  Taken.
+  
+  >[2] get feather
+  Taken.
+  
+  >[3] put feather in bag
+  You put the feather into the paper bag.
+  
+  >[4] get pig
+  Taken.
+  
+  >[5] put pig in bag
+  You put the lead pig into the paper bag.
+  
+  The paper bag splits and breaks under the weight! You discard its ruined remains, looking miserably down at the lead pig and the feather on the floor.
+  
+  >[6] look
+  Metallurgy Workshop
+  You can see a feather, a lead pig and a silver coin here.
+  
+> >

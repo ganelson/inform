@@ -1,0 +1,7 @@
+The Parlor is a room. Town Square and Access Tunnel are rooms.
+
+The Attic is a room above the Parlor. The Attic2 is above the Parlor2.
+
+The manhole cover is a door. It is below the Town Square and above the Access Tunnel.
+
+Test me with "u/d/gonear attic/d/u/gonear parlor2/u/d/gonear attic2/d/u".

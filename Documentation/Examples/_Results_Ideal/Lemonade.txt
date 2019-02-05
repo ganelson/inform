@@ -1,0 +1,61 @@
+   Porch
+  Lemonade
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Porch
+  An inviting swing hangs here at the end of the porch, allowing you to enjoy the summer with a cool beverage, and watch your neighbor Ted mowing his lawn with the very last manual powerless lawnmower on the block.
+  
+  You can also see a pitcher of lemonade here.
+  
+> >   Porch
+  (Testing.)
+  
+  >[1] x milk
+  The glass contains about one fluid ounce of milk.
+  
+  >[2] x lemonade
+  The pitcher contains about twenty fluid ounces of lemonade.
+  
+  >[3] drink lemonade
+  You take a sip of lemonade.
+  
+  >[4] drink milk
+  You take a sip of milk.
+  
+  >[5] pour lemonade into glass
+  Mixing lemonade with milk would give unsavory results.
+  
+  >[6] drink milk
+  You take a sip of milk.
+  
+  >[7] x milk
+  The glass contains a swallow or two of milk.
+  
+  >[8] drink milk
+  You take a sip of milk.
+  
+  >[9] g
+  You take a sip of milk, leaving the glass empty.
+  
+  >[10] i
+  You are carrying:
+    an empty glass
+  
+  >[11] fill glass with lemonade
+  The pitcher of lemonade now contains about eight fluid ounces of lemonade; the glass of lemonade contains about twelve fluid ounces of lemonade, and is now full.
+  
+  >[12] drink lemonade
+  (the glass of lemonade)
+  You take a sip of lemonade.
+  
+  >[13] drop glass
+  Dropped.
+  
+  >[14] drink lemonade
+  Which do you mean, the glass of lemonade or the pitcher of lemonade?
+  
+  >[15] pitcher
+  You take a sip of lemonade.
+  
+> >

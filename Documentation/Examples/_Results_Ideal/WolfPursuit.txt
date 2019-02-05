@@ -1,0 +1,34 @@
+   Dark Forest
+  You have lost your spectacles, and the lamp, and can see barely further than the next tree. Roots keep trying to trip you, too...
+  
+  Full Moon
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dark Forest
+  You are mostly aware that you are not as alone here as you would like, and that the ground is uneven.
+  
+> >   Dark Forest
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  The wind howls in your ears.
+  
+  >[2] z
+  Time passes.
+  
+  You feel chilly.
+  
+  >[3] z
+  Time passes.
+  
+  The wind howls in your ears.
+  
+  >[4] z
+  Time passes.
+  
+  A twig snaps behind you!
+  
+> >

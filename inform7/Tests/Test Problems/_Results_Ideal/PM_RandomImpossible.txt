@@ -1,0 +1,19 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 58 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RandomImpossible
+  >--> You wrote 'let Q be a random text' (source text, line 6): but this asks
+    to find a random choice from a range which is too large or impractical, so
+    can't be done. For instance, 'a random person' is fine - it's clear exactly
+    who all the people are, and the supply is limited - but not 'a random
+    text'.
+Problem__ PM_RandomImpossible
+  >--> You wrote 'let R be a random number' (source text, line 7): again, this
+    asks to find a random choice from a range which is too large or
+    impractical.
+Problem__ PM_RandomImpossible
+  >--> You wrote 'now the topic understood is a random snippet' (source text, line 8):
+    again, this asks to find a random choice from a range which is too large or
+    impractical.
+Inform 7 has finished: 43 centiseconds used.

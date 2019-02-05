@@ -1,0 +1,153 @@
+   Spire of Hidden Objects
+  Chapter 13: An Exercise in Concealment
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Spire of Hidden Objects
+  You can see a chaise (on which is a green pillow), Percival Blakeney and Marguerite (wife of Percival Blakeney) here.
+  
+  From here you have a spectacular view of the Hedge Maze and the Middle Terrace.
+  
+> >   Spire of Hidden Objects
+  ** x watch
+  That's your favorite watch.
+  
+> >   Spire of Hidden Objects
+  ** drop watch
+  (first taking the watch off)
+  Dropped.
+  
+> >   Spire of Hidden Objects
+  ** x watch
+  You see nothing special about the watch.
+  
+> >   Spire of Hidden Objects
+  ** look under the sofa
+  You can't see any such thing.
+  
+> >   Spire of Hidden Objects
+  ** look under the chaise
+  You find a catalog of exotic cooking supplies!
+  
+> >   Spire of Hidden Objects
+  ** i
+  You are carrying:
+    a catalog of exotic cooking supplies
+    a book
+  
+> >   Spire of Hidden Objects
+  ** put catalog under the chaise
+  You shove the catalog of exotic cooking supplies out of sight beneath the chaise.
+  
+> >   Spire of Hidden Objects
+  ** look
+  Spire of Hidden Objects
+  You can see a watch, a chaise (on which is a green pillow), Percival Blakeney and Marguerite here.
+  
+  From here you have a spectacular view of the Hedge Maze and the Middle Terrace.
+  
+> >   Spire of Hidden Objects
+  ** take chaise
+  That's fixed in place.
+  
+> >   Spire of Hidden Objects
+  ** get pillow
+  Taken.
+  
+> >   Spire of Hidden Objects
+  ** put it under the chaise
+  You shove the green pillow out of sight beneath the chaise.
+  
+> >   Spire of Hidden Objects
+  ** look
+  Spire of Hidden Objects
+  You can see a watch, a chaise, Percival Blakeney and Marguerite here.
+  
+  From here you have a spectacular view of the Hedge Maze and the Middle Terrace.
+  
+> >   Spire of Hidden Objects
+  ** look under chaise
+  You find a green pillow!
+  
+> >   Spire of Hidden Objects
+  ** g
+  You find a catalog of exotic cooking supplies!
+  
+> >   Spire of Hidden Objects
+  ** g
+  You find a gold ball!
+  
+> >   Spire of Hidden Objects
+  ** g
+  You find nothing of interest.
+  
+> >   Spire of Hidden Objects
+  ** i
+  You are carrying:
+    a gold ball
+    a catalog of exotic cooking supplies
+    a green pillow
+    a book
+  
+> >   Spire of Hidden Objects
+  ** x hedge maze
+  Off in the Hedge Maze, you can see a spiral maze.
+  
+> >   Spire of Hidden Objects
+  ** x spiral
+  You gaze down into the Hedge Maze...
+  
+  You see nothing special about the spiral maze.
+  
+> >   Spire of Hidden Objects
+  ** x middle terrace
+  Off in the Middle Terrace, you can see a lily pond.
+  
+> >   Spire of Hidden Objects
+  ** x lily pond
+  You gaze down into the Middle Terrace...
+  
+  A neat round pond.
+  
+  In the lily pond are a frog and a waterlily.
+  
+> >   Spire of Hidden Objects
+  ** x lower terrace
+  Off in the Lower Terrace, you can see a reproduction Venus de Milo.
+  
+> >   Spire of Hidden Objects
+  ** x venus
+  You gaze down across the Middle Terrace towards the Lower Terrace, a good 100 feet...
+  
+  She has been given a pair of plaster arms, for decency.
+  
+> >   Spire of Hidden Objects
+  ** x reproduction
+  You gaze down across the Middle Terrace towards the Lower Terrace, a good 100 feet...
+  
+  She has been given a pair of plaster arms, for decency.
+  
+> >   Spire of Hidden Objects
+  ** x tent peg
+  It is too far from here to the Lower Terrace for you to make out much detail about the tent peg.
+  
+> >   Spire of Hidden Objects
+  ** gonear chaise
+  Spire of Hidden Objects
+  You can see a watch, a chaise, Percival Blakeney and Marguerite here.
+  
+  From here you have a spectacular view of the Hedge Maze and the Middle Terrace.
+  
+> >   Spire of Hidden Objects
+  ** push chaise
+  The chaise moves fractionally with respect to the green pillow.
+  
+> >   Spire of Hidden Objects
+  ** push pillow
+  The green pillow moves fractionally with respect to the chaise.
+  
+> >   Spire of Hidden Objects
+  **
+  I beg your pardon?
+  
+> >

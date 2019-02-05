@@ -1,0 +1,15 @@
+Home is a room.
+
+Part 1
+
+Tabulating is a rulebook producing a list of numbers.
+
+When play begins:
+	showme a list of numbers produced by the tabulating rulebook.
+
+Part 2
+
+Summing is a (list of numbers) based rulebook producing a number.
+
+When play begins:
+	showme the number produced by the summing rulebook for {1, 2, 3}.

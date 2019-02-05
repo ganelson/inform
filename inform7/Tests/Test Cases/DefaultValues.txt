@@ -1,0 +1,21 @@
+The Brahms Conservatoire is a room.
+
+Colour is a kind of value. The colours are red, indigo and chartreuse.
+
+Weight is a kind of value. 5kg specifies a weight.
+
+When play begins:
+	showme default value of number;
+	showme default value of time;
+	showme default value of table name;
+	showme default value of colour;
+	showme default value of weight;
+	let Q be a phrase numbers -> times;
+	showme Q;
+	showme Q applied to 4;
+	let R be a phrase numbers -> (phrase numbers -> colours);
+	showme R;
+	showme R applied to 3;
+	showme (R applied to 3) applied to 2;
+	let S be a phrase numbers -> nothing;
+	showme S;

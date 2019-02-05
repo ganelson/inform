@@ -1,0 +1,72 @@
+** Visible vs touchable vs carried
+(Understanding new commands involving compass directions--Lighthouse whose light can shine in different directions; Eddystone)
+Creating new commands involving the standard compass directions.
+
+Using the compass directions in commands is a little bit finicky because directions are forbidden to figure in any interactions involving touch. (Really, directions are more a concept than an object; this is a compromise situation.) In any case, if we want to write a new command involving these, we need to be sure to specify that the direction is a visible thing. For instance:
+
+	"Eddystone"
+
+	The Lighthouse is a room. "A lonely place, but in these tense times, no one but the lighthouse keeper and a few trusted agents are allowed on the grounds at all, for fear of sabotage."
+
+	The light is a fixed in place thing in the Lighthouse.  "At the center of the room is the light itself, a 1000-Watt tungsten halogen light powered by diesel generator, and having a visible range of twenty-six nautical miles." Understand "lamp" as the light. It is lit. The light has a a direction called heading. The heading of the light is north.
+
+	A room is usually dark.
+
+	Understand "turn [something] [a direction]" as reorienting it to. Reorienting it to is an action applying to two things. 
+	
+will give us
+
+	>turn light northeast
+	You must name something more substantial.
+	
+To avoid this mystifying result:
+
+	{*}"Eddystone"
+
+	The Lighthouse is a room. "A lonely place, but in these tense times, no one but the lighthouse keeper and a few trusted agents are allowed on the grounds at all, for fear of sabotage."
+
+	The light is a fixed in place thing in the Lighthouse.  "At the center of the room is the light itself, a 1000-Watt tungsten halogen light powered by diesel generator, and having a visible range of twenty-six nautical miles." Understand "lamp" as the light. It is lit. The light has a direction called heading. The heading of the light is north.
+
+	A room is usually dark.
+
+	Understand "turn [something] [a direction]" as reorienting it to. Reorienting it to is an action applying to one thing and one visible thing. 
+
+	Instead of turning the light, say "Try turning the light to the direction of your choice."
+
+	Check reorienting it to: if the noun is not the light, say "You couldn't do so meaningfully." instead; if the second noun is up or the second noun is down, say "The light only points in compass directions." instead. 
+
+And now that's done, we have a little fun calculating where the beam hits:
+
+	{**}Carry out reorienting it to: 
+		now the heading of the light is the second noun;
+		let way be the heading of the light;
+		let place be the room way from the Lighthouse;
+		while place is a room and place is lower than Lighthouse:
+			let place be the room way from the place;
+		if place is not a room, now the beam is nowhere;
+		otherwise move beam to the place.
+
+	Report reorienting it to: say "The light now points [heading of the light][if the beam is in a room], spotlighting [the holder of the beam][otherwise], into empty space[end if]."
+
+	The beam is a lit thing. Understand "light" or "brilliant" as the beam. "Brilliant light from the lighthouse floods the whole area." It is fixed in place. Instead of doing something other than examining to the beam: say "The light is, of course, intangible." The description is "The light is coming from the lighthouse, since the lamp is apparently pointed this way."
+
+	Altitude is a kind of value. 200 ft specifies an altitude. A room has an altitude. The altitude of a room is usually 50 ft. The altitude of the Lighthouse is 100 ft.
+
+	Definition: a room is low if its altitude is 20 ft or less.
+	
+	The Jetty is south of the Lighthouse. "During daylight hours, a fine place to catch almost unlimited supplies of crayfish. Less entertaining by night."
+	
+	North of the Lighthouse is the Uphill Road. The altitude of Uphill Road is 75 ft. North of Uphill Road is Hilltop. The altitude of Hilltop is 110 ft. The description of Hilltop is "The highest natural point around for miles; sometimes you will sit up here and watch for the lighthouse supply ship, the Lady Loch."
+
+	Northeast of the Lighthouse is Open Field. East of the Lighthouse is Stanley Creek Valley. The description of Stanley Creek is "This place used to have some other name meaning Ghost Valley in the aboriginal language, but it was piously renamed by missionaries." Train Trestle is east of the Stanley Creek Valley. "The now-abandoned track of the Bush Pacific Railway runs here, above Stanley Creek." The altitude of Train Trestle is 100 ft.
+
+	Before going from a room (called source) to a room (called destination):
+		if source is lower than destination:
+			say "It's an uphill climb...";
+		otherwise:
+			if destination is lower than source, say "You're heading downhill now...";
+			otherwise say "It's a straight shot."
+	
+	Test me with "turn lamp / turn lamp down / turn lamp east / e / e".
+
+All very loosely based on the Eddystone Point lighthouse of Tasmania, built in 1889, and forbiddingly remote even today. George Isaacs, a child growing up in the lighthouse, remembers the plentiful crayfish.

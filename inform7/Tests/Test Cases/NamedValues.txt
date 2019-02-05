@@ -1,0 +1,35 @@
+Dummy is a room.
+
+Trevor carries the fish.
+
+The wolf count is a number which varies.
+The marmot count is initially 5.
+The preferred person is initially Trevor. The preferred person is a person which varies.
+
+The box is on the table.
+
+The wolf count is initially 7.
+
+The dull look is always "It has a dull look to it."
+
+The badger count is always 12.
+
+Table of Bananas
+rating	fruity
+10	11
+12	badger count
+
+The trebuchet is initially 16339. The cuddly animal count is initially the badger count.
+
+The description of the fish is the dull look.
+
+When play begins:
+	showme wolf count;
+	showme marmot count;
+	showme the preferred person;
+	showme the badger count;
+	showme the description of the fish;
+	let X be the badger count;
+	let Y be the dull look;
+	showme the contents of the Table of Bananas;
+	showme {1, badger count, 7};

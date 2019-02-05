@@ -1,0 +1,10 @@
+The Kitchen is a room.
+
+The grill is a supporter in the Kitchen.
+A steak is on the grill.
+
+A sausage is on top of the grill.
+
+When play begins:
+	if the steak is on the grill, say "Steak confirmed as on the grill.";
+	if the steak is on top of the grill, say "Steak confirmed as on top of the grill."

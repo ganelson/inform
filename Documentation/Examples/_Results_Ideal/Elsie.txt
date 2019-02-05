@@ -1,0 +1,33 @@
+   Ship's Bridge
+  Elsie
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ship's Bridge
+  There is a door in this wall -- or at least, the potential for a door, since currently it is sealed, distinguishable from the rest of the wall only by the warning stripes on its surface.
+  
+> >   C Deck
+  (Testing.)
+  
+  >[1] open door
+  You press the appropriate buttons, and a section of wall slides away.
+  
+  >[2] look
+  Ship's Bridge
+  There is a door in this wall.
+  
+  The sliding door slips back into place, sealing the wall as though there had never been a breach.
+  
+  >[3] enter door
+  (first opening the sliding door)
+  You press the appropriate buttons, and a section of wall slides away.
+  
+  C Deck
+  There is a door in this wall.
+  
+  >[4] z
+  Time passes.
+  
+  The sliding door slips back into place, sealing the wall as though there had never been a breach.
+  
+> >

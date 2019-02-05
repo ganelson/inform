@@ -1,0 +1,3 @@
+More than three people are in the Dining Room.
+
+None of the doors is open.

@@ -1,0 +1,61 @@
+   arena
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  No, you're here to FIGHT!
+  
+  arena
+  You're here to fight.
+  
+> >   lounge
+  (Testing.)
+  
+  >[1] look
+  No, you're here to FIGHT!
+  
+  arena
+  You're here to fight.
+  
+  >[2] x me
+  No, you're here to FIGHT!
+  
+  As good-looking as ever.
+  
+  >[3] take me
+  That's the spirit!
+  
+  No, you're here to FIGHT!
+  
+  You are always self-possessed.
+  
+  >[4] attack me
+  That's the spirit!
+  
+  Violence isn't the answer to this one.
+  
+  >[5] east
+  No, you're here to FIGHT!
+  
+  lounge
+  
+  >[6] x me
+  No, you're here to FIGHT!
+  
+  As good-looking as ever.
+  
+  >[7] take me
+  That's the spirit!
+  
+  No, you're here to FIGHT!
+  
+  You are always self-possessed.
+  
+  >[8] attack me
+  A gentleman wouldn't.
+  
+  That's the spirit!
+  
+  Violence isn't the answer to this one.
+  
+> >

@@ -1,0 +1,52 @@
+   Herb Garden
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Herb Garden
+  You can see six flowerpots and ten Ming vases here.
+  
+> >   Herb Garden
+  (Testing.)
+  
+  >[1] get three ming vases
+  Ming vase: Taken.
+  Ming vase: Taken.
+  Ming vase: Taken.
+  
+  >[2] get four flowerpots
+  flowerpot: Taken.
+  flowerpot: Taken.
+  flowerpot: Taken.
+  flowerpot: Taken.
+  
+  >[3] drop all
+  flowerpot: Crack!
+  unbroken flowerpot: Crack!
+  unbroken flowerpot: Crack!
+  unbroken flowerpot: Crack!
+  unbroken Ming vase: Crack!
+  unbroken Ming vase: Crack!
+  unbroken Ming vase: Crack!
+  
+  >[4] look
+  Herb Garden
+  You can see three broken Ming vases, four broken flowerpots, two unbroken flowerpots and seven unbroken Ming vases here.
+  
+  >[5] get two broken ming vases
+  broken Ming vase: Taken.
+  broken Ming vase: Taken.
+  
+  >[6] get two broken flowerpots
+  broken flowerpot: Taken.
+  broken flowerpot: Taken.
+  
+  >[7] get two unbroken ming vases
+  unbroken Ming vase: Taken.
+  unbroken Ming vase: Taken.
+  
+  >[8] get two unbroken flowerpots
+  unbroken flowerpot: Taken.
+  unbroken flowerpot: Taken.
+  
+> >

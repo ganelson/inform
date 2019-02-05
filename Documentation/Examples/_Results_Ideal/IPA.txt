@@ -1,0 +1,57 @@
+   Strip-mall Parking Lot                                                                                                                                                                                                 9:50 am
+  IPA
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Strip-mall Parking Lot
+  Dead Christmas trees are heaped outside the bagel shop. Strips of dirty ice survive along the curb, and in the shadows of the lamp-posts. A wet, almost illegible sheet of algebra homework is plastered to the asphalt.
+  
+  Pinewood Brewing Supply is at the east end of the lot.
+  
+> >   Pinewood Brewing Supply                                                                                                                                                                                                10:01 am
+  (Testing.)
+  
+  >[1] e
+  Pinewood Brewing Supply is locked up until 10:00 am.
+  
+  >[2] e
+  You rattle at the door again. "Hold your horses, for crying out loud," yells a voice from within.
+  
+  >[3] n
+  
+  Noah's Bagels
+  The selection has been somewhat picked over, leaving you with your choice of Pumpernickel, Asiago, or Everything.
+  
+  >[4] z
+  Time passes.
+  
+  >[5] s
+  
+  Strip-mall Parking Lot
+  Dead Christmas trees are heaped outside the bagel shop. Strips of dirty ice survive along the curb, and in the shadows of the lamp-posts. A wet, almost illegible sheet of algebra homework is plastered to the asphalt.
+  
+  Pinewood Brewing Supply is at the east end of the lot.
+  
+  >[6] e
+  Pinewood Brewing Supply is locked up until 10:00 am.
+  
+  >[7] z
+  Time passes.
+  
+  >[8] e
+  Pinewood Brewing Supply is locked up until 10:00 am.
+  
+  >[9] z
+  Time passes.
+  
+  >[10] z
+  Time passes.
+  
+  >[11] e
+  
+  Pinewood Brewing Supply
+  Shelves and shelves of malt and hops; large glass carboys, and plastic tubing; empty bottles; bottle-caps; bottle-labeling kits; starters for vinegar, sourdough, root beer.
+  
+  A sweet malty smell hangs in the air.
+  
+> >

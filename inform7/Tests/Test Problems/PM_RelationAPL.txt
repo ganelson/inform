@@ -1,0 +1,1 @@
+A room can be either outdoor or indoor.Oliver's House is a Region. A room in Oliver's House is usually indoor. Oliver's Room is a room in Oliver's House.

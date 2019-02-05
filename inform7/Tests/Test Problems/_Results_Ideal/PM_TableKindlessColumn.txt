@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableKindlessColumn
+  >--> Column 2 (rank) of 'Table 1 - Admirals' (source text, line 3) contains
+    no values and doesn't tell me anything about its kind, which means that I
+    don't know how to deal with it. You should either put a value into the
+    column somewhere, or else write the kind in as part of the heading: 'rank
+    (a number)', say.
+Inform 7 has finished: 18 centiseconds used.

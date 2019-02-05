@@ -1,0 +1,31 @@
+* Assemblies and body parts
+(Pocket added to every jacket; Being Prepared)
+A kind for jackets, which always includes a container called a pocket.
+
+	{*}"Being Prepared"
+	
+	A jacket is a kind of thing. A jacket is always wearable.  
+
+	A pocket is a kind of container. A pocket is part of every jacket. The carrying capacity of a pocket is always 2.
+
+	After examining a jacket:
+		let target be a random pocket which is part of the noun;
+		say "[The target] contains [a list of things in the target]."
+
+Now we've created the rules that will govern any specific jackets we might happen to put in our game: each one will always have one pocket, which will be able to contain no more than two things. The description of "a list of things" is text with a list, which we will learn about further in a few sections. 
+
+Next we might want to create the environment and an actual example of the jacket kind:
+
+	{**}Tent is a room. "A dome made of two flexible rods and a lot of bright green ripstop nylon. It bills itself as a one-man tent, but you'd call it a two-dwarf tent: there is no way to arrange yourself on its square floor so that you can stretch out completely."
+	
+	The hoodie is a jacket. "Your hoodie is balled up in the corner." The description of the hoodie is "Both elbows are stained from yesterday's entrenching project."
+
+	The hoodie's pocket contains a Swiss army knife and a folded map. The hoodie is in the Tent.
+
+Notice that, since Inform has created a pocket for the hoodie, we can now refer to it by name in our source, giving it any additional properties we need to define. Here we simply put a few items into it.
+	
+	{**}The player wears a whistle. The description of the whistle is "To frighten bears."
+
+	Test me with "x hoodie / get hoodie / get knife / get map / i / put hoodie in pocket / put whistle in pocket / put map in pocket / put knife in pocket / i".
+
+Notice that Inform automatically refuses to put the hoodie into its own pocket: as a default, a container cannot contain something of which it is itself a part. 

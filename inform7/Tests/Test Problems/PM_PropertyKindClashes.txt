@@ -1,0 +1,2 @@
+A room has a number called bogosity.
+A container has some text called bogosity.

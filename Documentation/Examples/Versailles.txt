@@ -1,0 +1,49 @@
+** Which and who
+(Mirror into which the player can look; Versailles)
+A mirror which will reflect some random object in the room.
+
+One of the advantages of descriptions is that we can use them to pick an item randomly from a specified category. (For more on this possibility, see the Change chapter sections on randomness.)
+
+For instance, suppose we wanted to create a mirror in which the player would see some item from the room reflected. We might write
+
+	Instead of searching the mirror:
+		say "You see [a random thing in the location] reflected back at you."
+		
+This is the same as "a random thing which is in the location": phrase "in..." can be used briefly in Inform as it can in English.
+
+But, on a little more thought, we might want to expand on this: the mirror perhaps should reflect not only things that are in the room, but anything that the player can see (even if it's on a supporter or carried by someone). So then we might instead write
+
+	Instead of searching the mirror:
+		say "You see [a random visible thing] reflected back at you."
+
+There's still a risk, though, that this will produce the response
+
+	You see the mirror reflected back at you.
+
+because, of course, the mirror is itself visible. So instead we might write
+
+	Instead of searching the mirror:
+		say "You see [a random visible thing which is not the mirror] reflected back at you."
+
+	{*}"Versailles"
+
+	The Hall of Plywood Boards is a room. "The Hall of Mirrors is under reconstruction: it is currently a dank tunnel enlivened only by short placards about the history of the room.
+
+	As though to mock tourists such as yourself who bought their tickets without knowing this, the officials have left uncovered a single panel of mirror."
+
+	The mirror is scenery in the Hall of Plywood Boards. Understand "panel" or "panel of mirror" as the mirror. The description is "Lovingly restored to shimmering brilliance, it suggests how marvelous this room would be if you had had the good sense to arrive after the renovations were complete."
+
+	Some tourists are a person in the Hall of Plywood Boards. The tourists are scenery. 
+
+	Instead of searching the mirror:
+		say "You see [a random visible thing which is not the mirror] reflected back at you."
+	
+	Test me with "x mirror / look in mirror / g".
+	
+A final note: we use "searching" here because Inform understands both SEARCH THING and LOOK IN THING as the searching action, and the player is most likely to type LOOK IN MIRROR in order to see the reflection there. In the absence of an example, we can discover the relationship between actions and their command vocabulary in one of two ways. A complete list of actions and the vocabulary associated with them is available in the Actions index. Alternatively, we can type ACTIONS at a prompt, followed by LOOK IN MIRROR, and get the response
+
+	[searching the mirror] 
+	You find nothing of interest. 
+	[searching the mirror - failed the can't search unless container or supporter rule] 
+
+...which tells us that Inform is understanding the action as "searching the mirror". 

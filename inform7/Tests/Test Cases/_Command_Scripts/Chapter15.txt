@@ -1,0 +1,176 @@
+e
+s
+e
+e
+e
+e
+s
+fire left cannon
+fire left cannons
+fire right cannons
+fire right cannons
+fire left cannons
+x dock
+out
+n
+x dock
+s
+x dock
+fire right
+g
+g
+g
+g
+g
+fire left
+fire right
+x dock
+fire left
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+fire right
+g
+g
+g
+g
+fire left
+fire right
+fire left
+fire right
+g
+g
+g
+x dock
+fire left
+fire right
+fire left
+fire right
+fire left
+fire right
+fire left
+x dock
+fire left
+fire right
+fire left
+g
+g
+fire right
+g
+g
+g
+g
+g
+g
+fire right
+fire left
+g
+g
+x dock
+fire left
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+g
+look
+x dock
+fire left
+g
+g
+x ships
+x dock
+fire left
+g
+g
+look
+x ships
+x dock
+fire left cannons
+fire right cannons
+listen
+n
+w
+w
+w
+w
+w
+n
+listen
+g
+g
+g
+g
+s
+e
+e
+e
+e
+w
+s
+n
+w
+sw
+smell
+g
+listen
+n
+e
+ne
+listen
+w
+listen
+w
+listen
+s
+listen
+s
+listen
+e
+listen
+e
+listen
+e
+listen
+w
+n
+listen
+w
+listen
+e
+n
+i
+eat musket
+s
+eat musket
+s
+w
+eat musket
+w
+eat musket
+jump
+n
+jump
+e
+n
+jump
+

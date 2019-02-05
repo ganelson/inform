@@ -1,0 +1,50 @@
+   Splog
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Splog
+  
+> >   Splog
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  Element Hydrogen.
+  Which has N = 1.
+  Element Iron.
+  Element Zinc.
+  Which has N = 30.
+  Element Uranium.
+  Which has N = 92.
+  
+  >[2] e
+  You can't go that way.
+  
+  Element Hydrogen.
+  Element Iron.
+  Element Zinc.
+  Which has N = 30.
+  Element Uranium.
+  Which has N = 92.
+  
+  >[3] eat me
+  You're plainly inedible.
+  
+  Element Hydrogen.
+  Element Iron.
+  Element Zinc.
+  Element Uranium.
+  
+  >[4] jump
+  You jump on the spot.
+  
+  Element Hydrogen.
+  Element Iron.
+  Element Uranium.
+  
+  >[5] inv
+  You are carrying nothing.
+  
+> >

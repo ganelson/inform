@@ -1,0 +1,6 @@
+Laboratory is a room. Peter and Jane are in the laboratory.
+
+Amity relates various people to various people. The verb to like (he likes,
+they like, it is liked, he is liking) implies the amity relation.
+
+Daphne is a woman who does not like Peter.

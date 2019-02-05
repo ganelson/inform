@@ -1,0 +1,15 @@
+The Reliquary is a room. The wooden door is a door.  The wooden door is inside from the Reliquary 
+and outside from the Crypt.
+The ghost is a person in the Reliquary.
+
+Instead of going north: try the ghost closing the wooden door.
+
+Every turn: say "The ghost can[if the ghost cannot touch the wooden door]not[end if] touch the wooden 
+door."
+
+The handle is part of the wooden door. Instead of an actor turning the handle: try the person asked opening 
+the wooden door.
+
+Instead of jumping: try the ghost turning the handle.
+
+Test me with "actions/z/in/n/jump".

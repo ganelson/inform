@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 77 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RedefinedNow
+  >--> You wrote 'To now the volume of fluid of (C - a fluid container) is (X -
+    number)' (source text, line 6): but creating new variants on 'now' is not
+    allowed, because 'now' plays a special role in the language. It has a
+    wide-ranging ability to make a condition become immediately true. (To give
+    it wider abilities, the idea is to create new relations.)
+Inform 7 has finished: 15 centiseconds used.

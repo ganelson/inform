@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 36 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OverspecifiedSpec
+  >--> You wrote 'The description of the power line in the Train Yard is "This
+    is a power line."' (source text, line 5): but this tries to set a property
+    for something more complicated than a single thing named without
+    qualifications, and that isn't allowed. For instance, 'The description of
+    the Great Portal is "It's open."' is fine, but 'The description of the
+    Great Portal in the Palace is "It's open."' is not allowed, because it
+    tries to qualify 'Great Portal' with the extra clause 'in the Palace'. (If
+    you need to make a description which changes based on where something is,
+    or where it is seen from, try using text substitutions.)
+Inform 7 has finished: 17 centiseconds used.

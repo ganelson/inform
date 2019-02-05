@@ -1,0 +1,29 @@
+   Inadequate Shelter
+  Merlin
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Inadequate Shelter
+  A piece of corrugated tin, leaned on two sticks, and pathetically augmented with a tire (on one side) and a cardboard box (on the side towards the wind). And that's what you've got between you and the driving rain.
+  
+  At the moment rain is all you can remember, in fact.
+  
+> >   Inadequate Shelter
+  (Testing.)
+  
+  >[1] remember rain
+  You've seen worse, but not often: it's falling so hard now that the tin rattles and the runoff, on the low side of the roof, would be a tenable source of hydroelectric power.
+  
+  >[2] remember power
+  It's not as though you have any sort of light bulb in here to turn on, even if you could power it.
+  
+  >[3] remember light bulb
+  Light bulbs, like so much else, are a thing of your past. Or is it your future? Tricky, the way the world loops round on itself.
+  
+  >[4] remember future
+  Living backwards has its drawbacks. A tendency to confuse and annoy your friends, being one; the total inability to maintain a stable relationship; and a deep dissatisfaction with most of the bodily processes people enjoy, since they ultimately make you hungrier, colder, or-- no point dwelling on it, really.
+  
+  >[5] remember backwards
+  It's not even exactly *backwards*, now is it? It's more like a series of forwardses stuck back to back. As though someone had taken each track of a CD and put them in the exactly wrong order. You miss that. The music on demand.
+  
+> >

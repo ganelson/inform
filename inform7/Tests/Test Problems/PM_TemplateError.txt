@@ -1,0 +1,7 @@
+Cliff Edge is a room. 
+
+Include (-
+
+{-callv:Banana Milk Shake}
+
+-) instead of "Print Table to File" in "Tables.i6t". 

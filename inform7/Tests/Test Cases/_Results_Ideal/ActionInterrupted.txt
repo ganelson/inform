@@ -1,0 +1,24 @@
+   Kitchen
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Kitchen
+  Just a small kitchen.
+  
+  You can see a bottle (in which is some whisky) here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] close bottle
+  You close the bottle.
+  
+  >[2] drink whisky
+  (first opening the bottle)
+  You take one sip, and feel it burn your tongue.
+  
+  >[3] drink whisky
+  One sip was enough.
+  
+> >

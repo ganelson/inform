@@ -1,0 +1,15 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 26 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_ElementOverflow
+  >--> In the sentence 'X is 16:10' (source text, line 5), you use the notation
+    '16:10' to write a constant value. But the notation was specified as
+    '16:9', which means that the second numerical part should range between 0
+    and 9.
+Problem__ PM_ElementOverflow
+  >--> In the sentence 'X is 16:10' (source text, line 5), you use the notation
+    '16:10' to write a constant value. But the notation was specified as
+    '16:9', which means that the second numerical part should range between 0
+    and 9.
+Inform 7 has finished: 16 centiseconds used.

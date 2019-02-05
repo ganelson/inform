@@ -1,0 +1,10 @@
+Porch is a room.
+
+Use maximum things understood at once of at least 200.
+
+A log is a kind of thing. The carrying capacity of the player is 1000.
+
+90 logs are in Porch.
+90 logs are in Porch.
+
+Test me with "get all / look / inventory / drop all".

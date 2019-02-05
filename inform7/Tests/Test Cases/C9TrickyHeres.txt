@@ -1,0 +1,18 @@
+The forest is a region. The Ruined Chapel, By the Waterfall and Final
+Darkness are in the forest.
+
+The Ruined Chapel is north of By the Waterfall. "One room.".
+
+The nose is here.
+
+The eye is here.
+
+By the Waterfall is north of the Final Darkness. "Another room."
+
+The mouth is here.
+
+Final Darkness is a room. "Boy, it sure is dark in here."
+
+The ear is here.
+
+Test me with "s/s".

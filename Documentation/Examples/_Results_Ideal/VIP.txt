@@ -1,0 +1,36 @@
+   Winding Street
+  A&E
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Winding Street
+  
+> >   Stately Lawn
+  (Testing.)
+  
+  >[1] e
+  A burly studio guard materializes in your path, convincing you that you would prefer to be elsewhere.
+  
+  >[2] n
+  
+  Sloping Street
+  You can see a garbage can (in which is a VIP Pass) here.
+  
+  >[3] e
+  A burly studio guard materializes in your path, convincing you that you would prefer to be elsewhere.
+  
+  >[4] get pass
+  Taken.
+  
+  >[5] e
+  Success! At last you are inside the set of "Prouder and More Prejudiced". Next step: locating Mr Firth.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

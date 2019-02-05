@@ -1,0 +1,9 @@
+Inform 7 build 6M27 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42500 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_LPRepeatedPartNames
+  >--> You wrote '12a5 specifies a blorb with parts trog and trog' (source text, line 2):
+    but this repeats a part name, that is, it uses the same name for two
+    different parts of the pattern.
+Inform 7 has finished: 19 centiseconds used.

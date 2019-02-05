@@ -1,0 +1,5 @@
+A room is a kind of door.
+
+Foo is a room.
+West of Foo is Bar.
+West of Bar is Foo.

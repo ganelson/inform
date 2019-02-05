@@ -1,0 +1,39 @@
+   Daunting Dungeon
+  Slogar's Revenge
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Daunting Dungeon
+  You can see a Disturbing Door here.
+  
+> >   Fallow Field
+  (Testing.)
+  
+  >[1] unlock disturbing door with amulet
+  You unlock the Disturbing Door.
+  
+  >[2] open door
+  You open the Disturbing Door.
+  
+  >[3] west
+  
+  Fallow Field
+  You can see a Disturbing Door here.
+  
+  >[4] remove amulet
+  You take off the Amulet of Tumblers.
+  
+  >[5] close door
+  You close the Disturbing Door.
+  
+  >[6] lock disturbing door with amulet
+  You lock the Disturbing Door.
+  
+  >[7] drop amulet
+  Dropped.
+  
+  >[8] unlock disturbing door with amulet
+  (first picking up the amulet)
+  You unlock the Disturbing Door.
+  
+> >

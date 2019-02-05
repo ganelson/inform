@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 28 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BothWaysDoor
+  >--> The Drawbridge seems to be a door whose connections have been given in
+    both of the alternative ways at once, by directly giving its map
+    connections (the normal way to set up a two-sided door) and also by saying
+    what is through it (the normal way to set up a one-sided door). As a door
+    can't be both one- and two-sided at once, I'm going to object to this.
+Inform 7 has finished: 17 centiseconds used.

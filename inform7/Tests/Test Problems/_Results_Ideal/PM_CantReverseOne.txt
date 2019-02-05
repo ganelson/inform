@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 22 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_CantReverseOne
+  >--> You wrote 'Understand "[someone]" as asking it about (with nouns
+    reversed)' (source text, line 1): but you can't use a 'reversed' action
+    when you supply fewer than two values for it to apply to, since reversal is
+    the process of exchanging them.
+Problem__ PM_CantReverseOne
+  >--> You wrote 'Understand "[text]" as asking it about (with nouns reversed)'
+    (source text, line 2): again, you can't use a 'reversed' action when you
+    supply fewer than two values for it to apply to.
+Inform 7 has finished: 56 centiseconds used.

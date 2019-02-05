@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 26 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NegationForbidden
+  >--> You wrote 'X is -14:4' (source text, line 5): but the minus sign is not
+    allowed here, since this is a kind of value which only allows positive
+    values to be written.
+Inform 7 has finished: 17 centiseconds used.

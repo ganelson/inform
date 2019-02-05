@@ -1,0 +1,54 @@
+   Cubist Lab
+  Depth
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cubist Lab
+  A laboratory which, as the art critic Louis Vauxcelles said about Braque's paintings in 1908, is full of little cubes: everyday objects rendered as if cuboidal.
+  
+> >   Cubist Lab
+  (Testing.)
+  
+  >[1] put arrow in box
+  The arrow is too long to fit into the box.
+  
+  >[2] put book in box
+  The child's book is too wide to fit into the box.
+  
+  >[3] put cube in box
+  The featureless white cube is too bulky to fit into the box.
+  
+  >[4] put ball in box
+  You put the red rubber ball into the box.
+  
+  >[5] put baguette in box
+  The crusty baguette will never fit inside the box.
+  
+  >[6] put pebbles in box
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: Done.
+  pebble: The pebble will not fit into the box with the twenty-one pebbles and the red rubber ball.
+  pebble: The pebble will not fit into the box with the twenty-one pebbles and the red rubber ball.
+  pebble: The pebble will not fit into the box with the twenty-one pebbles and the red rubber ball.
+  pebble: The pebble will not fit into the box with the twenty-one pebbles and the red rubber ball.
+  
+> >

@@ -1,0 +1,5 @@
+Lab is a room.
+When play begins:
+	let foo be a random person in a room (called bar);
+	showme foo;
+	showme bar.

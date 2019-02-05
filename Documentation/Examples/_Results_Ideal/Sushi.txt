@@ -1,0 +1,201 @@
+   Studio                                                                                                                                                                                                                 0/1
+  You're on the run. You've got a million errands to do -- your apartment to get cleaned up, the fish to feed, lingerie to buy, Britney's shuttle to meet--
+  
+  The fish. You almost forgot. And it's in the studio, halfway across town from anywhere else you have to do. Oh well, you'll just zip over, take care of it, and hop back on the El. This'll be over in no time.
+  
+  Don't you just hate days where you wake up the wrong color?
+  
+  A Day For Fresh Sushi
+  Your basic surreal gay fish romance by Emily Short
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Studio
+  This is Britney's studio. You haven't been around here for a while, because of how busy you've been with work, and she's made a few changes -- the aquarium in the corner, for instance. But it still brings back a certain emotional sweetness from the days when you had just met for the first time... when you used to spend hours on the sofa...
+  
+  You shake your head. No time for fantasy. Must feed fish.
+  
+  A huge cabinet, in the guise of an armoire, stands between the windows.
+  
+  On the easel is a painting.
+  
+  On the table is a vase (empty).
+  
+  In one corner of the room, a large aquarium bubbles in menacing fashion.
+  
+> >   Studio                                                                                                                                                                                                                 1/23
+  (Testing.)
+  
+  >[1] x fish
+  Even if you had had no prior experience with him, you would be able to see at a glance that this is an evil fish. From his sharkish nose to his razor fins, every inch of his compact body exudes hatred and danger.
+  
+  The fish glares at you, as though to underline this point.
+  
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
+  
+  >[2] g
+  Even if you had had no prior experience with him, you would be able to see at a glance that this is an evil fish. From his sharkish nose to his razor fins, every inch of his compact body exudes hatred and danger.
+  
+  "If you're looking for signs of malnutrition," says the fish, "LOOK NO FURTHER!!" And it sucks in its gills until you can see its ribcage.
+  
+  The evil fish is swimming around the tank in lazy circles.
+  
+  >[3] kiss fish
+  You're saving all your lovin for someone a lot cuddlier.
+  
+  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  
+  >[4] x aquarium
+  A very roomy aquarium, large enough to hold quite a variety of colorful sealife -- if any yet survived.
+  
+  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  
+  >[5] x gravel
+  A lot of very small grey rocks.
+  
+  The fish notices your gaze; makes a pathetic mime of trying to find little flakes of remaining food amongst the gravel.
+  
+  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  
+  >[6] x seaweed
+  Fake plastic seaweed of the kind generally bought in stores for exactly this purpose.
+  
+  "Nice, hunh?" blubs the fish, taking a stabbing bite out of one just by way of demonstration. "Look so good I could eat it."
+  
+  The evil fish is swimming around the tank in lazy circles.
+  
+  >[7] i
+  You are carrying:
+    a telegram
+    a bouquet
+    a lingerie bag
+    a chef hat (being worn)
+  
+  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  
+  >[8] x telegram
+  A telegram, apparently. And dated three days ago. TRIUMPH OURS STOP BACK SOON STOP BE SURE TO FEED FISH STOP
+  
+  "So," blubs the evil fish. "How about it? Little food over here?"
+  
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
+  
+  >[9] x bouquet
+  Okay, so it's silly and sentimental and no doubt a waste of money, of which there is never really enough, but: you miss her. You've missed her since ten seconds after she stepped aboard the shuttle to Luna Prime, and when you saw these -- her favorites, pure golden tulips like springtime -- you had to have them.
+  
+  "Oh, you shouldn't have," says the fish. "For me??" You just respond with a livid glare.
+  
+  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  
+  >[10] smell bouquet
+  "Mmm-mm," says the fish. "Damn, I sure wish I had olfactory abilities. Hey, if I did, I might be even better at noticing the presence or absence of FOOD."
+  
+  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  
+  >[11] x lingerie
+  You grant yourself the satisfaction of a little peek inside. You went with a pale, silky ivory this time -- it has that kind of sophisticated innocence, and it goes well with the purple of your skin. A small smirk of anticipation crosses your lips.
+  
+  "What's in THERE?" asks the fish. "Didja bring me take-out? I don't mind Chinese. They eat a lot of carp, but what do I care? I'm not a carp. Live and let live is what I s--"
+  
+  "It's NOT take-out." You stare the fish down and for once he actually backstrokes a stroke or two. "It's PRIVATE."
+  
+  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  
+  >[12] g
+  You grant yourself the satisfaction of a little peek inside. You went with a pale, silky ivory this time -- it has that kind of sophisticated innocence, and it goes well with the purple of your skin. A small smirk of anticipation crosses your lips.
+  
+  "If it's not take-out, I don't see the relevance!" shouts the fish. "Food is what you want in this situation. Food for MEEEE."
+  
+  The evil fish is swimming around the tank in lazy circles.
+  
+  >[13] x hat
+  A big white chef hat of the kind worn by chefs. In this case, you. Just goes to show what a hurry you were in on the way out of the restaurant.
+  
+  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  
+  >[14] x window
+  Through the windows, you get a lovely view of the street outside -- the little fountain on the corner, the slightly dilapidated but nonetheless magnificent Jugendstil architecture of the facing building. The glass itself is shut, however.
+  
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
+  
+  >[15] open window
+  "Thank god some air," says the fish. "Man, it was getting hard to breathe in here." Two beats pass. "Oh wait."
+  
+  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  
+  >[16] x painting
+  A ferocious banging from the aquarium attracts your attention as you go to look at the painting. "Hey!" screams the fish. "She doesn't like strangers looking at her paintings before they're DOONNNE!"
+  
+  "Shut up, you," you reply casually. "I'm not a stranger." But the fish puts you off a little bit, and your heart is already in your mouth before you see the painting itself...
+  
+  Only partway finished, but you can tell what it is: Britney's mother. You only met the old woman once, before she faded out of existence in a little hospice in Salzburg.
+  
+  In the picture, her hands are grasping tightly at a small grey bottle, the pills to which she became addicted in her old age, and strange, gargoyle-like forms clutch at her arms and whisper in her ears.
+  
+  But the disturbing thing, the truly awful thing, is the small figure of Britney herself, down in the corner, unmistakable: she is walking away. Her back turned.
+  
+  You thought she'd finally talked this out, but evidently not. Still feels guilty for leaving. You only barely stop yourself from tracing, with your finger, those tiny slumped shoulders...
+  
+  "So what's it of?" asks the fish, as you turn away. "She never asks if I want to see them, you know?"
+  
+  "Her mother," you respond without thinking.
+  
+  "Yeah? Man. I never knew my mother. Eggs, that's the way to go."
+  
+  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  
+  >[17] g
+  Once is really enough. It's pretty much embedded in your consciousness now.
+  
+  The evil fish is swimming around the tank in lazy circles.
+  
+  >[18] x cabinet
+  Large, and with a bit of an Art Nouveau theme going on in the shape of the doors.
+  
+  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  
+  >[19] open cabinet
+  "There ya go," says the fish. "The girl is getting WARMER."
+  
+  The evil fish is swimming around the tank in lazy circles.
+  
+  >[20] x cloths
+  Various colors of drapery that Britney uses to set up backgrounds and clothe her models. She does a lot of portraiture, so this comes in handy. It's all a big messy wad at the moment. Organized is not her middle name.
+  
+  "Whatcha looking at? I can't see through the doors, you know."
+  
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
+  
+  >[21] search cloths
+  Poking around the cloths reveals -- ha HA! -- a vehemently orange can of fish food.
+  
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
+  
+  >[22] open food
+  "Oh, for--!" The evil fish breaks out in exasperation and hives. "Screw the screwing around with the screwtop. SHE never has to do that."
+  
+  "Well, SHE is not here," you reply. "What do you suggest?"
+  
+  ">FEED FISH<" says the fish promptly, making fishy faces and pointing at you with his fin. "Simplicity. Try it."
+  
+  The evil fish is swimming around the tank in lazy circles.
+  
+  >[23] feed fish
+  (the can of fish food)
+  Triumphantly, you dump the remaining contents of the canister of fish food into the tank. It floats on the surface like scum, but the fish for once stops jawing and starts eating. Like a normal fish. Blub, blub.
+  
+    *** TWO HOURS LATER ***
+  
+  "So," Britney says, tucking a strand of hair behind your ear, "where shall we go for dinner? Since I made the big bucks on this trip, it's my treat. Anywhere you like."
+  
+  "I've had a hankering all day," you admit, as the two of you turn from the shuttle platform and head toward the bank of taxis. "I could really go for some sashimi right now."
+  
+  
+  
+      *** The End ***
+  
+  
+  In that game you scored 1 out of a possible 1, in 23 turns.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

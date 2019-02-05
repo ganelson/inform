@@ -1,0 +1,22 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 31 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_APWithBadWhen
+  >--> You wrote 'Instead of jumping when Orinoco asdl lkjhlkjhlkh' (source
+    text, line 3), which seems to introduce a rule taking effect only 'when
+    Orinoco asdl lkjhlkjhlkh'. But this condition did not make sense, so I am
+    unable to accept this rule.
+Problem__ PM_APWithBadWhen
+  >--> You wrote 'Instead of jumping when Orinoco is nowhere' (source text, line 5),
+    which seems to introduce a rule taking effect only 'when Orinoco is
+    nowhere'. But this condition did not make sense, perhaps because 'nowhere'
+    tends not to be allowed in Inform conditions? (Whereas 'no room' is usually
+    allowed.)
+Problem__ PM_APWithBadWhen
+  >--> You wrote 'Instead of jumping when Orinoco has nothing' (source text, line 7),
+    which seems to introduce a rule taking effect only 'when Orinoco has
+    nothing'. But this condition did not make sense, perhaps because 'nothing'
+    tends not to be allowed in Inform conditions? (Whereas 'no thing' is
+    usually allowed.)
+Inform 7 has finished: 20 centiseconds used.

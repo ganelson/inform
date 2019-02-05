@@ -1,0 +1,29 @@
+Maths Department is a room. "Try typing E.G. 2^3 to do some
+number crunching."
+
+A power is a kind of value. 3^9 specifies a power with parts base
+and exponent.
+
+A wibble is a kind of value. a^^^b, flob~flab, x\d\x and blob@blab are wibbles.
+
+When play begins:
+	say "a^^^b = [a^^^b], flob~flab = [flob~flab], x\d\x = [x\d\x] and blob@blab = [blob@blab]."
+
+
+To decide which number is (b - a number) raised to the power of (e - a number):
+    if e is 0, decide on 1;
+    decrease e by 1;
+    let b be b * (b raised to the power of e);
+    decide on b.
+
+Raising is an action applying to one power.
+Understand "[power]" as raising.
+
+Check raising 0^0: say "That is undefined." instead.
+
+Carry out raising:
+    let the answer be the base part of the power understood raised
+    to the power of the exponent part of the power understood;
+    say "The result of [power understood] is [answer]."
+
+Test me with "3^4".

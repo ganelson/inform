@@ -1,0 +1,57 @@
+   Dressing Room
+  What Not To Wear
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dressing Room
+  
+> >   Dressing Room
+  (Testing.)
+  
+  >[1] wear capris
+  You put on the capris.
+  
+  >[2] wear jeans
+  (first taking off the capris)
+  You put on the jeans.
+  
+  >[3] i
+  You're carrying some capris, a corset, a plunge bra, a thong, boy-shorts, black satin D'Orsay pumps, brown leather boots, a camisole, a cocktail dress, a bolero, a cashmere shrug, a sheer wrap and a linen tunic. You are wearing some jeans.
+  
+  >[4] wear thong
+  (first removing the jeans)
+  You put on the thong.
+  
+  >[5] i
+  You're carrying some capris, some jeans, a corset, a plunge bra, boy-shorts, black satin D'Orsay pumps, brown leather boots, a camisole, a cocktail dress, a bolero, a cashmere shrug, a sheer wrap and a linen tunic. You are wearing a thong.
+  
+  >[6] wear dress
+  You put on the cocktail dress.
+  
+  >[7] wear corset
+  (first removing the cocktail dress)
+  You put on the corset.
+  
+  >[8] wear dress
+  You put on the cocktail dress.
+  
+  >[9] i
+  You're carrying some capris, some jeans, a plunge bra, boy-shorts, black satin D'Orsay pumps, brown leather boots, a camisole, a bolero, a cashmere shrug, a sheer wrap and a linen tunic. You are wearing a cocktail dress.
+  
+  >[10] wear wrap
+  You put on the sheer wrap.
+  
+  >[11] i
+  You're carrying some capris, some jeans, a plunge bra, boy-shorts, black satin D'Orsay pumps, brown leather boots, a camisole, a bolero, a cashmere shrug and a linen tunic. You are wearing a cocktail dress and a sheer wrap.
+  
+  >[12] wear boots
+  You put on brown leather boots.
+  
+  >[13] wear pumps
+  (first taking off brown leather boots)
+  You put on black satin D'Orsay pumps.
+  
+  >[14] i
+  You're carrying some capris, some jeans, a plunge bra, boy-shorts, brown leather boots, a camisole, a bolero, a cashmere shrug and a linen tunic. You are wearing black satin D'Orsay pumps, a cocktail dress and a sheer wrap.
+  
+> >

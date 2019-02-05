@@ -1,0 +1,4 @@
+There is a room.
+A room has a person called spong.
+Every turn:
+	increment the spong of the location;

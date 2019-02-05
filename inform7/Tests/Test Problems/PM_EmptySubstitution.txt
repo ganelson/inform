@@ -1,0 +1,7 @@
+There is a room.
+
+When play begins:
+	let w be "[]";
+	let x be "[   ]frpg";
+	let y be "asasdf[  ]frpg";
+	let z be "asasdf[ ]";

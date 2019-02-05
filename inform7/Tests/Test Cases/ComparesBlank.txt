@@ -1,0 +1,17 @@
+The Kitchen is a room.
+
+The rock is in the Kitchen. The initial appearance of the rock is "[one of]Surprising rock![or]Familiar 
+rock.[stopping]"
+
+T is initially "[one of]One[or]Two[or]Three[stopping]".
+
+When play begins:
+	if T is "":
+		say "Empty.";
+	else:
+		say "Not empty.";
+	say "[T].";
+	if T is "":
+		say "Empty.";
+	else:
+		say "Not empty.";

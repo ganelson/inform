@@ -1,0 +1,51 @@
+Length is a kind of value. 1m specifies a length. 1mm specifies a length
+scaled down by 1000. 1cm specifies a length scaled down by 100. 1km
+specifies a length scaled up by 1000.
+
+Area is a kind of value. 1 sq m specifies an area. 1 sq cm specifies an
+area scaled down by 10000. 1 hectare specifies an area scaled up by 10000.
+Length times length specifies an area.
+
+A volume is a kind of value. 1 cu m specifies a volume. 1cc specifies
+a volume scaled down by 1000000. Length times area specifies a volume.
+
+Test evaluation (internal) with 0mm.
+Test evaluation (internal) with 1mm.
+Test evaluation (internal) with 9mm.
+Test evaluation (internal) with 10mm.
+Test evaluation (internal) with 11mm.
+Test evaluation (internal) with 0cm.
+Test evaluation (internal) with 1cm.
+Test evaluation (internal) with 97cm.
+Test evaluation (internal) with 100cm.
+Test evaluation (internal) with 101cm.
+Test evaluation (internal) with 0m.
+Test evaluation (internal) with 1m.
+Test evaluation (internal) with 97m.
+Test evaluation (internal) with 999m.
+Test evaluation (internal) with 1000m.
+Test evaluation (internal) with 1001m.
+Test evaluation (internal) with 0km.
+Test evaluation (internal) with 1km.
+Test evaluation (internal) with 26km.
+Test evaluation (internal) with 1m times 1m.
+Test evaluation (internal) with 1m times 8.
+Test evaluation (internal) with 1cm times 27m.
+Test evaluation (internal) with 1 sq m divided by 20cm.
+Test evaluation (internal) with 1m divided by 8.
+Test evaluation (internal) with 1m divided by 8cm.
+Test evaluation (internal) with (5mm times 8cm) times 172mm.
+Test evaluation (internal) with 0.5cm.
+Test evaluation (internal) with -0.5cm.
+Test evaluation (internal) with 0.271km.
+Test evaluation (internal) with 0.000321km.
+Test evaluation (internal) with 51.82m.
+
+Laboratory is a room.
+
+Measuring is an action applying to one length. Understand "measure [length]" as measuring.
+
+Carry out measuring: say "You measure out [the length understood]."
+
+Test me with "measure 1.6cm / measure 1.62cm / measure 1.62km / measure 20mm /
+measure 2mm / measure 25.0321km".

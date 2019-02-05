@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 12 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadObjectTranslation
+  >--> You wrote 'The whatsit object translates into I6 as "whatsit"' (source
+    text, line 3): but there is no such object or kind of object, so its name
+    will never be translated into an I6 Object or Class identifier in any
+    event.
+Inform 7 has finished: 16 centiseconds used.

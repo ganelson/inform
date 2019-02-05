@@ -1,0 +1,41 @@
+   Flea Market                                                                                                                                                                                                            Your funds: $15
+  Money for Nothing
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Flea Market
+  A crotchety man here is selling the broken television set, the Victorian rhinestone brooch and the cracked shaving mug.
+  
+> >   Flea Market                                                                                                                                                                                                            Your funds: $4.37
+  (Testing.)
+  
+  >[1] offer $0.50 for mug
+  "How about $2.75?" suggests the crotchety man.
+  
+  >[2] offer $0.50 to man
+  You'll need to specify what you want to buy -- try OFFER $1000.00 FOR BROOKLYN BRIDGE.
+  
+  >[3] offer $6.00 for mug
+  From the avaricious gleam in the eye of the crotchety man, you guess you could've gotten this purchase for less...
+  
+  You spend $6, and now you possess the cracked shaving mug.
+  
+  >[4] offer $50.00 for brooch
+  You don't have that kind of cash.
+  
+  >[5] offer $1.50 for brooch
+  The crotchety man cackles disdainfully. "If yer just here to insult me you can take your business elsewhere!" he says.
+  
+  >[6] offer $4.50 for brooch
+  "How about $4.75?" suggests the crotchety man.
+  
+  >[7] no
+  You reject the offer firmly.
+  
+  >[8] offer $4.50 for brooch
+  "How about $4.63?" suggests the crotchety man.
+  
+  >[9] yes
+  You spend $4.63, and now you possess the Victorian rhinestone brooch.
+  
+> >

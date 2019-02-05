@@ -1,0 +1,9 @@
+The study is a room.
+
+When play begins:
+	withstand;
+	explode.
+
+To withstand: (- {-counter:abcdeabcdeabcdeabcde} -).
+
+To explode: (- {-counter:abcdeabcdeabcdeabcdea} -).

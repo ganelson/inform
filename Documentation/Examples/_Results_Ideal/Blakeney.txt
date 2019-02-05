@@ -1,0 +1,32 @@
+   Pere Blanchard's Hut
+  A Humble Wayside Flower
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pere Blanchard's Hut
+  You can see Percival Blakeney and Marguerite (wife of Percival Blakeney) here.
+  
+> >   Road to Paris
+  (Testing.)
+  
+  >[1] out
+  
+  Garden
+  You can see Louise here.
+  
+  >[2] west
+  
+  Road to Paris
+  You can see Armand St Just (brother of Marguerite) here.
+  
+  >[3] east
+  
+  Garden
+  You can see Louise (wife of Armand St Just) here.
+  
+  >[4] west
+  
+  Road to Paris
+  You can see Armand St Just here.
+  
+> >

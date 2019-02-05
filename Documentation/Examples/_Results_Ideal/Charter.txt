@@ -1,0 +1,149 @@
+   Cabin                                                                                                                                                                                                                  0/1
+  Disenchantment Bay
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Cabin
+  The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
+  
+  Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company.
+  
+  The captain sits at the wheel, steering the boat and occasionally checking the radar readout.
+  
+> >   Cabin                                                                                                                                                                                                                  5/30
+  (Testing.)
+  
+  >[1] test first
+  (Testing.)
+  
+  >[2] x captain
+  The Captain is wearing a baseball cap and carrying a small silver key.
+  
+  >[3] open case
+  (first unlocking the glass case)
+  You lack a key that fits the glass case.
+  
+  >[4] i
+  You are carrying:
+    a backpack (open)
+      a warm beer
+    a pair of sunglasses (being worn)
+  
+  >[5] ask captain for the key
+  "Sure, you can -- well, get me a drink first, would you?"
+  
+  >[6] give beer to captain
+  (first taking the warm beer)
+  "I don't drink on the job, thanks," he says. "You can help yourself if you want it, though."
+  
+  >[7] open bench
+  You open the storage compartment, revealing some nets and a warm Coke.
+  
+  >[8] x nets
+  They must have something to do with fish as well. Really, you're just here for the sights.
+  
+  >[9] get nets
+  Taken.
+  
+  >[10] get coke
+  (putting the warm beer into the backpack to make room)
+  Taken.
+  
+  >[11] give coke to captain
+  "It needs chilling," the Captain remarks, disgruntled.
+  
+  >[12] test second
+  (Testing.)
+  
+  >[13] s
+  (first opening the cabin door)
+  
+  Deck
+  The whole back half of the boat is open, allowing you to view the surroundings without intervening windows -- if you can stand the cold.
+  
+  A very heavy ice chest sits on the ground.
+  
+  All around the boat bob chunks of glacier ice.
+  
+  >[14] open chest
+  You open the ice chest.
+  
+  >[15] drop nets
+  Dropped.
+  
+  >[16] get glacier ice
+  You are having a hard time fishing out the ice with your bare hands.
+  
+  >[17] get nets
+  Taken.
+  
+  >[18] get glacier ice
+  You scoop up the ice with the net.
+  
+  >[19] g
+  (putting the warm Coke into the backpack to make room)
+  Taken.
+  
+  >[20] put glacier ice in chest
+  You put the glacier ice into the ice chest.
+  
+  >[21] get coke
+  Taken.
+  
+  >[22] put coke in chest
+  You put the warm Coke into the ice chest.
+  
+  >[23] test third
+  (Testing.)
+  
+  >[24] x coke
+  You see nothing special about the room temperature Coke.
+  
+  >[25] g
+  You see nothing special about the cool Coke.
+  
+  >[26] g
+  You see nothing special about the cold Coke.
+  
+  >[27] g
+  You see nothing special about the cold Coke.
+  
+  >[28] get coke
+  Taken.
+  
+  >[29] n
+  
+  Cabin
+  The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, one of which is currently lifted to allow access to the storage compartment within. A glass case against the wall contains several fishing rods.
+  
+  Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company.
+  
+  The captain sits at the wheel, steering the boat and occasionally checking the radar readout.
+  
+  >[30] give coke to captain
+  "Ah, thank you," he says. How he can drink an iced soda on a day like today is an open question, but Alaskans are special.
+  
+  [Your score has just gone up by two points.]
+  
+  >[31] ask captain for key
+  "Here, knock yourself out."
+  
+  >[32] open case
+  (first unlocking the glass case)
+  (with the small silver key)
+  You open the glass case.
+  
+  >[33] get rods
+  (putting the nets into the backpack to make room)
+  Success is yours! (Now if only you knew anything about fishing.)
+  
+  
+  
+      *** The End ***
+  
+  
+  In that game you scored 5 out of a possible 5, in 30 turns.
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

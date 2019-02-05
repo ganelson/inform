@@ -1,0 +1,4 @@
+Laboratory is a room.
+
+When play begins:
+	let F be given by F = 001, where F is a number.

@@ -1,0 +1,52 @@
+   Cave
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Something other than listening to or talking to or examining the creature.
+  
+  Cave
+  You can see a creature here.
+  
+> >   Cave
+  (Testing.)
+  
+  >[1] look
+  Something other than listening to or talking to or examining the creature.
+  
+  Cave
+  You can see a creature here.
+  
+  >[2] take creature
+  Something other than listening to or talking to or examining the creature.
+  
+  I don't suppose the creature would care for that.
+  
+  >[3] drop creature
+  Something other than listening to or talking to or examining the creature.
+  
+  The creature is already here.
+  
+  >[4] examine me
+  Something other than listening to or talking to or examining the creature.
+  
+  As good-looking as ever.
+  
+  >[5] examine creature
+  Something other than taking or dropping to the creature.
+  
+  You see nothing special about the creature.
+  
+  >[6] listen to creature
+  Something other than taking or dropping to the creature.
+  
+  You hear nothing unexpected.
+  
+  >[7] push creature
+  Something other than listening to or talking to or examining the creature.
+  
+  Something other than taking or dropping to the creature.
+  
+  The creature might not like that.
+  
+> >

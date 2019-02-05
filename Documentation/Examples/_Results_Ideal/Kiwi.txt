@@ -1,0 +1,62 @@
+   Bottom of the Nursery
+  Kiwi
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Bottom of the Nursery
+  Ever since you ate that mysterious cake, you've been even shorter than usual.
+  
+  The high shelf is above you.
+  
+  You can see a step-ladder here.
+  
+> >   Bottom of the Nursery
+  (Testing.)
+  
+  >[1] x shelf
+  You can't see from down here.
+  
+  >[2] search shelf
+  You can't see from down here.
+  
+  >[3] get dodo
+  You can't reach from down here.
+  
+  >[4] get all from shelf
+  Whatever might be up there, you can't see or reach from down here.
+  
+  >[5] stand on ladder
+  You get onto the step-ladder.
+  
+  >[6] get all from shelf
+  kiwi-green ball: Taken.
+  stuffed dodo: Taken.
+  
+  >[7] search shelf
+  There is nothing on the high shelf.
+  
+  >[8] get off
+  You get off the step-ladder.
+  
+  Bottom of the Nursery
+  Ever since you ate that mysterious cake, you've been even shorter than usual.
+  
+  The high shelf is above you.
+  
+  You can see a step-ladder here.
+  
+  >[9] put all on shelf
+  stuffed dodo: You can't reach from down here.
+  kiwi-green ball: You can't reach from down here.
+  
+  >[10] get all from shelf
+  The high shelf is empty.
+  
+  >[11] stand on ladder
+  You get onto the step-ladder.
+  
+  >[12] put all on shelf
+  stuffed dodo: Done.
+  kiwi-green ball: Done.
+  
+> >

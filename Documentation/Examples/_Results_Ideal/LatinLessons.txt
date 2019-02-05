@@ -1,0 +1,24 @@
+   Latin Studio
+  Latin Lessons
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Latin Studio
+  You can see Rick here.
+  
+> >   Latin Studio
+  (Testing.)
+  
+  >[1] dance
+  You dance a few steps of street salsa.
+  
+  >[2] dance samba
+  You dance a few steps of samba.
+  
+  >[3] rick, dance
+  Rick dances a few steps of street salsa for you.
+  
+  >[4] rick, dance merengue
+  Rick dances a few steps of merengue for you.
+  
+> >

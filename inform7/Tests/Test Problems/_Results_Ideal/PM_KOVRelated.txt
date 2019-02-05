@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 6 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KOVRelated
+  >--> You wrote 'A number is in the box' (source text, line 1): but this seems
+    to give a worldly relationship to something intangible, possibly due to an
+    accidental clash of names between a kind of value and something in the real
+    world. I sometimes read sentences like 'There is a number on the door' or
+    'A text is in the prayer-box' literally - thinking you mean a whole number
+    or a piece of double-quoted text, and not realising you intended to make a
+    brass number-plate or an old book. If that's the trouble, you can use
+    'called': for instance, 'In the prayer-box is a thing called the text.'
+Inform 7 has finished: 16 centiseconds used.

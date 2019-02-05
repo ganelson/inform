@@ -1,0 +1,184 @@
+   Aleph
+  At this point the marble is nowhere.
+  X = marble.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: false
+  "whether or not the X is everywhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere" = truth state: false
+  "whether or not the X is not somewhere" = truth state: true
+  "whether or not the X is somewhere lighted" = truth state: false
+  "whether or not the X is in somewhere lighted" = truth state: false
+  "whether or not the X is somewhere which is lighted" = truth state: false
+  "whether or not the X is somewhere which is not lighted" = truth state: false
+  "whether or not the X is nowhere" = truth state: true
+  "whether or not the X is not nowhere" = truth state: false
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the marble is in Aleph.
+  X = marble.
+  marble is in Aleph.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: true
+  "whether or not the X is everywhere which is Aleph" = truth state: true
+  "whether or not the X is somewhere which is Aleph" = truth state: true
+  "whether or not the X is somewhere" = truth state: true
+  "whether or not the X is not somewhere" = truth state: false
+  "whether or not the X is somewhere lighted" = truth state: true
+  "whether or not the X is in somewhere lighted" = truth state: true
+  "whether or not the X is somewhere which is lighted" = truth state: true
+  "whether or not the X is somewhere which is not lighted" = truth state: false
+  "whether or not the X is nowhere" = truth state: false
+  "whether or not the X is not nowhere" = truth state: true
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the marble is in Beth.
+  X = marble.
+  marble is in Beth.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: false
+  "whether or not the X is everywhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere" = truth state: true
+  "whether or not the X is not somewhere" = truth state: false
+  "whether or not the X is somewhere lighted" = truth state: false
+  "whether or not the X is in somewhere lighted" = truth state: false
+  "whether or not the X is somewhere which is lighted" = truth state: false
+  "whether or not the X is somewhere which is not lighted" = truth state: true
+  "whether or not the X is nowhere" = truth state: false
+  "whether or not the X is not nowhere" = truth state: true
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the rain is nowhere.
+  X = rain.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: false
+  "whether or not the X is everywhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere" = truth state: false
+  "whether or not the X is not somewhere" = truth state: true
+  "whether or not the X is somewhere lighted" = truth state: false
+  "whether or not the X is in somewhere lighted" = truth state: false
+  "whether or not the X is somewhere which is lighted" = truth state: false
+  "whether or not the X is somewhere which is not lighted" = truth state: false
+  "whether or not the X is nowhere" = truth state: true
+  "whether or not the X is not nowhere" = truth state: false
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the rain is in Alephland.
+  X = rain.
+  rain is in Aleph.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: true
+  "whether or not the X is everywhere which is Aleph" = truth state: true
+  "whether or not the X is somewhere which is Aleph" = truth state: true
+  "whether or not the X is somewhere" = truth state: true
+  "whether or not the X is not somewhere" = truth state: false
+  "whether or not the X is somewhere lighted" = truth state: true
+  "whether or not the X is in somewhere lighted" = truth state: true
+  "whether or not the X is somewhere which is lighted" = truth state: true
+  "whether or not the X is somewhere which is not lighted" = truth state: false
+  "whether or not the X is nowhere" = truth state: false
+  "whether or not the X is not nowhere" = truth state: true
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the rain is in Bethland.
+  X = rain.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: false
+  "whether or not the X is everywhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere" = truth state: true
+  "whether or not the X is not somewhere" = truth state: false
+  "whether or not the X is somewhere lighted" = truth state: false
+  "whether or not the X is in somewhere lighted" = truth state: false
+  "whether or not the X is somewhere which is lighted" = truth state: false
+  "whether or not the X is somewhere which is not lighted" = truth state: true
+  "whether or not the X is nowhere" = truth state: false
+  "whether or not the X is not nowhere" = truth state: true
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the rain is nowhere.
+  X = rain.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: false
+  "whether or not the X is everywhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere which is Aleph" = truth state: false
+  "whether or not the X is somewhere" = truth state: false
+  "whether or not the X is not somewhere" = truth state: true
+  "whether or not the X is somewhere lighted" = truth state: false
+  "whether or not the X is in somewhere lighted" = truth state: false
+  "whether or not the X is somewhere which is lighted" = truth state: false
+  "whether or not the X is somewhere which is not lighted" = truth state: false
+  "whether or not the X is nowhere" = truth state: true
+  "whether or not the X is not nowhere" = truth state: false
+  "whether or not the X is in every room" = truth state: false
+  "whether or not the X is everywhere" = truth state: false
+  "whether or not the X is not in every room" = truth state: true
+  "whether or not the X is not everywhere" = truth state: true
+  
+  
+  At this point the rain is everywhere.
+  X = rain.
+  rain is in Aleph.
+  "whether or not Aleph is somewhere lighted" = truth state: true
+  "whether or not Beth is somewhere lighted" = truth state: false
+  "whether or not the X is in Aleph" = truth state: true
+  "whether or not the X is everywhere which is Aleph" = truth state: true
+  "whether or not the X is somewhere which is Aleph" = truth state: true
+  "whether or not the X is somewhere" = truth state: true
+  "whether or not the X is not somewhere" = truth state: false
+  "whether or not the X is somewhere lighted" = truth state: true
+  "whether or not the X is in somewhere lighted" = truth state: true
+  "whether or not the X is somewhere which is lighted" = truth state: true
+  "whether or not the X is somewhere which is not lighted" = truth state: false
+  "whether or not the X is nowhere" = truth state: false
+  "whether or not the X is not nowhere" = truth state: true
+  "whether or not the X is in every room" = truth state: true
+  "whether or not the X is everywhere" = truth state: true
+  "whether or not the X is not in every room" = truth state: false
+  "whether or not the X is not everywhere" = truth state: false
+  
+  
+  
+  *** Run-time problem P53: Only backdrops can be moved to multiple places.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Aleph
+  
+> >   Aleph
+> Are you sure you want to quit? 

@@ -1,0 +1,11 @@
+Inform 7 build 6M36 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42506 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PhraseTokenQuantified
+  >--> In 'To flob (N - any number)' (source text, line 3), the text 'any
+    number' after the hyphen should tell me what kind of value goes here (like
+    'a number', or 'a vehicle'), but it has to be a single value, and not a
+    description of what might be multiple values. So 'N - a number' is fine,
+    but not 'N - three numbers' or 'N - every number'.
+Inform 7 has finished: 31 centiseconds used.

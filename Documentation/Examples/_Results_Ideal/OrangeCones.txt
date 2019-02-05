@@ -1,0 +1,86 @@
+   Town Square
+  Orange Cones
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Town Square
+  Dense traffic snarls the streets, making it difficult to cross even with the lights. Men on motorbikes edge between the cars, and sometimes pull up onto the sidewalks to go around.
+  
+  Under the cars in the middle of the street, you can just make out the cover of the manhole you need to get into.
+  
+> >   Access Tunnel
+  (Testing.)
+  
+  >[1] x traffic
+  It is more or less as usual for this time of day. It's a wonder it ever dissipates, really.
+  
+  >[2] open manhole
+  You can't get anywhere near the manhole cover with all these cars above it.
+  
+  >[3] n
+  
+  Candle Street
+  Dense traffic snarls the streets, making it difficult to cross even with the lights. Men on motorbikes edge between the cars, and sometimes pull up onto the sidewalks to go around.
+  
+  >[4] x traffic
+  It is more or less as usual for this time of day. It's a wonder it ever dissipates, really.
+  
+  >[5] s
+  
+  Town Square
+  Dense traffic snarls the streets, making it difficult to cross even with the lights. Men on motorbikes edge between the cars, and sometimes pull up onto the sidewalks to go around.
+  
+  Under the cars in the middle of the street, you can just make out the cover of the manhole you need to get into.
+  
+  >[6] e
+  
+  Mortar Street
+  A line of orange cones holds back the traffic from entering here.
+  
+  >[7] x traffic
+  You can't see any such thing.
+  
+  >[8] get cones
+  You go around taking up the orange cones, and within moments the traffic begins to flow into the street again.
+  
+  >[9] look
+  Mortar Street
+  Dense traffic snarls the streets, making it difficult to cross even with the lights. Men on motorbikes edge between the cars, and sometimes pull up onto the sidewalks to go around.
+  
+  >[10] x traffic
+  It is more or less as usual for this time of day. It's a wonder it ever dissipates, really.
+  
+  >[11] w
+  
+  Town Square
+  Dense traffic snarls the streets, making it difficult to cross even with the lights. Men on motorbikes edge between the cars, and sometimes pull up onto the sidewalks to go around.
+  
+  Under the cars in the middle of the street, you can just make out the cover of the manhole you need to get into.
+  
+  >[12] drop cones
+  With steely determination you begin to lay out the orange cones, blocking access to this segment of street. This produces honking and swearing -- but you persevere.
+  
+  >[13] look
+  Town Square
+  A line of orange cones holds back the traffic from entering here.
+  
+  There's a promising manhole in the middle of the street.
+  
+  >[14] open manhole
+  You open the manhole cover.
+  
+  >[15] take cones
+  You'd better not let the traffic back in until you've closed the manhole. There'll be accidents otherwise.
+  
+  >[16] d
+  With a stealthy glance left and right, you lower yourself into the access tunnel, thus accomplishing your mission for Chapter 2. To continue your adventure, see Chapter 3: The Vault of Peaquod.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

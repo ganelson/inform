@@ -1,0 +1,33 @@
+Lab is a room.
+
+LN1 is a list of numbers that varies. LN1 is {1, 2, 3, 4}.
+
+Instead of waiting:
+	let L2 be LN1;
+	let L3 be LN1;
+	repeat with X1 running through LN1:
+		remove X1 from L2;
+		now L3 is L2;
+		repeat with X2 running through L2:
+			say "Before removing X2 from L3, X2 is [X2].";
+			remove X2 from L3;
+			say "After removing X2 from L3, X2 is [X2].";
+			repeat with X3 running through L3:
+				say "[X1],[X2],[X3]."
+
+LT1 is a list of text that varies. LT1 is {"a", "b", "c", "d"}.
+
+Instead of jumping:
+	let L2 be LT1;
+	let L3 be LT1;
+	repeat with X1 running through LT1:
+		remove X1 from L2;
+		now L3 is L2;
+		repeat with X2 running through L2:
+			say "Before removing X2 from L3, X2 is [X2].";
+			remove X2 from L3;
+			say "After removing X2 from L3, X2 is [X2].";
+			repeat with X3 running through L3:
+				say "[X1],[X2],[X3]."
+
+Test me with "wait / jump".

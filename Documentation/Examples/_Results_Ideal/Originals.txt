@@ -1,0 +1,37 @@
+   Forest
+  Originals
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Forest
+  You can see a deer and a daisy here.
+  
+> >   Forest
+  (Testing.)
+  
+  >[1] duplicate deer
+  You concentrate and manifest a model deer.
+  
+  >[2] x model deer
+  You see nothing special about the model deer.
+  
+  >[3] x deer model
+  You see nothing special about the model deer.
+  
+  >[4] drop deer
+  (the model deer)
+  Dropped.
+  
+  >[5] x deer
+  Which do you mean, the model deer or the actual deer?
+  
+  >[6] actual
+  You see nothing special about the deer.
+  
+  >[7] x deer
+  Which do you mean, the model deer or the actual deer?
+  
+  >[8] model
+  You see nothing special about the model deer.
+  
+> >

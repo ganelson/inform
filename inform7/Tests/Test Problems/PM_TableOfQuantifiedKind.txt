@@ -1,0 +1,1 @@
+Garden is a room.The bush is a supporter in Garden.A berry is a kind of thing.  Three berries on the bush are defined by the Table of Tasty Berries.Every berry has some text called flavor.  Instead of tasting a berry: say "[The noun] tastes [flavor]."Table of Tasty Berriesberry			flavora blue berry	"sweet"a green berry	"sour"a red berry		"hot"

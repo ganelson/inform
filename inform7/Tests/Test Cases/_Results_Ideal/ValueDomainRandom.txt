@@ -1,0 +1,28 @@
+   Stanford
+  RANDOMNESS TEST.
+  Figures:  Figure of Woodlands
+  
+  Sounds:  Sound of rustling leaves
+  
+  External files:  File of Glaciers
+  
+  Times:  6:34 pm
+  
+  Tables:  (the empty table)
+  
+  Truth states:  false
+  
+  Colours:  green
+  
+  LSD Experience is a random scene.
+  Entire Game is a random good scene.
+  LSD Experience is a random bad scene.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Stanford
+  
+> >   Stanford
+> Are you sure you want to quit? 

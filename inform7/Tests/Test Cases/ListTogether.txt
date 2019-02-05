@@ -1,0 +1,43 @@
+The Kitchen is a room.
+The Dining Room is east of the Kitchen.
+The Living Room is east of the Dining Room.
+The Bathroom is east of the Living Room.
+The Garden is east of the Bathroom.
+
+A pot is a kind of thing. The red pot, the green pot, and the blue pot are pots carried by the player.
+
+A pan is a kind of thing. The white pan, the black pan, and the gray pan are pans carried by the player.
+
+Before listing contents when the location is the Kitchen:
+	group pots together as "pots";
+	group pans together as "pans";
+
+To meta: (-
+	objectloop ({-my:1}) {
+		if (LT_Compare({-my:1}.list_together, 0) ~= 0)
+			print (the) {-my:1}, ": ", {-my:1}.list_together, ": ", (TEXT_TY_Say) {-my:1}.list_together, "^";
+	}
+-).
+
+Before listing contents when the location is the Dining Room:
+	group pots together as the substituted form of "pots";
+	group pans together as the substituted form of "pans";
+
+Before listing contents when the location is the Living Room:
+	let N be 1;
+	group pots together as "implement-[N]";
+	increment N;
+	group pans together as "implement-[N]";
+
+Before listing contents when the location is the Bathroom:
+	let N be 1;
+	group pots together as the substituted form of "implement-[N]";
+	increment N;
+	group pans together as the substituted form of "implement-[N]";
+
+Every turn:
+	say "Inventory: ";
+	list the contents of the player, as a sentence;
+	say "."
+
+Test me with "i / e / e / e / e".

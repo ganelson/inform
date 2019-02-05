@@ -1,0 +1,3 @@
+Xanadu is a room.
+
+Check taking or dropping: say "No, don't."

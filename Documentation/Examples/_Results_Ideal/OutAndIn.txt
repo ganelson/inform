@@ -1,0 +1,83 @@
+   Dune
+  Owen's Law
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dune
+  Hundreds of feet of dune stretch west to the beach, crisscrossed with dune-buggy tracks and the footprints of birds. To the east is a low-lying, boxy concrete installation.
+  
+> >   Ocean Shores Military Installation
+  (Testing.)
+  
+  >[1] e
+  
+  Ocean Shores Military Installation
+  The World War II emplacements, built in case of Japanese invasion, have never been destroyed, though with all the weapons and furnishings gone it is difficult to make much sense of the original structure. A doorway leads west into concrete-lined darkness; a rusty but reliable ladder ascends to a walkway overlooking the sea.
+  
+  >[2] u
+  
+  Walkway
+  From here you have a long view of the dunes and the Pacific Ocean, complete with the rotting hull of a long-stranded vessel.
+  
+  >[3] d
+  
+  Ocean Shores Military Installation
+  The World War II emplacements, built in case of Japanese invasion, have never been destroyed, though with all the weapons and furnishings gone it is difficult to make much sense of the original structure. A doorway leads west into concrete-lined darkness; a rusty but reliable ladder ascends to a walkway overlooking the sea.
+  
+  >[4] in
+  
+  Dark Echoing Room
+  It is dark in here, and feels unsafe.
+  
+  >[5] s
+  
+  Narrow Room
+  It is dark in here, and feels unsafe.
+  
+  >[6] out
+  (that is, north)
+  
+  Dark Echoing Room
+  It is dark in here, and feels unsafe.
+  
+  >[7] n
+  
+  Small Sealed Chamber
+  It is dark in here, and feels unsafe.
+  
+  >[8] out
+  (that is, south)
+  
+  Dark Echoing Room
+  It is dark in here, and feels unsafe.
+  
+  >[9] e
+  
+  Dank Dripping Room
+  It is dark in here, and feels unsafe.
+  
+  >[10] in
+  (that is, north)
+  
+  Room Smelling of Animal Urine
+  It is dark in here, and feels unsafe.
+  
+  >[11] out
+  (that is, south)
+  
+  Dank Dripping Room
+  It is dark in here, and feels unsafe.
+  
+  >[12] out
+  (that is, west)
+  
+  Dark Echoing Room
+  It is dark in here, and feels unsafe.
+  
+  >[13] out
+  (that is, outside)
+  
+  Ocean Shores Military Installation
+  The World War II emplacements, built in case of Japanese invasion, have never been destroyed, though with all the weapons and furnishings gone it is difficult to make much sense of the original structure. A doorway leads west into concrete-lined darkness; a rusty but reliable ladder ascends to a walkway overlooking the sea.
+  
+> >

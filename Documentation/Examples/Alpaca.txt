@@ -1,0 +1,50 @@
+* New commands for old grammar
+(USE action which divines rational behavior for a wide range of possible nouns; Alpaca Farm)
+A generic USE action which behaves sensibly with a range of different objects.
+
+This example takes the ordering of grammar lines to its logical extreme, sorting the player's input into different categories depending on the kind and condition of the objects mentioned.
+
+	{*}"Alpaca Farm"
+
+	Understand "use [an edible thing]" as eating. 
+
+	Understand "use [a wearable thing]" as wearing. 
+
+	Understand "use [a closed openable container]" as opening. Understand "use [an open openable container]" as closing.
+
+	Understand "use [something preferably held] on [a locked lockable thing]" as unlocking it with (with nouns reversed). Understand "use [something preferably held] on [an unlocked lockable thing]" as locking it with (with nouns reversed). 
+
+	Understand "use [a switched off device]" as switching on.
+
+	Understand "use [something]" as using. Using is an action applying to one thing. Carry out using: say "You will have to be more specific about your intentions."
+
+	Understand "use [a door]" as opening. Understand "use [an open door]" as entering.
+
+	The Llama Pen is a room. North of the Pen is the gate. The gate is a door. North of the gate is the Rocky Path. The brown llama is an animal in the Llama Pen. 
+
+	Appearance is a kind of value. The appearances are muddy, scruffy, fluffy, and dapper. The brown llama has an appearance. The brown llama is muddy. Before printing the name of the brown llama, say "[appearance] ". Before printing the name of the brown llama while grooming: say "now-[if appearance of the brown llama is less than dapper]merely-[end if]".
+
+	A grooming tool is a kind of thing. Understand "use [a grooming tool] on [something]" as grooming it with (with nouns reversed). Grooming it with is an action applying to two things. Understand "groom [something] with [something]" as grooming it with.
+
+	Carry out grooming it with:
+		if the appearance of the noun is less than dapper, now the appearance of the noun is the appearance after the appearance of the noun.
+
+	Report grooming it with:
+		say "You attend diligently to the appearance and hygiene of [the noun]."
+	
+	Instead of using a grooming tool in the presence of the brown llama:
+		try grooming the brown llama with the noun.
+
+	The player carries some nail nippers, a slicker brush, and an apple. The apple is edible. The brush and the nippers are grooming tools. The player wears a sombrero.
+
+	The description of the nail nippers is "Ten inches long, to give you the necessary leverage to cut tough llama toenails. It still helps to soften them up by making the llama stand in a bucket of water first, though."
+
+	The description of the slicker brush is "Fine, angled soft bristles set into a broad back, perfect for removing mud from the coat of a long-woolled llama."
+
+	The industrial-strength blower is a fixed in place device in the Llama Pen. "Attached to the nearest wall, on its own movable boom, is an industrial-strength blower for doing llama hair."
+
+	Understand "use [switched off blower]" as switching on. Understand "use [switched on blower] on [brown llama]" as grooming it with (with nouns reversed). Instead of using the blower in the presence of the brown llama, try grooming the brown llama with the blower.
+	
+	Test me with "use gate / use blower / use nippers / use brush / use apple / remove sombrero / use sombrero".
+
+Whether we actually want a USE action is a subject of some theoretical debate in the IF community. On the one hand, it helps avoid guess-the-verb problems where the player cannot figure out what term to use in order to express a fairly simple idea. On the other, it encourages the player to think that all items have one and exactly one use, rather than getting him to consider the range of possibilities that arise from having a complex vocabulary.

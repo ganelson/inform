@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 38 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DoorOverconnected
+  >--> Great Gate seems to be a door with three ways out (specified 'The Great
+    Gate is south of the Taj Mahal' (source text, line 2), 'The Great Gate is
+    west of the Temple' (source text, line 4) and 'The Great Gate is east of
+    the Grassy Slope' (source text, line 3)), but you can only have one or two
+    sides to a door in Inform: a one-sided door means a door which is only
+    touchable and usable from one side, and an example might be a window
+    through which one falls to the ground below. If you really need a
+    three-sided cavity, best to make it a room in its own right.
+Inform 7 has finished: 17 centiseconds used.

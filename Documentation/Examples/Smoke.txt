@@ -1,0 +1,47 @@
+*** Defining adjectives for values
+(Smoke which spreads, not tracking concentration; Only You...)
+Smoke which spreads through the rooms of the map, but only every other turn.
+
+Suppose we want to have smoke that spreads from room to room, gradually filling the entire map with a clogging smoke. Having it spread every single turn would make for a pretty rapid diffusion, so we temper this by having it spread only on even-numbered turns, instead. Conveniently, Inform by default already knows about even and odd numbers, so we can write:
+
+	{*}"Only You..."
+	
+	Section 1 - The Procedure
+
+	Every turn when the turn count is even:
+		if every room is smoky, make no decision;
+		let previously smoky be whether or not the location is smoky;
+		repeat with area running through smoky rooms:
+			now every room which is adjacent to the area is smoky;
+		if previously smoky is false and the location is smoky:
+			say "[The location] is filling rapidly with smoke."
+
+	A room can be smoky or unsmoky.
+
+	Some air is a backdrop. Air is everywhere. Instead of doing something other than examining or smelling to air: say "It's just air." Understand "smoke" as the air when the location is smoky.
+
+	Instead of examining the air in a smoky room: say "A thick layer of smoke lies just under the ceiling."
+
+	Instead of smelling the air in a smoky room: say "Agh, acrid." Instead of smelling a smoky room: try smelling the air.
+
+	After looking in a smoky room: say "A thick layer of smoke has gathered under the ceiling."
+	
+	Section 2 - The Scenario
+	
+	The Guide Lodge is a room. "A very spacious room capable of containing several hundred girls while they eat, talk, or do crafts. It is constructed in a not-unappealing rustic style, with floor-to-ceiling windows overlooking the lake below, and a fieldstone hearth at the center." The Guide Lodge is smoky.
+
+	The Kitchen is north of the Guide Lodge. "Multiple eight-burner ranges, ovens, and a walk-in refrigerator: you know the sort of thing."
+
+	The Industrial Pantry is east of the Kitchen. "Awe-inspiring quantities of food line every shelf, from the three-gallon tub of mayonnaise to the 50-pound tub of rice. Perhaps the most astonishing item is a bag of marshmallows big enough to double as a futon."
+
+	The player is in the Pantry.
+
+	The Hallway is west of the Guide Lodge. The description of the Hallway is "A perpetually-crammed hallway which has to handle the overflow line for the toilets." A singed sign is fixed in place in the Hallway. The description of the sign is "Where the edge of the sign has not been burnt, the legible words are '...Can Prevent Forest Fires'."
+
+	The Toilets are north of the Hallway. "Always in full use, at least when the 12-to-15s are here."
+
+	The Coat Closet is south of the Hallway. "Muddy boots may not be worn inside the lodge; instead, about 250 pair are piled here, along with their owners' damp parkas and umbrellas."
+
+	The Craft Supply Room is west of the Hallway. "A holding-depot for jugs of white glue and popsicle sticks."
+
+	Test me with "x smoke / z / z / z / z / x smoke / look".

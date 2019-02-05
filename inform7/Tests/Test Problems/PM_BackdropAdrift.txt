@@ -1,0 +1,3 @@
+A backdrop is a kind of door.
+The portal is a door.
+The portal is east of Foo and west of Goo.

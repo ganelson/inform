@@ -1,0 +1,22 @@
+The lab is a room.
+
+The bench is a supporter in the lab.
+
+The apple is an thing. It is on the bench.
+
+The sandwich is a thing. It is on the bench.
+
+The can of cola is a thing on the bench. The cola can be fizzy or flat. The
+cola is fizzy.
+
+Instead of taking the apple, say "[if the apple is on the bench]You really
+shouldn't eat in the lab.[otherwise]This will never be printed."
+
+Check taking the sandwich: say "[if the sandwich is on the bench]The
+sandwich should really stay on the bench.[otherwise]It's best not to
+interfere with experiments." instead;
+
+Check taking the cola: say "[if the cola is flat]What's the
+point?[otherwise]Oh, no! too much fizzing!" instead;
+
+Test me with "take apple/take cola/take sandwich"

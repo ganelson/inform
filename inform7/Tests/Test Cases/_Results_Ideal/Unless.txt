@@ -1,0 +1,20 @@
+   Upper Cave
+  M is not 2.
+  M is not 1.
+  M may be 3, but isn't 2.
+  Rolled up: M is not 2.
+  Rolled up: M may be 3, but isn't 2.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Upper Cave
+  
+> >   Upper Cave
+  (Testing.)
+  
+  >[1] look
+  Upper Cave
+  
+> >

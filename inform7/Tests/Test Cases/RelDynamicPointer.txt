@@ -1,0 +1,8 @@
+Home is a room. John is here. He is a man.
+
+Capability relates various people to various stored actions. The verb
+to be capable of implies the capability relation.
+
+John is capable of the action of taking inventory.
+
+Test me with "relations".

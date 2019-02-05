@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 18 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MultiwordGrading
+  >--> You gave as a definition 'a thing is stately indeed if its carrying
+    capacity is 6 or more' (source text, line 3): but a grading adjective must
+    be a single word, as in 'Definition: a container is large if its carrying
+    capacity is 10 or more.': 'fairly large' would not be allowed because it
+    would make no sense to talk about 'fairly larger' or 'fairly largest'.
+Inform 7 has finished: 14 centiseconds used.

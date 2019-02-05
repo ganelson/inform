@@ -1,0 +1,4 @@
+Foo is a room.
+Zog is a sayable value based rulebook.
+A zog rule for a stored action (called obj): say "I, [obj], am a stored action!".
+When play begins: follow zog for the Swedish language.

@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 5 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_IfOutsidePhrase
+  >--> You wrote 'If the score exceeds 10' (source text, line 1): but I can't
+    find a verb that I know how to deal with. This looks like an 'if' phrase
+    which has slipped its moorings, so I am ignoring it. ('If' phrases, like
+    all other such instructions, belong inside definitions of rules or phrases
+    - not as sentences which have no context. Maybe a full stop or a skipped
+    line was accidentally used instead of semicolon, so that you inadvertently
+    ended the last rule early?)
+Inform 7 has finished: 17 centiseconds used.

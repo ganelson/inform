@@ -1,0 +1,45 @@
+   Graduate Lounge
+  Bibliophilia
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Graduate Lounge
+  Shabby sofas; plastic cups remaining from the afternoon's pre-lecture espresso; a collection of Xena and Hercules figurines posed for ironic effect. It's somewhat depressing at this hour, when everyone has gone home.
+  
+> >   Classics Reading Room
+  (Testing.)
+  
+  >[1] south
+  
+  Classics Reading Room
+  Not as large a collection as the one in the Library, but it contains copies of everything really essential for reference.
+  
+  >[2] examine ocd
+  A hefty reference with short articles on everything from Greek meter to ancient cosmetics.
+  
+  >[3] examine books
+  You scan the shelves and notice, among others, a volume entitled Oxford Classical Dictionary.
+  
+  >[4] examine books
+  You scan the shelves and notice, among others, a volume entitled Collected Dialogues of Plato.
+  
+  >[5] examine plato
+  All the Platonic dialogues -- some, admittedly, in rather tired translations -- but still a useful single volume, ed. Edith Hamilton and Huntington Cairns.
+  
+  >[6] n
+  
+  Graduate Lounge
+  Shabby sofas; plastic cups remaining from the afternoon's pre-lecture espresso; a collection of Xena and Hercules figurines posed for ironic effect. It's somewhat depressing at this hour, when everyone has gone home.
+  
+  >[7] x hercules
+  You can't see any such thing.
+  
+  >[8] s
+  
+  Classics Reading Room
+  Not as large a collection as the one in the Library, but it contains copies of everything really essential for reference.
+  
+  >[9] x hercules
+  You can't find any such text.
+  
+> >

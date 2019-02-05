@@ -1,0 +1,57 @@
+The grassy meadow is a room.
+
+When play begins:
+	if 1 is 1:
+		if 2 is 2:
+			if 3 is 3:
+				if 4 is 4:
+					if 5 is 5:
+						if 6 is 6:
+							if 7 is 7:
+								if 8 is 8:
+									if 9 is 9:
+										if 10 is 10:
+											if 1 is 1:
+												if 2 is 2:
+													if 3 is 3:
+														if 4 is 4:
+															if 5 is 5:
+																if 6 is 6:
+																	if 7 is 7:
+																		if 8 is 8:
+																			if 9 is 9:
+																				if 10 is 10:
+																					if 1 is 1:
+																						if 2 is 2:
+																							if 3 is 3:
+																								if 4 is 4:
+																									say "Hi!"
+
+When play begins:
+	if 1 is 1:
+		if 2 is 2:
+			if 3 is 3:
+				if 4 is 4:
+					if 5 is 5:
+						if 6 is 6:
+							if 7 is 7:
+								if 8 is 8:
+									if 9 is 9:
+										if 10 is 10:
+											if 1 is 1:
+												if 2 is 2:
+													if 3 is 3:
+														if 4 is 4:
+															if 5 is 5:
+																if 6 is 6:
+																	if 7 is 7:
+																		if 8 is 8:
+																			if 9 is 9:
+																				if 10 is 10:
+																					if 1 is 1:
+																						if 2 is 2:
+																							if 3 is 3:
+																								if 4 is 4:
+																									if 5 is 5:
+																										if 5 is 5:
+																											say "Hi!"

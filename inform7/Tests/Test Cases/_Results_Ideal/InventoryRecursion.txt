@@ -1,0 +1,37 @@
+   Throne Room
+  Inventory Recursion
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Throne Room
+  You can see an extravagant crown here.
+  
+> >   Throne Room
+  (Testing.)
+  
+  >[1] wear crown
+  (first taking the extravagant crown)
+  You put on the extravagant crown.
+  
+  >[2] i
+  Perched on your head is an extravagant crown: everyone who sets eyes on you must be blinded by the 102-carat blue diamond known as the Star of Hopeful Brightness.
+  
+  You are carrying a mace, a gilded cage and a platter. The gilded cage contains a canary. The canary is carrying a seed. The canary is wearing a golden collar. A diamond charm is part of the golden collar. The platter supports a fish. You are wearing an ermine robe and a pair of velvet pantaloons. A pocket is part of the pair of velvet pantaloons. The pocket contains a piece of eight.
+  >[3] drop cage
+  Dropped.
+  
+  >[4] i
+  Perched on your head is an extravagant crown: everyone who sets eyes on you must be blinded by the 102-carat blue diamond known as the Star of Hopeful Brightness.
+  
+  You are carrying a mace and a platter. The platter supports a fish. You are wearing an ermine robe and a pair of velvet pantaloons. A pocket is part of the pair of velvet pantaloons. The pocket contains a piece of eight.
+  >[5] take off crown
+  You take off the extravagant crown.
+  
+  >[6] i
+  You are carrying a mace, a platter and an extravagant crown. The platter supports a fish. You are wearing an ermine robe and a pair of velvet pantaloons. A pocket is part of the pair of velvet pantaloons. The pocket contains a piece of eight.
+  >[7] get piece
+  Taken.
+  
+  >[8] i
+  You are carrying a mace, a platter, an extravagant crown and a piece of eight. The platter supports a fish. You are wearing an ermine robe and a pair of velvet pantaloons. A pocket is part of the pair of velvet pantaloons.
+> >

@@ -1,0 +1,7 @@
+Home is a room.
+
+Weight is a kind of value.
+
+1 tonne 999 kg 6 scr specifies a weight with parts tonnes and kilograms.
+
+1 x 999 y 6 z specifies a weight with parts xs, ys, zs and exotica.

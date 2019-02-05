@@ -1,0 +1,17 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	symbol public misc K_colour
+	symbol public misc I_green
+	symbol public misc I_red
+	symbol public misc I_turquoise
+	symbol public misc I_maroon
+	symbol public misc wallpaper_shade
+	symbol public misc I_cerise
+	kind K_colour enum
+	instance I_green K_colour = 1
+	instance I_turquoise K_colour = 17
+	instance I_maroon K_colour = 4002
+	constant wallpaper_shade K_colour = I_green
+	instance I_cerise K_colour = 28

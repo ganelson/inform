@@ -1,0 +1,41 @@
+   Supply Closet
+  Extra Supplies
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Supply Closet
+  You can see a supply of red pens here.
+  
+> >   Supply Closet
+  (Testing.)
+  
+  >[1] get pen
+  You help yourself to a fresh red pen.
+  
+  >[2] i
+  You are carrying:
+    a red pen
+  
+  >[3] get pen
+  You already have that.
+  
+  >[4] get supply
+  You're only allowed one pen at a time. The department secretary is very strict.
+  
+  >[5] s
+  
+  Furnace Room
+  The incinerator is here, working full blast.
+  
+  >[6] put pen in incinerator
+  A fiery blast consumes the red pen!
+  
+  >[7] n
+  
+  Supply Closet
+  You can see a supply of red pens here.
+  
+  >[8] get pen
+  You help yourself to a fresh red pen.
+  
+> >

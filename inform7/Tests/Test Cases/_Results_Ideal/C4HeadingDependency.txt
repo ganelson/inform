@@ -1,0 +1,18 @@
+   Schoolhouse
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Schoolhouse
+  You can see a lime, a peach and a banana here.
+  
+> >   Schoolhouse
+  (Testing.)
+  
+  >[1] take peach
+  Taken.
+  
+  >[2] inv
+  That's not a verb I recognise.
+  
+> >

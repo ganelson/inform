@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationSymbolMisdeclared
+  >--> You wrote 'Equation 2 F = ma where F is a number, m bores me, a is a
+    number' (source text, line 3): but the symbols here are not declared
+    properly, and should each be declared with a kind of value or else an
+    actual value.
+Inform 7 has finished: 19 centiseconds used.

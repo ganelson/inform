@@ -1,0 +1,47 @@
+   Taj Mahal
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Taj Mahal
+  You stand to admire the Taj Mahal.
+  
+  You can see a fish and some condensers here.
+  
+> >   Taj Mahal
+  (Testing.)
+  
+  >[1] get me
+  You are pinned down by Dr Zarkov's force field. You aren't free to move. You can't move. You won't move. You haven't a chance to move. Anyhow, you don't move.
+  
+  >[2] get fish
+  The fish is pinned down by Dr Zarkov's force field. It isn't free to move. It can't move. It won't move. It hasn't a chance to move. Anyhow, it doesn't move.
+  
+  >[3] get condensers
+  The condensers are pinned down by Dr Zarkov's force field. They aren't free to move. They can't move. They won't move. They haven't a chance to move. Anyhow, they don't move.
+  
+  >[4] adopt past tense
+  The world shimmers into the past tense.
+  
+  >[5] get me
+  You were pinned down by Dr Zarkov's force field. You weren't free to move. You couldn't move. You wouldn't move. You hadn't a chance to move. Anyhow, you didn't move.
+  
+  >[6] get fish
+  The fish was pinned down by Dr Zarkov's force field. It wasn't free to move. It couldn't move. It wouldn't move. It hadn't a chance to move. Anyhow, it didn't move.
+  
+  >[7] get condensers
+  The condensers were pinned down by Dr Zarkov's force field. They weren't free to move. They couldn't move. They wouldn't move. They hadn't a chance to move. Anyhow, they didn't move.
+  
+  >[8] adopt future tense
+  The world shimmered into the future tense.
+  
+  >[9] get me
+  You will be pinned down by Dr Zarkov's force field. You won't be free to move. You won't be able to move. You won't move. You won't have a chance to move. Anyhow, you won't move.
+  
+  >[10] get fish
+  The fish will be pinned down by Dr Zarkov's force field. It won't be free to move. It won't be able to move. It won't move. It won't have a chance to move. Anyhow, it won't move.
+  
+  >[11] get condensers
+  The condensers will be pinned down by Dr Zarkov's force field. They won't be free to move. They won't be able to move. They won't move. They won't have a chance to move. Anyhow, they won't move.
+  
+> >

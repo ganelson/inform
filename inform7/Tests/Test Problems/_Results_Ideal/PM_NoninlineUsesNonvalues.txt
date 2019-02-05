@@ -1,0 +1,13 @@
+Inform 7 build 6L83 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NoninlineUsesNonvalues
+  >--> In 'To disregard (act - an existing variable)' (source text, line 3),
+    the text 'an existing variable' after the hyphen should tell me what kind
+    of value goes here (like 'a number', or 'a vehicle'), but this is not a
+    kind: it does describe something I can understand, but not something which
+    can then be used as a value. (It would be allowed in low-level, so-called
+    'inline' phrase definitions, but not in a standard phrase definition like
+    this one.)
+Inform 7 has finished: 23 centiseconds used.

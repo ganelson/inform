@@ -1,0 +1,16 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_colour enum
+	instance I_green K_colour = 1
+	splat &"#ifdef DEBUG;\n"
+	instance I_red K_colour = 17
+	splat &"#ifnot;\n"
+	instance I_turquoise K_colour = 17
+	splat &"#ENDIF;\n"
+	instance I_maroon K_colour = 4002
+	constant wallpaper_shade K_colour = I_green
+	splat &"#ifdef wallpaper_shade;\n"
+	instance I_cerise K_colour = 28
+	splat &"  #ENDif ; \n"

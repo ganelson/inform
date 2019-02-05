@@ -1,0 +1,10 @@
+The dome is a room. 
+
+To decide if (A - a room) qualifies:
+	decide no.
+
+To decide if (A - a room) abutting (B - a room) qualifies:
+	decide yes.
+
+WWfocus is a scene. 
+WWfocus ends when dome abutting the dome qualifies.

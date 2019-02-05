@@ -1,0 +1,3 @@
+The Temple is a room.
+
+A direction translates into English as a route.

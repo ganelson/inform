@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RulebookVariableVague
+  >--> You wrote 'The every turn rulebook has a value called Trevor' (source
+    text, line 3), but saying that a variable is a 'value' does not give me a
+    clear enough idea what it will hold. You need to say what kind of value:
+    for instance, 'A door has a number called street address.' is allowed
+    because 'number' is specific about the kind of value.
+Inform 7 has finished: 17 centiseconds used.

@@ -1,0 +1,113 @@
+4K41 (23 January 2007)
+
+4K40 contained a bug making it unreliable under Mac OS X on G4 or G5
+	processors: 4K41 is believed to fix this, with our apologies for the
+	inconvenience. In all other respects it is identical to 4K40 and
+	Mac OS X users with Intel processors need not download again.
+
+4K40 (23 January 2007)
+
+(Mac OS X only) The Skein's appearance has been redesigned, and an illustrated
+	tutorial to the new-look Skein now appears as section 1.8 of the
+	documentation for the OS X application. (We hope that similar changes
+	will be made shortly in the Windows application.)
+(Mac OS X only) The Skein panel now has a Layout... button for customising
+	the width and height proportions of the skein display.
+(Windows only) Documentation links from the Index tab now work with Internet
+	Explorer 7.
+(Windows only) The size, italic, text colour and background colour style hints
+	are now supported when running a Glulx game in the game tab.
+New activities "clarifying the parser's choice of something" and "asking
+	which do you mean" allow customisation of the familiar messages:
+		(the mahogany inlaid box)
+	and
+		Which do you mean, the mahogany inlaid box or the icebox?
+Extensions:
+	Punctuation Removal made bi-platform (and version number advanced to 2).
+	Version 4 of Plurality by Emily Short now responds correctly to
+		male/female settings even if the items in question are not of the
+		man/woman kind, and adds several further tokens.
+Examples:
+	Magneto's Revenge fixed to use "the person reaching" rather than "the
+		person asked".
+	Changes to Waning Moon, Air Conditioning is Standard, and Fifty Times
+		Fifty Ways to correct typos.
+	Veronica added to demonstrate leaving a region.
+	Numberless added to demonstrate two ways to emulate a switch statement.
+	Pine4 given a tiny fix to make its articles behave better.
+The rules for the sorting of grammar lines in the grammar for command verbs
+	have been slightly changed. Few users should notice any difference, but
+	one change means that grammar added to cover "mistakes" should now no
+	longer be able to "mask" grammar for non-mistaken commands, something
+	which had been reported previously as a bug.
+Problem message added for attempting to use "Understand the command ... as
+	... when ...", where some condition follows the "when": this has never
+	been supported, but in previous builds the "when" clause was silently
+	ignored.
+Problem message added for attempting to use the "[text]" token in a
+	table entry or a ... matches ... condition, where it is not allowed.
+A new rule called the "very unlikely to mean taking what's already carried
+	rule" improves the parser's handling of TAKE SPLODGE when there are
+	several splodges in different places, some of them carried.
+Blue "help" icon added to "Does the player mean..." in the Rules index.
+A long-standing bug fixed whereby things introduced without an article would
+	sometimes be given one, rather than being consider proper nouns (or mass
+	nouns): for instance, in "The player carries a small key, a tent, and
+	Variety Magazine.", the source text clearly suggests that Variety
+	Magazine is a proper noun, and I7 now recognises this.
+Two bugs fixed to do with "when..." clauses attached to rules in unusual
+	situations - both bugs having appeared only in 4F59. One related to
+	rules in the form "check A when B", where A is an action including
+	the word "it" (such as "telling it about") and B a condition; the
+	other to "when" clauses attached to object-based rulebooks known never
+	to run during activities, notably the reaching inside rules. In each
+	case spurious problem messages were generated.
+Bug fixed so that things are no longer "lockable" by default. (Instead,
+	locked containers and locked doors are lockable by default.)
+Bug fixed whereby an instruction like "Understand "[any actor]" as James
+	Bond." would generate I6 code failing to compile through I6.
+Bug fixed whereby one token to match an object making use of another one
+	would sometimes find the result corrupted: for instance,
+		Understand "leg of [person]" as a leg.
+	would get confused between the leg and the person whose leg it is said
+	to be.
+Bug fixed whereby some combinations of name words and tokens to match the
+	names of objects did not work.
+Bug fixed whereby meaningless text would sometimes match a "[number]" token
+	when parsing. Moreover, "[number]" has been improved so that it now
+	matches any literal decimal between -32768 and 32767 inclusive (i.e., the
+	full 16-bit range of signed integers supported by the Z-machine) rather
+	than duplicating the peculiar behaviour of the I6 number-parser, which
+	worked only on non-negative numbers up to 10000.
+Bug fixed which caused too many things (and rooms) to have plural forms of
+	their names recognised: for instance, a "red chair" would be referrable
+	to in the plural as "red chairs" even if it was the only one, and this
+	would cause ambiguity if a second object were in the same place and
+	with its main singular name coincidentally "chairs". The convention
+	now is that an object can be referred to in the plural with a name
+	inherited from its kind if and only if it has no name of its own. (This
+	change sounds substantial, but in fact did not change the behaviour of
+	any of the examples.)
+Bug fixed whereby large numbers of identical objects could cause mysterious
+	things to happen if ever 64 of them are in the same place at the same
+	time. (In fact an I6 library bug: thank due to Martin Bays for his fix,
+	which is patch L61125.)
+Bug fixed in which two things without names of their own were sometimes
+	considered "indistinguishable" by the I6 parser, and therefore grouped
+	into a plural (e.g., "six red blocks"), when in fact they were
+	distinguishable by virtue of having a visible property which differed
+	between the two (e.g., some being red, some being blue).
+Bug fixed causing documentation of examples in extensions to have any
+	Inform 6 fragments in (- ... -) brackets lose the -). In particular,
+	this affected the example in Menus by Emily Short.
+A limit on the number of different "in the presence of..." clauses
+	allowed in a single source text has been removed. (Previously it stood
+	at 100: now there is no limit.)
+A limit on the number of different noun- and scope-filtering tokens
+	allowed in a single source text has been removed. (Previously it stood
+	at 100: now there is no limit.)
+A limit on the number of new kinds of value which could be created by a
+	single source text has been removed. (Previously it stood at 400: now
+	there is no limit.)
+Two bugs fixed causing crashes in unlikely circumstances after a problem
+	has been encountered.

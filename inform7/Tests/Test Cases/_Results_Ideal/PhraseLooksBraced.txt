@@ -1,0 +1,10 @@
+   Home
+  "{ 1, 2, 3 } next to { 4, 5, 6 }" = list of numbers: {1, 2, 3, 4, 5, 6}
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  
+  Home
+  
+> >   Home
+> Are you sure you want to quit? 

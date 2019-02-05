@@ -1,0 +1,19 @@
+* Reading and talking
+(ASKing about a conversation topic other than the one the player typed; Lucy)
+Redirecting a question about one topic to ask about another.
+
+Occasionally we will want to replace the player's question topic with another of our own devising. We can do this in the simplest possible case like so:
+
+	{*}"Lucy"
+	
+	The International Boardgame Championship is a room. Lucy is a woman in the Championship.
+
+	Instead of asking Lucy about "checkers":
+		try asking Lucy about "games".
+	
+	Instead of asking Lucy about "games",
+		say "'I don't like games,' she sniffs." 
+		
+	Test me with "ask lucy about checkers / ask lucy about games".
+		
+Note that this syntax did not work in older versions of Inform; it is now safe.

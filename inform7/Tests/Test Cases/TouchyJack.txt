@@ -1,0 +1,28 @@
+The Kitchen is a room.
+
+The box is an enterable container. 
+A box is here.
+Jack is a person in the box.
+The player is in the box.
+
+The rock is in the Kitchen.
+
+To reach is a verb.
+
+A rule for reaching outside containers:
+	let T be the container in question;
+	if the person reaching is Jack:
+		say "([The person reaching] cannot reach through [the T].)";
+		deny access;
+	else:
+		say "([The person reaching] [reach] through [the T].)";
+		allow access.
+
+When play begins:
+	say "Jack tries to touch the rock...";
+	try Jack touching the rock;
+	say "Can Jack touch the rock? ";
+	if Jack can touch the rock:
+		say "Yes.";
+	else:
+		say "No."

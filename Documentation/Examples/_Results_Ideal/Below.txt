@@ -1,0 +1,27 @@
+   Terrifying Basement
+  Down Below
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Terrifying Basement
+  You can see a light switch here.
+  
+> >   Terrifying Basement
+  (Testing.)
+  
+  >[1] turn off light
+  You switch the light switch off.
+  
+  It is now pitch dark in here!
+  
+  >[2] look
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+  >[3] flip light switch
+  You switch the light switch on.
+  
+  Terrifying Basement
+  You can see a light switch here.
+  
+> >

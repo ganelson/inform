@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 81 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_MatchedAsTooLong
+  >--> You wrote 'The asking it about action has an object called the active
+    node (matched as "located near")' (source text, line 1), which I am reading
+    as a request to make a new named variable for an action - a value
+    associated with a action and which has a name. You say that it should be
+    '(matched as "located near")', but I can only recognise such matches when a
+    single keyword is used to introduce the clause, and this is more than one
+    word.
+Inform 7 has finished: 16 centiseconds used.

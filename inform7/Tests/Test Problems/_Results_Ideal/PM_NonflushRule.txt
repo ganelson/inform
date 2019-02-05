@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 27 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_NonflushRule
+  >--> The phrase or rule definition 'Before going in the East Bay' (source
+    text, line 2) is written using tab indentations to show how its phrases are
+    to be grouped together. But in that case the opening line needs to be on
+    the left margin, not indented.
+Inform 7 has finished: 14 centiseconds used.

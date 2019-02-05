@@ -1,0 +1,2 @@
+Foo is a room.
+12 is east of Foo.

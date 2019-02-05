@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 43 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableWithBlankNames
+  >--> 'Table of Vial Statistics' (source text, line 6) is being used to create
+    values, so that the first column needs to contain names for these new
+    things. It's not allowed to contain blanks, but row 1 does (see '--' (source
+    text, line 8)).
+Inform 7 has finished: 17 centiseconds used.

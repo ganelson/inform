@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 13 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_FilenameNotTextual
+  >--> You wrote 'The File of Glaciers is called My Chilly File' (source text, line 3):
+    but a file can only be called with a single quoted piece of text, as in:
+    'The File of Wisdom is called "wisdom".'
+Inform 7 has finished: 16 centiseconds used.

@@ -1,0 +1,24 @@
+The Brahms Conservatoire is a room.
+
+When play begins:
+	let S be a list of numbers;
+	add 2 to S; add 4 to S; add 8 to S; add 16 to S; add 32 to S; add 64 to S;
+	let T be a list of numbers;
+	add 2 to T; add 4 to T; add 6 to T; add 10 to T;
+	say "Begin with the sets S = [S in brace notation], T = [T in brace notation].";
+	add 8 to T, if absent;
+	sort T;
+	say "Adding 8 to T gives T = [T in brace notation].";
+	let I be T;
+	repeat with element running through T
+	begin;
+		if element is not listed in S, remove element from I;
+	end repeat;
+	say "The intersection I = [I in brace notation].";
+	let U be S;
+	add T to U, if absent;
+	sort U;
+	say "The union U = [U in brace notation].";
+	let D be S;
+	remove T from D, if present;
+	say "The set difference S\T = [D in brace notation].";

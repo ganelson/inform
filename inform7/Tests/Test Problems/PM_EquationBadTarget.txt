@@ -1,0 +1,4 @@
+Laboratory is a room.
+
+When play begins:
+	let F be given by m=1, where m = 2.

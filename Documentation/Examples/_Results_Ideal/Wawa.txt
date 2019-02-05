@@ -1,0 +1,56 @@
+   Wawa
+  3 AM
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wawa
+  A convenience store, if you like to call it that, vending the usual assortment of chips, donuts, soda, and beer. There is something of a line at the sandwich counter.
+  
+  A box of Tastykake Enrobed Cakes has fallen off its shelf.
+  
+> >   Wawa
+  (Testing.)
+  
+  >[1] get box
+  Taken.
+  
+  >[2] shake box
+  Something rattles inside the box of enrobed cakes.
+  
+  >[3] open box
+  The Wawa clerks frown on the consumption of unpurchased foodstuffs.
+  
+  >[4] shake box
+  Something rattles inside the box of enrobed cakes.
+  
+  >[5] listen to can
+  It sounds calm!
+  
+  >[6] shake can
+  You give the can a good hard shake.
+  
+  >[7] listen to can
+  It sounds fizzy!
+  
+  >[8] wait
+  Time passes.
+  
+  >[9] wait
+  Time passes.
+  
+  >[10] wait
+  Time passes.
+  
+  >[11] wait
+  Time passes.
+  
+  >[12] wait
+  Time passes.
+  
+  >[13] listen to can
+  It sounds calm!
+  
+  >[14] open can
+  The root beer is disappointingly flat. That's what you get for shaking it up!
+  
+> >

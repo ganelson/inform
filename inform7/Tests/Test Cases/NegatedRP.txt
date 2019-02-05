@@ -1,0 +1,8 @@
+A box is a kind of container which is closed and openable.
+A sealed box is a kind of box which is not openable.
+The Start is a room. "Here are [list of things which are not closed]."
+The jewel box is a box. It is here.
+The broken box is a box which is not openable.  It is here.
+The secret box is a sealed box. It is here.
+
+Test me with "open jewel box / open broken box / open secret box".

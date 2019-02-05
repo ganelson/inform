@@ -1,0 +1,13 @@
+Home is a room.
+
+To announce (msg - text) to (target - a person):
+	say "[target]: [msg]".
+
+To vigorously announce (msg - text) to (target - a person):
+	say "Hey ";
+	announce msg to target.
+
+Joe is a person in home.
+
+When play begins:
+	vigorously announce "Where you going with that gun in your hand?" to Joe.

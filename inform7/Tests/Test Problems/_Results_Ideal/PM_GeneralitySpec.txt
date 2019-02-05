@@ -1,0 +1,19 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 52 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_GeneralitySpec
+  >--> You wrote 'The description of a freshwater fish is "Red."' (source text, line 10):
+    but this tries to set a property for a complicated generality of items all
+    at once, which can lead to ambiguities. For instance, 'The description of
+    an open door is "It's open."' is not allowed: if we followed Inform's
+    normal conventions strictly, that would be an instruction to create a new,
+    nameless, open door and give it the description. But this is very unlikely
+    to be what the writer intended, given the presence of the adjective to make
+    it seem as if a particular door is meant. So in fact we reject such
+    sentences unless they refer only to a kind, without adjectives: 'The
+    description of a door is "It's a door."' is fine. (If the idea is actually
+    to make the description change in play, we could write a rule like 'Instead
+    of examining an open door, say "It's open."'; or we could set the
+    description of every door to "[if open]It's open.[otherwise]It's closed.".)
+Inform 7 has finished: 17 centiseconds used.

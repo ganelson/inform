@@ -1,0 +1,14 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 14 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TableColumnEmptyLists
+  >--> In 'Table of Requirements' (source text, line 3), the column
+    'ingredients' (source text, line 4) seems to consist only of empty lists.
+    This means that I can't tell what kind of value it should hold - are they
+    to be lists of numbers, for instance, or lists of texts, or some other
+    possibility? Either one of the entries must contain a non-empty list - so
+    that I can deduce the answer by looking at what is in it - or else the
+    column heading must say, e.g., by calling it 'exceptions (list of texts)'
+    with the kind of value in brackets after the name.
+Inform 7 has finished: 17 centiseconds used.

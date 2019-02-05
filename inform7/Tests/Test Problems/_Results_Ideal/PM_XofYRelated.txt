@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 19 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_XofYRelated
+  >--> You wrote 'The description of the Winter Palace is east of the Hills' (source
+    text, line 3): but this seems to say that a property of something is not
+    simply equal to what happens at the moment to satisfy some relationship,
+    but conceptually the same as that relationship, like saying 'the position
+    of the weathervane is east of the church'. It would be fine to say 'the
+    position of the weathervane is east' or 'the position of the weathervane is
+    the meadow', because 'east' and 'meadow' are definite things.
+Inform 7 has finished: 19 centiseconds used.

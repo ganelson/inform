@@ -1,0 +1,19 @@
+Zot is a room.
+
+A posture is a kind of value. The postures are seated, standing, and reclining.
+
+Drivel relates postures to each other in groups.
+
+The verb to blob (he blobs, they blob, he blobbed) implies the drivel relation.
+
+Seated blobs reclining.
+
+Instead of waiting:
+	now reclining blobs standing;
+	say "now reclining blobs standing."
+
+Instead of jumping:
+	now reclining does not blob seated;
+	say "now reclining does not blob seated."
+
+Test me with "relations / z / relations / jump / relations".

@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 22 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SpecNotText
+  >--> You wrote 'The specification of volcano cup size is 10' (source text, line 5):
+    but this tries to set a specification to something other than literal
+    quoted text, which will not work. 'Specification' is a special property
+    used only to annotate the Index, and specifically the Kinds index, so it
+    makes no sense to set this property to anything other than text.
+Inform 7 has finished: 17 centiseconds used.

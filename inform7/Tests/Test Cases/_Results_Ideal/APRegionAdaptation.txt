@@ -1,0 +1,41 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Lab
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] actions
+  Actions listing on.
+  
+  >[2] bar foo
+  [barring Foo]
+  Foo barred.
+  [barring Foo - failed]
+  
+  >[3] s
+  [going south]
+  Going in Foo now.
+  
+  Going from Foo now.
+  
+  Going to Corridor now.
+  
+  Corridor
+  [going south - succeeded]
+  
+  >[4] n
+  [going north]
+  Going in Corridor now.
+  
+  Going from Corridor now.
+  
+  Going to Foo now.
+  
+  Lab
+  [going north - succeeded]
+  
+> >

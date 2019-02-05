@@ -1,0 +1,89 @@
+3V01 (2 August 2006)
+
+Rather than being a bug-fixing build, this build carries out a number of
+	significant internal reforms, some outwardly visible and some not.
+For the first time, compilation to the Glulx virtual machine rather than
+	the Z-machine is possible. As the option on the Settings panel for a
+	project suggests, we had always intended this to be a possibility,
+	but too much was involved to get Glulx working in time for the public
+	beta. In the future, we hope that Glulx will provide a solidly
+	reliable platform for larger and for multimedia works: at present,
+	though, our aim is simply to allow larger works to be compiled:
+	and there are a few restrictions on screen effects, with some code
+	(particularly to do with coloured text) not yet working.
+	Glulx support in this build is experimental at best: we ask users
+	not to send bug report forms yet, and would advise that people avoid
+	publishing works compiled to Glulx rather than Z. With that said, we
+	do believe that worthwhile progress is being made.
+The most important change in adapting to Glulx was the switch to an
+	Inform 6 library derived from library 6/11, the current biplatform
+	I6 library: up until now, Inform 7 has used a heavily adapted I6
+	library referred to as "6/10N", derived from both 6/9 and 6/10.
+	The new library, "6/11N", is the work of Jesse McGrew: our intention,
+	once Glulx support is stabilised a little, is that this will
+	eventually become library 6/12 - that is, the standard I6 library
+	for use by both I6 and I7 authors alike. This should finally bring
+	together branches of work on the I6 library which have been divergent
+	for three years now.
+	For the most part, the change of library will be invisible to I7
+	users, but the adoption of various I6 bug-fixes and improvements
+	between 6/9 and 6/11 should subtly improve the behaviour of Inform
+	story files at run-time.
+Inform now reacts more helpfully to various overflows in Inform 6: thus, if
+	Inform generates code which overflows the size of the Z-machine or
+	breaks one of Inform 6's memory settings, rather more useful pages of
+	advice are displayed.
+As promised, the deprecated "means" and "means that" features have been
+	withdrawn, and removed from Chapter 19 of the documentation.
+The meanings of "in" and "on" have been made stricter: in past builds, the
+	test "if A is in B" would pass if, e.g., A was being carried by a person
+	B: this now fails. "A is in B" requires B to be a room or container;
+	or else requires A to be a room or region, and B a region. Similarly,
+	"A is on B" now requires B to be a supporter. The point of these reforms
+	is that the built-in relations (well, all relations, really) ought to
+	test as the same relation that they assert: asserting "The spanner is
+	in the box." implies that "the box" is definitely not a person, so it
+	is wrong for "if the spanner is in Fred" to succeed where Fred clearly
+	is a person.
+Because it is, nevertheless, useful to be able to test "by whatever means
+	A is immediately carried by B", the meaning of "to hold" has been
+	changed to this relation. This accords with the meaning of the existing
+	construction "the holder of A": thus "B holds A" if and only if B is
+	"the holder of" A, and one can talk about "things held by B", and so on.
+	In previous builds, "to hold" was synonymous with "to carry", and
+	implied that the holder was a person: clearly, this is no longer true.
+	A bucket can "hold" sand, a table can "hold" place settings, and so on.
+	Note that, as with "holder of", the parts of something are also deemed
+	to be "held" by it.
+Examples:
+	Minor changes have been made to a small number of examples to reflect
+		this stricter sense of "in";
+	Two new examples, "Bees" and "Zqlran", demonstrate a random maze and
+		and an exotic time notation respectively.
+Bug fixed so that "now" is able to change variables and properties, e.g. by
+	writing "now the score is 132" or "now the carrying capacity of the
+	player is 10". (In general, the "now" mechanism for asserting things
+	has been rewritten, and should be more capable all round.)
+When Inform deals with descriptions such as "the people who are in lighted
+	rooms", it compiles code using Inform 6's "objectloop" construct. The
+	running speed of the result depends in part on the form of objectloop
+	used, and in general it is fastest to try to minimise the size of the
+	set of the objects looped through. Inform 7 now does a better job of
+	minimising this set, and tries to avoid circumstances in which it is
+	forced to loop through every object in searching for a match to a
+	pattern. (It is possible that, in a limited number of cases, a
+	description such as "if a woman (called the shopper) is in a shop, ..."
+	will now result in a different woman being written into the "shopper"
+	value than would have happened under previous builds - still a
+	woman who is in a shop, but maybe not the same one. This might possibly
+	affect Transcripts being used for testing.)
+	Because this optimisation trades memory space for time, it is switched
+	off if "use memory economy" has been requested.
+Values of kind "rule" can now be said - the result being to print their
+	names: e.g., "can't turn scenery rule". This will probably only be
+	useful for debugging, or the writing of surrealist competition pieces.
+The scene icons missing in build 3T38 for OS X have been restored.
+The crash occurring in build 3T38 for Windows to do with "a, b, and c" has
+	been fixed.
+Bug in listing installed extension documentation fixed.
+Problem messages in the EPS map-maker generally tidied up.

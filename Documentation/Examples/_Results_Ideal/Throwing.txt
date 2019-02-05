@@ -1,0 +1,97 @@
+   Moss Garden
+  Kyoto
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Moss Garden
+  Earlier today, you arranged three leaves on the moss in imitation of autumn. They must not be disturbed.
+  
+  You can see a sliding paper screen here.
+  
+> >   Moss Garden
+  (Testing.)
+  
+  >[1] test one
+  (Testing.)
+  
+  >[2] open screen
+  You open the sliding paper screen.
+  
+  >[3] throw netsuke at screen
+  The netsuke flies out of sight into the Study.
+  
+  >[4] n
+  
+  Study
+  A restful three-tatami room.
+  
+  A handsome scroll depicts two women in kimonos crossing a bridge; Mount Fuji is in the background.
+  
+  You can also see a sliding paper screen, a netsuke and a calligraphy box (closed) here.
+  
+  >[5] get netsuke
+  Taken.
+  
+  >[6] close screen
+  You close the sliding paper screen.
+  
+  >[7] get scroll
+  Taken.
+  
+  >[8] throw scroll at screen
+  The hanging scroll, unwieldy, flutters to the ground.
+  
+  >[9] throw netsuke at scroll
+  The netsuke hits the hanging scroll.
+  
+  The netsuke lands nearby.
+  
+  >[10] get netsuke
+  Taken.
+  
+  >[11] throw netsuke at shamisen
+  It would be difficult to throw at something you are yourself holding.
+  
+  >[12] drop netsuke
+  Dropped.
+  
+  >[13] test two
+  (Testing.)
+  
+  >[14] throw shamisen at netsuke
+  The shamisen hits the netsuke.
+  
+  The shamisen breaks, leaving a neck, a body and a string behind.
+  
+  >[15] get all
+  string: Taken.
+  shamisen body: Taken.
+  shamisen neck: Taken.
+  netsuke: Taken.
+  hanging scroll: Taken.
+  calligraphy box: Taken.
+  
+  >[16] throw netsuke at screen
+  The netsuke hits the sliding paper screen.
+  
+  The sliding paper screen smashes.
+  
+  The netsuke lands nearby.
+  
+  >[17] get netsuke
+  Taken.
+  
+  >[18] throw netsuke at door
+  The netsuke flies out of sight into the Moss Garden.
+  
+  >[19] s
+  
+  Moss Garden
+  Earlier today, you arranged three leaves on the moss in imitation of autumn. They must not be disturbed.
+  
+  You can see an open doorway and a netsuke here.
+  
+  >[20] get netsuke
+  Taken.
+  
+> >

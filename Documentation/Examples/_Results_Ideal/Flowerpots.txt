@@ -1,0 +1,26 @@
+   Herb Garden
+  Terracottissima
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Herb Garden
+  You can see ten flowerpots here.
+  
+> >   Herb Garden
+  (Testing.)
+  
+  >[1] get three flowerpots
+  flowerpot: Taken.
+  flowerpot: Taken.
+  flowerpot: Taken.
+  
+  >[2] drop all
+  flowerpot: Crack!
+  unbroken flowerpot: Crack!
+  unbroken flowerpot: Crack!
+  
+  >[3] look
+  Herb Garden
+  You can see three broken flowerpots and seven unbroken flowerpots here.
+  
+> >

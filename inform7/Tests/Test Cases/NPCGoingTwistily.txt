@@ -1,0 +1,10 @@
+The Twisted Passage is a room. The Twisty Passage is east of the Twisted
+Passage. The Twisted Passage is east of the Twisty Passage. West of the
+Twisty Passage is nowhere. West of the Twisted Passage is nowhere.
+
+The thief is in the Twisty Passage.
+
+Every turn:
+	try the thief trying going east.
+	
+Test me with "wait/g".

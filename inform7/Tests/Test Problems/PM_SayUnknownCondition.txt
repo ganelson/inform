@@ -1,0 +1,5 @@
+A tree is a kind of thing.
+A tree is either living or dead.
+The description of a tree is "A [tree condition] tree".
+
+The Forest is a room.

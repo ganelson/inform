@@ -1,0 +1,3 @@
+Home is a room.
+
+A thing has a relation of values to values called bar.

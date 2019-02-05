@@ -1,0 +1,21 @@
+   Assembly Room
+  Democratic Process
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Assembly Room
+  On most days, this room is used for elementary school assemblies; at the moment, it serves as a voting place.
+  
+  On the ballot machine is a sign which reads "PUT BALLOTS IN ME :)".
+  
+  You can also see a desk (on which is a ballot) here.
+  
+> >   Assembly Room
+  (Testing.)
+  
+  >[1] put ballot in machine
+  (first taking the ballot)
+  
+  You put the ballot into the machine.
+  
+> >

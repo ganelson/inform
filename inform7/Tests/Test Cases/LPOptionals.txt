@@ -1,0 +1,30 @@
+Game Room is a room.
+
+A die roll is a kind of value. 3d20+9 specifies a die roll with parts dice, sides
+(without leading zeros), adds (without leading zeros, optional, preamble
+optional).
+
+To decide which number is roll of (dr - a die roll):
+	let the total be the adds part of dr;
+	say "[dr]: ";
+	repeat with counter running from 1 to the dice part of dr
+	begin;
+		let the roll be a random number from 1 to the sides part of dr;
+		if the counter is not 1, say ",";
+		say the roll;
+		increase the total by the roll;
+	end repeat;
+	if the adds part of dr is 0 and the dice part of dr is 1, decide on the total;
+	if the adds part of dr is not 0, say "+", adds part of dr;
+	say "=", total;
+	decide on the total.
+
+Test rolling is an action out of world applying to one die roll.
+Understand "dice [die roll]" as test rolling.
+
+Carry out test rolling:
+	say "For your own amusement, you roll ";
+	let the dicing result be the roll of the die roll understood;
+	say ", making [dicing result in words]."
+
+Test me with "dice 2d20+1 / dice 2d20+ / dice 2d20".

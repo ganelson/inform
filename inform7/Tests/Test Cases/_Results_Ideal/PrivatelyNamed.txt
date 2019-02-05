@@ -1,0 +1,36 @@
+   Wabe
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Wabe
+  You can see a blue peacock, a sundial and a drawer (in which is a dusty paper) here.
+  
+> >   Wabe
+  (Testing.)
+  
+  >[1] x blue
+  You can't see any such thing.
+  
+  >[2] x peacock
+  You can't see any such thing.
+  
+  >[3] x sundial
+  You see nothing special about the sundial.
+  
+  >[4] x bird
+  You see nothing special about the blue peacock.
+  
+  >[5] x dusty paper
+  You see nothing special about the dusty paper.
+  
+  >[6] x secret document
+  You can't see any such thing.
+  
+  >[7] get dusty paper
+  Heavens! It is the secret document!
+  
+  >[8] x secret document
+  You see nothing special about the secret document.
+  
+> >

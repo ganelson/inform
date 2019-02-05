@@ -1,0 +1,14 @@
+Home is a room.
+
+Divisibility relates a number (called N) to a number (called M)
+when the remainder after dividing M by N is 0.
+
+The verb to divide (it divides, they divide, it divided, it is divisible)
+implies the divisibility relation. The verb to be a factor of implies the
+divisibility relation.
+
+When play begins:
+	if 2 is a factor of 8, say "2 is a factor of 8.";
+	if 2 is not a factor of 17, say "2 is not a factor of 17.";
+	if 3 divides 6, say "3 divides 6.";
+	if 3 divides 17, say "3 divides 17."

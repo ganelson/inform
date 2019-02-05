@@ -1,0 +1,50 @@
+   Seven Dials
+  Signs and Portents
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Seven Dials
+  There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road now London, now Abingdon; now Weston-super-Mare, or now Hell.
+  
+> >   Seven Dials
+  (Testing.)
+  
+  >[1] x signpost
+  The signpost currently puts you on the road to London, but it swiftly alters again.
+  
+  >[2] n
+  You can't go that way.
+  
+  >[3] turn signpost
+  With a hand's touch you turn the signpost to mark your way for Luton.
+  
+  >[4] n
+  You can't go that way.
+  
+  >[5] turn signpost
+  With a hand's touch you turn the signpost to mark your way for Weston-super-Mare.
+  
+  >[6] n
+  You can't go that way.
+  
+  >[7] turn signpost
+  With a hand's touch you turn the signpost to mark your way for Runnymede.
+  
+  >[8] n
+  You can't go that way.
+  
+  >[9] turn signpost
+  With a hand's touch you turn the signpost to mark your way for Hell.
+  
+  >[10] n
+  It is a path that goes gently ever down and down with no stumbling block or any distraction at either side; there are no bandits and no tolls.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

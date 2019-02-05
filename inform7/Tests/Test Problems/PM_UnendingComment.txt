@@ -1,0 +1,3 @@
+
+[This is a comment which never ends [though an inner one does]
+

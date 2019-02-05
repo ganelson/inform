@@ -1,0 +1,3 @@
+The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
+
+Understand the command "snatch" as "take" when the statue is in the Memorial.

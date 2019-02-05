@@ -1,0 +1,107 @@
+   Fallow Field
+  Otranto
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Fallow Field
+  The very land is gloomy, the earth plowed into untended rows that yield no fruit, shadowed by the castle to the north. A chasm, no doubt the product of some upheaval of the earth, opens before your feet.
+  
+  The hempen rope is tied to the oak stump, and from there runs off towards the Chasm.
+  
+> >   Sinister Attic
+  (Testing.)
+  
+  >[1] x rope
+  The hempen rope is tied to the oak stump and the deadweight.
+  
+  >[2] pull rope
+  The impulse is transmitted to the oak stump and the deadweight.
+  oak stump: The oak stump is firmly anchored.
+  
+  deadweight: The wooden chest rises into view.
+  
+  >[3] get chest
+  Taken.
+  
+  >[4] untie rope from chest
+  (first picking up the hempen rope)
+  
+  Taken.
+  
+  Untied.
+  
+  >[5] tie rope to me
+  You loop the hempen rope around yourself and knot firmly.
+  
+  >[6] down
+  You lower yourself gingerly, hoping that the oak stump holds your weight...
+  
+  Chasm
+  Your person is most uncomfortably pressed on every side by the closeness of the walls; to which you may add as a further inconvenience, that the irregularity of the floor making it difficult to walk upright.
+  
+  An iron key nestles in the cleft of earth, its age indicated by its implausibly great size.
+  
+  >[7] get key
+  Taken.
+  
+  >[8] up
+  (coiling up your rope again as you go...)
+  
+  Fallow Field
+  The very land is gloomy, the earth plowed into untended rows that yield no fruit, shadowed by the castle to the north. A chasm, no doubt the product of some upheaval of the earth, opens before your feet.
+  
+  From an oak stump, a few hopeful shoots grow.
+  
+  >[9] untie rope from stump
+  Untied.
+  
+  >[10] north
+  
+  Castle Hall
+  All is desolate: the great hall has no roof, nor is there any glass in the windows. A staircase without banister ascends inside the wall to a musician's gallery without song.
+  
+  >[11] up
+  
+  Musician's Gallery
+  Of its former cheery aspect only this remains to the Gallery: that chevrons of red and yellow are painted on the wall. But as these are streaked with rain and grime, the banister pulled away, the roof open to the sky, and the corners made a nesting place for birds, the consolation thereby afforded is but slight.
+  
+  A pointed door of particularly grim and uninviting aspect leads north.
+  
+  >[12] unlock pointed door with key
+  You unlock the pointed door.
+  
+  >[13] open it
+  When you rattle at the door, there arises from beyond a terrible shrill noise as though something beyond exults in its imminent release.
+  
+  >[14] tie rope to door
+  You loop the hempen rope around the pointed door and knot firmly.
+  
+  >[15] down
+  
+  Castle Hall
+  All is desolate: the great hall has no roof, nor is there any glass in the windows. A staircase without banister ascends inside the wall to a musician's gallery without song.
+  
+  >[16] pull rope
+  The impulse is transmitted to the pointed door.
+  pointed door: You open the pointed door.
+  
+  >[17] up
+  (coiling up your rope again as you go...)
+  
+  Musician's Gallery
+  Of its former cheery aspect only this remains to the Gallery: that chevrons of red and yellow are painted on the wall. But as these are streaked with rain and grime, the banister pulled away, the roof open to the sky, and the corners made a nesting place for birds, the consolation thereby afforded is but slight.
+  
+  A pointed door of particularly grim and uninviting aspect leads north.
+  
+  >[18] north
+  You have arrived at the goal of your quest!
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

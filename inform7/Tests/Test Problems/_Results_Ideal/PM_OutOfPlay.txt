@@ -1,0 +1,16 @@
+Inform 7 build 6L49 has started.
+I've now read your source text, which is 20 words long.
+I've also read Standard Rules by Graham Nelson, which is 42523 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_OutOfPlay
+  >--> In the sentence 'if the player is out of play' (source text, line 4), I
+    was expecting to read a condition, but instead found some text that I
+    couldn't understand - 'player is out of play'. People sometimes say that
+    things or people removed from all rooms are 'out of play', but Inform uses
+    the adjective 'off-stage' - for instance, 'if the ball is off-stage'. If
+    you would like 'out of play' to work, you could always write 'Definition: A
+    thing is out of play if it is off-stage.' Then the two would be equivalent.
+    I was trying to match this phrase:
+      if (player is out of play - a condition): 
+    But I didn't recognise 'player is out of play'.
+Inform 7 has finished: 51 centiseconds used.

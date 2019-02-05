@@ -1,0 +1,75 @@
+*** During scenes
+(Scenes which restrict movement; Bowler Hats and Baby Geese)
+Creating a category of scenes that restrict the player's behavior.
+
+Scenes can have properties -- a fact that is very useful when it comes to writing a series of scenes that all need to act alike in some respect.
+
+Suppose we have a plot that features a number of scripted scenes, where we need the player to stand still and wait while the events of the scene play out. One way to set this up is to create a property for such scenes -- let's call them "restricted" -- and then write a rule that keeps the player in place while the scene happens:
+
+	{*} "Bowler Hats and Baby Geese"
+	
+	Section 1 - The Procedure
+
+	A scene can be restricted or free.
+
+	Instead of going somewhere during a restricted scene:	
+		say "Better to stay here for the moment and find out what is going to happen next."
+
+And now let's set up our restricted scene. In it, a clown is going to turn up wherever the player is (it doesn't matter where on the map he's gotten to at this point) and do a performance; the player will not be able to leave the area until the performance completes. We'll start with the setting:
+	
+	{**}Section 2 - The Stage and Props
+
+	The Broad Lawn is a room. "A sort of fun fair has been set up on this broad lawn, with the House as a backdrop: it's an attempt to give local children something to do during the bank holiday. In typical fashion, everyone is doing a very good job of ignoring the House itself, despite its swarthy roofline and dozens of blacked-out windows."
+
+	The House is scenery in the Broad Lawn. The description is "A cautious vagueness about the nature of the inhabitants is generally considered a good idea. They might be gods, or minor demons, or they might be aliens from space, or possibly they are embodiments of physical principles, or expressions of universal human experience, or... at any rate they can run time backward and forward so it warbles like an old cassette. And they're always about when somebody dies. Other than that, they're very good neighbors and no one has a word to say against."
+
+	Instead of entering the House:
+		say "You can't go in, of course. It's not a house for people."
+
+	The Gazebo is north of the Broad Lawn. "The gazebo is sometimes used for bands, but at the moment has been appropriated for the distribution of lemonade."
+
+	The clown is a man. "A clown wearing [a list of things worn by the clown] stands nearby." The description is "He winks back at you."
+
+	The clown wears a purple polka-dot bowler hat. He carries a supply of baby geese. The description of the supply of baby geese is "Three or four. Or five. It's hard to count." Understand "goose" or "gosling" or "goslings" as the supply of baby geese.
+
+	There are some eggs. The description of the eggs is "A blur, really."
+
+	There is a Spanish omelet. The description of the Spanish omelet is "Exquisitely prepared."
+	
+...And now the scene itself:
+
+	{**}Section 3 - The Scenes
+	
+	The Clown Performance is a restricted scene. Clown Performance begins when the turn count is 3.
+
+	When Clown Performance begins:
+		move the clown to the location.
+
+	Every turn during Clown Performance:
+		repeat through the Table of Clowning:
+			say "[event description entry][paragraph break]";
+			blank out the whole row;
+			stop.
+
+	When Clown Performance ends:
+		now the eggs are nowhere;
+		now the clown carries the omelet.
+	
+	Clown Performance ends when the number of filled rows in the Table of Clowning is 0.
+
+	Table of Clowning
+	event description
+	"A clown with a purple polka-dot bowler hat strides into the vicinity and begins to juggle baby geese."
+	"While the clown juggles, the baby geese visibly grow older and larger. The clown becomes unnerved."
+	"In an attempt to resolve the problem, the clown reverses the direction of his juggling. The geese revert to goslings."
+	"The goslings become smaller and smaller until the clown is juggling goose eggs[replace eggs]."
+	"The clown throws all the eggs into the air at once and catches them in the bowler hat. He takes a bow; the audience applauds. As a final gesture, he upends his hat to release a perfectly cooked omelet."
+
+	To say replace eggs:
+		now the supply of baby geese is nowhere;
+		now the clown carries the eggs.
+
+	Free Time is a scene. Free Time begins when Clown Performance Ends.
+
+	Test me with "scenes / n / z/ z / look / x geese / s / x geese / x eggs / z / s".
+

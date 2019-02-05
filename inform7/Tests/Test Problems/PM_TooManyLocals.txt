@@ -1,0 +1,25 @@
+Burrow is a room.
+
+To use gratuitous locals with (A - number) and (B - text):
+	let C be 12;
+	repeat with D running through things in the Burrow begin;
+	repeat with E running through things in the Burrow begin;
+	repeat with F running through things in the Burrow begin;
+	repeat with G running through things in the Burrow begin;
+	repeat with H running through things in the Burrow begin;
+	repeat with I running through things in the Burrow begin;
+	repeat with J running through things in the Burrow begin;
+	let K be "marble";
+	let L be "towers";
+	let M be "how many letters along is M, anyway?";
+	let N be "surely this must break the bank";
+	let O be "surely this must break the bank, then";
+	let P be "surely this must break the bank, then";
+	let Q be "surely this must break the bank, then";
+	end repeat;
+	end repeat;
+	end repeat;
+	end repeat;
+	end repeat;
+	end repeat;
+	end repeat.

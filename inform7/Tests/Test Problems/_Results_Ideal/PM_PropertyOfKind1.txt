@@ -1,0 +1,11 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PropertyOfKind1
+  >--> You wrote 'A kind can be significant or ordinary' (source text, line 3):
+    but this seems to give a property to all kinds, rather than to objects or
+    values, which are the only things capable of having properties. For
+    instance, 'A vehicle has a number called maximum speed' is fine, but not 'A
+    kind has a number called coolness rating'.
+Inform 7 has finished: 17 centiseconds used.

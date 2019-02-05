@@ -1,0 +1,10 @@
+Burrow is a room.
+
+Instead of taking something (called fish): say "It's still dark."
+
+
+Instead of taking something (called the fish): say "It's still dark."
+
+
+Instead of taking something (called the): say "It's still dark."
+

@@ -1,0 +1,74 @@
+   Foreshore
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Foreshore
+  This is the Foreshore.
+  
+  You can see a bucket, a ball and a starfish here.
+  
+> >   Sea
+  (Testing.)
+  
+  >[1] look
+  Foreshore
+  This is the Foreshore.
+  
+  You can see a bucket, a ball and a starfish here.
+  
+  >[2] s
+  
+  Beach
+  A further sandy room.
+  
+  >[3] n
+  
+  Foreshore
+  This is the Foreshore.
+  
+  You can see a bucket, a ball and a starfish here.
+  
+  >[4] s
+  
+  Beach
+  A further sandy room.
+  
+  >[5] n
+  
+  Foreshore
+  This is the Foreshore.
+  
+  You can see a bucket, a ball and a starfish here.
+  
+  >[6] take all
+  bucket: Taken.
+  ball: It bounces up to your hand.
+  starfish: Taken.
+  
+  >[7] s
+  
+  Beach
+  A further sandy room.
+  
+  >[8] s
+  
+  Sea
+  The wave washes up to your feet.
+  
+  A crab scuttles by.
+  
+  >[9] wait
+  Time passes.
+  
+  The wave washes up to your feet.
+  
+  A crab scuttles by.
+  
+  >[10] look
+  Sea
+  The wave washes up to your feet.
+  
+  A crab scuttles by.
+  
+> >

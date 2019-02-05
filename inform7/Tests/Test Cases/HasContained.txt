@@ -1,0 +1,5 @@
+Foo is a room.
+
+When play begins:
+	if Foo has contained the player, say "huzzah.";
+	if Foo had provided the property lighted, say "huzzah.".

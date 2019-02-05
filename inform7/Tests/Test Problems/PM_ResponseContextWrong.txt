@@ -1,0 +1,4 @@
+The Temple is a room.
+
+When play begins:
+	say "Hey there!" (A).

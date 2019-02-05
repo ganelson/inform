@@ -1,0 +1,16 @@
+The Upper Cave is above the Rock Pool.
+
+When play begins:
+	let M be 3;
+	unless M is 2, say "M is not 2.";
+	unless M is 1, say "M is not 1.";
+	unless M is 3:
+		say "M not 3.";
+	otherwise unless M is 2:
+		say "M may be 3, but isn't 2.";
+	otherwise:
+		say "Can never happen.";
+	say "Rolled up: [unless M is 2]M is not 2.";
+	say "Rolled up: [unless M is 3]M is not 3.[otherwise unless M is 2]M may be 3, but isn't 2.[otherwise]Whoops.";
+
+Test me with "look".

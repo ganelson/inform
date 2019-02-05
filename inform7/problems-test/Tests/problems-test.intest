@@ -1,0 +1,19 @@
+-cases 'inform7/problems-test/Tests/Test Cases'
+
+-recipe
+
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	step: inform7/problems-test/Tangled/problems-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
+	or: 'produced errors in problems-test' $A
+
+	show: $A
+
+	exists: $I
+	or: 'passed without errors but no blessed output existed'
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end

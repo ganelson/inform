@@ -1,0 +1,13 @@
+There is a room.
+Trading is an action applying to two things.
+The trading action has a person called the trader.
+
+Check trading when the second noun is held: stop.
+Check trading when the second noun is held: stop.
+Check trading when the second noun is held: stop.
+Check trading when the second noun is held: stop.
+Check trading when the second noun is held: stop.
+
+Check trading when trader needs more memories: stop.
+To decide whether (trader - a person) needs more memories:
+	decide yes.

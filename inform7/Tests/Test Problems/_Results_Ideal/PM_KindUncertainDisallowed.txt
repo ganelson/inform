@@ -1,0 +1,23 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 36 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_KindUncertainDisallowed
+  >--> You wrote 'A man is never a kind of animal' (source text, line 3): but
+    you aren't allowed to make a kind in a way expressing certainty or doubt,
+    so 'A badger is a kind of animal' is fine, but 'A fungus is usually a kind
+    of every animal' isn't allowed, and nor is 'A fern is never a kind of
+    animal'. When you tell me about kinds, you have to tell me certainly.
+Problem__ PM_KindUncertainDisallowed
+  >--> You wrote 'A man is seldom a kind of animal' (source text, line 4):
+    again, you aren't allowed to make a kind in a way expressing certainty or
+    doubt.
+Problem__ PM_KindUncertainDisallowed
+  >--> You wrote 'A man is usually a kind of animal' (source text, line 5):
+    again, you aren't allowed to make a kind in a way expressing certainty or
+    doubt.
+Problem__ PM_KindUncertainDisallowed
+  >--> You wrote 'A man is always a kind of animal' (source text, line 6):
+    again, you aren't allowed to make a kind in a way expressing certainty or
+    doubt.
+Inform 7 has finished: 16 centiseconds used.

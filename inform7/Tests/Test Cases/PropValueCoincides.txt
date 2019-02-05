@@ -1,0 +1,27 @@
+Right here is a room. 
+
+Colour is a kind of value. The colours are red, white, green and blue.
+
+A scene has a colour.
+
+Abba Concert is a scene.
+AC-DC Concert is a recurring scene.
+Black Sabbath Concert is a scene.
+
+Yes Concert is a scene.
+A scene is usually white.
+Steeleye Span Concert is a blue scene.
+The AC-DC Concert is blue.
+The colour of the Black Sabbath Concert is red.
+
+When play begins:
+	repeat with C running through scenes:
+		say "[C] has colour [colour of C]."
+
+Instead of waiting:
+	now every scene is green;
+	now Steeleye Span Concert is red;
+	repeat with C running through scenes:
+		say "[C] has colour [colour of C]."
+
+Test me with "z".

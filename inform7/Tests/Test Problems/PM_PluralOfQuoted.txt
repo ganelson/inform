@@ -1,0 +1,6 @@
+The bank is a room.
+
+A coin is a kind of thing. 
+
+The plural of "coin" is monies. 
+

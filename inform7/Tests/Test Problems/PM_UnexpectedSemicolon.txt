@@ -1,0 +1,4 @@
+Countertop is a room.
+		
+Refrigtop is a room; "f";
+down from Refrigtop is Countertop.

@@ -1,0 +1,15 @@
+   Home
+  Fireball: Real Men cast Fireball.
+  Path: Real Roleplayers cast Find the Path.
+  Nose-Picking: Loonies cast Otto's Irresistible Nose-Picking.
+  Smite: Munchkins cast Smite Ruler and Transfer Loyalty of Populace.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Home
+  You can see French curves, Dutch cheese, a Smite Manual and a Ring of Infinite Nose-Picking here.
+  
+> >   Home
+> Are you sure you want to quit? 

@@ -1,0 +1,35 @@
+B/lfigs: Load Figures Template.
+ 
+@Purpose: To load the Figures language definition element.
+ 
+@-------------------------------------------------------------------------------
+
+@p Data type definitions.
+
+@c
+{-lines:type}
+FIGURE_NAME_TY:
+apply-macro:#BASE-KIND
+singular:figure name
+plural:figure names
+
+instance-of:WORD_VALUE_TY
+instance-of:ENUMERATED_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+named-values-created-with-assertions:yes
+default-value:1
+
+i6-printing-routine:PrintFigureName
+has-i6-GPR:yes
+apply-template:*UNDERSTOOD-VARIABLE
+constant-compilation-method:quantitative
+
+description:the name of a figure
+documentation-reference:kind_figurename
+index-priority:6
+index-default-value:figure of cover
+indexed-grey-if-empty:yes
+specification-text:When made with the Glulx setting, an Inform project can include images as well as words, and these are called figures. A figure name is just the name of one of the figures in the current project.
+
+{-endlines}
+{-callv:Kinds::Interpreter::batch_done}

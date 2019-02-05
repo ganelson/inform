@@ -1,0 +1,6 @@
+Reading "intest/Workspace/T4/Example.inform/Build/output.zblorb"...
+
+List of resources:
+Usage 'Exec' number 0: chunk 1
+Usage 'Pict' number 1: chunk 4
+

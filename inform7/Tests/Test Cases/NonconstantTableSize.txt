@@ -1,0 +1,6 @@
+Foo is a room.
+The table size is always 12.
+
+Table of Blogg
+bloggle (a number)
+with table size blank rows

@@ -1,0 +1,11 @@
+Instead of an actor waiting:
+	try requesting the pronoun meanings;
+	try the actor saying yes;
+	
+Instead of an actor jumping:
+	try the actor saying yes;
+	try requesting the pronoun meanings;
+	
+spot is a room. bob is a man in spot.  persuasion: rule succeeds.
+
+Test me with "actions /  yes / z / bob, yes / bob, pronouns / bob, z / bob, jump"

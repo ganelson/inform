@@ -1,0 +1,65 @@
+   Supermarket
+  Lugubrious Pete's Delicatessen
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Supermarket
+  You can see Alice, Beth, Gemma, Delia and Eliza here.
+  
+> >   Delicatessen Counter
+  (Testing.)
+  
+  >[1] wait
+  Time passes.
+  
+  Delia walks into the Delicatessen.
+  
+  >[2] wait
+  Time passes.
+  
+  Eliza walks into the Delicatessen.
+  
+  Delia emerges cheerfully from the Delicatessen Counter, and goes about her regular shopping.
+  
+  >[3] wait
+  Time passes.
+  
+  >[4] east
+  
+  Delicatessen Counter
+  Lugubrious Pete, dolefully slicing meats and cheeses, serves at the counter.
+  
+  You can also see Eliza here.
+  
+  Pete gives a droopy expression as he serves Eliza, who nevertheless brightens and leaves.
+  
+  >[5] wait
+  Time passes.
+  
+  Beth comes in from the Supermarket, and can't believe her luck. The counter is free!
+  
+  >[6] wait
+  Time passes, for Beth quite as much as for yourself.
+  
+  Gemma comes in from the Supermarket, and resignedly queues behind Beth.
+  
+  Pete gives a droopy expression as he serves Beth, who nevertheless brightens and leaves.
+  
+  >[7] wait
+  Time passes, for Gemma quite as much as for yourself.
+  
+  Alice comes in from the Supermarket, and resignedly queues behind Gemma.
+  
+  Pete gives a droopy expression as he serves Gemma, who nevertheless brightens and leaves.
+  
+  >[8] wait
+  Time passes, for Alice quite as much as for yourself.
+  
+  Beth comes in from the Supermarket, and resignedly queues behind Alice.
+  
+  >[9] wait
+  Time passes, for Alice and Beth quite as much as for yourself.
+  
+  Delia comes in from the Supermarket, and resignedly queues behind Alice and Beth.
+  
+> >

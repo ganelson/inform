@@ -1,0 +1,13 @@
+The Release Zone is a room.
+
+Release along with cover art.
+
+Figure of Space is the file "Shuttle.jpg".
+
+Figure of Geometry is the file "Triangle.png".
+
+Sound of Chiming is the file "Powermac.aiff".
+
+Sound of Bach is the file "Bach.ogg".
+
+Sound of Organ is the file "Passacaglia.mid".

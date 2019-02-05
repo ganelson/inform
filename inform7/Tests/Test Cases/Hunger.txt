@@ -1,0 +1,16 @@
+Hunger is a room.
+
+The cake is here. The cake is edible.
+
+The harem girl is here. The harem girl carries the grapes. The grapes are edible.
+
+The fungus is here. "Delicious fungus coats the walls." The fungus is edible
+and fixed in place.
+
+Madame Cholet is here. A dining table is here. A jam tart is on the table.
+The tart is edible.
+
+Instead of taking the tart:
+	say "Madame Cholet smacks your hand away."
+
+Test me with "eat cake / eat grapes / eat fungus / eat tart".

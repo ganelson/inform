@@ -1,0 +1,7 @@
+[Surprisingly, this tests the reading of the table entry "false" in the
+Standard Rules, which mustn't be confused with the "False Door" below.]
+
+Egyptian Tomb is a room.
+
+False Door is a door. It is west of Egyptian Tomb. The description is "The
+faux doorway that leads to the underworld, accessible only to the dead….".

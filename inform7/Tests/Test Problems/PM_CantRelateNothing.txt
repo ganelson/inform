@@ -1,0 +1,6 @@
+Stage is a room.
+
+Requirement relates various things to various things. The verb to require (he requires, they require, 
+he required, it is required, he is requiring) implies the requirement relation. 
+
+Splodge is a thing. It requires nothing.

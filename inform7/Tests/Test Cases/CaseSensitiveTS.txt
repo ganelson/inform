@@ -1,0 +1,6 @@
+The Schoolhouse is a room.
+
+To say Blorp: say "Blorp!".
+To say blorp: say "blorp.".
+
+When play begins: say Blorp; say blorp; say "Well, [Blorp]And [blorp]";

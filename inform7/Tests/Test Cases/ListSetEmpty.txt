@@ -1,0 +1,8 @@
+Home is a room.
+
+Foo is a list of text that varies.
+
+When play begins:
+	now foo is {};
+	add "hello" to foo;
+	say "Foo is [foo]."

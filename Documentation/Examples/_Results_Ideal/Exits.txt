@@ -1,0 +1,23 @@
+   Nearby: something N, something S, something W, something NW, something NE, something E, something SE and something SW
+  Guided Tour
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Dome
+  
+> >   Nearby: Dome (E), Quiet Corner (N) and something S
+  (Testing.)
+  
+  >[1] n
+  
+  North Chapel
+  
+  >[2] w
+  
+  Quiet Corner
+  
+  >[3] s
+  
+  Western End
+  
+> >

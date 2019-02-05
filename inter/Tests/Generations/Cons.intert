@@ -1,0 +1,11 @@
+packagetype _plain
+packagetype _code
+
+package main _plain
+	kind K_unchecked unchecked
+	constant Bidger K_unchecked = 20
+	splat &"Constant Badger =     12;\n"
+	splat &"Constant Bodger $$10011101;\n"
+	splat &"Constant Budger $7fe2  ;\n"
+	constant Danza K_unchecked = sum{ 2, 34 }
+	constant Sahara K_unchecked = sum{ Danza, Bidger, 1 }

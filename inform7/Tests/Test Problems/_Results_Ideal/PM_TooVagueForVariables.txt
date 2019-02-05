@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 11 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_TooVagueForVariables
+  >--> You wrote 'A kind has a number called x' (source text, line 2): but this
+    is too vague a description of the owner of the property, so that I don't
+    know where to put this. Something like 'A person has a number called age'
+    is fine, but 'A kind has a number called age' is not. Which kind?
+Inform 7 has finished: 17 centiseconds used.

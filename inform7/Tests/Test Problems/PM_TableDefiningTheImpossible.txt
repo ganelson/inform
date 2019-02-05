@@ -1,0 +1,6 @@
+The Admiralty is a room. Ship is a kind of vehicle. Some 475
+are defined by Table 1.
+
+Table 1 - Vessels
+rate			commander
+2				"Captain Meldrew"

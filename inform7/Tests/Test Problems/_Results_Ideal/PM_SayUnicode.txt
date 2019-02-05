@@ -1,0 +1,29 @@
+Inform 7 build 6L65 has started.
+I've now read your source text, which is 38 words long.
+I've also read Standard Rules by Graham Nelson, which is 42485 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_SayUnicode
+  >--> In the line 'say unicode Coastline of Spain' (source text, line 4), I
+    was expecting that 'unicode Coastline of Spain' would be something to
+    'say', but it didn't look like any form of 'say' that I know. So I tried to
+    read 'unicode Coastline of Spain' as a Unicode character, which seemed
+    likely because of the word 'unicode', but that didn't work either. Unicode
+    characters can be written either using their decimal numbers - for
+    instance, 'Unicode 2041' - or with their standard names - 'Unicode Latin
+    small ligature oe'. For efficiency reasons these names are only available
+    if you ask for them; to make them available, you need to 'Include Unicode
+    Character Names by Graham Nelson' or, if you really need more, 'Include
+    Unicode Full Character Names by Graham Nelson'.
+Problem__ PM_SayUnicode
+  >--> In the line 'say "Look at the [unicode Coastline of France] there."' (source
+    text, line 5), I was expecting that 'unicode Coastline of France' would be
+    something to 'say', but it didn't look like any form of 'say' that I know.
+    So I tried to read 'unicode Coastline of France' as a Unicode character,
+    which seemed likely because of the word 'unicode', but that didn't work
+    either. Unicode characters can be written either using their decimal
+    numbers - for instance, 'Unicode 2041' - or with their standard names -
+    'Unicode Latin small ligature oe'. For efficiency reasons these names are
+    only available if you ask for them; to make them available, you need to
+    'Include Unicode Character Names by Graham Nelson' or, if you really need
+    more, 'Include Unicode Full Character Names by Graham Nelson'.
+Inform 7 has finished: 47 centiseconds used.

@@ -1,0 +1,36 @@
+*** What are relations for?
+(Mathematical view of relations)
+Some notes on relations from a mathematical point of view, provided only to clarify some technicalities for those who are interested.
+
+Inform uses the term "relation" in a broader sense than mathematics. Properly speaking, the term "relation" in its mathematical sense only applies to the case where the domain for the left and right objects are the same: for simplicity's sake, let us talk only about the case where they are.
+
+In mathematics, the properties most often looked for in a relation are that it should be:
+
+(a) Reflexive: A <=> A for every A. This is not especially useful for Inform, and seldom appears in practical examples.
+
+(b) Symmetric: A <=> B if and only if B <=> A. Generally, Inform relations are not symmetric, but there are two important cases which are:
+
+	Meeting relates people to each other.
+	Marriage relates one person to another.
+
+These are automatically symmetric, so that to assert one way round is to assert the other as well.
+
+(c) Transitive: A <=> B and B <=> C means that A <=> C as well. Again, Inform relations are not generally transitive. In many relations, there can be long chains of things, each perhaps related to the one in front and the one behind, so that there is some indirect sense in which the two ends of the chain are connected to each other: but they are not related as such. For instance, a journey across the map might pass through ten rooms, each adjacent to the last and next, but the two ends would not themselves be adjacent. The concept we need is the "transitive closure" of the original relation, defined as the smallest transitive relation including the original. If R is a relation between "things", then the following:
+
+	TC relates a thing (called A) to a thing (called B) when the number of steps via R from A to B is greater than 0.
+
+is the transitive closure of R. In particular,
+
+	Accessibility relates a room (called A) to a room (called B) when the number of moves from B to A is greater than 0. The verb to be accessible from means the accessibility relation.
+
+calculates the transitive closure of adjacency. Here, though, the way we normally understand "accessible from" suggests that it would be better to write:
+
+	Accessibility relates a room (called A) to a room (called B) when the number of moves from B to A is at least 0.
+
+which is reflexive as well as transitive. The usefulness of Inform's "next step via R from A to B" construction, in a wide variety of settings, reflects the importance of transitivity as an idea.
+
+A relation which has all three properties of being reflexive, symmetric and transitive is called an "equivalence relation". (If all the map connections are two-way, then the accessibility relation above is symmetric and therefore a full equivalence relation: but if not, it may not be.) Inform has a special construction for making equivalence relations:
+
+	Nationality relates people to each other in groups.
+
+This language - "in groups" - relies on the standard theorem that every equivalence relation on a set naturally defines a partition of that set, and vice versa. The "groups" referred to are what are normally called "equivalence classes". (Inform does little with these equivalence classes: it might be interesting to do so, in effect forming quotient kinds.)

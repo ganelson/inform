@@ -1,0 +1,16 @@
+Place is a room.
+
+A dial is a kind of thing.
+
+A device called a timer is in Place. A dial called a graduated dial is part of the timer.
+
+The block setting it to rule is not listed in any rulebook.
+
+The setting it to action has a number called intended setting.
+
+Setting action variables for setting something to something (this is the set numerically rule):
+	now the intended setting is -1;
+	if the player's command includes "[number]":
+		now the intended setting is the number understood.
+
+Test me with "actions / set dial to infinity / set dial to 3 / set dial to 5 / set dial to 20".

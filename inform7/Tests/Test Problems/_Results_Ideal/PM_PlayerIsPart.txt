@@ -1,0 +1,9 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 22 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_PlayerIsPart
+  >--> The jelly monster seems to have the player attached as a component part,
+    which is not allowed. The player can be in a room, or inside a container,
+    or on a supporter, but can't be part of something.
+Inform 7 has finished: 17 centiseconds used.

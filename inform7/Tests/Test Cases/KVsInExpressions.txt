@@ -1,0 +1,15 @@
+Brightness is a kind of value. The brightnesses are guttering, weak, radiant, and blazing.
+Lab is a room. The table lamp is in Lab. The table lamp has a brightness.
+
+Before printing the name of a lamp: say "[brightness of the item described] ".
+
+After jumping:
+	let lumens be the brightness of the table lamp;
+	now the brightness of the table lamp is the capped successor to lumens;
+	continue the action.
+
+To decide which K is the capped successor to (original - enumerated value of kind K):
+	if the original is the last value of K:
+		decide on the original;
+	otherwise:
+		decide on the K after the original.

@@ -1,0 +1,17 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 35 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_RangeOverlyBroad
+  >--> You wrote 'Globbing relates various people to various values' (source
+    text, line 5): but relations aren't allowed to range over all 'objects' or
+    all 'values', as these are too broad. A relation has to be between two
+    kinds of object, or kinds of value. So 'Taming relates various people to
+    various animals' is fine, because 'people' and 'animals' both mean kinds of
+    object, but 'Wanting relates various objects to various values' is not
+    allowed.
+Problem__ PM_RangeOverlyBroad
+  >--> You wrote 'Knowing relates various people to various objects' (source
+    text, line 7): again, relations aren't allowed to range over all 'objects'
+    or all 'values'.
+Inform 7 has finished: 16 centiseconds used.

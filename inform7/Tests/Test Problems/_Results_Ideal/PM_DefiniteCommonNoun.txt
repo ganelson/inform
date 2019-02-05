@@ -1,0 +1,19 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 16 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_DefiniteCommonNoun
+  >--> In 'Instead of opening a door when the door is closed' (source text, line 3),
+    I'm not able to understand what specific thing is meant by the phrase 'the
+    door'. You use the definite article 'the', which suggests you have a
+    particular thing in mind, but then you go on to refer to a kind rather than
+    something definite. Quite likely a human reading this sentence would find
+    it obvious what you mean, but I don't. This often arises when writing
+    something like: 'Instead of opening a door when the door is closed' - where
+    clearly a human would understand that 'the door' refers to the same one in
+    'a door' earlier. I can make sense of this only if you help: for example,
+    'Instead of opening a door (called the portal) when the portal is closed'
+    would work. So would 'Instead of opening a closed door'; or 'Instead of
+    opening a door which is closed'. All of these alternatives help me by
+    making clear that only one door is being talked about.
+Inform 7 has finished: 19 centiseconds used.

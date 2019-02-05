@@ -1,0 +1,138 @@
+   Pizza Prince
+  Pizza Prince
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Pizza Prince
+  On the buffet table is a pizza selection. They are all cheese-only, and all luke-warm.
+  
+> >   Pizza Prince
+  (Testing.)
+  
+  >[1] i
+  You are carrying nothing.
+  
+  >[2] get pizza
+  Taken (gingerly).
+  
+  >[3] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[4] i
+  You are carrying:
+    two pizza slices
+  
+  >[5] get pizza
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[6] drop pizza
+  (the pizza slice)
+  Dropped.
+  
+  >[7] look
+  Pizza Prince
+  On the buffet table is a pizza selection. They are all cheese-only, and all luke-warm.
+  
+  You can also see a pizza slice here.
+  
+  >[8] get pizza
+  (the pizza slice)
+  Taken.
+  
+  >[9] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[10] look
+  Pizza Prince
+  On the buffet table is a pizza selection. They are all cheese-only, and all luke-warm.
+  
+  >[11] eat pizza
+  (the pizza slice)
+  You eat the pizza slice. Not bad.
+  
+  >[12] g
+  (the pizza slice)
+  You eat the pizza slice. Not bad.
+  
+  >[13] g
+  (the pizza slice)
+  You eat the pizza slice. Not bad.
+  
+  >[14] g
+  (the pizza slice)
+  You eat the pizza slice. Not bad.
+  
+  >[15] g
+  That's plainly inedible.
+  
+  >[16] get pizza
+  Taken (gingerly).
+  
+  >[17] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[18] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[19] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[20] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[21] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[22] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[23] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[24] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[25] g
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[26] g
+  (from the magnificent selection before you)
+  "Hey!" barks a hitherto-unseen manager from behind you. "It's an "all you can eat" buffet, not an "all you can stuff down your pants" buffet."
+  
+  >[27] g
+  (from the magnificent selection before you)
+  You are conscious of a disapproving huff from the manager, so you refrain.
+  
+  >[28] g
+  (from the magnificent selection before you)
+  You are conscious of a disapproving huff from the manager, so you refrain.
+  
+  >[29] i
+  You are carrying:
+    ten pizza slices
+  
+  >[30] eat pizza
+  (the pizza slice)
+  You eat the pizza slice. Not bad.
+  
+  >[31] take pizza
+  (from the magnificent selection before you)
+  Taken (gingerly).
+  
+  >[32] g
+  (from the magnificent selection before you)
+  You are conscious of a disapproving huff from the manager, so you refrain.
+  
+> >

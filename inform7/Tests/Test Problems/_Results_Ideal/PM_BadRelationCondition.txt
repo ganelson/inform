@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 21 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadRelationCondition
+  >--> You wrote 'Contact relates a thing (called X) to a thing (called Y) when
+    X arfle barfly Y gloop' (source text, line 3): but the condition defining
+    this relation makes no sense to me, although the definition was properly
+    formed - it is only the part after 'when' which I can't follow.
+Inform 7 has finished: 55 centiseconds used.

@@ -1,0 +1,10 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 8 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_BadRelation
+  >--> You wrote 'The arrow is in a kind of value' (source text, line 1): but
+    this description of a relationship makes no sense to me, and should be
+    something like 'X is in Y' (or 'on' or 'part of Y'); or else 'X is here' or
+    'X is east of Y'.
+Inform 7 has finished: 17 centiseconds used.

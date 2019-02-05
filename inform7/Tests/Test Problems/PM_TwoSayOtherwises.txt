@@ -1,0 +1,3 @@
+There is a room.
+
+When play begins: say "[if true is true]Hello[otherwise if true is true]Goodbye[otherwise]Adios[otherwise]Adieu[end if]".

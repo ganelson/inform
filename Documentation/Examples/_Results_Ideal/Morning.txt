@@ -1,0 +1,39 @@
+   Exhibition Room
+  One of Those Mornings
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Exhibition Room
+  By far the finest thing in the room is a priceless pearl in a glass display case. It should of course be yours, if only you can remember where you hid the key.
+  
+  You can see a jade vase (closed), a teak chest (closed), a bronze teakettle (closed) and a child's burial casket (closed) here.
+  
+> >   Exhibition Room
+  (Testing.)
+  
+  >[1] find pearl
+  You left the priceless pearl in the display case.
+  
+  Your watch ticks with maddening loudness.
+  
+  >[2] find teakettle
+  You left the bronze teakettle in the Exhibition Room.
+  
+  Your watch ticks with maddening loudness.
+  
+  >[3] get teakettle
+  Taken.
+  
+  Your watch ticks with maddening loudness.
+  
+  >[4] find teakettle
+  You're holding the bronze teakettle!
+  
+  Your watch ticks with maddening loudness.
+  
+  >[5] find key
+  You left the silver key in the teak chest.
+  
+  Your watch ticks with maddening loudness.
+  
+> >

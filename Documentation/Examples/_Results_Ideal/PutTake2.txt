@@ -1,0 +1,97 @@
+   Closet
+  Thanks to your cruel stepmother, you're not going anywhere until the lentils and peas are sorted.
+  
+  Sand
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Closet
+  You can see three lentils, fourteen black-eyed peas, a round tin (in which are seventeen lentils) and a square tin (in which are twenty black-eyed peas) here.
+  
+> >   Closet
+  (Testing.)
+  
+  >[1] put peas in square tin
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: (first taking the black-eyed pea)
+  Done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  black-eyed pea: Already done.
+  
+  >[2] put lentils in round tin
+  lentil: (first taking the lentil)
+  Done.
+  lentil: (first taking the lentil)
+  Done.
+  lentil: (first taking the lentil)
+  Done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  lentil: Already done.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

@@ -1,0 +1,55 @@
+   Scissors Room
+  Snip!
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Scissors Room
+  
+> >   Scissors Room
+  (Testing.)
+  
+  >[1] trim string by 4 in
+  You now have a 4 inch piece of string and a 32 inch piece of string.
+  
+  >[2] cut longer string in half
+  You now have two 16 inch pieces of string and a 4 inch piece of string.
+  
+  >[3] cut longest string in half
+  You now have two 8 inch pieces of string, a 4 inch piece of string and a 16 inch piece of string.
+  
+  >[4] cut shortest string in half
+  You now have two 2 inch pieces of string, two 8 inch pieces of string and a 16 inch piece of string.
+  
+  >[5] g
+  You now have two 1 inch pieces of string, two 8 inch pieces of string, a 2 inch piece of string and a 16 inch piece of string.
+  
+  >[6] g
+  You're approaching Zeno's string at this point.
+  
+  >[7] tie longest string to shortest string
+  You end up with a 16 inch piece of string, as some is taken up by the knot.
+  
+  >[8] tie longest string to medium string
+  Which do you mean, a 8 inch piece of string or the 2 inch piece of string?
+  
+  >[9] i
+  You are carrying:
+    a 1 inch piece of string
+    two 8 inch pieces of string
+    a 2 inch piece of string
+    a 16 inch piece of string
+  
+  >[10] x 16 inch string
+  You see nothing special about the 16 inch piece of string.
+  
+  >[11] drop 8 inch string
+  Dropped.
+  
+  >[12] i
+  You are carrying:
+    a 1 inch piece of string
+    a 8 inch piece of string
+    a 2 inch piece of string
+    a 16 inch piece of string
+  
+> >

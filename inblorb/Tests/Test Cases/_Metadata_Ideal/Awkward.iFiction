@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ifindex version="1.0" xmlns="http://babel.ifarchive.org/protocol/iFiction/">
+    <story>
+        <identification>
+            <ifid>0B00B00D-3307-4688-B2D8-95DB962781B4</ifid>
+            <format>glulx</format>
+        </identification>
+        <bibliographic>
+            <title>It Is An Awkward &amp; &lt;Difficult&gt; Title But With Élan And Naïveté</title>
+            <author>Halldór Ásgrímsson</author>
+            <headline>An Interactive Test &amp; &lt;so forth&gt;</headline>
+            <genre>Fiction</genre>
+            <firstpublished>2016</firstpublished>
+            <description>A framed photograph of Icelandic Prime Minister Halldór Ásgrímsson, a ruler measuring Ångströms, a Bokmål-Lëtzebuergesch Lëtzebuergesch-Bokmål dictionary and a ticket to Tromsø via Østfold are in the Íslendingabók. A paper by Karl Weierstraß, a general feeling of Ärger, an old Österreich passport and the Bach Clavier-Übung open at the fugue à 4 are in the Bücherei. The painting of École normale superiéure students singing Ça ira, the frankly lesser-known journal of Niccolò Polo, Così fan tutte on CD, an extract of Herodotus concerning Artaÿctes and the exit sign reading À BIENTÔT are in the Bibliothèque. A wicker basket marked CHLOË is in the Bibliothèque. A ginger cat is in the basket. A guide to Æsop for naïve æsthetes, Lönnrot's Kalevala, a creed according to the Bahá'ís, FALARÃO magazine, an Estonian poem by Tõnu Trubetsky, a Portuguese-Italian recipe for macarrão, a stripy hanging CANDY PIÑATA bag, a ¿¡Punctuation Turned Upside Down¿¡ pamphlet, an Italian brewers' anti-violence poster declaring BÓTTE NON BÒTTE, a map of È and a dusty book titled The Parnasum of Luís Vaz bearing CAMÕES on its spine are in Miscellany Mañana. In Mañana is something called ÂÊÎÔÛ - The Official Journal of the Society for Vowels bearing Circumflexes. In Mañana is something called âêîôû comic - the youth edition.</description>
+            <language>en</language>
+            <group>Inform</group>
+        </bibliographic>
+        <releases>
+            <attached>
+                <release>
+                    <releasedate>2016-04-28</releasedate>
+                    <version>1</version>
+                    <compiler>Inform 7</compiler>
+                    <compilerversion>Inform 7.99.99 (build 9Z99)</compilerversion>
+                </release>
+            </attached>
+        </releases>
+        <colophon>
+            <generator>Inform 7</generator>
+            <generatorversion>Inform 7.99.99 (build 9Z99)</generatorversion>
+            <originated>2016-04-28</originated>
+        </colophon>
+        <glulx>
+            <serial>160428</serial>
+            <release>1</release>
+            <compiler>Inform Inform 7.99.99 (build 9Z99)</compiler>
+        </glulx>
+    </story>
+</ifindex>

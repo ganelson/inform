@@ -1,0 +1,44 @@
+   Ancient Cambodian Temple
+  Croft
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Ancient Cambodian Temple (on the wood platform)
+  A vast space built for ancient and forgotten rituals. The stone floor crawls with vermin. Well above the floor, and separated by some feet, are twin platforms built into the wall: the one carved of jointed wood, the other of sheets of graven bronze.
+  
+  On the bronze platform is Lara.
+  
+> >   Ancient Cambodian Temple
+  (Testing.)
+  
+  >[1] lara, drop map
+  Lara puts down the map.
+  
+  >[2] lara, drop gun
+  Lara drops the gun onto the bronze platform, which clangs protestingly.
+  
+  >[3] drop idol
+  Dropped.
+  
+  >[4] enter bronze platform
+  You leap into midair to cross the distance...
+  
+  You land in a cat-like crouch on the bronze platform.
+  
+  >[5] drop pickaxe
+  You drop the pickaxe, and the bronze platform clangs protestingly.
+  
+  >[6] get off
+  You get off the bronze platform.
+  
+  Ancient Cambodian Temple
+  A vast space built for ancient and forgotten rituals. The stone floor crawls with vermin. Well above the floor, and separated by some feet, are twin platforms built into the wall: the one carved of jointed wood, the other of sheets of graven bronze.
+  
+  On the bronze platform are a pickaxe, a gun, a map and Lara.
+  
+  On the wood platform is a precious idol.
+  
+  >[7] climb wood
+  You jump, catch the edge of the wood platform in your hands, and -- exerting considerable upper-body strength -- pull yourself up onto it.
+  
+> >

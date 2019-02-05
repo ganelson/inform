@@ -1,0 +1,29 @@
+x watch
+drop watch
+x watch
+look under the sofa
+look under the chaise
+i
+put catalog under the chaise
+look
+take chaise
+get pillow
+put it under the chaise
+look
+look under chaise
+g
+g
+g
+i
+x hedge maze
+x spiral
+x middle terrace
+x lily pond
+x lower terrace
+x venus
+x reproduction
+x tent peg
+gonear chaise
+push chaise
+push pillow
+

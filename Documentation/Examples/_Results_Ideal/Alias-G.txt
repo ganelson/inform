@@ -1,0 +1,47 @@
+
+
+
+Alias
+An Interactive Fiction
+Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+
+Senator's Junior Suite
+The Senator appears, unfortunately, to have very precise habits: little in the room has been moved from its usual place; the trash can is empty; the bed has been remade. There may in fact be nothing to find here.
+
+You can see a dresser (on which is a lamp) here.
+
+>(Testing.)
+
+>[1] dial 555-9999
+(on the Nokia)
+You dial 555-9999.
+
+>[2] call home on the telephone
+You dial 555-9200.
+
+>[3] phone the president
+That's not a number you know.
+
+>[4] call stephen
+That's not a number you know.
+
+>[5] open drawer
+You open the drawer, revealing a blue paper.
+
+>[6] read paper
+It reads: "Call Stephen - 555-2513".
+
+>[7] call stephen
+(on the Nokia)
+You dial 555-2513.
+
+>[8] put phone in drawer
+You put the Nokia into the drawer.
+
+>[9] close drawer
+You close the drawer.
+
+>[10] call stephen
+What do you want to call that on?
+
+>Are you sure you want to quit? 

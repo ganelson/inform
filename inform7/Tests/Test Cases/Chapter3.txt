@@ -1,0 +1,259 @@
+"Chapter 3" by Emily Short
+
+Chapter 3
+
+Use command line echoing.
+
+Section 1 - Descriptions
+[Explicit and implicit creations of rooms; 'is here' syntax, which I have never used in my life before now; All directions, just to be thorough.]
+
+Use full-length room descriptions.
+
+The British Museum Courtyard is a room. "A very large square space roofed in glass. Exits lead in the cardinal directions; at the center of the room is a large round building." [Note: since I seem to have lost my flyer with the plan, actual locations are approximate and probably incorrectly oriented.]
+
+A loud merengue band is here. "There is a merengue band nearby, celebrating ethnic diversity and, evidently, the rights of the deaf."
+
+The Great Outdoors is outside of the Courtyard. "Gathered outside the museum are a collection of pigeons and a German school group."
+
+The Museum Shop is inside of the Courtyard.
+
+The Staircase is above the Courtyard. "A long, curving staircase which winds around the outside of the library."
+
+The Steam Tunnel is below the Courtyard. "Well well. Slip through a manhole cover and you never do know what you'll find!"
+
+The Parthenon Frieze Room is west of the Courtyard. "A tasteful exhibit of the Parthenon sculptures accompanied by plaques explaining why under no circumstances they should be returned to Athens. For the good of humanity, which is of course the Museum's chief concern."
+
+The Enlightenment Room is east of the Courtyard. "Assembled with a cheerful eclecticism which is somehow more human, if less easily-browsed, than the rest of the museum. You're surrounded by shelves containing: small shells, coins, shells of moderate size, telescopes, astrolabes, bones, large shells, burial materials of ancient China, Greek vases of inferior quality to those displayed elsewhere, shells large enough to hide inside, and a stuffed monkey. 
+
+Somewhere there is probably also the shelf containing animals painted with a fine camel's-hair brush, but you don't see it just now."
+
+The Unmemorable Exhibit Room is north of the Courtyard. "There's some stuff here." [Okay, so I didn't actually go this way last time and can't remember what's there. Probably something good, like Sutton Hoo, but I've forgotten.]
+
+The Entry Hall is south of the Courtyard. [Okay, you should technically have to go through this to get to the Great Outdoors, but finick not, for lo it is a test, not Truth.]
+
+The Crowded Corner is southwest of the Courtyard.
+
+The Empty Corner is southeast of the Courtyard.
+
+The Untidy Corner is northwest of the Courtyard.
+
+The Dull Corner is northeast of the Courtyard.
+
+Section 2 - Rooms and the map
+[Inverse formations of all directions explored in Section 1; Twisting passages of a few types.]
+
+Inside from the Staircase is the Library Interior.
+
+Outside from the Great Outdoors is Holborn.
+
+Below the Parthenon Frieze Room is the Room of Frightening Roman Busts.
+
+Above the Parthenon Frieze Room is the Reserve Vase Room. The description of the Reserve Vase Room is "Case upon case upon case of intriguing vases deemed inadequately sublime to go in any of the other exhibits."
+
+East of the Entry Hall is the Toilets.
+
+West of the Parthenon Frieze Room is the Assyrian Antiquities Exhibit. [I think I've actually made this almost exactly backwards, even allowing for a spun compass, but enh.]
+
+North of the Staircase is the Skybridge. 
+
+South of the Assyrian Antiquities Exhibit is the Rosetta Stone Room. [Totally making up the geography now.]
+
+
+Section 3 - One-way connections
+
+Southwest of the Steam Tunnel is southeast of the Dim Tube-like Room. 
+
+Northwest of the Dim Tube-like Room is northeast of the Crumbling Tunnel.
+
+West of the Crumbling Tunnel is outside of the Nest-like Place. [And the World Index hateth me, and hath given a number to its hatred, which is six hundred and nine.]
+
+
+The Bottom of the Well is a room.  "You are standing at the bottom of a well."
+
+The bucket is here. "An empty bucket lies nearby."
+
+The Slimy Passage is below the Bottom of the Well.
+
+The Top of the Well is above the Bottom of the Well. The Top of the Well is west of the Medieval Room.
+
+The Oubliette is south of Bottom of the Well. North of the Oubliette is nowhere.
+
+
+Section 4 - Regions
+[Defining regions; putting rooms in regions; stacking regions.]
+
+The Exterior is a region. The Great Outdoors and Holborn are in the Exterior.
+
+The Abominable Addition is a region. The Museum Shop and Library Interior are in the Abominable Addition. 
+
+The Especially Confusing Area is a region. It is in the Abominable Addition. The Skybridge is in the Especially Confusing Area.
+
+The Moderately Confusing Area is a region in the Abominable Addition. The Staircase is in the Moderately Confusing Area.
+
+
+
+Section 5 - Kinds
+[In the ... is a ...; explicitly assigning kinds after the fact; in/on the X is a Y called the Z; repeat syntax over all but the weird built-in kinds, so thing, door, container, player's holdall, vehicle, supporter, backdrop, person, animal, man, woman, device; but not direction or player character.]
+
+In the Dim Tube-like Room is a dead fish. The dead fish is a thing. [The latter sentence wholly unnecessary, but included for the purposes of thoroughness.] 
+
+In the Museum Shop is a cash register. The cash register is a container.
+
+In the Museum Shop is a capacious sack. The capacious sack is a player's holdall. [Nothing like a capacious sack to say OLD-SCHOOL GAME.]
+
+In Holborn is a Yugo. The Yugo is a vehicle. [Construed very generously.]
+
+In the Rosetta Stone Room is a pedestal. The pedestal is a supporter.
+
+In the Great Outdoors is a sky. The sky is a backdrop.
+
+In the Reserve Vase Room is a security guard. The security guard is a person. 
+
+In the Great Outdoors are some pigeons. The pigeons are animals.
+
+In the Dull Corner is a student. The student is a man.
+
+In the Untidy Corner is a little girl. The girl is a woman. [Metaphysical.]
+
+In the Great Outdoors is a fly. The fly is a neuter animal.
+
+In the Steam Tunnel is walkie-talkie. The walkie-talkie is a device.
+
+In the cash register is a thing called a pound coin. In the Reserve Vase Room is a container called the white-ground lekythos. In the Nest-like Place is a player's holdall called the brown bag.  On the pedestal is a supporter called the rosetta stone. 
+
+In the Courtyard is a backdrop called the infernal racket. 
+
+In the Entry Hall is a person called the Japanese tourist. In the Steam Tunnel is an animal called the beetle. In the Enlightenment Room is a man called the gaunt older gentleman. In Holborn is a woman called the picnicker.
+
+In the Unmemorable Exhibit is a device called the silencer.
+
+Section 6 - Either/or properties
+[Test of all reasonably-assignable adjectives listed in the lexicon at the outset, therefore closed, dark, described, edible, enterable, female, fixed in place, handled, inedible, lighted, lockable, locked, male, opaque, open, openable, portable, pushable between rooms, scenery, switched off, switched on, transparent, undescribed, unlocked, unopenable, wearable but NOT adjacent, marked for listing, touchable and untouchable, lit and unlit, visible and invisible.]
+
+The cash register is openable and closed and lockable and locked. 
+
+The lekythos is open, openable, opaque. It is fixed in place, and inedible. It is not enterable.
+
+The Yugo is unlocked, handled, transparent, and pushable between rooms.
+
+The brown bag is open and not openable. The capacious sack is unopenable. [Both are listed, one in the lexicon and the other in docs; both should therefore work. If either stops working, this fact should be reflected appropriately.]
+
+Pigeons are scenery. The beetle is edible.
+
+The infernal racket is undescribed. The merengue band is described.
+
+The silencer is switched off. The walkie-talkie is portable and switched on.
+
+The Steam Tunnel is dark. The Nest-like Place is lighted.
+
+The capacious sack is wearable and enterable.
+
+The security guard is male. The Japanese tourist is female.
+
+[No need for a 3.7, as such.]
+
+Section 8 - Scenery
+[Sort of redundant with the foregoing, but tries a few minor variations of syntax with plurals and multiple assignment.]
+
+The pedestal and the security guard are scenery. The crowds are scenery in the Entry Hall.
+
+Section 9 - Backdrops
+[Again, just an expansion on the above.]
+
+The infernal racket is in the Staircase, the Skybridge, and the Museum Shop.
+
+The clouds and the dim sunlight are backdrops in the Great Outdoors.
+
+The open air is a backdrop. It is in the Exterior.
+
+The sense of ennui is a backdrop. It is everywhere. The description is "You've been here before, you feel sure."
+
+Section 10 - Properties holding text
+[Some of this has been tested a little above already.]
+
+The Disconcerting Exhibit is north of the Skybridge. "Art and artifacts, but not from any culture you can identify; in fact, the longer you stand at the center of the room the less certain you are that they're even the product of human hands, or tools made for human lives."
+
+The description of the Skybridge is "A narrow path connecting the staircase at the center of the courtyard with the northern portion of the museum."
+
+The British Museum Station is north of the Dim Tube-like Room. The description is "Long abandoned, except for the mummy in the corner."
+
+Section 11 - Three descriptions of things
+[initial, description, inventory listing for singular and plural things]
+
+The angular flavor is in the Disconcerting Exhibit. "One exhibit is an angular flavor. It is feather-light and vibrates with angry disdain at having been captured in this form." The description is "What Cubism would taste like." 
+
+Some number colors are in the Disconcerting Exhibit. "Another is a pair of number colors, four-green and six-red." The description is "In peripheral vision, they shade together into intermediate meanings -- five? yellow? Christmas?" 
+
+Section 12 - Doors
+
+The white door is south of the Reserve Vase Room and north of the HBSC Exhibit of Money. The white door is an open door.
+
+The blue door is a door. It is north of the Enlightenment Room. Through it is the Medieval Room. 
+
+Section 13 - Locks and Keys
+
+The cash register has matching key the tiny gold key. The tiny gold key is in the lekythos.
+
+The blue door is lockable and locked. It has matching key the blue key. The blue key is in the Enlightenment Room.
+ 
+Section 15 - Vehicles and pushable things 
+
+
+In the Empty Corner is a vehicle called the tricycle. The tricycle is pushable between rooms.
+
+
+Section 16 - Men, Women, and Animals
+[Mostly covered, but check the for people and the creation of additional articles.]
+
+A woman called the curator is in the Library. A man called a butcher is in the Assyrian Antiquities Exhibit.
+
+Section 17 - Articles and Proper Names
+
+The indefinite article of the Yugo is "your".
+
+Section 18 - Carrying Capacity
+
+The carrying capacity of the lekythos is 1. The pedestal has carrying capacity 1.
+
+The carrying capacity of the player is 2. [Life is annoying.]
+
+Section 19 - Possessions and Clothing
+[Carries, wears, is carrying, is wearing. Applied to both the player and other characters. Is carried, is worn defaulting to the player. "is wearable" already applies to the capacious sack.]
+
+The player carries a digital camera. The two-pound coin is carried. A shabby jacket is worn. The player wears a Mickey Mouse watch.
+
+The Japanese tourist is carrying a map of the Museum. The student carries a sketchpad. A Pez dispenser is carried by the little girl.
+
+The pigeons are wearing miniature top hats. The security guard wears a uniform.
+
+[Section 20 - The player's holdall is pretty much already covered by the foregoing bits.]
+
+Section 21 - Parts of things
+
+A dashboard, a glove compartment, a brake pedal, and a gas pedal are part of the Yugo. The dashboard is a supporter. The glove compartment is a closed, openable container.
+
+Section 22 - Extra Cases
+[Test of tricky cases like someone.]
+
+South of Holborn is Nowhere Important. Nothing good is in Nowhere Important.
+
+Someone Else's Apartment is east of Holborn. 
+
+A painting and someone else's purse are in Someone Else's Apartment.
+
+Something Strange is north of the Disconcerting Exhibit.
+
+someone sinister is a man in Something Strange. Someone sinister is carrying something ugly, something slimy, and nothing you want. Instead of examining someone sinister, say "He has [the list of things carried by someone sinister]."
+
+[The following, appropriately, does not compile.]
+[Definition: a person is sinister if it wears a hat.
+
+A hat is a kind of thing. A hat is always wearable. The student wears a hat called a fedora.]
+
+Before asking someone about something, say "You mutter a question."
+
+Before asking someone sinister about something, say "You are too afraid to address the cloaked, masked stranger." instead.
+
+Before going to someone, say "This is trespassing, you know...". [As far as I can tell, this does nothing.]
+
+Before going to Someone Else's Apartment, say "This is trespassing, you know..."

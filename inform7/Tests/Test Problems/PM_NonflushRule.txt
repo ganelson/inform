@@ -1,0 +1,4 @@
+The East Bay is east from the West Bay.
+	Before going in the East Bay:
+		if the player had been holding something:
+			say "Not so fast!" instead.

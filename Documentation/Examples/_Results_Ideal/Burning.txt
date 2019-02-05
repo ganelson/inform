@@ -1,0 +1,236 @@
+   Library of the Dead
+  In Fire or in Flood
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  On the desk is a world's last manuscript of the Psychagogoi by Aeschylus.
+  
+  You can also see a box (in which is a shroud of Laertes) here.
+  
+> >   Library of the Dead
+  (Testing.)
+  
+  >[1] get manuscript
+  Taken.
+  
+  >[2] get shroud
+  Taken.
+  
+  >[3] light desk
+  You light the desk with the flaming torch.
+  
+  >[4] look
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  You can also see a box (empty) here.
+  
+  Flames engulf the drawer.
+  
+  >[5] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  You can also see a box (empty) here.
+  
+  >[6] open drawer
+  Fire has too thoroughly engulfed the flaming drawer for that to be a good idea.
+  
+  >[7] look
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  You can also see a box (empty) here.
+  
+  >[8] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  You can also see a box (empty) here.
+  
+  The flaming desk burns away, leaving a flaming drawer behind.
+  
+  >[9] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  You can also see a flaming drawer (closed) and a box (empty) here.
+  
+  The flaming drawer burns away, leaving an asbestos sack behind.
+  
+  >[10] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape.
+  
+  You can also see an asbestos sack (empty) and a box (empty) here.
+  
+  >[11] get sack
+  Taken.
+  
+  >[12] put shroud in sack
+  You put the shroud of Laertes into the asbestos sack.
+  
+  >[13] put manuscript in sack
+  You put the world's last manuscript of the Psychagogoi by Aeschylus into the asbestos sack.
+  
+  >[14] close sack
+  You close the asbestos sack.
+  
+  >[15] light trapdoor
+  You light the trapdoor with the flaming torch.
+  
+  >[16] look
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a box (empty) here.
+  
+  >[17] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a box (empty) here.
+  
+  >[18] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a box (empty) here.
+  
+  >[19] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a box (empty) here.
+  
+  A spark from the flaming trapdoor catches the box!
+  
+  >[20] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a flaming box (empty) here.
+  
+  >[21] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a flaming box (empty) here.
+  
+  >[22] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a flaming box (empty) here.
+  
+  >[23] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a flaming box (empty) here.
+  
+  >[24] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a flaming box (empty) here.
+  
+  >[25] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a flaming box (empty) here.
+  
+  The flaming box burns away, leaving a metal hinge behind.
+  
+  >[26] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a metal hinge here.
+  
+  >[27] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a metal hinge here.
+  
+  >[28] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a metal hinge here.
+  
+  >[29] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a metal hinge here.
+  
+  >[30] g
+  Library of the Dead
+  This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
+  
+  A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
+  
+  You can also see a metal hinge here.
+  
+  The flaming trapdoor burns away.
+  
+  >[31] up
+  Out at last!
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

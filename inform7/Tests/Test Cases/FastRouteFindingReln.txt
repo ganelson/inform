@@ -1,0 +1,9 @@
+Lab is a room.
+A theme is a kind of thing. Love is a theme. Loss is a theme. Lust is a theme.
+Suggesting relates various themes to each other with fast route-finding. The verb to suggest (he suggests, 
+they suggest, he suggested, it is suggested, he is suggesting) implies the suggesting relation. Love 
+suggests Loss. Loss suggests Love. Loss suggests Lust. Lust suggests Loss.
+
+Every turn: say "[The next step via the suggesting relation from Love to Lust]."
+
+Test me with "z".

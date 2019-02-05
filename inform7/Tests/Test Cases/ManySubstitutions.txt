@@ -1,0 +1,7 @@
+[This tests the maximum legal number of substitutions on one text.]
+
+Testbed is a room. The description is
+"[phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase][phrase]".
+
+Counter is a number that varies. Counter is 0. To say phrase: increase
+counter by 1; say "[counter], ".

@@ -1,0 +1,6 @@
+The Temple of Eris is a room.
+
+To beep (N - 1): say "Beep just once."
+
+To provoke dissent, like so:
+	beep 2;

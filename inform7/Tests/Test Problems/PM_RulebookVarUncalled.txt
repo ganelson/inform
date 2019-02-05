@@ -1,0 +1,2 @@
+There is a room.
+The every turn rulebook has an object.

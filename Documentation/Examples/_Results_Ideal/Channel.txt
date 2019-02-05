@@ -1,0 +1,39 @@
+   Office
+  Channel
+  An Interactive Fiction
+  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  
+  Office
+  You can see a widescreen TV and a fifties TV here.
+  
+> >   Office
+  (Testing.)
+  
+  >[1] change channel of fifties tv to 4
+  You tune the fifties TV to channel 4.
+  
+  >[2] x channel 4
+  The fifties TV is currently turned off.
+  
+  >[3] switch on fifties
+  You switch the fifties TV on.
+  
+  >[4] x channel 4
+  A gloomy female news anchor describes the latest car bomb in Baghdad: 104 dead today, and no sign of change.
+  
+  >[5] switch on widescreen
+  You switch the widescreen TV on.
+  
+  >[6] tune fifties tv to 5
+  You tune the fifties TV to channel 5.
+  
+  >[7] x channel 5
+  A couple of contestants in spangled scarlet outfits are performing an energetic paso doble.
+  
+  >[8] x fifties tv
+  A couple of contestants in spangled scarlet outfits are performing an energetic paso doble.
+  
+  >[9] x channel 4
+  You can't see any such thing.
+  
+> >

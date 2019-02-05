@@ -1,0 +1,13 @@
+Inform 7 build 6L26 has started.
+I've now read your source text, which is 84 words long.
+I've also read Standard Rules by Graham Nelson, which is 42597 words long.
+I've also read English Language by Graham Nelson, which is 2288 words long.
+Problem__ PM_EquationDimensionPower
+  >--> In 'Equation 1 Q = I^n where Q is an electric charge, I is an electric
+    current, n is a number' (source text, line 11), you define an equation 'Q =
+    I^n': but the '^' raise-to-power symbol can only be used to raise a value
+    with dimensions to a specific number. So 'mv^2' is fine, but not 'mv^n' or
+    'mv^(1+n)'. (This is because I would need to work out what kind of value
+    'v^n' would be, and the answer would depend on 'n', but I wouldn't know
+    what 'n' is.)
+Inform 7 has finished: 19 centiseconds used.

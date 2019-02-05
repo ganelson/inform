@@ -1,0 +1,26 @@
+"Stepping Through Changed Reciprocal V-to-V Relation"
+
+Linking relates things to each other. The verb to link (he links, they link,
+he linked, it is linked, he is linking) implies the linking relation.
+
+AAA is a thing.
+BBB is a thing.
+
+CCC is a thing.
+DDD is a thing.
+DDD links CCC;
+
+When play begins:
+	now AAA links BBB;
+	let count be the number of steps via the linking relation from AAA to BBB;
+	say "AAA -> BBB - count = [count][line break]";
+	let count be the number of steps via the linking relation from BBB to AAA;
+	say "BBB -> AAA - count = [count][line break]";
+	let count be the number of steps via the linking relation from CCC to DDD;
+	say "CCC -> DDD - count = [count][line break]";
+	let count be the number of steps via the linking relation from DDD to CCC;
+	say "DDD -> CCC - count = [count][line break]";
+			
+The Stage is a room.
+
+Test me with "relations".

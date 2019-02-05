@@ -1,0 +1,21 @@
+The Brahms Conservatoire is a room.
+
+When play begins:
+	check sorting 1;
+	check sorting 10;
+	check sorting 100;
+	check sorting 1000.
+
+To check sorting (N - a number):
+	say "Test of sorting the numbers 1 to [N] from a randomised order.";
+	let L be a list of numbers;
+	extend L to N entries;
+	repeat with X running from 1 to N
+	begin;
+		now entry X of L is X;
+	end repeat;
+	say "L unrandomised is [L].";
+	sort L in random order;
+	say "L randomised is [L].";
+	sort L;
+	say "L in ascending order is [L]."

@@ -1,0 +1,3 @@
+Burrow is a room.
+
+To shoot (N (Or M) - a number) wombles: say "Bang!"

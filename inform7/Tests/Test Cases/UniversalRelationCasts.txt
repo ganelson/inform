@@ -1,0 +1,11 @@
+Home is a room.
+
+Partnership relates various texts to various texts.
+
+Bijection relates various numbers to various numbers.
+
+When play begins:
+	now the bijection relation relates 45 to 17;
+	now the partnership relation relates "apples" to "bananas";
+
+Test me with "relations".
