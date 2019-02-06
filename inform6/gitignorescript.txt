@@ -1,8 +1,8 @@
-inform6/*.o
+Inform6/*.o
 Tests/intest-history.txt
 Tests/Assistants/dumb-frotz/dumb-frotz
 Tests/Assistants/dumb-frotz/*.o
 Tests/Assistants/dumb-glulx/glulxe/glulxe
 Tests/Assistants/dumb-glulx/cheapglk/*.o
 Tests/Assistants/dumb-glulx/glulxe/*.o
-Tangled/
+Tangled/inform6
