@@ -1,5 +1,6 @@
 {basics}
 
+indoc.mk
 Tests/Basic/Output/
 Tests/Full/Output/
 Tests/Full/Output-C/

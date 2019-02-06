@@ -10,6 +10,7 @@ Tests/Transient/
 Tests/hashes.intest
 Tests/_Results_Actual/
 
+indoc.mk
 Tests/Basic/Output/
 Tests/Full/Output/
 Tests/Full/Output-C/

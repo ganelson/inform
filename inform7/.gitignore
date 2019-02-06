@@ -10,6 +10,15 @@ Tests/Transient/
 Tests/hashes.intest
 Tests/_Results_Actual/
 
+inform7.mk
+core-test/core-test.mk
+inflections-test/inflections-test.mk
+kinds-test/kinds-test.mk
+linguistics-test/linguistics-test.mk
+problems-test/problems-test.mk
+syntax-test/syntax-test.mk
+words-test/words-test.mk
+
 core-module/Woven/
 if-module/Woven/
 index-module/Woven/

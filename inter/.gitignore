@@ -13,6 +13,8 @@ Tests/_Results_Actual/
 codegen-module/Woven/
 inter-module/Woven/
 
+inter.mk
+
 Tests/Assimilate/_Results_Actual/
 Tests/Assimilate/_Console/
 Tests/Generations/_Results_Actual/

@@ -3,6 +3,9 @@
 
 .DS_Store
 gameinfo.dbg
+
+makefile
+
 Changes/Output/
 Changes/Output/META-INF/
 Changes/Output/OEBPS/
@@ -22,3 +25,4 @@ Internal/Miscellany/definitions.html
 retrospective/*/cBlorb
 retrospective/*/ni
 retrospective/*/*.o
+retrospective/makefile
