@@ -6,9 +6,21 @@
 
 BLORBLIB = $(ME)/Tests/Assistants/blorblib
 
+.PHONY: all
+all: executable preform
+
+.PHONY: executable
+executable: $(ME)/Tangled/$(MYNAME)
+
+.PHONY: preform
+preform: $(ME)/Tangled/Syntax.preform
+
 # Making the program:
 
 $(ME)/Tangled/$(MYNAME): {dependent-files}
+	$(call make-me)
+
+$(ME)/TangledSyntax.preform:
 	$(call make-me)
 
 .PHONY: force
