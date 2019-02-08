@@ -166,13 +166,16 @@ INFORM6X = inform6/Tangled/inform6
 
 .PHONY: all
 
-all: tools srules $(INTERNAL)/Languages/English/Syntax.preform
+all: tools srules Internal/Languages/English/Syntax.preform
 
 .PHONY: force
 
-force: forcetools forcesrules $(INTERNAL)/Languages/English/Syntax.preform
+force: forcetools forcesrules Internal/Languages/English/Syntax.preform
 
 # (Of course those four phony targets are yet to be defined.)
+
+Internal/Languages/English/Syntax.preform:
+	cp -f 'inform7/Tangled/Syntax.preform' "Internal/Languages/English/Syntax.preform"
 
 # -----------------------------------------------------------------------------
 # Target "makers"
