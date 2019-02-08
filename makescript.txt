@@ -175,6 +175,7 @@ force: forcetools forcesrules localintegration
 .PHONY: localintegration
 localintegration:
 	cp -f 'inform7/Tangled/Syntax.preform' "Internal/Languages/English/Syntax.preform"
+	mkdir -p Internal/I6T
 	cp -R -f $(INFORM7WEB)/Appendix\ B/*.i6t Internal/I6T
 
 # (Of course those other four phony targets are yet to be defined.)
