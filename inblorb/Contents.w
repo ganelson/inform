@@ -6,8 +6,8 @@ Declare Section Usage: Off
 Licence: This is a free, open-source program published under the Artistic License 2.0.
 Version Number: 4
 Version Name: Duralumin
-Build Number: 6Q14
-Build Date: 6 February 2019
+Build Number: 6Q15
+Build Date: 8 February 2019
 Web Syntax Version: 2
 
 Import: foundation
@@ -35,6 +35,7 @@ Chapter 3: Other Material
 	Templates
 	Website Maker
 	Base64
+
 
 
 
