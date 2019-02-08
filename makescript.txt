@@ -166,13 +166,13 @@ INFORM6X = inform6/Tangled/inform6
 
 .PHONY: all
 
-all: tools srules
+all: tools srules $(INTERNAL)/Languages/English/Syntax.preform
 
 .PHONY: force
 
-force: forcetools forcesrules
+force: forcetools forcesrules $(INTERNAL)/Languages/English/Syntax.preform
 
-# (Of course those four targets are yet to be defined.)
+# (Of course those four phony targets are yet to be defined.)
 
 # -----------------------------------------------------------------------------
 # Target "makers"

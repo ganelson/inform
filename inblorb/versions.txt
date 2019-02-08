@@ -2,4 +2,4 @@ Sync to inform7
 Amalgam	1	3K27	April 2006	Public launch
 Brass	2	5Z71	April 2009	Faster and tidied up (renamed "cBlorb")
 Chromoly	3	6E36	April 2010	Extended to release interpreters	
-Duralumin	4	*6Q13	4 February 2019	Unicode support (renamed "inblorb")
+Duralumin	4	*6Q14	6 February 2019	Unicode support (renamed "inblorb")
