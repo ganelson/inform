@@ -54,7 +54,7 @@ the problem message test cases, so we observe them.
 void Coverage::which_problems_have_test_cases(pathname *Workspace) {
 	filename *CAT = Filenames::in_folder(Workspace, I"cases.txt");
 	TEMPORARY_TEXT(COMMAND);
-	WRITE_TO(COMMAND, "intest/Tangled/intest -catalogue ");
+	WRITE_TO(COMMAND, "intest/Tangled/intest inform7 -catalogue ");
 	Shell::redirect(COMMAND, CAT);
 	if (Shell::run(COMMAND)) Errors::fatal("can't run intest to harvest cases");
 	DISCARD_TEXT(COMMAND);
