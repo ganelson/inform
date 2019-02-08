@@ -11,5 +11,5 @@ Tests/hashes.intest
 Tests/_Results_Actual/
 
 inpolicy.mk
-Workspace/
+Workspace/*.txt
 
