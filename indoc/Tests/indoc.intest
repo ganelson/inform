@@ -1,9 +1,12 @@
 -cases indoc/Tests/Targets
 
 -recipe
+	mkdir: indoc/Tests/Targets
 
 	set: $I = indoc/Tests/Targets/$CASE-Ideal
 	set: $A = indoc/Tests/Targets/$CASE-Actual
+	mkdir: $I
+	mkdir: $A
 
 	step: rm -f $A/.DS_Store
 

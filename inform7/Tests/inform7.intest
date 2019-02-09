@@ -65,6 +65,9 @@
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
 
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
 	if: $CASE PM_Map%c*
 		set: $I7OPTIONS = -format=$FORMAT -noprogress -fixtime -rng -sigils -clock -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	else
@@ -159,6 +162,8 @@
 
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
+	mkdir: $PATH/_Indices_Actual
+	mkdir: $PATH/_Indices_Ideal
 
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
@@ -246,6 +251,8 @@
 
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
+	mkdir: $PATH/_Maps_Actual
+	mkdir: $PATH/_Maps_Ideal
 
 	set: $I7OPTIONS = -format=ulx -noprogress -rng -sigils -clock -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
@@ -292,6 +299,11 @@
 	else
 		set: $FORMAT		= z8
 	endif
+
+	mkdir: $PATH/_Inter_Binary
+	mkdir: $PATH/_Inter_Textual
+	mkdir: $PATH/_Inter_Actual
+	mkdir: $PATH/_Inter_Ideal
 
 	! Now we extract the source text from whatever file originated the test
 	! case: this is a non-trivial operation when the file is an Extension or
