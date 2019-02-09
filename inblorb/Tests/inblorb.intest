@@ -63,6 +63,9 @@
 
 	set: $BLORBFILE = $WORK/Example.inform/Build/output.$BLORBEXT
 
+	mkdir $PATH/_Console_Actual
+	mkdir $PATH/_Console_Ideal
+
 	set: $CA = $PATH/_Console_Actual/$CASE.txt
 	set: $CI = $PATH/_Console_Ideal/$CASE.txt
 	step: $INBLORB `$CBLORBOPTIONS $BLURB $BLORBFILE >$CA 2>&1
@@ -70,6 +73,9 @@
 	show: $CA
 	match text: $CA $CI
 	or: 'produced the wrong inblorb console output'
+
+	mkdir $PATH/_Tree_Actual
+	mkdir $PATH/_Tree_Ideal
 
 	set: $TA = $PATH/_Tree_Actual/$CASE.txt
 	set: $TI = $PATH/_Tree_Ideal/$CASE.txt
@@ -80,6 +86,9 @@
 
 	exists: inblorb/Tests/Assistants/blorblib/blorbscan
 	or: 'incompletely tested because no blorbscan tool is available'
+
+	mkdir $PATH/_Scan_Actual
+	mkdir $PATH/_Scan_Ideal
 
 	set: $TA = $PATH/_Scan_Actual/$CASE.txt
 	set: $TI = $PATH/_Scan_Ideal/$CASE.txt
