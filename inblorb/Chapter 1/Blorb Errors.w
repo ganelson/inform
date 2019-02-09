@@ -3,10 +3,10 @@
 To read text files of whatever flavour, one line at a time.
 
 @h Error messages.
-|inblorb| is only minimally helpful when diagnosing problems, because it's
+Inblorb is only minimally helpful when diagnosing problems, because it's
 intended to be used as the back end of a system which only generates correct
 blurb files, so that everything will work -- ideally, the Inform user will
-never know that |inblorb| exists.
+never know that Inblorb exists.
 
 Note that errors are spooled to a variable before being issued, so that
 an HTML report can be generated which shows them. (This is why we don't

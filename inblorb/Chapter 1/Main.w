@@ -5,7 +5,7 @@ obey them.
 
 @h Some globals.
 The following variables record HTML and Javascript-related points where
-|inblorb| needs to behave differently on the different platforms. The default
+Inblorb needs to behave differently on the different platforms. The default
 values here aren't actually correct for any platform as they stand: in the
 |main| routine below, we set them as needed.
 
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
 @
 
-@e TRACE_CLSW
+@e VERBOSE_CLSW
 @e PROJECT_CLSW
 
 @<Parse command-line arguments@> =
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 	CommandLine::declare_heading(L"inblorb: a releaser and packager for IF story files\n\n"
 		L"usage: inblorb [-options] [blurbfile [blorbfile]]\n");
 
-	CommandLine::declare_switch(TRACE_CLSW, L"trace", 1,
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
 		L"print running notes on what's happening");
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within Inform project X");
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
 @ =
 void Main::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		case TRACE_CLSW: trace_mode = TRUE; break;
+		case VERBOSE_CLSW: trace_mode = val; break;
 		case PROJECT_CLSW: project_folder = Pathnames::from_text(arg); break;
 		default: internal_error("unimplemented switch");
 	}
@@ -135,7 +135,7 @@ void Main::bareword(int id, text_stream *opt, void *state) {
 
 @ Now let's set the platform-dependent variables.
 
-|inblorb| generates quite a variety of HTML, for instance to create websites,
+Inblorb generates quite a variety of HTML, for instance to create websites,
 but the tricky points below affect only one special page not browsed by
 the general public: the results page usually called |StatusCblorb.html|
 (though this depends on how the |status| command is used in the blurb).
@@ -172,7 +172,7 @@ since backslashes are escape characters in Javascript literals.
 		reverse_slash_openUrl = TRUE; reverse_slash_fileUrl = TRUE;
 	#endif
 
-@ The placeholder variable [YEAR] is initialised to the year in which |inblorb|
+@ The placeholder variable [YEAR] is initialised to the year in which Inblorb
 runs, according to the host operating system, at least. (It can of course then
 be overridden by commands in the blurb file, and Inform always does this in
 the blurb files it writes. But it leaves [DATESTAMP] and [TIMESTAMP] alone.)
@@ -202,9 +202,9 @@ void Main::initialise_time_variables(void) {
 }
 
 @h Opening and closing banners.
-Note that |inblorb| customarily prints informational messages with an initial
-|!|, so that the piped output from |inblorb| could be used as an |Include|
-file in I6 code; that isn't in fact how I7 uses |inblorb|, but it's traditional
+Note that Inblorb customarily prints informational messages with an initial
+|!|, so that the piped output from Inblorb could be used as an |Include|
+file in I6 code; that isn't in fact how I7 uses Inblorb, but it's traditional
 for blorbing programs to do this.
 
 =

@@ -329,7 +329,7 @@ has the assumption that the cover art is image number 1 built in.
 	Placeholders::set_to(I"SMALLCOVER", text1, 0);
 
 @ Here, |text1| is the pathname of the Release folder. If we suppose that
-|inblorb| is being run from Inform, then this folder is a subfolder of the
+Inblorb is being run from Inform, then this folder is a subfolder of the
 Materials folder for an I7 project. It follows that we can obtain the
 pathname to the Materials folder by trimming the leaf and the final separator.
 That makes the |MATERIALSFOLDERPATH| placeholder. We then set |MATERIALSFOLDER|

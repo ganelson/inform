@@ -73,7 +73,7 @@ typedef struct rdes_record {
 } rdes_record;
 
 @h Big-endian integers.
-IFF files use big-endian integers, whereas |inblorb| might or might not
+IFF files use big-endian integers, whereas Inblorb might or might not
 (depending on the platform it runs on), so we need routines to write
 32, 16 or 8-bit values in explicitly big-endian form:
 
@@ -119,9 +119,9 @@ with no further chunks inside.
 =
 chunk_metadata *current_chunk = NULL;
 
-@ Each chunk is "added" in one of two ways. {\it Either} we supply a filename
+@ Each chunk is "added" in one of two ways. Either we supply a filename
 for an existing binary file on disc which will hold the data we want to
-write, {\it or} we supply a |NULL| filename and a |data| pointer to |length|
+write, or we supply a |NULL| filename and a |data| pointer to |length|
 bytes in memory.
 
 =
@@ -433,7 +433,7 @@ void Writer::executable_chunk(filename *fn) {
 
 @ |"IFmd"|: the bibliographic data (or "metadata") about the work of IF
 being blorbed up, in the form of an iFiction record. (The format of which
-is set out in the {\it Treaty of Babel} agreement.)
+is set out in the "Treaty of Babel" agreement.)
 
 =
 void Writer::metadata_chunk(filename *fn) {

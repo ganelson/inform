@@ -124,7 +124,7 @@ here is that we're copying HTML over to make a new web page, but we've hit
 text in the template like "[AUTHOR]". We output the value of this
 placeholder instead of that literal text. The reserved placeholders output as
 special gadgets instead of any fixed text, so those all call suitable
-routines elsewhere in |inblorb|.
+routines elsewhere in Inblorb.
 
 If the placeholder name isn't known to us, we print the text back, so that the
 original material will be unchanged. (This is in case the original contains

@@ -75,7 +75,7 @@ typedef struct segment {
 @h Styling with CSS.
 We try to give the template files as much freedom as possible to define
 whatever CSS styles they need, but the template can't see inside the text of
-variables, so |inblorb| itself has to choose CSS styles for anything interesting
+variables, so Inblorb itself has to choose CSS styles for anything interesting
 that is displayed there. We use the following style names, which a CSS file
 is required to define:
 
@@ -93,7 +93,7 @@ is required to define:
 In addition it must provide paragraph classes |indent0| to |indent9| for code
 which begins at tab positions 0 to 9 (see below). Although "Standard.css"
 contains other names of classes, these are only needed because "Standard.html"
-or "Standard-Source.html" say so: |inblorb| does not mandate them.
+or "Standard-Source.html" say so: Inblorb does not mandate them.
 
 @ In case CSS is not available, we use old-fashioned HTML alternatives:
 
@@ -647,7 +647,7 @@ notes there were.
 run about $H$ times, where $H$ is the number of headings (in fact at most $H+1$
 times and usually a little less); but we might reasonably expect that $H$
 is proportional to $N$, since there's typically a heading every 30 or so
-lines in the source text, so that $H\simeq N/30$. If we then did the simplest
+lines in the source text, so that H is about N/30. If we then did the simplest
 thing, of opening the source text file and sending every line to
 |Websites::write_source_line|, we would make $O(N^2)$ calls, and even though many of
 those would quickly return it would be an expensive algorithm.
@@ -937,7 +937,7 @@ quotation marks, and this section of code benefits from his careful amendments.
 	if (quoted_matter == FALSE) Websites::change_style(SPAGE, "quote");
 	quoted_matter = (quoted_matter)?FALSE:TRUE;
 
-@ On the other hand, the squares around a comment {\it do} pick up the colour
+@ On the other hand, the squares around a comment do pick up the colour
 of the commentary within them. Asterisked comments must end in the same paragraph
 as they begin.
 

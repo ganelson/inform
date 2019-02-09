@@ -254,12 +254,12 @@ list files which need to be copied into the Release in order to piece together
 a working copy of the interpreter.
 
 However, this is more expressive than the "(extras).txt" file because it
-also has the ability to set placeholders in |inblorb|. We use this mechanism
+also has the ability to set placeholders in Inblorb. We use this mechanism
 because it allows each interpreter to provide some metadata about its own
 identity and exactly how it wants to be interfaced with the website which
-|inblorb| will generate. This isn't the place to document what those metadata
+Inblorb will generate. This isn't the place to document what those metadata
 placeholders are and what they mean, since (except for a consistency check
-below) |inblorb| doesn't know anything about them -- it's the Standard
+below) Inblorb doesn't know anything about them -- it's the Standard
 website template which they need to match up to. Anyway, the best way
 to get an idea of this is to read the manifest file for the default,
 Parchment, interpreter.
@@ -312,13 +312,13 @@ each line.
 		Placeholders::append_to(current_placeholder, I"\n");
 	Placeholders::append_to(current_placeholder, manifestline);
 
-@ Perhaps it's clumsy to do it here, but at some point |inblorb| needs to
+@ Perhaps it's clumsy to do it here, but at some point Inblorb needs to
 make sure we aren't trying to release a Z-machine game along with a
 Glulx interpreter, or vice versa. The manifest file for the interpreter
 is required to declare which virtual machines it implements, by giving a
 value of the placeholder |INTERPRETERVM|. This declares whether the interpreter
 can handle blorbed Z-machine files (|z|), blorbed Glulx files (|g|) or both
-(|zg| or |gz|). No other values are legal; note lower case. |inblorb| then
+(|zg| or |gz|). No other values are legal; note lower case. Inblorb then
 checks this against its own placeholder |INTERPRETERVMIS|, which stores
 what the actual format of the blorb being released is.
 
@@ -424,7 +424,7 @@ void Requests::declare_where_blorb_should_be_copied(pathname *path) {
 }
 
 @h Reporting the release.
-Inform normally asks |inblorb| to generate an HTML page reporting what it has
+Inform normally asks Inblorb to generate an HTML page reporting what it has
 done, and if things have gone well then this typically contains a list of
 what has been released. (That's easy for us to produce, since we just have to
 look through the requests.) Rather than attempt to write to the file here,
@@ -554,7 +554,7 @@ application, called |openUrl|.
 				L"<img src='inform:/outcome_images/browse.png' border=0></a> play-in-browser page"));
 	Placeholders::append_to(ph, I"</center></p>");
 
-@ Since |inblorb| has no knowledge of what the Inform source text producing
+@ Since Inblorb has no knowledge of what the Inform source text producing
 this blorb was, it can't finish the status report from its own knowledge --
 it must rely on details supplied to it by Inform via blurb commands. First,
 Inform gives it source-text links for any "Release along with..." sentences,
@@ -578,7 +578,7 @@ which have by now become |INSTRUCTION_REQ| requests:
 		Placeholders::append_to(ph, I".</p>");
 
 @ And secondly, Inform gives it adverts for other fancy services on offer,
-complete with links to the Inform documentation (which, again, |inblorb|
+complete with links to the Inform documentation (which, again, Inblorb
 doesn't itself know about); and these have by now become |ALTERNATIVE_REQ|
 requests.
 

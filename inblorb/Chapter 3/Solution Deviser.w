@@ -41,12 +41,12 @@ is typed, lives here:
 skein_node *root_skn = NULL; /* only |NULL| when the tree is empty */
 
 @h Walking through.
-This section provides just one function to the rest of |inblorb|: this one,
+This section provides just one function to the rest of Inblorb: this one,
 which implements the Blurb |solution| command.
 
-Our method works in four steps. Steps 1 to 3 have a running time of $O(K^2)$,
-where $K$ is the number of knots in the Skein, and step 4 is $O(K\log_2(K))$,
-so the process as a whole is $O(K^2)$.
+Our method works in four steps. Steps 1 to 3 have a running time of O(K^2),
+where K is the number of knots in the Skein, and step 4 is O(K log K),
+so the process as a whole is O(K^2).
 
 =
 void Solution::walkthrough(filename *Skein_filename, filename *walkthrough_filename) {

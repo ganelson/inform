@@ -336,6 +336,16 @@ define weave-webs
 endef
 
 # -----------------------------------------------------------------------------
+# Target "pages"
+# -----------------------------------------------------------------------------
+# "make pages" refreshes the GitHub Pages content in the docs folder.
+# -----------------------------------------------------------------------------
+
+.PHONY: pages
+pages:
+	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
+
+# -----------------------------------------------------------------------------
 # Target "clean"
 # -----------------------------------------------------------------------------
 # "make clean" removes inessential files from the Inform source hierarchy

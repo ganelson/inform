@@ -4,8 +4,8 @@ To manage links to auxiliary files, and placeholder variables.
 
 @h Auxiliary files are for items bundled up with the release but which are
 deliberately made accessible for the eventual player: things such as maps
-or manuals. |inblorb| needs to know about these only when releasing a website;
-they are also recorded in an iFiction record, but |inblorb| does not create
+or manuals. Inblorb needs to know about these only when releasing a website;
+they are also recorded in an iFiction record, but Inblorb does not create
 that (|ni| does).
 
 =
@@ -84,7 +84,7 @@ void Links::expand_AUXILIARY_variable(OUTPUT_STREAM) {
 	Requests::add_links_to_requested_resources(OUT);
 }
 
-@ On some of the pages produced by |inblorb| the story file itself looks like
+@ On some of the pages produced by Inblorb the story file itself looks like
 another auxiliary resource, but it's produced thus:
 
 =
