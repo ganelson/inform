@@ -281,7 +281,7 @@ void Lexer::ensure_lexer_hwm_can_be_raised_by(int n, int transfer_partial_word) 
 		wchar_t *old_hwm = lexer_hwm;
 		int m = 1;
 		if (transfer_partial_word) {
-			m = ((old_hwm - lexer_word + n + 3)/TEXT_STORAGE_CHUNK_SIZE) + 1;
+			m = (((int) (old_hwm - lexer_word) + n + 3)/TEXT_STORAGE_CHUNK_SIZE) + 1;
 			if (m < 1) m = 1;
 		}
 		Lexer::allocate_lexer_workspace_chunk(m);

@@ -344,6 +344,7 @@ endef
 .PHONY: pages
 pages:
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
+	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 
 # -----------------------------------------------------------------------------
 # Target "clean"

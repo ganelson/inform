@@ -703,7 +703,7 @@ void NewVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 =
 int NewVerbs::verb_form_is_instance(verb_form *vf) {
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
-	if ((vc->auxiliary_only == FALSE) && (vc->instance_of_verb) &&
+	if ((vc) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb) &&
 		((vf->preposition == NULL) || (vf->underlying_verb != copular_verb)))
 		return TRUE;
 	return FALSE;

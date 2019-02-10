@@ -197,7 +197,7 @@ parse_tree_node_type parse_tree_node_types[NO_DEFINED_NT_VALUES];
 
 void ParseTree::md(parse_tree_node_type ptnt) {
 	if (ParseTree::valid_type(ptnt.identity) == FALSE) internal_error("set bad metadata");
-	parse_tree_node_types[ptnt.identity] = ptnt;
+	parse_tree_node_types[ptnt.identity - BASE_OF_ENUMERATED_NTS] = ptnt;
 }
 
 @ =

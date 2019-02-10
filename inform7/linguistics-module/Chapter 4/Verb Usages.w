@@ -550,7 +550,7 @@ or "the verb to be able to see" use these.
 	verb_form *vf;
 	LOOP_OVER(vf, verb_form) {
 		verb_conjugation *vc = vf->underlying_verb->conjugation;
-		if ((vc->auxiliary_only == FALSE) && (vc->instance_of_verb)) {
+		if ((vc) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb)) {
 			if (WordAssemblages::compare_with_wording(&(vf->pos_reference_text), W)) {
 				*XP = vf; *X = FALSE; return TRUE;
 			}
@@ -566,7 +566,7 @@ or "the verb to be able to see" use these.
 	verb_form *vf;
 	LOOP_OVER(vf, verb_form) {
 		verb_conjugation *vc = vf->underlying_verb->conjugation;
-		if ((vc->auxiliary_only == FALSE) && (vc->instance_of_verb)) {
+		if ((vc) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb)) {
 			if (WordAssemblages::compare_with_wording(&(vf->infinitive_reference_text), W)) {
 				*XP = vf; *X = FALSE; return TRUE;
 			}
