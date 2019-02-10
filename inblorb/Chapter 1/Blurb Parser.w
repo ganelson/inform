@@ -1,6 +1,6 @@
 [Parser::] Blurb Parser.
 
-To read and follow the instructions in the blurb file, our main input.
+Blurb is an interpreted language, and this is the interpreter for it.
 
 @h Reading the file.
 We divide the file into blurb commands at line breaks, so:
@@ -14,69 +14,72 @@ void Parser::parse_blurb_file(filename *F) {
 @ The sequence of values enumerated here must correspond exactly to
 indexes into the syntaxes table below.
 
-@d author_COMMAND 0
-@d auxiliary_COMMAND 1
-@d base64_COMMAND 2
-@d copyright_COMMAND 3
-@d cover_COMMAND 4
-@d css_COMMAND 5
-@d ifiction_COMMAND 6
-@d ifiction_public_COMMAND 7
-@d ifiction_file_COMMAND 8
-@d interpreter_COMMAND 9
-@d palette_COMMAND 10
-@d palette_16_bit_COMMAND 11
-@d palette_32_bit_COMMAND 12
-@d picture_scaled_COMMAND 13
-@d picture_COMMAND 14
-@d picture_text_COMMAND 15
-@d picture_noid_COMMAND 16
-@d picture_with_alt_text_COMMAND 17
-@d placeholder_COMMAND 18
-@d project_folder_COMMAND 19
-@d release_COMMAND 20
-@d release_file_COMMAND 21
-@d release_file_from_COMMAND 22
-@d release_source_COMMAND 23
-@d release_to_COMMAND 24
-@d resolution_max_COMMAND 25
-@d resolution_min_max_COMMAND 26
-@d resolution_min_COMMAND 27
-@d resolution_COMMAND 28
-@d solution_COMMAND 29
-@d solution_public_COMMAND 30
-@d sound_music_COMMAND 31
-@d sound_repeat_COMMAND 32
-@d sound_forever_COMMAND 33
-@d sound_song_COMMAND 34
-@d sound_COMMAND 35
-@d sound_text_COMMAND 36
-@d sound_noid_COMMAND 37
-@d sound_with_alt_text_COMMAND 38
-@d source_COMMAND 39
-@d source_public_COMMAND 40
-@d status_COMMAND 41
-@d status_alternative_COMMAND 42
-@d status_instruction_COMMAND 43
-@d storyfile_include_COMMAND 44
-@d storyfile_COMMAND 45
-@d storyfile_leafname_COMMAND 46
-@d template_path_COMMAND 47
-@d website_COMMAND 48
+@e author_COMMAND from 0
+@e auxiliary_COMMAND
+@e base64_COMMAND
+@e copyright_COMMAND
+@e cover_COMMAND
+@e css_COMMAND
+@e ifiction_COMMAND
+@e ifiction_public_COMMAND
+@e ifiction_file_COMMAND
+@e interpreter_COMMAND
+@e palette_COMMAND
+@e palette_16_bit_COMMAND
+@e palette_32_bit_COMMAND
+@e picture_scaled_COMMAND
+@e picture_COMMAND
+@e picture_text_COMMAND
+@e picture_noid_COMMAND
+@e picture_with_alt_text_COMMAND
+@e placeholder_COMMAND
+@e project_folder_COMMAND
+@e release_COMMAND
+@e release_file_COMMAND
+@e release_file_from_COMMAND
+@e release_source_COMMAND
+@e release_to_COMMAND
+@e resolution_max_COMMAND
+@e resolution_min_max_COMMAND
+@e resolution_min_COMMAND
+@e resolution_COMMAND
+@e solution_COMMAND
+@e solution_public_COMMAND
+@e sound_music_COMMAND
+@e sound_repeat_COMMAND
+@e sound_forever_COMMAND
+@e sound_song_COMMAND
+@e sound_COMMAND
+@e sound_text_COMMAND
+@e sound_noid_COMMAND
+@e sound_with_alt_text_COMMAND
+@e source_COMMAND
+@e source_public_COMMAND
+@e status_COMMAND
+@e status_alternative_COMMAND
+@e status_instruction_COMMAND
+@e storyfile_include_COMMAND
+@e storyfile_COMMAND
+@e storyfile_leafname_COMMAND
+@e template_path_COMMAND
+@e website_COMMAND
 
-@ A single number specifying various possible combinations of operands:
+@ A single number specifying various possible combinations of operands. For
+example, |NT_OPS| means "number, text". Clearly the list below is not
+exhaustive of the possibilities, but these are the only ones arising for
+Blurb commands.
 
-@d OPS_NO 1
-@d OPS_1TEXT 2
-@d OPS_2TEXT 3
-@d OPS_2TEXT_1NUMBER 4
-@d OPS_1NUMBER 5
-@d OPS_2NUMBER 6
-@d OPS_1NUMBER_1TEXT 7
-@d OPS_1NUMBER_2TEXTS 8
-@d OPS_1NUMBER_1TEXT_1NUMBER 9
-@d OPS_3NUMBER 10
-@d OPS_3TEXT 11
+@e VOID_OPS from 1
+@e N_OPS
+@e NN_OPS
+@e NNN_OPS
+@e NT_OPS
+@e NTN_OPS
+@e NTT_OPS
+@e T_OPS
+@e TT_OPS
+@e TTN_OPS
+@e TTT_OPS
 
 @ Each legal command syntax is stored as one of these structures.
 
@@ -84,7 +87,7 @@ indexes into the syntaxes table below.
 typedef struct blurb_command {
 	char *explicated; /* plain English form of the command */
 	wchar_t *prototype; /* regular expression prototype */
-	int operands; /* one of the above |OPS_*| codes */
+	int operands; /* one of the above |*_OPS| codes */
 	int deprecated;
 } blurb_command;
 
@@ -99,66 +102,66 @@ but, as we shall see, has no effect.
 
 =
 blurb_command syntaxes[] = {
-	{ "author \"name\"", L"author \"(%q*)\"", OPS_1TEXT, FALSE },
+	{ "author \"name\"", L"author \"(%q*)\"", T_OPS, FALSE },
 	{ "auxiliary \"filename\" \"description\" \"subfolder\"",
-			L"auxiliary \"(%q*)\" \"(%q*)\" \"(%q*)\"", OPS_3TEXT, FALSE },
+			L"auxiliary \"(%q*)\" \"(%q*)\" \"(%q*)\"", TTT_OPS, FALSE },
 	{ "base64 \"filename\" to \"filename\"",
-			L"base64 \"(%q*)\" to \"(%q*)\"", OPS_2TEXT, FALSE },
-	{ "copyright \"message\"", L"copyright \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "cover \"filename\"", L"cover \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "css", L"css", OPS_NO, FALSE },
-	{ "ifiction", L"ifiction", OPS_NO, FALSE },
-	{ "ifiction public", L"ifiction public", OPS_NO, FALSE },
-	{ "ifiction \"filename\" include", L"ifiction \"(%q*)\" include", OPS_1TEXT, FALSE },
+			L"base64 \"(%q*)\" to \"(%q*)\"", TT_OPS, FALSE },
+	{ "copyright \"message\"", L"copyright \"(%q*)\"", T_OPS, FALSE },
+	{ "cover \"filename\"", L"cover \"(%q*)\"", T_OPS, FALSE },
+	{ "css", L"css", VOID_OPS, FALSE },
+	{ "ifiction", L"ifiction", VOID_OPS, FALSE },
+	{ "ifiction public", L"ifiction public", VOID_OPS, FALSE },
+	{ "ifiction \"filename\" include", L"ifiction \"(%q*)\" include", T_OPS, FALSE },
 	{ "interpreter \"interpreter-name\" \"vm-letter\"",
-			L"interpreter \"(%q*)\" \"([gz])\"", OPS_2TEXT, FALSE },
-	{ "palette { details }", L"palette {(%c*?)}", OPS_1TEXT, TRUE },
-	{ "palette 16 bit", L"palette 16 bit", OPS_NO, TRUE },
-	{ "palette 32 bit", L"palette 32 bit", OPS_NO, TRUE },
+			L"interpreter \"(%q*)\" \"([gz])\"", TT_OPS, FALSE },
+	{ "palette { details }", L"palette {(%c*?)}", T_OPS, TRUE },
+	{ "palette 16 bit", L"palette 16 bit", VOID_OPS, TRUE },
+	{ "palette 32 bit", L"palette 32 bit", VOID_OPS, TRUE },
 	{ "picture ID \"filename\" scale ...",
-			L"picture (%i+?) \"(%q*)\" scale (%c*)", OPS_3TEXT, TRUE },
-	{ "picture N \"filename\"", L"picture (%d+) \"(%q*)\"", OPS_1NUMBER_1TEXT, FALSE },
-	{ "picture ID \"filename\"", L"picture (%i+) \"(%q*)\"", OPS_2TEXT, FALSE },
-	{ "picture \"filename\"", L"picture \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "picture N \"filename\" \"alt-text\"", L"picture %d \"(%q*)\" \"(%q*)\"", OPS_1NUMBER_2TEXTS, FALSE },
-	{ "placeholder [name] = \"text\"", L"placeholder %[(%C+)%] = \"(%q*)\"", OPS_2TEXT, FALSE },
-	{ "project folder \"pathname\"", L"project folder \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "release \"text\"", L"release \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "release file \"filename\"", L"release file \"(%q*)\"", OPS_1TEXT, FALSE },
+			L"picture (%i+?) \"(%q*)\" scale (%c*)", TTT_OPS, TRUE },
+	{ "picture N \"filename\"", L"picture (%d+) \"(%q*)\"", NT_OPS, FALSE },
+	{ "picture ID \"filename\"", L"picture (%i+) \"(%q*)\"", TT_OPS, FALSE },
+	{ "picture \"filename\"", L"picture \"(%q*)\"", T_OPS, FALSE },
+	{ "picture N \"filename\" \"alt-text\"", L"picture %d \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
+	{ "placeholder [name] = \"text\"", L"placeholder %[(%C+)%] = \"(%q*)\"", TT_OPS, FALSE },
+	{ "project folder \"pathname\"", L"project folder \"(%q*)\"", T_OPS, FALSE },
+	{ "release \"text\"", L"release \"(%q*)\"", T_OPS, FALSE },
+	{ "release file \"filename\"", L"release file \"(%q*)\"", T_OPS, FALSE },
 	{ "release file \"filename\" from \"template\"",
-			L"release file \"(%q*)\" from \"(%q*)\"", OPS_2TEXT, FALSE },
+			L"release file \"(%q*)\" from \"(%q*)\"", TT_OPS, FALSE },
 	{ "release source \"filename\" using \"filename\" from \"template\"",
-			L"release source \"(%q*)\" using \"(%q*)\" from \"(%q*)\"", OPS_3TEXT, FALSE },
-	{ "release to \"pathname\"", L"release to \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "resolution NxN max NxN", L"resolution (%d+) max (%d+)", OPS_2NUMBER, TRUE },
-	{ "resolution NxN min NxN max NxN", L"resolution (%d+) min (%d+) max (%d+)", OPS_3NUMBER, TRUE },
-	{ "resolution NxN min NxN", L"resolution (%d+) min (%d+)", OPS_2NUMBER, TRUE },
-	{ "resolution NxN", L"resolution (%d+)", OPS_1NUMBER, TRUE },
-	{ "solution", L"solution", OPS_NO, FALSE },
-	{ "solution public", L"solution public", OPS_NO, FALSE },
-	{ "sound ID \"filename\" music", L"sound (%i+) \"(%q*)\" music", OPS_2TEXT, TRUE },
+			L"release source \"(%q*)\" using \"(%q*)\" from \"(%q*)\"", TTT_OPS, FALSE },
+	{ "release to \"pathname\"", L"release to \"(%q*)\"", T_OPS, FALSE },
+	{ "resolution NxN max NxN", L"resolution (%d+) max (%d+)", NN_OPS, TRUE },
+	{ "resolution NxN min NxN max NxN", L"resolution (%d+) min (%d+) max (%d+)", NNN_OPS, TRUE },
+	{ "resolution NxN min NxN", L"resolution (%d+) min (%d+)", NN_OPS, TRUE },
+	{ "resolution NxN", L"resolution (%d+)", N_OPS, TRUE },
+	{ "solution", L"solution", VOID_OPS, FALSE },
+	{ "solution public", L"solution public", VOID_OPS, FALSE },
+	{ "sound ID \"filename\" music", L"sound (%i+) \"(%q*)\" music", TT_OPS, TRUE },
 	{ "sound ID \"filename\" repeat N",
-			L"sound (%i+) \"(%q*)\" repeat (%d+)", OPS_2TEXT_1NUMBER, TRUE },
+			L"sound (%i+) \"(%q*)\" repeat (%d+)", TTN_OPS, TRUE },
 	{ "sound ID \"filename\" repeat forever",
-			L"sound (%i+) \"(%q*)\" repeat forever", OPS_2TEXT, TRUE },
-	{ "sound ID \"filename\" song", L"sound (%i+) \"(%q*)\" song", OPS_2TEXT, TRUE },
-	{ "sound N \"filename\"", L"sound (%d+) \"(%q*)\"", OPS_1NUMBER_1TEXT, FALSE },
-	{ "sound ID \"filename\"", L"sound (%i+) \"(%q*)\"", OPS_2TEXT, FALSE },
-	{ "sound \"filename\"", L"sound \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "sound N \"filename\" \"alt-text\"", L"sound (%d+) \"(%q*)\" \"(%q*)\"", OPS_1NUMBER_2TEXTS, FALSE },
-	{ "source", L"source", OPS_NO, FALSE },
-	{ "source public", L"source public", OPS_NO, FALSE },
-	{ "status \"template\" \"filename\"", L"status \"(%q*)\" \"(%q*)\"", OPS_2TEXT, FALSE },
+			L"sound (%i+) \"(%q*)\" repeat forever", TT_OPS, TRUE },
+	{ "sound ID \"filename\" song", L"sound (%i+) \"(%q*)\" song", TT_OPS, TRUE },
+	{ "sound N \"filename\"", L"sound (%d+) \"(%q*)\"", NT_OPS, FALSE },
+	{ "sound ID \"filename\"", L"sound (%i+) \"(%q*)\"", TT_OPS, FALSE },
+	{ "sound \"filename\"", L"sound \"(%q*)\"", T_OPS, FALSE },
+	{ "sound N \"filename\" \"alt-text\"", L"sound (%d+) \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
+	{ "source", L"source", VOID_OPS, FALSE },
+	{ "source public", L"source public", VOID_OPS, FALSE },
+	{ "status \"template\" \"filename\"", L"status \"(%q*)\" \"(%q*)\"", TT_OPS, FALSE },
 	{ "status alternative ||link to Inform documentation||",
-			L"status alternative ||(%c*)||", OPS_1TEXT, FALSE },
+			L"status alternative ||(%c*)||", T_OPS, FALSE },
 	{ "status instruction ||link to Inform source text||",
-			L"status instruction ||(%c*)||", OPS_1TEXT, FALSE },
-	{ "storyfile \"filename\" include", L"storyfile \"(%q*)\" include", OPS_1TEXT, FALSE },
-	{ "storyfile \"filename\"", L"storyfile \"(%q*)\"", OPS_1TEXT, TRUE },
-	{ "storyfile leafname \"leafname\"", L"storyfile leafname \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "template path \"folder\"", L"template path \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ "website \"template\"", L"website \"(%q*)\"", OPS_1TEXT, FALSE },
-	{ NULL, NULL, OPS_NO, FALSE }
+			L"status instruction ||(%c*)||", T_OPS, FALSE },
+	{ "storyfile \"filename\" include", L"storyfile \"(%q*)\" include", T_OPS, FALSE },
+	{ "storyfile \"filename\"", L"storyfile \"(%q*)\"", T_OPS, TRUE },
+	{ "storyfile leafname \"leafname\"", L"storyfile leafname \"(%q*)\"", T_OPS, FALSE },
+	{ "template path \"folder\"", L"template path \"(%q*)\"", T_OPS, FALSE },
+	{ "website \"template\"", L"website \"(%q*)\"", T_OPS, FALSE },
+	{ NULL, NULL, VOID_OPS, FALSE }
 };
 
 @h Summary.
@@ -188,7 +191,7 @@ void Parser::interpret_line(text_stream *command, text_file_position *tf, void *
 	if (Str::len(command) == 0) return; /* thus skip a line containing only blank space */
 	if (Str::get_first_char(command) == '!') return; /* thus skip a comment line */
 
-	if (trace_mode) PRINT("! %03d: %S\n", TextFiles::get_line_count(tf), command);
+	if (verbose_mode) PRINT("! %03d: %S\n", TextFiles::get_line_count(tf), command);
 
 	int num1 = 0, num2 = 0, num3 = 0, outcome = -1; /* which of the legal command syntaxes is used */
 	TEMPORARY_TEXT(text1);
@@ -210,31 +213,31 @@ copied in |text1|, |num1|, ..., accordingly.
 	for (int t=0; syntaxes[t].prototype; t++)
 		if (Regexp::match(&mr, command, syntaxes[t].prototype)) {
 			switch (syntaxes[t].operands) {
-				case OPS_NO: break;
-				case OPS_1TEXT: 				Str::copy(text1, mr.exp[0]); break;
-				case OPS_2TEXT: 				Str::copy(text1, mr.exp[0]);
-												Str::copy(text2, mr.exp[1]); break;
-				case OPS_2TEXT_1NUMBER:			Str::copy(text1, mr.exp[0]);
-												Str::copy(text2, mr.exp[1]);
-												num1 = Str::atoi(mr.exp[2], 0); break;
-				case OPS_1NUMBER: 				num1 = Str::atoi(mr.exp[0], 0); break;
-				case OPS_2NUMBER: 				num1 = Str::atoi(mr.exp[0], 0);
-												num2 = Str::atoi(mr.exp[1], 0); break;
-				case OPS_1NUMBER_1TEXT: 		num1 = Str::atoi(mr.exp[0], 0);
-												Str::copy(text1, mr.exp[1]); break;
-				case OPS_1NUMBER_2TEXTS:		num1 = Str::atoi(mr.exp[0], 0);
-												Str::copy(text1, mr.exp[1]);
-												Str::copy(text2, mr.exp[2]); break;
-				case OPS_1NUMBER_1TEXT_1NUMBER:	num1 = Str::atoi(mr.exp[0], 0);
-												Str::copy(text1, mr.exp[1]);
-												num2 = Str::atoi(mr.exp[2], 0); break;
-				case OPS_3NUMBER:				num1 = Str::atoi(mr.exp[0], 0);
-												num2 = Str::atoi(mr.exp[1], 0);
-												num3 = Str::atoi(mr.exp[2], 0); break;
-				case OPS_3TEXT:					Str::copy(text1, mr.exp[0]);
-												Str::copy(text2, mr.exp[1]);
-												Str::copy(text3, mr.exp[2]); break;
-				default: 						internal_error("unknown operand type");
+				case VOID_OPS: break;
+				case T_OPS:		Str::copy(text1, mr.exp[0]); break;
+				case TT_OPS:	Str::copy(text1, mr.exp[0]);
+								Str::copy(text2, mr.exp[1]); break;
+				case TTN_OPS:	Str::copy(text1, mr.exp[0]);
+								Str::copy(text2, mr.exp[1]);
+								num1 = Str::atoi(mr.exp[2], 0); break;
+				case N_OPS:		num1 = Str::atoi(mr.exp[0], 0); break;
+				case NN_OPS:	num1 = Str::atoi(mr.exp[0], 0);
+								num2 = Str::atoi(mr.exp[1], 0); break;
+				case NT_OPS:	num1 = Str::atoi(mr.exp[0], 0);
+								Str::copy(text1, mr.exp[1]); break;
+				case NTT_OPS:	num1 = Str::atoi(mr.exp[0], 0);
+								Str::copy(text1, mr.exp[1]);
+								Str::copy(text2, mr.exp[2]); break;
+				case NTN_OPS:	num1 = Str::atoi(mr.exp[0], 0);
+								Str::copy(text1, mr.exp[1]);
+								num2 = Str::atoi(mr.exp[2], 0); break;
+				case NNN_OPS:	num1 = Str::atoi(mr.exp[0], 0);
+								num2 = Str::atoi(mr.exp[1], 0);
+								num3 = Str::atoi(mr.exp[2], 0); break;
+				case TTT_OPS:	Str::copy(text1, mr.exp[0]);
+								Str::copy(text2, mr.exp[1]);
+								Str::copy(text3, mr.exp[2]); break;
+				default:		internal_error("unknown operand type");
 			}
 			outcome = t; break;
 		}
@@ -302,7 +305,10 @@ copied in |text1|, |num1|, ..., accordingly.
 		case sound_with_alt_text_COMMAND: Writer::sound_chunk(num1, Filenames::from_text(text1), text2); break;
 		case source_COMMAND: Requests::request_1(SOURCE_REQ, I"", TRUE); break;
 		case source_public_COMMAND: Requests::request_1(SOURCE_REQ, I"", FALSE); break;
-		case status_COMMAND: status_template = Filenames::from_text(text1); status_file = Filenames::from_text(text2); break;
+		case status_COMMAND:
+			status_template = Filenames::from_text(text1);
+			status_file = Filenames::from_text(text2);
+			break;
 		case status_alternative_COMMAND: Requests::request_1(ALTERNATIVE_REQ, text1, FALSE); break;
 		case status_instruction_COMMAND: Requests::request_1(INSTRUCTION_REQ, text1, FALSE); break;
 		case storyfile_include_COMMAND: Writer::executable_chunk(Filenames::from_text(text1)); break;

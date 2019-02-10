@@ -20,8 +20,8 @@ Preliminaries
 Chapter 1: Blurbs
 "A little infrastructure, but basically, parsing of our instructions."
 	Basics
-	Blorb Errors
 	Main
+	Blorb Errors
 	Blurb Parser
 
 Chapter 2: Blorbs

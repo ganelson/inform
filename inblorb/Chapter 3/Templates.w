@@ -29,7 +29,7 @@ int no_template_paths = 0;
 void Templates::new_path(pathname *P) {
 	template_path *tp = CREATE(template_path);
 	tp->template_repository = P;
-	if (trace_mode)
+	if (verbose_mode)
 		PRINT("! Template search path %d: <%p>\n", ++no_template_paths, P);
 }
 
@@ -116,7 +116,7 @@ filename *Templates::try_single(template *t, text_stream *needed) {
 
 	pathname *T = Pathnames::subfolder(t->template_location->template_repository, t->template_name);
 	t->latest_use = Filenames::in_folder(T, needed);
-	if (trace_mode) PRINT("! Trying <%f>\n", t->latest_use);
+	if (verbose_mode) PRINT("! Trying <%f>\n", t->latest_use);
 	if (TextFiles::exists(t->latest_use)) return t->latest_use;
 	return NULL;
 }

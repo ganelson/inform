@@ -209,7 +209,7 @@ The file should be a valid iFiction record for the work. This is an XML file
 specified in the Treaty of Babel, a cross-IF-system standard for specifying
 bibliographic data; it will be embedded into the blorb.
 
-	|storyfile <filename>| -- unsupported by Inblorb
+	|storyfile <filename>    ... unsupported by Inblorb|
 	|storyfile <filename> include|
 
 Specifies the filename of the story file which these resources are being
@@ -226,9 +226,9 @@ Inblorb always does this, and does not support |storyfile| without
 
 @ Second, now-deprecated commands describing our ideal screen display:
 
-	|palette 16 bit| -- unsupported by Inblorb
-	|palette 32 bit| -- unsupported by Inblorb
-	|palette { <colour-1>| É |<colour-N> }| -- unsupported by Inblorb
+	|palette 16 bit    ... unsupported by Inblorb|
+	|palette 32 bit    ... unsupported by Inblorb|
+	|palette { <colour-1> ... <colour-N> }    ... unsupported by Inblorb|
 
 Blorb allows designers to signal to the interpreter that a particular
 colour-scheme is in use. The first two options simply suggest that the
@@ -239,10 +239,10 @@ continue over many lines. At least one and at most 256 colours may be
 defined in this way. This is only a "clue" to the interpreter; see the
 Blorb specification for details.
 
-	|resolution <dim>| -- unsupported by Inblorb
-	|resolution <dim> min <dim>| -- unsupported by Inblorb
-	|resolution <dim> max <dim>| -- unsupported by Inblorb
-	|resolution <dim> min <dim> max <dim>| -- unsupported by Inblorb
+	|resolution <dim>    ... unsupported by Inblorb|
+	|resolution <dim> min <dim>    ... unsupported by Inblorb|
+	|resolution <dim> max <dim>    ... unsupported by Inblorb|
+	|resolution <dim> min <dim> max <dim>    ... unsupported by Inblorb|
 
 Allows the designer to signal a preferred screen size, in real pixels, in
 case the interpreter should have any choice over this. The minimum and
@@ -253,10 +253,10 @@ infinity by infinity.
 @ Third, commands for adding audiovisual resources:
 
 	|sound <id> <filename>|
-	|sound <id> <filename> repeat <number>| -- unsupported by Inblorb
-	|sound <id> <filename> repeat forever| -- unsupported by Inblorb
-	|sound <id> <filename> music| -- unsupported by Inblorb
-	|sound <id> <filename> song| -- unsupported by Inblorb
+	|sound <id> <filename> repeat <number>    ... unsupported by Inblorb|
+	|sound <id> <filename> repeat forever    ... unsupported by Inblorb|
+	|sound <id> <filename> music    ... unsupported by Inblorb|
+	|sound <id> <filename> song    ... unsupported by Inblorb|
 
 Tells us to take a sound sample from the named file and make it the sound
 effect with the given number. Most forms of |sound| are now deprecated:
@@ -267,9 +267,9 @@ sound formats. Nowadays the straight |sound| command should always
 be used regardless of format.
 
 	|picture <id> <filename>|
-	|picture <id> <filename> scale <ratio>| -- unsupported by Inblorb
-	|picture <id> <filename> scale min <ratio>| -- unsupported by Inblorb
-	|picture <id> <filename> scale <ratio> min <ratio>| -- unsupported by Inblorb
+	|picture <id> <filename> scale <ratio>    ... unsupported by Inblorb|
+	|picture <id> <filename> scale min <ratio>    ... unsupported by Inblorb|
+	|picture <id> <filename> scale <ratio> min <ratio>    ... unsupported by Inblorb|
 
 (and so on) is a similar command for images. In 2001, the image file was required
 to be a PNG, but it can now alternatively be a JPEG.

@@ -3,8 +3,7 @@
 To produce base64-encoded story files ready for in-browser play by
 a Javascript-based interpreter such as Parchment.
 
-@h Base 64.
-This encoding scheme is defined by the Internet standard RFC 1113.
+@ The Base64 encoding scheme is defined by the Internet standard RFC 1113.
 Broadly, the idea is to take a binary stream of bytes, break it into
 threes, and then convert this into a sequence of four emailable
 characters. To encode 24 bits in four characters, we need six bits per

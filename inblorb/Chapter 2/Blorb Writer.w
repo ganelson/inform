@@ -53,13 +53,13 @@ same goes for Pict resources.  These two linked lists are used to store all the
 resource numbers encountered.
 
 =
-typedef struct resource_list resource_list;
-struct resource_list {
+typedef struct resource_number {
 	int num;
-	struct resource_list *n;
-};
-resource_list *sound_resource = NULL;
-resource_list *pict_resource = NULL;
+	MEMORY_MANAGEMENT
+} resource_number;
+
+linked_list *sound_resource = NULL; /* of |resource_number| */
+linked_list *pict_resource = NULL; /* of |resource_number| */
 
 @ And this is used to record alt-descriptions of resources, for the benefit
 of partially sighted or deaf users:
@@ -147,7 +147,7 @@ void Writer::add_chunk_to_blorb(char *id, int resource_num, filename *supplied_f
 	@<Compute the size in bytes of the chunk@>;
 	@<Advance the total chunk size@>;
 
-	if (trace_mode)
+	if (verbose_mode)
 		PRINT("! Begun chunk %s: fn is <%f> (innate size %d)\n",
 			current_chunk->chunk_type, current_chunk->chunk_file, current_chunk->size);
 }
@@ -231,17 +231,14 @@ exit with a fatal error. Otherwise, FALSE is returned, indicating that
 everything is fine.
 
 =
-int Writer::resource_seen(resource_list **list, int value) {
-	resource_list *p;
-	for(p = *list; p; p = p->n) {
-		if (p->num == value) return TRUE;
-	}
-	p = *list;
-	*list = Memory::I7_malloc(sizeof(resource_list), RDES_MREASON);
-	if (*list == NULL)
-		BlorbErrors::fatal("Run out of memory");
-	(*list)->num = value;
-	(*list)->n = p;
+int Writer::resource_seen(linked_list *L, int value) {
+	resource_number *rn;
+	LOOP_OVER_LINKED_LIST(rn, resource_number, L)
+		if (rn->num == value)
+			return TRUE;
+	rn = CREATE(resource_number);
+	rn->num = value;
+	ADD_TO_LINKED_LIST(rn, resource_number, L);	
 	return FALSE;
 }
 
@@ -259,7 +256,7 @@ int Writer::chunk_type_is_already_an_IFF(char *type) {
 
 =
 void Writer::author_chunk(text_stream *t) {
-	if (trace_mode) PRINT("! Author: <%S>\n", t);
+	if (verbose_mode) PRINT("! Author: <%S>\n", t);
     Writer::add_chunk_to_blorb("AUTH", 0, NULL, NULL, (unsigned char *) t, Str::len(t));
 }
 
@@ -267,7 +264,7 @@ void Writer::author_chunk(text_stream *t) {
 
 =
 void Writer::copyright_chunk(text_stream *t) {
-	if (trace_mode) PRINT("! Copyright declaration: <%S>\n", t);
+	if (verbose_mode) PRINT("! Copyright declaration: <%S>\n", t);
     Writer::add_chunk_to_blorb("(c) ", 0, NULL, NULL, (unsigned char *) t, Str::len(t));
 }
 
@@ -276,7 +273,7 @@ cover art, in other words.
 
 =
 void Writer::frontispiece_chunk(int pn) {
-	if (trace_mode) PRINT("! Frontispiece is image %d\n", pn);
+	if (verbose_mode) PRINT("! Frontispiece is image %d\n", pn);
     unsigned char data[4];
     Writer::s_four_word(data, pn);
     Writer::add_chunk_to_blorb("Fspc", 0, NULL, NULL, data, 4);
@@ -286,7 +283,7 @@ void Writer::frontispiece_chunk(int pn) {
 
 =
 void Writer::release_chunk(int rn) {
-	if (trace_mode) PRINT("! Release number is %d\n", rn);
+	if (verbose_mode) PRINT("! Release number is %d\n", rn);
     unsigned char data[2];
     Writer::s_two_word(data, rn);
     Writer::add_chunk_to_blorb("RelN", 0, NULL, NULL, data, 2);
@@ -306,7 +303,9 @@ void Writer::picture_chunk(int n, filename *fn, text_stream *alt) {
 		"(expected e.g. '.png' for PNG, '.jpeg' for JPEG)", fn);
 
 	if (n < 1) BlorbErrors::fatal("Picture resource number is less than 1");
-	if (Writer::resource_seen(&pict_resource, n)) BlorbErrors::fatal("Duplicate Picture resource number");
+	if (pict_resource == NULL) pict_resource = NEW_LINKED_LIST(resource_number);
+	if (Writer::resource_seen(pict_resource, n))
+		BlorbErrors::fatal("Duplicate Picture resource number");
 
     Writer::add_chunk_to_blorb(type, n, fn, "Pict", NULL, 0);
     if (Str::len(alt) > 0) {
@@ -354,7 +353,8 @@ void Writer::sound_chunk(int n, filename *fn, text_stream *alt) {
 		"(expected e.g. '.ogg', '.midi', '.mod' or '.aiff', as appropriate)", fn);
 
 	if (n < 3) BlorbErrors::fatal("Sound resource number is less than 3");
-	if (Writer::resource_seen(&sound_resource, n)) BlorbErrors::fatal("Duplicate Sound resource number");
+	if (sound_resource == NULL) sound_resource = NEW_LINKED_LIST(resource_number);
+	if (Writer::resource_seen(sound_resource, n)) BlorbErrors::fatal("Duplicate Sound resource number");
 
     Writer::add_chunk_to_blorb(type, n, fn, "Snd ", NULL, 0);
     if (Str::len(alt) > 0) {
@@ -452,7 +452,7 @@ void Writer::write_blorb_file(filename *out) {
 	int RIdx_size, first_byte_after_index;
 	@<Calculate the sizes of the whole file and the index chunk@>;
 	@<Write the initial FORM chunk of the IFF file, and then the index@>;
-	if (trace_mode) @<Print out a copy of the chunk table@>;
+	if (verbose_mode) @<Print out a copy of the chunk table@>;
 
 	chunk_metadata *chunk;
 	LOOP_OVER(chunk, chunk_metadata) @<Write the chunk@>;

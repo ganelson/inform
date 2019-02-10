@@ -130,7 +130,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 	current_skein_node->child = NULL;
 	current_skein_node->sibling = NULL;
 	current_skein_node->relevant = FALSE;
-	if (trace_mode) PRINT("Creating knot with ID '%S'\n", node_id);
+	if (verbose_mode) PRINT("Creating knot with ID '%S'\n", node_id);
 
 @ We make |new_child| the youngest child of |current_skein_mode|:
 
@@ -147,19 +147,19 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 @<Look for a "command" tag and set the command text from it@> =
 	text_stream *p = current_skein_node->command;
 	if (Solution::find_text_of_tag(p, line, "command")) {
-		if (trace_mode) PRINT("Raw command '%S'\n", p);
+		if (verbose_mode) PRINT("Raw command '%S'\n", p);
 		Solution::undo_XML_escapes_in_string(p);
 		LOOP_THROUGH_TEXT(pos, p)
 			Str::put(pos, Characters::toupper(Str::get(pos)));
-		if (trace_mode) PRINT("Processed command '%S'\n", p);
+		if (verbose_mode) PRINT("Processed command '%S'\n", p);
 	}
 
 @<Look for an "annotation" tag and set the annotation text from it@> =
 	text_stream *p = current_skein_node->annotation;
 	if (Solution::find_text_of_tag(p, line, "annotation")) {
-		if (trace_mode) PRINT("Raw annotation '%S'\n", p);
+		if (verbose_mode) PRINT("Raw annotation '%S'\n", p);
 		Solution::undo_XML_escapes_in_string(p);
-		if (trace_mode) PRINT("Processed annotation '%S'\n", p);
+		if (verbose_mode) PRINT("Processed annotation '%S'\n", p);
 	}
 
 @ Try to find a node ID element attached to a particular tag on the line:
@@ -251,14 +251,14 @@ void Solution::identify_relevant_lines(void) {
 	skein_node *skn;
 	LOOP_OVER(skn, skein_node) {
 		text_stream *p = skn->annotation;
-		if (trace_mode) PRINT("Knot %S is annotated '%S'\n", skn->id, p);
+		if (verbose_mode) PRINT("Knot %S is annotated '%S'\n", skn->id, p);
 		if ((Str::get_at(p, 0) == '*') && (Str::get_at(p, 1) == '*') && (Str::get_at(p, 2) == '*')) {
 			int i = 3, j; while (Str::get_at(p, i) == ' ') i++;
 			for (j=0; Str::get_at(p, i); i++) Str::put_at(p, j++, Str::get_at(p, i)); Str::put_at(p, j, 0);
 			skein_node *knot;
 			for (knot = skn; knot; knot = knot->parent) {
 				knot->relevant = TRUE;
-				if (trace_mode) PRINT("Knot %S is relevant\n", knot->id);
+				if (verbose_mode) PRINT("Knot %S is relevant\n", knot->id);
 			}
 		}
 	}

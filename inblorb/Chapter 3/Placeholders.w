@@ -103,13 +103,13 @@ void Placeholders::append_to(text_stream *var, text_stream *text) {
 
 =
 void Placeholders::set_to_inner(text_stream *var, text_stream *text, int reservation, int extend) {
-	if (trace_mode) PRINT("! [%S] <-- \"%S\"\n", var, text);
+	if (verbose_mode) PRINT("! [%S] <-- \"%S\"\n", var, text);
 
 	placeholder *wv = Placeholders::find(var);
 	if ((wv) && (reservation > 0)) { BlorbErrors::error_1S("tried to set reserved variable %S", var); return; }
 	if (wv == NULL) {
 		wv = CREATE(placeholder);
-		if (trace_mode) PRINT("! Creating [%S]\n", var);
+		if (verbose_mode) PRINT("! Creating [%S]\n", var);
 		wv->pl_name = Str::duplicate(var);
 		wv->pl_contents = Str::new();
 		wv->reservation = reservation;

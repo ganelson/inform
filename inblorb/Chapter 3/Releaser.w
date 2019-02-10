@@ -3,28 +3,27 @@
 To manage requests to release material other than a Blorb file.
 
 @h Requests.
-If the previous section, "Blorb Writer.w", was the Lord High Executioner,
+If the previous chapter, which wrote blorb files, was the Lord High Executioner,
 then this one is the Lord High Everything Else: it keeps track of requests
-to write all kinds of interesting things which are _not_ blorb files,
+to write all kinds of interesting things which are not blorb files,
 and then sees that they are carried out. The requests divide as follows:
 
-@d COPY_REQ 0 /* a miscellaneous file */
-@d IFICTION_REQ 1 /* the iFiction record of a project */
-@d RELEASE_FILE_REQ 2 /* a template file */
-@d RELEASE_SOURCE_REQ 3 /* the source text in HTML form */
-@d SOLUTION_REQ 4 /* a solution file generated from the skein */
-@d SOURCE_REQ 5 /* the source text of a project */
-@d WEBSITE_REQ 6 /* a whole website */
-@d INTERPRETER_REQ 7 /* an in-browser interpreter */
-@d BASE64_REQ 8 /* a base64-encoded copy of a binary file */
-@d INSTRUCTION_REQ 9 /* a release instruction copied to inblorb for reporting only */
-@d ALTERNATIVE_REQ 10 /* an unused release instruction copied to inblorb for reporting only */
+@e COPY_REQ from 0 /* a miscellaneous file */
+@e IFICTION_REQ /* the iFiction record of a project */
+@e RELEASE_FILE_REQ /* a template file */
+@e RELEASE_SOURCE_REQ /* the source text in HTML form */
+@e SOLUTION_REQ /* a solution file generated from the skein */
+@e SOURCE_REQ /* the source text of a project */
+@e WEBSITE_REQ /* a whole website */
+@e INTERPRETER_REQ /* an in-browser interpreter */
+@e BASE64_REQ /* a base64-encoded copy of a binary file */
+@e INSTRUCTION_REQ /* a release instruction copied to inblorb for reporting only */
+@e ALTERNATIVE_REQ /* an unused release instruction copied to inblorb for reporting only */
 
 =
 int website_requested = FALSE; /* has a |WEBSITE_REQ| been made? */
 
-@ This would use a lot of memory if there were many requests, but there are
-not and it does not.
+@ Each request produces an instance of:
 
 =
 typedef struct request {
@@ -92,14 +91,18 @@ void Requests::any_last_requests(void) {
 	if (default_cover_used == FALSE) {
 		text_stream *BIGCOVER = Placeholders::read(I"BIGCOVER");
 		if (Str::len(BIGCOVER) > 0) {
-			if (cover_is_in_JPEG_format) Requests::request_copy(BIGCOVER, I"Cover.jpg", I"--");
-			else Requests::request_copy(BIGCOVER, I"Cover.png", I"--");
+			if (cover_is_in_JPEG_format)
+				Requests::request_copy(BIGCOVER, I"Cover.jpg", I"--");
+			else
+				Requests::request_copy(BIGCOVER, I"Cover.png", I"--");
 		}
 		if (website_requested) {
 			text_stream *SMALLCOVER = Placeholders::read(I"SMALLCOVER");
 			if (Str::len(SMALLCOVER) > 0) {
-				if (cover_is_in_JPEG_format) Requests::request_copy(SMALLCOVER, I"Small Cover.jpg", I"--");
-				else Requests::request_copy(SMALLCOVER, I"Small Cover.png", I"--");
+				if (cover_is_in_JPEG_format)
+					Requests::request_copy(SMALLCOVER, I"Small Cover.jpg", I"--");
+				else
+					Requests::request_copy(SMALLCOVER, I"Small Cover.png", I"--");
 			}
 		}
 	}
@@ -174,7 +177,7 @@ void Requests::create_requested_material(void) {
 	Placeholders::set_to(I"TEMPLATE", req->details3, 0);
 	filename *HTML_template = Templates::find_file_in_specific_template(req->details3, req->details2);
 	if (HTML_template == NULL) BlorbErrors::error_1S("can't find HTML template file", req->details2);
-	if (trace_mode) PRINT("! Web page %f from template %s\n", HTML_template, req->details3);
+	if (verbose_mode) PRINT("! Web page %f from template %s\n", HTML_template, req->details3);
 	Websites::web_copy_source(HTML_template, release_folder);
 
 @ Interpreters are copied, not made. They're really just like website
@@ -368,14 +371,14 @@ to the experts.
 
 @<Release an HTML page from the template into the website@> =
 	Placeholders::set_to(I"TEMPLATE", t, 0);
-	if (trace_mode) PRINT("! Web page %S from template %S\n", name, t);
+	if (verbose_mode) PRINT("! Web page %S from template %S\n", name, t);
 	if (Str::eq_wide_string(name, L"source.html"))
 		Websites::web_copy_source(from, release_folder);
 	else
 		Websites::web_copy(from, write_to);
 
 @<Release a binary file from the template into the website@> =
-	if (trace_mode) PRINT("! Binary file %S from template %S\n", name, t);
+	if (verbose_mode) PRINT("! Binary file %S from template %S\n", name, t);
 	BinaryFiles::copy(from, write_to, FALSE);
 
 @ The home page will need links to any public released resources, and this

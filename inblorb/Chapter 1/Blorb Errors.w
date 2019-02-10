@@ -1,16 +1,16 @@
-[BlorbErrors::] Text Files.
+[BlorbErrors::] Blorb Errors.
 
-To read text files of whatever flavour, one line at a time.
+To spool error messages into the HTML report.
 
-@h Error messages.
-Inblorb is only minimally helpful when diagnosing problems, because it's
-intended to be used as the back end of a system which only generates correct
-blurb files, so that everything will work -- ideally, the Inform user will
-never know that Inblorb exists.
+@ Foundation has a perfectly good library of code for error messages, but
+we won't use it, because we need to do something unusual with them: they
+must not only be printed to standard error, but also spooled into HTML
+format for possible use on a status HTML page. Hence this section.
 
-Note that errors are spooled to a variable before being issued, so that
-an HTML report can be generated which shows them. (This is why we don't
-use the perfectly good errors system supplied in |foundation|.)
+Inblorb is in any case only minimally helpful when diagnosing problems,
+because it's intended to be used as the back end of a system which only
+generates correct blurb files, so that everything will work -- ideally, the
+Inform user will never know that Inblorb exists.
 
 First, the current position of errors is recorded so that we can report
 the source of the trouble:
@@ -101,11 +101,10 @@ void BlorbErrors::errorf_2S(char *erm, text_stream *s1, text_stream *s2) {
 	DISCARD_TEXT(ERM);
 }
 
-@ As noted, errors are spooled to a placeholder, for the benefit of the report:
+@ As noted, errors are spooled to a placeholder variable, for the benefit of
+the report:
 
 =
-int error_count = 0; /* number of error messages produced so far */
-
 void BlorbErrors::spool_error(OUTPUT_STREAM) {
 	Placeholders::append_to(I"CBLORBERRORS", I"<li>");
 	Placeholders::append_to(I"CBLORBERRORS", OUT);

@@ -153,7 +153,7 @@ void Links::request_copy_of_auxiliaries(void) {
 	auxiliary_file *aux;
 	LOOP_OVER(aux, auxiliary_file)
 		if (Str::eq(aux->format, I"link")) {
-			if (trace_mode)
+			if (verbose_mode)
 				PRINT("! COPY <%f> as <%S>\n", aux->full_filename, aux->aux_leafname);
 			TEMPORARY_TEXT(as_text);
 			WRITE_TO(as_text, "%f", aux->full_filename);

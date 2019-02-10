@@ -1,7 +1,7 @@
 [Main::] Main.
 
-To parse command-line arguments and take the necessary steps to
-obey them.
+To parse command-line arguments, then start the Blurb interpreter, then
+report back to the user.
 
 @h Some globals.
 The following variables record HTML and Javascript-related points where
@@ -18,7 +18,9 @@ int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 @ Some global variables:
 
 =
-int trace_mode = FALSE; /* print diagnostics to |stdout| while running? */
+int error_count = 0; /* number of error messages produced so far */
+
+int verbose_mode = FALSE; /* print diagnostics to |stdout| while running? */
 int current_year_AD = 0; /* e.g., 2008 */
 
 int blorb_file_size = 0; /* size in bytes of the blorb file written */
@@ -80,7 +82,7 @@ int main(int argc, char *argv[]) {
 	status_file = NULL;
 	status_template = NULL;
 
-@
+@ We use Foundation's standard command-line routines.
 
 @e VERBOSE_CLSW
 @e PROJECT_CLSW
@@ -89,7 +91,7 @@ int main(int argc, char *argv[]) {
 	@<Read the command-line switches@>;
 	@<Set platform-dependent HTML and Javascript variables@>;
 
-	if (trace_mode)
+	if (verbose_mode)
 		PRINT("! Blurb in: <%f>\n! Blorb out: <%f>\n",
 			blurb_filename, blorb_filename);
 
@@ -117,7 +119,7 @@ int main(int argc, char *argv[]) {
 @ =
 void Main::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		case VERBOSE_CLSW: trace_mode = val; break;
+		case VERBOSE_CLSW: verbose_mode = val; break;
 		case PROJECT_CLSW: project_folder = Pathnames::from_text(arg); break;
 		default: internal_error("unimplemented switch");
 	}
@@ -204,8 +206,8 @@ void Main::initialise_time_variables(void) {
 @h Opening and closing banners.
 Note that Inblorb customarily prints informational messages with an initial
 |!|, so that the piped output from Inblorb could be used as an |Include|
-file in I6 code; that isn't in fact how I7 uses Inblorb, but it's traditional
-for blorbing programs to do this.
+file in I6 code, where |!| is the comment character; that isn't in fact how
+I7 uses Inblorb, but it's traditional for blorbing programs to do this.
 
 =
 void Main::print_banner(void) {
@@ -231,8 +233,8 @@ void Main::print_report(void) {
 }
 
 @ If it isn't apparent what these placeholders do, take a look at
-the template file for |StatusCblorb.html| in the Inform application -- that's
-where they're used.
+the template file called |CblorbModel.html| in the Inform application --
+that's where they're used.
 
 @<Set a whole pile of placeholders which will be needed to generate the status page@> =
 	if (error_count > 0) {
