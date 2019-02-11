@@ -24,7 +24,6 @@ Chapter 2: Processing
 	Examples
 	Renderer
 	Rawtext Reader
-	Navigational Gadgets
 	Updating the Standard Rules
 	HTML and Javascript
 	CSS
@@ -34,7 +33,8 @@ Chapter 3: Indexing
 	General Index
 	Examples Index
 
-Chapter 4: Book Designs
+Chapter 4: Navigation Styles
+	Navigational Gadgets
 	Codename Lacuna
 	Codename Midnight
 	Codename Architect

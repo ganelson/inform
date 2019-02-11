@@ -4,23 +4,13 @@ Instructions of indoc to different output types.
 
 @h Definitions.
 
-@ A few fundamental options set at the command line. Note the default book
-folder which |indoc| reads: "Documentation" in the current working directory.
+@ A few fundamental options set at the command line.
 
-= (early code)
+=
 int verbose_mode = 0;
 int test_index_mode = 0;
 filename *standard_rules_filename = NULL;
 pathname *book_folder = NULL;
-
-@ Most configuration is done not from the command line, but by instructions
-files, and we store a list of those here:
-
-@d MAX_INSTRUCTIONS_FILES 100
-
-=
-filename *instructions_files[MAX_INSTRUCTIONS_FILES];
-int no_instructions_files = 0;
 
 @ First, there are two structural settings:
 
@@ -142,7 +132,7 @@ them until all have been found. (The user may as well get all of the bad news,
 not just the beginning of it.)
 
 =
-void Instructions::read_instructions(text_stream *target_sought) {
+void Instructions::read_instructions(text_stream *target_sought, linked_list *L) {
 	int found_flag = FALSE; /* was a target of this name actually found? */
 
 	SET_change_logs_directory = Pathnames::subfolder(book_folder, I"Change Logs");
@@ -151,8 +141,9 @@ void Instructions::read_instructions(text_stream *target_sought) {
 	SET_css_source_file = Filenames::in_folder(Materials, I"base.css");
 	SET_definitions_index_leafname = Str::duplicate(I"general_index.html");
 
-	for (int ins_file = 0; ins_file < no_instructions_files; ins_file++)
-		if (Instructions::read_instructions_from(instructions_files[ins_file], target_sought))
+	filename *F;
+	LOOP_OVER_LINKED_LIST(F, filename, L)
+		if (Instructions::read_instructions_from(F, target_sought))
 			found_flag = TRUE;
 
 	@<Reconcile any conflicting instructions@>;
@@ -176,6 +167,12 @@ example,
 applies 20 for all targets except |hypercard|, where it applies 40.
 
 =
+typedef struct ins_helper_state {
+	int found_aim;
+	struct text_stream *desired_target;
+	struct text_stream *scanning_target;
+} ins_helper_state;
+
 int Instructions::read_instructions_from(filename *F, text_stream *desired) {
 	ins_helper_state ihs;
 	ihs.scanning_target = Str::new();
@@ -186,12 +183,7 @@ int Instructions::read_instructions_from(filename *F, text_stream *desired) {
 	return ihs.found_aim;
 }
 
-typedef struct ins_helper_state {
-	int found_aim;
-	struct text_stream *desired_target;
-	struct text_stream *scanning_target;
-} ins_helper_state;
-
+@ =
 void Instructions::read_instructions_helper(text_stream *cl, text_file_position *tfp,
 	void *v_ihs) {
 	ins_helper_state *ihs = (ins_helper_state *) v_ihs;
@@ -524,6 +516,7 @@ pathname *Instructions::set_path(text_stream *val) {
 	return Pathnames::from_text(val);
 }
 
+@ =
 filename *Instructions::set_file(text_stream *val) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {

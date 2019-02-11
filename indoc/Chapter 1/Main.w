@@ -34,11 +34,11 @@ We turn the source matter, "rawtext", into a batch of output files using the
 chosen format, a process we'll call "rendering". We do this in two passes.
 
 =
-int main(int argc, char **argv) {
-	Foundation::start();
-	Log::declare_aspect(SYMBOLS_DA, L"symbols", FALSE, FALSE);
-	Log::declare_aspect(INSTRUCTIONS_DA, L"instructions", FALSE, FALSE);
+int no_volumes = 0;
+int no_examples = 0;
 
+int main(int argc, char **argv) {
+	Basics::start();
 	@<Start up indoc@>;
 	@<Make a first-pass scan of the rawtext@>;
 	@<Render the rawtext as documentation@>;
@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
 		Epub::end_construction(SET_ebook);
 	}
 	@<Shut down indoc@>;
+	Basics::end();
 	return 0;
 }
 

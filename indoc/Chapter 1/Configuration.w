@@ -2,7 +2,23 @@
 
 Instructions of indoc to different output types.
 
-@h Command Line Switches.
+@h Known instruction files.
+Most configuration is done not from the command line, but by instructions
+files, and we store a list of those here:
+
+=
+linked_list *instructions_files = NULL; /* of |filename| */
+
+void Configuration::add_instructions_file(filename *F) {
+	if (instructions_files == NULL) instructions_files = NEW_LINKED_LIST(filename);
+	ADD_TO_LINKED_LIST(F, filename, instructions_files);
+}
+
+void Configuration::read_instructions(text_stream *target) {
+	Instructions::read_instructions(target, instructions_files);
+}
+
+@h Command line switches.
 
 =
 void Configuration::read_command_line(int argc, char **argv) {
@@ -15,7 +31,7 @@ void Configuration::read_command_line(int argc, char **argv) {
 	@<Read the command line@>;
 	Configuration::add_instructions_file(
 		Filenames::in_folder(book_folder, I"indoc-instructions.txt"));
-	Instructions::read_instructions(target_chosen);
+	Configuration::read_instructions(target_chosen);
 	DISCARD_TEXT(target_chosen);
 }
 
@@ -66,13 +82,4 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 void Configuration::bareword(int id, text_stream *opt, void *v_target_chosen) {
 	text_stream *target_chosen = (text_stream *) v_target_chosen;
 	Str::copy(target_chosen, opt);
-}
-
-@ When a file is added, it's put at the end of the queue.
-
-=
-void Configuration::add_instructions_file(filename *F) {
-	if (no_instructions_files >= MAX_INSTRUCTIONS_FILES)
-		Errors::fatal("too many instructions files");
-	instructions_files[no_instructions_files++] = F;
 }

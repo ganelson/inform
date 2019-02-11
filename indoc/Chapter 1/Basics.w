@@ -2,14 +2,30 @@
 
 Some fundamental definitions.
 
-@h Build identity.
-First we define the build, using a notation which tangles out to the current
-build number as specified in the contents section of this web.
+@h Who we are.
+This is a command-line tool built on top of the Foundation module. The first
+definition we need to make is:
 
 @d INTOOL_NAME "indoc"
-@d INDOC_BUILD "indoc [[Build Number]]"
 
-@h Structures.
+=
+void Basics::start(void) {
+	Foundation::start();
+	@<Declare the debugging log aspects@>;
+}
+
+void Basics::end(void) {
+	Foundation::end();
+}
+
+@ Just two logging aspects to add to the usual Foundation stock:
+
+@e SYMBOLS_DA
+@e INSTRUCTIONS_DA
+
+@<Declare the debugging log aspects@> =
+	Log::declare_aspect(SYMBOLS_DA, L"symbols", FALSE, FALSE);
+	Log::declare_aspect(INSTRUCTIONS_DA, L"instructions", FALSE, FALSE);
 
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
@@ -45,18 +61,9 @@ ALLOCATE_INDIVIDUALLY(CSS_tweak_data)
 ALLOCATE_INDIVIDUALLY(span_notation)
 ALLOCATE_INDIVIDUALLY(dc_metadatum)
 
-@h Further debugging aspects.
-
-@e SYMBOLS_DA
-@e INSTRUCTIONS_DA
-
 @h The Unicode for section.
 Since this doesn't lie in the ASCII character range, I'll refer to it by
 its Unicode number rather than placing the character in question in the
 source code directly.
 
 @d SECTION_SYMBOL 167 /* Unicode for a section symbol */
-
-@ =
-int no_volumes = 0;
-int no_examples = 0;
