@@ -8,7 +8,7 @@ Some conveniences shared by our different forms of index.
 text_stream index_stream;
 
 text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname) {
-	filename *F = Filenames::in_folder(SET_destination, leafname);
+	filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
 	if (SET_wrapper == WRAPPER_epub)
 		Epub::note_page(SET_ebook, F, title, I"index");
 

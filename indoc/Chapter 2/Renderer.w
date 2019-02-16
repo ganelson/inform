@@ -104,7 +104,7 @@ text_stream *Renderer::render_block(OUTPUT_STREAM, volume *V, section *S) {
 			if (no_examples_rendered_here == 1)
 				Gadgets::render_navigation_example_top(OUT, V, S);
 			@<Render the example here@>;
-			if (SET_examples_mode == EXMODE_open_internal) HTMLUtilities::ruled_line(OUT);
+			if (indoc_settings->examples_mode == EXMODE_open_internal) HTMLUtilities::ruled_line(OUT);
  		}
  	}
 
@@ -152,7 +152,7 @@ section names are capitalised for this purpose.)
 @ =
 text_stream *Renderer::render_example_body(OUTPUT_STREAM, example *E, volume *V, int empty) {
 	int hide = FALSE;
-	if (SET_examples_mode == EXMODE_openable_internal) hide = TRUE;
+	if (indoc_settings->examples_mode == EXMODE_openable_internal) hide = TRUE;
 	if (SET_format == HTML_FORMAT) {
 		TEMPORARY_TEXT(id);
 		WRITE_TO(id, "example%d", E->allocation_id);
@@ -667,7 +667,7 @@ text_stream *Renderer::formatted_file_must_be(OUTPUT_STREAM, volume *V, section 
 				Epub::note_page(SET_ebook, S->section_filename, S->section_file_title, I"");
 			if (S == V->sections[0]) {
 				ebook_volume *ev = Epub::starts_volume(SET_ebook, page, V->vol_title);
-				filename *F = Filenames::in_folder(SET_destination, V->vol_CSS_leafname);
+				filename *F = Filenames::in_folder(indoc_settings->destination, V->vol_CSS_leafname);
 				Epub::use_CSS(ev, F);
 			}
 			if (S->begins_which_chapter)

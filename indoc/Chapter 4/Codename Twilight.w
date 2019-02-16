@@ -32,7 +32,7 @@ void Twilight::twilight_section_title(OUTPUT_STREAM, volume *V, section *S) {
 	}
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(img);
-	WRITE_TO(url, "%S.html", SET_contents_leafname);
+	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::image_element(img, I"Home.png");
 	HTMLUtilities::general_link(OUT, I"standardlink", url, img);
 	DISCARD_TEXT(img);
@@ -107,7 +107,7 @@ void Twilight::twilight_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) 
 		WRITE(" / ");
 	}
 	TEMPORARY_TEXT(url);
-	WRITE_TO(url, "%S.html", SET_contents_leafname);
+	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::general_link(OUT, I"footerlink", url, I"Contents");
 	DISCARD_TEXT(url);
 	HTML_CLOSE("p");

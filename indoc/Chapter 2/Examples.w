@@ -66,13 +66,13 @@ Inform documentation.
 
 =
 void Examples::scan_examples(void) {
-	scan_directory *dir = Directories::open(SET_examples_directory);
+	scan_directory *dir = Directories::open(indoc_settings->examples_directory);
 	if (dir == NULL) Errors::fatal("can't open examples directory");
 
 	TEMPORARY_TEXT(leafname);
 	while (Directories::next(dir, leafname)) {
 		if (Str::get_last_char(leafname) == FOLDER_SEPARATOR) continue;
-		filename *exloc = Filenames::in_folder(SET_examples_directory, leafname);
+		filename *exloc = Filenames::in_folder(indoc_settings->examples_directory, leafname);
 		if (Regexp::match(NULL, leafname, L"%(Recipes%)%c*")) @<Scan the Recipe Book catalogue@>
 		else @<Scan a regular example@>;
 	}
@@ -307,11 +307,11 @@ or even the end of the volume, to appear. This is where that's worked out.
 		section *hang_here = NULL;
 		for (int p = 0; p < V->vol_section_count; p++) {
 			section *HS = V->sections[p];
-			if (((SET_examples_granularity == 3) && (S == HS))
+			if (((indoc_settings->examples_granularity == SECTION_GRANULARITY) && (S == HS))
 				||
-				((SET_examples_granularity == 2) && (HS->in_which_chapter == S->in_which_chapter))
+				((indoc_settings->examples_granularity == CHAPTER_GRANULARITY) && (HS->in_which_chapter == S->in_which_chapter))
 				||
-				(SET_examples_granularity == 1))
+				(indoc_settings->examples_granularity == BOOK_GRANULARITY))
 				hang_here = HS;
 		}
 		if (hang_here)
@@ -323,7 +323,7 @@ or even the end of the volume, to appear. This is where that's worked out.
 @h Rendering example cues.
 An example cue is a rendered chunk describing and naming an example. The text
 of the example may or may not follow: if it doesn't, the description is a
-link which opens it. Depending on |SET_examples_mode|, the text of the
+link which opens it. Depending on the examples mode, the text of the
 example may be either (a) included in the file and always visible, (b) included
 but hidden by default until an icon is clicked, or (c) stored in an external,
 that is, separate file.
@@ -456,7 +456,7 @@ some cases this should work by a Javascript function call instead...
 
 =
 void Examples::open_example_url(OUTPUT_STREAM, example *E, volume *from_V, volume *V, int writing_index) {
-	if ((SET_examples_mode == EXMODE_openable_internal) && (writing_index == 0) && (from_V == V))
+	if ((indoc_settings->examples_mode == EXMODE_openable_internal) && (writing_index == 0) && (from_V == V))
 		WRITE("#");
 	else
 		Examples::goto_example_url(OUT, E, V);
@@ -466,7 +466,7 @@ void Examples::open_example_url(OUTPUT_STREAM, example *E, volume *from_V, volum
 
 =
 void Examples::open_example_onclick(OUTPUT_STREAM, example *E, volume *from_V, volume *V, int writing_index) {
-	if ((SET_examples_mode == EXMODE_openable_internal) &&
+	if ((indoc_settings->examples_mode == EXMODE_openable_internal) &&
 		(writing_index == 0) &&
 		(from_V == V)) {
 		WRITE("showExample('example%d'); return false;", E->allocation_id);

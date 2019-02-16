@@ -129,10 +129,10 @@ void Gadgets::render_navigation_example_top(OUTPUT_STREAM, volume *V, section *S
 		HTML_OPEN_WITH("p", "class=\"chapterheading\"");
 	}
 
-	if (SET_examples_granularity == 2) {
+	if (indoc_settings->examples_granularity == CHAPTER_GRANULARITY) {
 		chapter *C = S->in_which_chapter;
 		WRITE("Examples from %S", C->chapter_full_title);
-	} else if (SET_examples_granularity == 1) {
+	} else if (indoc_settings->examples_granularity == BOOK_GRANULARITY) {
 		WRITE("Examples");
 	}
 
@@ -167,7 +167,7 @@ void Gadgets::render_navigation_example_bottom(OUTPUT_STREAM, volume *V, section
 	}
 
 	if (SET_format == HTML_FORMAT) {
-		if (SET_examples_mode != EXMODE_open_internal) { HTMLUtilities::ruled_line(OUT); }
+		if (indoc_settings->examples_mode != EXMODE_open_internal) { HTMLUtilities::ruled_line(OUT); }
 		HTML::end_div(OUT);
 	}
 

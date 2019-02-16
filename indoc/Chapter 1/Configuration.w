@@ -14,25 +14,30 @@ void Configuration::add_instructions_file(filename *F) {
 	ADD_TO_LINKED_LIST(F, filename, instructions_files);
 }
 
-void Configuration::read_instructions(text_stream *target) {
-	Instructions::read_instructions(target, instructions_files);
+void Configuration::read_instructions(text_stream *target, indoc_instructions *settings) {
+	Instructions::read_instructions(target, instructions_files, settings);
 }
 
 @h Command line switches.
 
 =
-void Configuration::read_command_line(int argc, char **argv) {
-	book_folder = Pathnames::from_text(I"Documentation");
+typedef struct cl_state {
+	struct text_stream *target_chosen;
+	struct indoc_instructions *settings;
+} cl_state;
+
+void Configuration::read_command_line(int argc, char **argv, indoc_instructions *settings) {
 	pathname *IM = Pathnames::from_text(I"indoc");
 	IM = Pathnames::subfolder(IM, I"Materials");
 	filename *basics = Filenames::in_folder(IM, I"basic-instructions.txt");
 	Configuration::add_instructions_file(basics);
-	TEMPORARY_TEXT(target_chosen);
+	cl_state state;
+	state.target_chosen = Str::new();
+	state.settings = settings;
 	@<Read the command line@>;
 	Configuration::add_instructions_file(
-		Filenames::in_folder(book_folder, I"indoc-instructions.txt"));
-	Configuration::read_instructions(target_chosen);
-	DISCARD_TEXT(target_chosen);
+		Filenames::in_folder(settings->book_folder, I"indoc-instructions.txt"));
+	Configuration::read_instructions(state.target_chosen, settings);
 }
 
 @
@@ -63,23 +68,25 @@ void Configuration::read_command_line(int argc, char **argv) {
 	CommandLine::declare_switch(INSTRUCTIONS_CLSW, L"instructions", 2,
 		L"read further instructions from file X");
 
-	if (CommandLine::read(argc, argv, target_chosen, &Configuration::switch, &Configuration::bareword)
+	if (CommandLine::read(argc, argv, &state, &Configuration::switch, &Configuration::bareword)
 		== FALSE) exit(0);
 
 @ =
-void Configuration::switch(int id, int val, text_stream *arg, void *state) {
+void Configuration::switch(int id, int val, text_stream *arg, void *v_cl_state) {
+	indoc_instructions *settings = ((cl_state *) v_cl_state)->settings;
 	switch (id) {
-		case VERBOSE_CLSW: verbose_mode = val; break;
-		case TEST_INDEX_CLSW: test_index_mode = val; break;
-		case REWRITE_CLSW: standard_rules_filename = Filenames::from_text(arg); break;
-		case FROM_CLSW: book_folder = Pathnames::from_text(arg); break;
-		case TO_CLSW: SET_destination = Pathnames::from_text(arg); destination_override = TRUE; break;
+		case VERBOSE_CLSW: settings->verbose_mode = val; break;
+		case TEST_INDEX_CLSW: settings->test_index_mode = val; break;
+		case REWRITE_CLSW: settings->standard_rules_filename = Filenames::from_text(arg); break;
+		case FROM_CLSW: settings->book_folder = Pathnames::from_text(arg); break;
+		case TO_CLSW: settings->destination = Pathnames::from_text(arg);
+			settings->destination_modifiable = FALSE; break;
 		case INSTRUCTIONS_CLSW: Configuration::add_instructions_file(Filenames::from_text(arg)); break;
 		default: internal_error("unimplemented switch");
 	}
 }
 
-void Configuration::bareword(int id, text_stream *opt, void *v_target_chosen) {
-	text_stream *target_chosen = (text_stream *) v_target_chosen;
-	Str::copy(target_chosen, opt);
+void Configuration::bareword(int id, text_stream *opt, void *v_cl_state) {
+	cl_state *state = (cl_state *) v_cl_state;
+	Str::copy(state->target_chosen, opt);
 }

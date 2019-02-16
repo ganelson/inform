@@ -97,7 +97,7 @@ working backwards. As soon as we find a file of that name, we copy it over.
 =
 void HTMLUtilities::copy_images(void) {
 	if (SET_images_copy == 1) {
-		pathname *I = Pathnames::subfolder(SET_destination, I"images");
+		pathname *I = Pathnames::subfolder(indoc_settings->destination, I"images");
 		Pathnames::create_in_file_system(I);
 		image_usage *iu;
 		LOOP_OVER(iu, image_usage) {

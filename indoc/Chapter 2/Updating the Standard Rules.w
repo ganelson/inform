@@ -43,16 +43,16 @@ which contains up to date information on which documentation symbols occur
 in which files.
 
 =
-void Updater::rewrite_standard_rules_file(void) {
+void Updater::rewrite_standard_rules_file(filename *F) {
 	PRINT("indoc: rewriting documentation references in Standard Rules\n");
 	TEMPORARY_TEXT(spool);
-	TextFiles::read(standard_rules_filename, FALSE, "can't open Standard Rules file",
+	TextFiles::read(F, FALSE, "can't open Standard Rules file",
 		TRUE, Updater::rewrite_helper, NULL, spool);
 
 	text_stream SR;
 	text_stream *OUT = &SR;
-	if (Streams::open_to_file(OUT, standard_rules_filename, UTF8_ENC) == FALSE)
-		Errors::fatal_with_file("can't write Standard Rules file", standard_rules_filename);
+	if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("can't write Standard Rules file", F);
 
 	int first_time = 0;
 	for (int i=0, L=Str::len(spool); i<L; ) {

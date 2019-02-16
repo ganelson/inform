@@ -86,13 +86,13 @@ void CSS::write_CSS_files(filename *from) {
 		if (no_volumes > 1) WRITE_TO(leafname, "_%S", V->vol_abbrev);
 		WRITE_TO(leafname, ".css");
 		V->vol_CSS_leafname = Str::duplicate(leafname);
-		filename *F = Filenames::in_folder(SET_destination, leafname);
+		filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
 
 		text_stream CSS_struct;
 		text_stream *OUT = &CSS_struct;
 		if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
 			Errors::fatal_with_file("can't write CSS file", F);
-		if (verbose_mode) PRINT("[Writing %/f]\n", F);
+		if (indoc_settings->verbose_mode) PRINT("[Writing %/f]\n", F);
 
 		@<Construct the CSS for this volume@>;
 		@<Add any missing CSS material to this volume@>;
@@ -236,7 +236,7 @@ void CSS::expand_IMAGES(text_stream *text) {
 
 =
 void CSS::alert_CSS_change(text_stream *what, text_stream *this_style, volume *V) {
-	if (verbose_mode)
+	if (indoc_settings->verbose_mode)
 		PRINT("%S CSS style \"%S\" in volume \"%S\"\n", what, this_style, V->vol_title);
 }
 

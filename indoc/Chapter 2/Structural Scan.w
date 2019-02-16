@@ -78,7 +78,7 @@ typedef struct section {
 These are created when we scan the instructions file.
 
 =
-void Scanner::create_volume(text_stream *leaf, text_stream *title, text_stream *abbrev_supplied) {
+void Scanner::create_volume(pathname *book_path, text_stream *leaf, text_stream *title, text_stream *abbrev_supplied) {
   	TEMPORARY_TEXT(pre);
  	TEMPORARY_TEXT(abbrev);
 	Str::copy(abbrev, abbrev_supplied);
@@ -96,7 +96,7 @@ void Scanner::create_volume(text_stream *leaf, text_stream *title, text_stream *
  	V->vol_title = Str::duplicate(title);
  	V->vol_prefix = Str::duplicate(pre);
  	V->vol_abbrev = Str::duplicate(abbrev);
- 	V->vol_rawtext_filename = Filenames::in_folder(book_folder, leaf);
+ 	V->vol_rawtext_filename = Filenames::in_folder(book_path, leaf);
   	V->vol_CSS_leafname = NULL;
  	V->vol_URL = NULL;
  	V->vol_chapter_count = 0;
@@ -261,14 +261,14 @@ anchor is blank, the filename alone is used.
  	char *extension = "txt";
  	if (SET_format == HTML_FORMAT) extension = "html";
  	TEMPORARY_TEXT(leaf);
- 	if (SET_granularity == 3) {
+ 	if (indoc_settings->granularity == SECTION_GRANULARITY) {
  		if (SET_html_for_Inform_application)
  			WRITE_TO(leaf, "%Sdoc%d.%s", sr->owner->vol_prefix, sr->s, extension);
  		else
  			WRITE_TO(leaf, "%S_%d_%d.%s", sr->owner->vol_abbrev, sr->ch, sr->chs, extension);
  		S->section_anchor = Str::new();
  		S->section_file_title = Str::duplicate(S->title);
- 	} else if (SET_granularity == 2) {
+ 	} else if (indoc_settings->granularity == CHAPTER_GRANULARITY) {
  		WRITE_TO(leaf, "%S_%d.%s", sr->owner->vol_abbrev, sr->ch, extension);
  		S->section_anchor = Str::new();
  		WRITE_TO(S->section_anchor, "s%d", sr->chs);
@@ -279,7 +279,7 @@ anchor is blank, the filename alone is used.
  		WRITE_TO(S->section_anchor, "c%d_s%d", sr->ch, sr->chs);
  		S->section_file_title = Str::duplicate(sr->owner->vol_title);
  	}
-	S->section_filename = Filenames::in_folder(SET_destination, leaf);
+	S->section_filename = Filenames::in_folder(indoc_settings->destination, leaf);
 	S->section_URL = Str::duplicate(leaf);
 	S->unanchored_URL = Str::duplicate(leaf);
 	DISCARD_TEXT(leaf);
@@ -289,8 +289,8 @@ anchor is blank, the filename alone is used.
 
 @<Work out chapter URLs and anchors, depending on granularity@> =
  	C->chapter_anchor = Str::new();
- 	if (SET_granularity == 3) {
- 	} else if (SET_granularity == 2) {
+ 	if (indoc_settings->granularity == SECTION_GRANULARITY) {
+ 	} else if (indoc_settings->granularity == CHAPTER_GRANULARITY) {
  		if (sr->ch == 1) WRITE_TO(C->chapter_anchor, "chapter_%d_%d", sr->v, sr->ch);
  	} else {
  		WRITE_TO(C->chapter_anchor, "chapter_%d_%d", sr->v, sr->ch);
@@ -304,7 +304,8 @@ helps the Inform application in searching the online documentation.
 
 =
 void Scanner::write_manifest_file(volume *V) {
-	filename *M = Filenames::in_folder(SET_destination, SET_manifest_leafname);
+	filename *M = Filenames::in_folder(
+		indoc_settings->destination, indoc_settings->manifest_leafname);
 	text_stream M_struct;
 	text_stream *OUT = &M_struct;
 	if (Streams::open_to_file(OUT, M, UTF8_ENC) == FALSE)

@@ -34,6 +34,7 @@ We turn the source matter, "rawtext", into a batch of output files using the
 chosen format, a process we'll call "rendering". We do this in two passes.
 
 =
+indoc_instructions *indoc_settings = NULL;
 int no_volumes = 0;
 int no_examples = 0;
 
@@ -59,16 +60,19 @@ int main(int argc, char **argv) {
 @h Starting up.
 
 @<Start up indoc@> =
-	PRINT("indoc [[Build Number]] (Inform Tools Suite)\n");
+	PRINT("indoc [[Version Number]] (Inform Tools Suite)\n");
+	indoc_settings = Instructions::clean_slate();
 	Symbols::start_up_symbols();
-	Configuration::read_command_line(argc, argv);
+	Configuration::read_command_line(argc, argv, indoc_settings);
 	if (SET_wrapper == WRAPPER_epub) {
-		HTMLUtilities::image_URL(NULL, Filenames::get_leafname(book_cover_image));
+		HTMLUtilities::image_URL(NULL,
+			Filenames::get_leafname(indoc_settings->book_cover_image));
 		Instructions::apply_ebook_metadata();
 		pathname *I = Pathnames::from_text(I"images");
-		filename *cover_in_situ = Filenames::in_folder(I, Filenames::get_leafname(book_cover_image));
-		SET_destination = Epub::begin_construction(SET_ebook,
-			SET_destination, cover_in_situ);
+		filename *cover_in_situ = Filenames::in_folder(I,
+			Filenames::get_leafname(indoc_settings->book_cover_image));
+		indoc_settings->destination = Epub::begin_construction(SET_ebook,
+			indoc_settings->destination, cover_in_situ);
 	}
 
 	if (NUMBER_CREATED(volume) == 0) { PRINT("indoc: nothing to do\n"); exit(0); }
@@ -82,7 +86,7 @@ point, nothing is being output.
 @<Make a first-pass scan of the rawtext@> =
 	volume *V;
 	LOOP_OVER(V, volume) Scanner::scan_rawtext_for_section_titles(V);
-	if (book_contains_examples == 1) Examples::scan_examples();
+	if (indoc_settings->book_contains_examples) Examples::scan_examples();
 
 @ We then work through each volume's rawtext file in turn, writing the output
 section by section.
@@ -100,7 +104,8 @@ to go inside the Inform user interface application.
 @<Work out cross-references for the in-application documentation only@> =
 	Scanner::write_manifest_file(FIRST_OBJECT(volume));
 	if (SET_definitions_filename) Updater::write_definitions_file();
-	if (standard_rules_filename) Updater::rewrite_standard_rules_file();
+	if (indoc_settings->standard_rules_filename)
+		Updater::rewrite_standard_rules_file(indoc_settings->standard_rules_filename);
 
 @ These are automatically generated.
 

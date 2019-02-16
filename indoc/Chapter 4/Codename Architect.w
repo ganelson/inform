@@ -28,7 +28,7 @@ void Architect::architect_section_title(OUTPUT_STREAM, volume *V, section *S) {
 	text_stream *linkright = NULL;
 	@<Work out URLs for the preceding and following sections@>;
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.html", SET_contents_leafname);
+	WRITE_TO(leaf, "%S.html", indoc_settings->contents_leafname);
 	Architect::architect_banner(OUT,
 		S->in_which_chapter->chapter_full_title, V, leaf, linkleft, linkright);
 	HTML::end_div(OUT);
@@ -91,7 +91,7 @@ void Architect::architect_navigation_bottom(OUTPUT_STREAM, volume *V, section *S
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"footercontents\"");
 	TEMPORARY_TEXT(url);
-	WRITE_TO(url, "%S.html", SET_contents_leafname);
+	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::general_link(OUT, I"footerlink", url, I"Contents");
 	DISCARD_TEXT(url);
 	HTML_CLOSE("td");
@@ -129,7 +129,7 @@ void Architect::architect_banner(OUTPUT_STREAM, text_stream *title, volume *V,
 	HTML_OPEN_WITH("td", "class=\"midnightbannercentrecell\"");
 	if (Str::len(linkcentre) > 0) {
 		TEMPORARY_TEXT(url);
-		WRITE_TO(url, "%S.html", SET_contents_leafname);
+		WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 		HTML::begin_link_with_class(OUT, I"standardlink", url);
 		DISCARD_TEXT(url);
 	}
@@ -142,7 +142,7 @@ void Architect::architect_banner(OUTPUT_STREAM, text_stream *title, volume *V,
 	HTML_OPEN_WITH("td", "class=\"midnightbannerrightcell\"");
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(img);
-	WRITE_TO(url, "%S.html", SET_contents_leafname);
+	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::image_with_id(img, I"Hookup.png", I"hookup");
 	HTMLUtilities::general_link(OUT, I"standardlink", url, img);
 	DISCARD_TEXT(img);

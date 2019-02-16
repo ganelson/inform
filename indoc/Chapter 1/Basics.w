@@ -30,6 +30,7 @@ void Basics::end(void) {
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
 
+@e indoc_instructions_MT
 @e volume_MT
 @e chapter_MT
 @e section_MT
@@ -47,6 +48,7 @@ We need to itemise the structures we'll want to allocate:
 @ And then expand:
 
 =
+ALLOCATE_INDIVIDUALLY(indoc_instructions)
 ALLOCATE_INDIVIDUALLY(volume)
 ALLOCATE_INDIVIDUALLY(chapter)
 ALLOCATE_INDIVIDUALLY(section)

@@ -6,53 +6,92 @@ Instructions of indoc to different output types.
 
 @ A few fundamental options set at the command line.
 
-=
-int verbose_mode = 0;
-int test_index_mode = 0;
-filename *standard_rules_filename = NULL;
-pathname *book_folder = NULL;
+@d LETTER_ALPHABETIZATION 1
+@d WORD_ALPHABETIZATION 2
 
-@ First, there are two structural settings:
+@d EXMODE_open_internal 1
+@d EXMODE_openable_internal 2
+
+@d BOOK_GRANULARITY 1
+@d CHAPTER_GRANULARITY 2
+@d SECTION_GRANULARITY 3
+@d SAME_AS_MAIN_GRANULARITY -1
 
 =
-int book_contains_examples = FALSE;
-filename *book_cover_image = NULL; /* leafname such as |cover-image.png|; by default, none */
+typedef struct indoc_instructions {
+	int verbose_mode;
+	int test_index_mode;
+
+	struct pathname *destination; /* path to the directory where documentation will be made */
+	int destination_modifiable; /* can |destination| still be changed by instructions? */
+	struct text_stream *manifest_leafname; /* within the |destination| directory */
+	struct filename *standard_rules_filename;
+
+	struct pathname *book_folder;
+	filename *book_cover_image; /* e.g., |cover-image.png|; by default, none */
+	int index_alphabetisation_algorithm; /* one of the |*_ALPHABETIZATION| values above */
+	
+	int granularity; /* one of the |*_GRANULARITY| values above */
+	
+	text_stream *contents_leafname;
+	int contents_expandable;
+	int toc_granularity; /* one of the |*_GRANULARITY| values above */
+
+	int book_contains_examples;
+	int examples_mode; /* one of the |EXMODE_*| values above */
+	struct text_stream *examples_alphabetical_leafname;
+	struct text_stream *examples_numerical_leafname;
+	struct text_stream *examples_thematic_leafname;
+	struct pathname *examples_directory;
+	int examples_granularity; /* one of the |*_GRANULARITY| values above */
+
+	MEMORY_MANAGEMENT
+} indoc_instructions;
+
+@
+
+=
+indoc_instructions *Instructions::clean_slate(void) {
+	indoc_instructions *settings = CREATE(indoc_instructions);
+	settings->verbose_mode = FALSE;
+	settings->test_index_mode = FALSE;
+
+	settings->destination = NULL;
+	settings->destination_modifiable = TRUE;
+	settings->manifest_leafname = NULL;
+	settings->standard_rules_filename = NULL;
+
+	settings->book_folder = Pathnames::from_text(I"Documentation");
+	settings->book_cover_image = NULL;
+	settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION;
+
+	settings->granularity = SECTION_GRANULARITY;
+
+	settings->contents_leafname = NULL;
+	settings->contents_expandable = FALSE;
+	settings->toc_granularity = SAME_AS_MAIN_GRANULARITY;
+
+	settings->book_contains_examples = FALSE;
+	settings->examples_mode = EXMODE_open_internal;
+	settings->examples_alphabetical_leafname = NULL;
+	settings->examples_numerical_leafname = NULL;
+	settings->examples_thematic_leafname = NULL;
+	settings->examples_directory = NULL;
+	settings->examples_granularity = SAME_AS_MAIN_GRANULARITY;
+
+	return settings;
+}
 
 @ Otherwise, following settings are made by the instructions; these are their
 default values, which ensure that |indoc| will at least run safely, but in
 practice several of these are in any case set by the basic instructions file.
 See the manual for their meanings.
 
-@d LETTER_ALPHABETIZATION 1
-@d WORD_ALPHABETIZATION 2
-
 =
-int SET_alphabetization = LETTER_ALPHABETIZATION;
-
-@ =
 pathname *SET_change_logs_directory = NULL; /* default set below, as it depends on book folder */
-text_stream *SET_contents_leafname = NULL; /* affects Midnight only */
-int SET_contents_expandable = FALSE; /* affects Midnight only */
 filename *SET_css_source_file = NULL;
 filename *SET_definitions_filename = NULL;
 text_stream *SET_definitions_index_leafname = NULL;
-int destination_override = FALSE;
-pathname *SET_destination = NULL;
-pathname *SET_examples_directory = NULL; /* default set below, as it depends on book folder */
-int SET_examples_granularity = -1; /* meaning "same as granularity" */
-
-@
-
-@d EXMODE_open_internal 1
-@d EXMODE_openable_internal 2
-
-=
-int SET_examples_mode = EXMODE_open_internal; /* must be one of the above */
-
-@ =
-text_stream *SET_examples_alphabetical_leafname = NULL;
-text_stream *SET_examples_numerical_leafname = NULL;
-text_stream *SET_examples_thematic_leafname = NULL;
 
 @
 
@@ -63,7 +102,6 @@ text_stream *SET_examples_thematic_leafname = NULL;
 int SET_format = HTML_FORMAT; /* must be one of those */
 
 @ =
-int SET_granularity = 3;
 int SET_html_for_Inform_application = FALSE;
 int SET_images_copy = FALSE;
 pathname *SET_images_path = NULL;
@@ -86,7 +124,6 @@ int SET_javascript_paste_method = PASTEMODE_none; /* must be one of those */
 
 @ =
 text_stream *SET_link_to_extensions_index = NULL;
-text_stream *SET_manifest_leafname = NULL;
 
 @
 
@@ -101,7 +138,6 @@ text_stream *SET_manifest_leafname = NULL;
 int SET_navigation = NAVMODE_midnight; /* must be one of the above */
 
 @ =
-int SET_toc_granularity = -1; /* meaning "same as granularity" */
 filename *SET_top_and_tail = NULL;
 filename *SET_top_and_tail_sections = NULL;
 int SET_treat_code_as_verbatim = FALSE;
@@ -132,18 +168,19 @@ them until all have been found. (The user may as well get all of the bad news,
 not just the beginning of it.)
 
 =
-void Instructions::read_instructions(text_stream *target_sought, linked_list *L) {
+void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
+	indoc_instructions *settings) {
 	int found_flag = FALSE; /* was a target of this name actually found? */
 
-	SET_change_logs_directory = Pathnames::subfolder(book_folder, I"Change Logs");
-	SET_examples_directory = Pathnames::subfolder(book_folder, I"Examples");
+	SET_change_logs_directory = Pathnames::subfolder(settings->book_folder, I"Change Logs");
+	settings->examples_directory = Pathnames::subfolder(settings->book_folder, I"Examples");
 	pathname *Materials = Pathnames::subfolder(Pathnames::from_text(I"indoc"), I"Materials");
 	SET_css_source_file = Filenames::in_folder(Materials, I"base.css");
 	SET_definitions_index_leafname = Str::duplicate(I"general_index.html");
 
 	filename *F;
 	LOOP_OVER_LINKED_LIST(F, filename, L)
-		if (Instructions::read_instructions_from(F, target_sought))
+		if (Instructions::read_instructions_from(F, target_sought, settings))
 			found_flag = TRUE;
 
 	@<Reconcile any conflicting instructions@>;
@@ -169,16 +206,19 @@ applies 20 for all targets except |hypercard|, where it applies 40.
 =
 typedef struct ins_helper_state {
 	int found_aim;
+	struct indoc_instructions *settings;
 	struct text_stream *desired_target;
 	struct text_stream *scanning_target;
 } ins_helper_state;
 
-int Instructions::read_instructions_from(filename *F, text_stream *desired) {
+int Instructions::read_instructions_from(filename *F, text_stream *desired,
+	indoc_instructions *settings) {
 	ins_helper_state ihs;
 	ihs.scanning_target = Str::new();
 	ihs.desired_target = desired;
 	ihs.found_aim = FALSE;
-	TextFiles::read(F, FALSE, "can't open instructions file",
+	ihs.settings = settings;
+		TextFiles::read(F, FALSE, "can't open instructions file",
 		TRUE, Instructions::read_instructions_helper, NULL, &ihs);
 	return ihs.found_aim;
 }
@@ -204,11 +244,12 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 	} else {
 		if ((Str::len(ihs->scanning_target) == 0) ||
 			(Str::eq(ihs->scanning_target, ihs->desired_target))) {
-			if (verbose_mode == 1)
+			if (ihs->settings->verbose_mode)
 				PRINT("%f, line %d: %S\n", tfp->text_file_filename, tfp->line_count, cl);
 			if (Regexp::match(&mr, cl, L" *follow: *(%c*?) *")) {
 				if (Instructions::read_instructions_from(
-					Filenames::in_folder(book_folder, mr.exp[0]), ihs->desired_target))
+					Filenames::in_folder(ihs->settings->book_folder, mr.exp[0]),
+					ihs->desired_target, ihs->settings))
 					ihs->found_aim = TRUE;
 			} else if (Regexp::match(&mr, cl, L" *declare: *(%c*?) *")) {
 				Symbols::declare_symbol(mr.exp[0]);
@@ -226,10 +267,10 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 		@<Act on a volume creation@>
 	} else if (Regexp::match(&mr, cl, L" *cover: *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
-		book_cover_image = Instructions::set_file(mr.exp[0]);
+		ihs->settings->book_cover_image = Instructions::set_file(mr.exp[0], ihs->settings);
 	} else if (Regexp::match(&mr, cl, L" *examples *")) {
 		@<Disallow this in a specific target@>;
-		book_contains_examples = TRUE;
+		ihs->settings->book_contains_examples = TRUE;
 	} else if (Regexp::match(&mr, cl, L" *dc:(%C+): *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
 		dc_metadatum *dcm = CREATE(dc_metadatum);
@@ -240,7 +281,7 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 	} else if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
 		@<Act on an indexing notation@>;
 	} else if (Regexp::match(&mr, cl, L" *images: *(%c*?) *")) {
-		HTMLUtilities::add_image_source(Instructions::set_path(mr.exp[0]));
+		HTMLUtilities::add_image_source(Instructions::set_path(mr.exp[0], ihs->settings));
 	} else if (Regexp::match(&mr, cl, L" *(%C+) *= *(%c*?) *")) {
 		@<Act on an instructions setting@>;
 	} else {
@@ -274,7 +315,7 @@ which reads:
 	if (Regexp::match(&mr2, title, L"(%c*?) *%((%c*?)%)")) { /* the optional abbreviation syntax */
 		Str::copy(title, mr2.exp[0]); Str::copy(abbrev, mr2.exp[1]);
 	}
-	Scanner::create_volume(file, title, abbrev);
+	Scanner::create_volume(ihs->settings->book_folder, file, title, abbrev);
 	DISCARD_TEXT(file);
 	DISCARD_TEXT(abbrev);
 	Regexp::dispose_of(&mr2);
@@ -319,7 +360,7 @@ which reads:
 @<Act on an indexing notation@> =
 	text_stream *tweak = mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
-	if (test_index_mode) PRINT("Read in: %S\n", tweak);
+	if (ihs->settings->test_index_mode) PRINT("Read in: %S\n", tweak);
 	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation(mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
 	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
@@ -360,46 +401,47 @@ taste). In a multiple-line value, each line is terminated with a newline.
 
 @<Set an instructions option@> =
 	if (Str::eq_wide_string(key, L"alphabetization")) {
-		if (Str::eq_wide_string(val, L"word-by-word")) { SET_alphabetization = WORD_ALPHABETIZATION; }
-		else if (Str::eq_wide_string(val, L"letter-by-letter")) { SET_alphabetization = LETTER_ALPHABETIZATION; }
+		if (Str::eq_wide_string(val, L"word-by-word")) { ihs->settings->index_alphabetisation_algorithm = WORD_ALPHABETIZATION; }
+		else if (Str::eq_wide_string(val, L"letter-by-letter")) { ihs->settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION; }
 		else Errors::in_text_file("no such alphabetization", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"assume_Public_Library")) {
 		SET_assume_Public_Library = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"change_logs_directory")) { SET_change_logs_directory = Instructions::set_path(val); }
-	else if (Str::eq_wide_string(key, L"contents_leafname")) { SET_contents_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"contents_expandable")) { SET_contents_expandable = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"css_source_file")) { SET_css_source_file = Instructions::set_file(val); }
-	else if (Str::eq_wide_string(key, L"definitions_filename")) { SET_definitions_filename = Instructions::set_file(val); }
+	else if (Str::eq_wide_string(key, L"change_logs_directory")) { SET_change_logs_directory = Instructions::set_path(val, ihs->settings); }
+	else if (Str::eq_wide_string(key, L"contents_leafname")) { ihs->settings->contents_leafname = Str::duplicate(val); }
+	else if (Str::eq_wide_string(key, L"contents_expandable")) { ihs->settings->contents_expandable = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"css_source_file")) { SET_css_source_file = Instructions::set_file(val, ihs->settings); }
+	else if (Str::eq_wide_string(key, L"definitions_filename")) { SET_definitions_filename = Instructions::set_file(val, ihs->settings); }
 	else if (Str::eq_wide_string(key, L"definitions_index_filename")) {
 		SET_definitions_index_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"destination")) {
-		if (destination_override == FALSE)
-			SET_destination = Instructions::set_path(val);
+		if (ihs->settings->destination_modifiable)
+			ihs->settings->destination = Instructions::set_path(val, ihs->settings);
 	}
-	else if (Str::eq_wide_string(key, L"examples_directory")) { SET_examples_directory = Instructions::set_path(val); }
+	else if (Str::eq_wide_string(key, L"examples_directory")) {
+		ihs->settings->examples_directory = Instructions::set_path(val, ihs->settings); }
 	else if (Str::eq_wide_string(key, L"examples_alphabetical_leafname")) {
-		SET_examples_alphabetical_leafname = Str::duplicate(val); }
+		ihs->settings->examples_alphabetical_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"examples_granularity")) {
-		SET_examples_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+		ihs->settings->examples_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
 	else if (Str::eq_wide_string(key, L"examples_mode")) {
-		if (Str::eq_wide_string(val, L"open")) { SET_examples_mode = EXMODE_open_internal; }
-		else if (Str::eq_wide_string(val, L"openable")) { SET_examples_mode = EXMODE_openable_internal; }
+		if (Str::eq_wide_string(val, L"open")) { ihs->settings->examples_mode = EXMODE_open_internal; }
+		else if (Str::eq_wide_string(val, L"openable")) { ihs->settings->examples_mode = EXMODE_openable_internal; }
 		else Errors::in_text_file("no such examples mode", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"examples_numerical_leafname")) {
-		SET_examples_numerical_leafname = Str::duplicate(val); }
+		ihs->settings->examples_numerical_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"examples_thematic_leafname")) {
-		SET_examples_thematic_leafname = Str::duplicate(val); }
+		ihs->settings->examples_thematic_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"format")) {
 		if (Str::eq_wide_string(val, L"HTML")) { SET_format = HTML_FORMAT; }
 		else if (Str::eq_wide_string(val, L"text")) { SET_format = PLAIN_FORMAT; }
 		else Errors::in_text_file("no such format", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"granularity")) { SET_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+	else if (Str::eq_wide_string(key, L"granularity")) { ihs->settings->granularity = Instructions::set_range(key, val, 1, 3, tfp); }
 	else if (Str::eq_wide_string(key, L"html_for_Inform_application")) {
 		SET_html_for_Inform_application = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"images_path")) { SET_images_path = Instructions::set_path(val); }
+	else if (Str::eq_wide_string(key, L"images_path")) { SET_images_path = Instructions::set_path(val, ihs->settings); }
 	else if (Str::eq_wide_string(key, L"images_copy")) { SET_images_copy = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"inform_definitions_mode")) {
 		SET_inform_definitions_mode = Instructions::set_yn(key, val, tfp); }
@@ -412,7 +454,7 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	}
 	else if (Str::eq_wide_string(key, L"link_to_extensions_index")) {
 		SET_link_to_extensions_index = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"manifest_leafname")) { SET_manifest_leafname = Str::duplicate(val); }
+	else if (Str::eq_wide_string(key, L"manifest_leafname")) { ihs->settings->manifest_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"navigation")) {
 		if (Str::eq_wide_string(val, L"twilight")) { SET_navigation = NAVMODE_twilight; }
 		else if (Str::eq_wide_string(val, L"midnight")) { SET_navigation = NAVMODE_midnight; }
@@ -429,10 +471,10 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	else if (Str::eq_wide_string(key, L"suppress_fonts")) {
 		SET_suppress_fonts = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"toc_granularity")) {
-		SET_toc_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+		ihs->settings->toc_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
 	else if (Str::eq_wide_string(key, L"top_and_tail_sections")) {
-		SET_top_and_tail_sections = Instructions::set_file(val); }
-	else if (Str::eq_wide_string(key, L"top_and_tail")) { SET_top_and_tail = Instructions::set_file(val); }
+		SET_top_and_tail_sections = Instructions::set_file(val, ihs->settings); }
+	else if (Str::eq_wide_string(key, L"top_and_tail")) { SET_top_and_tail = Instructions::set_file(val, ihs->settings); }
 	else if (Str::eq_wide_string(key, L"treat_code_as_verbatim")) {
 		SET_treat_code_as_verbatim = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"wrapper")) {
@@ -449,10 +491,10 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	if (SET_wrapper == WRAPPER_epub) {
 		SET_javascript = 0;
 		SET_javascript_paste_method = PASTEMODE_none;
-		if (SET_examples_mode == EXMODE_openable_internal) {
-			SET_examples_mode = EXMODE_open_internal;
+		if (settings->examples_mode == EXMODE_openable_internal) {
+			settings->examples_mode = EXMODE_open_internal;
 		}
-		SET_contents_expandable = 0;
+		settings->contents_expandable = FALSE;
 		SET_images_copy = 1;
 		if ((SET_navigation != NAVMODE_roadsign) &&
 			(SET_navigation != NAVMODE_unsigned)) {
@@ -465,17 +507,17 @@ taste). In a multiple-line value, each line is terminated with a newline.
 
 	if (SET_javascript_paste_method != PASTEMODE_none) { SET_javascript = 1; }
 
-	if (SET_examples_granularity == -1) {
-		SET_examples_granularity = SET_granularity; }
-	if (SET_toc_granularity == -1) {
-		SET_toc_granularity = SET_granularity; }
+	if (settings->examples_granularity == SAME_AS_MAIN_GRANULARITY)
+		settings->examples_granularity = settings->granularity;
+	if (settings->toc_granularity == SAME_AS_MAIN_GRANULARITY)
+		settings->toc_granularity = settings->granularity;
 
-	if (SET_examples_granularity < SET_granularity) {
-		SET_examples_granularity = SET_granularity;
+	if (settings->examples_granularity < settings->granularity) {
+		settings->examples_granularity = settings->granularity;
 		Errors::nowhere("examples granularity can't be less than granularity");
 	}
-	if (SET_toc_granularity < SET_granularity) {
-		SET_toc_granularity = SET_granularity;
+	if (settings->toc_granularity < settings->granularity) {
+		settings->toc_granularity = settings->granularity;
 		Errors::nowhere("TOC granularity can't be less than granularity");
 	}
 
@@ -494,16 +536,16 @@ Note the Unix-style conveniences for pathnames: an initial |~| means the
 home folder, |~~| means the book folder.
 
 =
-pathname *Instructions::set_path(text_stream *val) {
+pathname *Instructions::set_path(text_stream *val, indoc_instructions *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
 			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
 				TEMPORARY_TEXT(t);
 				Str::copy_tail(t, val, 3);
-				pathname *P = Pathnames::from_text_relative(book_folder, t);
+				pathname *P = Pathnames::from_text_relative(settings->book_folder, t);
 				DISCARD_TEXT(t);
 				return P;
-			} else if (Str::get_at(val, 2) == 0) return book_folder;
+			} else if (Str::get_at(val, 2) == 0) return settings->book_folder;
 		}
 		if ((Str::get_at(val, 1) == '/') || (Str::get_at(val, 1) == FOLDER_SEPARATOR)) {
 			TEMPORARY_TEXT(t);
@@ -517,13 +559,13 @@ pathname *Instructions::set_path(text_stream *val) {
 }
 
 @ =
-filename *Instructions::set_file(text_stream *val) {
+filename *Instructions::set_file(text_stream *val, indoc_instructions *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
 			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
 				TEMPORARY_TEXT(t);
 				Str::copy_tail(t, val, 3);
-				filename *F = Filenames::from_text_relative(book_folder, t);
+				filename *F = Filenames::from_text_relative(settings->book_folder, t);
 				DISCARD_TEXT(t);
 				return F;
 			}

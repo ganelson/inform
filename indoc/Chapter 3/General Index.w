@@ -192,7 +192,7 @@ void Indexes::scan_indexingnotations(text_stream *text, volume *V, section *S, e
 			DISCARD_TEXT(seethis);
 		}
 		if (Str::eq_wide_string(carets, L"^") == FALSE) Str::clear(midriff);
-		if (test_index_mode) {
+		if (indoc_settings->test_index_mode) {
 			if (ito_registered == FALSE) {
 				ito_registered = TRUE;
 				CSS::add_span_notation(
@@ -487,7 +487,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		if (Regexp::match(&mr, sort_key, L"a/%C+ (%c*)")) Str::copy(sort_key, mr.exp[0]);
 		if (Regexp::match(&mr, sort_key, L"the/%C+ (%c*)")) Str::copy(sort_key, mr.exp[0]);
 
-		if (SET_alphabetization == WORD_ALPHABETIZATION)
+		if (indoc_settings->index_alphabetisation_algorithm == WORD_ALPHABETIZATION)
 			Regexp::replace(sort_key, L" ", L"aaaaaaaaaaaaaaaaaaaaaa", REP_REPEATING);
 
 		TEMPORARY_TEXT(un);
@@ -711,7 +711,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	}
 
 @<Give feedback in index testing mode@> =
-	if (test_index_mode) {
+	if (indoc_settings->test_index_mode) {
 		PRINT("indoc ran in index test mode: do not publish typeset documentation.\n");
 		int t = 0;
 		indexing_category *ic;

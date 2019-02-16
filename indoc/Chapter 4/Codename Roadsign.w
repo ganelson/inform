@@ -79,10 +79,10 @@ void Roadsign::roadsign_volume_title(OUTPUT_STREAM, volume *V) {
 	}
 	if ((no_examples > 0) && (NUMBER_CREATED(index_lemma) > 0)) {
 		Roadsign::roadsign_add_direction(OUT, I"arrow-down-right.png",
-			I"Indexes of the examples and definitions", SET_examples_alphabetical_leafname);
+			I"Indexes of the examples and definitions", indoc_settings->examples_alphabetical_leafname);
 	} else if (no_examples > 0) {
 		Roadsign::roadsign_add_direction(OUT, I"arrow-down-right.png",
-			I"Indexes of the examples", SET_examples_alphabetical_leafname);
+			I"Indexes of the examples", indoc_settings->examples_alphabetical_leafname);
 	} else if (NUMBER_CREATED(index_lemma) > 0) {
 		Roadsign::roadsign_add_direction(OUT, I"arrow-down-right.png",
 			I"Index of definitions", SET_definitions_index_leafname);
@@ -134,15 +134,15 @@ void Roadsign::roadsign_navigation_index_top(OUTPUT_STREAM, text_stream *filenam
 	HTML_CLOSE("p");
 	Roadsign::roadsign_begin(OUT, 1);
 	if (no_examples > 0) {
-		if (Str::ne(filename, SET_examples_alphabetical_leafname))
+		if (Str::ne(filename, indoc_settings->examples_alphabetical_leafname))
 			Roadsign::roadsign_add_direction(OUT, I"arrow-right.png",
-				I"Examples in Alphabetical Order", SET_examples_alphabetical_leafname);
-		if (Str::ne(filename, SET_examples_thematic_leafname))
+				I"Examples in Alphabetical Order", indoc_settings->examples_alphabetical_leafname);
+		if (Str::ne(filename, indoc_settings->examples_thematic_leafname))
 			Roadsign::roadsign_add_direction(OUT, I"arrow-right.png",
-				I"Examples in Thematic Order", SET_examples_thematic_leafname);
-		if (Str::ne(filename, SET_examples_numerical_leafname))
+				I"Examples in Thematic Order", indoc_settings->examples_thematic_leafname);
+		if (Str::ne(filename, indoc_settings->examples_numerical_leafname))
 			Roadsign::roadsign_add_direction(OUT, I"arrow-right.png",
-				I"Examples in Numerical Order", SET_examples_numerical_leafname);
+				I"Examples in Numerical Order", indoc_settings->examples_numerical_leafname);
 	}
 	if (NUMBER_CREATED(index_lemma) > 0)
 		if (Str::ne(filename, SET_definitions_index_leafname))
@@ -173,7 +173,7 @@ void Roadsign::roadsign_navigation_middle(OUTPUT_STREAM, volume *V, section *S) 
 	chapter *C = S->in_which_chapter;
 	Roadsign::roadsign_begin(OUT, 0);
 	@<Add home, back and forward directions to the roadsign@>;
-	if (SET_examples_mode == EXMODE_open_internal)
+	if (indoc_settings->examples_mode == EXMODE_open_internal)
 		@<Add directions to this section's examples to the roadsign@>;
 	Roadsign::roadsign_end(OUT, 0);
 	HTMLUtilities::ruled_line(OUT);
@@ -237,7 +237,7 @@ one example will be:
 
 =
 void Roadsign::roadsign_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
-	if (SET_examples_granularity == 2)
+	if (indoc_settings->examples_granularity == 2)
 		Roadsign::roadsign_chapter_jumps(OUT, V, S->in_which_chapter, TRUE);
 }
 
@@ -288,7 +288,7 @@ void Roadsign::roadsign_chapter_jumps(OUTPUT_STREAM, volume *V, chapter *C, int 
 	if (no_examples > 0)
 		Roadsign::roadsign_add_direction(OUT, I"arrow-down-right.png",
 			I"Indexes of the examples",
-			SET_examples_alphabetical_leafname);
+			indoc_settings->examples_alphabetical_leafname);
 
 	Roadsign::roadsign_end(OUT, 1);
 }

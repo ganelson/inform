@@ -28,7 +28,7 @@ void Midnight::midnight_section_title(OUTPUT_STREAM, volume *V, section *S) {
 	text_stream *linkright = NULL;
 	@<Work out URLs for the preceding and following sections@>;
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.html", SET_contents_leafname);
+	WRITE_TO(leaf, "%S.html", indoc_settings->contents_leafname);
 	Midnight::midnight_banner(OUT,
 		S->in_which_chapter->chapter_full_title, V, leaf, linkleft, linkright);
 	HTML::end_div(OUT);
@@ -91,7 +91,7 @@ void Midnight::midnight_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) 
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"footercontents\"");
 	TEMPORARY_TEXT(url);
-	WRITE_TO(url, "%S.html", SET_contents_leafname);
+	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::general_link(OUT, I"footerlink", url, I"Contents");
 	DISCARD_TEXT(url);
 	HTML_CLOSE("td");
@@ -117,7 +117,7 @@ top of every Midnight page.
 void Midnight::midnight_banner(OUTPUT_STREAM, text_stream *title, volume *V,
 	text_stream *linkcentre, text_stream *linkleft, text_stream *linkright) {
 	TEMPORARY_TEXT(url);
-	WRITE_TO(url, "%S.html", SET_contents_leafname);
+	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTML_OPEN_WITH("table", "class=\"fullwidth midnightblack\"");
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"midnightbannerleftcell\"");
@@ -186,8 +186,8 @@ of each volume side by side.
 =
 void Midnight::write_contents_page(volume *V) {
 	TEMPORARY_TEXT(leafname);
-	WRITE_TO(leafname, "%S%S.html", V->vol_prefix, SET_contents_leafname);
-	filename *F = Filenames::in_folder(SET_destination, leafname);
+	WRITE_TO(leafname, "%S%S.html", V->vol_prefix, indoc_settings->contents_leafname);
+	filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
 
 	text_stream C_struct;
 	text_stream *OUT = &C_struct;
@@ -320,9 +320,9 @@ void Midnight::write_contents_page(volume *V) {
 
 	if (SET_html_for_Inform_application)
 		HTMLUtilities::textual_link(OUT, SET_link_to_extensions_index, I"Installed Extensions");
-	HTMLUtilities::textual_link(OUT, SET_examples_alphabetical_leafname, I"Alphabetical Index of Examples");
-	HTMLUtilities::textual_link(OUT, SET_examples_numerical_leafname, I"Numerical Index of Examples");
-	HTMLUtilities::textual_link(OUT, SET_examples_thematic_leafname, I"Thematic Index of Examples");
+	HTMLUtilities::textual_link(OUT, indoc_settings->examples_alphabetical_leafname, I"Alphabetical Index of Examples");
+	HTMLUtilities::textual_link(OUT, indoc_settings->examples_numerical_leafname, I"Numerical Index of Examples");
+	HTMLUtilities::textual_link(OUT, indoc_settings->examples_thematic_leafname, I"Thematic Index of Examples");
 	if (NUMBER_CREATED(index_lemma) > 0)
 		HTMLUtilities::textual_link(OUT, SET_definitions_index_leafname, I"General Index");
 
@@ -345,7 +345,7 @@ there are in practice about 25.
 	if (column == 1) X = volumes[1-V->allocation_id];
 
 	TEMPORARY_TEXT(extra);
-	if (SET_contents_expandable == 1) HTMLUtilities::all_extras_link(extra, X->vol_abbrev);
+	if (indoc_settings->contents_expandable) HTMLUtilities::all_extras_link(extra, X->vol_abbrev);
 	Midnight::midnight_contents_column_banner(OUT, X->vol_title, X, extra);
 	DISCARD_TEXT(extra);
 
@@ -353,14 +353,14 @@ there are in practice about 25.
 	for (section *S = volumes[column]->sections[0]; S; S = S->next_section) {
 		chapter *C = S->begins_which_chapter;
 		if (C) {
-			if ((extra_count > 0) && (SET_contents_expandable)) {
+			if ((extra_count > 0) && (indoc_settings->contents_expandable)) {
 				HTML::end_div(OUT);
 			}
 			@<Render a chapter link@>;
 		}
 		@<Render a section link@>;
 	}
-	if ((extra_count > 0) && (SET_contents_expandable == 1)) {
+	if ((extra_count > 0) && (indoc_settings->contents_expandable)) {
 		HTML::end_div(OUT);
 	}
 	if ((column == no_volumes - 1) &&
@@ -373,9 +373,9 @@ there are in practice about 25.
 	}
 	if (SET_html_for_Inform_application == 1) {
 		if (column == 0) {
-			Midnight::mc_link_A(OUT, SET_examples_numerical_leafname, I"Numerical Index of Examples");
+			Midnight::mc_link_A(OUT, indoc_settings->examples_numerical_leafname, I"Numerical Index of Examples");
 		} else {
-			Midnight::mc_link_A(OUT, SET_examples_thematic_leafname, I"Thematic Index of Examples");
+			Midnight::mc_link_A(OUT, indoc_settings->examples_thematic_leafname, I"Thematic Index of Examples");
 		}
 	}
 
@@ -384,7 +384,7 @@ there are in practice about 25.
 @<Render a chapter link@> =
 	int id = column*1000 + extra_count++;
 	HTML_OPEN_WITH("p", "class=\"midnightcontentsA\"");
-	if (SET_contents_expandable == 1) HTMLUtilities::extra_link(OUT, id);
+	if (indoc_settings->contents_expandable) HTMLUtilities::extra_link(OUT, id);
 	TEMPORARY_TEXT(thetitle);
 	Str::copy(thetitle, C->chapter_title);
 	TEMPORARY_TEXT(theprefix);
@@ -401,7 +401,7 @@ there are in practice about 25.
 	HTMLUtilities::general_link(OUT, I"standardlink", S->section_URL, txt);
 	DISCARD_TEXT(txt);
 	HTML_CLOSE("p");
-	if (SET_contents_expandable == 1) HTMLUtilities::extra_div_open(OUT, id);
+	if (indoc_settings->contents_expandable) HTMLUtilities::extra_div_open(OUT, id);
 	DISCARD_TEXT(theprefix);
 	DISCARD_TEXT(thetitle);
 
@@ -451,9 +451,9 @@ contents cells.
 	}
 
 @<Render links to example indexes@> =
-	Midnight::mc_link_A(OUT, SET_examples_alphabetical_leafname, I"Alphabetical Index of Examples");
-	Midnight::mc_link_A(OUT, SET_examples_numerical_leafname, I"Numerical Index of Examples");
-	Midnight::mc_link_A(OUT, SET_examples_thematic_leafname, I"Thematic Index of Examples");
+	Midnight::mc_link_A(OUT, indoc_settings->examples_alphabetical_leafname, I"Alphabetical Index of Examples");
+	Midnight::mc_link_A(OUT, indoc_settings->examples_numerical_leafname, I"Numerical Index of Examples");
+	Midnight::mc_link_A(OUT, indoc_settings->examples_thematic_leafname, I"Thematic Index of Examples");
 
 @ And here are the level A and B contents entry link paragraphs:
 

@@ -95,7 +95,7 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 	@<Stock the alphabetical index@>;
 
 	text_stream *OUT = IndexUtilities::open_page(
-		I"Alphabetical Index of Examples", SET_examples_alphabetical_leafname);
+		I"Alphabetical Index of Examples", indoc_settings->examples_alphabetical_leafname);
 	IndexUtilities::alphabet_row(OUT, 1);
 	HTML_OPEN_WITH("table", "class=\"indextable\"");
 
@@ -192,7 +192,7 @@ int ExamplesIndex::sort_comparison(const void *ent1, const void *ent2) {
 =
 void ExamplesIndex::write_thematic_examples_index(void) {
 	text_stream *OUT = IndexUtilities::open_page(
-		I"Examples in Thematic Order", SET_examples_thematic_leafname);
+		I"Examples in Thematic Order", indoc_settings->examples_thematic_leafname);
 	ExamplesIndex::write_index_for_volume(OUT, volumes[1]);
 	IndexUtilities::close_page(OUT);
 }
@@ -202,7 +202,7 @@ void ExamplesIndex::write_thematic_examples_index(void) {
 =
 void ExamplesIndex::write_numerical_examples_index(void) {
 	text_stream *OUT = IndexUtilities::open_page(
-		I"Examples in Numerical Order", SET_examples_numerical_leafname);
+		I"Examples in Numerical Order", indoc_settings->examples_numerical_leafname);
 	ExamplesIndex::write_index_for_volume(OUT, volumes[0]);
 	IndexUtilities::close_page(OUT);
 }
