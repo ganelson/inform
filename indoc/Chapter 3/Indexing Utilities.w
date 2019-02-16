@@ -9,8 +9,8 @@ text_stream index_stream;
 
 text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname) {
 	filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
-	if (SET_wrapper == WRAPPER_epub)
-		Epub::note_page(SET_ebook, F, title, I"index");
+	if (indoc_settings->wrapper == WRAPPER_epub)
+		Epub::note_page(indoc_settings->ebook, F, title, I"index");
 
 	text_stream *OUT = &index_stream;
 	if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
@@ -31,7 +31,7 @@ text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname
 		HTMLUtilities::begin_file(OUT, volumes[0]);
 		HTMLUtilities::write_title(OUT, title);
 		HTML::end_head(OUT);
-		HTML::begin_body(OUT, "paper papertint");
+		HTML::begin_body(OUT, I"paper papertint");
 	}
 	DISCARD_TEXT(head);
 
@@ -137,7 +137,7 @@ void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {
 			break;
 		}
 	}
-	if (SET_navigation == NAVMODE_twilight) {
+	if (indoc_settings->navigation->simplified_letter_rows) {
 		HTML_OPEN("p");
 	} else {
 		HTML_OPEN_WITH("table", "class=\"fullwidth\"");
@@ -170,7 +170,7 @@ void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {
 	HTMLUtilities::general_link(OUT, I"letterlink", I"#X", I"X"); @<Between@>;
 	HTMLUtilities::general_link(OUT, I"letterlink", I"#Y", I"Y"); @<Between@>;
 	HTMLUtilities::general_link(OUT, I"letterlink", I"#Z", I"Z");
-	if (SET_navigation == NAVMODE_twilight) {
+	if (indoc_settings->navigation->simplified_letter_rows) {
 		HTML_CLOSE("p");
 	} else {
 		HTML_CLOSE("td");
@@ -180,7 +180,7 @@ void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {
 }
 
 @<Between@> =
-	if (SET_navigation == NAVMODE_twilight) WRITE(" / ");
+	if (indoc_settings->navigation->simplified_letter_rows) WRITE(" / ");
 	else {
 		HTML_CLOSE("td");
 		HTML_OPEN_WITH("td", "class=\"letterinrow\"");
@@ -192,7 +192,7 @@ in width and a longer text is supplied.
 
 =
 void IndexUtilities::majuscule_heading(OUTPUT_STREAM, text_stream *display_text, int single_letter) {
-	if (SET_navigation == NAVMODE_twilight) {
+	if (indoc_settings->navigation->simplified_letter_rows) {
 		if (single_letter == 1) { HTML::begin_div_with_class_S(OUT, I"majuscule"); }
 		else { HTML::begin_div_with_class_S(OUT, I"stretchymajuscule"); }
 		HTML_OPEN_WITH("span", "class=\"majusculelettering\"");

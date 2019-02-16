@@ -330,8 +330,8 @@ that is, separate file.
 
 =
 void Examples::render_example_cue(OUTPUT_STREAM, example *E, volume *V, int writing_index) {
-	if (SET_format == PLAIN_FORMAT) @<Render example cue in plain text@>
-	else if (SET_format == HTML_FORMAT) @<Render example cue in HTML@>;
+	if (indoc_settings->format == PLAIN_FORMAT) @<Render example cue in plain text@>
+	else if (indoc_settings->format == HTML_FORMAT) @<Render example cue in HTML@>;
 }
 
 @<Render example cue in plain text@> =
@@ -346,7 +346,7 @@ void Examples::render_example_cue(OUTPUT_STREAM, example *E, volume *V, int writ
 		DISCARD_TEXT(anchor);
 	}
 
-	if (SET_navigation != NAVMODE_twilight) @<Render the example cue left surround@>;
+	if (indoc_settings->navigation->simplified_examples == FALSE) @<Render the example cue left surround@>;
 
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(onclick);
@@ -363,7 +363,7 @@ void Examples::render_example_cue(OUTPUT_STREAM, example *E, volume *V, int writ
 	HTML_TAG("br");
 	WRITE("%S", E->ex_outline);
 
-	if (SET_navigation != NAVMODE_twilight) @<Render the example cue right surround@>;
+	if (indoc_settings->navigation->simplified_examples == FALSE) @<Render the example cue right surround@>;
 	WRITE("\n");
 
 @ The "surround" is an table-implemented area which contains the descriptive
@@ -398,7 +398,7 @@ other book.
 
 @<Render the example difficulty asterisks@> =
 	for (int starcc=0; starcc < E->ex_star_count; starcc++) {
-		if (SET_navigation == NAVMODE_twilight) WRITE("*");
+		if (indoc_settings->navigation->simplified_examples) WRITE("*");
 		else HTMLUtilities::asterisk_image(OUT, I"asterisk.png");
 	}
 
@@ -414,7 +414,7 @@ other book.
 	}
 	Str::trim_white_space(text_of_name);
 	Rawtext::escape_HTML_characters_in(text_of_name);
-	if (SET_navigation != NAVMODE_twilight) {
+	if (indoc_settings->navigation->simplified_examples == FALSE) {
 		HTML_OPEN_WITH("span", "class=\"egbanner\"");
 		WRITE("Example");
 		HTML_CLOSE("span");

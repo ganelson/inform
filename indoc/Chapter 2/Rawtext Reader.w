@@ -135,7 +135,7 @@ void Rawtext::process_large_helper(text_stream *rawl, text_file_position *tfp,
 		TEMPORARY_TEXT(css_style);
 		match_results mr2 = Regexp::create_mr();
 		@<Deal with any permitted markup@>;
-		if ((SET_treat_code_as_verbatim == 0) || (Str::get_first_char(rawl) != '\t')) {
+		if ((indoc_settings->treat_code_as_verbatim == FALSE) || (Str::get_first_char(rawl) != '\t')) {
 			@<Deal with an insert-change-log notation@>;
 			@<Deal with an insert-image notation@>;
 		}
@@ -214,16 +214,16 @@ smoke-test indexing mode applies direct markup to make its smoky black
 rectangles.)
 
 @<Deal with any permitted markup@> =
- 	if ((SET_treat_code_as_verbatim == FALSE) || (Str::get_first_char(rawl) != '\t')) {
+ 	if ((indoc_settings->treat_code_as_verbatim == FALSE) || (Str::get_first_char(rawl) != '\t')) {
  		Indexes::scan_indexingnotations(rawl, rhs->V,
  			(rhs->V)?(rhs->V->sections[rhs->no_blocks_written]):NULL, rhs->E);
  		CSS::expand_spannotations(rawl, MARKUP_SPP);
  	}
 
- 	if (SET_format == HTML_FORMAT) Regexp::replace(rawl, L"<(%c*?)>", L"&lt;%0&gt;", REP_REPEATING);
+ 	if (indoc_settings->format == HTML_FORMAT) Regexp::replace(rawl, L"<(%c*?)>", L"&lt;%0&gt;", REP_REPEATING);
 
  	wchar_t *replacement = L"%1";
- 	if (SET_format == HTML_FORMAT) replacement = L"<span class=\"%0\">%1</span>";
+ 	if (indoc_settings->format == HTML_FORMAT) replacement = L"<span class=\"%0\">%1</span>";
  	Regexp::replace(rawl, L"___mu___(%c*?)___mo___(%c*?)___mc___", replacement, REP_REPEATING);
 
 @ The notation |///6X12.txt///| means "insert the change log for build 6X12 here".
@@ -232,16 +232,16 @@ It should be the only thing on its line.
 @<Deal with an insert-change-log notation@> =
  	if (Regexp::match(&mr2, rawl, L"(%c*?)///(%c*?).txt/// *")) {
  		Str::copy(rawl, mr2.exp[0]);
- 		if (SET_format == HTML_FORMAT) {
+ 		if (indoc_settings->format == HTML_FORMAT) {
  			Str::clear(rawl);
  			HTML::hr(rawl, NULL);
  			HTML::open(rawl, "pre", I"class='changelog'");
  			suppress_p_tag = TRUE;
  		}
- 		filename *cl = Filenames::in_folder(SET_change_logs_directory, mr2.exp[1]);
+ 		filename *cl = Filenames::in_folder(indoc_settings->change_logs_folder, mr2.exp[1]);
 		TextFiles::read(cl, FALSE, "can't open change log file",
 			TRUE, Rawtext::process_change_log_helper, NULL, rawl);
- 		if (SET_format == HTML_FORMAT) {
+ 		if (indoc_settings->format == HTML_FORMAT) {
  			WRITE_TO(rawl, "\n");
  			HTML::close(rawl, "pre");
  		}
@@ -253,7 +253,7 @@ It should be the only thing on its line.
 void Rawtext::process_change_log_helper(text_stream *sml, text_file_position *tfp,
 	void *v_rawl) {
 	text_stream *rawl = (text_stream *) v_rawl;
-	if (SET_format == HTML_FORMAT) {
+	if (indoc_settings->format == HTML_FORMAT) {
 		Regexp::replace(sml, L"<", L"&lt;", REP_REPEATING);
 		Regexp::replace(sml, L">", L"&gt;", REP_REPEATING);
 	}
@@ -284,7 +284,7 @@ is used, then the image is styled as |img.classname|.
  		TEMPORARY_TEXT(url);
  		HTMLUtilities::image_URL(url, name);
  		Str::clear(rawl);
- 		if (SET_format == HTML_FORMAT) {
+ 		if (indoc_settings->format == HTML_FORMAT) {
  			WRITE_TO(rawl, "%S", left);
  			TEMPORARY_TEXT(details);
  			WRITE_TO(details, "alt=\"%S\" src=\"%S\"", name, url);
@@ -394,7 +394,7 @@ block heading, and whatever tags it once had have been removed.
 in tag elements into |&quot;| escapes.
 
 @<Treat the text as necessary@> =
- 	if (SET_format == HTML_FORMAT) {
+ 	if (indoc_settings->format == HTML_FORMAT) {
  		TEMPORARY_TEXT(dequotee);
  		Str::copy(dequotee, rawl);
  		Str::clear(rawl);
@@ -411,7 +411,7 @@ in tag elements into |&quot;| escapes.
 
 @ =
 void Rawtext::escape_HTML_characters_in(text_stream *text) {
- 	if (SET_format == HTML_FORMAT) {
+ 	if (indoc_settings->format == HTML_FORMAT) {
 		TEMPORARY_TEXT(modified);
 		for (int i=0, L=Str::len(text); i<L; i++) {
 			int c = Str::get_at(text, i);

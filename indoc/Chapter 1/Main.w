@@ -43,14 +43,14 @@ int main(int argc, char **argv) {
 	@<Start up indoc@>;
 	@<Make a first-pass scan of the rawtext@>;
 	@<Render the rawtext as documentation@>;
-	if (SET_html_for_Inform_application == 1)
+	if (indoc_settings->html_for_Inform_application)
 		@<Work out cross-references for the in-application documentation only@>;
 	@<Produce the indexes@>;
 	HTMLUtilities::copy_images();
-	if (SET_wrapper == WRAPPER_epub) {
+	if (indoc_settings->wrapper == WRAPPER_epub) {
 		HTMLUtilities::note_images();
 		Scanner::mark_up_ebook();
-		Epub::end_construction(SET_ebook);
+		Epub::end_construction(indoc_settings->ebook);
 	}
 	@<Shut down indoc@>;
 	Basics::end();
@@ -61,17 +61,18 @@ int main(int argc, char **argv) {
 
 @<Start up indoc@> =
 	PRINT("indoc [[Version Number]] (Inform Tools Suite)\n");
-	indoc_settings = Instructions::clean_slate();
+	Gadgets::start();
 	Symbols::start_up_symbols();
+	indoc_settings = Instructions::clean_slate();
 	Configuration::read_command_line(argc, argv, indoc_settings);
-	if (SET_wrapper == WRAPPER_epub) {
+	if (indoc_settings->wrapper == WRAPPER_epub) {
 		HTMLUtilities::image_URL(NULL,
 			Filenames::get_leafname(indoc_settings->book_cover_image));
-		Instructions::apply_ebook_metadata();
+		Instructions::apply_ebook_metadata(indoc_settings->ebook);
 		pathname *I = Pathnames::from_text(I"images");
 		filename *cover_in_situ = Filenames::in_folder(I,
 			Filenames::get_leafname(indoc_settings->book_cover_image));
-		indoc_settings->destination = Epub::begin_construction(SET_ebook,
+		indoc_settings->destination = Epub::begin_construction(indoc_settings->ebook,
 			indoc_settings->destination, cover_in_situ);
 	}
 
@@ -92,7 +93,7 @@ point, nothing is being output.
 section by section.
 
 @<Render the rawtext as documentation@> =
-	if (SET_format == HTML_FORMAT) CSS::write_CSS_files(SET_css_source_file);
+	if (indoc_settings->format == HTML_FORMAT) CSS::write_CSS_files(indoc_settings->css_source_file);
 	volume *V;
 	text_stream *TO = NULL;
 	LOOP_OVER(V, volume) TO = Rawtext::process_large_rawtext_file(TO, V);
@@ -103,14 +104,14 @@ to go inside the Inform user interface application.
 
 @<Work out cross-references for the in-application documentation only@> =
 	Scanner::write_manifest_file(FIRST_OBJECT(volume));
-	if (SET_definitions_filename) Updater::write_definitions_file();
+	if (indoc_settings->definitions_filename) Updater::write_definitions_file();
 	if (indoc_settings->standard_rules_filename)
 		Updater::rewrite_standard_rules_file(indoc_settings->standard_rules_filename);
 
 @ These are automatically generated.
 
 @<Produce the indexes@> =
-	if (SET_format == HTML_FORMAT) {
+	if (indoc_settings->format == HTML_FORMAT) {
 		if (no_examples > 0) {
 			ExamplesIndex::write_alphabetical_examples_index();
 			ExamplesIndex::write_numerical_examples_index();

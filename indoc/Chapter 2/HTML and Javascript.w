@@ -61,10 +61,10 @@ void HTMLUtilities::image_URL(OUTPUT_STREAM, text_stream *leafname) {
 		Dictionaries::write_value(image_usages, leafname, iu);
 	}
 	iu->usage_count++;
-	filename *F = Filenames::in_folder(SET_images_path, leafname);
-	if (SET_html_for_Inform_application == 1) WRITE("inform:/%/f", F);
+	filename *F = Filenames::in_folder(indoc_settings->images_path, leafname);
+	if (indoc_settings->html_for_Inform_application == 1) WRITE("inform:/%/f", F);
 	else {
-		if (SET_images_copy == 1)
+		if (indoc_settings->images_copy)
 			F = Filenames::in_folder(Pathnames::from_text(I"images"), leafname);
 		WRITE("%/f", F);
 	}
@@ -77,7 +77,7 @@ void HTMLUtilities::image_URL(OUTPUT_STREAM, text_stream *leafname) {
 void HTMLUtilities::note_images(void) {
 	image_usage *iu;
 	LOOP_OVER(iu, image_usage)
-		Epub::note_image(SET_ebook, iu->resolved_to);
+		Epub::note_image(indoc_settings->ebook, iu->resolved_to);
 }
 
 @ Suppose we are indeed copying images into place: we have to get them from
@@ -96,7 +96,7 @@ working backwards. As soon as we find a file of that name, we copy it over.
 
 =
 void HTMLUtilities::copy_images(void) {
-	if (SET_images_copy == 1) {
+	if (indoc_settings->images_copy) {
 		pathname *I = Pathnames::subfolder(indoc_settings->destination, I"images");
 		Pathnames::create_in_file_system(I);
 		image_usage *iu;
@@ -120,7 +120,7 @@ void HTMLUtilities::copy_images(void) {
 
 =
 void HTMLUtilities::begin_file(OUTPUT_STREAM, volume *V) {
-	HTML::declare_as_HTML(OUT, SET_XHTML);
+	HTML::declare_as_HTML(OUT, indoc_settings->XHTML);
 	filename *CSS = NULL;
 	if ((V) && (Str::len(V->vol_CSS_leafname) > 0))
 		CSS = Filenames::from_text(V->vol_CSS_leafname);
@@ -169,7 +169,7 @@ Horizontal ruled lines.
 
 =
 void HTMLUtilities::ruled_line(OUTPUT_STREAM) {
-	if (SET_format == HTML_FORMAT) HTML_TAG("hr")
+	if (indoc_settings->format == HTML_FORMAT) HTML_TAG("hr")
 	else WRITE("----------------------------------------------------------------------\n");
 }
 
@@ -355,9 +355,9 @@ void HTMLUtilities::paste_script(OUTPUT_STREAM, text_stream *content, int code_n
 	else WRITE("%d(code", code_num);
 	WRITE(") {\n");
 
-	if (SET_javascript_paste_method == PASTEMODE_Andrew)
+	if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
 		WRITE("    var myProject = window.Project;\n");
-	if (SET_javascript_paste_method == PASTEMODE_David)
+	if (indoc_settings->javascript_paste_method == PASTEMODE_David)
 		WRITE("    var myProject = external.Project;\n");
 	WRITE("\n");
 	WRITE("    myProject.selectView('source');\n");
@@ -375,9 +375,9 @@ void HTMLUtilities::create_script(OUTPUT_STREAM, text_stream *content, int code_
 	else WRITE("%d(code", code_num);
 	WRITE(", title) {\n");
 
-	if (SET_javascript_paste_method == PASTEMODE_Andrew)
+	if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
 		WRITE("    var myProject = window.Project;\n");
-	if (SET_javascript_paste_method == PASTEMODE_David)
+	if (indoc_settings->javascript_paste_method == PASTEMODE_David)
 		WRITE("    var myProject = external.Project;\n");
 
 	WRITE("\n");
@@ -398,7 +398,7 @@ Some nice little boxes for syntax definitions in computery manuals:
 int no_definition_anchors = 0;
 
 void HTMLUtilities::definition_box(OUTPUT_STREAM, text_stream *defn, text_stream *sigil, volume *V, section *S) {
-	if (SET_format == HTML_FORMAT) {
+	if (indoc_settings->format == HTML_FORMAT) {
 		TEMPORARY_TEXT(anchor);
 		WRITE_TO(anchor, "defn%d", no_definition_anchors++);
 
@@ -425,7 +425,7 @@ void HTMLUtilities::definition_box(OUTPUT_STREAM, text_stream *defn, text_stream
 }
 
 void HTMLUtilities::end_definition_box(OUTPUT_STREAM) {
-	if (SET_format == HTML_FORMAT) {
+	if (indoc_settings->format == HTML_FORMAT) {
 		WRITE("\n");
 		HTML::comment(OUT, I"end definition");
 		HTML_CLOSE("div");
@@ -445,7 +445,7 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 	TEMPORARY_TEXT(index_as);
 	@<Work out an index mark for this definition@>;
 
-	if (SET_inform_definitions_mode) {
+	if (indoc_settings->inform_definitions_mode) {
 		@<Rewrite definition as an HTML paragraph of class defnprototype@>;
 		@<Set the kind of the result of the phrase in italic, not bold@>;
 		@<Specially set and specially index a phrase to decide a condition@>;
@@ -472,7 +472,7 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 
 @<Work out an index mark for this definition@> =
 	Str::copy(index_as, given_defn);
-	if (SET_inform_definitions_mode) Regexp::replace(index_as, L" ...%c*", NULL, 0);
+	if (indoc_settings->inform_definitions_mode) Regexp::replace(index_as, L" ...%c*", NULL, 0);
 	Regexp::replace(index_as, L": *", NULL, 0);
 	WRITE_TO(index_as, "=___=!definition");
 	Indexes::mark_index_term(index_as, V, S, anchor, NULL, NULL, NULL);
@@ -590,10 +590,10 @@ void HTMLUtilities::tt_helper(text_stream *line, text_file_position *tfp, void *
 =
 void HTMLUtilities::get_tt_matter(OUTPUT_STREAM, int top, int main) {
 	if (first_request_for_tt) {
-		if (SET_top_and_tail_sections)
-			HTMLUtilities::read_top_and_tail_matter(SET_top_and_tail_sections, FALSE);
-		if (SET_top_and_tail)
-			HTMLUtilities::read_top_and_tail_matter(SET_top_and_tail, TRUE);
+		if (indoc_settings->top_and_tail_sections)
+			HTMLUtilities::read_top_and_tail_matter(indoc_settings->top_and_tail_sections, FALSE);
+		if (indoc_settings->top_and_tail)
+			HTMLUtilities::read_top_and_tail_matter(indoc_settings->top_and_tail, TRUE);
 	}
 	first_request_for_tt = FALSE;
 	if ((top == 1) && (main == 1)) WRITE("%S", DSET_main_top_matter);

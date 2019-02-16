@@ -136,7 +136,7 @@ section names are capitalised for this purpose.)
 	WRITE_TO(index_term, "%S=___=!example", E->ex_public_name);
  	Indexes::mark_index_term(index_term, V, NULL, NULL, E, NULL, NULL);
 	DISCARD_TEXT(index_term);
- 	if (SET_format == HTML_FORMAT) {
+ 	if (indoc_settings->format == HTML_FORMAT) {
 		TEMPORARY_TEXT(comment);
 		WRITE_TO(comment, "START EXAMPLE \"%d: %S\" \"e%d\"",
 			E->example_position[0], E->ex_public_name, E->allocation_id);
@@ -147,19 +147,19 @@ section names are capitalised for this purpose.)
 	code_example = E;
 	OUT = Renderer::render_example_body(OUT, E, V, TRUE);
 	code_example = NULL;
-	if (SET_format == HTML_FORMAT) HTML::comment(OUT, I"END EXAMPLE");
+	if (indoc_settings->format == HTML_FORMAT) HTML::comment(OUT, I"END EXAMPLE");
 
 @ =
 text_stream *Renderer::render_example_body(OUTPUT_STREAM, example *E, volume *V, int empty) {
 	int hide = FALSE;
 	if (indoc_settings->examples_mode == EXMODE_openable_internal) hide = TRUE;
-	if (SET_format == HTML_FORMAT) {
+	if (indoc_settings->format == HTML_FORMAT) {
 		TEMPORARY_TEXT(id);
 		WRITE_TO(id, "example%d", E->allocation_id);
 		HTML::begin_div_with_class_and_id_S(OUT, I"egpanel", id, hide);
 	}
 	OUT = Rawtext::process_example_rawtext_file(OUT, V, E);
-	if (SET_format == HTML_FORMAT) {
+	if (indoc_settings->format == HTML_FORMAT) {
 		HTML::end_div(OUT);
 		if (empty) { HTML_OPEN("p"); HTML_CLOSE("p"); }
 	}
@@ -171,8 +171,8 @@ The actual contents of the buffer are rendered here, then:
 
 =
 text_stream *Renderer::render_text_of_block(OUTPUT_STREAM, volume *V, section *S) {
- 	if (SET_format == PLAIN_FORMAT) @<Render the block buffer as plain text@>
- 	else if (SET_format == HTML_FORMAT) @<Render the block buffer as HTML@>;
+ 	if (indoc_settings->format == PLAIN_FORMAT) @<Render the block buffer as plain text@>
+ 	else if (indoc_settings->format == HTML_FORMAT) @<Render the block buffer as HTML@>;
  	return OUT;
 }
 
@@ -187,7 +187,7 @@ text_stream *Renderer::render_text_of_block(OUTPUT_STREAM, volume *V, section *S
  		/* Remove any paste markers entirely */
  		text_stream *raw = paragraphs[i].par_texts;
   		match_results mr = Regexp::create_mr();
- 		if ((SET_treat_code_as_verbatim == 0) &&
+ 		if ((indoc_settings->treat_code_as_verbatim == FALSE) &&
  			(Regexp::match(&mr, raw, L"{%*+} *(%c*)")))
  			WRITE("%S\n", mr.exp[0]);
  		else
@@ -250,7 +250,7 @@ very much.
  	TEMPORARY_TEXT(raw);
  	Str::copy(raw, P->par_texts);
 
- 	if (SET_treat_code_as_verbatim == FALSE) {
+ 	if (indoc_settings->treat_code_as_verbatim == FALSE) {
 
  		Regexp::replace(raw, L"{%*%*}", NULL, REP_REPEATING); /* Remove any paste-continuation marker */
 
@@ -408,11 +408,11 @@ see below.
 	Str::copy(raw, mr.exp[0]);
 	TEMPORARY_TEXT(right);
 	Str::copy(right, mr.exp[1]);
- 	if (SET_javascript_paste_method == PASTEMODE_none) {
+ 	if (indoc_settings->javascript_paste_method == PASTEMODE_none) {
  		WRITE_TO(raw, "%S", right);
  	} else {
  		WRITE_TO(raw, "<a href=\"javascript:pasteCode");
-		if (SET_javascript_paste_method == PASTEMODE_David) {
+		if (indoc_settings->javascript_paste_method == PASTEMODE_David) {
  			Javascript_paste_count++;
  			WRITE_TO(raw, "%d", Javascript_paste_count);
  		}
@@ -429,21 +429,21 @@ see below.
  			}
  		}
  		Renderer::apply_Inform_escape_characters(titling);
- 		if (SET_javascript_paste_method == PASTEMODE_Andrew)
+ 		if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
  			WRITE_TO(raw, "'%S\\n'", J_text);
  		WRITE_TO(raw, ")\">");
- 		if (SET_retina_images == 1) HTMLUtilities::image_element_scaled(raw, I"paste@2x.png", 13, 13);
+ 		if (indoc_settings->retina_images) HTMLUtilities::image_element_scaled(raw, I"paste@2x.png", 13, 13);
  		else HTMLUtilities::image_element(raw, I"paste.png");
  		WRITE_TO(raw, "</a> ");
- 		if ((SET_support_creation) && (Str::len(titling) > 0)) {
+ 		if ((indoc_settings->support_creation) && (Str::len(titling) > 0)) {
  			WRITE_TO(raw, "<a href=\"javascript:createNewProject");
- 			if (SET_javascript_paste_method == PASTEMODE_David)
+ 			if (indoc_settings->javascript_paste_method == PASTEMODE_David)
  				WRITE_TO(raw, "%d", Javascript_paste_count);
  			WRITE_TO(raw, "(");
- 			if (SET_javascript_paste_method == PASTEMODE_Andrew)
+ 			if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
  				WRITE_TO(raw, "'%S\\n', '%S'", J_text, titling);
  			WRITE_TO(raw, ")\">");
- 			if (SET_retina_images == 1) {
+ 			if (indoc_settings->retina_images) {
  				HTMLUtilities::image_element_scaled(raw, I"create@2x.png", 26, 13);
  			} else {
  				HTMLUtilities::image_element(raw, I"create.png");
@@ -452,8 +452,8 @@ see below.
 			WRITE_TO(raw, "&nbsp;&nbsp; ");
  		}
   		WRITE_TO(raw, "%S", right);
- 		if ((SET_javascript == 1) &&
- 			(SET_javascript_paste_method == PASTEMODE_David)) {
+ 		if ((indoc_settings->javascript) &&
+ 			(indoc_settings->javascript_paste_method == PASTEMODE_David)) {
  			HTMLUtilities::paste_script(OUT, J_text, Javascript_paste_count);
  			HTMLUtilities::create_script(OUT, J_text, Javascript_paste_count, titling);
  		}
@@ -611,10 +611,10 @@ which block is meant, and encode this as a link.
 =
 void Renderer::render_cross_reference(OUTPUT_STREAM,
  	text_stream *sname, text_stream *reason, volume *V, int quieter) {
- 	if (SET_format == PLAIN_FORMAT)
+ 	if (indoc_settings->format == PLAIN_FORMAT)
  		WRITE("(See %S for %S.)\n", sname, reason);
 
- 	if (SET_format == HTML_FORMAT) {
+ 	if (indoc_settings->format == HTML_FORMAT) {
 	  	TEMPORARY_TEXT(dest);
 	 	WRITE_TO(dest, "index.html");
 	 	@<Identify the reference destination and be sure it exists@>;
@@ -662,23 +662,23 @@ text_stream *Renderer::formatted_file_must_be(OUTPUT_STREAM, volume *V, section 
 		OUT = &current_FTD_stream;
 		if (Streams::open_to_file(OUT, S->section_filename, UTF8_ENC) == FALSE)
 			Errors::fatal_with_file("can't write documentation", S->section_filename);
-		if (SET_wrapper == WRAPPER_epub) {
+		if (indoc_settings->wrapper == WRAPPER_epub) {
 			ebook_page *page =
-				Epub::note_page(SET_ebook, S->section_filename, S->section_file_title, I"");
+				Epub::note_page(indoc_settings->ebook, S->section_filename, S->section_file_title, I"");
 			if (S == V->sections[0]) {
-				ebook_volume *ev = Epub::starts_volume(SET_ebook, page, V->vol_title);
+				ebook_volume *ev = Epub::starts_volume(indoc_settings->ebook, page, V->vol_title);
 				filename *F = Filenames::in_folder(indoc_settings->destination, V->vol_CSS_leafname);
 				Epub::use_CSS(ev, F);
 			}
 			if (S->begins_which_chapter)
 				S->begins_which_chapter->ebook_ref =
-					Epub::starts_chapter(SET_ebook, page, S->begins_which_chapter->chapter_full_title, S->begins_which_chapter->chapter_URL);
+					Epub::starts_chapter(indoc_settings->ebook, page, S->begins_which_chapter->chapter_full_title, S->begins_which_chapter->chapter_URL);
 		}
 
 		formatted_file *ftd = CREATE(formatted_file);
 		ftd->name = current_FTD_filename;
 
- 		if (SET_format == HTML_FORMAT) @<Write the HTML header for the formatted file@>;
+ 		if (indoc_settings->format == HTML_FORMAT) @<Write the HTML header for the formatted file@>;
  	}
  	return OUT;
 }
@@ -688,7 +688,7 @@ text_stream *Renderer::formatted_file_must_be(OUTPUT_STREAM, volume *V, section 
 =
 text_stream *Renderer::close_formatted_file(OUTPUT_STREAM) {
  	if (current_FTD_filename) {
- 		if (SET_format == HTML_FORMAT) @<Write the HTML footer for the formatted file@>;
+ 		if (indoc_settings->format == HTML_FORMAT) @<Write the HTML footer for the formatted file@>;
  		Streams::close(&current_FTD_stream);
  		current_FTD_filename = NULL;
  	}
@@ -711,16 +711,16 @@ with a |<head>| we make ourselves.
  	} else {
  		HTMLUtilities::begin_file(OUT, V);
  		HTMLUtilities::write_title(OUT, S->section_file_title);
- 		if (SET_javascript == 1) {
+ 		if (indoc_settings->javascript) {
  			HTML::open_javascript(OUT, FALSE);
  			HTMLUtilities::write_javascript_for_buttons(OUT);
  			HTML::close_javascript(OUT);
  		}
  		HTML::end_head(OUT);
- 		HTML::begin_body(OUT, "paper papertint");
+ 		HTML::begin_body(OUT, I"paper papertint");
  	}
- 	if ((SET_javascript == 1) &&
- 		(SET_javascript_paste_method == PASTEMODE_Andrew)) {
+ 	if ((indoc_settings->javascript) &&
+ 		(indoc_settings->javascript_paste_method == PASTEMODE_Andrew)) {
  		HTMLUtilities::paste_script(OUT, NULL, 0);
  		HTMLUtilities::create_script(OUT, NULL, 0, NULL);
  	}

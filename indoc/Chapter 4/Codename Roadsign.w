@@ -2,11 +2,25 @@
 
 The "roadsign" style of navigational gadgets.
 
+@h Creation.
+
+=
+navigation_design *Roadsign::create(void) {
+	navigation_design *ND = Gadgets::new(I"roadsign", TRUE, FALSE);
+	METHOD_ADD(ND, RENDER_VOLUME_TITLE_MTID, Roadsign::roadsign_volume_title);
+	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Roadsign::roadsign_chapter_title);
+	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Roadsign::roadsign_section_title);
+	METHOD_ADD(ND, RENDER_INDEX_TOP_MTID, Roadsign::roadsign_navigation_index_top);
+	METHOD_ADD(ND, RENDER_NAV_MIDDLE_MTID, Roadsign::roadsign_navigation_middle);
+	METHOD_ADD(ND, RENDER_EXAMPLE_TOP_MTID, Roadsign::roadsign_navigation_example_top);
+	return ND;
+}
+
 @h Top.
 At the front end of a section, before any of its text.
 
 =
-void Roadsign::roadsign_volume_title(OUTPUT_STREAM, volume *V) {
+void Roadsign::roadsign_volume_title(navigation_design *self, text_stream *OUT, volume *V) {
 	@<Render a volume heading@>;
 	@<Render a chapter-contents table@>;
 	HTML_OPEN("p"); HTML_CLOSE("p");
@@ -85,12 +99,12 @@ void Roadsign::roadsign_volume_title(OUTPUT_STREAM, volume *V) {
 			I"Indexes of the examples", indoc_settings->examples_alphabetical_leafname);
 	} else if (NUMBER_CREATED(index_lemma) > 0) {
 		Roadsign::roadsign_add_direction(OUT, I"arrow-down-right.png",
-			I"Index of definitions", SET_definitions_index_leafname);
+			I"Index of definitions", indoc_settings->definitions_index_leafname);
 	}
 	Roadsign::roadsign_end(OUT, 1);
 
 @ =
-void Roadsign::roadsign_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
+void Roadsign::roadsign_chapter_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C) {
 	@<Render a chapter heading@>;
 	@<Render a section-contents listing@>;
 	Roadsign::roadsign_chapter_jumps(OUT, V, C, 0);
@@ -117,7 +131,7 @@ void Roadsign::roadsign_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
 	HTML_CLOSE("p");
 
 @ =
-void Roadsign::roadsign_section_title(OUTPUT_STREAM, volume *V, section *S) {
+void Roadsign::roadsign_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	HTML_OPEN_WITH("p", "class=\"sectionheading\"");
 	if (Str::len(S->section_anchor) > 0) HTML::anchor(OUT, S->section_anchor);
 	WRITE("%c%S", SECTION_SYMBOL, S->title);
@@ -128,7 +142,7 @@ void Roadsign::roadsign_section_title(OUTPUT_STREAM, volume *V, section *S) {
 And this is a variant for index pages, such as the index of examples.
 
 =
-void Roadsign::roadsign_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
+void Roadsign::roadsign_navigation_index_top(navigation_design *self, text_stream *OUT, text_stream *filename, text_stream *title) {
 	HTML_OPEN_WITH("p", "class=\"chapterheading\"");
 	WRITE("%S", title);
 	HTML_CLOSE("p");
@@ -145,9 +159,9 @@ void Roadsign::roadsign_navigation_index_top(OUTPUT_STREAM, text_stream *filenam
 				I"Examples in Numerical Order", indoc_settings->examples_numerical_leafname);
 	}
 	if (NUMBER_CREATED(index_lemma) > 0)
-		if (Str::ne(filename, SET_definitions_index_leafname))
+		if (Str::ne(filename, indoc_settings->definitions_index_leafname))
 			Roadsign::roadsign_add_direction(OUT, I"arrow-right.png",
-				I"General Index", SET_definitions_index_leafname);
+				I"General Index", indoc_settings->definitions_index_leafname);
 
 	for (int v = 0; v < no_volumes; v++) {
 		volume *V = volumes[v];
@@ -167,7 +181,7 @@ void Roadsign::roadsign_navigation_index_top(OUTPUT_STREAM, text_stream *filenam
 At the middle part, when the text is over, but before any example cues.
 
 =
-void Roadsign::roadsign_navigation_middle(OUTPUT_STREAM, volume *V, section *S) {
+void Roadsign::roadsign_navigation_middle(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTMLUtilities::ruled_line(OUT);
 	HTML::begin_div_with_class_S(OUT, I"roadsigns");
 	chapter *C = S->in_which_chapter;
@@ -236,32 +250,9 @@ This is reached before the first example is rendered, provided at least
 one example will be:
 
 =
-void Roadsign::roadsign_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
-	if (indoc_settings->examples_granularity == 2)
+void Roadsign::roadsign_navigation_example_top(navigation_design *self, text_stream *OUT, volume *V, section *S) {
+	if (indoc_settings->examples_granularity == CHAPTER_GRANULARITY)
 		Roadsign::roadsign_chapter_jumps(OUT, V, S->in_which_chapter, TRUE);
-}
-
-@h Example bottom.
-Any closing ornament at the end of examples? This is reached after the
-last example is rendered, provided at least one example has been.
-
-=
-void Roadsign::roadsign_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Bottom.
-At the end of the section, after any example cues and perhaps also example
-bodied. (In a section with no examples, this immediately follows the middle.)
-
-=
-void Roadsign::roadsign_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Contents page.
-Roadsign doesn't use a standalone contents page.
-
-=
-void Roadsign::roadsign_navigation_contents_files(void) {
 }
 
 @h Utility routines.

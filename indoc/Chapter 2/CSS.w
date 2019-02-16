@@ -213,7 +213,7 @@ all CSS files, but here we know that |base.css| is tidily written.
 @ =
 void CSS::expand_IMAGES(text_stream *text) {
 	match_results mr = Regexp::create_mr();
-	if (SET_suppress_fonts == 1) {
+	if (indoc_settings->suppress_fonts == 1) {
 		while (Regexp::match(&mr, text, L"(%c*?)font-family:(%c*?);(%c*)")) {
 			text_stream *L = mr.exp[0], *M = NULL, *R = mr.exp[2];
 			if (Regexp::match(NULL, mr.exp[1], L"%c*monospace%c*")) M = I"___MONOSPACE___";

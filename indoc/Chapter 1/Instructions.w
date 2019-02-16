@@ -17,6 +17,17 @@ Instructions of indoc to different output types.
 @d SECTION_GRANULARITY 3
 @d SAME_AS_MAIN_GRANULARITY -1
 
+@d HTML_FORMAT 1
+@d PLAIN_FORMAT 2
+
+@d PASTEMODE_none 1
+@d PASTEMODE_Andrew 2
+@d PASTEMODE_David 3
+
+@d WRAPPER_none 1
+@d WRAPPER_epub 2
+@d WRAPPER_zip 3
+
 =
 typedef struct indoc_instructions {
 	int verbose_mode;
@@ -44,6 +55,34 @@ typedef struct indoc_instructions {
 	struct text_stream *examples_thematic_leafname;
 	struct pathname *examples_directory;
 	int examples_granularity; /* one of the |*_GRANULARITY| values above */
+
+	struct pathname *change_logs_folder;
+	struct filename *css_source_file;
+	struct filename *definitions_filename;
+	struct text_stream *definitions_index_leafname;
+
+	int format; /* one of the |*_FORMAT| values above */
+	int XHTML; /* a flag: relevant only if |HTML_FORMAT| is chosen */
+	int javascript; /* a flag */
+	int javascript_paste_method; /* one of the |PASTEMDDE_*| values above */
+
+	int html_for_Inform_application;
+	int images_copy;
+	struct pathname *images_path;
+	int inform_definitions_mode;
+	int suppress_fonts;
+	int assume_Public_Library;
+
+	int retina_images;
+	int support_creation;
+
+	struct text_stream *link_to_extensions_index;
+	struct filename *top_and_tail;
+	struct filename *top_and_tail_sections;
+	int treat_code_as_verbatim;
+	int wrapper; /* one of the |WRAPPER_*| values above */
+	struct ebook *ebook;
+	struct navigation_design *navigation;
 
 	MEMORY_MANAGEMENT
 } indoc_instructions;
@@ -79,81 +118,37 @@ indoc_instructions *Instructions::clean_slate(void) {
 	settings->examples_directory = NULL;
 	settings->examples_granularity = SAME_AS_MAIN_GRANULARITY;
 
+	settings->change_logs_folder = NULL; /* default not set here, as it depends on book folder */
+	settings->css_source_file = NULL;
+	settings->definitions_filename = NULL;
+	settings->definitions_index_leafname = NULL;
+
+	settings->format = HTML_FORMAT;
+	settings->XHTML = FALSE;
+	settings->javascript = FALSE;
+	settings->javascript_paste_method = PASTEMODE_none;
+
+	settings->html_for_Inform_application = FALSE;
+	settings->images_copy = FALSE;
+	settings->images_path = NULL;
+	settings->inform_definitions_mode = FALSE;
+	settings->suppress_fonts = FALSE;
+	settings->assume_Public_Library = FALSE;
+
+	settings->retina_images = FALSE;
+	settings->support_creation = FALSE;
+
+	settings->link_to_extensions_index = NULL;
+	settings->top_and_tail = NULL;
+	settings->top_and_tail_sections = NULL;
+	settings->treat_code_as_verbatim = FALSE;
+	settings->wrapper = WRAPPER_none;
+	settings->ebook = NULL;
+
+	settings->navigation = Gadgets::default();
+
 	return settings;
 }
-
-@ Otherwise, following settings are made by the instructions; these are their
-default values, which ensure that |indoc| will at least run safely, but in
-practice several of these are in any case set by the basic instructions file.
-See the manual for their meanings.
-
-=
-pathname *SET_change_logs_directory = NULL; /* default set below, as it depends on book folder */
-filename *SET_css_source_file = NULL;
-filename *SET_definitions_filename = NULL;
-text_stream *SET_definitions_index_leafname = NULL;
-
-@
-
-@d HTML_FORMAT 1
-@d PLAIN_FORMAT 2
-
-=
-int SET_format = HTML_FORMAT; /* must be one of those */
-
-@ =
-int SET_html_for_Inform_application = FALSE;
-int SET_images_copy = FALSE;
-pathname *SET_images_path = NULL;
-int SET_inform_definitions_mode = FALSE;
-int SET_javascript = FALSE;
-int SET_suppress_fonts = FALSE;
-int SET_assume_Public_Library = FALSE;
-
-int SET_retina_images = FALSE;
-int SET_support_creation = FALSE;
-
-@
-
-@d PASTEMODE_none 1
-@d PASTEMODE_Andrew 2
-@d PASTEMODE_David 3
-
-=
-int SET_javascript_paste_method = PASTEMODE_none; /* must be one of those */
-
-@ =
-text_stream *SET_link_to_extensions_index = NULL;
-
-@
-
-@d NAVMODE_twilight 1
-@d NAVMODE_midnight 2
-@d NAVMODE_architect 3
-@d NAVMODE_roadsign 4
-@d NAVMODE_lacuna 5
-@d NAVMODE_unsigned 6
-
-=
-int SET_navigation = NAVMODE_midnight; /* must be one of the above */
-
-@ =
-filename *SET_top_and_tail = NULL;
-filename *SET_top_and_tail_sections = NULL;
-int SET_treat_code_as_verbatim = FALSE;
-
-@
-
-@d WRAPPER_none 1
-@d WRAPPER_epub 2
-@d WRAPPER_zip 3
-
-=
-int SET_wrapper = WRAPPER_none; /* must be one of the above */
-ebook *SET_ebook = NULL;
-
-@ =
-int SET_XHTML = FALSE;
 
 @ =
 typedef struct dc_metadatum {
@@ -172,11 +167,11 @@ void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
 	indoc_instructions *settings) {
 	int found_flag = FALSE; /* was a target of this name actually found? */
 
-	SET_change_logs_directory = Pathnames::subfolder(settings->book_folder, I"Change Logs");
+	settings->change_logs_folder = Pathnames::subfolder(settings->book_folder, I"Change Logs");
 	settings->examples_directory = Pathnames::subfolder(settings->book_folder, I"Examples");
 	pathname *Materials = Pathnames::subfolder(Pathnames::from_text(I"indoc"), I"Materials");
-	SET_css_source_file = Filenames::in_folder(Materials, I"base.css");
-	SET_definitions_index_leafname = Str::duplicate(I"general_index.html");
+	settings->css_source_file = Filenames::in_folder(Materials, I"base.css");
+	settings->definitions_index_leafname = Str::duplicate(I"general_index.html");
 
 	filename *F;
 	LOOP_OVER_LINKED_LIST(F, filename, L)
@@ -227,6 +222,7 @@ int Instructions::read_instructions_from(filename *F, text_stream *desired,
 void Instructions::read_instructions_helper(text_stream *cl, text_file_position *tfp,
 	void *v_ihs) {
 	ins_helper_state *ihs = (ins_helper_state *) v_ihs;
+	indoc_instructions *settings = ihs->settings;
 	match_results mr = Regexp::create_mr();
 
 	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
@@ -244,12 +240,12 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 	} else {
 		if ((Str::len(ihs->scanning_target) == 0) ||
 			(Str::eq(ihs->scanning_target, ihs->desired_target))) {
-			if (ihs->settings->verbose_mode)
+			if (settings->verbose_mode)
 				PRINT("%f, line %d: %S\n", tfp->text_file_filename, tfp->line_count, cl);
 			if (Regexp::match(&mr, cl, L" *follow: *(%c*?) *")) {
 				if (Instructions::read_instructions_from(
-					Filenames::in_folder(ihs->settings->book_folder, mr.exp[0]),
-					ihs->desired_target, ihs->settings))
+					Filenames::in_folder(settings->book_folder, mr.exp[0]),
+					ihs->desired_target, settings))
 					ihs->found_aim = TRUE;
 			} else if (Regexp::match(&mr, cl, L" *declare: *(%c*?) *")) {
 				Symbols::declare_symbol(mr.exp[0]);
@@ -267,10 +263,10 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 		@<Act on a volume creation@>
 	} else if (Regexp::match(&mr, cl, L" *cover: *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
-		ihs->settings->book_cover_image = Instructions::set_file(mr.exp[0], ihs->settings);
+		settings->book_cover_image = Instructions::set_file(mr.exp[0], settings);
 	} else if (Regexp::match(&mr, cl, L" *examples *")) {
 		@<Disallow this in a specific target@>;
-		ihs->settings->book_contains_examples = TRUE;
+		settings->book_contains_examples = TRUE;
 	} else if (Regexp::match(&mr, cl, L" *dc:(%C+): *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
 		dc_metadatum *dcm = CREATE(dc_metadatum);
@@ -281,7 +277,7 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 	} else if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
 		@<Act on an indexing notation@>;
 	} else if (Regexp::match(&mr, cl, L" *images: *(%c*?) *")) {
-		HTMLUtilities::add_image_source(Instructions::set_path(mr.exp[0], ihs->settings));
+		HTMLUtilities::add_image_source(Instructions::set_path(mr.exp[0], settings));
 	} else if (Regexp::match(&mr, cl, L" *(%C+) *= *(%c*?) *")) {
 		@<Act on an instructions setting@>;
 	} else {
@@ -315,7 +311,7 @@ which reads:
 	if (Regexp::match(&mr2, title, L"(%c*?) *%((%c*?)%)")) { /* the optional abbreviation syntax */
 		Str::copy(title, mr2.exp[0]); Str::copy(abbrev, mr2.exp[1]);
 	}
-	Scanner::create_volume(ihs->settings->book_folder, file, title, abbrev);
+	Scanner::create_volume(settings->book_folder, file, title, abbrev);
 	DISCARD_TEXT(file);
 	DISCARD_TEXT(abbrev);
 	Regexp::dispose_of(&mr2);
@@ -360,7 +356,7 @@ which reads:
 @<Act on an indexing notation@> =
 	text_stream *tweak = mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
-	if (ihs->settings->test_index_mode) PRINT("Read in: %S\n", tweak);
+	if (settings->test_index_mode) PRINT("Read in: %S\n", tweak);
 	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation(mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
 	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
@@ -401,111 +397,104 @@ taste). In a multiple-line value, each line is terminated with a newline.
 
 @<Set an instructions option@> =
 	if (Str::eq_wide_string(key, L"alphabetization")) {
-		if (Str::eq_wide_string(val, L"word-by-word")) { ihs->settings->index_alphabetisation_algorithm = WORD_ALPHABETIZATION; }
-		else if (Str::eq_wide_string(val, L"letter-by-letter")) { ihs->settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION; }
+		if (Str::eq_wide_string(val, L"word-by-word")) { settings->index_alphabetisation_algorithm = WORD_ALPHABETIZATION; }
+		else if (Str::eq_wide_string(val, L"letter-by-letter")) { settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION; }
 		else Errors::in_text_file("no such alphabetization", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"assume_Public_Library")) {
-		SET_assume_Public_Library = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"change_logs_directory")) { SET_change_logs_directory = Instructions::set_path(val, ihs->settings); }
-	else if (Str::eq_wide_string(key, L"contents_leafname")) { ihs->settings->contents_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"contents_expandable")) { ihs->settings->contents_expandable = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"css_source_file")) { SET_css_source_file = Instructions::set_file(val, ihs->settings); }
-	else if (Str::eq_wide_string(key, L"definitions_filename")) { SET_definitions_filename = Instructions::set_file(val, ihs->settings); }
+		settings->assume_Public_Library = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"change_logs_directory")) { settings->change_logs_folder = Instructions::set_path(val, settings); }
+	else if (Str::eq_wide_string(key, L"contents_leafname")) { settings->contents_leafname = Str::duplicate(val); }
+	else if (Str::eq_wide_string(key, L"contents_expandable")) { settings->contents_expandable = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"css_source_file")) { settings->css_source_file = Instructions::set_file(val, settings); }
+	else if (Str::eq_wide_string(key, L"definitions_filename")) { settings->definitions_filename = Instructions::set_file(val, settings); }
 	else if (Str::eq_wide_string(key, L"definitions_index_filename")) {
-		SET_definitions_index_leafname = Str::duplicate(val); }
+		settings->definitions_index_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"destination")) {
-		if (ihs->settings->destination_modifiable)
-			ihs->settings->destination = Instructions::set_path(val, ihs->settings);
+		if (settings->destination_modifiable)
+			settings->destination = Instructions::set_path(val, settings);
 	}
 	else if (Str::eq_wide_string(key, L"examples_directory")) {
-		ihs->settings->examples_directory = Instructions::set_path(val, ihs->settings); }
+		settings->examples_directory = Instructions::set_path(val, settings); }
 	else if (Str::eq_wide_string(key, L"examples_alphabetical_leafname")) {
-		ihs->settings->examples_alphabetical_leafname = Str::duplicate(val); }
+		settings->examples_alphabetical_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"examples_granularity")) {
-		ihs->settings->examples_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+		settings->examples_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
 	else if (Str::eq_wide_string(key, L"examples_mode")) {
-		if (Str::eq_wide_string(val, L"open")) { ihs->settings->examples_mode = EXMODE_open_internal; }
-		else if (Str::eq_wide_string(val, L"openable")) { ihs->settings->examples_mode = EXMODE_openable_internal; }
+		if (Str::eq_wide_string(val, L"open")) { settings->examples_mode = EXMODE_open_internal; }
+		else if (Str::eq_wide_string(val, L"openable")) { settings->examples_mode = EXMODE_openable_internal; }
 		else Errors::in_text_file("no such examples mode", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"examples_numerical_leafname")) {
-		ihs->settings->examples_numerical_leafname = Str::duplicate(val); }
+		settings->examples_numerical_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"examples_thematic_leafname")) {
-		ihs->settings->examples_thematic_leafname = Str::duplicate(val); }
+		settings->examples_thematic_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"format")) {
-		if (Str::eq_wide_string(val, L"HTML")) { SET_format = HTML_FORMAT; }
-		else if (Str::eq_wide_string(val, L"text")) { SET_format = PLAIN_FORMAT; }
+		if (Str::eq_wide_string(val, L"HTML")) { settings->format = HTML_FORMAT; }
+		else if (Str::eq_wide_string(val, L"text")) { settings->format = PLAIN_FORMAT; }
 		else Errors::in_text_file("no such format", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"granularity")) { ihs->settings->granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+	else if (Str::eq_wide_string(key, L"granularity")) { settings->granularity = Instructions::set_range(key, val, 1, 3, tfp); }
 	else if (Str::eq_wide_string(key, L"html_for_Inform_application")) {
-		SET_html_for_Inform_application = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"images_path")) { SET_images_path = Instructions::set_path(val, ihs->settings); }
-	else if (Str::eq_wide_string(key, L"images_copy")) { SET_images_copy = Instructions::set_yn(key, val, tfp); }
+		settings->html_for_Inform_application = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"images_path")) { settings->images_path = Instructions::set_path(val, settings); }
+	else if (Str::eq_wide_string(key, L"images_copy")) { settings->images_copy = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"inform_definitions_mode")) {
-		SET_inform_definitions_mode = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"javascript")) { SET_javascript = Instructions::set_yn(key, val, tfp); }
+		settings->inform_definitions_mode = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"javascript")) { settings->javascript = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"javascript_paste_method")) {
-		if (Str::eq_wide_string(val, L"none")) { SET_javascript_paste_method = PASTEMODE_none; }
-		else if (Str::eq_wide_string(val, L"Andrew")) { SET_javascript_paste_method = PASTEMODE_Andrew; }
-		else if (Str::eq_wide_string(val, L"David")) { SET_javascript_paste_method = PASTEMODE_David; }
+		if (Str::eq_wide_string(val, L"none")) { settings->javascript_paste_method = PASTEMODE_none; }
+		else if (Str::eq_wide_string(val, L"Andrew")) { settings->javascript_paste_method = PASTEMODE_Andrew; }
+		else if (Str::eq_wide_string(val, L"David")) { settings->javascript_paste_method = PASTEMODE_David; }
 		else Errors::in_text_file("no such Javascript paste mode", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"link_to_extensions_index")) {
-		SET_link_to_extensions_index = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"manifest_leafname")) { ihs->settings->manifest_leafname = Str::duplicate(val); }
+		settings->link_to_extensions_index = Str::duplicate(val); }
+	else if (Str::eq_wide_string(key, L"manifest_leafname")) { settings->manifest_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"navigation")) {
-		if (Str::eq_wide_string(val, L"twilight")) { SET_navigation = NAVMODE_twilight; }
-		else if (Str::eq_wide_string(val, L"midnight")) { SET_navigation = NAVMODE_midnight; }
-		else if (Str::eq_wide_string(val, L"architect")) { SET_navigation = NAVMODE_architect; }
-		else if (Str::eq_wide_string(val, L"roadsign")) { SET_navigation = NAVMODE_roadsign; }
-		else if (Str::eq_wide_string(val, L"unsigned")) { SET_navigation = NAVMODE_unsigned; }
-		else if (Str::eq_wide_string(val, L"lacuna")) { SET_navigation = NAVMODE_lacuna; }
-		else Errors::in_text_file("no such navigation mode", tfp);
+		settings->navigation = Gadgets::parse(val);
+		if (settings->navigation == NULL) Errors::in_text_file("no such navigation mode", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"retina_images")) {
-		SET_retina_images = Instructions::set_yn(key, val, tfp); }
+		settings->retina_images = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"support_creation")) {
-		SET_support_creation = Instructions::set_yn(key, val, tfp); }
+		settings->support_creation = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"suppress_fonts")) {
-		SET_suppress_fonts = Instructions::set_yn(key, val, tfp); }
+		settings->suppress_fonts = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"toc_granularity")) {
-		ihs->settings->toc_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+		settings->toc_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
 	else if (Str::eq_wide_string(key, L"top_and_tail_sections")) {
-		SET_top_and_tail_sections = Instructions::set_file(val, ihs->settings); }
-	else if (Str::eq_wide_string(key, L"top_and_tail")) { SET_top_and_tail = Instructions::set_file(val, ihs->settings); }
+		settings->top_and_tail_sections = Instructions::set_file(val, settings); }
+	else if (Str::eq_wide_string(key, L"top_and_tail")) { settings->top_and_tail = Instructions::set_file(val, settings); }
 	else if (Str::eq_wide_string(key, L"treat_code_as_verbatim")) {
-		SET_treat_code_as_verbatim = Instructions::set_yn(key, val, tfp); }
+		settings->treat_code_as_verbatim = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"wrapper")) {
-		if (Str::eq_wide_string(val, L"EPUB")) { SET_wrapper = WRAPPER_epub; }
-		else if (Str::eq_wide_string(val, L"zip")) { SET_wrapper = WRAPPER_zip; }
-		else if (Str::eq_wide_string(val, L"none")) { SET_wrapper = WRAPPER_none; }
+		if (Str::eq_wide_string(val, L"EPUB")) { settings->wrapper = WRAPPER_epub; }
+		else if (Str::eq_wide_string(val, L"zip")) { settings->wrapper = WRAPPER_zip; }
+		else if (Str::eq_wide_string(val, L"none")) { settings->wrapper = WRAPPER_none; }
 		else Errors::in_text_file("no such wrapper", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"XHTML")) { SET_XHTML = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"XHTML")) { settings->XHTML = Instructions::set_yn(key, val, tfp); }
 
 	else Errors::in_text_file("no such setting", tfp);
 
 @<Reconcile any conflicting instructions@> =
-	if (SET_wrapper == WRAPPER_epub) {
-		SET_javascript = 0;
-		SET_javascript_paste_method = PASTEMODE_none;
+	if (settings->wrapper == WRAPPER_epub) {
+		settings->javascript = FALSE;
+		settings->javascript_paste_method = PASTEMODE_none;
 		if (settings->examples_mode == EXMODE_openable_internal) {
 			settings->examples_mode = EXMODE_open_internal;
 		}
 		settings->contents_expandable = FALSE;
-		SET_images_copy = 1;
-		if ((SET_navigation != NAVMODE_roadsign) &&
-			(SET_navigation != NAVMODE_unsigned)) {
-			SET_navigation = NAVMODE_roadsign;
-		}
-		SET_format = HTML_FORMAT;
-		SET_XHTML = TRUE;
-		SET_ebook = Epub::new(I"untitled ebook", "");
+		settings->images_copy = 1;
+		settings->navigation = Gadgets::for_ebook(settings->navigation);
+		settings->format = HTML_FORMAT;
+		settings->XHTML = TRUE;
+		settings->ebook = Epub::new(I"untitled ebook", "");
 	}
 
-	if (SET_javascript_paste_method != PASTEMODE_none) { SET_javascript = 1; }
+	if (settings->javascript_paste_method != PASTEMODE_none)
+		settings->javascript = TRUE;
 
 	if (settings->examples_granularity == SAME_AS_MAIN_GRANULARITY)
 		settings->examples_granularity = settings->granularity;
@@ -521,15 +510,16 @@ taste). In a multiple-line value, each line is terminated with a newline.
 		Errors::nowhere("TOC granularity can't be less than granularity");
 	}
 
-	if (SET_format == PLAIN_FORMAT) SET_navigation = NAVMODE_lacuna;
+	if (settings->format == PLAIN_FORMAT)
+		settings->navigation = Gadgets::for_plain_text(settings->navigation);
 
 @<Declare the format and wrapper as symbols@> =
-	if (SET_wrapper == WRAPPER_epub) Symbols::declare_symbol(I"EPUB");
-	else if (SET_wrapper == WRAPPER_zip) Symbols::declare_symbol(I"zip");
+	if (settings->wrapper == WRAPPER_epub) Symbols::declare_symbol(I"EPUB");
+	else if (settings->wrapper == WRAPPER_zip) Symbols::declare_symbol(I"zip");
 	else Symbols::declare_symbol(I"unwrapped");
 
-	if (SET_format == HTML_FORMAT) Symbols::declare_symbol(I"HTML");
-	if (SET_format == PLAIN_FORMAT) Symbols::declare_symbol(I"text");
+	if (settings->format == HTML_FORMAT) Symbols::declare_symbol(I"HTML");
+	if (settings->format == PLAIN_FORMAT) Symbols::declare_symbol(I"text");
 
 @h Parsing values.
 Note the Unix-style conveniences for pathnames: an initial |~| means the
@@ -615,11 +605,11 @@ int Instructions::set_yn(text_stream *key, text_stream *val, text_file_position 
 @ For ebooks only.
 
 =
-void Instructions::apply_ebook_metadata(void) {
+void Instructions::apply_ebook_metadata(ebook *E) {
 	dc_metadatum *dcm;
 	LOOP_OVER(dcm, dc_metadatum) {
 		wchar_t K[1024];
 		Str::copy_to_wide_string(K, dcm->dc_key, 1024);
-		Epub::attach_metadata(SET_ebook, K, dcm->dc_val);
+		Epub::attach_metadata(E, K, dcm->dc_val);
 	}
 }

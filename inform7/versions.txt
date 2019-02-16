@@ -28,4 +28,4 @@ Hydrogen	7.8.1	6E59	June 2010	Parchment support, functional programming
 Iron	7.9.1	6L02	May 2014	Language reforms, unifying text
 	7.9.2	6L38	August 2014	Added Android platform
 	7.9.3	6M62	December 2015	Extension projects, unifying actions
-Krypton	7.10.1	*6Q18	15 February 2019	*
+Krypton	7.10.1	*6Q19	16 February 2019	*

@@ -259,10 +259,10 @@ anchor is blank, the filename alone is used.
 
 @<Work out section URLs and anchors, depending on granularity@> =
  	char *extension = "txt";
- 	if (SET_format == HTML_FORMAT) extension = "html";
+ 	if (indoc_settings->format == HTML_FORMAT) extension = "html";
  	TEMPORARY_TEXT(leaf);
  	if (indoc_settings->granularity == SECTION_GRANULARITY) {
- 		if (SET_html_for_Inform_application)
+ 		if (indoc_settings->html_for_Inform_application)
  			WRITE_TO(leaf, "%Sdoc%d.%s", sr->owner->vol_prefix, sr->s, extension);
  		else
  			WRITE_TO(leaf, "%S_%d_%d.%s", sr->owner->vol_abbrev, sr->ch, sr->chs, extension);

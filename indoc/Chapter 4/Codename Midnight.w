@@ -2,6 +2,21 @@
 
 The "midnight" style of navigational gadgets.
 
+@h Creation.
+
+=
+navigation_design *Midnight::create(void) {
+	navigation_design *ND = Gadgets::new(I"midnight", FALSE, FALSE);
+	ND->columnar = TRUE;
+	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Midnight::midnight_section_title);
+	METHOD_ADD(ND, RENDER_INDEX_TOP_MTID, Midnight::midnight_navigation_index_top);
+	METHOD_ADD(ND, RENDER_NAV_MIDDLE_MTID, Midnight::midnight_navigation_middle);
+	METHOD_ADD(ND, RENDER_NAV_BOTTOM_MTID, Midnight::midnight_navigation_bottom);
+	METHOD_ADD(ND, RENDER_CONTENTS_MTID, Midnight::midnight_navigation_contents_files);
+	METHOD_ADD(ND, RENDER_CONTENTS_HEADING_MTID, Midnight::midnight_navigation_contents_heading);
+	return ND;
+}
+
 @h Top.
 At the front end of a section, before any of its text.
 
@@ -9,14 +24,7 @@ Midnight doesn't have volume or chapter titles as such, since the banner
 heading includes these anyway.
 
 =
-void Midnight::midnight_volume_title(OUTPUT_STREAM, volume *V) {
-}
-
-void Midnight::midnight_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
-}
-
-@ =
-void Midnight::midnight_section_title(OUTPUT_STREAM, volume *V, section *S) {
+void Midnight::midnight_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	if (S->begins_which_chapter == NULL) {
 		TEMPORARY_TEXT(comment);
 		WRITE_TO(comment, "START IGNORE %d", S->number_within_volume);
@@ -48,7 +56,7 @@ void Midnight::midnight_section_title(OUTPUT_STREAM, volume *V, section *S) {
 And this is a variant for index pages, such as the index of examples.
 
 =
-void Midnight::midnight_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
+void Midnight::midnight_navigation_index_top(navigation_design *self, text_stream *OUT, text_stream *filename, text_stream *title) {
 	Midnight::midnight_banner(OUT, title, 0, NULL, NULL, NULL);
 }
 
@@ -56,24 +64,8 @@ void Midnight::midnight_navigation_index_top(OUTPUT_STREAM, text_stream *filenam
 At the middle part, when the text is over, but before any example cues.
 
 =
-void Midnight::midnight_navigation_middle(OUTPUT_STREAM, volume *V, section *S) {
+void Midnight::midnight_navigation_middle(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTMLUtilities::ruled_line(OUT);
-}
-
-@h Example top.
-This is reached before the first example is rendered, provided at least
-one example will be:
-
-=
-void Midnight::midnight_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Example bottom.
-Any closing ornament at the end of examples? This is reached after the
-last example is rendered, provided at least one example has been.
-
-=
-void Midnight::midnight_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S) {
 }
 
 @h Bottom.
@@ -81,7 +73,7 @@ At the end of the section, after any example cues and perhaps also example
 bodied. (In a section with no examples, this immediately follows the middle.)
 
 =
-void Midnight::midnight_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) {
+void Midnight::midnight_navigation_bottom(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTML::begin_div_with_class_S(OUT, I"bookfooter");
 	HTML_OPEN_WITH("table", "class=\"fullwidth\"");
 	HTML_OPEN("tr");
@@ -174,8 +166,14 @@ void Midnight::midnight_contents_column_banner(OUTPUT_STREAM, text_stream *title
 Midnight provides a contents page of its very own.
 
 =
-void Midnight::midnight_navigation_contents_files(void) {
-	Midnight::write_contents_page(volumes[0]);
+void Midnight::midnight_navigation_contents_files(navigation_design *self) {
+	Midnight::write_contents_page(self, volumes[0]);
+}
+
+void Midnight::midnight_navigation_contents_heading(navigation_design *self, text_stream *OUT, volume *V) {
+	WRITE("\n\n");
+	HTML_OPEN_WITH("table", "class=\"fullwidth\"");
+	HTML_OPEN("tr");
 }
 
 @ Contents pages are only produced in some styles, and they're really index
@@ -184,7 +182,7 @@ the current volume; in heavy mode, it's a two-column table, with the contents
 of each volume side by side.
 
 =
-void Midnight::write_contents_page(volume *V) {
+void Midnight::write_contents_page(navigation_design *self, volume *V) {
 	TEMPORARY_TEXT(leafname);
 	WRITE_TO(leafname, "%S%S.html", V->vol_prefix, indoc_settings->contents_leafname);
 	filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
@@ -193,20 +191,17 @@ void Midnight::write_contents_page(volume *V) {
 	text_stream *OUT = &C_struct;
 	if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("can't write contents file", F);
-	if (SET_wrapper == WRAPPER_epub)
-		Epub::note_page(SET_ebook, F, I"Contents", I"toc");
+	if (indoc_settings->wrapper == WRAPPER_epub)
+		Epub::note_page(indoc_settings->ebook, F, I"Contents", I"toc");
 
 	TEMPORARY_TEXT(title);
 	WRITE_TO(title, "Contents");
 	@<Begin the HTML page for the contents@>;
-	@<Render any heading at the top of the contents@>;
+	Gadgets::navigation_contents_heading(OUT, V);
 
-	for (int column = 0; column < no_volumes; column++) {
-		if ((column == V->allocation_id) ||
-			(SET_navigation == NAVMODE_midnight) ||
-			(SET_navigation == NAVMODE_architect))
+	for (int column = 0; column < no_volumes; column++)
+		if ((column == V->allocation_id) || (self->columnar))
 			@<Render this column of the contents@>;
-	}
 	@<Render any tailpiece at the foot of the contents@>;
 
 	@<End the HTML page for the contents@>;
@@ -229,19 +224,14 @@ void Midnight::write_contents_page(volume *V) {
 	} else {
 		HTMLUtilities::begin_file(OUT, volumes[0]);
 		HTMLUtilities::write_title(OUT, title);
-		if (SET_javascript == 1) {
+		if (indoc_settings->javascript) {
 			HTML::open_javascript(OUT, FALSE);
 			HTMLUtilities::write_javascript_for_buttons(OUT);
 			HTMLUtilities::write_javascript_for_contents_buttons(OUT);
 			HTML::close_javascript(OUT);
 		}
 		HTML::end_head(OUT);
-
-		if (SET_navigation == NAVMODE_architect) {
-			HTML::begin_body(OUT, "paper architectpapertint");
-		} else {
-			HTML::begin_body(OUT, "paper midnightpapertint");
-		}
+		HTML::begin_body(OUT, self->contents_body_class);
 	}
 	DISCARD_TEXT(xxx);
 
@@ -252,47 +242,8 @@ void Midnight::write_contents_page(volume *V) {
 	else HTML::end_body(OUT);
 	DISCARD_TEXT(tail);
 
-@<Render any heading at the top of the contents@> =
-	if (SET_navigation == NAVMODE_midnight) {
-		WRITE("\n\n");
-		HTML_OPEN_WITH("table", "class=\"fullwidth\"");
-		HTML_OPEN("tr");
-	} else if (SET_navigation == NAVMODE_architect) {
-		WRITE("\n\n");
-		HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
-		HTML_OPEN("tr");
-		HTML_OPEN_WITH("td", "style=\"width:80px; height:120px;\"");
-		HTML_TAG_WITH("img", "src=\"inform:/doc_images/wwi_cover@2x.png\" class=\"thinbordered\" style=\"width:80px; height:120px;\"");
-		HTML_CLOSE("td");
-		HTML_OPEN_WITH("td", "style=\"width:80px; height:120px;\"");
-		HTML_TAG_WITH("img", "src=\"inform:/doc_images/irb_cover@2x.png\" class=\"thinbordered\" style=\"width:80px; height:120px;\"");
-		HTML_CLOSE("td");
-		HTML_OPEN_WITH("td", "style=\"width:100%%;\"");
-		HTML_OPEN_WITH("div", "class=\"headingboxhigh\"");
-		HTML_OPEN_WITH("div", "class=\"headingtext\"");
-		WRITE("Documentation");
-		HTML_CLOSE("div");
-		HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-		WRITE("Two complete books about Inform:");
-		HTML_OPEN("br");
-		WRITE("<i>Writing with Inform</i>, a comprehensive introduction");
-		HTML_OPEN("br");
-		WRITE("<i>The Inform Recipe Book</i>, practical solutions for authors to use");
-		HTML_CLOSE("div");
-		HTML_CLOSE("div");
-		HTML_CLOSE("td");
-		HTML_CLOSE("tr");
-		HTML_CLOSE("table");
-		HTML_OPEN_WITH("table", "class=\"fullwidtharch\"");
-		HTML_OPEN("tr");
-	} else {
-		HTML_OPEN("h2");
-		WRITE("%S", V->vol_title);
-		HTML_CLOSE("h2");
-	}
-
 @<Render this column of the contents@> =
-	if ((SET_navigation == NAVMODE_midnight) || (SET_navigation == NAVMODE_architect)) {
+	if (self->columnar) {
 		if (no_volumes == 1) HTML_OPEN("td")
 		else if (column == 0) HTML_OPEN_WITH("td", "class=\"midnightlefthalfpage\"")
 		else HTML_OPEN_WITH("td", "class=\"midnightrighthalfpage\"");
@@ -318,13 +269,13 @@ void Midnight::write_contents_page(volume *V) {
 		HTML_TAG("br");
 	}
 
-	if (SET_html_for_Inform_application)
-		HTMLUtilities::textual_link(OUT, SET_link_to_extensions_index, I"Installed Extensions");
+	if (indoc_settings->html_for_Inform_application)
+		HTMLUtilities::textual_link(OUT, indoc_settings->link_to_extensions_index, I"Installed Extensions");
 	HTMLUtilities::textual_link(OUT, indoc_settings->examples_alphabetical_leafname, I"Alphabetical Index of Examples");
 	HTMLUtilities::textual_link(OUT, indoc_settings->examples_numerical_leafname, I"Numerical Index of Examples");
 	HTMLUtilities::textual_link(OUT, indoc_settings->examples_thematic_leafname, I"Thematic Index of Examples");
 	if (NUMBER_CREATED(index_lemma) > 0)
-		HTMLUtilities::textual_link(OUT, SET_definitions_index_leafname, I"General Index");
+		HTMLUtilities::textual_link(OUT, indoc_settings->definitions_index_leafname, I"General Index");
 
 	volume *OV = volumes[0];
 	if (V == volumes[0]) OV = volumes[1];
@@ -364,14 +315,14 @@ there are in practice about 25.
 		HTML::end_div(OUT);
 	}
 	if ((column == no_volumes - 1) &&
-		(SET_html_for_Inform_application == 0) &&
+		(indoc_settings->html_for_Inform_application == FALSE) &&
 		(no_examples > 0)) {
 		HTML_OPEN_WITH("p", "class=\"midnightcontentsA\"");
 		WRITE("<i>Index</i>");
 		HTML_CLOSE("p");
 		@<Render links to example indexes@>;
 	}
-	if (SET_html_for_Inform_application == 1) {
+	if (indoc_settings->html_for_Inform_application) {
 		if (column == 0) {
 			Midnight::mc_link_A(OUT, indoc_settings->examples_numerical_leafname, I"Numerical Index of Examples");
 		} else {
@@ -417,14 +368,14 @@ done with a second row of the table whose first row contains the chapter
 contents cells.
 
 @<Render any tailpiece at the foot of the contents@> =
-	if ((SET_navigation == NAVMODE_midnight) || (SET_navigation == NAVMODE_architect)) {
+	if (self->columnar) {
 		HTML_CLOSE("tr");
 
-		if ((SET_assume_Public_Library == 0) && (SET_html_for_Inform_application == 1)) {
+		if ((indoc_settings->assume_Public_Library == FALSE) && (indoc_settings->html_for_Inform_application)) {
 			HTML_OPEN("tr");
 			HTML_OPEN_WITH("td", "class=\"midnightlefthalfpage\"");
 			Midnight::midnight_contents_column_banner(OUT, I"Extensions", volumes[0], NULL);
-			Midnight::mc_link_A(OUT, SET_link_to_extensions_index, I"Installed Extensions");
+			Midnight::mc_link_A(OUT, indoc_settings->link_to_extensions_index, I"Installed Extensions");
 
 			HTML_OPEN_WITH("p", "class=\"midnightcontentsA\"");
 			WRITE("<i>for more extensions, visit:</i>");
@@ -441,7 +392,7 @@ contents cells.
 				Midnight::midnight_contents_column_banner(OUT, NULL, volumes[1], NULL);
 			}
 			if (NUMBER_CREATED(index_lemma) > 0) {
-				Midnight::mc_link_A(OUT, SET_definitions_index_leafname, I"General Index");
+				Midnight::mc_link_A(OUT, indoc_settings->definitions_index_leafname, I"General Index");
 			}
 			HTML_CLOSE("td");
 			HTML_CLOSE("tr");

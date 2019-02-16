@@ -2,11 +2,24 @@
 
 The "unsigned" style of navigational gadgets.
 
+@h Creation.
+
+=
+navigation_design *Unsigned::create(void) {
+	navigation_design *ND = Gadgets::new(I"unsigned", TRUE, FALSE);
+	METHOD_ADD(ND, RENDER_VOLUME_TITLE_MTID, Unsigned::unsigned_volume_title);
+	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Unsigned::unsigned_chapter_title);
+	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Unsigned::unsigned_section_title);
+	METHOD_ADD(ND, RENDER_INDEX_TOP_MTID, Unsigned::unsigned_navigation_index_top);
+	METHOD_ADD(ND, RENDER_NAV_MIDDLE_MTID, Unsigned::unsigned_navigation_middle);
+	return ND;
+}
+
 @h Top.
 At the front end of a section, before any of its text.
 
 =
-void Unsigned::unsigned_volume_title(OUTPUT_STREAM, volume *V) {
+void Unsigned::unsigned_volume_title(navigation_design *self, text_stream *OUT, volume *V) {
 	@<Render a volume heading@>;
 	@<Render a chapter-contents table@>;
 }
@@ -32,7 +45,7 @@ void Unsigned::unsigned_volume_title(OUTPUT_STREAM, volume *V) {
 	}
 
 @ =
-void Unsigned::unsigned_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
+void Unsigned::unsigned_chapter_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C) {
 	@<Render a chapter heading@>;
 	@<Render a section-contents listing@>;
 }
@@ -59,7 +72,7 @@ void Unsigned::unsigned_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
 	HTML_CLOSE("p");
 
 @ =
-void Unsigned::unsigned_section_title(OUTPUT_STREAM, volume *V, section *S) {
+void Unsigned::unsigned_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	HTML_OPEN_WITH("p", "class=\"sectionheading\"");
 	if (Str::len(S->section_anchor) > 0) HTML::anchor(OUT, S->section_anchor);
 	WRITE("%c%S", SECTION_SYMBOL, S->title);
@@ -70,7 +83,7 @@ void Unsigned::unsigned_section_title(OUTPUT_STREAM, volume *V, section *S) {
 And this is a variant for index pages, such as the index of examples.
 
 =
-void Unsigned::unsigned_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
+void Unsigned::unsigned_navigation_index_top(navigation_design *self, text_stream *OUT, text_stream *filename, text_stream *title) {
 	HTMLUtilities::ruled_line(OUT);
 }
 
@@ -78,37 +91,6 @@ void Unsigned::unsigned_navigation_index_top(OUTPUT_STREAM, text_stream *filenam
 At the middle part, when the text is over, but before any example cues.
 
 =
-void Unsigned::unsigned_navigation_middle(OUTPUT_STREAM, volume *V, section *S) {
+void Unsigned::unsigned_navigation_middle(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTMLUtilities::ruled_line(OUT);
-}
-
-@h Example top.
-This is reached before the first example is rendered, provided at least
-one example will be:
-
-=
-void Unsigned::unsigned_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Example bottom.
-Any closing ornament at the end of examples? This is reached after the
-last example is rendered, provided at least one example has been.
-
-=
-void Unsigned::unsigned_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Bottom.
-At the end of the section, after any example cues and perhaps also example
-bodied. (In a section with no examples, this immediately follows the middle.)
-
-=
-void Unsigned::unsigned_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Contents page.
-Roadsign doesn't use a standalone contents page.
-
-=
-void Unsigned::unsigned_navigation_contents_files(void) {
 }

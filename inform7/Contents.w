@@ -1,7 +1,7 @@
 Title: inform7
 Author: Graham Nelson
-Build Date: 15 February 2019
-Build Number: 6Q18
+Build Date: 16 February 2019
+Build Number: 6Q19
 Version Name: Krypton
 Version Number: 7.10.1
 Purpose: The core compiler in a natural-language design system for interactive fiction.
@@ -97,6 +97,7 @@ followed during compilation."
 	ZMachine Template (Independent Inform 6)
 	Glulx Template (Independent Inform 6)
 	FileIO Template (Independent Inform 6)
+
 
 
 

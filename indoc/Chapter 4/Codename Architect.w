@@ -2,21 +2,29 @@
 
 The "architect" style of navigational gadgets.
 
-@h Top.
-At the front end of a section, before any of its text.
-
+@h Creation.
 Architect doesn't have volume or chapter titles as such, since the banner
 heading includes these anyway.
 
 =
-void Architect::architect_volume_title(OUTPUT_STREAM, volume *V) {
+navigation_design *Architect::create(void) {
+	navigation_design *ND = Gadgets::new(I"architect", FALSE, FALSE);
+	ND->columnar = TRUE;
+	ND->contents_body_class = I"paper architectpapertint";
+	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Architect::architect_section_title);
+	METHOD_ADD(ND, RENDER_INDEX_TOP_MTID, Architect::architect_navigation_index_top);
+	METHOD_ADD(ND, RENDER_NAV_MIDDLE_MTID, Architect::architect_navigation_middle);
+	METHOD_ADD(ND, RENDER_NAV_BOTTOM_MTID, Architect::architect_navigation_bottom);
+	METHOD_ADD(ND, RENDER_CONTENTS_MTID, Architect::architect_navigation_contents_files);
+	METHOD_ADD(ND, RENDER_CONTENTS_HEADING_MTID, Architect::architect_navigation_contents_heading);
+	return ND;
 }
 
-void Architect::architect_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
-}
+@h Top.
+At the front end of a section, before any of its text.
 
-@ =
-void Architect::architect_section_title(OUTPUT_STREAM, volume *V, section *S) {
+=
+void Architect::architect_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	if (S->begins_which_chapter == NULL) {
 		TEMPORARY_TEXT(comment);
 		WRITE_TO(comment, "START IGNORE %d", S->number_within_volume);
@@ -48,7 +56,7 @@ void Architect::architect_section_title(OUTPUT_STREAM, volume *V, section *S) {
 And this is a variant for index pages, such as the index of examples.
 
 =
-void Architect::architect_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
+void Architect::architect_navigation_index_top(navigation_design *self, text_stream *OUT, text_stream *filename, text_stream *title) {
 	Architect::architect_banner(OUT, title, 0, NULL, NULL, NULL);
 }
 
@@ -56,24 +64,8 @@ void Architect::architect_navigation_index_top(OUTPUT_STREAM, text_stream *filen
 At the middle part, when the text is over, but before any example cues.
 
 =
-void Architect::architect_navigation_middle(OUTPUT_STREAM, volume *V, section *S) {
+void Architect::architect_navigation_middle(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTMLUtilities::ruled_line(OUT);
-}
-
-@h Example top.
-This is reached before the first example is rendered, provided at least
-one example will be:
-
-=
-void Architect::architect_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Example bottom.
-Any closing ornament at the end of examples? This is reached after the
-last example is rendered, provided at least one example has been.
-
-=
-void Architect::architect_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S) {
 }
 
 @h Bottom.
@@ -81,7 +73,7 @@ At the end of the section, after any example cues and perhaps also example
 bodied. (In a section with no examples, this immediately follows the middle.)
 
 =
-void Architect::architect_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) {
+void Architect::architect_navigation_bottom(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTML::begin_div_with_class_S(OUT, I"bookfooter");
 	HTML_OPEN_WITH("table", "class=\"fullwidth\"");
 	HTML_OPEN("tr");
@@ -114,7 +106,7 @@ These are the black, status-line-like banners with navigation icons at the
 top of every Architect page.
 
 =
-void Architect::architect_banner(OUTPUT_STREAM, text_stream *title, volume *V,
+void Architect::architect_banner(text_stream *OUT, text_stream *title, volume *V,
 	text_stream *linkcentre, text_stream *linkleft, text_stream *linkright) {
 	HTML_OPEN_WITH("table", "class=\"fullwidth midnightblack\"");
 	HTML_OPEN("tr");
@@ -181,6 +173,36 @@ void Architect::architect_contents_column_banner(OUTPUT_STREAM,
 Architect provides a contents page of its very own.
 
 =
-void Architect::architect_navigation_contents_files(void) {
-	Midnight::write_contents_page(volumes[0]);
+void Architect::architect_navigation_contents_files(navigation_design *self) {
+	Midnight::write_contents_page(self, volumes[0]);
+}
+
+void Architect::architect_navigation_contents_heading(navigation_design *self, text_stream *OUT, volume *V) {
+	WRITE("\n\n");
+	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
+	HTML_OPEN("tr");
+	HTML_OPEN_WITH("td", "style=\"width:80px; height:120px;\"");
+	HTML_TAG_WITH("img", "src=\"inform:/doc_images/wwi_cover@2x.png\" class=\"thinbordered\" style=\"width:80px; height:120px;\"");
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "style=\"width:80px; height:120px;\"");
+	HTML_TAG_WITH("img", "src=\"inform:/doc_images/irb_cover@2x.png\" class=\"thinbordered\" style=\"width:80px; height:120px;\"");
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "style=\"width:100%%;\"");
+	HTML_OPEN_WITH("div", "class=\"headingboxhigh\"");
+	HTML_OPEN_WITH("div", "class=\"headingtext\"");
+	WRITE("Documentation");
+	HTML_CLOSE("div");
+	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
+	WRITE("Two complete books about Inform:");
+	HTML_OPEN("br");
+	WRITE("<i>Writing with Inform</i>, a comprehensive introduction");
+	HTML_OPEN("br");
+	WRITE("<i>The Inform Recipe Book</i>, practical solutions for authors to use");
+	HTML_CLOSE("div");
+	HTML_CLOSE("div");
+	HTML_CLOSE("td");
+	HTML_CLOSE("tr");
+	HTML_CLOSE("table");
+	HTML_OPEN_WITH("table", "class=\"fullwidtharch\"");
+	HTML_OPEN("tr");
 }

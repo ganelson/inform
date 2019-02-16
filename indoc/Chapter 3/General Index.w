@@ -452,7 +452,7 @@ as it will be seen by the reader.
 
 =
 void Indexes::write_general_index(void) {
-	text_stream *OUT = IndexUtilities::open_page(I"General Index", SET_definitions_index_leafname);
+	text_stream *OUT = IndexUtilities::open_page(I"General Index", indoc_settings->definitions_index_leafname);
 	index_lemma **lemma_list =
 		Memory::I7_calloc(NUMBER_CREATED(index_lemma), sizeof(index_lemma *), CLS_SORTING_MREASON);
 	index_lemma *il;

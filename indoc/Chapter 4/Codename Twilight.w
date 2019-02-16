@@ -3,21 +3,35 @@
 The "twilight" style of navigational gadgets, a minimal version
 of "midnight".
 
+@h Creation.
+
+=
+navigation_design *Twilight::create(void) {
+	navigation_design *ND = Gadgets::new(I"twilight", FALSE, FALSE);
+	ND->simplified_examples = TRUE;
+	ND->simplified_letter_rows = TRUE;
+	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Twilight::twilight_chapter_title);
+	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Twilight::twilight_section_title);
+	METHOD_ADD(ND, RENDER_INDEX_TOP_MTID, Twilight::twilight_navigation_index_top);
+	METHOD_ADD(ND, RENDER_NAV_MIDDLE_MTID, Twilight::twilight_navigation_middle);
+	METHOD_ADD(ND, RENDER_NAV_BOTTOM_MTID, Twilight::twilight_navigation_bottom);
+	METHOD_ADD(ND, RENDER_CONTENTS_MTID, Twilight::twilight_navigation_contents_files);
+	METHOD_ADD(ND, RENDER_CONTENTS_HEADING_MTID, Twilight::twilight_navigation_contents_heading);
+	return ND;
+}
+
 @h Top.
 At the front end of a section, before any of its text.
 
 =
-void Twilight::twilight_volume_title(OUTPUT_STREAM, volume *V) {
-}
-
-void Twilight::twilight_chapter_title(OUTPUT_STREAM, volume *V, chapter *C) {
+void Twilight::twilight_chapter_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C) {
 	HTML_OPEN("h2");
 	WRITE("%S", C->chapter_full_title);
 	HTML_CLOSE("h2");
 }
 
 @ =
-void Twilight::twilight_section_title(OUTPUT_STREAM, volume *V, section *S) {
+void Twilight::twilight_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	HTML::begin_div_with_class_S(OUT, I"bookheader");
 	HTML_OPEN_WITH("table", "width=\"100%%\"");
 	HTML_OPEN("tr");
@@ -60,7 +74,7 @@ void Twilight::twilight_section_title(OUTPUT_STREAM, volume *V, section *S) {
 And this is a variant for index pages, such as the index of examples.
 
 =
-void Twilight::twilight_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
+void Twilight::twilight_navigation_index_top(navigation_design *self, text_stream *OUT, text_stream *filename, text_stream *title) {
 	HTML_OPEN("h2");
 	WRITE("%S", title);
 	HTML_CLOSE("h2");
@@ -70,24 +84,8 @@ void Twilight::twilight_navigation_index_top(OUTPUT_STREAM, text_stream *filenam
 At the middle part, when the text is over, but before any example cues.
 
 =
-void Twilight::twilight_navigation_middle(OUTPUT_STREAM, volume *V, section *S) {
+void Twilight::twilight_navigation_middle(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTMLUtilities::ruled_line(OUT);
-}
-
-@h Example top.
-This is reached before the first example is rendered, provided at least
-one example will be:
-
-=
-void Twilight::twilight_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
-}
-
-@h Example bottom.
-Any closing ornament at the end of examples? This is reached after the
-last example is rendered, provided at least one example has been.
-
-=
-void Twilight::twilight_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S) {
 }
 
 @h Bottom.
@@ -95,7 +93,7 @@ At the end of the section, after any example cues and perhaps also example
 bodied. (In a section with no examples, this immediately follows the middle.)
 
 =
-void Twilight::twilight_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) {
+void Twilight::twilight_navigation_bottom(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTML::begin_div_with_class_S(OUT, I"bookfooter");
 	HTML_OPEN("p");
 	if (S->previous_section) {
@@ -118,8 +116,14 @@ void Twilight::twilight_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) 
 Twilight provides a contents page of its very own: actually, several.
 
 =
-void Twilight::twilight_navigation_contents_files(void) {
+void Twilight::twilight_navigation_contents_files(navigation_design *self) {
 	volume *V;
 	LOOP_OVER(V, volume)
-		Midnight::write_contents_page(V);
+		Midnight::write_contents_page(self, V);
+}
+
+void Twilight::twilight_navigation_contents_heading(navigation_design *self, text_stream *OUT, volume *V) {
+	HTML_OPEN("h2");
+	WRITE("%S", V->vol_title);
+	HTML_CLOSE("h2");
 }

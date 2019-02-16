@@ -44,6 +44,7 @@ We need to itemise the structures we'll want to allocate:
 @e CSS_tweak_data_MT
 @e span_notation_MT
 @e dc_metadatum_MT
+@e navigation_design_MT
 
 @ And then expand:
 
@@ -62,6 +63,7 @@ ALLOCATE_INDIVIDUALLY(example)
 ALLOCATE_INDIVIDUALLY(CSS_tweak_data)
 ALLOCATE_INDIVIDUALLY(span_notation)
 ALLOCATE_INDIVIDUALLY(dc_metadatum)
+ALLOCATE_INDIVIDUALLY(navigation_design)
 
 @h The Unicode for section.
 Since this doesn't lie in the ASCII character range, I'll refer to it by

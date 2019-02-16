@@ -100,8 +100,8 @@ the Inform index-generator can use:
 void Updater::write_definitions_file(void) {
 	text_stream DEFNS;
 	text_stream *OUT = &DEFNS;
-	if (Streams::open_to_file(OUT, SET_definitions_filename, UTF8_ENC) == FALSE)
-		Errors::fatal_with_file("can't write definitions file", SET_definitions_filename);
+	if (Streams::open_to_file(OUT, indoc_settings->definitions_filename, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("can't write definitions file", indoc_settings->definitions_filename);
 	formatted_file *ftd;
 	LOOP_OVER(ftd, formatted_file) {
 		definitions_helper_state dhs;
