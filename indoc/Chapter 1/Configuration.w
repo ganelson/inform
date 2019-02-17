@@ -14,7 +14,7 @@ void Configuration::add_instructions_file(filename *F) {
 	ADD_TO_LINKED_LIST(F, filename, instructions_files);
 }
 
-void Configuration::read_instructions(text_stream *target, indoc_instructions *settings) {
+void Configuration::read_instructions(text_stream *target, settings_block *settings) {
 	Instructions::read_instructions(target, instructions_files, settings);
 }
 
@@ -23,18 +23,16 @@ void Configuration::read_instructions(text_stream *target, indoc_instructions *s
 =
 typedef struct cl_state {
 	struct text_stream *target_chosen;
-	struct indoc_instructions *settings;
+	struct settings_block *settings;
 } cl_state;
 
-void Configuration::read_command_line(int argc, char **argv, indoc_instructions *settings) {
-	pathname *IM = Pathnames::from_text(I"indoc");
-	IM = Pathnames::subfolder(IM, I"Materials");
-	filename *basics = Filenames::in_folder(IM, I"basic-instructions.txt");
-	Configuration::add_instructions_file(basics);
+void Configuration::read_command_line(int argc, char **argv, settings_block *settings) {
 	cl_state state;
 	state.target_chosen = Str::new();
 	state.settings = settings;
 	@<Read the command line@>;
+	Configuration::add_instructions_file(
+		Filenames::in_folder(path_to_indoc_materials, I"basic-instructions.txt"));
 	Configuration::add_instructions_file(
 		Filenames::in_folder(settings->book_folder, I"indoc-instructions.txt"));
 	Configuration::read_instructions(state.target_chosen, settings);
@@ -73,7 +71,7 @@ void Configuration::read_command_line(int argc, char **argv, indoc_instructions 
 
 @ =
 void Configuration::switch(int id, int val, text_stream *arg, void *v_cl_state) {
-	indoc_instructions *settings = ((cl_state *) v_cl_state)->settings;
+	settings_block *settings = ((cl_state *) v_cl_state)->settings;
 	switch (id) {
 		case VERBOSE_CLSW: settings->verbose_mode = val; break;
 		case TEST_INDEX_CLSW: settings->test_index_mode = val; break;

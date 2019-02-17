@@ -6,7 +6,7 @@ The "roadsign" style of navigational gadgets.
 
 =
 navigation_design *Roadsign::create(void) {
-	navigation_design *ND = Gadgets::new(I"roadsign", TRUE, FALSE);
+	navigation_design *ND = Nav::new(I"roadsign", TRUE, FALSE);
 	METHOD_ADD(ND, RENDER_VOLUME_TITLE_MTID, Roadsign::roadsign_volume_title);
 	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Roadsign::roadsign_chapter_title);
 	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Roadsign::roadsign_section_title);

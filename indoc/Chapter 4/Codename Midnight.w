@@ -6,7 +6,7 @@ The "midnight" style of navigational gadgets.
 
 =
 navigation_design *Midnight::create(void) {
-	navigation_design *ND = Gadgets::new(I"midnight", FALSE, FALSE);
+	navigation_design *ND = Nav::new(I"midnight", FALSE, FALSE);
 	ND->columnar = TRUE;
 	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Midnight::midnight_section_title);
 	METHOD_ADD(ND, RENDER_INDEX_TOP_MTID, Midnight::midnight_navigation_index_top);
@@ -197,7 +197,7 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 	TEMPORARY_TEXT(title);
 	WRITE_TO(title, "Contents");
 	@<Begin the HTML page for the contents@>;
-	Gadgets::navigation_contents_heading(OUT, V);
+	Nav::navigation_contents_heading(OUT, V);
 
 	for (int column = 0; column < no_volumes; column++)
 		if ((column == V->allocation_id) || (self->columnar))

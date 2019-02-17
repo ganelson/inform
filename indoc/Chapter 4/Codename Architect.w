@@ -8,7 +8,7 @@ heading includes these anyway.
 
 =
 navigation_design *Architect::create(void) {
-	navigation_design *ND = Gadgets::new(I"architect", FALSE, FALSE);
+	navigation_design *ND = Nav::new(I"architect", FALSE, FALSE);
 	ND->columnar = TRUE;
 	ND->contents_body_class = I"paper architectpapertint";
 	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Architect::architect_section_title);

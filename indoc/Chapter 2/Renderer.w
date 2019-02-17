@@ -85,11 +85,11 @@ routine which doesn't surround the text with navigational gadgets and headings.
 text_stream *Renderer::render_block(OUTPUT_STREAM, volume *V, section *S) {
 	OUT = Renderer::formatted_file_must_be(OUT, V, S);
 
- 	Gadgets::render_navigation_top(OUT, V, S);
+ 	Nav::render_navigation_top(OUT, V, S);
  	Renderer::render_text_of_block(OUT, V, S);
- 	Gadgets::render_navigation_middle(OUT, V, S);
+ 	Nav::render_navigation_middle(OUT, V, S);
  	@<Render the examples below the text of the block@>;
- 	Gadgets::render_navigation_bottom(OUT, V, S);
+ 	Nav::render_navigation_bottom(OUT, V, S);
  	return OUT;
 }
 
@@ -102,14 +102,14 @@ text_stream *Renderer::render_block(OUTPUT_STREAM, volume *V, section *S) {
  		if (E->example_displayed_at_section[V->allocation_id] == S) {
 			no_examples_rendered_here++;
 			if (no_examples_rendered_here == 1)
-				Gadgets::render_navigation_example_top(OUT, V, S);
+				Nav::render_navigation_example_top(OUT, V, S);
 			@<Render the example here@>;
 			if (indoc_settings->examples_mode == EXMODE_open_internal) HTMLUtilities::ruled_line(OUT);
  		}
  	}
 
  	if (no_examples_rendered_here > 0)
- 		Gadgets::render_navigation_example_bottom(OUT, V, S);
+ 		Nav::render_navigation_example_bottom(OUT, V, S);
 
 @ Examples need to connect with particular sections of documentation, but
 they do so by title, not by block number, to protect them from renumbering

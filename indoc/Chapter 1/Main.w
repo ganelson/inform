@@ -2,39 +2,15 @@
 
 The top level of the program.
 
-@h Definitions.
-
-@ Indoc is one of the earliest Inform tools, and it spent much of its
-life as a hacky Perl script: like all too many quick-fix Perl scripts, it
-was still in use ten years later. In 2012, I spent some time tidying it up
-to generate better HTML, and moved it over to literate code. This took an
-exasperatingly long time, not least because the original had produced
-typically sloppy turn-of-the-century HTML, with tables for layout and
-no CSS, and with many now-deprecated tags and elements. The 2012 edition,
-by contrast, needed to produce validatable XHTML 1.1 Strict in order to
-make EPUBs which read roughly correctly in today's ebook-readers, and
-when they call this Strict they're not kidding. It took something like
-four weeks of spare evenings.
-
-Just as I was finishing up, the programmer and commentator John Siracusa
-described an almost identical web-content-and-ebook generation task on his
-podcast (Hypercritical 85): "My solution for this is... I was trying to
-think of a good analogy for what happens when you're a programmer and you
-have this sort of task in front of you. Is it, the cobbler's children have
-no shoes? ... You would expect someone who is a programmer to make some
-awesome system which would generate these three things. But when you're a
-programmer, you have the ability to do whatever you want really, really
-quickly in the crappiest possible way... And that's what I did. I wrote a
-series of incredibly disgusting Perl scripts."
-
-This made me feel better. Nevertheless, in 2016, I rewrote in C.
-
 @h Nutshell.
 We turn the source matter, "rawtext", into a batch of output files using the
 chosen format, a process we'll call "rendering". We do this in two passes.
 
 =
-indoc_instructions *indoc_settings = NULL;
+pathname *path_to_indoc = NULL; /* where we are installed */
+pathname *path_to_indoc_materials = NULL; /* the materials pathname */
+
+settings_block *indoc_settings = NULL;
 int no_volumes = 0;
 int no_examples = 0;
 
@@ -61,10 +37,13 @@ int main(int argc, char **argv) {
 
 @<Start up indoc@> =
 	PRINT("indoc [[Version Number]] (Inform Tools Suite)\n");
-	Gadgets::start();
+	Nav::start();
 	Symbols::start_up_symbols();
 	indoc_settings = Instructions::clean_slate();
 	Configuration::read_command_line(argc, argv, indoc_settings);
+	path_to_indoc = Pathnames::installation_path("INDOC_PATH", I"indoc");
+	if (indoc_settings->verbose_mode) PRINT("Installation path is %p\n", path_to_indoc);
+	path_to_indoc_materials = Pathnames::subfolder(path_to_indoc, I"Materials");
 	if (indoc_settings->wrapper == WRAPPER_epub) {
 		HTMLUtilities::image_URL(NULL,
 			Filenames::get_leafname(indoc_settings->book_cover_image));
@@ -97,7 +76,7 @@ section by section.
 	volume *V;
 	text_stream *TO = NULL;
 	LOOP_OVER(V, volume) TO = Rawtext::process_large_rawtext_file(TO, V);
-	Gadgets::render_navigation_contents_files();
+	Nav::render_navigation_contents_files();
 
 @ The following functions here are for use only when compiling documentation
 to go inside the Inform user interface application.

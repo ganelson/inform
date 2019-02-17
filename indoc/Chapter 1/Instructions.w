@@ -3,8 +3,10 @@
 Instructions of indoc to different output types.
 
 @h Definitions.
-
-@ A few fundamental options set at the command line.
+The command-line and Instructions-file-set values provide a large slate of
+what used to be global variables in the Perl version of Indoc. Today they
+are herded together into an instance of the |settings_block| structure,
+and in particular into a global instance of this called |indoc_settings|.
 
 @d LETTER_ALPHABETIZATION 1
 @d WORD_ALPHABETIZATION 2
@@ -29,7 +31,7 @@ Instructions of indoc to different output types.
 @d WRAPPER_zip 3
 
 =
-typedef struct indoc_instructions {
+typedef struct settings_block {
 	int verbose_mode;
 	int test_index_mode;
 
@@ -85,13 +87,13 @@ typedef struct indoc_instructions {
 	struct navigation_design *navigation;
 
 	MEMORY_MANAGEMENT
-} indoc_instructions;
+} settings_block;
 
 @
 
 =
-indoc_instructions *Instructions::clean_slate(void) {
-	indoc_instructions *settings = CREATE(indoc_instructions);
+settings_block *Instructions::clean_slate(void) {
+	settings_block *settings = CREATE(settings_block);
 	settings->verbose_mode = FALSE;
 	settings->test_index_mode = FALSE;
 
@@ -145,17 +147,10 @@ indoc_instructions *Instructions::clean_slate(void) {
 	settings->wrapper = WRAPPER_none;
 	settings->ebook = NULL;
 
-	settings->navigation = Gadgets::default();
+	settings->navigation = Nav::default();
 
 	return settings;
 }
-
-@ =
-typedef struct dc_metadatum {
-	struct text_stream *dc_key;
-	struct text_stream *dc_val;
-	MEMORY_MANAGEMENT
-} dc_metadatum;
 
 @h Instructions file.
 Note that |indoc| reports errors in the instructions file, but doesn't halt on
@@ -164,13 +159,12 @@ not just the beginning of it.)
 
 =
 void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
-	indoc_instructions *settings) {
+	settings_block *settings) {
 	int found_flag = FALSE; /* was a target of this name actually found? */
 
 	settings->change_logs_folder = Pathnames::subfolder(settings->book_folder, I"Change Logs");
 	settings->examples_directory = Pathnames::subfolder(settings->book_folder, I"Examples");
-	pathname *Materials = Pathnames::subfolder(Pathnames::from_text(I"indoc"), I"Materials");
-	settings->css_source_file = Filenames::in_folder(Materials, I"base.css");
+	settings->css_source_file = Filenames::in_folder(path_to_indoc_materials, I"base.css");
 	settings->definitions_index_leafname = Str::duplicate(I"general_index.html");
 
 	filename *F;
@@ -181,7 +175,7 @@ void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
 	@<Reconcile any conflicting instructions@>;
 	@<Declare the format and wrapper as symbols@>;
 
-	HTMLUtilities::add_image_source(Pathnames::subfolder(Materials, I"images"));
+	HTMLUtilities::add_image_source(Pathnames::subfolder(path_to_indoc_materials, I"images"));
 
 	if (found_flag == FALSE)
 		Errors::fatal_with_text("unknown target %S", target_sought);
@@ -201,13 +195,13 @@ applies 20 for all targets except |hypercard|, where it applies 40.
 =
 typedef struct ins_helper_state {
 	int found_aim;
-	struct indoc_instructions *settings;
+	struct settings_block *settings;
 	struct text_stream *desired_target;
 	struct text_stream *scanning_target;
 } ins_helper_state;
 
 int Instructions::read_instructions_from(filename *F, text_stream *desired,
-	indoc_instructions *settings) {
+	settings_block *settings) {
 	ins_helper_state ihs;
 	ihs.scanning_target = Str::new();
 	ihs.desired_target = desired;
@@ -222,7 +216,7 @@ int Instructions::read_instructions_from(filename *F, text_stream *desired,
 void Instructions::read_instructions_helper(text_stream *cl, text_file_position *tfp,
 	void *v_ihs) {
 	ins_helper_state *ihs = (ins_helper_state *) v_ihs;
-	indoc_instructions *settings = ihs->settings;
+	settings_block *settings = ihs->settings;
 	match_results mr = Regexp::create_mr();
 
 	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
@@ -269,9 +263,7 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 		settings->book_contains_examples = TRUE;
 	} else if (Regexp::match(&mr, cl, L" *dc:(%C+): *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
-		dc_metadatum *dcm = CREATE(dc_metadatum);
-		dcm->dc_key = Str::duplicate(mr.exp[0]);
-		dcm->dc_val = Str::duplicate(mr.exp[1]);
+		Instructions::create_ebook_metadata(Str::duplicate(mr.exp[0]), Str::duplicate(mr.exp[1]));
 	} else if (Regexp::match(&mr, cl, L" *css: *(%c*?) *")) {
 		@<Act on a CSS tweak@>;
 	} else if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
@@ -397,15 +389,20 @@ taste). In a multiple-line value, each line is terminated with a newline.
 
 @<Set an instructions option@> =
 	if (Str::eq_wide_string(key, L"alphabetization")) {
-		if (Str::eq_wide_string(val, L"word-by-word")) { settings->index_alphabetisation_algorithm = WORD_ALPHABETIZATION; }
-		else if (Str::eq_wide_string(val, L"letter-by-letter")) { settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION; }
+		if (Str::eq_wide_string(val, L"word-by-word"))
+			settings->index_alphabetisation_algorithm = WORD_ALPHABETIZATION;
+		else if (Str::eq_wide_string(val, L"letter-by-letter"))
+			settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION;
 		else Errors::in_text_file("no such alphabetization", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"assume_Public_Library")) {
-		settings->assume_Public_Library = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"change_logs_directory")) { settings->change_logs_folder = Instructions::set_path(val, settings); }
-	else if (Str::eq_wide_string(key, L"contents_leafname")) { settings->contents_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"contents_expandable")) { settings->contents_expandable = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, L"assume_Public_Library"))
+		settings->assume_Public_Library = Instructions::set_yn(key, val, tfp);
+	else if (Str::eq_wide_string(key, L"change_logs_directory"))
+		settings->change_logs_folder = Instructions::set_path(val, settings);
+	else if (Str::eq_wide_string(key, L"contents_leafname"))
+		settings->contents_leafname = Str::duplicate(val);
+	else if (Str::eq_wide_string(key, L"contents_expandable"))
+		settings->contents_expandable = Instructions::set_yn(key, val, tfp);
 	else if (Str::eq_wide_string(key, L"css_source_file")) { settings->css_source_file = Instructions::set_file(val, settings); }
 	else if (Str::eq_wide_string(key, L"definitions_filename")) { settings->definitions_filename = Instructions::set_file(val, settings); }
 	else if (Str::eq_wide_string(key, L"definitions_index_filename")) {
@@ -452,7 +449,7 @@ taste). In a multiple-line value, each line is terminated with a newline.
 		settings->link_to_extensions_index = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"manifest_leafname")) { settings->manifest_leafname = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"navigation")) {
-		settings->navigation = Gadgets::parse(val);
+		settings->navigation = Nav::parse(val);
 		if (settings->navigation == NULL) Errors::in_text_file("no such navigation mode", tfp);
 	}
 	else if (Str::eq_wide_string(key, L"retina_images")) {
@@ -487,7 +484,7 @@ taste). In a multiple-line value, each line is terminated with a newline.
 		}
 		settings->contents_expandable = FALSE;
 		settings->images_copy = 1;
-		settings->navigation = Gadgets::for_ebook(settings->navigation);
+		settings->navigation = Nav::for_ebook(settings->navigation);
 		settings->format = HTML_FORMAT;
 		settings->XHTML = TRUE;
 		settings->ebook = Epub::new(I"untitled ebook", "");
@@ -511,7 +508,7 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	}
 
 	if (settings->format == PLAIN_FORMAT)
-		settings->navigation = Gadgets::for_plain_text(settings->navigation);
+		settings->navigation = Nav::for_plain_text(settings->navigation);
 
 @<Declare the format and wrapper as symbols@> =
 	if (settings->wrapper == WRAPPER_epub) Symbols::declare_symbol(I"EPUB");
@@ -526,7 +523,7 @@ Note the Unix-style conveniences for pathnames: an initial |~| means the
 home folder, |~~| means the book folder.
 
 =
-pathname *Instructions::set_path(text_stream *val, indoc_instructions *settings) {
+pathname *Instructions::set_path(text_stream *val, settings_block *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
 			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
@@ -549,7 +546,7 @@ pathname *Instructions::set_path(text_stream *val, indoc_instructions *settings)
 }
 
 @ =
-filename *Instructions::set_file(text_stream *val, indoc_instructions *settings) {
+filename *Instructions::set_file(text_stream *val, settings_block *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
 			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
@@ -605,6 +602,18 @@ int Instructions::set_yn(text_stream *key, text_stream *val, text_file_position 
 @ For ebooks only.
 
 =
+typedef struct dc_metadatum {
+	struct text_stream *dc_key;
+	struct text_stream *dc_val;
+	MEMORY_MANAGEMENT
+} dc_metadatum;
+
+void Instructions::create_ebook_metadata(text_stream *key, text_stream *value) {
+	dc_metadatum *dcm = CREATE(dc_metadatum);
+	dcm->dc_key = Str::duplicate(key);
+	dcm->dc_val = Str::duplicate(value);
+}
+
 void Instructions::apply_ebook_metadata(ebook *E) {
 	dc_metadatum *dcm;
 	LOOP_OVER(dcm, dc_metadatum) {

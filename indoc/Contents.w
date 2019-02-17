@@ -12,11 +12,16 @@ Build Date: 16 February 2019
 
 Import: foundation
 
+Preliminaries
+	Introduction to Indoc
+	Volumes and Instructions
+	Documentation Markup
+
 Chapter 1: Setting Up
 	Basics
-	Instructions
-	Configuration
 	Main
+	Configuration
+	Instructions
 	Context Symbols
 
 Chapter 2: Processing
@@ -34,7 +39,7 @@ Chapter 3: Indexing
 	Examples Index
 
 Chapter 4: Navigation Styles
-	Navigational Gadgets
+	Navigational Designs
 	Codename Lacuna
 	Codename Midnight
 	Codename Architect

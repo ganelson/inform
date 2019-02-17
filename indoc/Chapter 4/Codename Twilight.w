@@ -7,7 +7,7 @@ of "midnight".
 
 =
 navigation_design *Twilight::create(void) {
-	navigation_design *ND = Gadgets::new(I"twilight", FALSE, FALSE);
+	navigation_design *ND = Nav::new(I"twilight", FALSE, FALSE);
 	ND->simplified_examples = TRUE;
 	ND->simplified_letter_rows = TRUE;
 	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Twilight::twilight_chapter_title);

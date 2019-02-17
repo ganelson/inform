@@ -35,7 +35,7 @@ text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname
 	}
 	DISCARD_TEXT(head);
 
-	Gadgets::render_navigation_index_top(OUT, leafname, title);
+	Nav::render_navigation_index_top(OUT, leafname, title);
 	return OUT;
 }
 

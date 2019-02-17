@@ -6,7 +6,7 @@ The "unsigned" style of navigational gadgets.
 
 =
 navigation_design *Unsigned::create(void) {
-	navigation_design *ND = Gadgets::new(I"unsigned", TRUE, FALSE);
+	navigation_design *ND = Nav::new(I"unsigned", TRUE, FALSE);
 	METHOD_ADD(ND, RENDER_VOLUME_TITLE_MTID, Unsigned::unsigned_volume_title);
 	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Unsigned::unsigned_chapter_title);
 	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Unsigned::unsigned_section_title);

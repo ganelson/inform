@@ -7,7 +7,7 @@ no navigational features at all.
 
 =
 navigation_design *Lacuna::create(void) {
-	navigation_design *ND = Gadgets::new(I"lacuna", FALSE, TRUE);
+	navigation_design *ND = Nav::new(I"lacuna", FALSE, TRUE);
 	METHOD_ADD(ND, RENDER_CHAPTER_TITLE_MTID, Lacuna::lacuna_chapter_title);
 	METHOD_ADD(ND, RENDER_SECTION_TITLE_MTID, Lacuna::lacuna_section_title);
 	return ND;
