@@ -68,6 +68,22 @@ If you're not sure what Indoc has decided and suspect it may be wrong,
 running Indoc with the |-verbose| switch will cause it to print its belief
 about its location as it starts up.
 
+@ Perhaps the ugliest thing Indoc does is to rewrite the Standard Rules
+extension, which comes supplied with Inform, so that its lines giving
+cross-references to documentation contain accurate references. These
+lines are special sentences such as:
+
+	|Document kind_person at doc45 "3.17" "Men, women and animals".|
+
+Indoc looks for a contiguous block of lines in the form
+
+	|Document ... at doc12.|
+
+and replaces it with a new block of lines containing up to date information.
+
+This happens only if |-rewrite-standard-rules X| is specified, with |X| being
+the filename of the Standard Rules.
+
 @ As a program, Indoc began as a rat's nest of Perl in 2002, and you can still
 see where the rats used to live. Like all too many quick-fix Perl scripts, it
 was still in use ten years later. In 2012, I spent some time tidying it up to
@@ -75,19 +91,22 @@ generate better HTML, and made it a web (that is, a literate program). The
 original had produced typically sloppy turn-of-the-century HTML, with tables
 for layout and no CSS, and with many now-deprecated tags and elements. The
 2012 edition, by contrast, needed to produce validatable XHTML 1.1 Strict in
-order to make EPUBs which read roughly correctly in today's ebook-readers, and
+order to make Epubs which read roughly correctly in today's ebook-readers, and
 when they call this Strict they're not kidding. It took something like four
 weeks of spare evenings.
 
-Just as I was finishing up, the programmer and commentator John Siracusa
-described a not dissimilar web-content-and-ebook generation task on his
-podcast (Hypercritical 85): "I was trying to think of a good analogy for what
-happens when you're a programmer and you have this sort of task in front of
-you. Is it, the cobbler's children have no shoes? ... You would expect someone
-who is a programmer to make some awesome system which would generate these
-three things. But when you're a programmer, you have the ability to do
-whatever you want really, really quickly in the crappiest possible way... And
-that's what I did. I wrote a series of incredibly disgusting Perl scripts."
+Just as I was finishing up, John Siracusa described a not dissimilar task on
+his then podcast (Hypercritical 85): "I was trying to think of a good analogy
+for what happens when you're a programmer and you have this sort of task in
+front of you. Is it, the cobbler's children have no shoes? ... You would
+expect someone who is a programmer to make some awesome system which would
+generate these three things. But when you're a programmer, you have the
+ability to do whatever you want really, really quickly in the crappiest
+possible way... And that's what I did. I wrote a series of incredibly
+disgusting Perl scripts."
 
-This made me feel better. Nevertheless, in 2016, indoc was rewritten in C,
-and it received a further revision in 2019.
+This made me feel better. (Also that, as it turned out, we both asked Liza
+Daly for help when we got stuck trying to understand Epub: small world.)
+Nevertheless, in 2016, Indoc was rewritten in C, using the then-new Foundation
+library, and it received a further revision in 2019, when this documentation
+was finally written, 17 years after the program it documents.
