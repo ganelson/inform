@@ -36,7 +36,7 @@ project *Inversion::read(text_stream *web) {
 	P = CREATE(project);
 	P->sync_line = Str::new();
 	P->sync_to = NULL;
-	P->manual_updating = FALSE;
+	P->manual_updating = TRUE;
 	P->web = Str::duplicate(web);
 	P->first_version = NULL;
 	P->current_version = NULL;
@@ -57,10 +57,11 @@ void Inversion::version_harvester(text_stream *text, text_file_position *tfp, vo
 	project *P = (project *) state;
 	match_results mr = Regexp::create_mr();
 	if (Str::len(text) == 0) return;
-	if (Regexp::match(&mr, text, L"Manual")) {
-		P->manual_updating = TRUE;
+	if (Regexp::match(&mr, text, L"Automatic")) {
+		P->manual_updating = FALSE;
 	} else if (Regexp::match(&mr, text, L"Sync to (%c*)")) {
 		P->sync_to = Inversion::read(mr.exp[0]);
+		P->manual_updating = FALSE;
 	} else if (Regexp::match(&mr, text, L"(%c*?)\t+(%c*?)\t+(%c*?)\t+(%c*?)\t+(%c*)")) {
 		version *V = CREATE(version);
 		V->name = Str::duplicate(mr.exp[0]);

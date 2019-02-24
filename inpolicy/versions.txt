@@ -1,2 +1,1 @@
-Sync to inform7
-Plan A	1	*6Q16	10 February 2019	
+Plan A	1	*9Z99	31 December 9999	

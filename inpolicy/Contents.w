@@ -17,18 +17,3 @@ Chapter 1: What It Does
 	Main
 	Problem Coverage
 	Version Numbering
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

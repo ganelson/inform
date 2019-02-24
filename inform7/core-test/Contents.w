@@ -24,17 +24,3 @@ Import: index
 
 Chapter 1: Everything
 	Program Control
-
-
-
-
-
-
-
-
-
-
-
-
-
-
