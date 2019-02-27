@@ -346,6 +346,7 @@ pages:
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
+	$(INWEBX) inrtps -weave-docs -weave-into docs/inrtps
 
 # -----------------------------------------------------------------------------
 # Target "clean"

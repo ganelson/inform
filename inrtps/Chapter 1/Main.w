@@ -5,51 +5,52 @@ this plan out.
 
 @h Main routine.
 
-@e FONT_CLSW
+@d INTOOL_NAME "inrtps"
+@d DEFAULT_FONT_TEXT 
 
 =
-text_stream *font_setting = NULL;
-int folder_count = 0;
 pathname *from_folder = NULL;
 pathname *to_folder = NULL;
+int font_setting = TRUE;
 
 int main(int argc, char **argv) {
 	Foundation::start();
-	font_setting = Str::new();
+	@<Read the command line@>;
+	if (from_folder) {
+		if (to_folder == NULL)
+			Errors::fatal("usage: inrtps from-folder to-folder [options]");
+		text_stream *f = NULL;
+		if (font_setting)
+			f = I"face='lucida grande,geneva,arial,tahoma,verdana,helvetica,helv'";
+		Translator::go(from_folder, to_folder, f);
+	}
+	Foundation::end();
+	return 0;
+}
 
+@ We use Foundation to read the command line:
+
+@e FONT_CLSW
+
+@<Read the command line@> =	
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
 		L"usage: inrtps from-folder to-folder [options]\n");
 
 	CommandLine::declare_boolean_switch(FONT_CLSW, L"font", 1,
-		L"include non-CSS font settings");
+		L"explicitly set sans-serif fonts by name");
 
-	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::pname);
+	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 
-	if ((folder_count != 0) && (folder_count != 2))
-		Errors::fatal("usage: inrtps from-folder to-folder [options]");
-
-	if (folder_count == 2)
-		Translator::go(from_folder, to_folder, font_setting);
-
-	Foundation::end();
-	return 0;
-}
-
-void Main::respond(int id, int val, text_stream *arg, void *state) {
+@ =
+void Main::option(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		case FONT_CLSW:
-			if (val) WRITE_TO(font_setting,
-				"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\"");
-			else Str::clear(font_setting);
-			break;
+		case FONT_CLSW: font_setting = val; break;
 	}
 }
 
-void Main::pname(int id, text_stream *arg, void *state) {
-	switch (folder_count++) {
-		case 0: from_folder = Pathnames::from_text(arg); break;
-		case 1: to_folder = Pathnames::from_text(arg); break;
-		default: Errors::fatal("too many arguments given at command line");
-	}
+void Main::bareword(int id, text_stream *arg, void *state) {
+	if (from_folder == NULL) from_folder = Pathnames::from_text(arg);
+	else if (to_folder == NULL) to_folder = Pathnames::from_text(arg);
+	else Errors::fatal("too many arguments given at command line");
 }

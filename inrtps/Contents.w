@@ -13,9 +13,8 @@ Web Syntax Version: 2
 Import: foundation
 
 Preliminaries
-	The inrtps Manual
+	Using Inrtps
 
 Chapter 1: The Whole Shooting Match
-	Basics
 	Main
 	Making RTP Pages

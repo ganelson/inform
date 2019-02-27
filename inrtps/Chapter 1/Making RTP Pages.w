@@ -34,6 +34,9 @@ void Translator::go(pathname *from_folder, pathname *to_folder, text_stream *fon
 	PRINT("%d problem texts written\n", ts.counter);
 }
 
+@ Thus, the following is called on each line in turn of the |texts.txt| file:
+
+=
 void Translator::go_helper(text_stream *text, text_file_position *tfp, void *state) {
 	translator_state *ts = (translator_state *) state;
 	match_results mr = Regexp::create_mr(), mr2 = Regexp::create_mr();
@@ -61,22 +64,19 @@ void Translator::go_helper(text_stream *text, text_file_position *tfp, void *sta
 	Regexp::dispose_of(&mr2);
 }
 
-@ This is where files are written:
+@ And this routine is called when we encounter either the start of a new
+problem text, or else the end of the file: that means that the individual
+text being read is now complete, and can be translated as HTML.
 
 =
 void Translator::flush(translator_state *ts) {
 	if (Str::len(ts->current_code) > 0) {
-		@<Give any material in double-quotes a blue tint@>;
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "%S.html", ts->current_code);
 		filename *F = Filenames::in_folder(ts->destination_folder, leaf);
 		DISCARD_TEXT(leaf);
-		ts->write_to = CREATE(text_stream);
-		if (Streams::open_to_file(ts->write_to, F, UTF8_ENC) == FALSE)
-			Errors::fatal_with_file("unable to write RTP page file", F);
-		TextFiles::read(ts->model_to_follow, FALSE, "unable to read file of model HTML", TRUE,
-			&Translator::flush_helper, NULL, ts);
-		Streams::close(ts->write_to);
+		@<Give any material in double-quotes a blue tint@>;
+		@<Translate the material out to HTML@>;
 		ts->counter++;
 	}
 }
@@ -94,6 +94,14 @@ void Translator::flush(translator_state *ts) {
 			mr.exp[0], mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);
+
+@<Translate the material out to HTML@> =
+	ts->write_to = CREATE(text_stream);
+	if (Streams::open_to_file(ts->write_to, F, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write RTP page file", F);
+	TextFiles::read(ts->model_to_follow, FALSE, "unable to read file of model HTML", TRUE,
+		&Translator::flush_helper, NULL, ts);
+	Streams::close(ts->write_to);
 
 @ =
 void Translator::flush_helper(text_stream *text, text_file_position *tfp, void *state) {
