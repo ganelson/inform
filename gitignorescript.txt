@@ -6,6 +6,9 @@ gameinfo.dbg
 
 makefile
 
+intest/
+inweb/
+
 Changes/Output/
 Changes/Output/META-INF/
 Changes/Output/OEBPS/
@@ -26,3 +29,5 @@ retrospective/*/cBlorb
 retrospective/*/ni
 retrospective/*/*.o
 retrospective/makefile
+
+inform7/*-test/Tests/Test Cases/_Results_Actual/
