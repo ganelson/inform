@@ -12,8 +12,13 @@ Build Date: 10 February 2019
 
 Import: foundation
 
-Chapter 1: What It Does
+Preliminaries
+	Using Inpolicy
+
+Chapter 1: Setting Up
 	Basics
 	Main
+
+Chapter 2: Policies
 	Problem Coverage
 	Version Numbering

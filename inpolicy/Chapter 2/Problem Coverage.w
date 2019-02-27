@@ -4,21 +4,25 @@ To see which problem messages have test cases and which are linked
 to the documentation.
 
 @h Observation.
+Problem messages are identified by their code-names, e.g., |PM_MisplacedFrom|;
+those names should be unique, but any number of problems can instead be
+marked with one of three special names.
 
-@d CASE_EXISTS_PCON		0x00000001
-@d DOC_MENTIONS_PCON 	0x00000002
-@d CODE_MENTIONS_PCON 	0x00000004
-@d IMPOSSIBLE_PCON 		0x00000008
-@d UNTESTABLE_PCON 		0x00000010
-@d NAMELESS_PCON		0x00000020
+Problems can be mentioned in the code, in the documentation, or in the
+set of Inform test cases.
+
+@d CASE_EXISTS_PCON    0x00000001 /* mentioned in test cases */
+@d DOC_MENTIONS_PCON   0x00000002 /* mentioned in documentation */
+@d CODE_MENTIONS_PCON  0x00000004 /* mentioned in source code */
+@d IMPOSSIBLE_PCON     0x00000008 /* this is |BelievedImpossible| */
+@d UNTESTABLE_PCON     0x00000010 /* this is |Untestable| */
+@d NAMELESS_PCON       0x00000020 /* this is |...| */
 
 =
-dictionary *problems_dictionary = NULL;
-
 typedef struct known_problem {
 	struct text_stream *name;
-	int contexts_observed;
-	int contexts_observed_multiple_times;
+	int contexts_observed; /* bitmap of the above bits */
+	int contexts_observed_multiple_times; /* bitmap of the above bits */
 	MEMORY_MANAGEMENT
 } known_problem;
 
@@ -26,6 +30,8 @@ typedef struct known_problem {
 and augment its bitmap of known contexts:
 
 =
+dictionary *problems_dictionary = NULL;
+
 void Coverage::observe_problem(text_stream *name, int context) {
 	if (problems_dictionary == NULL)
 		problems_dictionary = Dictionaries::new(1000, FALSE);
@@ -92,23 +98,29 @@ void Coverage::xref_harvester(text_stream *text, text_file_position *tfp, void *
 }
 
 @h Problems generated in the I7 source.
-Which is to say, actually existing problem messages.
+Which is to say, actually existing problem messages. Ideally, this code
+should find the modules included in Inform in some more sophisticated way.
 
 =
-void Coverage::which_problems_exist(pathname *Workspace) {
-	Coverage::which_problems_exist_inner(
-		Pathnames::from_text(I"inform7"), Workspace);
-	Coverage::which_problems_exist_inner(
-		Pathnames::from_text(I"inform7/core-module"), Workspace);
-	Coverage::which_problems_exist_inner(
-		Pathnames::from_text(I"inform7/if-module"), Workspace);
-	Coverage::which_problems_exist_inner(
-		Pathnames::from_text(I"inform7/multimedia-module"), Workspace);
-	Coverage::which_problems_exist_inner(
-		Pathnames::from_text(I"inter/codegen-module"), Workspace);
+void Coverage::which_problems_exist(void) {
+	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7"));
+	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7/core-module"));
+	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7/if-module"));
+	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7/multimedia-module"));
+	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inter/codegen-module"));
 }
 
-void Coverage::which_problems_exist_inner(pathname *D, pathname *Workspace) {
+@ So now we have to read the contents page of a web, to see what section
+files it contains:
+
+=
+typedef struct existence_state {
+	struct pathname *web_path;
+	struct pathname *chapter_path;
+	struct filename *section;
+} existence_state;
+
+void Coverage::which_problems_exist_inner(pathname *D) {
 	filename *C = Filenames::in_folder(D, I"Contents.w");
 	existence_state es;
 	es.web_path = D;
@@ -116,12 +128,6 @@ void Coverage::which_problems_exist_inner(pathname *D, pathname *Workspace) {
 	TextFiles::read(C, FALSE, "unable to read contents page of 'inform7' web", TRUE,
 		&Coverage::section_harvester, NULL, &es);
 }
-
-typedef struct existence_state {
-	struct pathname *web_path;
-	struct pathname *chapter_path;
-	struct filename *section;
-} existence_state;
 
 void Coverage::section_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	existence_state *es = (existence_state *) state;
@@ -143,6 +149,11 @@ void Coverage::section_harvester(text_stream *text, text_file_position *tfp, voi
 	Regexp::dispose_of(&mr);
 }
 
+@ So now we're working through individual section files. The exclusion of
+the case called |sigil| throws out a macro definition in the source code,
+not a specific problem case.
+
+=
 void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	existence_state *es = (existence_state *) state;
 	match_results mr = Regexp::create_mr();
@@ -151,64 +162,78 @@ void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, v
 		WRITE_TO(text, "%S%S", mr.exp[0], mr.exp[2]);
 		TEMPORARY_TEXT(name);
 		Str::copy(name, mr.exp[1]);
-		if (Str::eq_wide_string(name, L"sigil")) break;
+		if (Str::eq(name, I"sigil")) break;
 		int context = CODE_MENTIONS_PCON;
-		if (Str::eq_wide_string(name, L"BelievedImpossible")) { context = IMPOSSIBLE_PCON; @<Suffix location@> }
-		else if (Str::eq_wide_string(name, L"Untestable")) { context = UNTESTABLE_PCON; @<Suffix location@> }
-		else if (Str::eq_wide_string(name, L"...")) { context = NAMELESS_PCON; @<Suffix location@> }
-		if (Str::eq_wide_string(name, L"BelievedImpossible")) @<Suffix location@>
+		if (Str::eq(name, I"BelievedImpossible")) {
+			context = IMPOSSIBLE_PCON;
+			WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
+		} else if (Str::eq(name, I"Untestable")) {
+			context = UNTESTABLE_PCON;
+			WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
+		} else if (Str::eq(name, I"...")) {
+			context = NAMELESS_PCON;
+			WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
+		}
 		Coverage::observe_problem(name, context);
 		DISCARD_TEXT(name);
 	}
 	Regexp::dispose_of(&mr);
 }
 
-@<Suffix location@> =
-	WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
-
 @h Checking.
+So the actual policy-enforcement routine is here:
 
 =
 int observations_made = FALSE;
 int Coverage::check(OUTPUT_STREAM) {
 	if (observations_made == FALSE) {
-		pathname *P =
-			Pathnames::subfolder(Pathnames::from_text(I"inpolicy"), I"Workspace");
-		Coverage::which_problems_have_test_cases(P);
-		Coverage::which_problems_are_referenced(P);
-		Coverage::which_problems_exist(P);
+		@<Perform the observations@>;
 		observations_made = TRUE;
 	}
 
 	int all_is_well = TRUE;
+	@<Report and decide how grave the situation is@>;
+	if (all_is_well) WRITE("All is well.\n");
+	else WRITE("This needs attention.\n");
+	WRITE("\n");
+	return all_is_well;
+}
 
+@<Perform the observations@> =
+	Coverage::which_problems_have_test_cases(path_to_inpolicy_materials);
+	Coverage::which_problems_are_referenced(path_to_inpolicy_materials);
+	Coverage::which_problems_exist();
+
+@ Okay, so that's all of the scanning done; now to report on it.
+
+@<Report and decide how grave the situation is@> =
 	WRITE("%d problem name(s) have been observed:\n", NUMBER_CREATED(known_problem)); INDENT;
 
 	WRITE("Problems actually existing (the source code refers to them):\n"); INDENT;
 	Coverage::cite(OUT, CODE_MENTIONS_PCON, 0, CODE_MENTIONS_PCON,
-		L"are named and in principle testable");
+		I"are named and in principle testable");
 	if (Coverage::cite(OUT, 0, CODE_MENTIONS_PCON, CODE_MENTIONS_PCON,
-		L"are named more than once:") > 0) {
+		I"are named more than once:") > 0) {
 		all_is_well = FALSE;
 		Coverage::list(OUT, 0, CODE_MENTIONS_PCON, CODE_MENTIONS_PCON);
 	}
 	Coverage::cite(OUT, IMPOSSIBLE_PCON, 0, IMPOSSIBLE_PCON,
-		L"are 'BelievedImpossible', that is, no known source text causes them");
+		I"are 'BelievedImpossible', that is, no known source text causes them");
 	Coverage::cite(OUT, UNTESTABLE_PCON, 0, UNTESTABLE_PCON,
-		L"are 'Untestable', that is, not mechanically testable");
+		I"are 'Untestable', that is, not mechanically testable");
 	Coverage::cite(OUT, NAMELESS_PCON, 0, NAMELESS_PCON,
-		L"are '...', that is, they need to be give a name and a test case");
+		I"are '...', that is, they need to be give a name and a test case");
 	OUTDENT;
 
 	WRITE("Problems which should have test cases:\n"); INDENT;
 	Coverage::cite(OUT, CASE_EXISTS_PCON+CODE_MENTIONS_PCON, 0, CASE_EXISTS_PCON+CODE_MENTIONS_PCON,
-		L"have test cases");
+		I"have test cases");
 	if (Coverage::cite(OUT, CASE_EXISTS_PCON+CODE_MENTIONS_PCON, 0, CODE_MENTIONS_PCON,
-		L"have no test case yet:") > 0) {
+		I"have no test case yet:") > 0) {
 		Coverage::list(OUT, CASE_EXISTS_PCON+CODE_MENTIONS_PCON, 0, CODE_MENTIONS_PCON);
 	}
 	if (Coverage::cite(OUT, CASE_EXISTS_PCON+CODE_MENTIONS_PCON, 0, CASE_EXISTS_PCON,
-		L"are spurious test cases, since no such problems exist:") > 0) {
+		I"are spurious test cases, since no such problems exist:") > 0) {
 		all_is_well = FALSE;
 		Coverage::list(OUT, CASE_EXISTS_PCON+CODE_MENTIONS_PCON, 0, CASE_EXISTS_PCON);
 	}
@@ -216,45 +241,39 @@ int Coverage::check(OUTPUT_STREAM) {
 
 	WRITE("Problems which are cross-referenced in 'Writing with Inform':\n"); INDENT;
 	Coverage::cite(OUT, CODE_MENTIONS_PCON+DOC_MENTIONS_PCON, 0, CODE_MENTIONS_PCON+DOC_MENTIONS_PCON,
-		L"are cross-referenced");
+		I"are cross-referenced");
 	if (Coverage::cite(OUT, 0, DOC_MENTIONS_PCON, DOC_MENTIONS_PCON,
-		L"are cross-referenced more than once:") > 0) {
+		I"are cross-referenced more than once:") > 0) {
 		all_is_well = FALSE;
 		Coverage::list(OUT, 0, DOC_MENTIONS_PCON, DOC_MENTIONS_PCON);
 	}
 	if (Coverage::cite(OUT, CODE_MENTIONS_PCON+DOC_MENTIONS_PCON, 0, DOC_MENTIONS_PCON,
-		L"are spurious references, since no such problems exist:") > 0) {
+		I"are spurious references, since no such problems exist:") > 0) {
 		all_is_well = FALSE;
 		Coverage::list(OUT, CODE_MENTIONS_PCON+DOC_MENTIONS_PCON, 0, DOC_MENTIONS_PCON);
 	}
 	OUTDENT;
-
 	OUTDENT;
-	if (all_is_well) WRITE("All is well.\n");
-	else WRITE("This needs attention.\n");
-	WRITE("\n");
-	return all_is_well;
-}
 
-int Coverage::cite(OUTPUT_STREAM, int mask, int mask2, int val, wchar_t *message) {
+@ =
+int Coverage::cite(OUTPUT_STREAM, int mask, int mask2, int val, text_stream *message) {
 	int N = 0;
 	known_problem *KP;
 	LOOP_OVER(KP, known_problem) {
 		if ((KP->contexts_observed & mask) == val) N++;
 		if ((KP->contexts_observed_multiple_times & mask2) == val) N++;
 	}
-	if ((N>0) && (message)) WRITE("%d problem(s) %w\n", N, message);
+	if ((N>0) && (message)) WRITE("%d problem(s) %S\n", N, message);
 	return N;
 }
 
 void Coverage::list(OUTPUT_STREAM, int mask, int mask2, int val) {
 	INDENT;
 	known_problem *KP;
-	LOOP_OVER(KP, known_problem) {
+	LOOP_OVER(KP, known_problem)
 		if (((KP->contexts_observed & mask) == val) ||
 			((KP->contexts_observed_multiple_times & mask2) == val)) {
 			WRITE("%S\n", KP->name);
 		}
-	}
 	OUTDENT;
 }

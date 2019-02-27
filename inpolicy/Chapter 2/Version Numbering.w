@@ -3,6 +3,10 @@
 To update the build number(s) and versions for the intools.
 
 @h The build-numbers file.
+The scheme here is that each project can optionally contain a UTF-8 encoded
+text file called |versions.txt|, which lists all of its version history;
+a line of that file corresponds to a "version". Out of these versions, one
+must be marked as the current version.
 
 =
 typedef struct project {
@@ -11,7 +15,7 @@ typedef struct project {
 	int manual_updating;
 	struct text_stream *web;
 	struct filename *versions_file;
-	struct version *first_version;
+	struct linked_list *versions; /* of |version| */
 	struct version *current_version;
 	struct text_stream *conts;
 	MEMORY_MANAGEMENT
@@ -23,42 +27,58 @@ typedef struct version {
 	struct text_stream *build_code;
 	struct text_stream *date;
 	struct text_stream *notes;
-	int unstable;
-	struct version *next_version;
 	MEMORY_MANAGEMENT
 } version;
 
+@ And here we turn a named web into its |project| structure. We print its
+current version number when we first load a project in:
+
+=
 project *Inversion::read(text_stream *web) {
 	project *P;
-	LOOP_OVER(P, project)
-		if (Str::eq(web, P->web))
-			return P;
+	LOOP_OVER(P, project) if (Str::eq(web, P->web)) return P;
 	P = CREATE(project);
 	P->sync_line = Str::new();
 	P->sync_to = NULL;
 	P->manual_updating = TRUE;
 	P->web = Str::duplicate(web);
-	P->first_version = NULL;
+	P->versions = NEW_LINKED_LIST(version);
 	P->current_version = NULL;
-	P->versions_file = Filenames::in_folder(Pathnames::from_text(web), I"versions.txt");
-	TextFiles::read(P->versions_file, FALSE, "unable to read roster of version numbers", TRUE,
-		&Inversion::version_harvester, NULL, P);
 	P->conts = Str::new();
+	P->versions_file = Filenames::in_folder(Pathnames::from_text(web), I"versions.txt");
+	@<Read in the versions file@>;
+	@<Print the current version number@>;
+	return P;
+}
+
+@<Print the current version number@> =
 	if (P->current_version == NULL) {
 		Errors::with_text("warning: no version marked as current", web);
 	} else {
 		PRINT("%S: %S %S (build %S)\n", web,
 			P->current_version->name, P->current_version->number, P->current_version->build_code);
 	}
-	return P;
-}
 
+@<Read in the versions file@> =
+	TextFiles::read(P->versions_file, FALSE, "unable to read roster of version numbers", TRUE,
+		&Inversion::version_harvester, NULL, P);
+
+@ A version file contains lines which can either be a special command, or
+give details of a version. The commands are |Automatic| or |Manual| (the
+latter is the default), or |Sync to W|, where |W| is another project.
+(All of this is infrastructure left over from when the Inform tools were
+syncing version numbers to the main Inform 7 version number: with the
+transition to Github, this scheme was dropped.)
+
+=
 void Inversion::version_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	project *P = (project *) state;
 	match_results mr = Regexp::create_mr();
 	if (Str::len(text) == 0) return;
 	if (Regexp::match(&mr, text, L"Automatic")) {
 		P->manual_updating = FALSE;
+	} else if (Regexp::match(&mr, text, L"Manual")) {
+		P->manual_updating = TRUE;
 	} else if (Regexp::match(&mr, text, L"Sync to (%c*)")) {
 		P->sync_to = Inversion::read(mr.exp[0]);
 		P->manual_updating = FALSE;
@@ -70,39 +90,39 @@ void Inversion::version_harvester(text_stream *text, text_file_position *tfp, vo
 		V->date = Str::duplicate(mr.exp[3]);
 		V->notes = Str::duplicate(mr.exp[4]);
 		if (Str::get_first_char(V->build_code) == '*') {
-			V->unstable = TRUE;
 			Str::delete_first_character(V->build_code);
 			P->current_version = V;
-		} else V->unstable = FALSE;
-		if (P->first_version == NULL) P->first_version = V;
-		else {
-			version *W = P->first_version;
-			while ((W) && (W->next_version)) W = W->next_version;
-			W->next_version = V;
 		}
+		ADD_TO_LINKED_LIST(V, version, P->versions);
 	} else {
 		Errors::in_text_file("can't parse version line", tfp);
 	}
 	Regexp::dispose_of(&mr);
 }
 
+@ The following then writes back the versions file, following a version
+increment:
+
+=
 void Inversion::write(project *P) {
 	text_stream vr_stream;
 	text_stream *OUT = &vr_stream;
 	if (Streams::open_to_file(OUT, P->versions_file, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("can't write versions file", P->versions_file);
 	if (P->sync_to) WRITE("Sync to %S\n", P->sync_to->web);
-	for (version *V = P->first_version; V; V = V->next_version) {
-		WRITE("%S\t%S\t",
-			V->name, V->number);
-		if (V->unstable) WRITE("*");
-		WRITE("%S\t%S\t%S\n",
-			V->build_code, V->date, V->notes);
+	else if (P->manual_updating) WRITE("Manual\n");
+	else WRITE("Automatic\n");
+	version *V;
+	LOOP_OVER_LINKED_LIST(V, version, P->versions) {
+		WRITE("%S\t%S\t", V->name, V->number);
+		if (V == P->current_version) WRITE("*");
+		WRITE("%S\t%S\t%S\n", V->build_code, V->date, V->notes);
 	}
 	Streams::close(OUT);
 }
 
 @h Updating.
+The standard date format we use is "26 February 2018".
 
 =
 int Inversion::dated_today(project *P, text_stream *dateline) {
@@ -116,6 +136,13 @@ int Inversion::dated_today(project *P, text_stream *dateline) {
 	return rv;
 }
 
+@ Here we read the Inform four-character code, e.g., |3Q27|, and increase it
+by one. The two-digit code at the back is incremented, but rolls around from
+|99| to |01|, in which case the letter is advanced, except that |I| and |O|
+are skipped, and if the letter passes |Z| then it rolls back around to |A|
+and the initial digit is incremented.
+
+=
 void Inversion::increment(project *P) {
 	if (P->current_version == NULL) return;
 	text_stream *T = P->current_version->build_code;
@@ -145,6 +172,8 @@ void Inversion::increment(project *P) {
 }
 
 @h Imposition.
+When we impose a new version number on a web that has a contents page, we
+update the metadata in that contents page.
 
 =
 void Inversion::impose(project *P) {
@@ -179,6 +208,27 @@ void Inversion::impose_helper(text_stream *text, text_file_position *tfp, void *
 	Regexp::dispose_of(&mr);
 }
 
+@h Daily build maintenance.
+
+=
+void Inversion::maintain(text_stream *web) {
+	project *P = Inversion::read(web);
+	if (Inversion::needs_update(P))  {
+		Inversion::write(P);
+		Inversion::impose(P);
+		if ((Str::eq(web, I"inform7")) && (P->current_version)) {
+			filename *F = Filenames::from_text(I"build-code.mk");
+			text_stream as_stream;
+			text_stream *OUT = &as_stream;
+			if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
+				Errors::fatal_with_file("unable to write archive settings", F);
+			WRITE("BUILDCODE = %S\n", P->current_version->build_code);
+			Streams::close(OUT);
+		}
+	}
+}
+
+@ =
 int Inversion::needs_update(project *P) {
 	int rv = FALSE;
 	if ((P->manual_updating == FALSE) && (P->current_version)) {
@@ -203,24 +253,4 @@ int Inversion::needs_update(project *P) {
 		}
 	}
 	return rv;
-}
-
-@h Daily build maintenance.
-
-=
-void Inversion::maintain(text_stream *web) {
-	project *P = Inversion::read(web);
-	if (Inversion::needs_update(P))  {
-		Inversion::write(P);
-		Inversion::impose(P);
-		if ((Str::eq(web, I"inform7")) && (P->current_version)) {
-			filename *F = Filenames::from_text(I"build-code.mk");
-			text_stream as_stream;
-			text_stream *OUT = &as_stream;
-			if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
-				Errors::fatal_with_file("unable to write archive settings", F);
-			WRITE("BUILDCODE = %S\n", P->current_version->build_code);
-			Streams::close(OUT);
-		}
-	}
 }

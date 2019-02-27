@@ -345,6 +345,7 @@ endef
 pages:
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
+	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
 
 # -----------------------------------------------------------------------------
 # Target "clean"
