@@ -34,7 +34,7 @@ typedef struct version {
 current version number when we first load a project in:
 
 =
-project *Inversion::read(text_stream *web) {
+project *Inversion::read(text_stream *web, int silently) {
 	project *P;
 	LOOP_OVER(P, project) if (Str::eq(web, P->web)) return P;
 	P = CREATE(project);
@@ -55,8 +55,9 @@ project *Inversion::read(text_stream *web) {
 	if (P->current_version == NULL) {
 		Errors::with_text("warning: no version marked as current", web);
 	} else {
-		PRINT("%S: %S %S (build %S)\n", web,
-			P->current_version->name, P->current_version->number, P->current_version->build_code);
+		if (!silently)
+			PRINT("%S: %S %S (build %S)\n", web,
+				P->current_version->name, P->current_version->number, P->current_version->build_code);
 	}
 
 @<Read in the versions file@> =
@@ -80,7 +81,7 @@ void Inversion::version_harvester(text_stream *text, text_file_position *tfp, vo
 	} else if (Regexp::match(&mr, text, L"Manual")) {
 		P->manual_updating = TRUE;
 	} else if (Regexp::match(&mr, text, L"Sync to (%c*)")) {
-		P->sync_to = Inversion::read(mr.exp[0]);
+		P->sync_to = Inversion::read(mr.exp[0], TRUE);
 		P->manual_updating = FALSE;
 	} else if (Regexp::match(&mr, text, L"(%c*?)\t+(%c*?)\t+(%c*?)\t+(%c*?)\t+(%c*)")) {
 		version *V = CREATE(version);
@@ -212,7 +213,7 @@ void Inversion::impose_helper(text_stream *text, text_file_position *tfp, void *
 
 =
 void Inversion::maintain(text_stream *web) {
-	project *P = Inversion::read(web);
+	project *P = Inversion::read(web, FALSE);
 	if (Inversion::needs_update(P))  {
 		Inversion::write(P);
 		Inversion::impose(P);

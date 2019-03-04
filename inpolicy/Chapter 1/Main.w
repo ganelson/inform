@@ -7,6 +7,7 @@ this plan out.
 
 @e SILENCE_CLSW
 @e VERBOSE_CLSW
+@e WRITEME_CLSW
 @e PROBLEMS_CLSW
 @e ADVANCE_CLSW
 
@@ -26,6 +27,8 @@ int main(int argc, char **argv) {
 		L"check problem test case coverage");
 	CommandLine::declare_switch(ADVANCE_CLSW, L"advance-build", 2,
 		L"increment daily build code for web X");
+	CommandLine::declare_switch(WRITEME_CLSW, L"write-me", 2,
+		L"write a read-me file following instructions in file X");
 
 	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
 		L"print nothing unless there's something wrong");
@@ -61,6 +64,7 @@ void Main::disallow(int id, text_stream *arg, void *state) {
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case ADVANCE_CLSW: Inversion::maintain(arg); break;
+		case WRITEME_CLSW: Readme::write(Filenames::from_text(arg)); break;
 		case PROBLEMS_CLSW: RUNTEST(Coverage::check); break;
 		case SILENCE_CLSW: silence_mode = val; break;
 		case VERBOSE_CLSW: verbose_mode = val; break;
