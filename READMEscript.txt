@@ -1,5 +1,69 @@
 @-> README.md
-This is the main Inform 7 repository.
+# Inform 7 @version(inform7)
+
+## About Inform 7
+
+Inform 7 (April 2006-) is a programming language for creating interactive
+fiction, using natural language syntax. Using natural language and drawing on
+ideas from linguistics and from literate programming, Inform is widely
+used as a medium for literary writing, as a prototyping tool in the games
+industry, and in education, both at school and university level (where
+Inform is often assigned material for courses on digital narrative).
+It has twice ranked in the top 100 most influential programming languages
+according to the TIOBE index.
+
+## Repositories
+
+This is the "core repository", holding source code for the compiler, and
+for everything needed to run it on the command line. However:
+
+* To build and test the compiler you also need Inweb and Intest, programs
+spun out from the Inform project. These are __not included in the core
+repository either as submodules or copies__, and have their own repositories.
+If you are new to Inform core development, begin by cloning and building Inweb
+as a stand-alone tool, then use that to build Intest, then return here.
+	* [https://github.com/ganelson/inweb](https://github.com/ganelson/inweb), maintained by [Graham Nelson](https://github.com/ganelson)
+	* [https://github.com/ganelson/intest](https://github.com/ganelson/intest), maintained by [Graham Nelson](https://github.com/ganelson)
+* Most Inform authors use Inform as an app: for example, it is available
+on the Mac App Store. While much of the UI design is the same across all
+platforms, each app has its own code in its own repository. See:
+	* [https://github.com/TobyLobster/Inform](https://github.com/TobyLobster/Inform) for MacOS, maintained by [Toby Nelson](https://github.com/TobyLobster)
+	* [https://github.com/DavidKinder/Windows-Inform7](https://github.com/DavidKinder/Windows-Inform7) for Windows, maintained by [David Kinder](https://github.com/DavidKinder)
+	* [https://github.com/ptomato/gnome-inform7](https://github.com/ptomato/gnome-inform7) for Linux, maintained by [Philip Chimento](https://github.com/ptomato)
+
+## Inventory
+
+Inform is not a single program: while the Inform 7 compiler builds to a single
+executable file, this is only useful in concert with other tools (notably the
+Inform 6 compiler and the Inblorb packager), with standard libraries of code
+(called Extensions), with documentation, test cases and so on. This repository
+assembles all those programs and resources, which fall into two categories:
+
+### Resources for which this is the primary repository
+
+This repository is where development is done on the following:
+
+@define primary(program)
+* @program - @purpose(@program) - currently at @version(@program)
+@end
+@primary(inform7)
+@primary(inblorb)
+@primary(indoc)
+@primary(inpolicy)
+@primary(inrtps)
+@primary(inter)
+
+### Resources copied here from elsewhere
+
+Stable versions of the following are periodically copied into this repository,
+but this is not where development on them is done, and no pull requests will
+be accepted. (Note that these are not git submodules.)
+
+@define secondary(program, for, maintainer, username, repository)
+* @program - @for - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
+@end
+@secondary(inform6, 'the Inform 6 compiler (used by I7 as a code generator)', 'David Kinder', DavidKinder, Inform6)
+
 @-> docs/webs.html
 @define web(program, manual)
 	<li>
