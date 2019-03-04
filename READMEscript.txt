@@ -43,15 +43,29 @@ assembles all those programs and resources, which fall into two categories:
 
 This repository is where development is done on the following:
 
-@define primary(program)
-* @program - @purpose(@program) - currently at @version(@program)
+@define primary(program, language)
+* @program - @purpose(@program) Current @version(@program). @language
 @end
-@primary(inform7)
-@primary(inblorb)
-@primary(indoc)
-@primary(inpolicy)
-@primary(inrtps)
-@primary(inter)
+@define book(title, path, topic)
+* @title - @topic. Ebook in Indoc format, stored at path @path.
+@end
+@primary(inform7, 'Web of InC')
+@primary(inblorb, 'Web of InC')
+@primary(indoc, 'Web of InC')
+@primary(inpolicy, 'Web of InC')
+@primary(inrtps, 'Web of InC')
+@primary(inter, 'Web of InC')
+@book('Changes to Inform', 'Changes', 'A detailed change history of Inform 7')
+@book('Writing with Inform and the Inform Recipe Book', 'Documentation', 'The main Inform documentation, as seen in the apps, and in standalone Epubs')
+
+Notes:
+
+1. The "webs" above are literate programs. This means they can either be
+"tangled" to executables, or "woven" to human-readable forms. The woven
+forms can [all be browsed here](docs/webs.html). They aim to be much easier
+to understand than raw source code found by spelunking through the repository.
+2. "InC" is a slight extension of ANSI C99. These extensions are handled by
+Inweb, which acts as a preprocessor. For more on InC, see the Inweb manual.
 
 ### Resources copied here from elsewhere
 
@@ -63,6 +77,11 @@ be accepted. (Note that these are not git submodules.)
 * @program - @for - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
 @end
 @secondary(inform6, 'the Inform 6 compiler (used by I7 as a code generator)', 'David Kinder', DavidKinder, Inform6)
+
+### Colophon
+
+This README.mk file was generated automatically by Inpolicy, and should not
+be edited. To make changes, edit READMEscript.txt and re-generate.
 
 @-> docs/webs.html
 @define web(program, manual)

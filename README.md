@@ -42,18 +42,31 @@ assembles all those programs and resources, which fall into two categories:
 
 This repository is where development is done on the following:
 
-* inform7 - The core compiler in a natural-language design system for interactive fiction. - currently at version 7.10.1 'Krypton' (build 6Q21)
+* inform7 - The core compiler in a natural-language design system for interactive fiction. Current version 7.10.1 'Krypton' (build 6Q21). Web of InC
 
-* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - currently at version 4 'Duralumin'
+* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. Current version 4 'Duralumin'. Web of InC
 
-* indoc - The documentation-formatter for the Inform 7 system. - currently at version 4 'Didache'
+* indoc - The documentation-formatter for the Inform 7 system. Current version 4 'Didache'. Web of InC
 
-* inpolicy - A lint-like tool to check up on various policies used in Inform source code. - currently at version 1 'Plan A'
+* inpolicy - A lint-like tool to check up on various policies used in Inform source code. Current version 1 'Plan A'. Web of InC
 
-* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - currently at version 2 'Benefactive'
+* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. Current version 2 'Benefactive'. Web of InC
 
-* inter - For handling intermediate Inform code - currently at version 1 'Axion'
+* inter - For handling intermediate Inform code Current version 1 'Axion'. Web of InC
 
+* Changes to Inform - A detailed change history of Inform 7. Ebook in Indoc format, stored at path Changes.
+
+* Writing with Inform and the Inform Recipe Book - The main Inform documentation, as seen in the apps, and in standalone Epubs. Ebook in Indoc format, stored at path Documentation.
+
+
+Notes:
+
+1. The "webs" above are literate programs. This means they can either be
+"tangled" to executables, or "woven" to human-readable forms. The woven
+forms can [all be browsed here](docs/webs.html). They aim to be much easier
+to understand than raw source code found by spelunking through the repository.
+2. "InC" is a slight extension of ANSI C99. These extensions are handled by
+Inweb, which acts as a preprocessor. For more on InC, see the Inweb manual.
 
 ### Resources copied here from elsewhere
 
@@ -63,4 +76,9 @@ be accepted. (Note that these are not git submodules.)
 
 * inform6 - the Inform 6 compiler (used by I7 as a code generator) - from [https://github.com/DavidKinder/Inform6], maintained by [David Kinder](https://github.com/DavidKinder)
 
+
+### Colophon
+
+This README.mk file was generated automatically by Inpolicy, and should not
+be edited. To make changes, edit READMEscript.txt and re-generate.
 
