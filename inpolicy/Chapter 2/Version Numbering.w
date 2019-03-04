@@ -14,9 +14,11 @@ typedef struct project {
 	struct project *sync_to;
 	int manual_updating;
 	struct text_stream *web;
+	struct filename *contents_file;
 	struct filename *versions_file;
 	struct linked_list *versions; /* of |version| */
 	struct version *current_version;
+	struct text_stream *purpose;
 	struct text_stream *conts;
 	MEMORY_MANAGEMENT
 } project;
@@ -45,24 +47,40 @@ project *Inversion::read(text_stream *web, int silently) {
 	P->versions = NEW_LINKED_LIST(version);
 	P->current_version = NULL;
 	P->conts = Str::new();
+	P->purpose = Str::new();
 	P->versions_file = Filenames::in_folder(Pathnames::from_text(web), I"versions.txt");
-	@<Read in the versions file@>;
+	P->contents_file = Filenames::in_folder(Pathnames::from_text(web), I"Contents.w");
+	if (TextFiles::exists(P->contents_file)) @<Read in the contents file@>;
+	if (TextFiles::exists(P->versions_file)) @<Read in the versions file@>;
 	@<Print the current version number@>;
 	return P;
 }
 
 @<Print the current version number@> =
-	if (P->current_version == NULL) {
-		Errors::with_text("warning: no version marked as current", web);
-	} else {
-		if (!silently)
-			PRINT("%S: %S %S (build %S)\n", web,
-				P->current_version->name, P->current_version->number, P->current_version->build_code);
-	}
+	if ((P->current_version) && (!silently))
+		PRINT("%S: %S %S (build %S)\n", web,
+			P->current_version->name, P->current_version->number, P->current_version->build_code);
+
+@<Read in the contents file@> =
+	TextFiles::read(P->contents_file, FALSE, "unable to read contents section", TRUE,
+		&Inversion::contents_harvester, NULL, P);
 
 @<Read in the versions file@> =
 	TextFiles::read(P->versions_file, FALSE, "unable to read roster of version numbers", TRUE,
 		&Inversion::version_harvester, NULL, P);
+
+@ The format for the contents section of a web is documented in Inweb.
+
+=
+void Inversion::contents_harvester(text_stream *text, text_file_position *tfp, void *state) {
+	project *P = (project *) state;
+	match_results mr = Regexp::create_mr();
+	if (Str::len(text) == 0) return;
+	if (Regexp::match(&mr, text, L" *Purpose: *(%c*?) *")) {
+		P->purpose = Str::duplicate(mr.exp[0]);
+	}
+	Regexp::dispose_of(&mr);
+}
 
 @ A version file contains lines which can either be a special command, or
 give details of a version. The commands are |Automatic| or |Manual| (the
@@ -178,13 +196,12 @@ update the metadata in that contents page.
 
 =
 void Inversion::impose(project *P) {
-	filename *F = Filenames::in_folder(Pathnames::from_text(P->web), I"Contents.w");
-	TextFiles::read(F, FALSE, "unable to read web contents", TRUE,
+	TextFiles::read(P->contents_file, FALSE, "unable to read web contents", TRUE,
 		&Inversion::impose_helper, NULL, P);
 	text_stream vr_stream;
 	text_stream *OUT = &vr_stream;
-	if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
-		Errors::fatal_with_file("unable to write web contents", F);
+	if (Streams::open_to_file(OUT, P->contents_file, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write web contents", P->contents_file);
 	WRITE("%S", P->conts);
 	Streams::close(OUT);
 }

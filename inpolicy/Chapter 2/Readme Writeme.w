@@ -153,9 +153,23 @@ void Readme::command(write_state *ws, text_stream *OUT, text_stream *command, te
 			Readme::expand(ws, program, mt_stack->pars[0], tfp);
 			project *P = Inversion::read(program, TRUE);
 			DISCARD_TEXT(program);
-			WRITE("version %S '%S'", P->current_version->number, P->current_version->name);
-			if (Str::ne(P->current_version->build_code, I"9Z99"))
-				WRITE(" (build %S)", P->current_version->build_code);
+			if (P->current_version) {
+				WRITE("version %S '%S'", P->current_version->number, P->current_version->name);
+				if (Str::ne(P->current_version->build_code, I"9Z99"))
+					WRITE(" (build %S)", P->current_version->build_code);
+			}
+		}
+		Regexp::dispose_of(&mr);
+		return;
+	}
+	if (Regexp::match(&mr, command, L"purpose")) {
+		if (mt_stack->no_pars != 1) Errors::in_text_file("@purpose takes 1 parameter", tfp);
+		else {
+			TEMPORARY_TEXT(program);
+			Readme::expand(ws, program, mt_stack->pars[0], tfp);
+			project *P = Inversion::read(program, TRUE);
+			DISCARD_TEXT(program);
+			WRITE("%S", P->purpose);
 		}
 		Regexp::dispose_of(&mr);
 		return;

@@ -1,20 +1,44 @@
 @-> README.md
 This is the main Inform 7 repository.
 @-> docs/webs.html
-@define details(program, purpose, manual)
+@define web(program, manual)
 	<li>
 		<p><a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		@version(@program)
-		- <span class="purpose">@purpose</span>
+		- <span class="purpose">@purpose(@program)</span>
 		Documentation is <a href="@program/@manual.html">here</a>.</p>
 	</li>
 @end
-@define extdetails(program, purpose, manual)
+@define subweb(owner, program)
+	<li>
+		<p>↳ <a href="docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		<span class="purpose">@purpose(@owner/@program)</span></p>
+	</li>
+@end
+@define mod(owner, module)
+	<li>
+		<p>↳ <a href="docs/@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
+		<span class="purpose">@purpose(@owner/@module-module)</span></p>
+	</li>
+@end
+@define extweb(program)
 	<li>
 		<p><a href="../@program/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
 		@version(@program)
-		- <span class="purpose">@purpose</span>
+		- <span class="purpose">@purpose(@program)</span>
 		This has its own repository, with its own &#9733; Webs page.</p>
+	</li>
+@end
+@define extsubweb(owner, program)
+	<li>
+		<p>↳ <a href="../@owner/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		<span class="purpose">@purpose(@owner/@program)</span></p>
+	</li>
+@end
+@define extmod(owner, module)
+	<li>
+		<p>↳ <a href="../@owner/docs/@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
+		<span class="purpose">@purpose(@owner/@module-module)</span></p>
 	</li>
 @end
 <html>
@@ -41,16 +65,40 @@ These pages showcase the woven form, and are for human eyes only.</p>
 		<hr>
 		<p class="chapter">Command-line programs needed to use Inform 7:</p>
 		<ul class="sectionlist">
-			@details('inblorb', 'The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.', 'P-ui')
-			@extdetails('intest', 'A text-based command-line tool for testing other command-line tools.')
+			@web('inform7', 'P-p')
+			@mod('inform7', 'words')
+			@subweb('inform7', 'words-test')
+			@mod('inform7', 'inflections')
+			@subweb('inform7', 'inflections-test')
+			@mod('inform7', 'syntax')
+			@subweb('inform7', 'syntax-test')
+			@mod('inform7', 'problems')
+			@subweb('inform7', 'problems-test')
+			@mod('inform7', 'linguistics')
+			@subweb('inform7', 'linguistics-test')
+			@mod('inform7', 'kinds')
+			@subweb('inform7', 'kinds-test')
+			@mod('inform7', 'core')
+			@subweb('inform7', 'core-test')
+			@mod('inform7', 'if')
+			@mod('inform7', 'multimedia')
+			@mod('inform7', 'index')
+			@web('inter', 'P-ui')
+			@mod('inter', 'inter')
+			@mod('inter', 'codegen')
+			@web('inform6', 'P-p')
+			@web('inblorb', 'P-ui')
+			@extweb('intest')
 		</ul>
 		<hr>
 		<p class="chapter">Command-line programs needed only to build Inform 7:</p>
 		<ul class="sectionlist">
-			@details('indoc', 'The documentation-formatter for the Inform 7 system.', 'P-iti')
-			@details('inpolicy', 'A lint-like tool to check up on various policies used in Inform source code.', 'P-ui')
-			@details('inrtps', 'A generator of HTML pages to show for run-time problem messages in Inform.', 'P-ui')
-			@extdetails('inweb', 'A modern system for literate programming.')
+			@web('indoc', 'P-iti')
+			@web('inpolicy', 'P-ui')
+			@web('inrtps', 'P-ui')
+			@extweb('inweb')
+			@extmod('inweb', 'foundation')
+			@extsubweb('inweb', 'foundation-test')
 		</ul>
 		<hr>
 	</body>
