@@ -34,19 +34,19 @@ platforms, each app has its own code in its own repository. See:
 
 Make a directory in which to work: let's call this "work". Then:
 
-(a) Clone and build Inweb into "work/inweb".
-(b) Clone and build Intest into "work/intest".
-(c) Clone Inform into "work/inform". Change the current directory to that.
+* Clone and build Inweb into "work/inweb".
+* Clone and build Intest into "work/intest".
+* Clone Inform into "work/inform". Change the current directory to that.
 We first need to make all the many makefiles necessary, so run these two
 commands - the first makes the master makefile, the second makes all the
 tool-specific ones:
 	* ../inweb/Tangled/inweb -makefile makefile
 	* make makers
-(d) And now you can simply run "make". Thiss hould give you a complete working
+* And now you can simply run "make". Thiss hould give you a complete working
 set of command-line Inform tools.
-(e) For a simple test, try e.g. "inblorb/Tangled/inblorb -help". All the
+* For a simple test, try e.g. "inblorb/Tangled/inblorb -help". All the
 executables should similarly respond to -help.
-(f) But for a true test, run "make check". This compiles two more tools needed
+* But for a true test, run "make check". This compiles two more tools needed
 only for testing (dumb-frotz and dumb-glulx), then runs Intest on each tool
 in turn. Some haven't got a test suite, some have; it will run whatever it
 finds. Be advised that on a 2013 laptop this all takes quarter of an hour and
