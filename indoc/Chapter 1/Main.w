@@ -41,9 +41,6 @@ int main(int argc, char **argv) {
 	Symbols::start_up_symbols();
 	indoc_settings = Instructions::clean_slate();
 	Configuration::read_command_line(argc, argv, indoc_settings);
-	path_to_indoc = Pathnames::installation_path("INDOC_PATH", I"indoc");
-	if (indoc_settings->verbose_mode) PRINT("Installation path is %p\n", path_to_indoc);
-	path_to_indoc_materials = Pathnames::subfolder(path_to_indoc, I"Materials");
 	if (indoc_settings->wrapper == WRAPPER_epub) {
 		HTMLUtilities::image_URL(NULL,
 			Filenames::get_leafname(indoc_settings->book_cover_image));

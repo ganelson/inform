@@ -30,6 +30,28 @@ platforms, each app has its own code in its own repository. See:
 	* [https://github.com/DavidKinder/Windows-Inform7](https://github.com/DavidKinder/Windows-Inform7) for Windows, maintained by [David Kinder](https://github.com/DavidKinder)
 	* [https://github.com/ptomato/gnome-inform7](https://github.com/ptomato/gnome-inform7) for Linux, maintained by [Philip Chimento](https://github.com/ptomato)
 
+## Build Instructions
+
+Make a directory in which to work: let's call this "work". Then:
+
+(a) Clone and build Inweb into "work/inweb".
+(b) Clone and build Intest into "work/intest".
+(c) Clone Inform into "work/inform". Change the current directory to that.
+We first need to make all the many makefiles necessary, so run these two
+commands - the first makes the master makefile, the second makes all the
+tool-specific ones:
+	* ../inweb/Tangled/inweb -makefile makefile
+	* make makers
+(d) And now you can simply run "make". Thiss hould give you a complete working
+set of command-line Inform tools.
+(e) For a simple test, try e.g. "inblorb/Tangled/inblorb -help". All the
+executables should similarly respond to -help.
+(f) But for a true test, run "make check". This compiles two more tools needed
+only for testing (dumb-frotz and dumb-glulx), then runs Intest on each tool
+in turn. Some haven't got a test suite, some have; it will run whatever it
+finds. Be advised that on a 2013 laptop this all takes quarter of an hour and
+sounds like a helicopter taking off.
+
 ## Inventory
 
 Inform is not a single program: while the Inform 7 compiler builds to a single

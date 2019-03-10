@@ -1,9 +1,6 @@
 # This makefile was automatically written by inweb -makefile
 # and is not intended for human editing
 
-INTEST = intest/Tangled/intest
-INWEB = inweb/Tangled/inweb
-
 CC = clang -std=c99 -c $(MANYWARNINGS) $(CCOPTS) -g 
 INDULGENTCC = clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g
 
@@ -23,6 +20,7 @@ INFORM6OS = OSX
 GLULXEOS = OS_UNIX
 
 ME = inform6
+INTEST = ../intest/Tangled/intest
 SANDBOX = $(ME)/Inform6
 INTERPRETERS = $(ME)/Tests/Assistants
 

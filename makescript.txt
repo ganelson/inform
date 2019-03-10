@@ -6,7 +6,7 @@
 # script for making that makefile; it's human-readable and editable.
 # To perform the translation, run this as a shell command:
 #
-#    $ inweb/Tangled/inweb -prototype makescript.txt -makefile makefile
+#    $ ../inweb/Tangled/inweb -prototype makescript.txt -makefile makefile
 #
 # In the syntax of this file, only curly braces {thus} represent special
 # features: everything else is raw makefile syntax, copied directly across.
@@ -15,6 +15,10 @@
 # definitions.
 
 {platform-settings}
+
+INTEST = ../intest/Tangled/intest
+INWEB = ../inweb/Tangled/inweb
+INWEBX = ../inweb/Tangled/inweb
 
 # The "-" at the front here tells make to load this file if it exists, and
 # continue otherwise. If it does exist, it will define the symbol INTEGRATION.
@@ -43,7 +47,7 @@
 # root of the core Inform distribution.
 # In the eventual makefile, the symbol NAMEWEB is defined as its location.
 
-{module} FOUNDATION foundation inweb/foundation-module
+{module} FOUNDATION foundation ../inweb/foundation-module
 {module} WORDS words inform7/words-module
 {module} INFLECTIONS inflections inform7/inflections-module
 {module} SYNTAX syntax inform7/syntax-module
@@ -90,12 +94,6 @@
 {tool} INRTPS inrtps inrtps
 {dep} INRTPS on FOUNDATION
 
-{tool} INTEST intest intest
-{dep} INTEST on FOUNDATION
-
-{tool} INWEB inweb inweb
-{dep} INWEB on FOUNDATION
-
 {tool} INTERTOOL inter inter
 {dep} INTERTOOL on FOUNDATION
 {dep} INTERTOOL on INTER
@@ -106,9 +104,6 @@
 INFORM6X = inform6/Tangled/inform6
 
 # While these are also executables, they only provide unit tests for modules:
-
-{tool} FOUNDATIONTEST foundation-test inweb/foundation-test
-{dep} FOUNDATIONTEST on FOUNDATION
 
 #{tool} CORETEST core-test inform7/core-test
 #{dep} CORETEST on FOUNDATION
@@ -194,7 +189,7 @@ makers:
 	{repeatblock}
 	$(INWEBX) $(*WEB) -makefile $(*MAKER)
 	{endblock}
-	inweb/Tangled/inweb -prototype inform6/makescript.txt -makefile inform6/inform6.mk
+	$(INWEBX) -prototype inform6/makescript.txt -makefile inform6/inform6.mk
 
 # -----------------------------------------------------------------------------
 # Target "gitignores"
@@ -206,7 +201,7 @@ gitignores:
 	{repeatblock}
 	$(INWEBX) $(*WEB) -gitignore $(*WEB)/.gitignore
 	{endblock}
-	inweb/Tangled/inweb -prototype inform6/gitignorescript.txt -gitignore inform6/.gitignore
+	$(INWEBX) -prototype inform6/gitignorescript.txt -gitignore inform6/.gitignore
 
 # -----------------------------------------------------------------------------
 # Target "versions"

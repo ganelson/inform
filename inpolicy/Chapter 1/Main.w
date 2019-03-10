@@ -13,7 +13,7 @@ this plan out.
 
 =
 pathname *path_to_inpolicy = NULL; /* where we are installed */
-pathname *path_to_inpolicy_materials = NULL; /* the materials pathname */
+pathname *path_to_inpolicy_workspace = NULL; /* the materials pathname */
 int return_happy = TRUE, silence_mode = FALSE, verbose_mode = FALSE;
 
 int main(int argc, char **argv) {
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::disallow);
 
 	path_to_inpolicy = Pathnames::installation_path("INPOLICY_PATH", I"inpolicy");
-	path_to_inpolicy_materials = Pathnames::subfolder(path_to_inpolicy, I"Materials");
+	path_to_inpolicy_workspace = Pathnames::subfolder(path_to_inpolicy, I"Workspace");
 	if (verbose_mode) PRINT("Installation path is %p\n", path_to_inpolicy);
 
 	Foundation::end();
@@ -53,7 +53,7 @@ void Main::disallow(int id, text_stream *arg, void *state) {
 
 @d RUNTEST(Routine)
 	path_to_inpolicy = Pathnames::installation_path("INPOLICY_PATH", I"inpolicy");
-	path_to_inpolicy_materials = Pathnames::subfolder(path_to_inpolicy, I"Materials");
+	path_to_inpolicy_workspace = Pathnames::subfolder(path_to_inpolicy, I"Workspace");
 	if (silence_mode) {
 		if (Routine(NULL) == FALSE) { return_happy = FALSE; Routine(STDERR); }
 	} else {

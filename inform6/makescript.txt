@@ -4,6 +4,7 @@
 {platform-settings}
 
 ME = inform6
+INTEST = ../intest/Tangled/intest
 SANDBOX = $(ME)/Inform6
 INTERPRETERS = $(ME)/Tests/Assistants
 

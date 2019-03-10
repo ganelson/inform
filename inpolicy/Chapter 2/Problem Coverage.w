@@ -57,10 +57,10 @@ this back to look for cases whose names have the |PM_...| format. Those are
 the problem message test cases, so we observe them.
 
 =
-void Coverage::which_problems_have_test_cases(pathname *Workspace) {
-	filename *CAT = Filenames::in_folder(Workspace, I"cases.txt");
+void Coverage::which_problems_have_test_cases(void) {
+	filename *CAT = Filenames::in_folder(path_to_inpolicy_workspace, I"cases.txt");
 	TEMPORARY_TEXT(COMMAND);
-	WRITE_TO(COMMAND, "intest/Tangled/intest inform7 -catalogue ");
+	WRITE_TO(COMMAND, "../intest/Tangled/intest inform7 -catalogue ");
 	Shell::redirect(COMMAND, CAT);
 	if (Shell::run(COMMAND)) Errors::fatal("can't run intest to harvest cases");
 	DISCARD_TEXT(COMMAND);
@@ -80,7 +80,7 @@ Here we look through the "Writing with Inform" source text for cross-references
 to problem messages:
 
 =
-void Coverage::which_problems_are_referenced(pathname *Workspace) {
+void Coverage::which_problems_are_referenced(void) {
 	pathname *D = Pathnames::from_text(I"Documentation");
 	filename *WWI = Filenames::in_folder(D, I"Writing with Inform.txt");
 	TextFiles::read(WWI, FALSE, "unable to read 'Writing with Inform' source text", TRUE,
@@ -200,8 +200,8 @@ int Coverage::check(OUTPUT_STREAM) {
 }
 
 @<Perform the observations@> =
-	Coverage::which_problems_have_test_cases(path_to_inpolicy_materials);
-	Coverage::which_problems_are_referenced(path_to_inpolicy_materials);
+	Coverage::which_problems_have_test_cases();
+	Coverage::which_problems_are_referenced();
 	Coverage::which_problems_exist();
 
 @ Okay, so that's all of the scanning done; now to report on it.

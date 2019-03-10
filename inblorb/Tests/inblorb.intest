@@ -6,7 +6,7 @@
 	set: $I7 = inform7/Tangled/inform7
 	set: $INBLORB = inblorb/Tangled/inblorb
 	set: $INTERNAL = Internal
-	set: $WORKSPACE = intest/Workspace
+	set: $WORKSPACE = ../intest/Workspace
 
 	set: $INTERCHAIN = link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,reconcile-verbs,generate-i6:*
 
