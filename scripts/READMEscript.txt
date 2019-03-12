@@ -1,4 +1,4 @@
-@-> README.md
+@-> ../README.md
 # Inform 7 @version(inform7)
 
 ## About Inform 7
@@ -38,13 +38,10 @@ Make a directory in which to work: let's call this "work". Then:
 * Clone and build Inweb into "work/inweb".
 * Clone and build Intest into "work/intest".
 * Clone Inform into "work/inform". Change the current directory to that.
-We first need to make all the many makefiles necessary, so run these two
-commands - the first makes the master makefile, the second makes all the
-tool-specific ones:
-	* ../inweb/Tangled/inweb -makefile makefile
-	* make makers
-* And now you can simply run "make". Thiss hould give you a complete working
-set of command-line Inform tools.
+Then run "bash scripts/first.sh" (or whatever shell you prefer: it need
+not be bash). This should give you a complete working set of command-line
+Inform tools and associated makefiles. For any future builds, you can simply
+type "make".
 * For a simple test, try e.g. "inblorb/Tangled/inblorb -help". All the
 executables should similarly respond to -help.
 * But for a true test, run "make check". This compiles two more tools needed
@@ -164,7 +161,7 @@ be accepted. (Note that these are not git submodules.)
 This README.mk file was generated automatically by Inpolicy, and should not
 be edited. To make changes, edit READMEscript.txt and re-generate.
 
-@-> docs/webs.html
+@-> ../docs/webs.html
 @define web(program, manual)
 	<li>
 		<p><a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -

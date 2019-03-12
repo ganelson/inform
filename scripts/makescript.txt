@@ -198,6 +198,7 @@ makers:
 
 .PHONY: gitignores
 gitignores:
+	$(INWEBX) -prototype scripts/gitignorescript.txt -gitignore .gitignore
 	{repeatblock}
 	$(INWEBX) $(*WEB) -gitignore $(*WEB)/.gitignore
 	{endblock}
@@ -338,6 +339,7 @@ endef
 
 .PHONY: pages
 pages:
+	$(INPOLICYX) -write-me scripts/READMEscript.txt
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
