@@ -342,6 +342,7 @@ pages:
 	$(INPOLICYX) -write-me scripts/READMEscript.txt
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
+	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
 	$(INWEBX) inrtps -weave-docs -weave-into docs/inrtps
 

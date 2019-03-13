@@ -12,10 +12,7 @@ Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Preliminaries
-	Preface
-	Licence and Copyright Declaration
-	Introduction to Syntax ^"Preform"
-	The Champollion Project
+	Command-Line Usage
 
 Import: foundation
 Import: words

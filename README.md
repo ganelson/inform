@@ -11,6 +11,23 @@ Inform is often assigned material for courses on digital narrative).
 It has twice ranked in the top 100 most influential programming languages
 according to the TIOBE index.
 
+## Licence
+
+Except as noted, copyright in material in this repository (the "Package") is
+held by Graham Nelson (the "Author"), who retains copyright so that there is
+a single point of reference. As from the first date of this repository
+becoming public, the Package is placed under the [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
+This is a highly permissive licence, used by Perl among other notable projects,
+recognised by the Open Source Initiative as open and by the Free Software
+Foundation as free in both senses.
+
+For the avoidance of doubt, the Author makes the further grant that users of
+the Package may make unlimited use of story files produced by the Package:
+such story files are not derivative works of Inform and do not inherit the
+Artistic License 2.0 as an obligation. (This further grant follows the
+practice of projects like bison, which also copy substantial code into
+their outputs.)
+
 ## Repositories
 
 This is the "core repository", holding source code for the compiler, and
@@ -50,6 +67,12 @@ finds. Be advised that on a 2013 laptop this all takes quarter of an hour and
 sounds like a helicopter taking off.
 
 ## Inventory
+
+"I can't help feeling that if someone had asked me before the universe began
+how it would turn out, I should have guessed something a bit less like an old
+curiosity shop and a bit more like a formal French garden — an orderly
+arrangement of straight avenues, circular walks, and geometrically shaped
+trees and hedges." (Michael Frayn)
 
 Inform is not a single program: while the Inform 7 compiler builds to a single
 executable file, this is only useful in concert with other tools (notably the
