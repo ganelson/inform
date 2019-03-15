@@ -170,8 +170,6 @@ force: forcetools forcesrules localintegration
 .PHONY: localintegration
 localintegration:
 	cp -f 'inform7/Tangled/Syntax.preform' "Internal/Languages/English/Syntax.preform"
-	mkdir -p Internal/I6T
-	cp -R -f $(INFORM7WEB)/Appendix\ B/*.i6t Internal/I6T
 
 # (Of course those other four phony targets are yet to be defined.)
 
@@ -219,24 +217,21 @@ versions:
 # -----------------------------------------------------------------------------
 # Targets "srules" and "forcesrules"
 # -----------------------------------------------------------------------------
-# The Standard Rules extension is generated as a tangle from Appendix A of
-# the inform7 web, and is not, of course, a C program, so it needs its own
-# individual handling. "make srules" updates this if need be; "make forcesrules"
-# updates it regardless.
+# The Standard Rules extension is generated from a web (though it is not a
+# C program), and needs its own individual handling. "make srules" updates
+# this if need be; "make forcesrules" updates it regardless.
 
 SRULES = Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
 
 .PHONY: srules
 srules: $(SRULES)
 
-$(SRULES): $(INFORM7WEB)/Appendix*A/*.w
-	$(INWEBX) $(INFORM7WEB) -tangle A
-	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
+$(SRULES): srules/Contents.w srules/Sections/*.w
+	$(INWEBX) srules -tangle-to $(SRULES)
 
 .PHONY: forcesrules
 forcesrules:
-	$(INWEBX) $(INFORM7WEB) -tangle A
-	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
+	$(INWEBX) srules -tangle-to $(SRULES)
 
 # -----------------------------------------------------------------------------
 # Target "tools"
@@ -552,7 +547,7 @@ endef
 
 # (d) Copying the I6 template into the app
 
-$(INTERNAL)/I6T/Main.i6t: $(INFORM7WEB)/Appendix\ B/*.i6t
+$(INTERNAL)/I6T/Main.i6t: Internal/I6T/*.i6t
 	$(call transfer-i6-template)
 
 # The I6 template could be tangled by inweb, but we don't do so: instead the
@@ -562,10 +557,7 @@ $(INTERNAL)/I6T/Main.i6t: $(INFORM7WEB)/Appendix\ B/*.i6t
 define transfer-i6-template
 	mkdir -p "$(INTERNAL)/I6T"
 	rm -f $(INTERNAL)/I6T/*.i6t
-	touch $(INFORM7WEB)/Appendix\ B/Main.i6t
-	cp -R -f $(INFORM7WEB)/Appendix\ B/*.i6t $(INTERNAL)/I6T
-	rm -f Internal/I6T/*.i6t
-	cp -R -f $(INFORM7WEB)/Appendix\ B/*.i6t Internal/I6T
+	cp -R -f Internal/I6T/*.i6t $(INTERNAL)/I6T
 endef
 
 # (e) Copying internal resources into the app
@@ -663,7 +655,7 @@ ifdef BENEVOLENTOVERLORD
 define make-inapp-documentation
 	mkdir -p "$(INTERNAL)/Documentation"
 	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) -rewrite-standard-rules 'inform7/Appendix A/Preamble.w' $(INDOCOPTS)
+	$(INDOCX) -rewrite-standard-rules 'srules/Sections/Preamble.w' $(INDOCOPTS)
 	$(INWEBX) inform7 -tangle A
 	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
 	$(call transfer-standard-rules)
