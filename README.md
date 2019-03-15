@@ -96,7 +96,7 @@ This repository is where development is done on the following:
 
 * inter - For handling intermediate Inform code Current version 1 'Axion'. Web of InC
 
-* srukes -  Current . Web of Inform 7
+* srules - The Standard Rules extension, included in all Inform 7 works Current . Web of Inform 7
 
 * Changes to Inform - A detailed change history of Inform 7. Ebook in Indoc format, stored at path Changes.
 
