@@ -97,7 +97,7 @@ This repository is where development is done on the following:
 @primary(inpolicy, 'Web of InC')
 @primary(inrtps, 'Web of InC')
 @primary(inter, 'Web of InC')
-@primary(srukes, 'Web of Inform 7')
+@primary(srules, 'Web of Inform 7')
 @book('Changes to Inform', 'Changes', 'A detailed change history of Inform 7')
 @book('Writing with Inform and the Inform Recipe Book', 'Documentation', 'The main Inform documentation, as seen in the apps, and in standalone Epubs')
 * retrospective - ANSI C source and resources needed to build (some) previous versions of Inform 7
