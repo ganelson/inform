@@ -23,7 +23,7 @@ Every Inform 7 extension begins with a standard titling line and a
 rubric text, and the Standard Rules are no exception:
 
 =
-Version 4/160502 of the Standard Rules by Graham Nelson begins here.
+Version [[Version Number]] of the Standard Rules by Graham Nelson begins here.
 
 "The Standard Rules, included in every project, define the basic framework
 of kinds, actions and phrases which make Inform what it is."

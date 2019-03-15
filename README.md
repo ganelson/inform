@@ -96,6 +96,8 @@ This repository is where development is done on the following:
 
 * inter - For handling intermediate Inform code Current version 1 'Axion'. Web of InC
 
+* srukes -  Current . Web of Inform 7
+
 * Changes to Inform - A detailed change history of Inform 7. Ebook in Indoc format, stored at path Changes.
 
 * Writing with Inform and the Inform Recipe Book - The main Inform documentation, as seen in the apps, and in standalone Epubs. Ebook in Indoc format, stored at path Documentation.
@@ -104,9 +106,7 @@ This repository is where development is done on the following:
 
 * Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
 
-* The special Standard Rules extension. Web of Inform 7; currently Appendix A of inform7, with a secondary copy in Internal/Extensions/Graham Nelson
-
-* The I6 Template - The .i6t files used in code generation. Inform 6; currently Appendix B of inform7, with a secondary copy in Internal/I6T
+* The I6 Template - The .i6t files used in code generation. Inform 6; held in Internal/I6T
 
 * Internal/Extensions - Libraries of code. Inform 7
 	* Internal/Extensions/Emily Short/Basic Help Menu.i7x

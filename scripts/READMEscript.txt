@@ -97,15 +97,14 @@ This repository is where development is done on the following:
 @primary(inpolicy, 'Web of InC')
 @primary(inrtps, 'Web of InC')
 @primary(inter, 'Web of InC')
+@primary(srukes, 'Web of Inform 7')
 @book('Changes to Inform', 'Changes', 'A detailed change history of Inform 7')
 @book('Writing with Inform and the Inform Recipe Book', 'Documentation', 'The main Inform documentation, as seen in the apps, and in standalone Epubs')
 * retrospective - ANSI C source and resources needed to build (some) previous versions of Inform 7
 
 * Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
 
-* The special Standard Rules extension. Web of Inform 7; currently Appendix A of inform7, with a secondary copy in Internal/Extensions/Graham Nelson
-
-* The I6 Template - The .i6t files used in code generation. Inform 6; currently Appendix B of inform7, with a secondary copy in Internal/I6T
+* The I6 Template - The .i6t files used in code generation. Inform 6; held in Internal/I6T
 
 * Internal/Extensions - Libraries of code. Inform 7
 	* Internal/Extensions/Emily Short/Basic Help Menu.i7x
@@ -193,9 +192,16 @@ be edited. To make changes, edit READMEscript.txt and re-generate.
 		Documentation is <a href="@program/@manual.html">here</a>.</p>
 	</li>
 @end
+@define xweb(program)
+	<li>
+		<p><a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		@version(@program)
+		- <span class="purpose">@purpose(@program)</span>.</p>
+	</li>
+@end
 @define subweb(owner, program)
 	<li>
-		<p>↳ <a href="docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ <a href="docs/webs.html"><spon class="sectiontitle">@program</span></a> -
 		<span class="purpose">@purpose(@owner/@program)</span></p>
 	</li>
 @end
@@ -215,7 +221,7 @@ be edited. To make changes, edit READMEscript.txt and re-generate.
 @end
 @define extsubweb(owner, program)
 	<li>
-		<p>↳ <a href="../@owner/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ <a href="../@owner/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
 		<span class="purpose">@purpose(@owner/@program)</span></p>
 	</li>
 @end
@@ -273,6 +279,11 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@web('inform6', 'P-p')
 			@web('inblorb', 'P-ui')
 			@extweb('intest')
+		</ul>
+		<hr>
+		<p class="chapter">Resources needed by Inform 7:</p>
+		<ul class="sectionlist">
+			@xweb('srules')
 		</ul>
 		<hr>
 		<p class="chapter">Command-line programs needed only to build Inform 7:</p>

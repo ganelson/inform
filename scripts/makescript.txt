@@ -340,6 +340,7 @@ pages:
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
 	$(INWEBX) inrtps -weave-docs -weave-into docs/inrtps
+	$(INWEBX) srules -weave-docs -weave-into docs/srules
 
 # -----------------------------------------------------------------------------
 # Target "clean"
