@@ -173,7 +173,7 @@ be accepted. (Note that these are not git submodules.)
 
 ### Other files and folders in this repository
 
-* docs - Woven forms of the webs, for serving by GitHub Pages
+* docs - Woven forms of the webs, for serving by GitHub Pages (**not yet added**)
 * scripts/gitignorescript.txt - Inweb uses this to generate the .gitignore file at the root of the repository
 * scripts/makescript.txt - Inweb uses this to generate a makefile at the root of the repository
 * scripts/READMEscript.txt - Inpolicy uses this to generate the README.md file for the repository
@@ -181,7 +181,7 @@ be accepted. (Note that these are not git submodules.)
 ### Colophon
 
 This README.mk file was generated automatically by Inpolicy, and should not
-be edited. To make changes, edit READMEscript.txt and re-generate.
+be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 
 @-> ../docs/webs.html
 @define web(program, manual)
