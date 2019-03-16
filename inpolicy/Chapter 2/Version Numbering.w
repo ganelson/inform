@@ -234,15 +234,6 @@ void Inversion::maintain(text_stream *web) {
 	if (Inversion::needs_update(P))  {
 		Inversion::write(P);
 		Inversion::impose(P);
-		if ((Str::eq(web, I"inform7")) && (P->current_version)) {
-			filename *F = Filenames::from_text(I"build-code.mk");
-			text_stream as_stream;
-			text_stream *OUT = &as_stream;
-			if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
-				Errors::fatal_with_file("unable to write archive settings", F);
-			WRITE("BUILDCODE = %S\n", P->current_version->build_code);
-			Streams::close(OUT);
-		}
 	}
 }
 

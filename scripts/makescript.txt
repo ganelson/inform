@@ -35,10 +35,6 @@ INWEBX = ../inweb/Tangled/inweb
 
 -include ../make-benevolent-overlord.mk
 
-# And this defines the BUILDCODE symbol to some value such as "6P01":
-
--include build-code.mk
-
 # -----------------------------------------------------------------------------
 # Most components of Inform are C programs written as literate-programming
 # webs, making use of shared libraries of code called modules. We list them.
