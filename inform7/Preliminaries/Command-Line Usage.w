@@ -35,7 +35,10 @@ means "inside the app" -- in other words, fixed material supplied with Inform
 and always present; external means "outside the app", and is where the user
 installs her own choice of extra resources.
 
-@ If no |-internal I| is given on the command line, Inform 7 tries to find
+@ If no |-external E| is given, Inform behaves as it would in a clean
+installation with no external resources available.
+
+If no |-internal I| is given on the command line, Inform 7 tries to find
 out where it is installed in the file system. There is no completely foolproof,
 cross-platform way to know this (on some Unixes, a program cannot determine
 its own location), so Inform decides by the following set of rules:
@@ -53,21 +56,36 @@ respect to the current working directory.
 The default value for |-internal| is then the subdirectory |Internal| of
 this location: for example, |inform7/Internal|.
 
+@ If the user of an Inform UI app clicks Release instead of Go, the
+command-line switch |-release| is added to the above command. See the main
+Inform documentation for what this does.
 
+On some UI apps, there's a menu item "Release for testing...": this should
+add |-debug| to |-release|, which causes Inform to include debugging commands
+in the story file it generates. (Those commands are ordinarily suppressed
+by |-release| to prevent story files accidentally being shipped with them
+still in place.)
 
+Similarly, the Settings pane in the app contains a checkbox for "Make
+random outcomes predictable when testing": the app achieves this by adding
+the switch |-rng| to the above command-line call.
 
-
-
-
-
-ni "-internal" "/Users/gnelson/Natural Inform/Inform.app/Contents/Resources/Internal" "-external" "/Users/gnelson/Library/Inform" "-project" "/Users/gnelson/Natural Inform/Worked Examples/Buggy.inform" "-format=ulx"
-
-
-
-
-
-	|inform7/Tangled/inform7 [OPTIONS] [SOURCETEXT]|
-
+@h Testing and debugging switches.
+The following switches are used only when testing or maintaining Inform,
+and are unlikely to be useful to end users:
+(a) |-clock| times the run;
+(b) |-crash-all| performs a deliberate hard crash, dividing by zero, in
+the event of any Problem message being issues -- this makes it easier to
+obtain stack backtraces in a debugger;
+(c) |-noindex| skips the production of an Index, which reduces file system
+writes in a big testing run, and also saves a little time;
+(d) |-noprogress| suppresses console output of the "++ 26% (Binding rulebooks)"
+kind;
+(e) |-sigils| causes each Problem message to be preceded in console output
+by its "sigil", that is, its internal code: for example, |PM_PropertyNameTooLong|;
+(f) |-require-problem SIGIL| tells Inform to return an exit code of 0 if
+exactly this problem message is produced, and 1 otherwise;
+(g) |-case X| 
 
 
 

@@ -1091,7 +1091,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 	Strings::TextLiterals::define_CCOUNT_QUOTATIONS();
 	Emit::named_numeric_constant(InterNames::iname(MAX_FRAME_SIZE_NEEDED_INAME), (inter_t) max_frame_size_needed);
 	Emit::named_numeric_constant(InterNames::iname(RNG_SEED_AT_START_OF_PLAY_INAME), (inter_t) rng_seed_at_start_of_play);
-	Emit::named_numeric_constant(InterNames::iname(DEFAULT_SCORING_SETTING_INAME), (inter_t) default_scoring_setting);
+	Emit::named_numeric_constant(InterNames::iname(DEFAULT_SCORING_SETTING_INAME), (inter_t) FALSE);
 }
 
 void Kinds::RunTime::compile_data_type_support_routines(void) {

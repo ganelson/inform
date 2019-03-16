@@ -29,7 +29,6 @@ int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 int census_mode = FALSE; /* NI running only to update extension documentation */
 text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
-int default_scoring_setting = FALSE; /* By default, whether a score is kept at run time */
 int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
 int disable_import = FALSE;
 
@@ -121,7 +120,6 @@ list is not exhaustive.
 @e RELEASE_CLSW
 @e REQUIRE_PROBLEM_CLSW
 @e RNG_CLSW
-@e SCORING_CLSW
 @e SIGILS_CLSW
 @e TRANSIENT_CLSW
 @e INTER_CLSW
@@ -151,8 +149,6 @@ list is not exhaustive.
 		L"compile a version suitable for a Release build");
 	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
 		L"fix the random number generator of the story file (for testing)");
-	CommandLine::declare_boolean_switch(SCORING_CLSW, L"scoring", 1,
-		L"set default scoring setting");
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
 		L"print Problem message sigils (for testing)");
 	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
@@ -473,7 +469,6 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 			if (val) rng_seed_at_start_of_play = -16339;
 			else rng_seed_at_start_of_play = 0;
 			break;
-		case SCORING_CLSW: default_scoring_setting = val; break;
 		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
 
 		/* Other settings */
