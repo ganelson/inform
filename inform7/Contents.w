@@ -7,8 +7,6 @@ Version Number: 7.10.1
 Purpose: The core compiler in a natural-language design system for interactive fiction.
 Language: InC
 Preform Language: English
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Import: foundation

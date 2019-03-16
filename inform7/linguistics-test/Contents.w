@@ -1,6 +1,6 @@
 Title: linguistics-test
 Author: Graham Nelson
-Purpose: For testing linguistics
+Purpose: Unit tests for the linguistics module.
 Language: InC
 Declare Section Usage: Off
 Web Syntax Version: 2

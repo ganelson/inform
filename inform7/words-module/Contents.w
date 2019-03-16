@@ -1,9 +1,7 @@
 Title: words
 Author: Graham Nelson
-Purpose: A library of common code used by all of the Inform tools.
+Purpose: A library of code for reading natural language into a stream of words.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Chapter 1: Setting Up

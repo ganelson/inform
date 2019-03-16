@@ -2,8 +2,6 @@ Title: core
 Author: Graham Nelson
 Purpose: The core of the Inform compiler, as a module.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Chapter 1: Configuration and Control

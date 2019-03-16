@@ -182,8 +182,8 @@ Rule for deciding whether all includes a person while dropping or throwing
 	it does not.
 
 @ The supplying activities are linguistically interesting, for reasons gone
-into in the paper {\it Interactive Fiction, Natural Language and Semantic
-Analysis}: English verbs do not naturally seem to feature optional nouns.
+into in the paper "Interactive Fiction, Natural Language and Semantic
+Analysis": English verbs do not naturally seem to feature optional nouns.
 Indeed, we say "it rained on Tuesday" where "it" refers to nothing at all,
 merely because we can't bring ourselves to leave a gap and say just "rained
 on Tuesday". A better example here would be "it sounded like rain", because
@@ -248,7 +248,7 @@ by repeatedly calling the following activity:
 =
 Handling the final question is an activity. [29]
 
-@ It follows that this activity {\it must} at least sometimes do something
+@ It follows that this activity must at least sometimes do something
 dramatic to the execution state: perform a quit, for instance. Four
 primitive rules are available for the drastic things which the activity
 might wish to do, but these are not placed in any rulebook: instead they
@@ -369,7 +369,7 @@ then a single (though often, as here, multi-paragraph) locale:
 
 	|Sentier Le Corbusier|
 	|A coastal walk along the rocky shore between Nice and Menton.|
-	|    | {\it now the locale for the room Sentier Le Corbusier:}
+	|    ...now the locale for the room Sentier Le Corbusier:|
 	|A translucent jellyfish has been washed up by the waves.|
 	|    |
 	|You can also see a bucket and a spade here.|
@@ -387,11 +387,11 @@ When the player is in or on top of something, multiple locales are described:
 
 	|Sentier Le Corbusier (in the golf cart)|
 	|A coastal walk along the rocky shore between Nice and Menton.|
-	|    | {\it now the locale for the room Sentier Le Corbusier:}
+	|    ...now the locale for the room Sentier Le Corbusier:|
 	|A translucent jellyfish has been washed up by the waves.|
 	|    |
 	|You can also see a bucket and a spade here.|
-	|    | {\it now the locale for the golf cart:}
+	|    ...now the locale for the golf cart:|
 	|In the golf cart you can see a map of Villefranche-sur-Mer.|
 
 To sum up, the text produced by LOOK consists of a header (produced by

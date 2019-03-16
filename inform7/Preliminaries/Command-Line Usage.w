@@ -2,7 +2,10 @@ Command-Line Usage.
 
 A brief note on using Inform 7 at the command line.
 
-@h What Inform 7 is.
+@h Disclaimer.
+This is not documentation on the Inform language or its user-interface apps:
+it's a technical note on how the command-line tool inside those apps is called.
+
 The |inform7| executable has a few ancillary functions, but basically it
 takes natural language source text and compiles it to either "inter", an
 intermediate-level code, or all the way to Inform 6 source code. In order
@@ -70,28 +73,50 @@ Similarly, the Settings pane in the app contains a checkbox for "Make
 random outcomes predictable when testing": the app achieves this by adding
 the switch |-rng| to the above command-line call.
 
+@ If the app has a feature for systematically testing each example in an
+extension project, then it should add the switch |-case A| when running
+example A through inform7, |-case B| for B, and so on. This ensures that
+if the compiler generates Problem messages (i,e., if those tests fail
+to compile) then source-reference links will be to the right examples.
+
+For ordinary, non-Extension, projects, this switch should not be used.
+
+@ When the app installs a new extension (in the external area), or is run
+for the first time, it should call Inform 7 to perform a "census" of the
+available extensions. The compiler then looks through its internal and
+external areas, and creates suitable HTML pages showing what it finds,
+which it stores in a writeable area of the file system called the "transient"
+directory.
+
+The usage for this is:
+
+	|inform7/Tangled/inform7 -internal I -external E -transient T -census|
+
+(The caller has the obligation to provide the Transient directory.)
+
+@h Experimental Inter features.
+The options |-export X|, |-import X| and |-inter X| are not final, likely
+to change, and not documented.
+
 @h Testing and debugging switches.
 The following switches are used only when testing or maintaining Inform,
-and are unlikely to be useful to end users:
-(a) |-clock| times the run;
+and are unlikely to be useful to end users. Many of these are, however,
+used in the Intest scripts for testing Inform 7 and Inblorb.
+
+(a) |-clock| times the run.
 (b) |-crash-all| performs a deliberate hard crash, dividing by zero, in
 the event of any Problem message being issues -- this makes it easier to
-obtain stack backtraces in a debugger;
+obtain stack backtraces in a debugger.
 (c) |-noindex| skips the production of an Index, which reduces file system
-writes in a big testing run, and also saves a little time;
+writes in a big testing run, and also saves a little time.
 (d) |-noprogress| suppresses console output of the "++ 26% (Binding rulebooks)"
-kind;
+kind.
 (e) |-sigils| causes each Problem message to be preceded in console output
-by its "sigil", that is, its internal code: for example, |PM_PropertyNameTooLong|;
+by its "sigil", that is, its internal code. A typical sigil is
+|PM_PropertyNameTooLong|, where the ubiquitous PM stands for "property
+message".
 (f) |-require-problem SIGIL| tells Inform to return an exit code of 0 if
-exactly this problem message is produced, and 1 otherwise;
-(g) |-case X| 
-
-
-
-
-@ Inform returns an exit code of 0 if successful, or else it throws errors
-to |stderr| and returns 1 if unsuccessful.
+exactly this problem message is produced, and 1 otherwise.
 
 @h Prehistory.
 Build 1A01 was the first rough draft of a completed compiler: but it did

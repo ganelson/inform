@@ -1,6 +1,6 @@
 Title: problems-test
 Author: Graham Nelson
-Purpose: For testing problems
+Purpose: Unit tests for the problems module.
 Language: InC
 Declare Section Usage: Off
 Web Syntax Version: 2

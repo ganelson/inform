@@ -2,8 +2,6 @@ Title: indoc
 Author: Graham Nelson
 Purpose: The documentation-formatter for the Inform 7 system.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 Version Number: 4
 Version Name: Didache

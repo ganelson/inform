@@ -73,7 +73,7 @@ are case sensitive on the first word, so that "to say a something" and "to
 say A something" are different.
 
 A curiosity of the original I6 design, arising I think mostly from the need to
-save property memory in {\it Curses} (1993), the work of IF for which Inform 1
+save property memory in "Curses" (1993), the work of IF for which Inform 1
 had been created, is that it lacks the |print (A) ...| syntax to match the
 other forms. The omission is made good by using a routine in the I6 library
 instead.
@@ -185,8 +185,8 @@ reimplements a form of Jon Ingold's former extension Text Variations, which
 itself built on code going back to the days of I6.
 
 The head phrase here has one of the most complicated definitions in the SR,
-but is actually documented fairly explicitly in the {\it Extensions} chapter
-of {\it Writing with Inform}, so we won't repeat all that here. Essentially
+but is actually documented fairly explicitly in the Extensions chapter
+of "Writing with Inform", so we won't repeat all that here. Essentially
 it uses its own allocated cell of storage in an array to remember a state
 between uses, and compiles as a switch statement based on the current state.
 
@@ -1696,7 +1696,7 @@ To decide whether the action is not silent:
 	(- (keep_silent == false) -).
 
 @ The requirements of the current action can be tested. The following
-may be reimplemented using a verb {\it to require} at some future point.
+may be reimplemented using a verb "to require" at some future point.
 
 =
 Section SR5/4/2 - Actions, activities and rules - Action requirements (for interactive fiction language element only)
@@ -1900,7 +1900,7 @@ To decide which rulebook outcome is the outcome of the rulebook
 @h The model world.
 Phrase definitions with wordings like "the story has ended" are a
 necessary evil. The "has" here is parsed literally, not as the present
-tense of {\it to have}, so inflected forms like "the story had ended" are
+tense of "to have", so inflected forms like "the story had ended" are
 not available: nor is there any value "the story" for the subject noun
 phrase to hold... and so on. Ideally, we would word all conditional phrases
 so as to avoid the verbs, but natural language just doesn't work that way.
@@ -2229,7 +2229,7 @@ To say parser command so far:
 	(- PrintCommand(); -).
 
 @h Miscellaneous other phrases.
-Again, {\it these are not part of Inform's public specification}.
+Again, these are not part of Inform's public specification.
 
 =
 Section SR5/9/1 - Miscellaneous other phrases - Unindexed (for interactive fiction language element only)

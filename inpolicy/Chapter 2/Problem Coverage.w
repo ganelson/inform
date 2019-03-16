@@ -82,7 +82,7 @@ to problem messages:
 =
 void Coverage::which_problems_are_referenced(void) {
 	pathname *D = Pathnames::from_text(I"resources");
-	D = Pathnames::subfolder(I"Documentation")
+	D = Pathnames::subfolder(D, I"Documentation");
 	filename *WWI = Filenames::in_folder(D, I"Writing with Inform.txt");
 	TextFiles::read(WWI, FALSE, "unable to read 'Writing with Inform' source text", TRUE,
 		&Coverage::xref_harvester, NULL, NULL);

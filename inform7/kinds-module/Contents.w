@@ -2,8 +2,6 @@ Title: kinds
 Author: Graham Nelson
 Purpose: The type system used by Inform.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Chapter 1: Starting Up

@@ -457,7 +457,7 @@ indexing and rule-ordering tricks ameliorated this a little, but in the end
 it was just a bad design: withdrawing the ability to make check, carry out
 and report rules apply to multiple actions resulted in much cleaner code,
 and also a clearer conceptual definition of what these rulebooks were for.
-(But users still {\it didn't} like the change: actual functionality was
+(But users still didn't like the change: actual functionality was
 withdrawn.)
 
 So if they are always empty and never used, why are the three rulebooks
@@ -691,8 +691,8 @@ which the user, or an extension included by the user, chooses to add to the
 turn sequence rules.
 
 An unusual point here is that the "parse command rule" and the
-"generate action rule" are written such that they {\it do nothing unless
-the turn sequence rulebook is being followed at the top level} (by |Main|,
+"generate action rule" are written such that they do nothing unless
+the turn sequence rulebook is being followed at the top level (by |Main|,
 that is). This prevents them from being used recursively, which would not
 work properly, and enables a popular trick from the time before the 2008
 reform to keep working: we can simulate six turns going by in which the

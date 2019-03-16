@@ -1,6 +1,6 @@
 Title: words-test
 Author: Graham Nelson
-Purpose: For testing foundation
+Purpose: Unit tests for the words module.
 Language: InC
 Declare Section Usage: Off
 Web Syntax Version: 2

@@ -59,7 +59,7 @@ Definition: a thing is held if the player is holding it.
 @ Animate beings also have the ability to see and touch their surroundings,
 but note that we only model the ability to do these things -- we do not attempt
 to track what they actually do see or touch at any given moment, so there are
-no built-in verbs {\it to see} or {\it to touch}.
+no built-in verbs "to see" or "to touch".
 
 =
 The verb to be able to see means the visibility relation.
@@ -312,21 +312,17 @@ and so on).
 A thing has a text called a description.
 A thing has a text called an initial appearance.
 
-@ Lastly on things: an implication about scenery. The following sentence
-looks like an assertion much like others above ("A thing is usually inedible",
-for instance) -- but this is misleading. What is different is that instead of
-reading $K(x)\Rightarrow Q(x)$, where $K$ is a kind and $Q$ is a property,
-this has the form $P(x)\Rightarrow Q(x)$: it says that an object having
-property $P$ also probably has property $Q$. Such sentences are called
-implications, and the Standard Rules make only very sparing use of them.
-They can trip up the user (who may quite reasonably say that it is up to him
-what properties something has): but they are invaluable if they cause Inform
-to make deductions which any human reader would always make without thought.
+@ Lastly on things: an implication about scenery. The following sentence looks
+like an assertion much like others above ("A thing is usually inedible", for
+instance) -- but in fact it is an "implication": it says that an object having
+one property also probably has another. The Standard Rules make only very
+sparing use of implications. They can trip up the user (who may quite
+reasonably say that it is up to him what properties something has): but they
+are invaluable if they cause Inform to make deductions which any human reader
+would always make without thought.
 
 They can of course be overruled by explicit sentences in the source text,
 just as every sentence qualified by "usually" can.
-
-The handful of implications in the Standard Rules are all commented as such.
 
 =
 Scenery is usually fixed in place. [An implication.]
@@ -342,8 +338,8 @@ is how we get away with having just one set of 12 direction objects, not
 12 different ones for every location.) Implicit in that assumption is that
 the model world occupies a "flat" Euclidean space, to use further
 mathematical jargon: it doesn't wrap around on itself, and there are no
-bad positions where the directions fail. (Compare the Infocom game {\it Leather
-Goddesses of Phobos}, in which the South Pole of Mars is just such a
+bad positions where the directions fail. (Compare the Infocom game "Leather
+Goddesses of Phobos", in which the South Pole of Mars is just such a
 singularity: there are three routes out of this location, all of them
 "north". This of course required special programming, and so it would in
 an Inform 7 work, too.) More concisely:
@@ -424,7 +420,7 @@ Of the rest, N/S, NE/SW, E/W, SE/NW and U/D, it's noteworthy that this
 choice imposes a cubical grid on the world, simply because the compass
 directions are at 45 and 90 degree angles to each other: a hexagonal
 tessalation would be more faithful to distances (it would get rid of the
-awkward point that a NE move is $\sqrt{2}$ times the length of a N move),
+awkward point that a NE move is root 2 times the length of a N move),
 but in practice the world model doesn't care much about distances, another
 example of its qualitative nature. A further point is that, in a
 three-dimensional cubic lattice, we ought to have another eight pairs
@@ -514,7 +510,7 @@ A door is never pushable between rooms.
 Include (- has door, -) when defining a door.
 
 @ "Every exit is an entrance somewhere else," as Stoppard's play
-{\it Rosencrantz and Guildenstern are Dead} puts it: and though not all
+"Rosencrantz and Guildenstern are Dead" puts it: and though not all
 I7 doors are present on both sides, they do nevertheless have two sides.
 The representation of this is quite tricky because, as Stoppard implies,
 it's all a matter of which side you look at it from. What we call the
@@ -613,12 +609,6 @@ that they both grant or withhold access to some extent of space bordering
 on the current one. (Doors do this for the "horizontal" spatial model
 between rooms, whereas containers do it for the "vertical" spatial model
 of objects enclosing each other.)
-
-The following diagram shows the kinds created by the Standard Rules (bold
-boxes for fundamental kinds, plain ones for discretionary additions) and
-the patterns of behaviour they share (dotted boxes).
-
-[[Fig_A_1.png width 15cm]]
 
 @h The openability pattern.
 To satisfy the openability pattern, a thing has to provide both of the
@@ -745,7 +735,7 @@ more bytes of precious Z-machine array space than they necessarily would in
 I6. This is all part of the doctrine that in I7, all characters are equal
 in status: all can be the player, all can carry out actions. Anyway: here
 are all of those I6 properties, spatchcocked into the |Class| definition
-which NI will compile for "person" -- see $\S$21 of the DM4 for details
+which NI will compile for "person" -- see section 21 of the DM4 for details
 of why these are needed and what they do.
 
 =
@@ -805,7 +795,7 @@ person is necessary as the domain of P in "P carries X", for instance), and
 that too many kinds confuses the picture and imposes what may be a constraining
 structure on the user, who should be free to decide for himself what concepts
 are most helpful to organise. These arguments are discussed further in the
-white paper, {\it Natural Language, Semantic Analysis and Interactive Fiction}
+white paper, "Natural Language, Semantic Analysis and Interactive Fiction"
 (2005), but briefly: we are minimalist but not puritanically so.
 
 @h Men, women and animals.
@@ -865,8 +855,7 @@ fall into this category: it's intended to be used for "people" who are
 animate but probably not intelligent, or anyway, not participants in human
 society. It seems unusual to write "The black Labrador is a person."
 because that sounds like an insistent assertion of rights and thus a quite
-different sort of statement. (Don't drown that Labrador! He's a {\it
-person}.)
+different sort of statement. (Don't drown that Labrador! He's a person.)
 
 As can be seen from the tiny definition of "animal", though, it's really
 nothing more than a name for a position in the kinds hierarchy. There is
@@ -907,7 +896,7 @@ kind which can be switched on or off."
 Here again the justification boils down to tradition. Vehicles were a
 staple ingredient of the Infocom classics, largely because of code
 originally written for the inflatable boat in the 1978-79 mainframe version
-of {\it Zork}, which was then copied through into later titles. Unlike
+of "Zork", which was then copied through into later titles. Unlike
 devices, though, vehicles are genuinely difficult to model, and the
 implementation provided by the Standard Rules would be quite a lot of
 work for a user to manage alone. (Consider, for instance, the case when
@@ -970,8 +959,7 @@ A vehicle is usually not portable.
 This is the final kind created in the Standard Rules, and probably the most
 doubtful of all. It simply provides a hook to a cute and traditional feature
 of the I6 library whereby spare possessions are automatically cleared out
-of the player's way: it derives from the rucksack in the 1993 IF title
-{\it Curses}.
+of the player's way: it derives from the rucksack in the 1993 IF title "Curses".
 
 =
 Section SR1/15 - Player's holdall

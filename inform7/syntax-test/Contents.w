@@ -1,6 +1,6 @@
 Title: syntax-test
 Author: Graham Nelson
-Purpose: For testing foundation
+Purpose: Unit tests for the syntax module.
 Language: InC
 Declare Section Usage: Off
 Web Syntax Version: 2

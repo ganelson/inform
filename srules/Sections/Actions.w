@@ -51,7 +51,7 @@ this was explained in terms of Missee Lee, a black and white cat
 living in North Oxford; named for a Cambridge-educated pirate queen in
 the South China seas who is the heroine -- or villainess -- of the
 tenth in Arthur Ransome's Swallows and Amazons series of children's
-books, {\it Missee Lee} (1941). The rule was then removed, but it
+books, "Missee Lee" (1941). The rule was then removed, but it
 seemed sad to delete the only mention of Missee, and all the more so
 since she died (at a grand old age and in mid-spring) in 2008.
 

@@ -1,6 +1,6 @@
 Title: srules
 Author: Graham Nelson
-Purpose: The Standard Rules extension, included in all Inform 7 works
+Purpose: The Standard Rules extension, included in all Inform 7 works.
 Version Number: 5/190315
 Language: Inform 7
 Web Syntax Version: 2

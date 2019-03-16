@@ -1,6 +1,6 @@
 Title: core-test
 Author: Graham Nelson
-Purpose: For testing the core compiler module in isolation from its IF layer
+Purpose: For testing the core compiler module in isolation from its IF layer.
 Language: C for Inform
 Declare Section Usage: Off
 Web Syntax Version: 2

@@ -154,9 +154,15 @@ void Readme::command(write_state *ws, text_stream *OUT, text_stream *command, te
 			project *P = Inversion::read(program, TRUE);
 			DISCARD_TEXT(program);
 			if (P->current_version) {
-				WRITE("version %S '%S'", P->current_version->number, P->current_version->name);
+				WRITE("version");
+				if (Str::len(P->current_version->number) > 0)
+					WRITE(" %S", P->current_version->number);
+				if (Str::len(P->current_version->name) > 0)
+					WRITE(" '%S'", P->current_version->name);
 				if (Str::ne(P->current_version->build_code, I"9Z99"))
 					WRITE(" (build %S)", P->current_version->build_code);
+			} else {
+				WRITE("unversioned");
 			}
 		}
 		Regexp::dispose_of(&mr);

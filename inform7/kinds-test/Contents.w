@@ -1,6 +1,6 @@
 Title: kinds-test
 Author: Graham Nelson
-Purpose: For testing kinds
+Purpose: Unit tests for the kinds module.
 Language: InC
 Declare Section Usage: Off
 Web Syntax Version: 2

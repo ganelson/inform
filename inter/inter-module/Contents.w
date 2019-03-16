@@ -2,8 +2,6 @@ Title: inter
 Author: Graham Nelson
 Purpose: Code for dealing with intermediate-level Inform
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Chapter 1: Setting Up

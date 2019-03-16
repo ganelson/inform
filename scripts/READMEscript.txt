@@ -86,32 +86,35 @@ assembles all those programs and resources, which fall into two categories:
 This repository is where development is done on the following:
 
 @define primary(program, language)
-* @program - @purpose(@program) Current @version(@program). @language
+* @program - @purpose(@program) - __@version(@program)__ - @language
 @end
 @define book(title, path, topic)
 * @title - @topic. Ebook in Indoc format, stored at path @path.
 @end
+@define extension(path)
+		* @path - __@version(@path)__
+@end
 @primary(inform7, 'Web of InC')
 	* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
 	* inform7/Internal/Extensions - Libraries of code. Inform 7
-		* inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x
-		* inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x
-		* inform7/Internal/Extensions/Emily Short/Complex Listing.i7x
-		* inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x
-		* inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x
-		* inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x
-		* inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x
-		* inform7/Internal/Extensions/Emily Short/Locksmith.i7x
-		* inform7/Internal/Extensions/Emily Short/Menus.i7x
-		* inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x
-		* inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x
-		* inform7/Internal/Extensions/Eric Eve/Epistemology.i7x
-		* inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x
-		* inform7/Internal/Extensions/Graham Nelson/English Language.i7x
-		* inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x
-		* inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x
-		* inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x
-		* inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x
+@extension('inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Complex Listing.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Locksmith.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Menus.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x')
+@extension('inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x')
+@extension('inform7/Internal/Extensions/Eric Eve/Epistemology.i7x')
+@extension('inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x')
+@extension('inform7/Internal/Extensions/Graham Nelson/English Language.i7x')
+@extension('inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x')
+@extension('inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x')
+@extension('inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x')
+@extension('inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x')
 	* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
 	* inform7/Internal/Languages - Natural language definition bundles
 	* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
@@ -152,14 +155,17 @@ but this is not where development on them is done, and no pull requests will
 be accepted. (Note that these are not git submodules.)
 
 @define secondary(program, for, maintainer, username, repository)
-* @program - @for - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
+* @program - @for - __@version(@program)__ - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
 @end
-@secondary(inform6, 'the Inform 6 compiler (used by I7 as a code generator)', 'David Kinder', DavidKinder, Inform6)
+@secondary(inform6, 'The Inform 6 compiler (used by I7 as a code generator).', 'David Kinder', DavidKinder, Inform6)
 
+@define template(program, for, maintainer, username, repository)
+	* @program - @for - __@version(@program)__ - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
+@end
 * inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
-	* inform7/Internal/Templates/Parchment - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
-	* inform7/Internal/Templates/Quixe - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
-	* inform7/Internal/Templates/Vorpal - from (part of) [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
+@template('inform7/Internal/Templates/Parchment', 'Z-machine in Javascript', 'Dannii Willis', curiousdannii, parchment)
+@template('inform7/Internal/Templates/Quixe', 'Glulx in Javascript', 'Andrew Plotkin', erkyrath, quixe)
+@template('inform7/Internal/Templates/Vorple', 'Multimedia in Javascript', 'Juhana Leinonen', vorple, inform7)
 
 ### Binary resources (such as image files)
 

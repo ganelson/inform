@@ -2,8 +2,6 @@ Title: codegen
 Author: Graham Nelson
 Purpose: An embryonic code generator for I6 code.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Chapter 1: Setting Up

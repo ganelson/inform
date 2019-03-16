@@ -134,7 +134,7 @@ list is not exhaustive.
 	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
 		L"compile I6 code suitable for the virtual machine X");
 	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
-		L"rather than compile, perform an extensions census");
+		L"perform an extensions census (rather than compile)");
 	CommandLine::declare_boolean_switch(CLOCK_CLSW, L"clock", 1,
 		L"time how long inform7 takes to run");
 	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,

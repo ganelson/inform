@@ -1,9 +1,7 @@
 Title: syntax
 Author: Graham Nelson
-Purpose: A library of common code used by all of the Inform tools.
+Purpose: A library of code to build a parse tree and break text into sentences.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 
 Chapter 1: Setting Up
