@@ -9,8 +9,8 @@ ideas from linguistics and from literate programming, Inform is widely
 used as a medium for literary writing, as a prototyping tool in the games
 industry, and in education, both at school and university level (where
 Inform is often assigned material for courses on digital narrative).
-It has twice ranked in the top 100 most influential programming languages
-according to the TIOBE index.
+It has several times ranked in the top 100 most influential programming
+languages according to the TIOBE index.
 
 ## Licence
 
@@ -37,8 +37,6 @@ for everything needed to run it on the command line. However:
 * To build and test the compiler you also need Inweb and Intest, programs
 spun out from the Inform project. These are __not included in the core
 repository either as submodules or copies__, and have their own repositories.
-If you are new to Inform core development, begin by cloning and building Inweb
-as a stand-alone tool, then use that to build Intest, then return here.
 	* [https://github.com/ganelson/inweb](https://github.com/ganelson/inweb), maintained by [Graham Nelson](https://github.com/ganelson)
 	* [https://github.com/ganelson/intest](https://github.com/ganelson/intest), maintained by [Graham Nelson](https://github.com/ganelson)
 * Most Inform authors use Inform as an app: for example, it is available
@@ -52,8 +50,8 @@ platforms, each app has its own code in its own repository. See:
 
 Make a directory in which to work: let's call this "work". Then:
 
-* Clone and build Inweb into "work/inweb".
-* Clone and build Intest into "work/intest".
+* Clone and build Inweb into "work/inweb": repository [here](https://github.com/ganelson/inweb).
+* Clone and build Intest into "work/intest": repository [here](https://github.com/ganelson/intest).
 * Clone Inform into "work/inform". Change the current directory to that.
 Then run "bash scripts/first.sh" (or whatever shell you prefer: it need
 not be bash). This should give you a complete working set of command-line
@@ -83,7 +81,7 @@ becomes public: GitHub Pages does not work on private repositories.)
 
 ### Resources for which this is the primary repository
 
-This repository is where development is done on the following:
+This repository is where development is done on the following executables:
 
 @define primary(program, language)
 * @program - @purpose(@program) - __@version(@program)__ - [&#9733;&nbsp;Web](docs/@program/index.html)
@@ -92,11 +90,23 @@ This repository is where development is done on the following:
 * @title - @topic. Ebook in Indoc format, stored at path @path.
 @end
 @define extension(path)
-		* @path - __@version(@path)__
+	* @path - __@version(@path)__
 @end
 @primary(inform7, 'Web of InC')
-	* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
-	* inform7/Internal/Extensions - Libraries of code. Inform 7
+	* its modules [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
+	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html), [&#9733;&nbsp;core-test](docs/core-test/index.html)
+@primary(inblorb, 'Web of InC')
+@primary(indoc, 'Web of InC')
+@primary(inpolicy, 'Web of InC')
+@primary(inrtps, 'Web of InC')
+@primary(inter, 'Web of InC')
+	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
+@primary(srules, 'Web of Inform 7')
+
+The inform7 subtree further contains these primary resources:
+
+* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
+* inform7/Internal/Extensions - Libraries of code. Inform 7
 @extension('inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x')
 @extension('inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x')
 @extension('inform7/Internal/Extensions/Emily Short/Complex Listing.i7x')
@@ -115,20 +125,14 @@ This repository is where development is done on the following:
 @extension('inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x')
 @extension('inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x')
 @extension('inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x')
-	* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
-	* inform7/Internal/Languages - Natural language definition bundles
-	* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
+* inform7/Internal/Languages - Natural language definition bundles
+* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
 @define itemplate(program, for)
-		* @program - @for - __@version(@program)__
+	* @program - @for - __@version(@program)__
 @end
 @itemplate('inform7/Internal/Templates/Classic', 'An older, plainer website')
 @itemplate('inform7/Internal/Templates/Standard', 'The default, more modern look')
-@primary(inblorb, 'Web of InC')
-@primary(indoc, 'Web of InC')
-@primary(inpolicy, 'Web of InC')
-@primary(inrtps, 'Web of InC')
-@primary(inter, 'Web of InC')
-@primary(srules, 'Web of Inform 7')
 
 The "resources" directory holds a number of non-executable items of use to the
 Inform UI applications, and to Inform websites:

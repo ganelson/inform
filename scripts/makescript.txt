@@ -335,8 +335,28 @@ pages:
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
+	$(INWEBX) inform7/core-module -weave-docs -weave-into docs/core-module
+	$(INWEBX) inform7/core-test -weave-docs -weave-into docs/core-test
+	$(INWEBX) inform7/if-module -weave-docs -weave-into docs/if-module
+	$(INWEBX) inform7/index-module -weave-docs -weave-into docs/index-module
+	$(INWEBX) inform7/inflections-module -weave-docs -weave-into docs/inflections-module
+	$(INWEBX) inform7/inflections-test -weave-docs -weave-into docs/inflections-test
+	$(INWEBX) inform7/kinds-module -weave-docs -weave-into docs/kinds-module
+	$(INWEBX) inform7/kinds-test -weave-docs -weave-into docs/kinds-test
+	$(INWEBX) inform7/linguistics-module -weave-docs -weave-into docs/linguistics-module
+	$(INWEBX) inform7/linguistics-test -weave-docs -weave-into docs/linguistics-test
+	$(INWEBX) inform7/multimedia-module -weave-docs -weave-into docs/multimedia-module
+	$(INWEBX) inform7/problems-module -weave-docs -weave-into docs/problems-module
+	$(INWEBX) inform7/problems-test -weave-docs -weave-into docs/problems-test
+	$(INWEBX) inform7/syntax-module -weave-docs -weave-into docs/syntax-module
+	$(INWEBX) inform7/syntax-test -weave-docs -weave-into docs/syntax-test
+	$(INWEBX) inform7/words-module -weave-docs -weave-into docs/words-module
+	$(INWEBX) inform7/words-test -weave-docs -weave-into docs/words-test
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
 	$(INWEBX) inrtps -weave-docs -weave-into docs/inrtps
+	$(INWEBX) inter -weave-docs -weave-into docs/inter
+	$(INWEBX) inter/inter-module -weave-docs -weave-into docs/inter-module
+	$(INWEBX) inter/codegen-module -weave-docs -weave-into docs/codegen-module
 	$(INWEBX) srules -weave-docs -weave-into docs/srules
 
 # -----------------------------------------------------------------------------

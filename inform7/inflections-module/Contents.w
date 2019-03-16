@@ -1,9 +1,7 @@
 Title: inflections
 Author: Graham Nelson
 Purpose: A library for adapting words or short phrases for linguistic purposes.
-Language: C for Inform
-Declare Section Usage: Off
-Web Syntax Version: 2
+Language: InC
 Licence: Artistic License 2.0
 
 Chapter 1: Starting Up

@@ -8,8 +8,8 @@ ideas from linguistics and from literate programming, Inform is widely
 used as a medium for literary writing, as a prototyping tool in the games
 industry, and in education, both at school and university level (where
 Inform is often assigned material for courses on digital narrative).
-It has twice ranked in the top 100 most influential programming languages
-according to the TIOBE index.
+It has several times ranked in the top 100 most influential programming
+languages according to the TIOBE index.
 
 ## Licence
 
@@ -36,8 +36,6 @@ for everything needed to run it on the command line. However:
 * To build and test the compiler you also need Inweb and Intest, programs
 spun out from the Inform project. These are __not included in the core
 repository either as submodules or copies__, and have their own repositories.
-If you are new to Inform core development, begin by cloning and building Inweb
-as a stand-alone tool, then use that to build Intest, then return here.
 	* [https://github.com/ganelson/inweb](https://github.com/ganelson/inweb), maintained by [Graham Nelson](https://github.com/ganelson)
 	* [https://github.com/ganelson/intest](https://github.com/ganelson/intest), maintained by [Graham Nelson](https://github.com/ganelson)
 * Most Inform authors use Inform as an app: for example, it is available
@@ -51,8 +49,8 @@ platforms, each app has its own code in its own repository. See:
 
 Make a directory in which to work: let's call this "work". Then:
 
-* Clone and build Inweb into "work/inweb".
-* Clone and build Intest into "work/intest".
+* Clone and build Inweb into "work/inweb": repository [here](https://github.com/ganelson/inweb).
+* Clone and build Intest into "work/intest": repository [here](https://github.com/ganelson/intest).
 * Clone Inform into "work/inform". Change the current directory to that.
 Then run "bash scripts/first.sh" (or whatever shell you prefer: it need
 not be bash). This should give you a complete working set of command-line
@@ -82,55 +80,12 @@ becomes public: GitHub Pages does not work on private repositories.)
 
 ### Resources for which this is the primary repository
 
-This repository is where development is done on the following:
+This repository is where development is done on the following executables:
 
 * inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - [&#9733;&nbsp;Web](docs/inform7/index.html)
 
-	* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
-	* inform7/Internal/Extensions - Libraries of code. Inform 7
-		* inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x - __unversioned__
-
-		* inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x - __version 7/140425__
-
-		* inform7/Internal/Extensions/Emily Short/Complex Listing.i7x - __version 9__
-
-		* inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x - __version 10/140425__
-
-		* inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x - __version 4__
-
-		* inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x - __version 5/140516__
-
-		* inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x - __unversioned__
-
-		* inform7/Internal/Extensions/Emily Short/Locksmith.i7x - __version 12__
-
-		* inform7/Internal/Extensions/Emily Short/Menus.i7x - __version 3__
-
-		* inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x - __version 5__
-
-		* inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x - __unversioned__
-
-		* inform7/Internal/Extensions/Eric Eve/Epistemology.i7x - __version 9__
-
-		* inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x - __version 1__
-
-		* inform7/Internal/Extensions/Graham Nelson/English Language.i7x - __version 1__
-
-		* inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x - __version 2__
-
-		* inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x - __version 3__
-
-		* inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x - __unversioned__
-
-		* inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x - __unversioned__
-
-	* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
-	* inform7/Internal/Languages - Natural language definition bundles
-	* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
-		* inform7/Internal/Templates/Classic - An older, plainer website - __unversioned__
-
-		* inform7/Internal/Templates/Standard - The default, more modern look - __unversioned__
-
+	* its modules [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
+	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html), [&#9733;&nbsp;core-test](docs/core-test/index.html)
 * inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - [&#9733;&nbsp;Web](docs/inblorb/index.html)
 
 * indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - [&#9733;&nbsp;Web](docs/indoc/index.html)
@@ -141,7 +96,56 @@ This repository is where development is done on the following:
 
 * inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html)
 
+	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
 * srules - The Standard Rules extension, included in all Inform 7 works. - __version 5/190315__ - [&#9733;&nbsp;Web](docs/srules/index.html)
+
+
+The inform7 subtree further contains these primary resources:
+
+* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
+* inform7/Internal/Extensions - Libraries of code. Inform 7
+	* inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x - __unversioned__
+
+	* inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x - __version 7/140425__
+
+	* inform7/Internal/Extensions/Emily Short/Complex Listing.i7x - __version 9__
+
+	* inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x - __version 10/140425__
+
+	* inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x - __version 4__
+
+	* inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x - __version 5/140516__
+
+	* inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x - __unversioned__
+
+	* inform7/Internal/Extensions/Emily Short/Locksmith.i7x - __version 12__
+
+	* inform7/Internal/Extensions/Emily Short/Menus.i7x - __version 3__
+
+	* inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x - __version 5__
+
+	* inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x - __unversioned__
+
+	* inform7/Internal/Extensions/Eric Eve/Epistemology.i7x - __version 9__
+
+	* inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x - __version 1__
+
+	* inform7/Internal/Extensions/Graham Nelson/English Language.i7x - __version 1__
+
+	* inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x - __version 2__
+
+	* inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x - __version 3__
+
+	* inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x - __unversioned__
+
+	* inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x - __unversioned__
+
+* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
+* inform7/Internal/Languages - Natural language definition bundles
+* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+	* inform7/Internal/Templates/Classic - An older, plainer website - __unversioned__
+
+	* inform7/Internal/Templates/Standard - The default, more modern look - __unversioned__
 
 
 The "resources" directory holds a number of non-executable items of use to the
