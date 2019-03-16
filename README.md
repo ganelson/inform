@@ -68,17 +68,17 @@ sounds like a helicopter taking off.
 
 ## Inventory
 
-"I can't help feeling that if someone had asked me before the universe began
+**"I can't help feeling that if someone had asked me before the universe began
 how it would turn out, I should have guessed something a bit less like an old
 curiosity shop and a bit more like a formal French garden — an orderly
 arrangement of straight avenues, circular walks, and geometrically shaped
-trees and hedges." (Michael Frayn)
+trees and hedges."** (Michael Frayn)
 
-Inform is not a single program: while the Inform 7 compiler builds to a single
-executable file, this is only useful in concert with other tools (notably the
-Inform 6 compiler and the Inblorb packager), with standard libraries of code
-(called Extensions), with documentation, test cases and so on. This repository
-assembles all those programs and resources, which fall into two categories:
+Inform is not a single program, but an assemblage of programs and resources.
+Some, including the inform7 compiler itself, are "literate programs", also
+called "webs". The notation &#9733; marks these, and links are provided to
+their human-readable forms. (This will be enabled when the repository
+becomes public: GitHub Pages does not work on private repositories.)
 
 ### Resources for which this is the primary repository
 
@@ -157,15 +157,6 @@ Inform UI applications, and to Inform websites:
 Finally, the "retrospective" directory holds ANSI C source and resources needed
 to build (some) previous versions of Inform 7. At present, this is only sketchily
 put together.
-
-Notes:
-
-1. The "webs" above are literate programs. This means they can either be
-"tangled" to executables, or "woven" to human-readable forms. The woven
-forms can [all be browsed here](docs/webs.html). They aim to be much easier
-to understand than raw source code found by spelunking through the repository.
-2. "InC" is a slight extension of ANSI C99. These extensions are handled by
-Inweb, which acts as a preprocessor. For more on InC, see the Inweb manual.
 
 ### Resources copied here from elsewhere
 
