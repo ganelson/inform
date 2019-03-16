@@ -86,7 +86,7 @@ assembles all those programs and resources, which fall into two categories:
 This repository is where development is done on the following:
 
 @define primary(program, language)
-* @program - @purpose(@program) - __@version(@program)__ - @language
+* @program - @purpose(@program) - __@version(@program)__ - [&#9733;&nbsp;Web](docs/@program/index.html)
 @end
 @define book(title, path, topic)
 * @title - @topic. Ebook in Indoc format, stored at path @path.
@@ -118,8 +118,11 @@ This repository is where development is done on the following:
 	* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
 	* inform7/Internal/Languages - Natural language definition bundles
 	* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
-		* Internal/Templates/Classic
-		* Internal/Templates/Standard
+@define itemplate(program, for)
+		* @program - @for - __@version(@program)__
+@end
+@itemplate('inform7/Internal/Templates/Classic', 'An older, plainer website')
+@itemplate('inform7/Internal/Templates/Standard', 'The default, more modern look')
 @primary(inblorb, 'Web of InC')
 @primary(indoc, 'Web of InC')
 @primary(inpolicy, 'Web of InC')

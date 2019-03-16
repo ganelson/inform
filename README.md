@@ -84,7 +84,7 @@ assembles all those programs and resources, which fall into two categories:
 
 This repository is where development is done on the following:
 
-* inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - Web of InC
+* inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - [&#9733;&nbsp;Web](docs/inform7/index.html)
 
 	* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
 	* inform7/Internal/Extensions - Libraries of code. Inform 7
@@ -127,19 +127,21 @@ This repository is where development is done on the following:
 	* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
 	* inform7/Internal/Languages - Natural language definition bundles
 	* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
-		* Internal/Templates/Classic
-		* Internal/Templates/Standard
-* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - Web of InC
+		* inform7/Internal/Templates/Classic - An older, plainer website - __unversioned__
 
-* indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - Web of InC
+		* inform7/Internal/Templates/Standard - The default, more modern look - __unversioned__
 
-* inpolicy - A lint-like tool to check up on various policies used in Inform source code. - __version 1 'Plan A'__ - Web of InC
+* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - [&#9733;&nbsp;Web](docs/inblorb/index.html)
 
-* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - Web of InC
+* indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - [&#9733;&nbsp;Web](docs/indoc/index.html)
 
-* inter - For handling intermediate Inform code. - __version 1 'Axion'__ - Web of InC
+* inpolicy - A lint-like tool to check up on various policies used in Inform source code. - __version 1 'Plan A'__ - [&#9733;&nbsp;Web](docs/inpolicy/index.html)
 
-* srules - The Standard Rules extension, included in all Inform 7 works. - __version 5/190315__ - Web of Inform 7
+* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - [&#9733;&nbsp;Web](docs/inrtps/index.html)
+
+* inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html)
+
+* srules - The Standard Rules extension, included in all Inform 7 works. - __version 5/190315__ - [&#9733;&nbsp;Web](docs/srules/index.html)
 
 
 The "resources" directory holds a number of non-executable items of use to the
