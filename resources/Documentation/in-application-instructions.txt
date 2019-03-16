@@ -22,6 +22,6 @@ css: td.midnightlefthalfpage + {
 }
 
 link_to_extensions_index = inform://Extensions/Extensions.html
-definitions_filename = Internal/Miscellany/definitions.html
+definitions_filename = inform7/Internal/Miscellany/definitions.html
 
 declare: app

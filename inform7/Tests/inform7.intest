@@ -9,12 +9,12 @@
 -if osx -cases	[Index] 'inform7/Tests/Test Index'
 -if osx -cases	[Map] 'inform7/Tests/Test Maps'
 -if osx -cases	[Release] 'inform7/Tests/Test Releases'
--extension		[Main] 'Internal/Extensions/Emily Short/Complex Listing.i7x'
--extension		[Main] 'Internal/Extensions/Emily Short/Inanimate Listeners.i7x'
--extension		[Main] 'Internal/Extensions/Emily Short/Locksmith.i7x'
--extension		[Main] 'Internal/Extensions/Emily Short/Punctuation Removal.i7x'
--extension		[Main] 'Internal/Extensions/Emily Short/Skeleton Keys.i7x'
--extensions		[Main] 'Internal/Extensions/Graham Nelson'
+-extension		[Main] 'inform7/Internal/Extensions/Emily Short/Complex Listing.i7x'
+-extension		[Main] 'inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x'
+-extension		[Main] 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
+-extension		[Main] 'inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x'
+-extension		[Main] 'inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x'
+-extensions		[Main] 'inform7/Internal/Extensions/Graham Nelson'
 -examples		[Main] Documentation/Examples
 -problems		[Main] 'inform7/Tests/Test Problems'
 
@@ -22,7 +22,7 @@
 
 	set: $I6 = inform6/Tangled/inform6
 	set: $I7 = inform7/Tangled/inform7
-	set: $INTERNAL = Internal
+	set: $INTERNAL = inform7/Internal
 	set: $WORKSPACE = intest/Workspace
 	set: $ZINT = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
 	set: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
@@ -75,9 +75,9 @@
 	endif
 
 	if: $VM G
-		set: $SRINTERB = Internal/I6T/sr-G.interb
+		set: $SRINTERB = inform7/Internal/I6T/sr-G.interb
 	else
-		set: $SRINTERB = Internal/I6T/sr-Z.interb
+		set: $SRINTERB = inform7/Internal/I6T/sr-Z.interb
 	endif
 !	if: $CASE Imp_%c*
 !		set: $INTERCHAIN = import:$SRINTERB,link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,reconcile-verbs,generate-inter:haha.txt,generate-i6:*
@@ -149,7 +149,7 @@
 -recipe [Index]
 
 	set: $I7 = inform7/Tangled/inform7
-	set: $INTERNAL = Internal
+	set: $INTERNAL = inform7/Internal
 	set: $WORKSPACE = intest/Workspace
 
 	! This recipe is for testing that the index in a sample project is correct.
@@ -243,7 +243,7 @@
 -recipe [Map]
 
 	set: $I7 = inform7/Tangled/inform7
-	set: $INTERNAL = Internal
+	set: $INTERNAL = inform7/Internal
 	set: $WORKSPACE = intest/Workspace
 
 	set: $VM = G
@@ -279,7 +279,7 @@
 
 	set: $I7 = inform7/Tangled/inform7
 	set: $INTER = inter/Tangled/inter
-	set: $INTERNAL = Internal
+	set: $INTERNAL = inform7/Internal
 	set: $WORKSPACE = intest/Workspace
 
 	! First we decide whether to compile it for the Z-machine or Glulx.
@@ -341,7 +341,7 @@
 -recipe [Release]
 
 	set: $I7 = inform7/Tangled/inform7
-	set: $INTERNAL = Internal
+	set: $INTERNAL = inform7/Internal
 	set: $WORKSPACE = intest/Workspace
 
 	set: $VM = G

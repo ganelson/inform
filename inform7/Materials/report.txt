@@ -1,9 +1,0 @@
-[[Repeat Chapter]]
-[[Chapter Title]]: [[Chapter Lines]] lines
-[[End Repeat]]
-
-[[Repeat Chapter]]
-[[Repeat Section]]
-[[Section Mean]]    [[Section Title]]: [[Section Code]]: [[Section Lines]] lines, [[Section Paragraphs]] pars
-[[End Repeat]]
-[[End Repeat]]

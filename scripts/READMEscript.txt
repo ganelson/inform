@@ -92,49 +92,49 @@ This repository is where development is done on the following:
 * @title - @topic. Ebook in Indoc format, stored at path @path.
 @end
 @primary(inform7, 'Web of InC')
+	* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
+	* inform7/Internal/Extensions - Libraries of code. Inform 7
+		* inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x
+		* inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x
+		* inform7/Internal/Extensions/Emily Short/Complex Listing.i7x
+		* inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x
+		* inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x
+		* inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x
+		* inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x
+		* inform7/Internal/Extensions/Emily Short/Locksmith.i7x
+		* inform7/Internal/Extensions/Emily Short/Menus.i7x
+		* inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x
+		* inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x
+		* inform7/Internal/Extensions/Eric Eve/Epistemology.i7x
+		* inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x
+		* inform7/Internal/Extensions/Graham Nelson/English Language.i7x
+		* inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x
+		* inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x
+		* inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x
+		* inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x
+	* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
+	* inform7/Internal/Languages - Natural language definition bundles
+	* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+		* Internal/Templates/Classic
+		* Internal/Templates/Standard
 @primary(inblorb, 'Web of InC')
 @primary(indoc, 'Web of InC')
 @primary(inpolicy, 'Web of InC')
 @primary(inrtps, 'Web of InC')
 @primary(inter, 'Web of InC')
 @primary(srules, 'Web of Inform 7')
-@book('Changes to Inform', 'Changes', 'A detailed change history of Inform 7')
-@book('Writing with Inform and the Inform Recipe Book', 'Documentation', 'The main Inform documentation, as seen in the apps, and in standalone Epubs')
-* retrospective - ANSI C source and resources needed to build (some) previous versions of Inform 7
 
-* Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
+The "resources" directory holds a number of non-executable items of use to the
+Inform UI applications, and to Inform websites:
 
-* The I6 Template - The .i6t files used in code generation. Inform 6; held in Internal/I6T
+@book('Changes to Inform', 'resources/Changes', 'A detailed change history of Inform 7')
+@book('Writing with Inform and the Inform Recipe Book', 'resources/Documentation', 'The main Inform documentation, as seen in the apps, and in standalone Epubs')
+* resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
+* resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app. Inform 7
 
-* Internal/Extensions - Libraries of code. Inform 7
-	* Internal/Extensions/Emily Short/Basic Help Menu.i7x
-	* Internal/Extensions/Emily Short/Basic Screen Effects.i7x
-	* Internal/Extensions/Emily Short/Complex Listing.i7x
-	* Internal/Extensions/Emily Short/Glulx Entry Points.i7x
-	* Internal/Extensions/Emily Short/Glulx Image Centering.i7x
-	* Internal/Extensions/Emily Short/Glulx Text Effects.i7x
-	* Internal/Extensions/Emily Short/Inanimate Listeners.i7x
-	* Internal/Extensions/Emily Short/Locksmith.i7x
-	* Internal/Extensions/Emily Short/Menus.i7x
-	* Internal/Extensions/Emily Short/Punctuation Removal.i7x
-	* Internal/Extensions/Emily Short/Skeleton Keys.i7x
-	* Internal/Extensions/Eric Eve/Epistemology.i7x
-	* Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x
-	* Internal/Extensions/Graham Nelson/English Language.i7x
-	* Internal/Extensions/Graham Nelson/Metric Units.i7x
-	* Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x
-	* Internal/Extensions/Graham Nelson/Unicode Character Names.i7x
-	* Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x
-
-* Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
-
-* Internal/Languages - Natural language definition bundles
-
-* Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app. Inform 7
-
-* Internal/Templates - template websites for Inform 7's 'release as a website' feature
-	* Internal/Templates/Classic
-	* Internal/Templates/Standard
+Finally, the "retrospective" directory holds ANSI C source and resources needed
+to build (some) previous versions of Inform 7. At present, this is only sketchily
+put together.
 
 Notes:
 
@@ -156,27 +156,27 @@ be accepted. (Note that these are not git submodules.)
 @end
 @secondary(inform6, 'the Inform 6 compiler (used by I7 as a code generator)', 'David Kinder', DavidKinder, Inform6)
 
-* Internal/Templates - template websites for Inform 7's 'release as a website' feature
-	* Internal/Templates/Parchment - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
-	* Internal/Templates/Quixe - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
-	* Internal/Templates/Vorpal - from (part of) [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
+* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+	* inform7/Internal/Templates/Parchment - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
+	* inform7/Internal/Templates/Quixe - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
+	* inform7/Internal/Templates/Vorpal - from (part of) [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
 
 ### Binary resources (such as image files)
 
-* Imagery/app_images - icons for the Inform app and its many associated files, in MacOS format
-* Imagery/bg_images - background textures used in the Index generated by Inform
-* Imagery/doc_images - miscellaneous images needed by the documentation
-* Imagery/map_icons - images needed for the World pane of the Index generated by Inform
-* Imagery/outcome_images - images used on outcome pages
-* Imagery/scene_icons - images needed for the Scenes pane of the Index generated by Inform
-* Internal/Miscellany - default cover art, the Introduction to IF and Postcard PDFs
+* resources/Imagery/app_images - icons for the Inform app and its many associated files, in MacOS format
+* resources/Imagery/bg_images - background textures used in the Index generated by Inform
+* resources/Imagery/doc_images - miscellaneous images needed by the documentation
+* resources/Imagery/map_icons - images needed for the World pane of the Index generated by Inform
+* resources/Imagery/outcome_images - images used on outcome pages
+* resources/Imagery/scene_icons - images needed for the Scenes pane of the Index generated by Inform
+* resources/Internal/Miscellany - default cover art, the Introduction to IF and Postcard PDFs
 
 ### Other files and folders in this repository
 
 * docs - Woven forms of the webs, for serving by GitHub Pages
-* gitignorescript.txt - Inweb uses this to generate the .gitignore file at the root of the repository
-* makescript.txt - Inweb uses this to generate a makefile at the root of the repository
-* READMEscript.txt - Inpolicy uses this to generate the README.md file for the repository
+* scripts/gitignorescript.txt - Inweb uses this to generate the .gitignore file at the root of the repository
+* scripts/makescript.txt - Inweb uses this to generate a makefile at the root of the repository
+* scripts/READMEscript.txt - Inpolicy uses this to generate the README.md file for the repository
 
 ### Colophon
 

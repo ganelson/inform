@@ -6,24 +6,21 @@ gameinfo.dbg
 
 makefile
 
-intest/
-inweb/
-
-Changes/Output/
-Changes/Output/META-INF/
-Changes/Output/OEBPS/
-Changes/Output/OEBPS/Images/
-Documentation/Output/
-Documentation/Output/META-INF/
-Documentation/Output/OEBPS/
-Documentation/Output/OEBPS/Images/
-Documentation/Examples/_Results_Actual/
+resources/Changes/Output/
+resources/Changes/Output/META-INF/
+resources/Changes/Output/OEBPS/
+resources/Changes/Output/OEBPS/Images/
+resources/Documentation/Output/
+resources/Documentation/Output/META-INF/
+resources/Documentation/Output/OEBPS/
+resources/Documentation/Output/OEBPS/Images/
+resources/Documentation/Examples/_Results_Actual/
 */_Results_Actual/
 
-Internal/Extensions/Graham Nelson/Standard Rules.i7x
-Internal/I6T/
-Internal/Languages/English/Syntax.preform
-Internal/Miscellany/definitions.html
+inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7x
+inform7/Internal/I6T/
+inform7/Internal/Languages/English/Syntax.preform
+inform7/Internal/Miscellany/definitions.html
 
 retrospective/*/cBlorb
 retrospective/*/ni

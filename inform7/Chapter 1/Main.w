@@ -2,45 +2,21 @@
 
 A shell for the modules which actually form the compiler.
 
-@h Build identity.
-First we define the build, using a notation which tangles out to the current
-build number as specified in the contents section of this web.
+@ The source code for the Inform 7 compiler is modularised, and each module
+has its own web, leaving very little here. (To get a sense of how Inform works,
+read the web for the Core module, and dip into the others as needed.)
 
-Each time the master copy of NI is modified and recompiled, the build
-number (digit-letter-digit-digit) is advanced. Build numbers do not reflect
-a hierarchical branching of the source, but are simply a way to encode a
-large number in four printable digits. Letters I and O are skipped, and the
-tailing two digits run from 01 to 99.
-
-Build 1A01 was the first rough draft of a completed compiler: but it did
-not synchronise fully with the OS X Inform application until 1G22 and
-private beta-testing did not begin until 1J34. Other milestones include
-time (1B92), tables (1C86), component parts (1E60), indexing (1F46),
-systematic memory allocation (1J53), pattern matching (1M11), the map index
-(1P97), extension documentation support (1S39) and activities (1T89). The
-first round of testing, a heroic effort by Emily Short and Sonja Kesserich,
-came informally to an end at around the 1V50 build, after which a general
-rewriting exercise began. Minor changes needed for David Kinder's Windows
-port began to be made with 1W80, but the main aims were to increase speed
-and to improve clarity of source code. Hashing algorithms adapted to
-word-based syntax were introduced in 1Z50; the prototype parser was then
-comprehensively rewritten using a unified system to handle ambiguities and
-avoid blind alleys. A time trial of 2D52 against 1V59 on the same, very
-large, source text showed a speed increase of a factor of four. A second
-stage of rewriting, to generalise binary predicates and improve grammatical
-accuracy, began with 2D70. By the time of the first public beta release,
-3K27, the testing tool |inform-test| had been written (it subsequently
-evolved into today's |intest|), and Emily Short's extensive suite of Examples
-had been worked into the verification process for builds. The history since
-3K27 is recorded in the published change log.
+First, some identification:
 
 @d INTOOL_NAME "inform7"
 @d INFORM7_BUILD "inform7 [[Build Number]]"
 @d HUMAN_READABLE_INTOOL_NAME "Inform 7"
 
-@h Main itself.
-On some platforms the core Inform compiler is a separate command-line tool,
-but on others it's compiled into the body of an application. So:
+@ On some platforms the core Inform compiler is a separate command-line tool,
+so that execution should begin with |main()|, as in all C programs. But some
+Inform UI applications need to compile it into the body of a larger program:
+those should define the symbol |SUPPRESS_MAIN| and call |Main::core_inform_main()|
+when they want I7 to run.
 
 =
 #ifndef SUPPRESS_MAIN
@@ -49,12 +25,26 @@ int main(int argc, char *argv[]) {
 }
 #endif
 
-@ All our modules have to be started up and shut down, so we take care of that
-with one more intermediary:
+@ Either way, that brings us here. All our modules have to be started up and
+shut down, so we take care of that with one more intermediary. These modules
+fall into four categories:
+
+(a) Libraries of code providing services to the compiler but containing
+none of its logic: Foundation, Words, Inflections, Syntax, Linguistics,
+Kinds, Problems, Index. Foundation is shared with numerous other tools,
+and is part of the Inweb repository.
+
+(b) Core, the front end of the compiler for the basic Inform 7 language.
+
+(c) Inter and Codegen, the back end. These modules are shared with the
+command-line tool Inter.
+
+(d) Extensions to the Inform 7 language for interactive fiction: IF,
+Multimedia.
 
 =
 int Main::core_inform_main(int argc, char *argv[]) {
-	Foundation::start();
+	Foundation::start(); /* must be started first */
 	WordsModule::start();
 	InflectionsModule::start();
 	SyntaxModule::start();
@@ -82,6 +72,6 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	IndexModule::end();
 	InterModule::end();
 	CodegenModule::end();
-	Foundation::end();
+	Foundation::end(); /* must be ended last */
 	return rv;
 }

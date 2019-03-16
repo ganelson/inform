@@ -86,6 +86,11 @@ void Locations::set_internal(text_stream *loc) {
 	pathname_of_area[INTERNAL_FS_AREA] = Pathnames::from_text(loc);
 }
 
+void Locations::set_default_internal(pathname *P) {
+	if (pathname_of_area[INTERNAL_FS_AREA] == NULL)
+		pathname_of_area[INTERNAL_FS_AREA] = P;
+}
+
 void Locations::set_external(text_stream *loc) {
 	pathname_of_area[EXTERNAL_FS_AREA] = Pathnames::from_text(loc);
 }

@@ -56,21 +56,12 @@ int model_world_under_construction = FALSE; /* World model is being constructed 
 int model_world_constructed = FALSE; /* World model is now constructed */
 int indexing_stage = FALSE; /* Everything is done except indexing */
 
-@ Either way, execution really begins in the |core_inform_main| routine, which
-takes command-line arguments with the standard parameters |argc| and |argv|.
-In practice it consists only of command-line processing and the minimum setup
-necessary to get the meta-language interpreter running, so that it can then
-hand over to the template file |Main.i6t|.
-
-Inform returns only two possible values to the shell, either here or via
-|exit(1)| in the case of fatal errors: 0 if it completed its run with no
-errors, 1 if errors were produced.
-
-=
+@ =
 int report_clock_time = FALSE;
 time_t right_now;
 int export_mode = FALSE, import_mode = FALSE;
 text_stream *inter_processing_chain = NULL;
+pathname *path_to_inform7 = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
 	clock_t start = clock();
@@ -78,6 +69,7 @@ int CoreMain::main(int argc, char *argv[]) {
 	@<Register command-line arguments@>;
 	int proceed = CommandLine::read(argc, argv, NULL, &CoreMain::switch, &CoreMain::bareword);
 	if (proceed) {
+		@<Establish our location in the file system@>;
 		@<With that done, configure all other settings@>;
 		@<Open the debugging log and the problems report@>;
 		@<Boot up the compiler@>;
@@ -182,6 +174,11 @@ list is not exhaustive.
 		L"use X as the user's home for installed material such as extensions");
 	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
 		L"use X for transient data such as the extensions census");
+
+@<Establish our location in the file system@> =
+	path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
+	pathname *def_int = Pathnames::subfolder(Pathnames::up(path_to_inform7), I"Internal");
+	Locations::set_default_internal(def_int);
 
 @<With that done, configure all other settings@> =
 	VirtualMachines::set_identifier(story_filename_extension);

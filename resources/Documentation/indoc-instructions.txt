@@ -491,7 +491,7 @@ osx_app {
 	retina_images = yes
 	declare: OSX
 	javascript_paste_method = Andrew
-	destination = Inform.app/Contents/Resources/English.lproj/
+	destination = ../Inform.app/Contents/Resources/English.lproj/
 }
 
 windows_app {

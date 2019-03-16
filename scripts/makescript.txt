@@ -17,6 +17,7 @@
 {platform-settings}
 
 INTEST = ../intest/Tangled/intest
+INTESTWEB = ../intest
 INWEB = ../inweb/Tangled/inweb
 INWEBX = ../inweb/Tangled/inweb
 
@@ -169,7 +170,7 @@ force: forcetools forcesrules localintegration
 
 .PHONY: localintegration
 localintegration:
-	cp -f 'inform7/Tangled/Syntax.preform' "Internal/Languages/English/Syntax.preform"
+	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
 
 # (Of course those other four phony targets are yet to be defined.)
 
@@ -221,7 +222,7 @@ versions:
 # C program), and needs its own individual handling. "make srules" updates
 # this if need be; "make forcesrules" updates it regardless.
 
-SRULES = Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
+SRULES = inform7/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
 
 .PHONY: srules
 srules: $(SRULES)
@@ -377,31 +378,6 @@ define purge-up
 endef
 
 # -----------------------------------------------------------------------------
-# Target "archive"
-# -----------------------------------------------------------------------------
-# "make archive" produces a tarball of core Inform: this was the form normally
-# circulated to the platform people, before the move to Github
-# -----------------------------------------------------------------------------
-
-MANIFEST = \
-	About.txt \
-	Changes Documentation Imagery Internal "Outcome Pages" "Sample Projects" \
-	inblorb indoc inform6 inform7 inpolicy inrtps inter intest inweb \
-	makefile makescript.txt gitignorescript.txt .gitignore build-code.mk
-
-# the "COPYFILE_DISABLE" nonsense is a hack for Mac OS X to suppress OS X files
-# like .DS_STORE, though it only somewhat works
-
-.PHONY: archive
-archive:
-	$(call tangle-webs)
-	$(call purge-up)
-	export COPYFILE_DISABLE=true
-	tar --create --exclude='*/.*' --exclude='inweb/Tangled/inweb' --file Inform-Source-$(BUILDCODE).tar $(MANIFEST)
-	gzip -f Inform-Source-$(BUILDCODE).tar
-	export COPYFILE_DISABLE=false
- 
-# -----------------------------------------------------------------------------
 # Target "ebooks"
 # -----------------------------------------------------------------------------
 # "make ebooks" generates the two Inform ebook files in EPUB format.
@@ -412,22 +388,22 @@ archive:
 .PHONY: ebooks
 ebooks:
 	$(call clean-ebooks)
-	$(INDOCX) ebook
+	$(INDOCX) -from resources/Documentation ebook
 	$(call clean-ebooks)
-	$(INDOCX) -from Changes ebook
+	$(INDOCX) -from resources/Changes ebook
 	$(call clean-ebooks)
 
 define clean-ebooks
-	rm -f Documentation/Output/OEBPS/images/*
-	rm -f Documentation/Output/OEBPS/*.*
-	rm -f Documentation/Output/META-INF/container.xml
-	rm -f Documentation/Output/mimetype
-	rm -f Documentation/Output/*.*
-	rm -f Changes/Output/OEBPS/images/*
-	rm -f Changes/Output/OEBPS/*.*
-	rm -f Changes/Output/META-INF/container.xml
-	rm -f Changes/Output/mimetype
-	rm -f Changes/Output/*.*
+	rm -f resources/Documentation/Output/OEBPS/images/*
+	rm -f resources/Documentation/Output/OEBPS/*.*
+	rm -f resources/Documentation/Output/META-INF/container.xml
+	rm -f resources/Documentation/Output/mimetype
+	rm -f resources/Documentation/Output/*.*
+	rm -f resources/Changes/Output/OEBPS/images/*
+	rm -f resources/Changes/Output/OEBPS/*.*
+	rm -f resources/Changes/Output/META-INF/container.xml
+	rm -f resources/Changes/Output/mimetype
+	rm -f resources/Changes/Output/*.*
 endef
 
 # -----------------------------------------------------------------------------
@@ -440,14 +416,14 @@ endef
 .PHONY: csr
 csr:
 	cp -f $(INFORM7WEB)/Home.txt $(INTESTWEB)/Workspace/T0/Example.inform/Source/story.ni
-	'inform7/Tangled/inform7' '-format=z8' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'Internal/I6T/sr-Z.intert' '-inter'  'stop'
-	$(INTERTOOLWEB)/Tangled/inter Internal/I6T/sr-Z.intert -binary Internal/I6T/sr-Z.interb
-	cp -f Internal/I6T/sr-Z.intert $(INTERNAL)/I6T/sr-Z.intert 
-	cp -f Internal/I6T/sr-Z.interb $(INTERNAL)/I6T/sr-Z.interb 
-	'inform7/Tangled/inform7' '-format=ulx' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'Internal/I6T/sr-G.intert' '-inter'  'stop'
-	$(INTERTOOLWEB)/Tangled/inter Internal/I6T/sr-G.intert -binary Internal/I6T/sr-G.interb
-	cp -f Internal/I6T/sr-G.intert $(INTERNAL)/I6T/sr-G.intert 
-	cp -f Internal/I6T/sr-G.interb $(INTERNAL)/I6T/sr-G.interb 
+	'inform7/Tangled/inform7' '-format=z8' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'inform7/Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'inform7/Internal/I6T/sr-Z.intert' '-inter'  'stop'
+	$(INTERTOOLWEB)/Tangled/inter inform7/Internal/I6T/sr-Z.intert -binary inform7/Internal/I6T/sr-Z.interb
+	cp -f inform7/Internal/I6T/sr-Z.intert $(INTERNAL)/I6T/sr-Z.intert 
+	cp -f inform7/Internal/I6T/sr-Z.interb $(INTERNAL)/I6T/sr-Z.interb 
+	'inform7/Tangled/inform7' '-format=ulx' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'inform7/Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'inform7/Internal/I6T/sr-G.intert' '-inter'  'stop'
+	$(INTERTOOLWEB)/Tangled/inter inform7/Internal/I6T/sr-G.intert -binary inform7/Internal/I6T/sr-G.interb
+	cp -f inform7/Internal/I6T/sr-G.intert $(INTERNAL)/I6T/sr-G.intert 
+	cp -f inform7/Internal/I6T/sr-G.interb $(INTERNAL)/I6T/sr-G.interb 
 
 # -----------------------------------------------------------------------------
 # Targets "integration" and "forceintegration"
@@ -463,9 +439,9 @@ INTOOLSBUILTIN = \
 
 SRULESINPLACE = $(INTERNAL)/Extensions/Graham\ Nelson/Standard\ Rules.i7x
 INTERNALEXEMPLUM = $(INTERNAL)/Miscellany/Cover.jpg
-INTERNALEXEMPLUMFROM = Internal/Miscellany/Cover.jpg
+INTERNALEXEMPLUMFROM = inform7/Internal/Miscellany/Cover.jpg
 IMAGESEXEMPLUM = $(BUILTINHTML)/doc_images/help.png
-IMAGESEXEMPLUMFROM = Imagery/doc_images/help.png
+IMAGESEXEMPLUMFROM = resources/Imagery/doc_images/help.png
 DOCEXEMPLUM = $(BUILTINHTMLINNER)/index.html
 RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
 
@@ -511,9 +487,9 @@ $(BUILTINCOMPS)/$(INFORM7NAME): $(INFORM7WEB)/Tangled/inform7
 	cp -f $(INFORM7X) $(BUILTINCOMPS)/$(INFORM7NAME)
 
 $(BUILTINCOMPS)/intest: $(INTESTWEB)/Tangled/intest
-	$(MAKE) -f $(INTESTMAKER)
+	cd ..; $(MAKE) -f intest/intest.mk; cd inform
 	mkdir -p $(BUILTINCOMPS)
-	cp -f $(INTESTX) $(BUILTINCOMPS)/intest
+	cp -f $(INTESTWEB)/Tangled/intest $(BUILTINCOMPS)/intest
 
 define transfer-intools
 	mkdir -p $(BUILTINCOMPS)
@@ -533,7 +509,7 @@ $(INFORM7WEB)/Tangled/Syntax.preform:
 
 define transfer-preform
 	cp -f 'inform7/Tangled/Syntax.preform' "$(INTERNAL)/Languages/English/Syntax.preform"
-	cp -f 'inform7/Tangled/Syntax.preform' "Internal/Languages/English/Syntax.preform"
+	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
 endef
 
 # (c) Copying the Standard Rules into the app
@@ -548,7 +524,7 @@ endef
 
 # (d) Copying the I6 template into the app
 
-$(INTERNAL)/I6T/Main.i6t: Internal/I6T/*.i6t
+$(INTERNAL)/I6T/Main.i6t: inform7/Internal/I6T/*.i6t
 	$(call transfer-i6-template)
 
 # The I6 template could be tangled by inweb, but we don't do so: instead the
@@ -558,7 +534,7 @@ $(INTERNAL)/I6T/Main.i6t: Internal/I6T/*.i6t
 define transfer-i6-template
 	mkdir -p "$(INTERNAL)/I6T"
 	rm -f $(INTERNAL)/I6T/*.i6t
-	cp -R -f Internal/I6T/*.i6t $(INTERNAL)/I6T
+	cp -R -f inform7/Internal/I6T/*.i6t $(INTERNAL)/I6T
 endef
 
 # (e) Copying internal resources into the app
@@ -567,16 +543,16 @@ endef
 # In effect, it's a repository in the UI app of non-executable resources:
 
 $(INTERNALEXEMPLUM): \
-		Internal/Extensions/Eric\ Eve/[A-Za-z]* \
-		Internal/Extensions/Emily\ Short/[A-Za-z]* \
-		Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
-		Internal/Miscellany/[A-Za-z]*.* \
-		Internal/HTML/[A-Za-z]*.* \
-		Internal/Templates/Parchment/[A-Za-z]*.* \
-		Internal/Templates/Quixe/[A-Za-z]*.* \
-		Internal/Templates/Classic/[A-Za-z]*.* \
-		Internal/Templates/Vorple/[A-Za-z]*.* \
-		Internal/Templates/Standard/[A-Za-z]*.*
+		inform7/Internal/Extensions/Eric\ Eve/[A-Za-z]* \
+		inform7/Internal/Extensions/Emily\ Short/[A-Za-z]* \
+		inform7/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
+		inform7/Internal/Miscellany/[A-Za-z]*.* \
+		inform7/Internal/HTML/[A-Za-z]*.* \
+		inform7/Internal/Templates/Parchment/[A-Za-z]*.* \
+		inform7/Internal/Templates/Quixe/[A-Za-z]*.* \
+		inform7/Internal/Templates/Classic/[A-Za-z]*.* \
+		inform7/Internal/Templates/Vorple/[A-Za-z]*.* \
+		inform7/Internal/Templates/Standard/[A-Za-z]*.*
 	$(call transfer-internal-tree)
 
 define transfer-internal-tree
@@ -588,14 +564,14 @@ define transfer-internal-tree
 	rm -f $(INTERNAL)/Extensions/Emily\ Short/*
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
 	rm -f $(INTERNAL)/Extensions/Graham\ Nelson/*
-	cp -R -f Internal/Extensions $(INTERNAL)/Extensions/..
+	cp -R -f inform7/Internal/Extensions $(INTERNAL)/Extensions/..
 	mkdir -p "$(INTERNAL)/Languages"
 	mkdir -p "$(INTERNAL)/Languages/English"
 	mkdir -p "$(INTERNAL)/Languages/French"
 	mkdir -p "$(INTERNAL)/Languages/German"
 	mkdir -p "$(INTERNAL)/Languages/Italian"
 	mkdir -p "$(INTERNAL)/Languages/Spanish"
-	cp -R -f Internal/Languages $(INTERNAL)/Languages/..
+	cp -R -f inform7/Internal/Languages $(INTERNAL)/Languages/..
 	mkdir -p "$(INTERNAL)/Templates"
 	mkdir -p "$(INTERNAL)/Templates/Standard"
 	rm -f $(INTERNAL)/Templates/Standard/*
@@ -607,77 +583,76 @@ define transfer-internal-tree
 	rm -f $(INTERNAL)/Templates/Quixe/*
 	mkdir -p "$(INTERNAL)/Templates/Vorple"
 	rm -f $(INTERNAL)/Templates/Vorple/*
-	cp -R -f Internal/Templates $(INTERNAL)/Templates/..
+	cp -R -f inform7/Internal/Templates $(INTERNAL)/Templates/..
 	mkdir -p "$(INTERNAL)/Miscellany"
 	rm -f $(INTERNAL)/Miscellany/*
-	cp -R -f Internal/Miscellany $(INTERNAL)/Miscellany/..
+	cp -R -f inform7/Internal/Miscellany $(INTERNAL)/Miscellany/..
 	mkdir -p "$(INTERNAL)/HTML"
 	rm -f $(INTERNAL)/HTML/*
-	cp -R -f Internal/HTML $(INTERNAL)/HTML/..
+	cp -R -f inform7/Internal/HTML $(INTERNAL)/HTML/..
 endef
 
 # (f) Copying images into the app
 
 $(IMAGESEXEMPLUM): \
-	Imagery/app_images/[A-Za-z]*.* \
-	Imagery/bg_images/[A-Za-z]*.* \
-	Imagery/doc_images/[A-Za-z]*.* \
-	Imagery/map_icons/[A-Za-z]*.* \
-	Imagery/outcome_images/[A-Za-z]*.* \
-	Imagery/scene_icons/[A-Za-z]*.*
+	resources/Imagery/app_images/[A-Za-z]*.* \
+	resources/Imagery/bg_images/[A-Za-z]*.* \
+	resources/Imagery/doc_images/[A-Za-z]*.* \
+	resources/Imagery/map_icons/[A-Za-z]*.* \
+	resources/Imagery/outcome_images/[A-Za-z]*.* \
+	resources/Imagery/scene_icons/[A-Za-z]*.*
 	$(call transfer-images)
 
 define transfer-images
 	touch $(IMAGESEXEMPLUMFROM)
-	cp -f Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
+	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
 	mkdir -p $(BUILTINHTML)/bg_images
 	rm -f $(BUILTINHTML)/bg_images/*
-	cp -f Imagery/bg_images/[A-Za-z]*.* $(BUILTINHTML)/bg_images
+	cp -f resources/Imagery/bg_images/[A-Za-z]*.* $(BUILTINHTML)/bg_images
 	mkdir -p $(BUILTINHTML)/doc_images
 	rm -f $(BUILTINHTML)/doc_images/*
-	cp -f Imagery/doc_images/[A-Za-z]*.* $(BUILTINHTML)/doc_images
+	cp -f resources/Imagery/doc_images/[A-Za-z]*.* $(BUILTINHTML)/doc_images
 	mkdir -p $(BUILTINHTML)/map_icons
 	rm -f $(BUILTINHTML)/map_icons/*
-	cp -f Imagery/map_icons/[A-Za-z]*.* $(BUILTINHTML)/map_icons
+	cp -f resources/Imagery/map_icons/[A-Za-z]*.* $(BUILTINHTML)/map_icons
 	mkdir -p $(BUILTINHTML)/outcome_images
 	rm -f $(BUILTINHTML)/outcome_images/*
-	cp -f Imagery/outcome_images/[A-Za-z]*.* $(BUILTINHTML)/outcome_images
+	cp -f resources/Imagery/outcome_images/[A-Za-z]*.* $(BUILTINHTML)/outcome_images
 	mkdir -p $(BUILTINHTML)/scene_icons
 	rm -f $(BUILTINHTML)/scene_icons/*
-	cp -f Imagery/scene_icons/[A-Za-z]*.* $(BUILTINHTML)/scene_icons
+	cp -f resources/Imagery/scene_icons/[A-Za-z]*.* $(BUILTINHTML)/scene_icons
 endef
 
 # (g) Typesetting documentation to HTML inside the app
 
-$(DOCEXEMPLUM): Documentation/*.txt Documentation/Examples/*.txt
+$(DOCEXEMPLUM): resources/Documentation/*.txt resources/Documentation/Examples/*.txt
 	$(call make-inapp-documentation)
 
 ifdef BENEVOLENTOVERLORD
 define make-inapp-documentation
 	mkdir -p "$(INTERNAL)/Documentation"
 	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) -rewrite-standard-rules 'srules/Sections/Preamble.w' $(INDOCOPTS)
-	$(INWEBX) inform7 -tangle A
-	cp 'inform7/Tangled/The Standard Rules' $(SRULES)
+	$(INDOCX) -from resources/Documentation -rewrite-standard-rules 'srules/Sections/Preamble.w' $(INDOCOPTS)
+	$(INWEBX) srules -tangle-to $(SRULES)
 	$(call transfer-standard-rules)
-	$(INDOCX) $(INDOCOPTS)
+	$(INDOCX) -from resources/Documentation $(INDOCOPTS)
 endef
 else
 define make-inapp-documentation
 	mkdir -p "$(INTERNAL)/Documentation"
 	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) $(INDOCOPTS)
+	$(INDOCX) -from resources/Documentation $(INDOCOPTS)
 endef
 endif
 
 # (h) Typesetting the HTML pages used to display run-time problem messages
 
-$(RTPEXEMPLUM): Outcome*Pages/texts.txt Outcome*Pages/*.html
+$(RTPEXEMPLUM): resources/Outcome*Pages/texts.txt resources/Outcome*Pages/*.html
 	$(call make-inapp-outcome-pages)
 
 define make-inapp-outcome-pages
-	$(INRTPSX) Outcome\ Pages $(BUILTINHTMLINNER) $(INRTPSOPTS)
-	cp -f Outcome\ Pages/pl404.html $(BUILTINHTMLINNER)
+	$(INRTPSX) resources/Outcome\ Pages $(BUILTINHTMLINNER) $(INRTPSOPTS)
+	cp -f resources/Outcome\ Pages/pl404.html $(BUILTINHTMLINNER)
 endef
 
 # -----------------------------------------------------------------------------
