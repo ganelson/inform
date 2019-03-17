@@ -1,7 +1,7 @@
 CheapGlk: Cheapass Implementation of the Glk API.
 
-CheapGlk Library: version 0.9.2###.
-Glk API which this implements: version 0.7.0.
+CheapGlk Library: version 1.0.6.
+Glk API which this implements: version 0.7.5.
 Designed by Andrew Plotkin <erkyrath@eblong.com>
 http://eblong.com/zarf/glk/index.html
 
@@ -27,6 +27,11 @@ newlines.)
     -ui: Assume that stdin contains UTF-8 encoded text.
     -uo: Generate UTF-8 encoded text on stdout.
     -u: Both of the above.
+
+    -q: Don't display the "Welcome to CheapGlk" banner before the game.
+
+    -D: Consider "/" to be a debug command prefix; all /commands are
+        passed to the game debugger (if it has one).
 
 * Notes on building this mess:
 
@@ -145,6 +150,8 @@ libraries.) These gli_ functions (and other internal constants and
 structures) are declared in cheapglk.h.
 
 The files gi_dispa.c and gi_dispa.h are the Glk dispatch layer.
+gi_blorb.c,h are the Blorb utility functions, and gi_debug.c,h are
+the debug console interface.
 
 As you can see from the code, I've kept a policy of catching every error
 that I can possibly catch, and printing visible warnings.
@@ -155,31 +162,61 @@ and glk_fileref_does_file_exist() -- I've implemented them with the
 Unix calls unlink() and stat() respectively.
 
 The character-encoding problem is pretty much ignored here (like most
-of the more complicated Glk issues.) By default, this source code
-assumes that players can only type the standard ASCII characters (32
-to 126), and also that the display (wherever stdout goes) can only
-display the same. It tells these facts to the game via the character
-I/O Gestalt selectors. So really, if the player *can* type accented
-characters, you'll have to modify this code to transform them to
-Latin-1 encoding (if necessary) and also change the Gestalt responses.
-Similarly, if displaying accented characters is possible, you'll have
-to write code to transform Latin-1 to the platform-native encoding (if
-necessary) and again change Gestalt.
-
-(The Gestalt step is important! A well-written game will not even try to
-print an accented character unless Gestalt reassures it that the output
-capacity is there.)
-
-New in version 0.9 is the "-u" argument. This tells CheapGlk that its
-stdin and stdout are attached to a terminal (or other device) which
-does UTF-8 encoding and decoding. (For example, the MacOSX Terminal
-app. Be sure to *uncheck* the "Use option key as meta key" preference,
-or Unicode input will fail.) In "-u" mode, CheapGlk declares that it
-can input and output all Unicode characters.
+of the more complicated Glk issues.) By default, this reads and writes
+the Latin-1 charset. If you use the -u switch, it reads and writes
+UTF-8 instead. Most modern terminal windows can do UTF-8. (If you're
+using the Terminal app on a Mac, be sure to *uncheck* the "Use option
+key as meta key" preference.)
 
 * Version History
 
-0.9.2###:
+1.0.6:
+    Declared support for Glk spec 0.7.5.
+    Added support for a "debug console". If the -D option is given, lines
+    beginning with "/" are considered debug commands. (This is not
+    interesting unless the interpreter is compiled with debug support.)
+
+1.0.5:
+    Text-mode Unicode file streams are now read and written in UTF-8
+    (Glk 0.7.5, although that won't be formalized until 1.0.6).
+    Fixed a struct initialization bug in gli_date_to_tm(). (I think this
+    caused no problems in practice.)
+    Added an optional timegm() function that you can compile in if your
+    platform lacks it. (#define NO_TIMEGM_AVAIL)
+    Removed old, deprecated tmpnam() call.
+
+1.0.4:
+    Updated the Blorb-resource functions to understand FORM chunks
+    (Glk 0.7.4 amendment).
+    Added stub for autosave/autorestore hooks. (This library does not
+    support autosave, however.)
+
+1.0.3:
+    Added the Blorb-resource functions (Glk 0.7.4).
+    External filenames now follow the new spec recommendations: standard
+    filename suffixes, and removing more questionable characters in
+    fileref_create_by_name().
+
+1.0.2:
+    Added Windows patches for the date-time code.
+    Fixed a bug with reading and writing to the same file without a
+    reposition operation in between.
+    In gi_dispa.c, fixed a notation that was preventing stream_open_memory
+    and stream_open_memory_uni from accepting a null array argument.
+    Fixed get_line_stream() to include the terminal null when reading
+    from a Unicode stream.
+    Added stubs for the improved sound functions (Glk 0.7.3).
+
+1.0.1:
+    Added the date-time functions (Glk 0.7.2).
+    Fixed bugs in Unicode normalization and case-changing (thanks David 
+    Fletcher and David Kinder).
+
+1.0.0:
+    Support for all the Glk 0.7.1 features that can be supported.
+    (Meaning, the Unicode normalization calls.)
+    Added -q option to silence banner.
+    The library now exits cleanly if stdin closes.
     Added glkunix_stream_open_pathname_gen(), a more general form of
     the pathname opening function in the startup code. (This is needed
     for profiling improvements.)
@@ -234,11 +271,7 @@ can input and output all Unicode characters.
 
 * Permissions
 
-The source code in this package is copyright 1998-2000 by Andrew Plotkin. You
-may copy and distribute it freely, by any means and under any conditions,
-as long as the code and documentation is not changed. You may also
-incorporate this code into your own program and distribute that, or modify
-this code and use and distribute the modified version, as long as you retain
-a notice in your program or documentation which mentions my name and the
-URL shown above.
-
+The CheapGlk, GiDispa, and GiBlorb libraries, as well as the glk.h header
+file, are copyright 1998-2016 by Andrew Plotkin. The GiDebug library is
+copyright 2014-2017 by Andrew Plotkin. All are distributed under the MIT
+license; see the "LICENSE" file.

@@ -50,6 +50,7 @@ static glui32 cpv__start = 0;        /* array of common prop defaults */
 
 typedef struct accelentry_struct {
     glui32 addr;
+    glui32 index;
     acceleration_func func;
     struct accelentry_struct *next;
 } accelentry_t;
@@ -100,6 +101,25 @@ acceleration_func accel_get_func(glui32 addr)
     return NULL;
 }
 
+/* Iterate the entire acceleration table, calling the callback for
+   each (non-NULL) entry. This is used only for autosave. */
+void accel_iterate_funcs(void (*func)(glui32 index, glui32 addr))
+{
+    int bucknum;
+    accelentry_t *ptr;
+
+    if (!accelentries)
+        return;
+
+    for (bucknum=0; bucknum<ACCEL_HASH_SIZE; bucknum++) {
+        for (ptr = accelentries[bucknum]; ptr; ptr = ptr->next) {
+            if (ptr->func) {
+                func(ptr->index, ptr->addr);
+            }
+        }
+    }
+}
+
 void accel_set_func(glui32 index, glui32 addr)
 {
     int bucknum;
@@ -123,6 +143,7 @@ void accel_set_func(glui32 index, glui32 addr)
     }
 
     new_func = accel_find_func(index);
+    /* Might be NULL, if the index is zero or not recognized. */
 
     bucknum = (addr % ACCEL_HASH_SIZE);
     for (ptr = accelentries[bucknum]; ptr; ptr = ptr->next) {
@@ -137,11 +158,13 @@ void accel_set_func(glui32 index, glui32 addr)
         if (!ptr)
             fatal_error("Cannot malloc acceleration entry.");
         ptr->addr = addr;
+        ptr->index = 0;
         ptr->func = NULL;
         ptr->next = accelentries[bucknum];
         accelentries[bucknum] = ptr;
     }
 
+    ptr->index = index;
     ptr->func = new_func;
 }
 
@@ -157,6 +180,29 @@ void accel_set_param(glui32 index, glui32 val)
         case 6: self = val; break;
         case 7: num_attr_bytes = val; break;
         case 8: cpv__start = val; break;
+    }
+}
+
+/* This is used only for autosave. */
+glui32 accel_get_param_count()
+{
+    return 9;
+}
+
+/* This is used only for autosave. */
+glui32 accel_get_param(glui32 index)
+{
+    switch (index) {
+        case 0: return classes_table;
+        case 1: return indiv_prop_start;
+        case 2: return class_metaclass;
+        case 3: return object_metaclass;
+        case 4: return routine_metaclass;
+        case 5: return string_metaclass;
+        case 6: return self;
+        case 7: return num_attr_bytes;
+        case 8: return cpv__start;
+        default: return 0;
     }
 }
 

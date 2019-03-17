@@ -14,7 +14,8 @@
 /* Linked list of all filerefs */
 static fileref_t *gli_filereflist = NULL; 
 
-static char workingdir[256] = ".";
+#define BUFLEN (256)
+static char workingdir[BUFLEN] = ".";
 
 fileref_t *gli_new_fileref(char *filename, glui32 usage, glui32 rock)
 {
@@ -86,16 +87,28 @@ void glk_fileref_destroy(fileref_t *fref)
     gli_delete_fileref(fref);
 }
 
+static char *gli_suffix_for_usage(glui32 usage)
+{
+    switch (usage & fileusage_TypeMask) {
+        case fileusage_Data:
+            return ".glkdata";
+        case fileusage_SavedGame:
+            return ".glksave";
+        case fileusage_Transcript:
+        case fileusage_InputRecord:
+            return ".txt";
+        default:
+            return "";
+    }
+}
+
 frefid_t glk_fileref_create_temp(glui32 usage, glui32 rock)
 {
-    char *filename;
+    char filename[BUFLEN];
     fileref_t *fref;
     
-    /* This is a pretty good way to do this on Unix systems. On Macs,
-        it's pretty bad, but this library won't be used much on the Mac 
-        -- I hope. I have no idea about the DOS/Windows world. */
-        
-    filename = tmpnam(NULL);
+    sprintf(filename, "/tmp/glktempfref-XXXXXX");
+    mktemp(filename);
     
     fref = gli_new_fileref(filename, usage, rock);
     if (!fref) {
@@ -129,43 +142,43 @@ frefid_t glk_fileref_create_by_name(glui32 usage, char *name,
     glui32 rock)
 {
     fileref_t *fref;
-    char buf[256];
-    char buf2[256+256+1];
+    char buf[BUFLEN];
+    char buf2[2*BUFLEN+10];
     int len;
     char *cx;
+    char *suffix;
     
-    len = strlen(name);
-    if (len > 255)
-        len = 255;
-    
-    /* Take out all '/' characters, and make sure the length is greater 
-        than zero. Again, this is the right behavior in Unix. 
-        DOS/Windows might want to take out '\' instead, unless the
-        stdio library converts slashes for you. They'd also want to trim 
-        to 8 characters. Remember, the overall goal is to make a legal 
-        platform-native filename, without any extra directory 
-        components.
-       Suffixes are another sore point. Really, the game program 
-        shouldn't have a suffix on the name passed to this function. So
-        in DOS/Windows, this function should chop off dot-and-suffix,
-        if there is one, and then add a dot and a three-letter suffix
-        appropriate to the file type (as gleaned from the usage 
-        argument.)
+    /* The new spec recommendations: delete all characters in the
+       string "/\<>:|?*" (including quotes). Truncate at the first
+       period. Change to "null" if there's nothing left. Then append
+       an appropriate suffix: ".glkdata", ".glksave", ".txt".
     */
     
-    memcpy(buf, name, len);
-    if (len == 0) {
-        buf[0] = 'X';
-        len++;
+    for (cx=name, len=0; (*cx && *cx!='.' && len<BUFLEN-1); cx++) {
+        switch (*cx) {
+            case '"':
+            case '\\':
+            case '/':
+            case '>':
+            case '<':
+            case ':':
+            case '|':
+            case '?':
+            case '*':
+                break;
+            default:
+                buf[len++] = *cx;
+        }
     }
     buf[len] = '\0';
-    
-    for (cx=buf; *cx; cx++) {
-        if (*cx == '/')
-            *cx = '-';
+
+    if (len == 0) {
+        strcpy(buf, "null");
+        len = strlen(buf);
     }
     
-    sprintf(buf2, "%s/%s", workingdir, buf);
+    suffix = gli_suffix_for_usage(usage);
+    sprintf(buf2, "%s/%s%s", workingdir, buf, suffix);
 
     fref = gli_new_fileref(buf2, usage, rock);
     if (!fref) {
@@ -180,9 +193,11 @@ frefid_t glk_fileref_create_by_prompt(glui32 usage, glui32 fmode,
     glui32 rock)
 {
     fileref_t *fref;
-    char buf[256], newbuf[256];
+    char buf[BUFLEN];
+    char newbuf[2*BUFLEN+10];
+    char *res;
     char *cx;
-    int val;
+    int val, gotdot;
     char *prompt, *prompt2;
     
     switch (usage & fileusage_TypeMask) {
@@ -208,9 +223,15 @@ frefid_t glk_fileref_create_by_prompt(glui32 usage, glui32 fmode,
     
     printf("%s %s: ", prompt, prompt2);
     
-    fgets(buf, 255, stdin);
+    res = fgets(buf, BUFLEN-1, stdin);
+    if (!res) {
+        printf("\n<end of input>\n");
+        glk_exit();
+    }
+
+    /* Trim whitespace from end and beginning. */
+
     val = strlen(buf);
-    
     while (val 
         && (buf[val-1] == '\n' 
             || buf[val-1] == '\r' 
@@ -226,12 +247,27 @@ frefid_t glk_fileref_create_by_prompt(glui32 usage, glui32 fmode,
             default value, but this implementation is too cheap. */
         return NULL;
     }
-    
+
     if (cx[0] == '/')
         strcpy(newbuf, cx);
     else
         sprintf(newbuf, "%s/%s", workingdir, cx);
 
+    /* If there is no dot-suffix, add a standard one. */
+    val = strlen(newbuf);
+    gotdot = FALSE;
+    while (val && (buf[val-1] != '/')) {
+        if (buf[val-1] == '.') {
+            gotdot = TRUE;
+            break;
+        }
+        val--;
+    }
+    if (!gotdot) {
+        char *suffix = gli_suffix_for_usage(usage);
+        strcat(newbuf, suffix);
+    }
+    
     fref = gli_new_fileref(newbuf, usage, rock);
     if (!fref) {
         gli_strict_warning("fileref_create_by_prompt: unable to create fileref.");

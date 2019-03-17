@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "glk.h"
+#include "gi_debug.h"
 #include "cheapglk.h"
 #include "glkstart.h"
 
@@ -9,13 +10,18 @@ int gli_screenwidth = 80;
 int gli_screenheight = 24; 
 int gli_utf8output = FALSE;
 int gli_utf8input = FALSE;
+#if GIDEBUG_LIBRARY_SUPPORT
+int gli_debugger = FALSE;
+#endif /* GIDEBUG_LIBRARY_SUPPORT */
 
 static int inittime = FALSE;
 
 int main(int argc, char *argv[])
 {
     int ix, jx, val;
-    int errflag = 0;
+    int display_version = TRUE;
+
+    int errflag = FALSE;
     glkunix_startup_t startdata;
     
     /* Test for compile-time errors. If one of these spouts off, you
@@ -66,7 +72,7 @@ int main(int argc, char *argv[])
                 
                 if (argform->argtype == glkunix_arg_ValueFollows) {
                     if (ix+1 >= argc) {
-                        printf("%s: %s must be followed by a value\n", 
+                        printf("%s: %s must be followed by a value\n\n", 
                             argv[0], argform->name);
                         errflag = TRUE;
                         break;
@@ -87,7 +93,7 @@ int main(int argc, char *argv[])
                 else if (argform->argtype == glkunix_arg_NumberValue) {
                     if (ix+1 >= argc
                         || (atoi(argv[ix+1]) == 0 && argv[ix+1][0] != '0')) {
-                        printf("%s: %s must be followed by a number\n", 
+                        printf("%s: %s must be followed by a number\n\n", 
                             argv[0], argform->name);
                         errflag = TRUE;
                         break;
@@ -124,7 +130,7 @@ int main(int argc, char *argv[])
                             val = atoi(argv[ix]);
                     }
                     if (val < 8)
-                        errflag = 1;
+                        errflag = TRUE;
                     else
                         gli_screenwidth = val;
                     break;
@@ -138,7 +144,7 @@ int main(int argc, char *argv[])
                             val = atoi(argv[ix]);
                     }
                     if (val < 2)
-                        errflag = 1;
+                        errflag = TRUE;
                     else
                         gli_screenheight = val;
                     break;
@@ -149,15 +155,23 @@ int main(int argc, char *argv[])
                         else if (argv[ix][2] == 'o')
                             gli_utf8output = TRUE;
                         else
-                            errflag = 1;
+                            errflag = TRUE;
                     }
                     else {
                         gli_utf8output = TRUE;
                         gli_utf8input = TRUE;
                     }
                     break;
+                case 'q':
+                    display_version = FALSE;
+                    break;
+#if GIDEBUG_LIBRARY_SUPPORT
+                case 'D':
+                    gli_debugger = TRUE;
+                    break;
+#endif /* GIDEBUG_LIBRARY_SUPPORT */
                 default:
-                    printf("%s: unknown option: %s\n", argv[0], argv[ix]);
+                    printf("%s: unknown option: %s\n\n", argv[0], argv[ix]);
                     errflag = TRUE;
                     break;
             }
@@ -165,7 +179,12 @@ int main(int argc, char *argv[])
     }
 
     if (errflag) {
-        printf("usage: %s -w WIDTH -h HEIGHT -u[i|o]\n", argv[0]);
+#if GIDEBUG_LIBRARY_SUPPORT
+        char *debugoption = " -D";
+#else  /* GIDEBUG_LIBRARY_SUPPORT */
+        char *debugoption = "";
+#endif /* GIDEBUG_LIBRARY_SUPPORT */
+        printf("usage: %s -w WIDTH -h HEIGHT -u[i|o] -q%s\n", argv[0], debugoption);
         if (glkunix_arguments[0].argtype != glkunix_arg_End) {
             glkunix_argumentlist_t *argform;
             printf("game options:\n");
@@ -196,8 +215,19 @@ int main(int argc, char *argv[])
     }
     inittime = FALSE;
 
-    /*printf("Welcome to the Cheap Glk Implementation, library version %s.\n\n", 
-        LIBRARY_VERSION); */
+    if (display_version) {
+        char *debugoption = "";
+#if GIDEBUG_LIBRARY_SUPPORT
+        if (gli_debugger)
+            debugoption = " Debug support is on.";
+#endif /* GIDEBUG_LIBRARY_SUPPORT */
+        printf("Welcome to the Cheap Glk Implementation, library version %s.%s\n\n", 
+            LIBRARY_VERSION, debugoption);
+    }
+
+    if (gli_debugger)
+        gidebug_announce_cycle(gidebug_cycle_Start);
+
     glk_main();
     glk_exit();
     

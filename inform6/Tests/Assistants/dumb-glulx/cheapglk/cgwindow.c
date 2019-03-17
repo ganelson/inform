@@ -535,3 +535,22 @@ void glk_cancel_hyperlink_event(winid_t win)
 }
 
 #endif /* GLK_MODULE_HYPERLINKS */
+
+#ifdef GLK_MODULE_LINE_ECHO
+
+void glk_set_echo_line_event(winid_t win, glui32 val)
+{
+    gli_strict_warning("set_echo_line_event: not supported.");
+}
+
+#endif /* GLK_MODULE_LINE_ECHO */
+
+#ifdef GLK_MODULE_LINE_TERMINATORS
+
+void glk_set_terminators_line_event(winid_t win, glui32 *keycodes, 
+    glui32 count)
+{
+    gli_strict_warning("set_terminators_line_event: not supported.");
+}
+
+#endif /* GLK_MODULE_LINE_TERMINATORS */

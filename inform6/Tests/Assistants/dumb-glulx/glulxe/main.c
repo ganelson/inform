@@ -118,6 +118,11 @@ static winid_t get_error_win()
 */
 void fatal_error_handler(char *str, char *arg, int useval, glsi32 val)
 {
+  /* If the debugger is compiled in, send the error message to the debug
+     console. This may also block for debug commands, depending on 
+     preferences. */
+  debugger_handle_crash(str);
+
   winid_t win = get_error_win();
   if (win) {
     glk_set_window(win);

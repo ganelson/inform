@@ -92,6 +92,10 @@ knife.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">I6_vn</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Read in I6 source header file</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">template_vn</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">web</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"(manifest).txt"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">template_vn</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Read in template manifest file</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">;</span>
+            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rmt_vn</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">web</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"README.txt"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">rmt_vn</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Read in README file</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">;</span>
+            <span class="identifier">rmt_vn</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">web</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"README.md"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">rmt_vn</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Read in README file</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Print the current version number</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
@@ -201,6 +205,20 @@ knife.
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
+<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Read in README file</span> <span class="cwebmacronumber">2.8</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">rmt_vn</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"unable to read manifest file from website template"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">,</span>
+            <span class="plain">&amp;</span><span class="functiontext">Inversion::readme_harvester</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a> (twice).</p>
+
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The format for the contents section of a web is documented in Inweb.
 </p>
 
@@ -211,7 +229,7 @@ knife.
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *Version (%c*?) of %c*begins here. *"</span><span class="plain">)) {</span>
-            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="plain">}</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
@@ -242,7 +260,7 @@ knife.
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *Version Number: *(%c*?) *"</span><span class="plain">)) {</span>
-            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="plain">}</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
@@ -309,11 +327,11 @@ transition to Github, this scheme was dropped.)
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"#define RELEASE_NUMBER (%c*?) *"</span><span class="plain">)) {</span>
-            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"#define RELEASE_DATE \</span><span class="plain">"</span><span class="string">(%c*?)\</span><span class="plain">"</span><span class="string"> *"</span><span class="plain">)) {</span>
-            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;date</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="plain">}</span>
@@ -337,7 +355,7 @@ transition to Github, this scheme was dropped.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%[INTERPRETERVERSION%]"</span><span class="plain">)) {</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next_is_version</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next_is_version</span><span class="plain">) {</span>
-            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
             <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next_is_version</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -349,13 +367,35 @@ transition to Github, this scheme was dropped.)
 
 <p class="endnote">The function Inversion::template_harvester is used in <a href="#SP2_7">&#167;2.7</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b>And many of the above use this, which assumes there will be just one single
+<p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b>And this is needed for cheapglk and glulxe.
+</p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inversion::readme_harvester</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">project</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = (</span><span class="reserved">project</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"CheapGlk Library: version (%c*?) *"</span><span class="plain">)) ||</span>
+            <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"- Version (%c*?) *"</span><span class="plain">))) {</span>
+            &lt;<span class="cwebmacro">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
+            <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;current_version</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Inversion::readme_harvester is used in <a href="#SP2_8">&#167;2.8</a>.</p>
+
+<p class="inwebparagraph"><a id="SP3_6"></a><b>&#167;3.6.  </b>And many of the above use this, which assumes there will be just one single
 version number known for a program.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Ensure a current version exists</span> <span class="cwebmacronumber">3.5</span>&gt; =
+&lt;<span class="cwebmacrodefn">Ensure a current version exists</span> <span class="cwebmacronumber">3.6</span>&gt; =
 </code></p>
 
 
@@ -374,7 +414,7 @@ version number known for a program.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>, <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_3">&#167;3.3</a> (twice), <a href="#SP3_4">&#167;3.4</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>, <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_3">&#167;3.3</a> (twice), <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following then writes back the versions file, following a version
 increment:
@@ -565,7 +605,7 @@ update the metadata in that contents page.
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-pc.html">Back to 'Problem Coverage'</a></li><li><a href="2-rw.html">Continue with 'Readme Writeme'</a></li></ul><hr class="tocbar">
-<!--End of weave: 386 lines from a web of 10373-->
+<!--End of weave: 410 lines from a web of 10396-->
 	</body>
 </html>
 

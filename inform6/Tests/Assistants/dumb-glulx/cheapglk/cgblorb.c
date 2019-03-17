@@ -2,8 +2,8 @@
 #include "gi_blorb.h"
 
 /* We'd like to be able to deal with game files in Blorb files, even
-   if we never load a sound or image. So we're willing to set a map
-   here. */
+   if we never load a sound or image. We'd also like to be able to
+   deal with Data chunks. So we're willing to set a map here. */
 
 static giblorb_map_t *blorbmap = 0; /* NULL */
 

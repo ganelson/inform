@@ -32,6 +32,7 @@ void execute_loop()
   while (!done_executing) {
 
     profile_tick();
+    debugger_tick();
     /* Do OS-specific processing, if appropriate. */
     glk_tick();
     
@@ -359,6 +360,10 @@ void execute_loop()
 
       case op_copy:
         value = inst[0].value;
+#ifdef TOLERATE_SUPERGLUS_BUG
+        if (inst[1].desttype == 1 && inst[1].value == 0)
+            inst[1].desttype = 0;
+#endif /* TOLERATE_SUPERGLUS_BUG */
         store_operand(inst[1].desttype, inst[1].value, value);
         break;
       case op_copys:
@@ -563,6 +568,15 @@ void execute_loop()
         break;
 
       case op_debugtrap:
+#if VM_DEBUGGER
+        /* We block and handle debug commands, but only if the
+           library has invoked debug features. (Meaning, has
+           the cycle handler ever been called.) */
+        if (debugger_ever_invoked()) {
+          debugger_block_and_debug("user debugtrap, pausing...");
+          break;
+        }
+#endif /* VM_DEBUGGER */
         fatal_error_i("user debugtrap encountered.", inst[0].value);
 
       case op_jumpabs:
@@ -622,6 +636,10 @@ void execute_loop()
         value = inst[1].value;
         arglist = pop_arguments(value, 0);
         val0 = perform_glk(inst[0].value, value, arglist);
+#ifdef TOLERATE_SUPERGLUS_BUG
+        if (inst[2].desttype == 1 && inst[2].value == 0)
+            inst[2].desttype = 0;
+#endif /* TOLERATE_SUPERGLUS_BUG */
         store_operand(inst[2].desttype, inst[2].value, val0);
         profile_out(stackptr);
         break;
@@ -668,7 +686,6 @@ void execute_loop()
         break;
 
       case op_restore:
-        profile_fail("restore");
         value = perform_restore(find_stream_by_id(inst[0].value), FALSE);
         if (value == 0) {
           /* We've succeeded, and the stack now contains the callstub
@@ -690,7 +707,6 @@ void execute_loop()
         break;
 
       case op_restoreundo:
-        profile_fail("restoreundo");
         value = perform_restoreundo();
         if (value == 0) {
           /* We've succeeded, and the stack now contains the callstub
@@ -1024,9 +1040,17 @@ void execute_loop()
 
 #endif /* FLOAT_SUPPORT */
 
+#ifdef GLULX_EXTEND_OPCODES
+      GLULX_EXTEND_OPCODES
+#endif /* GLULX_EXTEND_OPCODES */
+
       default:
         fatal_error_i("Executed unknown opcode.", opcode);
       }
     }
   }
+  /* done executing */
+#if VM_DEBUGGER
+  debugger_handle_quit();
+#endif /* VM_DEBUGGER */
 }

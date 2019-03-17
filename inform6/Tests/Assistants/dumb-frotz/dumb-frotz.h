@@ -1,5 +1,5 @@
 /* dumb-frotz.h
- * $Id: dumb-frotz.h,v 1.5 1998/07/08 03:45:40 al Exp $
+ * $Id: dumb-frotz.h,v 1.5 1998/07/08 03:45:40 al Exp $, modified by Graham Nelson
  * Frotz os functions for a standard C library and a dumb terminal.
  * Now you can finally play Zork Zero on your Teletype.
  *

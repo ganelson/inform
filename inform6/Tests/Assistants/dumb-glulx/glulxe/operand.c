@@ -273,6 +273,10 @@ operandlist_t *lookup_operandlist(glui32 opcode)
 
 #endif /* FLOAT_SUPPORT */
 
+#ifdef GLULX_EXTEND_OPERANDS
+  GLULX_EXTEND_OPERANDS
+#endif /* GLULX_EXTEND_OPERANDS */
+
   default: 
     return NULL;
   }

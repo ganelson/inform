@@ -11,8 +11,10 @@ typedef struct library_state_data_struct {
 	glui32 protectstart, protectend;
 	glui32 iosys_mode, iosys_rock;
 	glui32 stringtable;
+	NSArray *accel_params; // array of NSNumber -- manually retained!
+	NSArray *accel_funcs; // array of GlulxAccelEntry -- manually retained!
 	glui32 gamefiletag;
-	NSArray *id_map_list; // manually retained!
+	NSArray *id_map_list; // array of GlkObjIdEntry -- manually retained!
 } library_state_data;
 
 extern void iosglk_do_autosave(glui32 eventaddr);
@@ -32,5 +34,18 @@ extern void iosglk_shut_down_process(void) GLK_ATTRIBUTE_NORETURN;
 - (glui32) objclass;
 - (glui32) tag;
 - (glui32) dispid;
+
+@end
+
+
+@interface GlulxAccelEntry : NSObject {
+	glui32 index;
+	glui32 addr;
+}
+
+- (id) initWithIndex:(glui32)index addr:(glui32)addr;
+
+- (glui32) index;
+- (glui32) addr;
 
 @end

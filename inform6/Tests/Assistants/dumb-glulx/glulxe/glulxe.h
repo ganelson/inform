@@ -27,7 +27,7 @@
    so we define it as a blank stub. */
 #ifndef GLK_ATTRIBUTE_NORETURN
 #define GLK_ATTRIBUTE_NORETURN
-#endif // GLK_ATTRIBUTE_NORETURN
+#endif /* GLK_ATTRIBUTE_NORETURN */
 
 /* If your system does not have <stdint.h>, you'll have to remove this
     include line. Then edit the definition of glui16 to make sure it's
@@ -44,15 +44,34 @@ typedef int16_t glsi16;
    game files from crashing the interpreter. */
 #define VERIFY_MEMORY_ACCESS (1)
 
+/* Uncomment this definition to permit an exception for memory-address
+   checking for @glk and @copy opcodes that try to write to memory address 0.
+   This was a bug in old Superglus-built game files. */
+/* #define TOLERATE_SUPERGLUS_BUG (1) */
+
 /* Uncomment this definition to turn on Glulx VM profiling. In this
    mode, all function calls are timed, and the timing information is
-   written to a data file called "profile-raw". */
+   written to a data file called "profile-raw".
+   (Build note: on Linux, glibc may require you to also define
+   _BSD_SOURCE or _DEFAULT_SOURCE or both for the timeradd() macro.) */
 /* #define VM_PROFILING (1) */
+
+/* Uncomment this definition to turn on the Glulx debugger. You should
+   only do this when debugging facilities are desired; it slows down
+   the interpreter. If you do, you will need to build with libxml2;
+   see the Makefile. */
+/* #define VM_DEBUGGER (1) */
 
 /* Comment this definition to turn off floating-point support. You
    might need to do this if you are building on a very limited platform
    with no math library. */
 #define FLOAT_SUPPORT (1)
+
+/* Comment this definition to not cache the original state of RAM in
+   (real) memory. This saves some memory, but slows down save/restore/undo
+   operations, which will have to read the original state off disk
+   every time. */
+#define SERIALIZE_CACHE_RAM (1)
 
 /* Some macros to read and write integers to memory, always in big-endian
    format. */
@@ -281,20 +300,49 @@ extern glui32 find_id_for_schannel(schanid_t schan);
 /* profile.c */
 extern void setup_profile(strid_t stream, char *filename);
 extern int init_profile(void);
+extern void profile_set_call_counts(int flag);
 #if VM_PROFILING
 extern glui32 profile_opcount;
 #define profile_tick() (profile_opcount++)
+extern int profile_profiling_active(void);
 extern void profile_in(glui32 addr, glui32 stackuse, int accel);
 extern void profile_out(glui32 stackuse);
 extern void profile_fail(char *reason);
 extern void profile_quit(void);
 #else /* VM_PROFILING */
 #define profile_tick()         (0)
+#define profile_profiling_active()         (0)
 #define profile_in(addr, stackuse, accel)  (0)
 #define profile_out(stackuse)  (0)
 #define profile_fail(reason)   (0)
 #define profile_quit()         (0)
 #endif /* VM_PROFILING */
+
+#if VM_DEBUGGER
+extern unsigned long debugger_opcount;
+#define debugger_tick() (debugger_opcount++)
+extern int debugger_load_info_stream(strid_t stream);
+extern int debugger_load_info_chunk(strid_t stream, glui32 pos, glui32 len);
+extern void debugger_track_cpu(int flag);
+extern void debugger_set_start_trap(int flag);
+extern void debugger_set_quit_trap(int flag);
+extern void debugger_set_crash_trap(int flag);
+extern void debugger_check_story_file(void);
+extern void debugger_setup_start_state(void);
+extern int debugger_ever_invoked(void);
+extern int debugger_cmd_handler(char *cmd);
+extern void debugger_cycle_handler(int cycle);
+extern void debugger_check_func_breakpoint(glui32 addr);
+extern void debugger_block_and_debug(char *msg);
+extern void debugger_handle_crash(char *msg);
+extern void debugger_handle_quit(void);
+#else /* VM_DEBUGGER */
+#define debugger_tick()              (0)
+#define debugger_check_story_file()  (0)
+#define debugger_setup_start_state() (0)
+#define debugger_check_func_breakpoint(addr)  (0)
+#define debugger_handle_crash(msg)   (0)
+#endif /* VM_DEBUGGER */
 
 /* accel.c */
 typedef glui32 (*acceleration_func)(glui32 argc, glui32 *argv);
@@ -303,6 +351,9 @@ extern acceleration_func accel_find_func(glui32 index);
 extern acceleration_func accel_get_func(glui32 addr);
 extern void accel_set_func(glui32 index, glui32 addr);
 extern void accel_set_param(glui32 index, glui32 val);
+extern glui32 accel_get_param_count(void);
+extern glui32 accel_get_param(glui32 index);
+extern void accel_iterate_funcs(void (*func)(glui32 index, glui32 addr));
 
 #ifdef FLOAT_SUPPORT
 

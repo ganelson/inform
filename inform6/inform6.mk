@@ -100,40 +100,8 @@ $(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
 	$(INTERPRETERS)/dumb-glulx/cheapglk/*.h \
 	$(INTERPRETERS)/dumb-glulx/glulxe/*.c \
 	$(INTERPRETERS)/dumb-glulx/glulxe/*.h
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgblorb.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgfref.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cggestal.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgmisc.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgschan.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgstream.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgstyle.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgunicod.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) cgwindow.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) gi_blorb.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) gi_dispa.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) glkstart.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(INDULGENTCC) main.c
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; $(ARTOOL) $(GLKLIB) $(CHEAPGLK_OBJS)
-	cd $(INTERPRETERS)/dumb-glulx/cheapglk; ranlib $(GLKLIB)
-	cp -f $(INTERPRETERS)/dumb-glulx/cheapglk/$(GLKLIB) $(INTERPRETERS)/dumb-glulx/glulxe
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) exec.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) files.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) funcs.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) float.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) gestalt.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) glkop.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) heap.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) main.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) operand.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -D$(GLULXEOS) -I$(GLKINCLUDEDIR) osdepend.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) search.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) serial.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) string.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) unixstrt.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) vm.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) accel.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(INDULGENTCC) -I$(GLKINCLUDEDIR) profile.c
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; $(LINK) -o glulxe $(GLULXE_OBJS) -L$(GLKLIBDIR) -lcheapglk $(LINKEROPTS)
+	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make
+	cd $(INTERPRETERS)/dumb-glulx/glulxe; make
 
 .PHONY: clean
 clean:

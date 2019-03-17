@@ -71,6 +71,10 @@ project *Inversion::read(text_stream *web, int silently) {
 		if (TextFiles::exists(I6_vn)) @<Read in I6 source header file@>;
 		filename *template_vn = Filenames::in_folder(Pathnames::from_text(web), I"(manifest).txt");
 		if (TextFiles::exists(template_vn)) @<Read in template manifest file@>;
+		filename *rmt_vn = Filenames::in_folder(Pathnames::from_text(web), I"README.txt");
+		if (TextFiles::exists(rmt_vn)) @<Read in README file@>;
+		rmt_vn = Filenames::in_folder(Pathnames::from_text(web), I"README.md");
+		if (TextFiles::exists(rmt_vn)) @<Read in README file@>;
 	}
 	@<Print the current version number@>;
 	return P;
@@ -104,6 +108,10 @@ project *Inversion::read(text_stream *web, int silently) {
 @<Read in template manifest file@> =
 	TextFiles::read(template_vn, FALSE, "unable to read manifest file from website template", TRUE,
 		&Inversion::template_harvester, NULL, P);
+
+@<Read in README file@> =
+	TextFiles::read(rmt_vn, FALSE, "unable to read manifest file from website template", TRUE,
+		&Inversion::readme_harvester, NULL, P);
 
 @ The format for the contents section of a web is documented in Inweb.
 
@@ -212,6 +220,21 @@ void Inversion::template_harvester(text_stream *text, text_file_position *tfp, v
 		@<Ensure a current version exists@>;
 		P->current_version->name = Str::duplicate(text);
 		P->next_is_version = FALSE;
+	}
+	Regexp::dispose_of(&mr);
+}
+
+@ And this is needed for cheapglk and glulxe.
+
+=
+void Inversion::readme_harvester(text_stream *text, text_file_position *tfp, void *state) {
+	project *P = (project *) state;
+	match_results mr = Regexp::create_mr();
+	if (Str::len(text) == 0) return;
+	if ((Regexp::match(&mr, text, L"CheapGlk Library: version (%c*?) *")) ||
+		(Regexp::match(&mr, text, L"- Version (%c*?) *"))) {
+		@<Ensure a current version exists@>;
+		P->current_version->number = Str::duplicate(mr.exp[0]);
 	}
 	Regexp::dispose_of(&mr);
 }

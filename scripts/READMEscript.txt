@@ -125,9 +125,9 @@ The inform7 subtree further contains these primary resources:
 @extension('inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x')
 @extension('inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x')
 @extension('inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x')
-* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
+* inform7/Internal/HTML - Files needed for generating extension documentation and the like
 * inform7/Internal/Languages - Natural language definition bundles
-* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+* inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 @define itemplate(program, for)
 	* @program - @for - __@version(@program)__
 @end
@@ -156,11 +156,14 @@ be accepted. (Note that these are not git submodules.)
 * @program - @for - __@version(@program)__ - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
 @end
 @secondary(inform6, 'The Inform 6 compiler (used by I7 as a code generator).', 'David Kinder', DavidKinder, Inform6)
+	* inform6/Tests/Assistants/dumb-frotz - A dumb-terminal Z-machine interpreter. - unversioned: modified from [Alembic Petrofsky's 1998 Teletype port of Frotz](https://github.com/sussman/ircbot-collection/tree/master/dumb-frotz)
+	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __@version(inform6/Tests/Assistants/dumb-glulx/glulxe)__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
+	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __@version(inform6/Tests/Assistants/dumb-glulx/cheapglk)__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
 @define template(program, for, maintainer, username, repository)
 	* @program - @for - __@version(@program)__ - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
 @end
-* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+* inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 @template('inform7/Internal/Templates/Parchment', 'Z-machine in Javascript', 'Dannii Willis', curiousdannii, parchment)
 @template('inform7/Internal/Templates/Quixe', 'Glulx in Javascript', 'Andrew Plotkin', erkyrath, quixe)
 @template('inform7/Internal/Templates/Vorple', 'Multimedia in Javascript', 'Juhana Leinonen', vorple, inform7)

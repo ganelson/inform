@@ -15,7 +15,8 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32 *arr,
     switch (id) {
         
         case gestalt_Version:
-            return 0x00000700;
+            /* This implements Glk spec version 0.7.5. */
+            return 0x00000705;
         
         case gestalt_LineInput:
             if (val >= 32 && val < 127)
@@ -68,6 +69,7 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32 *arr,
 
         case gestalt_Graphics:
         case gestalt_GraphicsTransparency:
+        case gestalt_GraphicsCharInput:
             return FALSE;
             
         case gestalt_DrawImage:
@@ -80,11 +82,35 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32 *arr,
             return FALSE;
 #endif /* GLK_MODULE_UNICODE */
             
+        case gestalt_UnicodeNorm:
+#ifdef GLK_MODULE_UNICODE_NORM
+            return TRUE;
+#else
+            return FALSE;
+#endif /* GLK_MODULE_UNICODE_NORM */
+            
         case gestalt_Sound:
         case gestalt_SoundVolume:
         case gestalt_SoundNotify: 
         case gestalt_SoundMusic:
             return FALSE;
+        case gestalt_Sound2: 
+            /* Sound2 implies all the above sound options. But for
+               cheapglk, they're all false. */
+            return FALSE;
+
+        case gestalt_LineInputEcho:
+            return FALSE;
+
+        case gestalt_LineTerminators:
+        case gestalt_LineTerminatorKey:
+            return FALSE;
+
+        case gestalt_DateTime:
+            return TRUE;
+
+        case gestalt_ResourceStream:
+            return TRUE;
 
         default:
             return 0;

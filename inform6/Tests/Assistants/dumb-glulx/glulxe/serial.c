@@ -35,6 +35,12 @@ static int undo_chain_size = 0;
 static int undo_chain_num = 0;
 static unsigned char **undo_chain = NULL;
 
+#ifdef SERIALIZE_CACHE_RAM
+/* This will contain a copy of RAM (ramstate to endmem) as it exists
+   in the game file. */
+static unsigned char *ramcache = NULL;
+#endif /* SERIALIZE_CACHE_RAM */
+
 static glui32 write_memstate(dest_t *dest);
 static glui32 write_heapstate(dest_t *dest, int portable);
 static glui32 write_stackstate(dest_t *dest, int portable);
@@ -62,6 +68,20 @@ int init_serial()
   if (!undo_chain)
     return FALSE;
 
+#ifdef SERIALIZE_CACHE_RAM
+  {
+    glui32 len = (endmem - ramstart);
+    glui32 res;
+    ramcache = (unsigned char *)glulx_malloc(sizeof(unsigned char *) * len);
+    if (!ramcache)
+      return FALSE;
+    glk_stream_set_position(gamefile, gamefile_start+ramstart, seekmode_Start);
+    res = glk_get_buffer_stream(gamefile, (char *)ramcache, len);
+    if (res != len)
+      return FALSE;
+  }
+#endif /* SERIALIZE_CACHE_RAM */
+
   return TRUE;
 }
 
@@ -80,6 +100,13 @@ void final_serial()
   undo_chain = NULL;
   undo_chain_size = 0;
   undo_chain_num = 0;
+
+#ifdef SERIALIZE_CACHE_RAM
+  if (ramcache) {
+    glulx_free(ramcache);
+    ramcache = NULL;
+  }
+#endif /* SERIALIZE_CACHE_RAM */
 }
 
 /* perform_saveundo():
@@ -195,6 +222,12 @@ glui32 perform_restoreundo()
   glui32 res, val;
   glui32 heapsumlen = 0;
   glui32 *heapsumarr = NULL;
+
+  /* If profiling is enabled and active then fail. */
+  #if VM_PROFILING
+  if (profile_profiling_active())
+    return 1;
+  #endif /* VM_PROFILING */
 
   if (undo_chain_size == 0 || undo_chain_num == 0)
     return 1;
@@ -401,6 +434,12 @@ glui32 perform_restore(strid_t str, int fromshell)
   glui32 filestart, filelen;
   glui32 heapsumlen = 0;
   glui32 *heapsumarr = NULL;
+
+  /* If profiling is enabled and active then fail. */
+  #if VM_PROFILING
+  if (profile_profiling_active())
+    return 1;
+  #endif /* VM_PROFILING */
 
   stream_get_iosys(&val, &lx);
   if (val != 2 && !fromshell) {
@@ -616,21 +655,34 @@ static glui32 write_memstate(dest_t *dest)
   int val;
   int runlen;
   unsigned char ch;
+#ifdef SERIALIZE_CACHE_RAM
+  glui32 cachepos;
+#endif /* SERIALIZE_CACHE_RAM */
 
   res = write_long(dest, endmem);
   if (res)
     return res;
 
   runlen = 0;
+
+#ifdef SERIALIZE_CACHE_RAM
+  cachepos = 0;
+#else /* SERIALIZE_CACHE_RAM */
   glk_stream_set_position(gamefile, gamefile_start+ramstart, seekmode_Start);
+#endif /* SERIALIZE_CACHE_RAM */
 
   for (pos=ramstart; pos<endmem; pos++) {
     ch = Mem1(pos);
     if (pos < endgamefile) {
+#ifdef SERIALIZE_CACHE_RAM
+      val = ramcache[cachepos];
+      cachepos++;
+#else /* SERIALIZE_CACHE_RAM */
       val = glk_get_char_stream(gamefile);
       if (val == -1) {
         fatal_error("The game file ended unexpectedly while saving.");
       }
+#endif /* SERIALIZE_CACHE_RAM */
       ch ^= (unsigned char)val;
     }
     if (ch == 0) {
@@ -670,6 +722,9 @@ static glui32 read_memstate(dest_t *dest, glui32 chunklen)
   int val;
   int runlen;
   unsigned char ch, ch2;
+#ifdef SERIALIZE_CACHE_RAM
+  glui32 cachepos;
+#endif /* SERIALIZE_CACHE_RAM */
 
   heap_clear();
 
@@ -682,14 +737,24 @@ static glui32 read_memstate(dest_t *dest, glui32 chunklen)
     return res;
 
   runlen = 0;
+
+#ifdef SERIALIZE_CACHE_RAM
+  cachepos = 0;
+#else /* SERIALIZE_CACHE_RAM */
   glk_stream_set_position(gamefile, gamefile_start+ramstart, seekmode_Start);
+#endif /* SERIALIZE_CACHE_RAM */
 
   for (pos=ramstart; pos<endmem; pos++) {
     if (pos < endgamefile) {
+#ifdef SERIALIZE_CACHE_RAM
+      val = ramcache[cachepos];
+      cachepos++;
+#else /* SERIALIZE_CACHE_RAM */
       val = glk_get_char_stream(gamefile);
       if (val == -1) {
         fatal_error("The game file ended unexpectedly while restoring.");
       }
+#endif /* SERIALIZE_CACHE_RAM */
       ch = (unsigned char)val;
     }
     else {

@@ -23,9 +23,9 @@ GLKLIB = libcheapglk.a
 
 CHEAPGLK_OBJS =  \
   cgfref.o cggestal.o cgmisc.o cgstream.o cgstyle.o cgwindow.o cgschan.o \
-  cgunicod.o main.o gi_dispa.o gi_blorb.o cgblorb.o
+  cgdate.o cgunicod.o main.o gi_dispa.o gi_blorb.o gi_debug.o cgblorb.o
 
-CHEAPGLK_HEADERS = cheapglk.h gi_dispa.h
+CHEAPGLK_HEADERS = cheapglk.h gi_dispa.h gi_debug.h
 
 all: $(GLKLIB) Make.cheapglk
 

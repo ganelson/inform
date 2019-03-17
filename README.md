@@ -140,9 +140,9 @@ The inform7 subtree further contains these primary resources:
 
 	* inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x - __unversioned__
 
-* inform7/Internal/HTML - Files needed for generating extension documentation and the like. HTML, Javascript, CSS
+* inform7/Internal/HTML - Files needed for generating extension documentation and the like
 * inform7/Internal/Languages - Natural language definition bundles
-* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+* inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 	* inform7/Internal/Templates/Classic - An older, plainer website - __unversioned__
 
 	* inform7/Internal/Templates/Standard - The default, more modern look - __unversioned__
@@ -170,8 +170,11 @@ be accepted. (Note that these are not git submodules.)
 
 * inform6 - The Inform 6 compiler (used by I7 as a code generator). - __version 1634 '5th March 2016'__ - from [https://github.com/DavidKinder/Inform6], maintained by [David Kinder](https://github.com/DavidKinder)
 
+	* inform6/Tests/Assistants/dumb-frotz - A dumb-terminal Z-machine interpreter. - unversioned: modified from [Alembic Petrofsky's 1998 Teletype port of Frotz](https://github.com/sussman/ircbot-collection/tree/master/dumb-frotz)
+	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __version 0.5.4__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
+	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __version 1.0.6.__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
-* inform7/Internal/Templates - template websites for Inform 7's 'release as a website' feature
+* inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __version 'Parchment for Inform 7 (2015-09-25)'__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
 
 	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __version 'Quixe for Inform 7 (v. 2.1.2)'__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)

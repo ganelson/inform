@@ -15,7 +15,7 @@ glui32 do_gestalt(glui32 val, glui32 val2)
     return 0x00030102; /* Glulx spec version 3.1.2 */
 
   case gestulx_TerpVersion:
-    return 0x00000502; /* Glulxe version 0.5.2 */
+    return 0x00000504; /* Glulxe version 0.5.4 */
 
   case gestulx_ResizeMem:
 #ifdef FIXED_MEMSIZE
@@ -69,6 +69,10 @@ glui32 do_gestalt(glui32 val, glui32 val2)
 #else /* FLOAT_SUPPORT */
     return 0; /* The floating-point opcodes are not compiled in. */
 #endif /* FLOAT_SUPPORT */
+
+#ifdef GLULX_EXTEND_GESTALT
+  GLULX_EXTEND_GESTALT
+#endif /* GLULX_EXTEND_GESTALT */
 
   default:
     return 0;

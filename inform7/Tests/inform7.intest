@@ -44,7 +44,7 @@
 		set: $I6OPTIONS		= -E2SDwGx
 		set: $INT			= $GINT
 		set: $INTNAME		= dumb-glulxe
-		set: $INTOPTIONS	= -u
+		set: $INTOPTIONS	= -u -q
 	else
 		set: $FORMAT		= z8
 		set: $I6OPTIONS		= -E2SDwv8x
