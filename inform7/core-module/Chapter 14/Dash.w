@@ -1233,7 +1233,7 @@ instance, if |inv| is an invocation of this phrase:
 	}
 
 @ The following is a delicate manoeuvre, but luckily it takes action only very
-rarely and in very specific circumstances. We allow a {\it very limited} use
+rarely and in very specific circumstances. We allow a very limited use
 of second-order logic in using the name of a kind as if it were a value,
 even though Inform is really not set up for this. The point is to allow:
 
@@ -3068,7 +3068,7 @@ any universal quantifier ("all", etc.) is removed.
 	return NEVER_MATCH;
 
 @ It might look as if this ought to be checked when phrase definitions are
-made; the trouble is, "action", "condition" and so on {\it are} valid
+made; the trouble is, "action", "condition" and so on are valid
 in phrase definitions, but only in inline-defined ones. We don't want to get
 into all that here, because the message is aimed more at Inform novices who
 have made an understandable confusion.

@@ -75,7 +75,6 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						if ((P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) && (P.data[DATA_CONST_IFLD] == GLOB_IVAL)) TO = summations_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) TO = verbs_at_eof;
 						if (Inter::Constant::is_routine(con_name)) {
-							// LOG("%d %08x ROUTINE $3\n", j, P.data, con_name);
 							TO = routines_at_eof;
 						}
 						CodeGen::frame(TO, I, P); break;

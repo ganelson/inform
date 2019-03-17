@@ -164,7 +164,6 @@ inter_error_message *Inter::Kind::read(inter_reading_state *IRS, inter_line_pars
 
 inter_error_message *Inter::Kind::new(inter_reading_state *IRS, inter_t SID, inter_t TID, inter_t SUP,
 	int constructor, int arity, inter_t *operands, inter_t level, inter_error_location *eloc) {
-// LOG("Before: "); Inter::Bookmarks::log(IRS); LOG("\n");
 	inter_frame P = Inter::Frame::fill_8(IRS,
 		KIND_IST, SID, TID, 0, 0, SUP, Inter::create_frame_list(IRS->read_into), Inter::create_frame_list(IRS->read_into),
 		(inter_t) constructor, eloc, level);
@@ -176,7 +175,6 @@ inter_error_message *Inter::Kind::new(inter_reading_state *IRS, inter_t SID, int
 	Inter::check_segments(IRS->read_into);
 	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
-// LOG("After: "); Inter::Bookmarks::log(IRS); LOG("\n");
 	return NULL;
 }
 

@@ -18,13 +18,12 @@ formulations for some concept: for instance, the possible commands beginning
 TAKE, or the possible verbal forms of numbers. Each GV is a list of GLs, and
 an individual GL must belong to exactly one GV. There are five different
 types of GV, differentiated mostly by the purpose to which the GV is put:
-\itemitem{1.}|GV_IS_COMMAND|. An imperative verbal command at run-time.
-\itemitem{2.}|GV_IS_TOKEN|. A square-bracketed token in other grammar.
-\itemitem{3.}|GV_IS_OBJECT|. A noun phrase at run time: a name for an object.
-\itemitem{4.}|GV_IS_VALUE|. A noun phrase at run time: a name for a value.
-\itemitem{5.}|GV_IS_CONSULT|. A pattern to match in part of a command (such
-as "consult").
-\itemitem{6.}|GV_IS_PROPERTY_NAME|. A noun phrase at run time: a name for one
+(-1) |GV_IS_COMMAND|. An imperative verbal command at run-time.
+(-2) |GV_IS_TOKEN|. A square-bracketed token in other grammar.
+(-3) |GV_IS_OBJECT|. A noun phrase at run time: a name for an object.
+(-4) |GV_IS_VALUE|. A noun phrase at run time: a name for a value.
+(-5) |GV_IS_CONSULT|. A pattern to match in part of a command (such as "consult").
+(-6) |GV_IS_PROPERTY_NAME|. A noun phrase at run time: a name for one
 possibility for an either/or property, say "open" or "fixed in place".
 
 (b) A grammar line (GL) is a single possibility within a GV: for

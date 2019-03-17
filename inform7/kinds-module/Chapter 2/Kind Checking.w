@@ -5,12 +5,12 @@ that, whether they are compatible with each other.
 
 @h Definitions.
 
-@ We say that a kind $K_L$ is a {\it subkind} of $K_R$ if its values can
+@ We say that a kind $K_L$ is a subkind of $K_R$ if its values can
 be used without modification at run-time in code which expects a value of
 $K_R$, and write
 $$ K_L \leq K_R. $$
 There are many pairs of kinds where neither is compatible with the other:
-for instance, rulebook $\not\leq$ text and text $\not\leq$ rulebook. So
+for instance, it is true neither that rulebook $\leq$ text nor that text $\leq$ rulebook. So
 we're using the notation $\leq$ here by analogy with partially-ordered sets
 rather than with numbers. The universe of kinds does indeed form a poset
 under this relation:
@@ -24,12 +24,12 @@ we also have |Kinds::Compare::eq| to test equality and |Kinds::Compare::lt| for 
 when $K\leq L$ but $K\noteq L$, that is, for $K<L$. The main aim of this
 section is to define those routines.
 
-@ To say that $K_L$ is {\it compatible} with $K_R$ is a weaker statement.
+@ To say that $K_L$ is compatible with $K_R$ is a weaker statement.
 This is the test Inform uses to see whether it will allow $K_L$ values to
 be used where $K_R$ values are expected. Clearly if $K_L\leq K_R$ then
 they must be compatible, but there are other possibilities. For example,
 snippets can be used as texts if suitably modified ("cast")
-at run-time, but snippet $\not\leq$ text. Compatibility lacks the
+at run-time, but snippet is not $\leq$ text. Compatibility lacks the
 elegant formal properties of $\leq$: for example, "value" is compatible
 with "text" which is in turn compatible with "value".
 
@@ -69,7 +69,7 @@ kinds against Q exactly as if it were checking against "number". It can
 indeed do this -- that's the |MATCH_KIND_VARIABLES_AS_VALUES| mode. It can
 also ignore the values of kind variables and treat them as names, so that
 Q matches only against Q, regardless of its current value; that's the
-|MATCH_KIND_VARIABLES_AS_SYMBOLS| mode. Or it can match {\it anything}
+|MATCH_KIND_VARIABLES_AS_SYMBOLS| mode. Or it can match anything
 against Q, which is |MATCH_KIND_VARIABLES_AS_UNIVERSAL| mode.
 
 More interestingly, the kind-checker can also set the values of A to Z.

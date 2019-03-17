@@ -124,8 +124,7 @@ Note that $r_0$ is never required, since $e_0$ is constrained in size only
 by the need for $N$ to fit into a single virtual machine integer. The value
 $$ m_i = \prod_{j>i} r_j $$
 is called the "multiplier", and note that $m_{n-1} = 1$. Conversely,
-$$ e_i = \cases{ N/m_0 & if $i=0$,\cr
-N/m_i {\rm ~mod~} r_i & otherwise.\cr} $$
+$e_i = N/m_0$ if $i=0$, and $N/m_i {\rm ~mod~} r_i$ otherwise.
 The rightmost element $e_{n-1}$ is the least significant numerically.
 
 =

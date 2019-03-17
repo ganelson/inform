@@ -546,7 +546,6 @@ inter_schema *InterSchemas::from_i6s(text_stream *prototype, int no_quoted_iname
 	dict_entry *de = Dictionaries::find(compiled_i6s_dict, prototype);
 	if (de) return (inter_schema *) Dictionaries::read_value(compiled_i6s_dict, prototype);
 
-//	LOG("New prototype: %S\n", prototype);
 	inter_schema *result = InterSchemas::from_text(prototype, TRUE, no_quoted_inames, quoted_inames);
 
 	Dictionaries::create(compiled_i6s_dict, prototype);
@@ -2554,8 +2553,6 @@ int InterSchemas::prefix(inter_symbol *O) {
 }
 
 int InterSchemas::right_associative(inter_symbol *O) {
-//	if (O == store_interp) return TRUE;
-//	return FALSE;
 	if (O == store_interp) return FALSE;
 	return TRUE;
 }

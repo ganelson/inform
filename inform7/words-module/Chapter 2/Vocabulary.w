@@ -279,8 +279,8 @@ for instance, would each produce the number 4.
 
 Instead we use a standard method to derive a number traditionally called
 a "hash code". This is the algorithm called "X 30011" in Aho, Sethi and
-Ullman's standard reference {\it Compilers: Principles, Techniques and Tools}
-(1986). Because it is derived from constantly overflowing integer arithmetic,
+Ullman's standard reference "Compilers: Principles, Techniques and Tools" (1986).
+Because it is derived from constantly overflowing integer arithmetic,
 it will produce different codes on different architectures (say, where
 |int| is 64 bits long rather than 32, or where |char| is unsigned).
 All that matters is that it provides a good spread of hash codes for

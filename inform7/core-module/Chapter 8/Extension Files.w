@@ -74,7 +74,7 @@ If to install such an extension would result in over-writing an extension
 already present at that filename, the user should be given a warning and
 asked if he wants to proceed.
 
-However, note that it is {\it not} an error to install an extension with
+However, note that it is not an error to install an extension with
 the same name and author as one in the built-in extensions folder. This
 does not result in overwriting, since the newly installed version will live
 in the external area, not the built-in area.
@@ -106,7 +106,7 @@ it's not mission-critical.
 @h What happens in census mode.
 The census has two purposes: first, to create provisional documentation
 where needed for new and unused extensions; and second, to create the
-following index files in the external documentation area ({\it not} in
+following index files in the external documentation area (not in
 the external extension area):
 
 	|.../Extensions.html| (basically a contents page)

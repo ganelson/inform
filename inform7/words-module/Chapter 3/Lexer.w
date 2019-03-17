@@ -130,7 +130,7 @@ close square bracket or the end of the quoted text. (Again, NI would
 issue problem messages if given a string malformed in this way.)
 
 (4b) Comment text. Outside of (4a) and (4c), an open square bracket begins
-comment. Comment continues until the next {\it matching} close square
+comment. Comment continues until the next matching close square
 bracket. (This is the case even if that is in double quotes within the
 comment, i.e., quotation marks should be ignored when matching |[| and |]|
 inside a comment.) Thus, nested comments are allowed, and the following
@@ -177,7 +177,7 @@ size.
 
 (4c) Literal I6 code: grey type. (Inform for OS X rather coolly goes into
 I6 syntax-colouring, which is considerably harder, for this material:
-see {\it The Inform 6 Technical Manual} for an algorithm.)
+see "The Inform 6 Technical Manual" for an algorithm.)
 
 (5) Normal text: black type.
 
@@ -966,7 +966,7 @@ throwing away the hyphen from the material of the current word.
     }
 
 @ So literal mode is used for comments, strings and verbatim passages of
-Inform 6 code. We are in this mode when scanning only the {\it middle} of
+Inform 6 code. We are in this mode when scanning only the middle of
 the literal: after all, we scanned (and recorded) the start of the literal
 in ordinary mode, before noticing that the character(s) marked the onset of
 a literal.

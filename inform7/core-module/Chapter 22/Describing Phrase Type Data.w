@@ -655,7 +655,7 @@ give problems for misuse of brackets.
 
 @ Phrase token declarations allow a variety of non-standard constructs.
 
-Note that nested brackets {\it are} allowed in the kind indication after
+Note that nested brackets are allowed in the kind indication after
 the hyphen, and this is sorely needed with complicated functional kinds.
 
 =

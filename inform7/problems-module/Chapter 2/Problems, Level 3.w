@@ -159,7 +159,7 @@ void Problems::Issue::s_subtree_error(char *mess) {
 }
 
 @h Sigils.
-Every problem message in Inform is identified by a {\it sigil}, a short
+Every problem message in Inform is identified by a sigil, a short
 alphanumeric symbol. The |_p_| notation is used to write these;
 see almost every section in later chapters for examples. The naming rules
 for sigils are as follows:
@@ -305,7 +305,7 @@ void Problems::Issue::memory_allocation_problem(SIGIL_ARGUMENTS, char *what_has_
 }
 
 @h Problem messages unlocated in the source text.
-And now the regular problem messages, the ones which are {\it not my fault}.
+And now the regular problem messages, the ones which are not my fault.
 We begin with lexical problems happening when the run is hardly begun:
 
 =

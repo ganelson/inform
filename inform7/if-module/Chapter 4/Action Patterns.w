@@ -8,7 +8,7 @@ text into a data structure called an |action_pattern|.
 @h Definitions.
 
 @ Action patterns are essentially a conjunction of specifications -- the
-action must be this, {\it and} the noun must be that, {\it and}... While
+action must be this, and the noun must be that, and... While
 they allow disjunction in the choice of action, all of that code is a
 matter for the action name list to handle. The AP structure is a list
 of conditions all of which must apply at once.

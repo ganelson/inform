@@ -119,7 +119,6 @@ inter_repository *Emit::repository(void) {
 
 inter_reading_state *Emit::move_write_position(inter_reading_state *to) {
 	inter_reading_state *from = default_bookmark;
-// LOG("Write pos $5 -> $5\n", from, to);
 	default_bookmark = to;
 	return from;
 }
@@ -133,7 +132,6 @@ inter_t Emit::baseline(inter_reading_state *IRS) {
 
 inter_reading_state Emit::bookmark(void) {
 	inter_reading_state b = Inter::Bookmarks::snapshot(Emit::IRS());
-//	LOG("Create bm b with package %08x\n", b.current_package);
 	return b;
 }
 
@@ -558,8 +556,6 @@ inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, 
 	inter_symbol *var_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Variable::new(default_bookmark,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, var_kind), v1, v2, Emit::baseline(default_bookmark), NULL));
-//	Emit::guard(Inter::Variable::new(&variables_bookmark,
-//		Inter::SymbolsTables::id_from_IRS_and_symbol(&variables_bookmark, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(&variables_bookmark, var_kind), v1, v2, Emit::baseline(&variables_bookmark), NULL));
 	if (rvalue) Emit::annotate_symbol_t(var_name, NAME_IANN, rvalue);
 	return var_name;
 }
@@ -877,13 +873,11 @@ void Emit::array_plural_dword_entry(text_stream *content) {
 
 void Emit::array_numeric_entry(inter_t N) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	/* LOG("Entry %d\n", N); */
 	Emit::add_entry(LITERAL_IVAL, N);
 }
 
 void Emit::array_divider(text_stream *divider_text) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	/* LOG("Divide %S\n", divider_text); */
 	inter_t S = Inter::create_text(Emit::repository());
 	Str::copy(Inter::get_text(Emit::repository(), S), divider_text);
 	Emit::add_entry(DIVIDER_IVAL, S);
@@ -996,7 +990,6 @@ inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_packag
 	inter_symbol *rsymb = InterNames::define_symbol(iname);
 	if (ptype == NULL) internal_error("no package type");
 	inter_package *IP = NULL;
-	// LOG("Emit package %n at level %d, child of $6\n", iname, B, default_bookmark->current_package);
 	Emit::guard(Inter::Package::new_package(default_bookmark, rsymb, ptype, B, NULL, &IP));
 	if (IP) {
 		IP->I7_baseline = B+1;
@@ -1031,7 +1024,6 @@ inter_symbol *Emit::block(inter_name *iname) {
 }
 
 void Emit::routine(inter_name *rname, kind *rkind, inter_symbol *block_name) {
-	// LOG("Emit routine %n with block $3; bookmark $5\n", rname, block_name, default_bookmark);
 	if (Emit::IRS() == NULL) internal_error("no inter repository");
 	inter_symbol *AB_symbol = Emit::kind_to_symbol(rkind);
 	inter_symbol *rsymb = InterNames::define_symbol(rname);
@@ -1202,7 +1194,6 @@ void Emit::set_level(int N) {
 	}
 	while (cip->noted_sp > 0) {
 		if (cip->noted_levels[cip->noted_sp-1] < N) break;
-//		LOG("Popped %d\n", cip->noted_levels[cip->noted_sp-1]);
 		cip->noted_sp--;
 	}
 	cip->inter_level = N;
@@ -1213,7 +1204,6 @@ void Emit::note_level(inter_symbol *from) {
 	code_insertion_point *cip = &cip_stack[cip_sp-1];
 	if (cip->noted_sp >= MAX_NESTED_NOTEWORTHY_LEVELS) return;
 	cip->noted_levels[cip->noted_sp++] = Emit::level();
-//	LOG("Pushed %d from %S\n", Emit::level(), from->symbol_name);
 }
 
 void Emit::to_last_level(int delta) {
@@ -1356,7 +1346,6 @@ void Emit::end_block(inter_symbol *rsymb) {
 	Emit::pop_code_position();
 	inter_reading_state *IRS = Emit::IRS();
 	IRS->current_package = IRS->current_package->parent_package;
-// LOG("End block %S\n", rsymb->symbol_name);
 }
 
 int Emit::emitting_routine(void) {

@@ -35,7 +35,7 @@ with a red-black tree: a form of balanced binary tree structure such that
 nodes appear in alphabetical order from left to right in the tree, but
 which has a roughly equal depth throughout, so that the number of string
 comparisons needed to search it is nearly the binary logarithm of the
-number of nodes. For an account of the theory, see Sedgewick, {\it Algorithms}
+number of nodes. For an account of the theory, see Sedgewick, "Algorithms"
 (2nd edn, chap. 15). Each node in the tree is marked "red" or "black":
 
 @d RED_NODE 1
@@ -223,7 +223,7 @@ literal_text *Strings::TextLiterals::rotate(int w1, literal_text *y) {
 one-off form of text called a "quotation", just to match an idiosyncratic
 feature of Inform 1 from 1993 which was in turn matching an idiosyncratic
 feature of version 4 of the Z-machine from 1985 which, in turn, existed only
-to serve the needs of an unusual single work of IF called {\it Trinity}.
+to serve the needs of an unusual single work of IF called "Trinity".
 But here we are. Boxed quotations are handled much like other literal
 texts in that they enter the red-black tree, but they are marked out as
 different for compilation purposes.

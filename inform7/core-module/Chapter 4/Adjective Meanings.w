@@ -142,9 +142,6 @@ inter_name *Adjectives::Meanings::iname(adjectival_phrase *aph, int task, int we
 	aih->iname_held = Packaging::supply_iname(aph->aph_package, TASK_PR_COUNTER);
 	Inter::Symbols::set_flag(InterNames::to_symbol(aih->iname_held), MAKE_NAME_UNIQUE);
 
-//	aih->iname_held->override = Str::new();
-//	WRITE_TO(aih->iname_held->override, "%n_K%d_T%d", aph->aph_iname, weak_id, task);
-//	InterNames::to_symbol(aih->iname_held);
 	return aih->iname_held;
 }
 
@@ -174,7 +171,6 @@ memory to keep the sorted list as a second linked list.
 adjectival_phrase *Adjectives::Meanings::declare(adjective_meaning *am,
 	wording W, int route) {
 	adjectival_phrase *aph = Adjectives::declare(W, NULL);
-	// LOG("By route %d: %W = %n\n", route, W, aph->aph_iname);
 	adjective_meaning *aml = aph->meanings->possible_meanings;
 	if (aml == NULL) aph->meanings->possible_meanings = am;
 	else {
@@ -1012,7 +1008,7 @@ known in order to sort.
 	Packaging::exit(save);
 
 @ The stack frame has just one call parameter: the value $x$ which might, or
-might not, be such that {\it adjective}($x$) is true. We allow this to be called
+might not, be such that adjective($x$) is true. We allow this to be called
 "it", though it can also have a calling name in some cases (see below).
 
 Clearly it ought to have the kind which defines the domain -- so it's a rulebook
@@ -1148,9 +1144,9 @@ void Adjectives::Meanings::compiling_soon(adjective_meaning *am, int T) {
 	}
 }
 
-@ 3. |*_KADJ_compile|. We should now {\it either} compile code which, in the
+@ 3. |*_KADJ_compile|. We should now either compile code which, in the
 given stack frame and writing code to the given file handle, carries out the
-given task for the adjective, and return |TRUE|; {\it or} return |FALSE| to
+given task for the adjective, and return |TRUE|; or return |FALSE| to
 tell Inform that the task is impossible.
 
 Note that if an adjective has defined a schema to handle the task, then its
@@ -1203,9 +1199,9 @@ into |*1|.
 		return TRUE;
 	}
 
-@ 4. |*_KADJ_assert|. We should now {\it either} take action to ensure that
+@ 4. |*_KADJ_assert|. We should now either take action to ensure that
 the adjective will hold (or not hold, according to |parity|) for the given
-object or value; {\it or} return |FALSE| to tell Inform that this cannot be
+object or value; or return |FALSE| to tell Inform that this cannot be
 asserted, which will trigger a problem message.
 
 =

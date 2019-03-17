@@ -157,7 +157,7 @@ int Calculus::Equality::REL_assert(binary_predicate *bp,
 
 @h Compilation.
 Since we are compiling to I6, which is itself a C-level programming
-language, it looks at first as if we can compile {\it is} into |==| when
+language, it looks at first as if we can compile is into |==| when
 testing equality and |=| when asserting it: thus
 
 >> now the score is 10;

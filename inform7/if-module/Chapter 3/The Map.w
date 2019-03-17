@@ -581,7 +581,7 @@ exists to the east of the Pitch; in effect, we read it as:
 where Z is a newly created and nameless object.
 
 But we must be careful not to catch "East is a direction" in the same net
-because, of course, that {\it does} set its kind.
+because, of course, that does set its kind.
 
 =
 int PL::Map::map_intervene_in_assertion(parse_node *px, parse_node *py) {
@@ -1007,7 +1007,6 @@ void PL::Map::write_door_dir_routines(void) {
 			Emit::ref_symbol(K_value, loc_s);
 			Emit::val_iname(K_value, InterNames::extern(LOCATION_EXNAMEF));
 		Emit::up();
-//		WRITE("loc = location;\n");
 
 		Emit::inv_primitive(if_interp);
 		Emit::down();
@@ -1025,7 +1024,6 @@ void PL::Map::write_door_dir_routines(void) {
 				Emit::up();
 			Emit::up();
 		Emit::up();
-//		WRITE("if (loc == thedark) loc = real_location;\n");
 
 		Emit::inv_primitive(if_interp);
 		Emit::down();
@@ -1050,9 +1048,6 @@ void PL::Map::write_door_dir_routines(void) {
 				Instances::iname(PL::Map::get_value_of_opposite_property(notice->D2)));
 		Emit::up();
 
-//		WRITE("if (loc == %~I) return %~I; return %~I;",
-//			notice->R1, PL::Map::get_value_of_opposite_property(notice->D1),
-//				PL::Map::get_value_of_opposite_property(notice->D2));
 		Routines::end();
 	}
 }

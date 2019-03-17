@@ -130,7 +130,7 @@ void Properties::SettingRelations::set_property_BP_schemas(binary_predicate *bp,
 Suppose we are setting property $P$ of subject $S$ to value $V$. Then the setting
 relation has terms $S$ and $V$. To pass typechecking, we require that $V$ be
 valid for the kind of value stored in $P$, and that $S$ have a kind a value
-allowing it to possess properties {\it in general}. But we don't require
+allowing it to possess properties in general. But we don't require
 that it possesses this one.
 
 This is because we can't know whether it does or not until model completion,

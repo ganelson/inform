@@ -4,27 +4,27 @@ A general introduction to kinds.
 
 @h Values, kinds and safety.
 Inform is like most programming languages in that it deals with a rich
-variety of {\it values}, that is, individual pieces of data. The number
+variety of values, that is, individual pieces of data. The number
 17, the time "3:15 PM" and the "Entire Game" (a named scene) are all
 examples of values. Every value is ultimately represented by a single word
 in memory at run-time, thus occupying either 16 bits in the Z-machine or
 32 bits in the Glulx virtual machine, depending on our compilation target.
 Some values are self-contained enough that this single word is enough, and
-are called {\it word values}; others, {\it pointer values}, use their word
+are called word values; others, pointer values, use their word
 to hold a pointer to a larger array of data stored somewhere else. For
 instance, times are word values; lists of times are pointer values.
 
-The usage of values is monitored by constant checking of the {\it kind of
-value}, or simply {\it kind} for short. Inform's "kind" is directly
+The usage of values is monitored by constant checking of the "kind of
+value", or simply kind for short. Inform's "kind" is directly
 equivalent to what most languages would call a "type". Except for the
 use of "kind" instead of "type", I have tried to follow conventional
 jargon in this source code: see for instance the definitions in Michael L.
-Scott {\it Programming Language Pragmatics} (second edition, 2006),
+Scott "Programming Language Pragmatics" (second edition, 2006),
 chapter 7. Thus the process of making sure that a number is never used
-where a scene is required, and so forth, is called {\it kind checking}
-(rather than "type checking"), and is done by ensuring {\it kind
-compatibility} (rather than "type compatibility"), but the idea is the
-same. Successful kind checking ensures what is called {\it safety}.
+where a scene is required, and so forth, is called kind checking
+(rather than "type checking"), and is done by ensuring "kind
+compatibility" (rather than "type compatibility"), but the idea is the
+same. Successful kind checking ensures what is called safety.
 
 Inform is a high-level language designed for reliability and ease of use.
 Accordingly:
@@ -34,9 +34,9 @@ provide efficiency at the price of increased hazard and finickiness. There
 are no pointers, no arrays with unchecked boundaries, no union kinds, no
 exceptions, no labels, no jump or |goto| instructions.
 
-(b) All values are {\it first-class}, whatever their kind. They can all
+(b) All values are first-class, whatever their kind. They can all
 be passed to phrases, returned by phrases or stored in variables. All
-copies and comparisons are {\it deep}: that is, to copy a pointer value
+copies and comparisons are deep: that is, to copy a pointer value
 replicates its entire contents, and to compare two pointer values is to
 examine their complete contents.
 
@@ -47,9 +47,9 @@ to data on the heap. (Indeed, this isn't even shown on the Kinds index page.)
 @h A strongly typed language mixing static and dynamic typing.
 Programming languages with types are often classified by two criteria.
 One is how rigorously they maintain safety, with safer languages being
-{\it strongly typed}, and more libertarian ones {\it weakly typed}.
-The other is when types are checked, with {\it statically typed} languages
-being checked at compile time, {\it dynamically typed} languages being
+strongly typed, and more libertarian ones weakly typed.
+The other is when types are checked, with statically typed languages
+being checked at compile time, dynamically typed languages being
 checked at run-time. Both strong/weak and static/dynamic are really ranges
 of possibilities.
 
@@ -66,9 +66,9 @@ time or at run-time.
 
 @h Casting and coercion.
 It is not always unsafe to use data of one kind in place of another. When this
-is permitted, it is called an {\it implicit cast}, and we say the compiler is
-{\it casting} the value. Casts can be either {\it converting} or {\it
-non-converting}. In a non-converting cast, the data can be left exactly as it
+is permitted, it is called an implicit cast, and we say the compiler is
+casting the value. Casts can be either "converting" or "non-converting".
+In a non-converting cast, the data can be left exactly as it
 is. For instance, a "vehicle" is stored at run-time as an object number, and
 so is a "thing", so any vehicle value is already a thing value. But to use a
 "snippet" as a "text" requires substantial code to extract the compressed,
@@ -101,8 +101,8 @@ be done if C functions are used to wrap, say, x86 assembly language for
 efficiency's sake. Defining phrases with Inform 6 inclusions is the
 equivalent in Inform 7.
 
-@ Kinds are formed from {\it base kinds}, complete in themselves, and
-(proper) {\it constructors}, used to make more elaborate kinds out of
+@ Kinds are formed from base kinds, complete in themselves, and
+(proper) constructors, used to make more elaborate kinds out of
 existing simpler ones. For example, "number" is a base kind and "list of
 K" is a constructor, enabling us to make "list of numbers" or "list of
 lists of texts".
@@ -122,11 +122,11 @@ As this example suggests, knowledge and property ownership passes through
 a single-inheritance hierarchy; that is, each kind inherits directly from
 only one other kind.
 
-@ Inform also supports {\it kinds of kinds}, which are analogous to
+@ Inform also supports kinds of kinds, which are analogous to
 typeclasses in Haskell. Examples of these are "arithmetic value" and
 indeed simply "value". These can be constructed upon just as base kinds
 can: for instance, "list of relations of numbers to values" can be
-formed. We say that something like this is not {\it definite}, because it
+formed. We say that something like this is not definite, because it
 can't be used as the kind of a variable. (A variable whose kind was
 "value" could never be safe to use.) But in other respects indefinite
 kinds are much like definite ones, and share the same data structure
@@ -137,7 +137,7 @@ All we can do with an indefinite kind is to test compatibility with it, but
 that little is still very useful. We can determine whether a value can
 have addition applied to it by testing whether its kind is compatible
 with "arithmetic value", for instance. When this happens, we say that
-the kind is an {\it instance} of the kind of kind.
+the kind is an instance of the kind of kind.
 
 Being an instance of something is not the same as inheriting from it.
 It's meaningless to ask if "number" inherits from "arithmetic value",

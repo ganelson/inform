@@ -318,8 +318,8 @@ In a few cases, there is a further textual gloss to add.
 the most normal ordering, in order to place the alphabetically important
 part first: thus "see, to be able to" rather than "to be able to see".
 (Compare "Gallifreyan High Council, continual incidences of madness and
-treachery amongst the" in {\it Doctor Who: The Completely Useless
-Encyclopaedia}, eds. Howarth and Lyons (1996).)
+treachery amongst the" in "Doctor Who: The Completely Useless
+Encyclopaedia", eds. Howarth and Lyons (1996).)
 
 @<Text of the actual lexicon entry@> =
 	Index::Lexicon::lexicon_copy_to_stream(lex, OUT);

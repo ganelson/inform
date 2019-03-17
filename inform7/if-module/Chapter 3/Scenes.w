@@ -765,7 +765,7 @@ void PL::Scenes::compile_scene_end(scene *sc, int end) {
 fact that "Ballroom Dance ends merrily" (say, end number 3) is in some
 sense a specialisation of "Ballroom Dance ends" (1). The doctrine is that
 end 3 causes end 1 to happen first, because a special ending is also a
-general ending; {\it but} rules taking effect on end 3 come earlier than
+general ending; but rules taking effect on end 3 come earlier than
 those for end 1, because they're more specialised, so they have a right to
 take effect first.
 

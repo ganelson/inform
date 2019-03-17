@@ -14,7 +14,7 @@ standing together as a conceptual unit, typically forming a component of a
 clause", but we've used the word "excerpt" for that. Instead, every Inform
 phrase definition reads back grammatically as a single complete sentence,
 even when quite long and written out in a tabulated, computer language sort
-of form: rather as Philip Larkin's poem {\it MCMIV} is a single sentence
+of form: rather as Philip Larkin's poem "MCMIV" is a single sentence
 through all four stanzas. For example:
 
 >> To award (N - a number) points: increase the score by N; say "Well done!"

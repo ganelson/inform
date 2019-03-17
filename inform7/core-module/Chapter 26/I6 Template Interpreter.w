@@ -56,7 +56,7 @@ special escape syntax:
 
 	|{-command:argument}|
 
-tells Inform to act {\it immediately} on the I6T command given, with the
+tells Inform to act immediately on the I6T command given, with the
 argument supplied. One of these commands is special:
 
 	|{-lines:commandname}|

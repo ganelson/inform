@@ -794,15 +794,15 @@ int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variab
 }
 
 @ Releasing requires four programs to work together: this one, Inform 6
-to turn our output into a story file, a releasing agent called "cBlorb"
+to turn our output into a story file, a releasing agent called "Inblorb"
 which binds up the result into a blorbed file, and lastly the user interface,
 which calls the other three in the right sequence.
 
 Although the user interface looks as if it's in charge, in fact we are
 pulling the strings, because we write a "blurb file" of instructions
-telling cBlorb exactly what to do. The format for this is an extension of
-the "blurb" format documented in the {\it Inform Designer's Manual},
-fourth edition (the "DM4"); see the published source code for cBlorb.
+telling Inblorb exactly what to do. The format for this is an extension of
+the "blurb" format documented in the "Inform Designer's Manual",
+fourth edition (the "DM4"); see the published source code for Inblorb.
 
 Note that the code below does not generate an |author| blurb instruction,
 which would lead to an AUTH chunk in the final blorb. This is partly
@@ -844,11 +844,11 @@ the Blorb-file's filename won't be too long for the file system.
 	WRITE_TO(TEMP, ".%s", VirtualMachines::get_blorbed_extension());
 
 @<Write the body of the Blurb file@> =
-	@<Tell cBlorb where to write its report to@>;
+	@<Tell Inblorb where to write its report to@>;
 	WRITE("\n! Identification\n\n");
-	@<Tell cBlorb where the project and release folders are@>;
+	@<Tell Inblorb where the project and release folders are@>;
 	WRITE("\n! Blorb instructions\n\n");
-	@<Tell cBlorb where the story file and iFiction files are@>;
+	@<Tell Inblorb where the story file and iFiction files are@>;
 	@<Give instructions about the cover image@>;
 	PL::Figures::write_blurb_commands(OUT);
 	PL::Sounds::write_blurb_commands(OUT);
@@ -859,19 +859,19 @@ the Blorb-file's filename won't be too long for the file system.
 	@<Give instructions about auxiliary files@>;
 	if (release_interpreter) @<Give instructions to release with an interpreter for Web play@>;
 	if (release_website) @<Give instructions to construct a website around the release@>;
-	@<Give hints to cblorb for its HTML status page@>;
+	@<Give hints to Inblorb for its HTML status page@>;
 
-@<Tell cBlorb where to write its report to@> =
+@<Tell Inblorb where to write its report to@> =
 	WRITE("status \"%f\" \"%f\"\n\n",
 		filename_of_cblorb_report_model,
 		filename_of_cblorb_report);
 
-@<Tell cBlorb where the project and release folders are@> =
+@<Tell Inblorb where the project and release folders are@> =
 	WRITE("project folder \"%p\"\n", pathname_of_project);
 	if (create_Materials)
 		WRITE("release to \"%p\"\n", pathname_of_materials_release);
 
-@<Tell cBlorb where the story file and iFiction files are@> =
+@<Tell Inblorb where the story file and iFiction files are@> =
 	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
 	if (existing_story_file)
 		WRITE("storyfile \"%f\" include\n", filename_of_existing_story_file);
@@ -991,7 +991,7 @@ file online.
 	WRITE("placeholder [ENCODEDSTORYFILE] = \"");
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
-	@<Tell cBlorb where to find the website templates@>;
+	@<Tell Inblorb where to find the website templates@>;
 
 	if (interpreter_template_leafname == NULL)
 		interpreter_template_leafname = VirtualMachines::get_default_interpreter();
@@ -1021,23 +1021,23 @@ file online.
 
 @<Give instructions to construct a website around the release@> =
 	WRITE("\n! Website instructions\n\n");
-	@<Tell cBlorb where to find the website templates@>;
+	@<Tell Inblorb where to find the website templates@>;
 	if (Wide::cmp(website_template_leafname, L"Classic") != 0) WRITE("css\n");
 	WRITE("website \"%w\"\n", website_template_leafname);
 
-@ The order here is significant, since cBlorb searches the folders in order,
+@ The order here is significant, since Inblorb searches the folders in order,
 with the earliest quoted searched first.
 
-@<Tell cBlorb where to find the website templates@> =
+@<Tell Inblorb where to find the website templates@> =
 	for (int area=0; area<NO_FS_AREAS; area++)
 		WRITE("template path \"%p\"\n", pathname_of_website_templates[area]);
 
-@ cBlorb reports its progress, or lack of it, with an HTML page, just as we do.
+@ Inblorb reports its progress, or lack of it, with an HTML page, just as we do.
 This page however includes some hints on what the user might have chosen
 instead of what he actually did choose, and we'll write those hints now, for
-cBlorb to copy out later.
+Inblorb to copy out later.
 
-@<Give hints to cblorb for its HTML status page@> =
+@<Give hints to Inblorb for its HTML status page@> =
 	ParseTree::traverse_with_stream(OUT, PL::Bibliographic::Release::visit_to_quote);
 	if (release_cover == FALSE) {
 		WRITE("status alternative ||Using 'Release along with cover art', to "

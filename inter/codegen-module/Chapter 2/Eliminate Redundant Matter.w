@@ -5,7 +5,7 @@ To reconcile clashes between assimilated and originally generated verbs.
 @h Parsing.
 
 =
-int notes_made = 0;
+int notes_made = 0, log_elims = FALSE;
 void CodeGen::Eliminate::go(inter_repository *I) {
 	CodeGen::Eliminate::keep(I, I"Main");
 	CodeGen::Eliminate::keep(I, I"DefArt");
@@ -39,8 +39,8 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 			}
 		}
 	}
-//	LOG("notes_made = %d\n", notes_made);
-//	LOG("The following routines are unnecessary:\n");
+	if (log_elims) LOG("notes_made = %d\n", notes_made);
+	if (log_elims) LOG("The following routines are unnecessary:\n");
 	for (int j=0; j<no_repos; j++) {
 		inter_repository *J = repos[j];
 		inter_frame P;
@@ -56,7 +56,7 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 						else consecutives = 0;
 					}
 					if (keep_me == FALSE) {
-//						LOG("-- %S %08x\n", con_name->symbol_name, con_name);
+						if (log_elims) LOG("-- %S %08x\n", con_name->symbol_name, con_name);
 						Inter::Nop::nop_out(J, P);
 					}
 				}
@@ -64,7 +64,7 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 		}
 	}
 
-//	LOG("The following table arrays are unnecessary:\n");
+	if (log_elims) LOG("The following table arrays are unnecessary:\n");
 	for (int j=0; j<no_repos; j++) {
 		inter_repository *J = repos[j];
 		inter_frame P;
@@ -81,7 +81,7 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 						else consecutives = 0;
 					}
 					if (keep_me == FALSE) {
-//						LOG("-- %S\n", con_name->symbol_name);
+						if (log_elims) LOG("-- %S\n", con_name->symbol_name);
 						Inter::Nop::nop_out(J, P);
 					}
 				}
@@ -100,10 +100,8 @@ void CodeGen::Eliminate::note(inter_symbol *S, inter_symbol *T, void *state) {
 	inter_symbol *Tdash = Inter::SymbolsTables::symbol_from_name_in_main(I, T->symbol_name);
 	if (Tdash) {
 		Inter::Symbols::set_flag(Tdash, USED_MARK_BIT);
-//		LOG("Note %S %08x\n", Tdash?(Tdash->symbol_name):I"<null>", Tdash);
 	} else {
 		Inter::Symbols::set_flag(T, USED_MARK_BIT);
 	}
-
 	notes_made++;
 }

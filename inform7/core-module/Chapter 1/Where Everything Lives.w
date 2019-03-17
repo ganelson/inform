@@ -160,7 +160,7 @@ example, live inside the Extensions part of this.
 
 	@<Miscellaneous other stuff@>;
 
-@ Most of these files are to help |cblorb| to perform a release. The
+@ Most of these files are to help Inblorb to perform a release. The
 documentation models are used when making extension documentation; the
 leafname is platform-dependent so that Windows can use different models
 from everybody else.
@@ -293,7 +293,7 @@ The UUID file records an ISBN-like identifying number for the project. This
 is read-only for us.
 
 The iFiction record, manifest and blurb file are all files that we generate
-to give instructions to the releasing agent |cblorb|. This means that they
+to give instructions to the releasing agent Inblorb. This means that they
 have no purpose unless Inform is in a release run (with |-release| set on
 the command line), but they take no time to generate so we make them anyway.
 
@@ -332,7 +332,7 @@ Briefly: we aim to compile the source text to an Inform 6 program; we issue
 an HTML report on our success or failure, listing problem messages if they
 occurred; we track our progress in the debugging log. We don't produce the
 story file ourselves, I6 will do that, but we do need to know what it's
-called; and similarly for the report which the releasing tool |cblorb|
+called; and similarly for the report which the releasing tool Inblorb
 will produce if this is a Release run.
 
 @<The Build folder within the project@> =
@@ -429,7 +429,7 @@ and Sounds, if any, live: in their own subfolders.
 
 	filename_of_epsfile =              Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], I"Inform Map.eps");
 
-@ On a release run, |cblorb| will populate the Release subfolder of Materials;
+@ On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
 is that everything in Release can always be thrown away without loss, because
 it can all be generated again.

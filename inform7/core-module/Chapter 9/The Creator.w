@@ -25,7 +25,7 @@ And |py|:
 
 The Creator is not alas a cultured gentleman with a white-pointed beard, a
 roll of architect's plans and a set square, perhaps played by an American
-character actor in a movie like {\it The Matrix}. It's just a routine which
+character actor in a movie like "The Matrix". It's just a routine which
 returns either |TRUE| or |FALSE|, giving permission for reading of the
 sentence to continue; and it always grants this permission unless a problem
 message had to be issued during its work.
@@ -65,7 +65,7 @@ example:
 
 In each case |px| describes something which will need to be created, but |py|
 tells us what kind it has: a colour in the second sentence here, but an object
-in the first. (We do not need to decide the {\it kind} of object here, and
+in the first. (We do not need to decide the kind of object here, and
 don't: it's sufficient to pin it down as far as "object".) The information
 about this kind of value sometimes comes from a particular node somewhere
 in |py|, which (if it exists) we'll call its "governing node".
@@ -88,7 +88,7 @@ object or a value -- it will become a named kind of action instead. So we
 amend the node to |ACTION_NT|.
 
 The second case occurs much less often -- for instance, the only time it comes
-up in the test suite is in the example {\it Chronic Hinting Syndrome}:
+up in the test suite is in the example "Chronic Hinting Syndrome":
 
 >> Setting is a kind of value. The settings are bright and dull.
 
@@ -112,7 +112,7 @@ example,
 
 >> The ball is on the box.
 
-uses the binary predicate {\it supports}, which requires its terms to be
+uses the binary predicate supports, which requires its terms to be
 objects. (In fact it requires them to be a thing and a supporter, but we
 weaken those into just "object", since that's all we need to know for
 creation purposes.) The code we use here looks asymmetric since it searches

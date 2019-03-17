@@ -56,9 +56,7 @@ pcalc_prop_deferral *Calculus::Deferrals::new_deferred_proposition(pcalc_prop *p
 	pdef->reason = reason;
 	pdef->deferred_from = current_sentence;
 	pdef->rtp_iname = NULL;
-//	pdef->ppd_iname = InterNames::new_in(DEFERRED_PROPOSITION_ROUTINE_INAMEF, Modules::current());
 	pdef->ppd_iname = Packaging::function(Packaging::supply_iname(Packaging::current_enclosure(), PROPOSITION_PR_COUNTER), Packaging::current_enclosure(), NULL);
-
 
 	Inter::Symbols::set_flag(InterNames::to_symbol(pdef->ppd_iname), MAKE_NAME_UNIQUE);
 
@@ -520,7 +518,7 @@ performs task $u$ on value $v$ when called as |D(u, v)|, where $u$ is
 expected to be one of the following values. (Note that $v$ is only needed
 in the first two cases.)
 
-These numbers {\it must} be negative, since they need to be different from
+These numbers must be negative, since they need to be different from
 every valid member of a quantifiable domain (objects, enumerated kinds, truth
 states, times of day, and so on).
 

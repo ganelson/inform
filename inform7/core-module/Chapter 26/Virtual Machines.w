@@ -136,7 +136,7 @@ address for clarity's sake.
 
 (2) |WORD_HIGHBIT| is the most significant bit in the VM's data word.
 
-(3) |IMPROBABLE_VALUE| is one which is {\it unlikely but still possible}
+(3) |IMPROBABLE_VALUE| is one which is unlikely but still possible
 to be a genuine I7 value. The efficiency of some algorithms depends on
 how well chosen this is: they would ran badly if we chose 1, for instance.
 
@@ -254,7 +254,7 @@ char *VirtualMachines::get_blorbed_extension(void) {
 }
 
 @ Different VMs have different in-browser interpreters, which means that
-cblorb needs to be given different release instructions for them. If the
+Inblorb needs to be given different release instructions for them. If the
 user doesn't specify any particular interpreter, he gets:
 
 =

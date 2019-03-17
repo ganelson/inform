@@ -54,8 +54,8 @@ applies to things. The two terms need not have the same domain: the
 is a binary predicate $W(x_0, x_1)$ such that $x_0$ ranges across people
 and $x_1$ ranges across things.
 
-Inform represents this by allowing each BP to have {\it either} a
-designated kind of object, {\it or} a designated kind of value, {\it or} no
+Inform represents this by allowing each BP to have either a
+designated kind of object, or a designated kind of value, or no
 restriction at all, for each term. (In practice, even the unrestricted
 terms have limitations, but which are enforced by special code in the
 type-checker to handle special predicates such as equality. For instance,
@@ -437,8 +437,6 @@ void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_
 				Emit::rfalse();
 			Emit::up();
 		Emit::up();
-//		WRITE("  if (~~(%~L ofclass %n)) rfalse;\n",
-//			lvar, Kinds::RunTime::I6_classname(K));
 	}
 }
 
@@ -925,7 +923,7 @@ objects $x$ such that $R(x, t)$.
 
 @ Other relations make use of the I6 object tree, in cases where $R(x, t)$
 is true if and only if $t$ is an object which is the parent of $x$ in the
-I6 object tree {\it and} some routine associated with $R$, called its
+I6 object tree and some routine associated with $R$, called its
 proviso |P|, is such that |P(x) == t|. For example, ${\it worn-by}(x, t)$
 is true iff $t$ is the parent of $x$ and |WearerOf(x) == t|. The proviso
 ensures that we don't falsely pick up, say, items carried by $t$ which

@@ -938,7 +938,7 @@ in this case.
 @h Case 30. I am in two minds about the next nit-picking error message.
 But really this is a device used in English only for declamatory purposes
 or comedic intent. (As in Peter Schickele's spoof example of an 18th-century
-opera about a dog, {\it Collared Is Bowser}.)
+opera about a dog, "Collared Is Bowser".)
 
 @<Case 30 - ADJECTIVE vs COMMON NOUN, PROPER NOUN@> =
 	if (ParseTree::get_subject(py))

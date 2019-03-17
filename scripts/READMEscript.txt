@@ -190,7 +190,7 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 @-> ../docs/webs.html
 @define web(program, manual)
 	<li>
-		<p><a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		@version(@program)
 		- <span class="purpose">@purpose(@program)</span>
 		Documentation is <a href="@program/@manual.html">here</a>.</p>
@@ -198,53 +198,39 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 @end
 @define xweb(program)
 	<li>
-		<p><a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		@version(@program)
 		- <span class="purpose">@purpose(@program)</span>.</p>
 	</li>
 @end
 @define subweb(owner, program)
 	<li>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ <a href="docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		<span class="purpose">@purpose(@owner/@program)</span></p>
 	</li>
 @end
 @define mod(owner, module)
 	<li>
-		<p>↳ <a href="docs/@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
 		<span class="purpose">@purpose(@owner/@module-module)</span></p>
 	</li>
 @end
-@define extweb(program)
+@define extweb(program, explanation)
 	<li>
-		<p><a href="../@program/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
-		@version(@program)
-		- <span class="purpose">@purpose(@program)</span>
-		This has its own repository, with its own &#9733; Webs page.</p>
-	</li>
-@end
-@define extsubweb(owner, program)
-	<li>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ <a href="../@owner/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
-		<span class="purpose">@purpose(@owner/@program)</span></p>
-	</li>
-@end
-@define extmod(owner, module)
-	<li>
-		<p>↳ <a href="../@owner/docs/@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
-		<span class="purpose">@purpose(@owner/@module-module)</span></p>
+		<p>&#9733; <a href="../../@program/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		@explanation</p>
 	</li>
 @end
 <html>
 	<head>
-		<title>Inform &#9733; Webs</title>
+		<title>Inform &#9733; Webs for ganelson/inform</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inblorb/inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
 	</head>
 
 	<body>
-		<ul class="crumbs"><li><b>&#9733;</b></li><li><b>Webs</b></li></ul>
+		<ul class="crumbs"><li><a href="https://github.com/ganelson/inform"><b>&#9733 Webs for ganelson/inform</b></a></li></ul>
 		<p class="purpose">Human-readable source code.</p>
 		<hr>
 		<p class="chapter">
@@ -257,9 +243,9 @@ is designed to be read by humans in its "woven" form, and to be compiled or
 run by computers in its "tangled" form.
 These pages showcase the woven form, and are for human eyes only.</p>
 		<hr>
-		<p class="chapter">Command-line programs needed to use Inform 7:</p>
+		<p class="chapter">The main Inform 7 compiler, front end and back end:</p>
 		<ul class="sectionlist">
-			@web('inform7', 'P-p')
+			@web('inform7', 'P-cu')
 			@mod('inform7', 'words')
 			@subweb('inform7', 'words-test')
 			@mod('inform7', 'inflections')
@@ -280,24 +266,21 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@web('inter', 'P-ui')
 			@mod('inter', 'inter')
 			@mod('inter', 'codegen')
-			@web('inform6', 'P-p')
+		</ul>
+		<hr>
+		<p class="chapter">Other webs in this repository:</p>
+		<ul class="sectionlist">
 			@web('inblorb', 'P-ui')
-			@extweb('intest')
-		</ul>
-		<hr>
-		<p class="chapter">Resources needed by Inform 7:</p>
-		<ul class="sectionlist">
-			@xweb('srules')
-		</ul>
-		<hr>
-		<p class="chapter">Command-line programs needed only to build Inform 7:</p>
-		<ul class="sectionlist">
 			@web('indoc', 'P-iti')
 			@web('inpolicy', 'P-ui')
 			@web('inrtps', 'P-ui')
-			@extweb('inweb')
-			@extmod('inweb', 'foundation')
-			@extsubweb('inweb', 'foundation-test')
+			@xweb('srules')
+		</ul>
+		<hr>
+		<p class="chapter">Rekated webs in other repositories:</p>
+		<ul class="sectionlist">
+			@extweb('intest', 'A tool used for testing some of the above.')
+			@extweb('inweb', 'The literate programming tool needed to compile the above: also includes the Foundation module of standard code used in all the above.')
 		</ul>
 		<hr>
 	</body>

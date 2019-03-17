@@ -344,9 +344,6 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
 			Emit::val_iname(K_value, rbno->nro_iname);
 			Emit::up();
-//			WRITE("RulebookSucceeds(%d, %n);",
-//				Kinds::RunTime::weak_id(K_rulebook_outcome),
-//				rbno->nro_iname);
 			Emit::rtrue();
 			break;
 		}
@@ -357,9 +354,6 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
 			Emit::val_iname(K_value, rbno->nro_iname);
 			Emit::up();
-//			WRITE("RulebookFails(%d, %n);",
-//				Kinds::RunTime::weak_id(K_rulebook_outcome),
-//				rbno->nro_iname);
 			Emit::rtrue();
 			break;
 		}

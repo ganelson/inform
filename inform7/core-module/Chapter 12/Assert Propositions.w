@@ -42,9 +42,9 @@ meaning.
 
 To build or change the model, we assert that propositions about it are true,
 using |Calculus::Propositions::Assert::assert_true| or
-|Calculus::Propositions::Assert::assert_true_about|. This is the {\it only} way to
+|Calculus::Propositions::Assert::assert_true_about|. This is the only way to
 create kinds, instances, global variables, and constant values, and also the
-{\it only} way to attach properties to objects, to set property values or
+only way to attach properties to objects, to set property values or
 the kind of a given object or the value of a global variable, or to declare
 that relationships hold.
 
@@ -92,7 +92,7 @@ void Calculus::Propositions::Assert::assert_true_about(pcalc_prop *prop, inferen
 	Calculus::Propositions::Assert::prop_true_in_world_model_inner(prop, infs, certitude);
 }
 
-@ If we are working along a proposition and reach, say, ${\it door}(x)$, we
+@ If we are working along a proposition and reach, say, $door(x)$, we
 can only assert that if we know what the value of $x$ is. We therefore keep
 an array (or a pair of arrays) holding our current beliefs about the values
 of the variables -- this is called the "identification slate".
@@ -232,7 +232,7 @@ which are dark" will do it).
 	return;
 
 @ Almost all propositions derive from sentences in the source text, but a
-crucial exception is the first one to be asserted: $\exists x: {\it isakind}(x)$,
+crucial exception is the first one to be asserted: $\exists x: isakind(x)$,
 which creates the kind "kind". Type-checking problems never arise with this
 in any case, so it doesn't matter that we wouldn't know what text to use in them.
 
@@ -250,7 +250,7 @@ often specifies $O$ and $V$ as the object and value referred to by a given
 node in the parse tree, and since an object is also a value, this often means
 that both are given. If we have $O$, then, we cancel $V$.
 
-As we shall see, it's permitted to interpret a bound variable {\it after} its
+As we shall see, it's permitted to interpret a bound variable after its
 quantifier, but not before, and in particular not at the start of the
 proposition. So we require that the slate identify exactly the free
 variables, and no others.
@@ -432,8 +432,8 @@ problem aside for now.
 	#endif
 
 @h Asserting predicates.
-First, asserting ${\it adjective}(t)$. We know that $t$ evaluates to a kind
-of value over which ${\it adjective}$ is defined, or the proposition would
+First, asserting $adjective(t)$. We know that $t$ evaluates to a kind
+of value over which $adjective$ is defined, or the proposition would
 not have survived type-checking. But only some adjectives can be asserted;
 "open" can, but "visible" can't, for instance. |Adjectives::Meanings::assert| returns a
 success flag.
@@ -499,7 +499,7 @@ where X is.
 
 Another difference is that $R(x, y)$ can give you definite information about
 the kinds of $x$ and $y$, where they are objects, because binary predicates
-have single definitions. (Knowing ${\it locked}(x)$, by contrast, doesn't
+have single definitions. (Knowing $locked(x)$, by contrast, doesn't
 tell you whether $x$ is a door or a container -- adjectives can have multiple
 domains in which they have differing definitions.) In the case of a
 proposition produced by sentence conversion, that information is redundant
@@ -558,7 +558,7 @@ these kind atoms.
 			"sentence is too complicatedly phrased, and could be broken up "
 			"into two or more sentences?");
 
-@ The "is" predicate is not usually assertable, but ${\it is}(x, f_R(y))$
+@ The "is" predicate is not usually assertable, but $is(x, f_R(y))$
 can be asserted since it is equivalent to $R(x, y)$ -- this is where we
 unravel that. We reject compound uses of functions in this way, but in
 practice they hardly ever arise, and could only do so with quite complex

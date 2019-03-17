@@ -4,8 +4,8 @@ To handle sentences with primary verb "to be" or "to have".
 
 @h Definitions.
 
-@ {\it To Be and To Have} ought to be the name of an incomprehensible
-book by Sartre which dismisses Heidegger's seminal {\it To Have and To Be},
+@ "To Be and To Have" ought to be the name of an incomprehensible
+book by Sartre which dismisses Heidegger's seminal "To Have and To Be",
 or something like that, but instead it is the name of a section which contains
 the most important sentence handler: the one for assertions.
 
@@ -13,7 +13,7 @@ This will turn out to be quite a lot of work, occupying four sections of
 code in all. For etymological reasons, the English verb "to be" is a mixture
 of several different verbs which have blurred together into one: consider "I
 am 5", "I am happy" and "I am Chloe". Even the definition occupies some
-12 columns of the {\it Oxford English Dictionary} and they make interesting
+12 columns of the "Oxford English Dictionary" and they make interesting
 reading in clarifying the problem. Most computer programming languages
 implement only |=| and |==|, which correspond to OED's meaning 10, "to exist
 as the thing known by a certain name; to be identical with". But Inform

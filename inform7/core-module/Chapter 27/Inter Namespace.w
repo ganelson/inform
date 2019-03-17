@@ -429,7 +429,6 @@ inter_name *InterNames::new_in(int fnum, compilation_module *C) {
 void InterNames::mark(inter_name_family *F, inter_name *iname, compilation_module *C) {
 	iname->declared_in = C;
 	if ((C) && (C->allocation_id == 1) && (F->cache_me)) InterNames::cache(iname);
-//	if (C) LOG("So %n in module %d\n", iname, C->allocation_id);
 }
 
 void InterNames::cache(inter_name *iname) {

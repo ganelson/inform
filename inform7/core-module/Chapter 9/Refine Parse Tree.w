@@ -588,7 +588,7 @@ adjective(s) plus proper noun as a reference to that noun in a special state.
 Case (b) comes out of a point of difference between proper and common nouns:
 use of an indefinite article is fine with common nouns -- "a container", for
 example -- but not with proper nouns: talking about "a silver bar" suggests
-that this is {\it not} the same silver bar referred to in some previous
+that this is not the same silver bar referred to in some previous
 sentence.
 
 @<Act on a simple description@> =
@@ -731,7 +731,7 @@ to restructure the nodes as:
 	|        ADJECTIVE_NT prop:p46_openable|
 	|        ADJECTIVE_NT prop:p44_open|
 
-This innocent-looking little routine involved drawing a {\it lot} of diagrams
+This innocent-looking little routine involved drawing a lot of diagrams
 on the back of an envelope. Change at your peril.
 
 =

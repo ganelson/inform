@@ -245,7 +245,7 @@ void Properties::EitherOr::compile_default_value(value_holster *VH, property *pr
 
 @h Either/or properties as adjectives.
 What makes either/or properties linguistically interesting is their use as
-adjectives: an {\it open} door, a {\it transparent} container. Adjectival
+adjectives: an open door, a transparent container. Adjectival
 meanings arising in this way are of the |EORP_KADJ| kind, and the following
 is called every time an either/or property is created, to create its matching
 adjectival meaning:

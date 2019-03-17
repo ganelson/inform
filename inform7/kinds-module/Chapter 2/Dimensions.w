@@ -214,7 +214,7 @@ Of course there are other ways to calculate $I$ -- we could have
 eliminated any of the three units and kept the other two.
 
 If the derivations were ever more complex than $AB=C$, we might have to
-use some elegant algorithms for calculating Gr\"obner bases in order to
+use some elegant algorithms for calculating Gröbner bases in order to
 determine $I$. But Inform's syntax is such that the writer of the source
 text gives us the simplest possible description of the ideal, so no such
 fun occurs.
@@ -233,8 +233,8 @@ copy of $R$) at compile-time.
 
 @ But enough abstraction: time for some arithmetic. Inform performs
 checking whenever values from two different kinds are combined by any of
-eight arithmetic operations, numbered as follows. The numbers must {\it
-not} be changed without amending the definitions of "plus" and so on
+eight arithmetic operations, numbered as follows. The numbers must not
+be changed without amending the definitions of "plus" and so on
 in the Standard Rules.
 
 @d NO_OPERATIONS 9
@@ -266,9 +266,8 @@ operand(s) had. For one thing, every arithmetic operation requires that its
 operands are quasinumerical -- Inform won't allow a text to be multiplied by
 a sound effect. (Occasionally we have thought about allowing text to be
 duplicated by multiplication -- 2 times "zig" would be "zigzig", and
-maybe similarly for lists -- but it always seemed a pose, fleetingly
-cool but seldom useful, and more likely to be used by mistake than
-intentionally.)
+maybe similarly for lists -- but it always seemed more likely to be used by
+mistake than intentionally.)
 
 Other restrictions are also applied. For instance, a time cannot be added
 to a number, or vice versa; addition, subtraction and approximation require
@@ -413,11 +412,11 @@ My maths students always find it a little oblique, despite the almost
 trivial proof that it works. I find it hard to visualise myself, for that
 matter. And then, consider that the average number of iterations $\tau_n$,
 in effect its running time, is known to be
-$$ \tau_n = {{12\log 2}\over{\pi^2}}\log n + (4P + 5/2) + O(n^{-{1\over 6}+\epsilon) $$
+$$ \tau_n = {{12\log 2}\over{\pi^2}}\log n + (4P + 5/2) + O(n^{-1/6+\epsilon) $$
 for any $\epsilon>0$, where $P$ is defined in terms of an integral, Euler's
 constant, and an evaluation of the derivative of the Riemann zeta function
--- see D. E. Knuth, `Evaluation of Porter's Constant', reprinted in {\it
-Selected Papers on Analysis of Algorithms} (Stanford: CSLI Lecture Notes
+-- see D. E. Knuth, `Evaluation of Porter's Constant', reprinted in
+"Selected Papers on Analysis of Algorithms" (Stanford: CSLI Lecture Notes
 102, 2000). In practice, a shade under $\log n$ steps, then, which is nicely
 quick. But I don't look at the code and immediately see this, myself.
 
@@ -987,15 +986,18 @@ Scaled values are convenient, and they have no effect on how we add, subtract,
 approximate (that is, round off) or take remainder after division. If we
 have true values $v_1$ and $v_2$ with scaled values $s_1$ and $s_2$,
 and $s_o$ is the scaled value for true value $v_1+v_2$, then
+
 $$ s_1 + s_2 = k_Uv_1 + k_Uv_2 = k_U(v_1+v_2) = s_o. $$
+
 So ordinary I6 |+| at run-time correctly adds scaled values. But that's
 not true for all operations, and this is where we deal with that.
 
 @ First, multiplication. This time the values $v_1$ and $v_2$ may have
 different kinds, which we'll call $X$ and $Y$, and the result in general
 will be a third kind, which we'll call $O$ (for outcome). Then:
-$$ s_1s_2 = k_Xv_1\cdot k_Yv_2 = k_Ov_1v_2\cdot\left({{k_Xk_Y}\over{k_O}\right)
-    = s_o\cdot\left({{k_Xk_Y}\over{k_O}\right) $$
+
+$$ s_1s_2 = k_Xv_1\cdot k_Yv_2 = k_Ov_1v_2\cdot\left({{k_Xk_Y}\over{k_O}}\right) = s_o\cdot\left({{k_Xk_Y}\over{k_O}}\right) $$
+
 so that simply multiplying the scaled values produces an answer which is
 too large by a factor of $k_Xk_Y/k_O$. We need to correct for that, which
 we do either by dividing by this factor or multiplying by its reciprocal.
@@ -1044,7 +1046,7 @@ void Kinds::Dimensions::kind_rescale_multiplication_emit_factor(kind *kindx, kin
 #endif
 
 @ Second, division, which is similar.
-$$ {{s_1}\over{s_2}} = {{k_Xv_1}\over{k_Yv_2}} = k_O{{v_1}\over{v_2}}\cdot\left({{k_X}\over{k_Ok_Y}\right)
+$$ {{s_1}\over{s_2}} = {{k_Xv_1}\over{k_Yv_2}} = k_O{{v_1}\over{v_2}}\cdot\left({{k_X}\over{k_Ok_Y}}\right)
     = s_o\cdot\left({{k_X}\over{k_Ok_Y}\right) $$
 so this time the excess to correct is a factor of $k_X/k_Ok_Y$.
 
@@ -1336,18 +1338,18 @@ author wants us to be. But these intermediate kinds are not defined, and we
 don't know for sure what the author would want. It seems wise to set
 $k \geq k_X$ and $k\geq k_Y$, so that we have at least as much detail as
 the calculation would have had within each operand kind. So perhaps we should
-put $k = {\rm max}(k_X, k_Y)$. But in fact we will choose $k = {\rm Kinds::Dimensions::lcm}(k_X, k_Y)$,
+put $k = {\rm max}(k_X, k_Y)$. But in fact we will choose $k$ = |Kinds::Dimensions::lcm(k_X, k_Y)|,
 the least common multiple, so that any subsequent divisions will cancel
 correctly and we won't lose too much information through integer rounding.
 (In practice this will probably either be the same as ${\rm max}(k_X, k_Y)$
-or will multiply by 6, since ${\rm Kinds::Dimensions::lcm}(60, 1000) = 6000$ and so on.)
+or will multiply by 6, since |Kinds::Dimensions::lcm(60, 1000) == 6000| and so on.)
 
 The same unit sequence can have different scalings each time it appears as
 an intermediate calculation. We could get to ${\rm m}^2\cdot {\rm kg}$
 either as ${\rm m}\cdot{\rm kg}$ times ${\rm m}$, or as ${\rm m^2}$ times
 ${\rm kg}$, or many other ways, and we'll get different scalings depending
 on the route. This is why the |unit_sequence| structure has a
-|scaling_factor| field; the choice of scale factor does {\it not} depend on
+|scaling_factor| field; the choice of scale factor does not depend on
 the physics but on the arithmetic method being used.
 
 @<And otherwise create a kind as the intermediate result of a calculation@> =

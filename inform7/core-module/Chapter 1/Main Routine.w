@@ -391,8 +391,6 @@ with "Output.i6t".
 	if ((problem_count == 0) && (existing_story_file == FALSE)) {
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
-//			if (Emit::glob_count() > 0) internal_error("Glob count positive!");
-
 			stage_set *SS = CodeGen::Stage::new_set();
 			if ((import_mode) && (filename_of_SR_module))
 				CodeGen::Stage::parse_into(SS, I"import:*",

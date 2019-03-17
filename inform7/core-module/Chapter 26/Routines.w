@@ -37,7 +37,6 @@ inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 
 =
 void Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
-// LOG("\n\nBegin %n\n", iname);
 	if (iname == NULL) internal_error("no iname for routine");
 	package_request *R = iname->eventual_owner;
 	if ((R == NULL) || (R == Packaging::request_main())) LOG("Mained %n\n", iname);

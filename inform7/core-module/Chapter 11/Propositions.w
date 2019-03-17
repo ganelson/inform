@@ -65,7 +65,7 @@ where letters could be inserted into the word "rap": before the "r"
 after the "p" (rapt). Though "rap" is a three-letter word, there are
 four possible insertion points -- so they can't exactly correspond to
 letters. The convention used with Inform propositions is that a position
-marker points to the |pcalc_prop| structure for the atom {\it before}
+marker points to the |pcalc_prop| structure for the atom before
 the position meant: and a |NULL| pointer in this context means the
 front position, before the opening atom.
 
@@ -198,8 +198,8 @@ kind of value each variable ranges over.
 These are steadily stronger conditions. The first is a basic invariant of
 our data structures: nothing failing (i) will ever be allowed to exist,
 provided the routines in this section are free of bugs. Condition (ii) is
-called {\it syntactic validity}; (iii) is {\it well-formedness}; (iv) is
-{\it type safety}. Correct source text eventually makes propositions which
+called syntactic validity; (iii) is well-formedness; (iv) is
+type safety. Correct source text eventually makes propositions which
 have all four properties, but intermediate half-built states often satisfy
 only (i).
 

@@ -66,7 +66,7 @@ This is much more complicated than simply looking for a vowel as the first
 letter, as people often think until they try a few cases.
 
 The following was compiled by Toby Nelson with the aid of a pronunciation
-dictionary and the {\it Official Scrabble Wordlist}.
+dictionary and the "Official Scrabble Wordlist".
 
 =
 <singular-noun-to-its-indefinite-article> ::=
@@ -83,7 +83,7 @@ dictionary and the {\it Official Scrabble Wordlist}.
 	ukiyo-e			an | 		/* Japanese style of 17th-19th cent. printmaking */
 	urao*			an |
 	urial*			an |
-	uvarovite*		an 			/* a rare emerald-green garnet, ${\rm Ca}_3{\rm Cr}_2({\rm SiO}_4)_3$ */
+	uvarovite*		an 			/* a rare emerald-green garnet, Ca3Cr2(SiO4)3 */
 
 @ Then the exceptions:
 
@@ -217,8 +217,8 @@ has a plural, and modifies it to the plural form. ("Golf" is a noun which
 doesn't sensibly have a plural; the algorithm here would return "golves".)
 
 The trie here was derived from a partial implementation of Damian Conway's
-algorithm: see his paper {\it An Algorithmic Approach to English
-Pluralization}, online at his website. The use of tries makes this somewhat
+algorithm: see his paper "An Algorithmic Approach to English
+Pluralization", online at his website. The use of tries makes this somewhat
 faster than Conway's reference implementation, which for clarity's sake
 consists of a long sequence of regular-expression matches.
 
@@ -572,7 +572,7 @@ for example.) In English, it's possible to say that there are seven or so
 classes of verbs, all regular by their own standards; but most people say
 there's just one class of verb, and then irregular exceptions.
 
-Our approach will follow Greenbaum, {\it Oxford English Grammar}, at 4.14.
+Our approach will follow Greenbaum, "Oxford English Grammar", at 4.14.
 Like Greenbaum, we will use the term "form type" for the different possible
 inflected versions of a verb word. The verb "to be" has eight form
 types (be, am, is, are, was, were, been, being), but it's unique in that
@@ -1270,7 +1270,7 @@ present tense, and the past tense.
 
 We'll start with the present participle. This is actually quite hard,
 because in some cases it depends on pronunciation rather than spelling.
-Greenbaum's {\it Oxford English Grammar} summarises the general rules at
+Greenbaum's "Oxford English Grammar" summarises the general rules at
 4.16, as follows:
 
 (a) If the base ends in -e but not -ee, -oe or -ye, drop the final -e before

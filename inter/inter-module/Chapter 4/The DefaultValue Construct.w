@@ -58,9 +58,6 @@ inter_error_message *Inter::DefaultValue::verify(inter_frame P) {
 
 	inter_error_message *E = Inter::Verify::symbol(P, P.data[KIND_DEF_IFLD], KIND_IST);
 	if (E) return E;
-//	inter_symbol *con_kind =
-//		Inter::SymbolsTables::symbol_from_frame_data(P, KIND_DEF_IFLD);
-//	E = Inter::Verify::value(P, VAL1_DEF_IFLD, con_kind); if (E) return E;
 	return NULL;
 }
 

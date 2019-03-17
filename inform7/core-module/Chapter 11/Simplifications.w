@@ -93,7 +93,7 @@ Double-negatives are a little odd. If natural language were really the same as
 predicate logic with some grunting sounds for decoration, then a double negative
 would always be a positive. But in 18th-century English, that wasn't true: it
 was a way of emphasising the negation, just as characters in Aaron Sorkin's
-{\it The West Wing} scripts are always saying "not for nothing, but..." when
+"The West Wing" scripts are always saying "not for nothing, but..." when
 their meaning is equivalent to "this is nothing, but...". Still, Inform takes
 the view that a double negative is a positive.
 
@@ -199,9 +199,8 @@ pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *chan
 The negation atom is worth removing wherever possible, since we want to
 keep propositions in a flat conjunction form if we can, and the negation
 of a string of atoms is therefore a bad thing. We therefore change thus:
-$$ \Sigma = \cdots \lnot (Qv\in\lbrace v\mid \phi(v)\rbrace: \psi)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots \overline{Q}v\in\lbrace v\mid \phi(v)\rbrace: \psi\cdots $$
-where $\overline{Q}$ is the negation of the generalised quantifier $Q$:
+$$ \Sigma = \cdots \lnot (Qv\in\lbrace v\mid \phi(v)\rbrace: \psi)\cdots \quad \longrightarrow \quad \Sigma' = \cdots Q'v\in\lbrace v\mid \phi(v)\rbrace: \psi\cdots $$
+where $Q'$ is the negation of the generalised quantifier $Q$:
 for instance, $V_{<5} y$ becomes $V_{\geq 5} y$.
 
 A curiosity here is that when simplifying during sentence conversion, we
@@ -555,7 +554,7 @@ doesn't matter, but it's tidy.)
 
 @ The noteworthy thing here is that we continue through the subexpression,
 deleting any weaker form of $K(v)$ that we find, but also allow ourselves
-to continue {\it beyond} the subexpression in one case. Suppose we have
+to continue beyond the subexpression in one case. Suppose we have
 $$ Qv\in\lbrace v\mid K(v) \land... \rbrace : L(v) $$
 and we are working on the $K(v)$ term. If we continue only to the end of
 the current subexpression, that runs out at the $\rbrace$, the end of
@@ -661,7 +660,7 @@ and $R$ is its reversal. Then we change:
 $$ \Sigma = \cdots B(t_1, t_2)\cdots \quad \longrightarrow \quad
 \Sigma' = \cdots R(t_2, t_1) \cdots $$
 
-(Note that the equality predicate {\it is} only has one way round, and it's
+(Note that the equality predicate "is" only has one way round, and it's
 the right one -- this is the only exception to the rule that BPs come in
 pairs -- so equality predicates won't be turned around here, not that it
 would matter if they were.)
@@ -704,7 +703,7 @@ $$ \Sigma = \cdots C_D(t, R)\cdots \quad \longrightarrow \quad
 \Sigma' = \cdots C_R(t, R)\cdots $$
 $$ \Sigma = \cdots C_D(R, t)\cdots \quad \longrightarrow \quad
 \Sigma' = \cdots C_R(R, t)\cdots $$
-(Note that a region cannot directly contain any object, {\it except} a backdrop.)
+(Note that a region cannot directly contain any object, except a backdrop.)
 
 =
 pcalc_prop *Calculus::Simplifications::region_containment(pcalc_prop *prop, int *changed) {

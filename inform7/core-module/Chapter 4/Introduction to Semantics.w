@@ -101,9 +101,9 @@ structure, but combines it with an indication of tense stored in a |time_period|
 Here the |binary_predicate| is the carrying relation and the |time_period|
 is the past tense. (The term "binary predicate" comes from logic once
 again; an Inform author would call the same concept a "relation".)
-(-b) "are in" is recognised as a usage of the verb {\it to be} plus "in",
+(-b) "are in" is recognised as a usage of the verb "to be" plus "in",
 which matches the wording of a |preposition_identity| structure. Here the tense
-derives only from the {\it to be} part: which is "are", so the |time_period|
+derives only from the "to be" part: which is "are", so the |time_period|
 parsed is the present tense. This makes the |preposition_identity| a simpler
 business than the |verb_usage| structure -- it only needs to refer to the
 underlying meaning, which is once again a |binary_predicate| structure,
@@ -118,7 +118,7 @@ from any data structures, like the meanings of "score" or "Mr Fitzwilliam
 Darcy".
 (-d) "at least three things" is an example of a noun phrase which has a
 head and a tail. The head, "at least three", is recognised as matching
-the wording in a |determiner| structure, "at least {\it number}", together
+the wording in a |determiner| structure, "at least (number)", together
 with the literal number 3. Once again, the |determiner| describes textual
 appearances; it points to another structure, a |quantifier|, to hold the
 meaning. This is another logical term, and Inform's debugging log would

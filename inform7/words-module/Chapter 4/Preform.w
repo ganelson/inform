@@ -1469,7 +1469,7 @@ int Preform::ptoken_width(ptoken *pt) {
 have any length, except that we specified |^ example| to match only a single
 word -- any word other than "example". So the extrema for |^ example| are
 1 and 1, whereas for |^ <sample-nonterminal>| they would have to be 0 and
-$\infty$.
+infinity.
 
 =
 void Preform::ptoken_extrema(ptoken *pt, int *min_t, int *max_t) {

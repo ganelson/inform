@@ -322,7 +322,6 @@ failing; so it doesn't terminate the following of its rulebook.
 		inter_name *subbed = Rules::iname(acl->substituted_rule);
 		inter_symbol *ss = InterNames::to_symbol(subbed);
 		if (Inter::Constant::is_routine(ss) == FALSE) {
-//			if (problem_count == 0) internal_error("substituted rule is not symbolic");
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		} else {
 			Emit::inv_call(ss);

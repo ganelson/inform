@@ -9,7 +9,7 @@ translated sentence was delivered -- his life-long task was rewarded. Yes,
 but for the fact that one man had been prepared to devote every spare hour of
 his life to solving the riddle, the amazing story of the Trigan Empire would
 never have been given to the world. WHAT FOLLOWS IS THAT STORY."
-({\it The Rise and Fall of the Trigan Empire}, 1965)
+("The Rise and Fall of the Trigan Empire", 1965)
 
 @h Why predicate calculus.
 Most attempts to codify the meaning of sentences in any systematic way
@@ -73,7 +73,7 @@ broadly similar ways, the details vary in practice. Inform's calculus
 is unusual in several respects, so here is its definition.
 
 The terms "constant", "variable" and "function" below are used in
-their predicate-calculus senses, {\it not} their Inform ones. In the excerpt
+their predicate-calculus senses, not their Inform ones. In the excerpt
 
 >> a container in the location of Nicole contains the second noun
 
@@ -91,7 +91,7 @@ respectively), while the only variable is $x$, the mysterious container.
 (The symbol $\exists$ means "there exists".) Because objects move
 around in play, and $C_1$ and $C_2$ have different values at different
 moments, this sentence is sometimes true and sometimes false. But its
-{\it meaning} does not change.
+meaning does not change.
 
 @ The propositions in our predicate calculus are those which can be made
 using the following ingredients and recipes.
@@ -237,7 +237,7 @@ conjoining $\exists x$ and ${\it door}(x)$ to form $\exists x: {\it door}(x)$.
 a quantifier instead of a conjunction sign $\land$. But Inform stores it
 as just another conjunction.)
 
-We {\it do} bracket the domain of quantification. Most simple predicate
+We do bracket the domain of quantification. Most simple predicate
 calculuses (predicates calculus?) have no need, since their only quantifiers
 are $\forall$ and $\exists$, and there is a single universe set from which
 all values are drawn. But in Inform, some quantifiers range over doors,
@@ -284,7 +284,7 @@ otherwise be there, and it exists only for a limited range. For instance, in
 the proposition
 $$ {\it open}(x)\land\lnot(\exists y: {\it in}(x, y))\land {\it container}(x) $$
 the variable $y$ exists only within the negation brackets; it ceases to exist
-as soon as we move back out to the {\it container} atom. This range is called
+as soon as we move back out to the container atom. This range is called
 the "scope" of the quantifier. In general, scopes are always as large as
 possible in Inform: a variable lasts until the end of the subexpression in
 which it is created. If the quantifier is outside of any brackets, then the
@@ -297,13 +297,13 @@ as far forwards as possible, so we no longer actively move them once they
 are in place. But it seems still worth preserving the rule which says when
 this can be done:
 
-{\bf Lemma.} {\sl Suppose that $x$ is a variable; $\phi$ is a proposition in
+Lemma. Suppose that $x$ is a variable; $\phi$ is a proposition in
 which $x$ is unused; $\psi(x)$ is a proposition in which $x$ is free; and that
 $Q$ is a generalised quantifier. Then
 $$ \phi\land Qx : \psi(x) \quad\Leftrightarrow\quad Qx : \phi\land\psi(x) $$
-provided that $Q$ requires at least one case in its range to be satisfied.}
+provided that $Q$ requires at least one case in its range to be satisfied.
 
-{\bf Proof.} In any given evaluation, either $\phi$ is true, or it is false.
+Proof. In any given evaluation, either $\phi$ is true, or it is false.
 Suppose it is true. Since $T\land \theta \Leftrightarrow \theta$, both sides
 reduce to the same expression, $Qx : \psi(x)$. On the other hand, suppose $\phi$
 is false. Then $\phi\land Qx : \psi(x)$ is false, since $F\land\theta = F$

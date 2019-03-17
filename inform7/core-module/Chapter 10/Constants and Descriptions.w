@@ -406,14 +406,14 @@ instance, is a value but not a description.
 Grammatically, a description is a sequence of the following five elements, some
 of which are optional:
 
-(a) {\it specifier}, which will be a determiner and/or an article (optional);
+(a) specifier, which will be a determiner and/or an article (optional);
 
-(b) {\it qualifier}, which for Inform means adjectives of the various kinds
+(b) qualifier, which for Inform means adjectives of the various kinds
 described above (optional);
 
-(c) {\it qualifiable noun} (sometimes optional, sometimes compulsory); and
+(c) qualifiable noun (sometimes optional, sometimes compulsory); and
 
-(d) {\it subordinate clause}, such as "in ..." or "which are on ..."
+(d) subordinate clause, such as "in ..." or "which are on ..."
 (optional).
 
 For the most part the sequence must be (a), (b), (c), (d), as in:

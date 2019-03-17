@@ -94,7 +94,7 @@ To allow this, we have a minor variation:
 
 where <s-variable-scope> matches "existing number variable".
 
-Note that these forms recurse, so that {\it syntactically} we allow "T that
+Note that these forms recurse, so that syntactically we allow "T that
 varies" for any type expression T. This would include contradictions in terms
 such as "15 that varies" or "number that varies that varies that varies",
 but we want to allow the parse here so that a problem message can be issued

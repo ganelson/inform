@@ -116,7 +116,6 @@ package_request *Packaging::request(inter_name *name, package_request *parent, i
 	R->parent_request = parent;
 	R->write_position = Inter::Bookmarks::new_IRS(Emit::repository());
 	for (int i=0; i<MAX_PR_COUNTER; i++) R->counters[i] = 0;
-//	LOG("Made request "); Packaging::log(R); LOG("\n");
 	return R;
 }
 

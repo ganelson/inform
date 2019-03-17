@@ -127,8 +127,4 @@ void JumpLabels::compile_necessary_storage(void) {
 }
 
 void JumpLabels::reset(void) {
-//	label_namespace *lns;
-//	LOOP_OVER(lns, label_namespace)
-//		lns->label_counter = 0;
 }
-

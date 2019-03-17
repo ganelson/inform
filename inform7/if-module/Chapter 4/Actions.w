@@ -1311,12 +1311,10 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 				Emit::up();
 				Emit::val_iname(K_number, InterNames::extern(CONSULTWORDS_EXNAMEF));
 			Emit::up();
-//			var = "100*consult_from + consult_words";
 		} else {
 			Emit::val_symbol(K_value, var);
 		}
 	Emit::up();
-//	WRITE("%n(%s); ", Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K), var);
 }
 
 void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {

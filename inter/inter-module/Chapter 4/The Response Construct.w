@@ -66,7 +66,6 @@ inter_error_message *Inter::Response::new(inter_reading_state *IRS, inter_t SID,
 inter_error_message *Inter::Response::verify(inter_frame P) {
 	if (P.extent != EXTENT_RESPONSE_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
 	inter_error_message *E = Inter::Verify::defn(P, DEFN_RESPONSE_IFLD); if (E) return E;
-//	E = Inter::Verify::symbol(P, P.data[RULE_RESPONSE_IFLD], CONSTANT_IST); if (E) return E;
 	if (P.data[MARKER_RESPONSE_IFLD] >= 26) return Inter::Errors::plain(I"response marker out of range", NULL);
 	return NULL;
 }

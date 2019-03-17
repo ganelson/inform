@@ -446,7 +446,7 @@ under discussion. Even this is tricky. Consider:
 
 >> The Pavilion is a room. East is the Cricket Square.
 
-East of where? Clearly of the current subject, the Pavilion ({\it not}
+East of where? Clearly of the current subject, the Pavilion (not
 the room kind). On the other hand,
 
 >> On the desk is a pencil. It has description "2B."

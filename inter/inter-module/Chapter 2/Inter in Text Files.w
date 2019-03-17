@@ -40,7 +40,6 @@ inter_symbol *Inter::Textual::find_symbol(inter_repository *I, inter_error_locat
 	if (Inter::Symbols::is_predeclared(symb)) return symb;
 	if (Inter::Frame::valid(&D) == FALSE) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
 	if ((D.data[ID_IFLD] != construct) && (Inter::Symbols::is_predeclared(symb) == FALSE)) {
-		// WRITE_TO(STDERR, "Hello type %d cons %d\n", D.data[ID_IFLD], construct);
 		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
 	}
 	return symb;

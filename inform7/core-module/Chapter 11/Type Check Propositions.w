@@ -516,7 +516,7 @@ int Calculus::Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl,
 }
 
 @ Once again we treat any kind of object as just "object", but we do take
-note that some BPs -- like {\it is} -- specify no kinds at all, and so
+note that some BPs -- like "is" -- specify no kinds at all, and so
 produce a |kinds_required| which is |NULL|.
 
 @<Work out what kinds we should have found@> =
@@ -525,10 +525,6 @@ produce a |kinds_required| which is |NULL|.
 		if (K == NULL) K = K_object;
 		kinds_required[i] = K;
 	}
-
-@ Once again we treat any kind of object as just "object", but we do take
-note that some BPs -- like {\it is} -- specify no kinds at all, and so
-produce a |kinds_required| which is |NULL|.
 
 @<Work out what kinds we find@> =
 	for (int i=0; i<2; i++)

@@ -130,7 +130,7 @@ int no_permanent_MLs = 0, no_ephemeral_MLs = 0, GAP_movements = 0;
 
 @ It will be noted that the meaning codes for excerpt meanings use the bottom
 31 bits of a (presumably) 32-bit word to hold sets of contexts, but never have
-bit 32 set. Meaning codes with bit 32 set are {\it not} considered as sets but
+bit 32 set. Meaning codes with bit 32 set are not considered as sets but
 simply as magic values in themselves. When we parse a complicated piece of
 text, the result is a tree in which the leaves are excerpts with simple
 meanings, where the |production| field is a meaning code; but the higher

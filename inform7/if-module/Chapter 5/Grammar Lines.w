@@ -15,7 +15,7 @@ there will also be a |resulting_action|.
 
 A small amount of disjunction is allowed in a grammar line: for instance,
 "look in/inside/into [something]" consists of five tokens, but only three
-{\it lexemes}, basic units to be matched. (The first is "look", the second
+lexemes, basic units to be matched. (The first is "look", the second
 is "one out of in, inside or into", and the third is an object in scope.)
 In the following structure we cache the lexeme count since it is fiddly
 to calculate, and useful when sorting grammar lines into applicability order.
@@ -255,8 +255,6 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 					Emit::up();
 				Emit::up();
 			Emit::up();
-//			WRITE(") return GPR_PREPOSITION;\n");
-//			WRITE("return GPR_FAIL;\n");
 		}
 		Emit::inv_primitive(return_interp);
 		Emit::down();
@@ -899,7 +897,7 @@ by the Standard Rules include:
 
 Only the second of these pairs leads to ambiguity, and even then only if
 an object has a name like ON VISION ON -- perhaps a book about the antique
-BBC children's television programme {\it Vision On} -- so that the command
+BBC children's television programme "Vision On" -- so that the command
 TURN ON VISION ON would match both of the alternative GLs.
 
 =
@@ -1134,7 +1132,6 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 					Emit::up();
 				Emit::up();
 			Emit::up();
-//			WRITE("if ((range_words==0) || (wn-range_from==range_words)) return rv;\n");
 
 			Emit::place_label(fail_label, TRUE);
 			Emit::inv_primitive(store_interp);

@@ -81,7 +81,7 @@ of the verb "to blend", but a definition like
 >> To blend (I blend, he blends, it is blent) ...
 
 will cause "blent" to override "blended" in the |PAST_PARTICIPLE_FORM_TYPE|.
-(Philip Larkin's poem {\it Church Going} uses "blent", but I've never seen
+(Philip Larkin's poem "Church Going" uses "blent", but I've never seen
 anybody else try this one on.)
 
 Note that verb form 0 can't be overridden: that was the base text.

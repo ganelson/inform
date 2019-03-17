@@ -421,11 +421,11 @@ parse tree, which for the time being is a direct child of the root.
 Sentences are classified by their node types, the main identification
 attached to each unit in the tree.
 
-(a) {\bf Nonstructural sentences}, which will be subject to further parsing
-work, have node type |SENTENCE_NT| (and so will {\bf regular sentences}).
+(a) "Nonstructural sentences", which will be subject to further parsing
+work, have node type |SENTENCE_NT| (and so will "regular sentences").
 Anything we cannot place into categories (b) or (c) below will go here.
 
-(b) {\bf Sentences making up rules}. These are sequences of sentences in which
+(b) "Sentences making up rules". These are sequences of sentences in which
 a preamble (ending with a colon, or in certain cases a comma) of node type
 |ROUTINE_NT| is followed by a sequence of phrases (ending with semicolons until
 the last, which ends with a full stop or paragraph break), each of node type
@@ -433,7 +433,7 @@ the last, which ends with a full stop or paragraph break), each of node type
 
 >> To look upwards: say "Look out!"; something else.
 
-(c) {\bf Structural sentences}. These demarcate the text, call for other text
+(c) "Structural sentences". These demarcate the text, call for other text
 or unusual matter to be included, etc.: the types in question are |TRACE_NT|,
 |HEADING_NT|, |INCLUDE_NT|, |INFORM6CODE_NT|, |BEGINHERE_NT|, |ENDHERE_NT|,
 |TABLE_NT|, |EQUATION_NT| and |BIBLIOGRAPHIC_NT|.

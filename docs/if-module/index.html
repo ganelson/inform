@@ -1,0 +1,193 @@
+<html>
+	<head>
+		<title>if  </title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+	</head>
+
+	<body>
+		<ul class="crumbs"><li><a href="../webs.html">&#9733;</a></li><li><b>if  </b></li></ul>
+		<p class="purpose">The interactive-fiction specific layer of Inform, as a module.</p>
+		<hr>
+		<ul class="chapterlist">
+			<li>
+				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Starting Up</span></p>
+				<p><span class="purpose"></span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="1-im.html"><spon class="sectiontitle">IF Module</span></a> -
+						<span class="purpose">Setting up the use of this module.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Bibliographic Data</span></p>
+				<p><span class="purpose">Our project is a kind of interactive book, with ISBN-like data and various cataloguing information, and which needs to be bound up in various ways.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="2-ifi.html"><spon class="sectiontitle">Interactive Fiction ID</span></a> -
+						<span class="purpose">Computes and makes available the IFID (Interactive Fiction ID) number for an Inform-generated work of IF, in compliance with the Treaty of Babel.</span></p>
+					</li>
+					<li>
+						<p><a href="2-bd.html"><spon class="sectiontitle">Bibliographic Data</span></a> -
+						<span class="purpose">To manage the special variables providing bibliographic data on the work of IF being generated (title, author's name and so forth), and to write the Library Card in the index.</span></p>
+					</li>
+					<li>
+						<p><a href="2-ri.html"><spon class="sectiontitle">Release Instructions</span></a> -
+						<span class="purpose">To write the iFiction record for the work of IF compiled, its release instructions and its picture manifest, if any.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Space and Time</span></p>
+				<p><span class="purpose">The default model domain for Inform is one which is adapted to interactive fiction, which provides for geography, spatial containment and scenes.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="3-tnt.html"><spon class="sectiontitle">The Naming Thicket</span></a> -
+						<span class="purpose">Inform has a thicket of properties to do with names: not just the name itself, but whether it is a plural, a proper name, and so on. Here we look after these properties, and give them their initial states.</span></p>
+					</li>
+					<li>
+						<p><a href="3-sm.html"><spon class="sectiontitle">Spatial Model</span></a> -
+						<span class="purpose">A plugin which constructs the fundamental spatial model used by IF, to represent containment, support, carrying, wearing, and incorporation.</span></p>
+					</li>
+					<li>
+						<p><a href="3-sr.html"><spon class="sectiontitle">Spatial Relations</span></a> -
+						<span class="purpose">A continuation of the Spatial plugin which defines the binary predicates corresponding to basic spatial relationships.</span></p>
+					</li>
+					<li>
+						<p><a href="3-tp.html"><spon class="sectiontitle">The Player</span></a> -
+						<span class="purpose">A plugin to give a special role to the player object.</span></p>
+					</li>
+					<li>
+						<p><a href="3-bck.html"><spon class="sectiontitle">Backdrops</span></a> -
+						<span class="purpose">A plugin to provide support for backdrop objects, which are present as scenery in multiple rooms at once.</span></p>
+					</li>
+					<li>
+						<p><a href="3-rgn.html"><spon class="sectiontitle">Regions</span></a> -
+						<span class="purpose">A plugin providing support for grouping rooms together into named and nestable regions.</span></p>
+					</li>
+					<li>
+						<p><a href="3-tm.html"><spon class="sectiontitle">The Map</span></a> -
+						<span class="purpose">A plugin to provide a geographical model, linking rooms and doors together in oppositely-paired directions.</span></p>
+					</li>
+					<li>
+						<p><a href="3-mcr.html"><spon class="sectiontitle">Map Connection Relations</span></a> -
+						<span class="purpose">To define one binary predicate for each map direction, such as "mapped north of".</span></p>
+					</li>
+					<li>
+						<p><a href="3-sg.html"><spon class="sectiontitle">Spatial Geometry</span></a> -
+						<span class="purpose">To deal with vectors and cuboids in a three-dimensional integer lattice.</span></p>
+					</li>
+					<li>
+						<p><a href="3-sm2.html"><spon class="sectiontitle">Spatial Map</span></a> -
+						<span class="purpose">To fit the map of the rooms in the game into a cubical grid, preserving distances and angles where possible, and so to give each room approximate coordinate locations.</span></p>
+					</li>
+					<li>
+						<p><a href="3-hm.html"><spon class="sectiontitle">HTML Map</span></a> -
+						<span class="purpose">To render the spatial map of rooms as HTML.</span></p>
+					</li>
+					<li>
+						<p><a href="3-em.html"><spon class="sectiontitle">EPS Map</span></a> -
+						<span class="purpose">To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.</span></p>
+					</li>
+					<li>
+						<p><a href="3-sc.html"><spon class="sectiontitle">Showme Command</span></a> -
+						<span class="purpose">A plugin to provide some support for the SHOWME testing command.</span></p>
+					</li>
+					<li>
+						<p><a href="3-scn.html"><spon class="sectiontitle">Scenes</span></a> -
+						<span class="purpose">Scenes are periods of time during play: at any given moment, several may be going on, or none. They are started and stopped when certain conditions are met, or by virtue of having been anchored together.</span></p>
+					</li>
+					<li>
+						<p><a href="3-tm2.html"><spon class="sectiontitle">Temporal Map</span></a> -
+						<span class="purpose">Parallel to the World index of space is the Scenes index of time, and in this section we render it as HTML.</span></p>
+					</li>
+					<li>
+						<p><a href="3-ts.html"><spon class="sectiontitle">The Score</span></a> -
+						<span class="purpose">A plugin to support the maximum score variable.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Actions</span></p>
+				<p><span class="purpose">Actions are impulses to do something within the simulated world.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="4-act.html"><spon class="sectiontitle">Actions</span></a> -
+						<span class="purpose">To define, map to I6 and index individual actions.</span></p>
+					</li>
+					<li>
+						<p><a href="4-anl.html"><spon class="sectiontitle">Action Name Lists</span></a> -
+						<span class="purpose">Action name lists provide a disjunction in the choice of action made by an action pattern. For instance, "taking or dropping the disc" results in a two-entry ANL. An empty ANL is also legal, and means "doing something" -- the generic I7 text for "any action at all".</span></p>
+					</li>
+					<li>
+						<p><a href="4-ap.html"><spon class="sectiontitle">Action Patterns</span></a> -
+						<span class="purpose">An action pattern is a description which may match many actions or none. The text "doing something" matches every action, while "throwing something at a door in a dark room" is seldom matched. Here we parse such text into a data structure called an |action_pattern|.</span></p>
+					</li>
+					<li>
+						<p><a href="4-los.html"><spon class="sectiontitle">Looping Over Scope</span></a> -
+						<span class="purpose">To compile routines capable of being passed as arguments to the I6 library routine for looping over parser scope at run-time, and so to provide an implementation for conditions such as "in the presence of Mrs Dalloway".</span></p>
+					</li>
+					<li>
+						<p><a href="4-nap.html"><spon class="sectiontitle">Named Action Patterns</span></a> -
+						<span class="purpose">A named action pattern is a named categorisation of actions, such as "acting suspiciously", which is a disjunction of action patterns (stored in a linked list).</span></p>
+					</li>
+					<li>
+						<p><a href="4-ai.html"><spon class="sectiontitle">Actions Index</span></a> -
+						<span class="purpose">To construct the Actions index page.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="5"></a><spon class="chaptertitle">Chapter 5: Command Grammar</span></p>
+				<p><span class="purpose">In which Understand sentences in the source text are converted into a parsing grammar, which tells the player's computer how to understand his typed commands during play, converting these into actions by the protagonist in the model world.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="5-itg.html"><spon class="sectiontitle">Introduction to Grammar</span></a> -
+						<span class="purpose">An exposition of the data structures and basic method used to deal with the command-parsing grammar implied by Understand sentences in the source text.</span></p>
+					</li>
+					<li>
+						<p><a href="5-tfg.html"><spon class="sectiontitle">Traverse for Grammar</span></a> -
+						<span class="purpose">To create and manipulate grammar, primarily by parsing and acting upon Understand... sentences in the source text.</span></p>
+					</li>
+					<li>
+						<p><a href="5-gp.html"><spon class="sectiontitle">Grammar Properties</span></a> -
+						<span class="purpose">A plugin for the I6 run-time properties needed to support parsing.</span></p>
+					</li>
+					<li>
+						<p><a href="5-gv.html"><spon class="sectiontitle">Grammar Verbs</span></a> -
+						<span class="purpose">A grammar verb is not literally a verb, as the name is a hangover from the way I6 defines grammar. It might be said to be a necklace onto which we thread the sea-shells of grammar lines. Each grammar verb has its own purpose: to match various possibilities (one for each grammar line) against text aimed at a particular result. For instance, all run time commands beginning with TAKE are parsed with a single grammar verb. If we create a new grammar token, "[polite remark]", for use in other grammar, then that too will have its own "grammar verb". If we define the word "eleventy-one" as meaning the number 111, it will be added to a grammar verb attached to the kind "number" which parses eccentric names for number values. And so on. Probably a better name for this structure would be simply "grammar", but that might be confusing in other ways, and anyway the ship has sailed.</span></p>
+					</li>
+					<li>
+						<p><a href="5-gl.html"><spon class="sectiontitle">Grammar Lines</span></a> -
+						<span class="purpose">A grammar line is a list of tokens to specify a textual pattern. For example, the NI source for a grammar line might be |"take [something] out"|, which is a sequence of three tokens.</span></p>
+					</li>
+					<li>
+						<p><a href="5-gt.html"><spon class="sectiontitle">Grammar Types</span></a> -
+						<span class="purpose">Some grammar text specifies one or more values, and we need to keep track of their kind(s). Here we manage the data structure doing this.</span></p>
+					</li>
+					<li>
+						<p><a href="5-gt2.html"><spon class="sectiontitle">Grammar Tokens</span></a> -
+						<span class="purpose">To handle grammar at the level of individual tokens. I7 grammar tokens correspond in a 1-to-1 way with I6 tokens: here we determine the I7 type a token represents (if any) and compile it to its I6 grammar token equivalent as needed.</span></p>
+					</li>
+					<li>
+						<p><a href="5-nft.html"><spon class="sectiontitle">Noun Filter Tokens</span></a> -
+						<span class="purpose">Filters are used to require nouns to have specific kinds or attributes, or to have specific scoping rules: they correspond to Inform 6's |noun=Routine| and |scope=Routine| tokens. Though these are quite different concepts in I6, their common handling seems natural in I7.</span></p>
+					</li>
+					<li>
+						<p><a href="5-tpv.html"><spon class="sectiontitle">Tokens Parsing Values</span></a> -
+						<span class="purpose">In the argot of Inform 6, GPR stands for General Parsing Routine, and I7 makes heavy use of GPR tokens to achieve its ends. This section is where the necessary I6 routines are compiled.</span></p>
+					</li>
+					<li>
+						<p><a href="5-gpr.html"><spon class="sectiontitle">General Parsing Routines</span></a> -
+						<span class="purpose">To compile I6 general parsing routines (GPRs) and/or |parse_name| properties as required by the I7 grammar.</span></p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<hr>
+	</body>
+
+</html>
+

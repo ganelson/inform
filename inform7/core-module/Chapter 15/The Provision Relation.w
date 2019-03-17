@@ -9,8 +9,8 @@ can be held by which objects.
 the expected duration") result in properties being created -- here "expected
 duration" -- and then in suitable propositions being asserted as true.
 
-These propositions are written in terms of the {\it provision} predicate: for
-example, {\it provision}(scene, expected duration). This is the only way to
+These propositions are written in terms of the provision predicate: for
+example, provision(scene, expected duration). This is the only way to
 grant permission to hold a property within the world model.
 
 = (early code)

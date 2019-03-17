@@ -14,8 +14,8 @@ Here the domain of the definition is "container", and we must assign
 an adjective meaning for "roomy" which involves the comparison of a
 property (here "carrying capacity") against a threshold value $t$ (here,
 $t=10$). Each such definition allows the property value to belong to a
-"region": we are looking for membership of $\lbrace x\mid x\le t\rbrace$,
-$\lbrace t\rbrace$ or $\lbrace x\mid x\ge t\rbrace$. The following constants
+"region": we are looking for membership of $\lbrace x\mid x\leq t\rbrace$,
+$\lbrace t\rbrace$ or $\lbrace x\mid x\geq t\rbrace$. The following constants
 enumerate the possible shapes of this region.
 
 @d MEASURE_T_OR_LESS -1
@@ -116,7 +116,7 @@ void Properties::Measurement::read_property_details(measurement_definition *mdef
 }
 
 @ Inconveniently, at the time when we create a measurement to test if a subject
-$S$ satisfies (say) $P(S) \in \lbrace x\mid x\ge t\rbrace$, we don't yet know
+$S$ satisfies (say) $P(S) \in \lbrace x\mid x\geq t\rbrace$, we don't yet know
 either the property $P$ or the threshold value $t$. That means the measurement
 definition structure stands incomplete for a while. Filling it in is called
 "validation", as follows.

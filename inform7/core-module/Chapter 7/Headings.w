@@ -75,18 +75,17 @@ heading pseudo_heading; /* The entire source falls under this top-level heading 
 @ As an example, a sequence in the primary source text of (Chapter I, Book
 Two, Section 5, Chapter I, Section 1, Chapter III) would be formed up into
 the heading tree:
-\medskip
-	|(the pseudo-heading)|\qquad level $-1$, indentation $-1$
-	|    (File: Standard Rules)|\qquad level 0, indentation 0
+
+	|(the pseudo-heading)  level -1, indentation -1|
+	|    (File: Standard Rules)  level 0, indentation 0|
 	|        ...|
-	|    (File: primary source text)|\qquad level 0, indentation 0
-	|        Chapter I|\qquad level 4, indentation 1
-	|        Book Two|\qquad level 2, indentation 1
-	|            Section 5|\qquad level 5, indentation 2
-	|            Chapter I|\qquad level 4, indentation 2
-	|                Section 1|\qquad level 5, indentation 3
-	|            Chapter III|\qquad level 4, indentation 2
-\medskip
+	|    (File: primary source text)  level 0, indentation 0|
+	|        Chapter I  level 4, indentation 1|
+	|        Book Two  level 2, indentation 1|
+	|            Section 5  level 5, indentation 2|
+	|            Chapter I  level 4, indentation 2|
+	|                Section 1  level 5, indentation 3|
+	|            Chapter III  level 4, indentation 2|
 
 Note that the level of a heading is not the same thing as its depth in this
 tree, which we call the "indentation", and there is no simple relationship
@@ -103,7 +102,7 @@ follows. The level $\ell_n$ of a heading depends only on its wording (or
 source file origin), but the indentation of the $n$th heading, $i_n$,
 depends on $(\ell_1, \ell_2, ..., \ell_n)$, the sequence of all levels so
 far:
-$$ i_n = i_{\hbox{${\rm max} \lbrace j \mid 0\leq j < n, \ell_j < \ell_n \rbrace$}} + 1 $$
+$$ i_n = i_m + 1 \qquad {\rm where}\qquad m = {\rm max} \lbrace j \mid 0\leq j < n, \ell_j < \ell_n \rbrace $$
 where $\ell_0 = i_0 = -1$, so that this set always contains 0 and is
 therefore not empty. We deduce that
 
@@ -120,7 +119,7 @@ indeed the number of tab steps we should be determining.
 
 Note that to calculate $i_n$ we do not need the whole of $(\ell_1, ..., \ell_n)$:
 we only need to remember the values of
-$$ i_{\hbox{${\rm max} \lbrace j \mid 0\leq j < n, \ell_j < K \rbrace$}} $$
+$$ i_{m(K)},\qquad {\rm where}\qquad m(K) = {\rm max} \lbrace j \mid 0\leq j < n, \ell_j < K \rbrace $$
 for each possible heading level $K=0, 1, ..., 9$. This requires much less
 storage: we call it the "last indentation above level $K$".
 
@@ -920,7 +919,7 @@ structure, there are no loops, and so $H_i = H_2$, $H_{i-1} = H_3$, and so
 on -- we must be walking a path and then retracing our steps in reverse.
 That being so, there is a point where we turned back: we went from $H_j$ to
 $H_{j+1}$ to $H_j$ again. And this violates the principle that at each node
-we move outwards in every direction {\it except} the way we came, a
+we move outwards in every direction except the way we came, a
 contradiction.
 
 The routine looks as if it may have a large recursion depth -- maybe as

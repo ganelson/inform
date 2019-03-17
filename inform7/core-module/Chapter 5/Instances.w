@@ -396,7 +396,7 @@ belongs: if we write
 >> Kathy is a woman.
 
 then the Kathy instance is also a person, a thing, an object and a value,
-but when we talk about {\it the} kind of Kathy, we mean "woman".
+but when we talk about the kind of Kathy, we mean "woman".
 
 Note that this is not stored as a field in the instance structure, because
 that would be redundant. Inform already knows which subjects are more

@@ -113,8 +113,6 @@ inter_error_message *Inter::PropertyValue::verify(inter_frame P) {
 	if (P.extent != EXTENT_PVAL_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
 	inter_error_message *E = Inter::Verify::symbol(P, P.data[PROP_PVAL_IFLD], PROPERTY_IST); if (E) return E;
 	E = Inter::Verify::symbol_KOI(P, P.data[OWNER_PVAL_IFLD]); if (E) return E;
-//	inter_symbol *val_kind = Inter::Property::kind_of(Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD));
-//	E = Inter::Verify::value(P, DVAL1_PVAL_IFLD, val_kind); if (E) return E;
 
 	if (vcount == 0) {
 		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD);

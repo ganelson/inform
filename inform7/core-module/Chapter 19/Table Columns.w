@@ -16,7 +16,7 @@ linked, as in a relational database.)
 
 The predicate calculus engine often finds conditions equivalent to "if A
 is a C listed in T": it is efficient to rewrite this in a special predicate
-{\it listed-in-C}(A, T), and to do this we need to have a binary
+listed-in-C(A, T), and to do this we need to have a binary
 predicate associated with each possible table column C.
 
 =
@@ -91,7 +91,7 @@ of evidence, if the kind has to be inferred from the table's initial entries.
 So we can't just set the kind once at creation time.
 
 This has a knock-on effect on the predicate associated with the column,
-because the kind of term A in {\it listed-in-C}(A, T) must match the kind
+because the kind of term A in listed-in-C(A, T) must match the kind
 of entry in the column.
 
 =

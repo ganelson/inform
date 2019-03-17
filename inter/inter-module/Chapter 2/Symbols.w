@@ -159,13 +159,11 @@ void Inter::Symbols::clear_transient_flags(void) {
 
 int Inter::Symbols::get_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
-//	LOG("Get %08x for %S (%08x)\n", f, symb->symbol_name, symb->transient_flags);
 	return (symb->transient_flags & f)?TRUE:FALSE;
 }
 
 void Inter::Symbols::set_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
-//	LOG("Set %08x for %S\n", f, symb->symbol_name);
 	symb->transient_flags = symb->transient_flags | f;
 }
 

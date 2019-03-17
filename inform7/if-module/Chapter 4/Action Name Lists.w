@@ -97,8 +97,8 @@ action_name_list *anl_being_parsed = NULL;
 >> doing something other than waiting
 >> taking or dropping the box
 
-At this stage in parsing, we are identifying {\it possible} actions, and
-what their {\it possible} operands are, but we aren't trying to parse those
+At this stage in parsing, we are identifying possible actions, and
+what their possible operands are, but we aren't trying to parse those
 operands.
 
 =

@@ -29,7 +29,7 @@ a fourth case?
 
 The answer is that there's no need, since "test false" can be done by
 compiling "test true" and applying the I7 negation operator |~~| to the
-result. No similar trick can be used to combine {\it making} something
+result. No similar trick can be used to combine making something
 true or false into a single operation.
 
 @d TEST_ATOM_TASK 1
@@ -304,8 +304,8 @@ adjective apparatus.
 	asch.schema = BinaryPredicates::get_i6_schema(task, bp_to_assert, &asch);
 	return asch;
 
-@ When a relation $R(x, y)$ has been simplified to ${\it is}(x, f_R(y))$
-or ${\it is}(g_R(x), y)$, it can be tested but not asserted true or false;
+@ When a relation $R(x, y)$ has been simplified to $is(x, f_R(y))$
+or $is(g_R(x), y)$, it can be tested but not asserted true or false;
 we have to re-establish $R(x, y)$ before we can proceed.
 
 @<Undo any functional simplification of the relation@> =

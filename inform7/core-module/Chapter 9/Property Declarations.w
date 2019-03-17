@@ -390,7 +390,7 @@ three or more alternatives, like so:
 
 >> A vehicle can be petrol, diesel, electric or hybrid.
 
-the default is the {\it first} option -- petrol. This accords with the
+the default is the first option -- petrol. This accords with the
 convention that the first-created value for an enumerated kind is always
 its default value.
 

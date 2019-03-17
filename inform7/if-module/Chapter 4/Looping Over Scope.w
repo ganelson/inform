@@ -68,6 +68,4 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 			Emit::up();
 		Emit::up();
 	Emit::up();
-//	WRITE(" los_rv = t_0;\n");
-
 	Routines::end();

@@ -8,7 +8,6 @@ To generate the initial state of storage for variables.
 int assim_verb_count = 0;
 void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	inter_repository *I = IRS->read_into;
-//	inter_symbols_table *into_scope = Inter::Packages::scope(Inter::Packages::main(IRS->read_into));
 	inter_frame P;
 	LOOP_THROUGH_FRAMES(P, I) {
 		inter_package *outer = Inter::Packages::container(P);

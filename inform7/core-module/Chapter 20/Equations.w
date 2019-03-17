@@ -954,7 +954,7 @@ int Equations::application_is_implied(equation_node *previous_token, equation_no
 
 @h The shift-reduce parser.
 This is a classic algorithm for expression-evaluator grammars; see for
-instance Aho, Sethi and Ullman, {\it Compilers}, \S 4.6 in the second edition.
+instance Aho, Sethi and Ullman, "Compilers", section 4.6 in the second edition.
 We use a pair of stacks. The SR stack holds possible attempts to understand
 what we have so far, given the tokens that have arrived; the emitter stack
 holds nodes which form pieces of the output tree as it is assembled. Nodes

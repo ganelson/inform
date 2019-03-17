@@ -7,12 +7,12 @@ and to apply quantifiers to bind any unbound variables.
 
 @ In any given proposition:
 
-(a) a variable is {\it unused} if it is never mentioned as, or in, any term,
+(a) a variable is unused if it is never mentioned as, or in, any term,
 and is not the variable of any quantifier;
 
-(b) a variable is {\it bound} if it appears as the variable of any |QUANTIFIER_ATOM|;
+(b) a variable is bound if it appears as the variable of any |QUANTIFIER_ATOM|;
 
-(c) a variable is {\it free} if it is used but not bound.
+(c) a variable is free if it is used but not bound.
 
 These are mutually exclusive (no two can be true at the same time), and in
 any given proposition, each of the 26 variables is always either unused, bound
@@ -20,20 +20,20 @@ or free.
 
 In this section we are concerned with three operations applied to propositions:
 
-(a) {\it substitution} means replacing each mention of a given variable
+(a) substitution means replacing each mention of a given variable
 with a given constant: for instance, changing $x$ to 3 throughout
 ("substituting $x=3$"). This has no effect if $x$ is unused, and is
 illegal if $x$ is bound, since it could produce nonsense like "for all 3,
 3 is odd".
 
-(b) {\it binding} means adding a new quantifier to a proposition, ranging
+(b) binding means adding a new quantifier to a proposition, ranging
 some variable $v$. If $v$ were unused this would be unlikely to be sensible
 (it would just make an inefficient way to test the size of the domain set),
 whereas if $v$ were already a bound variable then the result would be a
 proposition which is no longer well-formed. So binding can only be done to
 free variables.
 
-(c) {\it renumbering} means replacing each mention of a given variable $v$
+(c) renumbering means replacing each mention of a given variable $v$
 with another variable $w$. Clearly $w$ needs to be initially unused, or we
 could accidentally change "$v$ is greater than $w$" into "$w$ is greater
 than $w$". But provided $w$ is unused, the proposition's truth or otherwise
@@ -46,10 +46,10 @@ human understanding seems to be needed to interpret pronouns like "it"
 linguistics). So we aim to translate excerpts of source text into just two
 kinds of proposition:
 
-(a) an {\it S-proposition} which has no free variables -- such as the result
+(a) an S-proposition which has no free variables -- such as the result
 of translating "The tree is in the Courtyard" or "Every door is open";
 
-(b) an {\it SN-proposition} in which only variable 0 ($x$) is free -- such
+(b) an SN-proposition in which only variable 0 ($x$) is free -- such
 as the result of translating "open containers which are in lighted rooms",
 which comes out to a proposition $\phi(x)$ testing whether $x$ is one.
 
@@ -359,7 +359,7 @@ after $v$, is allowed to depend on it, in some way that we can't determine.
 (For examples of this, see "Simplifications".)
 
 The general rule, then, is that $T$ can contain only constants or variables
-which are free {\it within and after the scope of $v$}. (If $w$ is bound
+which are free within and after the scope of $v$. (If $w$ is bound
 outside the scope of $v$ but after it, this means $w$ didn't exist at the
 time that $v$ did, and the attempted substitution would produce a proposition
 which isn't well-formed -- $w$ would occur before its quantifier.) We can

@@ -46,7 +46,7 @@ to source text level.
 A |NULL| pointer is a valid kind, and means "unknown".
 
 Each node in the tree has a pointer (|->construct|) to the kind constructor
-used to make it; this is {\it never} null. In the case of two special
+used to make it; this is never null. In the case of two special
 constructors, there are further annotations (see below). The number of
 downward branches at the node is equal to the arity of the constructor
 being used; so the kind "number" is represented by a single leaf node:
@@ -74,7 +74,7 @@ the testing process with the |Kinds::Compare::eq| function in case of later chan
 and (iii) careful use of caches where access is fast enable us to reduce
 memory waste, mostly through intermediates but sometimes constructors, to
 only a very small percentage in typical Inform usage -- say about 2K on a
-medium-sized source text like {\it Bronze}, which is not worth economising.
+medium-sized source text like "Bronze", which is not worth economising.
 
 @ In principle we could imagine constructors needing arbitrarily large
 arity, or needing different arity in different usages, so the scheme of
@@ -142,7 +142,7 @@ little calculator icon in the Kinds index), and those which are implemented as
 enumerations of named constants. (This includes, e.g., scenes and figure names
 but not objects, whose run-time storage is not a simple numerical enumeration,
 or truth states, which are stored as 0 and 1 not 1 and 2. In particular, it
-{\it isn't} the same thing as having a finite range in the Kinds index.)
+isn't the same thing as having a finite range in the Kinds index.)
 
 = (early code)
 kind *K_arithmetic_value = NULL;

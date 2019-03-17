@@ -218,7 +218,7 @@ is unimportant, but in fact the score assigned to a match is based purely
 on the number of words missed out (see later): that means that ambiguities
 often arise between two lexically similar objects, e.g., a "blue chair"
 or a "red chair" when the text simply specifies "chair". Since the code
-below accepts the {\it first} noun with the highest score, the outcome is
+below accepts the first noun with the highest score, the outcome is
 thus determined by which of the blue and red chairs ranks highest in the
 search list: and that is why the search list is so important.
 

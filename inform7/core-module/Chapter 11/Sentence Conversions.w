@@ -118,7 +118,7 @@ it can be applied.
 @<Disallow the past tenses in relative clauses@> =
 	ExParser::Subtrees::throw_past_problem(FALSE);
 
-@ {\bf First Rule.} The "meaning" of a noun phrase is a pair $(\phi, t)$,
+@ First Rule. The "meaning" of a noun phrase is a pair $(\phi, t)$,
 where $\phi$ is a proposition and $t$ is a term. We read this as "$t$ such
 that $\phi$ is true". Exactly one of the following will always be true:
 (a) If the NP talks about a single definite thing $C$, then $t=C$ and $\phi = T$,
@@ -228,16 +228,19 @@ pair $t_O$ such that $\phi_O$. From the verb phrase (VP), we have found a
 binary relation $B$, meant either in a positive sense ($B$ does hold) or a
 negative one (it doesn't). And now:
 
-{\bf Second Rule.} The combined "meaning" $\Sigma$ is as follows:
+Second Rule. The combined "meaning" $\Sigma$ is as follows:
 (1) if we are parsing a whole sentence (i.e., an SV-subtree), or $\phi_S$ is
 not in the form $Q x\in\lbrace x\mid\theta(x)\rbrace$, then:
-$$ \Sigma = \cases{\phi_S \land \phi'_O \land B(t_S, t'_O) & {\rm if~sense~positive}\cr
-\phi_S \land \lnot(\phi'_O \land B(t_S, t'_O)) & {\rm if~sense~negative}\cr} $$
+$$ \Sigma = \phi_S \land \phi'_O \land B(t_S, t'_O) $$
+if the sense is positive, or
+$$ \phi_S \land \lnot(\phi'_O \land B(t_S, t'_O)) $$
+if not.
 (2) if we are parsing a relative clause (i.e., an SN-subtree), and $\phi_S$ is of the form
 $Q x\in\lbrace x\mid\theta(x)\rbrace$, then:
-$$ \Sigma = \cases{Q x\in\lbrace x\mid\theta(x) \land \phi'_O \land B(t_S, t'_O)\rbrace & {\rm if~sense~positive}\cr
-Q x\in\lbrace x\mid\theta(x) \land \lnot(\phi'_O \land B(t_S, t'_O))\rbrace & {\rm if~sense~negative}\cr} $$
-Here $\phi'_O$ and $t'_O$ are $\phi_O$ and $t_O$ modified to relabel its
+$$ \Sigma = Q x\in\lbrace x\mid\theta(x) \land \phi'_O \land B(t_S, t'_O)\rbrace $$
+if the sense is positive, or
+$$ Q x\in\lbrace x\mid\theta(x) \land \lnot(\phi'_O \land B(t_S, t'_O)) $$
+if not. Here $\phi'_O$ and $t'_O$ are $\phi_O$ and $t_O$ modified to relabel its
 variables so that there are no accidental clashes with variables named in
 $\phi_S$.
 
@@ -284,12 +287,12 @@ we don't mean the same $x$ on both sides, so we relabel the OP to get $y$
 such that ${\it animal}(y)$. There is not really any asymmetry between the
 SP and OP here, because it would have been just as good to relabel the SP.
 
-@ {\bf Lemma.} The result $\Sigma$ of the Second Rule is a proposition containing
+@ Lemma. The result $\Sigma$ of the Second Rule is a proposition containing
 either 0 or 1 free variables; $\Sigma$ has 1 free variable if and only if we
 are converting an SN-subtree, and the subject phrase of the sentence describes
 a single thing vaguely.
 
-{\bf Proof.} $\phi_O$ contains no free variables, since we bound it up above,
+Proof. $\phi_O$ contains no free variables, since we bound it up above,
 and the same must be true of its relabelled version $\phi'_O$. If we have
 an SV-subtree then $\phi_S$ similarly contains no free variables; we only
 leave it unbound for an SN-subtree. In that case, the First Rule tells us that
@@ -456,8 +459,8 @@ term will need to have a particular kind of value, then that kind is given
 to us. (But if it only needs to be an object, or if we don't know anything
 about its kind, the |K| argument will be |NULL|.)
 
-As can be seen, an NP subtree consists {\it either} of an SN subtree representing
-two further NPs joined by a verb to make a relative clause, {\it or} one of
+As can be seen, an NP subtree consists either of an SN subtree representing
+two further NPs joined by a verb to make a relative clause, or one of
 three basic noun phrases: a value, a description, or a marker for an implied
 but missing noun.
 

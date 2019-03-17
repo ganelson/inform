@@ -401,11 +401,11 @@ these integer values to tell them what they are looking at. For instance, the
 |ActionData| table records the kinds of the noun and second noun to which an
 action applies.
 
-We have two forms of description: {\it strong} and {\it weak}. Strong IDs
-really do uniquely identify kinds, and thus distinguish "list of lists of
-texts" from "list of numbers". Weak IDs are defined by:
+We have two forms of description: strong and weak. Strong IDs really do
+uniquely identify kinds, and thus distinguish "list of lists of texts" from
+"list of numbers". Weak IDs are defined by:
 
-{\bf Dogma.}\quad If a value $v$ has kind $K$, and we want to use it as a value
+Dogma. If a value $v$ has kind $K$, and we want to use it as a value
 of kind $W$, then
 (a) if $K$ and $W$ have different weak IDs then this is impossible;
 (b) if they have equal weak IDs then run-time code can tell from $v$ alone
@@ -465,7 +465,7 @@ to be able to compile it.
 Clearly a single 16-bit integer isn't enough to represent the full range of
 kinds. We could get closer to this if we used a trick like the one attributed to
 Ritchie and Johnson in chapter 6.3 of the Dragon book (Aho, Sethi and Ullman,
-{\it Compilers}, 1986), where lower bits of a word store the base kind for the
+"Compilers", 1986), where lower bits of a word store the base kind for the
 underlying data and upper bits record constructors applied to this.
 
 But instead we exploit the fact that integers and addresses are interchangeable

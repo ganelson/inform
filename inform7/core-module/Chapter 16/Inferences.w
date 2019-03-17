@@ -505,9 +505,9 @@ negative if |i2 < i1|. This is a stable trichotomy; in particular,
 for all pairs of inference pointers |I| and |J|.
 
 More importantly, though, it measures how similar the two inferences are,
-because the return value is always $\pm x$ where $x$ is one of the following.
+because the return value is always plus or minus one of the following.
 The notation |CI_DIFFER_IN_WHATEVER| means that the two inferences do
-not differ on all lower-order tests; thus, the higher the value of $x$,
+not differ on all lower-order tests; thus, the higher the absolute value,
 the more similar the inferences are. (|CI_IDENTICAL|, 0, is a special case;
 this is returned only when the two inferences are literally the same
 structure, i.e., |I == J|. Merely containing identical data is not enough.)

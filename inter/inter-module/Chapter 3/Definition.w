@@ -262,8 +262,6 @@ inter_error_message *Inter::Defn::scan_levels(inter_repository *I, inter_error_m
 		if ((E) && (err_at < 0)) err_at = F;
 		F++;
 		int L = Inter::Defn::get_level(P) - baseline;
-//		WRITE_TO(STDERR, "%d ", L); Inter::Defn::write_construct_text(STDERR, P); WRITE_TO(STDERR, "\n");
-//		LOG("%d ", L); Inter::Defn::write_construct_text(DL, P); LOG("\n");
 		if ((stop_at_top) && (L <= 0) && (F > 1)) break;
 		if (P.data[ID_IFLD] == COMMENT_IST) continue;
 		if (frame_sp == L) {
@@ -324,7 +322,6 @@ inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
 	if (pack == NULL) need = OUTSIDE_OF_PACKAGES;
 	else if (pack->codelike_package) need = INSIDE_CODE_PACKAGE;
 	if ((IC->usage_permissions & need) != need) {
-//		WRITE_TO(STDERR, "Need %08x, have %08x\n", need, IC->usage_permissions);
 		text_stream *M = Str::new();
 		WRITE_TO(M, "construct (%d, %08x) '", P.data[LEVEL_IFLD], Inter::Frame::get_package(P));
 		Inter::Defn::write_construct_text(M, P);
@@ -342,7 +339,6 @@ inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
 
 inter_error_message *Inter::Defn::get_construct(inter_frame P, inter_construct **to) {
 	if (Inter::Frame::valid(&P) == FALSE) {
-//		internal_error("z");
 		return Inter::Frame::error(&P, I"invalid frame", NULL);
 	}
 	if ((P.data[ID_IFLD] == INVALID_IST) || (P.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))

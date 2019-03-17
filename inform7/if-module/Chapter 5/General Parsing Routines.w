@@ -29,8 +29,8 @@ compiled here: they are in Tokens Parsing Values.
 
 @h Consult routines.
 These are used to parse an explicit range of words (such as traditionally
-found in the CONSULT command) at run time, and they are {\it not} I6 grammar
-tokens, and do {\it not} appear in |Verb| declarations: otherwise, such
+found in the CONSULT command) at run time, and they are not I6 grammar
+tokens, and do not appear in |Verb| declarations: otherwise, such
 routines are very similar to GPRs.
 
 First, we need to look after a pointer to the GV used to hold the grammar

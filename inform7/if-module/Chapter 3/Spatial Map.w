@@ -1868,7 +1868,7 @@ if $S$ grows. So my guess is that cooling is $O(S)$ in practice.
 Another virtue is that cooling alone works in many easy cases. If there are
 no locks, and no multiple exits between pairs of rooms A to B, then cooling
 is guaranteed to find a perfect (heat 0) grid positioning if one exists.
-There are plenty of Inform projects for which that happens: {\it Bronze},
+There are plenty of Inform projects for which that happens: "Bronze",
 for instance, has a single component of 55 rooms, and one round of cooling
 reduces this to absolute zero.
 
@@ -2354,7 +2354,7 @@ making their bounding cuboids disjoint, even though this will often mean
 that there is wasted space on the page. (Thus we do not, for instance, use
 the trick adopted by the British Ordnance Survey in mapping the outlying
 island of St Kilda on an inset square of what would otherwise be empty
-ocean on OS18 {\it Sound of Harris}, despite its being separated by about
+ocean on OS18 "Sound of Harris", despite its being separated by about
 60km from the position shown.)
 
 @<(4) Position the components in space@> =

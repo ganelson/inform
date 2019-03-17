@@ -456,12 +456,6 @@ void PL::Naming::compile_small_names(void) {
 					Emit::up();
 				Emit::up();
 			Emit::up();
-//				WRITE_TO(SNAMES,
-//					"if (%~I.&cap_short_name) PrintOrRun(%~I, cap_short_name, true);\n",
-//						owner, owner);
-//				WRITE_TO(SNAMES,
-//					"else PrintOrRun(%~I, short_name, true);\n",
-//						owner);
 		} else {
 			Emit::inv_primitive(printname_interp);
 			Emit::down();

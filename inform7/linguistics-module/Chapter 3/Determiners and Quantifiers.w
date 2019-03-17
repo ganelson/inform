@@ -39,7 +39,7 @@ take a numerical parameter, and a single |quantifier| structure represents
 the meaning for any value of this parameter. For instance, the cardinality
 quantifiers |Card=3| and |Card=17| are both represented by the same
 quantifier structure, whose pointer is called |exactly_quantifier| below.
-This is the result of parsing {\it exactly three} doors or {\it exactly 17}
+This is the result of parsing "exactly three" doors or "exactly 17"
 containers, for instance, where the parameter is 3 or 17 respectively.
 
 =
@@ -75,14 +75,14 @@ is a term from linguistics which approximately -- but only approximately --
 means the same thing.
 
 The determiner is the part of a noun phrase, always its head, which gives
-counting information to be combined with a common noun. Thus {\it the} clock,
-{\it seven} seals, {\it almost all of the} open doors, and so on. When a
+counting information to be combined with a common noun. Thus "the" clock,
+"seven" seals, "almost all of the" open doors, and so on. When a
 determiner appears to refer to a range of objects rather than a single
-item, NI translates it into a quantifier. Thus {\it the} clock is not parsed
-into a quantifier, but {\it all but three} rooms is.
+item, NI translates it into a quantifier. Thus "the" clock is not parsed
+into a quantifier, but "all but three" rooms is.
 
 The same quantifier can have several different verbal forms. For instance,
-{\it each} container and {\it every} container mean the same thing: both
+"each" container and "every" container mean the same thing: both
 apply the |ForAll| quantifier to containers. These different verbal forms
 are stored in the |determiner| structure, and each one points to the
 |quantifier| structure which is its meaning.

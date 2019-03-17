@@ -89,7 +89,6 @@ void CodeGen::Link::receive_raw(text_stream *S, I6T_kit *kit) {
 	int mode = IGNORE_WS_FILTER_BIT;
 	LOOP_THROUGH_TEXT(pos, S) {
 		wchar_t c = Str::get(pos);
-		// LOG("%02x %04x\n", mode, c);
 		if ((c == 10) || (c == 13)) c = '\n';
 		if (mode & IGNORE_WS_FILTER_BIT) {
 			if ((c == '\n') || (Characters::is_whitespace(c))) continue;

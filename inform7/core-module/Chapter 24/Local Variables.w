@@ -401,12 +401,10 @@ void LocalVariables::copy(ph_stack_frame *phsf_to, ph_stack_frame *phsf_from) {
 
 	local_variable *lvar;
 	for (lvar = slate_from->local_variable_allocation; lvar; lvar = lvar->next) {
-		// LOG("Copying %S\n", lvar->lv_lvalue);
 		local_variable *copied = LocalVariables::add_to_locals_slate(slate_to,
 			lvar->lv_purpose, lvar->varname, lvar->kind_as_declared,
 			lvar->lv_lvalue, lvar->index_with_this_purpose);
 		Str::copy(copied->lv_lvalue, lvar->lv_lvalue);
-		// LOG("Copy %08x -> %08x\n", lvar, copied);
 	}
 
 	slate_to->it_variable_exists = slate_from->it_variable_exists;
@@ -1135,7 +1133,6 @@ void LocalVariables::declare(ph_stack_frame *phsf, int shell_mode) {
 inter_symbol *LocalVariables::declare_this(local_variable *lvar, int shell_mode, int reason) {
 	inter_symbol *S = Emit::local_exists(lvar->lv_lvalue);
 	if (S) {
-		// LOG("%d: %08x: Retrieved %S in shell mode %d (%S) dup %d\n", reason, lvar, lvar->lv_lvalue, shell_mode, S->symbol_name, lvar->duplicated);
 		return S;
 	}
 
@@ -1147,7 +1144,6 @@ inter_symbol *LocalVariables::declare_this(local_variable *lvar, int shell_mode,
 	TEMPORARY_TEXT(comment);
 	LocalVariables::comment_on(comment, lvar, lvar->lv_purpose);
 	inter_symbol *symb = Emit::local(lvar->kind_as_declared, lvar->lv_lvalue, annot, comment);
-// LOG("%d: %08x: Declared %S in shell mode %d (%S) dup %d\n", reason, lvar, lvar->lv_lvalue, shell_mode, symb->symbol_name, lvar->duplicated);
 	DISCARD_TEXT(comment);
 	return symb;
 }

@@ -23,10 +23,9 @@ identifying the name of the variable in question. There are no
 arguments.
 
 |PROPERTY_VALUE_NT| represents a given (value-)property of a given object,
-{\it not} the name of a property in abstract. Thus "description of the
-Police Commissioner" qualifies, but "description" does not.
-There are two arguments: the property and the object which possesses it,
-respectively.
+not the name of a property in abstract. Thus "description of the Police
+Commissioner" qualifies, but "description" does not. There are two arguments:
+the property and the object which possesses it, respectively.
 
 |TABLE_ENTRY_NT| represents a given entry to a table, which can be referred
 to in several different ways. There are four different kinds of table reference,

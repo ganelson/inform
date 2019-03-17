@@ -348,7 +348,7 @@ We will do this by compiling the proposition from left to right. If there
 are $k$ atoms in $\phi$, then there are $k+1$ positions between atoms,
 counting the start and the end. Then:
 
-{\bf Invariant.}\quad Let $\psi$ be any syntactically valid subproposition
+Invariant.\quad Let $\psi$ be any syntactically valid subproposition
 of $\phi$ (that is, a contiguous sequence of atoms from $\psi$ which would
 be a valid proposition in its own right). Then there are before and after
 positions |B| and |A| in the compiled I6 code for searching $\phi$ such that
@@ -369,10 +369,10 @@ $\phi$ arises from "all doors are open" and is stored in memory as:
 Then |door(x)| and |Forall x IN[ door(x) IN]| are valid, for instance, but
 |IN] open(x)| is not.
 
-{\bf Lemma.}\quad If the Invariant holds for two adjacent syntactically valid
+Lemma.\quad If the Invariant holds for two adjacent syntactically valid
 subpropositions $\mu$ and $\nu$, then it holds for the subproposition $\mu\nu$.
 
-{\bf Proof.}\quad There are now three positions in the code: |B1|, before $\mu$;
+Proof.\quad There are now three positions in the code: |B1|, before $\mu$;
 |B2|, before $\nu$, which is the same position as after $\mu$; and |A|, after
 $\nu$. Execution reaches |B2| $m$ times for each visit to |B1|, where $m$
 is the number of combinations of viable bound variable values in $\mu$.
@@ -381,13 +381,13 @@ similar number for $\nu$. Therefore execution reaches |A| a total of $nm$
 times for each visit to |B1|, the product of the number of variable combinations
 in $\mu$ and $\nu$, which is exactly the number of combinations in total.
 
-{\bf Corollary.}\quad If the Invariant holds for subpropositions in each of
+Corollary.\quad If the Invariant holds for subpropositions in each of
 the following forms, then it will hold overall.
 (a) |Exists v|, for some variable $v$, or |Q v IN[ ... IN]|, for some quantifier other than $\exists$.
 (b) |NOT[ ... NOT]|.
 (c) any single predicate-like atom.
 
-{\bf Proof.}\quad Because all valid subpropositions are concatenations of
+Proof.\quad Because all valid subpropositions are concatenations of
 these, and we then apply the Lemma.
 
 It follows that if we can prove our algorithm maintains the invariant in
@@ -947,7 +947,7 @@ at 0, since all I6 locals do.
 @<Initialisation before NUMBER search@> =
 	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
-@ Recall that we get here for {\it each possible way} that $\phi(x)$ could
+@ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
 $\phi$. But we only want to increment |counter| once, so having done so, we
 exit the searching code and continue the outer loop.
@@ -1018,7 +1018,7 @@ is true. The local |list| holds the list so far, and already exists.
 
 	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
-@ Recall that we get here for {\it each possible way} that $\phi(x)$ could
+@ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
 $\phi$. But we only want to increment |counter| once, so having done so, we
 exit the searching code and continue the outer loop.
@@ -1299,8 +1299,6 @@ we don't, and have to look that up at run-time.
 				Emit::up();
 			Emit::up();
 		Emit::up();
-//		WRITE("if (property_loop_sign>0) best=MIN_NEGATIVE_NUMBER;\n");
-//		WRITE("else best=MAX_POSITIVE_NUMBER;\n");
 	} else {
 		measurement_definition *mdef =
 			RETRIEVE_POINTER_measurement_definition(pdef->defn_ref);
@@ -1326,7 +1324,7 @@ multiplying by |property_loop_sign|, thus combining the max and min
 versions into one, and saving an |if|. But (a) the multiplication is as
 expensive as the |if| (remember that on a VM there's no real branch
 penalty), and (b) we need to watch out because $-1$ times $-32768$, on a
-16-bit machine, is $-1$, not $32768$: so it is {\it not} always true that
+16-bit machine, is $-1$, not $32768$: so it is not always true that
 multiplying by $-1$ is order-reversing.
 
 @<Act on successful match in EXTREMAL search@> =
@@ -1387,17 +1385,6 @@ multiplying by $-1$ is order-reversing.
 				Emit::up();
 			Emit::up();
 		Emit::up();
-
-//		WRITE("if (%c.%S >= best) {\n", pcalc_vars[0], source_of_property);
-//		WRITE("best = %c.%S;\n", pcalc_vars[0], source_of_property);
-//		WRITE("best_with = %c;\n", pcalc_vars[0]);
-//		WRITE("}\n");
-
-//		WRITE("if (%c.%S <= best) {\n", pcalc_vars[0], source_of_property);
-//		WRITE("best = %c.%S;\n", pcalc_vars[0], source_of_property);
-//		WRITE("best_with = %c;\n", pcalc_vars[0]);
-//		WRITE("}\n");
-
 	} else {
 		Emit::inv_primitive(if_interp);
 		Emit::down();
@@ -1421,14 +1408,6 @@ multiplying by $-1$ is order-reversing.
 				Emit::up();
 			Emit::up();
 		Emit::up();
-
-//		WRITE("if (%c.%S %s best) {\n",
-//			pcalc_vars[0], source_of_property, (def_prn_sign == 1)?">=":"<=");
-//		INDENT;
-//		WRITE("best = %c.%S;\n", pcalc_vars[0], source_of_property);
-//		WRITE("best_with = %c;\n", pcalc_vars[0]);
-//		OUTDENT;
-//		WRITE("}\n");
 	}
 
 @<Emit code for a property lookup@> =
@@ -1443,7 +1422,6 @@ multiplying by $-1$ is order-reversing.
 	Emit::up();
 
 @<Winding-up after EXTREMAL search@> =
-// Place label
 	Emit::inv_primitive(return_interp);
 	Emit::down();
 		Emit::val_symbol(K_value, best_with_s);

@@ -366,8 +366,8 @@ language conventions. In English, we do say pseudo-algebraic things like
 more exciting lives than the present author. The use of letters emphasises
 that this is some kind of reference, not a direct identification. Whereas
 when we use asterisks, it's with an air of censorship, of something that
-must not be named (compare St\'ephanie de Genlis's gothic novella {\it Histoire
-de la duchesse de C***}, 1782).
+must not be named (compare St\'ephanie de Genlis's gothic novella "Histoire
+de la duchesse de C***", 1782).
 
 The following nonterminal matches only those kind variables whose values are
 actually set, and it returns those values. This is how kind variables are

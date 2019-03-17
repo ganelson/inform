@@ -692,7 +692,7 @@ though this won't happen for any property created by I7 source text.
 	WRITE("\" ");
 	pos++;
 
-@ A {\it complete} list here would be wasteful both of space and run-time
+@ A complete list here would be wasteful both of space and run-time
 checking time, but we only need a list $O_1, O_2, ..., O_k$ such that for
 each $W$ allowed to have the property, either $W = O_i$ for some $i$, or
 $W$ is of kind $O_i$ for some $i$ (perhaps indirectly).

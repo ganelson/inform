@@ -23,17 +23,14 @@ void CodeGen::Import::import(inter_repository *I, filename *F) {
 			inter_symbol *already =
 				Inter::SymbolsTables::symbol_from_name_in_main(I, S);
 			if (already) {
-				// LOG("*** ALREADY %S ***\n", S);
 				inter_frame P2 = Inter::Symbols::defining_frame(already);
 				if ((P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
 					(P2.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
 					(P.data[DATA_CONST_IFLD] == LITERAL_IVAL) &&
 					(P2.data[DATA_CONST_IFLD] == LITERAL_IVAL) &&
 					(P.data[DATA_CONST_IFLD+1] == P2.data[DATA_CONST_IFLD+1])) {
-					// LOG("Allowed! Both %d\n", P.data[DATA_CONST_IFLD+1]);
 					Inter::Nop::nop_out(I2, P);
 				} else {
-					// LOG("Permitting mismatch on symbol %S\n", S);
 					Inter::Nop::nop_out(I2, P);
 				}
 			}

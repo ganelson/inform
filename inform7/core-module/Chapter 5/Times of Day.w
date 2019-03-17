@@ -11,7 +11,7 @@ that time is at Nought. His less accurate grandmother Poetry has always been
 understood to start in the middle; but on reflection it appears that her
 proceeding is not very different from his; since Science, too, reckons backwards
 as well as forwards, divides his unit into billions, and with his clock-finger
-at Nought really sets off in medias res" (George Eliot, {\it Daniel Deronda}).
+at Nought really sets off in medias res" (George Eliot, "Daniel Deronda").
 Our make-believe here is midnight, our unit is divided not into billions but
 into 1440, and a value of this kind holds one of two possibilities:
 
@@ -80,8 +80,8 @@ linguistically the same thing at all.
 
 @ Note that we allow "12:01 AM" (one minute past midnight) and "12:01 PM"
 (ditto noon), and also "0:01 AM" and "00:01 AM", but not "0:01 PM".
-Lawrence Sanders's sci-fi thriller {\it The Tomorrow File}, if that can be
-mentioned on the same page as {\it Daniel Deronda}, had a terrific cover of
+Lawrence Sanders's sci-fi thriller "The Tomorrow File", if that can be
+mentioned on the same page as "Daniel Deronda", had a terrific cover of
 a digital clock glowing with "24:01" -- but we won't allow that, either.
 
 @<Vet the time for clock range@> =

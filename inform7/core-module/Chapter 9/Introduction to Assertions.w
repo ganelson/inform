@@ -2,7 +2,7 @@
 
 A general introduction to how the A-parser deals with assertions.
 
-@ Previously, on {\it Inform}... The text has been read in, broken into a
+@ Previously, on "Inform"... The text has been read in, broken into a
 stream of identified words, broken further into sentences organised under
 headings, and then parsed into a basic tree. That last part was the work of
 the A-parser, the simpler and more rigid of the two parsers we use. The
