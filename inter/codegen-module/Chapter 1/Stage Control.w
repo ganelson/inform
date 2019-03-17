@@ -143,6 +143,7 @@ inter_symbol *verb_directive_multiexcept_symbol = NULL;
 
 void CodeGen::Stage::follow(pathname *P, stage_set *S, inter_repository *I, int N, pathname **PP, pathname *PM, pathname *FM) {
 	if (S == NULL) return;
+	clock_t start = clock();
 
 	unchecked_kind_symbol = Inter::Packages::search_main_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_main_exhaustively(I, I"K_unchecked_function");
@@ -176,7 +177,8 @@ void CodeGen::Stage::follow(pathname *P, stage_set *S, inter_repository *I, int 
 		text_stream text_output_struct; /* The actual I6 code file */
 		text_stream *text_out_file = &text_output_struct; /* The actual I6 code file */
 		TEMPORARY_TEXT(STAGE_NAME);
-		WRITE_TO(STAGE_NAME, "inter step %d/%d: ", ++step_count, step_total);
+		WRITE_TO(STAGE_NAME, "inter step %d/%d (at %dcs): ", ++step_count, step_total,
+			((int) (clock() - start)) / (CLOCKS_PER_SEC/100));
 		switch (step->step_code) {
 			case DEPENDENCIES_STAGESTEP: {
 				WRITE_TO(STAGE_NAME, "show-dependencies:%S", step->step_argument);

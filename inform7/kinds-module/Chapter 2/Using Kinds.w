@@ -476,14 +476,12 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (Kinds::Compare::eq(K, K_real_number)) external = TRUE;
 	if (Str::len(X) > 0) {
 		if (R) {
-			LOG("There %s on $u -> %S\n", (external)?"external":"internal", K, X);
 			K->construct->pr_iname =
 				Packaging::function_text(
 					InterNames::one_off(I"print_fn", R),
 					R,
 					X);
 		} else {
-			LOG("Here %s on $u -> %S\n", (external)?"external":"internal", K, X);
 			if (external) K->construct->pr_iname = InterNames::extern_name(PRINTING_ROUTINE_INAMEF, X, NULL);
 			else K->construct->pr_iname = InterNames::intern(PRINTING_ROUTINE_INAMEF, X);
 		}

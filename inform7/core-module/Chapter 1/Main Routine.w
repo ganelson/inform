@@ -193,6 +193,7 @@ list is not exhaustive.
 
 @d COMPILATION_STEP(routine, mark) {
 	if (problem_count == 0) {
+		LOG("Begin " #routine " at %dcs\n", ((int) (clock() - start)) / (CLOCKS_PER_SEC/100));
 		routine();
 		/* Emit::marker(mark); */
 	}
@@ -389,6 +390,8 @@ with "Output.i6t".
 
 @<Convert inter to Inform 6@> =
 	if ((problem_count == 0) && (existing_story_file == FALSE)) {
+		clock_t front_end = clock();
+		LOG("Front end elapsed time: %dcs\n", ((int) (front_end - start)) / (CLOCKS_PER_SEC/100));
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
 			stage_set *SS = CodeGen::Stage::new_set();
@@ -405,6 +408,7 @@ with "Output.i6t".
 				pathname_of_i6t_files[INTERNAL_FS_AREA],
 				pathname_of_i6t_files[INTERNAL_FS_AREA]);
 		}
+		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Compilation now complete");
 
