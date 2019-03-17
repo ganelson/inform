@@ -1,2 +1,2 @@
-intest/Workspace/T3/Example.materials/Release
-intest/Workspace/T3/Example.materials/Release/Cover.jpg
+/Users/gnelson/Natural Inform/intest/Workspace/T3/Example.materials/Release
+/Users/gnelson/Natural Inform/intest/Workspace/T3/Example.materials/Release/Cover.jpg

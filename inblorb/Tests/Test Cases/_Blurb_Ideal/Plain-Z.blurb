@@ -1,20 +1,20 @@
 ! Blurb file created by Inform Inform 7.99.99 (build 9Z99)
 
-status "Internal/HTML/CblorbModel.html" "intest/Workspace/T4/Example.inform/Build/StatusCblorb.html"
+status "inform7/Internal/HTML/CblorbModel.html" "/Users/gnelson/Natural Inform/intest/Workspace/T4/Example.inform/Build/StatusCblorb.html"
 
 
 ! Identification
 
-project folder "intest/Workspace/T4/Example.inform"
-release to "intest/Workspace/T4/Example.materials/Release"
+project folder "/Users/gnelson/Natural Inform/intest/Workspace/T4/Example.inform"
+release to "/Users/gnelson/Natural Inform/intest/Workspace/T4/Example.materials/Release"
 
 ! Blorb instructions
 
 storyfile leafname "story.zblorb"
-storyfile "intest/Workspace/T4/Example.inform/Build/output.z8" include
-ifiction "intest/Workspace/T4/Example.inform/Metadata.iFiction" include
-cover "Internal/Miscellany/Cover.jpg"
-picture 1 "Internal/Miscellany/Cover.jpg"
+storyfile "/Users/gnelson/Natural Inform/intest/Workspace/T4/Example.inform/Build/output.z8" include
+ifiction "/Users/gnelson/Natural Inform/intest/Workspace/T4/Example.inform/Metadata.iFiction" include
+cover "inform7/Internal/Miscellany/Cover.jpg"
+picture 1 "inform7/Internal/Miscellany/Cover.jpg"
 
 ! Placeholder variables
 

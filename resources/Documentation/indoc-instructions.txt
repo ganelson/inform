@@ -5,7 +5,7 @@
 volume: Writing with Inform
 volume: The Inform Recipe Book (RB) = The Recipe Book.txt
 examples
-images: Imagery/doc_images/
+images: resources/Imagery/doc_images/
 cover: combined_cover.png
 
 dc:title: Inform - A Design System for Interactive Fiction

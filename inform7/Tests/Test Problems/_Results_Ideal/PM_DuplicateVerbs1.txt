@@ -1,4 +1,4 @@
-Inform 7.10.1 build 6Q15 has started.
+Inform 7.10.1 build 6Q21 has started.
 I've now read your source text, which is 82 words long.
 I've also read Standard Rules by Graham Nelson, which is 43240 words long.
 I've also read English Language by Graham Nelson, which is 2328 words long.
@@ -12,6 +12,6 @@ Problem__ PM_DuplicateVerbs1
 Problem__ PM_DuplicateVerbs1
   >--> You wrote 'The verb to be means the enclosure relation' (source text, line 16),
     but in another sentence 'The verb to be means the equality relation' (the
-    Standard Rules, line 19): again, this gives us two definitions of what
+    Standard Rules, line 18): again, this gives us two definitions of what
     appears to be the same verb.
-Inform 7 has finished: 26 centiseconds used.
+Inform 7 has finished: 23 centiseconds used.

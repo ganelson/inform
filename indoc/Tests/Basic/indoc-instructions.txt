@@ -1,7 +1,7 @@
 volume: The Indoc Manual
 volume: The Second Volume
 cover: combined_cover.png
-images: Imagery/doc_images/
+images: resources/Imagery/doc_images/
 examples
 
 contents_expandable = yes

@@ -15,7 +15,7 @@
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x'
 -extensions		[Main] 'inform7/Internal/Extensions/Graham Nelson'
--examples		[Main] Documentation/Examples
+-examples		[Main] resources/Documentation/Examples
 -problems		[Main] 'inform7/Tests/Test Problems'
 
 -recipe [Main]
