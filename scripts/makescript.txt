@@ -165,7 +165,9 @@ all: tools srules localintegration
 force: forcetools forcesrules localintegration
 
 .PHONY: localintegration
-localintegration:
+localintegration: inform7/Internal/Languages/English/Syntax.preform
+
+inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.preform
 	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
 
 # (Of course those other four phony targets are yet to be defined.)
@@ -446,6 +448,7 @@ csr:
 # -----------------------------------------------------------------------------
 # This copies material into the user interface application.
 # -----------------------------------------------------------------------------
+ifdef BUILTINCOMPS
 
 INTOOLSBUILTIN = \
 	$(BUILTINCOMPS)/$(INBLORBNAME) \
@@ -670,5 +673,7 @@ define make-inapp-outcome-pages
 	$(INRTPSX) resources/Outcome\ Pages $(BUILTINHTMLINNER) $(INRTPSOPTS)
 	cp -f resources/Outcome\ Pages/pl404.html $(BUILTINHTMLINNER)
 endef
+
+endif
 
 # -----------------------------------------------------------------------------
