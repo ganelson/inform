@@ -1,0 +1,763 @@
+B/listt: Lists Template.
+ 
+@Purpose: Code to support the list of... kind of value constructor.
+ 
+@-------------------------------------------------------------------------------
+
+@p Block Format.
+A list is a variable-length array of values all of which have the same kind.
+(Compare a combination, a fixed-length array of values with possibly
+different kinds.) The short block for a list is a pointer to the long
+block. The long block consists of the strong kind ID of the items
+(not of the list itself!), followed by the number of items, followed
+by one word for each item.
+
+@c
+Constant LIST_ITEM_KOV_F = 0; ! The kind of the items
+Constant LIST_LENGTH_F = 1;   ! The number of items
+Constant LIST_ITEM_BASE = 2;  ! List items begin at this entry
+
+@p KOV Support.
+See the "BlockValues.i6t" segment for the specification of the following
+routines.
+
+@c
+[ LIST_OF_TY_Support task arg1 arg2 arg3;
+	switch(task) {
+		CREATE_KOVS:      return LIST_OF_TY_Create(arg1, arg2);
+		DESTROY_KOVS:     LIST_OF_TY_Destroy(arg1);
+		MAKEMUTABLE_KOVS: return 1;
+		COPYKIND_KOVS:    return LIST_OF_TY_CopyKind(arg1, arg2);
+		COPYQUICK_KOVS:   return LIST_OF_TY_QuickCopy(arg1, arg2);
+		COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);
+		KINDDATA_KOVS:    return LIST_OF_TY_KindData(arg1, arg2);
+		EXTENT_KOVS:      return BlkValueRead(arg1, LIST_LENGTH_F) + LIST_ITEM_BASE;
+		COPY_KOVS:        LIST_OF_TY_Copy(arg1, arg2, arg3);
+		COMPARE_KOVS:     return LIST_OF_TY_Compare(arg1, arg2);
+		HASH_KOVS:        return LIST_OF_TY_Hash(arg1);
+		DEBUG_KOVS:       print " = {", (LIST_OF_TY_Say) arg1, "} of kind ",
+                              BlkValueRead(arg1, LIST_ITEM_KOV_F);
+	}
+	! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
+	rfalse;
+];
+
+@p Creation.
+Lists are by default created empty but in a block-value with enough capacity
+to hold 25 items, this being what's left in a 32-word block once all overheads
+are taken care of: 4 words are consumed by the header, then 2 more by the
+list metadata entries below.
+
+@c
+[ LIST_OF_TY_Create skov sb list;
+	skov = KindBaseTerm(skov, 0);
+	list = FlexAllocate(27*WORDSIZE, LIST_OF_TY, BLK_FLAG_MULTIPLE + BLK_FLAG_WORD);
+	BlkValueWrite(list, LIST_ITEM_KOV_F, skov, true);
+	BlkValueWrite(list, LIST_LENGTH_F, 0, true);
+	sb = BlkValueCreateSB1(sb, list);
+	return sb;
+];
+
+@p Destruction.
+If the list items are themselves block-values, they must all be freed before
+the list itself can be freed.
+
+@c
+[ LIST_OF_TY_Destroy list no_items i k;
+	k = BlkValueRead(list, LIST_ITEM_KOV_F);
+	if (KOVIsBlockValue(k)) {
+		no_items = BlkValueRead(list, LIST_LENGTH_F);
+		for (i=0: i<no_items: i++) BlkValueFree(BlkValueRead(list, i+LIST_ITEM_BASE));
+	}
+];
+
+@p Copying.
+Again, if the list contains block-values then they must be duplicated rather
+than bitwise copied as pointers.
+
+Note that we use the pre-copy stage to remember the kind of value stored
+in the list. Type-checking will make sure this isn't abused: cases where
+it's important include copying the empty list into a list of rooms (it
+should not as a result acquire the kind "list of values"), or copying
+a list of people into a list of things (which should remain a list of
+things.)
+
+@c
+[ LIST_OF_TY_CopyKind to from;
+	BlkValueWrite(to, LIST_ITEM_KOV_F, BlkValueRead(from, LIST_ITEM_KOV_F));
+];
+
+[ LIST_OF_TY_QuickCopy to from;
+	if (BlkValueRead(to, LIST_ITEM_KOV_F) ~= BlkValueRead(from, LIST_ITEM_KOV_F))
+		rfalse;
+	rtrue;
+];
+
+[ LIST_OF_TY_KindData list;
+	return BlkValueRead(list, LIST_ITEM_KOV_F);
+];
+
+[ LIST_OF_TY_Copy lto lfrom  precopied_list_kov no_items i nv bk val splk;
+	no_items = BlkValueRead(lfrom, LIST_LENGTH_F);
+	bk = BlkValueRead(lfrom, LIST_ITEM_KOV_F);
+	if (precopied_list_kov ~= 0 or UNKNOWN_TY)
+		BlkValueWrite(lto, LIST_ITEM_KOV_F, precopied_list_kov);
+	else BlkValueWrite(lto, LIST_ITEM_KOV_F, bk);
+	if (KOVIsBlockValue(bk)) {
+		for (i=0: i<no_items: i++) {
+			val = BlkValueRead(lfrom, i+LIST_ITEM_BASE);
+			if (precopied_list_kov ~= 0 or UNKNOWN_TY)
+				nv = BlkValueCreate(precopied_list_kov);
+			else
+				nv = BlkValueCreate(bk);
+			BlkValueCopy(nv, val);
+			BlkValueWrite(lto, i+LIST_ITEM_BASE, nv);
+		}
+	}
+];
+
+@p Comparison.
+Lists of a given kind of value are always grouped together, in this comparison:
+but the effect of that is unlikely to be noticed since NI's type-checker will
+probably prevent comparisons of lists of differing items in any case. The
+next criterion is length: a short list precedes a long one. Beyond that, we
+use the list's own preferred comparison function to judge the items in turn,
+stopping as soon as a pair of corresponding items differs: thus we sort
+lists of equal size in lexicographic order.
+
+Since the comparison function depends only on the KOV, it may seem wasteful
+of a word of memory to store it in the list, given that we are already storing
+the KOV in any case. But we do this because comparisons have to be fast: we
+don't want to incur the overhead of translating KOV to comparison function.
+
+@c
+[ LIST_OF_TY_Compare listleft listright delta no_items i cf;
+	delta = BlkValueRead(listleft, LIST_LENGTH_F) - BlkValueRead(listright, LIST_LENGTH_F);
+	if (delta) return delta;
+	no_items = BlkValueRead(listleft, LIST_LENGTH_F);
+	if (no_items == 0) return 0;
+	delta = BlkValueRead(listleft, LIST_ITEM_KOV_F) - BlkValueRead(listright, LIST_ITEM_KOV_F);
+	if (delta) return delta;
+	cf = LIST_OF_TY_ComparisonFn(listleft);
+	if (cf == 0 or UnsignedCompare) {
+		for (i=0: i<no_items: i++) {
+			delta = BlkValueRead(listleft, i+LIST_ITEM_BASE) -
+				BlkValueRead(listright, i+LIST_ITEM_BASE);
+			if (delta) return delta;
+		}
+	} else {
+		for (i=0: i<no_items: i++) {
+			delta = cf(BlkValueRead(listleft, i+LIST_ITEM_BASE),
+				BlkValueRead(listright, i+LIST_ITEM_BASE));
+			if (delta) return delta;
+		}
+	}
+	return 0;
+];
+
+[ LIST_OF_TY_ComparisonFn list;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	return KOVComparisonFunction(BlkValueRead(list, LIST_ITEM_KOV_F));
+];
+
+[ LIST_OF_TY_Distinguish txb1 txb2;
+	if (LIST_OF_TY_Compare(txb1, txb2) == 0) rfalse;
+	rtrue;
+];
+
+@p Hashing.
+
+@c
+[ LIST_OF_TY_Hash list  len kov rv i;
+	rv = 0;
+	len = BlkValueRead(list, LIST_LENGTH_F);
+	kov = BlkValueRead(list, LIST_ITEM_KOV_F);
+	for (i=0: i<len: i++)
+		rv = rv * 33 + GetHashValue(kov, BlkValueRead(list, i+LIST_ITEM_BASE));
+	return rv;
+];
+
+@p Printing.
+Unusually, this function can print the value in one of several formats:
+0 for a comma-separated list; 1 for a braced, set-notation list; 2 for
+a comma-separated list with definite articles, which only makes sense if
+the list contains objects; 3 for a comma-separated list with indefinite
+articles. Note that a list in this sense is {\it not} printed using the
+"ListWriter.i6t" code for elaborate lists of objects, and it doesn't
+use the "listing contents of..." activity in any circumstances.
+
+@c
+[ LIST_OF_TY_Say list format no_items v i bk;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	bk = KindAtomic(BlkValueRead(list, LIST_ITEM_KOV_F));
+	! print no_items, " of kov=", BlkValueRead(list, LIST_ITEM_KOV_F), ":";
+	if (format == 1) print "{";
+	for (i=0:i<no_items:i++) {
+		v = BlkValueRead(list, i+LIST_ITEM_BASE);
+		switch (format) {
+			2: print (the) v;
+			3: print (a) v;
+			default:
+				if (bk == LIST_OF_TY) LIST_OF_TY_Say(v, 1);
+				else if ((bk == TEXT_TY) && (format == 1)) {
+					print "~"; PrintKindValuePair(bk, v); print "~";
+				}
+				else PrintKindValuePair(bk, v);
+		}
+		if (i<no_items-2) print ", ";
+		if (i==no_items-2) {
+			if (format == 1) print ", "; else {
+				#ifdef SERIAL_COMMA; if (no_items ~= 2) print ","; #endif;
+				LIST_WRITER_INTERNAL_RM('C');
+			}
+		}
+	}
+	if (format == 1) print "}";
+	prior_named_list = no_items; prior_named_list_gender = -1;
+];
+
+@p List From Description.
+That completes the compulsory services required for this KOV to function:
+from here on, the remaining routines provide definitions of stored action-related
+phrases in the Standard Rules.
+
+Given a description |D| which applies to some objects and not others --
+say, "lighted rooms adjacent to the Transport Hub" -- we can cast this
+into a list of all objects satisfying |D| with the following routine.
+Slightly wastefully of time, we have to iterate through the objects
+twice in order first to work out the length of list we will need, and
+then to transcribe them.
+
+@c
+[ LIST_OF_TY_Desc list desc kov obj no_items ex len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	ex = BlkValueLBCapacity(list);
+	len = desc(-3);
+	if (len+LIST_ITEM_BASE > ex) {
+		if (BlkValueSetLBCapacity(list, len+LIST_ITEM_BASE) == false)
+			return 0;
+	}
+	if (kov) BlkValueWrite(list, LIST_ITEM_KOV_F, kov);
+	else BlkValueWrite(list, LIST_ITEM_KOV_F, OBJECT_TY);
+	BlkValueWrite(list, LIST_LENGTH_F, len);
+	obj = 0;
+	for (i=0: i<len: i++) {
+		obj = desc(-2, obj, i);
+		! print "i = ", i, " and obj = ", obj, "^";
+		BlkValueWrite(list, i+LIST_ITEM_BASE, obj);
+	}
+	return list;
+];
+
+@p Find Item.
+We test whether a list |list| includes a value equal to |v| or not. Equality
+here is in the sense of the list's comparison function: thus for texts or
+other lists, say, deep comparisons rather than simple pointer comparisons are
+performed. In other words, one copy of "Alert" is equal to another.
+
+@c
+[ LIST_OF_TY_FindItem list v i no_items cf;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	cf = LIST_OF_TY_ComparisonFn(list);
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (cf == 0 or UnsignedCompare) {
+		for (i=0: i<no_items: i++)
+			if (v == BlkValueRead(list, i+LIST_ITEM_BASE)) rtrue;
+	} else {
+		for (i=0: i<no_items: i++)
+			if (cf(v, BlkValueRead(list, i+LIST_ITEM_BASE)) == 0) rtrue;
+	}
+	rfalse;
+];
+
+@p Insert Item.
+The following routine inserts an item into the list. If this would break
+the size of the current block-value, then we extend by at least enough room
+to hold at least another 16 entries.
+
+In the call |LIST_OF_TY_InsertItem(list, v, posnflag, posn, nodups)|, only
+the first two arguments are compulsory.
+(a) If |nodups| is set, and an item equal to |v| is already present in the
+list, we return and do nothing. (|nodups| means "no duplicates".)
+(b) Otherwise, if |posnflag| is |false|, we append a new entry |v| at the
+back of the given |list|.
+(c) Otherwise, when |posnflag| is |true|, |posn| indicates the insertion
+position, from 1 (before the current first item) to $N+1$ (after the last),
+where $N$ is the number of items in the list at present.
+
+@c
+[ LIST_OF_TY_InsertItem list v posnflag posn nodups i no_items ex nv contents_kind;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	if (nodups && (LIST_OF_TY_FindItem(list, v))) return list;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	contents_kind = BlkValueRead(list, LIST_ITEM_KOV_F);
+	if ((posnflag) && ((posn<1) || (posn > no_items+1))) {
+		print "*** Couldn't add at entry ", posn, " in the list ";
+		LIST_OF_TY_Say(list, true);
+		print ", which has entries in the range 1 to ", no_items, " ***^";
+		RunTimeProblem(RTP_LISTRANGEERROR);
+		rfalse;
+	}
+	ex = BlkValueLBCapacity(list);
+	if (no_items+LIST_ITEM_BASE+1 > ex) {
+		if (BlkValueSetLBCapacity(list, ex+16) == false) return 0;
+	}
+	if (KOVIsBlockValue(contents_kind)) {
+		nv = BlkValueCreate(contents_kind);
+		BlkValueCopy(nv, v);
+		v = nv;
+	}
+	if (posnflag) {
+		posn--;
+		for (i=no_items:i>posn:i--) {
+			BlkValueWrite(list, i+LIST_ITEM_BASE,
+				BlkValueRead(list, i-1+LIST_ITEM_BASE));			
+		}
+		BlkValueWrite(list, posn+LIST_ITEM_BASE, v);
+	} else {
+		BlkValueWrite(list, no_items+LIST_ITEM_BASE, v);
+	}
+	BlkValueWrite(list, LIST_LENGTH_F, no_items+1);
+	return list;
+];
+
+@p Append List.
+Instead of adjoining a single value, we adjoin an entire second list, which
+must be of a compatible kind of value (something which NI's type-checking
+machinery polices for us). Except that we have a list |more| rather than a
+value |v| to insert, the specification is the same as for
+|LIST_OF_TY_InsertItem|.
+
+@c
+[ LIST_OF_TY_AppendList list more posnflag posn nodups v i j no_items msize ex nv;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	if ((more==0) || (BlkValueWeakKind(more) ~= LIST_OF_TY)) return list;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	if ((posnflag) && ((posn<1) || (posn > no_items+1))) {
+		print "*** Couldn't add at entry ", posn, " in the list ";
+		LIST_OF_TY_Say(list, true);
+		print ", which has entries in the range 1 to ", no_items, " ***^";
+		RunTimeProblem(RTP_LISTRANGEERROR);
+		rfalse;
+	}
+	msize = BlkValueRead(more, LIST_LENGTH_F);
+	ex = BlkValueLBCapacity(list);
+	if (no_items+msize+LIST_ITEM_BASE > ex) {
+		if (BlkValueSetLBCapacity(list, no_items+msize+LIST_ITEM_BASE+8) == false)
+			return 0;
+	}
+	if (posnflag) {
+		posn--;
+		for (i=no_items+msize:i>=posn+msize:i--) {
+			BlkValueWrite(list, i+LIST_ITEM_BASE,
+				BlkValueRead(list, i-msize+LIST_ITEM_BASE));			
+		}
+		! BlkValueWrite(list, posn, v);
+		for (j=0: j<msize: j++) {
+			v = BlkValueRead(more, j+LIST_ITEM_BASE);
+			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {
+				nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));
+				BlkValueCopy(nv, v);
+				v = nv;
+			}
+			BlkValueWrite(list, posn+j+LIST_ITEM_BASE, v);
+		}
+	} else {
+		for (i=0, j=0: i<msize: i++) {
+			v = BlkValueRead(more, i+LIST_ITEM_BASE);
+			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {
+				nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));
+				BlkValueCopy(nv, v);
+				v = nv;
+			}
+			if ((nodups == 0) || (LIST_OF_TY_FindItem(list, v) == false)) {
+				BlkValueWrite(list, no_items+j+LIST_ITEM_BASE, v);
+				j++;
+			}
+		}
+	}
+	BlkValueWrite(list, LIST_LENGTH_F, no_items+j);
+	return list;
+];
+
+@p Remove Value.
+We remove every instance of the value |v| from the given |list|. If the
+optional flag |forgive| is set, then we make no complaint if no value of
+|v| was present in the first place: otherwise, we issue a run-time problem.
+
+Note that if the list contains block-values then the value must be properly
+destroyed with |BlkValueFree| before being overwritten as the items shuffle down.
+
+@c
+[ LIST_OF_TY_RemoveValue list v forgive i j no_items odsize f cf delendum;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	cf = LIST_OF_TY_ComparisonFn(list);
+	no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;
+	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	for (i=0: i<no_items: i++) {
+		delendum = BlkValueRead(list, i+LIST_ITEM_BASE);
+		if (cf == 0 or UnsignedCompare)
+			f = (v == delendum);
+		else
+			f = (cf(v, delendum) == 0);
+		if (f) {
+			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+				BlkValueFree(delendum);
+			for (j=i+1: j<no_items: j++)
+				BlkValueWrite(list, j-1+LIST_ITEM_BASE,
+					BlkValueRead(list, j+LIST_ITEM_BASE));
+			no_items--; i--;
+			BlkValueWrite(list, LIST_LENGTH_F, no_items);
+		}
+	}
+	if (odsize ~= no_items) rfalse;
+	if (forgive) rfalse;
+	print "*** Couldn't remove: the value ";
+	PrintKindValuePair(BlkValueRead(list, LIST_ITEM_KOV_F), v);
+	print " was not present in the list ";
+	LIST_OF_TY_Say(list, true);
+	print " ***^";
+	RunTimeProblem(RTP_LISTRANGEERROR);
+];
+
+@p Remove Item Range.
+We excise items |from| to |to| from the given |list|, which numbers its items
+upwards from 1. If the optional flag |forgive| is set, then we truncate a range
+overspilling the actual list, and we make no complaint if it turns out that
+there is then nothing to be done: otherwise, in either event, we issue a
+run-time problem.
+
+Once again, we destroy any block-values whose pointers will be overwritten
+as the list shuffles down to fill the void.
+
+@c
+[ LIST_OF_TY_RemoveItemRange list from to forgive i d no_items;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if ((from > to) || (from <= 0) || (to > no_items)) {
+		if (forgive) {
+			if (from <= 0) from = 1;
+			if (to >= no_items) to = no_items;
+			if (from > to) return list;
+		} else {
+			print "*** Couldn't remove entries ", from, " to ", to, " from the list ";
+			LIST_OF_TY_Say(list, true);
+			print ", which has entries in the range 1 to ", no_items, " ***^";
+			RunTimeProblem(RTP_LISTRANGEERROR);
+			rfalse;
+		}
+	}
+	to--; from--;
+	d = to-from+1;
+	if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+		for (i=0: i<d: i++)
+			BlkValueFree(BlkValueRead(list, from+i+LIST_ITEM_BASE));
+	for (i=from: i<no_items-d: i++)
+		BlkValueWrite(list, i+LIST_ITEM_BASE,
+			BlkValueRead(list, i+d+LIST_ITEM_BASE));
+	BlkValueWrite(list, LIST_LENGTH_F, no_items-d);
+	return list;
+];
+
+@p Remove List.
+We excise all values from the removal list |rlist|, wherever they occur in
+|list|. Inevitably, given that we haven't sorted these lists and can spare
+neither time nor storage to do so, this is an expensive process with a
+running time proportional to the product of the two list sizes: we accept
+that as an overhead because in practice the |rlist| is almost always small
+in real-world use.
+
+If the initial lists were disjoint, so that no removals occur, we always
+forgive the user: the request was not necessarily a foolish one, it only
+happened in this situation to be unhelpful.
+
+@c
+[ LIST_OF_TY_Remove_List list rlist i j k v w no_items odsize rsize cf f;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;
+	rsize = BlkValueRead(rlist, LIST_LENGTH_F);
+	cf = LIST_OF_TY_ComparisonFn(list);
+	for (i=0: i<no_items: i++) {
+		v = BlkValueRead(list, i+LIST_ITEM_BASE);
+		for (k=0: k<rsize: k++) {
+			w = BlkValueRead(rlist, k+LIST_ITEM_BASE);
+			if (cf == 0 or UnsignedCompare)
+				f = (v == w);
+			else
+				f = (cf(v, w) == 0);
+			if (f) {
+				if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+					BlkValueFree(v);
+				for (j=i+1: j<no_items: j++)
+					BlkValueWrite(list, j+LIST_ITEM_BASE-1, 
+						BlkValueRead(list, j+LIST_ITEM_BASE));
+				no_items--; i--;
+				BlkValueWrite(list, LIST_LENGTH_F, no_items);
+				break;
+			}
+		}
+	}
+	rfalse;
+];
+
+@p Get Length.
+
+@c
+[ LIST_OF_TY_GetLength list;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	return BlkValueRead(list, LIST_LENGTH_F);
+];
+
+[ LIST_OF_TY_Empty list;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	if (BlkValueRead(list, LIST_LENGTH_F) == 0) rtrue;
+	rfalse;
+];
+
+@p Set Length.
+This is rather harder: it might lengthen the list, in which case we
+have to pad out with the default value for the kind of value stored --
+padding a list of numbers with 0s, a list of texts with copies of the
+empty text, and so on -- creating such block-values as might be needed;
+or else it might shorten the list, in which case we must cut items,
+destroying them properly if they were block-values.
+
+|LIST_OF_TY_SetLength(list, newsize, this_way_only, truncation_end)|
+alters the length of the given |list| to |newsize|. If |this_way_only| is 1,
+the list is only allowed to grow, and nothing happens if we have asked to
+shrink it; if it is $-1$, the list is only allowed to shrink; if it is 0,
+the list is allowed either to grow or shrink. In the event that the list
+does have to shrink, entries must be removed, and we remove from the end
+if |truncation_end| is 1, or from the start if it is $-1$.
+
+@c
+[ LIST_OF_TY_SetLength list newsize this_way_only truncation_end no_items ex i dv;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	if (newsize < 0) return RunTimeProblem(RTP_LISTSIZENEGATIVE, newsize);
+	BlkMakeMutable(list);
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (no_items < newsize) {
+		if (this_way_only == -1) return list;
+		ex = BlkValueLBCapacity(list);
+		if (newsize+LIST_ITEM_BASE > ex) {
+			if (BlkValueSetLBCapacity(list, newsize+LIST_ITEM_BASE) == false)
+				return 0;
+		}
+		dv = DefaultValueOfKOV(BlkValueRead(list, LIST_ITEM_KOV_F));
+		for (i=no_items: i<newsize: i++)
+			BlkValueWrite(list, LIST_ITEM_BASE+i, dv);
+		BlkValueWrite(list, LIST_LENGTH_F, newsize);
+	}
+	if (no_items > newsize) {
+		if (this_way_only == 1) return list;
+		if (truncation_end == -1) {
+			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+				for (i=0: i<no_items-newsize: i++)
+					BlkValueFree(BlkValueRead(list, LIST_ITEM_BASE+i));
+			for (i=0: i<newsize: i++)
+				BlkValueWrite(list, LIST_ITEM_BASE+i,
+					BlkValueRead(list, LIST_ITEM_BASE+no_items-newsize+i));
+		} else {
+			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+				for (i=newsize: i<no_items: i++)
+					BlkValueFree(BlkValueRead(list, LIST_ITEM_BASE+i));
+		}
+		BlkValueWrite(list, LIST_LENGTH_F, newsize);
+	}
+	return list;
+];
+
+@p Get Item.
+
+@c
+[ LIST_OF_TY_GetItem list i forgive no_items;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if ((i<=0) || (i>no_items)) {
+		if (forgive) return false;
+		print "*** Couldn't read from entry ", i, " of a list which";
+		switch (no_items) {
+			0: print " is empty ***^";
+			1: print " has only one entry, numbered 1 ***^";
+			default: print " has entries numbered from 1 to ", no_items, " ***^";
+		}
+		RunTimeProblem(RTP_LISTRANGEERROR);
+		if (no_items >= 1) i = 1;
+		else return false;
+	}
+	return BlkValueRead(list, LIST_ITEM_BASE+i-1);
+];
+
+@p Write Item.
+The slightly odd name for this function comes about because our usual way
+to convert an rvalue such as |LIST_OF_TY_GetItem(L, 4)| is to prefix
+|Write|, so that it becomes |WriteLIST_OF_TY_GetItem(L, 4)|.
+
+@c
+[ WriteLIST_OF_TY_GetItem list i val no_items;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if ((i<=0) || (i>no_items)) {
+		print "*** Couldn't write to list entry ", i, " of a list which";
+		switch (no_items) {
+			0: print " is empty ***^";
+			1: print " has only one entry, numbered 1 ***^";
+			default: print " has entries numbered from 1 to ", no_items, " ***^";
+		}
+		return RunTimeProblem(RTP_LISTRANGEERROR);
+	}
+	BlkValueWrite(list, LIST_ITEM_BASE+i-1, val);
+];
+
+@p Put Item.
+Higher-level code should not use |Write_LIST_OF_TY_GetItem|, because it does
+not properly keep track of block-value copying: the following should be
+used instead.
+
+@c
+[ LIST_OF_TY_PutItem list i v  no_items nv;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {
+		nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));
+		BlkValueCopy(nv, v);
+		v = nv;
+	}
+	if ((i<=0) || (i>no_items)) return false;
+	BlkValueWrite(list, LIST_ITEM_BASE+i-1, v);
+];
+
+@p Multiple Object List.
+The parser uses one data structure which is really a list: but which can't
+be represented as such because the heap might not exist. This is the multiple
+object list, which is used to handle commands like TAKE ALL by firing off a
+sequence of actions with one of the objects taken from entries in turn of
+the list. The following converts it to a list structure.
+
+@c
+[ LIST_OF_TY_Mol list len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = multiple_object-->0;
+	LIST_OF_TY_SetLength(list, len);
+	for (i=1: i<=len: i++)
+		LIST_OF_TY_PutItem(list, i, multiple_object-->i);
+	return list;
+];
+
+[ LIST_OF_TY_Set_Mol list len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = BlkValueRead(list, LIST_LENGTH_F);
+	if (len > 63) len = 63;
+	multiple_object-->0 = len;
+	for (i=1: i<=len: i++)
+		multiple_object-->i = BlkValueRead(list, LIST_ITEM_BASE+i-1);
+];
+
+@p Reversing.
+Reversing a list is, happily, a very efficient operation when the list contains
+block-values: because the pointers are rearranged but none is duplicated or
+destroyed, we can for once ignore the fact that they are pointers to
+block-values and simply move them around like any other data.
+
+@c
+[ LIST_OF_TY_Reverse list no_items i v;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (no_items < 2) return list;
+	for (i=0:i*2<no_items:i++) {
+		v = BlkValueRead(list, LIST_ITEM_BASE+i);
+		BlkValueWrite(list, LIST_ITEM_BASE+i,
+			BlkValueRead(list, LIST_ITEM_BASE+no_items-1-i));
+		BlkValueWrite(list, LIST_ITEM_BASE+no_items-1-i, v);
+	}
+	return list;
+];
+
+@p Rotation.
+The same is true of rotation. Here, "forwards" rotation means towards the
+end of the list, "backwards" means towards the start.
+
+@c
+[ LIST_OF_TY_Rotate list backwards  no_items i v;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (no_items < 2) return list;
+	if (backwards) {
+		v = BlkValueRead(list, LIST_ITEM_BASE);
+		for (i=0:i<no_items-1:i++)
+			BlkValueWrite(list, LIST_ITEM_BASE+i,
+				BlkValueRead(list, LIST_ITEM_BASE+i+1));
+		BlkValueWrite(list, no_items-1+LIST_ITEM_BASE, v);
+	} else {
+		v = BlkValueRead(list, no_items-1+LIST_ITEM_BASE);
+		for (i=no_items-1:i>0:i--)
+			BlkValueWrite(list, LIST_ITEM_BASE+i,
+				BlkValueRead(list, LIST_ITEM_BASE+i-1));
+		BlkValueWrite(list, LIST_ITEM_BASE, v);
+	}
+	return list;
+];
+
+@p Sorting.
+And the same, again, is true of sorting: but we do have to take note of block
+values when it comes to performing comparisons, because we can only compare
+items in the list by looking at their contents, not the pointers to their
+contents.
+
+|LIST_OF_TY_Sort(list, dir, prop)| sorts the given |list| in ascending order
+if |dir| is 1, in descending order if |dir| is $-1$, or in random order if
+|dir| is 2. The comparison used is the one for the kind of value stored in
+the list, unless the optional argument |prop| is supplied, in which case
+we sort based not on the item values but on their values for the property
+|prop|. (This only makes sense if the list contains objects.)
+
+@c
+Global LIST_OF_TY_Sort_cf;
+
+[ LIST_OF_TY_Sort list dir prop cf  i j no_items v;
+	BlkMakeMutable(list);
+	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (dir == 2) {
+		if (no_items < 2) return;
+		for (i=1:i<no_items:i++) {
+			j = random(i+1) - 1;
+			v = BlkValueRead(list, LIST_ITEM_BASE+i);
+			BlkValueWrite(list, LIST_ITEM_BASE+i, BlkValueRead(list, LIST_ITEM_BASE+j));
+			BlkValueWrite(list, LIST_ITEM_BASE+j, v);
+		}
+		return;
+	}
+	SetSortDomain(ListSwapEntries, ListCompareEntries);
+	if (cf) LIST_OF_TY_Sort_cf = BlkValueCompare;
+	else LIST_OF_TY_Sort_cf = 0;
+	SortArray(list, prop, dir, no_items, false, 0);
+];
+
+[ ListSwapEntries list i j v;
+	if (i==j) return;
+	v = BlkValueRead(list, LIST_ITEM_BASE+i-1);
+	BlkValueWrite(list, LIST_ITEM_BASE+i-1, BlkValueRead(list, LIST_ITEM_BASE+j-1));
+	BlkValueWrite(list, LIST_ITEM_BASE+j-1, v);
+];
+
+[ ListCompareEntries list col i j d cf;
+	if (i==j) return 0;
+	i = BlkValueRead(list, LIST_ITEM_BASE+i-1);
+	j = BlkValueRead(list, LIST_ITEM_BASE+j-1);
+	if (I7S_Col) {
+		if (i provides I7S_Col) i=i.I7S_Col; else i=0;
+		if (j provides I7S_Col) j=j.I7S_Col; else j=0;
+		cf = LIST_OF_TY_Sort_cf;
+	} else {
+		cf = LIST_OF_TY_ComparisonFn(list);
+	}
+	if (cf == 0) {
+		if (i > j) return 1;
+		if (i < j) return -1;
+		return 0;
+	} else
+		return cf(i, j);
+];

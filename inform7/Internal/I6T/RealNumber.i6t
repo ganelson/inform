@@ -1,0 +1,632 @@
+B/rnumt: Real Number Template.
+ 
+@Purpose: Support for real numbers.
+ 
+@-------------------------------------------------------------------------------
+
+@p Printing reals.
+Most of the code in this section is by Andrew Plotkin, and derives from test
+cases used to check the floating-point extensions to Glulx.
+
+@c
+#Ifdef TARGET_GLULX;
+
+[ REAL_NUMBER_TY_Say fp;
+	print (Float) fp;
+];
+
+[ REAL_NUMBER_TY_Compare r1 r2;
+	@jflt r1 r2 ?less;
+	@jfeq r1 r2 0 ?same;
+	return 1;
+	.same; return 0;
+	.less; return -1;
+];
+
+[ NUMBER_TY_to_REAL_NUMBER_TY int real; @numtof int real; return real; ];
+[ REAL_NUMBER_TY_to_NUMBER_TY real int; @ftonumn real int; return int; ];
+
+[ REAL_NUMBER_TY_Sin in out; @sin in out; return out; ];
+[ REAL_NUMBER_TY_Cos in out; @cos in out; return out; ];
+[ REAL_NUMBER_TY_Tan in out; @tan in out; return out; ];
+[ REAL_NUMBER_TY_Arcsin in out; @asin in out; return out; ];
+[ REAL_NUMBER_TY_Arccos in out; @acos in out; return out; ];
+[ REAL_NUMBER_TY_Arctan in out; @atan in out; return out; ];
+
+[ REAL_NUMBER_TY_Sinh in tmp out;
+	@exp in tmp;
+	@fsub M_0 in in;
+	@exp in out;
+	@fadd tmp out out;
+	@fmul out M_HALF out;
+	return out;
+];
+
+[ REAL_NUMBER_TY_Cosh in tmp out;
+	@exp in tmp;
+	@fsub M_0 in in;
+	@exp in out;
+	@fsub tmp out out;
+	@fmul out M_HALF out;
+	return out;
+];
+
+[ REAL_NUMBER_TY_Tanh in tmp out;
+	tmp = REAL_NUMBER_TY_Sinh(in);
+	in = REAL_NUMBER_TY_Cosh(in);
+	@fdiv tmp in out;
+	return out;
+];
+
+[ REAL_NUMBER_TY_Reciprocal in out; @fdiv M_1 in out; return out; ];
+[ REAL_NUMBER_TY_Negate in out; @fsub M_0 in out; return out; ];
+[ REAL_NUMBER_TY_Plus x y out; @fadd x y out; return out; ];
+[ REAL_NUMBER_TY_Minus x y out; @fsub x y out; return out; ];
+[ REAL_NUMBER_TY_Times x y out; @fmul x y out; return out; ];
+[ REAL_NUMBER_TY_Divide x y out; @fdiv x y out; return out; ];
+[ REAL_NUMBER_TY_Remainder x y r q; @fmod x y r q; return r; ];
+[ REAL_NUMBER_TY_Approximate x y quotient out;
+	@fdiv x y quotient;
+	@fadd quotient M_HALF quotient;
+	@floor quotient quotient;
+	@fmul quotient y out;
+	return out;
+];
+[ REAL_NUMBER_TY_Root x out; @sqrt x out; return out; ];
+[ REAL_NUMBER_TY_Cube_Root x out; @pow x M_THIRD out; return out; ];
+[ REAL_NUMBER_TY_Pow x y out; @pow x y out; return out; ];
+[ REAL_NUMBER_TY_Exp x out; @exp x out; return out; ];
+[ REAL_NUMBER_TY_Log x out; @log x out; return out; ];
+[ REAL_NUMBER_TY_BLog x n d out;
+	@log x out;
+	if (n == 10) d = M_LOG10;
+	else {
+		@numtof n d;
+		@log d d;
+	}
+	@fdiv out d out;
+	return out;
+];
+[ REAL_NUMBER_TY_Floor x out; @floor x out; return out; ];
+[ REAL_NUMBER_TY_Ceiling x out; @ceil x out; return out; ];
+[ REAL_NUMBER_TY_Abs x; return x & $7fffffff; ];
+[ REAL_NUMBER_TY_Nan x; @jisnan x ?Nan; rfalse; .Nan; rtrue; ];
+
+Constant M_0    = $0;
+Constant M_1    = $3F800000;
+Constant M_HALF = $3F000000; ! 1/3
+Constant M_THIRD = $3EAAAAAB; ! 1/3
+Constant M_LOG10 = $40135D8E; ! log(10)
+Constant M_N1   = $BF800000; ! -1
+Constant M_PI   = $40490FDB;
+Constant M_NPI  = $C0490FDB;
+Constant M_2PI  = $40C90FDB; ! 2*pi
+Constant M_PI2  = $3FC90FDB; ! pi/2
+Constant M_NPI2 = $BFC90FDB; 
+Constant M_E    = $402DF854;
+Constant M_E2   = $40EC7326; ! e^2
+Constant M_N0   = $80000000; ! negative zero
+Constant M_INF  = $7F800000; ! infinity
+Constant M_NINF = $FF800000; ! negative infinity
+Constant M_NAN  = $7F800001; ! one of many NaN values
+Constant M_NNAN = $FF800001; ! another, with a sign bit
+
+! Floating-point parsing routines.
+
+! Parse a float from a text buffer. Returns a float value, or FLOAT_NAN if
+! no value was understood.
+!
+! The recognized format, if you'll pardon a slightly bastardized regexp
+! syntax, is "S?D*(PD*)?(ES?D+)?" where S is a sign character "+" or "-",
+! D is a decimal digit "0" to "9", P is a decimal point ".",
+! and E is the exponential modifier "E" or "e".
+!
+! For flexibility, the string "M10^" is also accepted for E, where M is
+! "X", "x", "*", or the multiplication sign @{D7}. Optional spaces are
+! allowed before and after the M sign. (But only for the "10^" form of
+! the exponent, not the "e" form.)
+!
+! This routine does not try to recognize special names for infinity or NaN,
+! but it can return FLOAT_INFINITY or FLOAT_NINFINITY if the exponent is too
+! large.
+!
+! This routine relies on floating-point math. Therefore, the same string
+! may parse to slightly different float values on different interpreters!
+! Be warned.
+!
+! If useall is true, this insists on using all len characters from the buffer.
+! (It returns FLOAT_NAN if any unrecognized characters are left over.)
+! Contrariwise, if useall is false, unused characters at the end of the buffer
+! are fine. (But not at the beginning; the float must start at the beginning
+! of the buffer.)
+! 
+[ FloatParse buf len useall
+	res ix val ch ten negative intpart fracpart fracdiv
+	expon expnegative count;
+	
+!	print "FloatParse <";
+!	for (ix=0: ix<len: ix++) print (char) buf->ix;
+!	print ">^";
+
+	if (len == 0)
+		return FLOAT_NAN;
+		
+	ix = 0;
+	negative = false;
+	intpart = 0;
+	fracpart = 0;
+	@numtof 10 ten;
+
+	! Sign character (optional)
+	ch = buf->ix;
+	if (ch == '-') {
+		negative = true;
+		ix++;
+	}
+	else if (ch == '+') {
+		ix++;
+	}
+
+	! Some digits (optional)
+	for (count=0 : ix<len : ix++, count++) {
+		ch = buf->ix;
+		if (ch < '0' || ch > '9')
+			break;
+		val = (ch - '0');
+		@numtof val val;
+		@fmul intpart ten intpart;
+		@fadd intpart val intpart;
+	}
+
+	! Decimal point and more digits (optional)
+	if (ix<len && buf->ix == '.') {
+		ix++;
+		@numtof 1 fracdiv;
+		for ( : ix<len : ix++, count++) {
+			ch = buf->ix;
+			if (ch < '0' || ch > '9')
+				break;
+			val = (ch - '0');
+			@numtof	val val;
+			@fmul fracpart ten fracpart;
+			@fadd fracpart val fracpart;
+			@fmul fracdiv ten fracdiv;
+		}
+		@fdiv fracpart fracdiv fracpart;
+	}
+
+	! If there are no digits before *or* after the decimal point, fail.
+	if (count == 0)
+		return FLOAT_NAN;
+
+	! Combine the integer and fractional parts.
+	@fadd intpart fracpart res;
+
+	! Exponent (optional)
+	if (ix<len && buf->ix == 'e' or 'E' or ' ' or '*' or 'x' or 'X' or $D7) {
+		if (buf->ix == 'e' or 'E') {
+			! no spaces, just the 'e'
+			ix++;
+			if (ix == len)
+				return FLOAT_NAN;
+		}
+		else {
+			! any number of spaces, "*", any number of spaces more, "10^"
+			while (ix < len && buf->ix == ' ')
+				ix++;
+			if (ix == len)
+				return FLOAT_NAN;
+			if (buf->ix ~= '*' or 'x' or 'X' or $D7)
+				return FLOAT_NAN;
+			ix++;
+			while (ix < len && buf->ix == ' ')
+				ix++;
+			if (ix == len)
+				return FLOAT_NAN;
+			if (buf->ix ~= '1')
+				return FLOAT_NAN;
+			ix++;
+			if (buf->ix ~= '0')
+				return FLOAT_NAN;
+			ix++;
+			if (buf->ix ~= $5E)
+				return FLOAT_NAN;
+			ix++;
+		}
+
+		! Sign character (optional)
+		expnegative = false;
+		ch = buf->ix;
+		if (ch == '-') {
+			expnegative = true;
+			ix++;
+		}
+		else if (ch == '+') {
+			ix++;
+		}
+
+		expon = 0;
+		! Some digits (mandatory)
+		for (count=0 : ix<len : ix++, count++) {
+			ch = buf->ix;
+			if (ch < '0' || ch > '9')
+				break;
+			expon = 10*expon + (ch - '0');
+		}
+
+		if (count == 0)
+			return FLOAT_NAN;
+
+		if (expnegative)
+			expon = -expon;
+
+		if (expon) {
+			@numtof expon expon;
+			@pow ten expon val;
+			@fmul res val res;
+		}
+	}
+
+	if (negative) {
+		! set the value's sign bit
+		res = $80000000 | res;
+	}
+
+	if (useall && ix ~= len)
+		return FLOAT_NAN;
+	return res;
+];
+
+! An I6 grammar routine (GPR) for floats. On success, this returns
+! GPR_NUMBER and stores a value in the global parsed_number.
+!
+! This is quite a nuisance, actually, because "." is a word separator.
+! Also, we want to accept command sequences like "type 4. look"! So we
+! need to collect a set of words made up of digits, signs, periods, and
+! the letter "e", but without any intervening whitespace, and excluding
+! a trailing period.
+!
+! (This will fail to correctly parse "type 4.e", but I think that is a
+! small flaw. A player would more likely try "type 4. e" or, really,
+! not concatenate commands at all. It will also parse "type 4. on keyboard"
+! as two commands, even though "4." is a legitimate float literal.
+! Contrariwise, "type 4. x me" will be taken as one command. (Because the "x"
+! *could* be a continuation of the float, and I don't back up when it turns
+! out not to be.) I don't plan to worry about these cases.)
+
+[ FLOAT_TOKEN buf bufend ix ch firstwd newstart newlen lastchar lastwasdot;
+	if (wn > num_words)
+		return GPR_FAIL;
+
+	! We're going to collect a set of words. Start with zero words.
+	firstwd = wn;
+	buf = WordAddress(wn);
+	bufend = buf;
+	lastchar = 0;
+
+	while (wn <= num_words) {
+		newstart = WordAddress(wn);
+		if (newstart ~= bufend) {
+			! There's whitespace between the previous word and this one.
+			! Whitespace is okay around an asterisk...
+			if ((lastchar ~= '*' or 'x' or 'X' or $D7)
+				&& (newstart->0 ~= '*' or 'x' or 'X' or $D7)) {
+				! But around any other character, it's not.
+				! Don't include the new word.
+				break;
+			}
+		}
+		newlen = WordLength(wn);
+		for (ix=0 : ix<newlen : ix++) {
+			ch = newstart->ix;
+			if (~~((ch >= '0' && ch <= '9')
+				|| (ch == '-' or '+' or 'E' or 'e' or '.' or 'x' or 'X' or '*' or $D7 or $5E)))
+				break;
+		}
+		if (ix < newlen) {
+			! This word contains an invalid character.
+			! Don't include the new word.
+			break;
+		}
+		! Okay, include it.
+		bufend = newstart + newlen;
+		wn++;
+		lastchar = (bufend-1)->0;
+		lastwasdot = (newlen == 1 && lastchar == '.');
+	}
+
+	if (wn > firstwd && lastwasdot) {
+		! Exclude a trailing period.
+		wn--;
+		bufend--;
+	}
+
+	if (wn == firstwd) {
+		! No words accepted.
+		return GPR_FAIL;
+	}
+
+	parsed_number = FloatParse(buf, bufend-buf, true);
+	if (parsed_number == FLOAT_NAN)
+		return GPR_FAIL;
+	return GPR_NUMBER;
+];
+
+! Floating-point printing routines. (These are based on code in
+! Glulxercise.inf, but modified.)
+  
+! Print a float. This uses exponential notation ("[-]N.NNNe[+-]NN") if
+! the exponent is not between 6 and -4. If it is (that is, if the
+! absolute value is near 1.0) then it uses decimal notation ("[-]NNN.NNNNN").
+! The precision is the number of digits after the decimal point
+! (at least one, no more than eight). The default is five, because
+! beyond that rounding errors creep in, and even exactly-represented
+! float values are printed with trailing fudgy digits.
+! Trailing zeroes are trimmed.
+[ Float val prec   pval;
+	pval = val & $7FFFFFFF;
+
+	@jz pval ?UseFloatDec;
+	@jfge pval $49742400 ?UseFloatExp; ! 1000000.0
+	@jflt pval $38D1B717 ?UseFloatExp; ! 0.0001
+
+	.UseFloatDec;
+	return FloatDec(val, prec);
+	.UseFloatExp;
+	return FloatExp(val, prec);
+];
+
+Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000000000;
+
+! Print a float in exponential notation: "[-]N.NNNe[+-]NN".
+! The precision is the number of digits after the decimal point
+! (at least one, no more than eight). The default is five, because
+! beyond that rounding errors creep in, and even exactly-represented
+! float values are printed with trailing fudgy digits.
+! Trailing zeroes are trimmed.
+[ FloatExp val prec   log10val expo fexpo idig ix pow10;
+	if (prec == 0)
+		prec = 5;
+	if (prec > 8)
+		prec = 8;
+	pow10 = PowersOfTen --> prec;
+
+	! Knock off the sign bit first.
+	if (val & $80000000) {
+		@streamchar '-';
+		val = val & $7FFFFFFF;
+	}
+	
+	@jisnan val ?IsNan;
+	@jisinf val ?IsInf;
+
+	if (val == $0) {
+		expo = 0;
+		idig = 0;
+		jump DoPrint;
+	}
+
+	! Take as an example val=123.5, with precision=6. The desired
+	! result is "1.23000e+02".
+	
+	@log val sp;
+	@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
+	@floor log10val fexpo;
+	@ftonumn fexpo expo;
+	! expo is now the exponent (as an integer). For our example, expo=2.
+
+	@fsub log10val fexpo sp;
+	@numtof prec sp;
+	@fadd sp sp sp;
+	@fmul sp $40135D8E sp;
+	@exp sp sp;
+	! The stack value is now exp((log10val - fexpo + prec) * log(10)).
+	! We've shifted the decimal point left by expo digits (so that
+	! it's after the first nonzero digit), and then right by prec
+	! digits. In our example, that would be 1235000.0.
+	@ftonumn sp idig;
+	! Round to an integer, and we have 1235000. Notice that this is
+	! exactly the digits we want to print (if we stick a decimal point
+	! after the first).
+
+	.DoPrint;
+	
+	if (idig >= 10*pow10) {
+		! Rounding errors have left us outside the decimal range of
+		! [1.0, 10.0) where we should be. Adjust to the next higher
+		! exponent.
+		expo++;
+		@div idig 10 idig;
+	}
+	
+	! Trim off trailing zeroes, as long as there's at least one digit
+	! after the decimal point. (Delete this stanza if you want to
+	! keep the trailing zeroes.)
+	while (prec > 1) {
+		@mod idig 10 sp;
+		@jnz sp ?DoneTrimming;
+		@div pow10 10 pow10;
+		@div idig 10 idig;
+		prec--;
+	}
+	.DoneTrimming;
+	
+	for (ix=0 : ix<=prec : ix++) {
+		@div idig pow10 sp;
+		@mod sp 10 sp;
+		@streamnum sp;
+		if (ix == 0)
+			@streamchar '.';
+		@div pow10 10 pow10;
+	}
+
+	! Print the exponent. There are two conventions coded here: the
+	! programmatic ("1.0e+00") and the literary ("1.0 x 10^0").
+	#ifndef FLOAT_PROGRAMMING_EXPONENTS;
+		PrintMultiplicationSign();
+		@streamstr "10";
+		@streamchar $5E;
+		@streamnum expo;
+	#ifnot;
+		! Convention is to use at least two digits.
+		@streamchar 'e';
+		if (expo < 0) {
+			@streamchar '-';
+			@neg expo expo;
+		}
+		else {
+			@streamchar '+';
+		}
+		if (expo < 10)
+			@streamchar '0';
+		@streamnum expo;
+	#endif; ! FLOAT_PROGRAMMING_EXPONENTS
+	
+	rtrue;
+
+	.IsNan;
+	PrintNan();
+	rtrue;
+
+	.IsInf;
+	PrintInfinity();
+	rtrue;
+];
+
+! Print a float in decimal notation: "[-]NNN.NNNNN".
+! The precision is the number of digits after the decimal point
+! (at least one, no more than eight). The default is five, because
+! beyond that rounding errors creep in, and even exactly-represented
+! float values are printed with trailing fudgy digits.
+! Trailing zeroes are trimmed.
+[ FloatDec val prec   log10val int fint extra0 frac idig ix pow10;
+	if (prec == 0)
+		prec = 5;
+	if (prec > 8)
+		prec = 8;
+	pow10 = PowersOfTen --> prec;
+	
+	! Knock off the sign bit first.
+	if (val & $80000000) {
+		@streamchar '-';
+		val = val & $7FFFFFFF;
+	}
+	
+	@jisnan val ?IsNan;
+	@jisinf val ?IsInf;
+
+	! Take as an example val=123.5, with precision=6. The desired result
+	! is "123.50000".
+	
+	extra0 = 0;
+	@fmod val $3F800000 frac fint; ! $3F800000 is 1.0.
+	@ftonumz fint int;
+	! This converts the integer part of the value to an integer value;
+	! in our example, 123.
+	
+	if (int == $7FFFFFFF) {
+		! Looks like the integer part of the value is bigger than
+		! we can store in an int variable. (It could be as large
+		! as 3e+38.) We're going to have to use a log function to
+		! reduce it by some number of factors of 10, and then pad
+		! with zeroes.
+		@log fint sp;
+		@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
+		@ftonumz log10val extra0;
+		@sub extra0 8 extra0;
+		! extra0 is the number of zeroes we'll be padding with.
+		@numtof extra0 sp;
+		@fsub log10val sp sp;
+		@fmul sp $40135D8E sp;
+		@exp sp sp;
+		! The stack value is now exp((log10val - extra0) * log(10)).
+		! We've shifted the decimal point far enough left to leave
+		! about eight digits, which is all we can print as an integer.
+		@ftonumz sp int;
+	}
+
+	! Print the integer part.
+	@streamnum int;
+	for (ix=0 : ix<extra0 : ix++)
+		@streamchar '0';
+
+	@streamchar '.';
+
+	! Now we need to print the frac part, which is .5.
+	
+	@log frac sp;
+	@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
+	@numtof prec sp;
+	@fadd log10val sp sp;
+	@fmul sp $40135D8E sp;
+	@exp sp sp;
+	! The stack value is now exp((frac + prec) * log(10)).
+	! We've shifted the decimal point right by prec
+	! digits. In our example, that would be 50000.0.
+	@ftonumn sp idig;
+	! Round to an integer, and we have 50000. Notice that this is
+	! exactly the (post-decimal-point) digits we want to print.
+
+	.DoPrint;
+	
+	if (idig >= pow10) {
+		! Rounding errors have left us outside the decimal range of
+		! [0.0, 1.0) where we should be. I'm not sure this is possible,
+		! actually, but we'll just adjust downward.
+		idig = pow10 - 1;
+	}
+
+	! Trim off trailing zeroes, as long as there's at least one digit
+	! after the decimal point. (Delete this stanza if you want to
+	! keep the trailing zeroes.)
+	while (prec > 1) {
+		@mod idig 10 sp;
+		@jnz sp ?DoneTrimming;
+		@div pow10 10 pow10;
+		@div idig 10 idig;
+		prec--;
+	}
+	.DoneTrimming;
+	
+	@div pow10 10 pow10;
+	for (ix=0 : ix<prec : ix++) {
+		@div idig pow10 sp;
+		@mod sp 10 sp;
+		@streamnum sp;
+		@div pow10 10 pow10;
+	}
+	rtrue;
+
+	.IsNan;
+	PrintNan();
+	rtrue;
+
+	.IsInf;
+	PrintInfinity();
+	rtrue;
+];
+
+[ PrintInfinity;
+	@streamunichar $221E;
+	! @streamstr "Inf";
+];
+
+[ PrintNan;
+	@streamunichar $26a0;
+	! @streamstr "NaN";
+];
+
+[ PrintMultiplicationSign;
+	print " ";
+	@streamunichar $D7;
+	print " ";
+	! @streamstr " x ";
+];
+
+#Ifnot; ! TARGET_GLULX
+
+[ REAL_NUMBER_TY_Say real; print real; ]; ! Needs to exist, but likely never used
+
+[ REAL_NUMBER_TY_Compare r1 r2; return UnsignedCompare(r1, r2); ];
+
+#Endif; ! TARGET_GLULX

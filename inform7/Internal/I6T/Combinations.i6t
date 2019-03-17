@@ -1,0 +1,174 @@
+B/combt: Combinations Template.
+ 
+@Purpose: Code to support the combination kind of value constructor.
+ 
+@-------------------------------------------------------------------------------
+
+@p Block Format.
+A combination is like a list, but simpler; it has a fixed, usually short,
+size. On the other hand, its entries are not all of the same kind as each
+other.
+
+The short block for a combination is simply a pointer to the long block.
+This consists of one word to hold the strong kind ID, and then one word
+for each entry in the combination. Thus, a triple combination uses 4 words.
+
+@c
+Constant COMBINATION_KIND_F = 0;    ! Strong kind ID
+Constant COMBINATION_ITEM_BASE = 1; ! List items begin at this entry
+
+@p KOV Support.
+See the "BlockValues.i6t" segment for the specification of the following
+routines.
+
+@c
+[ COMBINATION_TY_Support task arg1 arg2 arg3;
+	switch(task) {
+		CREATE_KOVS:      return COMBINATION_TY_Create(arg1, arg2);
+		DESTROY_KOVS:     COMBINATION_TY_Destroy(arg1);
+		MAKEMUTABLE_KOVS: return 1;
+		COPYKIND_KOVS:    return COMBINATION_TY_CopyKind(arg1, arg2);
+		COPYQUICK_KOVS:   rtrue;
+		COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);
+		KINDDATA_KOVS:    return COMBINATION_TY_KindData(arg1);
+		EXTENT_KOVS:      return -1;
+		COPY_KOVS:        COMBINATION_TY_Copy(arg1, arg2, arg3);
+		COMPARE_KOVS:     return COMBINATION_TY_Compare(arg1, arg2);
+		HASH_KOVS:        return COMBINATION_TY_Hash(arg1);
+		DEBUG_KOVS:       print " = ", (COMBINATION_TY_Say) arg1;
+	}
+	! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
+	rfalse;
+];
+
+@p Creation.
+A combination is like a list, but simpler; it has a fixed, usually short,
+size. On the other hand, its entries are not all of the same kind as each
+other.
+
+Combinations are stored as a fixed-sized block of word entries. The first
+block is the only header information: a pointer to a further structure in
+memory, describing the kind. The subsequent blocks are the actual records.
+Thus, a triple $(x, y, z)$ uses 4 words.
+
+@c
+[ COMBINATION_TY_Create kind sb long_block N i bk v;
+	N = KindBaseArity(kind);
+	long_block = FlexAllocate(
+		(COMBINATION_ITEM_BASE+N)*WORDSIZE, COMBINATION_TY, BLK_FLAG_WORD);
+	BlkValueWrite(long_block, COMBINATION_KIND_F, kind, true);
+	for (i=0: i<N: i++) {
+		bk = KindBaseTerm(kind, i);
+		if (KOVIsBlockValue(bk)) v = BlkValueCreate(bk);
+		else v = DefaultValueOfKOV(bk);
+		BlkValueWrite(long_block, COMBINATION_ITEM_BASE+i, v, true);
+	}
+	return BlkValueCreateSB1(sb, long_block);
+];
+
+@p Destruction.
+If the comb items are themselves block-values, they must all be freed before
+the comb itself can be freed.
+
+@c
+[ COMBINATION_TY_Destroy comb kind no_items i bk;
+	kind = BlkValueRead(comb, COMBINATION_KIND_F);
+	no_items = KindBaseArity(kind);
+	for (i=0: i<no_items: i++) {
+		bk = KindBaseTerm(kind, i);
+		if (KOVIsBlockValue(bk))
+			BlkValueFree(BlkValueRead(comb, i+COMBINATION_ITEM_BASE));
+	}
+];
+
+@p Copying.
+Again, if the comb contains block-values then they must be duplicated rather
+than bitwise copied as pointers.
+
+@c
+[ COMBINATION_TY_CopyKind to from;
+	BlkValueWrite(to, COMBINATION_KIND_F, BlkValueRead(from, COMBINATION_KIND_F));
+];
+
+[ COMBINATION_TY_CopySB to from;
+	BlkValueCopySB1(to, from);
+];
+
+[ COMBINATION_TY_KindData comb;
+	return BlkValueRead(comb, COMBINATION_KIND_F);
+];
+
+[ COMBINATION_TY_Copy to_comb from_comb precopied_comb_kov  no_items i nv kind bk;
+	! kind = BlkValueRead(to_comb, COMBINATION_KIND_F);
+	no_items = KindBaseArity(precopied_comb_kov);
+	BlkValueWrite(to_comb, COMBINATION_KIND_F, precopied_comb_kov);
+	for (i=0: i<no_items: i++) {
+		bk = KindBaseTerm(kind, i);
+		if (KOVIsBlockValue(bk)) {
+			nv = BlkValueCreate(bk);
+			BlkValueCopy(nv, BlkValueRead(from_comb, i+COMBINATION_ITEM_BASE));
+			BlkValueWrite(to_comb, i+COMBINATION_ITEM_BASE, nv);
+		}
+	}
+];
+
+@p Comparison.
+This is a lexicographic comparison and assumes both combinations have the
+same kind.
+
+@c
+[ COMBINATION_TY_Compare left_comb right_comb delta no_items i cf kind bk;
+	kind = BlkValueRead(left_comb, COMBINATION_KIND_F);
+	no_items = KindBaseArity(kind);
+	for (i=0: i<no_items: i++) {
+		bk = KindBaseTerm(kind, i);
+		cf = KOVComparisonFunction(bk);
+		if (cf == 0 or UnsignedCompare) {
+			delta = BlkValueRead(left_comb, i+COMBINATION_ITEM_BASE) -
+				BlkValueRead(right_comb, i+COMBINATION_ITEM_BASE);
+			if (delta) return delta;
+		} else {
+			delta = cf(BlkValueRead(left_comb, i+COMBINATION_ITEM_BASE),
+				BlkValueRead(right_comb, i+COMBINATION_ITEM_BASE));
+			if (delta) return delta;
+		}
+	}
+	return 0;
+];
+
+[ COMBINATION_TY_Distinguish left_comb right_comb;
+	if (COMBINATION_TY_Compare(left_comb, right_comb) == 0) rfalse;
+	rtrue;
+];
+
+@p Hashing.
+
+@c
+[ COMBINATION_TY_Hash comb  kind rv no_items i bk;
+	rv = 0;
+	kind = BlkValueRead(comb, COMBINATION_KIND_F);
+	no_items = KindBaseArity(kind);
+	for (i=0: i<no_items: i++) {
+		bk = KindBaseTerm(kind, i);
+		rv = rv * 33 + GetHashValue(bk, BlkValueRead(comb, i+COMBINATION_ITEM_BASE));
+	}
+	return rv;
+];
+
+@p Printing.
+
+@c
+[ COMBINATION_TY_Say comb format no_items v i kind bk;
+	if ((comb==0) || (BlkValueWeakKind(comb) ~= COMBINATION_TY)) return;
+	kind = BlkValueRead(comb, COMBINATION_KIND_F);
+	no_items = KindBaseArity(kind);
+	print "(";
+	for (i=0: i<no_items: i++) {
+		if (i>0) print ", ";
+		bk = KindBaseTerm(kind, i);
+		v = BlkValueRead(comb, i+COMBINATION_ITEM_BASE);
+		if (bk == LIST_OF_TY) LIST_OF_TY_Say(v, 1);
+		else PrintKindValuePair(bk, v);
+	}
+	print ")";
+];
