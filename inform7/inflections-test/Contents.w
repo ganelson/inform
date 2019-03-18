@@ -1,6 +1,6 @@
 Title: inflections-test
 Author: Graham Nelson
-Purpose: Purpose: Unit tests for the inflections module.
+Purpose: Unit tests for the inflections module.
 Language: InC
 Licence: Artistic License 2.0
 

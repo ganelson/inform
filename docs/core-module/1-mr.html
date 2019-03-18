@@ -284,6 +284,7 @@ list is not exhaustive.
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">COMPILATION_STEP</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">mark</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Begin "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">" at %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">start</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
             <span class="identifier">routine</span><span class="plain">();</span>
             <span class="comment">Emit::marker(mark);</span>
         <span class="plain">}</span>
@@ -567,6 +568,8 @@ list is not exhaustive.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">existing_story_file</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+                <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">front_end</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Front end elapsed time: %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">front_end</span><span class="plain"> - </span><span class="identifier">start</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
                 <span class="functiontext">CoreMain::go_to_log_phase</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Converting inter to Inform 6"</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                     <span class="identifier">stage_set</span><span class="plain"> *</span><span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Stage::new_set</span><span class="plain">();</span>
@@ -583,6 +586,7 @@ list is not exhaustive.
                         <span class="identifier">pathname_of_i6t_files</span><span class="plain">[</span><span class="constant">INTERNAL_FS_AREA</span><span class="plain">],</span>
                         <span class="identifier">pathname_of_i6t_files</span><span class="plain">[</span><span class="constant">INTERNAL_FS_AREA</span><span class="plain">]);</span>
                 <span class="plain">}</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Back end elapsed time: %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">front_end</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) </span><span class="functiontext">CoreMain::go_to_log_phase</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Compilation now complete"</span><span class="plain">);</span>
     </pre>
@@ -747,7 +751,7 @@ list is not exhaustive.
 
     <hr class="tocbar">
     <ul class="toc"><li><i>(This section begins Chapter 1: Configuration and Control.)</i></li><li><a href="1-cm.html">Continue with 'Core Module'</a></li></ul><hr class="tocbar">
-    <!--End of weave: 527 lines from a web of 93246-->
+    <!--End of weave: 531 lines from a web of 93250-->
     	</body>
     </html>
 

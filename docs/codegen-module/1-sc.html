@@ -179,6 +179,7 @@
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::follow</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">stage_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">PP</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">PM</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">FM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">start</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
 
         <span class="identifier">unchecked_kind_symbol</span><span class="plain"> = </span><span class="identifier">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"K_unchecked"</span><span class="plain">);</span>
         <span class="identifier">unchecked_function_symbol</span><span class="plain"> = </span><span class="identifier">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"K_unchecked_function"</span><span class="plain">);</span>
@@ -212,7 +213,8 @@
             <span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">text_output_struct</span><span class="plain">; </span>    <span class="comment">The actual I6 code file</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text_out_file</span><span class="plain"> = &amp;</span><span class="identifier">text_output_struct</span><span class="plain">; </span>    <span class="comment">The actual I6 code file</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">, </span><span class="string">"inter step %d/%d: "</span><span class="plain">, ++</span><span class="identifier">step_count</span><span class="plain">, </span><span class="identifier">step_total</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">, </span><span class="string">"inter step %d/%d (at %dcs): "</span><span class="plain">, ++</span><span class="identifier">step_count</span><span class="plain">, </span><span class="identifier">step_total</span><span class="plain">,</span>
+                <span class="plain">((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">start</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_code</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEPENDENCIES_STAGESTEP</span><span class="plain">: {</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">, </span><span class="string">"show-dependencies:%S"</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
@@ -366,7 +368,7 @@
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-cm.html">Back to 'Codegen Module'</a></li><li><i>(This section ends Chapter 1: Setting Up.)</i></li></ul><hr class="tocbar">
-<!--End of weave: 309 lines from a web of 4959-->
+<!--End of weave: 311 lines from a web of 4961-->
 	</body>
 </html>
 

@@ -70,7 +70,7 @@ we need to keep track of:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no iname for routine"</span><span class="plain">);</span>
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain"> == </span><span class="functiontext">Packaging::request_main</span><span class="plain">())) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Mained %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain"> == </span><span class="functiontext">Packaging::request_main</span><span class="plain">())) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Routine outside of package: %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
 
         <span class="identifier">currently_compiling_iname</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">;</span>
         <span class="functiontext">JumpLabels::reset</span><span class="plain">();</span>
@@ -347,7 +347,7 @@ after the call parameters, and is used only as a scratch variable.
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="26-ct.html">Back to 'Compiled Text'</a></li><li><a href="26-tti.html">Continue with 'Translate to Identifiers'</a></li></ul><hr class="tocbar">
-<!--End of weave: 218 lines from a web of 93246-->
+<!--End of weave: 218 lines from a web of 93250-->
 	</body>
 </html>
 
