@@ -5,8 +5,6 @@ Language: InC
 Licence: Artistic License 2.0
 Version Number: 1
 Version Name: Plan A
-Build Number: 6Q16
-Build Date: 10 February 2019
 
 Import: foundation
 

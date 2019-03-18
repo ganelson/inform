@@ -2,13 +2,9 @@ Title: inblorb
 Author: Graham Nelson
 Purpose: The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
 Language: InC
-Declare Section Usage: Off
 Licence: This is a free, open-source program published under the Artistic License 2.0.
 Version Number: 4
 Version Name: Duralumin
-Build Number: 6Q20
-Build Date: 18 February 2019
-Web Syntax Version: 2
 
 Import: foundation
 

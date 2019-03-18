@@ -20,6 +20,12 @@ compiles this to a "story file" for one of two virtual machines, "Glulx"
 or "the Z-machine". On a release compilation, a further tool called Inblorb
 packages this up as a stand-alone website or download.
 
+__Disclaimer__. Because this is a private repository (until the next public
+release of Inform, when it will open), its GitHub pages server cannot be
+enabled yet. As a result links marked &#9733; below lead only to raw HTML
+source, not to served web pages. They can in the mean time be browsed offline
+as static HTML files stored in "docs".
+
 ## Licence
 
 Except as noted, copyright in material in this repository (the "Package") is
