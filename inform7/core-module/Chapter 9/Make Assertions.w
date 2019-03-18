@@ -901,7 +901,7 @@ properties) and for kinds (which do, but differently).
 
 @h Case 28. Sentence [1] below is deservedly rejected, but [2] makes a
 non-reciprocal map connection: "D of the R is E of the S" is construed as
-"D of the R is S" then "R is E of the S". We have to suppress NI's
+"D of the R is S" then "R is E of the S". We have to suppress Inform's
 tendency to make tentative reciprocal map connections, because even though
 they will only be listed as "likely", we know they are in fact impossible
 in this case.

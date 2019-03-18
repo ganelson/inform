@@ -5,7 +5,7 @@ To generate HTML documentation for extensions.
 @ Each extension gets its own page in the external documentation area, but
 this page can have two forms: the deluxe version, only produced if an
 extension is successfully used, and a cut-down placeholder version, used
-if NI has detected the extension but never used it (and so does not really
+if Inform has detected the extension but never used it (and so does not really
 understand what it entails). The following routine writes both kinds of page.
 
 =
@@ -46,7 +46,7 @@ void Extensions::Documentation::write_extension_documentation(extension_census_d
 We are not always obliged to make a sketchy page from an ECD: we decide against
 in a normal run where a page exists for it already, as otherwise a user with
 many extensions installed would detect an annoying slight delay on every run
-of NI -- whereas a slight delay on each census-mode run is acceptable, since
+of Inform -- whereas a slight delay on each census-mode run is acceptable, since
 census-mode runs are made only when extensions are installed or uninstalled.
 If we do decide to make a page from an ECD, we in fact read the extension into
 the lexer so as to make an EF of it. Of course, it won't be a very interesting

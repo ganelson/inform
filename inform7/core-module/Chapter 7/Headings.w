@@ -31,7 +31,7 @@ typed by the designer does not obviously have any headings in it.
 The hierarchy thus runs: File (0), Volume (1), Book (2), Part (3),
 Chapter (4), Section (5). (The implementation below allows for even lower
 levels of subheading, from 6 to 9, but Inform doesn't use them.) Every run
-of NI declares at least two File (0) headings, representing the start of
+of Inform declares at least two File (0) headings, representing the start of
 main text and the start of the Standard Rules, and these latter have a
 couple of dozen headings themselves, so the typical number of headings
 in a source text is 30 to 100.
@@ -147,7 +147,7 @@ gadget in the user interface.
 
 @ The primary source text, and indeed the source text in the extensions,
 can make whatever headings they like: no sequence is illegal. It is not
-for NI to decide on behalf of the author that it is eccentric to place
+for Inform to decide on behalf of the author that it is eccentric to place
 Section C before Section B, for instance. The author might be doing so
 deliberately, to put the Chariot-race before the Baths, say; and the
 indexing means that it will be very apparent to the author what the heading
@@ -482,7 +482,7 @@ The first of these we have already seen in use: the sentence-breaker calls
 it to ask whether sentences falling under the current heading should be
 included in the active source text. (For instance, sentences under a
 heading with the disclaimer "(for Glulx only)" will not be included
-if the target virtual machine on this run of NI is the Z-machine.)
+if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
 int Sentences::Headings::include_material(heading *h) {
@@ -518,7 +518,7 @@ wording Sentences::Headings::get_text(heading *h) {
 
 @ This routine determines the (closest) heading to which a scrap of text
 belongs, and is important since the parsing of noun phrases is affected by
-that choice of heading (as we shall see): to NI, headings provide something
+that choice of heading (as we shall see): to Inform, headings provide something
 analogous to the scope of local variables in a conventional programming
 language.
 
@@ -1159,7 +1159,7 @@ in practice strews distractingly many orange berries across the page.
 	if (c > 0) { HTML::end_colour(OUT); HTML_CLOSE("p"); }
 
 @h Describing the heading structure, 3: to a freestanding XML file.
-This is provided as a convenience to the application using NI, which may want
+This is provided as a convenience to the application using Inform, which may want
 to have a pull-down menu or similar gadget allowing the user to jump to a given
 heading. This tells the interface where every heading is, thus saving it from
 having to parse the source.
@@ -1167,7 +1167,7 @@ having to parse the source.
 The property list contains a single dictionary, whose keys are the numbers
 0, 1, 2, ..., $n-1$, where there are $n$ headings in all. (The pseudo-heading
 is not included.) A special key, the only non-numerical one, called "Application
-Version", contains the NI build number in its usual form: "4Q34", for instance.
+Version", contains the Inform build number in its usual form: "4Q34", for instance.
 
 =
 void Sentences::Headings::write_as_xml(void) {
@@ -1205,7 +1205,7 @@ void Sentences::Headings::write_headings_as_xml_inner(OUTPUT_STREAM) {
 @ Note that a level of 0, and a title of |--|, signifies a File (0) level
 heading: external tools can probably ignore such records. Similarly, it is
 unlikely that they will ever see a record without a "Filename" key --
-this would mean a heading arising from text created internally within NI,
+this would mean a heading arising from text created internally within Inform,
 which will only happen if someone has done something funny with |.i6t| files --
 but should this arise then the best recourse is to ignore the heading.
 

@@ -3,7 +3,7 @@
 A general introduction to the S-parser and the data structures
 it makes use of.
 
-@ At this point, the text read in by NI is now a stream of words, each of
+@ At this point, the text read in by Inform is now a stream of words, each of
 which is identified by a pointer to a |vocabulary_entry| structure in its
 dictionary. The words are numbered upwards from 0, and we refer to any
 contiguous run of words as an "excerpt", often writing |(w1, w2)| to mean

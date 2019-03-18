@@ -65,7 +65,7 @@ created, so it must not be stored inside a transient data structure like a
 Though it is probably the case that the author name and title supplied are
 already of normalised casing, we do not want to rely on that. EIDs of the
 same extension but named with different casing conventions would fail to
-match: and this could happen if a new build of NI were published which
+match: and this could happen if a new build of Inform were published which
 made a subtle change to the casing conventions, but which continued to use
 an extension dictionary file first written by previous builds under the
 previous conventions.

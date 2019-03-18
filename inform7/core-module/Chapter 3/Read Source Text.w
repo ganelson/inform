@@ -6,12 +6,12 @@ or from the main source text file, and fed into the lexer.
 @h Definitions.
 
 @ The source text is drawn almost entirely from the primary source file and
-the extensions, but NI does also inject small amounts of source text of
+the extensions, but Inform does also inject small amounts of source text of
 its own (for instance, when a new kind is created, the kind interpreter
 does this).
 
-In particular, every source text read into NI is automatically prefixed by
-the following eight words -- if NI were a computer, this would be the BIOS
+In particular, every source text read into Inform is automatically prefixed by
+the following eight words -- if Inform were a computer, this would be the BIOS
 which boots up its operating system. (In that the rest of the creation of the
 I7 world model is handled by source text in the Standard Rules.)
 

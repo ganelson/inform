@@ -56,7 +56,7 @@ void StructuralSentences::new_language(wording W) {
 @d EXTENSION_FILE_TYPE extension_file
 
 @h Sentence division.
-Sentence division can happen either early in NI's run, when the vast bulk
+Sentence division can happen either early in Inform's run, when the vast bulk
 of the source text is read, or at intermittent periods later when fresh text
 is generated internally. New sentences need to be treated slightly differently
 in these cases, so this seems as good a point as any to define the routine

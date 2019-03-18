@@ -34,8 +34,8 @@ and therefore has no effect on rule ordering within rulebooks.
 
 @ The system for deciding which of two phrases is logically prior, if
 either is. This is not quite compatible with the other comparison routines
-in NI (for comparing action patterns, SPs, etc.) because it returns a
-wider variety of values:
+(for comparing action patterns, SPs, etc.) because it returns a wider
+variety of values:
 
 @d BEFORE_PH -3
 @d SUBSCHEMA_PH -1

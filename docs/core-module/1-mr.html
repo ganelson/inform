@@ -14,7 +14,7 @@
 <ul class="toc"><li><a href="#SP1">&#167;1. Flags</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Flags. </b>These flags are set by command-line parameters. <code class="display"><span class="extract">for_release</span></code> will be set
-when NI is used in a run started by clicking on the Release button in the
+when Inform is used in a run started by clicking on the Release button in the
 application. <code class="display"><span class="extract">rng_seed_at_start_of_play</span></code> is not used by the application,
 but the <code class="display"><span class="extract">intest</span></code> program makes use of this feature to make repeated
 tests of the Z-machine story file produce identical sequences of random
@@ -23,12 +23,12 @@ text produced by the story file on one compilation from another.
 </p>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">story_filename_extension</span></code> is also set as a result of information passed
-from the application via the command line to NI. In order for NI to write
-good releasing instructions, it needs to know the story file format
-(".z5", ".z8", etc.) of the finally produced story file. But since
-NI compiles only to Inform 6 code, and does not run I6 itself, it has no
-way of telling what the application intends to do on this. So the
-application is required to give NI advance notice of this via a
+from the application via the command line to Inform. In order for Inform to
+write good releasing instructions, it needs to know the story file format
+(".z5", ".z8", etc.) of the finally produced story file. But since Inform 7
+compiles only to Inter and thence to Inform 6 code, and does not run I6
+itself, it has no way of telling what the application intends to do on this.
+So the application is required to give Inform advance notice of this via a
 command-line option.
 </p>
 
@@ -38,7 +38,7 @@ command-line option.
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_is_a_release_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Omit sections of source text marked not for release</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">existing_story_file</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Ignore source text to blorb existing story file?</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> = 0; </span>    <span class="comment">The seed value, or 0 if not seeded</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">NI running only to update extension documentation</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Inform running only to update extension documentation</span>
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">story_filename_extension</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">What story file we will eventually have</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">show_progress_indicator</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">Produce percentage of progress messages</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span>    <span class="comment">Whether in this case a score is kept at run time</span>
@@ -58,7 +58,7 @@ Inform strict in rejecting syntaxes we intend to get rid of later on.
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Broadly speaking, what NI does can be divided into two halves: in
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Broadly speaking, what Inform does can be divided into two halves: in
 the first half, it reads all the assertions, makes all the objects and
 global variables and constructs the model world; in the second half,
 it compiles the phrases and grammar to go with it.

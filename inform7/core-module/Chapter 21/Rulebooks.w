@@ -198,7 +198,7 @@ rules" and "coordination rulebook":
 
 @ Whereas, at run-time, rulebooks are special cases of rules (they have the
 same kind of value, though their I6 values are such as to make it possible
-to distinguish them), within NI rulebooks and rules have entirely different
+to distinguish them), within I7 rulebooks and rules have entirely different
 data structures. There are two constructor functions: a basic one, used
 for those created by typical source text, and an advanced one used when
 rulebooks are automatically created as a result of other structures being

@@ -19,7 +19,7 @@ the total is steadily rising. Our routines here therefore need to be
 scalable.
 
 Extensions are stored in two places: a built-in area, inside the Inform 7
-application, and an external area. NI knows the location of the former
+application, and an external area. Inform knows the location of the former
 because the application passes this as |-rules| on the command line, and it
 knows the location of the latter because this is standard and fixed for
 each platform: see Platform-Specific Definitions.
@@ -85,20 +85,20 @@ the built-in area. We must assume that the latter could be on a read-only
 disc, or could be part of a cryptographically signed application bundle.
 
 @h The extension census.
-The Inform application should run NI in "census mode" in order to
-keep extension documentation up to date. NI should be run in census mode
+The Inform application should run Inform in "census mode" in order to
+keep extension documentation up to date. Inform should be run in census mode
 on three occasions:
 
 (a) when the Inform application starts up;
 (b) when the Inform application installs a new extension;
 (c) when the Inform application uninstalls an extension.
 
-When NI is run in "census mode", it should be run with the command
+When Inform is run in "census mode", it should be run with the command
 
 	|ni -rules (...) -census|
 
 where the argument for |-rules| is the same as for any other run. All
-output from NI should be ignored, including its return code: ideally,
+output from Inform should be ignored, including its return code: ideally,
 not even a fatal error should provoke a reaction from the application.
 If the census doesn't work for some file-system reason, never mind --
 it's not mission-critical.
@@ -116,25 +116,25 @@ Documentation for any individual extension is stored at, e.g.,
 
 	|.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html|
 
-NI can generate such a file, for an individual extension, in two ways: (a)
+Inform can generate such a file, for an individual extension, in two ways: (a)
 provisionally, with much less detail, and (b) fully. Whenever it
 successfully compiles a work using extension X, it rewrites the
 documentation for X fully, and updates both the two indexing pages.
 
-When NI runs in |-census| mode, what it does is to scan for all extensions.
-If NI finds a valid extension with no documentation page, it writes a
+When Inform runs in |-census| mode, what it does is to scan for all extensions.
+If Inform finds a valid extension with no documentation page, it writes a
 provisional one; and again, it updates both the two indexing pages.
 
-(NI in fact runs a census on every compilation, as well, so |-census| runs
-do nothing "extra" that a normal run of NI does not also do. On every
-census, NI automatically checks for misfiled or broken extensions, and
+(Inform in fact runs a census on every compilation, as well, so |-census| runs
+do nothing "extra" that a normal run of Inform does not also do. On every
+census, Inform automatically checks for misfiled or broken extensions, and
 places a descriptive report of what's wrong on the |Extensions.html| index
 page -- if people move around or edit extensions by hand, they may run into
 these errors.)
 
 @ With that general discussion out of the way, we can get on with
 implementation. A modest structure is used to store details of extension
-files loaded into NI: or rather, to store requests to include them, and then
+files loaded into Inform: or rather, to store requests to include them, and then
 to keep track of the results.
 
 The rubric of an extension is text found near its opening, describing
@@ -225,7 +225,7 @@ matter to the census errors system elsewhere.
 	DISCARD_TEXT(exfa);
 
 @ Three pieces of information (not available when the EF is created) will
-be set later on, by other parts of NI calling the routines below.
+be set later on, by other parts of Inform calling the routines below.
 
 The rubric text for an extension, which is double-quoted matter just below
 its "begins here" line, is parsed as a sentence and will be read as an
@@ -560,8 +560,8 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, extension_file *fro
 
 @h Updating the documentation.
 This is done in the course of taking an extension census, which is called
-for in one of two circumstances: when NI is being run in "census mode" to
-notify it that extensions have been installed or uninstalled; or when NI
+for in one of two circumstances: when Inform is being run in "census mode" to
+notify it that extensions have been installed or uninstalled; or when Inform
 has completed the successful compilation of a source text. In the latter
 case, it knows quite a lot about the extensions actually used in that
 compilation, and so can write detailed versions of their documentation:

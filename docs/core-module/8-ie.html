@@ -13,7 +13,7 @@
 
 <ul class="toc"><li><a href="#SP5">&#167;5. Extension loading</a></li><li><a href="#SP6">&#167;6. Parsing extension version numbers</a></li><li><a href="#SP7">&#167;7. Checking the begins here and ends here sentences</a></li><li><a href="#SP11">&#167;11. Sentence handlers for begins here and ends here</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>At this point in the narrative of a typical run of NI, we have read in the
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>At this point in the narrative of a typical run of Inform, we have read in the
 source text supplied by the user. The lexer automatically prefaced this with
 "Include Standard Rules by Graham Nelson", and the sentence-breaker
 converted all such sentences to nodes of type <code class="display"><span class="extract">INCLUDE_NT</span></code> which are
@@ -183,7 +183,7 @@ parsed by &lt;platform-qualifier&gt;.
 
 <p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b>A request consists of author, name and version, the latter being optional.
 We obtain the extension file structure corresponding to this: it may have
-no text at all (for instance if NI could not open the file), or it may be
+no text at all (for instance if Inform could not open the file), or it may be
 one we have seen before, thanks to an earlier inclusion. Only when it
 provided genuinely new text will its <code class="display"><span class="extract">body_text_unbroken</span></code> flag be set,
 and then we call the sentence-breaker to ParseTree::graft the new material on to the

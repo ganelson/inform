@@ -37,7 +37,7 @@ as a property ("worn patch") belonging to a noun ("carpet"), or as a
 direction ("worn patch") relative to a noun ("carpet") -- consider the
 cases "description of carpet" and "east of the lawn" -- the key thing
 is to understand the meaning of the subject ("worn patch"). Unfortunately,
-the NI model world will not be created, much less named, for quite a long
+the model world will not be created, much less named, for quite a long
 time to come: so we cannot simply parse the subject as an expression. At this
 early stage the best we can do is to scan ahead through the parse tree to
 try to find direction and property declarations. We do this with a sequence
@@ -81,7 +81,7 @@ We now come to the routine which traverses the entire tree looking for
 property declarations.
 
 In this as in the subsequent traversals, we use a loop rather than recursion
-to span the width of the tree: otherwise NI's stack usage goes through the
+to span the width of the tree: otherwise our stack usage goes through the
 roof, since it might need to recurse thousands of function calls deep.
 
 =

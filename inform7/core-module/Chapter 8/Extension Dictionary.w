@@ -11,9 +11,9 @@ used, a dictionary is kept of the terms defined in them: this is used
 to generate the dynamic documentation on installed extensions, and
 is stored between runs in a cache file inside the I7 application.
 This means dictionary entries are first read in from the cache; then
-the entries for any extension used by NI in its current run are
+the entries for any extension used by Inform in its current run are
 revised, which may mean deleting some entries or adding new ones;
-and at last NI writes the final state of the dictionary back to the
+and at last Inform writes the final state of the dictionary back to the
 cache. In this way, changes in what an extension defines are reflected
 in the dictionary after each successful use of that extension.
 
@@ -120,7 +120,7 @@ to disc. (Entries are never physically deleted from the memory structures.)
 There are two reasons to erase entries. First, the following routine sets the
 erased flag for dictionary entries corresponding to an extension which,
 according to the census returns, is no longer installed. (This can happen
-if the user has uninstalled an extension since the last time NI successfully
+if the user has uninstalled an extension since the last time Inform successfully
 ran.)
 
 =
@@ -140,7 +140,7 @@ extension which was used on the current run. (For instance, if it created a
 kind of vehicle called "dragster", then we will make a dictionary entry
 for that.) Before making its dictionary entries, we first erase all entries
 for the same extension which are left in the dictionary from some previous
-run of NI, as those are now out of date.
+run of Inform, as those are now out of date.
 
 =
 void Extensions::Dictionary::erase_entries(extension_file *ef) {
@@ -339,7 +339,7 @@ for any future increase of the above maxima without fuss.)
 We pass this job on to the standard C library |qsort|, in hopes that it is
 reasonably efficiently implemented. We need to bear in mind that the
 extensions database can be expected to have some thousands of entries,
-and that the $O(n^2)$ insertion sorts used so casually elsewhere in NI --
+and that the $O(n^2)$ insertion sorts used so casually elsewhere in Inform --
 where lists are certainly much smaller -- could cause misery here.
 
 This routine returns the number of (unerased) entries in the dictionary,

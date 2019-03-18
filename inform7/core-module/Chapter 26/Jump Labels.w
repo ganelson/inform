@@ -54,8 +54,8 @@ label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module
 	return lns;
 }
 
-@ The rest of NI tends not to store pointers to namespaces: instead it must
-access them by searching on the name. This is inefficient, but there are
+@ The rest of Inform tends not to store pointers to namespaces: instead it
+must access them by searching on the name. This is inefficient, but there are
 few namespaces and it happens fairly seldom, so there is no point in
 optimising.
 

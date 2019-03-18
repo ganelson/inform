@@ -5,7 +5,7 @@ reading command-line arguments to modify its behaviour.
 
 @h Flags.
 These flags are set by command-line parameters. |for_release| will be set
-when NI is used in a run started by clicking on the Release button in the
+when Inform is used in a run started by clicking on the Release button in the
 application. |rng_seed_at_start_of_play| is not used by the application,
 but the |intest| program makes use of this feature to make repeated
 tests of the Z-machine story file produce identical sequences of random
@@ -13,12 +13,12 @@ numbers: without this, we would have difficulty comparing a transcript of
 text produced by the story file on one compilation from another.
 
 |story_filename_extension| is also set as a result of information passed
-from the application via the command line to NI. In order for NI to write
-good releasing instructions, it needs to know the story file format
-(".z5", ".z8", etc.) of the finally produced story file. But since
-NI compiles only to Inform 6 code, and does not run I6 itself, it has no
-way of telling what the application intends to do on this. So the
-application is required to give NI advance notice of this via a
+from the application via the command line to Inform. In order for Inform to
+write good releasing instructions, it needs to know the story file format
+(".z5", ".z8", etc.) of the finally produced story file. But since Inform 7
+compiles only to Inter and thence to Inform 6 code, and does not run I6
+itself, it has no way of telling what the application intends to do on this.
+So the application is required to give Inform advance notice of this via a
 command-line option.
 
 =
@@ -26,7 +26,7 @@ int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug featu
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 int existing_story_file = FALSE; /* Ignore source text to blorb existing story file? */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
-int census_mode = FALSE; /* NI running only to update extension documentation */
+int census_mode = FALSE; /* Inform running only to update extension documentation */
 text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
 int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
@@ -38,7 +38,7 @@ Inform strict in rejecting syntaxes we intend to get rid of later on.
 =
 int no_deprecated_features = FALSE; /* forbid syntaxes marked as deprecated? */
 
-@ Broadly speaking, what NI does can be divided into two halves: in
+@ Broadly speaking, what Inform does can be divided into two halves: in
 the first half, it reads all the assertions, makes all the objects and
 global variables and constructs the model world; in the second half,
 it compiles the phrases and grammar to go with it.

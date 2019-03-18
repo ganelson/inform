@@ -124,7 +124,7 @@ by entering a pointer to it into one of the above tables:
 point of the whole exercise &mdash; to allow them to be decentralised). But we
 do need to know their names, so every <code class="display"><span class="extract">*_SH</span></code> constant below must correspond
 to a sentence handler structure called <code class="display"><span class="extract">*_SH_handler</span></code> defined somewhere
-else in NI.
+else in the program.
 </p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Performing the traverse. </b>The following routine is called twice, once with <code class="display"><span class="extract">pass</span></code> equal to 1, then
@@ -250,9 +250,9 @@ artificially to run through those sentences.
 
 <p class="inwebparagraph"><a id="SP7_3_1"></a><b>&#167;7.3.1.  </b>At this stage, all we do is empty the tables. The reason we have to delay
 before entering the valid handlers is that some of them will be defined in
-sections of NI appearing after this one in the code: since C requires all
+sections appearing after this one in the program: since C requires all
 identifiers used to be predeclared, this means we can't enter the valid
-handlers until right at the end of NI. The routine which does so,
+handlers until right at the end of the program. The routine which does so,
 <code class="display"><span class="extract">TemplateFiles::register_sentence_handlers</span></code>, consists only of a run of
 <code class="display"><span class="extract">REGISTER_SENTENCE_HANDLER</span></code> macro expansions and can be found in Chapter
 14.
@@ -265,8 +265,7 @@ handlers until right at the end of NI. The routine which does so,
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_OF_NTS_AND_VBS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_OF_NTS_AND_VBS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">how_to_handle_nodes</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">how_to_handle_sentences</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -352,7 +351,7 @@ on either or both traverses, so the inner <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP7_2_2">&#167;7.2.2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The TRACE sentence handler. </b>While most of the sentence handlers are scattered across the rest of NI,
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The TRACE sentence handler. </b>While most of the sentence handlers are scattered across the rest of Inform,
 two will be given here. The first is the one which acts on <code class="display"><span class="extract">TRACE_NT</span></code> asterisks;
 this is a debugging feature of Inform. An asterisk on its own toggles logging
 of work on sentences. An asterisk followed by double-quoted text is a note

@@ -89,7 +89,7 @@ ingratitude of some -- oh, all right.
 
 @ The success message needs to take different forms in |stdout| and in
 the Problems log file. In the latter, we write as though the subsequent
-conversion of NI's output to a story file via Inform 6 had already been
+conversion of Inform's output to a story file via Inform 6 had already been
 completed successfully -- this is because the Problems log is intended
 to be viewed inside the Inform application, which will instead divert to
 an error page if I6 should fail. So although the Problems file contains

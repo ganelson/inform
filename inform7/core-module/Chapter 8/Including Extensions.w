@@ -3,7 +3,7 @@
 To fulfill requests to include extensions, adding their material
 to the parse tree as needed, and removing INCLUDE nodes.
 
-@ At this point in the narrative of a typical run of NI, we have read in the
+@ At this point in the narrative of a typical run of Inform, we have read in the
 source text supplied by the user. The lexer automatically prefaced this with
 "Include Standard Rules by Graham Nelson", and the sentence-breaker
 converted all such sentences to nodes of type |INCLUDE_NT| which are
@@ -115,7 +115,7 @@ void Extensions::Inclusion::fulfill_request_to_include_extension(parse_node *p, 
 
 @ A request consists of author, name and version, the latter being optional.
 We obtain the extension file structure corresponding to this: it may have
-no text at all (for instance if NI could not open the file), or it may be
+no text at all (for instance if Inform could not open the file), or it may be
 one we have seen before, thanks to an earlier inclusion. Only when it
 provided genuinely new text will its |body_text_unbroken| flag be set,
 and then we call the sentence-breaker to ParseTree::graft the new material on to the

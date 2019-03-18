@@ -85,7 +85,7 @@ by entering a pointer to it into one of the above tables:
 point of the whole exercise -- to allow them to be decentralised). But we
 do need to know their names, so every |*_SH| constant below must correspond
 to a sentence handler structure called |*_SH_handler| defined somewhere
-else in NI.
+else in the program.
 
 @h Performing the traverse.
 The following routine is called twice, once with |pass| equal to 1, then
@@ -163,16 +163,15 @@ void Assertions::Traverse::visit(parse_node *p, parse_node **last) {
 
 @ At this stage, all we do is empty the tables. The reason we have to delay
 before entering the valid handlers is that some of them will be defined in
-sections of NI appearing after this one in the code: since C requires all
+sections appearing after this one in the program: since C requires all
 identifiers used to be predeclared, this means we can't enter the valid
-handlers until right at the end of NI. The routine which does so,
+handlers until right at the end of the program. The routine which does so,
 |TemplateFiles::register_sentence_handlers|, consists only of a run of
 |REGISTER_SENTENCE_HANDLER| macro expansions and can be found in Chapter
 14.
 
 @<Empty the sentence handler tables@> =
-	int i;
-	for (i=0; i<MAX_OF_NTS_AND_VBS; i++) {
+	for (int i=0; i<MAX_OF_NTS_AND_VBS; i++) {
 		how_to_handle_nodes[i] = NULL;
 		how_to_handle_sentences[i] = NULL;
 	}
@@ -222,7 +221,7 @@ on either or both traverses, so the inner |if| can happily fail.
 	}
 
 @h The TRACE sentence handler.
-While most of the sentence handlers are scattered across the rest of NI,
+While most of the sentence handlers are scattered across the rest of Inform,
 two will be given here. The first is the one which acts on |TRACE_NT| asterisks;
 this is a debugging feature of Inform. An asterisk on its own toggles logging
 of work on sentences. An asterisk followed by double-quoted text is a note

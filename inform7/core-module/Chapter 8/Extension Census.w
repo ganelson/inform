@@ -6,8 +6,8 @@ on this run or not), and keep the documentation index for them up to date.
 @h Definitions.
 
 @ In addition to the extensions read in, there are the roads not taken: the
-ones which NI has at its disposal, but which the source text never asks to
-include. NI performs a "census" of installed extensions on every run,
+ones which I7 has at its disposal, but which the source text never asks to
+include. Inform performs a "census" of installed extensions on every run,
 essentially by scanning the directories which hold them to see what the
 user has installed there.
 
@@ -452,7 +452,7 @@ truncate it.
 
 @h Census errors.
 To recap, the extension census process involves looking for all the
-extensions NI can find, but also checking them: are the files genuine, that
+extensions Inform can find, but also checking them: are the files genuine, that
 is, do they appear to be suitable text files with the correct identifying
 first lines? Or have binary files crept in, or genuine extension but which
 have been given the wrong location or filename? When any of these checks
@@ -925,7 +925,7 @@ where all is optional except the title part.
 
 @ VM requirements are parsed by feeding them into the lexer and calling the
 same routines as would be used when parsing headings about VM requirements
-in a normal run of NI. Note that because the requirements are in round
+in a normal run of Inform. Note that because the requirements are in round
 brackets, which the lexer will split off as distinct words, we can ignore
 the first and last word and just look at what is in between:
 

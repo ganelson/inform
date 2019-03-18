@@ -1,7 +1,7 @@
 [Config::Inclusions::] Inform 6 Inclusions.
 
-To include Inform 6 code almost verbatim in the output of NI, as
-instructed by low-level Inform 7 sentences.
+To include Inform 6 code almost verbatim in the output, as instructed
+by low-level Inform 7 sentences.
 
 @h Definitions.
 

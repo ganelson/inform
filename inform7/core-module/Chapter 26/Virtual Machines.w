@@ -62,7 +62,7 @@ typedef struct VM_usage_note {
 
 @h Table of supported VMs.
 The following data determines what VMs we know about, and how they can
-be inferred from the present information passed by the GUI to NI at the
+be inferred from the present information passed by the GUI to us at the
 command line - viz., the eventual file extension. The application passes
 this by including among the command-line switches a pair like so:
 

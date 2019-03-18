@@ -1264,7 +1264,7 @@ parse_node *Sentences::RuleSubtrees::end_node(parse_node *opening) {
 
 @h Basic Structural Syntax.
 The following routine is an attempt to contain information about the
-basic structural phrases in one place in NI, so that if future loop constructs
+basic structural phrases in one place, so that if future loop constructs
 are added, they can fairly simply be put here.
 
 =
