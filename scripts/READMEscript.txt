@@ -12,6 +12,15 @@ Inform is often assigned material for courses on digital narrative).
 It has several times ranked in the top 100 most influential programming
 languages according to the TIOBE index.
 
+The architecture is as follows. The "front end" of Inform7 turns natural
+language source text into an intermediate representation called "Inter".
+The "back end", which can also be compiled as an independent tool also
+called Inter, performs code generation to turn inter into Inform 6 code.
+Inform 6, the final form of the original Inform project (1993-2001), then
+compiles this to a "story file" for one of two virtual machines, "Glulx"
+or "the Z-machine". On a release compilation, a further tool called Inblorb
+packages this up as a stand-alone website or download.
+
 ## Licence
 
 Except as noted, copyright in material in this repository (the "Package") is
@@ -50,20 +59,19 @@ platforms, each app has its own code in its own repository. See:
 
 Make a directory in which to work: let's call this "work". Then:
 
-* Clone and build Inweb into "work/inweb": repository [here](https://github.com/ganelson/inweb).
-* Clone and build Intest into "work/intest": repository [here](https://github.com/ganelson/intest).
-* Clone Inform into "work/inform". Change the current directory to that.
-Then run "bash scripts/first.sh" (or whatever shell you prefer: it need
-not be bash). This should give you a complete working set of command-line
-Inform tools and associated makefiles. For any future builds, you can simply
-type "make".
-* For a simple test, try e.g. "inblorb/Tangled/inblorb -help". All the
-executables should similarly respond to -help.
-* But for a true test, run "make check". This compiles two more tools needed
-only for testing (dumb-frotz and dumb-glulx), then runs Intest on each tool
-in turn. Some haven't got a test suite, some have; it will run whatever it
-finds. Be advised that on a 2013 laptop this all takes quarter of an hour and
-sounds like a helicopter taking off.
+* Change the current directory to "work": "cd work"
+* Build Inweb as "work/inweb": see its repository [here](https://github.com/ganelson/inweb)
+* Build Intest as "work/intest": see its repository [here](https://github.com/ganelson/intest)
+* Clone Inform as "work/inform": "git clone https://github.com/ganelson/inform.git"
+* Change the current directory to this: "cd inform"
+* Run a first-build script: "bash scripts/first.sh"
+* Check executables have compiled: "inblorb/Tangled/inblorb -help"
+* Run a single test case: "../intest/Tangled/intest inform7 -show Acidity".
+
+If that passes, probably all is well. The definitive test is "make check",
+which runs nearly 2000 cases through the executables, but takes 10 minutes
+on an 8-core desktop and half an hour on a 4-core laptop (which will sound
+something like a helicopter taking off).
 
 ## Inventory
 
