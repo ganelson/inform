@@ -54,7 +54,9 @@ void Readme::write_line(text_stream *text, text_file_position *tfp, void *state)
 		return;
 	}
 	if (ws->current_definition) {
-		WRITE_TO(ws->current_definition->content, "%S\n", text);
+		if (Str::len(ws->current_definition->content) > 0)
+			WRITE_TO(ws->current_definition->content, "\n");
+		WRITE_TO(ws->current_definition->content, "%S", text);
 		Regexp::dispose_of(&mr);
 		return;
 	}

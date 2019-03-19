@@ -96,79 +96,50 @@ becomes public: GitHub Pages does not work on private repositories.)
 
 This repository is where development is done on the following executables:
 
-* inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - [&#9733;&nbsp;Web](docs/inform7/index.html)
-
+* inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - [&#9733;&nbsp;Web](docs/inform7/index.html) - [&#9654;&nbsp;Web](docs/inform7/P-cu.html)
 	* its modules [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
 	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html), [&#9733;&nbsp;core-test](docs/core-test/index.html)
-* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - [&#9733;&nbsp;Web](docs/inblorb/index.html)
-
-* indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - [&#9733;&nbsp;Web](docs/indoc/index.html)
-
+* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - [&#9733;&nbsp;Web](docs/inblorb/index.html) - [&#9654;&nbsp;Web](docs/inblorb/P-ui.html)
+* indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - [&#9733;&nbsp;Web](docs/indoc/index.html) - [&#9654;&nbsp;Web](docs/indoc/P-iti.html)
 * inpolicy - A lint-like tool to check up on various policies used in Inform source code. - __version 1 'Plan A'__ - [&#9733;&nbsp;Web](docs/inpolicy/index.html)
-
 * inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - [&#9733;&nbsp;Web](docs/inrtps/index.html)
-
 * inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html)
-
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
 * srules - The Standard Rules extension, included in all Inform 7 works. - __version 5/190315__ - [&#9733;&nbsp;Web](docs/srules/index.html)
-
 
 The inform7 subtree further contains these primary resources:
 
 * The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
 * inform7/Internal/Extensions - Libraries of code. Inform 7
 	* inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x - __unversioned__
-
 	* inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x - __version 7/140425__
-
 	* inform7/Internal/Extensions/Emily Short/Complex Listing.i7x - __version 9__
-
 	* inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x - __version 10/140425__
-
 	* inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x - __version 4__
-
 	* inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x - __version 5/140516__
-
 	* inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x - __unversioned__
-
 	* inform7/Internal/Extensions/Emily Short/Locksmith.i7x - __version 12__
-
 	* inform7/Internal/Extensions/Emily Short/Menus.i7x - __version 3__
-
 	* inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x - __version 5__
-
 	* inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x - __unversioned__
-
 	* inform7/Internal/Extensions/Eric Eve/Epistemology.i7x - __version 9__
-
 	* inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x - __version 1__
-
 	* inform7/Internal/Extensions/Graham Nelson/English Language.i7x - __version 1__
-
 	* inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x - __version 2__
-
 	* inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x - __version 3__
-
 	* inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x - __unversioned__
-
 	* inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x - __unversioned__
-
 * inform7/Internal/HTML - Files needed for generating extension documentation and the like
 * inform7/Internal/Languages - Natural language definition bundles
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 	* inform7/Internal/Templates/Classic - An older, plainer website - __unversioned__
-
 	* inform7/Internal/Templates/Standard - The default, more modern look - __unversioned__
-
 
 The "resources" directory holds a number of non-executable items of use to the
 Inform UI applications, and to Inform websites:
 
 * Changes to Inform - A detailed change history of Inform 7. Ebook in Indoc format, stored at path resources/Changes.
-
 * Writing with Inform and the Inform Recipe Book - The main Inform documentation, as seen in the apps, and in standalone Epubs. Ebook in Indoc format, stored at path resources/Documentation.
-
 * resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
 * resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app. Inform 7
 
@@ -183,18 +154,14 @@ but this is not where development on them is done, and no pull requests will
 be accepted. (Note that these are not git submodules.)
 
 * inform6 - The Inform 6 compiler (used by I7 as a code generator). - __version 1634 '5th March 2016'__ - from [https://github.com/DavidKinder/Inform6], maintained by [David Kinder](https://github.com/DavidKinder)
-
 	* inform6/Tests/Assistants/dumb-frotz - A dumb-terminal Z-machine interpreter. - unversioned: modified from [Alembic Petrofsky's 1998 Teletype port of Frotz](https://github.com/sussman/ircbot-collection/tree/master/dumb-frotz)
 	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __version 0.5.4__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __version 1.0.6.__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __version 'Parchment for Inform 7 (2015-09-25)'__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
-
 	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __version 'Quixe for Inform 7 (v. 2.1.2)'__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
-
 	* inform7/Internal/Templates/Vorple - Multimedia in Javascript - __version 'Vorple'__ - from [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
-
 
 ### Binary resources (such as image files)
 
