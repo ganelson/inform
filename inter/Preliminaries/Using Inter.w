@@ -1,8 +1,9 @@
 Using Inter.
 
-A brief user guide.
+Using Inter at the command line.
 
-@ The command-line executable Inter packages up the back end of the Inform 7
+@h What Inter does.
+The command-line executable Inter packages up the back end of the Inform 7
 compiler into a stand-alone tool, and enables that back end to be used more
 flexibly. For example, it can read or write either textual or binary inter
 code, and can convert between them. It can also perform any of the numerous
@@ -15,7 +16,8 @@ it, and write it out as text again. This gives us a very helpful window into
 what Inform is doing; it also provides a test-bed for future optimisation,
 or for future applications of inter code.
 
-@ If you have compiled the standard distribution of the command-line tools
+@h Command-line usage.
+If you have compiled the standard distribution of the command-line tools
 for Inform then the Inter executable will be at |inter/Tangled/inter|.
 The usage is:
 
@@ -45,16 +47,16 @@ converts |my.intert| (a textual inter file) to its binary equivalent
 	|$ inter/Tangled/inter my.interb -textual my.intert|
 
 @ In the third and most flexible mode, Inter runs the supplied code through
-a chain of processing stages. The chain, which must contain at least
+a "chain" of processing stages. The chain, which must contain at least
 one stage, is a textual list of comma-separated stage names. For example,
 
 	|resolve-conditional-compilation,assimilate,make-identifiers-unique|
 
 is a valid three-stage chain. The command to do this is then:
 
-	|$ inter/Tangled/inter my.intert -binary -inter 'STAGES'|
+	|$ inter/Tangled/inter my.intert -inter 'CHAIN'|
 
-where |STAGES| is the chain description.
+where |CHAIN| is the chain description.
 
 In practice, this will only be useful if you can access the result, so it's
 normal for the final stage to output something: perhaps Inform 6 code, perhaps
@@ -66,15 +68,3 @@ Two more options may be helpful to supplement this: |-domain D| sets the
 directory |D| to be the default location for reading and writing inter files;
 and |-template T| tells Inter that it can find the I6T template files at
 the file system location |T|. (Some code-generation stages import these.)
-
-@ Inform itself currently has an undocumented feature to enable similar
-experimentation. The "use" sentence:
-
->> Use inter chain "STAGES".
-
-works in exactly the same way, so for example:
-
->> Use inter chain "link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,reconcile-verbs,generate-inter:haha.txt,generate-i6:*".
-
-The asterisk there substitutes for "whatever filename Inform wants to give the
-final I6 file".
