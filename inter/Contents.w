@@ -10,6 +10,9 @@ Import: foundation
 Import: inter
 Import: codegen
 
+Preliminaries
+	Using Inter
+
 Chapter 1: Everything
 	Basics
 	Main
