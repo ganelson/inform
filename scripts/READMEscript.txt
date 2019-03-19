@@ -101,7 +101,7 @@ This repository is where development is done on the following executables:
 * @program - @purpose(@program) - __@version(@program)__ - [&#9733;&nbsp;Web](docs/@program/index.html)
 @end
 @define primaryd(program, language, doc)
-* @program - @purpose(@program) - __@version(@program)__ - [&#9733;&nbsp;Web](docs/@program/index.html) - [&#9654;&nbsp;Web](docs/@program/@doc.html)
+* @program - @purpose(@program) - __@version(@program)__ - [&#9733;&nbsp;Web](docs/@program/index.html) - [&#9654;&nbsp;Documentation](docs/@program/@doc.html)
 @end
 @define book(title, path, topic)
 * @title - @topic. Ebook in Indoc format, stored at path @path.
@@ -114,9 +114,9 @@ This repository is where development is done on the following executables:
 	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html), [&#9733;&nbsp;core-test](docs/core-test/index.html)
 @primaryd(inblorb, 'Web of InC', 'P-ui')
 @primaryd(indoc, 'Web of InC', 'P-iti')
-@primary(inpolicy, 'Web of InC', 'P-ui')
-@primary(inrtps, 'Web of InC', 'P-ui')
-@primary(inter, 'Web of InC', 'P-ui')
+@primaryd(inpolicy, 'Web of InC', 'P-ui')
+@primaryd(inrtps, 'Web of InC', 'P-ui')
+@primaryd(inter, 'Web of InC', 'P-ui')
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
 @primary(srules, 'Web of Inform 7')
 
