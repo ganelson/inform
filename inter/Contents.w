@@ -12,6 +12,7 @@ Import: codegen
 
 Preliminaries
 	Using Inter
+	Textual Inter
 	Chains and Stages
 
 Chapter 1: Everything

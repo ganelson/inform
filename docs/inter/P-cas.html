@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>P/ui</title>
+		<title>P/ti</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -13,21 +13,13 @@
 
 <ul class="toc"><li><a href="#SP1">&#167;1. Stages and descriptions</a></li><li><a href="#SP3">&#167;3. The code-generation stages</a></li><li><a href="#SP13">&#167;13. Diagnostic or non-working stages</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Stages and descriptions. </b>Inter code has three representations: as a binary file, as a textual file,
-and in memory &mdash; a sort of cross-referenced form of binary. For speed, the
-Inform compiler generates memory inter directly, and code-generates from
-that, so that the inter is normally never written out to disc. When Inter
-performs a conversion, it loads (say) textual inter into memory inter, then
-writes that out as binary inter.
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Stages and descriptions. </b>A processing stage is a step in code generation which acts on a repository
+of inter in memory. Some stages change, add to or edit down that code, while
+others leave it untouched but output a file based on it.
 </p>
 
-<p class="inwebparagraph">A processing stage is a step in code generation which acts on memory inter.
-Some stages change, add to or edit down that code, while others leave it
-untouched but output a file based on it.
-</p>
-
-<p class="inwebparagraph">Each stage can see an entire "repository" of inter code at a time, and is
-not restricted to working through in sequence. Those which read in or write
+<p class="inwebparagraph">Each stage can see an entire repository of inter code at a time, and is
+not restricted to working through it in sequence. Those which read in or write
 out a file also have a filename supplied to them as a parameter, but there
 are otherwise no configuration options. It's not possible to tell a stage
 to work on one specific function alone, for example.
@@ -274,7 +266,7 @@ ice while a better and more systematic solution was found.
 </p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="P-ui.html">Back to 'Using Inter'</a></li><li><i>(This section ends Preliminaries.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-ti.html">Back to 'Textual Inter'</a></li><li><i>(This section ends Preliminaries.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

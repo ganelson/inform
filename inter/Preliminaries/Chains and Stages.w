@@ -3,19 +3,12 @@ Chains and Stages.
 Sequences of named code-generation stages are called chains.
 
 @h Stages and descriptions.
-Inter code has three representations: as a binary file, as a textual file,
-and in memory -- a sort of cross-referenced form of binary. For speed, the
-Inform compiler generates memory inter directly, and code-generates from
-that, so that the inter is normally never written out to disc. When Inter
-performs a conversion, it loads (say) textual inter into memory inter, then
-writes that out as binary inter.
+A processing stage is a step in code generation which acts on a repository
+of inter in memory. Some stages change, add to or edit down that code, while
+others leave it untouched but output a file based on it.
 
-A processing stage is a step in code generation which acts on memory inter.
-Some stages change, add to or edit down that code, while others leave it
-untouched but output a file based on it.
-
-Each stage can see an entire "repository" of inter code at a time, and is
-not restricted to working through in sequence. Those which read in or write
+Each stage can see an entire repository of inter code at a time, and is
+not restricted to working through it in sequence. Those which read in or write
 out a file also have a filename supplied to them as a parameter, but there
 are otherwise no configuration options. It's not possible to tell a stage
 to work on one specific function alone, for example.
