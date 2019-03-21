@@ -13,6 +13,8 @@ Import: codegen
 Preliminaries
 	Using Inter
 	Textual Inter
+	Data Packages in Textual Inter
+	Code Packages in Textual Inter
 	Chains and Stages
 
 Chapter 1: Everything
