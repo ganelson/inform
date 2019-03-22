@@ -1238,7 +1238,7 @@ void Emit::pop_code_position(void) {
 
 void Emit::code(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Code::new(Emit::at(), current_inter_routine, NULL, Emit::level(), UNDEF_IVAL, 0, NULL));
+	Emit::guard(Inter::Code::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
 }
 
 void Emit::concatenate(void) {

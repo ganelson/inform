@@ -226,7 +226,7 @@ isn't possible to write to the number 10: that is an rvalue but not an lvalue.
 
 	|inv !if|
 	|    val K_truth_state flag|
-	|    code _ _|
+	|    code|
 	|        inv !print|
 	|            val K_text "Yes!"|
 

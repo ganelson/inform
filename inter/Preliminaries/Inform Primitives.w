@@ -193,19 +193,19 @@ This looks a little baroque, but it works in practice:
 
 	|inv !switch|
 	|    val K_number X|
-	|    code _ _|
+	|    code|
 	|        inv !case|
 	|            val K_number 1|
-	|            code _ _|
+	|            code|
 	|                inv !print|
 	|                    val K_text "One!"|
 	|        inv !case|
 	|            val K_number 2|
-	|            code _ _|
+	|            code|
 	|                inv !print|
 	|                    val K_text "Two!"|
 	|        inv !default|
-	|            code _ _|
+	|            code|
 	|                inv !print|
 	|                    val K_text "Something else!"|
 

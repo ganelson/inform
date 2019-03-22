@@ -205,6 +205,42 @@ language such as:
 
 >> The marked for listing property translates into I6 as "workflag".
 
+@h Symbol annotations.
+A useful feature of inter is that short-term or inessential metadata can
+be attached to symbols; inter is flexible abput what this data might mean.
+These annotations can also be represented in text form, which is useful
+for looking at the output from different code-generation stages.
+
+Annotations are written on the line where the symbol is created, not where
+it is declared in the symbols table. For example, here is a creation of
+a symbol for a constant:
+
+	|constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000|
+
+And here it is with an annotation:
+
+	|constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000 __hex|
+
+The annotation, |__hex|, simply means that the natural way to print the
+value of this constant would be hexadecimal; it doesn't change the meaning
+of the program, and this is typical of annotations.
+
+All annotations begin with a double underscore, and some can take a number
+or text literal:
+
+	|__binary|
+	|__table_array=1|
+	|__name="matching key"|
+
+There is no built-in set of annotations, and their use does not need to be
+predeclared anywhere: simply writing
+
+	|constant MY_CONSTANT K_typeless_int = 27 __plugh|
+
+would create the annotation |__plugh| as a possibility, if it didn't already
+exist. However, Inform has a conventional set of annotations which it uses
+for symbols with various meanings, and that set will be covered later.
+
 @h Splats.
 The special statement |splat "TEXT"| or |splat ANNOTATION "TEXT"| allows
 raw Inform 6 code (or potentially raw code for any language) to be included

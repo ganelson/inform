@@ -20,7 +20,7 @@ package main _plain
 		.begin
 			inv !if
 				val K_number 1
-				code _ _
+				code
 					inv !goto
 						lab .begin
 		.end
