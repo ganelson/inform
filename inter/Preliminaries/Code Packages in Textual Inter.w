@@ -203,9 +203,9 @@ Just as |val| supplies a value as needed by a |val| term in an invocation
 signature, so |ref|, |lab| and |code| meet the other possible requirements.
 For example, suppose the following signatures:
 
-	!primitive !jump lab -> void|
-	!primitive !pull ref -> val|
-	!primitive !if val code -> void|
+	|primitive !jump lab -> void|
+	|primitive !pull ref -> val|
+	|primitive !if val code -> void|
 
 These might be invoked as follows:
 
