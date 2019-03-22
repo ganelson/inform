@@ -71,7 +71,6 @@ inter_symbol *while_interp = NULL;
 inter_symbol *for_interp = NULL;
 inter_symbol *objectloop_interp = NULL;
 inter_symbol *objectloopx_interp = NULL;
-inter_symbol *loop_interp = NULL;
 inter_symbol *switch_interp = NULL;
 inter_symbol *case_interp = NULL;
 inter_symbol *default_interp = NULL;
@@ -240,7 +239,6 @@ void Emit::begin(void) {
 	Emit::primitive(I"!for", I"val val val code -> void", &for_interp);
 	Emit::primitive(I"!objectloop", I"ref val val code -> void", &objectloop_interp);
 	Emit::primitive(I"!objectloopx", I"ref val code -> void", &objectloopx_interp);
-	Emit::primitive(I"!loop", I"code -> void", &loop_interp);
 	Emit::primitive(I"!switch", I"val code -> void", &switch_interp);
 	Emit::primitive(I"!case", I"val code -> void", &case_interp);
 	Emit::primitive(I"!default", I"code -> void", &default_interp);
@@ -1076,7 +1074,6 @@ void Emit::inv_primitive(inter_symbol *prim_symb) {
 	if ((prim_symb == switch_interp) ||
 		(prim_symb == if_interp) ||
 		(prim_symb == ifelse_interp) ||
-		(prim_symb == loop_interp) ||
 		(prim_symb == for_interp) ||
 		(prim_symb == while_interp) ||
 		(prim_symb == objectloop_interp)) Emit::note_level(prim_symb);

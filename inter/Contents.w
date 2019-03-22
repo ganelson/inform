@@ -15,6 +15,7 @@ Preliminaries
 	Textual Inter
 	Data Packages in Textual Inter
 	Code Packages in Textual Inter
+	Inform Primitives
 	Chains and Stages
 
 Chapter 1: Everything
