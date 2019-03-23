@@ -145,8 +145,8 @@ inter_frame_list *Inter::Inv::children_of_frame(inter_frame P) {
 
 inter_error_message *Inter::Inv::accept_child(inter_frame P, inter_frame C) {
 	if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != LAB_IST) &&
-		(C.data[0] != CODE_IST) && (C.data[0] != VAL_IST) && (C.data[0] != CONCATENATE_IST) &&
-		(C.data[0] != REFCATENATE_IST) && (C.data[0] != CAST_IST) && (C.data[0] != SPLAT_IST))
+		(C.data[0] != CODE_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) &&
+		(C.data[0] != REFERENCE_IST) && (C.data[0] != CAST_IST) && (C.data[0] != SPLAT_IST))
 		return Inter::Frame::error(&P, I"only inv, ref, cast, splat, lab, code, concatenate and val can be under an inv", NULL);
 	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_INV_IFLD]), C, NULL);
 	return NULL;
@@ -229,8 +229,8 @@ int Inter::Inv::arity(inter_frame P) {
 inter_t Inter::Inv::evaluated_category(inter_frame P) {
 	if (P.data[0] == REF_IST) return REF_PRIM_CAT;
 	if (P.data[0] == VAL_IST) return VAL_PRIM_CAT;
-	if (P.data[0] == CONCATENATE_IST) return VAL_PRIM_CAT;
-	if (P.data[0] == REFCATENATE_IST) return REF_PRIM_CAT;
+	if (P.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
+	if (P.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
 	if (P.data[0] == CAST_IST) return VAL_PRIM_CAT;
 	if (P.data[0] == LAB_IST) return LAB_PRIM_CAT;
 	if (P.data[0] == CODE_IST) return CODE_PRIM_CAT;
@@ -247,8 +247,8 @@ inter_t Inter::Inv::evaluated_category(inter_frame P) {
 inter_t Inter::Inv::operand_category(inter_frame P, int i) {
 	if (P.data[0] == REF_IST) return REF_PRIM_CAT;
 	if (P.data[0] == VAL_IST) return VAL_PRIM_CAT;
-	if (P.data[0] == CONCATENATE_IST) return VAL_PRIM_CAT;
-	if (P.data[0] == REFCATENATE_IST) return REF_PRIM_CAT;
+	if (P.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
+	if (P.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
 	if (P.data[0] == CAST_IST) return VAL_PRIM_CAT;
 	if (P.data[0] == LAB_IST) return LAB_PRIM_CAT;
 	if (P.data[0] == INV_IST) {

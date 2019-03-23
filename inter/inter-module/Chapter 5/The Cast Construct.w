@@ -89,7 +89,7 @@ void Inter::Cast::show_dependencies(inter_frame P, void (*callback)(struct inter
 }
 
 inter_error_message *Inter::Cast::accept_child(inter_frame P, inter_frame C) {
-	if ((C.data[0] != INV_IST) && (C.data[0] != VAL_IST) && (C.data[0] != CONCATENATE_IST) && (C.data[0] != CAST_IST))
+	if ((C.data[0] != INV_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != CAST_IST))
 		return Inter::Frame::error(&P, I"only inv, cast, concatenate and val can be under a cast", NULL);
 	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_CAST_IFLD]), C, NULL);
 	return NULL;

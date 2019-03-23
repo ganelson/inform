@@ -6,8 +6,7 @@ Defining the one true set of Inter annotation codes.
 
 @e INVALID_IANN from 0
 
-@e NAME_IANN
-@e MISCELLANY_IANN
+@e PROPERTY_NAME_IANN
 @e HEX_IANN
 @e SIGNED_IANN
 @e CALL_PARAMETER_IANN
@@ -38,6 +37,7 @@ Defining the one true set of Inter annotation codes.
 @e VERBARRAY_IANN
 @e WEAK_ID_IANN
 @e EXPLICIT_ATTRIBUTE_IANN
+@e EXPLICIT_VARIABLE_IANN
 
 @ And also the canonical set of bits to use in the flags word for an Inter
 symbol.
@@ -56,10 +56,9 @@ inter_annotation_form *name_IAF = NULL;
 void Inter::Canon::declare(void) {
 	invalid_IAF = Inter::Defn::create_annotation(INVALID_IANN, I"__invalid", FALSE);
 
-	name_IAF = Inter::Defn::create_annotation(NAME_IANN, I"__name", TRUE);
+	name_IAF = Inter::Defn::create_annotation(PROPERTY_NAME_IANN, I"__property_name", TRUE);
 	Inter::Defn::create_annotation(HEX_IANN, I"__hex", FALSE);
 	Inter::Defn::create_annotation(SIGNED_IANN, I"__signed", FALSE);
-	Inter::Defn::create_annotation(MISCELLANY_IANN, I"__miscellany", FALSE);
 	Inter::Defn::create_annotation(CALL_PARAMETER_IANN, I"__call_parameter", FALSE);
 	Inter::Defn::create_annotation(IMPLIED_CALL_PARAMETER_IANN, I"__implied_call_parameter", FALSE);
 
@@ -88,4 +87,5 @@ void Inter::Canon::declare(void) {
 	Inter::Defn::create_annotation(VERBARRAY_IANN, I"__verb", FALSE);
 	Inter::Defn::create_annotation(WEAK_ID_IANN, I"__weak_ID", FALSE);
 	Inter::Defn::create_annotation(EXPLICIT_ATTRIBUTE_IANN, I"__explicit_attribute", FALSE);
+	Inter::Defn::create_annotation(EXPLICIT_VARIABLE_IANN, I"__explicit_variable", FALSE);
 }

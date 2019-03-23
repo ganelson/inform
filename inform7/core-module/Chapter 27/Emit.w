@@ -554,7 +554,7 @@ inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, 
 	inter_symbol *var_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Variable::new(default_bookmark,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, var_kind), v1, v2, Emit::baseline(default_bookmark), NULL));
-	if (rvalue) Emit::annotate_symbol_t(var_name, NAME_IANN, rvalue);
+	if (rvalue) Emit::annotate_symbol_i(var_name, EXPLICIT_VARIABLE_IANN, 1);
 	return var_name;
 }
 
@@ -902,8 +902,6 @@ void Emit::array_end(void) {
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind);
 	} else {
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, unchecked_interk);
-		if (current_A->array_form == CONSTANT_INDIRECT_LIST)
-			Emit::annotate_symbol_i(con_name, MISCELLANY_IANN, 0);
 	}
 	inter_frame array_in_progress =
 		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), CID, current_A->array_form, NULL, Emit::baseline(IRS));
@@ -1241,14 +1239,14 @@ void Emit::code(void) {
 	Emit::guard(Inter::Code::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
 }
 
-void Emit::concatenate(void) {
+void Emit::evaluation(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Concatenate::new(Emit::at(), current_inter_routine, NULL, Emit::level(), UNDEF_IVAL, 0, NULL));
+	Emit::guard(Inter::Evaluation::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
 }
 
-void Emit::refcatenate(void) {
+void Emit::reference(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Refcatenate::new(Emit::at(), current_inter_routine, NULL, Emit::level(), UNDEF_IVAL, 0, NULL));
+	Emit::guard(Inter::Reference::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
 }
 
 void Emit::val(kind *K, inter_t val1, inter_t val2) {

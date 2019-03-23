@@ -79,7 +79,7 @@ inter_error_message *Inter::Label::write(OUTPUT_STREAM, inter_frame P) {
 }
 
 inter_error_message *Inter::Label::accept_child(inter_frame P, inter_frame C) {
-	if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != CONCATENATE_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != VAL_IST)) {
+	if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != VAL_IST)) {
 		inter_package *pack = Inter::Packages::container(P);
 		inter_symbol *routine = pack->package_name;
 		inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);

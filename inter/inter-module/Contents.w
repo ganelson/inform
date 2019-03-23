@@ -59,7 +59,7 @@ Chapter 5: Code Constructs
 	The Val Construct
 	The Lab Construct
 	The Code Construct
-	The Concatenate Construct
-	The Refcatenate Construct
+	The Evaluation Construct
+	The Reference Construct
 	The Cast Construct
 	The Splat Construct

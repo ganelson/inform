@@ -238,24 +238,29 @@ a value, and |code| can only be used in code context (i.e. matching the
 signature term |code|), not in value context. If what you need is code to
 return a value, that should be another function.
 
-@h Concatenate and refcatenate.
+@h Evaluation and reference.
 Using the mechanisms above, there is no good way to throw away an unwanted
 value: it is an error, for example, to evaluate something in void context.
-That means there is no sensible way to implement a typical C-style
-concatenation such as |A, B, C| -- which evaluates |A|, then |B|, then
-|C|, but produces only |C| as the answer, throwing away |A| and |B|.
-(One might want to do this because the evaluations have side-effects.)
-For that reason, we have:
+That's unfortunate if we want to evaluate something not for its result
+but for a side-effect. To get around that, we have:
 
-	|concatenate _ _|
-	|    val K_number A|
-	|    val K_number B|
-	|    val K_number C|
+	|evaluation|
+	|    ...|
 
-|concatenate| causes any number of indented values to be evaluated,
-throwing all away but returning the last. These values can have different
-kinds. Unlike |code|, whose contents are read in void mode, the contents
-of |concatenate| are read in value mode.
+|evaluation| causes any number of indented values to be evaluated,
+throwing each result away in turn. In effect, it's a shim which changes
+the context from void context to value context; it tends to generate no code
+in the final program.
 
-|refcatenate| is the same thing, except that the result is interpreted as
-a reference, not a value.
+|reference| is similarly a shim, but from reference context to value context.
+This is not in general a safe thing to do: consider the consequences of the
+following, for example -
+
+	|inv !store|
+	|    reference|
+	|        val K_number 7|
+	|    val K_number 3|
+
+In general |reference| must only be used where it can be proved that its
+content will compile to an lvalue in the Inform 6 generated. Inform uses it
+as little as possible.

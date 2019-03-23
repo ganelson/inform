@@ -2742,7 +2742,7 @@ void InterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	}
 
 @<Operation@> =
-	if (prim_cat == REF_PRIM_CAT) { Emit::refcatenate(); Emit::down(); }
+	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
 
 	Emit::inv_primitive(isn->isn_clarifier);
 	Emit::down();
@@ -2822,8 +2822,8 @@ void InterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	int tc = 0; for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) tc++;
 	if ((tc > 1) && (prim_cat == VAL_PRIM_CAT)) cat_me = TRUE;
 
-	if (cat_me) { Emit::concatenate(); Emit::down(); }
-	if (prim_cat == REF_PRIM_CAT) { Emit::refcatenate(); Emit::down(); }
+	if (cat_me) { Emit::evaluation(); Emit::down(); }
+	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
 
 	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
 		switch (t->ist_type) {

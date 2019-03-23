@@ -501,7 +501,7 @@ of defined adjectives. So:
 =
 void TemplateFiles::compile_I7_from_I6(value_holster *VH, text_stream *OUT, text_stream *p) {
 	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
-		Emit::concatenate();
+		Emit::evaluation();
 		Emit::down();
 	}
 

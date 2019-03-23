@@ -204,8 +204,8 @@ void CodeGen::frame(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		case LOCAL_IST: CodeGen::local(OUT, I, P); break;
 		case LABEL_IST: CodeGen::label(OUT, I, P); break;
 		case CODE_IST: CodeGen::code(OUT, I, P); break;
-		case CONCATENATE_IST: CodeGen::concatenate(OUT, I, P); break;
-		case REFCATENATE_IST: CodeGen::concatenate(OUT, I, P); break;
+		case EVALUATION_IST: CodeGen::evaluation(OUT, I, P); break;
+		case REFERENCE_IST: CodeGen::reference(OUT, I, P); break;
 		case PACKAGE_IST: CodeGen::block(OUT, I, P); break;
 		case INV_IST: CodeGen::inv(OUT, I, P); break;
 		case CAST_IST: CodeGen::cast(OUT, I, P); break;
@@ -500,9 +500,20 @@ void CodeGen::code(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	void_level = old_level;
 }
 
-void CodeGen::concatenate(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::evaluation(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	int old_level = void_level;
-	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_CAT_IFLD]);
+	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_EVAL_IFLD]);
+	if (ifl) {
+		inter_frame F;
+		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
+			CodeGen::frame(OUT, I, F);
+	}
+	void_level = old_level;
+}
+
+void CodeGen::reference(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+	int old_level = void_level;
+	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_RCE_IFLD]);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
@@ -1632,12 +1643,6 @@ void CodeGen::mark(inter_symbol *symb_name) {
 
 void CodeGen::unmark(inter_symbol *symb_name) {
 	Inter::Symbols::clear_flag(symb_name, TRAVERSE_MARK_BIT);
-}
-
-text_stream *CodeGen::read_name(inter_repository *I, inter_symbol *symb) {
-	int N = Inter::Symbols::read_annotation(symb, NAME_IANN);
-	if (N == 0) return NULL;
-	return Inter::get_text(I, (inter_t) N);
 }
 
 @ =

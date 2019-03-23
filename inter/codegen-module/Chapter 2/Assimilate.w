@@ -173,7 +173,6 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 						conts = value; annot = VERBARRAY_IANN;
 					}
 
-					Inter::Symbols::annotate_i(I, con_name, MISCELLANY_IANN, 0);
 					if (annot != 0) Inter::Symbols::annotate_i(I, con_name, annot, 1);
 
 					inter_t v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];

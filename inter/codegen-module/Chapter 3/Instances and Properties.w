@@ -688,7 +688,9 @@ though this won't happen for any property created by I7 source text.
 
 @<Write the property name in double quotes@> =
 	WRITE("\"");
-	WRITE("%S", CodeGen::read_name(I, prop_name));
+	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
+	if (N <= 0) WRITE("<nameless>");
+	else WRITE("%S", Inter::get_text(I, (inter_t) N));
 	WRITE("\" ");
 	pos++;
 

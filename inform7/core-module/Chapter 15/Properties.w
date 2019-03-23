@@ -761,8 +761,8 @@ void Properties::annotate_attributes(void) {
 				InterNames::annotate_i(Properties::iname(prn), ATTRIBUTE_IANN, 0);
 			}
 		}
-		if (Wordings::nonempty(prn->name)) InterNames::annotate_w(Properties::iname(prn), NAME_IANN, prn->name);
-		else InterNames::annotate_t(Properties::iname(prn), NAME_IANN, I"<nameless>");
+		if (Wordings::nonempty(prn->name))
+			InterNames::annotate_w(Properties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 		if (prn->run_time_only)
 			InterNames::annotate_i(Properties::iname(prn), RTO_IANN, 0);
 	}

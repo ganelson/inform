@@ -226,7 +226,7 @@ and the other operand is promoted from integer to real if necessary.
 @<Emit set-equals@> =
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::refcatenate();
+		Emit::reference();
 		Emit::down();
 			@<Emit the X-operand@>;
 		Emit::up();

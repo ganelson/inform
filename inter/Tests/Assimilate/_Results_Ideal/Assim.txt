@@ -62,16 +62,16 @@ package main _plain
 			splat &"return x+y;"
 		.end
 	constant Demo K_unchecked_function = Demo_B __assimilated=1
-	constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1 __miscellany
-	constant XB K_list_of_values = { &"(71 + 3)" } __assimilated=1 __miscellany
-	constant XC K_list_of_values = { 17, 91 } __assimilated=1 __miscellany __byte_array=1
-	constant XD K_list_of_values = { 8, 6 } __assimilated=1 __miscellany __byte_array=1
-	constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __miscellany __table_array=1
-	constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __miscellany __buffer_array=1
+	constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
+	constant XB K_list_of_values = { &"(71 + 3)" } __assimilated=1
+	constant XC K_list_of_values = { 17, 91 } __assimilated=1 __byte_array=1
+	constant XD K_list_of_values = { 8, 6 } __assimilated=1 __byte_array=1
+	constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __table_array=1
+	constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __buffer_array=1
 	constant Bodger K_unchecked = 157 __assimilated=1
 	constant Budger K_unchecked = 32738 __assimilated=1
 	variable nitwit K_unchecked = 2 __assimilated=1
-	constant assim_verb_1 K_list_of_values = { dw'purloin', VERB_DIRECTIVE_DIVIDER, &"scope=testcommandnoun", VERB_DIRECTIVE_RESULT, &"##XPurloin" } __assimilated=1 __miscellany __verb=1 __meta_verb=1
+	constant assim_verb_1 K_list_of_values = { dw'purloin', VERB_DIRECTIVE_DIVIDER, &"scope=testcommandnoun", VERB_DIRECTIVE_RESULT, &"##XPurloin" } __assimilated=1 __verb=1 __meta_verb=1
 	constant Bodger_1 K_unchecked = 77 __assimilated=1
 	constant Bydger K_unchecked = 777 __assimilated=1
 	package Banana_B _code

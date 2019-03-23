@@ -131,8 +131,8 @@ void Inter::Defn::create_language(void) {
 	Inter::Val::define();
 	Inter::Lab::define();
 	Inter::Code::define();
-	Inter::Concatenate::define();
-	Inter::Refcatenate::define();
+	Inter::Evaluation::define();
+	Inter::Reference::define();
 	Inter::Cast::define();
 	Inter::Splat::define();
 }
