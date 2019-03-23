@@ -55,8 +55,13 @@ inter_name *PL::Parsing::Tokens::General::print_consultation_gv_name(void) {
 
 inter_name *PL::Parsing::Tokens::General::consult_iname(grammar_verb *gv) {
 	if (gv->gv_consult_iname == NULL) {
-		gv->gv_consult_iname =
-			InterNames::new_in(CONSULT_GRAMMAR_INAMEF, Modules::current());
+		inter_name *c_iname = InterNames::new(CONSULT_GRAMMAR_INAMEF);
+		compilation_module *C = Modules::find(current_sentence);
+		package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+		gv->gv_consult_iname = Packaging::function(
+			InterNames::one_off(I"consult_fn", PR),
+			PR,
+			c_iname);
 	}
 	return gv->gv_consult_iname;
 }
@@ -84,7 +89,13 @@ will simply compile a |parse_name| routine inline, in the usual I6 way.
 =
 inter_name *PL::Parsing::Tokens::General::get_gv_parse_name(grammar_verb *gv) {
 	if (gv->gv_parse_name_iname == NULL) {
-		gv->gv_parse_name_iname = InterNames::new(GRAMMAR_PARSE_NAME_ROUTINE_INAMEF);
+		inter_name *r_iname = InterNames::new(GRAMMAR_PARSE_NAME_ROUTINE_INAMEF);
+		compilation_module *C = Modules::find(gv->where_gv_created);
+		package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+		gv->gv_parse_name_iname = Packaging::function(
+			InterNames::one_off(I"parse_name_fn", PR),
+			PR,
+			r_iname);
 		InterNames::to_symbol(gv->gv_parse_name_iname);
 	}
 	return gv->gv_parse_name_iname;
@@ -98,7 +109,13 @@ inter_name *PL::Parsing::Tokens::General::compile_parse_name_property(inference_
 	} else {
 		if (PL::Parsing::Visibility::any_property_visible_to_subject(subj, FALSE)) {
 			parse_name_notice *notice = CREATE(parse_name_notice);
-			notice->pnn_iname = InterNames::new(PARSE_NAME_ROUTINE_INAMEF);
+			inter_name *r_iname = InterNames::new(PARSE_NAME_ROUTINE_INAMEF);
+			compilation_module *C = Modules::find(subj->infs_created_at);
+			package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+			notice->pnn_iname = Packaging::function(
+				InterNames::one_off(I"parse_name_fn", PR),
+				PR,
+				r_iname);
 			InterNames::to_symbol(notice->pnn_iname);
 			notice->parse_subject = subj;
 			symb = notice->pnn_iname;
@@ -111,11 +128,13 @@ void PL::Parsing::Tokens::General::write_parse_name_routines(void) {
 	parse_name_notice *notice;
 	LOOP_OVER(notice, parse_name_notice) {
 		gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
+		packaging_state save = Packaging::enter_home_of(notice->pnn_iname);
 		if (PL::Parsing::Tokens::General::compile_parse_name_head(&gprk,
 			notice->parse_subject, NULL, notice->pnn_iname)) {
 			PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
 			Routines::end();
 		}
+		Packaging::exit(save);
 	}
 }
 

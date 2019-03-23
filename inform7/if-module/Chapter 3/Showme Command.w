@@ -24,7 +24,14 @@ properties.
 =
 void PL::Showme::compile_SHOWME_details(void) {
 	if (Plugins::Manage::plugged_in(showme_plugin) == FALSE) return;
-	Routines::begin(InterNames::iname(ShowMeDetails_INAME));
+	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
+	inter_name *ShowMeDetails_iname =
+		Packaging::function(
+			InterNames::one_off(I"ShowMeDetails_fn", R),
+			R,
+			InterNames::iname(ShowMeDetails_INAME));
+	packaging_state save = Packaging::enter_home_of(ShowMeDetails_iname);
+	Routines::begin(ShowMeDetails_iname);
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
 	Emit::inv_primitive(ifdebug_interp);
@@ -36,6 +43,7 @@ void PL::Showme::compile_SHOWME_details(void) {
 		Emit::up();
 	Emit::up();
 	Routines::end();
+	Packaging::exit(save);
 }
 
 void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol *na_s) {

@@ -41,10 +41,17 @@ noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int g
 	nft->parse_using_gpr = FALSE;
 	nft->nft_compiled = FALSE;
 
+	inter_name *filter_iname = NULL;
 	if (global_scope)
-		nft->nft_iname = InterNames::new(SCOPE_FILTER_INAMEF);
+		filter_iname = InterNames::new(SCOPE_FILTER_INAMEF);
 	else
-		nft->nft_iname = InterNames::new(NOUN_FILTER_INAMEF);
+		filter_iname = InterNames::new(NOUN_FILTER_INAMEF);
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	nft->nft_iname = Packaging::function(
+		InterNames::one_off(I"filter_fn", PR),
+		PR,
+		filter_iname);
 	InterNames::to_symbol(nft->nft_iname);
 	return nft;
 }
@@ -59,6 +66,8 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 	kind *K = NonlocalVariables::kind(I6_noun_VAR);
 	NonlocalVariables::set_kind(I6_noun_VAR, R);
 	if (Kinds::Compare::le(R, K_object) == FALSE) nft->parse_using_gpr = TRUE;
+
+	packaging_state save = Packaging::enter_home_of(nft->nft_iname);
 	Routines::begin(nft->nft_iname);
 	if (nft->parse_using_gpr) {
 		inter_symbol *v_s = LocalVariables::add_internal_local_c_as_symbol(I"v", "value parsed");
@@ -239,6 +248,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		Emit::up();
 	}
 	Routines::end();
+	Packaging::exit(save);
 	NonlocalVariables::set_kind(I6_noun_VAR, K);
 }
 

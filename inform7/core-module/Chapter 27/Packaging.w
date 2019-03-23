@@ -281,6 +281,7 @@ package_request *Packaging::request_synoptic(void) {
 @e RULEBOOKS_SUBPACKAGE
 @e ACTIVITIES_SUBPACKAGE
 @e RELATIONS_SUBPACKAGE
+@e GRAMMAR_SUBPACKAGE
 
 @e MAX_SUBPACKAGE
 
@@ -350,6 +351,7 @@ package_request *Packaging::synoptic_resource(int ix) {
 			case RULEBOOKS_SUBPACKAGE: N = I"rulebooks"; break;
 			case ACTIVITIES_SUBPACKAGE: N = I"activities"; break;
 			case RELATIONS_SUBPACKAGE: N = I"relations"; break;
+			case GRAMMAR_SUBPACKAGE: N = I"grammar"; break;
 			default: internal_error("nameless resource");
 		}
 		inter_name *iname = InterNames::one_off(N, parent);

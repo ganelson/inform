@@ -781,7 +781,9 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 		}
 		case GV_IS_CONSULT: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-			Routines::begin(PL::Parsing::Tokens::General::consult_iname(gv));
+			inter_name *iname = PL::Parsing::Tokens::General::consult_iname(gv);
+			packaging_state save = Packaging::enter_home_of(iname);
+			Routines::begin(iname);
 			PL::Parsing::Tokens::Values::add_range_calls(&gprk);
 			PL::Parsing::Tokens::Values::add_original(&gprk);
 			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
@@ -806,15 +808,18 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 			Emit::up();
 			Routines::end();
+			Packaging::exit(save);
 			break;
 		}
 		case GV_IS_OBJECT: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
+			packaging_state save = Packaging::enter_home_of(PL::Parsing::Tokens::General::get_gv_parse_name(gv));
 			if (PL::Parsing::Tokens::General::compile_parse_name_head(&gprk, gv->subj_understood, gv, NULL)) {
 				PL::Parsing::Verbs::gv_compile_parse_name_lines(&gprk, gv);
 				PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
 				Routines::end();
 			}
+			Packaging::exit(save);
 			break;
 		}
 		case GV_IS_VALUE:

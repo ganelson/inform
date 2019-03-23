@@ -96,7 +96,14 @@ grammar_line *PL::Parsing::Lines::new(int wn, action_name *ac,
 	gl->understanding_sort_bonus = UNCALCULATED_BONUS;
 
 	gl->cond_token_iname = NULL;
-	gl->mistake_iname = InterNames::new(GRAMMAR_LINE_MISTAKE_TOKEN_INAMEF);
+	
+	inter_name *m_iname = InterNames::new(GRAMMAR_LINE_MISTAKE_TOKEN_INAMEF);
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	gl->mistake_iname = Packaging::function(
+		InterNames::one_off(I"mistake_fn", PR),
+		PR,
+		m_iname);
 	InterNames::to_symbol(gl->mistake_iname);
 
 	return gl;
@@ -219,7 +226,17 @@ int PL::Parsing::Lines::conditional(grammar_line *gl) {
 void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) {
 	if (PL::Parsing::Lines::conditional(gl)) {
 		current_sentence = gl->where_grammar_specified;
-		gl->cond_token_iname = InterNames::new(GRAMMAR_LINE_COND_TOKEN_INAMEF);
+
+		inter_name *c_iname = InterNames::new(GRAMMAR_LINE_COND_TOKEN_INAMEF);
+		compilation_module *C = Modules::find(current_sentence);
+		package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+		gl->cond_token_iname = Packaging::function(
+			InterNames::one_off(I"conditional_token_fn", PR),
+			PR,
+			c_iname);
+		InterNames::to_symbol(gl->cond_token_iname);
+
+		packaging_state save = Packaging::enter_home_of(gl->cond_token_iname);
 		Routines::begin(gl->cond_token_iname);
 
 		parse_node *spec = NULL;
@@ -262,6 +279,7 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 		Emit::up();
 
 		Routines::end();
+		Packaging::exit(save);
 	}
 }
 
@@ -320,6 +338,7 @@ void PL::Parsing::Lines::set_mistake(grammar_line *gl, int wn) {
 
 void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 	if (gl->mistaken) {
+		packaging_state save = Packaging::enter_home_of(gl->mistake_iname);
 		Routines::begin(gl->mistake_iname);
 
 		Emit::inv_primitive(if_interp);
@@ -350,6 +369,7 @@ void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 		Emit::up();
 
 		Routines::end();
+		Packaging::exit(save);
 	}
 }
 
@@ -375,7 +395,14 @@ int PL::Parsing::Lines::gl_compile_result_of_mistake(gpr_kit *gprk, grammar_line
 }
 
 void PL::Parsing::Lines::MistakeActionSub_routine(void) {
-	Routines::begin(InterNames::iname(MistakeActionSub_INAME));
+	package_request *R = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
+	inter_name *MistakeActionSub_iname =
+		Packaging::function(
+			InterNames::one_off(I"MistakeActionSub_fn", R),
+			R,
+			InterNames::iname(MistakeActionSub_INAME));
+	packaging_state save = Packaging::enter_home_of(MistakeActionSub_iname);
+	Routines::begin(MistakeActionSub_iname);
 
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -426,6 +453,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	Emit::up();
 
 	Routines::end();
+	Packaging::exit(save);
 	MistakeAction_iname = InterNames::iname(MistakeAction_INAME);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
 	InterNames::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
