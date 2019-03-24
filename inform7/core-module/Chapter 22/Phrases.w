@@ -350,7 +350,13 @@ inter_schema *Phrases::get_inter_tail(phrase *ph) {
 
 inter_name *Phrases::iname(phrase *ph) {
 	if (ph->ph_iname == NULL) {
-		ph->ph_iname = InterNames::new_in(ADJECTIVE_DEFINED_INAMEF, ph->owning_module);
+		inter_name *c_iname = InterNames::new(ADJECTIVE_DEFINED_INAMEF);
+		package_request *PR =
+			Packaging::request_resource(ph->owning_module, ADJECTIVES_SUBPACKAGE);
+		ph->ph_iname = Packaging::function(
+			InterNames::one_off(I"definition_fn", PR),
+			PR,
+			c_iname);
 	}
 	return ph->ph_iname;
 }

@@ -282,6 +282,8 @@ package_request *Packaging::request_synoptic(void) {
 @e ACTIVITIES_SUBPACKAGE
 @e RELATIONS_SUBPACKAGE
 @e GRAMMAR_SUBPACKAGE
+@e TABLES_SUBPACKAGE
+@e CHRONOLOGY_SUBPACKAGE
 
 @e MAX_SUBPACKAGE
 
@@ -352,6 +354,8 @@ package_request *Packaging::synoptic_resource(int ix) {
 			case ACTIVITIES_SUBPACKAGE: N = I"activities"; break;
 			case RELATIONS_SUBPACKAGE: N = I"relations"; break;
 			case GRAMMAR_SUBPACKAGE: N = I"grammar"; break;
+			case TABLES_SUBPACKAGE: N = I"tables"; break;
+			case CHRONOLOGY_SUBPACKAGE: N = I"chronology"; break;
 			default: internal_error("nameless resource");
 		}
 		inter_name *iname = InterNames::one_off(N, parent);

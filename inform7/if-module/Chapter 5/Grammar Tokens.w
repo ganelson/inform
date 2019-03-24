@@ -1061,7 +1061,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							if (Str::len(i6_gpr_name) > 0)
 								Emit::val_iname(K_value, InterNames::extern_name(EXTERN_GPR_ROUTINE_INAMEF, i6_gpr_name, NULL));
 							else
-								Emit::val_iname(K_value, PL::Parsing::Tokens::Values::gprv_iname(K));
+								Emit::val_iname(K_value, Kinds::RunTime::get_kind_GPR_iname(K));
 						Emit::up();
 					Emit::up();
 					Emit::inv_primitive(if_interp);
@@ -1082,7 +1082,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					if (Str::len(i6_gpr_name) > 0)
 						Emit::array_iname_entry(InterNames::extern_name(EXTERN_GPR_ROUTINE_INAMEF, i6_gpr_name, NULL));
 					else
-						Emit::array_iname_entry(PL::Parsing::Tokens::Values::gprv_iname(K));
+						Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
 				}
 				return K;
 			}
@@ -1186,7 +1186,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									if (Str::len(i6_gpr_name) > 0)
 										Emit::val_iname(K_value, InterNames::extern_name(EXTERN_GPR_ROUTINE_INAMEF, i6_gpr_name, NULL));
 									else
-										Emit::val_iname(K_value, PL::Parsing::Tokens::Values::gprv_iname(K));
+										Emit::val_iname(K_value, Kinds::RunTime::get_kind_GPR_iname(K));
 								Emit::up();
 							Emit::up();
 							Emit::inv_primitive(if_interp);
@@ -1207,7 +1207,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							if (Str::len(i6_gpr_name) > 0)
 								Emit::array_iname_entry(InterNames::extern_name(EXTERN_GPR_ROUTINE_INAMEF, i6_gpr_name, NULL));
 							else
-								Emit::array_iname_entry(PL::Parsing::Tokens::Values::gprv_iname(K));
+								Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
 						}
 					} else if (Kinds::Compare::le(K, K_object)) {
 						if (code_mode) {

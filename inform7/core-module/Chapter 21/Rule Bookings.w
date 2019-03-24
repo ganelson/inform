@@ -725,10 +725,17 @@ which were introduced in December 2010.
 
 =
 void Rules::Bookings::start_list_compilation(void) {
-	Routines::begin(InterNames::iname(EMPTY_RULEBOOK_INAME));
+	package_request *PR = Packaging::request_resource(NULL, RULEBOOKS_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"empty_fn", PR),
+		PR,
+		InterNames::iname(EMPTY_RULEBOOK_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	LocalVariables::add_named_call(I"forbid_breaks");
 	Emit::rfalse();
 	Routines::end();
+	Packaging::exit(save);
 }
 
 @

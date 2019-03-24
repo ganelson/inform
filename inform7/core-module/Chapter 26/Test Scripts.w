@@ -294,7 +294,13 @@ void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 }
 
 void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
-	Routines::begin(InterNames::iname(TestScriptSub_INAME));
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"action_fn", PR),
+		PR,
+		InterNames::iname(TestScriptSub_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Emit::inv_primitive(print_interp);
 		Emit::down();
@@ -359,6 +365,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 	}
 
 	Routines::end();
+	Packaging::exit(save);
 }
 
 @ =
@@ -372,8 +379,14 @@ void PL::Parsing::TestScripts::new_internal(int code, wording W) {
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
 void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"run_tests_fn", PR),
+		PR,
+		InterNames::iname(InternalTestCases_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	internal_test_case *itc; int n = 0;
-	Routines::begin(InterNames::iname(InternalTestCases_INAME));
 	LOOP_OVER(itc, internal_test_case) {
 		n++;
 		if (itc->itc_code == HEADLINE_INTT) {
@@ -489,6 +502,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		DISCARD_TEXT(OUT);
 	}
 	Routines::end();
+	Packaging::exit(save);
 }
 
 void PL::Parsing::TestScripts::begin_internal_reporting(void) {

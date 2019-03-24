@@ -894,7 +894,13 @@ void Relations::compile_relation_records(void) {
 			@<Write the relation record for this BP@>;
 		}
 	}
-	Routines::begin(InterNames::iname(CreateDynamicRelations_INAME));
+	package_request *PR = Packaging::synoptic_resource(RELATIONS_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"creator_fn", PR),
+		PR,
+		InterNames::iname(CreateDynamicRelations_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
 	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
 	LOOP_OVER(bp, binary_predicate) {
@@ -972,6 +978,7 @@ void Relations::compile_relation_records(void) {
 		}
 	}
 	Routines::end();
+	Packaging::exit(save);
 }
 
 @<Write the relation record for this BP@> =
@@ -1742,7 +1749,13 @@ void Relations::compile_blank_relation(kind *K) {
 
 =
 void Relations::IterateRelations(void) {
-	Routines::begin(InterNames::iname(IterateRelations_INAME));
+	package_request *PR = Packaging::synoptic_resource(RELATIONS_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"iterator_fn", PR),
+		PR,
+		InterNames::iname(IterateRelations_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
@@ -1754,6 +1767,7 @@ void Relations::IterateRelations(void) {
 			Emit::up();
 		}
 	Routines::end();
+	Packaging::exit(save);
 }
 
 @h The bitmap for various-to-various relations.
@@ -2333,7 +2347,13 @@ void Relations::compile_defined_relations(void) {
 }
 
 @<Compile RProperty routine@> =
-	Routines::begin(InterNames::iname(RProperty_INAME));
+	package_request *PR = Packaging::synoptic_resource(RELATIONS_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"property_fn", PR),
+		PR,
+		InterNames::iname(RProperty_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	inter_symbol *obj_s = LocalVariables::add_named_call_as_symbol(I"obj");
 	inter_symbol *cl_s = LocalVariables::add_named_call_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::add_named_call_as_symbol(I"pr");
@@ -2362,6 +2382,7 @@ void Relations::compile_defined_relations(void) {
 		Emit::val_nothing();
 	Emit::up();
 	Routines::end();
+	Packaging::exit(save);
 
 @<Compile RGuard f0 routine@> =
 	if (rg->guard_f0_iname) {

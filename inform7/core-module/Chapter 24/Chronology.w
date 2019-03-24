@@ -350,7 +350,14 @@ void Chronology::past_tenses_i6_escape(void) {
 	LOGIF(TIME_PERIODS,
 		"Creating %d past tense conditions in TestSinglePastState\n",
 			NUMBER_CREATED(past_tense_condition_record));
-	Routines::begin(InterNames::iname(TestSinglePastState_INAME));
+
+	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"test_fn", PR),
+		PR,
+		InterNames::iname(TestSinglePastState_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");
@@ -379,6 +386,7 @@ void Chronology::past_tenses_i6_escape(void) {
 	@<Answer the question posed@>;
 
 	Routines::end();
+	Packaging::exit(save);
 	LOGIF(TIME_PERIODS, "Creation of past tense conditions complete\n");
 }
 

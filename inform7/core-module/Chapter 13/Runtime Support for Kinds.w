@@ -624,8 +624,13 @@ inter_name *Kinds::RunTime::get_kind_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->kind_GPR_iname == NULL) {
-		con->kind_GPR_iname = InterNames::new(GPR_FOR_KIND_INAMEF);
-		InterNames::to_symbol(con->kind_GPR_iname);
+		package_request *R = Kinds::RunTime::package(K);
+		con->kind_GPR_iname =
+			Packaging::function(
+				InterNames::one_off(I"gpr_fn", R),
+				R,
+				NULL);
+		Inter::Symbols::set_flag(InterNames::to_symbol(con->kind_GPR_iname), MAKE_NAME_UNIQUE);
 	}
 	return con->kind_GPR_iname;
 }
@@ -1165,7 +1170,6 @@ but at present this can't happen.
 @<Compile I6 printing routine for an enumerated kind@> =
 	packaging_state save = Packaging::enter_home_of(printing_rule_name);
 	Routines::begin(printing_rule_name);
-	LOG("Devising %n -> %S in $X\n", printing_rule_name, CodeGen::name(InterNames::to_symbol(printing_rule_name)), printing_rule_name->eventual_owner);
 	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
 
 	Emit::inv_primitive(switch_interp);

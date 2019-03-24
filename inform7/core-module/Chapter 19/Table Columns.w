@@ -145,7 +145,13 @@ int Tables::Columns::get_id(table_column *tc) {
 }
 
 void Tables::Columns::compile_run_time_support(void) {
-	Routines::begin(InterNames::iname(TC_KOV_INAME));
+	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"weak_kind_ID_of_column_entry_fn", PR),
+		PR,
+		InterNames::iname(TC_KOV_INAME));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Routines::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -175,6 +181,7 @@ void Tables::Columns::compile_run_time_support(void) {
 		Emit::val_symbol(K_value, InterNames::to_symbol(Kinds::Constructors::UNKNOWN_iname()));
 	Emit::up();
 	Routines::end();
+	Packaging::exit(save);
 }
 
 @h Discovering columns.
