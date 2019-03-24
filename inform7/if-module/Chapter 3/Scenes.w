@@ -569,8 +569,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 	package_request *R = Kinds::Behaviour::package(K_use_option);
 	inter_name *iname = Packaging::function(InterNames::one_off(I"detect_scene_change_fn", R),
 		R, InterNames::iname(DetectSceneChange_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *self = InterNames::to_symbol(iname);
 	inter_symbol *chs_s = LocalVariables::add_internal_local_c_as_symbol(I"chs", "count of changes made");
 	inter_symbol *ch_s = LocalVariables::add_internal_local_c_as_symbol(I"ch", "flag: change made");
@@ -582,8 +581,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 	Emit::place_label(CScene_l, TRUE);
 	@<Add the scene-change tail@>;
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @<Add the scene-change tail@> =
@@ -986,8 +984,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 	package_request *R = Kinds::Behaviour::package(K_use_option);
 	inter_name *iname = Packaging::function(InterNames::one_off(I"show_scene_status_fn", R),
 		R, InterNames::iname(ShowSceneStatus_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	Emit::inv_primitive(ifdebug_interp);
 	Emit::down();
 		Emit::code();
@@ -1019,8 +1016,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 			}
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @<Show status of this running scene@> =
@@ -1111,54 +1107,6 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 	Emit::down();
 		Emit::val_text(I"\n");
 	Emit::up();
-
-@h Printing scene names.
-The following routine isn't really necessary, but it's convenient to define
-it explicitly rather than allowing Inform to generate a similar routine by
-virtue of "scene" being an enumerated kind. (Because we're doing this in a
-plugin, and it would cause timing hassles, that's why. It's only a small sin.)
-
-=
-void PL::Scenes::PrintSceneName_routine(void) {
-	Routines::begin(InterNames::iname(PrintSceneName_INAME));
-	inter_symbol *sc_s = LocalVariables::add_named_call_as_symbol(I"sc");
-	Emit::inv_primitive(switch_interp);
-	Emit::down();
-		Emit::val_symbol(K_value, sc_s);
-		Emit::code();
-		Emit::down();
-			scene *sc;
-			LOOP_OVER(sc, scene) {
-				Emit::inv_primitive(case_interp);
-				Emit::down();
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(print_interp);
-						Emit::down();
-							TEMPORARY_TEXT(T);
-							wording NW = Instances::get_name(sc->as_instance, FALSE);
-							WRITE_TO(T, "%W", NW);
-							Emit::val_text(T);
-							DISCARD_TEXT(T);
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			}
-			Emit::inv_primitive(default_interp);
-			Emit::down();
-				Emit::code();
-				Emit::down();
-					Emit::inv_primitive(print_interp);
-					Emit::down();
-						Emit::val_text(I"<no-such-scene>");
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
-	Routines::end();
-}
 
 @h During clauses.
 We've now seen one use of scenes: they kick off rulebooks when they begin or

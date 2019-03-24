@@ -639,8 +639,13 @@ inter_name *Kinds::RunTime::get_instance_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->instance_GPR_iname == NULL) {
-		con->instance_GPR_iname = InterNames::new(GPR_FOR_INSTANCE_INAMEF);
-		InterNames::to_symbol(con->instance_GPR_iname);
+		package_request *R = Kinds::RunTime::package(K);
+		con->instance_GPR_iname =
+			Packaging::function(
+				InterNames::one_off(I"instance_gpr_fn", R),
+				R,
+				NULL);
+		Inter::Symbols::set_flag(InterNames::to_symbol(con->instance_GPR_iname), MAKE_NAME_UNIQUE);
 	}
 	return con->instance_GPR_iname;
 }
@@ -746,8 +751,7 @@ void Kinds::RunTime::compile_structures(void) {
 			InterNames::one_off(I"defaultvaluefinder_fn", R),
 			R,
 			InterNames::iname(DefaultValueFinder_INAME));
-	packaging_state save = Packaging::enter_home_of(DefaultValueFinder_iname);
-	Routines::begin(DefaultValueFinder_iname);
+	packaging_state save = Routines::begin(DefaultValueFinder_iname);
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
@@ -774,8 +778,7 @@ void Kinds::RunTime::compile_structures(void) {
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @h The heap.
 Texts, lists and other flexibly-sized structures make use of a pool of
@@ -1117,14 +1120,12 @@ void Kinds::RunTime::compile_data_type_support_routines(void) {
 		if (Kinds::Behaviour::is_an_enumeration(K)) continue;
 		if (Kinds::Behaviour::stored_as(K) == NULL) {
 			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
-			packaging_state save = Packaging::enter_home_of(printing_rule_name);
 			if (Kinds::Behaviour::is_quasinumerical(K)) {
 				@<Compile I6 printing routine for a unit kind@>;
 				@<Compile random-ranger routine for this kind@>;
 			} else {
 				@<Compile I6 printing routine for a vacant but named kind@>;
 			}
-			Packaging::exit(save);
 		}
 	}
 
@@ -1137,7 +1138,7 @@ appear at run-time; but we need the printing routine to exist to avoid
 compilation errors.
 
 @<Compile I6 printing routine for a vacant but named kind@> =
-	Routines::begin(printing_rule_name);
+	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
 	TEMPORARY_TEXT(C);
 	WRITE_TO(C, "! weak kind ID: %d\n", Kinds::RunTime::weak_id(K));
@@ -1147,7 +1148,7 @@ compilation errors.
 	Emit::down();
 		Emit::val_symbol(K_value, value_s);
 	Emit::up();
-	Routines::end();
+	Routines::end(save);
 
 @ A unit is printed back with its earliest-defined literal pattern used as
 notation. If it had no literal patterns, it would come out as decimal numbers,
@@ -1158,18 +1159,17 @@ but at present this can't happen.
 		LiteralPatterns::printing_routine(printing_rule_name,
 			LiteralPatterns::list_of_literal_forms(K));
 	else {
-		Routines::begin(printing_rule_name);
+		packaging_state save = Routines::begin(printing_rule_name);
 		inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
 		Emit::inv_primitive(print_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, value_s);
 		Emit::up();
-		Routines::end();
+		Routines::end(save);
 	}
 
 @<Compile I6 printing routine for an enumerated kind@> =
-	packaging_state save = Packaging::enter_home_of(printing_rule_name);
-	Routines::begin(printing_rule_name);
+	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
 
 	Emit::inv_primitive(switch_interp);
@@ -1218,8 +1218,7 @@ but at present this can't happen.
 		Emit::up();
 	Emit::up();
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ The suite of standard routines provided for enumerative types is a little
 like the one in Ada (|T'Succ|, |T'Pred|, and so on).
@@ -1238,18 +1237,14 @@ to |A_T1_colour(v)|.
 	LOOP_OVER_INSTANCES(I, K) instance_count++;
 
 	inter_name *iname_i = Kinds::Behaviour::get_inc_iname(K);
-	packaging_state save = Packaging::enter_home_of(iname_i);
-	Routines::begin(iname_i);
+	packaging_state save = Routines::begin(iname_i);
 	@<Implement the A routine@>;
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 	inter_name *iname_d = Kinds::Behaviour::get_dec_iname(K);
-	save = Packaging::enter_home_of(iname_d);
-	Routines::begin(iname_d);
+	save = Routines::begin(iname_d);
 	@<Implement the B routine@>;
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ There should be a blue historical plaque on the wall here: this was the
 first routine implemented by emitting Inter code, on 12 November 2017.
@@ -1335,8 +1330,7 @@ and |b| inclusive.
 
 @<Compile random-ranger routine for this kind@> =
 	inter_name *iname_r = Kinds::Behaviour::get_ranger_iname(K);
-	packaging_state save = Packaging::enter_home_of(iname_r);
-	Routines::begin(iname_r);
+	packaging_state save = Routines::begin(iname_r);
 	inter_symbol *a_s = LocalVariables::add_named_call_as_symbol(I"a");
 	inter_symbol *b_s = LocalVariables::add_named_call_as_symbol(I"b");
 
@@ -1411,8 +1405,7 @@ and |b| inclusive.
 		@<Formula for range@>;
 	Emit::up();
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @<Formula for range@> =
 	Emit::inv_primitive(plus_interp);
@@ -1459,8 +1452,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 			InterNames::one_off(I"printkindvaluepair_fn", R),
 			R,
 			InterNames::iname(PrintKindValuePair_INAME));
-	packaging_state save = Packaging::enter_home_of(PrintKindValuePair_iname);
-	Routines::begin(PrintKindValuePair_iname);
+	packaging_state save = Routines::begin(PrintKindValuePair_iname);
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	inter_symbol *v_s = LocalVariables::add_named_call_as_symbol(I"v");
 	Emit::inv_primitive(store_interp);
@@ -1508,8 +1500,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ |DefaultValueOfKOV(K)| returns the default value for kind |K|: it's needed,
 for instance, when increasing the size of a list of $K$ to include new entries,
@@ -1522,8 +1513,7 @@ which have to be given some type-safe value to start out at.
 			InterNames::one_off(I"defaultvalue_fn", R),
 			R,
 			InterNames::iname(DefaultValueOfKOV_INAME));
-	packaging_state save = Packaging::enter_home_of(DefaultValueOfKOV_iname);
-	Routines::begin(DefaultValueOfKOV_iname);
+	packaging_state save = Routines::begin(DefaultValueOfKOV_iname);
 	inter_symbol *sk_s = LocalVariables::add_named_call_as_symbol(I"sk");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
@@ -1581,8 +1571,7 @@ which have to be given some type-safe value to start out at.
 
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ |KOVComparisonFunction(K)| returns either the address of a function to
 perform a comparison between two values, or else 0 to signal that no
@@ -1599,8 +1588,7 @@ unless the two values are genuinely equal.
 			InterNames::one_off(I"comparison_fn", R),
 			R,
 			InterNames::iname(KOVComparisonFunction_INAME));
-	packaging_state save = Packaging::enter_home_of(KOVComparisonFunction_iname);
-	Routines::begin(KOVComparisonFunction_iname);
+	packaging_state save = Routines::begin(KOVComparisonFunction_iname);
 	LocalVariables::add_named_call(I"k");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
@@ -1652,8 +1640,7 @@ unless the two values are genuinely equal.
 
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @<Compile KOVDomainSize@> =
 	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
@@ -1662,8 +1649,7 @@ unless the two values are genuinely equal.
 			InterNames::one_off(I"domainsize_fn", R),
 			R,
 			InterNames::iname(KOVDomainSize_INAME));
-	packaging_state save = Packaging::enter_home_of(KOVDomainSize_iname);
-	Routines::begin(KOVDomainSize_iname);
+	packaging_state save = Routines::begin(KOVDomainSize_iname);
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
 	Emit::inv_primitive(store_interp);
@@ -1713,8 +1699,7 @@ unless the two values are genuinely equal.
 
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ |KOVIsBlockValue(K)| is true if and only if |K| is the I6 ID of a kind
 storing pointers to blocks on the heap.
@@ -1726,8 +1711,7 @@ storing pointers to blocks on the heap.
 			InterNames::one_off(I"blockvalue_fn", R),
 			R,
 			InterNames::iname(KOVIsBlockValue_INAME));
-	packaging_state save = Packaging::enter_home_of(KOVIsBlockValue_iname);
-	Routines::begin(KOVIsBlockValue_iname);
+	packaging_state save = Routines::begin(KOVIsBlockValue_iname);
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -1760,8 +1744,7 @@ storing pointers to blocks on the heap.
 		Emit::up();
 	Emit::up();
 	Emit::rfalse();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ |KOVSupportFunction(K)| returns the address of the specific support function
 for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
@@ -1774,8 +1757,7 @@ such a function does, see "BlockValues.i6t".
 			InterNames::one_off(I"support_fn", R),
 			R,
 			InterNames::iname(KOVSupportFunction_INAME));
-	packaging_state save = Packaging::enter_home_of(KOVSupportFunction_iname);
-	Routines::begin(KOVSupportFunction_iname);
+	packaging_state save = Routines::begin(KOVSupportFunction_iname);
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	inter_symbol *fail_s = LocalVariables::add_named_call_as_symbol(I"fail");
 
@@ -1827,8 +1809,7 @@ such a function does, see "BlockValues.i6t".
 	Emit::up();
 
 	Emit::rfalse();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ Code for printing names of kinds at run-time. This needn't run quickly, and
 making it a routine rather than using an array saves a few bytes of precious
@@ -1842,9 +1823,8 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 			InterNames::one_off(I"printkindname_fn", R),
 			R,
 			InterNames::iname(I7_Kind_Name_INAME));
-	packaging_state save = Packaging::enter_home_of(I7_Kind_Name_iname);
 	kind *K;
-	Routines::begin(I7_Kind_Name_iname);
+	packaging_state save = Routines::begin(I7_Kind_Name_iname);
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Compare::lt(K, K_object)) {
@@ -1867,8 +1847,7 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 				Emit::up();
 			Emit::up();
 		}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @ =

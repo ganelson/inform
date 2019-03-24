@@ -45,7 +45,12 @@ void Chronology::ap_compile_forced_to_present(action_pattern ap) {
 #ifdef IF_MODULE
 void Chronology::compile_past_action_pattern(value_holster *VH, time_period duration, action_pattern ap) {
 	char *op = duration.inform6_operator;
-	inter_name *pta_routine = InterNames::new(PAST_ACTION_ROUTINE_INAMEF);
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, CHRONOLOGY_SUBPACKAGE);
+	inter_name *pta_routine = Packaging::function(
+		InterNames::one_off(I"pap_fn", PR),
+		PR,
+		InterNames::new(PAST_ACTION_ROUTINE_INAMEF));
 	LOGIF(TIME_PERIODS,
 		"Chronology::compile_past_action_pattern on: $A\nat: $t\n", &ap, &duration);
 	if (PL::Actions::Patterns::makes_callings(&ap)) {
@@ -307,8 +312,7 @@ void Chronology::past_actions_i6_routines(void) {
 	past_tense_action_record *pta;
 	LOOP_OVER(pta, past_tense_action_record) {
 		current_sentence = pta->where_pta_tested; /* ensure problems reported correctly */
-
-		Routines::begin(pta->pta_iname);
+		packaging_state save = Routines::begin(pta->pta_iname);
 
 		Emit::inv_primitive(if_interp);
 		Emit::down();
@@ -332,7 +336,7 @@ void Chronology::past_actions_i6_routines(void) {
 				"this one? And so on.");
 		}
 
-		Routines::end();
+		Routines::end(save);
 	}
 	Emit::named_array_begin(InterNames::iname(PastActionsI6Routines_INAME), K_value);
 	LOOP_OVER(pta, past_tense_action_record)
@@ -356,8 +360,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		InterNames::one_off(I"test_fn", PR),
 		PR,
 		InterNames::iname(TestSinglePastState_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");
@@ -385,8 +388,7 @@ void Chronology::past_tenses_i6_escape(void) {
 
 	@<Answer the question posed@>;
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 	LOGIF(TIME_PERIODS, "Creation of past tense conditions complete\n");
 }
 

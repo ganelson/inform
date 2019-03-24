@@ -21,7 +21,13 @@ loop_over_scope *PL::Actions::ScopeLoops::new(parse_node *what) {
 		los->what_to_find->down = ParseTree::duplicate(los->what_to_find->down);
 		Descriptions::clear_calling(los->what_to_find);
 	}
-	los->los_iname = InterNames::new(LOOP_OVER_SCOPE_ROUTINE_INAMEF);
+	inter_name *m_iname = InterNames::new(LOOP_OVER_SCOPE_ROUTINE_INAMEF);
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	los->los_iname = Packaging::function(
+		InterNames::one_off(I"loop_over_scope_fn", PR),
+		PR,
+		m_iname);
 	return los;
 }
 
@@ -42,7 +48,7 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 }
 
 @<Compile an individual loop-over-scope@> =
-	Routines::begin(los->los_iname);
+	packaging_state save = Routines::begin(los->los_iname);
 
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	local_variable *it_lv = LocalVariables::add_pronoun(phsf, EMPTY_WORDING, K_object);
@@ -68,4 +74,4 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 			Emit::up();
 		Emit::up();
 	Emit::up();
-	Routines::end();
+	Routines::end(save);

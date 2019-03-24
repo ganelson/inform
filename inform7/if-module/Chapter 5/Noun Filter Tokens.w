@@ -67,8 +67,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 	NonlocalVariables::set_kind(I6_noun_VAR, R);
 	if (Kinds::Compare::le(R, K_object) == FALSE) nft->parse_using_gpr = TRUE;
 
-	packaging_state save = Packaging::enter_home_of(nft->nft_iname);
-	Routines::begin(nft->nft_iname);
+	packaging_state save = Routines::begin(nft->nft_iname);
 	if (nft->parse_using_gpr) {
 		inter_symbol *v_s = LocalVariables::add_internal_local_c_as_symbol(I"v", "value parsed");
 		inter_symbol *n_s = LocalVariables::add_internal_local_c_as_symbol(I"n", "saved value of noun");
@@ -247,8 +246,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 				Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
 		Emit::up();
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 	NonlocalVariables::set_kind(I6_noun_VAR, K);
 }
 

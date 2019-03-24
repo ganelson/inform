@@ -439,14 +439,12 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 					Packaging::function(
 						InterNames::one_off(I"command_prompt_text_fn", iname->eventual_owner), iname->eventual_owner,
 						InterNames::iname(CommandPromptText_INAME));
-				packaging_state save = Packaging::enter_home_of(rname);
-				Routines::begin(rname);
+				packaging_state save = Routines::begin(rname);
 				Emit::inv_primitive(return_interp);
 				Emit::down();
 					Emit::val_iname(K_text, iname);
 				Emit::up();
-				Routines::end();
-				Packaging::exit(save);
+				Routines::end(save);
 			}
 
 			Packaging::exit(save);

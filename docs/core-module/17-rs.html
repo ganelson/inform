@@ -171,8 +171,7 @@ a call to an activity based on that value:
             <span class="functiontext">Packaging::function</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"launcher_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">), </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
 
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">);</span>
 
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span>
             <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">);</span>
@@ -183,8 +182,7 @@ a call to an activity based on that value:
         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
@@ -242,8 +240,7 @@ essence here.
 
 <pre class="displaydefn">
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">responder_iname</span><span class="plain"> = </span><span class="functiontext">Rules::get_handler_definition</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">responder_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">responder_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">responder_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">code_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"code"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">val_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"val"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">val2_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"val2"</span><span class="plain">);</span>
@@ -385,8 +382,7 @@ essence here.
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">str_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -464,8 +460,7 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
 
 <pre class="displaydefn">
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">printing_rule_name</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K_response</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">printing_rule_name</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">printing_rule_name</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">printing_rule_name</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">);</span>
         <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">, </span><span class="reserved">response_message</span><span class="plain">) {</span>
@@ -499,8 +494,7 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

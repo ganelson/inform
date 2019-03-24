@@ -135,8 +135,7 @@ quantifiers, either.
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS</span><span class="plain">, </span><span class="string">"Compiling deferred proposition: %d: reason %d: $D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
             <span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;reason</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">);</span>
 
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;ppd_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;ppd_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;ppd_iname</span><span class="plain">);</span>
 
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
@@ -146,8 +145,7 @@ quantifiers, either.
         &lt;<span class="cwebmacro">Issue a problem message if a negated quantifier was needed</span> <span class="cwebmacronumber">2.1.4</span>&gt;<span class="plain">;</span>
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile the constant origin text for run-time problem use</span> <span class="cwebmacronumber">2.1.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">current_pdef</span><span class="plain"> = </span><span class="identifier">save_current_pdef</span><span class="plain">;</span>

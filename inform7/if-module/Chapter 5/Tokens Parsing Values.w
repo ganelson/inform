@@ -123,8 +123,7 @@ void PL::Parsing::Tokens::Values::number(void) {
 			InterNames::one_off(I"gpr_fn", R),
 			R,
 			InterNames::iname(DECIMAL_TOKEN_INNER_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_number);
@@ -133,8 +132,7 @@ void PL::Parsing::Tokens::Values::number(void) {
 	Emit::down();
 		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 void PL::Parsing::Tokens::Values::time(void) {
@@ -144,8 +142,7 @@ void PL::Parsing::Tokens::Values::time(void) {
 			InterNames::one_off(I"gpr_fn", R),
 			R,
 			InterNames::iname(TIME_TOKEN_INNER_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	kind *K = PL::TimesOfDay::kind();
@@ -157,8 +154,7 @@ void PL::Parsing::Tokens::Values::time(void) {
 	Emit::down();
 		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 void PL::Parsing::Tokens::Values::truth_state(void) {
@@ -168,8 +164,7 @@ void PL::Parsing::Tokens::Values::truth_state(void) {
 			InterNames::one_off(I"gpr_fn", R),
 			R,
 			InterNames::iname(TRUTH_STATE_TOKEN_INNER_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_truth_state);
@@ -178,8 +173,7 @@ void PL::Parsing::Tokens::Values::truth_state(void) {
 	Emit::down();
 		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
@@ -192,8 +186,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 			instance *q; literal_pattern *lp;
 			if (Kinds::Behaviour::needs_I6_GPR(K) == FALSE) continue;
 			inter_name *iname = Kinds::RunTime::get_kind_GPR_iname(K);
-			packaging_state save = Packaging::enter_home_of(iname);
-			Routines::begin(iname);
+			packaging_state save = Routines::begin(iname);
 			int need_lf_vars = FALSE;
 			LITERAL_FORMS_LOOP(lp, K) {
 				need_lf_vars = TRUE;
@@ -204,11 +197,11 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
 			if (need_lf_vars) PL::Parsing::Tokens::Values::add_lp_vars(&gprk);
 			@<Compile body of kind GPR@>;
-			Routines::end();
-			Packaging::exit(save);
+			Routines::end(save);
 			
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
-				Routines::begin(Kinds::RunTime::get_instance_GPR_iname(K));
+				inter_name *iname = Kinds::RunTime::get_instance_GPR_iname(K);
+				packaging_state save = Routines::begin(iname);
 				gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 				PL::Parsing::Tokens::Values::add_instance_call(&gprk);
 				PL::Parsing::Tokens::Values::add_original(&gprk);
@@ -216,7 +209,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 				GV_IS_VALUE_instance_mode = TRUE;
 				@<Compile body of kind GPR@>;
 				GV_IS_VALUE_instance_mode = FALSE;
-				Routines::end();
+				Routines::end(save);
 			}
 		}
 	}

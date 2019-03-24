@@ -357,8 +357,7 @@ compiling it.
 
         <span class="identifier">current_ts_being_compiled</span><span class="plain"> = </span><span class="identifier">ts</span><span class="plain">;</span>
         <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;tr_done_already</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain">);</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;parked_stack_frame</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_marker</span><span class="plain"> &gt;= 0)) {</span>
             <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain"> = </span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span>
@@ -377,8 +376,7 @@ compiling it.
             <span class="functiontext">LocalVariables::compile_retrieval</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
             <span class="functiontext">Emit::pop_code_position</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_sb_needed</span><span class="plain">) {</span>
             <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_iname</span><span class="plain">);</span>

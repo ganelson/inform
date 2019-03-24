@@ -159,8 +159,14 @@ equation *Equations::new(wording W, int anonymous) {
 	eqn->parsed_equation = NULL;
 	eqn->symbol_list = NULL;
 	eqn->examined_already = FALSE;
-	eqn->eqn_iname = InterNames::new(EQUATION_ROUTINE_INAMEF);
-	InterNames::attach_memo(eqn->eqn_iname, eqn->equation_name_text);
+
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, EQUATIONS_SUBPACKAGE);
+	eqn->eqn_iname = Packaging::function(
+		InterNames::one_off(I"solve_fn", PR),
+		PR,
+		NULL);
+	Inter::Symbols::set_flag(InterNames::to_symbol(eqn->eqn_iname), MAKE_NAME_UNIQUE);
 
 	wording NO = EMPTY_WORDING, NA = EMPTY_WORDING;
 	if (anonymous == FALSE) {
@@ -1540,9 +1546,9 @@ for equations a value; they are never called.
 void Equations::compile(void) {
 	equation *eqn;
 	LOOP_OVER(eqn, equation) {
-		Routines::begin(eqn->eqn_iname);
+		packaging_state save = Routines::begin(eqn->eqn_iname);
 		Emit::rfalse();
-		Routines::end();
+		Routines::end(save);
 	}
 }
 

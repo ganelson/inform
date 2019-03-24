@@ -286,7 +286,14 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 @<The object is found in many rooms or in whole regions, so make it a routine@> =
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
 	notice->backdrop = I;
-	notice->found_in_routine_iname = InterNames::new(BACKDROP_FOUND_IN_ROUTINE_INAMEF);
+	package_request *R = Instances::package(I);
+	notice->found_in_routine_iname =
+		Packaging::function(
+			InterNames::one_off(I"backdrop_found_in_fn", R),
+			R,
+			NULL);
+	Inter::Symbols::set_flag(InterNames::to_symbol(notice->found_in_routine_iname),
+		MAKE_NAME_UNIQUE);
 	InterNames::to_symbol(notice->found_in_routine_iname);
 	notice->many_places = TRUE;
 	FOUNDIN = notice->found_in_routine_iname;
@@ -299,7 +306,14 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 @<The object is found nowhere, so give it a stub found-in property and mark it absent@> =
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
 	notice->backdrop = I;
-	notice->found_in_routine_iname = InterNames::new(BACKDROP_FOUND_IN_ROUTINE_INAMEF);
+	package_request *R = Instances::package(I);
+	notice->found_in_routine_iname =
+		Packaging::function(
+			InterNames::one_off(I"backdrop_found_in_fn", R),
+			R,
+			NULL);
+	Inter::Symbols::set_flag(InterNames::to_symbol(notice->found_in_routine_iname),
+		MAKE_NAME_UNIQUE);
 	InterNames::to_symbol(notice->found_in_routine_iname);
 	notice->many_places = FALSE;
 	FOUNDIN = notice->found_in_routine_iname;
@@ -319,7 +333,7 @@ void PL::Backdrops::write_found_in_routines(void) {
 }
 
 @<The object is found in many rooms or in whole regions@> =
-	Routines::begin(notice->found_in_routine_iname);
+	packaging_state save = Routines::begin(notice->found_in_routine_iname);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF) {
 		instance *loc = World::Inferences::get_reference_as_object(inf);
@@ -346,9 +360,9 @@ void PL::Backdrops::write_found_in_routines(void) {
 		Emit::rfalse();
 		break;
 	}
-	Routines::end();
+	Routines::end(save);
 
 @<The object is found nowhere@> =
-	Routines::begin(notice->found_in_routine_iname);
+	packaging_state save = Routines::begin(notice->found_in_routine_iname);
 	Emit::rfalse();
-	Routines::end();
+	Routines::end(save);

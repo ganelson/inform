@@ -730,12 +730,10 @@ void Rules::Bookings::start_list_compilation(void) {
 		InterNames::one_off(I"empty_fn", PR),
 		PR,
 		InterNames::iname(EMPTY_RULEBOOK_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	LocalVariables::add_named_call(I"forbid_breaks");
 	Emit::rfalse();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @
@@ -818,22 +816,13 @@ than once for each rule.
 		case ARRAY_RBF: Emit::named_array_begin(identifier, K_value); break;
 		case GROUPED_ARRAY_RBF: Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_t) -2); break;
 		case ROUTINE_RBF: {
-			Routines::begin(identifier);
+			Routines::begin_in_current_package(identifier);
 			forbid_breaks_s = LocalVariables::add_named_call_as_symbol(I"forbid_breaks");
 			rv_s = LocalVariables::add_internal_local_c_as_symbol(I"rv", "return value");
 			if (countup > 1)
 				original_deadflag_s = LocalVariables::add_internal_local_c_as_symbol(I"original_deadflag", "saved state");
 			if (parameter_based)
 				p_s = LocalVariables::add_internal_local_c_as_symbol(I"p", "rulebook parameter");
-
-/*					Emit::inv_primitive(print_interp);
-					Emit::down();
-						TEMPORARY_TEXT(T);
-						WRITE_TO(T, "Rulebook %n\n", identifier);
-						Emit::val_text(T);
-						DISCARD_TEXT(T);
-					Emit::up();
-*/
 
 			if (countup > 1) {
 				Emit::inv_primitive(store_interp);
@@ -990,7 +979,7 @@ than once for each rule.
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Routines::end();
+			Routines::end_in_current_package();
 			break;
 	}
 

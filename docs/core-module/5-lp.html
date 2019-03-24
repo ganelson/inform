@@ -2474,7 +2474,7 @@ note that the following uses the raw text of the word.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">LiteralPatterns::printing_routine</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="reserved">literal_pattern</span><span class="plain"> *</span><span class="identifier">lp_list</span><span class="plain">) {</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
 
         <span class="reserved">literal_pattern_name</span><span class="plain"> *</span><span class="identifier">lpn</span><span class="plain">;</span>
         <span class="reserved">literal_pattern</span><span class="plain"> *</span><span class="identifier">lp</span><span class="plain">;</span>
@@ -2525,7 +2525,7 @@ note that the following uses the raw text of the word.
             &lt;<span class="cwebmacro">Print according to this particular literal pattern</span> <span class="cwebmacronumber">27.3</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::rtrue</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

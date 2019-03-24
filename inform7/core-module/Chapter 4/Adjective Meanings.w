@@ -984,7 +984,7 @@ known in order to sort.
 		W, K, T);
 
 	packaging_state save = Packaging::enter(aph->aph_iname->eventual_owner);
-	Routines::begin(Adjectives::Meanings::iname(aph, T,
+	Routines::begin_in_current_package(Adjectives::Meanings::iname(aph, T,
 		Kinds::RunTime::weak_id(K)));
 
 	@<Add an it-variable to represent the value or object in the domain@>;
@@ -1004,8 +1004,7 @@ known in order to sort.
 	}
 	Emit::rfalse();
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ The stack frame has just one call parameter: the value $x$ which might, or
 might not, be such that adjective($x$) is true. We allow this to be called
@@ -1311,8 +1310,7 @@ void Adjectives::Meanings::agreements(void) {
 		wording PW = Clusters::get_name_general(aph->adjective_names, language_of_play, 1, -1);
 		if (Wordings::empty(PW)) continue;
 
-		packaging_state save = Packaging::enter(aph->aph_iname->eventual_owner);
-		Routines::begin(aph->aph_iname);
+		packaging_state save = Routines::begin(aph->aph_iname);
 		inter_symbol *o_s = LocalVariables::add_named_call_as_symbol(I"o");
 		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
 		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
@@ -1423,8 +1421,7 @@ void Adjectives::Meanings::agreements(void) {
 			Emit::up();
 		Emit::up();
 
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 }
 

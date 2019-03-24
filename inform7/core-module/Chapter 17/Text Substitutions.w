@@ -252,8 +252,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 
 	current_ts_being_compiled = ts;
 	ts->tr_done_already = TRUE;
-	packaging_state save = Packaging::enter_home_of(ts->ts_routine_iname);
-	Routines::begin(ts->ts_routine_iname);
+	packaging_state save = Routines::begin(ts->ts_routine_iname);
 	ph_stack_frame *phsf = ts->parked_stack_frame;
 	if ((ts->responding_to_rule) && (ts->responding_to_marker >= 0)) {
 		response_message *resp = Rules::rule_defines_response(
@@ -272,8 +271,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 		LocalVariables::compile_retrieval(phsf);
 		Emit::pop_code_position();
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 	if (ts->ts_sb_needed) {
 		packaging_state save = Packaging::enter_home_of(ts->ts_iname);

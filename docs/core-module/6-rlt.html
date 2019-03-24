@@ -278,7 +278,9 @@ splitting into cases.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dynamic</span><span class="plain">) {</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;dynamic_memory</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">bpr</span><span class="plain">-</span><span class="element">&gt;dynamic_memory</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">RELATION_INITIALISER_ROUTINE_INAMEF</span><span class="plain">);</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
+            <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"relation_initialiser_fn"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">BinaryPredicates::mark_as_needed</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
 
@@ -1031,8 +1033,9 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;form_of_relation</span><span class="plain"> = </span><span class="constant">Relation_ByRoutine</span><span class="plain">;</span>
-            <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">RELATION_BY_ROUTINE_INAMEF</span><span class="plain">);</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain">);</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
+            <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"relation_fn"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;test_function</span><span class="plain"> = </span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"(%n(*1,*2))"</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain">);</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;condition_defn_text</span><span class="plain"> = </span><span class="identifier">CONW</span><span class="plain">;</span>
     </pre>
@@ -1250,7 +1253,12 @@ logical properties of the two terms of the BP being defined.
                     &lt;<span class="cwebmacro">Write the relation record for this BP</span> <span class="cwebmacronumber">15.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CreateDynamicRelations_INAME</span><span class="plain">));</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RELATIONS_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"creator_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+                <span class="identifier">PR</span><span class="plain">,</span>
+                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CreateDynamicRelations_INAME</span><span class="plain">));</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"i"</span><span class="plain">, </span><span class="string">"loop counter"</span><span class="plain">);</span>
             <span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"rel"</span><span class="plain">, </span><span class="string">"new relation"</span><span class="plain">);</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">) {</span>
@@ -1327,7 +1335,7 @@ logical properties of the two terms of the BP being defined.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     </pre>
 
@@ -1543,8 +1551,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"Y"</span><span class="plain">; </span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"X"</span><span class="plain">; </span><span class="identifier">dbp</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;reversal</span><span class="plain">; }</span>
 
             <span class="identifier">handler</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::handler_iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">handler</span><span class="plain">);</span>
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">handler</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">handler</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">rr_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"rr"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">task_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"task"</span><span class="plain">);</span>
             <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">X_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -1708,8 +1715,7 @@ logical properties of the two terms of the BP being defined.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
             <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     </pre>
 
     <p class="inwebparagraph"></p>
@@ -2365,7 +2371,12 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="display">
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::IterateRelations</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">IterateRelations_INAME</span><span class="plain">));</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RELATIONS_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"iterator_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+                <span class="identifier">PR</span><span class="plain">,</span>
+                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">IterateRelations_INAME</span><span class="plain">));</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">callback_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"callback"</span><span class="plain">);</span>
             <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">)</span>
@@ -2376,7 +2387,7 @@ logical properties of the two terms of the BP being defined.
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     </pre>
 
@@ -3154,7 +3165,12 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">RProperty_INAME</span><span class="plain">));</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RELATIONS_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"property_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+                <span class="identifier">PR</span><span class="plain">,</span>
+                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">RProperty_INAME</span><span class="plain">));</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">obj_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"obj"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">cl_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"cl"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pr_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pr"</span><span class="plain">);</span>
@@ -3182,7 +3198,7 @@ logical properties of the two terms of the BP being defined.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     </pre>
 
     <p class="inwebparagraph"></p>
@@ -3196,8 +3212,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f0_iname</span><span class="plain">) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f0_iname</span><span class="plain">);</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f0_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f0_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">X_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">X_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"X"</span><span class="plain">, </span><span class="string">"which is related to at most one object"</span><span class="plain">, &amp;</span><span class="identifier">X_lv</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;f0</span><span class="plain">) {</span>
@@ -3230,8 +3245,7 @@ logical properties of the two terms of the BP being defined.
                         <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
 
@@ -3246,8 +3260,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f1_iname</span><span class="plain">) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f1_iname</span><span class="plain">);</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f1_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_f1_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">X_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">X_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"X"</span><span class="plain">, </span><span class="string">"which is related to at most one object"</span><span class="plain">, &amp;</span><span class="identifier">X_lv</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;f1</span><span class="plain">) {</span>
@@ -3280,8 +3293,7 @@ logical properties of the two terms of the BP being defined.
                         <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
 
@@ -3296,8 +3308,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_test_iname</span><span class="plain">) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_test_iname</span><span class="plain">);</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_test_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_test_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">L_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">R_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">L_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"L"</span><span class="plain">, </span><span class="string">"left member of pair"</span><span class="plain">, &amp;</span><span class="identifier">L_lv</span><span class="plain">);</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">, </span><span class="string">"right member of pair"</span><span class="plain">, &amp;</span><span class="identifier">R_lv</span><span class="plain">);</span>
@@ -3337,8 +3348,7 @@ logical properties of the two terms of the BP being defined.
 
                 <span class="plain">}</span>
                 <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
 
@@ -3353,8 +3363,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_true_iname</span><span class="plain">) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_true_iname</span><span class="plain">);</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_true_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_true_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">L_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">R_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">L_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"L"</span><span class="plain">, </span><span class="string">"left member of pair"</span><span class="plain">, &amp;</span><span class="identifier">L_lv</span><span class="plain">);</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">, </span><span class="string">"right member of pair"</span><span class="plain">, &amp;</span><span class="identifier">R_lv</span><span class="plain">);</span>
@@ -3404,8 +3413,7 @@ logical properties of the two terms of the BP being defined.
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guarding</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
 
@@ -3420,8 +3428,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_false_iname</span><span class="plain">) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_false_iname</span><span class="plain">);</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_false_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guard_make_false_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">L_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">R_lv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">L_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"L"</span><span class="plain">, </span><span class="string">"left member of pair"</span><span class="plain">, &amp;</span><span class="identifier">L_lv</span><span class="plain">);</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">, </span><span class="string">"right member of pair"</span><span class="plain">, &amp;</span><span class="identifier">R_lv</span><span class="plain">);</span>
@@ -3471,8 +3478,7 @@ logical properties of the two terms of the BP being defined.
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;guarding</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
 
@@ -3487,7 +3493,7 @@ logical properties of the two terms of the BP being defined.
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::compile_routine_to_decide</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain">,</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">bp_term_details</span><span class="plain"> </span><span class="identifier">par1</span><span class="plain">, </span><span class="reserved">bp_term_details</span><span class="plain"> </span><span class="identifier">par2</span><span class="plain">) {</span>
 
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
 
             <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
             <span class="functiontext">BinaryPredicates::add_term_as_call_parameter</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">par1</span><span class="plain">);</span>
@@ -3509,7 +3515,7 @@ logical properties of the two terms of the BP being defined.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
 
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     </pre>
 

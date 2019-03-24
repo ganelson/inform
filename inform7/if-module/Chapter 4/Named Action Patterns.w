@@ -23,7 +23,13 @@ named_action_pattern *PL::Actions::Patterns::Named::nap_new(wording W) {
 	nap->name = Nouns::new_proper_noun(W, NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap));
-	nap->nap_iname = InterNames::new(NAMED_ACTION_PATTERN_INAMEF);
+
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	nap->nap_iname = Packaging::function(
+		InterNames::one_off(I"nap_fn", PR),
+		PR,
+		InterNames::new(NAMED_ACTION_PATTERN_INAMEF));
 	return nap;
 }
 
@@ -91,7 +97,7 @@ void PL::Actions::Patterns::Named::compile(void) {
 	named_action_pattern *nap;
 	action_pattern *ap;
 	LOOP_OVER(nap, named_action_pattern) {
-		Routines::begin(nap->nap_iname);
+		packaging_state save = Routines::begin(nap->nap_iname);
 		ap = nap->first;
 		while (ap != NULL) {
 			current_sentence = ap->entered_into_NAP_here;
@@ -106,7 +112,7 @@ void PL::Actions::Patterns::Named::compile(void) {
 			ap = ap->next;
 		}
 		Emit::rfalse();
-		Routines::end();
+		Routines::end(save);
 	}
 }
 

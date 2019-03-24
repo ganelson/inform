@@ -75,8 +75,13 @@ being matched against the snippet of words.
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Tokens::General::consult_iname</span><span class="plain">(</span><span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_consult_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_consult_iname</span><span class="plain"> =</span>
-                <span class="identifier">InterNames::new_in</span><span class="plain">(</span><span class="identifier">CONSULT_GRAMMAR_INAMEF</span><span class="plain">, </span><span class="identifier">Modules::current</span><span class="plain">());</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">c_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">CONSULT_GRAMMAR_INAMEF</span><span class="plain">);</span>
+            <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_consult_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"consult_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+                <span class="identifier">PR</span><span class="plain">,</span>
+                <span class="identifier">c_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_consult_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -118,7 +123,13 @@ will simply compile a <code class="display"><span class="extract">parse_name</sp
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Tokens::General::get_gv_parse_name</span><span class="plain">(</span><span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_parse_name_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_parse_name_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GRAMMAR_PARSE_NAME_ROUTINE_INAMEF</span><span class="plain">);</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">r_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GRAMMAR_PARSE_NAME_ROUTINE_INAMEF</span><span class="plain">);</span>
+            <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;where_gv_created</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_parse_name_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"parse_name_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+                <span class="identifier">PR</span><span class="plain">,</span>
+                <span class="identifier">r_iname</span><span class="plain">);</span>
             <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_parse_name_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_parse_name_iname</span><span class="plain">;</span>
@@ -132,7 +143,13 @@ will simply compile a <code class="display"><span class="extract">parse_name</sp
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Parsing::Visibility::any_property_visible_to_subject</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="reserved">parse_name_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">parse_name_notice</span><span class="plain">);</span>
-                <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">PARSE_NAME_ROUTINE_INAMEF</span><span class="plain">);</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">r_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">PARSE_NAME_ROUTINE_INAMEF</span><span class="plain">);</span>
+                <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">-&gt;</span><span class="identifier">infs_created_at</span><span class="plain">);</span>
+                <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+                <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                    <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"parse_name_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+                    <span class="identifier">PR</span><span class="plain">,</span>
+                    <span class="identifier">r_iname</span><span class="plain">);</span>
                 <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain">);</span>
                 <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;parse_subject</span><span class="plain"> = </span><span class="identifier">subj</span><span class="plain">;</span>
                 <span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain">;</span>
@@ -145,18 +162,20 @@ will simply compile a <code class="display"><span class="extract">parse_name</sp
         <span class="reserved">parse_name_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">parse_name_notice</span><span class="plain">) {</span>
             <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_head</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">,</span>
                 <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;parse_subject</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain">)) {</span>
                 <span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_tail</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="identifier">Routines::end</span><span class="plain">();</span>
+                <span class="identifier">Routines::end_in_current_package</span><span class="plain">();</span>
             <span class="plain">}</span>
+            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function PL::Parsing::Tokens::General::get_gv_parse_name is used in <a href="#SP6">&#167;6</a>.</p>
+<p class="endnote">The function PL::Parsing::Tokens::General::get_gv_parse_name is used in <a href="#SP6">&#167;6</a>, 5/gv (<a href="5-gv.html#SP27">&#167;27</a>).</p>
 
 <p class="endnote">The function PL::Parsing::Tokens::General::compile_parse_name_property is used in 5/gp (<a href="5-gp.html#SP10_2">&#167;10.2</a>).</p>
 
@@ -232,8 +251,8 @@ will be the correct decision.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">)) </span><span class="identifier">test_distinguishability</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rname</span><span class="plain">)  </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rname</span><span class="plain">)  </span><span class="identifier">Routines::begin_in_current_package</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">Routines::begin_in_current_package</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no parse name routine name given"</span><span class="plain">);</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_parse_name_vars</span><span class="plain">(</span><span class="identifier">gprk</span><span class="plain">);</span>
 

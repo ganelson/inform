@@ -306,22 +306,36 @@ must become "Cleopatra's nose", or at least several bug-reporters thought
 so. These routines allow that to happen.
 
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
+	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = InterNames::new(SHORT_NAME_ROUTINE_INAMEF);
+	notice->routine_iname = Packaging::function(
+			InterNames::one_off(I"short_name_fn", iname->eventual_owner),
+			iname->eventual_owner,
+			InterNames::new(SHORT_NAME_ROUTINE_INAMEF));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = FALSE;
-	notice->snn_iname = InterNames::new(SHORT_NAME_PROPERTY_ROUTINE_INAMEF);
+	notice->snn_iname = Packaging::function(
+			InterNames::one_off(I"short_name_property_fn", iname->eventual_owner),
+			iname->eventual_owner,
+			InterNames::new(SHORT_NAME_PROPERTY_ROUTINE_INAMEF));
 	faux = notice->snn_iname;
 	InterNames::to_symbol(faux);
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
+	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = InterNames::new(SHORT_NAME_ROUTINE_INAMEF);
+	notice->routine_iname = Packaging::function(
+			InterNames::one_off(I"short_name_fn", iname->eventual_owner),
+			iname->eventual_owner,
+			InterNames::new(SHORT_NAME_ROUTINE_INAMEF));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = TRUE;
-	notice->snn_iname = InterNames::new(SHORT_NAME_PROPERTY_ROUTINE_INAMEF);
+	notice->snn_iname = Packaging::function(
+			InterNames::one_off(I"short_name_property_fn", iname->eventual_owner),
+			iname->eventual_owner,
+			InterNames::new(SHORT_NAME_PROPERTY_ROUTINE_INAMEF));
 	faux = notice->snn_iname;
 	InterNames::to_symbol(faux);
 
@@ -425,7 +439,7 @@ void PL::Naming::compile_small_names(void) {
 	short_name_notice *notice;
 	LOOP_OVER(notice, short_name_notice) {
 		instance *owner = PL::Naming::object_this_is_named_after(notice->namee);
-		Routines::begin(notice->routine_iname);
+		packaging_state save = Routines::begin(notice->routine_iname);
 		wording NA = Assertions::Assemblies::get_named_after_text(notice->after_subject);
 		if (notice->capped) {
 			inter_name *porname = InterNames::extern(PRINTORRUN_EXNAMEF);
@@ -478,11 +492,14 @@ void PL::Naming::compile_small_names(void) {
 		DISCARD_TEXT(SNAMES);
 
 		Emit::rtrue();
-		Routines::end();
+		Routines::end(save);
 
+		save = Packaging::enter_home_of(notice->snn_iname);
 		Emit::named_array_begin(notice->snn_iname, NULL);
 		Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
 		Emit::array_iname_entry(notice->routine_iname);
 		Emit::array_end();
+
+		Packaging::exit(save);
 	}
 }

@@ -393,8 +393,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			InterNames::one_off(I"showextensionversions_fn", R),
 			R,
 			InterNames::iname(ShowExtensionVersions_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(the_author_name);
@@ -416,16 +415,14 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			}
 		DISCARD_TEXT(the_author_name);
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 	iname =
 		Packaging::function(
 			InterNames::one_off(I"showfullextensionversions_fn", R),
 			R,
 			InterNames::iname(ShowFullExtensionVersions_INAME));
-	save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	save = Routines::begin(iname);
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(C);
 		Extensions::Files::credit_ef(C, ef, TRUE);
@@ -435,16 +432,14 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 		Emit::up();
 		DISCARD_TEXT(C);
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 	iname =
 		Packaging::function(
 			InterNames::one_off(I"showoneextension_fn", R),
 			R,
 			InterNames::iname(ShowOneExtension_INAME));
-	save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	save = Routines::begin(iname);
 	inter_symbol *id_s = LocalVariables::add_named_call_as_symbol(I"id");
 	LOOP_OVER(ef, extension_file) {
 		Emit::inv_primitive(if_interp);
@@ -466,8 +461,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			Emit::up();
 		Emit::up();
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @ The actual credit consists of a single line, with name, version number

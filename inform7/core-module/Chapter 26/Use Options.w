@@ -518,8 +518,7 @@ void UseOptions::TestUseOption_routine(void) {
 			InterNames::one_off(I"test_fn", R),
 			R,
 			InterNames::iname(TestUseOption_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
@@ -538,13 +537,11 @@ void UseOptions::TestUseOption_routine(void) {
 			Emit::up();
 		}
 	Emit::rfalse();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @<Compile the PrintUseOption routine@> =
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -572,5 +569,4 @@ void UseOptions::TestUseOption_routine(void) {
 			}
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);

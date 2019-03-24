@@ -45,7 +45,7 @@ void Routines::Compile::routine(phrase *ph,
 
 	@<Compile the body of the routine@>;
 
-	Routines::end();
+	Routines::end_in_current_package();
 
 	phrase_being_compiled = NULL;
 	current_sentence = NULL;

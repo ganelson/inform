@@ -41,7 +41,13 @@
         <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="identifier">NAMED_AP_MC</span><span class="plain">, </span><span class="identifier">Rvalues::from_named_action_pattern</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">));</span>
-        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">NAMED_ACTION_PATTERN_INAMEF</span><span class="plain">);</span>
+
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"nap_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">NAMED_ACTION_PATTERN_INAMEF</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nap</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -109,7 +115,7 @@
         <span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain">;</span>
         <span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">, </span><span class="reserved">named_action_pattern</span><span class="plain">) {</span>
-            <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain">);</span>
             <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;entered_into_NAP_here</span><span class="plain">;</span>
@@ -124,7 +130,7 @@
                 <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">Emit::rfalse</span><span class="plain">();</span>
-            <span class="identifier">Routines::end</span><span class="plain">();</span>
+            <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

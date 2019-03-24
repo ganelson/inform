@@ -835,7 +835,7 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function BinaryPredicates::package is used in <a href="#SP32">&#167;32</a>, <a href="#SP42">&#167;42</a>, 6/rlt (<a href="6-rlt.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function BinaryPredicates::package is used in <a href="#SP32">&#167;32</a>, <a href="#SP42">&#167;42</a>, 6/rlt (<a href="6-rlt.html#SP9">&#167;9</a>, <a href="6-rlt.html#SP9_13">&#167;9.13</a>).</p>
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32. The handler. </b></p>
 
@@ -914,7 +914,7 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_bp</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">BinaryPredicates::store_dynamically</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">)) {</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain">);</span>
                 <span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">i</span><span class="plain">;</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rtiname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RELATIONTEST_EXNAMEF</span><span class="plain">);</span>
                 <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::as_subject</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">), </span><span class="constant">ARBITRARY_RELATION_INF</span><span class="plain">) {</span>
@@ -929,7 +929,7 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
                         <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;form_of_relation</span><span class="plain"> == </span><span class="constant">Relation_VtoV</span><span class="plain">) ||</span>
                     <span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;form_of_relation</span><span class="plain"> == </span><span class="constant">Relation_Sym_VtoV</span><span class="plain">))</span>

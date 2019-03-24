@@ -299,8 +299,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 		InterNames::one_off(I"action_fn", PR),
 		PR,
 		InterNames::iname(TestScriptSub_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Emit::inv_primitive(print_interp);
 		Emit::down();
@@ -364,8 +363,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 		Emit::up();
 	}
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @ =
@@ -384,8 +382,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		InterNames::one_off(I"run_tests_fn", PR),
 		PR,
 		InterNames::iname(InternalTestCases_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	internal_test_case *itc; int n = 0;
 	LOOP_OVER(itc, internal_test_case) {
 		n++;
@@ -501,8 +498,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		Emit::up();
 		DISCARD_TEXT(OUT);
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 void PL::Parsing::TestScripts::begin_internal_reporting(void) {

@@ -954,7 +954,11 @@ always the way to the other room -- the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
 	door_dir_notice *notice = CREATE(door_dir_notice);
-	notice->ddn_iname = InterNames::new(TWO_SIDED_DOOR_DOOR_DIR_INAMEF);
+	inter_name *iname = Instances::iname(I);
+	notice->ddn_iname = Packaging::function(
+		InterNames::one_off(I"tsd_door_dir_fn", iname->eventual_owner),
+		iname->eventual_owner,
+		InterNames::new(TWO_SIDED_DOOR_DOOR_DIR_INAMEF));
 	InterNames::to_symbol(notice->ddn_iname);
 	notice->door = I;
 	notice->R1 = R1;
@@ -968,7 +972,11 @@ always the other room -- the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
 	door_to_notice *notice = CREATE(door_to_notice);
-	notice->dtn_iname = InterNames::new(TWO_SIDED_DOOR_DOOR_TO_INAMEF);
+	inter_name *iname = Instances::iname(I);
+	notice->dtn_iname = Packaging::function(
+		InterNames::one_off(I"tsd_door_to_fn", iname->eventual_owner),
+		iname->eventual_owner,
+		InterNames::new(TWO_SIDED_DOOR_DOOR_TO_INAMEF));
 	InterNames::to_symbol(notice->dtn_iname);
 	notice->door = I;
 	notice->R1 = R1;
@@ -999,7 +1007,7 @@ why we don't need to compile |door_to| here.
 void PL::Map::write_door_dir_routines(void) {
 	door_dir_notice *notice;
 	LOOP_OVER(notice, door_dir_notice) {
-		Routines::begin(notice->ddn_iname);
+		packaging_state save = Routines::begin(notice->ddn_iname);
 		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
 		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
 		Emit::inv_primitive(store_interp);
@@ -1048,14 +1056,14 @@ void PL::Map::write_door_dir_routines(void) {
 				Instances::iname(PL::Map::get_value_of_opposite_property(notice->D2)));
 		Emit::up();
 
-		Routines::end();
+		Routines::end(save);
 	}
 }
 
 void PL::Map::write_door_to_routines(void) {
 	door_to_notice *notice;
 	LOOP_OVER(notice, door_to_notice) {
-		Routines::begin(notice->dtn_iname);
+		packaging_state save = Routines::begin(notice->dtn_iname);
 		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
 		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
 		Emit::inv_primitive(store_interp);
@@ -1102,7 +1110,7 @@ void PL::Map::write_door_to_routines(void) {
 			Emit::val_iname(K_value, Instances::iname(notice->R1));
 		Emit::up();
 
-		Routines::end();
+		Routines::end(save);
 	}
 }
 

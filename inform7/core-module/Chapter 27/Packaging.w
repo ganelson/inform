@@ -14,6 +14,7 @@ inter_symbol *rule_ptype = NULL;
 inter_symbol *request_ptype = NULL;
 inter_symbol *response_ptype = NULL;
 inter_symbol *adjective_ptype = NULL;
+inter_symbol *adjective_meaning_ptype = NULL;
 inter_symbol *instance_ptype = NULL;
 inter_symbol *property_ptype = NULL;
 inter_symbol *variable_ptype = NULL;
@@ -47,6 +48,8 @@ void Packaging::emit_types(void) {
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), response_ptype, Emit::baseline(Emit::IRS()), NULL));
 	adjective_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_adjective");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), adjective_ptype, Emit::baseline(Emit::IRS()), NULL));
+	adjective_meaning_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_adjective_meaning");
+	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), adjective_meaning_ptype, Emit::baseline(Emit::IRS()), NULL));
 	instance_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_instance");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), instance_ptype, Emit::baseline(Emit::IRS()), NULL));
 	property_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_property");
@@ -77,6 +80,7 @@ void Packaging::emit_types(void) {
 @e REQUEST_PR_COUNTER
 @e RESPONSE_PR_COUNTER
 @e ADJECTIVE_PR_COUNTER
+@e ADJECTIVE_MEANING_PR_COUNTER
 @e TASK_PR_COUNTER
 @e BLOCK_CONSTANT_PR_COUNTER
 @e PROPOSITION_PR_COUNTER
@@ -284,6 +288,8 @@ package_request *Packaging::request_synoptic(void) {
 @e GRAMMAR_SUBPACKAGE
 @e TABLES_SUBPACKAGE
 @e CHRONOLOGY_SUBPACKAGE
+@e LISTING_SUBPACKAGE
+@e EQUATIONS_SUBPACKAGE
 
 @e MAX_SUBPACKAGE
 
@@ -356,6 +362,8 @@ package_request *Packaging::synoptic_resource(int ix) {
 			case GRAMMAR_SUBPACKAGE: N = I"grammar"; break;
 			case TABLES_SUBPACKAGE: N = I"tables"; break;
 			case CHRONOLOGY_SUBPACKAGE: N = I"chronology"; break;
+			case LISTING_SUBPACKAGE: N = I"listing"; break;
+			case EQUATIONS_SUBPACKAGE: N = I"equations"; break;
 			default: internal_error("nameless resource");
 		}
 		inter_name *iname = InterNames::one_off(N, parent);
@@ -379,6 +387,7 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 		case REQUEST_PR_COUNTER: WRITE_TO(P, "request"); break;
 		case RESPONSE_PR_COUNTER: WRITE_TO(P, "response"); break;
 		case ADJECTIVE_PR_COUNTER: WRITE_TO(P, "adjective"); break;
+		case ADJECTIVE_MEANING_PR_COUNTER: WRITE_TO(P, "adjective_meaning"); break;
 		case TASK_PR_COUNTER: WRITE_TO(P, "task"); break;
 		case BLOCK_CONSTANT_PR_COUNTER: WRITE_TO(P, "block_constant"); break;
 		case PROPOSITION_PR_COUNTER: WRITE_TO(P, "proposition"); break;

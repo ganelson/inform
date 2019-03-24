@@ -220,7 +220,12 @@ by index within the current table.)
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::compile_run_time_support</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TC_KOV_INAME</span><span class="plain">));</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULEBOOKS_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"weak_kind_ID_of_column_entry_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TC_KOV_INAME</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">tcv_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"tc"</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -249,7 +254,7 @@ by index within the current table.)
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Kinds::Constructors::UNKNOWN_iname</span><span class="plain">()));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

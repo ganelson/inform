@@ -1030,7 +1030,9 @@ though this won't happen for any property created by I7 source text.
 
 <pre class="displaydefn">
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="functiontext">CodeGen::read_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">));</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">PROPERTY_NAME_IANN</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt;= 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;nameless&gt;"</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">));</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string"> "</span><span class="plain">);</span>
         <span class="identifier">pos</span><span class="plain">++;</span>
 </pre>

@@ -722,18 +722,12 @@ void NewVerbs::ConjugateVerbDefinitions(void) {
 
 void NewVerbs::ConjugateVerb(void) {
 	verb_conjugation *vc;
-	LOOP_OVER(vc, verb_conjugation) {
-		packaging_state save = Packaging::enter_home_of(Conjugation::conj_iname(vc));
+	LOOP_OVER(vc, verb_conjugation)
 		@<Compile ConjugateVerb routine@>;
-		Packaging::exit(save);
-	}
 	verb_form *vf;
 	LOOP_OVER(vf, verb_form)
-		if (NewVerbs::verb_form_is_instance(vf)) {
-			packaging_state save = Packaging::enter_home_of(Verbs::form_iname(vf));
+		if (NewVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
-			Packaging::exit(save);
-		}
 	Emit::named_array_begin(InterNames::iname(TableOfVerbs_INAME), K_value);
 	LOOP_OVER(vf, verb_form)
 		if (NewVerbs::verb_form_is_instance(vf))
@@ -743,7 +737,7 @@ void NewVerbs::ConjugateVerb(void) {
 }
 
 @<Compile ConjugateVerb routine@> =
-	Routines::begin(Conjugation::conj_iname(vc));
+	packaging_state save = Routines::begin(Conjugation::conj_iname(vc));
 	inter_symbol *fn_s = LocalVariables::add_named_call_as_symbol(I"fn");
 	inter_symbol *vp_s = LocalVariables::add_named_call_as_symbol(I"vp");
 	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
@@ -834,11 +828,11 @@ void NewVerbs::ConjugateVerb(void) {
 		Emit::up();
 	Emit::up();
 
-	Routines::end();
+	Routines::end(save);
 
 @<Compile ConjugateVerbForm routine@> =
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
-	Routines::begin(Verbs::form_iname(vf));
+	packaging_state save = Routines::begin(Verbs::form_iname(vf));
 	inter_symbol *fn_s = LocalVariables::add_named_call_as_symbol(I"fn");
 	inter_symbol *vp_s = LocalVariables::add_named_call_as_symbol(I"vp");
 	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
@@ -912,7 +906,7 @@ void NewVerbs::ConjugateVerb(void) {
 		DISCARD_TEXT(T);
 	}
 
-	Routines::end();
+	Routines::end(save);
 
 @<Check for modality@> =
 	for (int sense = 0; sense < 2; sense++)

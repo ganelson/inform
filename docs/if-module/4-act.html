@@ -1516,8 +1516,7 @@ infrastructure, and we access it with a single call.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">, </span><span class="reserved">action_name</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;use_verb_routine_in_I6_library</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Actions::Sub</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">);</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-            <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">generic_iname</span><span class="plain"> = </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GENERICVERBSUB_EXNAMEF</span><span class="plain">);</span>
@@ -1528,8 +1527,7 @@ infrastructure, and we access it with a single call.
                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;report_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Routines::end</span><span class="plain">();</span>
-            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -1575,7 +1573,13 @@ infrastructure, and we access it with a single call.
         <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">AD_RECORDS_INAME</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">record_count</span><span class="plain">);</span>
         <span class="identifier">VirtualMachines::note_usage</span><span class="plain">(</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 12, 0, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 
-        <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">DB_Action_Details_INAME</span><span class="plain">));</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">ACTIONS_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">DB_Action_Details_iname</span><span class="plain"> =</span>
+            <span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DB_Action_Details_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
+                <span class="identifier">R</span><span class="plain">,</span>
+                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">DB_Action_Details_INAME</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">DB_Action_Details_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">act_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"act"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">n_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"n"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">s_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"s"</span><span class="plain">);</span>
@@ -1667,7 +1671,7 @@ infrastructure, and we access it with a single call.
 
             <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Routines::end</span><span class="plain">();</span>
+        <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

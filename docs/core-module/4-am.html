@@ -1410,7 +1410,7 @@ known in order to sort.
             <span class="identifier">W</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
 
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">aph_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Adjectives::Meanings::iname</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">,</span>
+        <span class="functiontext">Routines::begin_in_current_package</span><span class="plain">(</span><span class="functiontext">Adjectives::Meanings::iname</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">,</span>
             <span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)));</span>
 
         &lt;<span class="cwebmacro">Add an it-variable to represent the value or object in the domain</span> <span class="cwebmacronumber">34.2.1</span>&gt;<span class="plain">;</span>
@@ -1430,8 +1430,7 @@ known in order to sort.
         <span class="plain">}</span>
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1846,8 +1845,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Clusters::get_name_general</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">adjective_names</span><span class="plain">, </span><span class="identifier">language_of_play</span><span class="plain">, 1, -1);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">PW</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
 
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">aph_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">aph_iname</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">aph_iname</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">o_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"o"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">force_plural_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"force_plural"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">gna_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gna"</span><span class="plain">);</span>
@@ -1958,8 +1956,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

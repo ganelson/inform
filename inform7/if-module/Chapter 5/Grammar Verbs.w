@@ -379,7 +379,13 @@ grammar_verb *PL::Parsing::Verbs::named_token_new(wording W) {
 	if (gv == NULL) {
 		gv = PL::Parsing::Verbs::gv_new(GV_IS_TOKEN);
 		gv->name = W;
-		gv->gv_line_iname = InterNames::new(GPR_FOR_TOKEN_INAMEF);
+		inter_name *m_iname = InterNames::new(GPR_FOR_TOKEN_INAMEF);
+		compilation_module *C = Modules::find(current_sentence);
+		package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+		gv->gv_line_iname = Packaging::function(
+			InterNames::one_off(I"parse_line_fn", PR),
+			PR,
+			m_iname);
 		InterNames::to_symbol(gv->gv_line_iname);
 	}
 	return gv;
@@ -526,7 +532,11 @@ grammar_verb *PL::Parsing::Verbs::for_prn(property *prn) {
 	gv = PL::Parsing::Verbs::gv_new(GV_IS_PROPERTY_NAME);
 	Properties::EitherOr::set_parsing_grammar(prn, gv);
 	gv->prn_understood = prn;
-	gv->gv_prn_iname = InterNames::new(GPR_FOR_EITHER_OR_PROPERTY_INAMEF);
+	inter_name *iname = Properties::iname(prn);
+	gv->gv_prn_iname = Packaging::function(
+		InterNames::one_off(I"either_or_GPR_fn", iname->eventual_owner),
+		iname->eventual_owner,
+		InterNames::new(GPR_FOR_EITHER_OR_PROPERTY_INAMEF));
 	return gv;
 }
 
@@ -758,7 +768,7 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 		case GV_IS_TOKEN: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 			if (gv->gv_line_iname == NULL) internal_error("gv token not ready");
-			Routines::begin(gv->gv_line_iname);
+			packaging_state save = Routines::begin(gv->gv_line_iname);
 			PL::Parsing::Tokens::Values::add_original(&gprk);
 			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
 			Emit::inv_primitive(store_interp);
@@ -776,14 +786,13 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			Emit::down();
 				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 			Emit::up();
-			Routines::end();
+			Routines::end(save);
 			break;
 		}
 		case GV_IS_CONSULT: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 			inter_name *iname = PL::Parsing::Tokens::General::consult_iname(gv);
-			packaging_state save = Packaging::enter_home_of(iname);
-			Routines::begin(iname);
+			packaging_state save = Routines::begin(iname);
 			PL::Parsing::Tokens::Values::add_range_calls(&gprk);
 			PL::Parsing::Tokens::Values::add_original(&gprk);
 			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
@@ -807,8 +816,7 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			Emit::down();
 				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 			Emit::up();
-			Routines::end();
-			Packaging::exit(save);
+			Routines::end(save);
 			break;
 		}
 		case GV_IS_OBJECT: {
@@ -817,7 +825,7 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			if (PL::Parsing::Tokens::General::compile_parse_name_head(&gprk, gv->subj_understood, gv, NULL)) {
 				PL::Parsing::Verbs::gv_compile_parse_name_lines(&gprk, gv);
 				PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
-				Routines::end();
+				Routines::end_in_current_package();
 			}
 			Packaging::exit(save);
 			break;
@@ -828,7 +836,7 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 		case GV_IS_PROPERTY_NAME: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 			if (gv->gv_prn_iname == NULL) internal_error("PRN PN not ready");
-			Routines::begin(gv->gv_prn_iname);
+			packaging_state save = Routines::begin(gv->gv_prn_iname);
 			PL::Parsing::Tokens::Values::add_original(&gprk);
 			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
 			Emit::inv_primitive(store_interp);
@@ -846,7 +854,7 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			Emit::down();
 				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
 			Emit::up();
-			Routines::end();
+			Routines::end(save);
 			break;
 		}
 	}

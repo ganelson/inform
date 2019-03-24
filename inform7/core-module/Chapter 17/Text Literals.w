@@ -305,7 +305,14 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 @<Compile a boxed-quotation literal text@> =
 	if (lt->lt_sba_iname == NULL)
 		lt->lt_sba_iname = InterNames::new(LITERAL_TEXT_SBA_INAMEF);
-	Routines::begin(lt->lt_sba_iname);
+	package_request *P = lt->lt_iname->eventual_owner;
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"box_quotation_fn", P),
+		P,
+		InterNames::new(PAST_ACTION_ROUTINE_INAMEF));
+	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
+
+	packaging_state save = Routines::begin(iname);
 	Emit::inv_primitive(box_interp);
 	Emit::down();
 		TEMPORARY_TEXT(T);
@@ -313,7 +320,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 		Emit::val_text(T);
 		DISCARD_TEXT(T);
 	Emit::up();
-	Routines::end();
+	Routines::end(save);
 
 @ =
 void Strings::TextLiterals::compile_small_block(OUTPUT_STREAM, literal_text *lt) {

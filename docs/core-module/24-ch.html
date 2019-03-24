@@ -65,7 +65,12 @@ storage: the following simple structures are used for this.
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Chronology::compile_past_action_pattern</span><span class="plain">(</span><span class="reserved">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">time_period</span><span class="plain"> </span><span class="identifier">duration</span><span class="plain">, </span><span class="identifier">action_pattern</span><span class="plain"> </span><span class="identifier">ap</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">op</span><span class="plain"> = </span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">inform6_operator</span><span class="plain">;</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">pta_routine</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">PAST_ACTION_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="constant">CHRONOLOGY_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">pta_routine</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pap_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">PAST_ACTION_ROUTINE_INAMEF</span><span class="plain">));</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TIME_PERIODS</span><span class="plain">,</span>
             <span class="string">"Chronology::compile_past_action_pattern on: $A\</span><span class="plain">n</span><span class="string">at: $t\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, &amp;</span><span class="identifier">ap</span><span class="plain">, &amp;</span><span class="identifier">duration</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::Patterns::makes_callings</span><span class="plain">(&amp;</span><span class="identifier">ap</span><span class="plain">)) {</span>
@@ -363,8 +368,7 @@ ever tampered with.
         <span class="reserved">past_tense_action_record</span><span class="plain"> *</span><span class="identifier">pta</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">pta</span><span class="plain">, </span><span class="reserved">past_tense_action_record</span><span class="plain">) {</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pta</span><span class="plain">-</span><span class="element">&gt;where_pta_tested</span><span class="plain">; </span>    <span class="comment">ensure problems reported correctly</span>
-
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pta</span><span class="plain">-</span><span class="element">&gt;pta_iname</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pta</span><span class="plain">-</span><span class="element">&gt;pta_iname</span><span class="plain">);</span>
 
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -388,7 +392,7 @@ ever tampered with.
                     <span class="string">"this one? And so on."</span><span class="plain">);</span>
             <span class="plain">}</span>
 
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">PastActionsI6Routines_INAME</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">pta</span><span class="plain">, </span><span class="reserved">past_tense_action_record</span><span class="plain">)</span>
@@ -414,7 +418,13 @@ ever tampered with.
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TIME_PERIODS</span><span class="plain">,</span>
             <span class="string">"Creating %d past tense conditions in TestSinglePastState\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
                 <span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">past_tense_condition_record</span><span class="plain">));</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TestSinglePastState_INAME</span><span class="plain">));</span>
+
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">CHRONOLOGY_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"test_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TestSinglePastState_INAME</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">past_flag_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"past_flag"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pt_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pt"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">turn_end_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"turn_end"</span><span class="plain">);</span>
@@ -442,7 +452,7 @@ ever tampered with.
 
         &lt;<span class="cwebmacro">Answer the question posed</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TIME_PERIODS</span><span class="plain">, </span><span class="string">"Creation of past tense conditions complete\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

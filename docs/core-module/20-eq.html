@@ -230,8 +230,14 @@ either case, an equation begins here:
         <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;parsed_equation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;symbol_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;examined_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">EQUATION_ROUTINE_INAMEF</span><span class="plain">);</span>
-        <span class="functiontext">InterNames::attach_memo</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_name_text</span><span class="plain">);</span>
+
+        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="constant">EQUATIONS_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"solve_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
 
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NO</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NA</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">anonymous</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -2187,9 +2193,9 @@ for equations a value; they are never called.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Equations::compile</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">, </span><span class="reserved">equation</span><span class="plain">) {</span>
-            <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
-            <span class="functiontext">Routines::end</span><span class="plain">();</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

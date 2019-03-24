@@ -112,8 +112,7 @@ a call to an activity based on that value:
 		Packaging::function(InterNames::one_off(I"launcher_fn", R), R, NULL);
 	Inter::Symbols::set_flag(InterNames::to_symbol(launcher), MAKE_NAME_UNIQUE);
 
-	packaging_state save = Packaging::enter(launcher->eventual_owner);
-	Routines::begin(launcher);
+	packaging_state save = Routines::begin(launcher);
 
 	inter_name *iname = Strings::response_constant_iname(
 		resp->responding_rule, resp->response_marker);
@@ -124,8 +123,7 @@ a call to an activity based on that value:
 	Emit::val_iname(K_value, iname);
 	Emit::up();
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 	save = Packaging::enter(R);
 	Emit::named_array_begin(resp->resp_iname, K_value);
@@ -155,8 +153,7 @@ essence here.
 
 @<If the response is via I6, compile the necessary routine for this rule@> =
 	inter_name *responder_iname = Rules::get_handler_definition(resp->responding_rule);
-	packaging_state save = Packaging::enter(responder_iname->eventual_owner);
-	Routines::begin(responder_iname);
+	packaging_state save = Routines::begin(responder_iname);
 	inter_symbol *code_s = LocalVariables::add_named_call_as_symbol(I"code");
 	inter_symbol *val_s = LocalVariables::add_named_call_as_symbol(I"val");
 	inter_symbol *val2_s = LocalVariables::add_named_call_as_symbol(I"val2");
@@ -298,8 +295,7 @@ essence here.
 		Emit::val_symbol(K_value, str_s);
 	Emit::up();
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ So much for the launchers. We also have to compile the response values,
 and some run-time tables which will enable the I6 template code to keep
@@ -346,8 +342,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 
 @<Compile the PrintResponse routine@> =
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_response);
-	packaging_state save = Packaging::enter_home_of(printing_rule_name);
-	Routines::begin(printing_rule_name);
+	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
@@ -381,8 +376,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 			Emit::up();
 		Emit::up();
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @ The following array is used only by the testing command RESPONSES, and
 enables the I6 template to print out all known responses at run-time,

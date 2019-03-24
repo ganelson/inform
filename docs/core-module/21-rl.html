@@ -775,8 +775,7 @@ do.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">();</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -802,8 +801,7 @@ do.
                 &lt;<span class="cwebmacro">Print a rule name</span> <span class="cwebmacronumber">20.2</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1019,16 +1017,14 @@ as the definition of the rule in future.
 
 <pre class="displaydefn">
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">shell_iname</span><span class="plain"> = </span><span class="functiontext">Rules::shell_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">shell_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">shell_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">shell_iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::compile_constraint</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

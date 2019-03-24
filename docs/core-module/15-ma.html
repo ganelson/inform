@@ -490,7 +490,14 @@ can't normally be unravelled at compile time.
         <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;superlative</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">but it may be set below</span>
         <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword_as_adjective</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">but it will certainly be set below</span>
 
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">MEASUREMENT_ADJECTIVE_INAMEF</span><span class="plain">);</span>
+        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span>
+            <span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">ADJECTIVE_MEANING_PR_COUNTER</span><span class="plain">), </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">adjective_meaning_ptype</span><span class="plain">);</span>
+        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"measurement_fn"</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">),</span>
+            <span class="identifier">R2</span><span class="plain">,</span>
+            <span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">MEASUREMENT_ADJECTIVE_INAMEF</span><span class="plain">));</span>
         <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain">);</span>
 </pre>
 
@@ -625,7 +632,7 @@ can't normally be unravelled at compile time.
         <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">, </span><span class="reserved">measurement_definition</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;property_schema_written</span><span class="plain">) {</span>
-                <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lv</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_call_parameter</span><span class="plain">(</span>
                     <span class="functiontext">Frames::current_stack_frame</span><span class="plain">(),</span>
                     <span class="identifier">EMPTY_WORDING</span><span class="plain">,</span>
@@ -654,7 +661,7 @@ can't normally be unravelled at compile time.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
-                <span class="functiontext">Routines::end</span><span class="plain">();</span>
+                <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

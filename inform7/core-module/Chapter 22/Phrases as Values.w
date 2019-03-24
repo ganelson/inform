@@ -154,7 +154,10 @@ compilation.
 
 =
 void Phrases::Constants::compile_default_closure(inter_name *closure_identifier, kind *K) {
-	inter_name *rname = InterNames::new(DEFAULT_CLOSURE_PHRASE_INAMEF);
+	package_request *P = Kinds::RunTime::package(K);
+	inter_name *rname = Packaging::function(InterNames::one_off(I"default_closure_fn", P), P, NULL);
+	Inter::Symbols::set_flag(InterNames::to_symbol(rname), MAKE_NAME_UNIQUE);
+
 	@<Compile the default routine@>;
 	@<Compile the default closure@>;
 }
@@ -175,7 +178,7 @@ made above.
 @ And here is the function that refers to:
 
 @<Compile the default routine@> =
-	Routines::begin(rname);
+	packaging_state save = Routines::begin(rname);
 	LocalVariables::add_named_call(I"a");
 	LocalVariables::add_named_call(I"b");
 	LocalVariables::add_named_call(I"c");
@@ -203,4 +206,4 @@ made above.
 
 		Emit::up();
 	}
-	Routines::end();
+	Routines::end(save);

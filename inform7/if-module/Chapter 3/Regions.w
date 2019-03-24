@@ -54,8 +54,19 @@ regions_data *PL::Regions::new_data(inference_subject *subj) {
 	regions_data *rd = CREATE(regions_data);
 	rd->in_region = NULL;
 	rd->in_region_set_at = NULL;
-	rd->in_region_iname = InterNames::new(REGION_FOUND_IN_ROUTINE_INAMEF);
+	rd->in_region_iname = NULL;
 	return rd;
+}
+
+inter_name *PL::Regions::found_in_iname(instance *I) {
+	if (PF_I(regions, I)->in_region_iname == NULL) {
+		inter_name *iname = Instances::iname(I);
+		PF_I(regions, I)->in_region_iname = Packaging::function(
+			InterNames::one_off(I"region_found_in_fn", iname->eventual_owner),
+			iname->eventual_owner,
+			InterNames::new(REGION_FOUND_IN_ROUTINE_INAMEF));
+	}
+	return PF_I(regions, I)->in_region_iname;
 }
 
 @h Kinds.
@@ -323,7 +334,7 @@ int PL::Regions::regions_complete_model(int stage) {
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if (Instances::of_kind(I, K_region)) {
-			inter_name *iname = PF_I(regions, I)->in_region_iname;
+			inter_name *iname = PL::Regions::found_in_iname(I);
 			InterNames::to_symbol(iname);
 			Properties::Valued::assert(P_regional_found_in, Instances::as_subject(I),
 				Rvalues::from_iname(iname), CERTAIN_CE);
@@ -334,7 +345,8 @@ void PL::Regions::write_regional_found_in_routines(void) {
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if (Instances::of_kind(I, K_region)) {
-			Routines::begin(PF_I(regions, I)->in_region_iname);
+			inter_name *iname = PL::Regions::found_in_iname(I);
+			packaging_state save = Routines::begin(iname);
 			Emit::inv_primitive(if_interp);
 			Emit::down();
 					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TESTREGIONALCONTAINMENT_EXNAMEF)));
@@ -348,7 +360,7 @@ void PL::Regions::write_regional_found_in_routines(void) {
 				Emit::up();
 			Emit::up();
 			Emit::rfalse();
-			Routines::end();
+			Routines::end(save);
 		}
 }
 

@@ -127,7 +127,13 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::number</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">DECIMAL_TOKEN_INNER_INAME</span><span class="plain">));</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> =</span>
+            <span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
+                <span class="identifier">R</span><span class="plain">,</span>
+                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">DECIMAL_TOKEN_INNER_INAME</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::get_parsing_grammar</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
@@ -136,11 +142,17 @@
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Routines::end</span><span class="plain">();</span>
+        <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::time</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">TIME_TOKEN_INNER_INAME</span><span class="plain">));</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">K_time</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> =</span>
+            <span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
+                <span class="identifier">R</span><span class="plain">,</span>
+                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">TIME_TOKEN_INNER_INAME</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">PL::TimesOfDay::kind</span><span class="plain">();</span>
@@ -152,11 +164,17 @@
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Routines::end</span><span class="plain">();</span>
+        <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::truth_state</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">TRUTH_STATE_TOKEN_INNER_INAME</span><span class="plain">));</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> =</span>
+            <span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
+                <span class="identifier">R</span><span class="plain">,</span>
+                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">TRUTH_STATE_TOKEN_INNER_INAME</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::get_parsing_grammar</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">);</span>
@@ -165,7 +183,7 @@
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Routines::end</span><span class="plain">();</span>
+        <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::compile_type_gprs</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -177,7 +195,8 @@
                 <span class="plain">(</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))) {</span>
                 <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">; </span><span class="identifier">literal_pattern</span><span class="plain"> *</span><span class="identifier">lp</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::needs_I6_GPR</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">need_lf_vars</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="identifier">LITERAL_FORMS_LOOP</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) {</span>
                     <span class="identifier">need_lf_vars</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -188,9 +207,11 @@
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_standard_set</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">need_lf_vars</span><span class="plain">) </span><span class="functiontext">PL::Parsing::Tokens::Values::add_lp_vars</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Compile body of kind GPR</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
-                <span class="identifier">Routines::end</span><span class="plain">();</span>
+                <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-                    <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Kinds::RunTime::get_instance_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+                    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::get_instance_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+                    <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
                     <span class="functiontext">PL::Parsing::Tokens::Values::add_instance_call</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                     <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
@@ -198,7 +219,7 @@
                     <span class="identifier">GV_IS_VALUE_instance_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     &lt;<span class="cwebmacro">Compile body of kind GPR</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
                     <span class="identifier">GV_IS_VALUE_instance_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                    <span class="identifier">Routines::end</span><span class="plain">();</span>
+                    <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -357,29 +378,6 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a> (three times).</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
-
-
-<pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::gprv_compile</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-    <span class="plain">}</span>
-    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Tokens::Values::gprv_iname</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-    <span class="plain">}</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::igprv_compile</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">Kinds::RunTime::get_instance_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function PL::Parsing::Tokens::Values::gprv_compile appears nowhere else.</p>
-
-<p class="endnote">The function PL::Parsing::Tokens::Values::gprv_iname is used in 5/gt2 (<a href="5-gt2.html#SP12">&#167;12</a>), 5/nft (<a href="5-nft.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function PL::Parsing::Tokens::Values::igprv_compile appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-nft.html">Back to 'Noun Filter Tokens'</a></li><li><a href="5-gpr.html">Continue with 'General Parsing Routines'</a></li></ul><hr class="tocbar">

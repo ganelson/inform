@@ -39,7 +39,13 @@
             <span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;what_to_find</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;what_to_find</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">);</span>
             <span class="identifier">Descriptions::clear_calling</span><span class="plain">(</span><span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;what_to_find</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;los_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">LOOP_OVER_SCOPE_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">m_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">LOOP_OVER_SCOPE_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;los_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loop_over_scope_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="identifier">m_iname</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">los</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -72,7 +78,7 @@
 
 
 <pre class="displaydefn">
-        <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;los_iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;los_iname</span><span class="plain">);</span>
 
         <span class="identifier">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="identifier">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">it_lv</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_pronoun</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
@@ -98,7 +104,7 @@
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Routines::end</span><span class="plain">();</span>
+        <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

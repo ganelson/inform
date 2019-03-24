@@ -1133,8 +1133,7 @@ void PL::Actions::compile_action_routines(void) {
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
 		inter_name *iname = PL::Actions::Sub(an);
-		packaging_state save = Packaging::enter_home_of(iname);
-		Routines::begin(iname);
+		packaging_state save = Routines::begin(iname);
 		Emit::inv_primitive(return_interp);
 		Emit::down();
 			inter_name *generic_iname = InterNames::extern(GENERICVERBSUB_EXNAMEF);
@@ -1145,8 +1144,7 @@ void PL::Actions::compile_action_routines(void) {
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) an->report_rules->allocation_id);
 			Emit::up();
 		Emit::up();
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 }
 
@@ -1192,8 +1190,7 @@ void PL::Actions::ActionData(void) {
 			InterNames::one_off(I"DB_Action_Details_fn", R),
 			R,
 			InterNames::iname(DB_Action_Details_INAME));
-	packaging_state save = Packaging::enter_home_of(DB_Action_Details_iname);
-	Routines::begin(DB_Action_Details_iname);
+	packaging_state save = Routines::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
@@ -1285,8 +1282,7 @@ void PL::Actions::ActionData(void) {
 
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @<Insert a space here if needed to break up the action name@> =

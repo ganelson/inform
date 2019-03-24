@@ -82,8 +82,19 @@ following minimal structure, though it will only be relevant for instances of
         <span class="reserved">regions_data</span><span class="plain"> *</span><span class="identifier">rd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">regions_data</span><span class="plain">);</span>
         <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">REGION_FOUND_IN_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rd</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Regions::found_in_iname</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"region_found_in_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+                <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+                <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">REGION_FOUND_IN_ROUTINE_INAMEF</span><span class="plain">));</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -92,6 +103,8 @@ following minimal structure, though it will only be relevant for instances of
 <p class="endnote">The function PL::Regions::start appears nowhere else.</p>
 
 <p class="endnote">The function PL::Regions::new_data is used in <a href="#SP7">&#167;7</a>.</p>
+
+<p class="endnote">The function PL::Regions::found_in_iname is used in <a href="#SP19_2">&#167;19.2</a>, <a href="#SP20">&#167;20</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Kinds. </b>This a kind name to do with regions which Inform provides special support
 for; it recognises the English name when defined by the Standard Rules. (So
@@ -506,7 +519,7 @@ region is either the next broadest region containing it, or else <code class="di
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">)) {</span>
-                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain">;</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Regions::found_in_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
                 <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_regional_found_in</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
                     <span class="identifier">Rvalues::from_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
@@ -525,7 +538,8 @@ region is either the next broadest region containing it, or else <code class="di
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">)) {</span>
-                <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain">);</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Regions::found_in_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TESTREGIONALCONTAINMENT_EXNAMEF</span><span class="plain">)));</span>
@@ -539,7 +553,7 @@ region is either the next broadest region containing it, or else <code class="di
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::rfalse</span><span class="plain">();</span>
-                <span class="identifier">Routines::end</span><span class="plain">();</span>
+                <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

@@ -328,7 +328,14 @@ can't normally be unravelled at compile time.
 	mdef->superlative = EMPTY_WORDING; /* but it may be set below */
 	mdef->headword_as_adjective = NULL; /* but it will certainly be set below */
 
-	mdef->mdef_iname = InterNames::new(MEASUREMENT_ADJECTIVE_INAMEF);
+	compilation_module *C = Modules::current();
+	package_request *R = Packaging::request_resource(C, ADJECTIVES_SUBPACKAGE);
+	package_request *R2 = Packaging::request(
+		Packaging::supply_iname(R, ADJECTIVE_MEANING_PR_COUNTER), R, adjective_meaning_ptype);
+	mdef->mdef_iname = Packaging::function(
+		InterNames::one_off(I"measurement_fn", R2),
+		R2,
+		InterNames::new(MEASUREMENT_ADJECTIVE_INAMEF));
 	InterNames::to_symbol(mdef->mdef_iname);
 
 @<Create the superlative form@> =
@@ -403,7 +410,7 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 	measurement_definition *mdef;
 	LOOP_OVER(mdef, measurement_definition)
 		if (mdef->property_schema_written) {
-			Routines::begin(mdef->mdef_iname);
+			packaging_state save = Routines::begin(mdef->mdef_iname);
 			local_variable *lv = LocalVariables::add_call_parameter(
 				Frames::current_stack_frame(),
 				EMPTY_WORDING,
@@ -432,7 +439,7 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 				Emit::up();
 			}
 			Emit::rfalse();
-			Routines::end();
+			Routines::end(save);
 		}
 }
 

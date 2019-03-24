@@ -213,7 +213,9 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 	if (dynamic) {
 		bp->dynamic_memory = TRUE;
 		bpr->dynamic_memory = TRUE;
-		bp->initialiser_iname = InterNames::new(RELATION_INITIALISER_ROUTINE_INAMEF);
+		package_request *P = BinaryPredicates::package(bp);
+		bp->initialiser_iname = Packaging::function(InterNames::one_off(I"relation_initialiser_fn", P), P, NULL);
+		Inter::Symbols::set_flag(InterNames::to_symbol(bp->initialiser_iname), MAKE_NAME_UNIQUE);
 	}
 	BinaryPredicates::mark_as_needed(bp);
 
@@ -731,8 +733,9 @@ K to L when (some condition)".
 
 @<Complete as a relation-by-routine BP@> =
 	bp->form_of_relation = Relation_ByRoutine;
-	bp->bp_by_routine_iname = InterNames::new(RELATION_BY_ROUTINE_INAMEF);
-	InterNames::to_symbol(bp->bp_by_routine_iname);
+	package_request *P = BinaryPredicates::package(bp);
+	bp->bp_by_routine_iname = Packaging::function(InterNames::one_off(I"relation_fn", P), P, NULL);
+	Inter::Symbols::set_flag(InterNames::to_symbol(bp->bp_by_routine_iname), MAKE_NAME_UNIQUE);
 	bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
 	bp->condition_defn_text = CONW;
 
@@ -899,8 +902,7 @@ void Relations::compile_relation_records(void) {
 		InterNames::one_off(I"creator_fn", PR),
 		PR,
 		InterNames::iname(CreateDynamicRelations_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
 	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
 	LOOP_OVER(bp, binary_predicate) {
@@ -977,8 +979,7 @@ void Relations::compile_relation_records(void) {
 			Emit::up();
 		}
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @<Write the relation record for this BP@> =
@@ -1102,8 +1103,7 @@ void Relations::compile_relation_records(void) {
 	if (bp->right_way_round == FALSE) { X = I"Y"; Y = I"X"; dbp = bp->reversal; }
 
 	handler = BinaryPredicates::handler_iname(bp);
-	packaging_state save = Packaging::enter_home_of(handler);
-	Routines::begin(handler);
+	packaging_state save = Routines::begin(handler);
 	inter_symbol *rr_s = LocalVariables::add_named_call_as_symbol(I"rr");
 	inter_symbol *task_s = LocalVariables::add_named_call_as_symbol(I"task");
 	local_variable *X_lv = NULL, *Y_lv = NULL;
@@ -1267,8 +1267,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 	Emit::rfalse();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @<The default case for minimal relations only@> =
 	Emit::inv_call(InterNames::to_symbol(InterNames::extern(RUNTIMEPROBLEM_EXNAMEF)));
@@ -1754,8 +1753,7 @@ void Relations::IterateRelations(void) {
 		InterNames::one_off(I"iterator_fn", PR),
 		PR,
 		InterNames::iname(IterateRelations_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
@@ -1766,8 +1764,7 @@ void Relations::IterateRelations(void) {
 				Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 			Emit::up();
 		}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @h The bitmap for various-to-various relations.
@@ -2352,8 +2349,7 @@ void Relations::compile_defined_relations(void) {
 		InterNames::one_off(I"property_fn", PR),
 		PR,
 		InterNames::iname(RProperty_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *obj_s = LocalVariables::add_named_call_as_symbol(I"obj");
 	inter_symbol *cl_s = LocalVariables::add_named_call_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::add_named_call_as_symbol(I"pr");
@@ -2381,13 +2377,11 @@ void Relations::compile_defined_relations(void) {
 	Emit::down();
 		Emit::val_nothing();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @<Compile RGuard f0 routine@> =
 	if (rg->guard_f0_iname) {
-		packaging_state save = Packaging::enter_home_of(rg->guard_f0_iname);
-		Routines::begin(rg->guard_f0_iname);
+		packaging_state save = Routines::begin(rg->guard_f0_iname);
 		local_variable *X_lv = NULL;
 		inter_symbol *X_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"X", "which is related to at most one object", &X_lv);
 		if (rg->f0) {
@@ -2420,14 +2414,12 @@ void Relations::compile_defined_relations(void) {
 				Emit::val_nothing();
 			Emit::up();
 		}
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 
 @<Compile RGuard f1 routine@> =
 	if (rg->guard_f1_iname) {
-		packaging_state save = Packaging::enter_home_of(rg->guard_f1_iname);
-		Routines::begin(rg->guard_f1_iname);
+		packaging_state save = Routines::begin(rg->guard_f1_iname);
 		local_variable *X_lv = NULL;
 		inter_symbol *X_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"X", "which is related to at most one object", &X_lv);
 		if (rg->f1) {
@@ -2460,14 +2452,12 @@ void Relations::compile_defined_relations(void) {
 				Emit::val_nothing();
 			Emit::up();
 		}
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 
 @<Compile RGuard T routine@> =
 	if (rg->guard_test_iname) {
-		packaging_state save = Packaging::enter_home_of(rg->guard_test_iname);
-		Routines::begin(rg->guard_test_iname);
+		packaging_state save = Routines::begin(rg->guard_test_iname);
 		local_variable *L_lv = NULL, *R_lv = NULL;
 		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
 		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
@@ -2507,14 +2497,12 @@ void Relations::compile_defined_relations(void) {
 
 		}
 		Emit::rfalse();
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 
 @<Compile RGuard MT routine@> =
 	if (rg->guard_make_true_iname) {
-		packaging_state save = Packaging::enter_home_of(rg->guard_make_true_iname);
-		Routines::begin(rg->guard_make_true_iname);
+		packaging_state save = Routines::begin(rg->guard_make_true_iname);
 		local_variable *L_lv = NULL, *R_lv = NULL;
 		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
 		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
@@ -2564,14 +2552,12 @@ void Relations::compile_defined_relations(void) {
 				Emit::val_iname(K_value, rg->guarding->bp_iname);
 			Emit::up();
 		}
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 
 @<Compile RGuard MF routine@> =
 	if (rg->guard_make_false_iname) {
-		packaging_state save = Packaging::enter_home_of(rg->guard_make_false_iname);
-		Routines::begin(rg->guard_make_false_iname);
+		packaging_state save = Routines::begin(rg->guard_make_false_iname);
 		local_variable *L_lv = NULL, *R_lv = NULL;
 		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
 		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
@@ -2621,15 +2607,14 @@ void Relations::compile_defined_relations(void) {
 				Emit::val_iname(K_value, rg->guarding->bp_iname);
 			Emit::up();
 		}
-		Routines::end();
-		Packaging::exit(save);
+		Routines::end(save);
 	}
 
 @ =
 void Relations::compile_routine_to_decide(inter_name *rname,
 	wording W, bp_term_details par1, bp_term_details par2) {
 
-	Routines::begin(rname);
+	packaging_state save = Routines::begin(rname);
 
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	BinaryPredicates::add_term_as_call_parameter(phsf, par1);
@@ -2651,7 +2636,7 @@ void Relations::compile_routine_to_decide(inter_name *rname,
 		Emit::up();
 	}
 
-	Routines::end();
+	Routines::end(save);
 }
 
 @h Indexing relations.

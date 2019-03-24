@@ -132,7 +132,7 @@ void PL::Parsing::Tokens::General::write_parse_name_routines(void) {
 		if (PL::Parsing::Tokens::General::compile_parse_name_head(&gprk,
 			notice->parse_subject, NULL, notice->pnn_iname)) {
 			PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
-			Routines::end();
+			Routines::end_in_current_package();
 		}
 		Packaging::exit(save);
 	}
@@ -201,8 +201,8 @@ int PL::Parsing::Tokens::General::compile_parse_name_head(gpr_kit *gprk, inferen
 
 	if (InferenceSubjects::domain(subj)) test_distinguishability = TRUE;
 
-	if (rname)  Routines::begin(rname);
-	else if (N) Routines::begin(N);
+	if (rname)  Routines::begin_in_current_package(rname);
+	else if (N) Routines::begin_in_current_package(N);
 	else internal_error("no parse name routine name given");
 	PL::Parsing::Tokens::Values::add_parse_name_vars(gprk);
 

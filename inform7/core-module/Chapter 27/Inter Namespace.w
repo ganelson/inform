@@ -312,7 +312,6 @@ int InterNames::defined(inter_name *iname) {
 @e CONJUGATE_VERB_ROUTINE_INAMEF
 @e CONJUGATIONS_INAMEF
 @e CONSULT_GRAMMAR_INAMEF
-@e DEFAULT_CLOSURE_PHRASE_INAMEF
 @e DEFAULT_VALUE_INAMEF
 @e DEFERRED_PROPOSITION_ROUTINE_INAMEF
 @e DEFERRED_PROPOSITION_RTP_INAMEF
@@ -608,7 +607,6 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case CONJUGATIONS_INAMEF:					S = I"conjugations";		break;
 		case CONSULT_GRAMMAR_INAMEF:				S = I"Consult_Grammar"; cache = TRUE;	break;
 		case COUNT_INSTANCE_INAMEF:					D = KIND_INAMEF; Suf = I"_Count"; break;
-		case DEFAULT_CLOSURE_PHRASE_INAMEF:			S = I"Def_Phrase";			break;
 		case DEFAULT_VALUE_INAMEF:					S = I"DV";					break;
 		case DEFERRED_PROPOSITION_ROUTINE_INAMEF:	S = I"Prop"; cache = TRUE;	break;
 		case DEFERRED_PROPOSITION_RTP_INAMEF:		S = I"PROP_SRC";			break;

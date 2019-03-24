@@ -53,7 +53,12 @@ prints the name of a routine to be compiled later.
 <pre class="display">
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">ListTogether::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">include_articles</span><span class="plain">) {</span>
         <span class="reserved">list_together_routine</span><span class="plain"> *</span><span class="identifier">ltr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">list_together_routine</span><span class="plain">);</span>
-        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="constant">LISTING_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"list_together_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ROUTINE_INAMEF</span><span class="plain">));</span>
         <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ARRAY_INAMEF</span><span class="plain">);</span>
         <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;articles_bit</span><span class="plain"> = </span><span class="identifier">include_articles</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">;</span>
@@ -104,7 +109,7 @@ is significant to the run-time list-printing code.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
@@ -141,7 +146,7 @@ is significant to the run-time list-printing code.
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF</span><span class="plain">));</span>

@@ -530,7 +530,12 @@ void Rulebooks::rulebook_var_creators(void) {
 }
 
 @<Make slow lookup routine@> =
-	Routines::begin(InterNames::iname(MStack_GetRBVarCreator_INAME));
+	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
+	inter_name *iname = Packaging::function(
+		InterNames::one_off(I"slow_lookup_fn", PR),
+		PR,
+		InterNames::iname(MStack_GetRBVarCreator_INAME));
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
 
 	Emit::inv_primitive(switch_interp);
@@ -562,7 +567,7 @@ void Rulebooks::rulebook_var_creators(void) {
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
 
-	Routines::end();
+	Routines::end(save);
 
 @h Indexing and logging rulebooks.
 

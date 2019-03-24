@@ -482,7 +482,14 @@ number <code class="display"><span class="extract">-1</span></code>).
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LITERAL_TEXT_SBA_INAMEF</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">;</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
+            <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"box_quotation_fn"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">),</span>
+            <span class="identifier">P</span><span class="plain">,</span>
+            <span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">PAST_ACTION_ROUTINE_INAMEF</span><span class="plain">));</span>
+        <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
+
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">box_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
@@ -490,7 +497,7 @@ number <code class="display"><span class="extract">-1</span></code>).
             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

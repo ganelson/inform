@@ -565,8 +565,7 @@ feelings of modesty.
                 <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"showextensionversions_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
                 <span class="identifier">R</span><span class="plain">,</span>
                 <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">ShowExtensionVersions_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">the_author_name</span><span class="plain">);</span>
@@ -588,16 +587,14 @@ feelings of modesty.
                 <span class="plain">}</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">the_author_name</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">iname</span><span class="plain"> =</span>
             <span class="functiontext">Packaging::function</span><span class="plain">(</span>
                 <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"showfullextensionversions_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
                 <span class="identifier">R</span><span class="plain">,</span>
                 <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">ShowFullExtensionVersions_INAME</span><span class="plain">));</span>
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -607,16 +604,14 @@ feelings of modesty.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">iname</span><span class="plain"> =</span>
             <span class="functiontext">Packaging::function</span><span class="plain">(</span>
                 <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"showoneextension_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
                 <span class="identifier">R</span><span class="plain">,</span>
                 <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">ShowOneExtension_INAME</span><span class="plain">));</span>
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">id_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"id"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
@@ -638,8 +633,7 @@ feelings of modesty.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

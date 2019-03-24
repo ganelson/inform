@@ -619,14 +619,12 @@ there's very little to say.
                         <span class="functiontext">Packaging::function</span><span class="plain">(</span>
                             <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"command_prompt_text_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">), </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">,</span>
                             <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CommandPromptText_INAME</span><span class="plain">));</span>
-                    <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
-                    <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
+                    <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_text</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Routines::end</span><span class="plain">();</span>
-                    <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                    <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
                 <span class="plain">}</span>
 
                 <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>

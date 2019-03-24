@@ -6,21 +6,18 @@ declarations.
 @ The code following is used throughout Inform, whenever we want to compile
 an I6 routine. Sometimes that's in order to define a phrase, but often not.
 
-We always do this with a flip-flop pair of routines. First we call one of
-the following pair, for example like so:
-
-	|OUT = Routines::begin(OUT, I"HypotheticalI6Routine");|
-
-The name supplied will be the I6 identifier of the routine; if it's to be
-declared instead as a property-value routine, a quirky I6 way to define
-anonymous routines, then the supplied name must be an asterisk |"*"|.
-
 We then compile the body code of our routine, and conclude with:
 
-	|Routines::end();|
+	|Routines::end_in_current_package();|
 
 =
-void Routines::begin(inter_name *name) {
+packaging_state Routines::begin(inter_name *name) {
+	packaging_state save = Packaging::enter_home_of(name);
+	Routines::begin_framed(name, NULL);
+	return save;
+}
+
+void Routines::begin_in_current_package(inter_name *name) {
 	Routines::begin_framed(name, NULL);
 }
 
@@ -39,8 +36,11 @@ inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 void Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
 	if (iname == NULL) internal_error("no iname for routine");
 	package_request *R = iname->eventual_owner;
-	if ((R == NULL) || (R == Packaging::request_main())) LOG("Routine outside of package: ................................................ %n\n", iname);
-
+	if ((R == NULL) || (R == Packaging::request_main())) {
+		LOG("Routine outside of package: ................................................ %n\n", iname);
+		WRITE_TO(STDERR, "Routine outside of package: %n\n", iname);
+		internal_error("routine outside of package");
+	}
 	currently_compiling_iname = iname;
 	JumpLabels::reset();
 
@@ -72,7 +72,12 @@ create a new nonphrasal stack frame.
 @ And here is the flop:
 
 =
-void Routines::end(void) {
+void Routines::end(packaging_state save) {
+	Routines::end_in_current_package();
+	Packaging::exit(save);
+}
+
+void Routines::end_in_current_package(void) {
 	kind *R_kind = LocalVariables::deduced_function_kind(currently_compiling_in_frame);
 
 	inter_name *kernel_name = NULL, *public_name = currently_compiling_iname;

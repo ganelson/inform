@@ -264,8 +264,7 @@ table values and prints the (title-cased) name of the one which matches.
 void Tables::Support::compile_print_table_names(void) {
 	table *t;
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *T_s = LocalVariables::add_named_call_as_symbol(I"T");
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -317,6 +316,5 @@ void Tables::Support::compile_print_table_names(void) {
 			Emit::up();
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }

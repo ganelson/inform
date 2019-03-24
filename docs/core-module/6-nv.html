@@ -1007,18 +1007,12 @@ foreign verbs (4).
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::ConjugateVerb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">verb_conjugation</span><span class="plain">) {</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">Conjugation::conj_iname</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">));</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">verb_conjugation</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Compile ConjugateVerb routine</span> <span class="cwebmacronumber">18.1</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="plain">}</span>
         <span class="identifier">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">, </span><span class="identifier">verb_form</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">NewVerbs::verb_form_is_instance</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">)) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">Verbs::form_iname</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">NewVerbs::verb_form_is_instance</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">))</span>
                 &lt;<span class="cwebmacro">Compile ConjugateVerbForm routine</span> <span class="cwebmacronumber">18.2</span>&gt;<span class="plain">;</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-            <span class="plain">}</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TableOfVerbs_INAME</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">, </span><span class="identifier">verb_form</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">NewVerbs::verb_form_is_instance</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">))</span>
@@ -1042,7 +1036,7 @@ foreign verbs (4).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">Conjugation::conj_iname</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">Conjugation::conj_iname</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">fn_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"fn"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">vp_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"vp"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"t"</span><span class="plain">);</span>
@@ -1133,7 +1127,7 @@ foreign verbs (4).
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1147,7 +1141,7 @@ foreign verbs (4).
 
 <pre class="displaydefn">
         <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="identifier">underlying_verb</span><span class="plain">-&gt;</span><span class="identifier">conjugation</span><span class="plain">;</span>
-        <span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">Verbs::form_iname</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">Verbs::form_iname</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">fn_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"fn"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">vp_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"vp"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"t"</span><span class="plain">);</span>
@@ -1221,7 +1215,7 @@ foreign verbs (4).
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="functiontext">Routines::end</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

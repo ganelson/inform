@@ -470,12 +470,19 @@ so. These routines allow that to happen.
 
 
 <pre class="displaydefn">
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">short_name_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">short_name_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"short_name_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+                <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+                <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_ROUTINE_INAMEF</span><span class="plain">));</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;namee</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;after_subject</span><span class="plain"> = </span><span class="identifier">subj</span><span class="plain">;</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;capped</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_PROPERTY_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"short_name_property_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+                <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+                <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_PROPERTY_ROUTINE_INAMEF</span><span class="plain">));</span>
         <span class="identifier">faux</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain">;</span>
         <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">faux</span><span class="plain">);</span>
 </pre>
@@ -490,12 +497,19 @@ so. These routines allow that to happen.
 
 
 <pre class="displaydefn">
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">short_name_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">short_name_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"short_name_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+                <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+                <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_ROUTINE_INAMEF</span><span class="plain">));</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;namee</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;after_subject</span><span class="plain"> = </span><span class="identifier">subj</span><span class="plain">;</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;capped</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_PROPERTY_ROUTINE_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"short_name_property_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+                <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+                <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SHORT_NAME_PROPERTY_ROUTINE_INAMEF</span><span class="plain">));</span>
         <span class="identifier">faux</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain">;</span>
         <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">faux</span><span class="plain">);</span>
 </pre>
@@ -644,7 +658,7 @@ capitalising and fixing "your" as needed.
         <span class="reserved">short_name_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">short_name_notice</span><span class="plain">) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain"> = </span><span class="functiontext">PL::Naming::object_this_is_named_after</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;namee</span><span class="plain">);</span>
-            <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain">);</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NA</span><span class="plain"> = </span><span class="identifier">Assertions::Assemblies::get_named_after_text</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;after_subject</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;capped</span><span class="plain">) {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">porname</span><span class="plain"> = </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PRINTORRUN_EXNAMEF</span><span class="plain">);</span>
@@ -697,12 +711,15 @@ capitalising and fixing "your" as needed.
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SNAMES</span><span class="plain">);</span>
 
             <span class="identifier">Emit::rtrue</span><span class="plain">();</span>
-            <span class="identifier">Routines::end</span><span class="plain">();</span>
+            <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
+            <span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain">);</span>
             <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;snn_iname</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF</span><span class="plain">));</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;routine_iname</span><span class="plain">);</span>
             <span class="identifier">Emit::array_end</span><span class="plain">();</span>
+
+            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

@@ -30,7 +30,12 @@ prints the name of a routine to be compiled later.
 =
 inter_name *ListTogether::new(int include_articles) {
 	list_together_routine *ltr = CREATE(list_together_routine);
-	ltr->ltr_routine_iname = InterNames::new(LIST_TOGETHER_ROUTINE_INAMEF);
+	compilation_module *C = Modules::find(current_sentence);
+	package_request *PR = Packaging::request_resource(C, LISTING_SUBPACKAGE);
+	ltr->ltr_routine_iname = Packaging::function(
+		InterNames::one_off(I"list_together_fn", PR),
+		PR,
+		InterNames::new(LIST_TOGETHER_ROUTINE_INAMEF));
 	ltr->ltr_array_iname = InterNames::new(LIST_TOGETHER_ARRAY_INAMEF);
 	ltr->articles_bit = include_articles;
 	return ltr->ltr_array_iname;
@@ -63,7 +68,7 @@ int ListTogether::compilation_coroutine(void) {
 @ Again, see the DM4.
 
 @<Compile the actual LTR@> =
-	Routines::begin(ltr->ltr_routine_iname);
+	packaging_state save = Routines::begin(ltr->ltr_routine_iname);
 	Emit::inv_primitive(if_interp);
 	Emit::down();
 		Emit::inv_primitive(eq_interp);
@@ -100,7 +105,7 @@ int ListTogether::compilation_coroutine(void) {
 	Emit::up();
 
 	Emit::rfalse();
-	Routines::end();
+	Routines::end(save);
 
 	Emit::named_array_begin(ltr->ltr_array_iname, K_value);
 	Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));

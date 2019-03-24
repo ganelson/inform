@@ -57,10 +57,17 @@ their names (used as I6 tokens), and compile their routines.
         <span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;parse_using_gpr</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">filter_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">global_scope</span><span class="plain">)</span>
-            <span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SCOPE_FILTER_INAMEF</span><span class="plain">);</span>
+            <span class="identifier">filter_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">SCOPE_FILTER_INAMEF</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">NOUN_FILTER_INAMEF</span><span class="plain">);</span>
+            <span class="identifier">filter_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">NOUN_FILTER_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"filter_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
+            <span class="identifier">PR</span><span class="plain">,</span>
+            <span class="identifier">filter_iname</span><span class="plain">);</span>
         <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_iname</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nft</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -75,7 +82,8 @@ their names (used as I6 tokens), and compile their routines.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NonlocalVariables::kind</span><span class="plain">(</span><span class="identifier">I6_noun_VAR</span><span class="plain">);</span>
         <span class="identifier">NonlocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">I6_noun_VAR</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;parse_using_gpr</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_iname</span><span class="plain">);</span>
+
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;nft_iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;parse_using_gpr</span><span class="plain">) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">v_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"v"</span><span class="plain">, </span><span class="string">"value parsed"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">n_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"n"</span><span class="plain">, </span><span class="string">"saved value of noun"</span><span class="plain">);</span>
@@ -84,7 +92,7 @@ their names (used as I6 tokens), and compile their routines.
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">v_s</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">gpr_to_ask</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_explicit_I6_GPR_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gpr_to_ask</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">gpr_to_ask</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::gprv_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gpr_to_ask</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">gpr_to_ask</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">gpr_to_ask</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
@@ -254,7 +262,7 @@ their names (used as I6 tokens), and compile their routines.
                     <span class="identifier">Calculus::Deferrals::emit_test_if_var_matches_description</span><span class="plain">(</span><span class="identifier">noun_var</span><span class="plain">, </span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;the_filter</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="identifier">Routines::end</span><span class="plain">();</span>
+        <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">NonlocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">I6_noun_VAR</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

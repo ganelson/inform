@@ -553,8 +553,7 @@ inter_name *Rules::RulePrintingRule(void) {
 
 void Rules::RulePrintingRule_routine(void) {
 	inter_name *iname = Rules::RulePrintingRule();
-	packaging_state save = Packaging::enter(iname->eventual_owner);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
 	Emit::inv_primitive(ifelse_interp);
 	Emit::down();
@@ -580,8 +579,7 @@ void Rules::RulePrintingRule_routine(void) {
 			@<Print a rule name@>;
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @<Print a rulebook name@> =
@@ -733,16 +731,14 @@ as the definition of the rule in future.
 
 @<Compile a shell routine to apply conditions to an I6 rule@> =
 	inter_name *shell_iname = Rules::shell_iname(R);
-	packaging_state save = Packaging::enter(shell_iname->eventual_owner);
-	Routines::begin(shell_iname);
+	packaging_state save = Routines::begin(shell_iname);
 	if (Rules::compile_constraint(R->first_applicability_condition) == FALSE) {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
 		Emit::inv_call(InterNames::to_symbol(R->rule_extern_iname));
 		Emit::up();
 	}
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 
 @h Indexing.
 Some rules are provided with index text:

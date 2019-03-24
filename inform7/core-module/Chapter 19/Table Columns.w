@@ -150,8 +150,7 @@ void Tables::Columns::compile_run_time_support(void) {
 		InterNames::one_off(I"weak_kind_ID_of_column_entry_fn", PR),
 		PR,
 		InterNames::iname(TC_KOV_INAME));
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -180,8 +179,7 @@ void Tables::Columns::compile_run_time_support(void) {
 	Emit::down();
 		Emit::val_symbol(K_value, InterNames::to_symbol(Kinds::Constructors::UNKNOWN_iname()));
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 @h Discovering columns.

@@ -695,7 +695,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 	binary_predicate *bp = InferenceSubjects::as_bp(infs);
 	if (bp->right_way_round) {
 		if (BinaryPredicates::store_dynamically(bp)) {
-			Routines::begin(bp->initialiser_iname);
+			packaging_state save = Routines::begin(bp->initialiser_iname);
 			inference *i;
 			inter_name *rtiname = InterNames::extern(RELATIONTEST_EXNAMEF);
 			POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
@@ -710,7 +710,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 					Specifications::Compiler::emit_as_val(K_value, spec1);
 				Emit::up();
 			}
-			Routines::end();
+			Routines::end(save);
 		} else {
 			if ((bp->form_of_relation == Relation_VtoV) ||
 				(bp->form_of_relation == Relation_Sym_VtoV))

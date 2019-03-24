@@ -1392,7 +1392,11 @@ always the way to the other room &mdash; the one we are not in.
 
 <pre class="displaydefn">
         <span class="reserved">door_dir_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">door_dir_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">TWO_SIDED_DOOR_DOOR_DIR_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"tsd_door_dir_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+            <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+            <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">TWO_SIDED_DOOR_DOOR_DIR_INAMEF</span><span class="plain">));</span>
         <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain">);</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;door</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">;</span>
@@ -1418,7 +1422,11 @@ always the other room &mdash; the one we are not in.
 
 <pre class="displaydefn">
         <span class="reserved">door_to_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">door_to_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">TWO_SIDED_DOOR_DOOR_TO_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
+            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"tsd_door_to_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
+            <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
+            <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">TWO_SIDED_DOOR_DOOR_TO_INAMEF</span><span class="plain">));</span>
         <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain">);</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;door</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">;</span>
@@ -1468,7 +1476,7 @@ why we don't need to compile <code class="display"><span class="extract">door_to
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::write_door_dir_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">door_dir_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">door_dir_notice</span><span class="plain">) {</span>
-            <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain">);</span>
             <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loc"</span><span class="plain">, </span><span class="string">"room of actor"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
@@ -1517,14 +1525,14 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                     <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D2</span><span class="plain">)));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Routines::end</span><span class="plain">();</span>
+            <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::write_door_to_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">door_to_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">door_to_notice</span><span class="plain">) {</span>
-            <span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain">);</span>
             <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loc"</span><span class="plain">, </span><span class="string">"room of actor"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
@@ -1571,7 +1579,7 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Routines::end</span><span class="plain">();</span>
+            <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

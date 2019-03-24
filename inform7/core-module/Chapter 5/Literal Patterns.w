@@ -1953,7 +1953,7 @@ char *LiteralPatterns::leading_zero_prototype(int range) {
 
 =
 void LiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_list) {
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 
 	literal_pattern_name *lpn;
 	literal_pattern *lp;
@@ -2004,7 +2004,7 @@ void LiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_li
 		@<Print according to this particular literal pattern@>;
 		Emit::rtrue();
 	}
-	Routines::end();
+	Routines::end(save);
 }
 
 @ This was at one time a more complicated criterion, which masked bugs in

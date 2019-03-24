@@ -408,8 +408,7 @@ void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 	}
 
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);
-	packaging_state save = Packaging::enter_home_of(printing_rule_name);
-	Routines::begin(printing_rule_name);
+	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *rbnov_s = LocalVariables::add_named_call_as_symbol(I"rbno");
 	Emit::inv_primitive(ifelse_interp);
 	Emit::down();
@@ -434,8 +433,7 @@ void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 			Emit::rfalse();
 		Emit::up();
 	Emit::up();
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 }
 
 inter_name *Rulebooks::Outcomes::get_default_value(void) {

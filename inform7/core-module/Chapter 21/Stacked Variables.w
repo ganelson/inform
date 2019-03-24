@@ -207,8 +207,7 @@ stacked_variable_list *StackedVariables::add_to_list(stacked_variable_list *stvl
 int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_name *iname) {
 	if (stvo == NULL) return 0;
 
-	packaging_state save = Packaging::enter_home_of(iname);
-	Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
 	inter_symbol *state_s = LocalVariables::add_named_call_as_symbol(I"state");
 
@@ -237,8 +236,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) count);
 	Emit::up();
 
-	Routines::end();
-	Packaging::exit(save);
+	Routines::end(save);
 	stvo->stvo_iname = iname;
 	return count;
 }
