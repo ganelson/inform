@@ -28,14 +28,17 @@ No source text directly leads to this, and indeed, it can entirely be defined
 without having seen any source text: it will be the same on every run. The
 package is |/main/resources/generic|.
 
-(b) Each extension is a compilation module, including of course the Standard
+(b) Material from the Inform 6 template is assimilated into inter code in
+the "template module", which is |/main/resources/template|.
+
+(c) Each extension is a compilation module, including of course the Standard
 Rules, which is |/main/resources/standard_rules|. Subsequent extensions have
 longer names, such as |/main/resources/locksmith_by_emily_short|.
 
-(c) Material in the main source text is a single compilation module, and
+(d) Material in the main source text is a single compilation module, and
 goes into |/main/resources/source_text|.
 
-(d) The "synoptic module" contains material which was synthesised from all
+(e) The "synoptic module" contains material which was synthesised from all
 of the source material in the other modules, and which can't meaningfully
 be localised. For example, a function at run-time which returns the default
 value for a kind given its weak kind ID has to be synoptic, because its
@@ -43,7 +46,8 @@ definition will include references to every kind defined in the program.
 Such a function doesn't belong to any one block of source text. The
 package is |/main/resources/synoptic|.
 
-@ Each module package then contains some or all of a standard set of
+@ Except for the template module, which is necessarily more free-form,
+each module package then contains some or all of a standard set of
 subpackages (and nothing else). Suppose the module name is |M|. The
 range of possible subpackages is:
 
