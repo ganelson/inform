@@ -29,6 +29,15 @@ void Modules::look_for_cu(parse_node *p) {
 }
 
 compilation_module *Modules::new(parse_node *from) {
+	extension_file *owner = NULL;
+	if ((from) && (Wordings::nonempty(ParseTree::get_text(from)))) {
+		source_location sl = Wordings::location(ParseTree::get_text(from));
+		if (sl.file_of_origin == NULL) owner = standard_rules_extension;
+		else owner = SourceFiles::get_extension_corresponding(
+			Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(from))));
+	}
+	if ((owner == NULL) && (pool_module != NULL)) return pool_module;
+
 	compilation_module *C = CREATE(compilation_module);
 	C->hanging_from = from;
 	C->resources = NULL;
@@ -47,17 +56,10 @@ compilation_module *Modules::new(parse_node *from) {
 		ParseTree::set_module(from, C);
 		Modules::propagate_downwards(from->down, C);
 	}
-	extension_file *owner = NULL;
-	if (Wordings::nonempty(ParseTree::get_text(C->hanging_from))) {
-		source_location sl = Wordings::location(ParseTree::get_text(C->hanging_from));
-		if (sl.file_of_origin == NULL) owner = standard_rules_extension;
-		else owner = SourceFiles::get_extension_corresponding(
-			Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(C->hanging_from))));
-	}
 
 	TEMPORARY_TEXT(PN);
 	if (owner == standard_rules_extension) WRITE_TO(PN, "standard_rules");
-	else if (owner == NULL) WRITE_TO(PN, "new_material");
+	else if (owner == NULL) WRITE_TO(PN, "source_text");
 	else {
 		WRITE_TO(PN, "%X", Extensions::Files::get_eid(owner));
 		LOOP_THROUGH_TEXT(pos, PN)

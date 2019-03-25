@@ -17,6 +17,7 @@ Preliminaries
 	Code Packages in Textual Inter
 	Inform Primitives
 	Inform Annotations
+	Inform Organisation
 	Chains and Stages
 
 Chapter 1: Everything
