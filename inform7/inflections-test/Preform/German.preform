@@ -1,0 +1,74 @@
+<grammatical-case-names> ::=
+	nominative | accusative | dative | genitive
+
+
+<article-declension> ::=
+	m	<de-male-article-declension> |
+	f	<de-female-article-declension> |
+	n	<de-neuter-article-declension>
+
+<de-male-article-declension> ::=
+	ein			ein	einen einem eines
+				eine eine einen einer |
+	der			der den dem des
+				die die den der
+
+<de-female-article-declension> ::=
+	ein			eine eine einer einer
+				eine eine einen einer |
+	der			das das dem des
+				die die den der
+
+<de-neuter-article-declension> ::=
+	ein			ein	ein einem eines
+				eine eine einen einer |
+	der			die die der der
+				die die den der
+
+
+<noun-declension> ::=
+	*	<de-noun-declension-irregular-group> |
+	m	<de-noun-declension-masculine-group> <de-noun-declension-masculine-tables> |
+	f	<de-noun-declension-feminine-group> <de-noun-declension-feminine-tables> |
+	n	<de-noun-declension-masculine-group> <de-noun-declension-masculine-tables>
+
+
+<de-noun-declension-irregular-group> ::=
+	herr		Herr 	Herrn	Herrn	Herrn 
+				Herren	Herren	Herren	Herren |
+	herz		Herz	Herz	Herzen	Herzens
+				Herzen	Herzen	Herzen	Herzen
+
+
+<de-noun-declension-masculine-group> ::=
+	*e			2 |
+	*			1
+
+<de-noun-declension-masculine-tables> ::=
+	<de-noun-declension-masculine> |
+	<de-noun-declension-masculine-with-e>
+
+<de-noun-declension-masculine> ::=
+	0 | 0 | 0 | 0es |
+	0er | 0er | 0ern | 0er
+
+<de-noun-declension-masculine-with-e> ::=
+	0 | 0 | 0 | 0s |
+	0r | 0r | 0rn | 0r
+
+
+<de-noun-declension-feminine-group> ::=
+	*e			2 |
+	*			1
+
+<de-noun-declension-feminine-tables> ::=
+	<de-noun-declension-feminine> |
+	<de-noun-declension-feminine-with-e>
+
+<de-noun-declension-feminine> ::=
+	0 | 0 | 0 | 0 |
+	0en | 0en | 0en | 0en
+
+<de-noun-declension-feminine-with-e> ::=
+	0 | 0 | 0 | 0 |
+	0n | 0n | 0n | 0n
