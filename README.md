@@ -158,6 +158,8 @@ be accepted. (Note that these are not git submodules.)
 	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __version 0.5.4__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __version 1.0.6.__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
+* inblorb/Tests/Assistants/blorblib - Code for examining blorb files, including blorbscan, used here for validating inblorb's output in tests. - version 1.0.2 - by [Andrew Plotkin](https://github.com/erkyrath), but not currently elsewhere on Github
+
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __version 'Parchment for Inform 7 (2015-09-25)'__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
 	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __version 'Quixe for Inform 7 (v. 2.1.2)'__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)

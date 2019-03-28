@@ -177,6 +177,8 @@ be accepted. (Note that these are not git submodules.)
 	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __@version(inform6/Tests/Assistants/dumb-glulx/glulxe)__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __@version(inform6/Tests/Assistants/dumb-glulx/cheapglk)__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
+* inblorb/Tests/Assistants/blorblib - Code for examining blorb files, including blorbscan, used here for validating inblorb's output in tests. - version 1.0.2 - by [Andrew Plotkin](https://github.com/erkyrath), but not currently elsewhere on Github
+
 @define template(program, for, maintainer, username, repository)
 	* @program - @for - __@version(@program)__ - from [https://github.com/@username/@repository], maintained by [@maintainer](https://github.com/@username)
 @end

@@ -8,7 +8,7 @@ BLORBLIB = $(ME)/Tests/Assistants/blorblib
 
 # Making the program:
 
-$(ME)/Tangled/$(MYNAME): {dependent-files}
+$(ME)/Tangled/$(MYNAME): $(BLORBLIB)/blorbscan {dependent-files}
 	$(call make-me)
 
 .PHONY: force

@@ -45,7 +45,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case TEST_ADJECTIVES_CLSW: Main::load(I"Syntax.preform"); Unit::test_adjectives(arg); break;
 		case TEST_ARTICLES_CLSW: Main::load(I"Syntax.preform"); Unit::test_articles(arg); break;
-		case TEST_DECLENSIONS_CLSW: Main::load(I"German.preform"); Unit::test_declensions(arg); break;
+		case TEST_DECLENSIONS_CLSW: Main::load_other(I"German.preform"); Unit::test_declensions(arg); break;
 		case TEST_PARTICIPLES_CLSW: Main::load(I"Syntax.preform"); Unit::test_participles(arg); break;
 		case TEST_PLURALS_CLSW: Main::load(I"Syntax.preform"); Unit::test_plurals(arg); break;
 		case TEST_VERBS_CLSW: Main::load(I"Syntax.preform"); Unit::test_verbs(arg); break;
@@ -56,6 +56,15 @@ void Main::load(text_stream *leaf) {
 	pathname *P = Pathnames::from_text(I"inform7");
 	P = Pathnames::subfolder(P, I"inflections-test");
 	P = Pathnames::subfolder(P, I"Tangled");
+	filename *S = Filenames::in_folder(P, leaf);
+	wording W = Preform::load_from_file(S);
+	Preform::parse_preform(W, FALSE);
+}
+
+void Main::load_other(text_stream *leaf) {
+	pathname *P = Pathnames::from_text(I"inform7");
+	P = Pathnames::subfolder(P, I"inflections-test");
+	P = Pathnames::subfolder(P, I"Preform");
 	filename *S = Filenames::in_folder(P, leaf);
 	wording W = Preform::load_from_file(S);
 	Preform::parse_preform(W, FALSE);

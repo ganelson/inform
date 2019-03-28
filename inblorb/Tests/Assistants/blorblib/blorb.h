@@ -17,7 +17,7 @@
     
 /* #define BLORB_BIG_ENDIAN */
 #define BLORB_LITTLE_ENDIAN
-typedef unsigned long uint32;
+typedef unsigned int uint32;
 typedef unsigned short uint16;
 
 /* End of things you have to edit. */
