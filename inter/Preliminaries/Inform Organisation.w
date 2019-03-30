@@ -69,3 +69,64 @@ range of possible subpackages is:
 	|/main/resources/M/rules|
 	|/main/resources/M/tables|
 	|/main/resources/M/variables|
+
+@h Function packages.
+All functions compiled by Inform 7 are expressed in inter code by packages
+of type |_function|. The only externally visible symbol is |call|, which is
+what is invoked. For example:
+
+	|symbol X == /main/resources/kinds/kind_6/gpr_fn/call|
+	|...|
+	|        inv X|
+
+invokes the function defined by the package:
+
+	|inv /main/resources/kinds/kind_6/gpr_fn|
+
+(Inform conventionally uses names ending in |_fn| for function packages.)
+
+It is possible for function packages to avoid defining any actual code, by
+defining |call| as an alias for a routine which we'll simply have to assume
+will be present at eventual compile time. For example:
+
+	|package print_fn _function|
+	|    symbol public misc call -> REAL_NUMBER_TY_Say|
+
+More often, however, and always for functions derived from Inform 7 source
+text, the package contains a code subpackage, and then defines |call| to
+be that code package:
+
+	|package gpr_fn _function|
+	|    package code_block_1 _code|
+	|        ...|
+	|    constant call K_phrase_nothing____nothing = code_block_1|
+
+In fact, though, the package can be much more elaborate. If the code needs
+to manipulate or refer to data not expressible in single words, such as
+lists or texts, then it will probably need to create and subsequently destroy
+a stack frame. The mechanism will then be:
+
+	|package gpr_fn _function|
+	|    package code_block_1 _code|
+	|        ...|
+	|    constant kernel K_phrase_nothing____nothing = code_block_1|
+	|    package code_block_2 _code|
+	|        ...|
+	|    constant call K_phrase_nothing____nothing = code_block_2|
+
+The "shell" routine of code, the one receiving the |call|, creates a stack
+fram and then calls the "kernel" routine, which does the actual work; when
+that returns to the "shell", the stack frame is disposed of again.
+
+Function packages will also contain definitions of any static data they
+need: for example, if an Inform 7 phrase contains a reference to the 
+constant |{ 1 , 2 , 3 }| then a function package for it will define a
+constant with a name such as |block_constant_1|. In short, as far as
+possible, function packages are self-contained.
+
+	
+
+
+
+
+

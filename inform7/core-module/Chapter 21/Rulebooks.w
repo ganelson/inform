@@ -867,14 +867,13 @@ void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
 	Rules::Bookings::list_judge_ordering(rb->rule_list);
 	if (Rules::Bookings::list_is_empty_of_i7_rules(rb->rule_list)) return;
 
-	CompiledText::divider_comment();
+	packaging_state save = Packaging::enter(rb->rb_package);
 	TEMPORARY_TEXT(C);
 	WRITE_TO(C, "Rules in rulebook: %~W (%n)", rb->primary_name, rb->rb_iname);
 	Emit::comment(C);
 	DISCARD_TEXT(C);
-	CompiledText::divider_comment();
 	Rules::Bookings::list_compile_rule_phrases(rb->rule_list, i, max_i);
-	CompiledText::divider_comment();
+	Packaging::exit(save);
 }
 
 void Rulebooks::rulebooks_array_array(void) {

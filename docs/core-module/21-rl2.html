@@ -1096,14 +1096,13 @@ code are the real outcome of the code in this section.
         <span class="functiontext">Rules::Bookings::list_judge_ordering</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::Bookings::list_is_empty_of_i7_rules</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="functiontext">CompiledText::divider_comment</span><span class="plain">();</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Rules in rulebook: %~W (%n)"</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="functiontext">CompiledText::divider_comment</span><span class="plain">();</span>
         <span class="functiontext">Rules::Bookings::list_compile_rule_phrases</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">max_i</span><span class="plain">);</span>
-        <span class="functiontext">CompiledText::divider_comment</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::rulebooks_array_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
