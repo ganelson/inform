@@ -271,7 +271,10 @@ void PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv) {
 	if (gv->first_line == NULL)
 		internal_error("compiling Verb for empty grammar");
 
-	Emit::named_verb_array_begin(InterNames::new(VERB_DECLARATION_ARRAY_INAMEF), K_value);
+	inter_name *array_iname = InterNames::new(VERB_DECLARATION_ARRAY_INAMEF);
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	Packaging::house(array_iname, PR);
+	Emit::named_verb_array_begin(array_iname, K_value);
 
 	if (Wordings::empty(gv->command))
 		Emit::array_dword_entry(I"no.verb");
@@ -448,11 +451,6 @@ void PL::Parsing::Verbs::translates(wording W, parse_node *p2) {
 		}
 	gv = PL::Parsing::Verbs::named_token_new(W);
 	WRITE_TO(gv->gv_I6_identifier, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
-}
-
-void PL::Parsing::Verbs::compile_i6_token(OUTPUT_STREAM, grammar_verb *gv) {
-	if (Str::len(gv->gv_I6_identifier) > 0) WRITE("%S", gv->gv_I6_identifier);
-	else WRITE("%n", gv->gv_line_iname);
 }
 
 inter_name *PL::Parsing::Verbs::i6_token_as_iname(grammar_verb *gv) {
@@ -694,6 +692,12 @@ inter_name *VERB_DIRECTIVE_CREATURE_iname = NULL;
 inter_name *VERB_DIRECTIVE_TOPIC_iname = NULL;
 inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 
+inter_name *PL::Parsing::Verbs::grammar_constant(int N, int V) {
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	Packaging::house(InterNames::iname(N), PR);
+	return Emit::named_numeric_constant(InterNames::iname(N), 1);
+}
+
 void PL::Parsing::Verbs::compile_all(void) {
 	grammar_verb *gv;
 	PL::Parsing::Verbs::gv_slash_all();
@@ -701,20 +705,23 @@ void PL::Parsing::Verbs::compile_all(void) {
 
 	Log::new_stage(I"Sorting and compiling non-value grammar (G3, G4)");
 
-	VERB_DIRECTIVE_REVERSE_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_REVERSE_INAME), 1);
-	VERB_DIRECTIVE_SLASH_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_SLASH_INAME), 1);
-	VERB_DIRECTIVE_DIVIDER_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_DIVIDER_INAME), 1);
-	VERB_DIRECTIVE_RESULT_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_RESULT_INAME), 2);
-	VERB_DIRECTIVE_SPECIAL_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_SPECIAL_INAME), 3);
-	VERB_DIRECTIVE_NUMBER_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_NUMBER_INAME), 4);
-	VERB_DIRECTIVE_NOUN_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_NOUN_INAME), 5);
-	VERB_DIRECTIVE_MULTI_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_MULTI_INAME), 6);
-	VERB_DIRECTIVE_MULTIINSIDE_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_MULTIINSIDE_INAME), 7);
-	VERB_DIRECTIVE_MULTIHELD_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_MULTIHELD_INAME), 8);
-	VERB_DIRECTIVE_HELD_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_HELD_INAME), 9);
-	VERB_DIRECTIVE_CREATURE_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_CREATURE_INAME), 10);
-	VERB_DIRECTIVE_TOPIC_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_TOPIC_INAME), 11);
-	VERB_DIRECTIVE_MULTIEXCEPT_iname = Emit::named_numeric_constant(InterNames::iname(VERB_DIRECTIVE_MULTIEXCEPT_INAME), 12);
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	packaging_state save = Packaging::enter(PR);
+
+	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_INAME, 1);
+	VERB_DIRECTIVE_SLASH_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SLASH_INAME, 1);
+	VERB_DIRECTIVE_DIVIDER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_DIVIDER_INAME, 1);
+	VERB_DIRECTIVE_RESULT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_RESULT_INAME, 2);
+	VERB_DIRECTIVE_SPECIAL_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SPECIAL_INAME, 3);
+	VERB_DIRECTIVE_NUMBER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NUMBER_INAME, 4);
+	VERB_DIRECTIVE_NOUN_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NOUN_INAME, 5);
+	VERB_DIRECTIVE_MULTI_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTI_INAME, 6);
+	VERB_DIRECTIVE_MULTIINSIDE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_INAME, 7);
+	VERB_DIRECTIVE_MULTIHELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIHELD_INAME, 8);
+	VERB_DIRECTIVE_HELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_HELD_INAME, 9);
+	VERB_DIRECTIVE_CREATURE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_CREATURE_INAME, 10);
+	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_INAME, 11);
+	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_INAME, 12);
 
 	LOOP_OVER(gv, grammar_verb)
 		if (gv->gv_is == GV_IS_TOKEN)
@@ -737,6 +744,7 @@ void PL::Parsing::Verbs::compile_all(void) {
 			PL::Parsing::Verbs::compile(gv); /* makes routines for use in |parse_name| */
 
 	PL::Parsing::Lines::compile_slash_gprs();
+	Packaging::exit(save);
 }
 
 @ The following routine unites, so far as possible, the different forms of
