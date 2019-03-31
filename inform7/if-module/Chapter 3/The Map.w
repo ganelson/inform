@@ -320,8 +320,10 @@ int PL::Map::map_set_kind_notify(instance *I, kind *k) {
 
 @<Assign the object a direction number and a mapped-D-of relation@> =
 	registered_directions++;
-	PF_I(map, I)->direction_iname = InterNames::new(DIRECTION_OBJECT_INAMEF);
-	PL::MapDirections::make_mapped_predicate(I, PF_I(map, I)->direction_iname);
+	inter_name *dname = InterNames::new(DIRECTION_OBJECT_INAMEF);
+	Packaging::house(dname, Kinds::Behaviour::package(K_direction));
+	PF_I(map, I)->direction_iname = dname;
+	PL::MapDirections::make_mapped_predicate(I, dname);
 
 @h The exits array.
 The bulk of the map is stored in the arrays called |exits|, which hold the
@@ -375,10 +377,14 @@ int PL::Map::map_compile_model_tables(void) {
 }
 
 @<Declare I6 constants for the directions@> =
-	Emit::named_numeric_constant(InterNames::iname(No_Directions_INAME), (inter_t) registered_directions);
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K_direction));
+	inter_name *ndi = InterNames::iname(No_Directions_INAME);
+	Packaging::house(ndi, Kinds::Behaviour::package(K_direction));
+	Emit::named_numeric_constant(ndi, (inter_t) registered_directions);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction)
 		Emit::named_iname_constant(PF_I(map, I)->direction_iname, K_object, Instances::emitted_iname(I));
+	Packaging::exit(save);
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
 one after another. It looks wasteful of memory, since it is almost always
