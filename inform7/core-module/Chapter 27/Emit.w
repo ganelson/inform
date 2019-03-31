@@ -692,7 +692,8 @@ void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val)
 void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
 	inter_symbol *con_name = InterNames::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
-	Emit::guard(Inter::Constant::new_numerical(&doublesharps_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(&doublesharps_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(&doublesharps_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(&doublesharps_bookmark), NULL));
+	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
+//	Emit::guard(Inter::Constant::new_numerical(&doublesharps_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(&doublesharps_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(&doublesharps_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(&doublesharps_bookmark), NULL));
 }
 
 void Emit::named_late_array_begin(inter_name *name, kind *K) {
