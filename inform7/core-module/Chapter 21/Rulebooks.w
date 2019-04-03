@@ -519,13 +519,17 @@ void Rulebooks::rulebook_var_creators(void) {
 				Rulebooks::get_stv_creator_iname(rb));
 
 	if (memory_economy_in_force == FALSE) {
-		Emit::named_array_begin(InterNames::iname(rulebook_var_creators_INAME), K_value);
+		package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
+		inter_name *iname = InterNames::one_off(I"rulebook_var_creators", PR);
+		packaging_state save = Packaging::enter(PR);
+		Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(rb, rulebook) {
 			if (StackedVariables::owner_empty(rb->owned_by_rb)) Emit::array_numeric_entry(0);
 			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->owned_by_rb));
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end();
+		Packaging::exit(save);
 	} else @<Make slow lookup routine@>;
 }
 
@@ -877,12 +881,16 @@ void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
 }
 
 void Rulebooks::rulebooks_array_array(void) {
-	Emit::named_array_begin(InterNames::iname(rulebooks_array_INAME), K_value);
+	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"rulebooks_array", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook)
 		Emit::array_iname_entry(rb->rb_iname);
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 void Rulebooks::compile_rulebooks(void) {
@@ -903,8 +911,20 @@ void Rulebooks::compile_rulebooks(void) {
 	Rules::check_placement_safety();
 }
 
+inter_name *rulebooknames_iname = NULL;
+inter_name *Rulebooks::RulebookNames_iname(void) {
+	if (rulebooknames_iname == NULL) {
+		package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
+		rulebooknames_iname = InterNames::one_off(I"RulebookNames", PR);
+	}
+	return rulebooknames_iname;
+}
+
 void Rulebooks::RulebookNames_array(void) {
-	Emit::named_array_begin(InterNames::iname(RulebookNames_INAME), K_value);
+	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
+	inter_name *iname = Rulebooks::RulebookNames_iname();
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	if (memory_economy_in_force) {
 		Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
@@ -918,6 +938,7 @@ void Rulebooks::RulebookNames_array(void) {
 		}
 	}
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h Parsing rulebook properties.

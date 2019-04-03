@@ -370,13 +370,17 @@ void Activities::activity_var_creators(void) {
 		}
 	}
 
-	Emit::named_array_begin(InterNames::iname(activity_var_creators_INAME), K_value);
+	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"activity_var_creators", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(av, activity) {
 		if (StackedVariables::owner_empty(av->owned_by_av)) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(StackedVariables::frame_creator(av->owned_by_av));
 	}
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h Activity indexing.
@@ -612,8 +616,11 @@ void Activities::compile_activity_constants(void) {
 }
 
 void Activities::Activity_before_rulebooks_array(void) {
+	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"Activity_before_rulebooks", PR);
+	packaging_state save = Packaging::enter(PR);
 	activity *av; int i = 0;
-	Emit::named_array_begin(InterNames::iname(Activity_before_rulebooks_INAME), K_number);
+	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) av->before_rules->allocation_id);
 		i++;
@@ -621,11 +628,15 @@ void Activities::Activity_before_rulebooks_array(void) {
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 void Activities::Activity_for_rulebooks_array(void) {
+	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"Activity_for_rulebooks", PR);
+	packaging_state save = Packaging::enter(PR);
 	activity *av; int i = 0;
-	Emit::named_array_begin(InterNames::iname(Activity_for_rulebooks_INAME), K_number);
+	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) av->for_rules->allocation_id);
 		i++;
@@ -633,11 +644,15 @@ void Activities::Activity_for_rulebooks_array(void) {
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 void Activities::Activity_after_rulebooks_array(void) {
+	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"Activity_after_rulebooks", PR);
+	packaging_state save = Packaging::enter(PR);
 	activity *av; int i = 0;
-	Emit::named_array_begin(InterNames::iname(Activity_after_rulebooks_INAME), K_number);
+	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) av->after_rules->allocation_id);
 		i++;
@@ -645,11 +660,15 @@ void Activities::Activity_after_rulebooks_array(void) {
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 void Activities::Activity_atb_rulebooks_array(void) {
+	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"Activity_atb_rulebooks", PR);
+	packaging_state save = Packaging::enter(PR);
 	activity *av; int i = 0;
-	Emit::named_byte_array_begin(InterNames::iname(Activity_atb_rulebooks_INAME), K_number);
+	Emit::named_byte_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) Rulebooks::used_by_future_actions(av->before_rules));
 		i++;
@@ -657,6 +676,7 @@ void Activities::Activity_atb_rulebooks_array(void) {
 	if (i==0) Emit::array_numeric_entry(255);
 	Emit::array_numeric_entry(255);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 void Activities::annotate_list_for_cross_references(activity_list *avl, phrase *ph) {

@@ -238,7 +238,10 @@ structure: a table with no columns and no rows, which would otherwise be
 against the rules. (The Template file "Tables.i6t" defines it.)
 
 @<Compile the Table of Tables@> =
-	Emit::named_array_begin(InterNames::iname(TableOfTables_INAME), K_value);
+	package_request *PR = Kinds::Behaviour::package(K_table);
+	inter_name *iname = InterNames::one_off(I"TableOfTables", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	Emit::array_iname_entry(InterNames::extern(EMPTY_TABLE_EXNAMEF));
 	table *t;
 	LOOP_OVER(t, table)
@@ -248,6 +251,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 
 @<Note the usage of run-time memory for tables@> =
 	table *t;

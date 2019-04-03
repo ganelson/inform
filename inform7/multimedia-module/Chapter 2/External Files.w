@@ -273,9 +273,14 @@ internal_error("LAMIA");
 =
 void PL::Files::arrays(void) {
 	if (Plugins::Manage::plugged_in(files_plugin) == FALSE) return;
-	Emit::named_numeric_constant(InterNames::iname(NO_EXTERNAL_FILES_INAME), (inter_t) (NUMBER_CREATED(external_file)));
-	external_file *exf;
 
+	package_request *PR = Kinds::Behaviour::package(K_external_file);
+	inter_name *iname = InterNames::one_off(I"NO_EXTERNAL_FILES", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_numeric_constant(iname, (inter_t) (NUMBER_CREATED(external_file)));
+	Packaging::exit(save);
+
+	external_file *exf;
 	LOOP_OVER(exf, external_file) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
 			Emit::named_string_array_begin(exf->IFID_array_iname, K_value);
@@ -308,11 +313,14 @@ void PL::Files::arrays(void) {
 		Emit::array_end();
 	}
 
-	Emit::named_array_begin(InterNames::iname(TableOfExternalFiles_INAME), K_value);
+	iname = InterNames::one_off(I"TableOfExternalFiles", PR);
+	save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	Emit::array_numeric_entry(0);
 	LOOP_OVER(exf, external_file) Emit::array_iname_entry(exf->exf_iname);
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h External Files Index.

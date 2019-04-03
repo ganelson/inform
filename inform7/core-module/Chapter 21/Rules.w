@@ -567,7 +567,7 @@ void Rules::RulePrintingRule_routine(void) {
 			Emit::inv_primitive(lt_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, R_s);
-				Emit::val_iname(K_value, InterNames::iname(NUMBER_RULEBOOKS_CREATED_INAME));
+				Emit::val_iname(K_value, Phrases::Manager::NRC_iname());
 			Emit::up();
 		Emit::up();
 		Emit::code();
@@ -601,7 +601,7 @@ void Rules::RulePrintingRule_routine(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::iname(RulebookNames_INAME));
+				Emit::val_iname(K_value, Rulebooks::RulebookNames_iname());
 				Emit::val_symbol(K_value, R_s);
 			Emit::up();
 		Emit::up();

@@ -753,6 +753,8 @@ compile under Inform 6.
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;make_default</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;default_requested_here</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">KIND_ID_INAMEF</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
@@ -874,10 +876,13 @@ K, we have also seen its bases.
 
 
 <pre class="displaydefn">
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Kinds::RunTime::emit_weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compile the list of strong IDs for the bases</span> <span class="cwebmacronumber">16.1.1</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

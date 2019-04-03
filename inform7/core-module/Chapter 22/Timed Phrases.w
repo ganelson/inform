@@ -28,7 +28,10 @@ typedef struct use_as_event {
 
 =
 void Phrases::Timed::TimedEventsTable(void) {
-	Emit::named_table_array_begin(InterNames::iname(TimedEventsTable_INAME), K_value);
+	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"TimedEventsTable", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_table_array_begin(iname, K_value);
 	int when_count = 0;
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
@@ -43,10 +46,14 @@ void Phrases::Timed::TimedEventsTable(void) {
 		Emit::array_numeric_entry(0);
 	}
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 void Phrases::Timed::TimedEventTimesTable(void) {
-	Emit::named_table_array_begin(InterNames::iname(TimedEventTimesTable_INAME), K_number);
+	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"TimedEventTimesTable", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_table_array_begin(iname, K_number);
 	int when_count = 0;
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
@@ -61,6 +68,7 @@ void Phrases::Timed::TimedEventTimesTable(void) {
 		Emit::array_numeric_entry(0);
 	}
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @ That's it, really: everything else is just indexing.

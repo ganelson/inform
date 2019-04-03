@@ -791,6 +791,11 @@ times".
 
 =
 void Chronology::chronology_extents_i6_escape(void) {
-	Emit::named_numeric_constant(InterNames::iname(NO_PAST_TENSE_CONDS_INAME), (inter_t) no_past_tenses);
-	Emit::named_numeric_constant(InterNames::iname(NO_PAST_TENSE_ACTIONS_INAME), (inter_t) no_past_actions);
+	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
+	inter_name *iname1 = InterNames::one_off(I"NO_PAST_TENSE_CONDS", PR);
+	inter_name *iname2 = InterNames::one_off(I"NO_PAST_TENSE_ACTIONS", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_numeric_constant(iname1, (inter_t) no_past_tenses);
+	Emit::named_numeric_constant(iname2, (inter_t) no_past_actions);
+	Packaging::exit(save);
 }

@@ -588,6 +588,8 @@ compile under Inform 6.
 	rks->make_default = FALSE;
 	rks->default_requested_here = NULL;
 	rks->rks_iname = InterNames::new(KIND_ID_INAMEF);
+	package_request *PR = Kinds::Behaviour::package(K);
+	Packaging::house(rks->rks_iname, PR);
 	TEMPORARY_TEXT(TEMP);
 	Kinds::Textual::write(TEMP, K);
 	wording W = Feeds::feed_stream(TEMP);
@@ -673,10 +675,13 @@ void Kinds::RunTime::compile_structures(void) {
 }
 
 @<Compile the runtime ID structure for this kind@> =
+	package_request *PR = Kinds::Behaviour::package(K);
+	packaging_state save = Packaging::enter(PR);
 	Emit::named_array_begin(rks->rks_iname, K_value);
 	Kinds::RunTime::emit_weak_id(K);
 	@<Compile the list of strong IDs for the bases@>;
 	Emit::array_end();
+	Packaging::exit(save);
 
 @<Compile the list of strong IDs for the bases@> =
 	int arity = Kinds::arity_of_constructor(K);

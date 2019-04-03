@@ -285,14 +285,28 @@ PHRCDs are used to make sure it appears in the right position.
 
 
 <pre class="display">
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">NUMBER_RULEBOOKS_CREATED_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Manager::NRC_iname</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_RULEBOOKS_CREATED_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULEBOOKS_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="identifier">NUMBER_RULEBOOKS_CREATED_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"NUMBER_RULEBOOKS_CREATED"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_RULEBOOKS_CREATED_iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::add_rules_to_rulebooks</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">EARLY_AFTERNOON_PHT</span><span class="plain">);</span>
         <span class="functiontext">Rules::Bookings::make_automatic_placements</span><span class="plain">();</span>
-        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">NUMBER_RULEBOOKS_CREATED_INAME</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain">));</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULEBOOKS_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="functiontext">Phrases::Manager::NRC_iname</span><span class="plain">(), (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain">));</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function Phrases::Manager::NRC_iname is used in 21/rl (<a href="21-rl.html#SP20">&#167;20</a>).</p>
 
 <p class="endnote">The function Phrases::Manager::add_rules_to_rulebooks is used in 1/mr (<a href="1-mr.html#SP4_13">&#167;4.13</a>).</p>
 

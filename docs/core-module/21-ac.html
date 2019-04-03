@@ -448,13 +448,17 @@ noun for it; for example, the "announcing activity".
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">activity_var_creators_INAME</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">ACTIONS_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"activity_var_creators"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">StackedVariables::owner_empty</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;owned_by_av</span><span class="plain">)) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">StackedVariables::frame_creator</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;owned_by_av</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -822,8 +826,11 @@ values, of the kind to which the activity applies.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_before_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">ACTIVITIES_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Activity_before_rulebooks"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="reserved">activity</span><span class="plain"> *</span><span class="identifier">av</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">Activity_before_rulebooks_INAME</span><span class="plain">), </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;before_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">++;</span>
@@ -831,11 +838,15 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_for_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">ACTIVITIES_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Activity_for_rulebooks"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="reserved">activity</span><span class="plain"> *</span><span class="identifier">av</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">Activity_for_rulebooks_INAME</span><span class="plain">), </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;for_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">++;</span>
@@ -843,11 +854,15 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_after_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">ACTIVITIES_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Activity_after_rulebooks"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="reserved">activity</span><span class="plain"> *</span><span class="identifier">av</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">Activity_after_rulebooks_INAME</span><span class="plain">), </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;after_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">++;</span>
@@ -855,11 +870,15 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_atb_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">ACTIVITIES_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Activity_atb_rulebooks"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="reserved">activity</span><span class="plain"> *</span><span class="identifier">av</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
-        <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">Activity_atb_rulebooks_INAME</span><span class="plain">), </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Rulebooks::used_by_future_actions</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;before_rules</span><span class="plain">));</span>
             <span class="identifier">i</span><span class="plain">++;</span>
@@ -867,6 +886,7 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(255);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(255);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::annotate_list_for_cross_references</span><span class="plain">(</span><span class="reserved">activity_list</span><span class="plain"> *</span><span class="identifier">avl</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>

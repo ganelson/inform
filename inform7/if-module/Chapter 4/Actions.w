@@ -998,10 +998,14 @@ inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 }
 
 void PL::Actions::ActionHappened(void) {
-	Emit::named_array_begin(InterNames::iname(ActionHappened_INAME), K_number);
+	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"ActionHappened", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
 		Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h The grammar list.
@@ -1159,7 +1163,11 @@ void PL::Actions::ActionData(void) {
 	PL::Actions::compile_action_name_var_creators();
 	action_name *an;
 	int mn, ms, ml, mnp, msp, hn, hs, record_count = 0;
-	Emit::named_table_array_begin(InterNames::iname(ActionData_INAME), K_value);
+
+	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"ActionData", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_table_array_begin(iname, K_value);
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
 		mn = 0; ms = 0; ml = 0; mnp = 1; msp = 1; hn = 0; hs = 0;
@@ -1184,7 +1192,10 @@ void PL::Actions::ActionData(void) {
 		Emit::array_numeric_entry((inter_t) (20000+an->allocation_id));
 	}
 	Emit::array_end();
-	Emit::named_numeric_constant(InterNames::iname(AD_RECORDS_INAME), (inter_t) record_count);
+	inter_name *ad_iname = InterNames::one_off(I"AD_RECORDS", PR);
+	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
+	Packaging::exit(save);
+
 	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
 
 	package_request *R = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
@@ -1193,7 +1204,7 @@ void PL::Actions::ActionData(void) {
 			InterNames::one_off(I"DB_Action_Details_fn", R),
 			R,
 			InterNames::iname(DB_Action_Details_INAME));
-	packaging_state save = Routines::begin(DB_Action_Details_iname);
+	save = Routines::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
@@ -1335,13 +1346,17 @@ void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
 }
 
 void PL::Actions::ActionCoding_array(void) {
-	Emit::named_array_begin(InterNames::iname(ActionCoding_INAME), K_value);
+	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"ActionCoding", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		if (Str::get_first_char(PL::Actions::identifier(an)) == '_') Emit::array_numeric_entry(0);
 		else Emit::array_action_entry(an);
 	}
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h Indexing.
