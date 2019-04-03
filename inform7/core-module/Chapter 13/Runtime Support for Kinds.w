@@ -1086,8 +1086,12 @@ void Kinds::RunTime::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Compare::le(K, K_object))) {
+			package_request *PR = Kinds::Behaviour::package(K);
+			packaging_state save = Packaging::enter(PR);
 			inter_name *iname = InterNames::icount_name(K);
+			Packaging::house(iname, PR);
 			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
+			Packaging::exit(save);
 		}
 	}
 

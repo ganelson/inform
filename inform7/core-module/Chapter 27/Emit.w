@@ -921,10 +921,14 @@ void Emit::array_end(void) {
 inter_name *Emit::nothing(void) {
 	if (K_object == NULL) internal_error("too soon for nothing");
 	if (nothing_iname == NULL) {
+		package_request *PR = Kinds::Behaviour::package(K_object);
 		nothing_iname = InterNames::iname(nothing_INAME);
+		Packaging::house(nothing_iname, PR);
+		packaging_state save = Packaging::enter(PR);
 		Emit::named_pseudo_numeric_constant(nothing_iname, K_object, 0);
 		inter_symbol *iname_s = InterNames::to_symbol(nothing_iname);
 		Inter::Symbols::set_flag(iname_s, SR_CACHE_MARK_BIT);
+		Packaging::exit(save);
 	}
 	return nothing_iname;
 }

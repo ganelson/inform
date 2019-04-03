@@ -157,17 +157,40 @@ need only be defined as a constant, and need not be stored in a memory word,
 since Inform always compiles code which knows which kind it's looping over.
 
 =
+inter_name *PL::Counting::first_instance(kind *K) {
+	package_request *PR = Kinds::Behaviour::package(K);
+	inter_name *iname = InterNames::letter_parametrised_name(
+		FIRST_INSTANCE_INAMEF, Kinds::RunTime::iname(K), FIRST_INSTANCE_INDERIV);
+	Packaging::house(iname, PR);
+	return iname;
+}
+
+inter_name *PL::Counting::next_instance(kind *K) {
+	inter_name *iname = InterNames::letter_parametrised_name(
+		NEXT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), NEXT_INSTANCE_INDERIV);
+	return iname;
+}
+
+inter_name *PL::Counting::instance_count_iname(kind *K) {
+	inter_name *iname = InterNames::letter_parametrised_name(
+		COUNT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), COUNT_INSTANCE_INDERIV);
+	return iname;
+}
+
 int PL::Counting::counting_compile_model_tables(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Compare::lt(K, K_object)) {
-			inter_name *iname = InterNames::letter_parametrised_name(FIRST_INSTANCE_INAMEF, Kinds::RunTime::iname(K), FIRST_INSTANCE_INDERIV);
+			inter_name *iname = PL::Counting::first_instance(K);
 			instance *next = PL::Counting::next_instance_of(NULL, K);
+			package_request *PR = Kinds::Behaviour::package(K);
+			packaging_state save = Packaging::enter(PR);
 			if (next) {
 				Emit::named_iname_constant(iname, K_object, Instances::emitted_iname(next));
 			} else {
 				Emit::named_iname_constant(iname, K_object, NULL);
 			}
+			Packaging::exit(save);
 			inter_symbol *iname_s = InterNames::to_symbol(iname);
 			Inter::Symbols::set_flag(iname_s, SR_CACHE_MARK_BIT);
 		}
@@ -233,16 +256,14 @@ for the relation-route-finding code at run time.
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Compare::lt(K, K_object)) {
 			inference_subject *subj = Kinds::Knowledge::as_subject(K);
-			inter_name *count_iname = InterNames::letter_parametrised_name(
-				COUNT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), COUNT_INSTANCE_INDERIV);
+			inter_name *count_iname = PL::Counting::instance_count_iname(K);
 			int N = Kinds::RunTime::I6_classnumber(K);
 			InterNames::override_count_iname(count_iname, N);
 
 			PF_S(counting, subj)->instance_count_prop =
 				Properties::Valued::new_nameless(InterNames::to_text(count_iname), K_number);
 
-			inter_name *next_iname = InterNames::letter_parametrised_name(
-				NEXT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), NEXT_INSTANCE_INDERIV);
+			inter_name *next_iname = PL::Counting::next_instance(K);
 			PF_S(counting, subj)->instance_link_prop =
 				Properties::Valued::new_nameless(InterNames::to_text(next_iname), K_object);
 		}
@@ -342,10 +363,8 @@ int PL::Counting::optimise_loop(i6_schema *sch, kind *K) {
 		Calculus::Schemas::modify(sch,
 			"for (*1=nothing: false: )");
 	else {
-		inter_name *first_iname = InterNames::letter_parametrised_name(
-			FIRST_INSTANCE_INAMEF, Kinds::RunTime::iname(K), FIRST_INSTANCE_INDERIV);
-		inter_name *next_iname = InterNames::letter_parametrised_name(
-			NEXT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), NEXT_INSTANCE_INDERIV);
+		inter_name *first_iname = PL::Counting::first_instance(K);
+		inter_name *next_iname = PL::Counting::next_instance(K);
 		Calculus::Schemas::modify(sch, "for (*1=%n: *1: *1=*1.%n)", first_iname, next_iname);
 	}
 	return TRUE;
