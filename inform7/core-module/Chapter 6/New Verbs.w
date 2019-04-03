@@ -728,12 +728,16 @@ void NewVerbs::ConjugateVerb(void) {
 	LOOP_OVER(vf, verb_form)
 		if (NewVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
-	Emit::named_array_begin(InterNames::iname(TableOfVerbs_INAME), K_value);
+	package_request *PR = Kinds::Behaviour::package(K_verb);
+	inter_name *iname = InterNames::one_off(I"TableOfVerbs", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(vf, verb_form)
 		if (NewVerbs::verb_form_is_instance(vf))
 			Emit::array_iname_entry(Verbs::form_iname(vf));
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @<Compile ConjugateVerb routine@> =
