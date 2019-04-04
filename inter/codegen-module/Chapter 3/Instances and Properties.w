@@ -552,7 +552,7 @@ just to force the property into being.
 			if (X.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = Inter::SymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				WRITE("%S", store->symbol_name);
+				WRITE("%S", CodeGen::name(store));
 			} else {
 				@<Compile a stick of property values and put its address here@>;
 			}

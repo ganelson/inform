@@ -65,8 +65,13 @@ inter_error_message *Inter::Types::verify(inter_frame P, inter_symbol *kind_symb
 		}
 		case ALIAS_IVAL: {
 			inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(scope, V2);
-			if (symb == NULL) return Inter::Frame::error(&P, I"no such symbol", NULL);
-
+			if (symb == NULL) {
+				LOG("No such symbol when verifying memory inter\n");
+				LOG("V2 is %08x\n", V2);
+				LOG("IST is $4\n", scope);
+				LOG("(did you forget to make the package type enclosing?)\n");
+				return Inter::Frame::error(&P, I"no such symbol", NULL);
+			}
 			if (Inter::Symbols::is_predeclared(symb)) return NULL;
 			if (Inter::Symbols::is_extern(symb)) return NULL;
 			inter_frame D = Inter::Symbols::defining_frame(symb);

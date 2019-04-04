@@ -82,12 +82,16 @@ found at <code class="display"><span class="extract">T--&gt;1</span></code>, <co
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             &lt;<span class="cwebmacro">Compile the inner table array for column j</span> <span class="cwebmacronumber">1.1.1.1.1</span>&gt;<span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
+        <span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">words_used</span><span class="plain"> += </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain"> + 1;</span>
 </pre>
 
@@ -115,6 +119,7 @@ or not.
 
 
 <pre class="displaydefn">
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain">;</span>
@@ -126,16 +131,14 @@ or not.
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> = 0; </span>    <span class="comment">which bit we're up to within the current byte of the blanks array</span>
 
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cell</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">cell</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">cell</span><span class="plain">; </span><span class="identifier">cell</span><span class="plain"> = </span><span class="identifier">cell</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cell</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">cell</span><span class="plain">; </span><span class="identifier">cell</span><span class="plain"> = </span><span class="identifier">cell</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Write a cell value for the initial contents of this cell</span> <span class="cwebmacronumber">1.1.1.1.1.4</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Allocate one bit in the blanks array, if needed</span> <span class="cwebmacronumber">1.1.1.1.1.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">words_used</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">blank_count</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;blank_rows</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">blank_count</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">blank_count</span><span class="plain"> = 1;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">br</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = 0; </span><span class="identifier">br</span><span class="plain"> &lt; </span><span class="identifier">blank_count</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">br</span><span class="plain"> = 0; </span><span class="identifier">br</span><span class="plain"> &lt; </span><span class="identifier">blank_count</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">++) {</span>
             &lt;<span class="cwebmacro">Write a cell value for a blank cell</span> <span class="cwebmacronumber">1.1.1.1.1.5</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Allocate one bit in the blanks array, if needed</span> <span class="cwebmacronumber">1.1.1.1.1.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">words_used</span><span class="plain">++;</span>
@@ -143,6 +146,8 @@ or not.
         &lt;<span class="cwebmacro">Pad out the blanks array as needed</span> <span class="cwebmacronumber">1.1.1.1.1.2</span>&gt;<span class="plain">;</span>
 
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Done column: $C\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

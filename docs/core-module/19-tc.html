@@ -291,8 +291,14 @@ text is passed to the following routine in turn:
         <span class="identifier">tcu</span><span class="element">.observed_constant_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">tcu</span><span class="element">.kind_name_entries</span><span class="plain"> = 0;</span>
         <span class="identifier">tcu</span><span class="element">.observed_kind_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tcu</span><span class="element">.tcu_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">TABLE_COLUMN_INAMEF</span><span class="plain">);</span>
-        <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">tcu</span><span class="element">.tcu_iname</span><span class="plain">);</span>
+
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">package_name</span><span class="plain"> = </span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_package</span><span class="plain">, </span><span class="constant">TABLE_COLUMN_PR_COUNTER</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_package</span><span class="plain">, </span><span class="identifier">table_column_ptype</span><span class="plain">);</span>
+
+    <span class="comment">package_request *R = Packaging::request_main();</span>
+        <span class="identifier">tcu</span><span class="element">.tcu_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"column_data"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">tcu</span><span class="element">.tcu_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tcu</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

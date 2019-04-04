@@ -38,12 +38,16 @@ data are stored inside. Thus if T has C columns, the column tables are
 found at |T-->1|, |T-->2|, ..., |T-->C|.
 
 @<Compile the outer table array@> =
-	Emit::named_table_array_begin(Tables::identifier(t), K_value);
 	for (int j=0; j<t->no_columns; j++) {
 		@<Compile the inner table array for column j@>;
+	}
+	packaging_state save = Packaging::enter_home_of(Tables::identifier(t));
+	Emit::named_table_array_begin(Tables::identifier(t), K_value);
+	for (int j=0; j<t->no_columns; j++) {
 		Emit::array_iname_entry(t->columns[j].tcu_iname);
 	}
 	Emit::array_end();
+	Packaging::exit(save);
 	words_used += t->no_columns + 1;
 
 @ Each column table |C| has its identifying number and bitmap combined in
@@ -58,6 +62,7 @@ a single bit in the "blanks array" which records whether the cell is blank
 or not.
 
 @<Compile the inner table array for column j@> =
+	packaging_state save = Packaging::enter_home_of(t->columns[j].tcu_iname);
 	Emit::named_table_array_begin(t->columns[j].tcu_iname, K_value);
 
 	table_column *tc = t->columns[j].column_identity;
@@ -69,16 +74,14 @@ or not.
 
 	int e = 0; /* which bit we're up to within the current byte of the blanks array */
 
-	parse_node *cell;
-	for (cell = t->columns[j].entries->down; cell; cell = cell->next) {
+	for (parse_node *cell = t->columns[j].entries->down; cell; cell = cell->next) {
 		@<Write a cell value for the initial contents of this cell@>;
 		@<Allocate one bit in the blanks array, if needed@>;
 		words_used++;
 	}
 	int blank_count = t->blank_rows;
 	if ((blank_count == 0) && (t->columns[j].entries->down == NULL)) blank_count = 1;
-	int br;
-	for (br = 0; br < blank_count; br++) {
+	for (int br = 0; br < blank_count; br++) {
 		@<Write a cell value for a blank cell@>;
 		@<Allocate one bit in the blanks array, if needed@>;
 		words_used++;
@@ -86,6 +89,8 @@ or not.
 	@<Pad out the blanks array as needed@>;
 
 	Emit::array_end();
+	LOGIF(TABLES, "Done column: $C\n", tc);
+	Packaging::exit(save);
 
 @ In this part of the code we're carefully keeping track of how much blank
 array storage we need (perhaps none!), but not compiling it. The sole aim

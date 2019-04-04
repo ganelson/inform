@@ -17,6 +17,7 @@ typedef struct table {
 	struct wording table_name_text; /* the table name (if any) */
 	struct table_contribution *table_created_at; /* where created in source */
 	struct parse_node *headline_fragment; /* a pseudo-sentence formed by the heading line */
+	struct package_request *table_package; /* where in the Inter */
 	int blank_rows; /* number of entirely blank rows to be appended (may be 0) */
 	struct wording blank_rows_for_each_text; /* add one blank for each instance */
 	struct wording blank_rows_text; /* text of blank rows specification */
@@ -140,7 +141,12 @@ table *Tables::new_table_structure(void) {
 	t->preserve_row_order_at_run_time = FALSE;
 	t->amendment_of = NULL;
 	t->has_been_amended = FALSE;
-	t->table_identifier = InterNames::new(TABLE_INAMEF);
+	package_request *PR = Packaging::request_resource(
+		Modules::find(current_sentence), TABLES_SUBPACKAGE);
+	inter_name *package_name = Packaging::supply_iname(PR, TABLE_PR_COUNTER);
+	t->table_package = Packaging::request(package_name, PR, table_ptype);
+	t->table_identifier = InterNames::one_off(I"data", t->table_package);
+	Inter::Symbols::set_flag(InterNames::to_symbol(t->table_identifier), MAKE_NAME_UNIQUE);
 	t->approximate_array_space_needed = 0;
 	t->disable_block_constant_correction = FALSE;
 	t->no_columns = 0;
@@ -314,10 +320,10 @@ void Tables::create_table(parse_node *PN) {
 	if (connection != TABLE_IS_NEW) @<Require the previous table to exist@>
 	else @<Require the previous table not to exist@>;
 
-	InterNames::attach_memo(t->table_identifier, t->table_name_text);
+//	InterNames::attach_memo(t->table_identifier, t->table_name_text);
 
 	if (connection == TABLE_IS_NEW) {
-		InterNames::to_symbol(t->table_identifier);
+//		InterNames::to_symbol(t->table_identifier);
 		@<Register the names of the new table@>;
 		LOGIF(TABLES, "Created: $B\n", t);
 	}
