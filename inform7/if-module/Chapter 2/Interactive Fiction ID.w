@@ -44,8 +44,12 @@ around it, in byte-accessible memory.
 inter_name *UUID_array_iname = NULL;
 void PL::Bibliographic::IFID::define_UUID(void) {
 	text_stream *uuid = PL::Bibliographic::IFID::read_uuid();
+	package_request *PR = Packaging::synoptic_resource(BIBLIOGRAPHIC_SUBPACKAGE);
 	UUID_array_iname = InterNames::iname(UUID_ARRAY_INAME);
+	Packaging::house(UUID_array_iname, PR);
+	packaging_state save = Packaging::enter_home_of(UUID_array_iname);
 	Emit::named_string_constant(UUID_array_iname, uuid);
+	Packaging::exit(save);
 }
 
 inter_name *PL::Bibliographic::IFID::UUID(void) {

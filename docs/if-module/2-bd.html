@@ -354,6 +354,12 @@ compiled to constants, used early on at run-time to print the banner.
 
 
 <pre class="display">
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Bibliographic::constant</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">BIBLIOGRAPHIC_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR2</span><span class="plain"> = </span><span class="identifier">Packaging::request</span><span class="plain">(</span><span class="identifier">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">, </span><span class="identifier">DATA_PR_COUNTER</span><span class="plain">), </span><span class="identifier">PR</span><span class="plain">, </span><span class="identifier">data_ptype</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">PR2</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Bibliographic::compile_constants</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">encode_constant_text_bibliographically</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
@@ -372,6 +378,8 @@ compiled to constants, used early on at run-time to print the banner.
 
 <p class="inwebparagraph"></p>
 
+<p class="endnote">The function PL::Bibliographic::constant is used in <a href="#SP12_1">&#167;12.1</a>, <a href="#SP12_2">&#167;12.2</a>, <a href="#SP12_3">&#167;12.3</a>, <a href="#SP12_4">&#167;12.4</a>, <a href="#SP12_5">&#167;12.5</a>.</p>
+
 <p class="endnote">The function PL::Bibliographic::compile_constants appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP12_1"></a><b>&#167;12.1.  </b>If the author doesn't name a work, then its title is properly "", not
@@ -385,13 +393,16 @@ compiled to constants, used early on at run-time to print the banner.
 
 
 <pre class="displaydefn">
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Bibliographic::constant</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Story"</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">NonlocalVariables::treat_as_plain_text_word</span><span class="plain">(</span><span class="identifier">story_title_VAR</span><span class="plain">);</span>
         <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NonlocalVariables::has_initial_value_set</span><span class="plain">(</span><span class="identifier">story_title_VAR</span><span class="plain">))</span>
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(&amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">story_title_VAR</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="identifier">Strings::TextLiterals::compile_literal_from_text</span><span class="plain">(&amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"\</span><span class="plain">"</span><span class="string">Welcome\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">Story_INAME</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+        <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -408,6 +419,8 @@ compiled to constants, used early on at run-time to print the banner.
 
 
 <pre class="displaydefn">
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Bibliographic::constant</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Headline"</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NonlocalVariables::has_initial_value_set</span><span class="plain">(</span><span class="identifier">story_headline_VAR</span><span class="plain">)) {</span>
             <span class="identifier">NonlocalVariables::treat_as_plain_text_word</span><span class="plain">(</span><span class="identifier">story_headline_VAR</span><span class="plain">);</span>
@@ -415,7 +428,8 @@ compiled to constants, used early on at run-time to print the banner.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Strings::TextLiterals::compile_literal_from_text</span><span class="plain">(&amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"\</span><span class="plain">"</span><span class="string">An Interactive Fiction\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">Headline_INAME</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+        <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -433,10 +447,13 @@ compiled to constants, used early on at run-time to print the banner.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NonlocalVariables::has_initial_value_set</span><span class="plain">(</span><span class="identifier">story_author_VAR</span><span class="plain">)) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Bibliographic::constant</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Story_Author"</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
             <span class="identifier">NonlocalVariables::treat_as_plain_text_word</span><span class="plain">(</span><span class="identifier">story_author_VAR</span><span class="plain">);</span>
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(&amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">story_author_VAR</span><span class="plain">);</span>
-            <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">Story_Author_INAME</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -455,9 +472,12 @@ compiled to constants, used early on at run-time to print the banner.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NonlocalVariables::has_initial_value_set</span><span class="plain">(</span><span class="identifier">story_release_number_VAR</span><span class="plain">)) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Bibliographic::constant</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Release"</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(&amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">story_release_number_VAR</span><span class="plain">);</span>
-            <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">Release_INAME</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -477,12 +497,15 @@ should be able to fake the date-stamp with dates of their own choosing.
 
 
 <pre class="displaydefn">
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Bibliographic::constant</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Serial"</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">SN</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">year_digits</span><span class="plain"> = (</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">) % 100;</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">SN</span><span class="plain">, </span><span class="string">"%02d%02d%02d"</span><span class="plain">,</span>
             <span class="identifier">year_digits</span><span class="plain">, (</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain">)+1, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_text_constant</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">Serial_INAME</span><span class="plain">), </span><span class="identifier">SN</span><span class="plain">);</span>
+        <span class="identifier">Emit::named_text_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">SN</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SN</span><span class="plain">);</span>
+        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

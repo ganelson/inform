@@ -338,12 +338,16 @@ void Chronology::past_actions_i6_routines(void) {
 
 		Routines::end(save);
 	}
-	Emit::named_array_begin(InterNames::iname(PastActionsI6Routines_INAME), K_value);
+	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
+	inter_name *iname = InterNames::one_off(I"PastActionsI6Routines", PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(pta, past_tense_action_record)
 		Emit::array_iname_entry(pta->pta_iname);
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 #endif
 }
 

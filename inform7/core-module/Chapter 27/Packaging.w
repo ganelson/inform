@@ -25,6 +25,7 @@ inter_symbol *rulebook_ptype = NULL;
 inter_symbol *table_ptype = NULL;
 inter_symbol *table_column_ptype = NULL;
 inter_symbol *relation_ptype = NULL;
+inter_symbol *data_ptype = NULL;
 
 @ =
 void Packaging::emit_types(void) {
@@ -72,6 +73,8 @@ void Packaging::emit_types(void) {
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), table_column_ptype, Emit::baseline(Emit::IRS()), NULL));
 	relation_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_relation");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), relation_ptype, Emit::baseline(Emit::IRS()), NULL));
+	data_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_data");
+	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), data_ptype, Emit::baseline(Emit::IRS()), NULL));
 }
 
 @
@@ -104,6 +107,7 @@ void Packaging::emit_types(void) {
 @e SUBSTITUTION_PR_COUNTER
 @e SUBSTITUTIONF_PR_COUNTER
 @e MISC_PR_COUNTER
+@e DATA_PR_COUNTER
 
 @e MAX_PR_COUNTER
 
@@ -202,6 +206,7 @@ packaging_state Packaging::enter(package_request *R) {
 			(S->eventual_type == relation_ptype) ||
 			(S->eventual_type == table_ptype) ||
 			(S->eventual_type == table_column_ptype) ||
+			(S->eventual_type == data_ptype) ||
 			(S->parent_request == NULL)) {
 			current_enclosure = S;
 			break;
@@ -300,6 +305,7 @@ package_request *Packaging::request_synoptic(void) {
 @e CHRONOLOGY_SUBPACKAGE
 @e LISTING_SUBPACKAGE
 @e EQUATIONS_SUBPACKAGE
+@e BIBLIOGRAPHIC_SUBPACKAGE
 
 @e MAX_SUBPACKAGE
 
@@ -374,6 +380,7 @@ package_request *Packaging::synoptic_resource(int ix) {
 			case CHRONOLOGY_SUBPACKAGE: N = I"chronology"; break;
 			case LISTING_SUBPACKAGE: N = I"listing"; break;
 			case EQUATIONS_SUBPACKAGE: N = I"equations"; break;
+			case BIBLIOGRAPHIC_SUBPACKAGE: N = I"bibliographic"; break;
 			default: internal_error("nameless resource");
 		}
 		inter_name *iname = InterNames::one_off(N, parent);
@@ -415,6 +422,7 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 		case SUBSTITUTION_PR_COUNTER: WRITE_TO(P, "ts"); break;
 		case SUBSTITUTIONF_PR_COUNTER: WRITE_TO(P, "ts_fn"); break;
 		case MISC_PR_COUNTER: WRITE_TO(P, "misc_const"); break;
+		case DATA_PR_COUNTER: WRITE_TO(P, "data"); break;
 		default: internal_error("unimplemented");
 	}
 	WRITE_TO(P, "_%d", ++(R->counters[what_for]));

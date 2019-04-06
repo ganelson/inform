@@ -375,8 +375,13 @@ void Kinds::Constructors::compile_I6_constants(void) {
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
 		if (Str::len(tn) > 0) {
-			con->con_iname = Emit::named_numeric_constant(InterNames::template_weak_ID_name(tn), (inter_t) con->weak_kind_ID);
+			package_request *PR = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
+			con->con_iname = InterNames::template_weak_ID_name(tn);
+			Packaging::house(con->con_iname, PR);
+			packaging_state save = Packaging::enter_home_of(con->con_iname);
+			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
 			Inter::Symbols::set_flag(InterNames::to_symbol(con->con_iname), SR_CACHE_MARK_BIT);
+			Packaging::exit(save);
 		}
 	}
 	Emit::named_numeric_constant(InterNames::iname(BASE_KIND_HWM_INAME), (inter_t) next_free_data_type_ID);

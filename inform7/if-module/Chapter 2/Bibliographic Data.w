@@ -236,6 +236,12 @@ int PL::Bibliographic::episode_SMF(int task, parse_node *V, wording *NPs) {
 compiled to constants, used early on at run-time to print the banner.
 
 =
+inter_name *PL::Bibliographic::constant(text_stream *name) {
+	package_request *PR = Packaging::synoptic_resource(BIBLIOGRAPHIC_SUBPACKAGE);
+	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, DATA_PR_COUNTER), PR, data_ptype);
+	return InterNames::one_off(name, PR2);
+}
+
 void PL::Bibliographic::compile_constants(void) {
 	encode_constant_text_bibliographically = TRUE;
 	BEGIN_COMPILATION_MODE;
@@ -255,17 +261,22 @@ void PL::Bibliographic::compile_constants(void) {
 "Welcome": that's just something we use to provide a readable banner.
 
 @<Compile the I6 Story constant@> =
+	inter_name *iname = PL::Bibliographic::constant(I"Story");
+	packaging_state save = Packaging::enter_home_of(iname);
 	NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
 	inter_t v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_title_VAR))
 		NonlocalVariables::seek_initial_value(&v1, &v2, story_title_VAR);
 	else
 		Strings::TextLiterals::compile_literal_from_text(&v1, &v2, L"\"Welcome\"");
-	Emit::named_generic_constant(InterNames::iname(Story_INAME), v1, v2);
+	Emit::named_generic_constant(iname, v1, v2);
+	Packaging::exit(save);
 
 @ And similarly here:
 
 @<Compile the I6 Headline constant@> =
+	inter_name *iname = PL::Bibliographic::constant(I"Headline");
+	packaging_state save = Packaging::enter_home_of(iname);
 	inter_t v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_headline_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_headline_VAR);
@@ -273,25 +284,32 @@ void PL::Bibliographic::compile_constants(void) {
 	} else {
 		Strings::TextLiterals::compile_literal_from_text(&v1, &v2, L"\"An Interactive Fiction\"");
 	}
-	Emit::named_generic_constant(InterNames::iname(Headline_INAME), v1, v2);
+	Emit::named_generic_constant(iname, v1, v2);
+	Packaging::exit(save);
 
 @ This time we compile nothing if no author is provided:
 
 @<Compile the I6 Story Author constant@> =
 	if (NonlocalVariables::has_initial_value_set(story_author_VAR)) {
+		inter_name *iname = PL::Bibliographic::constant(I"Story_Author");
+		packaging_state save = Packaging::enter_home_of(iname);
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
 		NonlocalVariables::seek_initial_value(&v1, &v2, story_author_VAR);
-		Emit::named_generic_constant(InterNames::iname(Story_Author_INAME), v1, v2);
+		Emit::named_generic_constant(iname, v1, v2);
+		Packaging::exit(save);
 	}
 
 @ Similarly (but numerically):
 
 @<Compile the I6 Release directive@> =
 	if (NonlocalVariables::has_initial_value_set(story_release_number_VAR)) {
+		inter_name *iname = PL::Bibliographic::constant(I"Release");
+		packaging_state save = Packaging::enter_home_of(iname);
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(&v1, &v2, story_release_number_VAR);
-		Emit::named_generic_constant(InterNames::iname(Release_INAME), v1, v2);
+		Emit::named_generic_constant(iname, v1, v2);
+		Packaging::exit(save);
 	}
 
 @ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
@@ -299,12 +317,15 @@ number "130625" -- is actually controversial: quite a few users feel they
 should be able to fake the date-stamp with dates of their own choosing.
 
 @<Compile the I6 serial number, based on the date@> =
+	inter_name *iname = PL::Bibliographic::constant(I"Serial");
+	packaging_state save = Packaging::enter_home_of(iname);
 	TEMPORARY_TEXT(SN);
 	int year_digits = (the_present->tm_year) % 100;
 	WRITE_TO(SN, "%02d%02d%02d",
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
-	Emit::named_text_constant(InterNames::iname(Serial_INAME), SN);
+	Emit::named_text_constant(iname, SN);
 	DISCARD_TEXT(SN);
+	Packaging::exit(save);
 
 @ The Library Card is part of the Contents index, and is intended as a
 natural way to present bibliographic data to the user. In effect, it's a

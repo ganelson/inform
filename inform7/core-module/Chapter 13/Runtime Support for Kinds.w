@@ -499,15 +499,6 @@ ensure that we always point to the same array every time the same construction
 turns up. This means remembering everything we've seen, using a new structure:
 
 =
-void Kinds::RunTime::compile_strong_id(OUTPUT_STREAM, kind *K) {
-	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
-	if (rks) {
-		WRITE("%n", rks->rks_iname);
-	} else {
-		Kinds::RunTime::compile_weak_id(OUT, K);
-	}
-}
-
 void Kinds::RunTime::emit_strong_id(kind *K) {
 	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
 	if (rks) {
@@ -873,13 +864,6 @@ heap_allocation Kinds::RunTime::make_heap_allocation(kind *K, int multiplier,
 	ha.allocated_kind = K;
 	ha.stack_offset = stack_offset;
 	return ha;
-}
-
-void Kinds::RunTime::compile_heap_allocation(OUTPUT_STREAM, heap_allocation ha) {
-	if (ha.stack_offset >= 0) WRITE("BlkValueCreateOnStack(%d, ", ha.stack_offset);
-	else WRITE("BlkValueCreate(");
-	Kinds::RunTime::compile_strong_id(OUT, ha.allocated_kind);
-	WRITE(")");
 }
 
 void Kinds::RunTime::emit_heap_allocation(heap_allocation ha) {

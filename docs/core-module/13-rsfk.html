@@ -568,7 +568,7 @@ which might occupy up to 31 characters, the maximum length of an I6 identifier:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::compile_weak_id is used in <a href="#SP12">&#167;12</a>, 12/is (<a href="12-is.html#SP4_3_1">&#167;4.3.1</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_weak_id is used in 12/is (<a href="12-is.html#SP4_3_1">&#167;4.3.1</a>).</p>
 
 <p class="endnote">The function Kinds::RunTime::emit_weak_id is used in <a href="#SP12">&#167;12</a>, <a href="#SP16_1">&#167;16.1</a>, <a href="#SP21">&#167;21</a>.</p>
 
@@ -628,15 +628,6 @@ turns up. This means remembering everything we've seen, using a new structure:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_strong_id</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Kinds::RunTime::compile_weak_id</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">) {</span>
@@ -657,8 +648,6 @@ turns up. This means remembering everything we've seen, using a new structure:
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Kinds::RunTime::compile_strong_id is used in <a href="#SP20">&#167;20</a>.</p>
 
 <p class="endnote">The function Kinds::RunTime::emit_strong_id is used in <a href="#SP16_1_1">&#167;16.1.1</a>, <a href="#SP16_1_1_1">&#167;16.1.1.1</a>, <a href="#SP16_1_1_2">&#167;16.1.1.2</a>, 6/rlt (<a href="6-rlt.html#SP15_1_4">&#167;15.1.4</a>, <a href="6-rlt.html#SP16">&#167;16</a>), 18/lc (<a href="18-lc.html#SP12_1">&#167;12.1</a>, <a href="18-lc.html#SP13">&#167;13</a>), 22/pav (<a href="22-pav.html#SP8_1">&#167;8.1</a>, <a href="22-pav.html#SP9_1">&#167;9.1</a>).</p>
 
@@ -1170,13 +1159,6 @@ list of 20 texts. For the cases above, it's always 1.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ha</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_heap_allocation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">heap_allocation</span><span class="plain"> </span><span class="identifier">ha</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ha</span><span class="element">.stack_offset</span><span class="plain"> &gt;= 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"BlkValueCreateOnStack(%d, "</span><span class="plain">, </span><span class="identifier">ha</span><span class="element">.stack_offset</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"BlkValueCreate("</span><span class="plain">);</span>
-        <span class="functiontext">Kinds::RunTime::compile_strong_id</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ha</span><span class="element">.allocated_kind</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_heap_allocation</span><span class="plain">(</span><span class="reserved">heap_allocation</span><span class="plain"> </span><span class="identifier">ha</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ha</span><span class="element">.stack_offset</span><span class="plain"> &gt;= 0) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">BLKVALUECREATEONSTACK_EXNAMEF</span><span class="plain">);</span>
@@ -1198,8 +1180,6 @@ list of 20 texts. For the cases above, it's always 1.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Kinds::RunTime::make_heap_allocation is used in 21/sv (<a href="21-sv.html#SP3_1">&#167;3.1</a>), 24/sf (<a href="24-sf.html#SP15_1">&#167;15.1</a>).</p>
-
-<p class="endnote">The function Kinds::RunTime::compile_heap_allocation appears nowhere else.</p>
 
 <p class="endnote">The function Kinds::RunTime::emit_heap_allocation is used in 21/sv (<a href="21-sv.html#SP3_1">&#167;3.1</a>), 26/rt (<a href="26-rt.html#SP4_1_2">&#167;4.1.2</a>).</p>
 
