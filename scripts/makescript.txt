@@ -187,6 +187,7 @@ makers:
 	$(INWEBX) $(*WEB) -makefile $(*MAKER)
 	{endblock}
 	$(INWEBX) -prototype inform6/makescript.txt -makefile inform6/inform6.mk
+	$(INWEBX) -prototype retrospective/makescript.txt -makefile retrospective/makefile
 
 # -----------------------------------------------------------------------------
 # Target "gitignores"
@@ -255,6 +256,17 @@ endif
 
 $(INFORM6X): inform6/Inform6/*.c
 	$(MAKE) -f inform6/inform6.mk
+
+# -----------------------------------------------------------------------------
+# Target "retrospective"
+# -----------------------------------------------------------------------------
+# "make retrospective" builds the back catalogue of old releases of ni and
+# cBlorb, in the retrospective/BBBB directories (where BBBB is the release
+# build code)
+
+.PHONY: retrospective
+retrospective:
+	$(MAKE) -f retrospective/makefile
 
 # -----------------------------------------------------------------------------
 # Target "forcetools"
