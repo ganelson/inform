@@ -101,7 +101,7 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	DISCARD_TEXT(ident);
 
 @<Decide whether symbol defined@> =
-	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main(I, symbol_name);
+	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, symbol_name);
 	if (symbol) {
 		result = TRUE;
 		if (Inter::Symbols::is_extern(symbol)) result = FALSE;
@@ -117,7 +117,7 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *== *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
-		inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main(I, identifier);
+		inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, identifier);
 		if (symbol) {
 			inter_frame P = Inter::Symbols::defining_frame(symbol);
 			if ((Inter::Frame::valid(&P)) &&

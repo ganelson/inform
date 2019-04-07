@@ -869,7 +869,11 @@ void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 		bp->bp_iname->eventual_owner = BinaryPredicates::package(bp);
 		if (default_rr == NULL) {
 			default_rr = bp->bp_iname;
-			Emit::named_iname_constant(InterNames::iname(MEANINGLESS_RR_INAME), K_value, bp->bp_iname);
+			inter_name *iname = InterNames::iname(MEANINGLESS_RR_INAME);
+			Packaging::house(iname, Packaging::request_resource(NULL, RELATIONS_SUBPACKAGE));
+			packaging_state save = Packaging::enter_home_of(iname);
+			Emit::named_iname_constant(iname, K_value, bp->bp_iname);
+			Packaging::exit(save);
 		}
 	}
 	bp->record_needed = TRUE;

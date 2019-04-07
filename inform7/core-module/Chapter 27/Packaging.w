@@ -287,7 +287,8 @@ package_request *Packaging::request_synoptic(void) {
 
 @
 
-@e KINDS_SUBPACKAGE from 0
+@e BASICS_SUBPACKAGE from 0
+@e KINDS_SUBPACKAGE
 @e CONJUGATIONS_SUBPACKAGE
 @e RULES_SUBPACKAGE
 @e PHRASES_SUBPACKAGE
@@ -306,6 +307,7 @@ package_request *Packaging::request_synoptic(void) {
 @e LISTING_SUBPACKAGE
 @e EQUATIONS_SUBPACKAGE
 @e BIBLIOGRAPHIC_SUBPACKAGE
+@e IF_SUBPACKAGE
 
 @e MAX_SUBPACKAGE
 
@@ -362,6 +364,7 @@ package_request *Packaging::synoptic_resource(int ix) {
 	if (SR->subs[ix] == NULL) {
 		text_stream *N = NULL;
 		switch (ix) {
+			case BASICS_SUBPACKAGE: N = I"basics"; break;
 			case KINDS_SUBPACKAGE: N = I"kinds"; break;
 			case CONJUGATIONS_SUBPACKAGE: N = I"conjugations"; break;
 			case RULES_SUBPACKAGE: N = I"rules"; break;
@@ -381,6 +384,7 @@ package_request *Packaging::synoptic_resource(int ix) {
 			case LISTING_SUBPACKAGE: N = I"listing"; break;
 			case EQUATIONS_SUBPACKAGE: N = I"equations"; break;
 			case BIBLIOGRAPHIC_SUBPACKAGE: N = I"bibliographic"; break;
+			case IF_SUBPACKAGE: N = I"interactive_fiction"; break;
 			default: internal_error("nameless resource");
 		}
 		inter_name *iname = InterNames::one_off(N, parent);

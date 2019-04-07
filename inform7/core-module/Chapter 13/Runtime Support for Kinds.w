@@ -815,9 +815,9 @@ has essentially no memory constraints compared with the Z-machine.
 		total_heap_allocation = UseOptions::get_dynamic_memory_allocation();
 	while (max_heap < total_heap_allocation) max_heap = max_heap*2;
 	if (VirtualMachines::is_16_bit())
-		Emit::named_numeric_constant(InterNames::iname(MEMORY_HEAP_SIZE_INAME), (inter_t) max_heap);
+		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", max_heap, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
 	else
-		Emit::named_numeric_constant(InterNames::iname(MEMORY_HEAP_SIZE_INAME), (inter_t) (4*max_heap));
+		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", 4*max_heap, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
 	LOG("Providing for a total heap of %d, given requirement of %d\n",
 		max_heap, total_heap_allocation);
 
@@ -1071,6 +1071,12 @@ void Kinds::RunTime::kind_declarations(void) {
 		}
 }
 
+void Kinds::RunTime::compile_nnc(text_stream *name, int val, package_request *PR) {
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_numeric_constant(InterNames::one_off(name, PR), (inter_t) val);
+	Packaging::exit(save);
+}
+
 void Kinds::RunTime::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
@@ -1084,15 +1090,15 @@ void Kinds::RunTime::compile_instance_counts(void) {
 		}
 	}
 
-	Emit::named_numeric_constant(InterNames::iname(CCOUNT_BINARY_PREDICATE_INAME), (inter_t) (NUMBER_CREATED(binary_predicate)));
-	Emit::named_numeric_constant(InterNames::iname(CCOUNT_PROPERTY_INAME), (inter_t) (NUMBER_CREATED(property)));
+	Kinds::RunTime::compile_nnc(I"CCOUNT_BINARY_PREDICATE", NUMBER_CREATED(binary_predicate), Packaging::synoptic_resource(RELATIONS_SUBPACKAGE));
+	Kinds::RunTime::compile_nnc(I"CCOUNT_PROPERTY", NUMBER_CREATED(property), Packaging::synoptic_resource(PROPERTIES_SUBPACKAGE));
 	#ifdef IF_MODULE
-	Emit::named_numeric_constant(InterNames::iname(CCOUNT_ACTION_NAME_INAME), (inter_t) (NUMBER_CREATED(action_name)));
+	Kinds::RunTime::compile_nnc(I"CCOUNT_ACTION_NAME", NUMBER_CREATED(action_name), Packaging::synoptic_resource(ACTIONS_SUBPACKAGE));
 	#endif
-	Strings::TextLiterals::define_CCOUNT_QUOTATIONS();
-	Emit::named_numeric_constant(InterNames::iname(MAX_FRAME_SIZE_NEEDED_INAME), (inter_t) max_frame_size_needed);
-	Emit::named_numeric_constant(InterNames::iname(RNG_SEED_AT_START_OF_PLAY_INAME), (inter_t) rng_seed_at_start_of_play);
-	Emit::named_numeric_constant(InterNames::iname(DEFAULT_SCORING_SETTING_INAME), (inter_t) FALSE);
+	Kinds::RunTime::compile_nnc(I"CCOUNT_QUOTATIONS", Strings::TextLiterals::CCOUNT_QUOTATIONS(), Packaging::synoptic_resource(BASICS_SUBPACKAGE));
+	Kinds::RunTime::compile_nnc(I"MAX_FRAME_SIZE_NEEDED", max_frame_size_needed, Packaging::synoptic_resource(BASICS_SUBPACKAGE));
+	Kinds::RunTime::compile_nnc(I"RNG_SEED_AT_START_OF_PLAY", rng_seed_at_start_of_play, Packaging::synoptic_resource(BASICS_SUBPACKAGE));
+	Kinds::RunTime::compile_nnc(I"DEFAULT_SCORING_SETTING", FALSE, Packaging::synoptic_resource(IF_SUBPACKAGE));
 }
 
 void Kinds::RunTime::compile_data_type_support_routines(void) {

@@ -596,7 +596,11 @@ of Inform: the following routine performs |{-callv:TemplateFiles::compile_build_
 void TemplateFiles::compile_build_number(void) {
 	TEMPORARY_TEXT(build);
 	WRITE_TO(build, "%B", TRUE);
-	Emit::named_string_constant(InterNames::iname(NI_BUILD_COUNT_INAME), build);
+	inter_name *iname = InterNames::iname(NI_BUILD_COUNT_INAME);
+	Packaging::house(iname, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_string_constant(iname, build);
+	Packaging::exit(save);
 	DISCARD_TEXT(build);
 }
 

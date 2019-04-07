@@ -118,6 +118,18 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main(inter_repository *I
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(Inter::Packages::main(I)), S);
 }
 
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_basics(inter_repository *I, text_stream *S) {
+	inter_package *P = Inter::Packages::basics(I);
+	if (P == NULL) return NULL;
+	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+}
+
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_repository *I, text_stream *S) {
+	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_basics(I, S);
+	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_main(I, S);
+	return symbol;
+}
+
 @ This is intentionally used very little. We don't want the inter specification
 to include implied identities through package-hierarchy context, because that
 makes it harder to link packages together. If you can avoid calling this, do.

@@ -242,8 +242,8 @@ void Strings::TextLiterals::compile_quotation(value_holster *VH, wording W) {
 	extent_of_runtime_quotations_array++;
 }
 
-void Strings::TextLiterals::define_CCOUNT_QUOTATIONS(void) {
-	Emit::named_numeric_constant(InterNames::iname(CCOUNT_QUOTATIONS_INAME), (inter_t) extent_of_runtime_quotations_array);
+int Strings::TextLiterals::CCOUNT_QUOTATIONS(void) {
+	return extent_of_runtime_quotations_array;
 }
 
 @ A version from fixed text:

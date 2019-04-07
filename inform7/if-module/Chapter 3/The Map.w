@@ -396,7 +396,9 @@ at run-time, so we can't know now how many we will need.
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		Instances::emitted_iname(I);
-	Emit::named_array_begin(InterNames::iname(Map_Storage_INAME), K_object);
+	package_request *PR = Packaging::synoptic_resource(IF_SUBPACKAGE);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_array_begin(InterNames::one_off(I"Map_Storage", PR), K_object);
 	int words_used = 0;
 	if (existing_story_file) {
 		Emit::array_divider(I"minimal, as there are no rooms");
@@ -426,6 +428,7 @@ at run-time, so we can't know now how many we will need.
 			}
 	}
 	Emit::array_end();
+	Packaging::exit(save);
 	VirtualMachines::note_usage("map", EMPTY_WORDING, I"map of rooms and doors",
 		words_used, 0, FALSE);
 

@@ -437,7 +437,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @<Write Value Property Holder objects for each kind of value instance@> =
 	@<Define the I6 VPH class@>;
-	inter_symbol *max_weak_id = Inter::SymbolsTables::symbol_from_name_in_main(I, I"MAX_WEAK_ID");
+	inter_symbol *max_weak_id = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, I"MAX_WEAK_ID");
 	if (max_weak_id) {
 		inter_frame P = Inter::Symbols::defining_frame(max_weak_id);
 		int M = (int) P.data[DATA_CONST_IFLD + 1];

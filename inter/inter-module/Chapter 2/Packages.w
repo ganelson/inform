@@ -67,6 +67,12 @@ inter_package *Inter::Packages::main(inter_repository *I) {
 	return NULL;
 }
 
+inter_package *Inter::Packages::basics(inter_repository *I) {
+	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"basics");
+	if (S) return Inter::Package::which(S);
+	return NULL;
+}
+
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 	if (found) return found;

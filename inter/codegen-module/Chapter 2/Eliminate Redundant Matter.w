@@ -91,13 +91,13 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 }
 
 void CodeGen::Eliminate::keep(inter_repository *I, text_stream *N) {
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_name_in_main(I, N);
+	inter_symbol *S = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, N);
 	if (S) Inter::Symbols::set_flag(S, USED_MARK_BIT);
 }
 
 void CodeGen::Eliminate::note(inter_symbol *S, inter_symbol *T, void *state) {
 	inter_repository *I = (inter_repository *) state;
-	inter_symbol *Tdash = Inter::SymbolsTables::symbol_from_name_in_main(I, T->symbol_name);
+	inter_symbol *Tdash = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, T->symbol_name);
 	if (Tdash) {
 		Inter::Symbols::set_flag(Tdash, USED_MARK_BIT);
 	} else {

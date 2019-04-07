@@ -157,6 +157,42 @@ horizon. Anyway, it's this comparison issue which means we need a different
 value for each possible word size.
 
 =
+inter_name *VirtualMachines::emit_fundamental_constant(int id, inter_t val, package_request *PR) {
+	inter_name *iname = InterNames::iname(id);
+	Packaging::house(iname, PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_numeric_constant(iname, val);
+	Packaging::exit(save);
+	return iname;
+}
+
+inter_name *VirtualMachines::emit_signed_fundamental_constant(int id, int val, package_request *PR) {
+	inter_name *iname = InterNames::iname(id);
+	Packaging::house(iname, PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_numeric_constant_signed(iname, val);
+	Packaging::exit(save);
+	return iname;
+}
+
+inter_name *VirtualMachines::emit_hex_fundamental_constant(int id, inter_t val, package_request *PR) {
+	inter_name *iname = InterNames::iname(id);
+	Packaging::house(iname, PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_numeric_constant_hex(iname, val);
+	Packaging::exit(save);
+	return iname;
+}
+
+inter_name *VirtualMachines::emit_unchecked_hex_fundamental_constant(int id, inter_t val, package_request *PR) {
+	inter_name *iname = InterNames::iname(id);
+	Packaging::house(iname, PR);
+	packaging_state save = Packaging::enter(PR);
+	Emit::named_unchecked_constant_hex(iname, val);
+	Packaging::exit(save);
+	return iname;
+}
+
 inter_name *VirtualMachines::emit_fundamental_constants(void) {
 	if (target_VM == -1) internal_error("target VM not set yet");
 
@@ -172,28 +208,29 @@ inter_name *VirtualMachines::emit_fundamental_constants(void) {
 	}
 
 	inter_name *NULL_iname = NULL;
+	
 	if (table_of_VM_data[target_VM].VM_is_32_bit) {
-		Emit::named_numeric_constant(InterNames::iname(WORDSIZE_INAME), 4);
-		NULL_iname = Emit::named_unchecked_constant_hex(InterNames::iname(NULL_INAME), 0xffffffff);
-		Emit::named_numeric_constant_hex(InterNames::iname(WORD_HIGHBIT_INAME), 0x80000000);
-		Emit::named_numeric_constant_hex(InterNames::iname(WORD_NEXTTOHIGHBIT_INAME), 0x40000000);
-		Emit::named_numeric_constant_hex(InterNames::iname(IMPROBABLE_VALUE_INAME), 0xdeadce11);
-		Emit::named_numeric_constant_hex(InterNames::iname(REPARSE_CODE_INAME), 0x40000000);
-		MPN_iname = Emit::named_numeric_constant(InterNames::iname(MAX_POSITIVE_NUMBER_INAME), 2147483647);
-		Emit::named_numeric_constant_signed(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME), -2147483648);
+		VirtualMachines::emit_fundamental_constant(WORDSIZE_INAME, 4, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_INAME, 0xffffffff, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_INAME, 0x80000000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_INAME, 0x40000000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_INAME, 0xdeadce11, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_INAME, 0x40000000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_INAME, 2147483647, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_INAME, -2147483648, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
 		InterNames::cache(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
 		InterNames::cache(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME));
 		InterNames::to_symbol(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
 		InterNames::to_symbol(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME));
 	} else {
-		Emit::named_numeric_constant(InterNames::iname(WORDSIZE_INAME), 2);
-		NULL_iname = Emit::named_unchecked_constant_hex(InterNames::iname(NULL_INAME), 0xffff);
-		Emit::named_numeric_constant_hex(InterNames::iname(WORD_HIGHBIT_INAME), 0x8000);
-		Emit::named_numeric_constant_hex(InterNames::iname(WORD_NEXTTOHIGHBIT_INAME), 0x4000);
-		Emit::named_numeric_constant_hex(InterNames::iname(IMPROBABLE_VALUE_INAME), 0x7fe3);
-		Emit::named_numeric_constant(InterNames::iname(REPARSE_CODE_INAME), 10000);
-		MPN_iname = Emit::named_numeric_constant(InterNames::iname(MAX_POSITIVE_NUMBER_INAME), 32767);
-		Emit::named_numeric_constant_signed(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME), -32768);
+		VirtualMachines::emit_fundamental_constant(WORDSIZE_INAME, 2, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_INAME, 0xffff, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_INAME, 0x8000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_INAME, 0x4000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_INAME, 0x7fe3, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_INAME, 10000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_INAME, 32767, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_INAME, -32768, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
 		InterNames::cache(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
 		InterNames::cache(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME));
 		InterNames::to_symbol(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));

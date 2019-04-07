@@ -196,7 +196,10 @@ case.)
 	else Kinds::RunTime::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
-	Emit::named_byte_array_begin(InterNames::iname(TB_Blanks_INAME), K_number);
+	inter_name *iname = InterNames::iname(TB_Blanks_INAME);
+	Packaging::house(iname, Packaging::synoptic_resource(TABLES_SUBPACKAGE));
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_byte_array_begin(iname, K_number);
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
@@ -214,6 +217,7 @@ case.)
 	Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end();
+	Packaging::exit(save);
 
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;

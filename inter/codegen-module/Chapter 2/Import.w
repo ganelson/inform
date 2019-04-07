@@ -21,7 +21,7 @@ void CodeGen::Import::import(inter_repository *I, filename *F) {
 			inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			text_stream *S = con_name->symbol_name;
 			inter_symbol *already =
-				Inter::SymbolsTables::symbol_from_name_in_main(I, S);
+				Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, S);
 			if (already) {
 				inter_frame P2 = Inter::Symbols::defining_frame(already);
 				if ((P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&

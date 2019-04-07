@@ -328,12 +328,14 @@ code to set things up correctly at run-time.
 =
 void PL::Player::InitialSituation(void) {
 	if (Plugins::Manage::plugged_in(player_plugin)) {
-		Emit::named_numeric_constant(InterNames::iname(PLAYER_OBJECT_INIS_INAME), (inter_t) 0);
-		Emit::named_numeric_constant(InterNames::iname(START_OBJECT_INIS_INAME), (inter_t) 1);
-		Emit::named_numeric_constant(InterNames::iname(START_ROOM_INIS_INAME), (inter_t) 2);
-		Emit::named_numeric_constant(InterNames::iname(START_TIME_INIS_INAME), (inter_t) 3);
-		Emit::named_numeric_constant(InterNames::iname(DONE_INIS_INAME), (inter_t) 4);
-		Emit::named_array_begin(InterNames::iname(InitialSituation_INAME), K_value);
+		package_request *PR = Packaging::synoptic_resource(IF_SUBPACKAGE);
+		packaging_state save = Packaging::enter(PR);
+		Emit::named_numeric_constant(InterNames::one_off(I"PLAYER_OBJECT_INIS", PR), (inter_t) 0);
+		Emit::named_numeric_constant(InterNames::one_off(I"START_OBJECT_INIS", PR), (inter_t) 1);
+		Emit::named_numeric_constant(InterNames::one_off(I"START_ROOM_INIS", PR), (inter_t) 2);
+		Emit::named_numeric_constant(InterNames::one_off(I"START_TIME_INIS", PR), (inter_t) 3);
+		Emit::named_numeric_constant(InterNames::one_off(I"DONE_INIS", PR), (inter_t) 4);
+		Emit::named_array_begin(InterNames::one_off(I"InitialSituation", PR), K_value);
 		NonlocalVariables::emit_initial_value(player_VAR);
 		if (start_object == NULL) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(Instances::iname(start_object));
@@ -342,6 +344,7 @@ void PL::Player::InitialSituation(void) {
 		NonlocalVariables::emit_initial_value(time_of_day_VAR);
 		Emit::array_numeric_entry(0);
 		Emit::array_end();
+		Packaging::exit(save);
 	}
 }
 
