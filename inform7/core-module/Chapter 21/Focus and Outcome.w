@@ -221,12 +221,18 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome)) {
 		return Rvalues::to_named_rulebook_outcome(p);
 	}
+
+	package_request *R = Packaging::request_resource(
+		Modules::find(current_sentence), RULEBOOKS_SUBPACKAGE);
+	inter_name *package_name = Packaging::supply_iname(R, OUTCOME_PR_COUNTER);
+	package_request *R2 = Packaging::request(package_name, R, outcome_ptype);
+
 	named_rulebook_outcome *rbno = CREATE(named_rulebook_outcome);
 	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno));
-	rbno->nro_iname = InterNames::new(RULEBOOK_NAMED_OPTION_INAMEF);
-	InterNames::to_symbol(rbno->nro_iname);
+	rbno->nro_iname = InterNames::one_off(I"outcome", R2);
+	InterNames::attach_memo(rbno->nro_iname, W);
 	return rbno;
 }
 
@@ -403,7 +409,9 @@ void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 	LOOP_OVER(rbno, named_rulebook_outcome) {
 		TEMPORARY_TEXT(RV);
 		WRITE_TO(RV, "%+W", Nouns::nominative(rbno->name));
+		packaging_state save = Packaging::enter_home_of(rbno->nro_iname);
 		Emit::named_string_constant(rbno->nro_iname, RV);
+		Packaging::exit(save);
 		DISCARD_TEXT(RV);
 	}
 
