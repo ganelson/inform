@@ -217,12 +217,16 @@ void PL::Sounds::write_copy_commands(void) {
 @ =
 void PL::Sounds::compile_ResourceIDsOfSounds_array(void) {
 	if (Plugins::Manage::plugged_in(sounds_plugin) == FALSE) return;
-	Emit::named_array_begin(InterNames::iname(ResourceIDsOfSounds_INAME), K_number);
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K_sound_name));
+	inter_name *iname = InterNames::iname(ResourceIDsOfSounds_INAME);
+	Packaging::house(iname, Kinds::Behaviour::package(K_sound_name));
+	Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);
 	blorb_sound *bs;
 	LOOP_OVER(bs, blorb_sound) Emit::array_numeric_entry((inter_t) bs->sound_number);
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h Sounds Index.

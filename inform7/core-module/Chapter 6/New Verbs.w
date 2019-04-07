@@ -710,14 +710,26 @@ int NewVerbs::verb_form_is_instance(verb_form *vf) {
 }
 
 void NewVerbs::ConjugateVerbDefinitions(void) {
-	Emit::named_numeric_constant_signed(InterNames::iname(CV_POS_INAME), -1);
-	Emit::named_numeric_constant_signed(InterNames::iname(CV_NEG_INAME), -2);
-	Emit::named_numeric_constant_signed(InterNames::iname(CV_MODAL_INAME), -3);
-	Emit::named_numeric_constant_signed(InterNames::iname(CV_MEANING_INAME), -4);
+	package_request *PR = Packaging::request_resource(NULL, CONJUGATIONS_SUBPACKAGE);
+	packaging_state save = Packaging::enter(PR);
+	inter_name *CV_POS_iname = InterNames::iname(CV_POS_INAME);
+	Packaging::house(CV_POS_iname, PR);
+	inter_name *CV_NEG_iname = InterNames::iname(CV_NEG_INAME);
+	Packaging::house(CV_NEG_iname, PR);
+	inter_name *CV_MODAL_INAME_iname = InterNames::iname(CV_MODAL_INAME);
+	Packaging::house(CV_MODAL_INAME_iname, PR);
+	inter_name *CV_MEANING_iname = InterNames::iname(CV_MEANING_INAME);
+	Packaging::house(CV_MEANING_iname, PR);
+
+	Emit::named_numeric_constant_signed(CV_POS_iname, -1);
+	Emit::named_numeric_constant_signed(CV_NEG_iname, -2);
+	Emit::named_numeric_constant_signed(CV_MODAL_INAME_iname, -3);
+	Emit::named_numeric_constant_signed(CV_MEANING_iname, -4);
 	InterNames::cache(InterNames::iname(CV_POS_INAME));
 	InterNames::cache(InterNames::iname(CV_NEG_INAME));
 	InterNames::to_symbol(InterNames::iname(CV_POS_INAME));
 	InterNames::to_symbol(InterNames::iname(CV_NEG_INAME));
+	Packaging::exit(save);
 }
 
 void NewVerbs::ConjugateVerb(void) {

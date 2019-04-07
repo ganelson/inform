@@ -370,7 +370,12 @@ of the kind which the constructor makes:
 #ifdef CORE_MODULE
 inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
-	UNKNOWN_TY_iname = Emit::named_numeric_constant(InterNames::iname(UNKNOWN_TY_INAME), (inter_t) UNKNOWN_NT);
+	UNKNOWN_TY_iname = InterNames::iname(UNKNOWN_TY_INAME);
+	Packaging::house(UNKNOWN_TY_iname, Packaging::request_resource(NULL, KINDS_SUBPACKAGE));
+	packaging_state save = Packaging::enter_home_of(UNKNOWN_TY_iname);
+	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_t) UNKNOWN_NT);
+	Packaging::exit(save);
+
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
@@ -384,7 +389,13 @@ void Kinds::Constructors::compile_I6_constants(void) {
 			Packaging::exit(save);
 		}
 	}
-	Emit::named_numeric_constant(InterNames::iname(BASE_KIND_HWM_INAME), (inter_t) next_free_data_type_ID);
+
+	package_request *PR = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
+	inter_name *hwm = InterNames::iname(BASE_KIND_HWM_INAME);
+	Packaging::house(hwm, PR);
+	save = Packaging::enter_home_of(hwm);
+	Emit::named_numeric_constant(hwm, (inter_t) next_free_data_type_ID);
+	Packaging::exit(save);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	if (UNKNOWN_TY_iname == NULL) internal_error("no unknown yet");

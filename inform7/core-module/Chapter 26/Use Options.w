@@ -506,7 +506,11 @@ one to test them, one to print them.
 
 =
 void UseOptions::TestUseOption_routine(void) {
-	Emit::named_numeric_constant(InterNames::iname(NO_USE_OPTIONS_INAME), (inter_t) NUMBER_CREATED(use_option));
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K_use_option));
+	inter_name *iname = InterNames::iname(NO_USE_OPTIONS_INAME);
+	Packaging::house(iname, Kinds::Behaviour::package(K_use_option));
+	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(use_option));
+	Packaging::exit(save);
 	@<Compile the TestUseOption routine@>;
 	@<Compile the PrintUseOption routine@>;
 }

@@ -255,12 +255,16 @@ void PL::Figures::write_copy_commands(void) {
 @ =
 void PL::Figures::compile_ResourceIDsOfFigures_array(void) {
 	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
-	Emit::named_array_begin(InterNames::iname(ResourceIDsOfFigures_INAME), K_number);
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K_figure_name));
+	inter_name *iname = InterNames::iname(ResourceIDsOfFigures_INAME);
+	Packaging::house(iname, Kinds::Behaviour::package(K_figure_name));
+	Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);
 	blorb_figure *bf;
 	LOOP_OVER(bf, blorb_figure) Emit::array_numeric_entry((inter_t) bf->figure_number);
 	Emit::array_numeric_entry(0);
 	Emit::array_end();
+	Packaging::exit(save);
 }
 
 @h Thumbnail Index.
