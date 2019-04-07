@@ -237,8 +237,12 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
     test->no_possessions = 0;
     test->text_of_script = Str::new();
 
-	test->text_iname = InterNames::new(TEST_TEXTS_INAMEF);
-	test->req_iname = InterNames::new(TEST_REQS_INAMEF);
+	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), GRAMMAR_SUBPACKAGE);
+	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, TEST_PR_COUNTER), PR, test_ptype);
+	test->text_iname = InterNames::one_off(I"script", PR2);
+	test->req_iname = InterNames::one_off(I"requirements", PR2);
+	Inter::Symbols::set_flag(InterNames::to_symbol(test->text_iname), MAKE_NAME_UNIQUE);
+	Inter::Symbols::set_flag(InterNames::to_symbol(test->req_iname), MAKE_NAME_UNIQUE);
 
 	ts_being_parsed = test;
     <test-sentence-object>(ParseTree::get_text(PN->next->next));
@@ -267,6 +271,7 @@ void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
 void PL::Parsing::TestScripts::write_text(void) {
 	test_scenario *test;
 	LOOP_OVER(test, test_scenario) {
+		packaging_state save = Packaging::enter_home_of(test->text_iname);
 		Emit::named_byte_array_begin(test->text_iname, K_text);
 		TEMPORARY_TEXT(tttext);
 		CompiledText::from_stream(tttext, test->text_of_script,
@@ -285,12 +290,19 @@ void PL::Parsing::TestScripts::write_text(void) {
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end();
+		Packaging::exit(save);
 	}
 }
 
 void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
-	if (NUMBER_CREATED(test_scenario) > 0)
-		Emit::named_numeric_constant(InterNames::iname(NO_TEST_SCENARIOS_INAME), (inter_t) NUMBER_CREATED(test_scenario));
+	if (NUMBER_CREATED(test_scenario) > 0) {
+		package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+		inter_name *iname = InterNames::iname(NO_TEST_SCENARIOS_INAME);
+		Packaging::house(iname, PR);
+		packaging_state save = Packaging::enter_home_of(iname);
+		Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(test_scenario));
+		Packaging::exit(save);
+	}
 }
 
 void PL::Parsing::TestScripts::TestScriptSub_routine(void) {

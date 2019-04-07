@@ -448,9 +448,13 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	Emit::up();
 
 	Routines::end(save);
+	package_request *PR = Packaging::request_resource(NULL, ACTIONS_SUBPACKAGE);
 	MistakeAction_iname = InterNames::iname(MistakeAction_INAME);
+	Packaging::house(MistakeAction_iname, PR);
+	save = Packaging::enter_home_of(MistakeAction_iname);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
 	InterNames::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
+	Packaging::exit(save);
 }
 
 @h Single word optimisation.

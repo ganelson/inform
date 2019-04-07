@@ -51,11 +51,16 @@ void PL::Score::compile_max_score(void) {
 			break;
 		}
 	}
+	package_request *PR = Packaging::synoptic_resource(IF_SUBPACKAGE);
+	inter_name *iname = InterNames::iname(INITIAL_MAX_SCORE_INAME);
+	Packaging::house(iname, PR);
+	packaging_state save = Packaging::enter_home_of(iname);
 	if (NonlocalVariables::has_initial_value_set(max_score_VAR)) {
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(&v1, &v2, max_score_VAR);
-		Emit::named_generic_constant(InterNames::iname(INITIAL_MAX_SCORE_INAME), v1, v2);
+		Emit::named_generic_constant(iname, v1, v2);
 	} else {
-		Emit::named_numeric_constant(InterNames::iname(INITIAL_MAX_SCORE_INAME), 0);
+		Emit::named_numeric_constant(iname, 0);
 	}
+	Packaging::exit(save);
 }

@@ -300,7 +300,7 @@ plural:verbs
 
 instance-of:WORD_VALUE_TY
 instance-of:SAYABLE_VALUE_TY
-default-value:ConjugateVerb_0
+default-value:0
 
 loop-domain-schema:for (*2=0, *1=TableOfVerbs-->*2: *1: *2++, *1=TableOfVerbs-->*2)
 i6-printing-routine:PrintVerbAsValue

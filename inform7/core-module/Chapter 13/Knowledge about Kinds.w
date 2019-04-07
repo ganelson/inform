@@ -89,7 +89,12 @@ particular order.
 
 =
 int Kinds::Knowledge::emit_all(void) {
-	Emit::named_numeric_constant(InterNames::iname(MAX_WEAK_ID_INAME), (inter_t) next_free_data_type_ID);
+	package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+	inter_name *iname = InterNames::iname(MAX_WEAK_ID_INAME);
+	Packaging::house(iname, PR);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_numeric_constant(iname, (inter_t) next_free_data_type_ID);
+	Packaging::exit(save);
 	Kinds::Knowledge::emit_recursive(Kinds::Knowledge::as_subject(K_object));
 	return FALSE;
 }

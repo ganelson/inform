@@ -185,7 +185,9 @@ void Plugins::Manage::start(void) {
 
 	CREATE_PLUGIN(files_plugin, PL::Files::start, FALSE, GLULX_EXTERNAL_FILES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
 	files_plugin->has_template_file = "Files";
+	package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
 	files_plugin->IFDEF_iname = InterNames::iname(PLUGIN_FILES_INAME);
+	Packaging::house(files_plugin->IFDEF_iname, PR);
 	#endif
 
 	#ifndef MULTIMEDIA_MODULE
@@ -316,8 +318,11 @@ void Plugins::Manage::show(OUTPUT_STREAM, char *label, int state) {
 void Plugins::Manage::define_IFDEF_symbols(void) {
 	plugin *P;
 	LOOP_OVER(P, plugin)
-		if ((P->now_plugged_in) && (P->IFDEF_iname))
+		if ((P->now_plugged_in) && (P->IFDEF_iname)) {
+			packaging_state save = Packaging::enter_home_of(P->IFDEF_iname);
 			Emit::named_numeric_constant(P->IFDEF_iname, 0);
+			Packaging::exit(save);
+		}
 }
 
 @ =

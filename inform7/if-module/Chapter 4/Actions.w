@@ -987,6 +987,7 @@ int PL::Actions::can_be_compiled_in_past_tense(action_name *an) {
 inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 	package_request *R = Packaging::request_main();
 	if (I) R = Instances::package(I);
+	else R = Kinds::Behaviour::package(K_object);
 	packaging_state save = Packaging::enter(R);
 	inter_name *N = Packaging::supply_iname(R, INLINE_PR_COUNTER);
 	Emit::named_array_begin(N, K_number);

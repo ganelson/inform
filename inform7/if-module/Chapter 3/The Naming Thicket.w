@@ -278,7 +278,12 @@ actually means it's rarely needed.)
 		if (P_cap_short_name == NULL) {
 			P_cap_short_name = Properties::Valued::new_nameless(
 				I"cap_short_name", K_text);
-			Emit::named_numeric_constant(InterNames::iname(CAP_SHORT_NAME_EXISTS_INAME), 1);
+			package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+			inter_name *iname = InterNames::iname(CAP_SHORT_NAME_EXISTS_INAME);
+			Packaging::house(iname, PR);
+			packaging_state save = Packaging::enter_home_of(iname);
+			Emit::named_numeric_constant(iname, 1);
+			Packaging::exit(save);
 		}
 		if (faux)
 			Properties::Valued::assert(P_cap_short_name, subj,

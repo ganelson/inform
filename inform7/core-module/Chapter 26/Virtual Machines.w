@@ -196,41 +196,43 @@ inter_name *VirtualMachines::emit_unchecked_hex_fundamental_constant(int id, int
 inter_name *VirtualMachines::emit_fundamental_constants(void) {
 	if (target_VM == -1) internal_error("target VM not set yet");
 
+	package_request *basics = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
-		Emit::named_numeric_constant(InterNames::iname(DEBUG_INAME), 1);
+		VirtualMachines::emit_fundamental_constant(DEBUG_INAME, 1, basics);
 
 	if (table_of_VM_data[target_VM].VM_code == Z_VM) {
-		Emit::named_numeric_constant(InterNames::iname(TARGET_ZCODE_INAME), 1);
-		Emit::named_numeric_constant(InterNames::iname(DICT_WORD_SIZE_INAME), 6);
+		VirtualMachines::emit_fundamental_constant(TARGET_ZCODE_INAME, 1, basics);
+		VirtualMachines::emit_fundamental_constant(DICT_WORD_SIZE_INAME, 6, basics);
 	} else if (table_of_VM_data[target_VM].VM_code == GLULX_VM) {
-		Emit::named_numeric_constant(InterNames::iname(TARGET_GLULX_INAME), 1);
-		Emit::named_numeric_constant(InterNames::iname(DICT_WORD_SIZE_INAME), 9);
+		VirtualMachines::emit_fundamental_constant(TARGET_GLULX_INAME, 1, basics);
+		VirtualMachines::emit_fundamental_constant(DICT_WORD_SIZE_INAME, 9, basics);
 	}
 
 	inter_name *NULL_iname = NULL;
 	
 	if (table_of_VM_data[target_VM].VM_is_32_bit) {
-		VirtualMachines::emit_fundamental_constant(WORDSIZE_INAME, 4, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_INAME, 0xffffffff, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_INAME, 0x80000000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_INAME, 0x40000000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_INAME, 0xdeadce11, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_INAME, 0x40000000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_INAME, 2147483647, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_INAME, -2147483648, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_fundamental_constant(WORDSIZE_INAME, 4, basics);
+		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_INAME, 0xffffffff, basics);
+		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_INAME, 0x80000000, basics);
+		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_INAME, 0x40000000, basics);
+		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_INAME, 0xdeadce11, basics);
+		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_INAME, 0x40000000, basics);
+		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_INAME, 2147483647, basics);
+		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_INAME, -2147483648, basics);
 		InterNames::cache(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
 		InterNames::cache(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME));
 		InterNames::to_symbol(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
 		InterNames::to_symbol(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME));
 	} else {
-		VirtualMachines::emit_fundamental_constant(WORDSIZE_INAME, 2, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_INAME, 0xffff, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_INAME, 0x8000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_INAME, 0x4000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_INAME, 0x7fe3, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_INAME, 10000, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_INAME, 32767, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
-		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_INAME, -32768, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		VirtualMachines::emit_fundamental_constant(WORDSIZE_INAME, 2, basics);
+		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_INAME, 0xffff, basics);
+		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_INAME, 0x8000, basics);
+		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_INAME, 0x4000, basics);
+		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_INAME, 0x7fe3, basics);
+		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_INAME, 10000, basics);
+		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_INAME, 32767, basics);
+		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_INAME, -32768, basics);
 		InterNames::cache(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
 		InterNames::cache(InterNames::iname(MIN_NEGATIVE_NUMBER_INAME));
 		InterNames::to_symbol(InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
