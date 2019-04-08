@@ -12,6 +12,7 @@ inter_symbol *mverb_ptype = NULL;
 inter_symbol *to_phrase_ptype = NULL;
 inter_symbol *rule_ptype = NULL;
 inter_symbol *request_ptype = NULL;
+inter_symbol *closure_ptype = NULL;
 inter_symbol *response_ptype = NULL;
 inter_symbol *adjective_ptype = NULL;
 inter_symbol *adjective_meaning_ptype = NULL;
@@ -28,6 +29,8 @@ inter_symbol *relation_ptype = NULL;
 inter_symbol *test_ptype = NULL;
 inter_symbol *outcome_ptype = NULL;
 inter_symbol *data_ptype = NULL;
+inter_symbol *external_file_ptype = NULL;
+inter_symbol *label_storage_ptype = NULL;
 
 @ =
 void Packaging::emit_types(void) {
@@ -49,6 +52,8 @@ void Packaging::emit_types(void) {
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), rule_ptype, Emit::baseline(Emit::IRS()), NULL));
 	request_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_request");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), request_ptype, Emit::baseline(Emit::IRS()), NULL));
+	closure_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_closure");
+	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), closure_ptype, Emit::baseline(Emit::IRS()), NULL));
 	response_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_response");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), response_ptype, Emit::baseline(Emit::IRS()), NULL));
 	adjective_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_adjective");
@@ -81,6 +86,10 @@ void Packaging::emit_types(void) {
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), outcome_ptype, Emit::baseline(Emit::IRS()), NULL));
 	data_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_data");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), data_ptype, Emit::baseline(Emit::IRS()), NULL));
+	external_file_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_external_file");
+	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), external_file_ptype, Emit::baseline(Emit::IRS()), NULL));
+	label_storage_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_label_storage");
+	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), label_storage_ptype, Emit::baseline(Emit::IRS()), NULL));
 }
 
 @
@@ -93,11 +102,13 @@ void Packaging::emit_types(void) {
 @e TO_PHRASE_PR_COUNTER
 @e RULE_PR_COUNTER
 @e REQUEST_PR_COUNTER
+@e CLOSURE_PR_COUNTER
 @e RESPONSE_PR_COUNTER
 @e ADJECTIVE_PR_COUNTER
 @e ADJECTIVE_MEANING_PR_COUNTER
 @e TASK_PR_COUNTER
 @e BLOCK_CONSTANT_PR_COUNTER
+@e LITERAL_PR_COUNTER
 @e PROPOSITION_PR_COUNTER
 @e INSTANCE_PR_COUNTER
 @e INLINE_PR_COUNTER
@@ -116,6 +127,8 @@ void Packaging::emit_types(void) {
 @e DATA_PR_COUNTER
 @e OUTCOME_PR_COUNTER
 @e TEST_PR_COUNTER
+@e EXTERNAL_FILE_PR_COUNTER
+@e LABEL_STORAGE_PR_COUNTER
 
 @e MAX_PR_COUNTER
 
@@ -171,6 +184,10 @@ packaging_state Packaging::stateless(void) {
 	return PS;
 }
 
+package_request *Packaging::home_of(inter_name *N) {
+	return N->eventual_owner;
+}
+
 packaging_state Packaging::enter_home_of(inter_name *N) {
 	return Packaging::enter(N->eventual_owner);
 }
@@ -216,7 +233,10 @@ packaging_state Packaging::enter(package_request *R) {
 			(S->eventual_type == table_column_ptype) ||
 			(S->eventual_type == data_ptype) ||
 			(S->eventual_type == outcome_ptype) ||
+			(S->eventual_type == external_file_ptype) ||
+			(S->eventual_type == adjective_ptype) ||
 			(S->eventual_type == test_ptype) ||
+			(S->eventual_type == closure_ptype) ||
 			(S->parent_request == NULL)) {
 			current_enclosure = S;
 			break;
@@ -318,6 +338,7 @@ package_request *Packaging::request_synoptic(void) {
 @e EQUATIONS_SUBPACKAGE
 @e BIBLIOGRAPHIC_SUBPACKAGE
 @e IF_SUBPACKAGE
+@e EXTERNAL_FILES_SUBPACKAGE
 
 @e MAX_SUBPACKAGE
 
@@ -395,6 +416,7 @@ package_request *Packaging::synoptic_resource(int ix) {
 			case EQUATIONS_SUBPACKAGE: N = I"equations"; break;
 			case BIBLIOGRAPHIC_SUBPACKAGE: N = I"bibliographic"; break;
 			case IF_SUBPACKAGE: N = I"interactive_fiction"; break;
+			case EXTERNAL_FILES_SUBPACKAGE: N = I"external_files"; break;
 			default: internal_error("nameless resource");
 		}
 		inter_name *iname = InterNames::one_off(N, parent);
@@ -416,10 +438,12 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 		case TO_PHRASE_PR_COUNTER: WRITE_TO(P, "phrase"); break;
 		case RULE_PR_COUNTER: WRITE_TO(P, "rule"); break;
 		case REQUEST_PR_COUNTER: WRITE_TO(P, "request"); break;
+		case CLOSURE_PR_COUNTER: WRITE_TO(P, "closure"); break;
 		case RESPONSE_PR_COUNTER: WRITE_TO(P, "response"); break;
 		case ADJECTIVE_PR_COUNTER: WRITE_TO(P, "adjective"); break;
 		case ADJECTIVE_MEANING_PR_COUNTER: WRITE_TO(P, "adjective_meaning"); break;
 		case TASK_PR_COUNTER: WRITE_TO(P, "task"); break;
+		case LITERAL_PR_COUNTER: WRITE_TO(P, "literal"); break;
 		case BLOCK_CONSTANT_PR_COUNTER: WRITE_TO(P, "block_constant"); break;
 		case PROPOSITION_PR_COUNTER: WRITE_TO(P, "proposition"); break;
 		case INSTANCE_PR_COUNTER: WRITE_TO(P, "instance"); break;
@@ -439,6 +463,8 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 		case TEST_PR_COUNTER: WRITE_TO(P, "test"); break;
 		case OUTCOME_PR_COUNTER: WRITE_TO(P, "rulebook_outcome"); break;
 		case DATA_PR_COUNTER: WRITE_TO(P, "data"); break;
+		case EXTERNAL_FILE_PR_COUNTER: WRITE_TO(P, "external_file"); break;
+		case LABEL_STORAGE_PR_COUNTER: WRITE_TO(P, "label_associated_storage"); break;
 		default: internal_error("unimplemented");
 	}
 	WRITE_TO(P, "_%d", ++(R->counters[what_for]));

@@ -389,7 +389,7 @@ object, rather inventing something like |O12_north| as it otherwise would.
 
 =
 Include (-
-	has scenery, ! class CompassDirection,
+	has scenery,
 -) when defining a direction.
 
 @ The Standard Rules define only thirteen I7 objects, and here we go with

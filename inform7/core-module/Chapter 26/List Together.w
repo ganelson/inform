@@ -36,7 +36,9 @@ inter_name *ListTogether::new(int include_articles) {
 		InterNames::one_off(I"list_together_fn", PR),
 		PR,
 		InterNames::new(LIST_TOGETHER_ROUTINE_INAMEF));
-	ltr->ltr_array_iname = InterNames::new(LIST_TOGETHER_ARRAY_INAMEF);
+	ltr->ltr_array_iname = InterNames::one_off(I"list_together_array", PR);
+	Inter::Symbols::set_flag(InterNames::to_symbol(ltr->ltr_array_iname), MAKE_NAME_UNIQUE);
+
 	ltr->articles_bit = include_articles;
 	return ltr->ltr_array_iname;
 }
@@ -107,7 +109,9 @@ int ListTogether::compilation_coroutine(void) {
 	Emit::rfalse();
 	Routines::end(save);
 
+	save = Packaging::enter_home_of(ltr->ltr_array_iname);
 	Emit::named_array_begin(ltr->ltr_array_iname, K_value);
 	Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
 	Emit::array_iname_entry(ltr->ltr_routine_iname);
 	Emit::array_end();
+	Packaging::exit(save);

@@ -587,9 +587,8 @@ compile under Inform 6.
 	DISCARD_TEXT(TEMP);
 	InterNames::attach_memo(rks->rks_iname, W);
 	InterNames::to_symbol(rks->rks_iname);
-	rks->rks_dv_iname = InterNames::new(DEFAULT_VALUE_INAMEF);
-	InterNames::attach_memo(rks->rks_dv_iname, W);
-	InterNames::to_symbol(rks->rks_dv_iname);
+	rks->rks_dv_iname = InterNames::one_off(I"default_value", PR);
+	Inter::Symbols::set_flag(InterNames::to_symbol(rks->rks_dv_iname), MAKE_NAME_UNIQUE);
 
 @ It's convenient to combine this system with one which constructs default
 values for kinds, since both involve tracking constructions uniquely.
@@ -724,6 +723,7 @@ void Kinds::RunTime::compile_structures(void) {
 @<Compile a constructed default value for this kind@> =
 	inter_name *identifier = rks->rks_dv_iname;
 	current_sentence = rks->default_requested_here;
+	packaging_state save = Packaging::enter_home_of(identifier);
 	if (Kinds::get_construct(K) == CON_phrase) {
 		Phrases::Constants::compile_default_closure(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_relation) {
@@ -739,6 +739,7 @@ void Kinds::RunTime::compile_structures(void) {
 			"for the kind '%2', but there's no obvious way to make one.");
 		Problems::issue_problem_end();
 	}
+	Packaging::exit(save);
 
 @<Compile the default value finder@> =
 	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);

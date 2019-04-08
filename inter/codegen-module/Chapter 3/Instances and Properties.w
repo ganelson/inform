@@ -619,7 +619,7 @@ because I6 doesn't allow function calls in a constant context.
 			WRITE("Class %S\n", CodeGen::name(kind_name));
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if (super_name) WRITE("    class %S\n", CodeGen::name(super_name));
-			CodeGen::append(OUT, kind_name);
+			CodeGen::append(OUT, I, kind_name);
 			inter_frame_list *FL =
 				Inter::find_frame_list(I, Inter::Kind::properties_list(kind_name));
 			CodeGen::IP::plist(OUT, I, FL);
@@ -834,7 +834,7 @@ void CodeGen::IP::object_instance(OUTPUT_STREAM, inter_repository *I, inter_fram
 		WRITE("%S \"\"", CodeGen::name(inst_name));
 		if (Inter::Kind::is_a(inst_kind, direction_kind_symbol)) { WRITE(" Compass"); }
 		WRITE("\n    class %S\n", CodeGen::name(inst_kind));
-		CodeGen::append(OUT, inst_name);
+		CodeGen::append(OUT, I, inst_name);
 		inter_frame_list *FL =
 			Inter::find_frame_list(
 				P.repo_segment->owning_repo,

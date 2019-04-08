@@ -9,6 +9,7 @@ inter_error_message *Inter::Verify::defn(inter_frame P, int index) {
 	if (S->equated_to) {
 		LOG("This is $6 but %S equates to a symbol in $6\n",
 			Inter::Packages::container(P), S->symbol_name, Inter::Packages::container(S->equated_to->definition));
+internal_error("zap");
 		return Inter::Frame::error(&P, I"symbol defined outside its native scope", S->symbol_name);
 	}
 	inter_frame D = Inter::Symbols::defining_frame(S);

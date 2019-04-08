@@ -47,7 +47,13 @@ label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module
 	lns->label_prefix = Str::new();
 	WRITE_TO(lns->label_prefix, "%S%S", cm->namespace->namespace_prefix, name);
 	lns->label_base_iname = InterNames::label_base_name(lns->label_prefix);
-	lns->label_storage_iname = InterNames::new_derived(LABEL_STORAGE_INAMEF, lns->label_base_iname);
+	
+	package_request *PR = Packaging::synoptic_resource(PHRASES_SUBPACKAGE);
+	package_request *PR2 = Packaging::request(
+		Packaging::supply_iname(PR, LABEL_STORAGE_PR_COUNTER), PR, label_storage_ptype);
+	lns->label_storage_iname = InterNames::one_off(I"label_associated_storage", PR2);
+	Inter::Symbols::set_flag(InterNames::to_symbol(lns->label_storage_iname), MAKE_NAME_UNIQUE);
+	
 	lns->label_counter = 0;
 	lns->allocate_storage = 0;
 	lns->module = cm;
@@ -119,10 +125,12 @@ void JumpLabels::compile_necessary_storage(void) {
 	label_namespace *lns;
 	LOOP_OVER(lns, label_namespace)
 		if (lns->allocate_storage > 0) {
+			packaging_state save = Packaging::enter_home_of(lns->label_storage_iname);
 			Emit::named_array_begin(lns->label_storage_iname, K_number);
 			int N = (lns->allocate_storage)*(lns->label_counter) + 2;
 			for (int i=0; i<N; i++) Emit::array_numeric_entry(0);
 			Emit::array_end();
+			Packaging::exit(save);
 		}
 }
 

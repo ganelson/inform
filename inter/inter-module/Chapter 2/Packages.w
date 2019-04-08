@@ -87,6 +87,12 @@ inter_symbol *Inter::Packages::search_main_exhaustively(inter_repository *I, tex
 	return Inter::Packages::search_exhaustively(Inter::Packages::main(I), S);
 }
 
+inter_symbol *Inter::Packages::search_resources_exhaustively(inter_repository *I, text_stream *S) {
+	inter_symbol *res = Inter::Packages::search_main_exhaustively(I, I"resources");
+	if (res) return Inter::Packages::search_exhaustively(Inter::Package::which(res), S);
+	return NULL;
+}
+
 inter_t Inter::Packages::to_PID(inter_package *P) {
 	if (P == NULL) return 0;
 	return P->index_n;

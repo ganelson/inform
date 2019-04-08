@@ -24,6 +24,7 @@ typedef struct literal_list {
 	int kinds_known_to_be_inconsistent; /* problem(s) thrown when parsing these */
 	struct llist_entry *first_llist_entry; /* linked list of contents */
 
+	struct package_request *ll_package; /* which will be the enclosure for... */
 	struct inter_name *ll_iname;
 
 	int list_compiled; /* lists are compiled at several different points: has this one been done? */
@@ -78,6 +79,7 @@ literal_list *Lists::empty_literal_list(wording W) {
 	ll->ll_iname = NULL;
 	ll->first_llist_entry = NULL;
 	ll->list_text = NULL;
+	ll->ll_package = Packaging::current_enclosure();
 	Kinds::RunTime::ensure_basic_heap_present();
 	return ll;
 }
@@ -270,8 +272,8 @@ inter_name *Lists::compile_literal_list(wording W) {
 
 inter_name *Lists::iname(literal_list *ll) {
 	if (ll->ll_iname == NULL) {
-		ll->ll_iname = InterNames::new(LITERAL_LIST_INAMEF);
-		InterNames::to_symbol(ll->ll_iname);
+		ll->ll_iname = Packaging::supply_iname(Packaging::current_enclosure(), LITERAL_PR_COUNTER);
+		Inter::Symbols::set_flag(InterNames::to_symbol(ll->ll_iname), MAKE_NAME_UNIQUE);
 	}
 	return ll->ll_iname;
 }
@@ -301,6 +303,7 @@ the list!);
 (d) that number of values, each representing one entry.
 
 @<Actually compile the list array@> =
+	packaging_state save = Packaging::enter_home_of(ll->ll_iname);
 	Emit::named_array_begin(ll->ll_iname, K_value);
 	llist_entry *lle;
 	int n = 0;
@@ -315,6 +318,7 @@ the list!);
 		Specifications::Compiler::emit_constant_to_kind(
 			lle->llist_entry_value, ll->entry_kind);
 	Emit::array_end();
+	Packaging::exit(save);
 
 @ The default list of any given kind is empty.
 

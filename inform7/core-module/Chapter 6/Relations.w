@@ -1827,7 +1827,10 @@ void Relations::compile_vtov_storage(binary_predicate *bp) {
 	if ((left_count > 0) && (right_count > 0))
 		@<Allocate a zeroed-out memory cache for relations with fast route-finding@>;
 
-	bp->v2v_bitmap_iname = InterNames::new(V2V_BITMAP_INAMEF);
+	package_request *P = BinaryPredicates::package(bp);
+	bp->v2v_bitmap_iname = InterNames::one_off(I"bitmap", P);
+	Inter::Symbols::set_flag(InterNames::to_symbol(bp->v2v_bitmap_iname), MAKE_NAME_UNIQUE);
+	packaging_state save = Packaging::enter_home_of(bp->v2v_bitmap_iname);
 	Emit::named_array_begin(bp->v2v_bitmap_iname, K_value);
 	@<Compile header information in the V-to-V structure@>;
 
@@ -1835,6 +1838,7 @@ void Relations::compile_vtov_storage(binary_predicate *bp) {
 		@<Compile bitmap pre-initialised to the V-to-V relation at start of play@>;
 
 	Emit::array_end();
+	Packaging::exit(save);
 
 	TEMPORARY_TEXT(rname);
 	WRITE_TO(rname, "%A", &(bp->relation_name));
@@ -1898,7 +1902,10 @@ and this is why the "cache broken" flag is initially set in the header
 above: it forces the template layer to generate the cache when first used.
 
 @<Allocate a zeroed-out memory cache for relations with fast route-finding@> =
-	inter_name *iname = InterNames::new(V2V_ROUTE_CACHE_INAMEF);
+	package_request *P = BinaryPredicates::package(bp);
+	inter_name *iname = InterNames::one_off(I"route_cache", P);
+	Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+	packaging_state save = Packaging::enter_home_of(iname);
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 	if ((bp->fast_route_finding) &&
@@ -1921,6 +1928,7 @@ above: it forces the template layer to generate the cache when first used.
 	} else {
 		v2v_iname = Emit::named_numeric_constant(iname, 0);
 	}
+	Packaging::exit(save);
 
 @ The following routine conveniently determines whether a given INFS is
 within the domain of one of the terms of a relation; the rule is that it

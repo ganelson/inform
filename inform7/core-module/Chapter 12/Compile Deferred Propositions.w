@@ -126,7 +126,9 @@ proposition would be wasteful of space in the Z-machine.
 		WRITE_TO(COTT, "%~W", ParseTree::get_text(pdef->deferred_from));
 	else
 		WRITE_TO(COTT, "not sure where this came from");
+	packaging_state save = Packaging::enter_home_of(pdef->rtp_iname);
 	Emit::named_string_constant(pdef->rtp_iname, COTT);
+	Packaging::exit(save);
 	DISCARD_TEXT(COTT);
 
 @ Just in case this hasn't already been done:
@@ -1592,8 +1594,9 @@ pcalc_prop *Calculus::Propositions::Deferred::compile_loop_header(int var, local
 	if ((K) && (parent_optimised == FALSE)) { /* parent optimisation is stronger, so we prefer that */
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K) == FALSE) {
 			if (pdef->rtp_iname == NULL) {
-				pdef->rtp_iname = InterNames::new(DEFERRED_PROPOSITION_RTP_INAMEF);
-				InterNames::to_symbol(pdef->rtp_iname);
+				package_request *P = Packaging::home_of(pdef->ppd_iname);
+				pdef->rtp_iname = InterNames::one_off(I"rtp", P);
+				Inter::Symbols::set_flag(InterNames::to_symbol(pdef->rtp_iname), MAKE_NAME_UNIQUE);
 			}
 			Calculus::Schemas::modify(&loop_schema, "if (RunTimeProblem(RTP_CANTITERATE, %n))",
 				pdef->rtp_iname);

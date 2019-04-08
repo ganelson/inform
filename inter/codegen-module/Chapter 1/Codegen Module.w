@@ -13,6 +13,7 @@ We need to itemise the structures we'll want to allocate:
 @e stage_set_MT
 @e stage_step_MT
 @e uniqueness_count_MT
+@e text_literal_holder_MT
 
 @ With allocation functions:
 
@@ -21,6 +22,7 @@ ALLOCATE_INDIVIDUALLY(I6T_intervention)
 ALLOCATE_INDIVIDUALLY(stage_set)
 ALLOCATE_INDIVIDUALLY(stage_step)
 ALLOCATE_INDIVIDUALLY(uniqueness_count)
+ALLOCATE_INDIVIDUALLY(text_literal_holder)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

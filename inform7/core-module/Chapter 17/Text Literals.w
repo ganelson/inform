@@ -105,7 +105,9 @@ literal_text *Strings::TextLiterals::lt_new(int w1, int colour) {
 	x->unexpanded = FALSE;
 	x->small_block_array_needed = FALSE;
 	x->lt_sba_iname = NULL;
-	x->lt_iname = InterNames::new_in(LITERAL_TEXT_INAMEF, Modules::current());
+	x->lt_iname = Packaging::supply_iname(Packaging::current_enclosure(), LITERAL_PR_COUNTER);
+	Inter::Symbols::set_flag(InterNames::to_symbol(x->lt_iname), MAKE_NAME_UNIQUE);
+	Emit::annotate_symbol_i(InterNames::to_symbol(x->lt_iname), TEXT_LITERAL_IANN, 1);
 	InterNames::to_symbol(x->lt_iname);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
@@ -178,8 +180,8 @@ which are null pointers.
 	if (encode_constant_text_bibliographically) x->bibliographic_conventions = TRUE;
 	if (write) {
 		if (x->lt_sba_iname == NULL) {
-			x->lt_sba_iname = InterNames::new_in(LITERAL_TEXT_SBA_INAMEF, Modules::current());
-			InterNames::to_symbol(x->lt_sba_iname);
+			x->lt_sba_iname = Packaging::supply_iname(Packaging::current_enclosure(), BLOCK_CONSTANT_PR_COUNTER);
+			Inter::Symbols::set_flag(InterNames::to_symbol(x->lt_sba_iname), MAKE_NAME_UNIQUE);
 		}
 		if (VH) InterNames::holster(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
@@ -282,6 +284,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 }
 
 @<Compile a standard literal text@> =
+	packaging_state save = Packaging::enter_home_of(lt->lt_iname);
 	if (existing_story_file) { /* to prevent trouble when no story file is really being made */
 		Emit::named_string_constant(lt->lt_iname, I"--");
 	} else {
@@ -295,24 +298,31 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 		Emit::named_string_constant(lt->lt_iname, TLT);
 		DISCARD_TEXT(TLT);
 	}
+	Packaging::exit(save);
 	if (lt->small_block_array_needed) {
+		packaging_state save = Packaging::enter_home_of(lt->lt_sba_iname);
 		Emit::named_array_begin(lt->lt_sba_iname, K_value);
 		Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
 		Emit::array_iname_entry(lt->lt_iname);
 		Emit::array_end();
+		Packaging::exit(save);
 	}
 
 @<Compile a boxed-quotation literal text@> =
-	if (lt->lt_sba_iname == NULL)
-		lt->lt_sba_iname = InterNames::new(LITERAL_TEXT_SBA_INAMEF);
+	if (lt->lt_sba_iname == NULL) {
+		lt->lt_sba_iname = Packaging::supply_iname(Packaging::current_enclosure(), BLOCK_CONSTANT_PR_COUNTER);
+		Inter::Symbols::set_flag(InterNames::to_symbol(lt->lt_sba_iname), MAKE_NAME_UNIQUE);
+	}
 	package_request *P = lt->lt_iname->eventual_owner;
 	inter_name *iname = Packaging::function(
 		InterNames::one_off(I"box_quotation_fn", P),
 		P,
 		InterNames::new(PAST_ACTION_ROUTINE_INAMEF));
+	packaging_state save = Packaging::enter_home_of(lt->lt_sba_iname);
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
+	Packaging::exit(save);
 
-	packaging_state save = Routines::begin(iname);
+	save = Routines::begin(iname);
 	Emit::inv_primitive(box_interp);
 	Emit::down();
 		TEMPORARY_TEXT(T);

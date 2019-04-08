@@ -41,7 +41,11 @@ void PL::Score::compile_max_score(void) {
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
 			InterNames::to_symbol(Tables::identifier(t));
+			inter_name *iname = InterNames::iname(RANKING_TABLE_INAME);
+			Packaging::house(iname, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(InterNames::iname(RANKING_TABLE_INAME), K_value, Tables::identifier(t));
+			Packaging::exit(save);
 			parse_node *PN = Tables::cells_in_ith_column(t, 0);
 			while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
 			if ((PN != NULL) && (max_score_VAR) &&

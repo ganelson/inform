@@ -2,7 +2,8 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
-	symbol public misc Banana
-	constant Peach K_number = Banana
-	constant Banana K_number = 2
+	package resources _plain
+		kind K_number int32
+		symbol public misc Banana
+		constant Peach K_number = Banana
+		constant Banana K_number = 2

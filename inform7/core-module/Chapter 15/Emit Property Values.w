@@ -69,10 +69,14 @@ I6 code into object bodies, and the I6 template does make use of this a little.
 In an ideal world we would revoke this ability.
 
 @<Append any inclusions the source text requested@> =
+	packaging_state save = Packaging::enter_home_of(iname);
 	TEMPORARY_TEXT(incl);
 	Config::Inclusions::compile_inclusions_for_subject(incl, subj);
-	if (Str::len(incl) > 0) Emit::append(iname, incl);
+	if (Str::len(incl) > 0) {
+		Emit::append(iname, incl);
+	}
 	DISCARD_TEXT(incl);
+	Packaging::exit(save);
 
 @ Now, here goes with the properties. We first compile clauses for those we
 know about, then for any other properties which are permitted but apparently

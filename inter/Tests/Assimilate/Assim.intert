@@ -2,31 +2,32 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_typeless_int int32
-	kind K_list_of_values list of K_unchecked
-	kind K_truth_state int2
-	constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
-	constant VERB_DIRECTIVE_RESULT K_unchecked = 2
-	splat &"Constant DEBUG;\n"
-	splat &"Constant Badger = 12;\n"
-	splat &"[ Falsity; return false; ];\n"
-	splat &"[ Demo x y; return x+y; ];\n"
-	splat &"Array XA --> 2 4 56;\n"
-	splat &"Array XB--> (71 + 3);\n"
-	splat &"Array XC -> 17 91;\n"
-	splat &"Array XD-> 8 6;\n"
-	splat &"Array XE table 2 3 4 5;\n"
-	splat &"Array XF buffer 6 7 8 9;\n"
-	splat &"Constant Bodger $$10011101;\n"
-	splat &"Constant Budger $7fe2  ;\n"
-	splat &"Global nitwit = 2;\n"
-	splat &"Verb meta 'purloin'\n    * scope=testcommandnoun                     -> XPurloin;\n"
-	splat &"Default Bodger = 77;\n"
-	splat &"Default Bydger = 777;\n"
-	splat &"#Stub Banana 2;\n"
-	splat &"#Stub Peach 0;\n"
-	splat &"Attribute marmorial;\n"
-	splat &"Property density;\n"
-	symbol external misc Falsity
+	package resources _plain
+		kind K_unchecked unchecked
+		kind K_unchecked_function function K_unchecked -> K_unchecked
+		kind K_typeless_int int32
+		kind K_list_of_values list of K_unchecked
+		kind K_truth_state int2
+		constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
+		constant VERB_DIRECTIVE_RESULT K_unchecked = 2
+		splat &"Constant DEBUG;\n"
+		splat &"Constant Badger = 12;\n"
+		splat &"[ Falsity; return false; ];\n"
+		splat &"[ Demo x y; return x+y; ];\n"
+		splat &"Array XA --> 2 4 56;\n"
+		splat &"Array XB--> (71 + 3);\n"
+		splat &"Array XC -> 17 91;\n"
+		splat &"Array XD-> 8 6;\n"
+		splat &"Array XE table 2 3 4 5;\n"
+		splat &"Array XF buffer 6 7 8 9;\n"
+		splat &"Constant Bodger $$10011101;\n"
+		splat &"Constant Budger $7fe2  ;\n"
+		splat &"Global nitwit = 2;\n"
+		splat &"Verb meta 'purloin'\n    * scope=testcommandnoun                     -> XPurloin;\n"
+		splat &"Default Bodger = 77;\n"
+		splat &"Default Bydger = 777;\n"
+		splat &"#Stub Banana 2;\n"
+		splat &"#Stub Peach 0;\n"
+		splat &"Attribute marmorial;\n"
+		splat &"Property density;\n"
+		symbol external misc Falsity

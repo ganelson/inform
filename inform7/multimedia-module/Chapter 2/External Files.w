@@ -33,7 +33,6 @@ kind *K_external_file = NULL;
 
 @ =
 void PL::Files::start(void) {
-	PLUGIN_REGISTER(PLUGIN_COMPILE_CONSTANT, PL::Files::files_compile_constant);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Files::files_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_NEW_INSTANCE_NOTIFY, PL::Files::files_new_named_instance_notify);
 }
@@ -238,9 +237,15 @@ void PL::Files::register_file(wording F, wording FN) {
 	exf->file_is_binary = binary;
 	exf->file_ownership = ownership;
 	exf->IFID_of_owner = Str::duplicate(ifid_of_file);
-	exf->exf_iname = InterNames::new(EXTERNAL_FILE_INAMEF);
+
+	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), EXTERNAL_FILES_SUBPACKAGE);
+	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, EXTERNAL_FILE_PR_COUNTER), PR, test_ptype);
+	exf->exf_iname = InterNames::one_off(I"file", PR2);
 	InterNames::attach_memo(exf->exf_iname, exf->name);
-	exf->IFID_array_iname = InterNames::new(IFID_ARRAY_INAMEF);
+	Inter::Symbols::set_flag(InterNames::to_symbol(exf->exf_iname), MAKE_NAME_UNIQUE);
+	exf->IFID_array_iname = InterNames::one_off(I"ifid", PR2);
+	InterNames::attach_memo(exf->IFID_array_iname, exf->name);
+	Inter::Symbols::set_flag(InterNames::to_symbol(exf->IFID_array_iname), MAKE_NAME_UNIQUE);
 
 	LOGIF(FIGURE_CREATIONS, "Created external file <%W> = filename '%N'\n",
 		F, exf->unextended_filename);
@@ -249,26 +254,6 @@ void PL::Files::register_file(wording F, wording FN) {
 
 @h I6 arrays of file structures.
 External files are written in I6 as their array names:
-
-=
-int PL::Files::files_compile_constant(OUTPUT_STREAM, kind *K, parse_node *spec) {
-	if (Plugins::Manage::plugged_in(files_plugin) == FALSE)
-		internal_error("files plugin inactive");
-	wording W = ParseTree::get_text(spec);
-	if ((Kinds::Compare::eq(K, K_external_file)) && (<s-literal>(W))) {
-internal_error("LAMIA");
-		external_file *exf;
-		LOOP_OVER(exf, external_file) {
-			if (exf->allocation_id == <<r>>) {
-				WRITE("%S", exf->exf_I6_identifier);
-				return TRUE;
-			}
-		}
-	}
-	return FALSE;
-}
-
-@ And the following declares the arrays:
 
 =
 void PL::Files::arrays(void) {
@@ -283,16 +268,19 @@ void PL::Files::arrays(void) {
 	external_file *exf;
 	LOOP_OVER(exf, external_file) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
+			packaging_state save = Packaging::enter_home_of(exf->IFID_array_iname);
 			Emit::named_string_array_begin(exf->IFID_array_iname, K_value);
 			TEMPORARY_TEXT(II);
 			WRITE_TO(II, "//%S//", exf->IFID_of_owner);
 			Emit::array_text_entry(II);
 			DISCARD_TEXT(II);
 			Emit::array_end();
+			Packaging::exit(save);
 		}
 	}
 
 	LOOP_OVER(exf, external_file) {
+		packaging_state save = Packaging::enter_home_of(exf->exf_iname);
 		Emit::named_array_begin(exf->exf_iname, K_value);
 		Emit::array_iname_entry(InterNames::extern(AUXF_MAGIC_VALUE_EXNAMEF));
 		Emit::array_iname_entry(InterNames::extern(AUXF_STATUS_IS_CLOSED_EXNAMEF));
@@ -311,6 +299,7 @@ void PL::Files::arrays(void) {
 			case OWNED_BY_SPECIFIC_PROJECT: Emit::array_iname_entry(exf->IFID_array_iname); break;
 		}
 		Emit::array_end();
+		Packaging::exit(save);
 	}
 
 	iname = InterNames::one_off(I"TableOfExternalFiles", PR);

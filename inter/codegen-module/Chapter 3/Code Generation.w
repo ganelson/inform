@@ -7,6 +7,12 @@ To generate I6 code from intermediate code.
 @d MAX_REPOS_AT_ONCE 8
 
 =
+typedef struct text_literal_holder {
+	struct text_stream *definition_code;
+	struct text_stream *literal_content;
+	MEMORY_MANAGEMENT
+} text_literal_holder;
+
 void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	if (I == NULL) internal_error("no inter to generate from");
 
@@ -64,7 +70,18 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 					case CONSTANT_IST: {
 						inter_symbol *con_name =
 							Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+						if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
+							WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
+							internal_error("constant defined in main");
+						}
 						TO = early_matter;
+						if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
+							text_literal_holder *tlh = CREATE(text_literal_holder);
+							tlh->definition_code = Str::new();
+							inter_t ID = P.data[DATA_CONST_IFLD];
+							tlh->literal_content = Inter::get_text(P.repo_segment->owning_repo, ID);
+							TO = tlh->definition_code;
+						}
 						if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) TO = code_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) TO = arrays_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) TO = arrays_at_eof;
@@ -140,6 +157,22 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	if (properties_written == FALSE) { text_stream *TO = main_matter; @<Property knowledge@>; }
 
 	WRITE("%S", early_matter);
+
+	int no_tlh = NUMBER_CREATED(text_literal_holder);
+	text_literal_holder **sorted = (text_literal_holder **)
+			(Memory::I7_calloc(no_tlh, sizeof(text_literal_holder *), CODE_GENERATION_MREASON));
+	int i = 0;
+	text_literal_holder *tlh;
+	LOOP_OVER(tlh, text_literal_holder) sorted[i++] = tlh;
+
+	qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *),
+		CodeGen::compare_tlh);
+	for (int i=0; i<no_tlh; i++) {
+		text_literal_holder *tlh = sorted[i];
+		WRITE("! TLH %d <%S>\n", tlh->allocation_id, tlh->literal_content);
+		WRITE("%S", tlh->definition_code);
+	}
+	
 	WRITE("%S", summations_at_eof);
 	WRITE("%S", attributes_at_eof);
 	WRITE("%S", arrays_at_eof);
@@ -1581,6 +1614,16 @@ then the result.
 	WRITE(")");
 
 @ =
+int CodeGen::compare_tlh(const void *elem1, const void *elem2) {
+	const text_literal_holder **e1 = (const text_literal_holder **) elem1;
+	const text_literal_holder **e2 = (const text_literal_holder **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting text literals");
+	text_stream *s1 = (*e1)->literal_content;
+	text_stream *s2 = (*e2)->literal_content;
+	return Str::cmp(s1, s2);
+}
+
 int CodeGen::compare_kind_symbols(const void *elem1, const void *elem2) {
 	const inter_symbol **e1 = (const inter_symbol **) elem1;
 	const inter_symbol **e2 = (const inter_symbol **) elem2;
@@ -1665,14 +1708,25 @@ inter_t CodeGen::kind_of_object_count(inter_symbol *kind_name) {
 	return 0;
 }
 
-void CodeGen::append(OUTPUT_STREAM, inter_symbol *symb) {
+void CodeGen::append(OUTPUT_STREAM, inter_repository *I, inter_symbol *symb) {
 	text_stream *S = Inter::Symbols::get_append(symb);
 	if (Str::len(S) == 0) return;
 	WRITE("    ");
-	LOOP_THROUGH_TEXT(P, S) {
-		wchar_t c = Str::get(P);
-		PUT(c);
-		if ((c == '\n') && (P.index != Str::len(S)-1)) WRITE("    ");
+	int L = Str::len(S);
+	for (int i=0; i<L; i++) {
+		wchar_t c = Str::get_at(S, i);
+		if (c == URL_SYMBOL_CHAR) {
+			TEMPORARY_TEXT(T);
+			for (i++; i<L; i++) {
+				wchar_t c = Str::get_at(S, i);
+				if (c == URL_SYMBOL_CHAR) break;
+				PUT_TO(T, c);
+			}
+			inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(I, NULL, T);
+			WRITE("%S", CodeGen::name(symb));
+			DISCARD_TEXT(T);
+		} else PUT(c);
+		if ((c == '\n') && (i != Str::len(S)-1)) WRITE("    ");
 	}
 }
 

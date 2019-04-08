@@ -32,8 +32,7 @@ constant_phrase *Phrases::Constants::create(wording NW, wording RW) {
 	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		PHRASE_CONSTANT_MC, Rvalues::from_constant_phrase(cphr));
-	cphr->cphr_iname = InterNames::new(CLOSURE_INAMEF);
-	InterNames::to_symbol(cphr->cphr_iname);
+	cphr->cphr_iname = NULL;
 	return cphr;
 }
 
@@ -99,6 +98,18 @@ inter_name *Phrases::Constants::compile(constant_phrase *cphr) {
 	if (Phrases::compiled_inline(ph) == FALSE)
 		Routines::ToPhrases::make_request(ph,
 			Phrases::Constants::kind(cphr), NULL, EMPTY_WORDING);
+	return Phrases::Constants::iname(cphr);
+}
+
+inter_name *Phrases::Constants::iname(constant_phrase *cphr) {
+	if (cphr->cphr_iname == NULL) {
+		phrase *ph = Phrases::Constants::as_phrase(cphr);
+		if (ph == NULL) internal_error("cannot reconstruct phrase from cphr");
+		package_request *closure_package =
+			Packaging::request(Packaging::supply_iname(ph->requests_package, CLOSURE_PR_COUNTER), ph->requests_package, closure_ptype);
+		cphr->cphr_iname = InterNames::one_off(I"closure_data", closure_package);
+		Inter::Symbols::set_flag(InterNames::to_symbol(cphr->cphr_iname), MAKE_NAME_UNIQUE);
+	}
 	return cphr->cphr_iname;
 }
 
@@ -122,7 +133,9 @@ phrase in order to make sure somebody has actually compiled it: this is in
 case the phrase occurs as a constant but is never explicitly invoked.
 
 @<Compile the closure array for this constant phrase@> =
-	Emit::named_array_begin(cphr->cphr_iname, K_value);
+	inter_name *iname = Phrases::Constants::iname(cphr);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_array_begin(iname, K_value);
 
 	Kinds::RunTime::emit_strong_id(cphr->cphr_kind);
 
@@ -136,6 +149,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 	DISCARD_TEXT(name);
 
 	Emit::array_end();
+	Packaging::exit(save);
 
 @ Now we come to something trickier. We want default values for kinds of phrases,
 because otherwise we can't have variables holding phrases unless they are
