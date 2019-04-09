@@ -705,7 +705,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 				Emit::inv_call(InterNames::to_symbol(rtiname));
 				Emit::down();
 					Emit::val_iname(K_value, bp->bp_iname);
-					Emit::val_iname(K_value, InterNames::iname(RELS_ASSERT_TRUE_INAME));
+					Emit::val_iname(K_value, InterNames::find(RELS_ASSERT_TRUE_NRL));
 					Specifications::Compiler::emit_as_val(K_value, spec0);
 					Specifications::Compiler::emit_as_val(K_value, spec1);
 				Emit::up();

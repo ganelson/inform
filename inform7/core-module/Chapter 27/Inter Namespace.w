@@ -1259,8 +1259,26 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 @e CV_NEG_NRL
 @e CV_POS_NRL
 
+@e RELS_ASSERT_FALSE_NRL
+@e RELS_ASSERT_TRUE_NRL
+@e RELS_EQUIVALENCE_NRL
+@e RELS_LIST_NRL
+@e RELS_LOOKUP_ALL_X_NRL
+@e RELS_LOOKUP_ALL_Y_NRL
+@e RELS_LOOKUP_ANY_NRL
+@e RELS_ROUTE_FIND_COUNT_NRL
+@e RELS_ROUTE_FIND_NRL
+@e RELS_SHOW_NRL
+@e RELS_SYMMETRIC_NRL
+@e RELS_TEST_NRL
+@e RELS_X_UNIQUE_NRL
+@e RELS_Y_UNIQUE_NRL
+@e REL_BLOCK_HEADER_NRL
+@e TTF_SUM_NRL
+
 @e NOTHING_NRL
 @e OBJECT_NRL
+@e TESTUSEOPTION_NRL
 
 @e MAX_NRL
 
@@ -1344,8 +1362,27 @@ void InterNames::create_nrls(void) {
 	InterNames::make_in(CV_NEG_NRL, I"CV_NEG", conj);
 	InterNames::make_in(CV_POS_NRL, I"CV_POS", conj);
 
+	package_request *rels = Packaging::request_resource(NULL, RELATIONS_SUBPACKAGE);
+	InterNames::make_in(RELS_ASSERT_FALSE_NRL, I"RELS_ASSERT_FALSE", rels);
+	InterNames::make_in(RELS_ASSERT_TRUE_NRL, I"RELS_ASSERT_TRUE", rels);
+	InterNames::make_in(RELS_EQUIVALENCE_NRL, I"RELS_EQUIVALENCE", rels);
+	InterNames::make_in(RELS_LIST_NRL, I"RELS_LIST", rels);
+	InterNames::make_in(RELS_LOOKUP_ALL_X_NRL, I"RELS_LOOKUP_ALL_X", rels);
+	InterNames::make_in(RELS_LOOKUP_ALL_Y_NRL, I"RELS_LOOKUP_ALL_Y", rels);
+	InterNames::make_in(RELS_LOOKUP_ANY_NRL, I"RELS_LOOKUP_ANY", rels);
+	InterNames::make_in(RELS_ROUTE_FIND_COUNT_NRL, I"RELS_ROUTE_FIND_COUNT", rels);
+	InterNames::make_in(RELS_ROUTE_FIND_NRL, I"RELS_ROUTE_FIND", rels);
+	InterNames::make_in(RELS_SHOW_NRL, I"RELS_SHOW", rels);
+	InterNames::make_in(RELS_SYMMETRIC_NRL, I"RELS_SYMMETRIC", rels);
+	InterNames::make_in(RELS_TEST_NRL, I"RELS_TEST", rels);
+	InterNames::make_in(RELS_X_UNIQUE_NRL, I"RELS_X_UNIQUE", rels);
+	InterNames::make_in(RELS_Y_UNIQUE_NRL, I"RELS_Y_UNIQUE", rels);
+	InterNames::make_in(REL_BLOCK_HEADER_NRL, I"REL_BLOCK_HEADER", rels);
+	InterNames::make_in(TTF_SUM_NRL, I"TTF_sum", rels);
+
 	InterNames::make_on_demand(OBJECT_NRL, I"Object");
 	InterNames::make_on_demand(NOTHING_NRL, I"nothing");
+	InterNames::make_on_demand(TESTUSEOPTION_NRL, I"TestUseOption");
 }
 
 inter_name *InterNames::find(int id) {
@@ -1393,6 +1430,17 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 			case OBJECT_NRL:
 				nrl->equates_to_iname = Kinds::RunTime::I6_classname(K_object);
 				break;
+			case TESTUSEOPTION_NRL: {
+				package_request *R = Kinds::RunTime::package(K_use_option);
+				nrl->equates_to_iname =
+					Packaging::function(
+						InterNames::one_off(I"test_fn", R),
+						R,
+						NULL);
+				Inter::Symbols::set_translate(InterNames::to_symbol(nrl->equates_to_iname), nrl->access_name);
+				break;
+			}
+
 		}
 		if (nrl->package == NULL)
 			nrl->package = Packaging::home_of(nrl->equates_to_iname);
@@ -1483,22 +1531,7 @@ inter_name *InterNames::formal_par(int n) {
 @e PrintTableName_INAME
 @e PrintUseOption_INAME
 @e RANKING_TABLE_INAME
-@e REL_BLOCK_HEADER_INAME
 @e Release_INAME
-@e RELS_ASSERT_FALSE_INAME
-@e RELS_ASSERT_TRUE_INAME
-@e RELS_EQUIVALENCE_INAME
-@e RELS_LIST_INAME
-@e RELS_LOOKUP_ALL_X_INAME
-@e RELS_LOOKUP_ALL_Y_INAME
-@e RELS_LOOKUP_ANY_INAME
-@e RELS_ROUTE_FIND_COUNT_INAME
-@e RELS_ROUTE_FIND_INAME
-@e RELS_SHOW_INAME
-@e RELS_SYMMETRIC_INAME
-@e RELS_TEST_INAME
-@e RELS_X_UNIQUE_INAME
-@e RELS_Y_UNIQUE_INAME
 @e ResourceIDsOfFigures_INAME
 @e ResourceIDsOfSounds_INAME
 @e ResponseDivisions_INAME
@@ -1529,7 +1562,6 @@ inter_name *InterNames::formal_par(int n) {
 @e TC_KOV_INAME
 @e TestScriptSub_INAME
 @e TestSinglePastState_INAME
-@e TestUseOption_INAME
 @e TIME_TOKEN_INNER_INAME
 @e TimedEventsTable_INAME
 @e TimedEventTimesTable_INAME
@@ -1629,22 +1661,7 @@ inter_name *InterNames::iname(int num) {
 		case PrintTableName_INAME:				S = I"PrintTableName"; break;
 		case PrintUseOption_INAME:				S = I"PrintUseOption"; break;
 		case RANKING_TABLE_INAME:				S = I"RANKING_TABLE"; break;
-		case REL_BLOCK_HEADER_INAME:			S = I"REL_BLOCK_HEADER"; break;
 		case Release_INAME:						S = I"Release"; break;
-		case RELS_ASSERT_FALSE_INAME:			S = I"RELS_ASSERT_FALSE"; break;
-		case RELS_ASSERT_TRUE_INAME:			S = I"RELS_ASSERT_TRUE"; break;
-		case RELS_EQUIVALENCE_INAME:			S = I"RELS_EQUIVALENCE"; break;
-		case RELS_LIST_INAME:					S = I"RELS_LIST"; break;
-		case RELS_LOOKUP_ALL_X_INAME:			S = I"RELS_LOOKUP_ALL_X"; break;
-		case RELS_LOOKUP_ALL_Y_INAME:			S = I"RELS_LOOKUP_ALL_Y"; break;
-		case RELS_LOOKUP_ANY_INAME:				S = I"RELS_LOOKUP_ANY"; break;
-		case RELS_ROUTE_FIND_COUNT_INAME:		S = I"RELS_ROUTE_FIND_COUNT"; break;
-		case RELS_ROUTE_FIND_INAME:				S = I"RELS_ROUTE_FIND"; break;
-		case RELS_SHOW_INAME:					S = I"RELS_SHOW"; break;
-		case RELS_SYMMETRIC_INAME:				S = I"RELS_SYMMETRIC"; break;
-		case RELS_TEST_INAME:					S = I"RELS_TEST"; break;
-		case RELS_X_UNIQUE_INAME:				S = I"RELS_X_UNIQUE"; break;
-		case RELS_Y_UNIQUE_INAME:				S = I"RELS_Y_UNIQUE"; break;
 		case ResourceIDsOfFigures_INAME:		S = I"ResourceIDsOfFigures"; break;
 		case ResourceIDsOfSounds_INAME:			S = I"ResourceIDsOfSounds"; break;
 		case ResponseDivisions_INAME:			S = I"ResponseDivisions"; break;
@@ -1675,12 +1692,10 @@ inter_name *InterNames::iname(int num) {
 		case TC_KOV_INAME:						S = I"TC_KOV"; break;
 		case TestScriptSub_INAME:				S = I"TestScriptSub"; break;
 		case TestSinglePastState_INAME:			S = I"TestSinglePastState"; break;
-		case TestUseOption_INAME:				S = I"TestUseOption"; break;
 		case TIME_TOKEN_INNER_INAME:			S = I"TIME_TOKEN_INNER"; break;
 		case TimedEventsTable_INAME:			S = I"TimedEventsTable"; break;
 		case TimedEventTimesTable_INAME:		S = I"TimedEventTimesTable"; break;
 		case TRUTH_STATE_TOKEN_INNER_INAME:		S = I"TRUTH_STATE_TOKEN_INNER"; break;
-		case TTF_sum_INAME:						S = I"TTF_sum"; break;
 		case UNKNOWN_TY_INAME:					S = I"UNKNOWN_TY"; break;
 		case UUID_ARRAY_INAME:					S = I"UUID_ARRAY"; break;
 		case VERB_DIRECTIVE_CREATURE_INAME:		S = I"VERB_DIRECTIVE_CREATURE"; break;

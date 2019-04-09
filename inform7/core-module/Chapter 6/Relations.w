@@ -857,9 +857,7 @@ inter_name *REL_BLOCK_HEADER_symbol = NULL;
 inter_name *TTF_iname = NULL;
 
 inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
-	package_request *PR = Packaging::request_resource(NULL, RELATIONS_SUBPACKAGE);
-	inter_name *iname = InterNames::iname(id);
-	Packaging::house(iname, PR);
+	inter_name *iname = InterNames::find(id);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	Packaging::exit(save);
@@ -867,26 +865,26 @@ inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
 }
 
 void Relations::compile_defined_relation_constants(void) {
-	RELS_SYMMETRIC_iname = Relations::compile_defined_relation_constant(RELS_SYMMETRIC_INAME, 0x8000);
-	RELS_EQUIVALENCE_iname = Relations::compile_defined_relation_constant(RELS_EQUIVALENCE_INAME, 0x4000);
-	RELS_X_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_X_UNIQUE_INAME, 0x2000);
-	RELS_Y_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_Y_UNIQUE_INAME, 0x1000);
-	RELS_TEST_iname = Relations::compile_defined_relation_constant(RELS_TEST_INAME, 0x0800);
-	RELS_ASSERT_TRUE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_TRUE_INAME, 0x0400);
-	RELS_ASSERT_FALSE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_FALSE_INAME, 0x0200);
-	RELS_SHOW_iname = Relations::compile_defined_relation_constant(RELS_SHOW_INAME, 0x0100);
-	RELS_ROUTE_FIND_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_INAME, 0x0080);
-	RELS_ROUTE_FIND_COUNT_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_COUNT_INAME, 0x0040);
-	RELS_LOOKUP_ANY_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ANY_INAME, 0x0008);
-	RELS_LOOKUP_ALL_X_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_X_INAME, 0x0004);
-	RELS_LOOKUP_ALL_Y_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_Y_INAME, 0x0002);
-	RELS_LIST_iname = Relations::compile_defined_relation_constant(RELS_LIST_INAME, 0x0001);
+	RELS_SYMMETRIC_iname = Relations::compile_defined_relation_constant(RELS_SYMMETRIC_NRL, 0x8000);
+	RELS_EQUIVALENCE_iname = Relations::compile_defined_relation_constant(RELS_EQUIVALENCE_NRL, 0x4000);
+	RELS_X_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_X_UNIQUE_NRL, 0x2000);
+	RELS_Y_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_Y_UNIQUE_NRL, 0x1000);
+	RELS_TEST_iname = Relations::compile_defined_relation_constant(RELS_TEST_NRL, 0x0800);
+	RELS_ASSERT_TRUE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_TRUE_NRL, 0x0400);
+	RELS_ASSERT_FALSE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_FALSE_NRL, 0x0200);
+	RELS_SHOW_iname = Relations::compile_defined_relation_constant(RELS_SHOW_NRL, 0x0100);
+	RELS_ROUTE_FIND_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_NRL, 0x0080);
+	RELS_ROUTE_FIND_COUNT_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_COUNT_NRL, 0x0040);
+	RELS_LOOKUP_ANY_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ANY_NRL, 0x0008);
+	RELS_LOOKUP_ALL_X_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_X_NRL, 0x0004);
+	RELS_LOOKUP_ALL_Y_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_Y_NRL, 0x0002);
+	RELS_LIST_iname = Relations::compile_defined_relation_constant(RELS_LIST_NRL, 0x0001);
 	if (VirtualMachines::is_16_bit()) {
-		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_INAME, 0x100*5 + 13); /* $2^5 = 32$ bytes block */
+		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_NRL, 0x100*5 + 13); /* $2^5 = 32$ bytes block */
 	} else {
-		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_INAME, (0x100*6 + 13)*0x10000);
+		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_NRL, (0x100*6 + 13)*0x10000);
 	}
-	TTF_iname = Relations::compile_defined_relation_constant(TTF_sum_INAME, (0x0800 + 0x0400 + 0x0200));
+	TTF_iname = Relations::compile_defined_relation_constant(TTF_SUM_NRL, (0x0800 + 0x0400 + 0x0200));
 	/* i.e., |RELS_TEST + RELS_ASSERT_TRUE + RELS_ASSERT_FALSE| */
 }
 
@@ -1028,8 +1026,8 @@ void Relations::compile_relation_records(void) {
 	Emit::array_iname_entry(RELS_TEST_iname);
 	if (minimal == FALSE) {
 		Emit::array_iname_entry(RELS_LOOKUP_ANY_iname);
-		Emit::array_iname_entry(InterNames::iname(RELS_LOOKUP_ALL_X_INAME));
-		Emit::array_iname_entry(InterNames::iname(RELS_LOOKUP_ALL_X_INAME));
+		Emit::array_iname_entry(InterNames::find(RELS_LOOKUP_ALL_X_NRL));
+		Emit::array_iname_entry(InterNames::find(RELS_LOOKUP_ALL_X_NRL));
 		Emit::array_iname_entry(RELS_LIST_iname);
 	}
 	switch(dbp->form_of_relation) {
@@ -1134,7 +1132,7 @@ void Relations::compile_relation_records(void) {
 		Emit::down();
 			Emit::inv_primitive(case_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::iname(RELS_TEST_INAME));
+				Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
 				Emit::code();
 				Emit::down();
 					@<The TEST task@>;
@@ -1151,7 +1149,7 @@ void Relations::compile_relation_records(void) {
 			} else {
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::iname(RELS_LOOKUP_ANY_INAME));
+					Emit::val_iname(K_value, InterNames::find(RELS_LOOKUP_ANY_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ANY task@>;
@@ -1159,7 +1157,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::iname(RELS_LOOKUP_ALL_X_INAME));
+					Emit::val_iname(K_value, InterNames::find(RELS_LOOKUP_ALL_X_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ALL X task@>;
@@ -1167,7 +1165,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::iname(RELS_LOOKUP_ALL_Y_INAME));
+					Emit::val_iname(K_value, InterNames::find(RELS_LOOKUP_ALL_Y_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ALL Y task@>;
@@ -1175,7 +1173,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::iname(RELS_LIST_INAME));
+					Emit::val_iname(K_value, InterNames::find(RELS_LIST_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LIST task@>;
@@ -1184,7 +1182,7 @@ void Relations::compile_relation_records(void) {
 				if (BinaryPredicates::can_be_made_true_at_runtime(bp)) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::iname(RELS_ASSERT_TRUE_INAME));
+						Emit::val_iname(K_value, InterNames::find(RELS_ASSERT_TRUE_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ASSERT TRUE task@>;
@@ -1192,7 +1190,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::iname(RELS_ASSERT_FALSE_INAME));
+						Emit::val_iname(K_value, InterNames::find(RELS_ASSERT_FALSE_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ASSERT FALSE task@>;
@@ -1213,7 +1211,7 @@ void Relations::compile_relation_records(void) {
 				if (shower) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::iname(RELS_SHOW_INAME));
+						Emit::val_iname(K_value, InterNames::find(RELS_SHOW_NRL));
 						Emit::code();
 						Emit::down();
 							@<The SHOW task@>;
@@ -1257,7 +1255,7 @@ void Relations::compile_relation_records(void) {
 				if (router) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::iname(RELS_ROUTE_FIND_INAME));
+						Emit::val_iname(K_value, InterNames::find(RELS_ROUTE_FIND_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ROUTE FIND task@>;
@@ -1265,7 +1263,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::iname(RELS_ROUTE_FIND_COUNT_INAME));
+						Emit::val_iname(K_value, InterNames::find(RELS_ROUTE_FIND_COUNT_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ROUTE FIND COUNT task@>;
@@ -1534,7 +1532,7 @@ void Relations::compile_relation_records(void) {
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
-							Emit::val_iname(K_value, InterNames::iname(RELS_TEST_INAME));
+							Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
 							if (t == 0) {
 								Emit::val_symbol(K_value, Z1_s);
 								Emit::val_symbol(K_value, X_s);
@@ -1634,7 +1632,7 @@ void Relations::compile_relation_records(void) {
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
-							Emit::val_iname(K_value, InterNames::iname(RELS_TEST_INAME));
+							Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
 							if (t == 0) {
 								Emit::val_symbol(K_value, Z1_s);
 								Emit::val_symbol(K_value, X_s);
@@ -1677,7 +1675,7 @@ void Relations::compile_relation_records(void) {
 								Emit::down();
 									Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 									Emit::val_symbol(K_value, rr_s);
-									Emit::val_iname(K_value, InterNames::iname(RELS_TEST_INAME));
+									Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
 									Emit::val_symbol(K_value, Z1_s);
 									Emit::val_symbol(K_value, Z3_s);
 								Emit::up();

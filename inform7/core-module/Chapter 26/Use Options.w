@@ -516,13 +516,7 @@ void UseOptions::TestUseOption_routine(void) {
 }
 
 @<Compile the TestUseOption routine@> =
-	package_request *R = Kinds::RunTime::package(K_use_option);
-	inter_name *iname =
-		Packaging::function(
-			InterNames::one_off(I"test_fn", R),
-			R,
-			InterNames::iname(TestUseOption_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(InterNames::find(TESTUSEOPTION_NRL));
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
