@@ -156,7 +156,9 @@ in the source.
         <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;unexpanded</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;small_block_array_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_in</span><span class="plain">(</span><span class="constant">LITERAL_TEXT_INAMEF</span><span class="plain">, </span><span class="functiontext">Modules::current</span><span class="plain">());</span>
+        <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">(), </span><span class="constant">LITERAL_PR_COUNTER</span><span class="plain">);</span>
+        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::annotate_symbol_i</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">), </span><span class="identifier">TEXT_LITERAL_IANN</span><span class="plain">, 1);</span>
         <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">wn_quote_suppressed</span><span class="plain"> &gt;= 0) &amp;&amp; (</span><span class="identifier">w1</span><span class="plain"> == </span><span class="identifier">wn_quote_suppressed</span><span class="plain">)) </span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;unexpanded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
@@ -283,8 +285,8 @@ which are null pointers.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">encode_constant_text_bibliographically</span><span class="plain">) </span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;bibliographic_conventions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">write</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_in</span><span class="plain">(</span><span class="constant">LITERAL_TEXT_SBA_INAMEF</span><span class="plain">, </span><span class="functiontext">Modules::current</span><span class="plain">());</span>
-                <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">);</span>
+                <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">(), </span><span class="constant">BLOCK_CONSTANT_PR_COUNTER</span><span class="plain">);</span>
+                <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VH</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">);</span>
             <span class="identifier">x</span><span class="plain">-</span><span class="element">&gt;small_block_array_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -381,8 +383,8 @@ different for compilation purposes.
         <span class="identifier">extent_of_runtime_quotations_array</span><span class="plain">++;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::TextLiterals::define_CCOUNT_QUOTATIONS</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CCOUNT_QUOTATIONS_INAME</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">extent_of_runtime_quotations_array</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Strings::TextLiterals::CCOUNT_QUOTATIONS</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">extent_of_runtime_quotations_array</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -390,7 +392,7 @@ different for compilation purposes.
 
 <p class="endnote">The function Strings::TextLiterals::compile_quotation is used in 17/rs (<a href="17-rs.html#SP12">&#167;12</a>).</p>
 
-<p class="endnote">The function Strings::TextLiterals::define_CCOUNT_QUOTATIONS is used in 13/rsfk (<a href="13-rsfk.html#SP26">&#167;26</a>).</p>
+<p class="endnote">The function Strings::TextLiterals::CCOUNT_QUOTATIONS is used in 13/rsfk (<a href="13-rsfk.html#SP26">&#167;26</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>A version from fixed text:
 </p>
@@ -449,6 +451,7 @@ number <code class="display"><span class="extract">-1</span></code>).
 
 
 <pre class="displaydefn">
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain">) { </span>    <span class="comment">to prevent trouble when no story file is really being made</span>
             <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"--"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -462,11 +465,14 @@ number <code class="display"><span class="extract">-1</span></code>).
             <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">, </span><span class="identifier">TLT</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TLT</span><span class="plain">);</span>
         <span class="plain">}</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;small_block_array_needed</span><span class="plain">) {</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF</span><span class="plain">));</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -480,16 +486,20 @@ number <code class="display"><span class="extract">-1</span></code>).
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LITERAL_TEXT_SBA_INAMEF</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">(), </span><span class="constant">BLOCK_CONSTANT_PR_COUNTER</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">;</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
             <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"box_quotation_fn"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">),</span>
             <span class="identifier">P</span><span class="plain">,</span>
             <span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">PAST_ACTION_ROUTINE_INAMEF</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_sba_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">box_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>

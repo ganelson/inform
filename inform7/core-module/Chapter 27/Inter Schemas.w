@@ -2813,7 +2813,7 @@ void InterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 			var_node = var_node->child_node;
 		if (var_node) {
 			InterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT, inline_command_handler, i7_source_handler);
-			Emit::val_iname(K_value, InterNames::extern(OBJECT_EXNAMEF));
+			Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
 		} else internal_error("objectloop without visible variable");
 	}
 

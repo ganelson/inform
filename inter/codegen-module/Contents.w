@@ -17,6 +17,7 @@ Chapter 2: Linking
 	Parse Linked Matter
 	Resolving Conditional Compilation
 	Assimilate
+	Resolve External Symbols
 	Uniqueness
 	Reconcile Verbs
 	Eliminate Redundant Matter

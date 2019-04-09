@@ -588,7 +588,9 @@ at run-time, so we can't know now how many we will need.
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="identifier">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">Map_Storage_INAME</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">IF_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Map_Storage"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_used</span><span class="plain"> = 0;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain">) {</span>
             <span class="identifier">Emit::array_divider</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"minimal, as there are no rooms"</span><span class="plain">);</span>
@@ -618,6 +620,7 @@ at run-time, so we can't know now how many we will need.
                 <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">Emit::array_end</span><span class="plain">();</span>
+        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">VirtualMachines::note_usage</span><span class="plain">(</span><span class="string">"map"</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"map of rooms and doors"</span><span class="plain">,</span>
             <span class="identifier">words_used</span><span class="plain">, 0, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 

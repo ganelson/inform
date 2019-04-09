@@ -161,6 +161,10 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 	return FALSE;
 }
 
+inter_name *PL::Parsing::Visibility::name_name(void) {
+	return Properties::iname(P_name);
+}
+
 @ The name property requires special care, partly over I6 eccentricities
 such as the way that single-letter dictionary words can be misinterpreted
 as characters (hence the double slash below), but also because something

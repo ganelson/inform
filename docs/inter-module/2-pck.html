@@ -87,6 +87,12 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::basics</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"basics"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Package::which</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::search_exhaustively</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">found</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name</span><span class="plain">(</span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">found</span><span class="plain">;</span>
@@ -99,6 +105,12 @@
 
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::search_exhaustively</span><span class="plain">(</span><span class="functiontext">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::search_resources_exhaustively</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"resources"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::search_exhaustively</span><span class="plain">(</span><span class="functiontext">Inter::Package::which</span><span class="plain">(</span><span class="identifier">res</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Packages::to_PID</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
@@ -152,9 +164,13 @@
 
 <p class="endnote">The function Inter::Packages::main is used in 2/st (<a href="2-st.html#SP3">&#167;3</a>), 3/smm (<a href="3-smm.html#SP1">&#167;1</a>).</p>
 
+<p class="endnote">The function Inter::Packages::basics is used in 2/st (<a href="2-st.html#SP3">&#167;3</a>).</p>
+
 <p class="endnote">The function Inter::Packages::search_exhaustively appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Packages::search_main_exhaustively appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Packages::search_resources_exhaustively appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Packages::to_PID is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>).</p>
 

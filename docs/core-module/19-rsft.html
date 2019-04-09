@@ -326,7 +326,10 @@ case.)
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TB_Blanks_INAME</span><span class="plain">), </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TB_Blanks_INAME</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">TABLES_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;amendment_of</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -344,6 +347,7 @@ case.)
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

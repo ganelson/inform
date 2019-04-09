@@ -28,6 +28,7 @@ typedef struct stage_step {
 @e RCC_STAGESTEP
 @e ASSIMILATE_STAGESTEP
 @e UNIQUE_STAGESTEP
+@e RESOLVE_EXTERNAL_SYMBOLS_STAGESTEP
 @e RECONCILE_VERBS_STAGESTEP
 @e ELIMINATE_REDUNDANT_CODE_STAGESTEP
 @e GENERATE_I6_STAGESTEP
@@ -103,6 +104,7 @@ stage_step *CodeGen::Stage::parse_step(stage_set *S, text_stream *step, text_str
 	else if (Str::eq(step, I"resolve-conditional-compilation")) ST->step_code = RCC_STAGESTEP;
 	else if (Str::eq(step, I"assimilate")) ST->step_code = ASSIMILATE_STAGESTEP;
 	else if (Str::eq(step, I"make-identifiers-unique")) ST->step_code = UNIQUE_STAGESTEP;
+	else if (Str::eq(step, I"resolve-external-symbols")) ST->step_code = RESOLVE_EXTERNAL_SYMBOLS_STAGESTEP;
 	else if (Str::eq(step, I"reconcile-verbs")) ST->step_code = RECONCILE_VERBS_STAGESTEP;
 	else if (Str::eq(step, I"eliminate-redundant-code")) ST->step_code = ELIMINATE_REDUNDANT_CODE_STAGESTEP;
 	else if (Str::eq(step, I"generate-i6")) ST->step_code = GENERATE_I6_STAGESTEP;
@@ -241,6 +243,10 @@ void CodeGen::Stage::follow(pathname *P, stage_set *S, inter_repository *I, int 
 				WRITE_TO(STAGE_NAME, "make-identifiers-unique");
 				Log::new_stage(STAGE_NAME);
 				CodeGen::Uniqueness::ensure(I); break;
+			case RESOLVE_EXTERNAL_SYMBOLS_STAGESTEP:
+				WRITE_TO(STAGE_NAME, "resolve-external-symbols");
+				Log::new_stage(STAGE_NAME);
+				CodeGen::Externals::resolve(I); break;
 			case RECONCILE_VERBS_STAGESTEP:
 				WRITE_TO(STAGE_NAME, "reconcile-verbs");
 				Log::new_stage(STAGE_NAME);

@@ -405,7 +405,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	if (PL::Actions::Patterns::object_based(&(phrcd->ap))) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_object, InterNames::extern(SELF_EXNAMEF));
+				Emit::ref_iname(K_object, InterNames::find(SELF_NRL));
 				Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
 			Emit::up();
 	}

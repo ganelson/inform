@@ -513,7 +513,10 @@ divided up by the extensions containing the rules which produce them.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">ResponseDivisions_INAME</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">ResponseDivisions_INAME</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULES_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">group_ef</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Make a ResponseDivisions entry</span> <span class="cwebmacronumber">7.3.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">group_ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">)</span>
@@ -522,6 +525,7 @@ divided up by the extensions containing the rules which produce them.
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

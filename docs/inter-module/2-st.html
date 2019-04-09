@@ -149,6 +149,18 @@
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_in_main</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name</span><span class="plain">(</span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="functiontext">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)), </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
+
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_in_basics</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::basics</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name</span><span class="plain">(</span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_in_main_or_basics</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_in_basics</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">symbol</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_in_main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">symbol</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -162,6 +174,10 @@
 <p class="endnote">The function Inter::SymbolsTables::symbol_from_name_creating_at_ID is used in 2/iibf (<a href="2-iibf.html#SP1_5_2">&#167;1.5.2</a>).</p>
 
 <p class="endnote">The function Inter::SymbolsTables::symbol_from_name_in_main appears nowhere else.</p>
+
+<p class="endnote">The function Inter::SymbolsTables::symbol_from_name_in_basics appears nowhere else.</p>
+
+<p class="endnote">The function Inter::SymbolsTables::symbol_from_name_in_main_or_basics appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>This is intentionally used very little. We don't want the inter specification
 to include implied identities through package-hierarchy context, because that
@@ -481,7 +497,7 @@ a global symbol in any non-global context.
 
 <p class="endnote">The function Inter::SymbolsTables::url_name_to_symbol is used in <a href="#SP10">&#167;10</a>, 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Inter::SymbolsTables::symbol_to_url_name is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inter::SymbolsTables::symbol_to_url_name is used in 2/sym (<a href="2-sym.html#SP2">&#167;2</a>, <a href="2-sym.html#SP4">&#167;4</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-iim.html">Back to 'Inter in Memory'</a></li><li><a href="2-pck.html">Continue with 'Packages'</a></li></ul><hr class="tocbar">

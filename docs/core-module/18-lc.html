@@ -41,6 +41,7 @@ braces and commas balance; and
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kinds_known_to_be_inconsistent</span><span class="plain">; </span>    <span class="comment">problem(s) thrown when parsing these</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">first_llist_entry</span><span class="plain">; </span>    <span class="comment">linked list of contents</span>
 
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">ll_package</span><span class="plain">; </span>    <span class="comment">which will be the enclosure for...</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">ll_iname</span><span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_compiled</span><span class="plain">; </span>    <span class="comment">lists are compiled at several different points: has this one been done?</span>
@@ -115,6 +116,7 @@ with a call to:
         <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_package</span><span class="plain"> = </span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">();</span>
         <span class="functiontext">Kinds::RunTime::ensure_basic_heap_present</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -403,8 +405,8 @@ so there was once a two-page explanation here, but it is now blessedly simple.
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Lists::iname</span><span class="plain">(</span><span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LITERAL_LIST_INAMEF</span><span class="plain">);</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">);</span>
+            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">(), </span><span class="constant">LITERAL_PR_COUNTER</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -457,6 +459,7 @@ the list!);
 
 
 <pre class="displaydefn">
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">lle</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
@@ -471,6 +474,7 @@ the list!);
             <span class="functiontext">Specifications::Compiler::emit_constant_to_kind</span><span class="plain">(</span>
                 <span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;llist_entry_value</span><span class="plain">, </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;entry_kind</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

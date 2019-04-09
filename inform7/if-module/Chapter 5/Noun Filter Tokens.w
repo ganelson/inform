@@ -160,7 +160,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 						Emit::inv_primitive(objectloop_interp);
 						Emit::down();
 							Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
-							Emit::val_iname(K_value, InterNames::extern(OBJECT_EXNAMEF));
+							Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
 							Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
 
 							Emit::code();

@@ -282,6 +282,11 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 
 	if (Str::eq(con_name->symbol_name, I"nothing")) return;
 
+	if (Str::eq(con_name->symbol_name, I"##TheSame")) return;
+	if (Str::eq(con_name->symbol_name, I"parent")) return;
+	if (Str::eq(con_name->symbol_name, I"child")) return;
+	if (Str::eq(con_name->symbol_name, I"sibling")) return;
+
 	if (Str::eq(con_name->symbol_name, I"Release")) {
 		inter_t val1 = P.data[DATA_CONST_IFLD];
 		inter_t val2 = P.data[DATA_CONST_IFLD + 1];

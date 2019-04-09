@@ -551,9 +551,13 @@ the mistake.
         <span class="identifier">Emit::up</span><span class="plain">();</span>
 
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">ACTIONS_SUBPACKAGE</span><span class="plain">);</span>
         <span class="identifier">MistakeAction_iname</span><span class="plain"> = </span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">MistakeAction_INAME</span><span class="plain">);</span>
+        <span class="identifier">Packaging::house</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">);</span>
         <span class="identifier">Emit::named_pseudo_numeric_constant</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">, 10000);</span>
         <span class="identifier">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
+        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

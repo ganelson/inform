@@ -724,13 +724,20 @@ The following can generate both old-style array rulebooks and routine rulebooks,
 which were introduced in December 2010.
 
 =
+inter_name *EMPTY_RULEBOOK_iname = NULL;
+inter_name *Rules::Bookings::empty_rulebook_iname(void) {
+	if (EMPTY_RULEBOOK_iname == NULL) {
+		package_request *PR = Packaging::request_resource(NULL, RULEBOOKS_SUBPACKAGE);
+		EMPTY_RULEBOOK_iname = Packaging::function(
+			InterNames::one_off(I"empty_fn", PR),
+			PR,
+			InterNames::iname(EMPTY_RULEBOOK_INAME));
+	}
+	return EMPTY_RULEBOOK_iname;
+}
+
 void Rules::Bookings::start_list_compilation(void) {
-	package_request *PR = Packaging::request_resource(NULL, RULEBOOKS_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"empty_fn", PR),
-		PR,
-		InterNames::iname(EMPTY_RULEBOOK_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Rules::Bookings::empty_rulebook_iname());
 	LocalVariables::add_named_call(I"forbid_breaks");
 	Emit::rfalse();
 	Routines::end(save);
@@ -752,7 +759,7 @@ inter_name *Rules::Bookings::list_compile(booking *list_head,
 	int countup = Rules::Bookings::no_rules_in_list(list_head);
 	if (countup == 0) {
 		rb_symb = Emit::named_iname_constant(identifier, K_value,
-			InterNames::iname(EMPTY_RULEBOOK_INAME));
+			Rules::Bookings::empty_rulebook_iname());
 	} else {
 		int format = ROUTINE_RBF;
 

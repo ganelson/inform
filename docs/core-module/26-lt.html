@@ -59,7 +59,9 @@ prints the name of a routine to be compiled later.
             <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"list_together_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
             <span class="identifier">PR</span><span class="plain">,</span>
             <span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ROUTINE_INAMEF</span><span class="plain">));</span>
-        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ARRAY_INAMEF</span><span class="plain">);</span>
+        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"list_together_array"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+
         <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;articles_bit</span><span class="plain"> = </span><span class="identifier">include_articles</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -148,10 +150,12 @@ is significant to the run-time list-printing code.
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

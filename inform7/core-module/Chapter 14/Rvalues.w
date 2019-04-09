@@ -682,7 +682,7 @@ kinds of value:
 	if (Kinds::Compare::le(kind_of_constant, K_object)) {
 		if (ParseTree::int_annotation(spec_found, self_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH)) {
-				InterNames::holster(VH, InterNames::extern(SELF_EXNAMEF));
+				InterNames::holster(VH, InterNames::find(SELF_NRL));
 			}
 		} else if (ParseTree::int_annotation(spec_found, nothing_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH))

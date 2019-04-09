@@ -73,7 +73,10 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 void Inter::Symbols::log(OUTPUT_STREAM, void *vs) {
 	inter_symbol *S = (inter_symbol *) vs;
 	if (S == NULL) WRITE("<no-symbol>");
-	else WRITE("%S/%d", S->symbol_name, S->symbol_ID - SYMBOL_BASE_VAL);
+	else {
+		Inter::SymbolsTables::symbol_to_url_name(DL, S);
+		WRITE("{%d}", S->symbol_ID - SYMBOL_BASE_VAL);
+	}
 }
 
 @ =

@@ -52,6 +52,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">WEAK_ID_IANN</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXPLICIT_ATTRIBUTE_IANN</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXPLICIT_VARIABLE_IANN</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TEXT_LITERAL_IANN</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -68,6 +69,7 @@ symbol.
     <span class="definitionkeyword">define</span> <span class="constant">SR_CACHE_MARK_BIT</span><span class="plain"> 8</span>
     <span class="definitionkeyword">define</span> <span class="constant">USED_MARK_BIT</span><span class="plain"> 16</span>
     <span class="definitionkeyword">define</span> <span class="constant">MAKE_NAME_UNIQUE</span><span class="plain"> 32</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXTERN_TARGET_BIT</span><span class="plain"> 64</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -111,6 +113,7 @@ symbol.
         <span class="functiontext">Inter::Defn::create_annotation</span><span class="plain">(</span><span class="constant">WEAK_ID_IANN</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"__weak_ID"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="functiontext">Inter::Defn::create_annotation</span><span class="plain">(</span><span class="constant">EXPLICIT_ATTRIBUTE_IANN</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"__explicit_attribute"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="functiontext">Inter::Defn::create_annotation</span><span class="plain">(</span><span class="constant">EXPLICIT_VARIABLE_IANN</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"__explicit_variable"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Defn::create_annotation</span><span class="plain">(</span><span class="constant">TEXT_LITERAL_IANN</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"__text_literal"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

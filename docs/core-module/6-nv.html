@@ -932,8 +932,8 @@ foreign verbs (4).
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::ConjugateVerb_invoke_emit</span><span class="plain">(</span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">,</span>
         <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">modal</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">negated</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">cv_pos</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_POS_INAME</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">cv_neg</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_NEG_INAME</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">cv_pos</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_POS_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">cv_neg</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_NEG_NRL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">modal</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">negated</span><span class="plain">) {</span>
                 <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Conjugation::conj_iname</span><span class="plain">(</span><span class="identifier">modal</span><span class="plain">)));</span>
@@ -995,14 +995,21 @@ foreign verbs (4).
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::ConjugateVerbDefinitions</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_POS_INAME</span><span class="plain">), -1);</span>
-        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_NEG_INAME</span><span class="plain">), -2);</span>
-        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_MODAL_INAME</span><span class="plain">), -3);</span>
-        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_MEANING_INAME</span><span class="plain">), -4);</span>
-        <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_POS_INAME</span><span class="plain">));</span>
-        <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_NEG_INAME</span><span class="plain">));</span>
-        <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_POS_INAME</span><span class="plain">));</span>
-        <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_NEG_INAME</span><span class="plain">));</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">CV_POS_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_POS_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">CV_NEG_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_NEG_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">CV_MODAL_INAME_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_MODAL_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">CV_MEANING_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_MEANING_NRL</span><span class="plain">);</span>
+
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">CV_POS_iname</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_POS_iname</span><span class="plain">, -1);</span>
+        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_NEG_iname</span><span class="plain">, -2);</span>
+        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_MODAL_INAME_iname</span><span class="plain">, -3);</span>
+        <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_MEANING_iname</span><span class="plain">, -4);</span>
+        <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="identifier">CV_POS_iname</span><span class="plain">);</span>
+        <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="identifier">CV_NEG_iname</span><span class="plain">);</span>
+        <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">CV_POS_iname</span><span class="plain">);</span>
+        <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">CV_NEG_iname</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::ConjugateVerb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1090,7 +1097,7 @@ foreign verbs (4).
 
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_MODAL_INAME</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_MODAL_NRL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">modal_verb</span><span class="plain">) </span><span class="functiontext">Emit::rtrue</span><span class="plain">();</span>
@@ -1099,7 +1106,7 @@ foreign verbs (4).
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_MEANING_INAME</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_MEANING_NRL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
@@ -1110,8 +1117,8 @@ foreign verbs (4).
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = 0; </span><span class="identifier">sense</span><span class="plain"> &lt; 2; </span><span class="identifier">sense</span><span class="plain">++) {</span>
-            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">sense_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_POS_INAME</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == 1) </span><span class="identifier">sense_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_NEG_INAME</span><span class="plain">);</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">sense_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_POS_NRL</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == 1) </span><span class="identifier">sense_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_NEG_NRL</span><span class="plain">);</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sense_iname</span><span class="plain">);</span>
@@ -1173,7 +1180,7 @@ foreign verbs (4).
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">fn_s</span><span class="plain">);</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_MODAL_INAME</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_MODAL_NRL</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1198,7 +1205,7 @@ foreign verbs (4).
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">fn_s</span><span class="plain">);</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">CV_MEANING_INAME</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">CV_MEANING_NRL</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>

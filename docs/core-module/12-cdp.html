@@ -172,7 +172,9 @@ proposition would be wasteful of space in the Z-machine.
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"%~W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;deferred_from</span><span class="plain">));</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"not sure where this came from"</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">, </span><span class="identifier">COTT</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">);</span>
 </pre>
 
@@ -1943,7 +1945,7 @@ we don't, and have to look that up at run-time.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">best_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_INAME</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_NRL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1951,7 +1953,7 @@ we don't, and have to look that up at run-time.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">best_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_INAME</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_NRL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1963,13 +1965,13 @@ we don't, and have to look that up at run-time.
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">best_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_INAME</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_NRL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">best_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_INAME</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_NRL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -2355,8 +2357,9 @@ then expand it into the output.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parent_optimised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) { </span>    <span class="comment">parent optimisation is stronger, so we prefer that</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::write_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                    <span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">DEFERRED_PROPOSITION_RTP_INAMEF</span><span class="plain">);</span>
-                    <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">);</span>
+                    <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;ppd_iname</span><span class="plain">);</span>
+                    <span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"rtp"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+                    <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="string">"if (RunTimeProblem(RTP_CANTITERATE, %n))"</span><span class="plain">,</span>
                     <span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">);</span>

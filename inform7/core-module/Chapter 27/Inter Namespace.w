@@ -455,6 +455,10 @@ inter_name *InterNames::new_overridden(int fnum, text_stream *identifier) {
 
 inter_name *InterNames::extern_name(int fnum, text_stream *name, kind *K) {
 	if (Str::len(name) == 0) internal_error("null extern");
+
+	inter_name *try = InterNames::find_by_name(name);
+	if (try) return try;
+
 	inter_name_family *F = InterNames::get_family(fnum);
 	if (F->fusage != EXTERN_FUSAGE) internal_error("not an extern family");
 	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
@@ -467,6 +471,7 @@ inter_name *InterNames::extern_name(int fnum, text_stream *name, kind *K) {
 
 inter_name *InterNames::intern(int fnum, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("null intern");
+LOG("INTERN: %S\n", name);
 	inter_name_family *F = InterNames::get_family(fnum);
 	if (F->fusage != EXTERN_FUSAGE) internal_error("not an extern family");
 	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
@@ -767,7 +772,6 @@ inter_name_family *InterNames::get_family(int fnum) {
 @e PRINTORRUN_EXNAMEF
 @e DEBUGRULES_EXNAMEF
 @e DBRULE_EXNAMEF
-@e SELF_EXNAMEF
 @e DEADFLAG_EXNAMEF
 @e ACTION_EXNAMEF
 @e ACTREQUESTER_EXNAMEF
@@ -885,7 +889,6 @@ inter_name_family *InterNames::get_family(int fnum) {
 @e PARSERONE_EXNAMEF
 @e PARSERTWO_EXNAMEF
 @e DETECTPLURALWORD_EXNAMEF
-@e THESAME_EXNAMEF
 @e PLURALFOUND_EXNAMEF
 @e WORDINPROPERTY_EXNAMEF
 @e NAME_EXNAMEF
@@ -921,7 +924,6 @@ inter_name_family *InterNames::get_family(int fnum) {
 @e ROUTINEFILTERTT_EXNAMEF
 @e WORN_EXNAMEF
 @e TRYGIVENOBJECT_EXNAMEF
-@e PARENT_EXNAMEF
 @e PNTOVP_EXNAMEF
 @e STORYTENSE_EXNAMEF
 @e PRIORNAMEDNOUN_EXNAMEF
@@ -1034,7 +1036,6 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case DEBUGRULES_EXNAMEF: 						S = I"debug_rules"; break;
 		case DBRULE_EXNAMEF:							S = I"DB_Rule";
 			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, Kinds::binary_construction(CON_TUPLE_ENTRY, K_number, K_number)), K_nil); break;
-		case SELF_EXNAMEF: 								S = I"self"; break;
 		case DEADFLAG_EXNAMEF: 							S = I"deadflag"; break;
 		case ACTION_EXNAMEF: 							S = I"action"; break;
 		case NOUN_EXNAMEF: 								S = I"noun"; break;
@@ -1163,7 +1164,6 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case PARSERONE_EXNAMEF:							S = I"parser_one"; break;
 		case PARSERTWO_EXNAMEF:							S = I"parser_two"; break;
 		case DETECTPLURALWORD_EXNAMEF:					S = I"DetectPluralWord"; break;
-		case THESAME_EXNAMEF:							S = I"##TheSame"; break;
 		case PLURALFOUND_EXNAMEF:						S = I"##PluralFound"; break;
 		case WORDINPROPERTY_EXNAMEF:					S = I"WordInProperty"; break;
 		case NAME_EXNAMEF:								S = I"name"; break;
@@ -1193,7 +1193,6 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case ROUTINEFILTERTT_EXNAMEF:					S = I"ROUTINE_FILTER_TT"; break;
 		case WORN_EXNAMEF:								S = I"worn"; break;
 		case TRYGIVENOBJECT_EXNAMEF:					S = I"TryGivenObject"; break;
-		case PARENT_EXNAMEF:							S = I"parent"; break;
 		case PNTOVP_EXNAMEF:							S = I"PNToVP"; break;
 		case STORYTENSE_EXNAMEF:						S = I"story_tense"; break;
 		case PRIORNAMEDNOUN_EXNAMEF:					S = I"prior_named_noun"; break;
@@ -1234,6 +1233,175 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 	return extern_inter_names[exnum];
 }
 
+@
+
+@e THESAME_NRL from 0
+@e PARENT_NRL
+@e CHILD_NRL
+@e SIBLING_NRL
+@e SELF_NRL
+
+@e DEBUG_NRL
+@e TARGET_ZCODE_NRL
+@e TARGET_GLULX_NRL
+@e DICT_WORD_SIZE_NRL
+@e WORDSIZE_NRL
+@e NULL_NRL
+@e WORD_HIGHBIT_NRL
+@e WORD_NEXTTOHIGHBIT_NRL
+@e IMPROBABLE_VALUE_NRL
+@e REPARSE_CODE_NRL
+@e MAX_POSITIVE_NUMBER_NRL
+@e MIN_NEGATIVE_NUMBER_NRL
+
+@e CV_MEANING_NRL
+@e CV_MODAL_NRL
+@e CV_NEG_NRL
+@e CV_POS_NRL
+
+@e NOTHING_NRL
+@e OBJECT_NRL
+
+@e MAX_NRL
+
+=
+typedef struct named_resource_location {
+	int access_number;
+	struct text_stream *access_name;
+	struct package_request *package;
+	struct inter_name *equates_to_iname;
+	MEMORY_MANAGEMENT
+} named_resource_location;
+
+named_resource_location *nrls_indexed_by_id[MAX_NRL];
+dictionary *nrls_indexed_by_name = NULL;
+
+named_resource_location *InterNames::make_in(int id, text_stream *name, package_request *P) {
+	named_resource_location *nrl = CREATE(named_resource_location);
+	nrl->access_number = id;
+	nrl->access_name = Str::duplicate(name);
+	nrl->package = P;
+	nrl->equates_to_iname = NULL;
+	nrls_indexed_by_id[id] = nrl;
+	Dictionaries::create(nrls_indexed_by_name, name);
+	Dictionaries::write_value(nrls_indexed_by_name, name, (void *) nrl);
+	return nrl;
+}
+
+named_resource_location *InterNames::make_as(int id, text_stream *name, inter_name *iname) {
+	named_resource_location *nrl = CREATE(named_resource_location);
+	nrl->access_number = id;
+	nrl->access_name = Str::duplicate(name);
+	nrl->package = iname->eventual_owner;
+	nrl->equates_to_iname = iname;
+	nrls_indexed_by_id[id] = nrl;
+	Dictionaries::create(nrls_indexed_by_name, name);
+	Dictionaries::write_value(nrls_indexed_by_name, name, (void *) nrl);
+	return nrl;
+}
+
+named_resource_location *InterNames::make_on_demand(int id, text_stream *name) {
+	named_resource_location *nrl = CREATE(named_resource_location);
+	nrl->access_number = id;
+	nrl->access_name = Str::duplicate(name);
+	nrl->package = NULL;
+	nrl->equates_to_iname = NULL;
+	nrls_indexed_by_id[id] = nrl;
+	Dictionaries::create(nrls_indexed_by_name, name);
+	Dictionaries::write_value(nrls_indexed_by_name, name, (void *) nrl);
+	return nrl;
+}
+
+int nrls_created = FALSE;
+void InterNames::create_nrls(void) {
+	nrls_created = TRUE;
+	for (int i=0; i<MAX_NRL; i++) nrls_indexed_by_id[i] = NULL;
+	nrls_indexed_by_name = Dictionaries::new(512, FALSE);
+
+	package_request *basics = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+	InterNames::make_in(THESAME_NRL, I"##TheSame", basics);
+	InterNames::make_in(PARENT_NRL, I"parent", basics);
+	InterNames::make_in(CHILD_NRL, I"child", basics);
+	InterNames::make_in(SIBLING_NRL, I"sibling", basics);
+	InterNames::make_in(SELF_NRL, I"self", basics);
+
+	InterNames::make_in(DEBUG_NRL, I"DEBUG", basics);
+	InterNames::make_in(TARGET_ZCODE_NRL, I"TARGET_ZCODE", basics);
+	InterNames::make_in(TARGET_GLULX_NRL, I"TARGET_GLULX", basics);
+	InterNames::make_in(DICT_WORD_SIZE_NRL, I"DICT_WORD_SIZE", basics);
+	InterNames::make_in(WORDSIZE_NRL, I"WORDSIZE", basics);
+	InterNames::make_in(NULL_NRL, I"NULL", basics);
+	InterNames::make_in(WORD_HIGHBIT_NRL, I"WORD_HIGHBIT", basics);
+	InterNames::make_in(WORD_NEXTTOHIGHBIT_NRL, I"WORD_NEXTTOHIGHBIT", basics);
+	InterNames::make_in(IMPROBABLE_VALUE_NRL, I"IMPROBABLE_VALUE", basics);
+	InterNames::make_in(REPARSE_CODE_NRL, I"REPARSE_CODE", basics);
+	InterNames::make_in(MAX_POSITIVE_NUMBER_NRL, I"MAX_POSITIVE_NUMBER", basics);
+	InterNames::make_in(MIN_NEGATIVE_NUMBER_NRL, I"MIN_NEGATIVE_NUMBER", basics);
+
+	package_request *conj = Packaging::request_resource(NULL, CONJUGATIONS_SUBPACKAGE);
+	InterNames::make_in(CV_MEANING_NRL, I"CV_MEANING", conj);
+	InterNames::make_in(CV_MODAL_NRL, I"CV_MODAL", conj);
+	InterNames::make_in(CV_NEG_NRL, I"CV_NEG", conj);
+	InterNames::make_in(CV_POS_NRL, I"CV_POS", conj);
+
+	InterNames::make_on_demand(OBJECT_NRL, I"Object");
+	InterNames::make_on_demand(NOTHING_NRL, I"nothing");
+}
+
+inter_name *InterNames::find(int id) {
+	if (nrls_created == FALSE) InterNames::create_nrls();
+	if ((id < 0) || (id >= MAX_NRL) || (nrls_indexed_by_id[id] == NULL))
+		internal_error("bad nrl ID");
+	return InterNames::nrl_to_iname(nrls_indexed_by_id[id]);
+}
+
+inter_name *InterNames::find_by_name(text_stream *name) {
+	if (Str::len(name) == 0) internal_error("bad nrl name");
+	if (nrls_created == FALSE) InterNames::create_nrls();
+	if (Dictionaries::find(nrls_indexed_by_name, name))
+		return InterNames::nrl_to_iname(
+			(named_resource_location *)
+				Dictionaries::read_value(nrls_indexed_by_name, name));
+	return NULL;
+}
+
+inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
+	if (nrl->equates_to_iname == NULL) {
+		if (nrl->package)
+			nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
+		switch (nrl->access_number) {
+			case THESAME_NRL:
+			case PARENT_NRL:
+			case CHILD_NRL:
+			case SIBLING_NRL: {
+				packaging_state save = Packaging::enter_home_of(nrl->equates_to_iname);
+				Emit::named_numeric_constant(nrl->equates_to_iname, 0);
+				Packaging::exit(save);
+				break;
+			}
+			case SELF_NRL: {
+				packaging_state save = Packaging::enter_home_of(nrl->equates_to_iname);
+				Emit::variable(nrl->equates_to_iname, K_value, UNDEF_IVAL, 0, I"self");
+				Packaging::exit(save);
+				break;
+			}
+			
+			case NOTHING_NRL:
+				nrl->package = Kinds::Behaviour::package(K_object);
+				nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
+				break;
+			case OBJECT_NRL:
+				nrl->equates_to_iname = Kinds::RunTime::I6_classname(K_object);
+				break;
+		}
+		if (nrl->package == NULL)
+			nrl->package = Packaging::home_of(nrl->equates_to_iname);
+	}
+	return nrl->equates_to_iname;
+}
+
+
+
 inter_name *InterNames::formal_par(int n) {
 	TEMPORARY_TEXT(lvalue);
 	WRITE_TO(lvalue, "formal_par%d", n);
@@ -1263,10 +1431,6 @@ inter_name *InterNames::formal_par(int n) {
 @e CCOUNT_QUOTATIONS_INAME
 @e CommandPromptText_INAME
 @e CreateDynamicRelations_INAME
-@e CV_MEANING_INAME
-@e CV_MODAL_INAME
-@e CV_NEG_INAME
-@e CV_POS_INAME
 @e DB_Action_Details_INAME
 @e DEBUG_INAME
 @e DECIMAL_TOKEN_INNER_INAME
@@ -1274,12 +1438,10 @@ inter_name *InterNames::formal_par(int n) {
 @e DefaultValueFinder_INAME
 @e DefaultValueOfKOV_INAME
 @e DetectSceneChange_INAME
-@e DICT_WORD_SIZE_INAME
 @e DONE_INIS_INAME
 @e EMPTY_RULEBOOK_INAME
 @e Headline_INAME
 @e I7_Kind_Name_INAME
-@e IMPROBABLE_VALUE_INAME
 @e INITIAL_MAX_SCORE_INAME
 @e InitialSituation_INAME
 @e InternalTestCases_INAME
@@ -1295,11 +1457,9 @@ inter_name *InterNames::formal_par(int n) {
 @e resources_INAME
 @e Map_Storage_INAME
 @e MAX_FRAME_SIZE_NEEDED_INAME
-@e MAX_POSITIVE_NUMBER_INAME
 @e MAX_WEAK_ID_INAME
 @e MEANINGLESS_RR_INAME
 @e MEMORY_HEAP_SIZE_INAME
-@e MIN_NEGATIVE_NUMBER_INAME
 @e MistakeAction_INAME
 @e MistakeActionSub_INAME
 @e MStack_GetRBVarCreator_INAME
@@ -1313,7 +1473,6 @@ inter_name *InterNames::formal_par(int n) {
 @e NO_USE_OPTIONS_INAME
 @e NO_VERB_VERB_DEFINED_INAME
 @e nothing_INAME
-@e NULL_INAME
 @e NUMBER_RULEBOOKS_CREATED_INAME
 @e PastActionsI6Routines_INAME
 @e PLAYER_OBJECT_INIS_INAME
@@ -1340,7 +1499,6 @@ inter_name *InterNames::formal_par(int n) {
 @e RELS_TEST_INAME
 @e RELS_X_UNIQUE_INAME
 @e RELS_Y_UNIQUE_INAME
-@e REPARSE_CODE_INAME
 @e ResourceIDsOfFigures_INAME
 @e ResourceIDsOfSounds_INAME
 @e ResponseDivisions_INAME
@@ -1367,8 +1525,6 @@ inter_name *InterNames::formal_par(int n) {
 @e TableOfExternalFiles_INAME
 @e TableOfTables_INAME
 @e TableOfVerbs_INAME
-@e TARGET_GLULX_INAME
-@e TARGET_ZCODE_INAME
 @e TB_Blanks_INAME
 @e TC_KOV_INAME
 @e TestScriptSub_INAME
@@ -1395,9 +1551,6 @@ inter_name *InterNames::formal_par(int n) {
 @e VERB_DIRECTIVE_SLASH_INAME
 @e VERB_DIRECTIVE_SPECIAL_INAME
 @e VERB_DIRECTIVE_TOPIC_INAME
-@e WORD_HIGHBIT_INAME
-@e WORD_NEXTTOHIGHBIT_INAME
-@e WORDSIZE_INAME
 
 @e FINAL_INAME
 
@@ -1424,10 +1577,6 @@ inter_name *InterNames::iname(int num) {
 		case CCOUNT_QUOTATIONS_INAME:			S = I"CCOUNT_QUOTATIONS"; break;
 		case CommandPromptText_INAME:			S = I"CommandPromptText"; break;
 		case CreateDynamicRelations_INAME:		S = I"CreateDynamicRelations"; break;
-		case CV_MEANING_INAME:					S = I"CV_MEANING"; break;
-		case CV_MODAL_INAME:					S = I"CV_MODAL"; break;
-		case CV_NEG_INAME:						S = I"CV_NEG"; break;
-		case CV_POS_INAME:						S = I"CV_POS"; break;
 		case DB_Action_Details_INAME:			S = I"DB_Action_Details"; break;
 		case DEBUG_INAME:						S = I"DEBUG"; break;
 		case DECIMAL_TOKEN_INNER_INAME:			S = I"DECIMAL_TOKEN_INNER"; break;
@@ -1435,12 +1584,10 @@ inter_name *InterNames::iname(int num) {
 		case DefaultValueFinder_INAME:			S = I"DefaultValueFinder"; break;
 		case DefaultValueOfKOV_INAME:			S = I"DefaultValueOfKOV"; break;
 		case DetectSceneChange_INAME:			S = I"DetectSceneChange"; break;
-		case DICT_WORD_SIZE_INAME:				S = I"DICT_WORD_SIZE"; break;
 		case DONE_INIS_INAME:					S = I"DONE_INIS"; break;
 		case EMPTY_RULEBOOK_INAME: 				S = I"EMPTY_RULEBOOK"; break;
 		case Headline_INAME:					S = I"Headline"; break;
 		case I7_Kind_Name_INAME:				S = I"I7_Kind_Name"; break;
-		case IMPROBABLE_VALUE_INAME:			S = I"IMPROBABLE_VALUE"; break;
 		case INITIAL_MAX_SCORE_INAME:			S = I"INITIAL_MAX_SCORE"; break;
 		case InitialSituation_INAME:			S = I"InitialSituation"; break;
 		case InternalTestCases_INAME:			S = I"InternalTestCases"; break;
@@ -1456,11 +1603,9 @@ inter_name *InterNames::iname(int num) {
 		case synoptic_INAME:					S = I"synoptic"; glob = TRUE; break;
 		case Map_Storage_INAME:					S = I"Map_Storage"; break;
 		case MAX_FRAME_SIZE_NEEDED_INAME:		S = I"MAX_FRAME_SIZE_NEEDED"; break;
-		case MAX_POSITIVE_NUMBER_INAME:			S = I"MAX_POSITIVE_NUMBER"; break;
 		case MAX_WEAK_ID_INAME:					S = I"MAX_WEAK_ID"; break;
 		case MEANINGLESS_RR_INAME:				S = I"MEANINGLESS_RR"; break;
 		case MEMORY_HEAP_SIZE_INAME:			S = I"MEMORY_HEAP_SIZE"; break;
-		case MIN_NEGATIVE_NUMBER_INAME:			S = I"MIN_NEGATIVE_NUMBER"; break;
 		case MistakeAction_INAME:				S = I"##MistakeAction"; break;
 		case MistakeActionSub_INAME:			S = I"MistakeActionSub"; break;
 		case MStack_GetRBVarCreator_INAME:		S = I"MStack_GetRBVarCreator"; break;
@@ -1474,7 +1619,6 @@ inter_name *InterNames::iname(int num) {
 		case NO_USE_OPTIONS_INAME:				S = I"NO_USE_OPTIONS"; break;
 		case NO_VERB_VERB_DEFINED_INAME:		S = I"NO_VERB_VERB_DEFINED"; break;
 		case nothing_INAME:						S = I"nothing"; break;
-		case NULL_INAME:						S = I"NULL"; break;
 		case NUMBER_RULEBOOKS_CREATED_INAME:	S = I"NUMBER_RULEBOOKS_CREATED"; break;
 		case PastActionsI6Routines_INAME:		S = I"PastActionsI6Routines"; break;
 		case PLAYER_OBJECT_INIS_INAME:			S = I"PLAYER_OBJECT_INIS"; break;
@@ -1501,7 +1645,6 @@ inter_name *InterNames::iname(int num) {
 		case RELS_TEST_INAME:					S = I"RELS_TEST"; break;
 		case RELS_X_UNIQUE_INAME:				S = I"RELS_X_UNIQUE"; break;
 		case RELS_Y_UNIQUE_INAME:				S = I"RELS_Y_UNIQUE"; break;
-		case REPARSE_CODE_INAME:				S = I"REPARSE_CODE"; break;
 		case ResourceIDsOfFigures_INAME:		S = I"ResourceIDsOfFigures"; break;
 		case ResourceIDsOfSounds_INAME:			S = I"ResourceIDsOfSounds"; break;
 		case ResponseDivisions_INAME:			S = I"ResponseDivisions"; break;
@@ -1528,8 +1671,6 @@ inter_name *InterNames::iname(int num) {
 		case TableOfExternalFiles_INAME:		S = I"TableOfExternalFiles"; break;
 		case TableOfTables_INAME:				S = I"TableOfTables"; break;
 		case TableOfVerbs_INAME:				S = I"TableOfVerbs"; break;
-		case TARGET_GLULX_INAME:				S = I"TARGET_GLULX"; break;
-		case TARGET_ZCODE_INAME:				S = I"TARGET_ZCODE"; break;
 		case TB_Blanks_INAME:					S = I"TB_Blanks"; break;
 		case TC_KOV_INAME:						S = I"TC_KOV"; break;
 		case TestScriptSub_INAME:				S = I"TestScriptSub"; break;
@@ -1556,9 +1697,6 @@ inter_name *InterNames::iname(int num) {
 		case VERB_DIRECTIVE_SLASH_INAME:		S = I"VERB_DIRECTIVE_SLASH"; break;
 		case VERB_DIRECTIVE_SPECIAL_INAME:		S = I"VERB_DIRECTIVE_SPECIAL"; break;
 		case VERB_DIRECTIVE_TOPIC_INAME:		S = I"VERB_DIRECTIVE_TOPIC"; break;
-		case WORD_HIGHBIT_INAME:				S = I"WORD_HIGHBIT"; break;
-		case WORD_NEXTTOHIGHBIT_INAME:			S = I"WORD_NEXTTOHIGHBIT"; break;
-		case WORDSIZE_INAME:					S = I"WORDSIZE"; break;
 	}
 	if (S == NULL) internal_error("no wording for external name");
 	intern_inter_names[num] = InterNames::one_off(S, glob?NULL:(Packaging::request_main()));

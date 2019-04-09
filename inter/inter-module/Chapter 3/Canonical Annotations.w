@@ -49,6 +49,7 @@ symbol.
 @d SR_CACHE_MARK_BIT 8
 @d USED_MARK_BIT 16
 @d MAKE_NAME_UNIQUE 32
+@d EXTERN_TARGET_BIT 64
 
 @ =
 inter_annotation_form *invalid_IAF = NULL;

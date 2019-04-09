@@ -115,10 +115,14 @@ In an ideal world we would revoke this ability.
 
 
 <pre class="displaydefn">
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">incl</span><span class="plain">);</span>
         <span class="functiontext">Config::Inclusions::compile_inclusions_for_subject</span><span class="plain">(</span><span class="identifier">incl</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">incl</span><span class="plain">) &gt; 0) </span><span class="functiontext">Emit::append</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">incl</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">incl</span><span class="plain">) &gt; 0) {</span>
+            <span class="functiontext">Emit::append</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">incl</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">incl</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

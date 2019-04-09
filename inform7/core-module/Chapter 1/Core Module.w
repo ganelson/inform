@@ -108,6 +108,7 @@ We need to itemise the structures we'll want to allocate:
 @e inter_schema_node_MT
 @e inter_schema_token_MT
 @e package_request_MT
+@e named_resource_location_MT
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -188,6 +189,7 @@ ALLOCATE_INDIVIDUALLY(inter_schema)
 ALLOCATE_INDIVIDUALLY(inter_schema_node)
 ALLOCATE_INDIVIDUALLY(inter_schema_token)
 ALLOCATE_INDIVIDUALLY(package_request)
+ALLOCATE_INDIVIDUALLY(named_resource_location)
 
 @ So much for the managed structures: now for the unmanaged structures.
 

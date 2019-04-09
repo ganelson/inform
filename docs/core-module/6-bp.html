@@ -835,7 +835,7 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function BinaryPredicates::package is used in <a href="#SP32">&#167;32</a>, <a href="#SP42">&#167;42</a>, 6/rlt (<a href="6-rlt.html#SP9">&#167;9</a>, <a href="6-rlt.html#SP9_13">&#167;9.13</a>).</p>
+<p class="endnote">The function BinaryPredicates::package is used in <a href="#SP32">&#167;32</a>, <a href="#SP42">&#167;42</a>, 6/rlt (<a href="6-rlt.html#SP9">&#167;9</a>, <a href="6-rlt.html#SP9_13">&#167;9.13</a>, <a href="6-rlt.html#SP20">&#167;20</a>, <a href="6-rlt.html#SP20_3">&#167;20.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32. The handler. </b></p>
 
@@ -1181,7 +1181,11 @@ relation itself.)
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">default_rr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">default_rr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
-                <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">MEANINGLESS_RR_INAME</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">);</span>
+                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">MEANINGLESS_RR_INAME</span><span class="plain">);</span>
+                <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">RELATIONS_SUBPACKAGE</span><span class="plain">));</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+                <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">);</span>
+                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;record_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>

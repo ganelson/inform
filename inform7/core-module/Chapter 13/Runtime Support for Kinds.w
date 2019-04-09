@@ -1356,7 +1356,7 @@ and |b| inclusive.
 				Emit::inv_primitive(random_interp);
 				Emit::down();
 					if (Kinds::Behaviour::is_quasinumerical(K))
-						Emit::val_iname(K_value, InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
+						Emit::val_iname(K_value, InterNames::find(MAX_POSITIVE_NUMBER_NRL));
 					else
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
 				Emit::up();
@@ -1415,7 +1415,7 @@ and |b| inclusive.
 		Emit::down();
 			Emit::inv_primitive(random_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::iname(MAX_POSITIVE_NUMBER_INAME));
+				Emit::val_iname(K_value, InterNames::find(MAX_POSITIVE_NUMBER_NRL));
 			Emit::up();
 			Emit::inv_primitive(plus_interp);
 			Emit::down();

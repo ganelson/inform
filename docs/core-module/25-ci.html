@@ -62,7 +62,7 @@ earlier invocation list (in what may be another setting entirely).
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">push_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SELF_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">SELF_NRL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_unproven</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
@@ -74,7 +74,7 @@ earlier invocation list (in what may be another setting entirely).
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">pull_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SELF_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">SELF_NRL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>

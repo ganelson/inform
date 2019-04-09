@@ -56,8 +56,7 @@ own right, a functional-programming sort of device. For example:
         <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="constant">PHRASE_CONSTANT_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_constant_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">));</span>
-        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="constant">CLOSURE_INAMEF</span><span class="plain">);</span>
-        <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain">);</span>
+        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -151,6 +150,18 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::compiled_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="functiontext">Routines::ToPhrases::make_request</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
                 <span class="functiontext">Phrases::Constants::kind</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::as_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"cannot reconstruct phrase from cphr"</span><span class="plain">);</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">closure_package</span><span class="plain"> =</span>
+                <span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">, </span><span class="constant">CLOSURE_PR_COUNTER</span><span class="plain">), </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">, </span><span class="identifier">closure_ptype</span><span class="plain">);</span>
+            <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"closure_data"</span><span class="plain">, </span><span class="identifier">closure_package</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -158,6 +169,8 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Phrases::Constants::compile is used in 14/rv (<a href="14-rv.html#SP24_3">&#167;24.3</a>).</p>
+
+<p class="endnote">The function Phrases::Constants::iname is used in <a href="#SP8_1">&#167;8.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And this is where those arrays are made:
 </p>
@@ -193,7 +206,9 @@ case the phrase occurs as a constant but is never explicitly invoked.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain">);</span>
 
@@ -207,6 +222,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
 
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

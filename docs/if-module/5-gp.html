@@ -230,11 +230,17 @@ for parsing:
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Visibility::name_name</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_name</span><span class="plain">);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function PL::Parsing::Visibility::parsing_complete_model is used in <a href="#SP6">&#167;6</a>.</p>
+
+<p class="endnote">The function PL::Parsing::Visibility::name_name is used in 5/gpr (<a href="5-gpr.html#SP7">&#167;7</a>, <a href="5-gpr.html#SP9">&#167;9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b>The name property requires special care, partly over I6 eccentricities
 such as the way that single-letter dictionary words can be misinterpreted

@@ -609,7 +609,7 @@ with the default outcome return (see above).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::Patterns::object_based</span><span class="plain">(&amp;(</span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;ap</span><span class="plain">))) {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SELF_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">SELF_NRL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NOUN_EXNAMEF</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
