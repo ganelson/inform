@@ -261,6 +261,7 @@ the presence of annotations can change what we do.
 
 	int by_value_not_reference = TRUE;
 	int blank_out = FALSE;
+	int reference_exists = FALSE;
 	int require_to_be_lvalue = FALSE;
 
 	BEGIN_COMPILATION_MODE;
@@ -331,6 +332,11 @@ frame for the can't exit closed containers rule, not to the local stack frame.
 		COMPILATION_MODE_ENTER(BLANK_OUT_CMODE);
 	if (blank_out == FALSE)
 		COMPILATION_MODE_EXIT(BLANK_OUT_CMODE);
+	if (reference_exists == TRUE) {
+		COMPILATION_MODE_ENTER(TABLE_EXISTENCE_CMODE_ISSBM);
+	}
+	if (reference_exists == FALSE)
+		COMPILATION_MODE_EXIT(TABLE_EXISTENCE_CMODE_ISSBM);
 	LOGIF(MATCHING, "Expanding $P into '%W' with %d, $u%s%s\n",
 		supplied, BRW, tok, kind_required,
 		changed?" (after kind substitution)":"",
@@ -580,6 +586,7 @@ using the same machinery as if the annotation hadn't been there.
 	int valid_annotation = FALSE;
 	if (sche->inline_command == by_reference_ISINC) @<Inline annotation "by-reference"@>;
 	if (sche->inline_command == by_reference_blank_out_ISINC) @<Inline annotation "by-reference-blank-out"@>;
+	if (sche->inline_command == reference_exists_ISINC) @<Inline annotation "reference-exists"@>;
 	if (sche->inline_command == lvalue_by_reference_ISINC) @<Inline annotation "lvalue-by-reference"@>;
 	if (sche->inline_command == by_value_ISINC) @<Inline annotation "by-value"@>;
 
@@ -618,6 +625,13 @@ this list, the original will change.
 	by_value_not_reference = FALSE;
 	valid_annotation = TRUE;
 	blank_out = TRUE;
+
+@ And, variedly:
+
+@<Inline annotation "reference-exists"@> =
+	by_value_not_reference = FALSE;
+	valid_annotation = TRUE;
+	reference_exists = TRUE;
 
 @ This is a variant which checks that the reference is to an lvalue, that
 is, to something which can be changed. If this weren't done, then

@@ -432,6 +432,7 @@ the presence of annotations can change what we do.
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">by_value_not_reference</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">blank_out</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reference_exists</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">require_to_be_lvalue</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
@@ -548,6 +549,11 @@ frame for the can't exit closed containers rule, not to the local stack frame.
             <span class="identifier">COMPILATION_MODE_ENTER</span><span class="plain">(</span><span class="constant">BLANK_OUT_CMODE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blank_out</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">BLANK_OUT_CMODE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reference_exists</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
+            <span class="identifier">COMPILATION_MODE_ENTER</span><span class="plain">(</span><span class="constant">TABLE_EXISTENCE_CMODE_ISSBM</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reference_exists</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">TABLE_EXISTENCE_CMODE_ISSBM</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Expanding $P into '%W' with %d, $u%s%s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
             <span class="identifier">supplied</span><span class="plain">, </span><span class="identifier">BRW</span><span class="plain">, </span><span class="identifier">tok</span><span class="plain">, </span><span class="identifier">kind_required</span><span class="plain">,</span>
             <span class="identifier">changed</span><span class="plain">?</span><span class="string">" (after kind substitution)"</span><span class="plain">:</span><span class="string">""</span><span class="plain">,</span>
@@ -1102,24 +1108,25 @@ using the same machinery as if the annotation hadn't been there.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">valid_annotation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">by_reference_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "by-reference"</span> <span class="cwebmacronumber">3.1.1.4.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">by_reference_blank_out_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "by-reference-blank-out"</span> <span class="cwebmacronumber">3.1.1.4.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">lvalue_by_reference_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "lvalue-by-reference"</span> <span class="cwebmacronumber">3.1.1.4.3</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">by_value_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "by-value"</span> <span class="cwebmacronumber">3.1.1.4.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">reference_exists_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "reference-exists"</span> <span class="cwebmacronumber">3.1.1.4.3</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">lvalue_by_reference_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "lvalue-by-reference"</span> <span class="cwebmacronumber">3.1.1.4.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">by_value_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "by-value"</span> <span class="cwebmacronumber">3.1.1.4.5</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">box_quotation_text_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "box-quotation-text"</span> <span class="cwebmacronumber">3.1.1.4.5</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">box_quotation_text_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "box-quotation-text"</span> <span class="cwebmacronumber">3.1.1.4.6</span>&gt;<span class="plain">;</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">try_action_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "try-action"</span> <span class="cwebmacronumber">3.1.1.4.8</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">try_action_silently_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "try-action-silently"</span> <span class="cwebmacronumber">3.1.1.4.9</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">try_action_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "try-action"</span> <span class="cwebmacronumber">3.1.1.4.9</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">try_action_silently_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "try-action-silently"</span> <span class="cwebmacronumber">3.1.1.4.10</span>&gt;<span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">return_value_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "return-value"</span> <span class="cwebmacronumber">3.1.1.4.6</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">return_value_from_rule_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "return-value-from-rule"</span> <span class="cwebmacronumber">3.1.1.4.7</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">return_value_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "return-value"</span> <span class="cwebmacronumber">3.1.1.4.7</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">return_value_from_rule_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "return-value-from-rule"</span> <span class="cwebmacronumber">3.1.1.4.8</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">property_holds_block_value_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "property-holds-block-value"</span> <span class="cwebmacronumber">3.1.1.4.10</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">mark_event_used_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "mark-event-used"</span> <span class="cwebmacronumber">3.1.1.4.11</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">property_holds_block_value_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "property-holds-block-value"</span> <span class="cwebmacronumber">3.1.1.4.11</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">mark_event_used_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline annotation "mark-event-used"</span> <span class="cwebmacronumber">3.1.1.4.12</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sche</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> != </span><span class="constant">no_ISINC</span><span class="plain">) &amp;&amp; (</span><span class="identifier">valid_annotation</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
-            &lt;<span class="cwebmacro">Throw a problem message for an invalid inline annotation</span> <span class="cwebmacronumber">3.1.1.4.12</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Throw a problem message for an invalid inline annotation</span> <span class="cwebmacronumber">3.1.1.4.13</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1174,7 +1181,26 @@ this list, the original will change.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_3"></a><b>&#167;3.1.1.4.3.  </b>This is a variant which checks that the reference is to an lvalue, that
+<p class="inwebparagraph"><a id="SP3_1_1_4_3"></a><b>&#167;3.1.1.4.3.  </b>And, variedly:
+</p>
+
+
+<p class="macrodefinition"><code class="display">
+&lt;<span class="cwebmacrodefn">Inline annotation "reference-exists"</span> <span class="cwebmacronumber">3.1.1.4.3</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">by_value_not_reference</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">valid_annotation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">reference_exists</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
+
+<p class="inwebparagraph"><a id="SP3_1_1_4_4"></a><b>&#167;3.1.1.4.4.  </b>This is a variant which checks that the reference is to an lvalue, that
 is, to something which can be changed. If this weren't done, then
 </p>
 
@@ -1189,7 +1215,7 @@ at run-time.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "lvalue-by-reference"</span> <span class="cwebmacronumber">3.1.1.4.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "lvalue-by-reference"</span> <span class="cwebmacronumber">3.1.1.4.4</span>&gt; =
 </code></p>
 
 
@@ -1203,12 +1229,12 @@ at run-time.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_4"></a><b>&#167;3.1.1.4.4.  </b>This is the default, so it's redundant, but clarifies definitions.
+<p class="inwebparagraph"><a id="SP3_1_1_4_5"></a><b>&#167;3.1.1.4.5.  </b>This is the default, so it's redundant, but clarifies definitions.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "by-value"</span> <span class="cwebmacronumber">3.1.1.4.4</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "by-value"</span> <span class="cwebmacronumber">3.1.1.4.5</span>&gt; =
 </code></p>
 
 
@@ -1221,7 +1247,7 @@ at run-time.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_5"></a><b>&#167;3.1.1.4.5.  </b>This is used only for the box statement in I6, which has slightly different
+<p class="inwebparagraph"><a id="SP3_1_1_4_6"></a><b>&#167;3.1.1.4.6.  </b>This is used only for the box statement in I6, which has slightly different
 textual requirements than regular I6 text. We could get rid of this by making
 a kind for box-quotation-text, and casting regular text to it, but honestly
 having this annotation seems the smaller of the two warts.
@@ -1229,7 +1255,7 @@ having this annotation seems the smaller of the two warts.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "box-quotation-text"</span> <span class="cwebmacronumber">3.1.1.4.5</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "box-quotation-text"</span> <span class="cwebmacronumber">3.1.1.4.6</span>&gt; =
 </code></p>
 
 
@@ -1255,7 +1281,7 @@ having this annotation seems the smaller of the two warts.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_6"></a><b>&#167;3.1.1.4.6.  </b>Suppose we are invoking:
+<p class="inwebparagraph"><a id="SP3_1_1_4_7"></a><b>&#167;3.1.1.4.7.  </b>Suppose we are invoking:
 </p>
 
 <blockquote>
@@ -1299,44 +1325,44 @@ object, but not necessarily that it's a container.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "return-value"</span> <span class="cwebmacronumber">3.1.1.4.6</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "return-value"</span> <span class="cwebmacronumber">3.1.1.4.7</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">returning_from_rule</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Handle an inline return</span> <span class="cwebmacronumber">3.1.1.4.6.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Handle an inline return</span> <span class="cwebmacronumber">3.1.1.4.7.1</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_7"></a><b>&#167;3.1.1.4.7.  </b>Exactly the same mechanism is needed for rules which produce a value, but
+<p class="inwebparagraph"><a id="SP3_1_1_4_8"></a><b>&#167;3.1.1.4.8.  </b>Exactly the same mechanism is needed for rules which produce a value, but
 the problem messages are phrased differently if something goes wrong.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "return-value-from-rule"</span> <span class="cwebmacronumber">3.1.1.4.7</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "return-value-from-rule"</span> <span class="cwebmacronumber">3.1.1.4.8</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">returning_from_rule</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Handle an inline return</span> <span class="cwebmacronumber">3.1.1.4.6.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Handle an inline return</span> <span class="cwebmacronumber">3.1.1.4.7.1</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_6_1"></a><b>&#167;3.1.1.4.6.1.  </b>So here's the common code:
+<p class="inwebparagraph"><a id="SP3_1_1_4_7_1"></a><b>&#167;3.1.1.4.7.1.  </b>So here's the common code:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Handle an inline return</span> <span class="cwebmacronumber">3.1.1.4.6.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Handle an inline return</span> <span class="cwebmacronumber">3.1.1.4.7.1</span>&gt; =
 </code></p>
 
 
@@ -1353,7 +1379,7 @@ the problem messages are phrased differently if something goes wrong.
             <span class="identifier">allow_me</span><span class="plain"> = </span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">kind_supplied</span><span class="plain">, </span><span class="identifier">kind_needed</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mor</span><span class="plain"> == </span><span class="constant">DECIDES_CONDITION_MOR</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">kind_supplied</span><span class="plain">, </span><span class="identifier">K_truth_state</span><span class="plain">)))</span>
             <span class="identifier">allow_me</span><span class="plain"> = </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem for returning a value when none was asked</span> <span class="cwebmacronumber">3.1.1.4.6.1.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem for returning a value when none was asked</span> <span class="cwebmacronumber">3.1.1.4.7.1.1</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">allow_me</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
             <span class="functiontext">Specifications::Compiler::emit_to_kind</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">, </span><span class="identifier">kind_needed</span><span class="plain">);</span>
@@ -1363,17 +1389,17 @@ the problem messages are phrased differently if something goes wrong.
                 <span class="functiontext">Specifications::Compiler::emit_to_kind</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">, </span><span class="identifier">kind_needed</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">kind_needed</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem for returning a value of the wrong kind</span> <span class="cwebmacronumber">3.1.1.4.6.1.2</span>&gt;<span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem for returning a value of the wrong kind</span> <span class="cwebmacronumber">3.1.1.4.7.1.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">return</span><span class="plain">; </span>    <span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_1_1_4_6">&#167;3.1.1.4.6</a>, <a href="#SP3_1_1_4_7">&#167;3.1.1.4.7</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3_1_1_4_7">&#167;3.1.1.4.7</a>, <a href="#SP3_1_1_4_8">&#167;3.1.1.4.8</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_6_1_1"></a><b>&#167;3.1.1.4.6.1.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Issue a problem for returning a value when none was asked</span> <span class="cwebmacronumber">3.1.1.4.6.1.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_1_1_4_7_1_1"></a><b>&#167;3.1.1.4.7.1.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Issue a problem for returning a value when none was asked</span> <span class="cwebmacronumber">3.1.1.4.7.1.1</span>&gt; =
 </code></p>
 
 
@@ -1398,10 +1424,10 @@ the problem messages are phrased differently if something goes wrong.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_1_1_4_6_1">&#167;3.1.1.4.6.1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3_1_1_4_7_1">&#167;3.1.1.4.7.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_6_1_2"></a><b>&#167;3.1.1.4.6.1.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Issue a problem for returning a value of the wrong kind</span> <span class="cwebmacronumber">3.1.1.4.6.1.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_1_1_4_7_1_2"></a><b>&#167;3.1.1.4.7.1.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Issue a problem for returning a value of the wrong kind</span> <span class="cwebmacronumber">3.1.1.4.7.1.2</span>&gt; =
 </code></p>
 
 
@@ -1426,10 +1452,10 @@ the problem messages are phrased differently if something goes wrong.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_1_1_4_6_1">&#167;3.1.1.4.6.1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3_1_1_4_7_1">&#167;3.1.1.4.7.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_8"></a><b>&#167;3.1.1.4.8.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "try-action"</span> <span class="cwebmacronumber">3.1.1.4.8</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_1_1_4_9"></a><b>&#167;3.1.1.4.9.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Inline annotation "try-action"</span> <span class="cwebmacronumber">3.1.1.4.9</span>&gt; =
 </code></p>
 
 
@@ -1451,8 +1477,8 @@ the problem messages are phrased differently if something goes wrong.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_9"></a><b>&#167;3.1.1.4.9.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "try-action-silently"</span> <span class="cwebmacronumber">3.1.1.4.9</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_1_1_4_10"></a><b>&#167;3.1.1.4.10.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Inline annotation "try-action-silently"</span> <span class="cwebmacronumber">3.1.1.4.10</span>&gt; =
 </code></p>
 
 
@@ -1510,14 +1536,14 @@ the problem messages are phrased differently if something goes wrong.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_10"></a><b>&#167;3.1.1.4.10.  </b>Suppose we have a token which is a property name, and we want to know about
+<p class="inwebparagraph"><a id="SP3_1_1_4_11"></a><b>&#167;3.1.1.4.11.  </b>Suppose we have a token which is a property name, and we want to know about
 the kind of value the property holds. We can't simply take the kind of the
 token, because that would be "property name". Instead:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "property-holds-block-value"</span> <span class="cwebmacronumber">3.1.1.4.10</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "property-holds-block-value"</span> <span class="cwebmacronumber">3.1.1.4.11</span>&gt; =
 </code></p>
 
 
@@ -1540,7 +1566,7 @@ token, because that would be "property name". Instead:
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_11"></a><b>&#167;3.1.1.4.11.  </b>This little annotation is used for the phrases about timed rule firing:
+<p class="inwebparagraph"><a id="SP3_1_1_4_12"></a><b>&#167;3.1.1.4.12.  </b>This little annotation is used for the phrases about timed rule firing:
 </p>
 
 <blockquote>
@@ -1565,7 +1591,7 @@ rule), and also makes a note for indexing purposes.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Inline annotation "mark-event-used"</span> <span class="cwebmacronumber">3.1.1.4.11</span>&gt; =
+&lt;<span class="cwebmacrodefn">Inline annotation "mark-event-used"</span> <span class="cwebmacronumber">3.1.1.4.12</span>&gt; =
 </code></p>
 
 
@@ -1592,8 +1618,8 @@ rule), and also makes a note for indexing purposes.
 
 <p class="endnote">This code is used in <a href="#SP3_1_1_4">&#167;3.1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_1_1_4_12"></a><b>&#167;3.1.1.4.12.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Throw a problem message for an invalid inline annotation</span> <span class="cwebmacronumber">3.1.1.4.12</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_1_1_4_13"></a><b>&#167;3.1.1.4.13.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Throw a problem message for an invalid inline annotation</span> <span class="cwebmacronumber">3.1.1.4.13</span>&gt; =
 </code></p>
 
 

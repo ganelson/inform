@@ -636,15 +636,22 @@ object as produced the original text containing the substitution.
 
 
 <pre class="displaydefn">
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">lookup</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPENTRY_EXNAMEF</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">lookup_corr</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPCORR_EXNAMEF</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TABLE_EXISTENCE_CMODE_ISSBM</span><span class="plain">)) {</span>
+            <span class="identifier">lookup</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">EXISTSTABLELOOKUPENTRY_EXNAMEF</span><span class="plain">);</span>
+            <span class="identifier">lookup_corr</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">EXISTSTABLELOOKUPCORR_EXNAMEF</span><span class="plain">);</span>
+        <span class="plain">}</span>
+
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
             <span class="reserved">case</span><span class="plain"> 1:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPENTRY_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lookup</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="functiontext">LocalVariables::used_stack_selection</span><span class="plain">();</span>
                     <span class="functiontext">LocalVariables::add_table_lookup</span><span class="plain">();</span>
                     <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
-                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPENTRY_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">lookup</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                     <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">ct_0_lv</span><span class="plain"> = </span><span class="functiontext">LocalVariables::by_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ct_0"</span><span class="plain">);</span>
@@ -667,10 +674,10 @@ object as produced the original text containing the substitution.
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> 3:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPENTRY_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lookup</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
-                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPENTRY_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">lookup</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
@@ -686,10 +693,10 @@ object as produced the original text containing the substitution.
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> 4:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPCORR_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lookup_corr</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
-                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLELOOKUPCORR_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">lookup_corr</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>

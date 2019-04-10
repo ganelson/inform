@@ -158,22 +158,20 @@ since Inform always compiles code which knows which kind it's looping over.
 
 =
 inter_name *PL::Counting::first_instance(kind *K) {
-	package_request *PR = Kinds::Behaviour::package(K);
 	inter_name *iname = InterNames::letter_parametrised_name(
-		FIRST_INSTANCE_INAMEF, Kinds::RunTime::iname(K), FIRST_INSTANCE_INDERIV);
-	Packaging::house(iname, PR);
+		FIRST_INSTANCE_INAMEF, Kinds::RunTime::iname(K), FIRST_INSTANCE_INDERIV, Kinds::Behaviour::package(K));
 	return iname;
 }
 
 inter_name *PL::Counting::next_instance(kind *K) {
 	inter_name *iname = InterNames::letter_parametrised_name(
-		NEXT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), NEXT_INSTANCE_INDERIV);
+		NEXT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), NEXT_INSTANCE_INDERIV, Kinds::Behaviour::package(K));
 	return iname;
 }
 
 inter_name *PL::Counting::instance_count_iname(kind *K) {
 	inter_name *iname = InterNames::letter_parametrised_name(
-		COUNT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), COUNT_INSTANCE_INDERIV);
+		COUNT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), COUNT_INSTANCE_INDERIV, Kinds::Behaviour::package(K));
 	return iname;
 }
 
@@ -261,11 +259,11 @@ for the relation-route-finding code at run time.
 			InterNames::override_count_iname(count_iname, N);
 
 			PF_S(counting, subj)->instance_count_prop =
-				Properties::Valued::new_nameless(InterNames::to_text(count_iname), K_number);
+				Properties::Valued::new_nameless_using(K_number, count_iname);
 
 			inter_name *next_iname = PL::Counting::next_instance(K);
 			PF_S(counting, subj)->instance_link_prop =
-				Properties::Valued::new_nameless(InterNames::to_text(next_iname), K_object);
+				Properties::Valued::new_nameless_using(K_object, next_iname);
 		}
 	P_KD_Count = Properties::Valued::new_nameless(I"KD_Count", K_number);
 

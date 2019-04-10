@@ -284,9 +284,10 @@ list is not exhaustive.
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">COMPILATION_STEP</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">mark</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Begin "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">" at %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">start</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
+            <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">now</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
             <span class="identifier">routine</span><span class="plain">();</span>
-            <span class="comment">Emit::marker(mark);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain"> = ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">now</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt; 0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">".... "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">"() took %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

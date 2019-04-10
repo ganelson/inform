@@ -1610,7 +1610,7 @@ void Relations::compile_relation_records(void) {
 	else {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(InterNames::iname(DefaultValueOfKOV_INAME)));
+			Emit::inv_call(InterNames::to_symbol(InterNames::find(DEFAULTVALUEOFKOV_NRL)));
 			Emit::down();
 				Kinds::RunTime::emit_strong_id_as_val(K);
 			Emit::up();

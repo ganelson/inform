@@ -98,6 +98,7 @@
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Inter::SymbolsTables::symbol_to_url_name</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"{%d}"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_ID</span><span class="plain"> - </span><span class="constant">SYMBOL_BASE_VAL</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;translate_text</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"'%S'"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;translate_text</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

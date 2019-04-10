@@ -1507,13 +1507,7 @@ for instance, when increasing the size of a list of $K$ to include new entries,
 which have to be given some type-safe value to start out at.
 
 @<Compile DefaultValueOfKOV@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *DefaultValueOfKOV_iname =
-		Packaging::function(
-			InterNames::one_off(I"defaultvalue_fn", R),
-			R,
-			InterNames::iname(DefaultValueOfKOV_INAME));
-	packaging_state save = Routines::begin(DefaultValueOfKOV_iname);
+	packaging_state save = Routines::begin(InterNames::find(DEFAULTVALUEOFKOV_NRL));
 	inter_symbol *sk_s = LocalVariables::add_named_call_as_symbol(I"sk");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);

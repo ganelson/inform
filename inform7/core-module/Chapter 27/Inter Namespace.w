@@ -550,7 +550,7 @@ void InterNames::translate(inter_name *iname, text_stream *text) {
 
 @e FINAL_INDERIV
 
-inter_name *InterNames::letter_parametrised_name(int family, inter_name *rname, int marker) {
+inter_name *InterNames::letter_parametrised_name(int family, inter_name *rname, int marker, package_request *R) {
 	if (rname == NULL) internal_error("can't parametrise null name");
 	if (rname->parametrised_derivatives == NULL) {
 		rname->parametrised_derivatives =
@@ -559,8 +559,8 @@ inter_name *InterNames::letter_parametrised_name(int family, inter_name *rname, 
 	}
 	if ((marker < 0) || (marker >= FINAL_INDERIV)) internal_error("respomse parameter out of range");
 	if (rname->parametrised_derivatives[marker] == NULL) {
-		compilation_module *C = InterNames::to_module(rname);
-		rname->parametrised_derivatives[marker] = InterNames::new_in(family, C);
+		rname->parametrised_derivatives[marker] = InterNames::new(family);
+		Packaging::house(rname->parametrised_derivatives[marker], R);
 		rname->parametrised_derivatives[marker]->derived_from = rname;
 	}
 
@@ -791,7 +791,6 @@ inter_name_family *InterNames::get_family(int fnum) {
 @e SPECIALWORD_EXNAMEF
 @e CONSULTFROM_EXNAMEF
 @e CONSULTWORDS_EXNAMEF
-@e THEDARK_EXNAMEF
 @e GPRFAIL_EXNAMEF
 @e GPRPREPOSITION_EXNAMEF
 @e THETIME_EXNAMEF
@@ -956,6 +955,8 @@ inter_name_family *InterNames::get_family(int fnum) {
 @e ACTIONCURRENTLYHAPPENINGFLAG_EXNAMEF
 @e TABLELOOKUPENTRY_EXNAMEF
 @e TABLELOOKUPCORR_EXNAMEF
+@e EXISTSTABLELOOKUPENTRY_EXNAMEF
+@e EXISTSTABLELOOKUPCORR_EXNAMEF
 @e TEXTTYEXPANDIFPERISHABLE_EXNAMEF
 @e GENERATERANDOMNUMBER_EXNAMEF
 
@@ -1063,7 +1064,6 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case NOARTICLEBIT_EXNAMEF:						S = I"NOARTICLE_BIT"; break;
 		case NEWLINEBIT_EXNAMEF:						S = I"NEWLINE_BIT"; break;
 		case INDENTBIT_EXNAMEF:							S = I"INDENT_BIT"; break;
-		case THEDARK_EXNAMEF:							S = I"thedark"; break;
 		case GPRFAIL_EXNAMEF:							S = I"GPR_FAIL"; break;
 		case GPRPREPOSITION_EXNAMEF:					S = I"GPR_PREPOSITION"; break;
 		case THETIME_EXNAMEF:							S = I"the_time"; break;
@@ -1225,6 +1225,8 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case ACTIONCURRENTLYHAPPENINGFLAG_EXNAMEF:		S = I"ActionCurrentlyHappeningFlag"; break;
 		case TABLELOOKUPENTRY_EXNAMEF:					S = I"TableLookUpEntry"; break;
 		case TABLELOOKUPCORR_EXNAMEF:					S = I"TableLookUpCorr"; break;
+		case EXISTSTABLELOOKUPENTRY_EXNAMEF:			S = I"ExistsTableLookUpEntry"; break;
+		case EXISTSTABLELOOKUPCORR_EXNAMEF:				S = I"ExistsTableLookUpCorr"; break;
 		case TEXTTYEXPANDIFPERISHABLE_EXNAMEF:			S = I"TEXT_TY_ExpandIfPerishable"; break;
 		case GENERATERANDOMNUMBER_EXNAMEF:				S = I"GenerateRandomNumber"; break;
 	}
@@ -1240,6 +1242,7 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 @e CHILD_NRL
 @e SIBLING_NRL
 @e SELF_NRL
+@e THEDARK_NRL
 
 @e DEBUG_NRL
 @e TARGET_ZCODE_NRL
@@ -1279,6 +1282,8 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 @e NOTHING_NRL
 @e OBJECT_NRL
 @e TESTUSEOPTION_NRL
+@e RULEPRINTINGRULE_NRL
+@e DEFAULTVALUEOFKOV_NRL
 
 @e MAX_NRL
 
@@ -1300,7 +1305,7 @@ named_resource_location *InterNames::make_in(int id, text_stream *name, package_
 	nrl->access_name = Str::duplicate(name);
 	nrl->package = P;
 	nrl->equates_to_iname = NULL;
-	nrls_indexed_by_id[id] = nrl;
+	if (id >= 0) nrls_indexed_by_id[id] = nrl;
 	Dictionaries::create(nrls_indexed_by_name, name);
 	Dictionaries::write_value(nrls_indexed_by_name, name, (void *) nrl);
 	return nrl;
@@ -1312,7 +1317,7 @@ named_resource_location *InterNames::make_as(int id, text_stream *name, inter_na
 	nrl->access_name = Str::duplicate(name);
 	nrl->package = iname->eventual_owner;
 	nrl->equates_to_iname = iname;
-	nrls_indexed_by_id[id] = nrl;
+	if (id >= 0) nrls_indexed_by_id[id] = nrl;
 	Dictionaries::create(nrls_indexed_by_name, name);
 	Dictionaries::write_value(nrls_indexed_by_name, name, (void *) nrl);
 	return nrl;
@@ -1324,7 +1329,7 @@ named_resource_location *InterNames::make_on_demand(int id, text_stream *name) {
 	nrl->access_name = Str::duplicate(name);
 	nrl->package = NULL;
 	nrl->equates_to_iname = NULL;
-	nrls_indexed_by_id[id] = nrl;
+	if (id >= 0) nrls_indexed_by_id[id] = nrl;
 	Dictionaries::create(nrls_indexed_by_name, name);
 	Dictionaries::write_value(nrls_indexed_by_name, name, (void *) nrl);
 	return nrl;
@@ -1342,6 +1347,7 @@ void InterNames::create_nrls(void) {
 	InterNames::make_in(CHILD_NRL, I"child", basics);
 	InterNames::make_in(SIBLING_NRL, I"sibling", basics);
 	InterNames::make_in(SELF_NRL, I"self", basics);
+	InterNames::make_in(THEDARK_NRL, I"thedark", basics);
 
 	InterNames::make_in(DEBUG_NRL, I"DEBUG", basics);
 	InterNames::make_in(TARGET_ZCODE_NRL, I"TARGET_ZCODE", basics);
@@ -1383,6 +1389,8 @@ void InterNames::create_nrls(void) {
 	InterNames::make_on_demand(OBJECT_NRL, I"Object");
 	InterNames::make_on_demand(NOTHING_NRL, I"nothing");
 	InterNames::make_on_demand(TESTUSEOPTION_NRL, I"TestUseOption");
+	InterNames::make_on_demand(RULEPRINTINGRULE_NRL, I"RulePrintingRule");
+	InterNames::make_on_demand(DEFAULTVALUEOFKOV_NRL, I"DefaultValueOfKOV");
 }
 
 inter_name *InterNames::find(int id) {
@@ -1402,6 +1410,12 @@ inter_name *InterNames::find_by_name(text_stream *name) {
 	return NULL;
 }
 
+inter_name *InterNames::function(package_request *R, text_stream *name, text_stream *trans) {
+	inter_name *iname = Packaging::function(InterNames::one_off(name, R), R, NULL);
+	if (trans) Inter::Symbols::set_translate(InterNames::to_symbol(iname), trans);
+	return iname;
+}
+
 inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 	if (nrl->equates_to_iname == NULL) {
 		if (nrl->package)
@@ -1410,7 +1424,8 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 			case THESAME_NRL:
 			case PARENT_NRL:
 			case CHILD_NRL:
-			case SIBLING_NRL: {
+			case SIBLING_NRL:
+			case THEDARK_NRL: {
 				packaging_state save = Packaging::enter_home_of(nrl->equates_to_iname);
 				Emit::named_numeric_constant(nrl->equates_to_iname, 0);
 				Packaging::exit(save);
@@ -1430,17 +1445,18 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 			case OBJECT_NRL:
 				nrl->equates_to_iname = Kinds::RunTime::I6_classname(K_object);
 				break;
-			case TESTUSEOPTION_NRL: {
-				package_request *R = Kinds::RunTime::package(K_use_option);
-				nrl->equates_to_iname =
-					Packaging::function(
-						InterNames::one_off(I"test_fn", R),
-						R,
-						NULL);
-				Inter::Symbols::set_translate(InterNames::to_symbol(nrl->equates_to_iname), nrl->access_name);
+			case TESTUSEOPTION_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Kinds::RunTime::package(K_use_option), I"test_fn", nrl->access_name);
 				break;
-			}
-
+			case RULEPRINTINGRULE_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Packaging::synoptic_resource(RULES_SUBPACKAGE), I"print_fn", nrl->access_name);
+				break;
+			case DEFAULTVALUEOFKOV_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Packaging::synoptic_resource(KINDS_SUBPACKAGE), I"defaultvalue_fn", nrl->access_name);
+				break;
 		}
 		if (nrl->package == NULL)
 			nrl->package = Packaging::home_of(nrl->equates_to_iname);
@@ -1542,7 +1558,6 @@ inter_name *InterNames::formal_par(int n) {
 @e RulebookNames_INAME
 @e RulebookOutcomePrintingRule_INAME
 @e rulebooks_array_INAME
-@e RulePrintingRule_INAME
 @e Serial_INAME
 @e ShowExtensionVersions_INAME
 @e ShowFullExtensionVersions_INAME
@@ -1614,7 +1629,6 @@ inter_name *InterNames::iname(int num) {
 		case DECIMAL_TOKEN_INNER_INAME:			S = I"DECIMAL_TOKEN_INNER"; break;
 		case DEFAULT_SCORING_SETTING_INAME:		S = I"DEFAULT_SCORING_SETTING"; break;
 		case DefaultValueFinder_INAME:			S = I"DefaultValueFinder"; break;
-		case DefaultValueOfKOV_INAME:			S = I"DefaultValueOfKOV"; break;
 		case DetectSceneChange_INAME:			S = I"DetectSceneChange"; break;
 		case DONE_INIS_INAME:					S = I"DONE_INIS"; break;
 		case EMPTY_RULEBOOK_INAME: 				S = I"EMPTY_RULEBOOK"; break;
@@ -1672,7 +1686,6 @@ inter_name *InterNames::iname(int num) {
 		case RulebookNames_INAME:				S = I"RulebookNames"; break;
 		case RulebookOutcomePrintingRule_INAME:	S = I"RulebookOutcomePrintingRule"; break;
 		case rulebooks_array_INAME:				S = I"rulebooks_array"; break;
-		case RulePrintingRule_INAME:			S = I"RulePrintingRule"; break;
 		case Serial_INAME:						S = I"Serial"; break;
 		case ShowExtensionVersions_INAME:		S = I"ShowExtensionVersions"; break;
 		case ShowFullExtensionVersions_INAME:	S = I"ShowFullExtensionVersions"; break;

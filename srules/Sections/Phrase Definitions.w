@@ -894,10 +894,10 @@ To decide which number is number of filled rows in/from (T - table name)
 	(- TableFilledRows({T}) -).
 To decide if there is (TR - table-reference)
 	(documented at ph_thereis):
-	(- (Exists{-by-reference:TR}) -).
+	(- ({-reference-exists:TR}) -).
 To decide if there is no (TR - table-reference)
 	(documented at ph_thereisno):
-	(- (Exists{-by-reference:TR} == false) -).
+	(- ({-reference-exists:TR} == false) -).
 To blank out (tr - table-reference)
 	(documented at ph_blankout):
 	(- {-by-reference-blank-out:tr}; -).

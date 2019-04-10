@@ -383,6 +383,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 			package_request *PR = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
 			con->con_iname = InterNames::template_weak_ID_name(tn);
 			Packaging::house(con->con_iname, PR);
+			InterNames::make_as(-1, InterNames::to_symbol(con->con_iname)->symbol_name, con->con_iname);
 			packaging_state save = Packaging::enter_home_of(con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
 			Inter::Symbols::set_flag(InterNames::to_symbol(con->con_iname), SR_CACHE_MARK_BIT);

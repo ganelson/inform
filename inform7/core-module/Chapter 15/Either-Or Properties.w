@@ -86,8 +86,10 @@ relies on adjectival meanings.
 =
 property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	wording W = Feeds::feed_text(I6_form);
-	property *prn = Properties::create(EMPTY_WORDING);
-	InterNames::attach_memo(Properties::iname(prn), W);
+	property *prn = Properties::create(EMPTY_WORDING, NULL);
+	inter_name *iname = Properties::iname(prn);
+	Packaging::house(iname, Packaging::request_template());
+	InterNames::attach_memo(iname, W);
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);
 	Properties::set_translation(prn, I6_form);
@@ -95,7 +97,7 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	Modules::set_current_to_SR();
 	Properties::EitherOr::create_adjective_from_property(prn, EMPTY_WORDING, K_object);
 	Modules::set_current_to(cm);
-	prn->run_time_only = TRUE;
+	prn->run_time_only = TRUE;	
 	return prn;
 }
 

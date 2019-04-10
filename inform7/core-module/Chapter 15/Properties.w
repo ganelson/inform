@@ -91,7 +91,7 @@ property *Properties::obtain(wording W, int valued) {
 	parse_node *p = ExParser::parse_excerpt(PROPERTY_MC, W);
 	property *prn;
 	if (p == NULL) {
-		prn = Properties::create(W);
+		prn = Properties::create(W, NULL);
 		if (valued) {
 			Properties::Valued::make_setting_relation(prn, W);
 			prn->either_or = FALSE;
@@ -111,7 +111,7 @@ property *Properties::obtain(wording W, int valued) {
 @ And: (2) To create a new structure outright.
 
 =
-property *Properties::create(wording W) {
+property *Properties::create(wording W, inter_name *using_iname) {
 	W = Articles::remove_article(W);
 	@<Ensure that the new property name is one we can live with@>;
 	@<See if the property name already has a meaning, which may or may not be okay@>;
@@ -196,7 +196,7 @@ something.
 	prn->ambiguous_name = <name-looking-like-property-test>(W);
 	prn->applicable_to = NULL;
 	prn->either_or = FALSE;
-	prn->prop_iname = NULL;
+	prn->prop_iname = using_iname;
 	prn->prn_emitted = FALSE;
 	prn->translated = FALSE;
 	prn->do_not_compile = FALSE;
@@ -487,7 +487,6 @@ run-time support code to work.
 void Properties::set_translation(property *prn, wchar_t *t) {
 	if (prn == NULL) internal_error("translation set for null property");
 	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation)) {
-		LOG("FLIP ");
 		Properties::set_translation(Properties::EitherOr::get_negation(prn), t);
 		return;
 	}
@@ -507,7 +506,6 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 void Properties::set_translation_S(property *prn, text_stream *t) {
 	if (prn == NULL) internal_error("translation set for null property");
 	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation)) {
-		LOG("FLIP ");
 		Properties::set_translation_S(Properties::EitherOr::get_negation(prn), t);
 		return;
 	}

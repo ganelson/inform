@@ -193,9 +193,10 @@ list is not exhaustive.
 
 @d COMPILATION_STEP(routine, mark) {
 	if (problem_count == 0) {
-		LOG("Begin " #routine " at %dcs\n", ((int) (clock() - start)) / (CLOCKS_PER_SEC/100));
+		clock_t now = clock();
 		routine();
-		/* Emit::marker(mark); */
+		int cs = ((int) (clock() - now)) / (CLOCKS_PER_SEC/100);
+		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);
 	}
 }
 

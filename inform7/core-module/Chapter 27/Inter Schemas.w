@@ -310,6 +310,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e counter_makes_array_ISINC
 @e by_reference_ISINC
 @e by_reference_blank_out_ISINC
+@e reference_exists_ISINC
 @e lvalue_by_reference_ISINC
 @e by_value_ISINC
 @e box_quotation_text_ISINC
@@ -852,6 +853,7 @@ a bracing.
 		else if (Str::eq_wide_string(t->command, L"counter-makes-array")) t->inline_command = counter_makes_array_ISINC;
 		else if (Str::eq_wide_string(t->command, L"by-reference")) t->inline_command = by_reference_ISINC;
 		else if (Str::eq_wide_string(t->command, L"by-reference-blank-out")) t->inline_command = by_reference_blank_out_ISINC;
+		else if (Str::eq_wide_string(t->command, L"reference-exists")) t->inline_command = reference_exists_ISINC;
 		else if (Str::eq_wide_string(t->command, L"lvalue-by-reference")) t->inline_command = lvalue_by_reference_ISINC;
 		else if (Str::eq_wide_string(t->command, L"by-value")) t->inline_command = by_value_ISINC;
 		else if (Str::eq_wide_string(t->command, L"box-quotation-text")) t->inline_command = box_quotation_text_ISINC;
@@ -940,6 +942,7 @@ optional, operand in |operand2|.
 @d PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM	64
 @d TREAT_AS_LVALUE_CMODE_ISSBM			128
 @d JUST_ROUTINE_CMODE_ISSBM				256
+@d TABLE_EXISTENCE_CMODE_ISSBM			512
 
 @<Look for a possible abbreviated command@> =
 	int at = pos;

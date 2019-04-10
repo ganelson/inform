@@ -2200,7 +2200,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">DefaultValueOfKOV_INAME</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_NRL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>

@@ -245,22 +245,20 @@ since Inform always compiles code which knows which kind it's looping over.
 
 <pre class="display">
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Counting::first_instance</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::letter_parametrised_name</span><span class="plain">(</span>
-            <span class="constant">FIRST_INSTANCE_INAMEF</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">FIRST_INSTANCE_INDERIV</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+            <span class="constant">FIRST_INSTANCE_INAMEF</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">FIRST_INSTANCE_INDERIV</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Counting::next_instance</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::letter_parametrised_name</span><span class="plain">(</span>
-            <span class="constant">NEXT_INSTANCE_INAMEF</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">NEXT_INSTANCE_INDERIV</span><span class="plain">);</span>
+            <span class="constant">NEXT_INSTANCE_INAMEF</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">NEXT_INSTANCE_INDERIV</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Counting::instance_count_iname</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::letter_parametrised_name</span><span class="plain">(</span>
-            <span class="constant">COUNT_INSTANCE_INAMEF</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">COUNT_INSTANCE_INDERIV</span><span class="plain">);</span>
+            <span class="constant">COUNT_INSTANCE_INAMEF</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">COUNT_INSTANCE_INDERIV</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -392,11 +390,11 @@ for the relation-route-finding code at run time.
                 <span class="functiontext">InterNames::override_count_iname</span><span class="plain">(</span><span class="identifier">count_iname</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
 
                 <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_count_prop</span><span class="plain"> =</span>
-                    <span class="functiontext">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="functiontext">InterNames::to_text</span><span class="plain">(</span><span class="identifier">count_iname</span><span class="plain">), </span><span class="identifier">K_number</span><span class="plain">);</span>
+                    <span class="functiontext">Properties::Valued::new_nameless_using</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">count_iname</span><span class="plain">);</span>
 
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">next_iname</span><span class="plain"> = </span><span class="functiontext">PL::Counting::next_instance</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_link_prop</span><span class="plain"> =</span>
-                    <span class="functiontext">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="functiontext">InterNames::to_text</span><span class="plain">(</span><span class="identifier">next_iname</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">);</span>
+                    <span class="functiontext">Properties::Valued::new_nameless_using</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">next_iname</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="identifier">P_KD_Count</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"KD_Count"</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
 </pre>

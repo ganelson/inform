@@ -140,15 +140,25 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 						Inter::SymbolsTables::id_from_symbol(I, outer, unchecked_kind_symbol), v1, v2,
 						baseline, NULL));
 					break;
-				case ATTRIBUTE_PLM:
-					CodeGen::Link::guard(Inter::Property::new(&ib,
-						Inter::SymbolsTables::id_from_symbol(I, outer, con_name),
-						Inter::SymbolsTables::id_from_symbol(I, outer, truth_state_kind_symbol),
-						baseline, NULL));
-					Inter::Symbols::annotate_i(I, con_name, ATTRIBUTE_IANN, 1);
-					Inter::Symbols::annotate_i(I, con_name, EITHER_OR_IANN, 1);
-					Inter::Symbols::set_translate(con_name, con_name->symbol_name);
+				case ATTRIBUTE_PLM: {
+					TEMPORARY_TEXT(A);
+					WRITE_TO(A, "P_%S", con_name->symbol_name);
+					inter_symbol *attr_symbol = Inter::SymbolsTables::symbol_from_name(into_scope, A);
+					
+					if ((attr_symbol == NULL) || (!Inter::Symbols::is_defined(attr_symbol))) {
+						if (attr_symbol == NULL) attr_symbol = con_name;
+						CodeGen::Link::guard(Inter::Property::new(&ib,
+							Inter::SymbolsTables::id_from_symbol(I, outer, attr_symbol),
+							Inter::SymbolsTables::id_from_symbol(I, outer, truth_state_kind_symbol),
+							baseline, NULL));
+						Inter::Symbols::annotate_i(I, attr_symbol, ATTRIBUTE_IANN, 1);
+						Inter::Symbols::annotate_i(I, attr_symbol, EITHER_OR_IANN, 1);
+						Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
+					} else if (attr_symbol) Inter::Symbols::annotate_i(I, attr_symbol, ASSIMILATED_IANN, 1);
+
+					DISCARD_TEXT(A);
 					break;
+				}
 				case PROPERTY_PLM:
 					CodeGen::Link::guard(Inter::Property::new(&ib,
 						Inter::SymbolsTables::id_from_symbol(I, outer, con_name),
@@ -508,7 +518,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, text_s
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
 	LOG("Glob: %S\n", S);
-	CodeGen::Link::log_search_path();
+	// CodeGen::Link::log_search_path();
 	inter_t ID = Inter::create_text(I);
 	text_stream *glob_storage = Inter::get_text(I, ID);
 	Str::copy(glob_storage, S);

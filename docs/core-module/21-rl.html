@@ -333,7 +333,7 @@ must be added after the rule has been created:
 
 <p class="endnote">The function Rules::get_handler_definition is used in 17/rs (<a href="17-rs.html#SP6_2">&#167;6.2</a>).</p>
 
-<p class="endnote">The function Rules::get_I7_definition is used in 21/rb (<a href="21-rb.html#SP8">&#167;8</a>, <a href="21-rb.html#SP17">&#167;17</a>, <a href="21-rb.html#SP18">&#167;18</a>, <a href="21-rb.html#SP25">&#167;25</a>), 21/rl2 (<a href="21-rl2.html#SP19">&#167;19</a>), 22/pu (<a href="22-pu.html#SP6_2">&#167;6.2</a>), 25/cii (<a href="25-cii.html#SP3_1_1_4_11">&#167;3.1.1.4.11</a>).</p>
+<p class="endnote">The function Rules::get_I7_definition is used in 21/rb (<a href="21-rb.html#SP8">&#167;8</a>, <a href="21-rb.html#SP17">&#167;17</a>, <a href="21-rb.html#SP18">&#167;18</a>, <a href="21-rb.html#SP25">&#167;25</a>), 21/rl2 (<a href="21-rl2.html#SP19">&#167;19</a>), 22/pu (<a href="22-pu.html#SP6_2">&#167;6.2</a>), 25/cii (<a href="25-cii.html#SP3_1_1_4_12">&#167;3.1.1.4.12</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Applicability constraints. </b></p>
 
@@ -760,22 +760,12 @@ do.
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">RulePrintingRule_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RulePrintingRule_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULES_SUBPACKAGE</span><span class="plain">);</span>
-            <span class="identifier">RulePrintingRule_iname</span><span class="plain"> =</span>
-                <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                    <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"print_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                    <span class="identifier">R</span><span class="plain">,</span>
-                    <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">RulePrintingRule_INAME</span><span class="plain">));</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RulePrintingRule_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_NRL</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">();</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">());</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>

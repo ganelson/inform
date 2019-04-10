@@ -720,7 +720,6 @@ pcalc_prop *Calculus::Simplifications::region_containment(pcalc_prop *prop, int 
 					kind *KR = Specifications::to_kind(pl->terms[j].constant);
 					if (Kinds::Compare::le(KR, K_region)) {
 						regionality = TRUE;
-						LOG("Regional: $T == $u\n", pl->terms[j].constant, KR);
 					}
 				}
 				if (pl->terms[1-j].constant) {

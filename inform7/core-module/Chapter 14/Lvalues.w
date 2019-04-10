@@ -394,15 +394,22 @@ object as produced the original text containing the substitution.
 @ Table entries are simple too, but come in four variant forms:
 
 @<Compile a table entry specification@> =
+	inter_name *lookup = InterNames::extern(TABLELOOKUPENTRY_EXNAMEF);
+	inter_name *lookup_corr = InterNames::extern(TABLELOOKUPCORR_EXNAMEF);
+	if (TEST_COMPILATION_MODE(TABLE_EXISTENCE_CMODE_ISSBM)) {
+		lookup = InterNames::extern(EXISTSTABLELOOKUPENTRY_EXNAMEF);
+		lookup_corr = InterNames::extern(EXISTSTABLELOOKUPCORR_EXNAMEF);
+	}
+
 	switch(ParseTree::no_children(spec_found)) {
 		case 1:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-				Emit::val_iname(K_value, InterNames::extern(TABLELOOKUPENTRY_EXNAMEF));
+				Emit::val_iname(K_value, lookup);
 			} else {
 				LocalVariables::used_stack_selection();
 				LocalVariables::add_table_lookup();
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TABLELOOKUPENTRY_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(lookup));
 					Emit::down();
 				}
 				local_variable *ct_0_lv = LocalVariables::by_name(I"ct_0");
@@ -425,10 +432,10 @@ object as produced the original text containing the substitution.
 			break;
 		case 3:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-				Emit::val_iname(K_value, InterNames::extern(TABLELOOKUPENTRY_EXNAMEF));
+				Emit::val_iname(K_value, lookup);
 			} else {
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TABLELOOKUPENTRY_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(lookup));
 					Emit::down();
 				}
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next);
@@ -444,10 +451,10 @@ object as produced the original text containing the substitution.
 			break;
 		case 4:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-				Emit::val_iname(K_value, InterNames::extern(TABLELOOKUPCORR_EXNAMEF));
+				Emit::val_iname(K_value, lookup_corr);
 			} else {
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TABLELOOKUPCORR_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(lookup_corr));
 					Emit::down();
 				}
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next->next);

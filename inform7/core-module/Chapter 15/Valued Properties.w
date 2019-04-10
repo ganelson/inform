@@ -61,7 +61,7 @@ Core Inform creates no such properties, but many of the plugins do.
 property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	wording W = Feeds::feed_stream(I6_form);
 	if (K == NULL) internal_error("new nameless property without kind");
-	property *prn = Properties::create(EMPTY_WORDING);
+	property *prn = Properties::create(EMPTY_WORDING, NULL);
 	InterNames::attach_memo(Properties::iname(prn), W);
 	Properties::exclude_from_index(prn);
 	prn->either_or = FALSE;
@@ -70,6 +70,19 @@ property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
 	prn->stored_bp = NULL;
 	prn->run_time_only = TRUE;
+	return prn;
+}
+
+property *Properties::Valued::new_nameless_using(kind *K, inter_name *using) {
+	if (K == NULL) internal_error("new nameless property without kind");
+	property *prn = Properties::create(EMPTY_WORDING, using);
+	Properties::exclude_from_index(prn);
+	prn->either_or = FALSE;
+	prn->property_value_kind = K;
+	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
+	prn->stored_bp = NULL;
+	prn->run_time_only = TRUE;
+	Properties::set_translation_S(prn, InterNames::to_text(using));
 	return prn;
 }
 

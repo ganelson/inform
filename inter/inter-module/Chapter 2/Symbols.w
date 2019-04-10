@@ -76,6 +76,7 @@ void Inter::Symbols::log(OUTPUT_STREAM, void *vs) {
 	else {
 		Inter::SymbolsTables::symbol_to_url_name(DL, S);
 		WRITE("{%d}", S->symbol_ID - SYMBOL_BASE_VAL);
+		if (Str::len(S->translate_text) > 0) WRITE("'%S'", S->translate_text);
 	}
 }
 

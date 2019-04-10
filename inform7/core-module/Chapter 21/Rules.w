@@ -538,22 +538,12 @@ inter_name *Rules::iname(rule *R) {
 @h Printing rule names at run time.
 
 =
-inter_name *RulePrintingRule_iname = NULL;
 inter_name *Rules::RulePrintingRule(void) {
-	if (RulePrintingRule_iname == NULL) {
-		package_request *R = Packaging::synoptic_resource(RULES_SUBPACKAGE);
-		RulePrintingRule_iname =
-			Packaging::function(
-				InterNames::one_off(I"print_fn", R),
-				R,
-				InterNames::iname(RulePrintingRule_INAME));
-	}
-	return RulePrintingRule_iname;
+	return InterNames::find(RULEPRINTINGRULE_NRL);
 }
 
 void Rules::RulePrintingRule_routine(void) {
-	inter_name *iname = Rules::RulePrintingRule();
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Rules::RulePrintingRule());
 	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
 	Emit::inv_primitive(ifelse_interp);
 	Emit::down();
