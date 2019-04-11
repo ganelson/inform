@@ -284,7 +284,6 @@ void Emit::begin(void) {
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
 	Packaging::exit(save);
 
-	InterNames::to_symbol(InterNames::iname(TableOfVerbs_INAME));
 	InterNames::to_symbol(InterNames::iname(Story_INAME));
 
 	Emit::comment(I"Fundamental constants:");

@@ -98,6 +98,8 @@ int CoreMain::main(int argc, char *argv[]) {
 @<Banner and startup@> =
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	story_filename_extension = I"ulx";
+	inter_processing_chain = I"link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-i6:*";
+	CoreMain::set_inter_chain_modes();
 
 	PRINT("%B build %B has started.\n", FALSE, TRUE);
 	STREAM_FLUSH(STDOUT);
@@ -354,6 +356,8 @@ with "Output.i6t".
 		COMPILATION_STEP(PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
 		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
 		COMPILATION_STEP(PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
+	} else {
+		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
 	}
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")
@@ -508,6 +512,10 @@ void CoreMain::set_inter_chain(wording W) {
 	Str::delete_first_character(inter_processing_chain);
 	Str::delete_last_character(inter_processing_chain);
 	LOG("Setting chain %S\n", inter_processing_chain);
+	CoreMain::set_inter_chain_modes();
+}
+void CoreMain::set_inter_chain_modes() {
+	import_mode = FALSE; export_mode = FALSE;
 	int port = CodeGen::Stage::port(inter_processing_chain);
 	if (port == 1) export_mode = TRUE;
 	if ((port == -1) && (disable_import == FALSE)) import_mode = TRUE;

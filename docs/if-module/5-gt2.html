@@ -789,7 +789,7 @@ nothing else.
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WORN_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_worn</span><span class="plain">));</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -805,7 +805,7 @@ nothing else.
                                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WORN_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_worn</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -957,7 +957,7 @@ nothing else.
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WORN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_worn</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -970,7 +970,7 @@ nothing else.
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WORN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_worn</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>

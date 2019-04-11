@@ -85,6 +85,7 @@ inter_error_message *Inter::Types::verify(inter_frame P, inter_symbol *kind_symb
 			else if (D.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
 			else if (D.data[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
 			else if (D.data[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
+			else if (D.data[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
 			else return Inter::Frame::error(&P, I"nonconstant symbol", symb->symbol_name);
 			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
 				WRITE_TO(STDERR, "cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);

@@ -1318,7 +1318,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->x_s);
-			Emit::val_iname(K_value, InterNames::extern(FLOATNAN_EXNAMEF));
+			Emit::val_iname(K_value, InterNames::find(FLOAT_NAN_NRL));
 		Emit::up();
 		Emit::code();
 		Emit::down();

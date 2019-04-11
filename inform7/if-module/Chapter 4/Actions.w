@@ -1199,12 +1199,7 @@ void PL::Actions::ActionData(void) {
 
 	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
 
-	package_request *R = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
-	inter_name *DB_Action_Details_iname =
-		Packaging::function(
-			InterNames::one_off(I"DB_Action_Details_fn", R),
-			R,
-			InterNames::iname(DB_Action_Details_INAME));
+	inter_name *DB_Action_Details_iname = InterNames::find(DB_ACTION_DETAILS_NRL);
 	save = Routines::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");

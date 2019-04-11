@@ -564,7 +564,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(has_interp);
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->rv_s);
-								Emit::val_iname(K_value, InterNames::extern(WORN_EXNAMEF));
+								Emit::val_iname(K_value, Properties::iname(P_worn));
 							Emit::up();
 							Emit::code();
 							Emit::down();
@@ -580,7 +580,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::inv_primitive(has_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->rv_s);
-									Emit::val_iname(K_value, InterNames::extern(WORN_EXNAMEF));
+									Emit::val_iname(K_value, Properties::iname(P_worn));
 								Emit::up();
 							Emit::up();
 							Emit::code();
@@ -732,7 +732,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::inv_primitive(has_interp);
 					Emit::down();
 						Emit::val_iname(K_value, InterNames::find(SELF_NRL));
-						Emit::val_iname(K_value, InterNames::extern(WORN_EXNAMEF));
+						Emit::val_iname(K_value, Properties::iname(P_worn));
 					Emit::up();
 					@<Then jump to our doom@>;
 				Emit::up();
@@ -745,7 +745,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::inv_primitive(has_interp);
 						Emit::down();
 							Emit::val_iname(K_value, InterNames::find(SELF_NRL));
-							Emit::val_iname(K_value, InterNames::extern(WORN_EXNAMEF));
+							Emit::val_iname(K_value, Properties::iname(P_worn));
 						Emit::up();
 					Emit::up();
 					@<Then jump to our doom@>;

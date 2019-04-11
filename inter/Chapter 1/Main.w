@@ -54,10 +54,10 @@ text_stream *inter_processing_chain = NULL;
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case TEXTUAL_CLSW: output_textually = Filenames::from_text(arg); break;
-		case BINARY_CLSW: output_binarily = Filenames::from_text(arg); break;
-		case INTER_CLSW: inter_processing_chain = Str::duplicate(arg); break;
-		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); break;
-		case TEMPLATE_CLSW: template_path = Pathnames::from_text(arg); break;
+		case BINARY_CLSW: output_binarily = Filenames::from_text(arg); inter_processing_chain = NULL; break;
+		case INTER_CLSW: inter_processing_chain = Str::duplicate(arg); inter_processing_chain = NULL; break;
+		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); inter_processing_chain = NULL; break;
+		case TEMPLATE_CLSW: template_path = Pathnames::from_text(arg); inter_processing_chain = NULL; break;
 	}
 }
 

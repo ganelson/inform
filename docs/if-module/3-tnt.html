@@ -406,8 +406,9 @@ actually means it's rarely needed.)
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">set_csn</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P_cap_short_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">P_cap_short_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span>
-                    <span class="identifier">I</span><span class="string">"cap_short_name"</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">property_iname</span><span class="plain"> = </span><span class="identifier">InterNames::find</span><span class="plain">(</span><span class="identifier">CAPSHORTNAME_NRL</span><span class="plain">);</span>
+                <span class="identifier">P_cap_short_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless_using</span><span class="plain">(</span>
+                    <span class="identifier">K_text</span><span class="plain">, </span><span class="identifier">property_iname</span><span class="plain">);</span>
                 <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">BASICS_SUBPACKAGE</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">CAP_SHORT_NAME_EXISTS_INAME</span><span class="plain">);</span>
                 <span class="identifier">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
@@ -673,14 +674,14 @@ capitalising and fixing "your" as needed.
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyaddress_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">CAPSHORTNAME_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::find</span><span class="plain">(</span><span class="identifier">CAPSHORTNAME_NRL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">porname</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">CAPSHORTNAME_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::find</span><span class="plain">(</span><span class="identifier">CAPSHORTNAME_NRL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>

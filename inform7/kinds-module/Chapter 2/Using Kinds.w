@@ -473,6 +473,7 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 		R = Kinds::Behaviour::package(K); external = FALSE;
 	}
 	if (Kinds::Compare::eq(K, K_time)) external = TRUE;
+	if (Kinds::Compare::eq(K, K_number)) external = TRUE;
 	if (Kinds::Compare::eq(K, K_real_number)) external = TRUE;
 	if (Str::len(X) > 0) {
 		if (R) {
@@ -480,7 +481,15 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 				Packaging::function_text(
 					InterNames::one_off(I"print_fn", R),
 					R,
-					X);
+					(external)?NULL:X);
+			if (external) {
+				LOG("Alpha External %S for $u\n", X, K);
+				Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->pr_iname), MAKE_NAME_UNIQUE);
+				inter_name *actual_iname = InterNames::extern_name(PRINTING_ROUTINE_INAMEF, X, NULL);
+				packaging_state save = Packaging::enter_home_of(K->construct->pr_iname);
+				Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
+				Packaging::exit(save);
+			}
 		} else {
 			if (external) K->construct->pr_iname = InterNames::extern_name(PRINTING_ROUTINE_INAMEF, X, NULL);
 			else K->construct->pr_iname = InterNames::intern(PRINTING_ROUTINE_INAMEF, X);

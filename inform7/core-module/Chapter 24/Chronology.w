@@ -235,7 +235,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		@<Emit the op@>;
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(InterNames::iname(TestSinglePastState_INAME)));
+	Emit::inv_call(InterNames::to_symbol(InterNames::find(TESTSINGLEPASTSTATE_NRL)));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) past_flag);
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_tenses);
@@ -359,12 +359,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		"Creating %d past tense conditions in TestSinglePastState\n",
 			NUMBER_CREATED(past_tense_condition_record));
 
-	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"test_fn", PR),
-		PR,
-		InterNames::iname(TestSinglePastState_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(InterNames::find(TESTSINGLEPASTSTATE_NRL));
 	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");

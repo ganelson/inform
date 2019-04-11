@@ -281,6 +281,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e MOVE_I6RW
 @e JUMP_I6RW
 @e SWITCH_I6RW
+@e DEFAULT_I6RW
 @e FONT_I6RW
 @e BREAK_I6RW
 @e CONTINUE_I6RW
@@ -1229,6 +1230,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"move")) { is = RESERVED_ISTT; which_rw = MOVE_I6RW; }
 	if (Str::eq(T, I"jump")) { is = RESERVED_ISTT; which_rw = JUMP_I6RW; }
 	if (Str::eq(T, I"switch")) { is = RESERVED_ISTT; which_rw = SWITCH_I6RW; }
+	if (Str::eq(T, I"default")) { is = RESERVED_ISTT; which_rw = DEFAULT_I6RW; }
 	if (Str::eq(T, I"font")) { is = RESERVED_ISTT; which_rw = FONT_I6RW; }
 	if (Str::eq(T, I"continue")) { is = RESERVED_ISTT; which_rw = CONTINUE_I6RW; }
 	if (Str::eq(T, I"break")) { is = RESERVED_ISTT; which_rw = BREAK_I6RW; }
@@ -1687,11 +1689,23 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
 				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
 				if ((n->ist_type == COLON_ISTT) && (bl == 0)) {
-					inter_schema_node *sw_val = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					inter_schema_node *sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
-					sw_val->next_node = sw_code;
-					sw_val->parent_node = isn; isn->child_node = sw_val;
-					sw_code->parent_node = isn;
+					int defaulter = FALSE;
+					if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == RESERVED_ISTT) &&
+						(isn->expression_tokens->reserved_word == DEFAULT_I6RW)) defaulter = TRUE;
+					
+					inter_schema_node *sw_val = NULL;
+					inter_schema_node *sw_code = NULL;
+					if (defaulter) {
+						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+						isn->child_node = sw_code;
+						sw_code->parent_node = isn;
+					} else {
+						sw_val = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+						sw_val->next_node = sw_code;
+						sw_val->parent_node = isn; isn->child_node = sw_val;
+						sw_code->parent_node = isn;
+					}
 
 					InterSchemas::mark_unclosed(sw_code);
 
@@ -1704,11 +1718,14 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 					}
 					if (in_switch == FALSE) InterSchemas::mark_case_closed(isn);
 
-					sw_val->expression_tokens = isn->expression_tokens;
+					if (sw_val) sw_val->expression_tokens = isn->expression_tokens;
 					prev->next = NULL;
 					isn->expression_tokens = NULL;
 					isn->isn_type = STATEMENT_ISNT;
-					isn->isn_clarifier = case_interp;
+					if (defaulter)
+						isn->isn_clarifier = default_interp;
+					else
+						isn->isn_clarifier = case_interp;
 
 					inter_schema_node *sw_code_exp = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 					sw_code_exp->expression_tokens = n->next;
@@ -1716,8 +1733,9 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 					sw_code->child_node = sw_code_exp;
 					sw_code_exp->parent_node = sw_code;
 
-					for (inter_schema_token *t = sw_val->expression_tokens; t; t = t->next)
-						t->owner = sw_val;
+					if (sw_val)
+						for (inter_schema_token *t = sw_val->expression_tokens; t; t = t->next)
+							t->owner = sw_val;
 					for (inter_schema_token *t = sw_code_exp->expression_tokens; t; t = t->next)
 						t->owner = sw_code_exp;
 
@@ -2574,6 +2592,7 @@ int InterSchemas::ip_arity(inter_symbol *O) {
 	if (O == move_interp) arity = 2;
 	if (O == give_interp) arity = 2;
 	if (O == take_interp) arity = 2;
+	if (O == default_interp) arity = 1;
 	if (O == case_interp) arity = 2;
 	if (O == switch_interp) arity = 2;
 	if (O == objectloop_interp) arity = 2;
@@ -2600,6 +2619,7 @@ int InterSchemas::ip_prim_cat(inter_symbol *O, int i) {
 	if ((O == if_interp) && (i == 1)) ok = CODE_PRIM_CAT;
 	if ((O == switch_interp) && (i == 1)) ok = CODE_PRIM_CAT;
 	if ((O == case_interp) && (i == 1)) ok = CODE_PRIM_CAT;
+	if ((O == default_interp) && (i == 0)) ok = CODE_PRIM_CAT;
 	if ((O == ifelse_interp) && (i >= 1)) ok = CODE_PRIM_CAT;
 	if ((InterSchemas::ip_loopy(O)) && (i == InterSchemas::ip_arity(O) - 1)) ok = CODE_PRIM_CAT;
 	return ok;

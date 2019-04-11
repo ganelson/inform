@@ -453,7 +453,7 @@ void PL::Parsing::Tokens::General::after_gl_failed(gpr_kit *gprk, inter_symbol *
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_iname(K_value, InterNames::extern(PARSERACTION_EXNAMEF));
-			Emit::val_iname(K_value, InterNames::extern(PLURALFOUND_EXNAMEF));
+			Emit::val_iname(K_value, InterNames::find(PLURALFOUND_NRL));
 		Emit::up();
 	}
 	Emit::inv_primitive(store_interp);

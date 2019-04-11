@@ -276,8 +276,9 @@ actually means it's rarely needed.)
 	}
 	if (set_csn) {
 		if (P_cap_short_name == NULL) {
-			P_cap_short_name = Properties::Valued::new_nameless(
-				I"cap_short_name", K_text);
+			inter_name *property_iname = InterNames::find(CAPSHORTNAME_NRL);
+			P_cap_short_name = Properties::Valued::new_nameless_using(
+				K_text, property_iname);
 			package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
 			inter_name *iname = InterNames::iname(CAP_SHORT_NAME_EXISTS_INAME);
 			Packaging::house(iname, PR);
@@ -454,14 +455,14 @@ void PL::Naming::compile_small_names(void) {
 				Emit::inv_primitive(propertyaddress_interp);
 				Emit::down();
 					Emit::val_iname(K_value, Instances::iname(owner));
-					Emit::val_iname(K_object, InterNames::extern(CAPSHORTNAME_EXNAMEF));
+					Emit::val_iname(K_value, InterNames::find(CAPSHORTNAME_NRL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
 					Emit::inv_call(InterNames::to_symbol(porname));
 					Emit::down();
 						Emit::val_iname(K_value, Instances::iname(owner));
-						Emit::val_iname(K_object, InterNames::extern(CAPSHORTNAME_EXNAMEF));
+						Emit::val_iname(K_value, InterNames::find(CAPSHORTNAME_NRL));
 						Emit::val(K_number, LITERAL_IVAL, 1);
 					Emit::up();
 				Emit::up();
