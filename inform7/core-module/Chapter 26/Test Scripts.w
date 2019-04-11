@@ -296,7 +296,7 @@ void PL::Parsing::TestScripts::write_text(void) {
 
 void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 	if (NUMBER_CREATED(test_scenario) > 0) {
-		package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+		package_request *PR = Packaging::generic_resource(BASICS_SUBPACKAGE);
 		inter_name *iname = InterNames::iname(NO_TEST_SCENARIOS_INAME);
 		Packaging::house(iname, PR);
 		packaging_state save = Packaging::enter_home_of(iname);
@@ -306,14 +306,14 @@ void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 }
 
 void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
-	inter_name *iname = InterNames::find(TESTSCRIPTSUB_NRL);
+	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_NRL);
 	packaging_state save = Routines::begin(iname);
 	Emit::rfalse();
 	Routines::end(save);
 }
 
 void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
-	inter_name *iname = InterNames::find(TESTSCRIPTSUB_NRL);
+	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_NRL);
 	packaging_state save = Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Emit::inv_primitive(print_interp);

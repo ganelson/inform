@@ -761,7 +761,7 @@ do.
 
 <pre class="display">
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_NRL</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_NRL</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -779,7 +779,7 @@ do.
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lt_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Phrases::Manager::NRC_iname</span><span class="plain">());</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_RULEBOOKS_CREATED_NRL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -825,7 +825,7 @@ do.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rulebooks::RulebookNames_iname</span><span class="plain">());</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKNAMES_NRL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>

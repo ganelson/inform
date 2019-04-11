@@ -742,13 +742,7 @@ void Kinds::RunTime::compile_structures(void) {
 	Packaging::exit(save);
 
 @<Compile the default value finder@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *DefaultValueFinder_iname =
-		Packaging::function(
-			InterNames::one_off(I"defaultvaluefinder_fn", R),
-			R,
-			InterNames::iname(DefaultValueFinder_INAME));
-	packaging_state save = Routines::begin(DefaultValueFinder_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(DEFAULTVALUEFINDER_NRL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
@@ -816,9 +810,9 @@ has essentially no memory constraints compared with the Z-machine.
 		total_heap_allocation = UseOptions::get_dynamic_memory_allocation();
 	while (max_heap < total_heap_allocation) max_heap = max_heap*2;
 	if (VirtualMachines::is_16_bit())
-		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", max_heap, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", max_heap, Packaging::generic_resource(BASICS_SUBPACKAGE));
 	else
-		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", 4*max_heap, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", 4*max_heap, Packaging::generic_resource(BASICS_SUBPACKAGE));
 	LOG("Providing for a total heap of %d, given requirement of %d\n",
 		max_heap, total_heap_allocation);
 
@@ -1078,6 +1072,12 @@ void Kinds::RunTime::compile_nnc(text_stream *name, int val, package_request *PR
 	Packaging::exit(save);
 }
 
+void Kinds::RunTime::compile_nnci(inter_name *name, int val) {
+	packaging_state save = Packaging::enter_home_of(name);
+	Emit::named_numeric_constant(name, (inter_t) val);
+	Packaging::exit(save);
+}
+
 void Kinds::RunTime::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
@@ -1091,15 +1091,15 @@ void Kinds::RunTime::compile_instance_counts(void) {
 		}
 	}
 
-	Kinds::RunTime::compile_nnc(I"CCOUNT_BINARY_PREDICATE", NUMBER_CREATED(binary_predicate), Packaging::synoptic_resource(RELATIONS_SUBPACKAGE));
-	Kinds::RunTime::compile_nnc(I"CCOUNT_PROPERTY", NUMBER_CREATED(property), Packaging::synoptic_resource(PROPERTIES_SUBPACKAGE));
+	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_NRL), NUMBER_CREATED(binary_predicate));
+	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_NRL), NUMBER_CREATED(property));
 	#ifdef IF_MODULE
-	Kinds::RunTime::compile_nnc(I"CCOUNT_ACTION_NAME", NUMBER_CREATED(action_name), Packaging::synoptic_resource(ACTIONS_SUBPACKAGE));
+	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_NRL), NUMBER_CREATED(action_name));
 	#endif
-	Kinds::RunTime::compile_nnc(I"CCOUNT_QUOTATIONS", Strings::TextLiterals::CCOUNT_QUOTATIONS(), Packaging::synoptic_resource(BASICS_SUBPACKAGE));
-	Kinds::RunTime::compile_nnc(I"MAX_FRAME_SIZE_NEEDED", max_frame_size_needed, Packaging::synoptic_resource(BASICS_SUBPACKAGE));
-	Kinds::RunTime::compile_nnc(I"RNG_SEED_AT_START_OF_PLAY", rng_seed_at_start_of_play, Packaging::synoptic_resource(BASICS_SUBPACKAGE));
-	Kinds::RunTime::compile_nnc(I"DEFAULT_SCORING_SETTING", FALSE, Packaging::synoptic_resource(IF_SUBPACKAGE));
+	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_NRL), Strings::TextLiterals::CCOUNT_QUOTATIONS());
+	Kinds::RunTime::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_NRL), max_frame_size_needed);
+	Kinds::RunTime::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_NRL), rng_seed_at_start_of_play);
+	Kinds::RunTime::compile_nnci(Hierarchy::find(DEFAULT_SCORING_SETTING_NRL), FALSE);
 }
 
 void Kinds::RunTime::compile_data_type_support_routines(void) {
@@ -1356,7 +1356,7 @@ and |b| inclusive.
 				Emit::inv_primitive(random_interp);
 				Emit::down();
 					if (Kinds::Behaviour::is_quasinumerical(K))
-						Emit::val_iname(K_value, InterNames::find(MAX_POSITIVE_NUMBER_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
 					else
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
 				Emit::up();
@@ -1415,7 +1415,7 @@ and |b| inclusive.
 		Emit::down();
 			Emit::inv_primitive(random_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::find(MAX_POSITIVE_NUMBER_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
 			Emit::up();
 			Emit::inv_primitive(plus_interp);
 			Emit::down();
@@ -1446,13 +1446,7 @@ be |K|. (Since I6 is typeless and in general the kind of |V| cannot be
 deduced from its value alone, |K| must explicitly be supplied.)
 
 @<Compile PrintKindValuePair@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *PrintKindValuePair_iname =
-		Packaging::function(
-			InterNames::one_off(I"printkindvaluepair_fn", R),
-			R,
-			InterNames::iname(PrintKindValuePair_INAME));
-	packaging_state save = Routines::begin(PrintKindValuePair_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(PRINTKINDVALUEPAIR_NRL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	inter_symbol *v_s = LocalVariables::add_named_call_as_symbol(I"v");
 	Emit::inv_primitive(store_interp);
@@ -1507,7 +1501,7 @@ for instance, when increasing the size of a list of $K$ to include new entries,
 which have to be given some type-safe value to start out at.
 
 @<Compile DefaultValueOfKOV@> =
-	packaging_state save = Routines::begin(InterNames::find(DEFAULTVALUEOFKOV_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(DEFAULTVALUEOFKOV_NRL));
 	inter_symbol *sk_s = LocalVariables::add_named_call_as_symbol(I"sk");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
@@ -1576,13 +1570,7 @@ so it must have no side-effects. |F(x,y)| should return 1 if $x>y$,
 unless the two values are genuinely equal.
 
 @<Compile KOVComparisonFunction@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *KOVComparisonFunction_iname =
-		Packaging::function(
-			InterNames::one_off(I"comparison_fn", R),
-			R,
-			InterNames::iname(KOVComparisonFunction_INAME));
-	packaging_state save = Routines::begin(KOVComparisonFunction_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(KOVCOMPARISONFUNCTION_NRL));
 	LocalVariables::add_named_call(I"k");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
@@ -1637,13 +1625,7 @@ unless the two values are genuinely equal.
 	Routines::end(save);
 
 @<Compile KOVDomainSize@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *KOVDomainSize_iname =
-		Packaging::function(
-			InterNames::one_off(I"domainsize_fn", R),
-			R,
-			InterNames::iname(KOVDomainSize_INAME));
-	packaging_state save = Routines::begin(KOVDomainSize_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(KOVDOMAINSIZE_NRL));
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
 	Emit::inv_primitive(store_interp);
@@ -1699,13 +1681,7 @@ unless the two values are genuinely equal.
 storing pointers to blocks on the heap.
 
 @<Compile KOVIsBlockValue@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *KOVIsBlockValue_iname =
-		Packaging::function(
-			InterNames::one_off(I"blockvalue_fn", R),
-			R,
-			InterNames::iname(KOVIsBlockValue_INAME));
-	packaging_state save = Routines::begin(KOVIsBlockValue_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(KOVISBLOCKVALUE_NRL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -1745,13 +1721,7 @@ for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
 such a function does, see "BlockValues.i6t".
 
 @<Compile KOVSupportFunction@> =
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *KOVSupportFunction_iname =
-		Packaging::function(
-			InterNames::one_off(I"support_fn", R),
-			R,
-			InterNames::iname(KOVSupportFunction_INAME));
-	packaging_state save = Routines::begin(KOVSupportFunction_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(KOVSUPPORTFUNCTION_NRL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	inter_symbol *fail_s = LocalVariables::add_named_call_as_symbol(I"fail");
 
@@ -1811,14 +1781,8 @@ Z-machine array space.
 
 =
 void Kinds::RunTime::I7_Kind_Name_routine(void) {
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *I7_Kind_Name_iname =
-		Packaging::function(
-			InterNames::one_off(I"printkindname_fn", R),
-			R,
-			InterNames::iname(I7_Kind_Name_INAME));
 	kind *K;
-	packaging_state save = Routines::begin(I7_Kind_Name_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(I7_KIND_NAME_NRL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Compare::lt(K, K_object)) {

@@ -8,8 +8,6 @@
 	set: $INTERNAL = inform7/Internal
 	set: $WORKSPACE = ../intest/Workspace
 
-	set: $INTERCHAIN = link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-i6:*
-
 	set: $VM = G
 	if: $CASE %c*-Z
 		set: $VM = Z
@@ -45,7 +43,7 @@
 	endif
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	step: $I7 `$I7OPTIONS -project $WORK/Example.inform -inter $INTERCHAIN >$I7CONSOLE 2>&1
+	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 
 	set: $BLURB = $WORK/Example.inform/Release.blurb

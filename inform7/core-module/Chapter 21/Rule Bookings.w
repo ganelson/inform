@@ -724,20 +724,8 @@ The following can generate both old-style array rulebooks and routine rulebooks,
 which were introduced in December 2010.
 
 =
-inter_name *EMPTY_RULEBOOK_iname = NULL;
-inter_name *Rules::Bookings::empty_rulebook_iname(void) {
-	if (EMPTY_RULEBOOK_iname == NULL) {
-		package_request *PR = Packaging::request_resource(NULL, RULEBOOKS_SUBPACKAGE);
-		EMPTY_RULEBOOK_iname = Packaging::function(
-			InterNames::one_off(I"empty_fn", PR),
-			PR,
-			InterNames::iname(EMPTY_RULEBOOK_INAME));
-	}
-	return EMPTY_RULEBOOK_iname;
-}
-
 void Rules::Bookings::start_list_compilation(void) {
-	packaging_state save = Routines::begin(Rules::Bookings::empty_rulebook_iname());
+	packaging_state save = Routines::begin(Hierarchy::find(EMPTY_RULEBOOK_INAME_NRL));
 	LocalVariables::add_named_call(I"forbid_breaks");
 	Emit::rfalse();
 	Routines::end(save);
@@ -759,7 +747,7 @@ inter_name *Rules::Bookings::list_compile(booking *list_head,
 	int countup = Rules::Bookings::no_rules_in_list(list_head);
 	if (countup == 0) {
 		rb_symb = Emit::named_iname_constant(identifier, K_value,
-			Rules::Bookings::empty_rulebook_iname());
+			Hierarchy::find(EMPTY_RULEBOOK_INAME_NRL));
 	} else {
 		int format = ROUTINE_RBF;
 

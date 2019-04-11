@@ -232,7 +232,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->abbreviable = FALSE;
 	an->translated = FALSE;
 
-	package_request *R = Packaging::request_resource(NULL, ACTIONS_SUBPACKAGE);
+	package_request *R = Packaging::generic_resource(ACTIONS_SUBPACKAGE);
 	an->an_package = Packaging::request(Packaging::supply_iname(R, ACTION_PR_COUNTER), R, action_ptype);
 	an->an_base_iname = InterNames::new(ACTION_BASE_INAMEF);
 	InterNames::attach_memo(an->an_base_iname, W);
@@ -999,9 +999,8 @@ inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 }
 
 void PL::Actions::ActionHappened(void) {
-	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"ActionHappened", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
 		Emit::array_numeric_entry(0);
@@ -1165,9 +1164,8 @@ void PL::Actions::ActionData(void) {
 	action_name *an;
 	int mn, ms, ml, mnp, msp, hn, hs, record_count = 0;
 
-	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"ActionData", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIONDATA_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_table_array_begin(iname, K_value);
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
@@ -1193,13 +1191,15 @@ void PL::Actions::ActionData(void) {
 		Emit::array_numeric_entry((inter_t) (20000+an->allocation_id));
 	}
 	Emit::array_end();
-	inter_name *ad_iname = InterNames::one_off(I"AD_RECORDS", PR);
+	Packaging::exit(save);
+	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_NRL);
+	save = Packaging::enter_home_of(ad_iname);
 	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
 	Packaging::exit(save);
 
 	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
 
-	inter_name *DB_Action_Details_iname = InterNames::find(DB_ACTION_DETAILS_NRL);
+	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_NRL);
 	save = Routines::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
@@ -1342,9 +1342,8 @@ void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
 }
 
 void PL::Actions::ActionCoding_array(void) {
-	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"ActionCoding", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIONCODING_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	action_name *an;
 	LOOP_OVER(an, action_name) {

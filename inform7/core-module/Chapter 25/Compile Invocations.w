@@ -43,7 +43,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
 			Emit::inv_primitive(push_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::find(SELF_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
 			Emit::up();
 		}
 		if (Invocations::is_marked_unproven(Invocations::first_in_list(invl))) {
@@ -55,7 +55,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
 			Emit::inv_primitive(pull_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::find(SELF_NRL));
+				Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
 			Emit::up();
 		}
 	}

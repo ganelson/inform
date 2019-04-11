@@ -2195,7 +2195,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Emit::down();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_value, InterNames::find(SELF_NRL));
+					Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
 					Emit::val_iname(K_object, InterNames::extern(ACTOR_EXNAMEF));
 				Emit::up();
 				Emit::val(K_truth_state, LITERAL_IVAL, 1);

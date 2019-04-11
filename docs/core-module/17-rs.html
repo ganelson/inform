@@ -513,8 +513,7 @@ divided up by the extensions containing the rules which produce them.
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">ResponseDivisions_INAME</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULES_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RESPONSEDIVISIONS_NRL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">group_ef</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>

@@ -519,9 +519,8 @@ void Rulebooks::rulebook_var_creators(void) {
 				Rulebooks::get_stv_creator_iname(rb));
 
 	if (memory_economy_in_force == FALSE) {
-		package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-		inter_name *iname = InterNames::one_off(I"rulebook_var_creators", PR);
-		packaging_state save = Packaging::enter(PR);
+		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_NRL);
+		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(rb, rulebook) {
 			if (StackedVariables::owner_empty(rb->owned_by_rb)) Emit::array_numeric_entry(0);
@@ -534,11 +533,7 @@ void Rulebooks::rulebook_var_creators(void) {
 }
 
 @<Make slow lookup routine@> =
-	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"slow_lookup_fn", PR),
-		PR,
-		InterNames::iname(MStack_GetRBVarCreator_INAME));
+	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_NRL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
 
@@ -881,9 +876,8 @@ void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
 }
 
 void Rulebooks::rulebooks_array_array(void) {
-	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"rulebooks_array", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook)
@@ -911,19 +905,9 @@ void Rulebooks::compile_rulebooks(void) {
 	Rules::check_placement_safety();
 }
 
-inter_name *rulebooknames_iname = NULL;
-inter_name *Rulebooks::RulebookNames_iname(void) {
-	if (rulebooknames_iname == NULL) {
-		package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-		rulebooknames_iname = InterNames::one_off(I"RulebookNames", PR);
-	}
-	return rulebooknames_iname;
-}
-
 void Rulebooks::RulebookNames_array(void) {
-	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-	inter_name *iname = Rulebooks::RulebookNames_iname();
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	if (memory_economy_in_force) {
 		Emit::array_numeric_entry(0);

@@ -186,7 +186,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	}
 
 	av->name = W;
-	package_request *R = Packaging::request_resource(NULL, ACTIVITIES_SUBPACKAGE);
+	package_request *R = Packaging::generic_resource(ACTIVITIES_SUBPACKAGE);
 	av->av_package = Packaging::request(Packaging::supply_iname(R, ACTIVITY_PR_COUNTER), R, activity_ptype);
 	av->av_iname = InterNames::new(ACTIVITY_INAMEF);
 	av->av_iname->eventual_owner = av->av_package;
@@ -370,9 +370,8 @@ void Activities::activity_var_creators(void) {
 		}
 	}
 
-	package_request *PR = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"activity_var_creators", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(av, activity) {
 		if (StackedVariables::owner_empty(av->owned_by_av)) Emit::array_numeric_entry(0);
@@ -616,9 +615,8 @@ void Activities::compile_activity_constants(void) {
 }
 
 void Activities::Activity_before_rulebooks_array(void) {
-	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"Activity_before_rulebooks", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
@@ -632,9 +630,8 @@ void Activities::Activity_before_rulebooks_array(void) {
 }
 
 void Activities::Activity_for_rulebooks_array(void) {
-	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"Activity_for_rulebooks", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
@@ -648,9 +645,8 @@ void Activities::Activity_for_rulebooks_array(void) {
 }
 
 void Activities::Activity_after_rulebooks_array(void) {
-	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"Activity_after_rulebooks", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
@@ -664,9 +660,8 @@ void Activities::Activity_after_rulebooks_array(void) {
 }
 
 void Activities::Activity_atb_rulebooks_array(void) {
-	package_request *PR = Packaging::synoptic_resource(ACTIVITIES_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"Activity_atb_rulebooks", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_byte_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {

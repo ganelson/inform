@@ -705,7 +705,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 				Emit::inv_call(InterNames::to_symbol(rtiname));
 				Emit::down();
 					Emit::val_iname(K_value, bp->bp_iname);
-					Emit::val_iname(K_value, InterNames::find(RELS_ASSERT_TRUE_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_NRL));
 					Specifications::Compiler::emit_as_val(K_value, spec0);
 					Specifications::Compiler::emit_as_val(K_value, spec1);
 				Emit::up();
@@ -870,7 +870,7 @@ void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 		if (default_rr == NULL) {
 			default_rr = bp->bp_iname;
 			inter_name *iname = InterNames::iname(MEANINGLESS_RR_INAME);
-			Packaging::house(iname, Packaging::request_resource(NULL, RELATIONS_SUBPACKAGE));
+			Packaging::house(iname, Packaging::generic_resource(RELATIONS_SUBPACKAGE));
 			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(iname, K_value, bp->bp_iname);
 			Packaging::exit(save);

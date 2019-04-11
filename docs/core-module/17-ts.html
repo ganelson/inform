@@ -412,27 +412,29 @@ a request for a new text substitution to be compiled later...
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">);</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifdebug_interp</span><span class="plain">);</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">)) {</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifdebug_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SUPPRESSTEXTSUBSTITUTION_EXNAMEF</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::code</span><span class="plain">();</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SUPPRESSTEXTSUBSTITUTION_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::code</span><span class="plain">();</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-                            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-                            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                                <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+                                <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                            <span class="functiontext">Emit::rtrue</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::rtrue</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="plain">}</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ts_code_block</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ROUTINE_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;belongs_to_module</span><span class="plain">);</span>

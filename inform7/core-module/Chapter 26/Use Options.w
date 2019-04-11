@@ -516,7 +516,7 @@ void UseOptions::TestUseOption_routine(void) {
 }
 
 @<Compile the TestUseOption routine@> =
-	packaging_state save = Routines::begin(InterNames::find(TESTUSEOPTION_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TESTUSEOPTION_NRL));
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
 	use_option *uo;
 	LOOP_OVER(uo, use_option)

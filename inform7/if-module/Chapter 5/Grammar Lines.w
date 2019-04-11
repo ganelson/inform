@@ -391,13 +391,7 @@ int PL::Parsing::Lines::gl_compile_result_of_mistake(gpr_kit *gprk, grammar_line
 }
 
 void PL::Parsing::Lines::MistakeActionSub_routine(void) {
-	package_request *R = Packaging::synoptic_resource(ACTIONS_SUBPACKAGE);
-	inter_name *MistakeActionSub_iname =
-		Packaging::function(
-			InterNames::one_off(I"MistakeActionSub_fn", R),
-			R,
-			InterNames::iname(MistakeActionSub_INAME));
-	packaging_state save = Routines::begin(MistakeActionSub_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(MISTAKEACTIONSUB_NRL));
 
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -448,9 +442,8 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	Emit::up();
 
 	Routines::end(save);
-	package_request *PR = Packaging::request_resource(NULL, ACTIONS_SUBPACKAGE);
-	MistakeAction_iname = InterNames::iname(MistakeAction_INAME);
-	Packaging::house(MistakeAction_iname, PR);
+	
+	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_NRL);
 	save = Packaging::enter_home_of(MistakeAction_iname);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
 	InterNames::annotate_i(MistakeAction_iname, ACTION_IANN, 1);

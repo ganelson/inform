@@ -359,7 +359,7 @@ object as produced the original text containing the substitution.
 	if (ParseTree::int_annotation(spec_found, record_as_self_ANNOT)) {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::find(SELF_NRL));
+			Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
 			Specifications::Compiler::emit_as_val(K_value, owner);
 		Emit::up();
 	} else {

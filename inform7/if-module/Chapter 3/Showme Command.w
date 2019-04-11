@@ -24,13 +24,7 @@ properties.
 =
 void PL::Showme::compile_SHOWME_details(void) {
 	if (Plugins::Manage::plugged_in(showme_plugin) == FALSE) return;
-	package_request *R = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *ShowMeDetails_iname =
-		Packaging::function(
-			InterNames::one_off(I"ShowMeDetails_fn", R),
-			R,
-			InterNames::iname(ShowMeDetails_INAME));
-	packaging_state save = Routines::begin(ShowMeDetails_iname);
+	packaging_state save = Routines::begin(Hierarchy::find(SHOWMEDETAILS_NRL));
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
 	Emit::inv_primitive(ifdebug_interp);
@@ -280,10 +274,14 @@ turn by turn.
 	Emit::down();
 		Emit::inv_primitive(and_interp);
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(ALLOWINSHOWME_EXNAMEF)));
-			Emit::down();
-				Emit::val_iname(K_value, Properties::iname(prn));
-			Emit::up();
+			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+				Emit::inv_call(InterNames::to_symbol(InterNames::extern(ALLOWINSHOWME_EXNAMEF)));
+				Emit::down();
+					Emit::val_iname(K_value, Properties::iname(prn));
+				Emit::up();
+			} else {
+				Emit::val(K_number, LITERAL_IVAL, 0);
+			}
 			Properties::Emit::emit_has_property(K_value, t_0_s, prn);
 		Emit::up();
 		Emit::code();

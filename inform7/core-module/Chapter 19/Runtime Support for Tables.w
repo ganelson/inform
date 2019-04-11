@@ -196,8 +196,7 @@ case.)
 	else Kinds::RunTime::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
-	inter_name *iname = InterNames::iname(TB_Blanks_INAME);
-	Packaging::house(iname, Packaging::synoptic_resource(TABLES_SUBPACKAGE));
+	inter_name *iname = Hierarchy::find(TB_BLANKS_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_byte_array_begin(iname, K_number);
 	table *t;
@@ -247,7 +246,7 @@ structure: a table with no columns and no rows, which would otherwise be
 against the rules. (The Template file "Tables.i6t" defines it.)
 
 @<Compile the Table of Tables@> =
-	inter_name *iname = InterNames::find(TABLEOFTABLES_NRL);
+	inter_name *iname = Hierarchy::find(TABLEOFTABLES_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	Emit::array_iname_entry(InterNames::extern(EMPTY_TABLE_EXNAMEF));

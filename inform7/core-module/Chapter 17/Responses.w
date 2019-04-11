@@ -383,8 +383,7 @@ enables the I6 template to print out all known responses at run-time,
 divided up by the extensions containing the rules which produce them.
 
 @<Compile the Response Divisions array@> =
-	inter_name *iname = InterNames::iname(ResponseDivisions_INAME);
-	Packaging::house(iname, Packaging::synoptic_resource(RULES_SUBPACKAGE));
+	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	extension_file *group_ef = NULL;

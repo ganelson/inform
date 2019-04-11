@@ -991,13 +991,7 @@ K, we have also seen its bases.
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">DefaultValueFinder_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"defaultvaluefinder_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">DefaultValueFinder_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">DefaultValueFinder_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEFINDER_NRL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">, </span><span class="reserved">runtime_kind_structure</span><span class="plain">) {</span>
@@ -1091,9 +1085,9 @@ has essentially no memory constraints compared with the Z-machine.
             <span class="identifier">total_heap_allocation</span><span class="plain"> = </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">();</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">max_heap</span><span class="plain"> &lt; </span><span class="identifier">total_heap_allocation</span><span class="plain">) </span><span class="identifier">max_heap</span><span class="plain"> = </span><span class="identifier">max_heap</span><span class="plain">*2;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())</span>
-            <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, </span><span class="identifier">max_heap</span><span class="plain">, </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
+            <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, </span><span class="identifier">max_heap</span><span class="plain">, </span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, 4*</span><span class="identifier">max_heap</span><span class="plain">, </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
+            <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, 4*</span><span class="identifier">max_heap</span><span class="plain">, </span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Providing for a total heap of %d, given requirement of %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
             <span class="identifier">max_heap</span><span class="plain">, </span><span class="identifier">total_heap_allocation</span><span class="plain">);</span>
 </pre>
@@ -1495,6 +1489,12 @@ each such kind, and needed at run-time.
         <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">val</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_instance_counts</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -1508,15 +1508,15 @@ each such kind, and needed at run-time.
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CCOUNT_BINARY_PREDICATE"</span><span class="plain">, </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain">), </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RELATIONS_SUBPACKAGE</span><span class="plain">));</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CCOUNT_PROPERTY"</span><span class="plain">, </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">property</span><span class="plain">), </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">PROPERTIES_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CCOUNT_BINARY_PREDICATE_NRL</span><span class="plain">), </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain">));</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CCOUNT_PROPERTY_NRL</span><span class="plain">), </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">property</span><span class="plain">));</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CCOUNT_ACTION_NAME"</span><span class="plain">, </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">action_name</span><span class="plain">), </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">ACTIONS_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CCOUNT_ACTION_NAME_NRL</span><span class="plain">), </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">action_name</span><span class="plain">));</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CCOUNT_QUOTATIONS"</span><span class="plain">, </span><span class="functiontext">Strings::TextLiterals::CCOUNT_QUOTATIONS</span><span class="plain">(), </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MAX_FRAME_SIZE_NEEDED"</span><span class="plain">, </span><span class="identifier">max_frame_size_needed</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"RNG_SEED_AT_START_OF_PLAY"</span><span class="plain">, </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DEFAULT_SCORING_SETTING"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">IF_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CCOUNT_QUOTATIONS_NRL</span><span class="plain">), </span><span class="functiontext">Strings::TextLiterals::CCOUNT_QUOTATIONS</span><span class="plain">());</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_FRAME_SIZE_NEEDED_NRL</span><span class="plain">), </span><span class="identifier">max_frame_size_needed</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RNG_SEED_AT_START_OF_PLAY_NRL</span><span class="plain">), </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULT_SCORING_SETTING_NRL</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_data_type_support_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1557,6 +1557,8 @@ each such kind, and needed at run-time.
 <p class="endnote">The function Kinds::RunTime::kind_declarations is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
 
 <p class="endnote">The function Kinds::RunTime::compile_nnc is used in <a href="#SP18_1">&#167;18.1</a>.</p>
+
+<p class="endnote">The function Kinds::RunTime::compile_nnci appears nowhere else.</p>
 
 <p class="endnote">The function Kinds::RunTime::compile_instance_counts is used in 1/mr (<a href="1-mr.html#SP4_13">&#167;4.13</a>).</p>
 
@@ -1868,7 +1870,7 @@ and <code class="display"><span class="extract">b</span></code> inclusive.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">random_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_NRL</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_NRL</span><span class="plain">));</span>
                         <span class="reserved">else</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">Kinds::Behaviour::get_highest_valid_value_as_integer</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1937,7 +1939,7 @@ and <code class="display"><span class="extract">b</span></code> inclusive.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">random_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_NRL</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_NRL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1991,13 +1993,7 @@ deduced from its value alone, <code class="display"><span class="extract">K</spa
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">PrintKindValuePair_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"printkindvaluepair_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">PrintKindValuePair_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">PrintKindValuePair_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRINTKINDVALUEPAIR_NRL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">v_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"v"</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
@@ -2064,7 +2060,7 @@ which have to be given some type-safe value to start out at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_NRL</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_NRL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sk_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"sk"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
@@ -2145,13 +2141,7 @@ unless the two values are genuinely equal.
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">KOVComparisonFunction_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"comparison_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">KOVComparisonFunction_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">KOVComparisonFunction_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVCOMPARISONFUNCTION_NRL</span><span class="plain">));</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
@@ -2216,13 +2206,7 @@ unless the two values are genuinely equal.
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">KOVDomainSize_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"domainsize_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">KOVDomainSize_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">KOVDomainSize_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVDOMAINSIZE_NRL</span><span class="plain">));</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
@@ -2290,13 +2274,7 @@ storing pointers to blocks on the heap.
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">KOVIsBlockValue_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"blockvalue_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">KOVIsBlockValue_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">KOVIsBlockValue_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVISBLOCKVALUE_NRL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -2348,13 +2326,7 @@ such a function does, see "BlockValues.i6t".
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">KOVSupportFunction_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"support_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">KOVSupportFunction_INAME</span><span class="plain">));</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">KOVSupportFunction_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVSUPPORTFUNCTION_NRL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">fail_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"fail"</span><span class="plain">);</span>
 
@@ -2421,14 +2393,8 @@ Z-machine array space.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::I7_Kind_Name_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBPACKAGE</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">I7_Kind_Name_iname</span><span class="plain"> =</span>
-            <span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"printkindname_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">I7_Kind_Name_INAME</span><span class="plain">));</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">I7_Kind_Name_iname</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">I7_KIND_NAME_NRL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>

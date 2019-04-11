@@ -185,7 +185,7 @@ void Plugins::Manage::start(void) {
 
 	CREATE_PLUGIN(files_plugin, PL::Files::start, FALSE, GLULX_EXTERNAL_FILES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
 	files_plugin->has_template_file = "Files";
-	package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+	package_request *PR = Packaging::generic_resource(BASICS_SUBPACKAGE);
 	files_plugin->IFDEF_iname = InterNames::iname(PLUGIN_FILES_INAME);
 	Packaging::house(files_plugin->IFDEF_iname, PR);
 	#endif

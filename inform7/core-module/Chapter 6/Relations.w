@@ -857,7 +857,7 @@ inter_name *REL_BLOCK_HEADER_symbol = NULL;
 inter_name *TTF_iname = NULL;
 
 inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
-	inter_name *iname = InterNames::find(id);
+	inter_name *iname = Hierarchy::find(id);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	Packaging::exit(save);
@@ -905,12 +905,7 @@ void Relations::compile_relation_records(void) {
 			@<Write the relation record for this BP@>;
 		}
 	}
-	package_request *PR = Packaging::synoptic_resource(RELATIONS_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"creator_fn", PR),
-		PR,
-		InterNames::iname(CreateDynamicRelations_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(CREATEDYNAMICRELATIONS_NRL));
 	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
 	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
 	LOOP_OVER(bp, binary_predicate) {
@@ -1026,8 +1021,8 @@ void Relations::compile_relation_records(void) {
 	Emit::array_iname_entry(RELS_TEST_iname);
 	if (minimal == FALSE) {
 		Emit::array_iname_entry(RELS_LOOKUP_ANY_iname);
-		Emit::array_iname_entry(InterNames::find(RELS_LOOKUP_ALL_X_NRL));
-		Emit::array_iname_entry(InterNames::find(RELS_LOOKUP_ALL_X_NRL));
+		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_NRL));
+		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_NRL));
 		Emit::array_iname_entry(RELS_LIST_iname);
 	}
 	switch(dbp->form_of_relation) {
@@ -1132,7 +1127,7 @@ void Relations::compile_relation_records(void) {
 		Emit::down();
 			Emit::inv_primitive(case_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
 				Emit::code();
 				Emit::down();
 					@<The TEST task@>;
@@ -1149,7 +1144,7 @@ void Relations::compile_relation_records(void) {
 			} else {
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::find(RELS_LOOKUP_ANY_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ANY_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ANY task@>;
@@ -1157,7 +1152,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::find(RELS_LOOKUP_ALL_X_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_X_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ALL X task@>;
@@ -1165,7 +1160,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::find(RELS_LOOKUP_ALL_Y_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_Y_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ALL Y task@>;
@@ -1173,7 +1168,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::find(RELS_LIST_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LIST_NRL));
 					Emit::code();
 					Emit::down();
 						@<The LIST task@>;
@@ -1182,7 +1177,7 @@ void Relations::compile_relation_records(void) {
 				if (BinaryPredicates::can_be_made_true_at_runtime(bp)) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::find(RELS_ASSERT_TRUE_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ASSERT TRUE task@>;
@@ -1190,7 +1185,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::find(RELS_ASSERT_FALSE_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_FALSE_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ASSERT FALSE task@>;
@@ -1211,7 +1206,7 @@ void Relations::compile_relation_records(void) {
 				if (shower) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::find(RELS_SHOW_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_SHOW_NRL));
 						Emit::code();
 						Emit::down();
 							@<The SHOW task@>;
@@ -1255,7 +1250,7 @@ void Relations::compile_relation_records(void) {
 				if (router) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::find(RELS_ROUTE_FIND_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ROUTE FIND task@>;
@@ -1263,7 +1258,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::find(RELS_ROUTE_FIND_COUNT_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_COUNT_NRL));
 						Emit::code();
 						Emit::down();
 							@<The ROUTE FIND COUNT task@>;
@@ -1532,7 +1527,7 @@ void Relations::compile_relation_records(void) {
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
-							Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
+							Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
 							if (t == 0) {
 								Emit::val_symbol(K_value, Z1_s);
 								Emit::val_symbol(K_value, X_s);
@@ -1610,7 +1605,7 @@ void Relations::compile_relation_records(void) {
 	else {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(InterNames::find(DEFAULTVALUEOFKOV_NRL)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DEFAULTVALUEOFKOV_NRL)));
 			Emit::down();
 				Kinds::RunTime::emit_strong_id_as_val(K);
 			Emit::up();
@@ -1632,7 +1627,7 @@ void Relations::compile_relation_records(void) {
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
-							Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
+							Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
 							if (t == 0) {
 								Emit::val_symbol(K_value, Z1_s);
 								Emit::val_symbol(K_value, X_s);
@@ -1675,7 +1670,7 @@ void Relations::compile_relation_records(void) {
 								Emit::down();
 									Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 									Emit::val_symbol(K_value, rr_s);
-									Emit::val_iname(K_value, InterNames::find(RELS_TEST_NRL));
+									Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
 									Emit::val_symbol(K_value, Z1_s);
 									Emit::val_symbol(K_value, Z3_s);
 								Emit::up();

@@ -209,21 +209,12 @@ our "fire alarm rule" will at last be placed in the "Instead" rulebook. The
 PHRCDs are used to make sure it appears in the right position.
 
 =
-inter_name *NUMBER_RULEBOOKS_CREATED_iname = NULL;
-inter_name *Phrases::Manager::NRC_iname(void) {
-	if (NUMBER_RULEBOOKS_CREATED_iname == NULL) {
-		package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-		NUMBER_RULEBOOKS_CREATED_iname = InterNames::one_off(I"NUMBER_RULEBOOKS_CREATED", PR);
-	}
-	return NUMBER_RULEBOOKS_CREATED_iname;
-}
-
 void Phrases::Manager::add_rules_to_rulebooks(void) {
 	Phrases::Manager::advance_phrase_time_to(EARLY_AFTERNOON_PHT);
 	Rules::Bookings::make_automatic_placements();
-	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-	packaging_state save = Packaging::enter(PR);
-	Emit::named_numeric_constant(Phrases::Manager::NRC_iname(), (inter_t) NUMBER_CREATED(rulebook));
+	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(rulebook));
 	Packaging::exit(save);
 }
 

@@ -1287,7 +1287,7 @@ we don't, and have to look that up at run-time.
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, best_s);
-					Emit::val_iname(K_value, InterNames::find(MIN_NEGATIVE_NUMBER_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
 				Emit::up();
 			Emit::up();
 			Emit::code();
@@ -1295,7 +1295,7 @@ we don't, and have to look that up at run-time.
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, best_s);
-					Emit::val_iname(K_value, InterNames::find(MAX_POSITIVE_NUMBER_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
 				Emit::up();
 			Emit::up();
 		Emit::up();
@@ -1307,13 +1307,13 @@ we don't, and have to look that up at run-time.
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, best_s);
-				Emit::val_iname(K_value, InterNames::find(MIN_NEGATIVE_NUMBER_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
 			Emit::up();
 		} else {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, best_s);
-				Emit::val_iname(K_value, InterNames::find(MAX_POSITIVE_NUMBER_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
 			Emit::up();
 		}
 	}

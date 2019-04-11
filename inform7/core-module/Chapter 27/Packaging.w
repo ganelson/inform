@@ -283,35 +283,43 @@ inter_symbols_table *Packaging::scope(inter_repository *I, inter_name *N) {
 package_request *main_pr = NULL;
 package_request *Packaging::request_main(void) {
 	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::iname(main_INAME), NULL, plain_ptype);
+		main_pr = Packaging::request(InterNames::one_off(I"main", NULL), NULL, plain_ptype);
 	return main_pr;
 }
 
 package_request *resources_pr = NULL;
 package_request *Packaging::request_resources(void) {
 	if (resources_pr == NULL)
-		resources_pr = Packaging::request(InterNames::iname(resources_INAME), Packaging::request_main(), plain_ptype);
+		resources_pr = Packaging::request(
+			InterNames::one_off(I"resources", Packaging::request_main()),
+			Packaging::request_main(), plain_ptype);
 	return resources_pr;
 }
 
 package_request *generic_pr = NULL;
 package_request *Packaging::request_generic(void) {
 	if (generic_pr == NULL)
-		generic_pr = Packaging::request(InterNames::iname(generic_INAME), Packaging::request_resources(), module_ptype);
+		generic_pr = Packaging::request(
+			InterNames::one_off(I"generic", Packaging::request_resources()),
+			Packaging::request_resources(), module_ptype);
 	return generic_pr;
 }
 
 package_request *template_pr = NULL;
 package_request *Packaging::request_template(void) {
 	if (template_pr == NULL)
-		template_pr = Packaging::request(InterNames::iname(template_INAME), Packaging::request_resources(), module_ptype);
+		template_pr = Packaging::request(
+			InterNames::one_off(I"template", Packaging::request_resources()),
+			Packaging::request_resources(), module_ptype);
 	return template_pr;
 }
 
 package_request *synoptic_pr = NULL;
 package_request *Packaging::request_synoptic(void) {
 	if (synoptic_pr == NULL)
-		synoptic_pr = Packaging::request(InterNames::iname(synoptic_INAME), Packaging::request_resources(), module_ptype);
+		synoptic_pr = Packaging::request(
+			InterNames::one_off(I"synoptic", Packaging::request_resources()),
+			Packaging::request_resources(), module_ptype);
 	return synoptic_pr;
 }
 
@@ -355,10 +363,6 @@ package_request *Packaging::request_conjugations(compilation_module *C) {
 	return Packaging::request_resource(C, CONJUGATIONS_SUBPACKAGE);
 }
 
-package_request *Packaging::request_kinds(compilation_module *C) {
-	return Packaging::request_resource(C, KINDS_SUBPACKAGE);
-}
-
 int generic_subpackages_initialised = FALSE;
 subpackage_requests generic_subpackages;
 int synoptic_subpackages_initialised = FALSE;
@@ -378,6 +382,16 @@ package_request *Packaging::request_resource(compilation_module *C, int ix) {
 		SR = &generic_subpackages;
 		parent = Packaging::request_generic();
 	}
+	@<Handle the resource request@>;
+}
+
+package_request *Packaging::generic_resource(int ix) {
+	if (generic_subpackages_initialised == FALSE) {
+		generic_subpackages_initialised = TRUE;
+		Packaging::initialise_subpackages(&generic_subpackages);
+	}
+	subpackage_requests *SR = &generic_subpackages;
+	package_request *parent = Packaging::request_generic();
 	@<Handle the resource request@>;
 }
 

@@ -295,27 +295,29 @@ a request for a new text substitution to be compiled later...
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
 
-	Emit::inv_primitive(ifdebug_interp);
-	Emit::down();
-		Emit::code();
+	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+		Emit::inv_primitive(ifdebug_interp);
 		Emit::down();
-			Emit::inv_primitive(if_interp);
+			Emit::code();
 			Emit::down();
-				Emit::val_iname(K_number, InterNames::extern(SUPPRESSTEXTSUBSTITUTION_EXNAMEF));
-				Emit::code();
+				Emit::inv_primitive(if_interp);
 				Emit::down();
-					Emit::inv_primitive(print_interp);
+					Emit::val_iname(K_number, InterNames::extern(SUPPRESSTEXTSUBSTITUTION_EXNAMEF));
+					Emit::code();
 					Emit::down();
-						TEMPORARY_TEXT(S);
-						WRITE_TO(S, "%W", ts->unsubstituted_text);
-						Emit::val_text(S);
-						DISCARD_TEXT(S);
+						Emit::inv_primitive(print_interp);
+						Emit::down();
+							TEMPORARY_TEXT(S);
+							WRITE_TO(S, "%W", ts->unsubstituted_text);
+							Emit::val_text(S);
+							DISCARD_TEXT(S);
+						Emit::up();
+						Emit::rtrue();
 					Emit::up();
-					Emit::rtrue();
 				Emit::up();
 			Emit::up();
 		Emit::up();
-	Emit::up();
+	}
 
 	parse_node *ts_code_block = ParseTree::new(ROUTINE_NT);
 	ParseTree::set_module(ts_code_block, ts->belongs_to_module);

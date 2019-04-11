@@ -145,12 +145,7 @@ int Tables::Columns::get_id(table_column *tc) {
 }
 
 void Tables::Columns::compile_run_time_support(void) {
-	package_request *PR = Packaging::synoptic_resource(RULEBOOKS_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"weak_kind_ID_of_column_entry_fn", PR),
-		PR,
-		InterNames::iname(TC_KOV_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(TC_KOV_NRL));
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
 	Emit::inv_primitive(switch_interp);
 	Emit::down();

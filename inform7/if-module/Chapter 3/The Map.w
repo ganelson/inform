@@ -1030,7 +1030,7 @@ void PL::Map::write_door_dir_routines(void) {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
-				Emit::val_iname(K_value, InterNames::find(THEDARK_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(THEDARK_NRL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
@@ -1086,7 +1086,7 @@ void PL::Map::write_door_to_routines(void) {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
-				Emit::val_iname(K_value, InterNames::find(THEDARK_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(THEDARK_NRL));
 			Emit::up();
 			Emit::code();
 			Emit::down();

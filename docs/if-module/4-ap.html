@@ -2682,7 +2682,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">ACTOR_EXNAMEF</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>

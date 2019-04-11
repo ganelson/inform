@@ -235,7 +235,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		@<Emit the op@>;
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(InterNames::find(TESTSINGLEPASTSTATE_NRL)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSINGLEPASTSTATE_NRL)));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) past_flag);
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_tenses);
@@ -338,9 +338,8 @@ void Chronology::past_actions_i6_routines(void) {
 
 		Routines::end(save);
 	}
-	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
-	inter_name *iname = InterNames::one_off(I"PastActionsI6Routines", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(pta, past_tense_action_record)
 		Emit::array_iname_entry(pta->pta_iname);
@@ -359,7 +358,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		"Creating %d past tense conditions in TestSinglePastState\n",
 			NUMBER_CREATED(past_tense_condition_record));
 
-	packaging_state save = Routines::begin(InterNames::find(TESTSINGLEPASTSTATE_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TESTSINGLEPASTSTATE_NRL));
 	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");
@@ -790,11 +789,13 @@ times".
 
 =
 void Chronology::chronology_extents_i6_escape(void) {
-	package_request *PR = Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE);
-	inter_name *iname1 = InterNames::one_off(I"NO_PAST_TENSE_CONDS", PR);
-	inter_name *iname2 = InterNames::one_off(I"NO_PAST_TENSE_ACTIONS", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname1 = Hierarchy::find(NO_PAST_TENSE_CONDS_NRL);
+	packaging_state save = Packaging::enter_home_of(iname1);
 	Emit::named_numeric_constant(iname1, (inter_t) no_past_tenses);
+	Packaging::exit(save);
+
+	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_NRL);
+	save = Packaging::enter_home_of(iname2);
 	Emit::named_numeric_constant(iname2, (inter_t) no_past_actions);
 	Packaging::exit(save);
 }

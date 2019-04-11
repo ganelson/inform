@@ -158,7 +158,7 @@ value for each possible word size.
 
 =
 inter_name *VirtualMachines::emit_fundamental_constant(int id, inter_t val) {
-	inter_name *iname = InterNames::find(id);
+	inter_name *iname = Hierarchy::find(id);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, val);
 	Packaging::exit(save);
@@ -166,7 +166,7 @@ inter_name *VirtualMachines::emit_fundamental_constant(int id, inter_t val) {
 }
 
 inter_name *VirtualMachines::emit_signed_fundamental_constant(int id, int val) {
-	inter_name *iname = InterNames::find(id);
+	inter_name *iname = Hierarchy::find(id);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_signed(iname, val);
 	Packaging::exit(save);
@@ -174,7 +174,7 @@ inter_name *VirtualMachines::emit_signed_fundamental_constant(int id, int val) {
 }
 
 inter_name *VirtualMachines::emit_hex_fundamental_constant(int id, inter_t val) {
-	inter_name *iname = InterNames::find(id);
+	inter_name *iname = Hierarchy::find(id);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	Packaging::exit(save);
@@ -182,7 +182,7 @@ inter_name *VirtualMachines::emit_hex_fundamental_constant(int id, inter_t val) 
 }
 
 inter_name *VirtualMachines::emit_unchecked_hex_fundamental_constant(int id, inter_t val) {
-	inter_name *iname = InterNames::find(id);
+	inter_name *iname = Hierarchy::find(id);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_unchecked_constant_hex(iname, val);
 	Packaging::exit(save);
@@ -214,10 +214,10 @@ inter_name *VirtualMachines::emit_fundamental_constants(void) {
 		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_NRL, 0x40000000);
 		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_NRL, 2147483647);
 		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_NRL, -2147483648);
-		InterNames::cache(InterNames::iname(MAX_POSITIVE_NUMBER_NRL));
-		InterNames::cache(InterNames::iname(MIN_NEGATIVE_NUMBER_NRL));
-		InterNames::to_symbol(InterNames::iname(MAX_POSITIVE_NUMBER_NRL));
-		InterNames::to_symbol(InterNames::iname(MIN_NEGATIVE_NUMBER_NRL));
+		InterNames::cache(Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
+		InterNames::cache(Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
+		InterNames::to_symbol(Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
+		InterNames::to_symbol(Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
 	} else {
 		VirtualMachines::emit_fundamental_constant(WORDSIZE_NRL, 2);
 		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_NRL, 0xffff);
@@ -227,10 +227,10 @@ inter_name *VirtualMachines::emit_fundamental_constants(void) {
 		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_NRL, 10000);
 		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_NRL, 32767);
 		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_NRL, -32768);
-		InterNames::cache(InterNames::iname(MAX_POSITIVE_NUMBER_NRL));
-		InterNames::cache(InterNames::iname(MIN_NEGATIVE_NUMBER_NRL));
-		InterNames::to_symbol(InterNames::iname(MAX_POSITIVE_NUMBER_NRL));
-		InterNames::to_symbol(InterNames::iname(MIN_NEGATIVE_NUMBER_NRL));
+		InterNames::cache(Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
+		InterNames::cache(Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
+		InterNames::to_symbol(Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
+		InterNames::to_symbol(Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
 	}
 	return NULL_iname;
 }

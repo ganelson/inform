@@ -267,7 +267,7 @@ void Emit::begin(void) {
 	Emit::comment(I"Responses:");
 	responses_bookmark = Emit::bookmark_bubble();
 
-	package_request *R = Packaging::request_resource(NULL, KINDS_SUBPACKAGE);
+	package_request *R = Packaging::generic_resource(KINDS_SUBPACKAGE);
 	package_request *R2 = Packaging::request(Packaging::supply_iname(R, KIND_PR_COUNTER), R, kind_ptype);
 	packaging_state save = Packaging::enter(R2);
 	inter_symbols_table *T = Inter::Packages::scope(default_bookmark->current_package);
@@ -920,7 +920,7 @@ void Emit::array_end(void) {
 inter_name *Emit::nothing(void) {
 	if (K_object == NULL) internal_error("too soon for nothing");
 	if (nothing_iname == NULL) {
-		nothing_iname = InterNames::find(NOTHING_NRL);
+		nothing_iname = Hierarchy::find(NOTHING_NRL);
 		packaging_state save = Packaging::enter_home_of(nothing_iname);
 		Emit::named_pseudo_numeric_constant(nothing_iname, K_object, 0);
 		inter_symbol *iname_s = InterNames::to_symbol(nothing_iname);

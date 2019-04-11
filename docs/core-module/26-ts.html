@@ -455,7 +455,7 @@ without notice.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) &gt; 0) {</span>
-            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">);</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">NO_TEST_SCENARIOS_INAME</span><span class="plain">);</span>
             <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
             <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
@@ -465,14 +465,14 @@ without notice.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::TestScriptSub_stub_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_NRL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::TestScriptSub_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_NRL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) == 0) {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>

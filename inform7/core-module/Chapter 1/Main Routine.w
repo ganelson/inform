@@ -357,7 +357,7 @@ with "Output.i6t".
 		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
 		COMPILATION_STEP(PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
 	} else {
-		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
+		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_stub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
 	}
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")

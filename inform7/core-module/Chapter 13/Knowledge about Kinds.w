@@ -89,7 +89,7 @@ particular order.
 
 =
 int Kinds::Knowledge::emit_all(void) {
-	package_request *PR = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
+	package_request *PR = Packaging::generic_resource(BASICS_SUBPACKAGE);
 	inter_name *iname = InterNames::iname(MAX_WEAK_ID_INAME);
 	Packaging::house(iname, PR);
 	packaging_state save = Packaging::enter_home_of(iname);

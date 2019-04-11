@@ -169,7 +169,7 @@ grammar_verb *PL::Parsing::Verbs::find_or_create_command(wording W) {
 
 	if (Wordings::empty(W)) {
 		inter_name *iname = InterNames::iname(NO_VERB_VERB_DEFINED_INAME);
-		Packaging::house(iname, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+		Packaging::house(iname, Packaging::generic_resource(BASICS_SUBPACKAGE));
 		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) 1);
 		Packaging::exit(save);
@@ -699,9 +699,7 @@ inter_name *VERB_DIRECTIVE_TOPIC_iname = NULL;
 inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 
 inter_name *PL::Parsing::Verbs::grammar_constant(int N, int V) {
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
-	Packaging::house(InterNames::iname(N), PR);
-	return Emit::named_numeric_constant(InterNames::iname(N), 1);
+	return Emit::named_numeric_constant(Hierarchy::find(N), 1);
 }
 
 void PL::Parsing::Verbs::compile_all(void) {
@@ -714,20 +712,20 @@ void PL::Parsing::Verbs::compile_all(void) {
 	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
 	packaging_state save = Packaging::enter(PR);
 
-	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_INAME, 1);
-	VERB_DIRECTIVE_SLASH_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SLASH_INAME, 1);
-	VERB_DIRECTIVE_DIVIDER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_DIVIDER_INAME, 1);
-	VERB_DIRECTIVE_RESULT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_RESULT_INAME, 2);
-	VERB_DIRECTIVE_SPECIAL_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SPECIAL_INAME, 3);
-	VERB_DIRECTIVE_NUMBER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NUMBER_INAME, 4);
-	VERB_DIRECTIVE_NOUN_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NOUN_INAME, 5);
-	VERB_DIRECTIVE_MULTI_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTI_INAME, 6);
-	VERB_DIRECTIVE_MULTIINSIDE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_INAME, 7);
-	VERB_DIRECTIVE_MULTIHELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIHELD_INAME, 8);
-	VERB_DIRECTIVE_HELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_HELD_INAME, 9);
-	VERB_DIRECTIVE_CREATURE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_CREATURE_INAME, 10);
-	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_INAME, 11);
-	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_INAME, 12);
+	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_NRL, 1);
+	VERB_DIRECTIVE_SLASH_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SLASH_NRL, 1);
+	VERB_DIRECTIVE_DIVIDER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_DIVIDER_NRL, 1);
+	VERB_DIRECTIVE_RESULT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_RESULT_NRL, 2);
+	VERB_DIRECTIVE_SPECIAL_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SPECIAL_NRL, 3);
+	VERB_DIRECTIVE_NUMBER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NUMBER_NRL, 4);
+	VERB_DIRECTIVE_NOUN_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NOUN_NRL, 5);
+	VERB_DIRECTIVE_MULTI_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTI_NRL, 6);
+	VERB_DIRECTIVE_MULTIINSIDE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_NRL, 7);
+	VERB_DIRECTIVE_MULTIHELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIHELD_NRL, 8);
+	VERB_DIRECTIVE_HELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_HELD_NRL, 9);
+	VERB_DIRECTIVE_CREATURE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_CREATURE_NRL, 10);
+	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_NRL, 11);
+	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_NRL, 12);
 
 	LOOP_OVER(gv, grammar_verb)
 		if (gv->gv_is == GV_IS_TOKEN)

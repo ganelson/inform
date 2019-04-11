@@ -539,7 +539,7 @@ inter_name *Rules::iname(rule *R) {
 
 =
 inter_name *Rules::RulePrintingRule(void) {
-	return InterNames::find(RULEPRINTINGRULE_NRL);
+	return Hierarchy::find(RULEPRINTINGRULE_NRL);
 }
 
 void Rules::RulePrintingRule_routine(void) {
@@ -557,7 +557,7 @@ void Rules::RulePrintingRule_routine(void) {
 			Emit::inv_primitive(lt_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, R_s);
-				Emit::val_iname(K_value, Phrases::Manager::NRC_iname());
+				Emit::val_iname(K_value, Hierarchy::find(NUMBER_RULEBOOKS_CREATED_NRL));
 			Emit::up();
 		Emit::up();
 		Emit::code();
@@ -591,7 +591,7 @@ void Rules::RulePrintingRule_routine(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_value, Rulebooks::RulebookNames_iname());
+				Emit::val_iname(K_value, Hierarchy::find(RULEBOOKNAMES_NRL));
 				Emit::val_symbol(K_value, R_s);
 			Emit::up();
 		Emit::up();

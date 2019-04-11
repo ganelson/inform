@@ -370,8 +370,7 @@ of the kind which the constructor makes:
 #ifdef CORE_MODULE
 inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
-	UNKNOWN_TY_iname = InterNames::iname(UNKNOWN_TY_INAME);
-	Packaging::house(UNKNOWN_TY_iname, Packaging::request_resource(NULL, KINDS_SUBPACKAGE));
+	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_NRL);
 	packaging_state save = Packaging::enter_home_of(UNKNOWN_TY_iname);
 	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_t) UNKNOWN_NT);
 	Packaging::exit(save);
@@ -391,9 +390,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 		}
 	}
 
-	package_request *PR = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
-	inter_name *hwm = InterNames::iname(BASE_KIND_HWM_INAME);
-	Packaging::house(hwm, PR);
+	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_NRL);
 	save = Packaging::enter_home_of(hwm);
 	Emit::named_numeric_constant(hwm, (inter_t) next_free_data_type_ID);
 	Packaging::exit(save);

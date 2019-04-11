@@ -1230,70 +1230,11 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 
 @
 
-@e THESAME_NRL from 0
-@e PLURALFOUND_NRL
-
-@e PARENT_NRL
-@e CHILD_NRL
-@e SIBLING_NRL
-@e SELF_NRL
-@e THEDARK_NRL
-
-@e DEBUG_NRL
-@e TARGET_ZCODE_NRL
-@e TARGET_GLULX_NRL
-@e DICT_WORD_SIZE_NRL
-@e WORDSIZE_NRL
-@e NULL_NRL
-@e WORD_HIGHBIT_NRL
-@e WORD_NEXTTOHIGHBIT_NRL
-@e IMPROBABLE_VALUE_NRL
-@e REPARSE_CODE_NRL
-@e MAX_POSITIVE_NUMBER_NRL
-@e MIN_NEGATIVE_NUMBER_NRL
-@e FLOAT_NAN_NRL
-
-@e CV_MEANING_NRL
-@e CV_MODAL_NRL
-@e CV_NEG_NRL
-@e CV_POS_NRL
-
-@e RELS_ASSERT_FALSE_NRL
-@e RELS_ASSERT_TRUE_NRL
-@e RELS_EQUIVALENCE_NRL
-@e RELS_LIST_NRL
-@e RELS_LOOKUP_ALL_X_NRL
-@e RELS_LOOKUP_ALL_Y_NRL
-@e RELS_LOOKUP_ANY_NRL
-@e RELS_ROUTE_FIND_COUNT_NRL
-@e RELS_ROUTE_FIND_NRL
-@e RELS_SHOW_NRL
-@e RELS_SYMMETRIC_NRL
-@e RELS_TEST_NRL
-@e RELS_X_UNIQUE_NRL
-@e RELS_Y_UNIQUE_NRL
-@e REL_BLOCK_HEADER_NRL
-@e TTF_SUM_NRL
-
-@e NOTHING_NRL
-@e OBJECT_NRL
-@e TESTUSEOPTION_NRL
-@e TESTSCRIPTSUB_NRL
-@e RULEPRINTINGRULE_NRL
-@e DEFAULTVALUEOFKOV_NRL
-@e TESTSINGLEPASTSTATE_NRL
-@e RESPONSETEXTS_NRL
-@e TABLEOFTABLES_NRL
-@e TABLEOFVERBS_NRL
-@e DB_ACTION_DETAILS_NRL
-@e CAPSHORTNAME_NRL
-
-@e MAX_NRL
-
 =
 typedef struct named_resource_location {
 	int access_number;
 	struct text_stream *access_name;
+	struct text_stream *function_package_name;
 	struct package_request *package;
 	struct inter_name *equates_to_iname;
 	MEMORY_MANAGEMENT
@@ -1306,6 +1247,7 @@ named_resource_location *InterNames::make_in(int id, text_stream *name, package_
 	named_resource_location *nrl = CREATE(named_resource_location);
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
+	nrl->function_package_name = NULL;
 	nrl->package = P;
 	nrl->equates_to_iname = NULL;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
@@ -1318,6 +1260,7 @@ named_resource_location *InterNames::make_as(int id, text_stream *name, inter_na
 	named_resource_location *nrl = CREATE(named_resource_location);
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
+	nrl->function_package_name = NULL;
 	nrl->package = iname->eventual_owner;
 	nrl->equates_to_iname = iname;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
@@ -1330,6 +1273,7 @@ named_resource_location *InterNames::make_on_demand(int id, text_stream *name) {
 	named_resource_location *nrl = CREATE(named_resource_location);
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
+	nrl->function_package_name = NULL;
 	nrl->package = NULL;
 	nrl->equates_to_iname = NULL;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
@@ -1338,71 +1282,25 @@ named_resource_location *InterNames::make_on_demand(int id, text_stream *name) {
 	return nrl;
 }
 
+named_resource_location *InterNames::make_function(int id, text_stream *name, text_stream *call_name, package_request *P) {
+	named_resource_location *nrl = CREATE(named_resource_location);
+	nrl->access_number = id;
+	nrl->access_name = Str::duplicate(call_name);
+	nrl->function_package_name = Str::duplicate(name);
+	nrl->package = P;
+	nrl->equates_to_iname = NULL;
+	if (id >= 0) nrls_indexed_by_id[id] = nrl;
+	Dictionaries::create(nrls_indexed_by_name, call_name);
+	Dictionaries::write_value(nrls_indexed_by_name, call_name, (void *) nrl);
+	return nrl;
+}
+
 int nrls_created = FALSE;
 void InterNames::create_nrls(void) {
 	nrls_created = TRUE;
 	for (int i=0; i<MAX_NRL; i++) nrls_indexed_by_id[i] = NULL;
 	nrls_indexed_by_name = Dictionaries::new(512, FALSE);
-
-	package_request *basics = Packaging::request_resource(NULL, BASICS_SUBPACKAGE);
-	InterNames::make_in(THESAME_NRL, I"##TheSame", basics);
-	InterNames::make_in(PLURALFOUND_NRL, I"##PluralFound", basics);
-	InterNames::make_in(PARENT_NRL, I"parent", basics);
-	InterNames::make_in(CHILD_NRL, I"child", basics);
-	InterNames::make_in(SIBLING_NRL, I"sibling", basics);
-	InterNames::make_in(SELF_NRL, I"self", basics);
-	InterNames::make_in(THEDARK_NRL, I"thedark", basics);
-	InterNames::make_in(RESPONSETEXTS_NRL, I"ResponseTexts", basics);
-
-	InterNames::make_in(DEBUG_NRL, I"DEBUG", basics);
-	InterNames::make_in(TARGET_ZCODE_NRL, I"TARGET_ZCODE", basics);
-	InterNames::make_in(TARGET_GLULX_NRL, I"TARGET_GLULX", basics);
-	InterNames::make_in(DICT_WORD_SIZE_NRL, I"DICT_WORD_SIZE", basics);
-	InterNames::make_in(WORDSIZE_NRL, I"WORDSIZE", basics);
-	InterNames::make_in(NULL_NRL, I"NULL", basics);
-	InterNames::make_in(WORD_HIGHBIT_NRL, I"WORD_HIGHBIT", basics);
-	InterNames::make_in(WORD_NEXTTOHIGHBIT_NRL, I"WORD_NEXTTOHIGHBIT", basics);
-	InterNames::make_in(IMPROBABLE_VALUE_NRL, I"IMPROBABLE_VALUE", basics);
-	InterNames::make_in(REPARSE_CODE_NRL, I"REPARSE_CODE", basics);
-	InterNames::make_in(MAX_POSITIVE_NUMBER_NRL, I"MAX_POSITIVE_NUMBER", basics);
-	InterNames::make_in(MIN_NEGATIVE_NUMBER_NRL, I"MIN_NEGATIVE_NUMBER", basics);
-	InterNames::make_in(FLOAT_NAN_NRL, I"FLOAT_NAN", basics);
-
-	package_request *conj = Packaging::request_resource(NULL, CONJUGATIONS_SUBPACKAGE);
-	InterNames::make_in(CV_MEANING_NRL, I"CV_MEANING", conj);
-	InterNames::make_in(CV_MODAL_NRL, I"CV_MODAL", conj);
-	InterNames::make_in(CV_NEG_NRL, I"CV_NEG", conj);
-	InterNames::make_in(CV_POS_NRL, I"CV_POS", conj);
-
-	package_request *rels = Packaging::request_resource(NULL, RELATIONS_SUBPACKAGE);
-	InterNames::make_in(RELS_ASSERT_FALSE_NRL, I"RELS_ASSERT_FALSE", rels);
-	InterNames::make_in(RELS_ASSERT_TRUE_NRL, I"RELS_ASSERT_TRUE", rels);
-	InterNames::make_in(RELS_EQUIVALENCE_NRL, I"RELS_EQUIVALENCE", rels);
-	InterNames::make_in(RELS_LIST_NRL, I"RELS_LIST", rels);
-	InterNames::make_in(RELS_LOOKUP_ALL_X_NRL, I"RELS_LOOKUP_ALL_X", rels);
-	InterNames::make_in(RELS_LOOKUP_ALL_Y_NRL, I"RELS_LOOKUP_ALL_Y", rels);
-	InterNames::make_in(RELS_LOOKUP_ANY_NRL, I"RELS_LOOKUP_ANY", rels);
-	InterNames::make_in(RELS_ROUTE_FIND_COUNT_NRL, I"RELS_ROUTE_FIND_COUNT", rels);
-	InterNames::make_in(RELS_ROUTE_FIND_NRL, I"RELS_ROUTE_FIND", rels);
-	InterNames::make_in(RELS_SHOW_NRL, I"RELS_SHOW", rels);
-	InterNames::make_in(RELS_SYMMETRIC_NRL, I"RELS_SYMMETRIC", rels);
-	InterNames::make_in(RELS_TEST_NRL, I"RELS_TEST", rels);
-	InterNames::make_in(RELS_X_UNIQUE_NRL, I"RELS_X_UNIQUE", rels);
-	InterNames::make_in(RELS_Y_UNIQUE_NRL, I"RELS_Y_UNIQUE", rels);
-	InterNames::make_in(REL_BLOCK_HEADER_NRL, I"REL_BLOCK_HEADER", rels);
-	InterNames::make_in(TTF_SUM_NRL, I"TTF_sum", rels);
-
-	InterNames::make_on_demand(OBJECT_NRL, I"Object");
-	InterNames::make_on_demand(NOTHING_NRL, I"nothing");
-	InterNames::make_on_demand(TESTSCRIPTSUB_NRL, I"TestScriptSub");
-	InterNames::make_on_demand(TESTUSEOPTION_NRL, I"TestUseOption");
-	InterNames::make_on_demand(RULEPRINTINGRULE_NRL, I"RulePrintingRule");
-	InterNames::make_on_demand(DEFAULTVALUEOFKOV_NRL, I"DefaultValueOfKOV");
-	InterNames::make_on_demand(TESTSINGLEPASTSTATE_NRL, I"TestSinglePastState");
-	InterNames::make_on_demand(TABLEOFTABLES_NRL, I"TableOfTables");
-	InterNames::make_on_demand(TABLEOFVERBS_NRL, I"TableOfVerbs");
-	InterNames::make_on_demand(DB_ACTION_DETAILS_NRL, I"DB_Action_Details");
-	InterNames::make_on_demand(CAPSHORTNAME_NRL, I"cap_short_name");
+	Hierarchy::establish();
 }
 
 inter_name *InterNames::find(int id) {
@@ -1430,6 +1328,13 @@ inter_name *InterNames::function(package_request *R, text_stream *name, text_str
 
 inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 	if (nrl->equates_to_iname == NULL) {
+		if (Str::len(nrl->function_package_name) > 0) {
+			nrl->equates_to_iname = Packaging::function_text(
+				InterNames::one_off(nrl->function_package_name, nrl->package),
+				nrl->package,
+				nrl->access_name);
+			nrl->package = Packaging::home_of(nrl->equates_to_iname);
+		}
 		if (nrl->package)
 			nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
 		switch (nrl->access_number) {
@@ -1455,7 +1360,6 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 			
 			case NOTHING_NRL:
 				nrl->package = Kinds::Behaviour::package(K_object);
-				nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
 				break;
 			case OBJECT_NRL:
 				nrl->equates_to_iname = Kinds::RunTime::I6_classname(K_object);
@@ -1464,39 +1368,18 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 				nrl->equates_to_iname = InterNames::function(
 					Kinds::RunTime::package(K_use_option), I"test_fn", nrl->access_name);
 				break;
-			case RULEPRINTINGRULE_NRL:
-				nrl->equates_to_iname = InterNames::function(
-					Packaging::synoptic_resource(RULES_SUBPACKAGE), I"print_fn", nrl->access_name);
-				break;
-			case DEFAULTVALUEOFKOV_NRL:
-				nrl->equates_to_iname = InterNames::function(
-					Packaging::synoptic_resource(KINDS_SUBPACKAGE), I"defaultvalue_fn", nrl->access_name);
-				break;
-			case TESTSCRIPTSUB_NRL:
-				nrl->equates_to_iname = InterNames::function(
-					Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE), I"action_fn", nrl->access_name);
-				break;
-			case TESTSINGLEPASTSTATE_NRL:
-				nrl->equates_to_iname = InterNames::function(
-					Packaging::synoptic_resource(CHRONOLOGY_SUBPACKAGE), I"test_fn", nrl->access_name);
-				break;
 			case TABLEOFTABLES_NRL:
 				nrl->package = Kinds::Behaviour::package(K_table);
-				nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
 				break;
 			case TABLEOFVERBS_NRL:
 				nrl->package = Kinds::Behaviour::package(K_verb);
-				nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
-				break;
-			case DB_ACTION_DETAILS_NRL:
-				nrl->equates_to_iname = InterNames::function(
-					Packaging::synoptic_resource(ACTIONS_SUBPACKAGE), I"DB_Action_Details_fn", nrl->access_name);
 				break;
 			case CAPSHORTNAME_NRL:
 				nrl->package = Kinds::Behaviour::package(K_object);
-				nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
 				break;
 		}
+		if (nrl->equates_to_iname == NULL)
+			nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
 		if (nrl->package == NULL)
 			nrl->package = Packaging::home_of(nrl->equates_to_iname);
 	}
@@ -1517,120 +1400,43 @@ inter_name *InterNames::formal_par(int n) {
 
 @e INVALID_INAME from 0
 
-@e ActionCoding_INAME
-@e ActionData_INAME
-@e ActionHappened_INAME
-@e Activity_after_rulebooks_INAME
-@e Activity_atb_rulebooks_INAME
-@e Activity_before_rulebooks_INAME
-@e Activity_for_rulebooks_INAME
-@e activity_var_creators_INAME
-@e AD_RECORDS_INAME
-@e BASE_KIND_HWM_INAME
-@e CAP_SHORT_NAME_EXISTS_INAME
-@e CCOUNT_ACTION_NAME_INAME
-@e CCOUNT_BINARY_PREDICATE_INAME
-@e CCOUNT_PROPERTY_INAME
-@e CCOUNT_QUOTATIONS_INAME
 @e CommandPromptText_INAME
-@e CreateDynamicRelations_INAME
-@e DEBUG_INAME
 @e DECIMAL_TOKEN_INNER_INAME
-@e DEFAULT_SCORING_SETTING_INAME
-@e DefaultValueFinder_INAME
 @e DefaultValueOfKOV_INAME
 @e DetectSceneChange_INAME
-@e DONE_INIS_INAME
-@e EMPTY_RULEBOOK_INAME
 @e Headline_INAME
-@e I7_Kind_Name_INAME
 @e INITIAL_MAX_SCORE_INAME
-@e InitialSituation_INAME
 @e InternalTestCases_INAME
 @e IterateRelations_INAME
-@e KOVComparisonFunction_INAME
-@e KOVDomainSize_INAME
-@e KOVIsBlockValue_INAME
-@e KOVSupportFunction_INAME
-@e main_INAME
-@e generic_INAME
-@e template_INAME
-@e synoptic_INAME
-@e resources_INAME
 @e Map_Storage_INAME
 @e MAX_FRAME_SIZE_NEEDED_INAME
 @e MAX_WEAK_ID_INAME
 @e MEANINGLESS_RR_INAME
 @e MEMORY_HEAP_SIZE_INAME
-@e MistakeAction_INAME
-@e MistakeActionSub_INAME
-@e MStack_GetRBVarCreator_INAME
 @e NI_BUILD_COUNT_INAME
 @e No_Directions_INAME
-@e NO_EXTERNAL_FILES_INAME
-@e NO_PAST_TENSE_ACTIONS_INAME
-@e NO_PAST_TENSE_CONDS_INAME
-@e NO_RESPONSES_INAME
 @e NO_TEST_SCENARIOS_INAME
 @e NO_USE_OPTIONS_INAME
 @e NO_VERB_VERB_DEFINED_INAME
-@e nothing_INAME
 @e NUMBER_RULEBOOKS_CREATED_INAME
-@e PastActionsI6Routines_INAME
-@e PLAYER_OBJECT_INIS_INAME
 @e PLUGIN_FILES_INAME
-@e PrintKindValuePair_INAME
-@e PrintResponse_INAME
-@e PrintSceneName_INAME
-@e PrintTableName_INAME
-@e PrintUseOption_INAME
 @e RANKING_TABLE_INAME
 @e Release_INAME
 @e ResourceIDsOfFigures_INAME
 @e ResourceIDsOfSounds_INAME
-@e ResponseDivisions_INAME
-@e RNG_SEED_AT_START_OF_PLAY_INAME
 @e RProperty_INAME
-@e rulebook_var_creators_INAME
-@e RulebookNames_INAME
-@e RulebookOutcomePrintingRule_INAME
-@e rulebooks_array_INAME
 @e Serial_INAME
 @e ShowExtensionVersions_INAME
 @e ShowFullExtensionVersions_INAME
-@e ShowMeDetails_INAME
 @e ShowOneExtension_INAME
 @e ShowSceneStatus_INAME
 @e STANDARD_RESPONSE_ISSUING_R_INAME
-@e START_OBJECT_INIS_INAME
-@e START_ROOM_INIS_INAME
-@e START_TIME_INIS_INAME
 @e Story_Author_INAME
 @e Story_INAME
-@e TableOfExternalFiles_INAME
-@e TB_Blanks_INAME
-@e TC_KOV_INAME
 @e TIME_TOKEN_INNER_INAME
-@e TimedEventsTable_INAME
-@e TimedEventTimesTable_INAME
 @e TRUTH_STATE_TOKEN_INNER_INAME
 @e TTF_sum_INAME
-@e UNKNOWN_TY_INAME
 @e UUID_ARRAY_INAME
-@e VERB_DIRECTIVE_CREATURE_INAME
-@e VERB_DIRECTIVE_DIVIDER_INAME
-@e VERB_DIRECTIVE_HELD_INAME
-@e VERB_DIRECTIVE_MULTI_INAME
-@e VERB_DIRECTIVE_MULTIEXCEPT_INAME
-@e VERB_DIRECTIVE_MULTIHELD_INAME
-@e VERB_DIRECTIVE_MULTIINSIDE_INAME
-@e VERB_DIRECTIVE_NOUN_INAME
-@e VERB_DIRECTIVE_NUMBER_INAME
-@e VERB_DIRECTIVE_RESULT_INAME
-@e VERB_DIRECTIVE_REVERSE_INAME
-@e VERB_DIRECTIVE_SLASH_INAME
-@e VERB_DIRECTIVE_SPECIAL_INAME
-@e VERB_DIRECTIVE_TOPIC_INAME
 
 @e FINAL_INAME
 
@@ -1640,118 +1446,40 @@ inter_name *InterNames::iname(int num) {
 	if (intern_inter_names[num]) return intern_inter_names[num];
 	text_stream *S = NULL; int glob = FALSE;
 	switch (num) {
-		case ActionCoding_INAME:				S = I"ActionCoding"; break;
-		case ActionData_INAME:					S = I"ActionData"; break;
-		case ActionHappened_INAME:				S = I"ActionHappened"; break;
-		case Activity_after_rulebooks_INAME:	S = I"Activity_after_rulebooks"; break;
-		case Activity_atb_rulebooks_INAME:		S = I"Activity_atb_rulebooks"; break;
-		case Activity_before_rulebooks_INAME:	S = I"Activity_before_rulebooks"; break;
-		case Activity_for_rulebooks_INAME:		S = I"Activity_for_rulebooks"; break;
-		case activity_var_creators_INAME:		S = I"activity_var_creators"; break;
-		case AD_RECORDS_INAME:					S = I"AD_RECORDS"; break;
-		case BASE_KIND_HWM_INAME:				S = I"BASE_KIND_HWM"; break;
-		case CAP_SHORT_NAME_EXISTS_INAME:		S = I"CAP_SHORT_NAME_EXISTS"; break;
-		case CCOUNT_ACTION_NAME_INAME:			S = I"CCOUNT_ACTION_NAME"; break;
-		case CCOUNT_BINARY_PREDICATE_INAME:		S = I"CCOUNT_BINARY_PREDICATE"; break;
-		case CCOUNT_PROPERTY_INAME:				S = I"CCOUNT_PROPERTY"; break;
-		case CCOUNT_QUOTATIONS_INAME:			S = I"CCOUNT_QUOTATIONS"; break;
 		case CommandPromptText_INAME:			S = I"CommandPromptText"; break;
-		case CreateDynamicRelations_INAME:		S = I"CreateDynamicRelations"; break;
-		case DEBUG_INAME:						S = I"DEBUG"; break;
 		case DECIMAL_TOKEN_INNER_INAME:			S = I"DECIMAL_TOKEN_INNER"; break;
-		case DEFAULT_SCORING_SETTING_INAME:		S = I"DEFAULT_SCORING_SETTING"; break;
-		case DefaultValueFinder_INAME:			S = I"DefaultValueFinder"; break;
 		case DetectSceneChange_INAME:			S = I"DetectSceneChange"; break;
-		case DONE_INIS_INAME:					S = I"DONE_INIS"; break;
-		case EMPTY_RULEBOOK_INAME: 				S = I"EMPTY_RULEBOOK"; break;
 		case Headline_INAME:					S = I"Headline"; break;
-		case I7_Kind_Name_INAME:				S = I"I7_Kind_Name"; break;
 		case INITIAL_MAX_SCORE_INAME:			S = I"INITIAL_MAX_SCORE"; break;
-		case InitialSituation_INAME:			S = I"InitialSituation"; break;
 		case InternalTestCases_INAME:			S = I"InternalTestCases"; break;
 		case IterateRelations_INAME:			S = I"IterateRelations"; break;
-		case KOVComparisonFunction_INAME:		S = I"KOVComparisonFunction"; break;
-		case KOVDomainSize_INAME:				S = I"KOVDomainSize"; break;
-		case KOVIsBlockValue_INAME:				S = I"KOVIsBlockValue"; break;
-		case KOVSupportFunction_INAME:			S = I"KOVSupportFunction"; break;
-		case main_INAME:						S = I"main"; glob = TRUE; break;
-		case generic_INAME:						S = I"generic"; glob = TRUE; break;
-		case template_INAME:					S = I"template"; glob = TRUE; break;
-		case resources_INAME:					S = I"resources"; glob = TRUE; break;
-		case synoptic_INAME:					S = I"synoptic"; glob = TRUE; break;
 		case Map_Storage_INAME:					S = I"Map_Storage"; break;
 		case MAX_FRAME_SIZE_NEEDED_INAME:		S = I"MAX_FRAME_SIZE_NEEDED"; break;
 		case MAX_WEAK_ID_INAME:					S = I"MAX_WEAK_ID"; break;
 		case MEANINGLESS_RR_INAME:				S = I"MEANINGLESS_RR"; break;
 		case MEMORY_HEAP_SIZE_INAME:			S = I"MEMORY_HEAP_SIZE"; break;
-		case MistakeAction_INAME:				S = I"##MistakeAction"; break;
-		case MistakeActionSub_INAME:			S = I"MistakeActionSub"; break;
-		case MStack_GetRBVarCreator_INAME:		S = I"MStack_GetRBVarCreator"; break;
 		case NI_BUILD_COUNT_INAME:				S = I"NI_BUILD_COUNT"; break;
 		case No_Directions_INAME:				S = I"No_Directions"; break;
-		case NO_EXTERNAL_FILES_INAME:			S = I"NO_EXTERNAL_FILES"; break;
-		case NO_PAST_TENSE_ACTIONS_INAME:		S = I"NO_PAST_TENSE_ACTIONS"; break;
-		case NO_PAST_TENSE_CONDS_INAME:			S = I"NO_PAST_TENSE_CONDS"; break;
-		case NO_RESPONSES_INAME:				S = I"NO_RESPONSES"; break;
 		case NO_TEST_SCENARIOS_INAME:			S = I"NO_TEST_SCENARIOS"; break;
 		case NO_USE_OPTIONS_INAME:				S = I"NO_USE_OPTIONS"; break;
 		case NO_VERB_VERB_DEFINED_INAME:		S = I"NO_VERB_VERB_DEFINED"; break;
-		case nothing_INAME:						S = I"nothing"; break;
-		case NUMBER_RULEBOOKS_CREATED_INAME:	S = I"NUMBER_RULEBOOKS_CREATED"; break;
-		case PastActionsI6Routines_INAME:		S = I"PastActionsI6Routines"; break;
-		case PLAYER_OBJECT_INIS_INAME:			S = I"PLAYER_OBJECT_INIS"; break;
 		case PLUGIN_FILES_INAME:				S = I"PLUGIN_FILES"; break;
-		case PrintKindValuePair_INAME:			S = I"PrintKindValuePair"; break;
-		case PrintResponse_INAME:				S = I"PrintResponse"; break;
-		case PrintSceneName_INAME:				S = I"PrintSceneName"; break;
-		case PrintTableName_INAME:				S = I"PrintTableName"; break;
-		case PrintUseOption_INAME:				S = I"PrintUseOption"; break;
 		case RANKING_TABLE_INAME:				S = I"RANKING_TABLE"; break;
 		case Release_INAME:						S = I"Release"; break;
 		case ResourceIDsOfFigures_INAME:		S = I"ResourceIDsOfFigures"; break;
 		case ResourceIDsOfSounds_INAME:			S = I"ResourceIDsOfSounds"; break;
-		case ResponseDivisions_INAME:			S = I"ResponseDivisions"; break;
-		case RNG_SEED_AT_START_OF_PLAY_INAME:	S = I"RNG_SEED_AT_START_OF_PLAY"; break;
 		case RProperty_INAME:					S = I"RProperty"; break;
-		case rulebook_var_creators_INAME:		S = I"rulebook_var_creators"; break;
-		case RulebookNames_INAME:				S = I"RulebookNames"; break;
-		case RulebookOutcomePrintingRule_INAME:	S = I"RulebookOutcomePrintingRule"; break;
-		case rulebooks_array_INAME:				S = I"rulebooks_array"; break;
 		case Serial_INAME:						S = I"Serial"; break;
 		case ShowExtensionVersions_INAME:		S = I"ShowExtensionVersions"; break;
 		case ShowFullExtensionVersions_INAME:	S = I"ShowFullExtensionVersions"; break;
-		case ShowMeDetails_INAME:				S = I"ShowMeDetails"; break;
 		case ShowOneExtension_INAME:			S = I"ShowOneExtension"; break;
 		case ShowSceneStatus_INAME:				S = I"ShowSceneStatus"; break;
 		case STANDARD_RESPONSE_ISSUING_R_INAME:	S = I"STANDARD_RESPONSE_ISSUING_R"; break;
-		case START_OBJECT_INIS_INAME:			S = I"START_OBJECT_INIS"; break;
-		case START_ROOM_INIS_INAME:				S = I"START_ROOM_INIS"; break;
-		case START_TIME_INIS_INAME:				S = I"START_TIME_INIS"; break;
 		case Story_Author_INAME:				S = I"Story_Author"; break;
 		case Story_INAME:						S = I"Story"; break;
-		case TableOfExternalFiles_INAME:		S = I"TableOfExternalFiles"; break;
-		case TB_Blanks_INAME:					S = I"TB_Blanks"; break;
-		case TC_KOV_INAME:						S = I"TC_KOV"; break;
 		case TIME_TOKEN_INNER_INAME:			S = I"TIME_TOKEN_INNER"; break;
-		case TimedEventsTable_INAME:			S = I"TimedEventsTable"; break;
-		case TimedEventTimesTable_INAME:		S = I"TimedEventTimesTable"; break;
 		case TRUTH_STATE_TOKEN_INNER_INAME:		S = I"TRUTH_STATE_TOKEN_INNER"; break;
-		case UNKNOWN_TY_INAME:					S = I"UNKNOWN_TY"; break;
 		case UUID_ARRAY_INAME:					S = I"UUID_ARRAY"; break;
-		case VERB_DIRECTIVE_CREATURE_INAME:		S = I"VERB_DIRECTIVE_CREATURE"; break;
-		case VERB_DIRECTIVE_DIVIDER_INAME:		S = I"VERB_DIRECTIVE_DIVIDER"; break;
-		case VERB_DIRECTIVE_HELD_INAME:			S = I"VERB_DIRECTIVE_HELD"; break;
-		case VERB_DIRECTIVE_MULTI_INAME:		S = I"VERB_DIRECTIVE_MULTI"; break;
-		case VERB_DIRECTIVE_MULTIEXCEPT_INAME:	S = I"VERB_DIRECTIVE_MULTIEXCEPT"; break;
-		case VERB_DIRECTIVE_MULTIHELD_INAME:	S = I"VERB_DIRECTIVE_MULTIHELD"; break;
-		case VERB_DIRECTIVE_MULTIINSIDE_INAME:	S = I"VERB_DIRECTIVE_MULTIINSIDE"; break;
-		case VERB_DIRECTIVE_NOUN_INAME:			S = I"VERB_DIRECTIVE_NOUN"; break;
-		case VERB_DIRECTIVE_NUMBER_INAME:		S = I"VERB_DIRECTIVE_NUMBER"; break;
-		case VERB_DIRECTIVE_RESULT_INAME:		S = I"VERB_DIRECTIVE_RESULT"; break;
-		case VERB_DIRECTIVE_REVERSE_INAME:		S = I"VERB_DIRECTIVE_REVERSE"; break;
-		case VERB_DIRECTIVE_SLASH_INAME:		S = I"VERB_DIRECTIVE_SLASH"; break;
-		case VERB_DIRECTIVE_SPECIAL_INAME:		S = I"VERB_DIRECTIVE_SPECIAL"; break;
-		case VERB_DIRECTIVE_TOPIC_INAME:		S = I"VERB_DIRECTIVE_TOPIC"; break;
 	}
 	if (S == NULL) internal_error("no wording for external name");
 	intern_inter_names[num] = InterNames::one_off(S, glob?NULL:(Packaging::request_main()));

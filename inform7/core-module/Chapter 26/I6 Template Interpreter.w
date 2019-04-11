@@ -605,7 +605,7 @@ void TemplateFiles::compile_build_number(void) {
 	TEMPORARY_TEXT(build);
 	WRITE_TO(build, "%B", TRUE);
 	inter_name *iname = InterNames::iname(NI_BUILD_COUNT_INAME);
-	Packaging::house(iname, Packaging::request_resource(NULL, BASICS_SUBPACKAGE));
+	Packaging::house(iname, Packaging::generic_resource(BASICS_SUBPACKAGE));
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_string_constant(iname, build);
 	Packaging::exit(save);

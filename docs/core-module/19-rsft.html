@@ -326,8 +326,7 @@ case.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::iname</span><span class="plain">(</span><span class="constant">TB_Blanks_INAME</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">TABLES_SUBPACKAGE</span><span class="plain">));</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TB_BLANKS_NRL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
@@ -419,7 +418,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::find</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_NRL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">EMPTY_TABLE_EXNAMEF</span><span class="plain">));</span>
