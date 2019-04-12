@@ -459,7 +459,7 @@ void PL::Parsing::Verbs::translates(wording W, parse_node *p2) {
 
 inter_name *PL::Parsing::Verbs::i6_token_as_iname(grammar_verb *gv) {
 	if (Str::len(gv->gv_I6_identifier) > 0)
-		return InterNames::extern_name(EXTERN_TOKEN_ROUTINE_INAMEF, gv->gv_I6_identifier, NULL);
+		return InterNames::extern_name(gv->gv_I6_identifier);
 	if (gv->gv_line_iname == NULL) internal_error("no token GPR");
 	return gv->gv_line_iname;
 }

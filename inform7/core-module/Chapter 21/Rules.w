@@ -208,7 +208,7 @@ void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 	R->rule_extern_iname = InterNames::one_off(I"exterior_rule", R->rule_package);
 	Inter::Symbols::set_flag(InterNames::to_symbol(R->rule_extern_iname), MAKE_NAME_UNIQUE);
 
-	inter_name *xiname = InterNames::extern_name(TEMPLATE_RESPONSE_INAMEF, XT, NULL);
+	inter_name *xiname = InterNames::extern_name(XT);
 	packaging_state save = Packaging::enter(R->rule_package);
 	inter_t v1 = 0, v2 = 0;
 	Inter::Symbols::to_data(Emit::repository(), Packaging::incarnate(R->rule_package), InterNames::to_symbol(xiname), &v1, &v2);

@@ -246,8 +246,7 @@ text_stream *Kinds::Behaviour::get_comparison_routine(kind *K) {
 
 #ifdef CORE_MODULE
 inter_name *Kinds::Behaviour::get_comparison_routine_as_iname(kind *K) {
-	return InterNames::extern_name(COMPARISON_ROUTINE_INAMEF,
-		Kinds::Behaviour::get_comparison_routine(K), NULL);
+	return InterNames::extern_name(Kinds::Behaviour::get_comparison_routine(K));
 }
 #endif
 
@@ -321,7 +320,7 @@ void Kinds::Behaviour::write_support_routine_name(OUTPUT_STREAM, kind *K) {
 inter_name *Kinds::Behaviour::get_support_routine_as_iname(kind *K) {
 	TEMPORARY_TEXT(N);
 	Kinds::Behaviour::write_support_routine_name(N, K);
-	inter_name *iname = InterNames::extern_name(SUPPORT_ROUTINE_INAMEF, N, NULL);
+	inter_name *iname = InterNames::extern_name(N);
 	DISCARD_TEXT(N);
 	return iname;
 }
@@ -398,7 +397,7 @@ text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {
 inter_name *Kinds::Behaviour::get_distinguisher_as_iname(kind *K) {
 	text_stream *N = Kinds::Behaviour::get_distinguisher(K);
 	if (N == NULL) return NULL;
-	return InterNames::extern_name(DISTINGUISHER_ROUTINE_INAMEF, N, NULL);
+	return InterNames::extern_name(N);
 }
 #endif
 
@@ -475,29 +474,25 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (Kinds::Compare::eq(K, K_time)) external = TRUE;
 	if (Kinds::Compare::eq(K, K_number)) external = TRUE;
 	if (Kinds::Compare::eq(K, K_real_number)) external = TRUE;
-	if (Str::len(X) > 0) {
-		if (R) {
-			K->construct->pr_iname =
-				Packaging::function_text(
-					InterNames::one_off(I"print_fn", R),
-					R,
-					(external)?NULL:X);
-			if (external) {
-				LOG("Alpha External %S for $u\n", X, K);
-				Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->pr_iname), MAKE_NAME_UNIQUE);
-				inter_name *actual_iname = InterNames::extern_name(PRINTING_ROUTINE_INAMEF, X, NULL);
-				packaging_state save = Packaging::enter_home_of(K->construct->pr_iname);
-				Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
-				Packaging::exit(save);
-			}
-		} else {
-			if (external) K->construct->pr_iname = InterNames::extern_name(PRINTING_ROUTINE_INAMEF, X, NULL);
-			else internal_error("internal but unpackaged kind printing routine");
+	if (Str::len(X) == 0) X = I"DecimalNumber";
+	if (R) {
+		K->construct->pr_iname =
+			Packaging::function_text(
+				InterNames::one_off(I"print_fn", R),
+				R,
+				(external)?NULL:X);
+		if (external) {
+			LOG("Alpha External %S for $u\n", X, K);
+			Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->pr_iname), MAKE_NAME_UNIQUE);
+			inter_name *actual_iname = InterNames::extern_name(X);
+			packaging_state save = Packaging::enter_home_of(K->construct->pr_iname);
+			Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
+			Packaging::exit(save);
 		}
 	} else {
-		K->construct->pr_iname = InterNames::extern_in(PRINTING_ROUTINE_INAMEF, DECIMAL_NUMBER_EXNAMEF);
+		if (external) K->construct->pr_iname = InterNames::extern_name(X);
+		else internal_error("internal but unpackaged kind printing routine");
 	}
-
 	return K->construct->pr_iname;
 }
 package_request *Kinds::Behaviour::package(kind *K) {
@@ -543,9 +538,9 @@ inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {
 	if (K == NULL) K = K_number;
 	if (K->construct->trace_iname) return K->construct->trace_iname;
 	if (Str::len(K->construct->name_of_printing_rule_ACTIONS) > 0)
-		K->construct->trace_iname = InterNames::extern_name(TRACE_PRINTING_ROUTINE_INAMEF, K->construct->name_of_printing_rule_ACTIONS, NULL);
+		K->construct->trace_iname = InterNames::extern_name(K->construct->name_of_printing_rule_ACTIONS);
 	else
-		K->construct->trace_iname = InterNames::extern_in(TRACE_PRINTING_ROUTINE_INAMEF, DA_NAME_EXNAMEF);
+		K->construct->trace_iname = InterNames::extern_name(I"DA_Name");
 	return K->construct->trace_iname;
 }
 #endif
@@ -570,7 +565,7 @@ inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
 	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
 	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
 	if (Str::len(K->construct->explicit_i6_GPR) > 0)
-		return InterNames::extern_name(EXTERN_GPR_ROUTINE_INAMEF, K->construct->explicit_i6_GPR, NULL);
+		return InterNames::extern_name(K->construct->explicit_i6_GPR);
 	return NULL;
 }
 #endif
@@ -617,7 +612,7 @@ text_stream *Kinds::Behaviour::get_recognition_only_GPR(kind *K) {
 inter_name *Kinds::Behaviour::get_recognition_only_GPR_as_iname(kind *K) {
 	text_stream *N = Kinds::Behaviour::get_recognition_only_GPR(K);
 	if (N == NULL) return NULL;
-	return InterNames::extern_name(RECOGNISER_ROUTINE_INAMEF, N, NULL);
+	return InterNames::extern_name(N);
 }
 #endif
 

@@ -6,7 +6,6 @@
 @e UNIQUE_PER_NAMESPACE_FUSAGE
 @e MANY_PER_NAMESPACE_FUSAGE
 @e DERIVED_FUSAGE
-@e EXTERN_FUSAGE
 
 =
 typedef struct inter_namespace {
@@ -240,7 +239,6 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 				if (Str::len(NP) > 0) WRITE("%S_", NP);
 				WRITE("%S", N->family->family_name);
 				break;
-			case EXTERN_FUSAGE:
 			case MANY_PER_NAMESPACE_FUSAGE:
 				if (Str::len(NP) > 0) WRITE("%S_", NP);
 				WRITE("%S%d", N->family->family_name, N->unique_number);
@@ -305,9 +303,7 @@ int InterNames::defined(inter_name *iname) {
 @e AGREE_ADJECTIVE_INAMEF
 @e BACKDROP_FOUND_IN_INAMEF
 @e BACKDROP_FOUND_IN_ROUTINE_INAMEF
-@e CASTER_ROUTINE_INAMEF
 @e CLOSURE_INAMEF
-@e COMPARISON_ROUTINE_INAMEF
 @e CONJUGATE_VERB_FORM_INAMEF
 @e CONJUGATE_VERB_ROUTINE_INAMEF
 @e CONJUGATIONS_INAMEF
@@ -316,16 +312,8 @@ int InterNames::defined(inter_name *iname) {
 @e DEFERRED_PROPOSITION_ROUTINE_INAMEF
 @e DEFERRED_PROPOSITION_RTP_INAMEF
 @e DIRECTION_OBJECT_INAMEF
-@e DISTINGUISHER_ROUTINE_INAMEF
 @e EQUATION_ROUTINE_INAMEF
-@e EXTERN_FORMAL_PAR_INAMEF
-@e EXTERN_GPR_ROUTINE_INAMEF
-@e EXTERN_INSTANCE_OR_KIND_INAMEF
-@e EXTERN_MISCELLANEOUS_INAMEF
-@e EXTERN_RESPONSE_ROUTINE_INAMEF
-@e EXTERN_TOKEN_ROUTINE_INAMEF
 @e EXTERNAL_FILE_INAMEF
-@e EXTERNALLY_DEFINED_PHRASE_INAMEF
 @e FORMAL_PAR_INAMEF
 @e GPR_FOR_EITHER_OR_PROPERTY_INAMEF
 @e GPR_FOR_INSTANCE_INAMEF
@@ -360,7 +348,6 @@ int InterNames::defined(inter_name *iname) {
 @e PHRASE_REQUEST_INAMEF
 @e PRINTING_ROUTINE_INAMEF
 @e PROPERTY_INAMEF
-@e RECOGNISER_ROUTINE_INAMEF
 @e REGION_FOUND_IN_ROUTINE_INAMEF
 @e RELATION_BY_ROUTINE_INAMEF
 @e RELATION_GUARD_F0_INAMEF
@@ -380,20 +367,16 @@ int InterNames::defined(inter_name *iname) {
 @e RULEBOOK_INAMEF
 @e RULEBOOK_NAMED_OPTION_INAMEF
 @e RULEBOOK_STV_FRAME_CREATOR_INAMEF
-@e SCHEMA_NAMED_ROUTINE_INAMEF
 @e SCOPE_FILTER_INAMEF
 @e SHORT_NAME_PROPERTY_ROUTINE_INAMEF
 @e SHORT_NAME_ROUTINE_INAMEF
-@e SUPPORT_ROUTINE_INAMEF
 @e TABLE_COLUMN_INAMEF
 @e TABLE_INAMEF
-@e TEMPLATE_RESPONSE_INAMEF
 @e TEST_REQS_INAMEF
 @e TEST_TEXTS_INAMEF
 @e TEXT_ROUTINE_INAMEF
 @e TEXT_SUBSTITUTION_INAMEF
 @e TO_PHRASE_INAMEF
-@e TRACE_PRINTING_ROUTINE_INAMEF
 @e TWO_SIDED_DOOR_DOOR_DIR_INAMEF
 @e TWO_SIDED_DOOR_DOOR_TO_INAMEF
 @e TWO_SIDED_DOOR_FOUND_IN_INAMEF
@@ -453,19 +436,14 @@ inter_name *InterNames::new_overridden(int fnum, text_stream *identifier) {
 	return N;
 }
 
-inter_name *InterNames::extern_name(int fnum, text_stream *name, kind *K) {
+inter_name *InterNames::extern_name(text_stream *name) {
 	if (Str::len(name) == 0) internal_error("empty extern");
-
+	
 	inter_name *try = InterNames::find_by_name(name);
 	if (try) return try;
 
-	inter_name_family *F = InterNames::get_family(fnum);
-	if (F->fusage != EXTERN_FUSAGE) internal_error("not an extern family");
-	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
-	N->override = Str::duplicate(name);
-	if (K == NULL) K = K_value;
-	N->symbol = Emit::extern(N->override, K);
-	N->eventual_owner = Packaging::request_template();
+	inter_name *N = InterNames::one_off(name, Packaging::request_template());
+	N->symbol = Emit::extern(name, K_value);
 	return N;
 }
 
@@ -579,7 +557,7 @@ inter_name_family *InterNames::get_family(int fnum) {
 	if ((fnum < 1) || (fnum >= FINAL_INAMEF)) internal_error("fnum out of range");
 	if (inter_name_families[fnum]) return inter_name_families[fnum];
 	text_stream *S = NULL;
-	int D = -1, XT = FALSE, cache = FALSE, mark_exports = TRUE;
+	int D = -1, cache = FALSE, mark_exports = TRUE;
 	text_stream *Pre = NULL, *Suf = NULL;
 	switch (fnum) {
 		case ACTION_BASE_INAMEF:					S = I"A";					break;
@@ -594,9 +572,7 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case AGREE_ADJECTIVE_INAMEF:				S = I"Adj"; cache = TRUE;	break;
 		case BACKDROP_FOUND_IN_INAMEF:				S = I"BD_found_in_storage";	break;
 		case BACKDROP_FOUND_IN_ROUTINE_INAMEF:		S = I"FI_for_I";			break;
-		case CASTER_ROUTINE_INAMEF:					XT = TRUE;					break;
 		case CLOSURE_INAMEF:						S = I"Closure";				break;
-		case COMPARISON_ROUTINE_INAMEF:				XT = TRUE;					break;
 		case CONJUGATE_VERB_FORM_INAMEF:			S = I"ConjugateVerbForm";	break;
 		case CONJUGATE_VERB_ROUTINE_INAMEF:			S = I"ConjugateVerb";		break;
 		case CONJUGATIONS_INAMEF:					S = I"conjugations";		break;
@@ -606,16 +582,8 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case DEFERRED_PROPOSITION_ROUTINE_INAMEF:	S = I"Prop"; cache = TRUE;	break;
 		case DEFERRED_PROPOSITION_RTP_INAMEF:		S = I"PROP_SRC";			break;
 		case DIRECTION_OBJECT_INAMEF:				S = I"DirectionObject";		break;
-		case DISTINGUISHER_ROUTINE_INAMEF:			XT = TRUE;					break;
 		case EQUATION_ROUTINE_INAMEF:				S = I"Q";					break;
-		case EXTERN_FORMAL_PAR_INAMEF:				XT = TRUE;					break;
-		case EXTERN_GPR_ROUTINE_INAMEF:				XT = TRUE;					break;
-		case EXTERN_INSTANCE_OR_KIND_INAMEF:		XT = TRUE;					break;
-		case EXTERN_MISCELLANEOUS_INAMEF:			XT = TRUE;					break;
-		case EXTERN_RESPONSE_ROUTINE_INAMEF:		D = TEMPLATE_RESPONSE_INAMEF; Suf = I"M"; break;
-		case EXTERN_TOKEN_ROUTINE_INAMEF:			XT = TRUE;					break;
 		case EXTERNAL_FILE_INAMEF:					S = I"X";					break;
-		case EXTERNALLY_DEFINED_PHRASE_INAMEF:		XT = TRUE;					break;
 		case FIRST_INSTANCE_INAMEF:					D = KIND_INAMEF; Suf = I"_First"; break;
 		case FORMAL_PAR_INAMEF:						S = I"formal_par";			break;
 		case GPR_FOR_EITHER_OR_PROPERTY_INAMEF:		S = I"PRN_PN";				break;
@@ -653,9 +621,8 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case PAST_ACTION_ROUTINE_INAMEF:			S = I"PAPR";				break;
 		case PHRASE_INAMEF:							S = I"R"; cache = TRUE;		break;
 		case PHRASE_REQUEST_INAMEF:					S = I"REQ"; cache = TRUE;	break;
-		case PRINTING_ROUTINE_INAMEF:				S = I"E"; XT = TRUE;		break;
+		case PRINTING_ROUTINE_INAMEF:				S = I"E";					break;
 		case PROPERTY_INAMEF:						S = I"P"; mark_exports = FALSE; break;
-		case RECOGNISER_ROUTINE_INAMEF:				XT = TRUE;					break;
 		case REGION_FOUND_IN_ROUTINE_INAMEF:		S = I"RFI_for_I";			break;
 		case RELATION_BY_ROUTINE_INAMEF:			S = I"Relation";			break;
 		case RELATION_GUARD_F0_INAMEF:				S = I"RGuard_f0";			break;
@@ -675,20 +642,16 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case RULEBOOK_INAMEF:						S = I"B";					break;
 		case RULEBOOK_NAMED_OPTION_INAMEF:			S = I"RBNO";				break;
 		case RULEBOOK_STV_FRAME_CREATOR_INAMEF:		S = I"RBSTVC";				break;
-		case SCHEMA_NAMED_ROUTINE_INAMEF:			XT = TRUE;					break;
 		case SCOPE_FILTER_INAMEF:					S = I"Scope_Filter";		break;
 		case SHORT_NAME_PROPERTY_ROUTINE_INAMEF:	S = I"SN_R_A";				break;
 		case SHORT_NAME_ROUTINE_INAMEF:				S = I"SN_R";				break;
-		case SUPPORT_ROUTINE_INAMEF:				XT = TRUE;					break;
 		case TABLE_COLUMN_INAMEF:					S = I"TC";					break;
 		case TABLE_INAMEF:							S = I"T";					break;
-		case TEMPLATE_RESPONSE_INAMEF:				XT = TRUE;					break;
 		case TEST_REQS_INAMEF:						S = I"TestReq";				break;
 		case TEST_TEXTS_INAMEF:						S = I"TestText";			break;
 		case TEXT_ROUTINE_INAMEF:					D = TEXT_SUBSTITUTION_INAMEF; Pre = I"R_"; cache = TRUE; break;
 		case TEXT_SUBSTITUTION_INAMEF:				S = I"TX_S"; cache = TRUE;	break;
 		case TO_PHRASE_INAMEF:						S = I"PHR";					break;
-		case TRACE_PRINTING_ROUTINE_INAMEF:			XT = TRUE;					break;
 		case TWO_SIDED_DOOR_DOOR_DIR_INAMEF:		S = I"TSD_door_dir_value";	break;
 		case TWO_SIDED_DOOR_DOOR_TO_INAMEF:			S = I"TSD_door_to_value";	break;
 		case TWO_SIDED_DOOR_FOUND_IN_INAMEF:		S = I"TSD_found_in_value";	break;
@@ -699,10 +662,9 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case WEAK_ID_CONSTANT_INAMEF:				S = I"always_overridden";	break;
 	}
 
-	if ((S) || (D >= 0) || (XT)) {
+	if ((S) || (D >= 0)) {
 		int fusage = MANY_PER_NAMESPACE_FUSAGE;
 		if (D >= 0) fusage = DERIVED_FUSAGE;
-		if (XT) fusage = EXTERN_FUSAGE;
 		inter_name_families[fnum] = InterNames::new_family(fusage, S);
 		if (D >= 0) {
 			inter_name_families[fnum]->derivative_of = inter_name_families[D];
@@ -948,16 +910,11 @@ inter_name_family *InterNames::get_family(int fnum) {
 
 @e FINAL_EXNAMEF
 
-inter_name *InterNames::extern(int exnum) {
-	return InterNames::extern_in(EXTERN_MISCELLANEOUS_INAMEF, exnum);
-}
-
 inter_name *extern_inter_names[FINAL_EXNAMEF+1];
-inter_name *InterNames::extern_in(int family, int exnum) {
+inter_name *InterNames::extern(int exnum) {
 	if ((exnum < 1) || (exnum >= FINAL_EXNAMEF)) internal_error("exnum out of range");
 	if (extern_inter_names[exnum]) return extern_inter_names[exnum];
 	text_stream *S = NULL;
-	kind *K = K_value;
 	switch (exnum) {
 		case EMPTY_TEXT_PACKED_EXNAMEF: 				S = I"EMPTY_TEXT_PACKED"; break;
 		case PACKED_TEXT_STORAGE_EXNAMEF: 				S = I"PACKED_TEXT_STORAGE"; break;
@@ -974,55 +931,33 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case DA_NAME_EXNAMEF: 							S = I"DA_Name"; break;
 		case DECIMAL_NUMBER_EXNAMEF: 					S = I"DecimalNumber"; break;
 		case I7SFRAME_EXNAMEF: 							S = I"I7SFRAME"; break;
-		case ALLOWINSHOWME_EXNAMEF: 					S = I"AllowInShowme";
-			K = Kinds::binary_construction(CON_phrase, K_value, K_value); break;
-		case BLKVALUEFREEONSTACK_EXNAMEF: 				S = I"BlkValueFreeOnStack";
-			K = Kinds::binary_construction(CON_phrase, K_number, K_nil); break;
-		case RESPONSEVIAACTIVITY_EXNAMEF: 				S = I"ResponseViaActivity";
-			K = Kinds::binary_construction(CON_phrase, K_number, K_nil); break;
-		case STACKFRAMECREATE_EXNAMEF: 					S = I"StackFrameCreate";
-			K = Kinds::binary_construction(CON_phrase, K_number, K_nil); break;
-		case BLKVALUECOPY_EXNAMEF: 						S = I"BlkValueCopy";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_value); break;
-		case BLKVALUECOPYAZ_EXNAMEF: 					S = I"BlkValueCopyAZ";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_value); break;
-		case BLKVALUECREATE_EXNAMEF: 					S = I"BlkValueCreate";
-			K = Kinds::binary_construction(CON_phrase, K_value, K_nil); break;
-		case BLKVALUEERROR_EXNAMEF: 					S = I"BlkValueError";
-			K = Kinds::binary_construction(CON_phrase, K_value, K_nil); break;
+		case ALLOWINSHOWME_EXNAMEF: 					S = I"AllowInShowme"; break;
+		case BLKVALUEFREEONSTACK_EXNAMEF: 				S = I"BlkValueFreeOnStack"; break;
+		case RESPONSEVIAACTIVITY_EXNAMEF: 				S = I"ResponseViaActivity"; break;
+		case STACKFRAMECREATE_EXNAMEF: 					S = I"StackFrameCreate"; break;
+		case BLKVALUECOPY_EXNAMEF: 						S = I"BlkValueCopy"; break;
+		case BLKVALUECOPYAZ_EXNAMEF: 					S = I"BlkValueCopyAZ"; break;
+		case BLKVALUECREATE_EXNAMEF: 					S = I"BlkValueCreate"; break;
+		case BLKVALUEERROR_EXNAMEF: 					S = I"BlkValueError"; break;
 		case LISTOFTYSAY_EXNAMEF:						S = I"LIST_OF_TY_Say"; break;
 		case LISTOFTYSETLENGTH_EXNAMEF:					S = I"LIST_OF_TY_SetLength"; break;
 		case LISTOFTYINSERTITEM_EXNAMEF:				S = I"LIST_OF_TY_InsertItem"; break;
-		case TEXTTYSAY_EXNAMEF: 						S = I"TEXT_TY_Say";
-			K = Kinds::binary_construction(CON_phrase, K_value, K_nil); break;
-		case TEXTTYCOMPARE_EXNAMEF: 					S = I"TEXT_TY_Compare";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_number, K_value), K_truth_state); break;
-		case RELATIONTYNAME_EXNAMEF: 					S = I"RELATION_TY_Name";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_nil); break;
-		case RELATIONTYOTOOADJECTIVE_EXNAMEF: 			S = I"RELATION_TY_OToOAdjective";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_nil); break;
-		case RELATIONTYOTOVADJECTIVE_EXNAMEF: 			S = I"RELATION_TY_OToVAdjective";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_nil); break;
-		case RELATIONTYVTOOADJECTIVE_EXNAMEF: 			S = I"RELATION_TY_VToOAdjective";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_nil); break;
-		case RELATIONTYSYMMETRICADJECTIVE_EXNAMEF: 		S = I"RELATION_TY_SymmetricAdjective";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_nil); break;
-		case RELATIONTYEQUIVALENCEADJECTIVE_EXNAMEF: 	S = I"RELATION_TY_EquivalenceAdjective";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value), K_nil); break;
-		case BLKVALUEFREE_EXNAMEF: 						S = I"BlkValueFree";
-			K = Kinds::binary_construction(CON_phrase, K_value, K_nil); break;
+		case TEXTTYSAY_EXNAMEF: 						S = I"TEXT_TY_Say"; break;
+		case TEXTTYCOMPARE_EXNAMEF: 					S = I"TEXT_TY_Compare"; break;
+		case RELATIONTYNAME_EXNAMEF: 					S = I"RELATION_TY_Name"; break;
+		case RELATIONTYOTOOADJECTIVE_EXNAMEF: 			S = I"RELATION_TY_OToOAdjective"; break;
+		case RELATIONTYOTOVADJECTIVE_EXNAMEF: 			S = I"RELATION_TY_OToVAdjective"; break;
+		case RELATIONTYVTOOADJECTIVE_EXNAMEF: 			S = I"RELATION_TY_VToOAdjective"; break;
+		case RELATIONTYSYMMETRICADJECTIVE_EXNAMEF: 		S = I"RELATION_TY_SymmetricAdjective"; break;
+		case RELATIONTYEQUIVALENCEADJECTIVE_EXNAMEF: 	S = I"RELATION_TY_EquivalenceAdjective"; break;
+		case BLKVALUEFREE_EXNAMEF: 						S = I"BlkValueFree"; break;
 		case BLKVALUEWRITE_EXNAMEF: 					S = I"BlkValueWrite"; break;
-		case BLKVALUECREATEONSTACK_EXNAMEF: 			S = I"BlkValueCreateOnStack";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_number, K_value), K_nil); break;
-		case RULEBOOKFAILS_EXNAMEF: 					S = I"RulebookFails";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_number, K_value), K_nil); break;
-		case RULEBOOKSUCCEEDS_EXNAMEF: 					S = I"RulebookSucceeds";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_number, K_value), K_nil); break;
-		case PRINTORRUN_EXNAMEF: 						S = I"PrintOrRun";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value)), K_nil); break;
+		case BLKVALUECREATEONSTACK_EXNAMEF: 			S = I"BlkValueCreateOnStack"; break;
+		case RULEBOOKFAILS_EXNAMEF: 					S = I"RulebookFails"; break;
+		case RULEBOOKSUCCEEDS_EXNAMEF: 					S = I"RulebookSucceeds"; break;
+		case PRINTORRUN_EXNAMEF: 						S = I"PrintOrRun"; break;
 		case DEBUGRULES_EXNAMEF: 						S = I"debug_rules"; break;
-		case DBRULE_EXNAMEF:							S = I"DB_Rule";
-			K = Kinds::binary_construction(CON_phrase, Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, Kinds::binary_construction(CON_TUPLE_ENTRY, K_number, K_number)), K_nil); break;
+		case DBRULE_EXNAMEF:							S = I"DB_Rule"; break;
 		case DEADFLAG_EXNAMEF: 							S = I"deadflag"; break;
 		case ACTION_EXNAMEF: 							S = I"action"; break;
 		case NOUN_EXNAMEF: 								S = I"noun"; break;
@@ -1071,11 +1006,7 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case WHENSCENEENDS_EXNAMEF:						S = I"WHEN_SCENE_ENDS_RB"; break;
 		case GENERICVERBSUB_EXNAMEF:					S = I"GenericVerbSub"; break;
 		case SHORTNAME_EXNAMEF:							S = I"short_name"; break;
-		case RELATIONTEST_EXNAMEF: 						S = I"RelationTest";
-			K = Kinds::binary_construction(CON_phrase,
-				Kinds::binary_construction(CON_TUPLE_ENTRY, K_value,
-					Kinds::binary_construction(CON_TUPLE_ENTRY, K_value,
-						Kinds::binary_construction(CON_TUPLE_ENTRY, K_value, K_value))), K_nil); break;
+		case RELATIONTEST_EXNAMEF: 						S = I"RelationTest"; break;
 		case DEBUGSCENES_EXNAMEF:						S = I"debug_scenes"; break;
 		case PRIORNAMEDLISTGENDER_EXNAMEF:				S = I"prior_named_list_gender"; break;
 		case LOSRV_EXNAMEF:								S = I"los_rv"; break;
@@ -1213,14 +1144,14 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 		case GENERATERANDOMNUMBER_EXNAMEF:				S = I"GenerateRandomNumber"; break;
 	}
 	if (S == NULL) internal_error("no wording for external name");
-	extern_inter_names[exnum] = InterNames::extern_name(family, S, K);
+	extern_inter_names[exnum] = InterNames::extern_name(S);
 	return extern_inter_names[exnum];
 }
 
 inter_name *InterNames::formal_par(int n) {
 	TEMPORARY_TEXT(lvalue);
 	WRITE_TO(lvalue, "formal_par%d", n);
-	inter_name *iname = InterNames::extern_name(EXTERN_FORMAL_PAR_INAMEF, lvalue, NULL);
+	inter_name *iname = InterNames::extern_name(lvalue);
 	DISCARD_TEXT(lvalue);
 	return iname;
 }

@@ -381,7 +381,7 @@ int Kinds::RunTime::emit_cast_call(kind *from, kind *to, int *down) {
 		WRITE_TO(N, "%S_to_%S",
 			Kinds::Behaviour::get_name_in_template_code(from),
 			Kinds::Behaviour::get_name_in_template_code(to));
-		inter_name *iname = InterNames::extern_name(CASTER_ROUTINE_INAMEF, N, NULL);
+		inter_name *iname = InterNames::extern_name(N);
 		DISCARD_TEXT(N);
 		Emit::inv_call(InterNames::to_symbol(iname));
 		*down = TRUE;

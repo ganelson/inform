@@ -206,7 +206,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 	nlv->nlv_name_translated = TRUE;
 	TEMPORARY_TEXT(name);
 	WRITE_TO(name, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
-	inter_name *as_iname = InterNames::extern_name(DISTINGUISHER_ROUTINE_INAMEF, name, NULL);
+	inter_name *as_iname = InterNames::extern_name(name);
 	NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_iname(as_iname));
 	NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_iname(as_iname));
 	DISCARD_TEXT(name);
