@@ -81,10 +81,8 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 		(LocalVariables::count(Frames::current_stack_frame()) > 0))
 		ts->local_names_existed_at_usage_time = TRUE;
 	ts->ts_iname = Packaging::supply_iname(P, SUBSTITUTION_PR_COUNTER);
-	//	InterNames::new_in(TEXT_SUBSTITUTION_INAMEF, Modules::current());
 	ts->ts_routine_iname =
 		Packaging::function(Packaging::supply_iname(P, SUBSTITUTIONF_PR_COUNTER), P, NULL);
-	//	InterNames::new_derived(TEXT_ROUTINE_INAMEF, ts->ts_iname);
 	ts->belongs_to_module = Modules::current();
 	Inter::Symbols::set_flag(InterNames::to_symbol(ts->ts_iname), MAKE_NAME_UNIQUE);
 	Inter::Symbols::set_flag(InterNames::to_symbol(ts->ts_routine_iname), MAKE_NAME_UNIQUE);

@@ -474,6 +474,17 @@ void Hierarchy::establish(void) {
 
 @
 
+@e K_OBJECT_XPACKAGE from 0
+@e K_NUMBER_XPACKAGE
+@e K_TIME_XPACKAGE
+@e K_TRUTH_STATE_XPACKAGE
+@e K_TABLE_XPACKAGE
+@e K_VERB_XPACKAGE
+@e K_FIGURE_NAME_XPACKAGE
+@e K_SOUND_NAME_XPACKAGE
+@e K_USE_OPTION_XPACKAGE
+@e V_COMMAND_PROMPT_XPACKAGE
+
 @e NOTHING_HL
 @e OBJECT_HL
 @e TESTUSEOPTION_HL
@@ -491,19 +502,28 @@ void Hierarchy::establish(void) {
 @
 
 @<The rest@> =
-	HierarchyLocations::make_on_demand(OBJECT_HL, I"Object");
-	HierarchyLocations::make_on_demand(NOTHING_HL, I"nothing");
-	HierarchyLocations::make_on_demand(TESTUSEOPTION_HL, I"TestUseOption");
-	HierarchyLocations::make_on_demand(TABLEOFTABLES_HL, I"TableOfTables");
-	HierarchyLocations::make_on_demand(TABLEOFVERBS_HL, I"TableOfVerbs");
-	HierarchyLocations::make_on_demand(CAPSHORTNAME_HL, I"cap_short_name");
-	HierarchyLocations::make_on_demand(COMMANDPROMPTTEXT_HL, I"CommandPromptText");
-	HierarchyLocations::make_on_demand(DECIMAL_TOKEN_INNER_HL, I"DECIMAL_TOKEN_INNER");
-	HierarchyLocations::make_on_demand(NO_USE_OPTIONS_HL, I"NO_USE_OPTIONS");
-	HierarchyLocations::make_on_demand(RESOURCEIDSOFFIGURES_HL, I"ResourceIDsOfFigures");
-	HierarchyLocations::make_on_demand(RESOURCEIDSOFSOUNDS_HL, I"ResourceIDsOfSounds");
-	HierarchyLocations::make_on_demand(TIME_TOKEN_INNER_HL, I"TIME_TOKEN_INNER");
-	HierarchyLocations::make_on_demand(TRUTH_STATE_TOKEN_INNER_HL, I"TRUTH_STATE_TOKEN_INNER");
+	HierarchyLocations::make_in_exotic(OBJECT_HL, I"Object", K_OBJECT_XPACKAGE);
+	HierarchyLocations::make_in_exotic(NOTHING_HL, I"nothing", K_OBJECT_XPACKAGE);
+	HierarchyLocations::make_in_exotic(CAPSHORTNAME_HL, I"cap_short_name", K_OBJECT_XPACKAGE);
+
+	HierarchyLocations::make_function_in_exotic(DECIMAL_TOKEN_INNER_HL, I"gpr_fn", I"DECIMAL_TOKEN_INNER", K_NUMBER_XPACKAGE);
+
+	HierarchyLocations::make_function_in_exotic(TIME_TOKEN_INNER_HL, I"gpr_fn", I"TIME_TOKEN_INNER", K_TIME_XPACKAGE);
+
+	HierarchyLocations::make_function_in_exotic(TRUTH_STATE_TOKEN_INNER_HL, I"gpr_fn", I"TRUTH_STATE_TOKEN_INNER", K_TRUTH_STATE_XPACKAGE);
+
+	HierarchyLocations::make_in_exotic(TABLEOFTABLES_HL, I"TableOfTables", K_TABLE_XPACKAGE);
+
+	HierarchyLocations::make_in_exotic(TABLEOFVERBS_HL, I"TableOfVerbs", K_VERB_XPACKAGE);
+
+	HierarchyLocations::make_in_exotic(RESOURCEIDSOFFIGURES_HL, I"ResourceIDsOfFigures", K_FIGURE_NAME_XPACKAGE);
+
+	HierarchyLocations::make_in_exotic(RESOURCEIDSOFSOUNDS_HL, I"ResourceIDsOfSounds", K_SOUND_NAME_XPACKAGE);
+
+	HierarchyLocations::make_in_exotic(NO_USE_OPTIONS_HL, I"NO_USE_OPTIONS", K_USE_OPTION_XPACKAGE);
+	HierarchyLocations::make_function_in_exotic(TESTUSEOPTION_HL, I"test_fn", I"TestUseOption", K_USE_OPTION_XPACKAGE);
+
+	HierarchyLocations::make_function_in_exotic(COMMANDPROMPTTEXT_HL, I"command_prompt_text_fn", I"CommandPromptText", V_COMMAND_PROMPT_XPACKAGE);
 
 @
 
@@ -980,6 +1000,58 @@ void Hierarchy::establish(void) {
 @
 
 @e MAX_HL
+
+@
+
+=
+package_request *Hierarchy::exotic_package(int x) {
+	switch (x) {
+		case K_OBJECT_XPACKAGE: return Kinds::Behaviour::package(K_object);
+		case K_NUMBER_XPACKAGE: return Kinds::Behaviour::package(K_number);
+		case K_TIME_XPACKAGE: return Kinds::Behaviour::package(K_time);
+		case K_TRUTH_STATE_XPACKAGE: return Kinds::Behaviour::package(K_truth_state);
+		case K_TABLE_XPACKAGE: return Kinds::Behaviour::package(K_table);
+		case K_VERB_XPACKAGE: return Kinds::Behaviour::package(K_verb);
+		case K_FIGURE_NAME_XPACKAGE: return Kinds::Behaviour::package(K_figure_name);
+		case K_SOUND_NAME_XPACKAGE: return Kinds::Behaviour::package(K_sound_name);
+		case K_USE_OPTION_XPACKAGE: return Kinds::Behaviour::package(K_use_option);
+		case V_COMMAND_PROMPT_XPACKAGE:
+			return Packaging::home_of(NonlocalVariables::iname(command_prompt_VAR));
+	}
+	internal_error("unknown exotic package");
+	return NULL;
+}
+
+@
+
+=
+inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
+	switch (HL_id) {
+		case THESAME_HL:
+		case PLURALFOUND_HL:
+		case PARENT_HL:
+		case CHILD_HL:
+		case SIBLING_HL:
+		case THEDARK_HL:
+		case FLOAT_NAN_HL:
+		case RESPONSETEXTS_HL: {
+			packaging_state save = Packaging::enter_home_of(iname);
+			Emit::named_numeric_constant(iname, 0);
+			Packaging::exit(save);
+			break;
+		}
+		case SELF_HL: {
+			packaging_state save = Packaging::enter_home_of(iname);
+			Emit::variable(iname, K_value, UNDEF_IVAL, 0, I"self");
+			Packaging::exit(save);
+			break;
+		}
+		case OBJECT_HL:
+			iname = Kinds::RunTime::I6_classname(K_object);
+			break;
+	}
+	return iname;
+}
 
 @
 

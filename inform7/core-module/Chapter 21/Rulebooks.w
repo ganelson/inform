@@ -219,9 +219,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R, text_st
 	else package_name = InterNames::one_off(supplied, R);
 	rb->rb_package = Packaging::request(package_name, R, rulebook_ptype);
 	rb->rb_iname = Packaging::function(InterNames::one_off(I"run_fn", rb->rb_package), rb->rb_package, NULL);
-	// InterNames::attach_memo(rb->rb_iname, rb->primary_name);
 	Inter::Symbols::set_flag(InterNames::to_symbol(rb->rb_iname), MAKE_NAME_UNIQUE);
-	// InterNames::new(RULEBOOK_INAMEF);
 
 	rb->rule_list = Rules::Bookings::list_new();
 

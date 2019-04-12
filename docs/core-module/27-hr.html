@@ -740,6 +740,16 @@
 
 
 <pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">K_OBJECT_XPACKAGE</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_NUMBER_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_TIME_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_TRUTH_STATE_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_TABLE_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_VERB_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_FIGURE_NAME_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_SOUND_NAME_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">K_USE_OPTION_XPACKAGE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">V_COMMAND_PROMPT_XPACKAGE</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NOTHING_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OBJECT_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TESTUSEOPTION_HL</span>
@@ -760,19 +770,28 @@
 
 
 <pre class="displaydefn">
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">OBJECT_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Object"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">NOTHING_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"nothing"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">TESTUSEOPTION_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TestUseOption"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TableOfTables"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">TABLEOFVERBS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TableOfVerbs"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">CAPSHORTNAME_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cap_short_name"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">COMMANDPROMPTTEXT_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CommandPromptText"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">DECIMAL_TOKEN_INNER_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"DECIMAL_TOKEN_INNER"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">NO_USE_OPTIONS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_USE_OPTIONS"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">RESOURCEIDSOFFIGURES_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ResourceIDsOfFigures"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">RESOURCEIDSOFSOUNDS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ResourceIDsOfSounds"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">TIME_TOKEN_INNER_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TIME_TOKEN_INNER"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::make_on_demand</span><span class="plain">(</span><span class="constant">TRUTH_STATE_TOKEN_INNER_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TRUTH_STATE_TOKEN_INNER"</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">OBJECT_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Object"</span><span class="plain">, </span><span class="constant">K_OBJECT_XPACKAGE</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">NOTHING_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"nothing"</span><span class="plain">, </span><span class="constant">K_OBJECT_XPACKAGE</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">CAPSHORTNAME_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cap_short_name"</span><span class="plain">, </span><span class="constant">K_OBJECT_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_function_in_exotic</span><span class="plain">(</span><span class="constant">DECIMAL_TOKEN_INNER_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"DECIMAL_TOKEN_INNER"</span><span class="plain">, </span><span class="constant">K_NUMBER_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_function_in_exotic</span><span class="plain">(</span><span class="constant">TIME_TOKEN_INNER_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TIME_TOKEN_INNER"</span><span class="plain">, </span><span class="constant">K_TIME_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_function_in_exotic</span><span class="plain">(</span><span class="constant">TRUTH_STATE_TOKEN_INNER_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TRUTH_STATE_TOKEN_INNER"</span><span class="plain">, </span><span class="constant">K_TRUTH_STATE_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TableOfTables"</span><span class="plain">, </span><span class="constant">K_TABLE_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">TABLEOFVERBS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TableOfVerbs"</span><span class="plain">, </span><span class="constant">K_VERB_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">RESOURCEIDSOFFIGURES_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ResourceIDsOfFigures"</span><span class="plain">, </span><span class="constant">K_FIGURE_NAME_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">RESOURCEIDSOFSOUNDS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ResourceIDsOfSounds"</span><span class="plain">, </span><span class="constant">K_SOUND_NAME_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_in_exotic</span><span class="plain">(</span><span class="constant">NO_USE_OPTIONS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_USE_OPTIONS"</span><span class="plain">, </span><span class="constant">K_USE_OPTION_XPACKAGE</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::make_function_in_exotic</span><span class="plain">(</span><span class="constant">TESTUSEOPTION_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"test_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TestUseOption"</span><span class="plain">, </span><span class="constant">K_USE_OPTION_XPACKAGE</span><span class="plain">);</span>
+
+        <span class="functiontext">HierarchyLocations::make_function_in_exotic</span><span class="plain">(</span><span class="constant">COMMANDPROMPTTEXT_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"command_prompt_text_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CommandPromptText"</span><span class="plain">, </span><span class="constant">V_COMMAND_PROMPT_XPACKAGE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1270,6 +1289,70 @@
     <span class="definitionkeyword">enum</span> <span class="constant">MAX_HL</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Hierarchy::exotic_package</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">) {</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_OBJECT_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_NUMBER_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_TIME_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_time</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_TRUTH_STATE_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_TABLE_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_VERB_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_verb</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_FIGURE_NAME_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_figure_name</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_SOUND_NAME_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_sound_name</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_USE_OPTION_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_use_option</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">V_COMMAND_PROMPT_XPACKAGE</span><span class="plain">:</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">command_prompt_VAR</span><span class="plain">));</span>
+        <span class="plain">}</span>
+        <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown exotic package"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Hierarchy::exotic_package is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Hierarchy::post_process</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">HL_id</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">) {</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">HL_id</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">THESAME_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PLURALFOUND_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PARENT_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CHILD_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SIBLING_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">THEDARK_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FLOAT_NAN_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RESPONSETEXTS_HL</span><span class="plain">: {</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+                <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, 0);</span>
+                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SELF_HL</span><span class="plain">: {</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+                <span class="functiontext">Emit::variable</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">UNDEF_IVAL</span><span class="plain">, 0, </span><span class="identifier">I</span><span class="string">"self"</span><span class="plain">);</span>
+                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">OBJECT_HL</span><span class="plain">:</span>
+                <span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Hierarchy::post_process is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 
 <pre class="display">
