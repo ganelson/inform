@@ -492,7 +492,7 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 			}
 		} else {
 			if (external) K->construct->pr_iname = InterNames::extern_name(PRINTING_ROUTINE_INAMEF, X, NULL);
-			else K->construct->pr_iname = InterNames::intern(PRINTING_ROUTINE_INAMEF, X);
+			else internal_error("internal but unpackaged kind printing routine");
 		}
 	} else {
 		K->construct->pr_iname = InterNames::extern_in(PRINTING_ROUTINE_INAMEF, DECIMAL_NUMBER_EXNAMEF);

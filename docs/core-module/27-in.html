@@ -537,17 +537,6 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::intern</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fnum</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null intern"</span><span class="plain">);</span>
-    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"INTERN: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">inter_name_family</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">InterNames::get_family</span><span class="plain">(</span><span class="identifier">fnum</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;fusage</span><span class="plain"> != </span><span class="constant">EXTERN_FUSAGE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not an extern family"</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">InterNames::new_in_space</span><span class="plain">(</span><span class="functiontext">InterNames::root</span><span class="plain">(), </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;override</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> = </span><span class="functiontext">Emit::holding_symbol</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;override</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::new_derived</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fnum</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">inter_name_family</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">InterNames::get_family</span><span class="plain">(</span><span class="identifier">fnum</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;fusage</span><span class="plain"> != </span><span class="constant">DERIVED_FUSAGE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a derived family"</span><span class="plain">);</span>
@@ -629,8 +618,6 @@
 <p class="endnote">The function InterNames::new_overridden appears nowhere else.</p>
 
 <p class="endnote">The function InterNames::extern_name is used in <a href="#SP6">&#167;6</a>, 5/nv (<a href="5-nv.html#SP10">&#167;10</a>), 13/rsfk (<a href="13-rsfk.html#SP7">&#167;7</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 22/tp (<a href="22-tp.html#SP8">&#167;8</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>).</p>
-
-<p class="endnote">The function InterNames::intern appears nowhere else.</p>
 
 <p class="endnote">The function InterNames::new_derived is used in 17/ts (<a href="17-ts.html#SP5">&#167;5</a>).</p>
 

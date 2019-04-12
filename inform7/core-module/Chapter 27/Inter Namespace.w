@@ -469,17 +469,6 @@ inter_name *InterNames::extern_name(int fnum, text_stream *name, kind *K) {
 	return N;
 }
 
-inter_name *InterNames::intern(int fnum, text_stream *name) {
-	if (Str::len(name) == 0) internal_error("null intern");
-LOG("INTERN: %S\n", name);
-	inter_name_family *F = InterNames::get_family(fnum);
-	if (F->fusage != EXTERN_FUSAGE) internal_error("not an extern family");
-	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
-	N->override = Str::duplicate(name);
-	N->symbol = Emit::holding_symbol(Emit::main_scope(), N->override);
-	return N;
-}
-
 inter_name *InterNames::new_derived(int fnum, inter_name *from) {
 	inter_name_family *F = InterNames::get_family(fnum);
 	if (F->fusage != DERIVED_FUSAGE) internal_error("not a derived family");
