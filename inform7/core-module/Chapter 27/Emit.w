@@ -918,7 +918,7 @@ void Emit::array_end(void) {
 inter_name *Emit::nothing(void) {
 	if (K_object == NULL) internal_error("too soon for nothing");
 	if (nothing_iname == NULL) {
-		nothing_iname = Hierarchy::find(NOTHING_NRL);
+		nothing_iname = Hierarchy::find(NOTHING_HL);
 		packaging_state save = Packaging::enter_home_of(nothing_iname);
 		Emit::named_pseudo_numeric_constant(nothing_iname, K_object, 0);
 		inter_symbol *iname_s = InterNames::to_symbol(nothing_iname);

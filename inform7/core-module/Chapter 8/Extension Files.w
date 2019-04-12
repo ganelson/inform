@@ -387,7 +387,7 @@ feelings of modesty.
 
 =
 void Extensions::Files::ShowExtensionVersions_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(SHOWEXTENSIONVERSIONS_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(SHOWEXTENSIONVERSIONS_HL));
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(the_author_name);
@@ -411,7 +411,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	}
 	Routines::end(save);
 
-	save = Routines::begin(Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_NRL));
+	save = Routines::begin(Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL));
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(C);
 		Extensions::Files::credit_ef(C, ef, TRUE);
@@ -423,7 +423,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	}
 	Routines::end(save);
 
-	save = Routines::begin(Hierarchy::find(SHOWONEEXTENSION_NRL));
+	save = Routines::begin(Hierarchy::find(SHOWONEEXTENSION_HL));
 	inter_symbol *id_s = LocalVariables::add_named_call_as_symbol(I"id");
 	LOOP_OVER(ef, extension_file) {
 		Emit::inv_primitive(if_interp);

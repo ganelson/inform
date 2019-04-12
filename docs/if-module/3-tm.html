@@ -557,7 +557,7 @@ follow the traditional I6 library way to represent the map):
 
 
 <pre class="displaydefn">
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ndi</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NO_DIRECTIONS_NRL</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ndi</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NO_DIRECTIONS_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ndi</span><span class="plain">);</span>
         <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">ndi</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">registered_directions</span><span class="plain">);</span>
         <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -591,7 +591,7 @@ at run-time, so we can't know now how many we will need.
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="identifier">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MAP_STORAGE_NRL</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MAP_STORAGE_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_used</span><span class="plain"> = 0;</span>
@@ -1494,7 +1494,7 @@ why we don't need to compile <code class="display"><span class="extract">door_to
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">LOCATION_EXNAMEF</span><span class="plain">));</span>
+                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATION_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
@@ -1502,14 +1502,14 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">THEDARK_NRL</span><span class="plain">));</span>
+                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">THEDARK_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">REALLOCATION_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_LOCATION_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1550,7 +1550,7 @@ why we don't need to compile <code class="display"><span class="extract">door_to
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">LOCATION_EXNAMEF</span><span class="plain">));</span>
+                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATION_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
@@ -1558,14 +1558,14 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">THEDARK_NRL</span><span class="plain">));</span>
+                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">THEDARK_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">REALLOCATION_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_LOCATION_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>

@@ -68,7 +68,7 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 		Emit::down();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(LOSRV_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
 				Emit::val_symbol(K_value, it_s);
 			Emit::up();
 		Emit::up();

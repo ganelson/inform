@@ -208,7 +208,7 @@ made above.
 		Emit::down();
 
 		if (Kinds::Behaviour::uses_pointer_values(result)) {
-			inter_name *iname = InterNames::extern(BLKVALUECREATE_EXNAMEF);
+			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 			Emit::inv_call(InterNames::to_symbol(iname));
 			Emit::down();
 			Kinds::RunTime::emit_strong_id_as_val(result);

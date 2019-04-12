@@ -242,7 +242,7 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 	if (rbo) {
 		switch(rbo->kind_of_outcome) {
 			case SUCCESS_OUTCOME: {
-				inter_name *iname = InterNames::extern(RULEBOOKSUCCEEDS_EXNAMEF);
+				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 				Emit::inv_call(InterNames::to_symbol(iname));
 				Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
@@ -252,7 +252,7 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 				break;
 			}
 			case FAILURE_OUTCOME: {
-				inter_name *iname = InterNames::extern(RULEBOOKFAILS_EXNAMEF);
+				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 				Emit::inv_call(InterNames::to_symbol(iname));
 				Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
@@ -265,7 +265,7 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 	} else {
 		switch(outs->default_rule_outcome) {
 			case SUCCESS_OUTCOME: {
-				inter_name *iname = InterNames::extern(RULEBOOKSUCCEEDS_EXNAMEF);
+				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 				Emit::inv_call(InterNames::to_symbol(iname));
 				Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -275,7 +275,7 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 				break;
 			}
 			case FAILURE_OUTCOME: {
-				inter_name *iname = InterNames::extern(RULEBOOKFAILS_EXNAMEF);
+				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 				Emit::inv_call(InterNames::to_symbol(iname));
 				Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -344,7 +344,7 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 	}
 	switch(rbo->kind_of_outcome) {
 		case SUCCESS_OUTCOME: {
-			inter_name *iname = InterNames::extern(RULEBOOKSUCCEEDS_EXNAMEF);
+			inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 			Emit::inv_call(InterNames::to_symbol(iname));
 			Emit::down();
 			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
@@ -354,7 +354,7 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 			break;
 		}
 		case FAILURE_OUTCOME: {
-			inter_name *iname = InterNames::extern(RULEBOOKFAILS_EXNAMEF);
+			inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 			Emit::inv_call(InterNames::to_symbol(iname));
 			Emit::down();
 			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);

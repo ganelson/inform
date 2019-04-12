@@ -141,7 +141,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 				if (phsf == NULL) phsf = Frames::current_stack_frame();
 				downs = LocalVariables::emit_storage(phsf);
 				phsf = Frames::boxed_frame(phsf);
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(TEXTTYEXPANDIFPERISHABLE_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL)));
 				Emit::down();
 					Frames::emit_allocation(K_text);
 			}
@@ -167,7 +167,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 		packaging_state save = Packaging::enter_current_enclosure();
 		inter_name *N = Kinds::RunTime::begin_block_constant(K_text);
 		if (N) InterNames::holster(VH, N);
-		Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(ts->ts_routine_iname);
 		Kinds::RunTime::end_block_constant(K_text);
 		Packaging::exit(save);
@@ -277,9 +277,9 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 		packaging_state save = Packaging::enter_home_of(ts->ts_iname);
 		Emit::named_array_begin(ts->ts_iname, K_value);
 		if (makes_local_references)
-			Emit::array_iname_entry(InterNames::extern(CONSTANT_PERISHABLE_TEXT_STORAGE_EXNAMEF));
+			Emit::array_iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
 		else
-			Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
+			Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(ts->ts_routine_iname);
 		Emit::array_end();
 		Packaging::exit(save);
@@ -302,7 +302,7 @@ a request for a new text substitution to be compiled later...
 			Emit::down();
 				Emit::inv_primitive(if_interp);
 				Emit::down();
-					Emit::val_iname(K_number, InterNames::extern(SUPPRESSTEXTSUBSTITUTION_EXNAMEF));
+					Emit::val_iname(K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
 					Emit::code();
 					Emit::down();
 						Emit::inv_primitive(print_interp);

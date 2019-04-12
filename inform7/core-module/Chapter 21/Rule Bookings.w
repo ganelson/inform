@@ -725,7 +725,7 @@ which were introduced in December 2010.
 
 =
 void Rules::Bookings::start_list_compilation(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(EMPTY_RULEBOOK_INAME_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(EMPTY_RULEBOOK_INAME_HL));
 	LocalVariables::add_named_call(I"forbid_breaks");
 	Emit::rfalse();
 	Routines::end(save);
@@ -747,7 +747,7 @@ inter_name *Rules::Bookings::list_compile(booking *list_head,
 	int countup = Rules::Bookings::no_rules_in_list(list_head);
 	if (countup == 0) {
 		rb_symb = Emit::named_iname_constant(identifier, K_value,
-			Hierarchy::find(EMPTY_RULEBOOK_INAME_NRL));
+			Hierarchy::find(EMPTY_RULEBOOK_INAME_HL));
 	} else {
 		int format = ROUTINE_RBF;
 
@@ -823,14 +823,14 @@ than once for each rule.
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, original_deadflag_s);
-					Emit::val_iname(K_value, InterNames::extern(DEADFLAG_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
 				Emit::up();
 			}
 			if (parameter_based) {
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, p_s);
-					Emit::val_iname(K_value, InterNames::extern(PARAMETERVALUE_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(PARAMETER_VALUE_HL));
 				Emit::up();
 			}
 			break;
@@ -854,7 +854,7 @@ than once for each rule.
 				Emit::down();
 					Emit::inv_primitive(eq_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(ACTION_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(ACTION_HL));
 						Emit::val_iname(K_value, PL::Actions::double_sharp(an));
 					Emit::up();
 					Emit::code();
@@ -879,7 +879,7 @@ than once for each rule.
 					Emit::inv_primitive(ne_interp);
 					Emit::down();
 						Emit::val_symbol(K_value, original_deadflag_s);
-						Emit::val_iname(K_value, InterNames::extern(DEADFLAG_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
 					Emit::up();
 					Emit::code();
 					Emit::down();
@@ -894,7 +894,7 @@ than once for each rule.
 			if (parameter_based) {
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_value, InterNames::extern(PARAMETERVALUE_EXNAMEF));
+					Emit::ref_iname(K_value, Hierarchy::find(PARAMETER_VALUE_HL));
 					Emit::val_symbol(K_value, p_s);
 				Emit::up();
 			}
@@ -923,7 +923,7 @@ than once for each rule.
 						Emit::down();
 							Emit::inv_primitive(return_interp);
 							Emit::down();
-								Emit::val_iname(K_value, InterNames::extern(REASONTHEACTIONFAILED_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
 							Emit::up();
 						Emit::up();
 					Emit::up();
@@ -939,7 +939,7 @@ than once for each rule.
 			Emit::down();
 				Emit::inv_primitive(lookupref_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(LATESTRULERESULT_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
 					Emit::val(K_number, LITERAL_IVAL, 0);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -982,10 +982,10 @@ than once for each rule.
 	if (entry_count > 0) {
 		Emit::inv_primitive(if_interp);
 		Emit::down();
-			Emit::val_iname(K_number, InterNames::extern(SAYP_EXNAMEF));
+			Emit::val_iname(K_number, Hierarchy::find(SAY__P_HL));
 			Emit::code();
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(RULEBOOKPARBREAK_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RULEBOOKPARBREAK_HL)));
 				Emit::down();
 					Emit::val_symbol(K_value, forbid_breaks_s);
 				Emit::up();

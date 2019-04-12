@@ -98,7 +98,7 @@
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">LOSRV_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOS_RV_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">it_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>

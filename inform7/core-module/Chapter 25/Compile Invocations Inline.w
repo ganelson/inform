@@ -422,7 +422,7 @@ proposition.
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
 	if ((Kinds::Compare::eq(K, K_number)) ||
 		(Kinds::Compare::eq(K, K_time)))
-		Emit::val_iname(K_value, InterNames::extern(GENERATERANDOMNUMBER_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
 	else if (K) Emit::val_iname(K_value, Kinds::Behaviour::get_ranger_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
@@ -728,7 +728,7 @@ the problem messages are phrased differently if something goes wrong.
 	if (allow_me == ALWAYS_MATCH) {
 		Specifications::Compiler::emit_to_kind(supplied, kind_needed);
 	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Compare::le(kind_needed, K_object))) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(CHECKKINDRETURNED_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(CHECKKINDRETURNED_HL)));
 		Emit::down();
 			Specifications::Compiler::emit_to_kind(supplied, kind_needed);
 			Emit::val_iname(K_value, Kinds::RunTime::I6_classname(kind_needed));
@@ -778,7 +778,7 @@ the problem messages are phrased differently if something goes wrong.
 		action_pattern *ap = ParseTree::get_constant_action_pattern(supplied);
 		PL::Actions::Patterns::emit_try(ap, FALSE);
 	} else {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(STOREDACTIONTYTRY_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(STORED_ACTION_TY_TRY_HL)));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_stored_action, supplied);
 		Emit::up();
@@ -791,42 +791,42 @@ the problem messages are phrased differently if something goes wrong.
 		action_pattern *ap = ParseTree::get_constant_action_pattern(supplied);
 		Emit::inv_primitive(push_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(KEEPSILENT_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 		Emit::up();
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(KEEPSILENT_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 		Emit::inv_primitive(push_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(SAYP_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(SAY__P_HL));
 		Emit::up();
 		Emit::inv_primitive(push_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(SAYPC_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(SAY__PC_HL));
 		Emit::up();
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(CLEARPARAGRAPHING_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(CLEARPARAGRAPHING_HL)));
 		Emit::down();
 			Emit::val(K_truth_state, LITERAL_IVAL, 1);
 		Emit::up();
 		PL::Actions::Patterns::emit_try(ap, FALSE);
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(DIVIDEPARAGRAPHPOINT_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL)));
 		Emit::inv_primitive(pull_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(SAYPC_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(SAY__PC_HL));
 		Emit::up();
 		Emit::inv_primitive(pull_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(SAYP_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(SAY__P_HL));
 		Emit::up();
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(ADJUSTPARAGRAPHPOINT_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL)));
 		Emit::inv_primitive(pull_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(KEEPSILENT_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(STOREDACTIONTYTRY_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(STORED_ACTION_TY_TRY_HL)));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_stored_action, supplied);
 			Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -1055,7 +1055,7 @@ default values when created, so they are always typesafe anyway.
 
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
 		if (Frames::Blocks::inside_a_loop_body()) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUECOPY_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPY_HL)));
 			Emit::down();
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 				Emit::val_symbol(K_value, lvar_s);
@@ -1335,7 +1335,7 @@ result would be the same without the optimisation.
 	Emit::down();
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_number, InterNames::extern(SAYN_EXNAMEF));
+			Emit::ref_iname(K_number, Hierarchy::find(SAY__N_HL));
 			Specifications::Compiler::emit_to_kind(to_say, K);
 		Emit::up();
 	Emit::up();
@@ -1351,18 +1351,18 @@ because neither syntax will compile when I6 is compiling for the other VM.
 @<Inline say unicode character@> =
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_number, InterNames::extern(UNICODETEMP_EXNAMEF));
+		Emit::ref_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
 		Specifications::Compiler::emit_to_kind(to_say, K);
 	Emit::up();
 	if (VirtualMachines::is_16_bit()) {
 		Emit::inv_assembly(I"@print_unicode");
 		Emit::down();
-			Emit::val_iname(K_number, InterNames::extern(UNICODETEMP_EXNAMEF));
+			Emit::val_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
 		Emit::up();
 	} else {
 		Emit::inv_assembly(I"@streamunichar");
 		Emit::down();
-			Emit::val_iname(K_number, InterNames::extern(UNICODETEMP_EXNAMEF));
+			Emit::val_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
 		Emit::up();
 	}
 	return;

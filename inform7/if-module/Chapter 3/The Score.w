@@ -41,7 +41,7 @@ void PL::Score::compile_max_score(void) {
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
 			InterNames::to_symbol(Tables::identifier(t));
-			inter_name *iname = Hierarchy::find(RANKING_TABLE_NRL);
+			inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
 			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(iname, K_value, Tables::identifier(t));
 			Packaging::exit(save);
@@ -54,7 +54,7 @@ void PL::Score::compile_max_score(void) {
 			break;
 		}
 	}
-	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_NRL);
+	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	if (NonlocalVariables::has_initial_value_set(max_score_VAR)) {
 		inter_t v1 = 0, v2 = 0;

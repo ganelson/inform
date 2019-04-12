@@ -281,4 +281,5 @@ Chapter 27: Bridge to Inter Module
 	Compilation Modules
 	Inter Namespace
 	Packaging
+	Hierarchy Locations
 	Hierarchy

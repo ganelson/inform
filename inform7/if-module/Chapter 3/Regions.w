@@ -349,9 +349,9 @@ void PL::Regions::write_regional_found_in_routines(void) {
 			packaging_state save = Routines::begin(iname);
 			Emit::inv_primitive(if_interp);
 			Emit::down();
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TESTREGIONALCONTAINMENT_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTREGIONALCONTAINMENT_HL)));
 					Emit::down();
-						Emit::val_iname(K_object, InterNames::extern(LOCATION_EXNAMEF));
+						Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
 						Emit::val_iname(K_object, Instances::iname(I));
 					Emit::up();
 				Emit::code();

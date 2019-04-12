@@ -265,14 +265,14 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 				Emit::down();
 					Emit::inv_primitive(return_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 					Emit::up();
 				Emit::up();
 			Emit::up();
 		}
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 		Emit::up();
 
 		Routines::end(save);
@@ -291,7 +291,7 @@ void PL::Parsing::Lines::gl_compile_extra_token_for_condition(gpr_kit *gprk, gra
 				Emit::inv_primitive(eq_interp);
 				Emit::down();
 					Emit::inv_call(InterNames::to_symbol(gl->cond_token_iname));
-					Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
@@ -340,27 +340,27 @@ void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 		Emit::down();
 			Emit::inv_primitive(ne_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(ACTOR_EXNAMEF));
-				Emit::val_iname(K_object, InterNames::extern(PLAYER_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+				Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
 				Emit::inv_primitive(return_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 				Emit::up();
 			Emit::up();
 		Emit::up();
 
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_number, InterNames::extern(UNDERSTANDASMISTAKENUMBER_EXNAMEF));
+			Emit::ref_iname(K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (100 + gl->allocation_id));
 		Emit::up();
 
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Emit::up();
 
 		Routines::end(save);
@@ -389,11 +389,11 @@ int PL::Parsing::Lines::gl_compile_result_of_mistake(gpr_kit *gprk, grammar_line
 }
 
 void PL::Parsing::Lines::MistakeActionSub_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(MISTAKEACTIONSUB_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(MISTAKEACTIONSUB_HL));
 
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(UNDERSTANDASMISTAKENUMBER_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
 		Emit::code();
 		Emit::down();
 			grammar_line *gl;
@@ -410,7 +410,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (100+gl->allocation_id));
 							Emit::code();
 							Emit::down();
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSERERROR_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSERERROR_HL)));
 								Emit::down();
 									Specifications::Compiler::emit_constant_to_kind_as_val(spec, K_text);
 								Emit::up();
@@ -435,13 +435,13 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_number, InterNames::extern(SAYP_EXNAMEF));
+		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);
 	Emit::up();
 
 	Routines::end(save);
 	
-	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_NRL);
+	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_HL);
 	save = Packaging::enter_home_of(MistakeAction_iname);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
 	InterNames::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
@@ -1113,11 +1113,11 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->original_wn_s);
 			Emit::up();
 			break;
@@ -1135,7 +1135,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 					Emit::down();
 						Emit::inv_primitive(minus_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->range_from_s);
 						Emit::up();
 						Emit::val_symbol(K_value, gprk->range_words_s);
@@ -1154,11 +1154,11 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->original_wn_s);
 			Emit::up();
 			break;
@@ -1168,17 +1168,17 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 		case GV_IS_VALUE:
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 				PL::Parsing::Tokens::Types::compile_to_string(&(gl->gl_type));
 			Emit::up();
 			Emit::inv_primitive(return_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(GPRNUMBER_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
 			Emit::up();
 			Emit::place_label(fail_label, TRUE);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->original_wn_s);
 			Emit::up();
 			break;
@@ -1249,7 +1249,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->group_wn_s);
-						Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::up();
 				}
 				if (next_reserved_label) Emit::place_label(next_reserved_label, TRUE);
@@ -1260,7 +1260,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+					Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val_symbol(K_value, gprk->group_wn_s);
 				Emit::up();
 
@@ -1311,7 +1311,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 						next_reserved_label = NULL;
 						Emit::inv_primitive(store_interp);
 						Emit::down();
-							Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->group_wn_s);
 						Emit::up();
 					}
@@ -1353,7 +1353,7 @@ void PL::Parsing::Lines::compile_slash_gprs(void) {
 		PL::Parsing::Lines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, GV_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Emit::up();
 		Routines::end(save);
 	}

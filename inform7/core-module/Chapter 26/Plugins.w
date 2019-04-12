@@ -185,7 +185,7 @@ void Plugins::Manage::start(void) {
 
 	CREATE_PLUGIN(files_plugin, PL::Files::start, FALSE, GLULX_EXTERNAL_FILES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
 	files_plugin->has_template_file = "Files";
-	files_plugin->IFDEF_iname = Hierarchy::find(PLUGIN_FILES_NRL);
+	files_plugin->IFDEF_iname = Hierarchy::find(PLUGIN_FILES_HL);
 	#endif
 
 	#ifndef MULTIMEDIA_MODULE

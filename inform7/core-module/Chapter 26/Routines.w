@@ -139,12 +139,12 @@ after the call parameters, and is used only as a scratch variable.
 @ We allocate memory for each pointer value used in the stack frame:
 
 @<Compile some setup code to make ready for the kernel@> =
-	Emit::push(K_value, InterNames::extern(I7SFRAME_EXNAMEF));
+	Emit::push(K_value, Hierarchy::find(I7SFRAME_HL));
 
 	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame) {
 		if (pall->offset_past > NBV) NBV = pall->offset_past;
 	}
-	inter_name *iname = InterNames::extern(STACKFRAMECREATE_EXNAMEF);
+	inter_name *iname = Hierarchy::find(STACKFRAMECREATE_HL);
 	Emit::inv_call(InterNames::to_symbol(iname));
 	Emit::down();
 	Emit::val(K_number, LITERAL_IVAL, (inter_t) NBV);
@@ -163,7 +163,7 @@ after the call parameters, and is used only as a scratch variable.
 	Emit::down();
 	Emit::ref_symbol(K_value, I7RBLK_symbol);
 	if (returns_block_value) {
-		inter_name *iname = InterNames::extern(BLKVALUECOPY_EXNAMEF);
+		inter_name *iname = Hierarchy::find(BLKVALUECOPY_HL);
 		Emit::inv_call(InterNames::to_symbol(iname));
 		Emit::down();
 		Emit::val_symbol(K_number,I7RBLK_symbol);
@@ -188,14 +188,14 @@ after the call parameters, and is used only as a scratch variable.
 	}
 
 	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame) {
-		inter_name *iname = InterNames::extern(BLKVALUEFREEONSTACK_EXNAMEF);
+		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
 		Emit::inv_call(InterNames::to_symbol(iname));
 		Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) pall->offset_index);
 		Emit::up();
 	}
 
-	Emit::pull(K_value, InterNames::extern(I7SFRAME_EXNAMEF));
+	Emit::pull(K_value, Hierarchy::find(I7SFRAME_HL));
 
 @<Compile a return from the outer shell@> =
 	Emit::inv_primitive(return_interp);

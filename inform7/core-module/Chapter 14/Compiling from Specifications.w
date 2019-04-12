@@ -106,7 +106,7 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 	if (TEST_COMPILATION_MODE(DEREFERENCE_POINTERS_CMODE)) {
 		kind *K = Specifications::to_kind(spec);
 		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUECOPY_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPY_HL)));
 			Emit::down();
 				Frames::emit_allocation(K);
 			dereffed = TRUE;

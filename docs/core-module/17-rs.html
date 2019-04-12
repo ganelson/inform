@@ -176,7 +176,7 @@ a call to an activity based on that value:
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span>
             <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">);</span>
 
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RESPONSEVIAACTIVITY_EXNAMEF</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RESPONSEVIAACTIVITY_HL</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
@@ -186,7 +186,7 @@ a call to an activity based on that value:
 
         <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-        <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF</span><span class="plain">));</span>
+        <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
 
@@ -287,31 +287,31 @@ essence here.
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">s_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NOUN_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NOUN_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">s2_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SECOND_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SECOND_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">s3_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSEDNUMBER_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSED_NUMBER_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NOUN_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NOUN_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SECOND_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SECOND_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val2_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSEDNUMBER_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSED_NUMBER_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
@@ -354,7 +354,7 @@ essence here.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TEXTTYSAY_EXNAMEF</span><span class="plain">)));</span>
+                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEXT_TY_SAY_HL</span><span class="plain">)));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">str_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -363,17 +363,17 @@ essence here.
 
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NOUN_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NOUN_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">s_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SECOND_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SECOND_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">s2_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSEDNUMBER_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSED_NUMBER_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">s3_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
@@ -513,7 +513,7 @@ divided up by the extensions containing the rules which produce them.
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RESPONSEDIVISIONS_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RESPONSEDIVISIONS_HL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">group_ef</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -569,7 +569,7 @@ divided up by the extensions containing the rules which produce them.
                 <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">QT</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">QT</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span>
-                <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">EMPTY_TEXT_PACKED_EXNAMEF</span><span class="plain">));</span>
+                <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_TEXT_PACKED_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">tally</span><span class="plain">));</span>
         <span class="plain">}</span>
 </pre>

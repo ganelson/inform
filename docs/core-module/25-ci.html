@@ -62,7 +62,7 @@ earlier invocation list (in what may be another setting entirely).
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">push_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_NRL</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_unproven</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
@@ -74,7 +74,7 @@ earlier invocation list (in what may be another setting entirely).
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">pull_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_NRL</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -366,7 +366,7 @@ the context of a value.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> != </span><span class="functiontext">Emit::level</span><span class="plain">()) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"applicability expression error"</span><span class="plain">);</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">FORMALRV_EXNAMEF</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FORMAL_RV_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
@@ -444,7 +444,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
         <span class="functiontext">NonlocalVariables::temporary_formal</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::formal_par</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::formal_par</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain">)</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
             <span class="reserved">else</span><span class="plain"> {</span>
@@ -589,7 +589,7 @@ no subsequent lines are looked at.
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">ARGUMENTTYPEFAILED_EXNAMEF</span><span class="plain">)));</span>
+        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ARGUMENTTYPEFAILED_HL</span><span class="plain">)));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
             <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">);</span>
@@ -874,7 +874,7 @@ evaluate to "true" with a minimum of branches in the compiled code.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">FORMALRV_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FORMAL_RV_HL</span><span class="plain">));</span>
         <span class="plain">}</span>
 
         <span class="reserved">value_holster</span><span class="plain"> </span><span class="identifier">VH2</span><span class="plain"> = </span><span class="functiontext">Holsters::new</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">-</span><span class="element">&gt;vhmode_wanted</span><span class="plain">);</span>

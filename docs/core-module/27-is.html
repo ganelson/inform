@@ -3622,7 +3622,7 @@ which are prefix or postfix, and so on.
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">InterSchemas::find_identifier_text</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Emit::seek_symbol</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">S</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern_name</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">));</span>
     <span class="plain">}</span>
 
 </pre>

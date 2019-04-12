@@ -377,7 +377,7 @@ int PL::Map::map_compile_model_tables(void) {
 }
 
 @<Declare I6 constants for the directions@> =
-	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_NRL);
+	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
 	packaging_state save = Packaging::enter_home_of(ndi);
 	Emit::named_numeric_constant(ndi, (inter_t) registered_directions);
 	Packaging::exit(save);
@@ -399,7 +399,7 @@ at run-time, so we can't know now how many we will need.
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		Instances::emitted_iname(I);
-	inter_name *iname = Hierarchy::find(MAP_STORAGE_NRL);
+	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_object);
 	int words_used = 0;
@@ -1025,7 +1025,7 @@ void PL::Map::write_door_dir_routines(void) {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, loc_s);
-			Emit::val_iname(K_value, InterNames::extern(LOCATION_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(LOCATION_HL));
 		Emit::up();
 
 		Emit::inv_primitive(if_interp);
@@ -1033,14 +1033,14 @@ void PL::Map::write_door_dir_routines(void) {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
-				Emit::val_iname(K_value, Hierarchy::find(THEDARK_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(THEDARK_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, loc_s);
-					Emit::val_iname(K_value, InterNames::extern(REALLOCATION_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(REAL_LOCATION_HL));
 				Emit::up();
 			Emit::up();
 		Emit::up();
@@ -1081,7 +1081,7 @@ void PL::Map::write_door_to_routines(void) {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, loc_s);
-			Emit::val_iname(K_value, InterNames::extern(LOCATION_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(LOCATION_HL));
 		Emit::up();
 
 		Emit::inv_primitive(if_interp);
@@ -1089,14 +1089,14 @@ void PL::Map::write_door_to_routines(void) {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
-				Emit::val_iname(K_value, Hierarchy::find(THEDARK_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(THEDARK_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, loc_s);
-					Emit::val_iname(K_value, InterNames::extern(REALLOCATION_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(REAL_LOCATION_HL));
 				Emit::up();
 			Emit::up();
 		Emit::up();

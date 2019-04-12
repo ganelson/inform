@@ -28,7 +28,7 @@ typedef struct use_as_event {
 
 =
 void Phrases::Timed::TimedEventsTable(void) {
-	inter_name *iname = Hierarchy::find(TIMEDEVENTSTABLE_NRL);
+	inter_name *iname = Hierarchy::find(TIMEDEVENTSTABLE_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_table_array_begin(iname, K_value);
 	int when_count = 0;
@@ -49,7 +49,7 @@ void Phrases::Timed::TimedEventsTable(void) {
 }
 
 void Phrases::Timed::TimedEventTimesTable(void) {
-	inter_name *iname = Hierarchy::find(TIMEDEVENTTIMESTABLE_NRL);
+	inter_name *iname = Hierarchy::find(TIMEDEVENTTIMESTABLE_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_table_array_begin(iname, K_number);
 	int when_count = 0;

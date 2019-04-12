@@ -455,7 +455,7 @@ without notice.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) &gt; 0) {</span>
-            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_TEST_SCENARIOS_NRL</span><span class="plain">);</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_TEST_SCENARIOS_HL</span><span class="plain">);</span>
             <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">));</span>
             <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -463,14 +463,14 @@ without notice.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::TestScriptSub_stub_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_HL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::TestScriptSub_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_HL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) == 0) {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
@@ -480,7 +480,7 @@ without notice.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SPECIALWORD_EXNAMEF</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SPECIAL_WORD_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="reserved">test_scenario</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain">;</span>
@@ -493,7 +493,7 @@ without notice.
                             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TESTSTART_EXNAMEF</span><span class="plain">)));</span>
+                                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSTART_HL</span><span class="plain">)));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain">);</span>
                                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">);</span>
@@ -565,7 +565,7 @@ without notice.
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">itc_save_DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">itc_save_OUT</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::InternalTestCases_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTERNALTESTCASES_NRL</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTERNALTESTCASES_HL</span><span class="plain">));</span>
         <span class="reserved">internal_test_case</span><span class="plain"> *</span><span class="identifier">itc</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">, </span><span class="reserved">internal_test_case</span><span class="plain">) {</span>
             <span class="identifier">n</span><span class="plain">++;</span>
@@ -787,7 +787,7 @@ without notice.
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">LISTOFTYSAY_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SAY_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>

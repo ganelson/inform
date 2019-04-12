@@ -1135,7 +1135,6 @@ reported in a problem message; so we only issue this problem message when
 L and R are more definite.
 
 @<Fail the invocation for a dimensional problem@> =
-	LOG("Fail: $u (~) $u = $u\n", left_kind, right_kind, kind_produced);
 	if ((left_kind) && (Kinds::Compare::eq(left_kind, K_value) == FALSE) &&
 		(right_kind) && (Kinds::Compare::eq(right_kind, K_value) == FALSE)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {

@@ -307,10 +307,10 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 	@<Reinterpret the "self" for what are unambiguously conditions of single things@>;
 
 	if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-		Emit::val_iname(K_value, InterNames::extern(GPROPERTY_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(GPROPERTY_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(GPROPERTY_HL)));
 			Emit::down();
 		}
 		Kinds::RunTime::emit_weak_id_as_val(owner_kind);
@@ -359,7 +359,7 @@ object as produced the original text containing the substitution.
 	if (ParseTree::int_annotation(spec_found, record_as_self_ANNOT)) {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
+			Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
 			Specifications::Compiler::emit_as_val(K_value, owner);
 		Emit::up();
 	} else {
@@ -374,10 +374,10 @@ object as produced the original text containing the substitution.
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
 	if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-		Emit::val_iname(K_value, InterNames::extern(LISTOFTYGETITEM_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETITEM_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
 			Emit::down();
 		}
 		BEGIN_COMPILATION_MODE;
@@ -394,11 +394,11 @@ object as produced the original text containing the substitution.
 @ Table entries are simple too, but come in four variant forms:
 
 @<Compile a table entry specification@> =
-	inter_name *lookup = InterNames::extern(TABLELOOKUPENTRY_EXNAMEF);
-	inter_name *lookup_corr = InterNames::extern(TABLELOOKUPCORR_EXNAMEF);
+	inter_name *lookup = Hierarchy::find(TABLELOOKUPENTRY_HL);
+	inter_name *lookup_corr = Hierarchy::find(TABLELOOKUPCORR_HL);
 	if (TEST_COMPILATION_MODE(TABLE_EXISTENCE_CMODE_ISSBM)) {
-		lookup = InterNames::extern(EXISTSTABLELOOKUPENTRY_EXNAMEF);
-		lookup_corr = InterNames::extern(EXISTSTABLELOOKUPCORR_EXNAMEF);
+		lookup = Hierarchy::find(EXISTSTABLELOOKUPENTRY_HL);
+		lookup_corr = Hierarchy::find(EXISTSTABLELOOKUPCORR_HL);
 	}
 
 	switch(ParseTree::no_children(spec_found)) {

@@ -239,7 +239,7 @@ inter_name *Routines::ToPhrases::make_iname(phrase *ph, kind *req_kind) {
 			Problems::issue_problem_end();
 			WRITE_TO(identifier, "ErrorRecoverySymbol");
 		}
-		inter_name *symb = InterNames::extern_name(identifier);
+		inter_name *symb = Hierarchy::find_by_name(identifier);
 		DISCARD_TEXT(identifier);
 		return symb;
 	}

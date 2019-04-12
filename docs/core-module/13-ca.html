@@ -31,7 +31,7 @@
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Choose which form of arithmetic and promotion</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reduce_modulo_1440</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NUMBERTYTOTIMETY_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_TY_TO_TIME_TY_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">op</span><span class="plain">) {</span>
@@ -115,7 +115,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYPLUS_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_PLUS_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -144,7 +144,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYMINUS_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_MINUS_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -173,7 +173,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYTIMES_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -204,7 +204,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYDIVIDE_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -214,7 +214,7 @@ and the other operand is promoted from integer to real if necessary.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">INTEGERDIVIDE_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTEGERDIVIDE_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_division_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -235,7 +235,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYREMAINDER_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_REMAINDER_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -245,7 +245,7 @@ and the other operand is promoted from integer to real if necessary.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">INTEGERREMAINDER_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTEGERREMAINDER_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
@@ -264,7 +264,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYAPPROXIMATE_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_APPROXIMATE_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -274,7 +274,7 @@ and the other operand is promoted from integer to real if necessary.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">ROUNDOFFTIME_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ROUNDOFFTIME_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
@@ -293,12 +293,12 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYROOT_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_ROOT_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SQUAREROOT_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SQUAREROOT_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_root_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, 2);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -318,12 +318,12 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYCUBEROOT_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_CUBE_ROOT_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">CUBEROOT_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CUBEROOT_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_root_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, 3);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
@@ -365,7 +365,7 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYNEGATE_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_NEGATE_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -394,7 +394,7 @@ always be small, partly because of the need for scaling to come out right.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REALNUMBERTYPOW_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_POW_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>

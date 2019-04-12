@@ -697,7 +697,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 		if (BinaryPredicates::store_dynamically(bp)) {
 			packaging_state save = Routines::begin(bp->initialiser_iname);
 			inference *i;
-			inter_name *rtiname = InterNames::extern(RELATIONTEST_EXNAMEF);
+			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
 			POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
 				parse_node *spec0, *spec1;
 				World::Inferences::get_references_spec(i, &spec0, &spec1);
@@ -705,7 +705,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 				Emit::inv_call(InterNames::to_symbol(rtiname));
 				Emit::down();
 					Emit::val_iname(K_value, bp->bp_iname);
-					Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
 					Specifications::Compiler::emit_as_val(K_value, spec0);
 					Specifications::Compiler::emit_as_val(K_value, spec1);
 				Emit::up();
@@ -869,7 +869,7 @@ void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 		bp->bp_iname->eventual_owner = BinaryPredicates::package(bp);
 		if (default_rr == NULL) {
 			default_rr = bp->bp_iname;
-			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_NRL);
+			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
 			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(iname, K_value, bp->bp_iname);
 			Packaging::exit(save);

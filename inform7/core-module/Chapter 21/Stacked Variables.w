@@ -44,14 +44,14 @@ int max_frame_size_needed = 0;
 @ =
 nonlocal_variable_emission StackedVariables::how_to_lvalue(stacked_variable *stv) {
 	if ((stv->owner_id == ACTION_PROCESSING_RB) && (stv->offset_in_owning_frame == 0))
-		return NonlocalVariables::nve_from_iname(InterNames::extern(ACTOR_EXNAMEF));
+		return NonlocalVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
 	else
 		return NonlocalVariables::nve_from_mstack(stv->owner_id, stv->offset_in_owning_frame, FALSE);
 }
 
 nonlocal_variable_emission StackedVariables::how_to_rvalue(stacked_variable *stv) {
 	if ((stv->owner_id == ACTION_PROCESSING_RB) && (stv->offset_in_owning_frame == 0))
-		return NonlocalVariables::nve_from_iname(InterNames::extern(ACTOR_EXNAMEF));
+		return NonlocalVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
 	else
 		return NonlocalVariables::nve_from_mstack(stv->owner_id, stv->offset_in_owning_frame, TRUE);
 }
@@ -249,7 +249,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		Emit::down();
 			Emit::inv_primitive(lookupref_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(MSTACK_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 				Emit::val_symbol(K_value, pos_s);
 			Emit::up();
 			if (Kinds::Behaviour::uses_pointer_values(K))
@@ -269,11 +269,11 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUEFREE_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEFREE_HL)));
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(MSTACK_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 					Emit::val_symbol(K_value, pos_s);
 				Emit::up();
 			Emit::up();

@@ -462,7 +462,7 @@ void PL::Actions::Lists::emit(action_name_list *anl) {
 		} else {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(ACTION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(ACTION_HL));
 				Emit::val_iname(K_value, PL::Actions::double_sharp(L->action_listed));
 			Emit::up();
 		}

@@ -694,7 +694,7 @@ nothing else.
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">NEXTWORDSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
                         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_dword</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
@@ -713,11 +713,11 @@ nothing else.
 
         <span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">ParseTree::get_grammar_token_relation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">) {</span>
-            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">ARTICLEDESCRIPTORS_EXNAMEF</span><span class="plain">)));</span>
+            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ARTICLEDESCRIPTORS_HL</span><span class="plain">)));</span>
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain"> == </span><span class="identifier">R_containment</span><span class="plain">) {</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
@@ -726,8 +726,8 @@ nothing else.
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">CONTAINER_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CONTAINER_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
@@ -740,8 +740,8 @@ nothing else.
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">SUPPORTER_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SUPPORTER_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
@@ -755,8 +755,8 @@ nothing else.
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">ANIMATE_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ANIMATE_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
@@ -779,7 +779,7 @@ nothing else.
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">in_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -816,16 +816,16 @@ nothing else.
                         <span class="plain">}</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_EXNAMEF</span><span class="plain">)));</span>
+                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_HL</span><span class="plain">)));</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -836,7 +836,7 @@ nothing else.
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                             <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -871,8 +871,8 @@ nothing else.
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">COMPONENTCHILD_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">COMPONENT_CHILD_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">while_interp</span><span class="plain">);</span>
@@ -882,16 +882,16 @@ nothing else.
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_EXNAMEF</span><span class="plain">)));</span>
+                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_HL</span><span class="plain">)));</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -902,7 +902,7 @@ nothing else.
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                             <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -919,7 +919,7 @@ nothing else.
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">COMPONENTSIBLING_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">COMPONENT_SIBLING_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -956,7 +956,7 @@ nothing else.
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_worn</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
@@ -969,7 +969,7 @@ nothing else.
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">P_worn</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -979,24 +979,24 @@ nothing else.
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARENT_NRL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARENT_HL</span><span class="plain">)));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
 
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_HL</span><span class="plain">)));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1007,7 +1007,7 @@ nothing else.
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
@@ -1018,22 +1018,22 @@ nothing else.
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">COMPONENTPARENT_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">COMPONENT_PARENT_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_HL</span><span class="plain">)));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1044,7 +1044,7 @@ nothing else.
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
@@ -1110,7 +1110,7 @@ nothing else.
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">provides_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -1121,7 +1121,7 @@ nothing else.
                                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
                                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1173,7 +1173,7 @@ nothing else.
                                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                                                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
-                                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_NRL</span><span class="plain">));</span>
+                                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                             <span class="identifier">continue_loop_on_fail</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -1206,16 +1206,16 @@ nothing else.
 
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_EXNAMEF</span><span class="plain">)));</span>
+                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRYGIVENOBJECT_HL</span><span class="plain">)));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1232,7 +1232,7 @@ nothing else.
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">WN_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -1280,11 +1280,11 @@ nothing else.
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRTT_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_TT_HL</span><span class="plain">));</span>
                                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">) &gt; 0)</span>
-                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
                                 <span class="reserved">else</span>
                                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1294,18 +1294,18 @@ nothing else.
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRNUMBER_EXNAMEF</span><span class="plain">));</span>
+                                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                             &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRNUMBER_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">) &gt; 0)</span>
-                            <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">InterNames::extern_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
+                            <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
                         <span class="reserved">else</span>
                             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                     <span class="plain">}</span>
@@ -1345,9 +1345,9 @@ nothing else.
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">ELEMENTARYTT_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ELEMENTARY_TT_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">i6_token_iname</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1356,7 +1356,7 @@ nothing else.
                         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
+                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1376,7 +1376,7 @@ nothing else.
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">PL::Parsing::Tokens::Filters::compile_id</span><span class="plain">(</span><span class="identifier">gtc</span><span class="plain">);</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1386,7 +1386,7 @@ nothing else.
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1405,11 +1405,11 @@ nothing else.
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRTT_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_TT_HL</span><span class="plain">));</span>
                                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">) &gt; 0)</span>
-                                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
+                                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
                                         <span class="reserved">else</span>
                                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1419,18 +1419,18 @@ nothing else.
                                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRNUMBER_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRNUMBER_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">) &gt; 0)</span>
-                                    <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">InterNames::extern_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
+                                    <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">i6_gpr_name</span><span class="plain">));</span>
                                 <span class="reserved">else</span>
                                     <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                             <span class="plain">}</span>
@@ -1439,7 +1439,7 @@ nothing else.
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="functiontext">PL::Parsing::Tokens::Filters::compile_id</span><span class="plain">(</span><span class="identifier">gtc</span><span class="plain">);</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1449,7 +1449,7 @@ nothing else.
                                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1472,9 +1472,9 @@ nothing else.
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRTT_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_TT_HL</span><span class="plain">));</span>
                                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">PL::Parsing::Verbs::i6_token_as_iname</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1483,7 +1483,7 @@ nothing else.
                                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1493,7 +1493,7 @@ nothing else.
                                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRPREPOSITION_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -1514,7 +1514,7 @@ nothing else.
                                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSETOKENSTOPPED_HL</span><span class="plain">)));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="functiontext">PL::Parsing::Tokens::Filters::compile_id</span><span class="plain">(</span><span class="identifier">gtc</span><span class="plain">);</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1524,7 +1524,7 @@ nothing else.
                                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;w_s</span><span class="plain">);</span>
-                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">GPRFAIL_EXNAMEF</span><span class="plain">));</span>
+                                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                                     &lt;<span class="cwebmacro">Then jump to our doom</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>

@@ -192,11 +192,11 @@ practice I6 and I7 are not capable of generating story files above 2 GB in any
 case.)
 
 @<Write a cell value for a blank cell@> =
-	if (t->fill_in_blanks == FALSE) Emit::array_iname_entry(InterNames::extern(TABLE_NOVALUE_EXNAMEF));
+	if (t->fill_in_blanks == FALSE) Emit::array_iname_entry(Hierarchy::find(TABLE_NOVALUE_HL));
 	else Kinds::RunTime::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
-	inter_name *iname = Hierarchy::find(TB_BLANKS_NRL);
+	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_byte_array_begin(iname, K_number);
 	table *t;
@@ -246,10 +246,10 @@ structure: a table with no columns and no rows, which would otherwise be
 against the rules. (The Template file "Tables.i6t" defines it.)
 
 @<Compile the Table of Tables@> =
-	inter_name *iname = Hierarchy::find(TABLEOFTABLES_NRL);
+	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
-	Emit::array_iname_entry(InterNames::extern(EMPTY_TABLE_EXNAMEF));
+	Emit::array_iname_entry(Hierarchy::find(EMPTY_TABLE_HL));
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
@@ -284,7 +284,7 @@ void Tables::Support::compile_print_table_names(void) {
 		Emit::down();
 			Emit::inv_primitive(case_interp);
 			Emit::down();
-				Emit::val_iname(K_table, InterNames::extern(THEEMPTYTABLE_EXNAMEF));
+				Emit::val_iname(K_table, Hierarchy::find(THEEMPTYTABLE_HL));
 				Emit::code();
 				Emit::down();
 					Emit::inv_primitive(print_interp);

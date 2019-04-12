@@ -241,7 +241,7 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 			Emit::down();
 				Emit::inv_primitive(ge_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(PARSERTRACE_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(PARSER_TRACE_HL));
 					Emit::val(K_number, LITERAL_IVAL, 3);
 				Emit::up();
 				Emit::code();
@@ -260,8 +260,8 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 		Emit::down();
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(PARSERACTION_EXNAMEF));
-				Emit::val_iname(K_value, Hierarchy::find(THESAME_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(PARSER_ACTION_HL));
+				Emit::val_iname(K_value, Hierarchy::find(THESAME_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
@@ -292,7 +292,7 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-				Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
@@ -318,8 +318,8 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 						Emit::down();
 							Emit::inv_primitive(ne_interp);
 							Emit::down();
-								Emit::val_iname(K_value, InterNames::extern(PARSERACTION_EXNAMEF));
-								Emit::val_iname(K_value, Hierarchy::find(THESAME_NRL));
+								Emit::val_iname(K_value, Hierarchy::find(PARSER_ACTION_HL));
+								Emit::val_iname(K_value, Hierarchy::find(THESAME_HL));
 							Emit::up();
 							Emit::inv_primitive(eq_interp);
 							Emit::down();
@@ -331,10 +331,10 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 						Emit::down();
 							Emit::inv_primitive(while_interp);
 							Emit::down();
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(WORDINPROPERTY_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(WORDINPROPERTY_HL)));
 								Emit::down();
-									Emit::inv_call(InterNames::to_symbol(InterNames::extern(NEXTWORDSTOPPED_EXNAMEF)));
-									Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+									Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+									Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 									Emit::val_iname(K_value, PL::Parsing::Visibility::name_name());
 								Emit::up();
 								Emit::code();
@@ -349,12 +349,12 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 
 							Emit::inv_primitive(postdecrement_interp);
 							Emit::down();
-								Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+								Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::up();
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-								Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::up();
 						Emit::up();
 					Emit::up();
@@ -386,8 +386,8 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 						Emit::down();
 							Emit::inv_primitive(ne_interp);
 							Emit::down();
-								Emit::val_iname(K_value, InterNames::extern(PARSERACTION_EXNAMEF));
-								Emit::val_iname(K_value, Hierarchy::find(THESAME_NRL));
+								Emit::val_iname(K_value, Hierarchy::find(PARSER_ACTION_HL));
+								Emit::val_iname(K_value, Hierarchy::find(THESAME_HL));
 							Emit::up();
 							Emit::inv_primitive(eq_interp);
 							Emit::down();
@@ -399,10 +399,10 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 						Emit::down();
 							Emit::inv_primitive(while_interp);
 							Emit::down();
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(WORDINPROPERTY_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(WORDINPROPERTY_HL)));
 								Emit::down();
-									Emit::inv_call(InterNames::to_symbol(InterNames::extern(NEXTWORDSTOPPED_EXNAMEF)));
-									Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+									Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+									Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 									Emit::val_iname(K_value, PL::Parsing::Visibility::name_name());
 								Emit::up();
 								Emit::code();
@@ -417,12 +417,12 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 
 							Emit::inv_primitive(postdecrement_interp);
 							Emit::down();
-								Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+								Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::up();
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-								Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::up();
 						Emit::up();
 					Emit::up();
@@ -432,13 +432,13 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->original_wn_s);
-		Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 	Emit::up();
 
 @<Reset word number@> =
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::val_symbol(K_value, gprk->original_wn_s);
 	Emit::up();
 
@@ -451,14 +451,14 @@ void PL::Parsing::Tokens::General::after_gl_failed(gpr_kit *gprk, inter_symbol *
 	if (pluralised) {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(PARSERACTION_EXNAMEF));
-			Emit::val_iname(K_value, Hierarchy::find(PLURALFOUND_NRL));
+			Emit::ref_iname(K_value, Hierarchy::find(PARSER_ACTION_HL));
+			Emit::val_iname(K_value, Hierarchy::find(PLURALFOUND_HL));
 		Emit::up();
 	}
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-		Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -470,7 +470,7 @@ void PL::Parsing::Tokens::General::after_gl_failed(gpr_kit *gprk, inter_symbol *
 	Emit::place_label(label, TRUE);
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::val_symbol(K_value, gprk->try_from_wn_s);
 	Emit::up();
 }
@@ -489,10 +489,10 @@ void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
 
 			Emit::inv_primitive(while_interp);
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(WORDINPROPERTY_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(WORDINPROPERTY_HL)));
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(NEXTWORDSTOPPED_EXNAMEF)));
-					Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 					Emit::val_iname(K_value, PL::Parsing::Visibility::name_name());
 				Emit::up();
 				Emit::code();
@@ -580,7 +580,7 @@ void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
 			Emit::down();
 				Emit::inv_primitive(ge_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(PARSERTRACE_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(PARSER_TRACE_HL));
 					Emit::val(K_number, LITERAL_IVAL, 3);
 				Emit::up();
 				Emit::code();
@@ -652,7 +652,7 @@ void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::inv_primitive(plus_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->original_wn_s);
@@ -674,7 +674,7 @@ void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
 			Emit::up();
 		Emit::up();
 	Emit::up();
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(DETECTPLURALWORD_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DETECTPLURALWORD_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, gprk->original_wn_s);
 		Emit::val_symbol(K_value, gprk->n_s);
@@ -780,8 +780,8 @@ void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_k
 	Emit::down();
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(PARSERACTION_EXNAMEF));
-			Emit::val_iname(K_value, Hierarchy::find(THESAME_NRL));
+			Emit::val_iname(K_value, Hierarchy::find(PARSER_ACTION_HL));
+			Emit::val_iname(K_value, Hierarchy::find(THESAME_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();
@@ -793,7 +793,7 @@ void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_k
 					Emit::down();
 						Emit::inv_primitive(ge_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(PARSERTRACE_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(PARSER_TRACE_HL));
 							Emit::val(K_number, LITERAL_IVAL, 4);
 						Emit::up();
 						Emit::code();
@@ -804,7 +804,7 @@ void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_k
 							Emit::up();
 							Emit::inv_primitive(printnumber_interp);
 							Emit::down();
-								Emit::val_iname(K_value, InterNames::extern(PARSERONE_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(PARSER_ONE_HL));
 							Emit::up();
 							Emit::inv_primitive(print_interp);
 							Emit::down();
@@ -812,7 +812,7 @@ void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_k
 							Emit::up();
 							Emit::inv_primitive(printnumber_interp);
 							Emit::down();
-								Emit::val_iname(K_value, InterNames::extern(PARSERTWO_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(PARSER_TWO_HL));
 							Emit::up();
 							Emit::inv_primitive(print_interp);
 							Emit::down();
@@ -825,15 +825,15 @@ void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_k
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->ss_s);
-				Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 			Emit::up();
 }
 
 void PL::Parsing::Tokens::General::test_distinguish_visible_property(gpr_kit *gprk, parse_node *spec) {
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
-		Emit::val_iname(K_value, InterNames::extern(PARSERONE_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
+		Emit::val_iname(K_value, Hierarchy::find(PARSER_ONE_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -843,8 +843,8 @@ void PL::Parsing::Tokens::General::test_distinguish_visible_property(gpr_kit *gp
 
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
-		Emit::val_iname(K_value, InterNames::extern(PARSERTWO_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
+		Emit::val_iname(K_value, Hierarchy::find(PARSER_TWO_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -883,10 +883,10 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 		Emit::down();
 			Emit::inv_primitive(and_interp);
 			Emit::down();
-				Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(InterNames::extern(PARSERONE_EXNAMEF)), prn);
+				Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(PARSER_ONE_HL)), prn);
 				Emit::inv_primitive(not_interp);
 				Emit::down();
-					Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(InterNames::extern(PARSERTWO_EXNAMEF)), prn);
+					Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(PARSER_TWO_HL)), prn);
 				Emit::up();
 			Emit::up();
 			Emit::code();
@@ -899,10 +899,10 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 		Emit::down();
 			Emit::inv_primitive(and_interp);
 			Emit::down();
-				Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(InterNames::extern(PARSERTWO_EXNAMEF)), prn);
+				Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(PARSER_TWO_HL)), prn);
 				Emit::inv_primitive(not_interp);
 				Emit::down();
-					Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(InterNames::extern(PARSERONE_EXNAMEF)), prn);
+					Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(PARSER_ONE_HL)), prn);
 				Emit::up();
 			Emit::up();
 			Emit::code();
@@ -920,12 +920,12 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 				Emit::down();
 					Emit::inv_primitive(propertyvalue_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(PARSERONE_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(PARSER_ONE_HL));
 						Emit::val_iname(K_value, Properties::iname(prn));
 					Emit::up();
 					Emit::inv_primitive(propertyvalue_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(PARSERTWO_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(PARSER_TWO_HL));
 						Emit::val_iname(K_value, Properties::iname(prn));
 					Emit::up();
 				Emit::up();
@@ -934,12 +934,12 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 				Emit::down();
 					Emit::inv_primitive(propertyvalue_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(PARSERONE_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(PARSER_ONE_HL));
 						Emit::val_iname(K_value, Properties::iname(prn));
 					Emit::up();
 					Emit::inv_primitive(propertyvalue_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(PARSERTWO_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(PARSER_TWO_HL));
 						Emit::val_iname(K_value, Properties::iname(prn));
 					Emit::up();
 				Emit::up();
@@ -962,7 +962,7 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 void PL::Parsing::Tokens::General::finish_distinguishing_visible_properties(gpr_kit *gprk) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
+				Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
 				Emit::val_symbol(K_value, gprk->ss_s);
 			Emit::up();
 			Emit::inv_primitive(return_interp);
@@ -984,7 +984,7 @@ void PL::Parsing::Tokens::General::begin_parsing_visible_properties(gpr_kit *gpr
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-		Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -1036,19 +1036,19 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 	} else {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::val_symbol(K_value, gprk->try_from_wn_s);
 		Emit::up();
 
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, gprk->spn_s);
-			Emit::val_iname(K_value, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 		Emit::up();
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, gprk->ss_s);
-			Emit::val_iname(K_value, InterNames::extern(ETYPE_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(ETYPE_HL));
 		Emit::up();
 
 		Emit::inv_primitive(if_interp);
@@ -1062,11 +1062,11 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 					Emit::down();
 						Emit::inv_primitive(propertyvalue_interp);
 						Emit::down();
-							Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+							Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 							Emit::val_iname(K_value, Properties::iname(prn));
 						Emit::up();
 					Emit::up();
-					Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				Emit::up();
 			} else if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				inter_name *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR_iname(K);
@@ -1076,16 +1076,16 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 						Emit::inv_primitive(eq_interp);
 						Emit::down();
 							Emit::inv_call(InterNames::to_symbol(i6_gpr_name));
-							Emit::val_iname(K_value, InterNames::extern(GPRNUMBER_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						Emit::up();
 						Emit::inv_primitive(eq_interp);
 						Emit::down();
 							Emit::inv_primitive(propertyvalue_interp);
 							Emit::down();
-								Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+								Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 								Emit::val_iname(K_value, Properties::iname(prn));
 							Emit::up();
-							Emit::val_iname(K_value, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 						Emit::up();
 					Emit::up();
 				} else if (Kinds::Behaviour::is_an_enumeration(K)) {
@@ -1095,11 +1095,11 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 						Emit::down();
 							Emit::inv_primitive(propertyvalue_interp);
 							Emit::down();
-								Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+								Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 								Emit::val_iname(K_value, Properties::iname(prn));
 							Emit::up();
 						Emit::up();
-						Emit::val_iname(K_value, InterNames::extern(GPRNUMBER_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 					Emit::up();
 				} else {
 					Emit::inv_primitive(and_interp);
@@ -1107,16 +1107,16 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 						Emit::inv_primitive(eq_interp);
 						Emit::down();
 							Emit::inv_call(InterNames::to_symbol(Kinds::RunTime::get_kind_GPR_iname(K)));
-							Emit::val_iname(K_value, InterNames::extern(GPRNUMBER_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						Emit::up();
 						Emit::inv_primitive(eq_interp);
 						Emit::down();
 							Emit::inv_primitive(propertyvalue_interp);
 							Emit::down();
-								Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+								Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 								Emit::val_iname(K_value, Properties::iname(prn));
 							Emit::up();
-							Emit::val_iname(K_value, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 						Emit::up();
 					Emit::up();
 				}
@@ -1126,7 +1126,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-					Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::up();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
@@ -1145,12 +1145,12 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 			Emit::val_symbol(K_value, gprk->spn_s);
 		Emit::up();
 		Emit::inv_primitive(store_interp);
 		Emit::down();
-			Emit::ref_iname(K_value, InterNames::extern(ETYPE_EXNAMEF));
+			Emit::ref_iname(K_value, Hierarchy::find(ETYPE_HL));
 			Emit::val_symbol(K_value, gprk->ss_s);
 		Emit::up();
 	}
@@ -1166,13 +1166,13 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 		int j = 0; LOOP_THROUGH_WORDING(i, W) j++;
 		int ands = 0;
 		if (j > 0) { Emit::inv_primitive(and_interp); Emit::down(); ands++; }
-		Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(SELF_NRL)), prn);
+		Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(SELF_HL)), prn);
 		int k = 0;
 		LOOP_THROUGH_WORDING(i, W) {
 			if (k < j-1) { Emit::inv_primitive(and_interp); Emit::down(); ands++; }
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(NEXTWORDSTOPPED_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
 				TEMPORARY_TEXT(N);
 				WRITE_TO(N, "%N", i);
 				Emit::val_dword(N);
@@ -1194,11 +1194,11 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 		Emit::down();
 			Emit::inv_primitive(and_interp);
 			Emit::down();
-				Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(SELF_NRL)), prn);
+				Properties::Emit::emit_has_property(K_value, InterNames::to_symbol(Hierarchy::find(SELF_HL)), prn);
 				Emit::inv_primitive(eq_interp);
 				Emit::down();
 					Emit::inv_call(InterNames::to_symbol(gv->gv_prn_iname));
-					Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				Emit::up();
 			Emit::up();
 			Emit::code();
@@ -1212,7 +1212,7 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 void PL::Parsing::Tokens::General::pvp_test_begins_dash(gpr_kit *gprk) {
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::val_symbol(K_value, gprk->try_from_wn_s);
 	Emit::up();
 }
@@ -1221,7 +1221,7 @@ void PL::Parsing::Tokens::General::pvp_test_passes_dash(gpr_kit *gprk, int visib
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->try_from_wn_s);
-		Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
@@ -1249,7 +1249,7 @@ void PL::Parsing::Tokens::General::finish_parsing_visible_properties(gpr_kit *gp
 	Emit::code_comment(I"try_from_wn is now advanced past any visible property values");
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::val_symbol(K_value, gprk->try_from_wn_s);
 	Emit::up();
 }

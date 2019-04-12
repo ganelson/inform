@@ -255,7 +255,7 @@ void PL::Figures::write_copy_commands(void) {
 @ =
 void PL::Figures::compile_ResourceIDsOfFigures_array(void) {
 	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
-	inter_name *iname = Hierarchy::find(RESOURCEIDSOFFIGURES_NRL);
+	inter_name *iname = Hierarchy::find(RESOURCEIDSOFFIGURES_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);

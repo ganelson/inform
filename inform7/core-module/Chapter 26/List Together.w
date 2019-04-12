@@ -74,32 +74,32 @@ int ListTogether::compilation_coroutine(void) {
 	Emit::down();
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(INVENTORYSTAGE_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(INVENTORY_STAGE_HL));
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 		Emit::code();
 		Emit::down();
 			Emit::inv_primitive(setbit_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(CSTYLE_EXNAMEF));
-				Emit::val_iname(K_value, InterNames::extern(ENGLISHBIT_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				Emit::val_iname(K_value, Hierarchy::find(ENGLISH_BIT_HL));
 			Emit::up();
 			if (!(ltr->articles_bit)) {
 			Emit::inv_primitive(setbit_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(CSTYLE_EXNAMEF));
-				Emit::val_iname(K_value, InterNames::extern(NOARTICLEBIT_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				Emit::val_iname(K_value, Hierarchy::find(NOARTICLE_BIT_HL));
 			Emit::up();
 			}
 			Emit::inv_primitive(clearbit_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(CSTYLE_EXNAMEF));
-				Emit::val_iname(K_value, InterNames::extern(NEWLINEBIT_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				Emit::val_iname(K_value, Hierarchy::find(NEWLINE_BIT_HL));
 			Emit::up();
 			Emit::inv_primitive(clearbit_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(CSTYLE_EXNAMEF));
-				Emit::val_iname(K_value, InterNames::extern(INDENTBIT_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				Emit::val_iname(K_value, Hierarchy::find(INDENT_BIT_HL));
 			Emit::up();
 
 		Emit::up();
@@ -110,7 +110,7 @@ int ListTogether::compilation_coroutine(void) {
 
 	save = Packaging::enter_home_of(ltr->ltr_array_iname);
 	Emit::named_array_begin(ltr->ltr_array_iname, K_value);
-	Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
+	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	Emit::array_iname_entry(ltr->ltr_routine_iname);
 	Emit::array_end();
 	Packaging::exit(save);

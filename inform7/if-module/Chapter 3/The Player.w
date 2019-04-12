@@ -336,13 +336,13 @@ void PL::Player::InitialSituation_define(int id, int val) {
 
 void PL::Player::InitialSituation(void) {
 	if (Plugins::Manage::plugged_in(player_plugin)) {
-		PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_NRL, 0);
-		PL::Player::InitialSituation_define(START_OBJECT_INIS_NRL, 1);
-		PL::Player::InitialSituation_define(START_ROOM_INIS_NRL, 2);
-		PL::Player::InitialSituation_define(START_TIME_INIS_NRL, 3);
-		PL::Player::InitialSituation_define(DONE_INIS_NRL, 4);
+		PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
+		PL::Player::InitialSituation_define(START_OBJECT_INIS_HL, 1);
+		PL::Player::InitialSituation_define(START_ROOM_INIS_HL, 2);
+		PL::Player::InitialSituation_define(START_TIME_INIS_HL, 3);
+		PL::Player::InitialSituation_define(DONE_INIS_HL, 4);
 		
-		inter_name *iname = Hierarchy::find(INITIALSITUATION_NRL);
+		inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
 		Emit::named_array_begin(iname, K_value);
 		packaging_state save = Packaging::enter_home_of(iname);
 		NonlocalVariables::emit_initial_value(player_VAR);

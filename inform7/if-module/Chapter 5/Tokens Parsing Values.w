@@ -117,20 +117,20 @@ void PL::Parsing::Tokens::Values::add_parse_name_vars(gpr_kit *gprk) {
 }
 
 void PL::Parsing::Tokens::Values::number(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(DECIMAL_TOKEN_INNER_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(DECIMAL_TOKEN_INNER_HL));
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_number);
 	if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
 	Emit::inv_primitive(return_interp);
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 	Emit::up();
 	Routines::end(save);
 }
 
 void PL::Parsing::Tokens::Values::time(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(TIME_TOKEN_INNER_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TIME_TOKEN_INNER_HL));
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	kind *K = PL::TimesOfDay::kind();
@@ -140,20 +140,20 @@ void PL::Parsing::Tokens::Values::time(void) {
 	}
 	Emit::inv_primitive(return_interp);
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 	Emit::up();
 	Routines::end(save);
 }
 
 void PL::Parsing::Tokens::Values::truth_state(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(TRUTH_STATE_TOKEN_INNER_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TRUTH_STATE_TOKEN_INNER_HL));
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_truth_state);
 	if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
 	Emit::inv_primitive(return_interp);
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 	Emit::up();
 	Routines::end(save);
 }
@@ -242,7 +242,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 					Emit::down();
 						Emit::inv_primitive(ne_interp);
 						Emit::down();
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(NEXTWORDSTOPPED_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
 							TEMPORARY_TEXT(W);
 							WRITE_TO(W, "%N", k);
 							Emit::val_dword(W);
@@ -259,12 +259,12 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 				}
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_value, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+					Emit::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 					Emit::val_iname(K_value, Instances::iname(q));
 				Emit::up();
 				Emit::inv_primitive(return_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(GPRNUMBER_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 				Emit::up();
 
 				if (GV_IS_VALUE_instance_mode) {
@@ -277,19 +277,19 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 	}
 	Emit::inv_primitive(return_interp);
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 	Emit::up();
 
 @<Save word number@> =
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk.original_wn_s);
-		Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 	Emit::up();
 
 @<Reset word number@> =
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::val_symbol(K_value, gprk.original_wn_s);
 	Emit::up();

@@ -368,7 +368,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rbo</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rbo</span><span class="plain">-</span><span class="element">&gt;kind_of_outcome</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: {</span>
-                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_EXNAMEF</span><span class="plain">);</span>
+                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_HL</span><span class="plain">);</span>
                     <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
@@ -378,7 +378,7 @@ can be used in a void context as a sort of return-from-rule phrase.
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: {</span>
-                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_EXNAMEF</span><span class="plain">);</span>
+                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_HL</span><span class="plain">);</span>
                     <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
@@ -391,7 +391,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: {</span>
-                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_EXNAMEF</span><span class="plain">);</span>
+                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_HL</span><span class="plain">);</span>
                     <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -401,7 +401,7 @@ can be used in a void context as a sort of return-from-rule phrase.
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: {</span>
-                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_EXNAMEF</span><span class="plain">);</span>
+                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_HL</span><span class="plain">);</span>
                     <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -470,7 +470,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="plain">}</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rbo</span><span class="plain">-</span><span class="element">&gt;kind_of_outcome</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: {</span>
-                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_EXNAMEF</span><span class="plain">);</span>
+                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_HL</span><span class="plain">);</span>
                 <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
@@ -480,7 +480,7 @@ can be used in a void context as a sort of return-from-rule phrase.
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: {</span>
-                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_EXNAMEF</span><span class="plain">);</span>
+                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_HL</span><span class="plain">);</span>
                 <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>

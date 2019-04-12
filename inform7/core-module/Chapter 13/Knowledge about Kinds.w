@@ -89,7 +89,7 @@ particular order.
 
 =
 int Kinds::Knowledge::emit_all(void) {
-	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_NRL);
+	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) next_free_data_type_ID);
 	Packaging::exit(save);

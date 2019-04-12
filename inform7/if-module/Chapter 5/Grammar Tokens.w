@@ -469,7 +469,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::down();
 				Emit::inv_primitive(ne_interp);
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(NEXTWORDSTOPPED_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
 					TEMPORARY_TEXT(N);
 					WRITE_TO(N, "%N", wn);
 					Emit::val_dword(N);
@@ -488,11 +488,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 	bp = ParseTree::get_grammar_token_relation(pn);
 	if (bp) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(ARTICLEDESCRIPTORS_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ARTICLEDESCRIPTORS_HL)));
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, gprk->w_s);
-			Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::up();
 		if (bp == R_containment) {
 			Emit::inv_primitive(if_interp);
@@ -501,8 +501,8 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::down();
 					Emit::inv_primitive(has_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
-						Emit::val_iname(K_value, InterNames::extern(CONTAINER_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
+						Emit::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
 					Emit::up();
 				Emit::up();
 				@<Then jump to our doom@>;
@@ -515,8 +515,8 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::down();
 					Emit::inv_primitive(has_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
-						Emit::val_iname(K_value, InterNames::extern(SUPPORTER_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
+						Emit::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
 					Emit::up();
 				Emit::up();
 				@<Then jump to our doom@>;
@@ -530,8 +530,8 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::down();
 					Emit::inv_primitive(has_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
-						Emit::val_iname(K_value, InterNames::extern(ANIMATE_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
+						Emit::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
 					Emit::up();
 				Emit::up();
 				@<Then jump to our doom@>;
@@ -554,7 +554,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::inv_primitive(in_interp);
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->rv_s);
-					Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
@@ -591,16 +591,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					}
 					Emit::inv_primitive(store_interp);
 					Emit::down();
-						Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::val_symbol(K_value, gprk->w_s);
 					Emit::up();
 					Emit::inv_primitive(store_interp);
 					Emit::down();
-						Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::inv_primitive(plus_interp);
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(TRYGIVENOBJECT_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->rv_s);
 								Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -611,7 +611,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::down();
 						Emit::inv_primitive(gt_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->w_s);
 						Emit::up();
 						Emit::code();
@@ -646,8 +646,8 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::inv_primitive(propertyvalue_interp);
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
-					Emit::val_iname(K_value, InterNames::extern(COMPONENTCHILD_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
+					Emit::val_iname(K_value, Hierarchy::find(COMPONENT_CHILD_HL));
 				Emit::up();
 			Emit::up();
 			Emit::inv_primitive(while_interp);
@@ -657,16 +657,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::down();
 					Emit::inv_primitive(store_interp);
 					Emit::down();
-						Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::val_symbol(K_value, gprk->w_s);
 					Emit::up();
 					Emit::inv_primitive(store_interp);
 					Emit::down();
-						Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::inv_primitive(plus_interp);
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(TRYGIVENOBJECT_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->rv_s);
 								Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -677,7 +677,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::down();
 						Emit::inv_primitive(gt_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->w_s);
 						Emit::up();
 						Emit::code();
@@ -694,7 +694,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::inv_primitive(propertyvalue_interp);
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->rv_s);
-							Emit::val_iname(K_value, InterNames::extern(COMPONENTSIBLING_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
 						Emit::up();
 					Emit::up();
 				Emit::up();
@@ -731,7 +731,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::down();
 					Emit::inv_primitive(has_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 						Emit::val_iname(K_value, Properties::iname(P_worn));
 					Emit::up();
 					@<Then jump to our doom@>;
@@ -744,7 +744,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::down();
 						Emit::inv_primitive(has_interp);
 						Emit::down();
-							Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+							Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 							Emit::val_iname(K_value, Properties::iname(P_worn));
 						Emit::up();
 					Emit::up();
@@ -754,24 +754,24 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARENT_NRL)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARENT_HL)));
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 				Emit::up();
 			Emit::up();
 
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->w_s);
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::inv_primitive(plus_interp);
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->w_s);
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TRYGIVENOBJECT_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->rv_s);
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -782,7 +782,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::down();
 				Emit::inv_primitive(eq_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val_symbol(K_value, gprk->w_s);
 				Emit::up();
 				@<Then jump to our doom@>;
@@ -793,22 +793,22 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::inv_primitive(propertyvalue_interp);
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
-					Emit::val_iname(K_value, InterNames::extern(COMPONENTPARENT_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
+					Emit::val_iname(K_value, Hierarchy::find(COMPONENT_PARENT_HL));
 				Emit::up();
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->w_s);
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::inv_primitive(plus_interp);
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->w_s);
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(TRYGIVENOBJECT_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->rv_s);
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -819,7 +819,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::down();
 				Emit::inv_primitive(eq_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val_symbol(K_value, gprk->w_s);
 				Emit::up();
 				@<Then jump to our doom@>;
@@ -885,7 +885,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::down();
 							Emit::inv_primitive(provides_interp);
 							Emit::down();
-								Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+								Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 								Emit::val_iname(K_value, Properties::iname(prn));
 							Emit::up();
 							Emit::code();
@@ -896,7 +896,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									Emit::ref_symbol(K_value, gprk->rv_s);
 									Emit::inv_primitive(propertyvalue_interp);
 									Emit::down();
-										Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+										Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 										Emit::val_iname(K_value, Properties::iname(prn));
 									Emit::up();
 								Emit::up();
@@ -948,7 +948,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 													Emit::val_symbol(K_value, gprk->rv_s);
 													Emit::val_iname(K_value, Properties::iname(prn));
 												Emit::up();
-												Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+												Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 											Emit::up();
 										Emit::up();
 						continue_loop_on_fail = TRUE;
@@ -981,16 +981,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 						Emit::inv_primitive(store_interp);
 						Emit::down();
-							Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->w_s);
 						Emit::up();
 						Emit::inv_primitive(store_interp);
 						Emit::down();
-							Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::inv_primitive(plus_interp);
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(TRYGIVENOBJECT_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->rv_s);
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -1007,7 +1007,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::down();
 							Emit::inv_primitive(gt_interp);
 							Emit::down();
-								Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 								Emit::val_symbol(K_value, gprk->w_s);
 							Emit::up();
 							Emit::code();
@@ -1055,11 +1055,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->w_s);
-						Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(GPRTT_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 							if (Str::len(i6_gpr_name) > 0)
-								Emit::val_iname(K_value, InterNames::extern_name(i6_gpr_name));
+								Emit::val_iname(K_value, Hierarchy::find_by_name(i6_gpr_name));
 							else
 								Emit::val_iname(K_value, Kinds::RunTime::get_kind_GPR_iname(K));
 						Emit::up();
@@ -1069,18 +1069,18 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::inv_primitive(ne_interp);
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
-							Emit::val_iname(K_number, InterNames::extern(GPRNUMBER_EXNAMEF));
+							Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
 						Emit::up();
 						@<Then jump to our doom@>;
 					Emit::up();
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->rv_s);
-						Emit::val_iname(K_number, InterNames::extern(GPRNUMBER_EXNAMEF));
+						Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
 					Emit::up();
 				} else {
 					if (Str::len(i6_gpr_name) > 0)
-						Emit::array_iname_entry(InterNames::extern_name(i6_gpr_name));
+						Emit::array_iname_entry(Hierarchy::find_by_name(i6_gpr_name));
 					else
 						Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
 				}
@@ -1120,9 +1120,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->w_s);
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(ELEMENTARYTT_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(ELEMENTARY_TT_HL));
 						Emit::val_iname(K_value, i6_token_iname);
 					Emit::up();
 				Emit::up();
@@ -1131,7 +1131,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::inv_primitive(eq_interp);
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->w_s);
-						Emit::val_iname(K_number, InterNames::extern(GPRFAIL_EXNAMEF));
+						Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 					Emit::up();
 					@<Then jump to our doom@>;
 				Emit::up();
@@ -1151,7 +1151,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		 				Emit::inv_primitive(store_interp);
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->w_s);
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 							Emit::down();
 								PL::Parsing::Tokens::Filters::compile_id(gtc);
 							Emit::up();
@@ -1161,7 +1161,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(eq_interp);
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->w_s);
-								Emit::val_iname(K_number, InterNames::extern(GPRFAIL_EXNAMEF));
+								Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 							Emit::up();
 							@<Then jump to our doom@>;
 						Emit::up();
@@ -1180,11 +1180,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 								Emit::down();
-									Emit::val_iname(K_value, InterNames::extern(GPRTT_EXNAMEF));
+									Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 									if (Str::len(i6_gpr_name) > 0)
-										Emit::val_iname(K_value, InterNames::extern_name(i6_gpr_name));
+										Emit::val_iname(K_value, Hierarchy::find_by_name(i6_gpr_name));
 									else
 										Emit::val_iname(K_value, Kinds::RunTime::get_kind_GPR_iname(K));
 								Emit::up();
@@ -1194,18 +1194,18 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::inv_primitive(ne_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
-									Emit::val_iname(K_number, InterNames::extern(GPRNUMBER_EXNAMEF));
+									Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->rv_s);
-								Emit::val_iname(K_number, InterNames::extern(GPRNUMBER_EXNAMEF));
+								Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
 							Emit::up();
 						} else {
 							if (Str::len(i6_gpr_name) > 0)
-								Emit::array_iname_entry(InterNames::extern_name(i6_gpr_name));
+								Emit::array_iname_entry(Hierarchy::find_by_name(i6_gpr_name));
 							else
 								Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
 						}
@@ -1214,7 +1214,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 								Emit::down();
 									PL::Parsing::Tokens::Filters::compile_id(gtc);
 								Emit::up();
@@ -1224,7 +1224,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::inv_primitive(eq_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
-									Emit::val_iname(K_number, InterNames::extern(GPRFAIL_EXNAMEF));
+									Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();
@@ -1247,9 +1247,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 								Emit::down();
-									Emit::val_iname(K_value, InterNames::extern(GPRTT_EXNAMEF));
+									Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 									Emit::val_iname(K_value, PL::Parsing::Verbs::i6_token_as_iname(gv));
 								Emit::up();
 							Emit::up();
@@ -1258,7 +1258,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::inv_primitive(eq_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
-									Emit::val_iname(K_number, InterNames::extern(GPRFAIL_EXNAMEF));
+									Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();
@@ -1268,7 +1268,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::inv_primitive(ne_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
-									Emit::val_iname(K_number, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+									Emit::val_iname(K_number, Hierarchy::find(GPR_PREPOSITION_HL));
 								Emit::up();
 								Emit::code();
 								Emit::down();
@@ -1289,7 +1289,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARSETOKENSTOPPED_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
 								Emit::down();
 									PL::Parsing::Tokens::Filters::compile_id(gtc);
 								Emit::up();
@@ -1299,7 +1299,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::inv_primitive(eq_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
-									Emit::val_iname(K_number, InterNames::extern(GPRFAIL_EXNAMEF));
+									Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();

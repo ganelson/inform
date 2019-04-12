@@ -208,7 +208,7 @@ void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 	R->rule_extern_iname = InterNames::one_off(I"exterior_rule", R->rule_package);
 	Inter::Symbols::set_flag(InterNames::to_symbol(R->rule_extern_iname), MAKE_NAME_UNIQUE);
 
-	inter_name *xiname = InterNames::extern_name(XT);
+	inter_name *xiname = Hierarchy::find_by_name(XT);
 	packaging_state save = Packaging::enter(R->rule_package);
 	inter_t v1 = 0, v2 = 0;
 	Inter::Symbols::to_data(Emit::repository(), Packaging::incarnate(R->rule_package), InterNames::to_symbol(xiname), &v1, &v2);
@@ -538,7 +538,7 @@ inter_name *Rules::iname(rule *R) {
 
 =
 inter_name *Rules::RulePrintingRule(void) {
-	return Hierarchy::find(RULEPRINTINGRULE_NRL);
+	return Hierarchy::find(RULEPRINTINGRULE_HL);
 }
 
 void Rules::RulePrintingRule_routine(void) {
@@ -556,7 +556,7 @@ void Rules::RulePrintingRule_routine(void) {
 			Emit::inv_primitive(lt_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, R_s);
-				Emit::val_iname(K_value, Hierarchy::find(NUMBER_RULEBOOKS_CREATED_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL));
 			Emit::up();
 		Emit::up();
 		Emit::code();
@@ -590,7 +590,7 @@ void Rules::RulePrintingRule_routine(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(RULEBOOKNAMES_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(RULEBOOKNAMES_HL));
 				Emit::val_symbol(K_value, R_s);
 			Emit::up();
 		Emit::up();

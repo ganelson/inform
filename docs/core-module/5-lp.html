@@ -1021,11 +1021,11 @@ if we fail to make a match.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postdecrement_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">to_label</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;lp_elements</span><span class="plain">[</span><span class="identifier">ec</span><span class="plain">]</span><span class="element">.preamble_optional</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;lp_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">]</span><span class="element">.lpt_type</span><span class="plain"> == </span><span class="constant">ELEMENT_LPT</span><span class="plain">))</span>
@@ -1105,12 +1105,12 @@ if we fail to make a match.
 
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSEDNUMBER_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSED_NUMBER_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">matched_number_s</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
         <span class="identifier">Kinds::Scalings::compile_quanta_to_value</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;scaling</span><span class="plain">,</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSEDNUMBER_EXNAMEF</span><span class="plain">)),</span>
+            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSED_NUMBER_HL</span><span class="plain">)),</span>
             <span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">sgn_s</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">x_s</span><span class="plain">, </span><span class="identifier">failed_label</span><span class="plain">);</span>
 
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifdebug_interp</span><span class="plain">);</span>
@@ -1121,7 +1121,7 @@ if we fail to make a match.
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSERTRACE_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSER_TRACE_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 3);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1132,7 +1132,7 @@ if we fail to make a match.
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printnumber_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARSEDNUMBER_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARSED_NUMBER_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1148,7 +1148,7 @@ if we fail to make a match.
 
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">GPRNUMBER_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">GPR_NUMBER_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">failed_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -1197,7 +1197,7 @@ if we fail to make a match.
 
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 </pre>
 
@@ -1368,19 +1368,19 @@ if we fail to make a match.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">minus_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1389,16 +1389,16 @@ if we fail to make a match.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">THEN1WD_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">THEN1__WD_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1444,7 +1444,7 @@ if we fail to make a match.
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1510,7 +1510,7 @@ if we fail to make a match.
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1655,7 +1655,7 @@ if we fail to make a match.
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">x_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">FLOATPARSE_EXNAMEF</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FLOATPARSE_HL</span><span class="plain">)));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">x_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">f_s</span><span class="plain">);</span>
@@ -1668,7 +1668,7 @@ if we fail to make a match.
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">x_s</span><span class="plain">);</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FLOAT_NAN_NRL</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FLOAT_NAN_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1724,7 +1724,7 @@ if we fail to make a match.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1781,7 +1781,7 @@ if we fail to make a match.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1797,7 +1797,7 @@ if we fail to make a match.
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">f_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1873,19 +1873,19 @@ if we fail to make a match.
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_EXNAMEF</span><span class="plain">)));</span>
+                        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">minus_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1894,16 +1894,16 @@ if we fail to make a match.
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_word_s</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">THEN1WD_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">THEN1__WD_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                                <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1945,7 +1945,7 @@ if we fail to make a match.
                                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
                                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_EXNAMEF</span><span class="plain">)));</span>
+                                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_HL</span><span class="plain">)));</span>
                                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
                                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1966,7 +1966,7 @@ if we fail to make a match.
                                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">times_interp</span><span class="plain">);</span>
                                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_EXNAMEF</span><span class="plain">)));</span>
+                                                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DIGITTOVALUE_HL</span><span class="plain">)));</span>
                                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
                                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -2035,17 +2035,17 @@ if we fail to make a match.
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_addr_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WORDADDRESS_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WORDADDRESS_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">cur_len_s</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WORDLENGTH_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WORDLENGTH_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -2073,7 +2073,7 @@ if we fail to make a match.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">WN_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">WN_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>

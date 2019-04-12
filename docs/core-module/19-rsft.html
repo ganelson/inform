@@ -312,7 +312,7 @@ case.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;fill_in_blanks</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">TABLE_NOVALUE_EXNAMEF</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;fill_in_blanks</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TABLE_NOVALUE_HL</span><span class="plain">));</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_default_value</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="string">"table entry"</span><span class="plain">);</span>
 </pre>
 
@@ -326,7 +326,7 @@ case.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TB_BLANKS_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TB_BLANKS_HL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
@@ -418,10 +418,10 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_NRL</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_HL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-        <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">EMPTY_TABLE_EXNAMEF</span><span class="plain">));</span>
+        <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_TABLE_HL</span><span class="plain">));</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;amendment_of</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -473,7 +473,7 @@ table values and prints the (title-cased) name of the one which matches.
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">THEEMPTYTABLE_EXNAMEF</span><span class="plain">));</span>
+                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">THEEMPTYTABLE_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>

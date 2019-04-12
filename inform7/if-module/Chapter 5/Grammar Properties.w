@@ -100,9 +100,9 @@ int PL::Parsing::Visibility::parsing_new_variable_notify(nonlocal_variable *var)
 			case 0:
 				if (<<kind:understood>> == NonlocalVariables::kind(var)) {
 					NonlocalVariables::set_I6_identifier(var, FALSE,
-						NonlocalVariables::nve_from_iname(InterNames::extern(PARSEDNUMBER_EXNAMEF)));
+						NonlocalVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
 					NonlocalVariables::set_I6_identifier(var, TRUE,
-						NonlocalVariables::nve_from_iname(InterNames::extern(PARSEDNUMBER_EXNAMEF)));
+						NonlocalVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
 					NonlocalVariables::allow_to_be_zero(var);
 				}
 				break;

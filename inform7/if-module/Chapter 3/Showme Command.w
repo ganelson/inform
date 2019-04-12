@@ -24,7 +24,7 @@ properties.
 =
 void PL::Showme::compile_SHOWME_details(void) {
 	if (Plugins::Manage::plugged_in(showme_plugin) == FALSE) return;
-	packaging_state save = Routines::begin(Hierarchy::find(SHOWMEDETAILS_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(SHOWMEDETAILS_HL));
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
 	Emit::inv_primitive(ifdebug_interp);
@@ -176,7 +176,7 @@ routine for colours; and the best thing is to print nothing at all.
 		if (require_nonzero) {
 			Emit::inv_primitive(if_interp);
 			Emit::down();
-				inter_name *iname = InterNames::extern(GPROPERTY_EXNAMEF);
+				inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 				Emit::inv_call(InterNames::to_symbol(iname));
 				Emit::down();
 					Kinds::RunTime::emit_weak_id_as_val(K_object);
@@ -207,15 +207,15 @@ routine for colours; and the best thing is to print nothing at all.
 		Emit::down();
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(TEXTTYCOMPARE_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TEXT_TY_COMPARE_HL)));
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(GPROPERTY_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(GPROPERTY_HL)));
 					Emit::down();
 						Kinds::RunTime::emit_weak_id_as_val(K_object);
 						Emit::val_symbol(K_value, t_0_s);
 						Emit::val_iname(K_value, Properties::iname(prn));
 					Emit::up();
-					Emit::val_iname(K_value, InterNames::extern(EMPTYTEXTVALUE_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
@@ -252,7 +252,7 @@ routine for colours; and the best thing is to print nothing at all.
 	Emit::inv_primitive(indirect1v_interp);
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Behaviour::get_iname(K));
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(GPROPERTY_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(GPROPERTY_HL)));
 		Emit::down();
 			Kinds::RunTime::emit_weak_id_as_val(K_object);
 			Emit::val_symbol(K_value, t_0_s);
@@ -275,7 +275,7 @@ turn by turn.
 		Emit::inv_primitive(and_interp);
 		Emit::down();
 			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(ALLOWINSHOWME_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ALLOWINSHOWME_HL)));
 				Emit::down();
 					Emit::val_iname(K_value, Properties::iname(prn));
 				Emit::up();

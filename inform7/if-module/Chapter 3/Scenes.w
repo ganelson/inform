@@ -566,7 +566,7 @@ There is no significance to the return value.
 
 =
 void PL::Scenes::DetectSceneChange_routine(void) {
-	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_NRL);
+	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *self = InterNames::to_symbol(iname);
 	inter_symbol *chs_s = LocalVariables::add_internal_local_c_as_symbol(I"chs", "count of changes made");
@@ -633,7 +633,7 @@ numbers so that more abstruse ways to end take precedence over less.
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(SCENESTATUS_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 1);
@@ -651,7 +651,7 @@ numbers so that more abstruse ways to end take precedence over less.
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(SCENESTATUS_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 0);
@@ -679,7 +679,7 @@ void PL::Scenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_sy
 				Emit::down();
 					Emit::inv_primitive(lookup_interp);
 					Emit::down();
-						Emit::val_iname(K_object, InterNames::extern(SCENEENDINGS_EXNAMEF));
+						Emit::val_iname(K_object, Hierarchy::find(SCENE_ENDINGS_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 					Emit::up();
 					Emit::val(K_number, LITERAL_IVAL, 1);
@@ -800,7 +800,7 @@ end actually occurred.)
 		Emit::down();
 			Emit::inv_primitive(lookupref_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(SCENESTATUS_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 1);
@@ -808,7 +808,7 @@ end actually occurred.)
 	} else {
 		Emit::inv_primitive(ifelse_interp);
 		Emit::down();
-			inter_name *iname = InterNames::extern(GPROPERTY_EXNAMEF);
+			inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 			Emit::inv_call(InterNames::to_symbol(iname));
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K_scene);
@@ -821,7 +821,7 @@ end actually occurred.)
 				Emit::down();
 					Emit::inv_primitive(lookupref_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(SCENESTATUS_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 					Emit::up();
 					Emit::val(K_number, LITERAL_IVAL, 0);
@@ -833,7 +833,7 @@ end actually occurred.)
 				Emit::down();
 					Emit::inv_primitive(lookupref_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(SCENESTATUS_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 					Emit::up();
 					Emit::val(K_number, LITERAL_IVAL, 2);
@@ -844,27 +844,27 @@ end actually occurred.)
 
 @<Compile code to run the scene end rulebooks@> =
 	if (end == 0) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(FOLLOWRULEBOOK_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FOLLOWRULEBOOK_HL)));
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(WHENSCENEBEGINS_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(WHEN_SCENE_BEGINS_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
 		Emit::up();
 	}
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(FOLLOWRULEBOOK_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FOLLOWRULEBOOK_HL)));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->end_rulebook[end]->allocation_id));
 	Emit::up();
 	if (end == 1) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(FOLLOWRULEBOOK_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FOLLOWRULEBOOK_HL)));
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(WHENSCENEENDS_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(WHEN_SCENE_ENDS_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
 		Emit::up();
 	}
 
 @<Compile code to update the arrays recording most recent scene ending@> =
-	inter_name *sarr = InterNames::extern(SCENEENDED_EXNAMEF);
-	if (end == 0) sarr = InterNames::extern(SCENESTARTED_EXNAMEF);
+	inter_name *sarr = Hierarchy::find(SCENE_ENDED_HL);
+	if (end == 0) sarr = Hierarchy::find(SCENE_STARTED_HL);
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::inv_primitive(lookupref_interp);
@@ -872,21 +872,21 @@ end actually occurred.)
 			Emit::val_iname(K_value, sarr);
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 		Emit::up();
-		Emit::val_iname(K_number, InterNames::extern(THETIME_EXNAMEF));
+		Emit::val_iname(K_number, Hierarchy::find(THE_TIME_HL));
 	Emit::up();
 
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::inv_primitive(lookupref_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(SCENEENDINGS_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(SCENE_ENDINGS_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 		Emit::up();
 		Emit::inv_primitive(bitwiseor_interp);
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(SCENEENDINGS_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(SCENE_ENDINGS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (1 << end));
@@ -897,7 +897,7 @@ end actually occurred.)
 	Emit::down();
 		Emit::inv_primitive(lookupref_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(SCENELATESTENDING_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 		Emit::up();
 		Emit::val(K_value, LITERAL_IVAL, (inter_t) end);
@@ -906,7 +906,7 @@ end actually occurred.)
 @<Compile code to print text in response to the SCENES command@> =
 	Emit::inv_primitive(if_interp);
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(DEBUGSCENES_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(DEBUG_SCENES_HL));
 		Emit::code();
 		Emit::down();
 			TEMPORARY_TEXT(OUT);
@@ -952,7 +952,7 @@ This is allowed; it's a case where the "tolerance" below is raised.
 							Emit::down();
 								Emit::inv_primitive(lookup_interp);
 								Emit::down();
-									Emit::val_iname(K_value, InterNames::extern(SCENESTATUS_EXNAMEF));
+									Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 									Emit::val(K_number, LITERAL_IVAL, (inter_t) other_scene->allocation_id);
 								Emit::up();
 								if (other_end >= 1)
@@ -979,7 +979,7 @@ what handles this.
 
 =
 void PL::Scenes::ShowSceneStatus_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(SHOWSCENESTATUS_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(SHOWSCENESTATUS_HL));
 	Emit::inv_primitive(ifdebug_interp);
 	Emit::down();
 		Emit::code();
@@ -994,7 +994,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 					Emit::down();
 						Emit::inv_primitive(lookup_interp);
 						Emit::down();
-							Emit::val_iname(K_object, InterNames::extern(SCENESTATUS_EXNAMEF));
+							Emit::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 						Emit::up();
 						Emit::val(K_number, LITERAL_IVAL, 1);
@@ -1027,10 +1027,10 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 	Emit::down();
 		Emit::inv_primitive(minus_interp);
 		Emit::down();
-			Emit::val_iname(K_number, InterNames::extern(THETIME_EXNAMEF));
+			Emit::val_iname(K_number, Hierarchy::find(THE_TIME_HL));
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(SCENESTARTED_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(SCENE_STARTED_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 		Emit::up();
@@ -1048,7 +1048,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(SCENELATESTENDING_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1073,7 +1073,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(SCENELATESTENDING_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 			Emit::up();
 			Emit::code();
@@ -1141,7 +1141,7 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(SCENESTATUS_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 1);
@@ -1152,7 +1152,7 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 		if (Dash::check_value(spec, Kinds::unary_construction(CON_description, K_scene)) == ALWAYS_MATCH) {
 			parse_node *desc = Descriptions::to_rvalue(spec);
 			if (desc) {
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(DURINGSCENEMATCHING_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DURINGSCENEMATCHING_HL)));
 				Emit::down();
 					Specifications::Compiler::emit_as_val(K_value, desc);
 				Emit::up();

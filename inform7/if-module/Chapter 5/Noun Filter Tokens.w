@@ -84,19 +84,19 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, v_s);
-				Emit::val_iname(K_object, InterNames::extern(GPRNUMBER_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, n_s);
-					Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+					Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 				Emit::up();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
-					Emit::val_iname(K_object, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+					Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
+					Emit::val_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 				Emit::up();
 
 				Emit::inv_primitive(if_interp);
@@ -110,14 +110,14 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 						Emit::inv_primitive(store_interp);
 						Emit::down();
 							Emit::ref_symbol(K_value, v_s);
-							Emit::val_iname(K_object, InterNames::extern(GPRFAIL_EXNAMEF));
+							Emit::val_iname(K_object, Hierarchy::find(GPR_FAIL_HL));
 						Emit::up();
 					Emit::up();
 				Emit::up();
 
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+					Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 					Emit::val_symbol(K_value, n_s);
 				Emit::up();
 			Emit::up();
@@ -133,7 +133,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 
 		Emit::inv_primitive(switch_interp);
 		Emit::down();
-			Emit::val_iname(K_object, InterNames::extern(SCOPESTAGE_EXNAMEF));
+			Emit::val_iname(K_object, Hierarchy::find(SCOPE_STAGE_HL));
 			Emit::code();
 			Emit::down();
 				Emit::inv_primitive(case_interp);
@@ -153,12 +153,12 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 						Emit::inv_primitive(store_interp);
 						Emit::down();
 							Emit::ref_symbol(K_value, obj_s);
-							Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+							Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 						Emit::up();
 
 						Emit::inv_primitive(objectloop_interp);
 						Emit::down();
-							Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+							Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 							Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
 							Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
 
@@ -167,21 +167,21 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 								Emit::inv_primitive(store_interp);
 								Emit::down();
 									Emit::ref_symbol(K_value, o2_s);
-									Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+									Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 								Emit::up();
 								Emit::inv_primitive(store_interp);
 								Emit::down();
-									Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+									Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 									Emit::val_symbol(K_value, obj_s);
 								Emit::up();
 
 								Emit::inv_primitive(store_interp);
 								Emit::down();
-									Emit::ref_iname(K_object, InterNames::extern(SUPPRESSSCOPELOOPS_EXNAMEF));
+									Emit::ref_iname(K_object, Hierarchy::find(SUPPRESS_SCOPE_LOOPS_HL));
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
 								Emit::up();
 
-								Emit::inv_call(InterNames::to_symbol(InterNames::extern(PLACEINSCOPE_EXNAMEF)));
+								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PLACEINSCOPE_HL)));
 								Emit::down();
 									Emit::val_symbol(K_value, o2_s);
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -189,13 +189,13 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 
 								Emit::inv_primitive(store_interp);
 								Emit::down();
-									Emit::ref_iname(K_object, InterNames::extern(SUPPRESSSCOPELOOPS_EXNAMEF));
+									Emit::ref_iname(K_object, Hierarchy::find(SUPPRESS_SCOPE_LOOPS_HL));
 									Emit::val(K_truth_state, LITERAL_IVAL, 0);
 								Emit::up();
 
 								Emit::inv_primitive(store_interp);
 								Emit::down();
-									Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+									Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 									Emit::val_symbol(K_value, o2_s);
 								Emit::up();
 							Emit::up();
@@ -203,7 +203,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 
 						Emit::inv_primitive(store_interp);
 						Emit::down();
-							Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+							Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 							Emit::val_symbol(K_value, obj_s);
 						Emit::up();
 
@@ -216,8 +216,8 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 					Emit::down();
 						Emit::inv_primitive(store_interp);
 						Emit::down();
-							Emit::ref_iname(K_object, InterNames::extern(NEXTBESTETYPE_EXNAMEF));
-							Emit::val_iname(K_object, InterNames::extern(NOTINCONTEXTPE_EXNAMEF));
+							Emit::ref_iname(K_object, Hierarchy::find(NEXTBEST_ETYPE_HL));
+							Emit::val_iname(K_object, Hierarchy::find(NOTINCONTEXTPE_HL));
 						Emit::up();
 						Emit::inv_primitive(return_interp);
 						Emit::down();
@@ -232,7 +232,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, x_s);
-			Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+			Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 		Emit::up();
 
 		Emit::inv_primitive(return_interp);
@@ -277,9 +277,9 @@ void PL::Parsing::Tokens::Filters::compile_id(int id) {
 	noun_filter_token *nft;
 	LOOP_OVER(nft, noun_filter_token)
 		if (nft->allocation_id == id) {
-			if (nft->parse_using_gpr) Emit::val_iname(K_value, InterNames::extern(GPRTT_EXNAMEF));
-			else if (nft->global_scope_flag) Emit::val_iname(K_value, InterNames::extern(SCOPETT_EXNAMEF));
-			else Emit::val_iname(K_value, InterNames::extern(ROUTINEFILTERTT_EXNAMEF));
+			if (nft->parse_using_gpr) Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
+			else if (nft->global_scope_flag) Emit::val_iname(K_value, Hierarchy::find(SCOPE_TT_HL));
+			else Emit::val_iname(K_value, Hierarchy::find(ROUTINEFILTER_TT_HL));
 			Emit::val_iname(K_value, nft->nft_iname);
 		}
 }

@@ -282,8 +282,8 @@ void PL::Files::arrays(void) {
 	LOOP_OVER(exf, external_file) {
 		packaging_state save = Packaging::enter_home_of(exf->exf_iname);
 		Emit::named_array_begin(exf->exf_iname, K_value);
-		Emit::array_iname_entry(InterNames::extern(AUXF_MAGIC_VALUE_EXNAMEF));
-		Emit::array_iname_entry(InterNames::extern(AUXF_STATUS_IS_CLOSED_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
+		Emit::array_iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
 		if (exf->file_is_binary) Emit::array_numeric_entry(1);
 		else Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);

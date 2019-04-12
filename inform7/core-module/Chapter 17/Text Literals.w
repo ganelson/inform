@@ -134,7 +134,7 @@ void Strings::TextLiterals::mark_as_unescaped(literal_text *lt) {
 literal_text *Strings::TextLiterals::compile_literal(value_holster *VH, int write, wording W) {
 	int w1 = Wordings::first_wn(W);
 	if (Wide::cmp(Lexer::word_text(w1), L"\"\"") == 0) {
-		if ((write) && (VH)) InterNames::holster(VH, InterNames::extern(EMPTYTEXTVALUE_EXNAMEF));
+		if ((write) && (VH)) InterNames::holster(VH, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
 		return NULL;
 	}
 	if (z_node == NULL) @<Initialise the red-black tree@>;
@@ -302,7 +302,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 	if (lt->small_block_array_needed) {
 		packaging_state save = Packaging::enter_home_of(lt->lt_sba_iname);
 		Emit::named_array_begin(lt->lt_sba_iname, K_value);
-		Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(lt->lt_iname);
 		Emit::array_end();
 		Packaging::exit(save);
@@ -344,8 +344,8 @@ literal_text *Strings::TextLiterals::compile_literal_sb(value_holster *VH, wordi
 		inter_name *N = Kinds::RunTime::begin_block_constant(K_text);
 		if (N) InterNames::holster(VH, N);
 		lt = Strings::TextLiterals::compile_literal(NULL, FALSE, W);
-		Emit::array_iname_entry(InterNames::extern(PACKED_TEXT_STORAGE_EXNAMEF));
-		if (lt == NULL) Emit::array_iname_entry(InterNames::extern(EMPTY_TEXT_PACKED_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
+		if (lt == NULL) Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 		else Emit::array_iname_entry(lt->lt_iname);
 		Kinds::RunTime::end_block_constant(K_text);
 		Packaging::exit(save);

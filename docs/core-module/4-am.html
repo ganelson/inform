@@ -1870,7 +1870,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gna_s</span><span class="plain">);</span>
-                        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">GETGNAOFOBJECT_EXNAMEF</span><span class="plain">);</span>
+                        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">GETGNAOFOBJECT_HL</span><span class="plain">);</span>
                         <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">o_s</span><span class="plain">);</span>
@@ -1888,7 +1888,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PRIORNAMEDLISTGENDER_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRIOR_NAMED_LIST_GENDER_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) -1);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1899,7 +1899,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
                                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 3);</span>
-                                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PRIORNAMEDLISTGENDER_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRIOR_NAMED_LIST_GENDER_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1963,16 +1963,16 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Adjectives::Meanings::emit</span><span class="plain">(</span><span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain">) {</span>
         <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">aph_iname</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PRIORNAMEDNOUN_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRIOR_NAMED_NOUN_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PRIORNAMEDLIST_EXNAMEF</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRIOR_NAMED_LIST_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SAYP_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
     <span class="plain">}</span>

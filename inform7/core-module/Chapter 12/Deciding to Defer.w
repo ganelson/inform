@@ -309,7 +309,7 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 						Emit::ref_symbol(K_value, local_s);
 						Emit::inv_primitive(lookup_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(DEFERREDCALLINGLIST_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (calling_count - 1));
 						Emit::up();
 					Emit::up();
@@ -340,7 +340,7 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 						Emit::ref_symbol(K_value, local_s);
 						Emit::inv_primitive(lookup_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(DEFERREDCALLINGLIST_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) calling_count++);
 						Emit::up();
 					Emit::up();
@@ -351,7 +351,7 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 	if (calling_count > 0) {
 		Emit::inv_primitive(lookup_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(DEFERREDCALLINGLIST_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Emit::val(K_number, LITERAL_IVAL, 26);
 		Emit::up();
 	}
@@ -372,7 +372,7 @@ int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int
 		Emit::down();
 			Emit::inv_primitive(lookupref_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(DEFERREDCALLINGLIST_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 				Emit::val(K_number, LITERAL_IVAL, 26);
 			Emit::up();
 		return TRUE;
@@ -671,7 +671,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 =
 void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYDESC_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_DESC_HL)));
 		Emit::down();
 			Frames::emit_allocation(K);
 			Specifications::Compiler::emit_as_val(K_value, spec);
@@ -738,7 +738,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 		Emit::down();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(PROPERTYTOBETOTALLED_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				Emit::val_iname(K_value, Properties::iname(prn));
 			Emit::up();
 			Emit::inv_primitive(indirect1_interp);
@@ -806,14 +806,14 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 		Emit::down();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(PROPERTYTOBETOTALLED_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				Emit::val_iname(K_value, Properties::iname(prn));
 			Emit::up();
 			Emit::inv_primitive(sequential_interp);
 			Emit::down();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
-					Emit::ref_iname(K_value, InterNames::extern(PROPERTYLOOPSIGN_EXNAMEF));
+					Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) sign);
 				Emit::up();
 				Emit::inv_primitive(indirect1_interp);
@@ -1121,15 +1121,15 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 						Emit::inv_primitive(store_interp);
 						Emit::down();
 							Emit::ref_symbol(K_value, val_var_s);
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUECREATE_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECREATE_HL)));
 							Emit::down();
 								Kinds::RunTime::emit_strong_id_as_val(CK);
 							Emit::up();
 						Emit::up();
-						Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUECOPYAZ_EXNAMEF)));
+						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPYAZ_HL)));
 						Emit::down();
 							Emit::val_symbol(K_value, val_var_s);
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETITEM_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
 							Emit::down();
 								Emit::val_symbol(K_value, copy_var_s);
 								Emit::val_symbol(K_value, index_var_s);
@@ -1141,7 +1141,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, val_var_s);
-						Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETITEM_EXNAMEF)));
+						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
 						Emit::down();
 							Emit::val_symbol(K_value, copy_var_s);
 							Emit::val_symbol(K_value, index_var_s);
@@ -1155,7 +1155,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 		Emit::inv_primitive(le_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, index_var_s);
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETLENGTH_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL)));
 			Emit::down();
 				Emit::val_symbol(K_value, copy_var_s);
 			Emit::up();
@@ -1168,10 +1168,10 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 				Emit::ref_symbol(K_value, index_var_s);
 			Emit::up();
 			if (pointery) {
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUECOPYAZ_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPYAZ_HL)));
 				Emit::down();
 					Emit::val_symbol(K_value, val_var_s);
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETITEM_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
 					Emit::down();
 						Emit::val_symbol(K_value, copy_var_s);
 						Emit::val_symbol(K_value, index_var_s);
@@ -1182,7 +1182,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, val_var_s);
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETITEM_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
 					Emit::down();
 						Emit::val_symbol(K_value, copy_var_s);
 						Emit::val_symbol(K_value, index_var_s);

@@ -145,7 +145,7 @@ int Tables::Columns::get_id(table_column *tc) {
 }
 
 void Tables::Columns::compile_run_time_support(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(TC_KOV_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TC_KOV_HL));
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
 	Emit::inv_primitive(switch_interp);
 	Emit::down();

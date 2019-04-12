@@ -1015,7 +1015,7 @@ which were introduced in December 2010.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::start_list_compilation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_RULEBOOK_INAME_NRL</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_RULEBOOK_INAME_HL</span><span class="plain">));</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"forbid_breaks"</span><span class="plain">);</span>
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -1045,7 +1045,7 @@ which were introduced in December 2010.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">countup</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::no_rules_in_list</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> == 0) {</span>
             <span class="identifier">rb_symb</span><span class="plain"> = </span><span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">,</span>
-                <span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_RULEBOOK_INAME_NRL</span><span class="plain">));</span>
+                <span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_RULEBOOK_INAME_HL</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">format</span><span class="plain"> = </span><span class="constant">ROUTINE_RBF</span><span class="plain">;</span>
 
@@ -1143,14 +1143,14 @@ than once for each rule.
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">original_deadflag_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DEADFLAG_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEADFLAG_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter_based</span><span class="plain">) {</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">p_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARAMETERVALUE_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARAMETER_VALUE_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -1184,7 +1184,7 @@ than once for each rule.
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">ACTION_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ACTION_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">));</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1219,7 +1219,7 @@ than once for each rule.
                         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">original_deadflag_s</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">DEADFLAG_EXNAMEF</span><span class="plain">));</span>
+                            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEADFLAG_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1234,7 +1234,7 @@ than once for each rule.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter_based</span><span class="plain">) {</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARAMETERVALUE_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARAMETER_VALUE_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">p_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
@@ -1263,7 +1263,7 @@ than once for each rule.
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">REASONTHEACTIONFAILED_EXNAMEF</span><span class="plain">));</span>
+                                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REASON_THE_ACTION_FAILED_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1279,7 +1279,7 @@ than once for each rule.
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupref_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">LATESTRULERESULT_EXNAMEF</span><span class="plain">));</span>
+                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LATEST_RULE_RESULT_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -1352,10 +1352,10 @@ than once for each rule.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry_count</span><span class="plain"> &gt; 0) {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SAYP_EXNAMEF</span><span class="plain">));</span>
+                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">RULEBOOKPARBREAK_EXNAMEF</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKPARBREAK_HL</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">forbid_breaks_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>

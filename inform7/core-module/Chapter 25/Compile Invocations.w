@@ -43,7 +43,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
 			Emit::inv_primitive(push_interp);
 			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(SELF_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 			Emit::up();
 		}
 		if (Invocations::is_marked_unproven(Invocations::first_in_list(invl))) {
@@ -55,7 +55,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
 			Emit::inv_primitive(pull_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(SELF_NRL));
+				Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
 			Emit::up();
 		}
 	}
@@ -255,7 +255,7 @@ the context of a value.
 				Emit::up();
 			}
 			if (L != Emit::level()) internal_error("applicability expression error");
-			Emit::val_iname(K_value, InterNames::extern(FORMALRV_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
 		Emit::up();
 	}
 
@@ -293,7 +293,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
 	NonlocalVariables::temporary_formal(i);
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_value, InterNames::formal_par(i));
+		Emit::ref_iname(K_value, NonlocalVariables::formal_par(i));
 		if (ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT)
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		else {
@@ -384,7 +384,7 @@ no subsequent lines are looked at.
 		Emit::code();
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(ARGUMENTTYPEFAILED_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ARGUMENTTYPEFAILED_HL)));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) sl.line_number);
 		extension_file *ef = SourceFiles::get_extension_corresponding(sl.file_of_origin);
@@ -559,7 +559,7 @@ evaluate to "true" with a minimum of branches in the compiled code.
 		Emit::down();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(FORMALRV_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
 	}
 
 	value_holster VH2 = Holsters::new(VH->vhmode_wanted);

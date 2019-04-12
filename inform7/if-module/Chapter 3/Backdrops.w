@@ -260,7 +260,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 @<If the object is found everywhere, make a found-in property accordingly@> =
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_EVERYWHERE_INF) {
-		FOUNDIN = InterNames::extern(FOUND_EVERYWHERE_EXNAMEF);
+		FOUNDIN = Hierarchy::find(FOUND_EVERYWHERE_HL);
 		break;
 	}
 
@@ -340,15 +340,15 @@ void PL::Backdrops::write_found_in_routines(void) {
 		Emit::inv_primitive(if_interp);
 		Emit::down();
 		if ((K_region) && (Instances::of_kind(loc, K_region))) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(TESTREGIONALCONTAINMENT_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTREGIONALCONTAINMENT_HL)));
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(LOCATION_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
 				Emit::val_iname(K_object, Instances::iname(loc));
 			Emit::up();
 		} else {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(LOCATION_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
 				Emit::val_iname(K_object, Instances::iname(loc));
 			Emit::up();
 		}

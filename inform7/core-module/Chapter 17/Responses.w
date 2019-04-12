@@ -117,7 +117,7 @@ a call to an activity based on that value:
 	inter_name *iname = Strings::response_constant_iname(
 		resp->responding_rule, resp->response_marker);
 
-	inter_name *rname = InterNames::extern(RESPONSEVIAACTIVITY_EXNAMEF);
+	inter_name *rname = Hierarchy::find(RESPONSEVIAACTIVITY_HL);
 	Emit::inv_call(InterNames::to_symbol(rname));
 	Emit::down();
 	Emit::val_iname(K_value, iname);
@@ -127,7 +127,7 @@ a call to an activity based on that value:
 
 	save = Packaging::enter(R);
 	Emit::named_array_begin(resp->resp_iname, K_value);
-	Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
+	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	Emit::array_iname_entry(launcher);
 	Emit::array_end();
 
@@ -200,31 +200,31 @@ essence here.
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, s_s);
-		Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+		Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, s2_s);
-		Emit::val_iname(K_value, InterNames::extern(SECOND_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(SECOND_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, s3_s);
-		Emit::val_iname(K_object, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+		Emit::val_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+		Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 		Emit::val_symbol(K_value, val_s);
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_object, InterNames::extern(SECOND_EXNAMEF));
+		Emit::ref_iname(K_object, Hierarchy::find(SECOND_HL));
 		Emit::val_symbol(K_value, val2_s);
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_object, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+		Emit::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 		Emit::val_symbol(K_value, val_s);
 	Emit::up();
 
@@ -267,7 +267,7 @@ essence here.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(TEXTTYSAY_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TEXT_TY_SAY_HL)));
 			Emit::down();
 				Emit::val_symbol(K_value, str_s);
 			Emit::up();
@@ -276,17 +276,17 @@ essence here.
 
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+		Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 		Emit::val_symbol(K_value, s_s);
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_object, InterNames::extern(SECOND_EXNAMEF));
+		Emit::ref_iname(K_object, Hierarchy::find(SECOND_HL));
 		Emit::val_symbol(K_value, s2_s);
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_object, InterNames::extern(PARSEDNUMBER_EXNAMEF));
+		Emit::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 		Emit::val_symbol(K_value, s3_s);
 	Emit::up();
 
@@ -383,7 +383,7 @@ enables the I6 template to print out all known responses at run-time,
 divided up by the extensions containing the rules which produce them.
 
 @<Compile the Response Divisions array@> =
-	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_NRL);
+	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	extension_file *group_ef = NULL;
@@ -419,7 +419,7 @@ divided up by the extensions containing the rules which produce them.
 			Emit::array_text_entry(QT);
 			DISCARD_TEXT(QT);
 		} else
-			Emit::array_iname_entry(InterNames::extern(EMPTY_TEXT_PACKED_EXNAMEF));
+			Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 		Emit::array_numeric_entry((inter_t) (tally));
 	}
 

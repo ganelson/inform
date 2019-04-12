@@ -206,7 +206,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 	nlv->nlv_name_translated = TRUE;
 	TEMPORARY_TEXT(name);
 	WRITE_TO(name, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
-	inter_name *as_iname = InterNames::extern_name(name);
+	inter_name *as_iname = Hierarchy::find_by_name(name);
 	NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_iname(as_iname));
 	NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_iname(as_iname));
 	DISCARD_TEXT(name);
@@ -280,10 +280,10 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 	} else if (nlv->lvalue_nve.stv_ID >= 0) {
 		Emit::inv_primitive(lookup_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(MSTACK_EXNAMEF));
-			int ex = MSTVO_EXNAMEF;
-			if (nlv->lvalue_nve.allow_outside) ex = MSTVON_EXNAMEF;
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(ex)));
+			Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+			int ex = MSTVO_HL;
+			if (nlv->lvalue_nve.allow_outside) ex = MSTVON_HL;
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ex)));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_ID);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_index);
@@ -435,7 +435,7 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 				rvalue = NonlocalVariables::identifier(nlv);
 			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
 			if (nlv == command_prompt_VAR) {
-				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_NRL));
+				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_HL));
 				Emit::inv_primitive(return_interp);
 				Emit::down();
 					Emit::val_iname(K_text, iname);
@@ -553,7 +553,7 @@ nonlocal_variable *NonlocalVariables::temporary_formal(int i) {
 	if (formal_par_vars_made == FALSE) {
 		for (int i=0; i<8; i++) {
 			formal_par_VAR[i] = NonlocalVariables::new(EMPTY_WORDING, K_object, NULL);
-			inter_name *iname = InterNames::formal_par(i);
+			inter_name *iname = NonlocalVariables::formal_par(i);
 			formal_par_VAR[i]->nlv_iname = iname;
 			NonlocalVariables::set_I6_identifier(formal_par_VAR[i], FALSE, NonlocalVariables::nve_from_iname(iname));
 			NonlocalVariables::set_I6_identifier(formal_par_VAR[i], TRUE, NonlocalVariables::nve_from_iname(iname));
@@ -562,6 +562,21 @@ nonlocal_variable *NonlocalVariables::temporary_formal(int i) {
 	}
 	nonlocal_variable *nlv = formal_par_VAR[i];
 	return nlv;
+}
+
+inter_name *NonlocalVariables::formal_par(int n) {
+	switch (n) {
+		case 0: return Hierarchy::find(formal_par0_HL);
+		case 1: return Hierarchy::find(formal_par1_HL);
+		case 2: return Hierarchy::find(formal_par2_HL);
+		case 3: return Hierarchy::find(formal_par3_HL);
+		case 4: return Hierarchy::find(formal_par4_HL);
+		case 5: return Hierarchy::find(formal_par5_HL);
+		case 6: return Hierarchy::find(formal_par6_HL);
+		case 7: return Hierarchy::find(formal_par7_HL);
+	}
+	internal_error("bad formal par number");
+	return NULL;
 }
 
 @ This is a curiosity, used to force the textual contents of a bibliographic

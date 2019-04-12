@@ -79,7 +79,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
 					Emit::inv_primitive(lookup_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(TIMESACTIONHASHAPPENED_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 				Emit::up();
@@ -90,13 +90,13 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) duration.until);
 						Emit::inv_primitive(lookup_interp);
 						Emit::down();
-							Emit::val_iname(K_value, InterNames::extern(TIMESACTIONHASHAPPENED_EXNAMEF));
+							Emit::val_iname(K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 						Emit::up();
 					Emit::up();
 					Emit::inv_primitive(lookupbyte_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(ACTIONCURRENTLYHAPPENINGFLAG_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(ACTIONCURRENTLYHAPPENINGFLAG_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 				Emit::up();
@@ -109,7 +109,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
 					Emit::inv_primitive(lookup_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(TURNSACTIONHASBEENHAPPENING_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 				Emit::up();
@@ -118,7 +118,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) duration.until);
 					Emit::inv_primitive(lookup_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(TURNSACTIONHASBEENHAPPENING_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 				Emit::up();
@@ -132,14 +132,14 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 				Emit::down();
 					Emit::inv_primitive(lookup_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(TIMESACTIONHASHAPPENED_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
 				Emit::up();
 				Emit::inv_primitive(lookupbyte_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(ACTIONCURRENTLYHAPPENINGFLAG_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(ACTIONCURRENTLYHAPPENINGFLAG_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 				Emit::up();
 			Emit::up();
@@ -148,7 +148,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(TURNSACTIONHASBEENHAPPENING_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
@@ -234,7 +234,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		@<Emit the op@>;
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSINGLEPASTSTATE_NRL)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSINGLEPASTSTATE_HL)));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) past_flag);
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_tenses);
@@ -337,7 +337,7 @@ void Chronology::past_actions_i6_routines(void) {
 
 		Routines::end(save);
 	}
-	inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_NRL);
+	inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(pta, past_tense_action_record)
@@ -357,7 +357,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		"Creating %d past tense conditions in TestSinglePastState\n",
 			NUMBER_CREATED(past_tense_condition_record));
 
-	packaging_state save = Routines::begin(Hierarchy::find(TESTSINGLEPASTSTATE_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TESTSINGLEPASTSTATE_HL));
 	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");
@@ -397,7 +397,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(PASTCHRONOLOGICALRECORD_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(PAST_CHRONOLOGICAL_RECORD_HL));
 				Emit::val_symbol(K_value, pt_s);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 1);
@@ -412,7 +412,7 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_object, InterNames::extern(PASTCHRONOLOGICALRECORD_EXNAMEF));
+					Emit::val_iname(K_object, Hierarchy::find(PAST_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0xFE);
@@ -429,7 +429,7 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_object, InterNames::extern(PASTCHRONOLOGICALRECORD_EXNAMEF));
+					Emit::val_iname(K_object, Hierarchy::find(PAST_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0xFF00);
@@ -446,7 +446,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		Emit::down();
 			Emit::inv_primitive(lookup_interp);
 			Emit::down();
-				Emit::val_iname(K_object, InterNames::extern(PRESENTCHRONOLOGICALRECORD_EXNAMEF));
+				Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 				Emit::val_symbol(K_value, pt_s);
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 1);
@@ -461,7 +461,7 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_object, InterNames::extern(PRESENTCHRONOLOGICALRECORD_EXNAMEF));
+					Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0xFE);
@@ -478,7 +478,7 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
-					Emit::val_iname(K_object, InterNames::extern(PRESENTCHRONOLOGICALRECORD_EXNAMEF));
+					Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0xFF00);
@@ -492,7 +492,7 @@ void Chronology::past_tenses_i6_escape(void) {
 	Emit::down();
 		Emit::inv_primitive(lookupref_interp);
 		Emit::down();
-			Emit::val_iname(K_object, InterNames::extern(PRESENTCHRONOLOGICALRECORD_EXNAMEF));
+			Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 			Emit::val_symbol(K_value, pt_s);
 		Emit::up();
 		Emit::inv_primitive(plus_interp);
@@ -788,12 +788,12 @@ times".
 
 =
 void Chronology::chronology_extents_i6_escape(void) {
-	inter_name *iname1 = Hierarchy::find(NO_PAST_TENSE_CONDS_NRL);
+	inter_name *iname1 = Hierarchy::find(NO_PAST_TENSE_CONDS_HL);
 	packaging_state save = Packaging::enter_home_of(iname1);
 	Emit::named_numeric_constant(iname1, (inter_t) no_past_tenses);
 	Packaging::exit(save);
 
-	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_NRL);
+	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_HL);
 	save = Packaging::enter_home_of(iname2);
 	Emit::named_numeric_constant(iname2, (inter_t) no_past_actions);
 	Packaging::exit(save);

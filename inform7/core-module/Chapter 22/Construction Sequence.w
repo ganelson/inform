@@ -212,7 +212,7 @@ PHRCDs are used to make sure it appears in the right position.
 void Phrases::Manager::add_rules_to_rulebooks(void) {
 	Phrases::Manager::advance_phrase_time_to(EARLY_AFTERNOON_PHT);
 	Rules::Bookings::make_automatic_placements();
-	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_NRL);
+	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(rulebook));
 	Packaging::exit(save);

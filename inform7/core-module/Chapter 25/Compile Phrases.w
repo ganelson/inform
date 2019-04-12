@@ -201,7 +201,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 	}
 	Emit::inv_primitive(store_interp); /* warn the paragraph breaker: this will print */
 	Emit::down();
-		Emit::ref_iname(K_number, InterNames::extern(SAYP_EXNAMEF));
+		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);
 	Emit::up();
 	Routines::Compile::verify_say_node_list(p->down);
@@ -583,7 +583,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 			(ParseTree::get_phrase_invoked(inv)) &&
 			(Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv))) &&
 			(ParseTree::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(PARACONTENT_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARACONTENT_HL)));
 		}
 	} else {
 		ExParser::parse_void_phrase(p);

@@ -2906,6 +2906,6 @@ inter_symbol *InterSchemas::find_identifier(inter_schema_token *t) {
 inter_symbol *InterSchemas::find_identifier_text(text_stream *S) {
 	inter_symbol *I = Emit::seek_symbol(Emit::main_scope(), S);
 	if (I) return I;
-	return InterNames::to_symbol(InterNames::extern_name(S));
+	return InterNames::to_symbol(Hierarchy::find_by_name(S));
 }
 

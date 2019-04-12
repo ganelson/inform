@@ -336,10 +336,10 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 	if ((tests > 0) || (ph->compile_with_run_time_debugging)) {
 		Emit::inv_primitive(if_interp);
 		Emit::down();
-			Emit::val_iname(K_number, InterNames::extern(DEBUGRULES_EXNAMEF));
+			Emit::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
 			Emit::code();
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(DBRULE_EXNAMEF)));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DB_RULE_HL)));
 				Emit::down();
 					Emit::val_iname(K_value, identifier);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
@@ -405,8 +405,8 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	if (PL::Actions::Patterns::object_based(&(phrcd->ap))) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_object, Hierarchy::find(SELF_NRL));
-				Emit::val_iname(K_object, InterNames::extern(NOUN_EXNAMEF));
+				Emit::ref_iname(K_object, Hierarchy::find(SELF_HL));
+				Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 			Emit::up();
 	}
 
@@ -421,8 +421,8 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	Emit::down();
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
-			Emit::val_iname(K_object, InterNames::extern(ACTOR_EXNAMEF));
-			Emit::val_iname(K_object, InterNames::extern(PLAYER_EXNAMEF));
+			Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+			Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();
@@ -465,12 +465,12 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 			Emit::down();
 				Emit::inv_primitive(gt_interp);
 				Emit::down();
-					Emit::val_iname(K_number, InterNames::extern(DEBUGRULES_EXNAMEF));
+					Emit::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
 					Emit::val(K_number, LITERAL_IVAL, 1);
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(DBRULE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DB_RULE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, identifier);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);

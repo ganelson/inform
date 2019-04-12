@@ -318,7 +318,7 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 		if (pt) Kinds::RunTime::emit_weak_id_as_val(pt->term_checked_as_kind);
 	} else if (give_comparison_routine) {
 		inter_name *cr = (pt)?(Kinds::Behaviour::get_comparison_routine_as_iname(pt->term_checked_as_kind)):NULL;
-		if (cr == NULL) cr = InterNames::extern(SIGNEDCOMPARE_EXNAMEF);
+		if (cr == NULL) cr = Hierarchy::find(SIGNEDCOMPARE_HL);
 		Emit::val_iname(K_value, cr);
 	} else {
 		if (by_reference) {

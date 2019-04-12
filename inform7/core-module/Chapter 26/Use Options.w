@@ -506,7 +506,7 @@ one to test them, one to print them.
 
 =
 void UseOptions::TestUseOption_routine(void) {
-	inter_name *iname = InterNames::find(NO_USE_OPTIONS_NRL);
+	inter_name *iname = Hierarchy::find(NO_USE_OPTIONS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(use_option));
 	Packaging::exit(save);
@@ -515,7 +515,7 @@ void UseOptions::TestUseOption_routine(void) {
 }
 
 @<Compile the TestUseOption routine@> =
-	packaging_state save = Routines::begin(Hierarchy::find(TESTUSEOPTION_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(TESTUSEOPTION_HL));
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
 	use_option *uo;
 	LOOP_OVER(uo, use_option)

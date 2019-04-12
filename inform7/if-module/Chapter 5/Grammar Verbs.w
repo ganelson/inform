@@ -168,7 +168,7 @@ grammar_verb *PL::Parsing::Verbs::find_or_create_command(wording W) {
 	gv->command = W;
 
 	if (Wordings::empty(W)) {
-		inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_NRL);
+		inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_HL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) 1);
 		Packaging::exit(save);
@@ -459,7 +459,7 @@ void PL::Parsing::Verbs::translates(wording W, parse_node *p2) {
 
 inter_name *PL::Parsing::Verbs::i6_token_as_iname(grammar_verb *gv) {
 	if (Str::len(gv->gv_I6_identifier) > 0)
-		return InterNames::extern_name(gv->gv_I6_identifier);
+		return Hierarchy::find_by_name(gv->gv_I6_identifier);
 	if (gv->gv_line_iname == NULL) internal_error("no token GPR");
 	return gv->gv_line_iname;
 }
@@ -710,20 +710,20 @@ void PL::Parsing::Verbs::compile_all(void) {
 	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
 	packaging_state save = Packaging::enter(PR);
 
-	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_NRL, 1);
-	VERB_DIRECTIVE_SLASH_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SLASH_NRL, 1);
-	VERB_DIRECTIVE_DIVIDER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_DIVIDER_NRL, 1);
-	VERB_DIRECTIVE_RESULT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_RESULT_NRL, 2);
-	VERB_DIRECTIVE_SPECIAL_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SPECIAL_NRL, 3);
-	VERB_DIRECTIVE_NUMBER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NUMBER_NRL, 4);
-	VERB_DIRECTIVE_NOUN_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NOUN_NRL, 5);
-	VERB_DIRECTIVE_MULTI_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTI_NRL, 6);
-	VERB_DIRECTIVE_MULTIINSIDE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_NRL, 7);
-	VERB_DIRECTIVE_MULTIHELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIHELD_NRL, 8);
-	VERB_DIRECTIVE_HELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_HELD_NRL, 9);
-	VERB_DIRECTIVE_CREATURE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_CREATURE_NRL, 10);
-	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_NRL, 11);
-	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_NRL, 12);
+	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_HL, 1);
+	VERB_DIRECTIVE_SLASH_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SLASH_HL, 1);
+	VERB_DIRECTIVE_DIVIDER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_DIVIDER_HL, 1);
+	VERB_DIRECTIVE_RESULT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_RESULT_HL, 2);
+	VERB_DIRECTIVE_SPECIAL_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SPECIAL_HL, 3);
+	VERB_DIRECTIVE_NUMBER_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NUMBER_HL, 4);
+	VERB_DIRECTIVE_NOUN_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_NOUN_HL, 5);
+	VERB_DIRECTIVE_MULTI_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTI_HL, 6);
+	VERB_DIRECTIVE_MULTIINSIDE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_HL, 7);
+	VERB_DIRECTIVE_MULTIHELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIHELD_HL, 8);
+	VERB_DIRECTIVE_HELD_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_HELD_HL, 9);
+	VERB_DIRECTIVE_CREATURE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_CREATURE_HL, 10);
+	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_HL, 11);
+	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
 
 	LOOP_OVER(gv, grammar_verb)
 		if (gv->gv_is == GV_IS_TOKEN)
@@ -784,17 +784,17 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk.original_wn_s);
-				Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk.rv_s);
-				Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
 			PL::Parsing::Verbs::gv_compile_lines(&gprk, gv);
 			Emit::inv_primitive(return_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 			Emit::up();
 			Routines::end(save);
 			break;
@@ -808,23 +808,23 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk.range_from_s);
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk.original_wn_s);
-				Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk.rv_s);
-				Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
 			PL::Parsing::Verbs::gv_compile_lines(&gprk, gv);
 			Emit::inv_primitive(return_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 			Emit::up();
 			Routines::end(save);
 			break;
@@ -852,17 +852,17 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk.original_wn_s);
-				Emit::val_iname(K_value, InterNames::extern(WN_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk.rv_s);
-				Emit::val_iname(K_value, InterNames::extern(GPRPREPOSITION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
 			PL::Parsing::Verbs::gv_compile_lines(&gprk, gv);
 			Emit::inv_primitive(return_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(GPRFAIL_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 			Emit::up();
 			Routines::end(save);
 			break;

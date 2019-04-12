@@ -1335,7 +1335,7 @@ void Adjectives::Meanings::agreements(void) {
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gna_s);
-					inter_name *iname = InterNames::extern(GETGNAOFOBJECT_EXNAMEF);
+					inter_name *iname = Hierarchy::find(GETGNAOFOBJECT_HL);
 					Emit::inv_call(InterNames::to_symbol(iname));
 					Emit::down();
 						Emit::val_symbol(K_value, o_s);
@@ -1353,7 +1353,7 @@ void Adjectives::Meanings::agreements(void) {
 				Emit::down();
 					Emit::inv_primitive(ne_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(PRIORNAMEDLISTGENDER_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
 					Emit::up();
 					Emit::code();
@@ -1364,7 +1364,7 @@ void Adjectives::Meanings::agreements(void) {
 							Emit::inv_primitive(plus_interp);
 							Emit::down();
 								Emit::val(K_number, LITERAL_IVAL, 3);
-								Emit::val_iname(K_value, InterNames::extern(PRIORNAMEDLISTGENDER_EXNAMEF));
+								Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
 							Emit::up();
 						Emit::up();
 					Emit::up();
@@ -1428,16 +1428,16 @@ void Adjectives::Meanings::agreements(void) {
 void Adjectives::Meanings::emit(adjectival_phrase *aph) {
 	Emit::inv_call(InterNames::to_symbol(aph->aph_iname));
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(PRIORNAMEDNOUN_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
 		Emit::inv_primitive(ge_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(PRIORNAMEDLIST_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_HL));
 			Emit::val(K_number, LITERAL_IVAL, 2);
 		Emit::up();
 	Emit::up();
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_number, InterNames::extern(SAYP_EXNAMEF));
+		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);
 	Emit::up();
 }

@@ -656,7 +656,7 @@ int LocalVariables::emit_storage(ph_stack_frame *phsf) {
 			Emit::down();
 				Emit::inv_primitive(lookupref_interp);
 				Emit::down();
-					Emit::val_iname(K_value, InterNames::extern(LOCALPARKING_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(LOCALPARKING_HL));
 					Emit::val(K_number, LITERAL_IVAL, j++);
 				Emit::up();
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
@@ -671,7 +671,7 @@ function, i.e., immediately after the call.
 
 =
 void LocalVariables::compile_retrieval(ph_stack_frame *phsf) {
-	inter_name *LP = InterNames::extern(LOCALPARKING_EXNAMEF);
+	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
 	inter_t j=0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
 		Emit::inv_primitive(store_interp);
@@ -946,7 +946,7 @@ void LocalVariables::end_scope(int s) {
 			(lvar->allocated) && (lvar->block_scope >= s)) {
 			LOGIF(LOCAL_VARIABLES, "De-allocating $k at end of block\n", lvar);
 			if (lvar->free_at_end_of_scope) {
-				inter_name *iname = InterNames::extern(BLKVALUEFREE_EXNAMEF);
+				inter_name *iname = Hierarchy::find(BLKVALUEFREE_HL);
 				inter_symbol *LN = LocalVariables::declare_this(lvar, FALSE, 2);
 				Emit::inv_call(InterNames::to_symbol(iname));
 				Emit::down();

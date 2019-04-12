@@ -296,7 +296,7 @@ void PL::Parsing::TestScripts::write_text(void) {
 
 void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 	if (NUMBER_CREATED(test_scenario) > 0) {
-		inter_name *iname = Hierarchy::find(NO_TEST_SCENARIOS_NRL);
+		inter_name *iname = Hierarchy::find(NO_TEST_SCENARIOS_HL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(test_scenario));
 		Packaging::exit(save);
@@ -304,14 +304,14 @@ void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 }
 
 void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
-	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_NRL);
+	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	packaging_state save = Routines::begin(iname);
 	Emit::rfalse();
 	Routines::end(save);
 }
 
 void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
-	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_NRL);
+	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	packaging_state save = Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Emit::inv_primitive(print_interp);
@@ -321,7 +321,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 	} else {
 		Emit::inv_primitive(switch_interp);
 		Emit::down();
-			Emit::val_iname(K_object, InterNames::extern(SPECIALWORD_EXNAMEF));
+			Emit::val_iname(K_object, Hierarchy::find(SPECIAL_WORD_HL));
 			Emit::code();
 			Emit::down();
 				test_scenario *test;
@@ -334,7 +334,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 						DISCARD_TEXT(W);
 						Emit::code();
 						Emit::down();
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(TESTSTART_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSTART_HL)));
 							Emit::down();
 								Emit::val_iname(K_value, test->text_iname);
 								Emit::val_iname(K_value, test->req_iname);
@@ -390,7 +390,7 @@ void PL::Parsing::TestScripts::new_internal(int code, wording W) {
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
 void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(INTERNALTESTCASES_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(INTERNALTESTCASES_HL));
 	internal_test_case *itc; int n = 0;
 	LOOP_OVER(itc, internal_test_case) {
 		n++;
@@ -568,7 +568,7 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	DISCARD_TEXT(OUT);
 
 	if (Kinds::get_construct(K) == CON_list_of) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYSAY_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SAY_HL)));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			Emit::val(K_number, LITERAL_IVAL, 1);

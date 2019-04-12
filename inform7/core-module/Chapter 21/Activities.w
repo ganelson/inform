@@ -370,7 +370,7 @@ void Activities::activity_var_creators(void) {
 		}
 	}
 
-	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_NRL);
+	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(av, activity) {
@@ -589,7 +589,7 @@ void Activities::emit_activity_list(activity_list *al) {
 	while (al != NULL) {
 		if (++ncl < cl) { Emit::inv_primitive(or_interp); Emit::down(); downs++; }
 		if (al->activity != NULL) {
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(TESTACTIVITY_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTACTIVITY_HL)));
 			Emit::down();
 				Emit::val_iname(K_value, al->activity->av_iname);
 				if (al->acting_on) {
@@ -615,7 +615,7 @@ void Activities::compile_activity_constants(void) {
 }
 
 void Activities::Activity_before_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_NRL);
+	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_array_begin(iname, K_number);
@@ -630,7 +630,7 @@ void Activities::Activity_before_rulebooks_array(void) {
 }
 
 void Activities::Activity_for_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_NRL);
+	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_array_begin(iname, K_number);
@@ -645,7 +645,7 @@ void Activities::Activity_for_rulebooks_array(void) {
 }
 
 void Activities::Activity_after_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_NRL);
+	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_array_begin(iname, K_number);
@@ -660,7 +660,7 @@ void Activities::Activity_after_rulebooks_array(void) {
 }
 
 void Activities::Activity_atb_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_NRL);
+	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	activity *av; int i = 0;
 	Emit::named_byte_array_begin(iname, K_number);

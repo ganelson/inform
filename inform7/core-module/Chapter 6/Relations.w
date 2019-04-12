@@ -865,26 +865,26 @@ inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
 }
 
 void Relations::compile_defined_relation_constants(void) {
-	RELS_SYMMETRIC_iname = Relations::compile_defined_relation_constant(RELS_SYMMETRIC_NRL, 0x8000);
-	RELS_EQUIVALENCE_iname = Relations::compile_defined_relation_constant(RELS_EQUIVALENCE_NRL, 0x4000);
-	RELS_X_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_X_UNIQUE_NRL, 0x2000);
-	RELS_Y_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_Y_UNIQUE_NRL, 0x1000);
-	RELS_TEST_iname = Relations::compile_defined_relation_constant(RELS_TEST_NRL, 0x0800);
-	RELS_ASSERT_TRUE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_TRUE_NRL, 0x0400);
-	RELS_ASSERT_FALSE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_FALSE_NRL, 0x0200);
-	RELS_SHOW_iname = Relations::compile_defined_relation_constant(RELS_SHOW_NRL, 0x0100);
-	RELS_ROUTE_FIND_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_NRL, 0x0080);
-	RELS_ROUTE_FIND_COUNT_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_COUNT_NRL, 0x0040);
-	RELS_LOOKUP_ANY_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ANY_NRL, 0x0008);
-	RELS_LOOKUP_ALL_X_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_X_NRL, 0x0004);
-	RELS_LOOKUP_ALL_Y_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_Y_NRL, 0x0002);
-	RELS_LIST_iname = Relations::compile_defined_relation_constant(RELS_LIST_NRL, 0x0001);
+	RELS_SYMMETRIC_iname = Relations::compile_defined_relation_constant(RELS_SYMMETRIC_HL, 0x8000);
+	RELS_EQUIVALENCE_iname = Relations::compile_defined_relation_constant(RELS_EQUIVALENCE_HL, 0x4000);
+	RELS_X_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_X_UNIQUE_HL, 0x2000);
+	RELS_Y_UNIQUE_iname = Relations::compile_defined_relation_constant(RELS_Y_UNIQUE_HL, 0x1000);
+	RELS_TEST_iname = Relations::compile_defined_relation_constant(RELS_TEST_HL, 0x0800);
+	RELS_ASSERT_TRUE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_TRUE_HL, 0x0400);
+	RELS_ASSERT_FALSE_iname = Relations::compile_defined_relation_constant(RELS_ASSERT_FALSE_HL, 0x0200);
+	RELS_SHOW_iname = Relations::compile_defined_relation_constant(RELS_SHOW_HL, 0x0100);
+	RELS_ROUTE_FIND_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_HL, 0x0080);
+	RELS_ROUTE_FIND_COUNT_iname = Relations::compile_defined_relation_constant(RELS_ROUTE_FIND_COUNT_HL, 0x0040);
+	RELS_LOOKUP_ANY_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ANY_HL, 0x0008);
+	RELS_LOOKUP_ALL_X_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_X_HL, 0x0004);
+	RELS_LOOKUP_ALL_Y_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_Y_HL, 0x0002);
+	RELS_LIST_iname = Relations::compile_defined_relation_constant(RELS_LIST_HL, 0x0001);
 	if (VirtualMachines::is_16_bit()) {
-		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_NRL, 0x100*5 + 13); /* $2^5 = 32$ bytes block */
+		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_HL, 0x100*5 + 13); /* $2^5 = 32$ bytes block */
 	} else {
-		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_NRL, (0x100*6 + 13)*0x10000);
+		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_HL, (0x100*6 + 13)*0x10000);
 	}
-	TTF_iname = Relations::compile_defined_relation_constant(TTF_SUM_NRL, (0x0800 + 0x0400 + 0x0200));
+	TTF_iname = Relations::compile_defined_relation_constant(TTF_SUM_HL, (0x0800 + 0x0400 + 0x0200));
 	/* i.e., |RELS_TEST + RELS_ASSERT_TRUE + RELS_ASSERT_FALSE| */
 }
 
@@ -905,19 +905,19 @@ void Relations::compile_relation_records(void) {
 			@<Write the relation record for this BP@>;
 		}
 	}
-	packaging_state save = Routines::begin(Hierarchy::find(CREATEDYNAMICRELATIONS_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(CREATEDYNAMICRELATIONS_HL));
 	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
 	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
 	LOOP_OVER(bp, binary_predicate) {
 		if ((bp->dynamic_memory) && (bp->right_way_round)) {
 
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUECREATE_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECREATE_HL)));
 			Emit::down();
 				Kinds::RunTime::emit_strong_id_as_val(BinaryPredicates::kind(bp));
 				Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 			Emit::up();
 
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYNAME_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_NAME_HL)));
 			Emit::down();
 				Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 				TEMPORARY_TEXT(A);
@@ -928,40 +928,40 @@ void Relations::compile_relation_records(void) {
 
 			switch(bp->form_of_relation) {
 				case Relation_OtoO:
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYOTOOADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_OtoV:
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYOTOVADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_VtoO:
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYVTOOADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_Sym_OtoO:
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYOTOOADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYSYMMETRICADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_Equiv:
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYEQUIVALENCEADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -969,7 +969,7 @@ void Relations::compile_relation_records(void) {
 					break;
 				case Relation_VtoV: break;
 				case Relation_Sym_VtoV:
-					Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELATIONTYSYMMETRICADJECTIVE_EXNAMEF)));
+					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL)));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -1021,8 +1021,8 @@ void Relations::compile_relation_records(void) {
 	Emit::array_iname_entry(RELS_TEST_iname);
 	if (minimal == FALSE) {
 		Emit::array_iname_entry(RELS_LOOKUP_ANY_iname);
-		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_NRL));
-		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_NRL));
+		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
+		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
 		Emit::array_iname_entry(RELS_LIST_iname);
 	}
 	switch(dbp->form_of_relation) {
@@ -1127,7 +1127,7 @@ void Relations::compile_relation_records(void) {
 		Emit::down();
 			Emit::inv_primitive(case_interp);
 			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 				Emit::code();
 				Emit::down();
 					@<The TEST task@>;
@@ -1144,7 +1144,7 @@ void Relations::compile_relation_records(void) {
 			} else {
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ANY_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ANY_HL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ANY task@>;
@@ -1152,7 +1152,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_X_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ALL X task@>;
@@ -1160,7 +1160,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_Y_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_Y_HL));
 					Emit::code();
 					Emit::down();
 						@<The LOOKUP ALL Y task@>;
@@ -1168,7 +1168,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 				Emit::inv_primitive(case_interp);
 				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(RELS_LIST_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(RELS_LIST_HL));
 					Emit::code();
 					Emit::down();
 						@<The LIST task@>;
@@ -1177,7 +1177,7 @@ void Relations::compile_relation_records(void) {
 				if (BinaryPredicates::can_be_made_true_at_runtime(bp)) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
 						Emit::code();
 						Emit::down();
 							@<The ASSERT TRUE task@>;
@@ -1185,7 +1185,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_FALSE_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_FALSE_HL));
 						Emit::code();
 						Emit::down();
 							@<The ASSERT FALSE task@>;
@@ -1195,18 +1195,18 @@ void Relations::compile_relation_records(void) {
 				inter_name *shower = NULL;
 				int par = 0;
 				switch(dbp->form_of_relation) {
-					case Relation_OtoO: shower = InterNames::extern(RELATIONRSHOWOTOO_EXNAMEF); break;
-					case Relation_OtoV: shower = InterNames::extern(RELATIONRSHOWOTOO_EXNAMEF); break;
-					case Relation_VtoO: shower = InterNames::extern(RELATIONSHOWOTOO_EXNAMEF); break;
-					case Relation_Sym_OtoO: shower = InterNames::extern(RELATIONSHOWOTOO_EXNAMEF); par = 1; break;
-					case Relation_Equiv: shower = InterNames::extern(RELATIONSHOWEQUIV_EXNAMEF); break;
-					case Relation_VtoV: shower = InterNames::extern(RELATIONSHOWVTOV_EXNAMEF); break;
-					case Relation_Sym_VtoV: shower = InterNames::extern(RELATIONSHOWVTOV_EXNAMEF); par = 1; break;
+					case Relation_OtoO: shower = Hierarchy::find(RELATION_RSHOWOTOO_HL); break;
+					case Relation_OtoV: shower = Hierarchy::find(RELATION_RSHOWOTOO_HL); break;
+					case Relation_VtoO: shower = Hierarchy::find(RELATION_SHOWOTOO_HL); break;
+					case Relation_Sym_OtoO: shower = Hierarchy::find(RELATION_SHOWOTOO_HL); par = 1; break;
+					case Relation_Equiv: shower = Hierarchy::find(RELATION_SHOWEQUIV_HL); break;
+					case Relation_VtoV: shower = Hierarchy::find(RELATION_SHOWVTOV_HL); break;
+					case Relation_Sym_VtoV: shower = Hierarchy::find(RELATION_SHOWVTOV_HL); par = 1; break;
 				}
 				if (shower) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(RELS_SHOW_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_SHOW_HL));
 						Emit::code();
 						Emit::down();
 							@<The SHOW task@>;
@@ -1216,18 +1216,18 @@ void Relations::compile_relation_records(void) {
 				inter_name *emptier = NULL;
 				par = 0;
 				switch(dbp->form_of_relation) {
-					case Relation_OtoO: emptier = InterNames::extern(RELATIONEMPTYOTOO_EXNAMEF); break;
-					case Relation_OtoV: emptier = InterNames::extern(RELATIONEMPTYOTOO_EXNAMEF); break;
-					case Relation_VtoO: emptier = InterNames::extern(RELATIONEMPTYOTOO_EXNAMEF); break;
-					case Relation_Sym_OtoO: emptier = InterNames::extern(RELATIONEMPTYOTOO_EXNAMEF); par = 1; break;
-					case Relation_Equiv: emptier = InterNames::extern(RELATIONEMPTYEQUIV_EXNAMEF); break;
-					case Relation_VtoV: emptier = InterNames::extern(RELATIONEMPTYVTOV_EXNAMEF); break;
-					case Relation_Sym_VtoV: emptier = InterNames::extern(RELATIONEMPTYVTOV_EXNAMEF); par = 1; break;
+					case Relation_OtoO: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); break;
+					case Relation_OtoV: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); break;
+					case Relation_VtoO: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); break;
+					case Relation_Sym_OtoO: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); par = 1; break;
+					case Relation_Equiv: emptier = Hierarchy::find(RELATION_EMPTYEQUIV_HL); break;
+					case Relation_VtoV: emptier = Hierarchy::find(RELATION_EMPTYVTOV_HL); break;
+					case Relation_Sym_VtoV: emptier = Hierarchy::find(RELATION_EMPTYVTOV_HL); par = 1; break;
 				}
 				if (emptier) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, InterNames::extern(RELSEMPTY_EXNAMEF));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_EMPTY_HL));
 						Emit::code();
 						Emit::down();
 							@<The EMPTY task@>;
@@ -1238,19 +1238,19 @@ void Relations::compile_relation_records(void) {
 				int id_flag = TRUE;
 				int follow = FALSE;
 				switch(dbp->form_of_relation) {
-					case Relation_OtoO: router = InterNames::extern(OTOVRELROUTETO_EXNAMEF); follow = TRUE; break;
-					case Relation_OtoV: router = InterNames::extern(OTOVRELROUTETO_EXNAMEF); follow = TRUE; break;
-					case Relation_VtoO: router = InterNames::extern(VTOORELROUTETO_EXNAMEF); follow = TRUE; break;
+					case Relation_OtoO: router = Hierarchy::find(OTOVRELROUTETO_HL); follow = TRUE; break;
+					case Relation_OtoV: router = Hierarchy::find(OTOVRELROUTETO_HL); follow = TRUE; break;
+					case Relation_VtoO: router = Hierarchy::find(VTOORELROUTETO_HL); follow = TRUE; break;
 					case Relation_VtoV:
 					case Relation_Sym_VtoV:
 						id_flag = FALSE;
-						router = InterNames::extern(VTOVRELROUTETO_EXNAMEF);
+						router = Hierarchy::find(VTOVRELROUTETO_HL);
 						break;
 				}
 				if (router) {
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_HL));
 						Emit::code();
 						Emit::down();
 							@<The ROUTE FIND task@>;
@@ -1258,7 +1258,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					Emit::inv_primitive(case_interp);
 					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_COUNT_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_COUNT_HL));
 						Emit::code();
 						Emit::down();
 							@<The ROUTE FIND COUNT task@>;
@@ -1273,9 +1273,9 @@ void Relations::compile_relation_records(void) {
 	Routines::end(save);
 
 @<The default case for minimal relations only@> =
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(RUNTIMEPROBLEM_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RUNTIMEPROBLEM_HL)));
 	Emit::down();
-		Emit::val_iname(K_value, InterNames::extern(RTPRELMINIMAL_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(RTP_RELMINIMAL_HL));
 		Emit::val_symbol(K_value, task_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
 		Emit::val_iname(K_value, BinaryPredicates::iname(bp));
@@ -1350,10 +1350,10 @@ void Relations::compile_relation_records(void) {
 
 @<Expand the ID operand@> =
 	if (id_flag) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(RLNGETF_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RLNGETF_HL)));
 		Emit::down();
 			Emit::val_symbol(K_value, rr_s);
-			Emit::val_iname(K_value, InterNames::extern(RRSTORAGE_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(RR_STORAGE_HL));
 		Emit::up();
 	} else {
 		Emit::val_symbol(K_value, rr_s);
@@ -1363,7 +1363,7 @@ void Relations::compile_relation_records(void) {
 	Emit::inv_primitive(return_interp);
 	Emit::down();
 	if (follow) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(RELFOLLOWVECTOR_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELFOLLOWVECTOR_HL)));
 		Emit::down();
 			Emit::inv_primitive(indirect3_interp);
 			Emit::down();
@@ -1420,12 +1420,12 @@ void Relations::compile_relation_records(void) {
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, Y_s);
-				Emit::val_iname(K_value, InterNames::extern(RLANYGETX_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(RLANY_GET_X_HL));
 			Emit::up();
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, Y_s);
-				Emit::val_iname(K_value, InterNames::extern(RLANYCANGETX_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
 			Emit::up();
 		Emit::up();
 		Emit::code();
@@ -1441,7 +1441,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LOOKUP ALL X task@> =
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYSETLENGTH_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, Y_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1456,7 +1456,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LOOKUP ALL Y task@> =
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYSETLENGTH_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, Y_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1471,7 +1471,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LIST task@> =
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYSETLENGTH_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, X_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1482,7 +1482,7 @@ void Relations::compile_relation_records(void) {
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, Y_s);
-			Emit::val_iname(K_value, InterNames::extern(RLISTALLX_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(RLIST_ALL_X_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();
@@ -1496,7 +1496,7 @@ void Relations::compile_relation_records(void) {
 				Emit::inv_primitive(eq_interp);
 				Emit::down();
 					Emit::val_symbol(K_value, Y_s);
-					Emit::val_iname(K_value, InterNames::extern(RLISTALLY_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(RLIST_ALL_Y_HL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
@@ -1527,7 +1527,7 @@ void Relations::compile_relation_records(void) {
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
-							Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
+							Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 							if (t == 0) {
 								Emit::val_symbol(K_value, Z1_s);
 								Emit::val_symbol(K_value, X_s);
@@ -1543,7 +1543,7 @@ void Relations::compile_relation_records(void) {
 								Emit::inv_primitive(eq_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, Y_s);
-									Emit::val_iname(K_value, InterNames::extern(RLANYCANGETX_EXNAMEF));
+									Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
 								Emit::up();
 								Emit::code();
 								Emit::down();
@@ -1556,7 +1556,7 @@ void Relations::compile_relation_records(void) {
 								Emit::inv_primitive(eq_interp);
 								Emit::down();
 									Emit::val_symbol(K_value, Y_s);
-									Emit::val_iname(K_value, InterNames::extern(RLANYCANGETY_EXNAMEF));
+									Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
 								Emit::up();
 								Emit::code();
 								Emit::down();
@@ -1580,7 +1580,7 @@ void Relations::compile_relation_records(void) {
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, Y_s);
-			Emit::val_iname(K_value, InterNames::extern(RLANYCANGETX_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();
@@ -1593,7 +1593,7 @@ void Relations::compile_relation_records(void) {
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, Y_s);
-			Emit::val_iname(K_value, InterNames::extern(RLANYCANGETY_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();
@@ -1605,7 +1605,7 @@ void Relations::compile_relation_records(void) {
 	else {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DEFAULTVALUEOFKOV_NRL)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DEFAULTVALUEOFKOV_HL)));
 			Emit::down();
 				Kinds::RunTime::emit_strong_id_as_val(K);
 			Emit::up();
@@ -1627,7 +1627,7 @@ void Relations::compile_relation_records(void) {
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
-							Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
+							Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 							if (t == 0) {
 								Emit::val_symbol(K_value, Z1_s);
 								Emit::val_symbol(K_value, X_s);
@@ -1638,7 +1638,7 @@ void Relations::compile_relation_records(void) {
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYINSERTITEM_EXNAMEF)));
+							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL)));
 							Emit::down();
 								Emit::val_symbol(K_value, Y_s);
 								Emit::val_symbol(K_value, Z1_s);
@@ -1670,13 +1670,13 @@ void Relations::compile_relation_records(void) {
 								Emit::down();
 									Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 									Emit::val_symbol(K_value, rr_s);
-									Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_NRL));
+									Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 									Emit::val_symbol(K_value, Z1_s);
 									Emit::val_symbol(K_value, Z3_s);
 								Emit::up();
 								Emit::code();
 								Emit::down();
-									Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYINSERTITEM_EXNAMEF)));
+									Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL)));
 									Emit::down();
 										if (t == 0) {
 											Emit::val_symbol(K_value, X_s);
@@ -1716,7 +1716,7 @@ void Relations::compile_default_relation(inter_name *identifier, kind *K) {
 	Emit::array_iname_entry(TTF_iname);
 	Emit::array_numeric_entry(0);
 	Kinds::RunTime::emit_strong_id(K);
-	Emit::array_iname_entry(InterNames::extern(EMPTYRELATIONHANDLER_EXNAMEF));
+	Emit::array_iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
 	Emit::array_text_entry(DVT);
 	DISCARD_TEXT(DVT);
 	Emit::array_end();
@@ -1736,9 +1736,9 @@ void Relations::compile_blank_relation(kind *K) {
 	Kinds::RunTime::emit_strong_id(K);
 	kind *EK = Kinds::unary_construction_material(K);
 	if (Kinds::Behaviour::uses_pointer_values(EK))
-		Emit::array_iname_entry(InterNames::extern(HASHLISTRELATIONHANDLER_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));
 	else
-		Emit::array_iname_entry(InterNames::extern(DOUBLEHASHSETRELATIONHANDLER_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(DOUBLEHASHSETRELATIONHANDLER_HL));
 
 	Emit::array_text_entry(I"an anonymous relation");
 
@@ -1751,7 +1751,7 @@ void Relations::compile_blank_relation(kind *K) {
 
 =
 void Relations::IterateRelations(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(ITERATERELATIONS_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(ITERATERELATIONS_HL));
 	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
@@ -2345,7 +2345,7 @@ void Relations::compile_defined_relations(void) {
 }
 
 @<Compile RProperty routine@> =
-	packaging_state save = Routines::begin(Hierarchy::find(RPROPERTY_NRL));
+	packaging_state save = Routines::begin(Hierarchy::find(RPROPERTY_HL));
 	inter_symbol *obj_s = LocalVariables::add_named_call_as_symbol(I"obj");
 	inter_symbol *cl_s = LocalVariables::add_named_call_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::add_named_call_as_symbol(I"pr");
@@ -2540,9 +2540,9 @@ void Relations::compile_defined_relations(void) {
 
 			if (downs > 0) { Emit::up(); Emit::up(); }
 
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(RUNTIMEPROBLEM_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RUNTIMEPROBLEM_HL)));
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(RTPRELKINDVIOLATION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				Emit::val_symbol(K_value, L_s);
 				Emit::val_symbol(K_value, R_s);
 				Emit::val_iname(K_value, rg->guarding->bp_iname);
@@ -2595,9 +2595,9 @@ void Relations::compile_defined_relations(void) {
 
 			if (downs > 0) { Emit::up(); Emit::up(); }
 
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(RUNTIMEPROBLEM_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RUNTIMEPROBLEM_HL)));
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(RTPRELKINDVIOLATION_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				Emit::val_symbol(K_value, L_s);
 				Emit::val_symbol(K_value, R_s);
 				Emit::val_iname(K_value, rg->guarding->bp_iname);

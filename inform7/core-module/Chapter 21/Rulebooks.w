@@ -519,7 +519,7 @@ void Rulebooks::rulebook_var_creators(void) {
 				Rulebooks::get_stv_creator_iname(rb));
 
 	if (memory_economy_in_force == FALSE) {
-		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_NRL);
+		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(rb, rulebook) {
@@ -533,7 +533,7 @@ void Rulebooks::rulebook_var_creators(void) {
 }
 
 @<Make slow lookup routine@> =
-	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_NRL);
+	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
 
@@ -876,7 +876,7 @@ void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
 }
 
 void Rulebooks::rulebooks_array_array(void) {
-	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_NRL);
+	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	rulebook *rb;
@@ -906,7 +906,7 @@ void Rulebooks::compile_rulebooks(void) {
 }
 
 void Rulebooks::RulebookNames_array(void) {
-	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_NRL);
+	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	if (memory_economy_in_force) {

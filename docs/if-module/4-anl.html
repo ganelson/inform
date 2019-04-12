@@ -615,7 +615,7 @@ end, but it's syntactically valid.)
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">ACTION_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTION_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;action_listed</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>

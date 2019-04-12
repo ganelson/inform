@@ -654,23 +654,23 @@ void NewVerbs::bootstrap(void) {
 =
 void NewVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 	verb_conjugation *modal, int negated) {
-	inter_name *cv_pos = Hierarchy::find(CV_POS_NRL);
-	inter_name *cv_neg = Hierarchy::find(CV_NEG_NRL);
+	inter_name *cv_pos = Hierarchy::find(CV_POS_HL);
+	inter_name *cv_neg = Hierarchy::find(CV_NEG_HL);
 	if (modal) {
 		if (negated) {
 			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(modal)));
 			Emit::down();
 				Emit::val_iname(K_value, cv_neg);
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(PNTOVP_EXNAMEF)));
-				Emit::val_iname(K_value, InterNames::extern(STORYTENSE_EXNAMEF));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 				Emit::val_iname(K_value, Conjugation::conj_iname(vc));
 			Emit::up();
 		} else {
 			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(modal)));
 			Emit::down();
 				Emit::val_iname(K_value, cv_pos);
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(PNTOVP_EXNAMEF)));
-				Emit::val_iname(K_value, InterNames::extern(STORYTENSE_EXNAMEF));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 				Emit::val_iname(K_value, Conjugation::conj_iname(vc));
 			Emit::up();
 		}
@@ -679,21 +679,21 @@ void NewVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(vc)));
 			Emit::down();
 				Emit::val_iname(K_value, cv_neg);
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(PNTOVP_EXNAMEF)));
-				Emit::val_iname(K_value, InterNames::extern(STORYTENSE_EXNAMEF));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 			Emit::up();
 		} else {
 			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(vc)));
 			Emit::down();
 				Emit::val_iname(K_value, cv_pos);
-				Emit::inv_call(InterNames::to_symbol(InterNames::extern(PNTOVP_EXNAMEF)));
-				Emit::val_iname(K_value, InterNames::extern(STORYTENSE_EXNAMEF));
+				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 			Emit::up();
 		}
 	}
 	Emit::inv_primitive(store_interp);
 	Emit::down();
-		Emit::ref_iname(K_number, InterNames::extern(SAYP_EXNAMEF));
+		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);
 	Emit::up();
 }
@@ -710,10 +710,10 @@ int NewVerbs::verb_form_is_instance(verb_form *vf) {
 }
 
 void NewVerbs::ConjugateVerbDefinitions(void) {
-	inter_name *CV_POS_iname = Hierarchy::find(CV_POS_NRL);
-	inter_name *CV_NEG_iname = Hierarchy::find(CV_NEG_NRL);
-	inter_name *CV_MODAL_INAME_iname = Hierarchy::find(CV_MODAL_NRL);
-	inter_name *CV_MEANING_iname = Hierarchy::find(CV_MEANING_NRL);
+	inter_name *CV_POS_iname = Hierarchy::find(CV_POS_HL);
+	inter_name *CV_NEG_iname = Hierarchy::find(CV_NEG_HL);
+	inter_name *CV_MODAL_INAME_iname = Hierarchy::find(CV_MODAL_HL);
+	inter_name *CV_MEANING_iname = Hierarchy::find(CV_MEANING_HL);
 
 	packaging_state save = Packaging::enter_home_of(CV_POS_iname);
 	Emit::named_numeric_constant_signed(CV_POS_iname, -1);
@@ -735,7 +735,7 @@ void NewVerbs::ConjugateVerb(void) {
 	LOOP_OVER(vf, verb_form)
 		if (NewVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
-	inter_name *iname = Hierarchy::find(TABLEOFVERBS_NRL);
+	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(vf, verb_form)
@@ -797,7 +797,7 @@ void NewVerbs::ConjugateVerb(void) {
 
 			Emit::inv_primitive(case_interp);
 			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(CV_MODAL_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(CV_MODAL_HL));
 				Emit::code();
 				Emit::down();
 					if (modal_verb) Emit::rtrue();
@@ -806,7 +806,7 @@ void NewVerbs::ConjugateVerb(void) {
 			Emit::up();
 			Emit::inv_primitive(case_interp);
 			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(CV_MEANING_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(CV_MEANING_HL));
 				Emit::code();
 				Emit::down();
 					Emit::inv_primitive(return_interp);
@@ -817,8 +817,8 @@ void NewVerbs::ConjugateVerb(void) {
 			Emit::up();
 
 	for (int sense = 0; sense < 2; sense++) {
-		inter_name *sense_iname = Hierarchy::find(CV_POS_NRL);
-		if (sense == 1) sense_iname = Hierarchy::find(CV_NEG_NRL);
+		inter_name *sense_iname = Hierarchy::find(CV_POS_HL);
+		if (sense == 1) sense_iname = Hierarchy::find(CV_NEG_HL);
 			Emit::inv_primitive(case_interp);
 			Emit::down();
 				Emit::val_iname(K_value, sense_iname);
@@ -870,7 +870,7 @@ void NewVerbs::ConjugateVerb(void) {
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, fn_s);
-			Emit::val_iname(K_value, Hierarchy::find(CV_MODAL_NRL));
+			Emit::val_iname(K_value, Hierarchy::find(CV_MODAL_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();
@@ -895,7 +895,7 @@ void NewVerbs::ConjugateVerb(void) {
 		Emit::inv_primitive(eq_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, fn_s);
-			Emit::val_iname(K_value, Hierarchy::find(CV_MEANING_NRL));
+			Emit::val_iname(K_value, Hierarchy::find(CV_MEANING_HL));
 		Emit::up();
 		Emit::code();
 		Emit::down();

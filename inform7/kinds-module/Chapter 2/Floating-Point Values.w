@@ -97,17 +97,17 @@ void Kinds::FloatingPoint::end_deflotation(OUTPUT_STREAM, kind *K) {
 #ifdef CORE_MODULE
 void Kinds::FloatingPoint::begin_flotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(REALNUMBERTYDIVIDE_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL)));
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(NUMBERTYTOREALNUMBERTY_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL)));
 	Emit::down();
 }
 
 void Kinds::FloatingPoint::end_flotation_emit(kind *K) {
 	Emit::up();
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(NUMBERTYTOREALNUMBERTY_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL)));
 		Emit::down();
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
 		Emit::up();
@@ -116,17 +116,17 @@ void Kinds::FloatingPoint::end_flotation_emit(kind *K) {
 }
 
 void Kinds::FloatingPoint::begin_deflotation_emit(kind *K) {
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(REALNUMBERTYTONUMBERTY_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL)));
 	Emit::down();
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(REALNUMBERTYTIMES_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL)));
 		Emit::down();
 	}
 }
 
 void Kinds::FloatingPoint::end_deflotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(REALNUMBERTYTONUMBERTY_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL)));
 		Emit::down();
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
 		Emit::up();

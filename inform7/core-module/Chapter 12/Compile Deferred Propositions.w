@@ -844,7 +844,7 @@ quantifier.
 	Emit::down();
 		Emit::inv_primitive(lookupref_interp);
 		Emit::down();
-			Emit::val_iname(K_value, InterNames::extern(DEFERREDCALLINGLIST_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) C_stack_index[C_sp]);
 		Emit::up();
 		Calculus::Terms::emit(C_stack_term[C_sp]);
@@ -1000,17 +1000,17 @@ In the next case, we want to form the list of all $x$ for which $\phi(x)$
 is true. The local |list| holds the list so far, and already exists.
 
 @<Initialisation before LIST search@> =
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUEWRITE_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEWRITE_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, list_s);
-		Emit::val_iname(K_value, InterNames::extern(LISTITEMKOVF_EXNAMEF));
+		Emit::val_iname(K_value, Hierarchy::find(LIST_ITEM_KOV_F_HL));
 		Emit::val_symbol(K_value, strong_kind_s);
 	Emit::up();
 
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, total_s);
-		Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYGETLENGTH_EXNAMEF)));
+		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL)));
 		Emit::down();
 			Emit::val_symbol(K_value, list_s);
 		Emit::up();
@@ -1059,7 +1059,7 @@ syntax to break or continue a loop other than the innermost one.
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYSETLENGTH_EXNAMEF)));
+			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
 			Emit::down();
 				Emit::val_symbol(K_value, list_s);
 				Emit::val_symbol(K_value, total_s);
@@ -1067,7 +1067,7 @@ syntax to break or continue a loop other than the innermost one.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(BLKVALUEWRITE_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEWRITE_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, list_s);
 		Emit::inv_primitive(minus_interp);
@@ -1075,7 +1075,7 @@ syntax to break or continue a loop other than the innermost one.
 			Emit::inv_primitive(plus_interp);
 			Emit::down();
 				Emit::val_symbol(K_value, counter_s);
-				Emit::val_iname(K_value, InterNames::extern(LISTITEMBASE_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(LIST_ITEM_BASE_HL));
 			Emit::up();
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
@@ -1090,7 +1090,7 @@ is what we do for multipurpose deferred propositions -- the labels do
 not have clashing names.
 
 @<Winding-up after LIST search@> =
-	Emit::inv_call(InterNames::to_symbol(InterNames::extern(LISTOFTYSETLENGTH_EXNAMEF)));
+	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
 	Emit::down();
 		Emit::val_symbol(K_value, list_s);
 		Emit::val_symbol(K_value, counter_s);
@@ -1234,7 +1234,7 @@ which until runtime -- when its identity will be found in the I6 variable
 			Emit::down();
 				Emit::val_symbol(K_value, var_s[0]);
 				if (multipurpose_routine) {
-					Emit::val_iname(K_value, InterNames::extern(PROPERTYTOBETOTALLED_EXNAMEF));
+					Emit::val_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				} else {
 					prn = RETRIEVE_POINTER_property(pdef->defn_ref);
 					Emit::val_iname(K_value, Properties::iname(prn));
@@ -1279,7 +1279,7 @@ we don't, and have to look that up at run-time.
 		Emit::down();
 			Emit::inv_primitive(gt_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(PROPERTYLOOPSIGN_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			Emit::code();
@@ -1287,7 +1287,7 @@ we don't, and have to look that up at run-time.
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, best_s);
-					Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 				Emit::up();
 			Emit::up();
 			Emit::code();
@@ -1295,7 +1295,7 @@ we don't, and have to look that up at run-time.
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, best_s);
-					Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 				Emit::up();
 			Emit::up();
 		Emit::up();
@@ -1307,13 +1307,13 @@ we don't, and have to look that up at run-time.
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, best_s);
-				Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 			Emit::up();
 		} else {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, best_s);
-				Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_NRL));
+				Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 			Emit::up();
 		}
 	}
@@ -1333,7 +1333,7 @@ multiplying by $-1$ is order-reversing.
 		Emit::down();
 			Emit::inv_primitive(gt_interp);
 			Emit::down();
-				Emit::val_iname(K_value, InterNames::extern(PROPERTYLOOPSIGN_EXNAMEF));
+				Emit::val_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			Emit::code();
@@ -1415,7 +1415,7 @@ multiplying by $-1$ is order-reversing.
 	Emit::down();
 		Emit::val_symbol(K_value, var_s[0]);
 		if (multipurpose_routine) {
-			Emit::val_iname(K_value, InterNames::extern(PROPERTYTOBETOTALLED_EXNAMEF));
+			Emit::val_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 		} else {
 			Emit::val_iname(K_value, Properties::iname(def_prn));
 		}

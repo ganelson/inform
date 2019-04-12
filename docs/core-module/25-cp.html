@@ -315,7 +315,7 @@ phrase to be different from the number version, and so on.
         <span class="plain">}</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">); </span>    <span class="comment">warn the paragraph breaker: this will print</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">SAYP_EXNAMEF</span><span class="plain">));</span>
+            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Routines::Compile::verify_say_node_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
@@ -932,7 +932,7 @@ type-checks it, and finally, all being well, compiles it.
                 <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Phrases::TypeData::is_a_say_phrase</span><span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">))) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)-</span><span class="element">&gt;type_data.as_say.say_control_structure</span><span class="plain"> == </span><span class="constant">NO_SAY_CS</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">InterNames::extern</span><span class="plain">(</span><span class="constant">PARACONTENT_EXNAMEF</span><span class="plain">)));</span>
+                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARACONTENT_HL</span><span class="plain">)));</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">ExParser::parse_void_phrase</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>

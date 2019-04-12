@@ -276,10 +276,10 @@ actually means it's rarely needed.)
 	}
 	if (set_csn) {
 		if (P_cap_short_name == NULL) {
-			inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_NRL);
+			inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
 			P_cap_short_name = Properties::Valued::new_nameless_using(
 				K_text, property_iname);
-			inter_name *iname = Hierarchy::find(CAP_SHORT_NAME_EXISTS_NRL);
+			inter_name *iname = Hierarchy::find(CAP_SHORT_NAME_EXISTS_HL);
 			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_numeric_constant(iname, 1);
 			Packaging::exit(save);
@@ -446,21 +446,21 @@ void PL::Naming::compile_small_names(void) {
 		packaging_state save = Routines::begin(notice->routine_iname);
 		wording NA = Assertions::Assemblies::get_named_after_text(notice->after_subject);
 		if (notice->capped) {
-			inter_name *porname = InterNames::extern(PRINTORRUN_EXNAMEF);
+			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
 
 			Emit::inv_primitive(ifelse_interp);
 			Emit::down();
 				Emit::inv_primitive(propertyaddress_interp);
 				Emit::down();
 					Emit::val_iname(K_value, Instances::iname(owner));
-					Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_NRL));
+					Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
 					Emit::inv_call(InterNames::to_symbol(porname));
 					Emit::down();
 						Emit::val_iname(K_value, Instances::iname(owner));
-						Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_NRL));
+						Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
 						Emit::val(K_number, LITERAL_IVAL, 1);
 					Emit::up();
 				Emit::up();
@@ -469,7 +469,7 @@ void PL::Naming::compile_small_names(void) {
 					Emit::inv_call(InterNames::to_symbol(porname));
 					Emit::down();
 						Emit::val_iname(K_value, Instances::iname(owner));
-						Emit::val_iname(K_object, InterNames::extern(SHORTNAME_EXNAMEF));
+						Emit::val_iname(K_object, Hierarchy::find(SHORT_NAME_HL));
 						Emit::val(K_number, LITERAL_IVAL, 1);
 					Emit::up();
 				Emit::up();
@@ -500,7 +500,7 @@ void PL::Naming::compile_small_names(void) {
 
 		save = Packaging::enter_home_of(notice->snn_iname);
 		Emit::named_array_begin(notice->snn_iname, NULL);
-		Emit::array_iname_entry(InterNames::extern(CONSTANT_PACKED_TEXT_STORAGE_EXNAMEF));
+		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(notice->routine_iname);
 		Emit::array_end();
 

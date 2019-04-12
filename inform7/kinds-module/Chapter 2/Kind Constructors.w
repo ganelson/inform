@@ -370,7 +370,7 @@ of the kind which the constructor makes:
 #ifdef CORE_MODULE
 inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
-	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_NRL);
+	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_HL);
 	packaging_state save = Packaging::enter_home_of(UNKNOWN_TY_iname);
 	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_t) UNKNOWN_NT);
 	Packaging::exit(save);
@@ -382,7 +382,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 			package_request *PR = Packaging::synoptic_resource(KINDS_SUBMODULE);
 			con->con_iname = InterNames::template_weak_ID_name(tn);
 			Packaging::house(con->con_iname, PR);
-			InterNames::make_as(-1, InterNames::to_symbol(con->con_iname)->symbol_name, con->con_iname);
+			Hierarchy::make_available(con->con_iname);
 			packaging_state save = Packaging::enter_home_of(con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
 			Inter::Symbols::set_flag(InterNames::to_symbol(con->con_iname), SR_CACHE_MARK_BIT);
@@ -390,7 +390,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 		}
 	}
 
-	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_NRL);
+	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
 	save = Packaging::enter_home_of(hwm);
 	Emit::named_numeric_constant(hwm, (inter_t) next_free_data_type_ID);
 	Packaging::exit(save);

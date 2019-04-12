@@ -408,7 +408,7 @@ been asserted true:
 <pre class="displaydefn">
         <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
         <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="constant">FOUND_EVERYWHERE_INF</span><span class="plain">) {</span>
-            <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">FOUND_EVERYWHERE_EXNAMEF</span><span class="plain">);</span>
+            <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">FOUND_EVERYWHERE_HL</span><span class="plain">);</span>
             <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -548,15 +548,15 @@ code, derived from the old I6 library, requires <code class="display"><span clas
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K_region</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">))) {</span>
-                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">TESTREGIONALCONTAINMENT_EXNAMEF</span><span class="plain">)));</span>
+                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TESTREGIONALCONTAINMENT_HL</span><span class="plain">)));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">LOCATION_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATION_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">InterNames::extern</span><span class="plain">(</span><span class="identifier">LOCATION_EXNAMEF</span><span class="plain">));</span>
+                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATION_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>

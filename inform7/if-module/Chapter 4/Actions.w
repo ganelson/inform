@@ -999,7 +999,7 @@ inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 }
 
 void PL::Actions::ActionHappened(void) {
-	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_NRL);
+	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
@@ -1143,7 +1143,7 @@ void PL::Actions::compile_action_routines(void) {
 		packaging_state save = Routines::begin(iname);
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			inter_name *generic_iname = InterNames::extern(GENERICVERBSUB_EXNAMEF);
+			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			Emit::inv_call(InterNames::to_symbol(generic_iname));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) an->check_rules->allocation_id);
@@ -1164,7 +1164,7 @@ void PL::Actions::ActionData(void) {
 	action_name *an;
 	int mn, ms, ml, mnp, msp, hn, hs, record_count = 0;
 
-	inter_name *iname = Hierarchy::find(ACTIONDATA_NRL);
+	inter_name *iname = Hierarchy::find(ACTIONDATA_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_table_array_begin(iname, K_value);
 	LOOP_OVER(an, action_name) {
@@ -1192,14 +1192,14 @@ void PL::Actions::ActionData(void) {
 	}
 	Emit::array_end();
 	Packaging::exit(save);
-	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_NRL);
+	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
 	save = Packaging::enter_home_of(ad_iname);
 	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
 	Packaging::exit(save);
 
 	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
 
-	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_NRL);
+	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
 	save = Routines::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
@@ -1311,7 +1311,7 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 		K = an->second_kind; var = s_s;
 	}
 	if (Kinds::Compare::le(K, K_object) == FALSE)
-		var = InterNames::to_symbol(InterNames::extern(PARSEDNUMBER_EXNAMEF));
+		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
 	Emit::inv_primitive(indirect1v_interp);
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
@@ -1321,9 +1321,9 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 				Emit::inv_primitive(times_interp);
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, 100);
-					Emit::val_iname(K_number, InterNames::extern(CONSULTFROM_EXNAMEF));
+					Emit::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));
 				Emit::up();
-				Emit::val_iname(K_number, InterNames::extern(CONSULTWORDS_EXNAMEF));
+				Emit::val_iname(K_number, Hierarchy::find(CONSULT_WORDS_HL));
 			Emit::up();
 		} else {
 			Emit::val_symbol(K_value, var);
@@ -1342,7 +1342,7 @@ void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
 }
 
 void PL::Actions::ActionCoding_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIONCODING_NRL);
+	inter_name *iname = Hierarchy::find(ACTIONCODING_HL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	action_name *an;
