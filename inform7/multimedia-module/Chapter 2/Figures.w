@@ -255,9 +255,8 @@ void PL::Figures::write_copy_commands(void) {
 @ =
 void PL::Figures::compile_ResourceIDsOfFigures_array(void) {
 	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
-	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K_figure_name));
-	inter_name *iname = InterNames::iname(ResourceIDsOfFigures_INAME);
-	Packaging::house(iname, Kinds::Behaviour::package(K_figure_name));
+	inter_name *iname = Hierarchy::find(RESOURCEIDSOFFIGURES_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);
 	blorb_figure *bf;

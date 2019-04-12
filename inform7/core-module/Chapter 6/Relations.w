@@ -1751,12 +1751,7 @@ void Relations::compile_blank_relation(kind *K) {
 
 =
 void Relations::IterateRelations(void) {
-	package_request *PR = Packaging::synoptic_resource(RELATIONS_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"iterator_fn", PR),
-		PR,
-		InterNames::iname(IterateRelations_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(ITERATERELATIONS_NRL));
 	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
@@ -2350,12 +2345,7 @@ void Relations::compile_defined_relations(void) {
 }
 
 @<Compile RProperty routine@> =
-	package_request *PR = Packaging::synoptic_resource(RELATIONS_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"property_fn", PR),
-		PR,
-		InterNames::iname(RProperty_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(RPROPERTY_NRL));
 	inter_symbol *obj_s = LocalVariables::add_named_call_as_symbol(I"obj");
 	inter_symbol *cl_s = LocalVariables::add_named_call_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::add_named_call_as_symbol(I"pr");

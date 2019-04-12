@@ -89,7 +89,7 @@ void Routines::ToPhrases::new(phrase *ph) {
 	phrase *previous_phrase = NULL;
 	phrase *current_phrase = first_in_logical_order;
 	package_request *R1 =
-		Packaging::request_resource(ph->owning_module, PHRASES_SUBPACKAGE);
+		Packaging::request_resource(ph->owning_module, PHRASES_SUBMODULE);
 	package_request *R2 =
 		Packaging::request(Packaging::supply_iname(R1, TO_PHRASE_PR_COUNTER), R1, to_phrase_ptype);
 	ph->requests_package = R2;

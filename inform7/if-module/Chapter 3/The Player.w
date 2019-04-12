@@ -326,16 +326,25 @@ compile this little array, which provides enough details for the I6 template
 code to set things up correctly at run-time.
 
 =
+void PL::Player::InitialSituation_define(int id, int val) {
+	inter_name *iname = Hierarchy::find(id);
+	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_numeric_constant(iname, (inter_t) val);
+	Packaging::exit(save);
+}
+
 void PL::Player::InitialSituation(void) {
 	if (Plugins::Manage::plugged_in(player_plugin)) {
-		package_request *PR = Packaging::synoptic_resource(IF_SUBPACKAGE);
-		packaging_state save = Packaging::enter(PR);
-		Emit::named_numeric_constant(InterNames::one_off(I"PLAYER_OBJECT_INIS", PR), (inter_t) 0);
-		Emit::named_numeric_constant(InterNames::one_off(I"START_OBJECT_INIS", PR), (inter_t) 1);
-		Emit::named_numeric_constant(InterNames::one_off(I"START_ROOM_INIS", PR), (inter_t) 2);
-		Emit::named_numeric_constant(InterNames::one_off(I"START_TIME_INIS", PR), (inter_t) 3);
-		Emit::named_numeric_constant(InterNames::one_off(I"DONE_INIS", PR), (inter_t) 4);
-		Emit::named_array_begin(InterNames::one_off(I"InitialSituation", PR), K_value);
+		PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_NRL, 0);
+		PL::Player::InitialSituation_define(START_OBJECT_INIS_NRL, 1);
+		PL::Player::InitialSituation_define(START_ROOM_INIS_NRL, 2);
+		PL::Player::InitialSituation_define(START_TIME_INIS_NRL, 3);
+		PL::Player::InitialSituation_define(DONE_INIS_NRL, 4);
+		
+		inter_name *iname = Hierarchy::find(INITIALSITUATION_NRL);
+		Emit::named_array_begin(iname, K_value);
+		packaging_state save = Packaging::enter_home_of(iname);
 		NonlocalVariables::emit_initial_value(player_VAR);
 		if (start_object == NULL) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(Instances::iname(start_object));

@@ -1085,9 +1085,9 @@ has essentially no memory constraints compared with the Z-machine.
             <span class="identifier">total_heap_allocation</span><span class="plain"> = </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">();</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">max_heap</span><span class="plain"> &lt; </span><span class="identifier">total_heap_allocation</span><span class="plain">) </span><span class="identifier">max_heap</span><span class="plain"> = </span><span class="identifier">max_heap</span><span class="plain">*2;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())</span>
-            <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, </span><span class="identifier">max_heap</span><span class="plain">, </span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
+            <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_NRL</span><span class="plain">), </span><span class="identifier">max_heap</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, 4*</span><span class="identifier">max_heap</span><span class="plain">, </span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="constant">BASICS_SUBPACKAGE</span><span class="plain">));</span>
+            <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_NRL</span><span class="plain">), 4*</span><span class="identifier">max_heap</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Providing for a total heap of %d, given requirement of %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
             <span class="identifier">max_heap</span><span class="plain">, </span><span class="identifier">total_heap_allocation</span><span class="plain">);</span>
 </pre>
@@ -1483,12 +1483,6 @@ each such kind, and needed at run-time.
             <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_nnc</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain">) {</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">val</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">val</span><span class="plain">);</span>
@@ -1556,9 +1550,7 @@ each such kind, and needed at run-time.
 
 <p class="endnote">The function Kinds::RunTime::kind_declarations is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
 
-<p class="endnote">The function Kinds::RunTime::compile_nnc is used in <a href="#SP18_1">&#167;18.1</a>.</p>
-
-<p class="endnote">The function Kinds::RunTime::compile_nnci appears nowhere else.</p>
+<p class="endnote">The function Kinds::RunTime::compile_nnci is used in <a href="#SP18_1">&#167;18.1</a>.</p>
 
 <p class="endnote">The function Kinds::RunTime::compile_instance_counts is used in 1/mr (<a href="1-mr.html#SP4_13">&#167;4.13</a>).</p>
 

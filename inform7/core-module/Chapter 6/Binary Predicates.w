@@ -619,7 +619,7 @@ binary_predicate *BinaryPredicates::make_single(int family,
 package_request *BinaryPredicates::package(binary_predicate *bp) {
 	if (bp == NULL) internal_error("null bp");
 	if (bp->bp_package == NULL) {
-		package_request *R = Packaging::request_resource(Modules::find(bp->bp_created_at), RELATIONS_SUBPACKAGE);
+		package_request *R = Packaging::request_resource(Modules::find(bp->bp_created_at), RELATIONS_SUBMODULE);
 		bp->bp_package = Packaging::request(Packaging::supply_iname(R, RELATION_PR_COUNTER), R, relation_ptype);
 	}
 	return bp->bp_package;
@@ -869,8 +869,7 @@ void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 		bp->bp_iname->eventual_owner = BinaryPredicates::package(bp);
 		if (default_rr == NULL) {
 			default_rr = bp->bp_iname;
-			inter_name *iname = InterNames::iname(MEANINGLESS_RR_INAME);
-			Packaging::house(iname, Packaging::generic_resource(RELATIONS_SUBPACKAGE));
+			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_NRL);
 			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(iname, K_value, bp->bp_iname);
 			Packaging::exit(save);

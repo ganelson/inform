@@ -114,9 +114,9 @@ instead of a word: for example, the <code class="display"><span class="extract">
             <span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;verb_package</span><span class="plain"> =</span>
                 <span class="identifier">Packaging::request</span><span class="plain">(</span>
                     <span class="identifier">Packaging::supply_iname</span><span class="plain">(</span>
-                        <span class="identifier">Packaging::request_conjugations</span><span class="plain">(</span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">where</span><span class="plain">)),</span>
+                        <span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">where</span><span class="plain">), </span><span class="identifier">CONJUGATIONS_SUBMODULE</span><span class="plain">),</span>
                         <span class="identifier">VERB_PR_COUNTER</span><span class="plain">),</span>
-                    <span class="identifier">Packaging::request_conjugations</span><span class="plain">(</span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">where</span><span class="plain">)),</span>
+                    <span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">where</span><span class="plain">), </span><span class="identifier">CONJUGATIONS_SUBMODULE</span><span class="plain">),</span>
                     <span class="identifier">verb_ptype</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;verb_package</span><span class="plain">;</span>
     <span class="plain">}</span>

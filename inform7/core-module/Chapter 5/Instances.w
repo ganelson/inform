@@ -286,8 +286,7 @@ text_stream *Instances::identifier(instance *I) {
 }
 
 inter_name *Instances::iname(instance *I) {
-	compilation_module *C = Modules::find(current_sentence);
-	package_request *R = Packaging::request_resource(C, INSTANCES_SUBPACKAGE);
+	package_request *R = Packaging::local_resource(INSTANCES_SUBMODULE);
 	package_request *R2 = Packaging::request(Packaging::supply_iname(R, INSTANCE_PR_COUNTER), R, instance_ptype);
 	if (I == NULL) return NULL;
 	UseNouns::noun_compose_identifier(R2, I->tag, I->allocation_id);

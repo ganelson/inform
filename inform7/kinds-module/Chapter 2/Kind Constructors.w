@@ -379,7 +379,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
 		if (Str::len(tn) > 0) {
-			package_request *PR = Packaging::synoptic_resource(KINDS_SUBPACKAGE);
+			package_request *PR = Packaging::synoptic_resource(KINDS_SUBMODULE);
 			con->con_iname = InterNames::template_weak_ID_name(tn);
 			Packaging::house(con->con_iname, PR);
 			InterNames::make_as(-1, InterNames::to_symbol(con->con_iname)->symbol_name, con->con_iname);
@@ -401,8 +401,7 @@ inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 }
 package_request *Kinds::Constructors::package(kind_constructor *con) {
 	if (con->kc_package == NULL) {
-		compilation_module *C = Modules::find(current_sentence);
-		package_request *R = Packaging::request_resource(C, KINDS_SUBPACKAGE);
+		package_request *R = Packaging::local_resource(KINDS_SUBMODULE);
 		con->kc_package = Packaging::request(Packaging::supply_iname(R, KIND_PR_COUNTER), R, kind_ptype);
 	}
 	return con->kc_package;

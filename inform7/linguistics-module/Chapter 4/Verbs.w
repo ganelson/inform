@@ -79,9 +79,9 @@ package_request *Verbs::verb_package(verb_identity *vi, parse_node *where) {
 		vi->verb_package =
 			Packaging::request(
 				Packaging::supply_iname(
-					Packaging::request_conjugations(Modules::find(where)),
+					Packaging::request_resource(Modules::find(where), CONJUGATIONS_SUBMODULE),
 					VERB_PR_COUNTER),
-				Packaging::request_conjugations(Modules::find(where)),
+				Packaging::request_resource(Modules::find(where), CONJUGATIONS_SUBMODULE),
 				verb_ptype);
 	return vi->verb_package;
 }

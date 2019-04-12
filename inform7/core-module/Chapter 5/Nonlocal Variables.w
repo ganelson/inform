@@ -396,7 +396,7 @@ inference_subject *NonlocalVariables::get_knowledge(nonlocal_variable *nlv) {
 inter_name *NonlocalVariables::iname(nonlocal_variable *nlv) {
 	if (nlv->nlv_iname == NULL) {
 		compilation_module *C = Modules::find(nlv->nlv_created_at);
-		package_request *R = Packaging::request_resource(C, VARIABLES_SUBPACKAGE);
+		package_request *R = Packaging::request_resource(C, VARIABLES_SUBMODULE);
 		package_request *R2 = Packaging::request(Packaging::supply_iname(R, VARIABLE_PR_COUNTER), R, variable_ptype);
 		nlv->nlv_iname = InterNames::new(VARIABLE_INAMEF);
 		InterNames::attach_memo(nlv->nlv_iname, nlv->name);
@@ -435,11 +435,7 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 				rvalue = NonlocalVariables::identifier(nlv);
 			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
 			if (nlv == command_prompt_VAR) {
-				inter_name *rname =
-					Packaging::function(
-						InterNames::one_off(I"command_prompt_text_fn", iname->eventual_owner), iname->eventual_owner,
-						InterNames::iname(CommandPromptText_INAME));
-				packaging_state save = Routines::begin(rname);
+				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_NRL));
 				Emit::inv_primitive(return_interp);
 				Emit::down();
 					Emit::val_iname(K_text, iname);

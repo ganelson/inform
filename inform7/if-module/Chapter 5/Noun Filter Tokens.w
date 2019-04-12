@@ -46,8 +46,7 @@ noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int g
 		filter_iname = InterNames::new(SCOPE_FILTER_INAMEF);
 	else
 		filter_iname = InterNames::new(NOUN_FILTER_INAMEF);
-	compilation_module *C = Modules::find(current_sentence);
-	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 	nft->nft_iname = Packaging::function(
 		InterNames::one_off(I"filter_fn", PR),
 		PR,

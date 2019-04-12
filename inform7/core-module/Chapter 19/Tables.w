@@ -142,7 +142,7 @@ table *Tables::new_table_structure(void) {
 	t->amendment_of = NULL;
 	t->has_been_amended = FALSE;
 	package_request *PR = Packaging::request_resource(
-		Modules::find(current_sentence), TABLES_SUBPACKAGE);
+		Modules::find(current_sentence), TABLES_SUBMODULE);
 	inter_name *package_name = Packaging::supply_iname(PR, TABLE_PR_COUNTER);
 	t->table_package = Packaging::request(package_name, PR, table_ptype);
 	t->table_identifier = InterNames::one_off(I"data", t->table_package);

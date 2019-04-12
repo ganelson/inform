@@ -232,7 +232,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->abbreviable = FALSE;
 	an->translated = FALSE;
 
-	package_request *R = Packaging::generic_resource(ACTIONS_SUBPACKAGE);
+	package_request *R = Packaging::generic_resource(ACTIONS_SUBMODULE);
 	an->an_package = Packaging::request(Packaging::supply_iname(R, ACTION_PR_COUNTER), R, action_ptype);
 	an->an_base_iname = InterNames::new(ACTION_BASE_INAMEF);
 	InterNames::attach_memo(an->an_base_iname, W);

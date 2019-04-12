@@ -127,13 +127,7 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::number</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> =</span>
-            <span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">DECIMAL_TOKEN_INNER_INAME</span><span class="plain">));</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">DECIMAL_TOKEN_INNER_NRL</span><span class="plain">));</span>
         <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::get_parsing_grammar</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
@@ -146,13 +140,7 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::time</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">K_time</span><span class="plain">);</span>
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> =</span>
-            <span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">TIME_TOKEN_INNER_INAME</span><span class="plain">));</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TIME_TOKEN_INNER_NRL</span><span class="plain">));</span>
         <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">PL::TimesOfDay::kind</span><span class="plain">();</span>
@@ -168,13 +156,7 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::truth_state</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">);</span>
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> =</span>
-            <span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gpr_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">TRUTH_STATE_TOKEN_INNER_INAME</span><span class="plain">));</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRUTH_STATE_TOKEN_INNER_NRL</span><span class="plain">));</span>
         <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
         <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::get_parsing_grammar</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">);</span>

@@ -810,9 +810,9 @@ has essentially no memory constraints compared with the Z-machine.
 		total_heap_allocation = UseOptions::get_dynamic_memory_allocation();
 	while (max_heap < total_heap_allocation) max_heap = max_heap*2;
 	if (VirtualMachines::is_16_bit())
-		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", max_heap, Packaging::generic_resource(BASICS_SUBPACKAGE));
+		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_NRL), max_heap);
 	else
-		Kinds::RunTime::compile_nnc(I"MEMORY_HEAP_SIZE", 4*max_heap, Packaging::generic_resource(BASICS_SUBPACKAGE));
+		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_NRL), 4*max_heap);
 	LOG("Providing for a total heap of %d, given requirement of %d\n",
 		max_heap, total_heap_allocation);
 
@@ -1064,12 +1064,6 @@ void Kinds::RunTime::kind_declarations(void) {
 			InterNames::annotate_i(iname, WEAK_ID_IANN, (inter_t) Kinds::RunTime::weak_id(K));
 			InterNames::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
-}
-
-void Kinds::RunTime::compile_nnc(text_stream *name, int val, package_request *PR) {
-	packaging_state save = Packaging::enter(PR);
-	Emit::named_numeric_constant(InterNames::one_off(name, PR), (inter_t) val);
-	Packaging::exit(save);
 }
 
 void Kinds::RunTime::compile_nnci(inter_name *name, int val) {

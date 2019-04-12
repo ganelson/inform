@@ -22,8 +22,7 @@ loop_over_scope *PL::Actions::ScopeLoops::new(parse_node *what) {
 		Descriptions::clear_calling(los->what_to_find);
 	}
 	inter_name *m_iname = InterNames::new(LOOP_OVER_SCOPE_ROUTINE_INAMEF);
-	compilation_module *C = Modules::find(current_sentence);
-	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 	los->los_iname = Packaging::function(
 		InterNames::one_off(I"loop_over_scope_fn", PR),
 		PR,

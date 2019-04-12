@@ -329,7 +329,7 @@ can't normally be unravelled at compile time.
 	mdef->headword_as_adjective = NULL; /* but it will certainly be set below */
 
 	compilation_module *C = Modules::current();
-	package_request *R = Packaging::request_resource(C, ADJECTIVES_SUBPACKAGE);
+	package_request *R = Packaging::request_resource(C, ADJECTIVES_SUBMODULE);
 	package_request *R2 = Packaging::request(
 		Packaging::supply_iname(R, ADJECTIVE_MEANING_PR_COUNTER), R, adjective_meaning_ptype);
 	mdef->mdef_iname = Packaging::function(

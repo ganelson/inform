@@ -238,7 +238,7 @@ void PL::Files::register_file(wording F, wording FN) {
 	exf->file_ownership = ownership;
 	exf->IFID_of_owner = Str::duplicate(ifid_of_file);
 
-	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), EXTERNAL_FILES_SUBPACKAGE);
+	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), EXTERNAL_FILES_SUBMODULE);
 	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, EXTERNAL_FILE_PR_COUNTER), PR, test_ptype);
 	exf->exf_iname = InterNames::one_off(I"file", PR2);
 	InterNames::attach_memo(exf->exf_iname, exf->name);

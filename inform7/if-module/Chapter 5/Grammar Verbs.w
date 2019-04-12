@@ -168,8 +168,7 @@ grammar_verb *PL::Parsing::Verbs::find_or_create_command(wording W) {
 	gv->command = W;
 
 	if (Wordings::empty(W)) {
-		inter_name *iname = InterNames::iname(NO_VERB_VERB_DEFINED_INAME);
-		Packaging::house(iname, Packaging::generic_resource(BASICS_SUBPACKAGE));
+		inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_NRL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) 1);
 		Packaging::exit(save);
@@ -278,7 +277,7 @@ void PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv) {
 		internal_error("compiling Verb for empty grammar");
 
 	inter_name *array_iname = InterNames::new(VERB_DECLARATION_ARRAY_INAMEF);
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
 	Packaging::house(array_iname, PR);
 	Emit::named_verb_array_begin(array_iname, K_value);
 
@@ -389,8 +388,7 @@ grammar_verb *PL::Parsing::Verbs::named_token_new(wording W) {
 		gv = PL::Parsing::Verbs::gv_new(GV_IS_TOKEN);
 		gv->name = W;
 		inter_name *m_iname = InterNames::new(GPR_FOR_TOKEN_INAMEF);
-		compilation_module *C = Modules::find(current_sentence);
-		package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+		package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 		gv->gv_line_iname = Packaging::function(
 			InterNames::one_off(I"parse_line_fn", PR),
 			PR,
@@ -709,7 +707,7 @@ void PL::Parsing::Verbs::compile_all(void) {
 
 	Log::new_stage(I"Sorting and compiling non-value grammar (G3, G4)");
 
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
 	packaging_state save = Packaging::enter(PR);
 
 	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_NRL, 1);

@@ -236,12 +236,6 @@ int PL::Bibliographic::episode_SMF(int task, parse_node *V, wording *NPs) {
 compiled to constants, used early on at run-time to print the banner.
 
 =
-inter_name *PL::Bibliographic::constant(text_stream *name) {
-	package_request *PR = Packaging::synoptic_resource(BIBLIOGRAPHIC_SUBPACKAGE);
-	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, DATA_PR_COUNTER), PR, data_ptype);
-	return InterNames::one_off(name, PR2);
-}
-
 void PL::Bibliographic::compile_constants(void) {
 	encode_constant_text_bibliographically = TRUE;
 	BEGIN_COMPILATION_MODE;
@@ -261,7 +255,7 @@ void PL::Bibliographic::compile_constants(void) {
 "Welcome": that's just something we use to provide a readable banner.
 
 @<Compile the I6 Story constant@> =
-	inter_name *iname = PL::Bibliographic::constant(I"Story");
+	inter_name *iname = Hierarchy::find(STORY_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
 	inter_t v1 = 0, v2 = 0;
@@ -275,7 +269,7 @@ void PL::Bibliographic::compile_constants(void) {
 @ And similarly here:
 
 @<Compile the I6 Headline constant@> =
-	inter_name *iname = PL::Bibliographic::constant(I"Headline");
+	inter_name *iname = Hierarchy::find(HEADLINE_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_t v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_headline_VAR)) {
@@ -291,7 +285,7 @@ void PL::Bibliographic::compile_constants(void) {
 
 @<Compile the I6 Story Author constant@> =
 	if (NonlocalVariables::has_initial_value_set(story_author_VAR)) {
-		inter_name *iname = PL::Bibliographic::constant(I"Story_Author");
+		inter_name *iname = Hierarchy::find(STORY_AUTHOR_NRL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
@@ -304,7 +298,7 @@ void PL::Bibliographic::compile_constants(void) {
 
 @<Compile the I6 Release directive@> =
 	if (NonlocalVariables::has_initial_value_set(story_release_number_VAR)) {
-		inter_name *iname = PL::Bibliographic::constant(I"Release");
+		inter_name *iname = Hierarchy::find(RELEASE_NRL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(&v1, &v2, story_release_number_VAR);
@@ -317,7 +311,7 @@ number "130625" -- is actually controversial: quite a few users feel they
 should be able to fake the date-stamp with dates of their own choosing.
 
 @<Compile the I6 serial number, based on the date@> =
-	inter_name *iname = PL::Bibliographic::constant(I"Serial");
+	inter_name *iname = Hierarchy::find(SERIAL_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	TEMPORARY_TEXT(SN);
 	int year_digits = (the_present->tm_year) % 100;

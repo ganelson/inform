@@ -349,7 +349,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="plain">}</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span>
-            <span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">), </span><span class="constant">RULEBOOKS_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">), </span><span class="constant">RULEBOOKS_SUBMODULE</span><span class="plain">);</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">package_name</span><span class="plain"> = </span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">OUTCOME_PR_COUNTER</span><span class="plain">);</span>
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">outcome_ptype</span><span class="plain">);</span>
 

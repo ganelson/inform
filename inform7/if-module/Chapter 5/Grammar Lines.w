@@ -98,8 +98,7 @@ grammar_line *PL::Parsing::Lines::new(int wn, action_name *ac,
 	gl->cond_token_iname = NULL;
 	
 	inter_name *m_iname = InterNames::new(GRAMMAR_LINE_MISTAKE_TOKEN_INAMEF);
-	compilation_module *C = Modules::find(current_sentence);
-	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 	gl->mistake_iname = Packaging::function(
 		InterNames::one_off(I"mistake_fn", PR),
 		PR,
@@ -228,8 +227,7 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 		current_sentence = gl->where_grammar_specified;
 
 		inter_name *c_iname = InterNames::new(GRAMMAR_LINE_COND_TOKEN_INAMEF);
-		compilation_module *C = Modules::find(current_sentence);
-		package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+		package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 		gl->cond_token_iname = Packaging::function(
 			InterNames::one_off(I"conditional_token_fn", PR),
 			PR,
@@ -1279,8 +1277,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 					(ParseTree::int_annotation(pn->next, slash_class_ANNOT) ==
 					ParseTree::int_annotation(pn, slash_class_ANNOT))) pn = pn->next;
 			sgpr->last_choice = pn;
-			compilation_module *C = Modules::find(current_sentence);
-			package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+			package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 			sgpr->sgpr_iname = Packaging::function(
 				InterNames::one_off(I"slash_fn", PR),
 				PR,

@@ -207,8 +207,7 @@ verb".
         <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;command</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">InterNames::iname</span><span class="plain">(</span><span class="identifier">NO_VERB_VERB_DEFINED_INAME</span><span class="plain">);</span>
-            <span class="identifier">Packaging::house</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">Packaging::generic_resource</span><span class="plain">(</span><span class="identifier">BASICS_SUBPACKAGE</span><span class="plain">));</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NO_VERB_VERB_DEFINED_NRL</span><span class="plain">);</span>
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) 1);</span>
             <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -345,7 +344,7 @@ now supplies new ones).
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"compiling Verb for empty grammar"</span><span class="plain">);</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">array_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">VERB_DECLARATION_ARRAY_INAMEF</span><span class="plain">);</span>
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">GRAMMAR_SUBMODULE</span><span class="plain">);</span>
         <span class="identifier">Packaging::house</span><span class="plain">(</span><span class="identifier">array_iname</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="identifier">Emit::named_verb_array_begin</span><span class="plain">(</span><span class="identifier">array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
@@ -485,8 +484,7 @@ names (e.g., "suitable colour").
             <span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::gv_new</span><span class="plain">(</span><span class="constant">GV_IS_TOKEN</span><span class="plain">);</span>
             <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">m_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GPR_FOR_TOKEN_INAMEF</span><span class="plain">);</span>
-            <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::local_resource</span><span class="plain">(</span><span class="identifier">GRAMMAR_SUBMODULE</span><span class="plain">);</span>
             <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_line_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
                 <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"parse_line_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
                 <span class="identifier">PR</span><span class="plain">,</span>
@@ -905,7 +903,7 @@ in the final I6 output.
 
         <span class="identifier">Log::new_stage</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Sorting and compiling non-value grammar (G3, G4)"</span><span class="plain">);</span>
 
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">GRAMMAR_SUBPACKAGE</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">GRAMMAR_SUBMODULE</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
 
         <span class="identifier">VERB_DIRECTIVE_REVERSE_iname</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::grammar_constant</span><span class="plain">(</span><span class="identifier">VERB_DIRECTIVE_REVERSE_NRL</span><span class="plain">, 1);</span>

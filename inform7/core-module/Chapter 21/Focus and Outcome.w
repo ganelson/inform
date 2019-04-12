@@ -223,7 +223,7 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 	}
 
 	package_request *R = Packaging::request_resource(
-		Modules::find(current_sentence), RULEBOOKS_SUBPACKAGE);
+		Modules::find(current_sentence), RULEBOOKS_SUBMODULE);
 	inter_name *package_name = Packaging::supply_iname(R, OUTCOME_PR_COUNTER);
 	package_request *R2 = Packaging::request(package_name, R, outcome_ptype);
 

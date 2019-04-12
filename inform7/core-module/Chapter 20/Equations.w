@@ -160,8 +160,7 @@ equation *Equations::new(wording W, int anonymous) {
 	eqn->symbol_list = NULL;
 	eqn->examined_already = FALSE;
 
-	compilation_module *C = Modules::find(current_sentence);
-	package_request *PR = Packaging::request_resource(C, EQUATIONS_SUBPACKAGE);
+	package_request *PR = Packaging::local_resource(EQUATIONS_SUBMODULE);
 	eqn->eqn_iname = Packaging::function(
 		InterNames::one_off(I"solve_fn", PR),
 		PR,

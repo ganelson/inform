@@ -267,7 +267,7 @@ void Emit::begin(void) {
 	Emit::comment(I"Responses:");
 	responses_bookmark = Emit::bookmark_bubble();
 
-	package_request *R = Packaging::generic_resource(KINDS_SUBPACKAGE);
+	package_request *R = Packaging::generic_resource(KINDS_SUBMODULE);
 	package_request *R2 = Packaging::request(Packaging::supply_iname(R, KIND_PR_COUNTER), R, kind_ptype);
 	packaging_state save = Packaging::enter(R2);
 	inter_symbols_table *T = Inter::Packages::scope(default_bookmark->current_package);
@@ -283,8 +283,6 @@ void Emit::begin(void) {
 	string_interk = Emit::new_symbol(T, I"K_typeless_string");
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
 	Packaging::exit(save);
-
-	InterNames::to_symbol(InterNames::iname(Story_INAME));
 
 	Emit::comment(I"Fundamental constants:");
 	NULL_iname = VirtualMachines::emit_fundamental_constants();

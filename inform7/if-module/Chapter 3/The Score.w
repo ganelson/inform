@@ -41,10 +41,9 @@ void PL::Score::compile_max_score(void) {
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
 			InterNames::to_symbol(Tables::identifier(t));
-			inter_name *iname = InterNames::iname(RANKING_TABLE_INAME);
-			Packaging::house(iname, Packaging::generic_resource(BASICS_SUBPACKAGE));
+			inter_name *iname = Hierarchy::find(RANKING_TABLE_NRL);
 			packaging_state save = Packaging::enter_home_of(iname);
-			Emit::named_iname_constant(InterNames::iname(RANKING_TABLE_INAME), K_value, Tables::identifier(t));
+			Emit::named_iname_constant(iname, K_value, Tables::identifier(t));
 			Packaging::exit(save);
 			parse_node *PN = Tables::cells_in_ith_column(t, 0);
 			while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
@@ -55,9 +54,7 @@ void PL::Score::compile_max_score(void) {
 			break;
 		}
 	}
-	package_request *PR = Packaging::synoptic_resource(IF_SUBPACKAGE);
-	inter_name *iname = InterNames::iname(INITIAL_MAX_SCORE_INAME);
-	Packaging::house(iname, PR);
+	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	if (NonlocalVariables::has_initial_value_set(max_score_VAR)) {
 		inter_t v1 = 0, v2 = 0;

@@ -237,7 +237,7 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
     test->no_possessions = 0;
     test->text_of_script = Str::new();
 
-	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), GRAMMAR_SUBMODULE);
 	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, TEST_PR_COUNTER), PR, test_ptype);
 	test->text_iname = InterNames::one_off(I"script", PR2);
 	test->req_iname = InterNames::one_off(I"requirements", PR2);
@@ -296,9 +296,7 @@ void PL::Parsing::TestScripts::write_text(void) {
 
 void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 	if (NUMBER_CREATED(test_scenario) > 0) {
-		package_request *PR = Packaging::generic_resource(BASICS_SUBPACKAGE);
-		inter_name *iname = InterNames::iname(NO_TEST_SCENARIOS_INAME);
-		Packaging::house(iname, PR);
+		inter_name *iname = Hierarchy::find(NO_TEST_SCENARIOS_NRL);
 		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(test_scenario));
 		Packaging::exit(save);
@@ -392,12 +390,7 @@ void PL::Parsing::TestScripts::new_internal(int code, wording W) {
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
 void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBPACKAGE);
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"run_tests_fn", PR),
-		PR,
-		InterNames::iname(InternalTestCases_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(INTERNALTESTCASES_NRL));
 	internal_test_case *itc; int n = 0;
 	LOOP_OVER(itc, internal_test_case) {
 		n++;

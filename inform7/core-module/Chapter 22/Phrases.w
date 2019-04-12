@@ -352,7 +352,7 @@ inter_name *Phrases::iname(phrase *ph) {
 	if (ph->ph_iname == NULL) {
 		inter_name *c_iname = InterNames::new(ADJECTIVE_DEFINED_INAMEF);
 		package_request *PR =
-			Packaging::request_resource(ph->owning_module, ADJECTIVES_SUBPACKAGE);
+			Packaging::request_resource(ph->owning_module, ADJECTIVES_SUBMODULE);
 		ph->ph_iname = Packaging::function(
 			InterNames::one_off(I"definition_fn", PR),
 			PR,

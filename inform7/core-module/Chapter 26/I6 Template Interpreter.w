@@ -604,8 +604,7 @@ of Inform: the following routine performs |{-callv:TemplateFiles::compile_build_
 void TemplateFiles::compile_build_number(void) {
 	TEMPORARY_TEXT(build);
 	WRITE_TO(build, "%B", TRUE);
-	inter_name *iname = InterNames::iname(NI_BUILD_COUNT_INAME);
-	Packaging::house(iname, Packaging::generic_resource(BASICS_SUBPACKAGE));
+	inter_name *iname = Hierarchy::find(NI_BUILD_COUNT_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_string_constant(iname, build);
 	Packaging::exit(save);

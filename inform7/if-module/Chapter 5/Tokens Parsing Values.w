@@ -117,13 +117,7 @@ void PL::Parsing::Tokens::Values::add_parse_name_vars(gpr_kit *gprk) {
 }
 
 void PL::Parsing::Tokens::Values::number(void) {
-	package_request *R = Kinds::RunTime::package(K_number);
-	inter_name *iname =
-		Packaging::function(
-			InterNames::one_off(I"gpr_fn", R),
-			R,
-			InterNames::iname(DECIMAL_TOKEN_INNER_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(DECIMAL_TOKEN_INNER_NRL));
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_number);
@@ -136,13 +130,7 @@ void PL::Parsing::Tokens::Values::number(void) {
 }
 
 void PL::Parsing::Tokens::Values::time(void) {
-	package_request *R = Kinds::RunTime::package(K_time);
-	inter_name *iname =
-		Packaging::function(
-			InterNames::one_off(I"gpr_fn", R),
-			R,
-			InterNames::iname(TIME_TOKEN_INNER_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(TIME_TOKEN_INNER_NRL));
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	kind *K = PL::TimesOfDay::kind();
@@ -158,13 +146,7 @@ void PL::Parsing::Tokens::Values::time(void) {
 }
 
 void PL::Parsing::Tokens::Values::truth_state(void) {
-	package_request *R = Kinds::RunTime::package(K_truth_state);
-	inter_name *iname =
-		Packaging::function(
-			InterNames::one_off(I"gpr_fn", R),
-			R,
-			InterNames::iname(TRUTH_STATE_TOKEN_INNER_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(TRUTH_STATE_TOKEN_INNER_NRL));
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_truth_state);

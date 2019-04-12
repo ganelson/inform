@@ -566,9 +566,7 @@ There is no significance to the return value.
 
 =
 void PL::Scenes::DetectSceneChange_routine(void) {
-	package_request *R = Kinds::Behaviour::package(K_use_option);
-	inter_name *iname = Packaging::function(InterNames::one_off(I"detect_scene_change_fn", R),
-		R, InterNames::iname(DetectSceneChange_INAME));
+	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_NRL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *self = InterNames::to_symbol(iname);
 	inter_symbol *chs_s = LocalVariables::add_internal_local_c_as_symbol(I"chs", "count of changes made");
@@ -981,10 +979,7 @@ what handles this.
 
 =
 void PL::Scenes::ShowSceneStatus_routine(void) {
-	package_request *R = Kinds::Behaviour::package(K_use_option);
-	inter_name *iname = Packaging::function(InterNames::one_off(I"show_scene_status_fn", R),
-		R, InterNames::iname(ShowSceneStatus_INAME));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Routines::begin(Hierarchy::find(SHOWSCENESTATUS_NRL));
 	Emit::inv_primitive(ifdebug_interp);
 	Emit::down();
 		Emit::code();

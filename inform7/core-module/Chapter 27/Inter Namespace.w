@@ -1228,6 +1228,14 @@ inter_name *InterNames::extern_in(int family, int exnum) {
 	return extern_inter_names[exnum];
 }
 
+inter_name *InterNames::formal_par(int n) {
+	TEMPORARY_TEXT(lvalue);
+	WRITE_TO(lvalue, "formal_par%d", n);
+	inter_name *iname = InterNames::extern_name(EXTERN_FORMAL_PAR_INAMEF, lvalue, NULL);
+	DISCARD_TEXT(lvalue);
+	return iname;
+}
+
 @
 
 =
@@ -1235,6 +1243,7 @@ typedef struct named_resource_location {
 	int access_number;
 	struct text_stream *access_name;
 	struct text_stream *function_package_name;
+	struct text_stream *datum_package_name;
 	struct package_request *package;
 	struct inter_name *equates_to_iname;
 	MEMORY_MANAGEMENT
@@ -1248,6 +1257,7 @@ named_resource_location *InterNames::make_in(int id, text_stream *name, package_
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
 	nrl->function_package_name = NULL;
+	nrl->datum_package_name = NULL;
 	nrl->package = P;
 	nrl->equates_to_iname = NULL;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
@@ -1261,6 +1271,7 @@ named_resource_location *InterNames::make_as(int id, text_stream *name, inter_na
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
 	nrl->function_package_name = NULL;
+	nrl->datum_package_name = NULL;
 	nrl->package = iname->eventual_owner;
 	nrl->equates_to_iname = iname;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
@@ -1274,6 +1285,7 @@ named_resource_location *InterNames::make_on_demand(int id, text_stream *name) {
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
 	nrl->function_package_name = NULL;
+	nrl->datum_package_name = NULL;
 	nrl->package = NULL;
 	nrl->equates_to_iname = NULL;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
@@ -1287,11 +1299,26 @@ named_resource_location *InterNames::make_function(int id, text_stream *name, te
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(call_name);
 	nrl->function_package_name = Str::duplicate(name);
+	nrl->datum_package_name = NULL;
 	nrl->package = P;
 	nrl->equates_to_iname = NULL;
 	if (id >= 0) nrls_indexed_by_id[id] = nrl;
 	Dictionaries::create(nrls_indexed_by_name, call_name);
 	Dictionaries::write_value(nrls_indexed_by_name, call_name, (void *) nrl);
+	return nrl;
+}
+
+named_resource_location *InterNames::make_datum(int id, text_stream *name, text_stream *datum_name, package_request *P) {
+	named_resource_location *nrl = CREATE(named_resource_location);
+	nrl->access_number = id;
+	nrl->access_name = Str::duplicate(datum_name);
+	nrl->function_package_name = NULL;
+	nrl->datum_package_name = Str::duplicate(name);
+	nrl->package = P;
+	nrl->equates_to_iname = NULL;
+	if (id >= 0) nrls_indexed_by_id[id] = nrl;
+	Dictionaries::create(nrls_indexed_by_name, datum_name);
+	Dictionaries::write_value(nrls_indexed_by_name, datum_name, (void *) nrl);
 	return nrl;
 }
 
@@ -1335,7 +1362,14 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 				nrl->access_name);
 			nrl->package = Packaging::home_of(nrl->equates_to_iname);
 		}
-		if (nrl->package)
+		if (Str::len(nrl->datum_package_name) > 0) {
+			nrl->equates_to_iname = Packaging::datum_text(
+				InterNames::one_off(nrl->datum_package_name, nrl->package),
+				nrl->package,
+				nrl->access_name);
+			nrl->package = Packaging::home_of(nrl->equates_to_iname);
+		}
+		if ((nrl->package) && (nrl->equates_to_iname == NULL))
 			nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
 		switch (nrl->access_number) {
 			case THESAME_NRL:
@@ -1377,6 +1411,32 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 			case CAPSHORTNAME_NRL:
 				nrl->package = Kinds::Behaviour::package(K_object);
 				break;
+			case RESOURCEIDSOFFIGURES_NRL:
+				nrl->package = Kinds::Behaviour::package(K_figure_name);
+				break;
+			case RESOURCEIDSOFSOUNDS_NRL:
+				nrl->package = Kinds::Behaviour::package(K_sound_name);
+				break;
+			case NO_USE_OPTIONS_NRL:
+				nrl->package = Kinds::Behaviour::package(K_use_option);
+				break;
+			case DECIMAL_TOKEN_INNER_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Kinds::RunTime::package(K_number), I"gpr_fn", nrl->access_name);
+				break;
+			case TIME_TOKEN_INNER_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Kinds::RunTime::package(K_time), I"gpr_fn", nrl->access_name);
+				break;
+			case TRUTH_STATE_TOKEN_INNER_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Kinds::RunTime::package(K_truth_state), I"gpr_fn", nrl->access_name);
+				break;
+			case COMMANDPROMPTTEXT_NRL:
+				nrl->equates_to_iname = InterNames::function(
+					Packaging::home_of(NonlocalVariables::iname(command_prompt_VAR)),
+					I"command_prompt_text_fn", nrl->access_name);				
+				break;
 		}
 		if (nrl->equates_to_iname == NULL)
 			nrl->equates_to_iname = InterNames::one_off(nrl->access_name, nrl->package);
@@ -1384,104 +1444,4 @@ inter_name *InterNames::nrl_to_iname(named_resource_location *nrl) {
 			nrl->package = Packaging::home_of(nrl->equates_to_iname);
 	}
 	return nrl->equates_to_iname;
-}
-
-
-
-inter_name *InterNames::formal_par(int n) {
-	TEMPORARY_TEXT(lvalue);
-	WRITE_TO(lvalue, "formal_par%d", n);
-	inter_name *iname = InterNames::extern_name(EXTERN_FORMAL_PAR_INAMEF, lvalue, NULL);
-	DISCARD_TEXT(lvalue);
-	return iname;
-}
-
-@
-
-@e INVALID_INAME from 0
-
-@e CommandPromptText_INAME
-@e DECIMAL_TOKEN_INNER_INAME
-@e DefaultValueOfKOV_INAME
-@e DetectSceneChange_INAME
-@e Headline_INAME
-@e INITIAL_MAX_SCORE_INAME
-@e InternalTestCases_INAME
-@e IterateRelations_INAME
-@e Map_Storage_INAME
-@e MAX_FRAME_SIZE_NEEDED_INAME
-@e MAX_WEAK_ID_INAME
-@e MEANINGLESS_RR_INAME
-@e MEMORY_HEAP_SIZE_INAME
-@e NI_BUILD_COUNT_INAME
-@e No_Directions_INAME
-@e NO_TEST_SCENARIOS_INAME
-@e NO_USE_OPTIONS_INAME
-@e NO_VERB_VERB_DEFINED_INAME
-@e NUMBER_RULEBOOKS_CREATED_INAME
-@e PLUGIN_FILES_INAME
-@e RANKING_TABLE_INAME
-@e Release_INAME
-@e ResourceIDsOfFigures_INAME
-@e ResourceIDsOfSounds_INAME
-@e RProperty_INAME
-@e Serial_INAME
-@e ShowExtensionVersions_INAME
-@e ShowFullExtensionVersions_INAME
-@e ShowOneExtension_INAME
-@e ShowSceneStatus_INAME
-@e STANDARD_RESPONSE_ISSUING_R_INAME
-@e Story_Author_INAME
-@e Story_INAME
-@e TIME_TOKEN_INNER_INAME
-@e TRUTH_STATE_TOKEN_INNER_INAME
-@e TTF_sum_INAME
-@e UUID_ARRAY_INAME
-
-@e FINAL_INAME
-
-inter_name *intern_inter_names[FINAL_INAME+1];
-inter_name *InterNames::iname(int num) {
-	if ((num < 1) || (num >= FINAL_INAME)) internal_error("inum out of range");
-	if (intern_inter_names[num]) return intern_inter_names[num];
-	text_stream *S = NULL; int glob = FALSE;
-	switch (num) {
-		case CommandPromptText_INAME:			S = I"CommandPromptText"; break;
-		case DECIMAL_TOKEN_INNER_INAME:			S = I"DECIMAL_TOKEN_INNER"; break;
-		case DetectSceneChange_INAME:			S = I"DetectSceneChange"; break;
-		case Headline_INAME:					S = I"Headline"; break;
-		case INITIAL_MAX_SCORE_INAME:			S = I"INITIAL_MAX_SCORE"; break;
-		case InternalTestCases_INAME:			S = I"InternalTestCases"; break;
-		case IterateRelations_INAME:			S = I"IterateRelations"; break;
-		case Map_Storage_INAME:					S = I"Map_Storage"; break;
-		case MAX_FRAME_SIZE_NEEDED_INAME:		S = I"MAX_FRAME_SIZE_NEEDED"; break;
-		case MAX_WEAK_ID_INAME:					S = I"MAX_WEAK_ID"; break;
-		case MEANINGLESS_RR_INAME:				S = I"MEANINGLESS_RR"; break;
-		case MEMORY_HEAP_SIZE_INAME:			S = I"MEMORY_HEAP_SIZE"; break;
-		case NI_BUILD_COUNT_INAME:				S = I"NI_BUILD_COUNT"; break;
-		case No_Directions_INAME:				S = I"No_Directions"; break;
-		case NO_TEST_SCENARIOS_INAME:			S = I"NO_TEST_SCENARIOS"; break;
-		case NO_USE_OPTIONS_INAME:				S = I"NO_USE_OPTIONS"; break;
-		case NO_VERB_VERB_DEFINED_INAME:		S = I"NO_VERB_VERB_DEFINED"; break;
-		case PLUGIN_FILES_INAME:				S = I"PLUGIN_FILES"; break;
-		case RANKING_TABLE_INAME:				S = I"RANKING_TABLE"; break;
-		case Release_INAME:						S = I"Release"; break;
-		case ResourceIDsOfFigures_INAME:		S = I"ResourceIDsOfFigures"; break;
-		case ResourceIDsOfSounds_INAME:			S = I"ResourceIDsOfSounds"; break;
-		case RProperty_INAME:					S = I"RProperty"; break;
-		case Serial_INAME:						S = I"Serial"; break;
-		case ShowExtensionVersions_INAME:		S = I"ShowExtensionVersions"; break;
-		case ShowFullExtensionVersions_INAME:	S = I"ShowFullExtensionVersions"; break;
-		case ShowOneExtension_INAME:			S = I"ShowOneExtension"; break;
-		case ShowSceneStatus_INAME:				S = I"ShowSceneStatus"; break;
-		case STANDARD_RESPONSE_ISSUING_R_INAME:	S = I"STANDARD_RESPONSE_ISSUING_R"; break;
-		case Story_Author_INAME:				S = I"Story_Author"; break;
-		case Story_INAME:						S = I"Story"; break;
-		case TIME_TOKEN_INNER_INAME:			S = I"TIME_TOKEN_INNER"; break;
-		case TRUTH_STATE_TOKEN_INNER_INAME:		S = I"TRUTH_STATE_TOKEN_INNER"; break;
-		case UUID_ARRAY_INAME:					S = I"UUID_ARRAY"; break;
-	}
-	if (S == NULL) internal_error("no wording for external name");
-	intern_inter_names[num] = InterNames::one_off(S, glob?NULL:(Packaging::request_main()));
-	return intern_inter_names[num];
 }

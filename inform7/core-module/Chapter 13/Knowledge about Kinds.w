@@ -89,9 +89,7 @@ particular order.
 
 =
 int Kinds::Knowledge::emit_all(void) {
-	package_request *PR = Packaging::generic_resource(BASICS_SUBPACKAGE);
-	inter_name *iname = InterNames::iname(MAX_WEAK_ID_INAME);
-	Packaging::house(iname, PR);
+	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_NRL);
 	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) next_free_data_type_ID);
 	Packaging::exit(save);

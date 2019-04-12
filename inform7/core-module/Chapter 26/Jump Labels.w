@@ -48,7 +48,7 @@ label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module
 	WRITE_TO(lns->label_prefix, "%S%S", cm->namespace->namespace_prefix, name);
 	lns->label_base_iname = InterNames::label_base_name(lns->label_prefix);
 	
-	package_request *PR = Packaging::synoptic_resource(PHRASES_SUBPACKAGE);
+	package_request *PR = Packaging::synoptic_resource(PHRASES_SUBMODULE);
 	package_request *PR2 = Packaging::request(
 		Packaging::supply_iname(PR, LABEL_STORAGE_PR_COUNTER), PR, label_storage_ptype);
 	lns->label_storage_iname = InterNames::one_off(I"label_associated_storage", PR2);

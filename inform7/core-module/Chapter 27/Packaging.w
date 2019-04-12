@@ -323,44 +323,12 @@ package_request *Packaging::request_synoptic(void) {
 	return synoptic_pr;
 }
 
-@
-
-@e BASICS_SUBPACKAGE from 0
-@e KINDS_SUBPACKAGE
-@e CONJUGATIONS_SUBPACKAGE
-@e RULES_SUBPACKAGE
-@e PHRASES_SUBPACKAGE
-@e ADJECTIVES_SUBPACKAGE
-@e INSTANCES_SUBPACKAGE
-@e PROPERTIES_SUBPACKAGE
-@e VARIABLES_SUBPACKAGE
-@e EXTENSIONS_SUBPACKAGE
-@e ACTIONS_SUBPACKAGE
-@e RULEBOOKS_SUBPACKAGE
-@e ACTIVITIES_SUBPACKAGE
-@e RELATIONS_SUBPACKAGE
-@e GRAMMAR_SUBPACKAGE
-@e TABLES_SUBPACKAGE
-@e CHRONOLOGY_SUBPACKAGE
-@e LISTING_SUBPACKAGE
-@e EQUATIONS_SUBPACKAGE
-@e BIBLIOGRAPHIC_SUBPACKAGE
-@e IF_SUBPACKAGE
-@e EXTERNAL_FILES_SUBPACKAGE
-
-@e MAX_SUBPACKAGE
-
-=
 typedef struct subpackage_requests {
-	struct package_request *subs[MAX_SUBPACKAGE];
+	struct package_request *subs[MAX_SUBMODULE];
 } subpackage_requests;
 
 void Packaging::initialise_subpackages(subpackage_requests *SR) {
-	for (int i=0; i<MAX_SUBPACKAGE; i++) SR->subs[i] = NULL;
-}
-
-package_request *Packaging::request_conjugations(compilation_module *C) {
-	return Packaging::request_resource(C, CONJUGATIONS_SUBPACKAGE);
+	for (int i=0; i<MAX_SUBMODULE; i++) SR->subs[i] = NULL;
 }
 
 int generic_subpackages_initialised = FALSE;
@@ -385,6 +353,10 @@ package_request *Packaging::request_resource(compilation_module *C, int ix) {
 	@<Handle the resource request@>;
 }
 
+package_request *Packaging::local_resource(int ix) {
+	return Packaging::request_resource(Modules::find(current_sentence), ix);
+}
+
 package_request *Packaging::generic_resource(int ix) {
 	if (generic_subpackages_initialised == FALSE) {
 		generic_subpackages_initialised = TRUE;
@@ -407,32 +379,7 @@ package_request *Packaging::synoptic_resource(int ix) {
 
 @<Handle the resource request@> =
 	if (SR->subs[ix] == NULL) {
-		text_stream *N = NULL;
-		switch (ix) {
-			case BASICS_SUBPACKAGE: N = I"basics"; break;
-			case KINDS_SUBPACKAGE: N = I"kinds"; break;
-			case CONJUGATIONS_SUBPACKAGE: N = I"conjugations"; break;
-			case RULES_SUBPACKAGE: N = I"rules"; break;
-			case PHRASES_SUBPACKAGE: N = I"phrases"; break;
-			case ADJECTIVES_SUBPACKAGE: N = I"adjectives"; break;
-			case INSTANCES_SUBPACKAGE: N = I"instances"; break;
-			case PROPERTIES_SUBPACKAGE: N = I"properties"; break;
-			case VARIABLES_SUBPACKAGE: N = I"variables"; break;
-			case EXTENSIONS_SUBPACKAGE: N = I"extensions"; break;
-			case ACTIONS_SUBPACKAGE: N = I"actions"; break;
-			case RULEBOOKS_SUBPACKAGE: N = I"rulebooks"; break;
-			case ACTIVITIES_SUBPACKAGE: N = I"activities"; break;
-			case RELATIONS_SUBPACKAGE: N = I"relations"; break;
-			case GRAMMAR_SUBPACKAGE: N = I"grammar"; break;
-			case TABLES_SUBPACKAGE: N = I"tables"; break;
-			case CHRONOLOGY_SUBPACKAGE: N = I"chronology"; break;
-			case LISTING_SUBPACKAGE: N = I"listing"; break;
-			case EQUATIONS_SUBPACKAGE: N = I"equations"; break;
-			case BIBLIOGRAPHIC_SUBPACKAGE: N = I"bibliographic"; break;
-			case IF_SUBPACKAGE: N = I"interactive_fiction"; break;
-			case EXTERNAL_FILES_SUBPACKAGE: N = I"external_files"; break;
-			default: internal_error("nameless resource");
-		}
+		text_stream *N = Hierarchy::submodule_name(ix);
 		inter_name *iname = InterNames::one_off(N, parent);
 		SR->subs[ix] = Packaging::request(iname, parent, plain_ptype);
 	}
@@ -507,6 +454,13 @@ inter_name *Packaging::function_text(inter_name *function_iname, package_request
 	if (translation) {
 		Inter::Symbols::set_translate(InterNames::to_symbol(iname), translation);
 	}
+	return iname;
+}
+
+inter_name *Packaging::datum_text(inter_name *function_iname, package_request *R2, text_stream *translation) {
+	package_request *R3 = Packaging::request(function_iname, R2, data_ptype);
+	inter_name *iname = InterNames::one_off(translation, R3);
+	Packaging::house(iname, R3);
 	return iname;
 }
 

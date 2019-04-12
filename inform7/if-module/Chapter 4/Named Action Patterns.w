@@ -24,8 +24,7 @@ named_action_pattern *PL::Actions::Patterns::Named::nap_new(wording W) {
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap));
 
-	compilation_module *C = Modules::find(current_sentence);
-	package_request *PR = Packaging::request_resource(C, GRAMMAR_SUBPACKAGE);
+	package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 	nap->nap_iname = Packaging::function(
 		InterNames::one_off(I"nap_fn", PR),
 		PR,

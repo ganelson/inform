@@ -377,14 +377,17 @@ int PL::Map::map_compile_model_tables(void) {
 }
 
 @<Declare I6 constants for the directions@> =
-	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K_direction));
-	inter_name *ndi = InterNames::iname(No_Directions_INAME);
-	Packaging::house(ndi, Kinds::Behaviour::package(K_direction));
+	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_NRL);
+	packaging_state save = Packaging::enter_home_of(ndi);
 	Emit::named_numeric_constant(ndi, (inter_t) registered_directions);
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_direction)
-		Emit::named_iname_constant(PF_I(map, I)->direction_iname, K_object, Instances::emitted_iname(I));
 	Packaging::exit(save);
+
+	instance *I;
+	LOOP_OVER_INSTANCES(I, K_direction) {
+		packaging_state save = Packaging::enter_home_of(PF_I(map, I)->direction_iname);
+		Emit::named_iname_constant(PF_I(map, I)->direction_iname, K_object, Instances::emitted_iname(I));
+		Packaging::exit(save);
+	}
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
 one after another. It looks wasteful of memory, since it is almost always
@@ -396,9 +399,9 @@ at run-time, so we can't know now how many we will need.
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		Instances::emitted_iname(I);
-	package_request *PR = Packaging::synoptic_resource(IF_SUBPACKAGE);
-	packaging_state save = Packaging::enter(PR);
-	Emit::named_array_begin(InterNames::one_off(I"Map_Storage", PR), K_object);
+	inter_name *iname = Hierarchy::find(MAP_STORAGE_NRL);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_array_begin(iname, K_object);
 	int words_used = 0;
 	if (existing_story_file) {
 		Emit::array_divider(I"minimal, as there are no rooms");

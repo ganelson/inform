@@ -186,7 +186,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	}
 
 	av->name = W;
-	package_request *R = Packaging::generic_resource(ACTIVITIES_SUBPACKAGE);
+	package_request *R = Packaging::generic_resource(ACTIVITIES_SUBMODULE);
 	av->av_package = Packaging::request(Packaging::supply_iname(R, ACTIVITY_PR_COUNTER), R, activity_ptype);
 	av->av_iname = InterNames::new(ACTIVITY_INAMEF);
 	av->av_iname->eventual_owner = av->av_package;

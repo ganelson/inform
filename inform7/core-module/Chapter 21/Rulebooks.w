@@ -213,7 +213,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R, text_st
 
 	rb->primary_name = W;
 	rb->alternative_name = EMPTY_WORDING;
-	if (R == NULL) R = Packaging::request_resource(Modules::find(current_sentence), RULEBOOKS_SUBPACKAGE);
+	if (R == NULL) R = Packaging::request_resource(Modules::find(current_sentence), RULEBOOKS_SUBMODULE);
 	inter_name *package_name = NULL;
 	if (supplied == NULL) package_name = Packaging::supply_iname(R, RULEBOOK_PR_COUNTER);
 	else package_name = InterNames::one_off(supplied, R);

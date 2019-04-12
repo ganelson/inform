@@ -487,16 +487,25 @@ code to set things up correctly at run-time.
 
 
 <pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
+        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">val</span><span class="plain">);</span>
+        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Player::InitialSituation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">player_plugin</span><span class="plain">)) {</span>
-            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">IF_SUBPACKAGE</span><span class="plain">);</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
-            <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"PLAYER_OBJECT_INIS"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) 0);</span>
-            <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"START_OBJECT_INIS"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) 1);</span>
-            <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"START_ROOM_INIS"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) 2);</span>
-            <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"START_TIME_INIS"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) 3);</span>
-            <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DONE_INIS"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) 4);</span>
-            <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"InitialSituation"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">PLAYER_OBJECT_INIS_NRL</span><span class="plain">, 0);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_OBJECT_INIS_NRL</span><span class="plain">, 1);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_ROOM_INIS_NRL</span><span class="plain">, 2);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_TIME_INIS_NRL</span><span class="plain">, 3);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">DONE_INIS_NRL</span><span class="plain">, 4);</span>
+
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">INITIALSITUATION_NRL</span><span class="plain">);</span>
+            <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">NonlocalVariables::emit_initial_value</span><span class="plain">(</span><span class="identifier">player_VAR</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">start_object</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">start_object</span><span class="plain">));</span>
@@ -511,6 +520,8 @@ code to set things up correctly at run-time.
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function PL::Player::InitialSituation_define appears nowhere else.</p>
 
 <p class="endnote">The function PL::Player::InitialSituation appears nowhere else.</p>
 
