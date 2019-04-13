@@ -244,7 +244,7 @@
                     <span class="identifier">Log::new_stage</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">);</span>
                     <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">CodeGen::Stage::extricate</span><span class="plain">(</span><span class="identifier">FM</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
                     &lt;<span class="cwebmacro">Open the file for text output</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
-                    <span class="functiontext">CodeGen::CacheCM::go</span><span class="plain">(</span><span class="identifier">text_out_file</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text_out_file</span><span class="plain">, </span><span class="string">"Currently disabled\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                     <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">text_out_file</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>

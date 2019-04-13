@@ -42,7 +42,7 @@
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="identifier">NAMED_AP_MC</span><span class="plain">, </span><span class="identifier">Rvalues::from_named_action_pattern</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">));</span>
 
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Packaging::local_resource</span><span class="plain">(</span><span class="identifier">GRAMMAR_SUBMODULE</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">NAMED_ACTION_PATTERNS_HAP</span><span class="plain">);</span>
         <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
             <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"nap_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
             <span class="identifier">PR</span><span class="plain">,</span>

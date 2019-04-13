@@ -42,15 +42,21 @@ noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int g
 	nft->nft_compiled = FALSE;
 
 	inter_name *filter_iname = NULL;
-	if (global_scope)
+	if (global_scope) {
 		filter_iname = InterNames::new(SCOPE_FILTER_INAMEF);
-	else
+		package_request *PR = Hierarchy::local_package(SCOPE_FILTERS_HAP);
+		nft->nft_iname = Packaging::function(
+			InterNames::one_off(I"filter_fn", PR),
+			PR,
+			filter_iname);
+	} else {
 		filter_iname = InterNames::new(NOUN_FILTER_INAMEF);
-	package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
-	nft->nft_iname = Packaging::function(
-		InterNames::one_off(I"filter_fn", PR),
-		PR,
-		filter_iname);
+		package_request *PR = Hierarchy::local_package(NOUN_FILTERS_HAP);
+		nft->nft_iname = Packaging::function(
+			InterNames::one_off(I"filter_fn", PR),
+			PR,
+			filter_iname);
+	}
 	InterNames::to_symbol(nft->nft_iname);
 	return nft;
 }

@@ -389,7 +389,6 @@ adjective definitions.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Definitions of rules in rulebooks"</span><span class="plain">);</span>
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">)</span>
             <span class="functiontext">Rulebooks::compile_rule_phrases</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">,</span>
@@ -406,7 +405,6 @@ adjective definitions.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Definitions of displaced and unbooked rules"</span><span class="plain">);</span>
         <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain">)</span>
             <span class="functiontext">Rules::compile_definition</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">,</span>
@@ -429,7 +427,6 @@ of Inform.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Definitions of adjectives"</span><span class="plain">);</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">)) ==</span>

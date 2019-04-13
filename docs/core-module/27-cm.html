@@ -88,10 +88,8 @@
                 <span class="reserved">else</span>
                     <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)));</span>
         <span class="plain">}</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">package_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="functiontext">Packaging::request_resources</span><span class="plain">());</span>
+        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;resources</span><span class="plain"> = </span><span class="functiontext">Packaging::resources_for_new_submodule</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, &amp;(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;subpackages</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;resources</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="identifier">package_iname</span><span class="plain">, </span><span class="functiontext">Packaging::request_resources</span><span class="plain">(), </span><span class="identifier">module_ptype</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::initialise_subpackages</span><span class="plain">(&amp;(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;subpackages</span><span class="plain">));</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -167,7 +165,7 @@
 
 <p class="endnote">The function Modules::propagate_downwards appears nowhere else.</p>
 
-<p class="endnote">The function Modules::find is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP5_3">&#167;5.3</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 21/rl (<a href="21-rl.html#SP26">&#167;26</a>), 21/rl2 (<a href="21-rl2.html#SP10">&#167;10</a>), 21/fao (<a href="21-fao.html#SP10">&#167;10</a>), 22/ph (<a href="22-ph.html#SP6_8">&#167;6.8</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 26/ts (<a href="26-ts.html#SP9_1">&#167;9.1</a>), 27/pc (<a href="27-pc.html#SP7">&#167;7</a>).</p>
+<p class="endnote">The function Modules::find is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP5_3">&#167;5.3</a>), 21/rl (<a href="21-rl.html#SP26">&#167;26</a>), 22/ph (<a href="22-ph.html#SP6_8">&#167;6.8</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 27/pc (<a href="27-pc.html#SP7">&#167;7</a>), 27/hr (<a href="27-hr.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The function Modules::markable appears nowhere else.</p>
 

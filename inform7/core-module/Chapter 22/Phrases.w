@@ -351,8 +351,7 @@ inter_schema *Phrases::get_inter_tail(phrase *ph) {
 inter_name *Phrases::iname(phrase *ph) {
 	if (ph->ph_iname == NULL) {
 		inter_name *c_iname = InterNames::new(ADJECTIVE_DEFINED_INAMEF);
-		package_request *PR =
-			Packaging::request_resource(ph->owning_module, ADJECTIVES_SUBMODULE);
+		package_request *PR = Hierarchy::package(ph->owning_module, ADJECTIVE_PHRASES_HAP);
 		ph->ph_iname = Packaging::function(
 			InterNames::one_off(I"definition_fn", PR),
 			PR,

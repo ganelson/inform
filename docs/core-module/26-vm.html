@@ -249,7 +249,7 @@ value for each possible word size.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">VirtualMachines::emit_fundamental_constants</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VirtualMachines::emit_fundamental_constants</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target_VM</span><span class="plain"> == -1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"target VM not set yet"</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">))</span>
@@ -263,36 +263,25 @@ value for each possible word size.
             <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">DICT_WORD_SIZE_HL</span><span class="plain">, 9);</span>
         <span class="plain">}</span>
 
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">NULL_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">table_of_VM_data</span><span class="plain">[</span><span class="identifier">target_VM</span><span class="plain">]</span><span class="element">.VM_is_32_bit</span><span class="plain">) {</span>
             <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">WORDSIZE_HL</span><span class="plain">, 4);</span>
-            <span class="identifier">NULL_iname</span><span class="plain"> = </span><span class="functiontext">VirtualMachines::emit_unchecked_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">NULL_HL</span><span class="plain">, 0</span><span class="identifier">xffffffff</span><span class="plain">);</span>
+            <span class="functiontext">VirtualMachines::emit_unchecked_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">NULL_HL</span><span class="plain">, 0</span><span class="identifier">xffffffff</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">WORD_HIGHBIT_HL</span><span class="plain">, 0</span><span class="identifier">x80000000</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">WORD_NEXTTOHIGHBIT_HL</span><span class="plain">, 0</span><span class="identifier">x40000000</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">IMPROBABLE_VALUE_HL</span><span class="plain">, 0</span><span class="identifier">xdeadce11</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">REPARSE_CODE_HL</span><span class="plain">, 0</span><span class="identifier">x40000000</span><span class="plain">);</span>
-            <span class="identifier">MPN_iname</span><span class="plain"> = </span><span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">, 2147483647);</span>
+            <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">, 2147483647);</span>
             <span class="functiontext">VirtualMachines::emit_signed_fundamental_constant</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_HL</span><span class="plain">, -2147483648);</span>
-            <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">));</span>
-            <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_HL</span><span class="plain">));</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">));</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_HL</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">WORDSIZE_HL</span><span class="plain">, 2);</span>
-            <span class="identifier">NULL_iname</span><span class="plain"> = </span><span class="functiontext">VirtualMachines::emit_unchecked_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">NULL_HL</span><span class="plain">, 0</span><span class="identifier">xffff</span><span class="plain">);</span>
+            <span class="functiontext">VirtualMachines::emit_unchecked_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">NULL_HL</span><span class="plain">, 0</span><span class="identifier">xffff</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">WORD_HIGHBIT_HL</span><span class="plain">, 0</span><span class="identifier">x8000</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">WORD_NEXTTOHIGHBIT_HL</span><span class="plain">, 0</span><span class="identifier">x4000</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">IMPROBABLE_VALUE_HL</span><span class="plain">, 0</span><span class="identifier">x7fe3</span><span class="plain">);</span>
             <span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="constant">REPARSE_CODE_HL</span><span class="plain">, 10000);</span>
-            <span class="identifier">MPN_iname</span><span class="plain"> = </span><span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">, 32767);</span>
+            <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">, 32767);</span>
             <span class="functiontext">VirtualMachines::emit_signed_fundamental_constant</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_HL</span><span class="plain">, -32768);</span>
-            <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">));</span>
-            <span class="functiontext">InterNames::cache</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_HL</span><span class="plain">));</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_POSITIVE_NUMBER_HL</span><span class="plain">));</span>
-            <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MIN_NEGATIVE_NUMBER_HL</span><span class="plain">));</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

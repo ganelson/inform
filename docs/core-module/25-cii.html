@@ -2510,7 +2510,7 @@ very special circumstances.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="constant">ssp_closing_segment_wn_ANNOT</span><span class="plain">) == -1) {</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">NULL_iname</span><span class="plain">);</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NULL_HL</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%~W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="constant">ssp_closing_segment_wn_ANNOT</span><span class="plain">)));</span>

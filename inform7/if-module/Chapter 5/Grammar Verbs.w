@@ -270,15 +270,12 @@ void PL::Parsing::Verbs::remove_action(grammar_verb *gv, action_name *an) {
 @ Command GVs are destined to be compiled into |Verb| directives, as follows.
 
 =
-void PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv) {
+void PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv, inter_name *array_iname) {
 	if (gv->gv_is != GV_IS_COMMAND)
 		internal_error("tried to compile Verb from non-command GV");
 	if (gv->first_line == NULL)
 		internal_error("compiling Verb for empty grammar");
 
-	inter_name *array_iname = InterNames::new(VERB_DECLARATION_ARRAY_INAMEF);
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
-	Packaging::house(array_iname, PR);
 	Emit::named_verb_array_begin(array_iname, K_value);
 
 	if (Wordings::empty(gv->command))
@@ -387,8 +384,8 @@ grammar_verb *PL::Parsing::Verbs::named_token_new(wording W) {
 	if (gv == NULL) {
 		gv = PL::Parsing::Verbs::gv_new(GV_IS_TOKEN);
 		gv->name = W;
+		package_request *PR = Hierarchy::local_package(NAMED_TOKENS_HAP);
 		inter_name *m_iname = InterNames::new(GPR_FOR_TOKEN_INAMEF);
-		package_request *PR = Packaging::local_resource(GRAMMAR_SUBMODULE);
 		gv->gv_line_iname = Packaging::function(
 			InterNames::one_off(I"parse_line_fn", PR),
 			PR,
@@ -726,9 +723,6 @@ void PL::Parsing::Verbs::compile_all(void) {
 	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_HL, 11);
 	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
 
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
-	packaging_state save = Packaging::enter(PR);
-
 	LOOP_OVER(gv, grammar_verb)
 		if (gv->gv_is == GV_IS_TOKEN)
 			PL::Parsing::Verbs::compile(gv); /* makes GPRs for designed tokens */
@@ -750,7 +744,6 @@ void PL::Parsing::Verbs::compile_all(void) {
 			PL::Parsing::Verbs::compile(gv); /* makes routines for use in |parse_name| */
 
 	PL::Parsing::Lines::compile_slash_gprs();
-	Packaging::exit(save);
 }
 
 @ The following routine unites, so far as possible, the different forms of
@@ -774,11 +767,17 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 
 	PL::Parsing::Lines::reset_labels();
 	switch(gv->gv_is) {
-		case GV_IS_COMMAND:
-			PL::Parsing::Verbs::gv_compile_Verb_directive_header(gv);
+		case GV_IS_COMMAND: {
+			inter_name *array_iname = InterNames::new(VERB_DECLARATION_ARRAY_INAMEF);
+			package_request *PR = Hierarchy::synoptic_package(COMMANDS_HAP);
+			Packaging::house(array_iname, PR);
+			packaging_state save = Packaging::enter_home_of(array_iname);
+			PL::Parsing::Verbs::gv_compile_Verb_directive_header(gv, array_iname);
 			PL::Parsing::Verbs::gv_compile_lines(NULL, gv);
 			Emit::array_end();
+			Packaging::exit(save);
 			break;
+		}
 		case GV_IS_TOKEN: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 			if (gv->gv_line_iname == NULL) internal_error("gv token not ready");

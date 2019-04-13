@@ -257,6 +257,8 @@ void Hierarchy::establish(void) {
 @e ADJECTIVES_HAP
 @e ADJECTIVE_MEANING_PR_COUNTER
 @e ADJECTIVE_MEANINGS_HAP
+@e ADJECTIVE_PHRASE_PR_COUNTER
+@e ADJECTIVE_PHRASES_HAP
 
 @<Establish adjectives@> =
 	inter_symbol *adjective_ptype = Packaging::register_ptype(I"_adjective", TRUE);
@@ -265,6 +267,9 @@ void Hierarchy::establish(void) {
 	inter_symbol *adjective_meaning_ptype = Packaging::register_ptype(I"_adjective_meaning", TRUE);
 	Packaging::register_counter(ADJECTIVE_MEANING_PR_COUNTER, I"adjective_meaning");
 	HierarchyLocations::ap(ADJECTIVE_MEANINGS_HAP, ADJECTIVES_SUBMODULE, ADJECTIVE_MEANING_PR_COUNTER, adjective_meaning_ptype);
+	inter_symbol *adjective_phrase_ptype = Packaging::register_ptype(I"_adjective_phrase", TRUE);
+	Packaging::register_counter(ADJECTIVE_PHRASE_PR_COUNTER, I"adjective_phrase");
+	HierarchyLocations::ap(ADJECTIVE_PHRASES_HAP, ADJECTIVES_SUBMODULE, ADJECTIVE_PHRASE_PR_COUNTER, adjective_phrase_ptype);
 
 @h Bibliographic.
 
@@ -369,8 +374,28 @@ void Hierarchy::establish(void) {
 
 @h Grammar.
 
+@e COND_TOKEN_PR_COUNTER
+@e COND_TOKENS_HAP
+@e CONSULT_TOKEN_PR_COUNTER
+@e CONSULT_TOKENS_HAP
 @e TEST_PR_COUNTER
 @e TESTS_HAP
+@e LOOP_OVER_SCOPE_PR_COUNTER
+@e LOOP_OVER_SCOPES_HAP
+@e MISTAKE_PR_COUNTER
+@e MISTAKES_HAP
+@e NAMED_ACTION_PATTERN_PR_COUNTER
+@e NAMED_ACTION_PATTERNS_HAP
+@e NAMED_TOKEN_PR_COUNTER
+@e NAMED_TOKENS_HAP
+@e NOUN_FILTER_PR_COUNTER
+@e NOUN_FILTERS_HAP
+@e PARSE_NAME_PR_COUNTER
+@e PARSE_NAMES_HAP
+@e SCOPE_FILTER_PR_COUNTER
+@e SCOPE_FILTERS_HAP
+@e SLASH_TOKEN_PR_COUNTER
+@e SLASH_TOKENS_HAP
 
 @e VERB_DIRECTIVE_CREATURE_HL
 @e VERB_DIRECTIVE_DIVIDER_HL
@@ -388,11 +413,43 @@ void Hierarchy::establish(void) {
 @e VERB_DIRECTIVE_TOPIC_HL
 @e TESTSCRIPTSUB_HL
 @e INTERNALTESTCASES_HL
+@e COMMAND_PR_COUNTER
+@e COMMANDS_HAP
 
 @<Establish grammar@> =
+	inter_symbol *cond_ptype = Packaging::register_ptype(I"_conditional_token", TRUE);
+	Packaging::register_counter(COND_TOKEN_PR_COUNTER, I"conditional_token");
+	HierarchyLocations::ap(COND_TOKENS_HAP, GRAMMAR_SUBMODULE, COND_TOKEN_PR_COUNTER, cond_ptype);
+	inter_symbol *consult_ptype = Packaging::register_ptype(I"_consult_token", TRUE);
+	Packaging::register_counter(CONSULT_TOKEN_PR_COUNTER, I"consult_token");
+	HierarchyLocations::ap(CONSULT_TOKENS_HAP, GRAMMAR_SUBMODULE, CONSULT_TOKEN_PR_COUNTER, consult_ptype);
 	inter_symbol *test_ptype = Packaging::register_ptype(I"_test", TRUE);
 	Packaging::register_counter(TEST_PR_COUNTER, I"test");
 	HierarchyLocations::ap(TESTS_HAP, GRAMMAR_SUBMODULE, TEST_PR_COUNTER, test_ptype);
+	inter_symbol *los_ptype = Packaging::register_ptype(I"_loop_over_scope", TRUE);
+	Packaging::register_counter(LOOP_OVER_SCOPE_PR_COUNTER, I"loop_over_scope");
+	HierarchyLocations::ap(LOOP_OVER_SCOPES_HAP, GRAMMAR_SUBMODULE, LOOP_OVER_SCOPE_PR_COUNTER, los_ptype);
+	inter_symbol *m_ptype = Packaging::register_ptype(I"_mistake", TRUE);
+	Packaging::register_counter(MISTAKE_PR_COUNTER, I"mistake");
+	HierarchyLocations::ap(MISTAKES_HAP, GRAMMAR_SUBMODULE, MISTAKE_PR_COUNTER, m_ptype);
+	inter_symbol *nap_ptype = Packaging::register_ptype(I"_named_action_pattern", TRUE);
+	Packaging::register_counter(NAMED_ACTION_PATTERN_PR_COUNTER, I"named_action_pattern");
+	HierarchyLocations::ap(NAMED_ACTION_PATTERNS_HAP, GRAMMAR_SUBMODULE, NAMED_ACTION_PATTERN_PR_COUNTER, nap_ptype);
+	inter_symbol *nt_ptype = Packaging::register_ptype(I"_named_token", TRUE);
+	Packaging::register_counter(NAMED_TOKEN_PR_COUNTER, I"named_token");
+	HierarchyLocations::ap(NAMED_TOKENS_HAP, GRAMMAR_SUBMODULE, NAMED_TOKEN_PR_COUNTER, nt_ptype);
+	inter_symbol *nf_ptype = Packaging::register_ptype(I"_noun_filter", TRUE);
+	Packaging::register_counter(NOUN_FILTER_PR_COUNTER, I"noun_filter");
+	HierarchyLocations::ap(NOUN_FILTERS_HAP, GRAMMAR_SUBMODULE, NOUN_FILTER_PR_COUNTER, nf_ptype);
+	inter_symbol *sf_ptype = Packaging::register_ptype(I"_scope_filter", TRUE);
+	Packaging::register_counter(SCOPE_FILTER_PR_COUNTER, I"scope_filter");
+	HierarchyLocations::ap(SCOPE_FILTERS_HAP, GRAMMAR_SUBMODULE, SCOPE_FILTER_PR_COUNTER, sf_ptype);
+	inter_symbol *pn_ptype = Packaging::register_ptype(I"_parse_name", TRUE);
+	Packaging::register_counter(PARSE_NAME_PR_COUNTER, I"parse_name");
+	HierarchyLocations::ap(PARSE_NAMES_HAP, GRAMMAR_SUBMODULE, PARSE_NAME_PR_COUNTER, pn_ptype);
+	inter_symbol *slash_ptype = Packaging::register_ptype(I"_slash_token", TRUE);
+	Packaging::register_counter(SLASH_TOKEN_PR_COUNTER, I"slash_token");
+	HierarchyLocations::ap(SLASH_TOKENS_HAP, GRAMMAR_SUBMODULE, SLASH_TOKEN_PR_COUNTER, slash_ptype);
 
 	package_request *synoptic_grammar = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
 	HierarchyLocations::make(VERB_DIRECTIVE_CREATURE_HL, I"VERB_DIRECTIVE_CREATURE", synoptic_grammar);
@@ -411,6 +468,9 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make(VERB_DIRECTIVE_TOPIC_HL, I"VERB_DIRECTIVE_TOPIC", synoptic_grammar);
 	HierarchyLocations::make_function(TESTSCRIPTSUB_HL, I"action_fn", I"TestScriptSub", synoptic_grammar);
 	HierarchyLocations::make_function(INTERNALTESTCASES_HL, I"run_tests_fn", I"InternalTestCases", synoptic_grammar);
+	inter_symbol *command_ptype = Packaging::register_ptype(I"_command", TRUE);
+	Packaging::register_counter(COMMAND_PR_COUNTER, I"command");
+	HierarchyLocations::synoptic_ap(COMMANDS_HAP, GRAMMAR_SUBMODULE, COMMAND_PR_COUNTER, command_ptype);
 
 @h Instances.
 
@@ -1341,4 +1401,8 @@ package_request *Hierarchy::package_within(int hap_id, package_request *super) {
 
 package_request *Hierarchy::package_in_package(int id, package_request *P) {
 	return HierarchyLocations::package_in_package(id, P);
+}
+
+package_request *Hierarchy::home_for_weak_type_IDs(void) {
+	return Packaging::synoptic_resource(KINDS_SUBMODULE);
 }
