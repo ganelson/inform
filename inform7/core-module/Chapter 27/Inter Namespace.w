@@ -2,6 +2,14 @@
 
 @
 
+=
+typedef struct name_iterator {
+	struct text_stream *prototype;
+	int counter;
+} name_iterator;
+
+@
+
 @e UNIQUE_FUSAGE from 1
 @e UNIQUE_PER_NAMESPACE_FUSAGE
 @e MANY_PER_NAMESPACE_FUSAGE
@@ -24,7 +32,6 @@ typedef struct inter_name_family {
 	struct inter_name_family *derivative_of;
 	struct text_stream *derived_prefix;
 	struct text_stream *derived_suffix;
-	int cache_me;
 	int mark_exports;
 	MEMORY_MANAGEMENT
 } inter_name_family;
@@ -73,7 +80,6 @@ inter_name_family *InterNames::new_family(int fu, text_stream *name) {
 	F->derivative_of = NULL;
 	F->derived_prefix = NULL;
 	F->derived_suffix = NULL;
-	F->cache_me = FALSE;
 	F->mark_exports = TRUE;
 	return F;
 }
@@ -123,7 +129,7 @@ inter_name *InterNames::new_in_space(inter_namespace *S, inter_name_family *F, i
 	N->parametrised_derivatives = NULL;
 	N->declared_in = NULL;
 	N->to_mark = 0;
-	N->eventual_owner = Packaging::request_main();
+	N->eventual_owner = Hierarchy::main();
 	return N;
 }
 
@@ -410,11 +416,6 @@ inter_name *InterNames::new_in(int fnum, compilation_module *C) {
 
 void InterNames::mark(inter_name_family *F, inter_name *iname, compilation_module *C) {
 	iname->declared_in = C;
-	if ((C) && (C->allocation_id == 1) && (F->cache_me)) InterNames::cache(iname);
-}
-
-void InterNames::cache(inter_name *iname) {
-	iname->to_mark = SR_CACHE_MARK_BIT;
 }
 
 compilation_module *InterNames::to_module(inter_name *iname) {
@@ -546,7 +547,7 @@ inter_name_family *InterNames::get_family(int fnum) {
 	if ((fnum < 1) || (fnum >= FINAL_INAMEF)) internal_error("fnum out of range");
 	if (inter_name_families[fnum]) return inter_name_families[fnum];
 	text_stream *S = NULL;
-	int D = -1, cache = FALSE, mark_exports = TRUE;
+	int D = -1, mark_exports = TRUE;
 	text_stream *Pre = NULL, *Suf = NULL;
 	switch (fnum) {
 		case ACTION_BASE_INAMEF:					S = I"A";					break;
@@ -557,18 +558,18 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case ACTIVITY_INAMEF:						S = I"V";					break;
 		case ACTIVITY_STV_FRAME_CREATOR_INAMEF:		S = I"AVSTVC";				break;
 		case ADJECTIVE_DEFINED_INAMEF:				S = I"ADJDEFN";				break;
-		case ADJECTIVAL_TASK_ROUTINE_INAMEF:		D = AGREE_ADJECTIVE_INAMEF; Suf = I"Task"; cache = TRUE; break;
-		case AGREE_ADJECTIVE_INAMEF:				S = I"Adj"; cache = TRUE;	break;
+		case ADJECTIVAL_TASK_ROUTINE_INAMEF:		D = AGREE_ADJECTIVE_INAMEF; Suf = I"Task"; break;
+		case AGREE_ADJECTIVE_INAMEF:				S = I"Adj";	break;
 		case BACKDROP_FOUND_IN_INAMEF:				S = I"BD_found_in_storage";	break;
 		case BACKDROP_FOUND_IN_ROUTINE_INAMEF:		S = I"FI_for_I";			break;
 		case CLOSURE_INAMEF:						S = I"Closure";				break;
 		case CONJUGATE_VERB_FORM_INAMEF:			S = I"ConjugateVerbForm";	break;
 		case CONJUGATE_VERB_ROUTINE_INAMEF:			S = I"ConjugateVerb";		break;
 		case CONJUGATIONS_INAMEF:					S = I"conjugations";		break;
-		case CONSULT_GRAMMAR_INAMEF:				S = I"Consult_Grammar"; cache = TRUE;	break;
+		case CONSULT_GRAMMAR_INAMEF:				S = I"Consult_Grammar";	break;
 		case COUNT_INSTANCE_INAMEF:					D = KIND_INAMEF; Suf = I"_Count"; break;
 		case DEFAULT_VALUE_INAMEF:					S = I"DV";					break;
-		case DEFERRED_PROPOSITION_ROUTINE_INAMEF:	S = I"Prop"; cache = TRUE;	break;
+		case DEFERRED_PROPOSITION_ROUTINE_INAMEF:	S = I"Prop";	break;
 		case DEFERRED_PROPOSITION_RTP_INAMEF:		S = I"PROP_SRC";			break;
 		case DIRECTION_OBJECT_INAMEF:				S = I"DirectionObject";		break;
 		case EQUATION_ROUTINE_INAMEF:				S = I"Q";					break;
@@ -586,7 +587,7 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case ICOUNT_CONSTANT_INAMEF:				S = I"always_overridden";	break;
 		case IFID_ARRAY_INAMEF:						S = I"IFID_ARRAY";			break;
 		case INSTANCE_INAMEF:						S = I"I";					break;
-		case KERNEL_ROUTINE_INAMEF:					S = I"KERNEL"; cache = TRUE; break;
+		case KERNEL_ROUTINE_INAMEF:					S = I"KERNEL"; break;
 		case KIND_DECREMENT_ROUTINE_INAMEF:			D = PRINTING_ROUTINE_INAMEF; Pre = I"B_"; break;
 		case KIND_ID_INAMEF:						S = I"KD";					break;
 		case KIND_INAMEF:							S = I"K";					break;
@@ -596,9 +597,9 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case LABEL_STORAGE_INAMEF:					D = LABEL_BASE_INAMEF; Pre = I"I7_ST_"; break;
 		case LIST_TOGETHER_ARRAY_INAMEF:			S = I"LTR";					break;
 		case LIST_TOGETHER_ROUTINE_INAMEF:			S = I"LTR_R";				break;
-		case LITERAL_LIST_INAMEF:					S = I"LIST_CONST"; cache = TRUE; break;
-		case LITERAL_TEXT_INAMEF:					S = I"TX_PS"; cache = TRUE;	break;
-		case LITERAL_TEXT_SBA_INAMEF:				S = I"TX_L"; cache = TRUE;	break;
+		case LITERAL_LIST_INAMEF:					S = I"LIST_CONST"; break;
+		case LITERAL_TEXT_INAMEF:					S = I"TX_PS";	break;
+		case LITERAL_TEXT_SBA_INAMEF:				S = I"TX_L";	break;
 		case LOOP_OVER_SCOPE_ROUTINE_INAMEF:		S = I"LOS";					break;
 		case MEASUREMENT_ADJECTIVE_INAMEF:			S = I"MADJ_Test";			break;
 		case NAME_PROPERTY_STORAGE_INAMEF:			S = I"name_storage";		break;
@@ -608,8 +609,8 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case PACKAGE_INAMEF:						S = I"package";				break;
 		case PARSE_NAME_ROUTINE_INAMEF:				S = I"PN_for_S";			break;
 		case PAST_ACTION_ROUTINE_INAMEF:			S = I"PAPR";				break;
-		case PHRASE_INAMEF:							S = I"R"; cache = TRUE;		break;
-		case PHRASE_REQUEST_INAMEF:					S = I"REQ"; cache = TRUE;	break;
+		case PHRASE_INAMEF:							S = I"R";		break;
+		case PHRASE_REQUEST_INAMEF:					S = I"REQ";	break;
 		case PRINTING_ROUTINE_INAMEF:				S = I"E";					break;
 		case PROPERTY_INAMEF:						S = I"P"; mark_exports = FALSE; break;
 		case REGION_FOUND_IN_ROUTINE_INAMEF:		S = I"RFI_for_I";			break;
@@ -623,10 +624,10 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case RELATION_INITIALISER_ROUTINE_INAMEF:	S = I"InitialiseRelation";	break;
 		case RELATION_RECORD_INAMEF:				S = I"Rel_Record";			break;
 		case RELATION_RELS_BM_INAMEF:				S = I"Relation_RELS_BM";	break;
-		case RESPONSE_CONSTANT_INAMEF:				S = I"RESP"; cache = TRUE;	break;
-		case RESPONSE_ROUTINE_INAMEF:				D = RESPONSE_VALUE_INAMEF; Suf = I"_R"; cache = TRUE;	break;
-		case RESPONSE_VALUE_INAMEF:					S = I"TX_R"; cache = TRUE;	break;
-		case ROUTINE_BLOCK_INAMEF:					S = I"RBLK"; cache = TRUE;	break;
+		case RESPONSE_CONSTANT_INAMEF:				S = I"RESP";	break;
+		case RESPONSE_ROUTINE_INAMEF:				D = RESPONSE_VALUE_INAMEF; Suf = I"_R";	break;
+		case RESPONSE_VALUE_INAMEF:					S = I"TX_R";	break;
+		case ROUTINE_BLOCK_INAMEF:					S = I"RBLK";	break;
 		case RULE_SHELL_ROUTINE_INAMEF:				S = I"I6_Rule_Shell";		break;
 		case RULEBOOK_INAMEF:						S = I"B";					break;
 		case RULEBOOK_NAMED_OPTION_INAMEF:			S = I"RBNO";				break;
@@ -638,8 +639,8 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case TABLE_INAMEF:							S = I"T";					break;
 		case TEST_REQS_INAMEF:						S = I"TestReq";				break;
 		case TEST_TEXTS_INAMEF:						S = I"TestText";			break;
-		case TEXT_ROUTINE_INAMEF:					D = TEXT_SUBSTITUTION_INAMEF; Pre = I"R_"; cache = TRUE; break;
-		case TEXT_SUBSTITUTION_INAMEF:				S = I"TX_S"; cache = TRUE;	break;
+		case TEXT_ROUTINE_INAMEF:					D = TEXT_SUBSTITUTION_INAMEF; Pre = I"R_"; break;
+		case TEXT_SUBSTITUTION_INAMEF:				S = I"TX_S";	break;
 		case TO_PHRASE_INAMEF:						S = I"PHR";					break;
 		case TWO_SIDED_DOOR_DOOR_DIR_INAMEF:		S = I"TSD_door_dir_value";	break;
 		case TWO_SIDED_DOOR_DOOR_TO_INAMEF:			S = I"TSD_door_to_value";	break;
@@ -660,8 +661,9 @@ inter_name_family *InterNames::get_family(int fnum) {
 			inter_name_families[fnum]->derived_prefix = Str::duplicate(Pre);
 			inter_name_families[fnum]->derived_suffix = Str::duplicate(Suf);
 		}
-		if (cache) inter_name_families[fnum]->cache_me = TRUE;
 		inter_name_families[fnum]->mark_exports = mark_exports;
 	} else internal_error("nameless namespace family");
 	return inter_name_families[fnum];
 }
+
+

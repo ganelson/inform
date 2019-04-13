@@ -22,6 +22,7 @@ Defining the one true set of Inter annotation codes.
 @e DECLARATION_ORDER_IANN
 @e DELENDA_EST_IANN
 @e EITHER_OR_IANN
+@e ENCLOSING_IANN
 @e FAKE_ACTION_IANN
 @e HOLDING_IANN
 @e INLINE_ARRAY_IANN
@@ -46,7 +47,6 @@ symbol.
 @d TRAVERSE_MARK_BIT 1
 @d ATTRIBUTE_MARK_BIT 2
 @d VPH_MARK_BIT 4
-@d SR_CACHE_MARK_BIT 8
 @d USED_MARK_BIT 16
 @d MAKE_NAME_UNIQUE 32
 @d EXTERN_TARGET_BIT 64
@@ -74,6 +74,7 @@ void Inter::Canon::declare(void) {
 	Inter::Defn::create_annotation(DECLARATION_ORDER_IANN, I"__declaration_order", FALSE);
 	Inter::Defn::create_annotation(DELENDA_EST_IANN, I"__delenda_est", FALSE);
 	Inter::Defn::create_annotation(EITHER_OR_IANN, I"__either_or", FALSE);
+	Inter::Defn::create_annotation(ENCLOSING_IANN, I"__enclosing", FALSE);
 	Inter::Defn::create_annotation(FAKE_ACTION_IANN, I"__fake_action", FALSE);
 	Inter::Defn::create_annotation(HOLDING_IANN, I"__holding", FALSE);
 	Inter::Defn::create_annotation(INLINE_ARRAY_IANN, I"__inline_array", FALSE);

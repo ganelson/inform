@@ -253,7 +253,10 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_repository *I, inter_pa
 	if (T == NULL) T = Inter::get_global_symbols(I);
 	if (T != S->owning_table) {
 		LOGIF(INTER_SYMBOLS, "Seek ID of $3 from $4, which is not its owner $4\n", S, T, S->owning_table);
-		if (S->owning_table == Inter::get_global_symbols(I)) internal_error("attempted to equate to global");
+		if (S->owning_table == Inter::get_global_symbols(I)) {
+			LOG("Seek ID of $3 from $4, which is not its owner $4\n", S, T, S->owning_table);
+			internal_error("attempted to equate to global");
+		}
 		for (int i=0; i<T->size; i++)
 			if ((T->symbol_array[i]) && (T->symbol_array[i]->equated_to == S))
 				return (inter_t) T->symbol_array[i]->symbol_ID;

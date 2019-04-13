@@ -123,9 +123,7 @@ rule *Rules::new(wording W, int named) {
 	R->do_not_import = FALSE;
 	R->explicitly_named = named;
 	R->shell_routine_iname = NULL;
-	package_request *R1 = Packaging::local_resource(RULES_SUBMODULE);
-	R->rule_package =
-		Packaging::request(Packaging::supply_iname(R1, RULE_PR_COUNTER), R1, rule_ptype);
+	R->rule_package = Hierarchy::local_package(RULES_HAP);
 	for (int l=0; l<26; l++) {
 		R->lettered_responses[l] = NULL;
 		R->lettered_responses_used[l] = NULL;

@@ -385,7 +385,6 @@ void Kinds::Constructors::compile_I6_constants(void) {
 			Hierarchy::make_available(con->con_iname);
 			packaging_state save = Packaging::enter_home_of(con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
-			Inter::Symbols::set_flag(InterNames::to_symbol(con->con_iname), SR_CACHE_MARK_BIT);
 			Packaging::exit(save);
 		}
 	}
@@ -400,10 +399,7 @@ inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	return UNKNOWN_TY_iname;
 }
 package_request *Kinds::Constructors::package(kind_constructor *con) {
-	if (con->kc_package == NULL) {
-		package_request *R = Packaging::local_resource(KINDS_SUBMODULE);
-		con->kc_package = Packaging::request(Packaging::supply_iname(R, KIND_PR_COUNTER), R, kind_ptype);
-	}
+	if (con->kc_package == NULL) con->kc_package = Hierarchy::local_package(KIND_HAP);
 	return con->kc_package;
 }
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {

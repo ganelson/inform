@@ -71,8 +71,7 @@ response_message *Strings::response_cue(value_holster *VH, rule *owner, int mark
 	resp->launcher_compiled = FALSE;
 	resp->via_I6 = via_I6;
 	resp->via_I6_routine_compiled = FALSE;
-	package_request *R = Rules::package(resp->responding_rule);
-	resp->resp_package = Packaging::request(Packaging::supply_iname(R, RESPONSE_PR_COUNTER), R, response_ptype);
+	resp->resp_package = Hierarchy::package_within(RESPONSES_HAP, Rules::package(resp->responding_rule));
 	resp->resp_iname = InterNames::one_off(I"launcher", resp->resp_package);
 	Inter::Symbols::set_flag(InterNames::to_symbol(resp->resp_iname), MAKE_NAME_UNIQUE);
 	resp->constant_iname = InterNames::one_off(I"as_constant", resp->resp_package);

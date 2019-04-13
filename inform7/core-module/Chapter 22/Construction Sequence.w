@@ -274,14 +274,12 @@ void Phrases::Manager::compile_first_block(void) {
 			total_phrases_to_compile++;
 
 @<Compile definitions of rules in rulebooks@> =
-	Emit::comment(I"Definitions of rules in rulebooks");
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook)
 		Rulebooks::compile_rule_phrases(rb,
 			&total_phrases_compiled, total_phrases_to_compile);
 
 @<Compile definitions of rules left out of rulebooks@> =
-	Emit::comment(I"Definitions of displaced and unbooked rules");
 	rule *R;
 	LOOP_OVER(R, rule)
 		Rules::compile_definition(R,
@@ -292,7 +290,6 @@ a whole multi-step phrase to define them -- a relatively little-used feature
 of Inform.
 
 @<Compile phrases which define adjectives@> =
-	Emit::comment(I"Definitions of adjectives");
 	phrase *ph;
 	LOOP_OVER(ph, phrase)
 		if (Phrases::Usage::get_effect(&(ph->usage_data)) ==

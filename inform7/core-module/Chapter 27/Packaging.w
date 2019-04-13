@@ -7,130 +7,36 @@ inter_symbol *plain_ptype = NULL;
 inter_symbol *code_ptype = NULL;
 inter_symbol *module_ptype = NULL;
 inter_symbol *function_ptype = NULL;
-inter_symbol *verb_ptype = NULL;
-inter_symbol *mverb_ptype = NULL;
 inter_symbol *to_phrase_ptype = NULL;
-inter_symbol *rule_ptype = NULL;
-inter_symbol *request_ptype = NULL;
 inter_symbol *closure_ptype = NULL;
 inter_symbol *response_ptype = NULL;
 inter_symbol *adjective_ptype = NULL;
 inter_symbol *adjective_meaning_ptype = NULL;
-inter_symbol *instance_ptype = NULL;
-inter_symbol *property_ptype = NULL;
-inter_symbol *variable_ptype = NULL;
-inter_symbol *kind_ptype = NULL;
-inter_symbol *action_ptype = NULL;
-inter_symbol *activity_ptype = NULL;
-inter_symbol *rulebook_ptype = NULL;
-inter_symbol *table_ptype = NULL;
-inter_symbol *table_column_ptype = NULL;
-inter_symbol *relation_ptype = NULL;
-inter_symbol *test_ptype = NULL;
-inter_symbol *outcome_ptype = NULL;
 inter_symbol *data_ptype = NULL;
-inter_symbol *external_file_ptype = NULL;
-inter_symbol *label_storage_ptype = NULL;
 
 @ =
 void Packaging::emit_types(void) {
 	plain_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_plain");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), plain_ptype, Emit::baseline(Emit::IRS()), NULL));
+
 	code_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_code");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), code_ptype, Emit::baseline(Emit::IRS()), NULL));
+
 	module_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_module");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), module_ptype, Emit::baseline(Emit::IRS()), NULL));
+
 	function_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_function");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), function_ptype, Emit::baseline(Emit::IRS()), NULL));
-	verb_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_verb");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), verb_ptype, Emit::baseline(Emit::IRS()), NULL));
-	mverb_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_mverb");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), mverb_ptype, Emit::baseline(Emit::IRS()), NULL));
-	to_phrase_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_phrase");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), to_phrase_ptype, Emit::baseline(Emit::IRS()), NULL));
-	rule_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_rule");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), rule_ptype, Emit::baseline(Emit::IRS()), NULL));
-	request_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_request");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), request_ptype, Emit::baseline(Emit::IRS()), NULL));
-	closure_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_closure");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), closure_ptype, Emit::baseline(Emit::IRS()), NULL));
-	response_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_response");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), response_ptype, Emit::baseline(Emit::IRS()), NULL));
-	adjective_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_adjective");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), adjective_ptype, Emit::baseline(Emit::IRS()), NULL));
-	adjective_meaning_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_adjective_meaning");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), adjective_meaning_ptype, Emit::baseline(Emit::IRS()), NULL));
-	instance_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_instance");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), instance_ptype, Emit::baseline(Emit::IRS()), NULL));
-	property_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_property");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), property_ptype, Emit::baseline(Emit::IRS()), NULL));
-	variable_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_variable");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), variable_ptype, Emit::baseline(Emit::IRS()), NULL));
-	kind_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_kind");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), kind_ptype, Emit::baseline(Emit::IRS()), NULL));
-	action_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_action");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), action_ptype, Emit::baseline(Emit::IRS()), NULL));
-	activity_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_activity");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), activity_ptype, Emit::baseline(Emit::IRS()), NULL));
-	rulebook_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_rulebook");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), rulebook_ptype, Emit::baseline(Emit::IRS()), NULL));
-	table_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_table");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), table_ptype, Emit::baseline(Emit::IRS()), NULL));
-	table_column_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_table_column");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), table_column_ptype, Emit::baseline(Emit::IRS()), NULL));
-	relation_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_relation");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), relation_ptype, Emit::baseline(Emit::IRS()), NULL));
-	test_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_test");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), test_ptype, Emit::baseline(Emit::IRS()), NULL));
-	outcome_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_outcome");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), outcome_ptype, Emit::baseline(Emit::IRS()), NULL));
+	Emit::annotate_symbol_i(function_ptype, ENCLOSING_IANN, 1);
+
 	data_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_data");
 	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), data_ptype, Emit::baseline(Emit::IRS()), NULL));
-	external_file_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_external_file");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), external_file_ptype, Emit::baseline(Emit::IRS()), NULL));
-	label_storage_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_label_storage");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), label_storage_ptype, Emit::baseline(Emit::IRS()), NULL));
+	Emit::annotate_symbol_i(data_ptype, ENCLOSING_IANN, 1);
 }
 
 @
 
-@e VERB_PR_COUNTER from 0
-@e MVERB_PR_COUNTER
-@e FUNCTION_PR_COUNTER
-@e FORM_PR_COUNTER
-@e BLOCK_PR_COUNTER
-@e TO_PHRASE_PR_COUNTER
-@e RULE_PR_COUNTER
-@e REQUEST_PR_COUNTER
-@e CLOSURE_PR_COUNTER
-@e RESPONSE_PR_COUNTER
-@e ADJECTIVE_PR_COUNTER
-@e ADJECTIVE_MEANING_PR_COUNTER
-@e TASK_PR_COUNTER
-@e BLOCK_CONSTANT_PR_COUNTER
-@e LITERAL_PR_COUNTER
-@e PROPOSITION_PR_COUNTER
-@e INSTANCE_PR_COUNTER
-@e INLINE_PR_COUNTER
-@e PROPERTY_PR_COUNTER
-@e VARIABLE_PR_COUNTER
-@e KIND_PR_COUNTER
-@e ACTION_PR_COUNTER
-@e ACTIVITY_PR_COUNTER
-@e RULEBOOK_PR_COUNTER
-@e TABLE_PR_COUNTER
-@e TABLE_COLUMN_PR_COUNTER
-@e RELATION_PR_COUNTER
-@e SUBSTITUTION_PR_COUNTER
-@e SUBSTITUTIONF_PR_COUNTER
-@e MISC_PR_COUNTER
-@e DATA_PR_COUNTER
-@e OUTCOME_PR_COUNTER
-@e TEST_PR_COUNTER
-@e EXTERNAL_FILE_PR_COUNTER
-@e LABEL_STORAGE_PR_COUNTER
-
-@e MAX_PR_COUNTER
+@e BOGUS_PR_COUNTER from 0
 
 =
 typedef struct package_request {
@@ -222,21 +128,7 @@ packaging_state Packaging::enter(package_request *R) {
 	PS.saved_IRS = IRS;
 	PS.saved_enclosure = current_enclosure;
 	for (package_request *S = R; S; S = S->parent_request)
-		if ((S->eventual_type == function_ptype) ||
-			(S->eventual_type == instance_ptype) ||
-			(S->eventual_type == property_ptype) ||
-			(S->eventual_type == variable_ptype) ||
-			(S->eventual_type == action_ptype) ||
-			(S->eventual_type == kind_ptype) ||
-			(S->eventual_type == relation_ptype) ||
-			(S->eventual_type == table_ptype) ||
-			(S->eventual_type == table_column_ptype) ||
-			(S->eventual_type == data_ptype) ||
-			(S->eventual_type == outcome_ptype) ||
-			(S->eventual_type == external_file_ptype) ||
-			(S->eventual_type == adjective_ptype) ||
-			(S->eventual_type == test_ptype) ||
-			(S->eventual_type == closure_ptype) ||
+		if ((Inter::Symbols::read_annotation(S->eventual_type, ENCLOSING_IANN) == 1) ||
 			(S->parent_request == NULL)) {
 			current_enclosure = S;
 			break;
@@ -280,52 +172,34 @@ inter_symbols_table *Packaging::scope(inter_repository *I, inter_name *N) {
 }
 
 @ =
-package_request *main_pr = NULL;
-package_request *Packaging::request_main(void) {
-	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::one_off(I"main", NULL), NULL, plain_ptype);
-	return main_pr;
-}
-
-package_request *resources_pr = NULL;
-package_request *Packaging::request_resources(void) {
-	if (resources_pr == NULL)
-		resources_pr = Packaging::request(
-			InterNames::one_off(I"resources", Packaging::request_main()),
-			Packaging::request_main(), plain_ptype);
-	return resources_pr;
-}
-
 package_request *generic_pr = NULL;
 package_request *Packaging::request_generic(void) {
 	if (generic_pr == NULL)
 		generic_pr = Packaging::request(
-			InterNames::one_off(I"generic", Packaging::request_resources()),
-			Packaging::request_resources(), module_ptype);
+			InterNames::one_off(I"generic", Hierarchy::resources()),
+			Hierarchy::resources(), module_ptype);
 	return generic_pr;
-}
-
-package_request *template_pr = NULL;
-package_request *Packaging::request_template(void) {
-	if (template_pr == NULL)
-		template_pr = Packaging::request(
-			InterNames::one_off(I"template", Packaging::request_resources()),
-			Packaging::request_resources(), module_ptype);
-	return template_pr;
 }
 
 package_request *synoptic_pr = NULL;
 package_request *Packaging::request_synoptic(void) {
 	if (synoptic_pr == NULL)
 		synoptic_pr = Packaging::request(
-			InterNames::one_off(I"synoptic", Packaging::request_resources()),
-			Packaging::request_resources(), module_ptype);
+			InterNames::one_off(I"synoptic", Hierarchy::resources()),
+			Hierarchy::resources(), module_ptype);
 	return synoptic_pr;
 }
 
 typedef struct subpackage_requests {
 	struct package_request *subs[MAX_SUBMODULE];
 } subpackage_requests;
+
+package_request *Packaging::resources_for_new_submodule(text_stream *name, subpackage_requests *SR) {
+	inter_name *package_iname = InterNames::one_off(name, Hierarchy::resources());
+	package_request *P = Packaging::request(package_iname, Hierarchy::resources(), module_ptype);
+	Packaging::initialise_subpackages(SR);
+	return P;
+}
 
 void Packaging::initialise_subpackages(subpackage_requests *SR) {
 	for (int i=0; i<MAX_SUBMODULE; i++) SR->subs[i] = NULL;
@@ -386,49 +260,30 @@ package_request *Packaging::synoptic_resource(int ix) {
 	return SR->subs[ix];
 
 @ =
+int pr_counter_names_created = FALSE;
+text_stream *pr_counter_names[MAX_PR_COUNTER];
+void Packaging::register_counter(int id, text_stream *name) {
+	if ((id < 0) || (id >= MAX_PR_COUNTER)) internal_error("out of range");
+	if (pr_counter_names_created == FALSE) {
+		for (int i=0; i<MAX_PR_COUNTER; i++) pr_counter_names[i] = NULL;
+		pr_counter_names_created = TRUE;
+	}
+	pr_counter_names[id] = name;
+}
+inter_symbol *Packaging::register_ptype(text_stream *name, int enclosing) {
+	inter_symbol *pt = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), name);
+	Emit::guard(Inter::PackageType::new_packagetype(&package_types_bookmark, pt, Emit::baseline(&package_types_bookmark), NULL));
+	if (enclosing) Emit::annotate_symbol_i(pt, ENCLOSING_IANN, 1);
+	return pt;
+}
+
 inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 	if (R == NULL) internal_error("no request");
 	if ((what_for < 0) || (what_for >= MAX_PR_COUNTER)) internal_error("out of range");
+	if ((pr_counter_names_created == FALSE) || (pr_counter_names[what_for] == NULL))
+		internal_error("unregistered counter");
 	TEMPORARY_TEXT(P);
-	switch (what_for) {
-		case VERB_PR_COUNTER: WRITE_TO(P, "verb"); break;
-		case MVERB_PR_COUNTER: WRITE_TO(P, "mverb"); break;
-		case FUNCTION_PR_COUNTER: WRITE_TO(P, "function"); break;
-		case FORM_PR_COUNTER: WRITE_TO(P, "form"); break;
-		case BLOCK_PR_COUNTER: WRITE_TO(P, "code_block"); break;
-		case TO_PHRASE_PR_COUNTER: WRITE_TO(P, "phrase"); break;
-		case RULE_PR_COUNTER: WRITE_TO(P, "rule"); break;
-		case REQUEST_PR_COUNTER: WRITE_TO(P, "request"); break;
-		case CLOSURE_PR_COUNTER: WRITE_TO(P, "closure"); break;
-		case RESPONSE_PR_COUNTER: WRITE_TO(P, "response"); break;
-		case ADJECTIVE_PR_COUNTER: WRITE_TO(P, "adjective"); break;
-		case ADJECTIVE_MEANING_PR_COUNTER: WRITE_TO(P, "adjective_meaning"); break;
-		case TASK_PR_COUNTER: WRITE_TO(P, "task"); break;
-		case LITERAL_PR_COUNTER: WRITE_TO(P, "literal"); break;
-		case BLOCK_CONSTANT_PR_COUNTER: WRITE_TO(P, "block_constant"); break;
-		case PROPOSITION_PR_COUNTER: WRITE_TO(P, "proposition"); break;
-		case INSTANCE_PR_COUNTER: WRITE_TO(P, "instance"); break;
-		case INLINE_PR_COUNTER: WRITE_TO(P, "inline_pval"); break;
-		case PROPERTY_PR_COUNTER: WRITE_TO(P, "property"); break;
-		case VARIABLE_PR_COUNTER: WRITE_TO(P, "variable"); break;
-		case KIND_PR_COUNTER: WRITE_TO(P, "kind"); break;
-		case ACTION_PR_COUNTER: WRITE_TO(P, "action"); break;
-		case ACTIVITY_PR_COUNTER: WRITE_TO(P, "activity"); break;
-		case RULEBOOK_PR_COUNTER: WRITE_TO(P, "rulebook"); break;
-		case TABLE_PR_COUNTER: WRITE_TO(P, "table"); break;
-		case TABLE_COLUMN_PR_COUNTER: WRITE_TO(P, "table_column"); break;
-		case RELATION_PR_COUNTER: WRITE_TO(P, "relation"); break;
-		case SUBSTITUTION_PR_COUNTER: WRITE_TO(P, "ts"); break;
-		case SUBSTITUTIONF_PR_COUNTER: WRITE_TO(P, "ts_fn"); break;
-		case MISC_PR_COUNTER: WRITE_TO(P, "misc_const"); break;
-		case TEST_PR_COUNTER: WRITE_TO(P, "test"); break;
-		case OUTCOME_PR_COUNTER: WRITE_TO(P, "rulebook_outcome"); break;
-		case DATA_PR_COUNTER: WRITE_TO(P, "data"); break;
-		case EXTERNAL_FILE_PR_COUNTER: WRITE_TO(P, "external_file"); break;
-		case LABEL_STORAGE_PR_COUNTER: WRITE_TO(P, "label_associated_storage"); break;
-		default: internal_error("unimplemented");
-	}
-	WRITE_TO(P, "_%d", ++(R->counters[what_for]));
+	WRITE_TO(P, "%S_%d", pr_counter_names[what_for], ++(R->counters[what_for]));
 	inter_name *iname = InterNames::one_off(P, R);
 	DISCARD_TEXT(P);
 	return iname;

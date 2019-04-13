@@ -208,7 +208,7 @@ void CodeGen::Stage::follow(pathname *P, stage_set *S, inter_repository *I, int 
 				Log::new_stage(STAGE_NAME);
 				filename *F = CodeGen::Stage::extricate(FM, step->step_argument);
 				@<Open the file for text output@>;
-				CodeGen::CacheCM::go(text_out_file, I);
+				WRITE_TO(text_out_file, "Currently disabled\n");
 				STREAM_CLOSE(text_out_file);
 				break;
 			}

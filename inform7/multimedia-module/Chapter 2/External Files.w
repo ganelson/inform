@@ -238,12 +238,11 @@ void PL::Files::register_file(wording F, wording FN) {
 	exf->file_ownership = ownership;
 	exf->IFID_of_owner = Str::duplicate(ifid_of_file);
 
-	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), EXTERNAL_FILES_SUBMODULE);
-	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, EXTERNAL_FILE_PR_COUNTER), PR, test_ptype);
-	exf->exf_iname = InterNames::one_off(I"file", PR2);
+	package_request *P = Hierarchy::local_package(EXTERNAL_FILES_HAP);
+	exf->exf_iname = InterNames::one_off(I"file", P);
 	InterNames::attach_memo(exf->exf_iname, exf->name);
 	Inter::Symbols::set_flag(InterNames::to_symbol(exf->exf_iname), MAKE_NAME_UNIQUE);
-	exf->IFID_array_iname = InterNames::one_off(I"ifid", PR2);
+	exf->IFID_array_iname = InterNames::one_off(I"ifid", P);
 	InterNames::attach_memo(exf->IFID_array_iname, exf->name);
 	Inter::Symbols::set_flag(InterNames::to_symbol(exf->IFID_array_iname), MAKE_NAME_UNIQUE);
 

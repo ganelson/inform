@@ -189,8 +189,6 @@ int PL::Counting::counting_compile_model_tables(void) {
 				Emit::named_iname_constant(iname, K_object, NULL);
 			}
 			Packaging::exit(save);
-			inter_symbol *iname_s = InterNames::to_symbol(iname);
-			Inter::Symbols::set_flag(iname_s, SR_CACHE_MARK_BIT);
 		}
 	return FALSE;
 }

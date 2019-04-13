@@ -204,10 +204,8 @@ table_column_usage Tables::Columns::add_to_table(wording W, table *t) {
 	tcu.kind_name_entries = 0;
 	tcu.observed_kind_cell = NULL;
 
-	inter_name *package_name = Packaging::supply_iname(t->table_package, TABLE_COLUMN_PR_COUNTER);
-	package_request *R = Packaging::request(package_name, t->table_package, table_column_ptype);
+	package_request *R = Hierarchy::package_within(TABLE_COLUMNS_HAP, t->table_package);
 	
-//	package_request *R = Packaging::request_main();
 	tcu.tcu_iname = InterNames::one_off(I"column_data", R);
 	Inter::Symbols::set_flag(InterNames::to_symbol(tcu.tcu_iname), MAKE_NAME_UNIQUE);
 

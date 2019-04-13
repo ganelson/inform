@@ -222,16 +222,13 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 		return Rvalues::to_named_rulebook_outcome(p);
 	}
 
-	package_request *R = Packaging::request_resource(
-		Modules::find(current_sentence), RULEBOOKS_SUBMODULE);
-	inter_name *package_name = Packaging::supply_iname(R, OUTCOME_PR_COUNTER);
-	package_request *R2 = Packaging::request(package_name, R, outcome_ptype);
+	package_request *R = Hierarchy::local_package(OUTCOMES_HAP);
 
 	named_rulebook_outcome *rbno = CREATE(named_rulebook_outcome);
 	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno));
-	rbno->nro_iname = InterNames::one_off(I"outcome", R2);
+	rbno->nro_iname = InterNames::one_off(I"outcome", R);
 	InterNames::attach_memo(rbno->nro_iname, W);
 	return rbno;
 }

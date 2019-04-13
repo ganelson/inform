@@ -68,10 +68,8 @@ compilation_module *Modules::new(parse_node *from) {
 			else
 				Str::put(pos, Characters::tolower(Str::get(pos)));
 	}
-	inter_name *package_iname = InterNames::one_off(PN, Packaging::request_resources());
+	C->resources = Packaging::resources_for_new_submodule(PN, &(C->subpackages));
 	DISCARD_TEXT(PN);
-	C->resources = Packaging::request(package_iname, Packaging::request_resources(), module_ptype);
-	Packaging::initialise_subpackages(&(C->subpackages));
 
 	return C;
 }

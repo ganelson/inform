@@ -141,10 +141,7 @@ table *Tables::new_table_structure(void) {
 	t->preserve_row_order_at_run_time = FALSE;
 	t->amendment_of = NULL;
 	t->has_been_amended = FALSE;
-	package_request *PR = Packaging::request_resource(
-		Modules::find(current_sentence), TABLES_SUBMODULE);
-	inter_name *package_name = Packaging::supply_iname(PR, TABLE_PR_COUNTER);
-	t->table_package = Packaging::request(package_name, PR, table_ptype);
+	t->table_package = Hierarchy::local_package(TABLES_HAP);
 	t->table_identifier = InterNames::one_off(I"data", t->table_package);
 	Inter::Symbols::set_flag(InterNames::to_symbol(t->table_identifier), MAKE_NAME_UNIQUE);
 	t->approximate_array_space_needed = 0;

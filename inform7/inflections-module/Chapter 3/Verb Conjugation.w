@@ -204,12 +204,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 	if (vc->vc_iname == NULL) {
 		package_request *R = NULL;
 		if (vc->vc_conjugates == NULL) {
-			R = Packaging::request(
-				Packaging::supply_iname(
-					Packaging::request_resource(Modules::find(vc->where_vc_created), CONJUGATIONS_SUBMODULE),
-					MVERB_PR_COUNTER),
-				Packaging::request_resource(Modules::find(vc->where_vc_created), CONJUGATIONS_SUBMODULE),
-				mverb_ptype);
+			R = Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
 		} else {
 			R = Verbs::verb_package(vc->vc_conjugates, vc->where_vc_created);
 		}

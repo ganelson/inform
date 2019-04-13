@@ -30,7 +30,7 @@ prints the name of a routine to be compiled later.
 =
 inter_name *ListTogether::new(int include_articles) {
 	list_together_routine *ltr = CREATE(list_together_routine);
-	package_request *PR = Packaging::local_resource(LISTING_SUBMODULE);
+	package_request *PR = Hierarchy::local_package(LABEL_STORAGES_HAP);
 	ltr->ltr_routine_iname = Packaging::function(
 		InterNames::one_off(I"list_together_fn", PR),
 		PR,

@@ -395,12 +395,9 @@ inference_subject *NonlocalVariables::get_knowledge(nonlocal_variable *nlv) {
 =
 inter_name *NonlocalVariables::iname(nonlocal_variable *nlv) {
 	if (nlv->nlv_iname == NULL) {
-		compilation_module *C = Modules::find(nlv->nlv_created_at);
-		package_request *R = Packaging::request_resource(C, VARIABLES_SUBMODULE);
-		package_request *R2 = Packaging::request(Packaging::supply_iname(R, VARIABLE_PR_COUNTER), R, variable_ptype);
 		nlv->nlv_iname = InterNames::new(VARIABLE_INAMEF);
 		InterNames::attach_memo(nlv->nlv_iname, nlv->name);
-		nlv->nlv_iname->eventual_owner = R2;
+		nlv->nlv_iname->eventual_owner = Hierarchy::package(Modules::find(nlv->nlv_created_at), VARIABLES_HAP);
 	}
 	return nlv->nlv_iname;
 }

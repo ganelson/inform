@@ -10,7 +10,6 @@ Chapter 1: Setting Up
 	Stage Control
 
 Chapter 2: Linking
-	Cache CM
 	Import
 	Linker
 	Template Reader

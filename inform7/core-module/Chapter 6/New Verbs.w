@@ -720,10 +720,6 @@ void NewVerbs::ConjugateVerbDefinitions(void) {
 	Emit::named_numeric_constant_signed(CV_NEG_iname, -2);
 	Emit::named_numeric_constant_signed(CV_MODAL_INAME_iname, -3);
 	Emit::named_numeric_constant_signed(CV_MEANING_iname, -4);
-	InterNames::cache(CV_POS_iname);
-	InterNames::cache(CV_NEG_iname);
-	InterNames::to_symbol(CV_POS_iname);
-	InterNames::to_symbol(CV_NEG_iname);
 	Packaging::exit(save);
 }
 

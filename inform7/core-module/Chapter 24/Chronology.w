@@ -45,7 +45,7 @@ void Chronology::ap_compile_forced_to_present(action_pattern ap) {
 #ifdef IF_MODULE
 void Chronology::compile_past_action_pattern(value_holster *VH, time_period duration, action_pattern ap) {
 	char *op = duration.inform6_operator;
-	package_request *PR = Packaging::local_resource(CHRONOLOGY_SUBMODULE);
+	package_request *PR = Hierarchy::local_package(PAST_ACTION_PATTERNS_HAP);
 	inter_name *pta_routine = Packaging::function(
 		InterNames::one_off(I"pap_fn", PR),
 		PR,

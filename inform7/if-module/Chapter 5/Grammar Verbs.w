@@ -697,7 +697,11 @@ inter_name *VERB_DIRECTIVE_TOPIC_iname = NULL;
 inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 
 inter_name *PL::Parsing::Verbs::grammar_constant(int N, int V) {
-	return Emit::named_numeric_constant(Hierarchy::find(N), 1);
+	inter_name *iname = Hierarchy::find(N);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::named_numeric_constant(iname, 1);
+	Packaging::exit(save);
+	return iname;
 }
 
 void PL::Parsing::Verbs::compile_all(void) {
@@ -706,9 +710,6 @@ void PL::Parsing::Verbs::compile_all(void) {
 	PL::Parsing::Verbs::gv_determine_all();
 
 	Log::new_stage(I"Sorting and compiling non-value grammar (G3, G4)");
-
-	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
-	packaging_state save = Packaging::enter(PR);
 
 	VERB_DIRECTIVE_REVERSE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_REVERSE_HL, 1);
 	VERB_DIRECTIVE_SLASH_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_SLASH_HL, 1);
@@ -724,6 +725,9 @@ void PL::Parsing::Verbs::compile_all(void) {
 	VERB_DIRECTIVE_CREATURE_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_CREATURE_HL, 10);
 	VERB_DIRECTIVE_TOPIC_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_TOPIC_HL, 11);
 	VERB_DIRECTIVE_MULTIEXCEPT_iname = PL::Parsing::Verbs::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
+
+	package_request *PR = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
+	packaging_state save = Packaging::enter(PR);
 
 	LOOP_OVER(gv, grammar_verb)
 		if (gv->gv_is == GV_IS_TOKEN)

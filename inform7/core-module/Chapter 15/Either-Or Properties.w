@@ -88,7 +88,7 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	wording W = Feeds::feed_text(I6_form);
 	property *prn = Properties::create(EMPTY_WORDING, NULL);
 	inter_name *iname = Properties::iname(prn);
-	Packaging::house(iname, Packaging::request_template());
+	Packaging::house(iname, Hierarchy::template());
 	InterNames::attach_memo(iname, W);
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);

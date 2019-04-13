@@ -186,14 +186,12 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	}
 
 	av->name = W;
-	package_request *R = Packaging::generic_resource(ACTIVITIES_SUBMODULE);
-	av->av_package = Packaging::request(Packaging::supply_iname(R, ACTIVITY_PR_COUNTER), R, activity_ptype);
+	av->av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	av->av_iname = InterNames::new(ACTIVITY_INAMEF);
 	av->av_iname->eventual_owner = av->av_package;
 	InterNames::attach_memo(av->av_iname, av->name);
 	packaging_state save = Packaging::enter_home_of(av->av_iname);
 	Emit::named_numeric_constant(av->av_iname, (inter_t) av->allocation_id);
-	Inter::Symbols::set_flag(InterNames::to_symbol(av->av_iname), SR_CACHE_MARK_BIT);
 	Packaging::exit(save);
 
 	LOGIF(ACTION_CREATIONS, "Created activity: %n = %W\n", av->av_iname, av->name);
@@ -224,23 +222,26 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	Feeds::feed_text_expanding_strings(L"before");
 	Feeds::feed_wording(av->name);
 	wording SW = Feeds::end(id);
+	package_request *BR = Hierarchy::package_in_package(BEFORE_RB_HL, av->av_package);
 	av->before_rules =
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			NO_OUTCOME, FALSE, future_action_flag, TRUE, av->av_package, I"before_rb");
+			NO_OUTCOME, FALSE, future_action_flag, TRUE, BR);
 	id = Feeds::begin();
 	Feeds::feed_text_expanding_strings(L"for");
 	Feeds::feed_wording(av->name);
 	SW = Feeds::end(id);
+	package_request *FR = Hierarchy::package_in_package(FOR_RB_HL, av->av_package);
 	av->for_rules =
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			SUCCESS_OUTCOME, FALSE, future_action_flag, TRUE, av->av_package, I"for_rb");
+			SUCCESS_OUTCOME, FALSE, future_action_flag, TRUE, FR);
 	id = Feeds::begin();
 	Feeds::feed_text_expanding_strings(L"after");
 	Feeds::feed_wording(av->name);
 	SW = Feeds::end(id);
+	package_request *AR = Hierarchy::package_in_package(AFTER_RB_HL, av->av_package);
 	av->after_rules =
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			NO_OUTCOME, FALSE, future_action_flag, TRUE, av->av_package, I"after_rb");
+			NO_OUTCOME, FALSE, future_action_flag, TRUE, AR);
 
 	av->owned_by_av = StackedVariables::new_owner(10000+av->allocation_id);
 	Rulebooks::make_stvs_accessible(av->before_rules, av->owned_by_av);

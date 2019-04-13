@@ -66,9 +66,7 @@ adjectival_phrase *Adjectives::from_word_range(wording W, PREFORM_LANGUAGE_TYPE 
 	aph->meanings = EMPTY_ADJECTIVE_MEANING();
 	#endif
 	#ifdef CORE_MODULE
-	compilation_module *C = Modules::current();
-	package_request *R = Packaging::request_resource(C, ADJECTIVES_SUBMODULE);
-	aph->aph_package = Packaging::request(Packaging::supply_iname(R, ADJECTIVE_PR_COUNTER), R, adjective_ptype);
+	aph->aph_package = Hierarchy::package(Modules::current(), ADJECTIVES_HAP);
 	aph->aph_iname = InterNames::one_off(I"adjective", aph->aph_package);
 	Inter::Symbols::set_flag(InterNames::to_symbol(aph->aph_iname), MAKE_NAME_UNIQUE);
 	#endif

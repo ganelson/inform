@@ -286,10 +286,9 @@ text_stream *Instances::identifier(instance *I) {
 }
 
 inter_name *Instances::iname(instance *I) {
-	package_request *R = Packaging::local_resource(INSTANCES_SUBMODULE);
-	package_request *R2 = Packaging::request(Packaging::supply_iname(R, INSTANCE_PR_COUNTER), R, instance_ptype);
 	if (I == NULL) return NULL;
-	UseNouns::noun_compose_identifier(R2, I->tag, I->allocation_id);
+	package_request *R = Hierarchy::local_package(INSTANCES_HAP);
+	UseNouns::noun_compose_identifier(R, I->tag, I->allocation_id);
 	InterNames::to_symbol(UseNouns::iname(I->tag));
 	return UseNouns::iname(I->tag);
 }

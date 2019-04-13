@@ -76,13 +76,7 @@ void Verbs::log_verb(OUTPUT_STREAM, void *vvi) {
 package_request *Verbs::verb_package(verb_identity *vi, parse_node *where) {
 	if (vi == NULL) internal_error("no verb identity");
 	if (vi->verb_package == NULL)
-		vi->verb_package =
-			Packaging::request(
-				Packaging::supply_iname(
-					Packaging::request_resource(Modules::find(where), CONJUGATIONS_SUBMODULE),
-					VERB_PR_COUNTER),
-				Packaging::request_resource(Modules::find(where), CONJUGATIONS_SUBMODULE),
-				verb_ptype);
+		vi->verb_package = Hierarchy::package(Modules::find(where), VERBS_HAP);
 	return vi->verb_package;
 }
 #endif

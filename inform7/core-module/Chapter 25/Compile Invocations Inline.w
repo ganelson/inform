@@ -1408,7 +1408,7 @@ very special circumstances.
 
 @<Inline command "final-segment-marker"@> =
 	if (ParseTree::int_annotation(inv, ssp_closing_segment_wn_ANNOT) == -1) {
-		Emit::val_iname(K_value, NULL_iname);
+		Emit::val_iname(K_value, Hierarchy::find(NULL_HL));
 	} else {
 		TEMPORARY_TEXT(T);
 		WRITE_TO(T, "%~W", Wordings::one_word(ParseTree::int_annotation(inv, ssp_closing_segment_wn_ANNOT)));

@@ -328,13 +328,10 @@ can't normally be unravelled at compile time.
 	mdef->superlative = EMPTY_WORDING; /* but it may be set below */
 	mdef->headword_as_adjective = NULL; /* but it will certainly be set below */
 
-	compilation_module *C = Modules::current();
-	package_request *R = Packaging::request_resource(C, ADJECTIVES_SUBMODULE);
-	package_request *R2 = Packaging::request(
-		Packaging::supply_iname(R, ADJECTIVE_MEANING_PR_COUNTER), R, adjective_meaning_ptype);
+	package_request *P = Hierarchy::package(Modules::current(), ADJECTIVE_MEANINGS_HAP);
 	mdef->mdef_iname = Packaging::function(
-		InterNames::one_off(I"measurement_fn", R2),
-		R2,
+		InterNames::one_off(I"measurement_fn", P),
+		P,
 		InterNames::new(MEASUREMENT_ADJECTIVE_INAMEF));
 	InterNames::to_symbol(mdef->mdef_iname);
 

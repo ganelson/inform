@@ -99,8 +99,6 @@ inter_symbol *unchecked_function_interk = NULL;
 inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
-inter_name *NULL_iname = NULL;
-inter_name *MPN_iname = NULL;
 inter_name *nothing_iname = NULL;
 
 @ =
@@ -141,16 +139,9 @@ inter_reading_state Emit::bookmark_bubble(void) {
 	return b;
 }
 
-inter_reading_state kinds_bookmark;
-inter_reading_state instances_bookmark;
 inter_reading_state pragmas_bookmark;
-inter_reading_state properties_bookmark;
-inter_reading_state variables_bookmark;
-inter_reading_state responses_bookmark;
-inter_reading_state exports_bookmark;
+inter_reading_state package_types_bookmark;
 inter_reading_state holdings_bookmark;
-inter_reading_state lates_bookmark;
-inter_reading_state doublesharps_bookmark;
 
 dictionary *extern_symbols = NULL;
 
@@ -165,6 +156,7 @@ void Emit::begin(void) {
 	Emit::guard(Inter::Version::new(Emit::IRS(), 1, Emit::baseline(Emit::IRS()), NULL));
 
 	Emit::comment(I"Package types:");
+	package_types_bookmark = Emit::bookmark_bubble();
 	Packaging::emit_types();
 
 	Emit::comment(I"Pragmas:");
@@ -260,61 +252,44 @@ void Emit::begin(void) {
 	Emit::primitive(I"!propertyvalue", I"val val -> val", &propertyvalue_interp);
 	Emit::primitive(I"!notin", I"val val -> val", &notin_interp);
 
-	Packaging::enter(Packaging::request_main()); // We never exit this
+	Packaging::enter(Hierarchy::main()); // We never exit this
 
-	Emit::comment(I"Kinds:");
-	kinds_bookmark = Emit::bookmark_bubble();
-	Emit::comment(I"Responses:");
-	responses_bookmark = Emit::bookmark_bubble();
-
-	package_request *R = Packaging::generic_resource(KINDS_SUBMODULE);
-	package_request *R2 = Packaging::request(Packaging::supply_iname(R, KIND_PR_COUNTER), R, kind_ptype);
-	packaging_state save = Packaging::enter(R2);
-	inter_symbols_table *T = Inter::Packages::scope(default_bookmark->current_package);
-	unchecked_interk = Emit::new_symbol(T, I"K_unchecked");
+	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
+	packaging_state save = Packaging::enter_home_of(KU);
+	unchecked_interk = InterNames::to_symbol(KU);
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, unchecked_interk), UNCHECKED_IDT, 0, BASE_ICON, 0, NULL);
+	Packaging::exit(save);
+
+	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
+	save = Packaging::enter_home_of(KUF);
+	unchecked_function_interk = InterNames::to_symbol(KUF);
 	inter_t operands[2];
 	operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, unchecked_interk);
 	operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, unchecked_interk);
-	unchecked_function_interk = Emit::new_symbol(T, I"K_unchecked_function");
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, unchecked_function_interk), ROUTINE_IDT, 0, FUNCTION_ICON, 2, operands);
-	int_interk = Emit::new_symbol(T, I"K_typeless_int");
+	Packaging::exit(save);
+
+	inter_name *KTI = Hierarchy::find(K_TYPELESS_INT_HL);
+	save = Packaging::enter_home_of(KTI);
+	int_interk = InterNames::to_symbol(KTI);
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, int_interk), INT32_IDT, 0, BASE_ICON, 0, NULL);
-	string_interk = Emit::new_symbol(T, I"K_typeless_string");
+	Packaging::exit(save);
+
+	inter_name *KTS = Hierarchy::find(K_TYPELESS_STRING_HL);
+	save = Packaging::enter_home_of(KTS);
+	string_interk = InterNames::to_symbol(KTS);
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
 	Packaging::exit(save);
 
-	Emit::comment(I"Fundamental constants:");
-	NULL_iname = VirtualMachines::emit_fundamental_constants();
+	VirtualMachines::emit_fundamental_constants();
 	NewVerbs::ConjugateVerbDefinitions();
 
-	Emit::comment(I"Instances:");
-	instances_bookmark = Emit::bookmark_bubble();
-
-	Emit::comment(I"Properties:");
-	properties_bookmark = Emit::bookmark_bubble();
-
-	Emit::comment(I"Global Variables:");
-	variables_bookmark = Emit::bookmark_bubble();
-
-	Emit::comment(I"Exports:");
-	exports_bookmark = Emit::bookmark_bubble();
-
-	Emit::comment(I"Holdings:");
 	holdings_bookmark = Emit::bookmark_bubble();
 
-	Emit::comment(I"Double sharps:");
-	doublesharps_bookmark = Emit::bookmark_bubble();
+	Packaging::incarnate(Hierarchy::resources());
+	Packaging::incarnate(Hierarchy::template());
 
-	Emit::comment(I"Lates:");
-	lates_bookmark = Emit::bookmark_bubble();
-
-	Packaging::incarnate(Packaging::request_resources());
-
-	Packaging::incarnate(Packaging::request_template());
-
-	Emit::comment(I"Body:");
-	Packaging::request_main()->write_position = Emit::bookmark_bubble();
+	Hierarchy::main()->write_position = Emit::bookmark_bubble();
 }
 
 int Emit::is_indirect_interp(inter_symbol *s) {
@@ -690,7 +665,6 @@ void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t v
 	inter_symbol *con_name = InterNames::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
-//	Emit::guard(Inter::Constant::new_numerical(&doublesharps_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(&doublesharps_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(&doublesharps_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(&doublesharps_bookmark), NULL));
 }
 
 void Emit::named_late_array_begin(inter_name *name, kind *K) {
@@ -823,11 +797,11 @@ void Emit::array_iname_entry(inter_name *iname) {
 }
 
 void Emit::array_null_entry(void) {
-	Emit::array_iname_entry(NULL_iname);
+	Emit::array_iname_entry(Hierarchy::find(NULL_HL));
 }
 
 void Emit::array_MPN_entry(void) {
-	Emit::array_iname_entry(MPN_iname);
+	Emit::array_iname_entry(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 }
 
 void Emit::array_generic_entry(inter_t val1, inter_t val2) {
@@ -921,8 +895,6 @@ inter_name *Emit::nothing(void) {
 		nothing_iname = Hierarchy::find(NOTHING_HL);
 		packaging_state save = Packaging::enter_home_of(nothing_iname);
 		Emit::named_pseudo_numeric_constant(nothing_iname, K_object, 0);
-		inter_symbol *iname_s = InterNames::to_symbol(nothing_iname);
-		Inter::Symbols::set_flag(iname_s, SR_CACHE_MARK_BIT);
 		Packaging::exit(save);
 	}
 	return nothing_iname;

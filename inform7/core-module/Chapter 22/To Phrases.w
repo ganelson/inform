@@ -88,11 +88,7 @@ logical order.
 void Routines::ToPhrases::new(phrase *ph) {
 	phrase *previous_phrase = NULL;
 	phrase *current_phrase = first_in_logical_order;
-	package_request *R1 =
-		Packaging::request_resource(ph->owning_module, PHRASES_SUBMODULE);
-	package_request *R2 =
-		Packaging::request(Packaging::supply_iname(R1, TO_PHRASE_PR_COUNTER), R1, to_phrase_ptype);
-	ph->requests_package = R2;
+	ph->requests_package = Hierarchy::package(ph->owning_module, PHRASES_HAP);
 
 	if (first_in_logical_order == NULL) { first_in_logical_order = ph; return; }
 	while ((current_phrase != NULL) &&
@@ -175,9 +171,8 @@ to_phrase_request *Routines::ToPhrases::make_request(phrase *ph, kind *K,
 	compilation_module *cm = Modules::current();
 	if (ph->declaration_node) cm = Modules::find(ph->declaration_node);
 
-	package_request *R3 =
-		Packaging::request(Packaging::supply_iname(ph->requests_package, REQUEST_PR_COUNTER), ph->requests_package, request_ptype);
-	req->req_iname = Packaging::function(InterNames::one_off(I"phrase_fn", R3), R3, InterNames::new_in(PHRASE_REQUEST_INAMEF, cm));
+	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->requests_package);
+	req->req_iname = Packaging::function(InterNames::one_off(I"phrase_fn", P), P, InterNames::new_in(PHRASE_REQUEST_INAMEF, cm));
 
 	for (int i=0; i<27; i++) req->kind_variables_interpretation[i] = NULL;
 	for (; kvd; kvd=kvd->next)

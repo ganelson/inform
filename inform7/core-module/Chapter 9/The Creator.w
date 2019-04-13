@@ -698,7 +698,7 @@ them by asserting propositions to be true; we act directly.
 	if (governor)
 		ParseTree::set_evaluation(governor,
 			Specifications::from_kind(create_as));
-	rulebook *rb = Rulebooks::new(create_as, W, NULL, NULL);
+	rulebook *rb = Rulebooks::new(create_as, W, Hierarchy::local_package(RULEBOOKS_HAP));
 	val = Rvalues::from_rulebook(rb);
 	ParseTree::annotate_int(current_sentence, clears_pronouns_ANNOT, TRUE);
 

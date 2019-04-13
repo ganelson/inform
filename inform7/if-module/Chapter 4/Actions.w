@@ -232,8 +232,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->abbreviable = FALSE;
 	an->translated = FALSE;
 
-	package_request *R = Packaging::generic_resource(ACTIONS_SUBMODULE);
-	an->an_package = Packaging::request(Packaging::supply_iname(R, ACTION_PR_COUNTER), R, action_ptype);
+	an->an_package = Hierarchy::local_package(ACTIONS_HAP);
 	an->an_base_iname = InterNames::new(ACTION_BASE_INAMEF);
 	InterNames::attach_memo(an->an_base_iname, W);
 	an->use_verb_routine_in_I6_library = TRUE;
@@ -272,27 +271,30 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Feeds::feed_text_expanding_strings(L"check");
 		Feeds::feed_wording(an->present_name);
 		wording W = Feeds::end(id);
+		package_request *CR = Hierarchy::package_in_package(CHECK_RB_HL, an->an_package);
 		an->check_rules =
 			Rulebooks::new_automatic(W, K_action_name,
-				NO_OUTCOME, TRUE, FALSE, FALSE, an->an_package, I"check_rb");
+				NO_OUTCOME, TRUE, FALSE, FALSE, CR);
 		Rulebooks::fragment_by_actions(an->check_rules, 1);
 
 		id = Feeds::begin();
 		Feeds::feed_text_expanding_strings(L"carry out");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
+		package_request *OR = Hierarchy::package_in_package(CARRY_OUT_RB_HL, an->an_package);
 		an->carry_out_rules =
 			Rulebooks::new_automatic(W, K_action_name,
-				NO_OUTCOME, TRUE, FALSE, FALSE, an->an_package, I"carry_out_rb");
+				NO_OUTCOME, TRUE, FALSE, FALSE, OR);
 		Rulebooks::fragment_by_actions(an->carry_out_rules, 2);
 
 		id = Feeds::begin();
 		Feeds::feed_text_expanding_strings(L"report");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
+		package_request *RR = Hierarchy::package_in_package(REPORT_RB_HL, an->an_package);
 		an->report_rules =
 			Rulebooks::new_automatic(W, K_action_name,
-				NO_OUTCOME, TRUE, FALSE, FALSE, an->an_package, I"report_rb");
+				NO_OUTCOME, TRUE, FALSE, FALSE, RR);
 		Rulebooks::fragment_by_actions(an->report_rules, 1);
 
 		an->owned_by_an = StackedVariables::new_owner(20000+an->allocation_id);
@@ -427,7 +429,6 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 		packaging_state save = Packaging::enter(an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
 		InterNames::annotate_i(an->an_iname, ACTION_IANN, 1);
-		InterNames::cache(an->an_iname);
 		Packaging::exit(save);
 	}
 	return an->an_iname;
@@ -985,7 +986,7 @@ int PL::Actions::can_be_compiled_in_past_tense(action_name *an) {
 }
 
 inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
-	package_request *R = Packaging::request_main();
+	package_request *R = NULL;
 	if (I) R = Instances::package(I);
 	else R = Kinds::Behaviour::package(K_object);
 	packaging_state save = Packaging::enter(R);

@@ -237,10 +237,9 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
     test->no_possessions = 0;
     test->text_of_script = Str::new();
 
-	package_request *PR = Packaging::request_resource(Modules::find(current_sentence), GRAMMAR_SUBMODULE);
-	package_request *PR2 = Packaging::request(Packaging::supply_iname(PR, TEST_PR_COUNTER), PR, test_ptype);
-	test->text_iname = InterNames::one_off(I"script", PR2);
-	test->req_iname = InterNames::one_off(I"requirements", PR2);
+	package_request *P = Hierarchy::local_package(TESTS_HAP);
+	test->text_iname = InterNames::one_off(I"script", P);
+	test->req_iname = InterNames::one_off(I"requirements", P);
 	Inter::Symbols::set_flag(InterNames::to_symbol(test->text_iname), MAKE_NAME_UNIQUE);
 	Inter::Symbols::set_flag(InterNames::to_symbol(test->req_iname), MAKE_NAME_UNIQUE);
 

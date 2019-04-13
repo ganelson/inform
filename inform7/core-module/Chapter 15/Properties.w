@@ -680,9 +680,8 @@ inter_name *Properties::iname(property *prn) {
 	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation))
 		return Properties::iname(Properties::EitherOr::get_negation(prn));
 	if (prn->prop_iname == NULL) {
-		package_request *R = Packaging::request_resource(prn->owning_module, PROPERTIES_SUBMODULE);
-		package_request *R2 = Packaging::request(Packaging::supply_iname(R, PROPERTY_PR_COUNTER), R, property_ptype);
-		prn->prop_iname = InterNames::one_off(I"P", R2);
+		package_request *R = Hierarchy::package(prn->owning_module, PROPERTIES_HAP);
+		prn->prop_iname = InterNames::one_off(I"P", R);
 		if (Wordings::nonempty(prn->name)) InterNames::attach_memo(prn->prop_iname, prn->name);
 	}
 	return prn->prop_iname;

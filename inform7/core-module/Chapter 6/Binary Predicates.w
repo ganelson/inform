@@ -618,10 +618,8 @@ binary_predicate *BinaryPredicates::make_single(int family,
 =
 package_request *BinaryPredicates::package(binary_predicate *bp) {
 	if (bp == NULL) internal_error("null bp");
-	if (bp->bp_package == NULL) {
-		package_request *R = Packaging::request_resource(Modules::find(bp->bp_created_at), RELATIONS_SUBMODULE);
-		bp->bp_package = Packaging::request(Packaging::supply_iname(R, RELATION_PR_COUNTER), R, relation_ptype);
-	}
+	if (bp->bp_package == NULL)
+		bp->bp_package = Hierarchy::package(Modules::find(bp->bp_created_at), RELATIONS_HAP);
 	return bp->bp_package;
 }
 

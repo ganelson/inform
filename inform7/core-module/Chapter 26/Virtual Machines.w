@@ -189,7 +189,7 @@ inter_name *VirtualMachines::emit_unchecked_hex_fundamental_constant(int id, int
 	return iname;
 }
 
-inter_name *VirtualMachines::emit_fundamental_constants(void) {
+void VirtualMachines::emit_fundamental_constants(void) {
 	if (target_VM == -1) internal_error("target VM not set yet");
 
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
@@ -203,36 +203,25 @@ inter_name *VirtualMachines::emit_fundamental_constants(void) {
 		VirtualMachines::emit_fundamental_constant(DICT_WORD_SIZE_HL, 9);
 	}
 
-	inter_name *NULL_iname = NULL;
-	
 	if (table_of_VM_data[target_VM].VM_is_32_bit) {
 		VirtualMachines::emit_fundamental_constant(WORDSIZE_HL, 4);
-		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_HL, 0xffffffff);
+		VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_HL, 0xffffffff);
 		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_HL, 0x80000000);
 		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_HL, 0x40000000);
 		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_HL, 0xdeadce11);
 		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_HL, 0x40000000);
-		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_HL, 2147483647);
+		VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_HL, 2147483647);
 		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_HL, -2147483648);
-		InterNames::cache(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-		InterNames::cache(Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
-		InterNames::to_symbol(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-		InterNames::to_symbol(Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 	} else {
 		VirtualMachines::emit_fundamental_constant(WORDSIZE_HL, 2);
-		NULL_iname = VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_HL, 0xffff);
+		VirtualMachines::emit_unchecked_hex_fundamental_constant(NULL_HL, 0xffff);
 		VirtualMachines::emit_hex_fundamental_constant(WORD_HIGHBIT_HL, 0x8000);
 		VirtualMachines::emit_hex_fundamental_constant(WORD_NEXTTOHIGHBIT_HL, 0x4000);
 		VirtualMachines::emit_hex_fundamental_constant(IMPROBABLE_VALUE_HL, 0x7fe3);
 		VirtualMachines::emit_hex_fundamental_constant(REPARSE_CODE_HL, 10000);
-		MPN_iname = VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_HL, 32767);
+		VirtualMachines::emit_fundamental_constant(MAX_POSITIVE_NUMBER_HL, 32767);
 		VirtualMachines::emit_signed_fundamental_constant(MIN_NEGATIVE_NUMBER_HL, -32768);
-		InterNames::cache(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-		InterNames::cache(Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
-		InterNames::to_symbol(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-		InterNames::to_symbol(Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 	}
-	return NULL_iname;
 }
 
 @ Using which:

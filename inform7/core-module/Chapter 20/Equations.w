@@ -160,7 +160,7 @@ equation *Equations::new(wording W, int anonymous) {
 	eqn->symbol_list = NULL;
 	eqn->examined_already = FALSE;
 
-	package_request *PR = Packaging::local_resource(EQUATIONS_SUBMODULE);
+	package_request *PR = Hierarchy::local_package(EQUATIONS_HAP);
 	eqn->eqn_iname = Packaging::function(
 		InterNames::one_off(I"solve_fn", PR),
 		PR,

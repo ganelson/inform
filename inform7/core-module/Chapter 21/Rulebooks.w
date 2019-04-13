@@ -205,7 +205,7 @@ rulebooks are automatically created as a result of other structures being
 built (for instance, scene endings).
 
 =
-rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R, text_stream *supplied) {
+rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	rulebook *rb = CREATE(rulebook);
 
 	<new-rulebook-name>(W);
@@ -213,11 +213,8 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R, text_st
 
 	rb->primary_name = W;
 	rb->alternative_name = EMPTY_WORDING;
-	if (R == NULL) R = Packaging::request_resource(Modules::find(current_sentence), RULEBOOKS_SUBMODULE);
-	inter_name *package_name = NULL;
-	if (supplied == NULL) package_name = Packaging::supply_iname(R, RULEBOOK_PR_COUNTER);
-	else package_name = InterNames::one_off(supplied, R);
-	rb->rb_package = Packaging::request(package_name, R, rulebook_ptype);
+	rb->rb_package = R;
+
 	rb->rb_iname = Packaging::function(InterNames::one_off(I"run_fn", rb->rb_package), rb->rb_package, NULL);
 	Inter::Symbols::set_flag(InterNames::to_symbol(rb->rb_iname), MAKE_NAME_UNIQUE);
 
@@ -290,10 +287,9 @@ kind *Rulebooks::to_kind(rulebook *rb) {
 }
 
 rulebook *Rulebooks::new_automatic(wording W, kind *basis,
-	int oc, int ata, int ubfaa, int rda, package_request *R, text_stream *supplied) {
+	int oc, int ata, int ubfaa, int rda, package_request *R) {
 	rulebook *rb = Rulebooks::new(
-		Kinds::binary_construction(CON_rulebook, basis, K_nil),
-		W, R, supplied);
+		Kinds::binary_construction(CON_rulebook, basis, K_nil), W, R);
 	Rulebooks::Outcomes::set_default_outcome(&(rb->my_outcomes), oc);
 	Rulebooks::Outcomes::set_focus_ata(&(rb->my_focus), ata);
 	rb->automatically_generated = TRUE;

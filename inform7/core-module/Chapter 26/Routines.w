@@ -36,7 +36,7 @@ inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 void Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
 	if (iname == NULL) internal_error("no iname for routine");
 	package_request *R = iname->eventual_owner;
-	if ((R == NULL) || (R == Packaging::request_main())) {
+	if ((R == NULL) || (R == Hierarchy::main())) {
 		LOG("Routine outside of package: ................................................ %n\n", iname);
 		WRITE_TO(STDERR, "Routine outside of package: %n\n", iname);
 		internal_error("routine outside of package");
