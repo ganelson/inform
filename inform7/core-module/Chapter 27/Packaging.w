@@ -7,11 +7,6 @@ inter_symbol *plain_ptype = NULL;
 inter_symbol *code_ptype = NULL;
 inter_symbol *module_ptype = NULL;
 inter_symbol *function_ptype = NULL;
-inter_symbol *to_phrase_ptype = NULL;
-inter_symbol *closure_ptype = NULL;
-inter_symbol *response_ptype = NULL;
-inter_symbol *adjective_ptype = NULL;
-inter_symbol *adjective_meaning_ptype = NULL;
 inter_symbol *data_ptype = NULL;
 
 @ =
@@ -36,7 +31,7 @@ void Packaging::emit_types(void) {
 
 @
 
-@e BOGUS_PR_COUNTER from 0
+@d MAX_PRCS_AT_ONCE 11
 
 =
 typedef struct package_request {
@@ -45,9 +40,14 @@ typedef struct package_request {
 	struct inter_package *actual_package;
 	struct package_request *parent_request;
 	struct inter_reading_state write_position;
-	int counters[MAX_PR_COUNTER];
+	struct linked_list *counters; /* of |subpackage_request_counter| */
 	MEMORY_MANAGEMENT
 } package_request;
+typedef struct subpackage_request_counter {
+	int counter_id;
+	int counter_value;
+	MEMORY_MANAGEMENT
+} subpackage_request_counter;
 
 @ =
 package_request *Packaging::request(inter_name *name, package_request *parent, inter_symbol *pt) {
@@ -58,7 +58,7 @@ package_request *Packaging::request(inter_name *name, package_request *parent, i
 	R->actual_package = NULL;
 	R->parent_request = parent;
 	R->write_position = Inter::Bookmarks::new_IRS(Emit::repository());
-	for (int i=0; i<MAX_PR_COUNTER; i++) R->counters[i] = 0;
+	R->counters = NULL;
 	return R;
 }
 
@@ -259,16 +259,18 @@ package_request *Packaging::synoptic_resource(int ix) {
 	}
 	return SR->subs[ix];
 
-@ =
-int pr_counter_names_created = FALSE;
-text_stream *pr_counter_names[MAX_PR_COUNTER];
-void Packaging::register_counter(int id, text_stream *name) {
-	if ((id < 0) || (id >= MAX_PR_COUNTER)) internal_error("out of range");
-	if (pr_counter_names_created == FALSE) {
-		for (int i=0; i<MAX_PR_COUNTER; i++) pr_counter_names[i] = NULL;
-		pr_counter_names_created = TRUE;
-	}
-	pr_counter_names[id] = name;
+@ 
+
+@d MAX_PRCS 500
+
+=
+int no_pr_counters_registered = 0;
+text_stream *pr_counter_names[MAX_PRCS];
+int Packaging::register_counter(text_stream *name) {
+	int id = no_pr_counters_registered++;
+	if ((id < 0) || (id >= MAX_PRCS)) internal_error("out of range");
+	pr_counter_names[id] = Str::duplicate(name);
+	return id;
 }
 inter_symbol *Packaging::register_ptype(text_stream *name, int enclosing) {
 	inter_symbol *pt = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), name);
@@ -279,11 +281,24 @@ inter_symbol *Packaging::register_ptype(text_stream *name, int enclosing) {
 
 inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 	if (R == NULL) internal_error("no request");
-	if ((what_for < 0) || (what_for >= MAX_PR_COUNTER)) internal_error("out of range");
-	if ((pr_counter_names_created == FALSE) || (pr_counter_names[what_for] == NULL))
-		internal_error("unregistered counter");
+	if ((what_for < 0) || (what_for >= no_pr_counters_registered)) internal_error("out of range");
+	if (R->counters == NULL)
+		R->counters = NEW_LINKED_LIST(subpackage_request_counter);
+	int N = -1;
+	subpackage_request_counter *src;
+	LOOP_OVER_LINKED_LIST(src, subpackage_request_counter, R->counters)
+		if (src->counter_id == what_for) {
+			N = ++(src->counter_value); break;
+		}
+	if (N < 0) {
+		subpackage_request_counter *src = CREATE(subpackage_request_counter);
+		src->counter_id = what_for;
+		src->counter_value = 1;
+		N = 1;
+		ADD_TO_LINKED_LIST(src, subpackage_request_counter, R->counters);
+	}
 	TEMPORARY_TEXT(P);
-	WRITE_TO(P, "%S_%d", pr_counter_names[what_for], ++(R->counters[what_for]));
+	WRITE_TO(P, "%S_%d", pr_counter_names[what_for], N);
 	inter_name *iname = InterNames::one_off(P, R);
 	DISCARD_TEXT(P);
 	return iname;

@@ -17,11 +17,6 @@
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">code_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">module_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">function_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">to_phrase_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">closure_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">response_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">adjective_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">adjective_meaning_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">data_ptype</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
@@ -59,7 +54,7 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">BOGUS_PR_COUNTER</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_PRCS_AT_ONCE</span><span class="plain"> 11</span>
 </pre>
 
 <pre class="display">
@@ -69,14 +64,21 @@
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">actual_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">parent_request</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">write_position</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">counters</span><span class="plain">[</span><span class="constant">MAX_PR_COUNTER</span><span class="plain">];</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">counters</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">subpackage_request_counter</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">package_request</span><span class="plain">;</span>
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">subpackage_request_counter</span><span class="plain"> {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">counter_id</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">counter_value</span><span class="plain">;</span>
+        <span class="identifier">MEMORY_MANAGEMENT</span>
+    <span class="plain">} </span><span class="reserved">subpackage_request_counter</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The structure package_request is accessed in 26/iti, 27/ei, 27/hl and here.</p>
+
+<p class="endnote">The structure subpackage_request_counter is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
@@ -90,7 +92,7 @@
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain"> = </span><span class="identifier">parent</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_PR_COUNTER</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = 0;</span>
+        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -367,16 +369,18 @@
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
 
+<pre class="definitions">
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_PRCS</span><span class="plain"> 500</span>
+</pre>
+
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pr_counter_names_created</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="constant">MAX_PR_COUNTER</span><span class="plain">];</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">id</span><span class="plain"> &lt; 0) || (</span><span class="identifier">id</span><span class="plain"> &gt;= </span><span class="constant">MAX_PR_COUNTER</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"out of range"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pr_counter_names_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_PR_COUNTER</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">pr_counter_names_created</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">] = </span><span class="identifier">name</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_pr_counters_registered</span><span class="plain"> = 0;</span>
+    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="constant">MAX_PRCS</span><span class="plain">];</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">no_pr_counters_registered</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">id</span><span class="plain"> &lt; 0) || (</span><span class="identifier">id</span><span class="plain"> &gt;= </span><span class="constant">MAX_PRCS</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"out of range"</span><span class="plain">);</span>
+        <span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">] = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">enclosing</span><span class="plain">) {</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain"> = </span><span class="functiontext">Emit::new_symbol</span><span class="plain">(</span><span class="identifier">Inter::get_global_symbols</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">()), </span><span class="identifier">name</span><span class="plain">);</span>
@@ -387,11 +391,24 @@
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">what_for</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no request"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">what_for</span><span class="plain"> &lt; 0) || (</span><span class="identifier">what_for</span><span class="plain"> &gt;= </span><span class="constant">MAX_PR_COUNTER</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"out of range"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pr_counter_names_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="identifier">what_for</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unregistered counter"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">what_for</span><span class="plain"> &lt; 0) || (</span><span class="identifier">what_for</span><span class="plain"> &gt;= </span><span class="identifier">no_pr_counters_registered</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"out of range"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">subpackage_request_counter</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = -1;</span>
+        <span class="reserved">subpackage_request_counter</span><span class="plain"> *</span><span class="identifier">src</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">src</span><span class="plain">, </span><span class="reserved">subpackage_request_counter</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">src</span><span class="plain">-</span><span class="element">&gt;counter_id</span><span class="plain"> == </span><span class="identifier">what_for</span><span class="plain">) {</span>
+                <span class="identifier">N</span><span class="plain"> = ++(</span><span class="identifier">src</span><span class="plain">-</span><span class="element">&gt;counter_value</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt; 0) {</span>
+            <span class="reserved">subpackage_request_counter</span><span class="plain"> *</span><span class="identifier">src</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">subpackage_request_counter</span><span class="plain">);</span>
+            <span class="identifier">src</span><span class="plain">-</span><span class="element">&gt;counter_id</span><span class="plain"> = </span><span class="identifier">what_for</span><span class="plain">;</span>
+            <span class="identifier">src</span><span class="plain">-</span><span class="element">&gt;counter_value</span><span class="plain"> = 1;</span>
+            <span class="identifier">N</span><span class="plain"> = 1;</span>
+            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">src</span><span class="plain">, </span><span class="reserved">subpackage_request_counter</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="string">"%S_%d"</span><span class="plain">, </span><span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="identifier">what_for</span><span class="plain">], ++(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;counters</span><span class="plain">[</span><span class="identifier">what_for</span><span class="plain">]));</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="string">"%S_%d"</span><span class="plain">, </span><span class="identifier">pr_counter_names</span><span class="plain">[</span><span class="identifier">what_for</span><span class="plain">], </span><span class="identifier">N</span><span class="plain">);</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
@@ -449,7 +466,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::register_counter is used in 27/hr (<a href="27-hr.html#SP2">&#167;2</a>, <a href="27-hr.html#SP2_4">&#167;2.4</a>, <a href="27-hr.html#SP2_6">&#167;2.6</a>, <a href="27-hr.html#SP2_8">&#167;2.8</a>, <a href="27-hr.html#SP2_12">&#167;2.12</a>, <a href="27-hr.html#SP2_14">&#167;2.14</a>, <a href="27-hr.html#SP2_16">&#167;2.16</a>, <a href="27-hr.html#SP2_20">&#167;2.20</a>, <a href="27-hr.html#SP2_22">&#167;2.22</a>, <a href="27-hr.html#SP2_24">&#167;2.24</a>, <a href="27-hr.html#SP2_28">&#167;2.28</a>, <a href="27-hr.html#SP2_30">&#167;2.30</a>, <a href="27-hr.html#SP2_32">&#167;2.32</a>, <a href="27-hr.html#SP2_34">&#167;2.34</a>, <a href="27-hr.html#SP2_36">&#167;2.36</a>, <a href="27-hr.html#SP2_38">&#167;2.38</a>, <a href="27-hr.html#SP2_40">&#167;2.40</a>, <a href="27-hr.html#SP2_42">&#167;2.42</a>, <a href="27-hr.html#SP2_44">&#167;2.44</a>).</p>
+<p class="endnote">The function Packaging::register_counter is used in 27/hl (<a href="27-hl.html#SP2">&#167;2</a>), 27/hr (<a href="27-hr.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Packaging::register_ptype is used in 27/hr (<a href="27-hr.html#SP2_4">&#167;2.4</a>, <a href="27-hr.html#SP2_6">&#167;2.6</a>, <a href="27-hr.html#SP2_8">&#167;2.8</a>, <a href="27-hr.html#SP2_12">&#167;2.12</a>, <a href="27-hr.html#SP2_14">&#167;2.14</a>, <a href="27-hr.html#SP2_16">&#167;2.16</a>, <a href="27-hr.html#SP2_20">&#167;2.20</a>, <a href="27-hr.html#SP2_22">&#167;2.22</a>, <a href="27-hr.html#SP2_24">&#167;2.24</a>, <a href="27-hr.html#SP2_28">&#167;2.28</a>, <a href="27-hr.html#SP2_30">&#167;2.30</a>, <a href="27-hr.html#SP2_32">&#167;2.32</a>, <a href="27-hr.html#SP2_34">&#167;2.34</a>, <a href="27-hr.html#SP2_36">&#167;2.36</a>, <a href="27-hr.html#SP2_38">&#167;2.38</a>, <a href="27-hr.html#SP2_40">&#167;2.40</a>, <a href="27-hr.html#SP2_42">&#167;2.42</a>, <a href="27-hr.html#SP2_44">&#167;2.44</a>).</p>
 

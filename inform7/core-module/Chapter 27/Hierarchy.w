@@ -60,7 +60,7 @@ text_stream *Hierarchy::submodule_name(int spid) {
 
 @
 
-@e BLOCK_CONSTANT_PR_COUNTER
+@e BLOCK_CONSTANT_PR_COUNTER from 0
 @e BLOCK_PR_COUNTER
 @e FORM_PR_COUNTER
 @e INLINE_PR_COUNTER
@@ -73,16 +73,16 @@ text_stream *Hierarchy::submodule_name(int spid) {
 
 =
 void Hierarchy::establish(void) {
-	Packaging::register_counter(BLOCK_CONSTANT_PR_COUNTER, I"block_constant");
-	Packaging::register_counter(BLOCK_PR_COUNTER, I"code_block");
-	Packaging::register_counter(FORM_PR_COUNTER, I"form");
-	Packaging::register_counter(INLINE_PR_COUNTER, I"inline_pval");
-	Packaging::register_counter(LITERAL_PR_COUNTER, I"literal");
-	Packaging::register_counter(MISC_PR_COUNTER, I"misc_const");
-	Packaging::register_counter(PROPOSITION_PR_COUNTER, I"proposition");
-	Packaging::register_counter(SUBSTITUTION_PR_COUNTER, I"ts");
-	Packaging::register_counter(SUBSTITUTIONF_PR_COUNTER, I"ts_fn");
-	Packaging::register_counter(TASK_PR_COUNTER, I"task");
+	Packaging::register_counter(I"block_constant");
+	Packaging::register_counter(I"code_block");
+	Packaging::register_counter(I"form");
+	Packaging::register_counter(I"inline_pval");
+	Packaging::register_counter(I"literal");
+	Packaging::register_counter(I"misc_const");
+	Packaging::register_counter(I"proposition");
+	Packaging::register_counter(I"ts");
+	Packaging::register_counter(I"ts_fn");
+	Packaging::register_counter(I"task");
 
 	@<Establish basics@>;
 	@<Establish actions@>;
@@ -188,7 +188,6 @@ void Hierarchy::establish(void) {
 
 @e MISTAKEACTION_HL
 
-@e ACTION_PR_COUNTER
 @e ACTIONS_HAP
 @e CHECK_RB_HL
 @e CARRY_OUT_RB_HL
@@ -207,8 +206,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make(MISTAKEACTION_HL, I"##MistakeAction", generic_actions);
 
 	inter_symbol *action_ptype = Packaging::register_ptype(I"_action", TRUE);
-	Packaging::register_counter(ACTION_PR_COUNTER, I"action");
-	HierarchyLocations::ap(ACTIONS_HAP, ACTIONS_SUBMODULE, ACTION_PR_COUNTER, action_ptype);
+	HierarchyLocations::ap(ACTIONS_HAP, ACTIONS_SUBMODULE, I"action", action_ptype);
 		HierarchyLocations::make_rulebook_within(CHECK_RB_HL, I"check_rb", action_ptype);
 		HierarchyLocations::make_rulebook_within(CARRY_OUT_RB_HL, I"carry_out_rb", action_ptype);
 		HierarchyLocations::make_rulebook_within(REPORT_RB_HL, I"report_rb", action_ptype);
@@ -224,7 +222,6 @@ void Hierarchy::establish(void) {
 
 @h Activities.
 
-@e ACTIVITY_PR_COUNTER
 @e ACTIVITIES_HAP
 @e BEFORE_RB_HL
 @e FOR_RB_HL
@@ -238,8 +235,7 @@ void Hierarchy::establish(void) {
 
 @<Establish activities@> =
 	inter_symbol *activity_ptype = Packaging::register_ptype(I"_activity", TRUE);
-	Packaging::register_counter(ACTIVITY_PR_COUNTER, I"activity");
-	HierarchyLocations::ap(ACTIVITIES_HAP, ACTIVITIES_SUBMODULE, ACTIVITY_PR_COUNTER, activity_ptype);
+	HierarchyLocations::ap(ACTIVITIES_HAP, ACTIVITIES_SUBMODULE, I"activity", activity_ptype);
 		HierarchyLocations::make_rulebook_within(BEFORE_RB_HL, I"before_rb", activity_ptype);
 		HierarchyLocations::make_rulebook_within(FOR_RB_HL, I"for_rb", activity_ptype);
 		HierarchyLocations::make_rulebook_within(AFTER_RB_HL, I"after_rb", activity_ptype);
@@ -253,23 +249,17 @@ void Hierarchy::establish(void) {
 
 @h Adjectives.
 
-@e ADJECTIVE_PR_COUNTER
 @e ADJECTIVES_HAP
-@e ADJECTIVE_MEANING_PR_COUNTER
 @e ADJECTIVE_MEANINGS_HAP
-@e ADJECTIVE_PHRASE_PR_COUNTER
 @e ADJECTIVE_PHRASES_HAP
 
 @<Establish adjectives@> =
 	inter_symbol *adjective_ptype = Packaging::register_ptype(I"_adjective", TRUE);
-	Packaging::register_counter(ADJECTIVE_PR_COUNTER, I"adjective");
-	HierarchyLocations::ap(ADJECTIVES_HAP, ADJECTIVES_SUBMODULE, ADJECTIVE_PR_COUNTER, adjective_ptype);
+	HierarchyLocations::ap(ADJECTIVES_HAP, ADJECTIVES_SUBMODULE, I"adjective", adjective_ptype);
 	inter_symbol *adjective_meaning_ptype = Packaging::register_ptype(I"_adjective_meaning", TRUE);
-	Packaging::register_counter(ADJECTIVE_MEANING_PR_COUNTER, I"adjective_meaning");
-	HierarchyLocations::ap(ADJECTIVE_MEANINGS_HAP, ADJECTIVES_SUBMODULE, ADJECTIVE_MEANING_PR_COUNTER, adjective_meaning_ptype);
+	HierarchyLocations::ap(ADJECTIVE_MEANINGS_HAP, ADJECTIVES_SUBMODULE, I"adjective_meaning", adjective_meaning_ptype);
 	inter_symbol *adjective_phrase_ptype = Packaging::register_ptype(I"_adjective_phrase", TRUE);
-	Packaging::register_counter(ADJECTIVE_PHRASE_PR_COUNTER, I"adjective_phrase");
-	HierarchyLocations::ap(ADJECTIVE_PHRASES_HAP, ADJECTIVES_SUBMODULE, ADJECTIVE_PHRASE_PR_COUNTER, adjective_phrase_ptype);
+	HierarchyLocations::ap(ADJECTIVE_PHRASES_HAP, ADJECTIVES_SUBMODULE, I"adjective_phrase", adjective_phrase_ptype);
 
 @h Bibliographic.
 
@@ -291,7 +281,6 @@ void Hierarchy::establish(void) {
 
 @h Chronology.
 
-@e PAP_PR_COUNTER
 @e PAST_ACTION_PATTERNS_HAP
 
 @e TIMEDEVENTSTABLE_HL
@@ -303,8 +292,7 @@ void Hierarchy::establish(void) {
 
 @<Establish chronology@> =
 	inter_symbol *past_action_pattern_ptype = Packaging::register_ptype(I"_past_action_pattern", TRUE);
-	Packaging::register_counter(PAP_PR_COUNTER, I"past_action_pattern");
-	HierarchyLocations::ap(PAST_ACTION_PATTERNS_HAP, CHRONOLOGY_SUBMODULE, PAP_PR_COUNTER, past_action_pattern_ptype);
+	HierarchyLocations::ap(PAST_ACTION_PATTERNS_HAP, CHRONOLOGY_SUBMODULE, I"past_action_pattern", past_action_pattern_ptype);
 
 	package_request *synoptic_chronology = Packaging::synoptic_resource(CHRONOLOGY_SUBMODULE);
 	HierarchyLocations::make(TIMEDEVENTSTABLE_HL, I"TimedEventsTable", synoptic_chronology);
@@ -321,9 +309,7 @@ void Hierarchy::establish(void) {
 @e CV_NEG_HL
 @e CV_POS_HL
 
-@e MVERB_PR_COUNTER
 @e MVERBS_HAP
-@e VERB_PR_COUNTER
 @e VERBS_HAP
 
 @<Establish conjugations@> =
@@ -334,21 +320,17 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make(CV_POS_HL, I"CV_POS", generic_conjugations);
 
 	inter_symbol *mverb_ptype = Packaging::register_ptype(I"_modal_verb", TRUE);
-	Packaging::register_counter(MVERB_PR_COUNTER, I"mverb");
-	HierarchyLocations::ap(MVERBS_HAP, CONJUGATIONS_SUBMODULE, MVERB_PR_COUNTER, mverb_ptype);
+	HierarchyLocations::ap(MVERBS_HAP, CONJUGATIONS_SUBMODULE, I"mverb", mverb_ptype);
 	inter_symbol *verb_ptype = Packaging::register_ptype(I"_verb", TRUE);
-	Packaging::register_counter(VERB_PR_COUNTER, I"verb");
-	HierarchyLocations::ap(VERBS_HAP, CONJUGATIONS_SUBMODULE, VERB_PR_COUNTER, verb_ptype);
+	HierarchyLocations::ap(VERBS_HAP, CONJUGATIONS_SUBMODULE, I"verb", verb_ptype);
 
 @h Equations.
 
-@e EQUATION_PR_COUNTER
 @e EQUATIONS_HAP
 
 @<Establish equations@> =
 	inter_symbol *equation_ptype = Packaging::register_ptype(I"_equation", TRUE);
-	Packaging::register_counter(EQUATION_PR_COUNTER, I"equation");
-	HierarchyLocations::ap(EQUATIONS_HAP, EQUATIONS_SUBMODULE, EQUATION_PR_COUNTER, equation_ptype);
+	HierarchyLocations::ap(EQUATIONS_HAP, EQUATIONS_SUBMODULE, I"equation", equation_ptype);
 	
 @h Extensions.
 
@@ -364,37 +346,24 @@ void Hierarchy::establish(void) {
 
 @h External files.
 
-@e EXTERNAL_FILE_PR_COUNTER
 @e EXTERNAL_FILES_HAP
 
 @<Establish external files@> =
 	inter_symbol *external_file_ptype = Packaging::register_ptype(I"_external_file", TRUE);
-	Packaging::register_counter(EXTERNAL_FILE_PR_COUNTER, I"external_file");
-	HierarchyLocations::ap(EXTERNAL_FILES_HAP, EXTERNAL_FILES_SUBMODULE, EXTERNAL_FILE_PR_COUNTER, external_file_ptype);
+	HierarchyLocations::ap(EXTERNAL_FILES_HAP, EXTERNAL_FILES_SUBMODULE, I"external_file", external_file_ptype);
 
 @h Grammar.
 
-@e COND_TOKEN_PR_COUNTER
 @e COND_TOKENS_HAP
-@e CONSULT_TOKEN_PR_COUNTER
 @e CONSULT_TOKENS_HAP
-@e TEST_PR_COUNTER
 @e TESTS_HAP
-@e LOOP_OVER_SCOPE_PR_COUNTER
 @e LOOP_OVER_SCOPES_HAP
-@e MISTAKE_PR_COUNTER
 @e MISTAKES_HAP
-@e NAMED_ACTION_PATTERN_PR_COUNTER
 @e NAMED_ACTION_PATTERNS_HAP
-@e NAMED_TOKEN_PR_COUNTER
 @e NAMED_TOKENS_HAP
-@e NOUN_FILTER_PR_COUNTER
 @e NOUN_FILTERS_HAP
-@e PARSE_NAME_PR_COUNTER
 @e PARSE_NAMES_HAP
-@e SCOPE_FILTER_PR_COUNTER
 @e SCOPE_FILTERS_HAP
-@e SLASH_TOKEN_PR_COUNTER
 @e SLASH_TOKENS_HAP
 
 @e VERB_DIRECTIVE_CREATURE_HL
@@ -418,38 +387,27 @@ void Hierarchy::establish(void) {
 
 @<Establish grammar@> =
 	inter_symbol *cond_ptype = Packaging::register_ptype(I"_conditional_token", TRUE);
-	Packaging::register_counter(COND_TOKEN_PR_COUNTER, I"conditional_token");
-	HierarchyLocations::ap(COND_TOKENS_HAP, GRAMMAR_SUBMODULE, COND_TOKEN_PR_COUNTER, cond_ptype);
+	HierarchyLocations::ap(COND_TOKENS_HAP, GRAMMAR_SUBMODULE, I"conditional_token", cond_ptype);
 	inter_symbol *consult_ptype = Packaging::register_ptype(I"_consult_token", TRUE);
-	Packaging::register_counter(CONSULT_TOKEN_PR_COUNTER, I"consult_token");
-	HierarchyLocations::ap(CONSULT_TOKENS_HAP, GRAMMAR_SUBMODULE, CONSULT_TOKEN_PR_COUNTER, consult_ptype);
+	HierarchyLocations::ap(CONSULT_TOKENS_HAP, GRAMMAR_SUBMODULE, I"consult_token", consult_ptype);
 	inter_symbol *test_ptype = Packaging::register_ptype(I"_test", TRUE);
-	Packaging::register_counter(TEST_PR_COUNTER, I"test");
-	HierarchyLocations::ap(TESTS_HAP, GRAMMAR_SUBMODULE, TEST_PR_COUNTER, test_ptype);
+	HierarchyLocations::ap(TESTS_HAP, GRAMMAR_SUBMODULE, I"test", test_ptype);
 	inter_symbol *los_ptype = Packaging::register_ptype(I"_loop_over_scope", TRUE);
-	Packaging::register_counter(LOOP_OVER_SCOPE_PR_COUNTER, I"loop_over_scope");
-	HierarchyLocations::ap(LOOP_OVER_SCOPES_HAP, GRAMMAR_SUBMODULE, LOOP_OVER_SCOPE_PR_COUNTER, los_ptype);
+	HierarchyLocations::ap(LOOP_OVER_SCOPES_HAP, GRAMMAR_SUBMODULE, I"loop_over_scope", los_ptype);
 	inter_symbol *m_ptype = Packaging::register_ptype(I"_mistake", TRUE);
-	Packaging::register_counter(MISTAKE_PR_COUNTER, I"mistake");
-	HierarchyLocations::ap(MISTAKES_HAP, GRAMMAR_SUBMODULE, MISTAKE_PR_COUNTER, m_ptype);
+	HierarchyLocations::ap(MISTAKES_HAP, GRAMMAR_SUBMODULE, I"mistake", m_ptype);
 	inter_symbol *nap_ptype = Packaging::register_ptype(I"_named_action_pattern", TRUE);
-	Packaging::register_counter(NAMED_ACTION_PATTERN_PR_COUNTER, I"named_action_pattern");
-	HierarchyLocations::ap(NAMED_ACTION_PATTERNS_HAP, GRAMMAR_SUBMODULE, NAMED_ACTION_PATTERN_PR_COUNTER, nap_ptype);
+	HierarchyLocations::ap(NAMED_ACTION_PATTERNS_HAP, GRAMMAR_SUBMODULE, I"named_action_pattern", nap_ptype);
 	inter_symbol *nt_ptype = Packaging::register_ptype(I"_named_token", TRUE);
-	Packaging::register_counter(NAMED_TOKEN_PR_COUNTER, I"named_token");
-	HierarchyLocations::ap(NAMED_TOKENS_HAP, GRAMMAR_SUBMODULE, NAMED_TOKEN_PR_COUNTER, nt_ptype);
+	HierarchyLocations::ap(NAMED_TOKENS_HAP, GRAMMAR_SUBMODULE, I"named_token", nt_ptype);
 	inter_symbol *nf_ptype = Packaging::register_ptype(I"_noun_filter", TRUE);
-	Packaging::register_counter(NOUN_FILTER_PR_COUNTER, I"noun_filter");
-	HierarchyLocations::ap(NOUN_FILTERS_HAP, GRAMMAR_SUBMODULE, NOUN_FILTER_PR_COUNTER, nf_ptype);
+	HierarchyLocations::ap(NOUN_FILTERS_HAP, GRAMMAR_SUBMODULE, I"noun_filter", nf_ptype);
 	inter_symbol *sf_ptype = Packaging::register_ptype(I"_scope_filter", TRUE);
-	Packaging::register_counter(SCOPE_FILTER_PR_COUNTER, I"scope_filter");
-	HierarchyLocations::ap(SCOPE_FILTERS_HAP, GRAMMAR_SUBMODULE, SCOPE_FILTER_PR_COUNTER, sf_ptype);
+	HierarchyLocations::ap(SCOPE_FILTERS_HAP, GRAMMAR_SUBMODULE, I"scope_filter", sf_ptype);
 	inter_symbol *pn_ptype = Packaging::register_ptype(I"_parse_name", TRUE);
-	Packaging::register_counter(PARSE_NAME_PR_COUNTER, I"parse_name");
-	HierarchyLocations::ap(PARSE_NAMES_HAP, GRAMMAR_SUBMODULE, PARSE_NAME_PR_COUNTER, pn_ptype);
+	HierarchyLocations::ap(PARSE_NAMES_HAP, GRAMMAR_SUBMODULE, I"parse_name", pn_ptype);
 	inter_symbol *slash_ptype = Packaging::register_ptype(I"_slash_token", TRUE);
-	Packaging::register_counter(SLASH_TOKEN_PR_COUNTER, I"slash_token");
-	HierarchyLocations::ap(SLASH_TOKENS_HAP, GRAMMAR_SUBMODULE, SLASH_TOKEN_PR_COUNTER, slash_ptype);
+	HierarchyLocations::ap(SLASH_TOKENS_HAP, GRAMMAR_SUBMODULE, I"slash_token", slash_ptype);
 
 	package_request *synoptic_grammar = Packaging::synoptic_resource(GRAMMAR_SUBMODULE);
 	HierarchyLocations::make(VERB_DIRECTIVE_CREATURE_HL, I"VERB_DIRECTIVE_CREATURE", synoptic_grammar);
@@ -469,18 +427,15 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make_function(TESTSCRIPTSUB_HL, I"action_fn", I"TestScriptSub", synoptic_grammar);
 	HierarchyLocations::make_function(INTERNALTESTCASES_HL, I"run_tests_fn", I"InternalTestCases", synoptic_grammar);
 	inter_symbol *command_ptype = Packaging::register_ptype(I"_command", TRUE);
-	Packaging::register_counter(COMMAND_PR_COUNTER, I"command");
-	HierarchyLocations::synoptic_ap(COMMANDS_HAP, GRAMMAR_SUBMODULE, COMMAND_PR_COUNTER, command_ptype);
+	HierarchyLocations::synoptic_ap(COMMANDS_HAP, GRAMMAR_SUBMODULE, I"command", command_ptype);
 
 @h Instances.
 
-@e INSTANCE_PR_COUNTER
 @e INSTANCES_HAP
 
 @<Establish instances@> =
 	inter_symbol *instance_ptype = Packaging::register_ptype(I"_instance", TRUE);
-	Packaging::register_counter(INSTANCE_PR_COUNTER, I"instance");
-	HierarchyLocations::ap(INSTANCES_HAP, INSTANCES_SUBMODULE, INSTANCE_PR_COUNTER, instance_ptype);
+	HierarchyLocations::ap(INSTANCES_HAP, INSTANCES_SUBMODULE, I"instance", instance_ptype);
 
 @h Interactive Fiction.
 
@@ -520,7 +475,6 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_INT_HL
 @e K_TYPELESS_STRING_HL
 
-@e KIND_PR_COUNTER
 @e KIND_HAP
 
 @e DEFAULTVALUEOFKOV_HL
@@ -543,8 +497,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make(K_TYPELESS_STRING_HL, I"K_typeless_string", generic_kinds);
 
 	inter_symbol *kind_ptype = Packaging::register_ptype(I"_kind", TRUE);
-	Packaging::register_counter(KIND_PR_COUNTER, I"kind");
-	HierarchyLocations::ap(KIND_HAP, KINDS_SUBMODULE, KIND_PR_COUNTER, kind_ptype);
+	HierarchyLocations::ap(KIND_HAP, KINDS_SUBMODULE, I"kind", kind_ptype);
 
 	package_request *synoptic_kinds = Packaging::synoptic_resource(KINDS_SUBMODULE);
 	HierarchyLocations::make(BASE_KIND_HWM_HL, I"BASE_KIND_HWM", synoptic_kinds);
@@ -560,51 +513,39 @@ void Hierarchy::establish(void) {
 
 @h Listing.
 
-@e LIST_TOGETHER_PR_COUNTER
 @e LISTS_TOGETHER_HAP
 
 @<Establish listing@> =
 	inter_symbol *list_together_ptype = Packaging::register_ptype(I"_list_together", TRUE);
-	Packaging::register_counter(LIST_TOGETHER_PR_COUNTER, I"list_together");
-	HierarchyLocations::ap(LISTS_TOGETHER_HAP, LISTING_SUBMODULE, LIST_TOGETHER_PR_COUNTER, list_together_ptype);
+	HierarchyLocations::ap(LISTS_TOGETHER_HAP, LISTING_SUBMODULE, I"list_together", list_together_ptype);
 
 @h Phrases.
 
 @e CLOSURES_HAP
-@e CLOSURE_PR_COUNTER
 @e PHRASES_HAP
-@e TO_PHRASE_PR_COUNTER
 @e REQUESTS_HAP
-@e REQUEST_PR_COUNTER
 @e LABEL_STORAGES_HAP
-@e LABEL_STORAGE_PR_COUNTER
 
 @<Establish phrases@> =
 	inter_symbol *to_phrase_ptype = Packaging::register_ptype(I"_phrase", TRUE);
-	Packaging::register_counter(TO_PHRASE_PR_COUNTER, I"phrase");
-	HierarchyLocations::ap(PHRASES_HAP, PHRASES_SUBMODULE, TO_PHRASE_PR_COUNTER, to_phrase_ptype);
+	HierarchyLocations::ap(PHRASES_HAP, PHRASES_SUBMODULE, I"phrase", to_phrase_ptype);
 		inter_symbol *closure_ptype = Packaging::register_ptype(I"_closure", TRUE);
-		Packaging::register_counter(CLOSURE_PR_COUNTER, I"closure");
-		HierarchyLocations::ap_within(CLOSURES_HAP, to_phrase_ptype, CLOSURE_PR_COUNTER, closure_ptype);
+		HierarchyLocations::ap_within(CLOSURES_HAP, to_phrase_ptype, I"closure", closure_ptype);
 		inter_symbol *request_ptype = Packaging::register_ptype(I"_request", TRUE);
-		Packaging::register_counter(REQUEST_PR_COUNTER, I"request");
-		HierarchyLocations::ap_within(REQUESTS_HAP, to_phrase_ptype, REQUEST_PR_COUNTER, request_ptype);
+		HierarchyLocations::ap_within(REQUESTS_HAP, to_phrase_ptype, I"request", request_ptype);
 
 	inter_symbol *label_storage_ptype = Packaging::register_ptype(I"_label_storage", TRUE);
-	Packaging::register_counter(LABEL_STORAGE_PR_COUNTER, I"label_associated_storage");
-	HierarchyLocations::synoptic_ap(LABEL_STORAGES_HAP, PHRASES_SUBMODULE, LABEL_STORAGE_PR_COUNTER, label_storage_ptype);
+	HierarchyLocations::synoptic_ap(LABEL_STORAGES_HAP, PHRASES_SUBMODULE, I"label_associated_storage", label_storage_ptype);
 
 @h Properties.
 
-@e PROPERTY_PR_COUNTER
 @e PROPERTIES_HAP
 
 @e CCOUNT_PROPERTY_HL
 
 @<Establish properties@> =
 	inter_symbol *property_ptype = Packaging::register_ptype(I"_property", TRUE);
-	Packaging::register_counter(PROPERTY_PR_COUNTER, I"property");
-	HierarchyLocations::ap(PROPERTIES_HAP, PROPERTIES_SUBMODULE, PROPERTY_PR_COUNTER, property_ptype);
+	HierarchyLocations::ap(PROPERTIES_HAP, PROPERTIES_SUBMODULE, I"property", property_ptype);
 
 	package_request *synoptic_props = Packaging::synoptic_resource(PROPERTIES_SUBMODULE);
 	HierarchyLocations::make(CCOUNT_PROPERTY_HL, I"CCOUNT_PROPERTY", synoptic_props);
@@ -629,7 +570,6 @@ void Hierarchy::establish(void) {
 @e TTF_SUM_HL
 @e MEANINGLESS_RR_HL
 
-@e RELATION_PR_COUNTER
 @e RELATIONS_HAP
 
 @e CREATEDYNAMICRELATIONS_HL
@@ -658,8 +598,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make(MEANINGLESS_RR_HL, I"MEANINGLESS_RR", generic_rels);
 
 	inter_symbol *relation_ptype = Packaging::register_ptype(I"_relation", TRUE);
-	Packaging::register_counter(RELATION_PR_COUNTER, I"relation");
-	HierarchyLocations::ap(RELATIONS_HAP, RELATIONS_SUBMODULE, RELATION_PR_COUNTER, relation_ptype);
+	HierarchyLocations::ap(RELATIONS_HAP, RELATIONS_SUBMODULE, I"relation", relation_ptype);
 
 	package_request *synoptic_rels = Packaging::synoptic_resource(RELATIONS_SUBMODULE);
 	HierarchyLocations::make_function(CREATEDYNAMICRELATIONS_HL, I"creator_fn", I"CreateDynamicRelations", synoptic_rels);
@@ -671,9 +610,7 @@ void Hierarchy::establish(void) {
 
 @e EMPTY_RULEBOOK_INAME_HL
 
-@e OUTCOME_PR_COUNTER
 @e OUTCOMES_HAP
-@e RULEBOOK_PR_COUNTER
 @e RULEBOOKS_HAP
 
 @e NUMBER_RULEBOOKS_CREATED_HL
@@ -687,11 +624,9 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::make_function(EMPTY_RULEBOOK_INAME_HL, I"empty_fn", I"EMPTY_RULEBOOK", generic_rulebooks);
 
 	inter_symbol *outcome_ptype = Packaging::register_ptype(I"_outcome", TRUE);
-	Packaging::register_counter(OUTCOME_PR_COUNTER, I"rulebook_outcome");
-	HierarchyLocations::ap(OUTCOMES_HAP, RULEBOOKS_SUBMODULE, OUTCOME_PR_COUNTER, outcome_ptype);
+	HierarchyLocations::ap(OUTCOMES_HAP, RULEBOOKS_SUBMODULE, I"rulebook_outcome", outcome_ptype);
 	inter_symbol *rulebook_ptype = Packaging::register_ptype(I"_rulebook", TRUE);
-	Packaging::register_counter(RULEBOOK_PR_COUNTER, I"rulebook");
-	HierarchyLocations::ap(RULEBOOKS_HAP, RULEBOOKS_SUBMODULE, RULEBOOK_PR_COUNTER, rulebook_ptype);
+	HierarchyLocations::ap(RULEBOOKS_HAP, RULEBOOKS_SUBMODULE, I"rulebook", rulebook_ptype);
 
 	package_request *synoptic_rulebooks = Packaging::synoptic_resource(RULEBOOKS_SUBMODULE);
 	HierarchyLocations::make(NUMBER_RULEBOOKS_CREATED_HL, I"NUMBER_RULEBOOKS_CREATED", synoptic_rulebooks);
@@ -702,9 +637,7 @@ void Hierarchy::establish(void) {
 
 @h Rules.
 
-@e RULE_PR_COUNTER
 @e RULES_HAP
-@e RESPONSE_PR_COUNTER
 @e RESPONSES_HAP
 
 @e RULEPRINTINGRULE_HL
@@ -712,11 +645,9 @@ void Hierarchy::establish(void) {
 
 @<Establish rules@> =
 	inter_symbol *rule_ptype = Packaging::register_ptype(I"_rule", TRUE);
-	Packaging::register_counter(RULE_PR_COUNTER, I"rule");
-	HierarchyLocations::ap(RULES_HAP, RULES_SUBMODULE, RULE_PR_COUNTER, rule_ptype);
+	HierarchyLocations::ap(RULES_HAP, RULES_SUBMODULE, I"rule", rule_ptype);
 		inter_symbol *response_ptype = Packaging::register_ptype(I"_response", TRUE);
-		Packaging::register_counter(RESPONSE_PR_COUNTER, I"response");
-		HierarchyLocations::ap_within(RESPONSES_HAP, rule_ptype, RESPONSE_PR_COUNTER, response_ptype);
+		HierarchyLocations::ap_within(RESPONSES_HAP, rule_ptype, I"response", response_ptype);
 
 	package_request *synoptic_rules = Packaging::synoptic_resource(RULES_SUBMODULE);
 	HierarchyLocations::make(RESPONSEDIVISIONS_HL, I"ResponseDivisions", synoptic_rules);
@@ -724,9 +655,7 @@ void Hierarchy::establish(void) {
 
 @h Tables.
 
-@e TABLE_PR_COUNTER
 @e TABLES_HAP
-@e TABLE_COLUMN_PR_COUNTER
 @e TABLE_COLUMNS_HAP
 
 @e TC_KOV_HL
@@ -734,11 +663,9 @@ void Hierarchy::establish(void) {
 
 @<Establish tables@> =
 	inter_symbol *table_ptype = Packaging::register_ptype(I"_table", TRUE);
-	Packaging::register_counter(TABLE_PR_COUNTER, I"table");
-	HierarchyLocations::ap(TABLES_HAP, TABLES_SUBMODULE, TABLE_PR_COUNTER, table_ptype);
+	HierarchyLocations::ap(TABLES_HAP, TABLES_SUBMODULE, I"table", table_ptype);
 		inter_symbol *table_column_ptype = Packaging::register_ptype(I"_table_column", TRUE);
-		Packaging::register_counter(TABLE_COLUMN_PR_COUNTER, I"table_column");
-		HierarchyLocations::ap_within(TABLE_COLUMNS_HAP, table_ptype, TABLE_COLUMN_PR_COUNTER, table_column_ptype);
+		HierarchyLocations::ap_within(TABLE_COLUMNS_HAP, table_ptype, I"table_column", table_column_ptype);
 
 	package_request *synoptic_tables = Packaging::synoptic_resource(TABLES_SUBMODULE);
 	HierarchyLocations::make(TB_BLANKS_HL, I"TB_Blanks", synoptic_tables);
@@ -746,13 +673,11 @@ void Hierarchy::establish(void) {
 
 @h Variables.
 
-@e VARIABLE_PR_COUNTER
 @e VARIABLES_HAP
 
 @<Establish variables@> =
 	inter_symbol *variable_ptype = Packaging::register_ptype(I"_variable", TRUE);
-	Packaging::register_counter(VARIABLE_PR_COUNTER, I"variable");
-	HierarchyLocations::ap(VARIABLES_HAP, VARIABLES_SUBMODULE, VARIABLE_PR_COUNTER, variable_ptype);
+	HierarchyLocations::ap(VARIABLES_HAP, VARIABLES_SUBMODULE, I"variable", variable_ptype);
 
 @
 
@@ -1283,7 +1208,6 @@ void Hierarchy::establish(void) {
 
 @e MAX_HL
 @e MAX_HAP
-@e MAX_PR_COUNTER
 
 @
 

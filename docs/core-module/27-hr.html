@@ -79,7 +79,7 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">BLOCK_CONSTANT_PR_COUNTER</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BLOCK_CONSTANT_PR_COUNTER</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BLOCK_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FORM_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INLINE_PR_COUNTER</span>
@@ -93,16 +93,16 @@
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hierarchy::establish</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"block_constant"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">BLOCK_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"code_block"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">FORM_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"form"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">INLINE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inline_pval"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">LITERAL_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"literal"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">MISC_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"misc_const"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">PROPOSITION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"proposition"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">SUBSTITUTION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ts"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">SUBSTITUTIONF_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ts_fn"</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">TASK_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"task"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"block_constant"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"code_block"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"form"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"inline_pval"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"literal"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"misc_const"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"proposition"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ts"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ts_fn"</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"task"</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Establish basics</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Establish actions</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
@@ -225,7 +225,6 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">MISTAKEACTION_HL</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ACTION_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTIONS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CHECK_RB_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CARRY_OUT_RB_HL</span>
@@ -248,8 +247,7 @@
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">MISTAKEACTION_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"##MistakeAction"</span><span class="plain">, </span><span class="identifier">generic_actions</span><span class="plain">);</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">action_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">ACTION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"action"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIONS_HAP</span><span class="plain">, </span><span class="constant">ACTIONS_SUBMODULE</span><span class="plain">, </span><span class="constant">ACTION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">action_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIONS_HAP</span><span class="plain">, </span><span class="constant">ACTIONS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">action_ptype</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::make_rulebook_within</span><span class="plain">(</span><span class="constant">CHECK_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"check_rb"</span><span class="plain">, </span><span class="identifier">action_ptype</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::make_rulebook_within</span><span class="plain">(</span><span class="constant">CARRY_OUT_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"carry_out_rb"</span><span class="plain">, </span><span class="identifier">action_ptype</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::make_rulebook_within</span><span class="plain">(</span><span class="constant">REPORT_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"report_rb"</span><span class="plain">, </span><span class="identifier">action_ptype</span><span class="plain">);</span>
@@ -272,7 +270,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">ACTIVITY_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTIVITIES_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BEFORE_RB_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FOR_RB_HL</span>
@@ -290,8 +287,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">activity_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_activity"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">ACTIVITY_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"activity"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIVITIES_HAP</span><span class="plain">, </span><span class="constant">ACTIVITIES_SUBMODULE</span><span class="plain">, </span><span class="constant">ACTIVITY_PR_COUNTER</span><span class="plain">, </span><span class="identifier">activity_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIVITIES_HAP</span><span class="plain">, </span><span class="constant">ACTIVITIES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"activity"</span><span class="plain">, </span><span class="identifier">activity_ptype</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::make_rulebook_within</span><span class="plain">(</span><span class="constant">BEFORE_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"before_rb"</span><span class="plain">, </span><span class="identifier">activity_ptype</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::make_rulebook_within</span><span class="plain">(</span><span class="constant">FOR_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for_rb"</span><span class="plain">, </span><span class="identifier">activity_ptype</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::make_rulebook_within</span><span class="plain">(</span><span class="constant">AFTER_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"after_rb"</span><span class="plain">, </span><span class="identifier">activity_ptype</span><span class="plain">);</span>
@@ -312,11 +308,8 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_MEANING_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_MEANINGS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_PHRASE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_PHRASES_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
@@ -326,14 +319,11 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">adjective_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_adjective"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">ADJECTIVE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVES_HAP</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBMODULE</span><span class="plain">, </span><span class="constant">ADJECTIVE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">adjective_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVES_HAP</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective"</span><span class="plain">, </span><span class="identifier">adjective_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">adjective_meaning_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_adjective_meaning"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">ADJECTIVE_MEANING_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective_meaning"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVE_MEANINGS_HAP</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBMODULE</span><span class="plain">, </span><span class="constant">ADJECTIVE_MEANING_PR_COUNTER</span><span class="plain">, </span><span class="identifier">adjective_meaning_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVE_MEANINGS_HAP</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective_meaning"</span><span class="plain">, </span><span class="identifier">adjective_meaning_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">adjective_phrase_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_adjective_phrase"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">ADJECTIVE_PHRASE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective_phrase"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVE_PHRASES_HAP</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBMODULE</span><span class="plain">, </span><span class="constant">ADJECTIVE_PHRASE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">adjective_phrase_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVE_PHRASES_HAP</span><span class="plain">, </span><span class="constant">ADJECTIVES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective_phrase"</span><span class="plain">, </span><span class="identifier">adjective_phrase_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -374,7 +364,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">PAP_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PAST_ACTION_PATTERNS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TIMEDEVENTSTABLE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TIMEDEVENTTIMESTABLE_HL</span>
@@ -390,8 +379,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">past_action_pattern_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_past_action_pattern"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">PAP_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"past_action_pattern"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PAST_ACTION_PATTERNS_HAP</span><span class="plain">, </span><span class="constant">CHRONOLOGY_SUBMODULE</span><span class="plain">, </span><span class="constant">PAP_PR_COUNTER</span><span class="plain">, </span><span class="identifier">past_action_pattern_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PAST_ACTION_PATTERNS_HAP</span><span class="plain">, </span><span class="constant">CHRONOLOGY_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"past_action_pattern"</span><span class="plain">, </span><span class="identifier">past_action_pattern_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_chronology</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">CHRONOLOGY_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">TIMEDEVENTSTABLE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TimedEventsTable"</span><span class="plain">, </span><span class="identifier">synoptic_chronology</span><span class="plain">);</span>
@@ -414,9 +402,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">CV_MODAL_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CV_NEG_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CV_POS_HL</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">MVERB_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MVERBS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">VERB_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VERBS_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_14"></a><b>&#167;2.14.  </b><code class="display">
@@ -432,11 +418,9 @@
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">CV_POS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CV_POS"</span><span class="plain">, </span><span class="identifier">generic_conjugations</span><span class="plain">);</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">mverb_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_modal_verb"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">MVERB_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mverb"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">MVERBS_HAP</span><span class="plain">, </span><span class="constant">CONJUGATIONS_SUBMODULE</span><span class="plain">, </span><span class="constant">MVERB_PR_COUNTER</span><span class="plain">, </span><span class="identifier">mverb_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">MVERBS_HAP</span><span class="plain">, </span><span class="constant">CONJUGATIONS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mverb"</span><span class="plain">, </span><span class="identifier">mverb_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">verb_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_verb"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">VERB_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"verb"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VERBS_HAP</span><span class="plain">, </span><span class="constant">CONJUGATIONS_SUBMODULE</span><span class="plain">, </span><span class="constant">VERB_PR_COUNTER</span><span class="plain">, </span><span class="identifier">verb_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VERBS_HAP</span><span class="plain">, </span><span class="constant">CONJUGATIONS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"verb"</span><span class="plain">, </span><span class="identifier">verb_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -447,7 +431,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">EQUATION_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EQUATIONS_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_16"></a><b>&#167;2.16.  </b><code class="display">
@@ -457,8 +440,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">equation_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_equation"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">EQUATION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"equation"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">EQUATIONS_HAP</span><span class="plain">, </span><span class="constant">EQUATIONS_SUBMODULE</span><span class="plain">, </span><span class="constant">EQUATION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">equation_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">EQUATIONS_HAP</span><span class="plain">, </span><span class="constant">EQUATIONS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"equation"</span><span class="plain">, </span><span class="identifier">equation_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -493,7 +475,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">EXTERNAL_FILE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXTERNAL_FILES_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_20"></a><b>&#167;2.20.  </b><code class="display">
@@ -503,8 +484,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">external_file_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_external_file"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">EXTERNAL_FILE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"external_file"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">EXTERNAL_FILES_HAP</span><span class="plain">, </span><span class="constant">EXTERNAL_FILES_SUBMODULE</span><span class="plain">, </span><span class="constant">EXTERNAL_FILE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">external_file_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">EXTERNAL_FILES_HAP</span><span class="plain">, </span><span class="constant">EXTERNAL_FILES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"external_file"</span><span class="plain">, </span><span class="identifier">external_file_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -515,27 +495,16 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">COND_TOKEN_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">COND_TOKENS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">CONSULT_TOKEN_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CONSULT_TOKENS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TESTS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">LOOP_OVER_SCOPE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LOOP_OVER_SCOPES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">MISTAKE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MISTAKES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">NAMED_ACTION_PATTERN_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NAMED_ACTION_PATTERNS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">NAMED_TOKEN_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NAMED_TOKENS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">NOUN_FILTER_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NOUN_FILTERS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">PARSE_NAME_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PARSE_NAMES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SCOPE_FILTER_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SCOPE_FILTERS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SLASH_TOKEN_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SLASH_TOKENS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VERB_DIRECTIVE_CREATURE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VERB_DIRECTIVE_DIVIDER_HL</span>
@@ -563,38 +532,27 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">cond_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_conditional_token"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">COND_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"conditional_token"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">COND_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">COND_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">cond_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">COND_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"conditional_token"</span><span class="plain">, </span><span class="identifier">cond_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">consult_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_consult_token"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">CONSULT_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"consult_token"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">CONSULT_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">CONSULT_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">consult_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">CONSULT_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"consult_token"</span><span class="plain">, </span><span class="identifier">consult_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">test_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_test"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">TEST_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"test"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">TESTS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">TEST_PR_COUNTER</span><span class="plain">, </span><span class="identifier">test_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">TESTS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"test"</span><span class="plain">, </span><span class="identifier">test_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">los_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_loop_over_scope"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">LOOP_OVER_SCOPE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"loop_over_scope"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">LOOP_OVER_SCOPES_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">LOOP_OVER_SCOPE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">los_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">LOOP_OVER_SCOPES_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"loop_over_scope"</span><span class="plain">, </span><span class="identifier">los_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">m_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_mistake"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">MISTAKE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mistake"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">MISTAKES_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">MISTAKE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">m_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">MISTAKES_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mistake"</span><span class="plain">, </span><span class="identifier">m_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">nap_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_named_action_pattern"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">NAMED_ACTION_PATTERN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"named_action_pattern"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">NAMED_ACTION_PATTERNS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">NAMED_ACTION_PATTERN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">nap_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">NAMED_ACTION_PATTERNS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"named_action_pattern"</span><span class="plain">, </span><span class="identifier">nap_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">nt_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_named_token"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">NAMED_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"named_token"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">NAMED_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">NAMED_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">nt_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">NAMED_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"named_token"</span><span class="plain">, </span><span class="identifier">nt_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">nf_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_noun_filter"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">NOUN_FILTER_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"noun_filter"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">NOUN_FILTERS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">NOUN_FILTER_PR_COUNTER</span><span class="plain">, </span><span class="identifier">nf_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">NOUN_FILTERS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"noun_filter"</span><span class="plain">, </span><span class="identifier">nf_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sf_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_scope_filter"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">SCOPE_FILTER_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"scope_filter"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">SCOPE_FILTERS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">SCOPE_FILTER_PR_COUNTER</span><span class="plain">, </span><span class="identifier">sf_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">SCOPE_FILTERS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"scope_filter"</span><span class="plain">, </span><span class="identifier">sf_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pn_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_parse_name"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">PARSE_NAME_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"parse_name"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PARSE_NAMES_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">PARSE_NAME_PR_COUNTER</span><span class="plain">, </span><span class="identifier">pn_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PARSE_NAMES_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"parse_name"</span><span class="plain">, </span><span class="identifier">pn_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">slash_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_slash_token"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">SLASH_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"slash_token"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">SLASH_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">SLASH_TOKEN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">slash_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">SLASH_TOKENS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"slash_token"</span><span class="plain">, </span><span class="identifier">slash_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_grammar</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">VERB_DIRECTIVE_CREATURE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"VERB_DIRECTIVE_CREATURE"</span><span class="plain">, </span><span class="identifier">synoptic_grammar</span><span class="plain">);</span>
@@ -614,8 +572,7 @@
         <span class="functiontext">HierarchyLocations::make_function</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"action_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TestScriptSub"</span><span class="plain">, </span><span class="identifier">synoptic_grammar</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make_function</span><span class="plain">(</span><span class="constant">INTERNALTESTCASES_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"run_tests_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InternalTestCases"</span><span class="plain">, </span><span class="identifier">synoptic_grammar</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">command_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_command"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">COMMAND_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"command"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::synoptic_ap</span><span class="plain">(</span><span class="constant">COMMANDS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="constant">COMMAND_PR_COUNTER</span><span class="plain">, </span><span class="identifier">command_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::synoptic_ap</span><span class="plain">(</span><span class="constant">COMMANDS_HAP</span><span class="plain">, </span><span class="constant">GRAMMAR_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"command"</span><span class="plain">, </span><span class="identifier">command_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -626,7 +583,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">INSTANCE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INSTANCES_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_24"></a><b>&#167;2.24.  </b><code class="display">
@@ -636,8 +592,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">instance_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_instance"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">INSTANCE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"instance"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">INSTANCES_HAP</span><span class="plain">, </span><span class="constant">INSTANCES_SUBMODULE</span><span class="plain">, </span><span class="constant">INSTANCE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">instance_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">INSTANCES_HAP</span><span class="plain">, </span><span class="constant">INSTANCES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"instance"</span><span class="plain">, </span><span class="identifier">instance_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -695,7 +650,6 @@
     <span class="definitionkeyword">enum</span> <span class="constant">K_UNCHECKED_FUNCTION_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">K_TYPELESS_INT_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">K_TYPELESS_STRING_HL</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">KIND_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">KIND_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DEFAULTVALUEOFKOV_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DEFAULTVALUEFINDER_HL</span>
@@ -722,8 +676,7 @@
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">K_TYPELESS_STRING_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"K_typeless_string"</span><span class="plain">, </span><span class="identifier">generic_kinds</span><span class="plain">);</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_kind"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">KIND_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kind"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">KIND_HAP</span><span class="plain">, </span><span class="constant">KINDS_SUBMODULE</span><span class="plain">, </span><span class="constant">KIND_PR_COUNTER</span><span class="plain">, </span><span class="identifier">kind_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">KIND_HAP</span><span class="plain">, </span><span class="constant">KINDS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kind"</span><span class="plain">, </span><span class="identifier">kind_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_kinds</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">KINDS_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">BASE_KIND_HWM_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"BASE_KIND_HWM"</span><span class="plain">, </span><span class="identifier">synoptic_kinds</span><span class="plain">);</span>
@@ -746,7 +699,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">LIST_TOGETHER_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LISTS_TOGETHER_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_30"></a><b>&#167;2.30.  </b><code class="display">
@@ -756,8 +708,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">list_together_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_list_together"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"list_together"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">LISTS_TOGETHER_HAP</span><span class="plain">, </span><span class="constant">LISTING_SUBMODULE</span><span class="plain">, </span><span class="constant">LIST_TOGETHER_PR_COUNTER</span><span class="plain">, </span><span class="identifier">list_together_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">LISTS_TOGETHER_HAP</span><span class="plain">, </span><span class="constant">LISTING_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"list_together"</span><span class="plain">, </span><span class="identifier">list_together_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -769,13 +720,9 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">CLOSURES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">CLOSURE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PHRASES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TO_PHRASE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">REQUESTS_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">REQUEST_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LABEL_STORAGES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">LABEL_STORAGE_PR_COUNTER</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_32"></a><b>&#167;2.32.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Establish phrases</span> <span class="cwebmacronumber">2.32</span>&gt; =
@@ -784,18 +731,14 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">to_phrase_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_phrase"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">TO_PHRASE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"phrase"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PHRASES_HAP</span><span class="plain">, </span><span class="constant">PHRASES_SUBMODULE</span><span class="plain">, </span><span class="constant">TO_PHRASE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">to_phrase_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PHRASES_HAP</span><span class="plain">, </span><span class="constant">PHRASES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"phrase"</span><span class="plain">, </span><span class="identifier">to_phrase_ptype</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">closure_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_closure"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">CLOSURE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"closure"</span><span class="plain">);</span>
-            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">CLOSURES_HAP</span><span class="plain">, </span><span class="identifier">to_phrase_ptype</span><span class="plain">, </span><span class="constant">CLOSURE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">closure_ptype</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">CLOSURES_HAP</span><span class="plain">, </span><span class="identifier">to_phrase_ptype</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"closure"</span><span class="plain">, </span><span class="identifier">closure_ptype</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">request_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_request"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">REQUEST_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"request"</span><span class="plain">);</span>
-            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">REQUESTS_HAP</span><span class="plain">, </span><span class="identifier">to_phrase_ptype</span><span class="plain">, </span><span class="constant">REQUEST_PR_COUNTER</span><span class="plain">, </span><span class="identifier">request_ptype</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">REQUESTS_HAP</span><span class="plain">, </span><span class="identifier">to_phrase_ptype</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"request"</span><span class="plain">, </span><span class="identifier">request_ptype</span><span class="plain">);</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">label_storage_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_label_storage"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">LABEL_STORAGE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"label_associated_storage"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::synoptic_ap</span><span class="plain">(</span><span class="constant">LABEL_STORAGES_HAP</span><span class="plain">, </span><span class="constant">PHRASES_SUBMODULE</span><span class="plain">, </span><span class="constant">LABEL_STORAGE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">label_storage_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::synoptic_ap</span><span class="plain">(</span><span class="constant">LABEL_STORAGES_HAP</span><span class="plain">, </span><span class="constant">PHRASES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"label_associated_storage"</span><span class="plain">, </span><span class="identifier">label_storage_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -806,7 +749,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">PROPERTY_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PROPERTIES_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CCOUNT_PROPERTY_HL</span>
 </pre>
@@ -817,8 +759,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">property_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_property"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">PROPERTY_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"property"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PROPERTIES_HAP</span><span class="plain">, </span><span class="constant">PROPERTIES_SUBMODULE</span><span class="plain">, </span><span class="constant">PROPERTY_PR_COUNTER</span><span class="plain">, </span><span class="identifier">property_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PROPERTIES_HAP</span><span class="plain">, </span><span class="constant">PROPERTIES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"property"</span><span class="plain">, </span><span class="identifier">property_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_props</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">PROPERTIES_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">CCOUNT_PROPERTY_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CCOUNT_PROPERTY"</span><span class="plain">, </span><span class="identifier">synoptic_props</span><span class="plain">);</span>
@@ -849,7 +790,6 @@
     <span class="definitionkeyword">enum</span> <span class="constant">REL_BLOCK_HEADER_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TTF_SUM_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MEANINGLESS_RR_HL</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">RELATION_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RELATIONS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CREATEDYNAMICRELATIONS_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CCOUNT_BINARY_PREDICATE_HL</span>
@@ -882,8 +822,7 @@
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">MEANINGLESS_RR_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"MEANINGLESS_RR"</span><span class="plain">, </span><span class="identifier">generic_rels</span><span class="plain">);</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">relation_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_relation"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">RELATION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"relation"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RELATIONS_HAP</span><span class="plain">, </span><span class="constant">RELATIONS_SUBMODULE</span><span class="plain">, </span><span class="constant">RELATION_PR_COUNTER</span><span class="plain">, </span><span class="identifier">relation_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RELATIONS_HAP</span><span class="plain">, </span><span class="constant">RELATIONS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"relation"</span><span class="plain">, </span><span class="identifier">relation_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_rels</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RELATIONS_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make_function</span><span class="plain">(</span><span class="constant">CREATEDYNAMICRELATIONS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"creator_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CreateDynamicRelations"</span><span class="plain">, </span><span class="identifier">synoptic_rels</span><span class="plain">);</span>
@@ -901,9 +840,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">EMPTY_RULEBOOK_INAME_HL</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">OUTCOME_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OUTCOMES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOK_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOKS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NUMBER_RULEBOOKS_CREATED_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOK_VAR_CREATORS_HL</span>
@@ -921,11 +858,9 @@
         <span class="functiontext">HierarchyLocations::make_function</span><span class="plain">(</span><span class="constant">EMPTY_RULEBOOK_INAME_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"empty_fn"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"EMPTY_RULEBOOK"</span><span class="plain">, </span><span class="identifier">generic_rulebooks</span><span class="plain">);</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">outcome_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_outcome"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">OUTCOME_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rulebook_outcome"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">OUTCOMES_HAP</span><span class="plain">, </span><span class="constant">RULEBOOKS_SUBMODULE</span><span class="plain">, </span><span class="constant">OUTCOME_PR_COUNTER</span><span class="plain">, </span><span class="identifier">outcome_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">OUTCOMES_HAP</span><span class="plain">, </span><span class="constant">RULEBOOKS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rulebook_outcome"</span><span class="plain">, </span><span class="identifier">outcome_ptype</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">rulebook_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">RULEBOOK_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rulebook"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULEBOOKS_HAP</span><span class="plain">, </span><span class="constant">RULEBOOKS_SUBMODULE</span><span class="plain">, </span><span class="constant">RULEBOOK_PR_COUNTER</span><span class="plain">, </span><span class="identifier">rulebook_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULEBOOKS_HAP</span><span class="plain">, </span><span class="constant">RULEBOOKS_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rulebook"</span><span class="plain">, </span><span class="identifier">rulebook_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_rulebooks</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULEBOOKS_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">NUMBER_RULEBOOKS_CREATED_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NUMBER_RULEBOOKS_CREATED"</span><span class="plain">, </span><span class="identifier">synoptic_rulebooks</span><span class="plain">);</span>
@@ -943,9 +878,7 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">RULE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">RESPONSE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RESPONSES_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULEPRINTINGRULE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RESPONSEDIVISIONS_HL</span>
@@ -957,11 +890,9 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">rule_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_rule"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">RULE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rule"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULES_HAP</span><span class="plain">, </span><span class="constant">RULES_SUBMODULE</span><span class="plain">, </span><span class="constant">RULE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">rule_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULES_HAP</span><span class="plain">, </span><span class="constant">RULES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rule"</span><span class="plain">, </span><span class="identifier">rule_ptype</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">response_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_response"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">RESPONSE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"response"</span><span class="plain">);</span>
-            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">RESPONSES_HAP</span><span class="plain">, </span><span class="identifier">rule_ptype</span><span class="plain">, </span><span class="constant">RESPONSE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">response_ptype</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">RESPONSES_HAP</span><span class="plain">, </span><span class="identifier">rule_ptype</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"response"</span><span class="plain">, </span><span class="identifier">response_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_rules</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">RULES_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">RESPONSEDIVISIONS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ResponseDivisions"</span><span class="plain">, </span><span class="identifier">synoptic_rules</span><span class="plain">);</span>
@@ -976,9 +907,7 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">TABLE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TABLES_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TABLE_COLUMN_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TABLE_COLUMNS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TC_KOV_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TB_BLANKS_HL</span>
@@ -990,11 +919,9 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">table_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_table"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">TABLE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"table"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">TABLES_HAP</span><span class="plain">, </span><span class="constant">TABLES_SUBMODULE</span><span class="plain">, </span><span class="constant">TABLE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">table_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">TABLES_HAP</span><span class="plain">, </span><span class="constant">TABLES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"table"</span><span class="plain">, </span><span class="identifier">table_ptype</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">table_column_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_table_column"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">TABLE_COLUMN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"table_column"</span><span class="plain">);</span>
-            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">TABLE_COLUMNS_HAP</span><span class="plain">, </span><span class="identifier">table_ptype</span><span class="plain">, </span><span class="constant">TABLE_COLUMN_PR_COUNTER</span><span class="plain">, </span><span class="identifier">table_column_ptype</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::ap_within</span><span class="plain">(</span><span class="constant">TABLE_COLUMNS_HAP</span><span class="plain">, </span><span class="identifier">table_ptype</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"table_column"</span><span class="plain">, </span><span class="identifier">table_column_ptype</span><span class="plain">);</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_tables</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="constant">TABLES_SUBMODULE</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::make</span><span class="plain">(</span><span class="constant">TB_BLANKS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TB_Blanks"</span><span class="plain">, </span><span class="identifier">synoptic_tables</span><span class="plain">);</span>
@@ -1009,7 +936,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">VARIABLE_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VARIABLES_HAP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_44"></a><b>&#167;2.44.  </b><code class="display">
@@ -1019,8 +945,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">variable_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_variable"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="constant">VARIABLE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"variable"</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VARIABLES_HAP</span><span class="plain">, </span><span class="constant">VARIABLES_SUBMODULE</span><span class="plain">, </span><span class="constant">VARIABLE_PR_COUNTER</span><span class="plain">, </span><span class="identifier">variable_ptype</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VARIABLES_HAP</span><span class="plain">, </span><span class="constant">VARIABLES_SUBMODULE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"variable"</span><span class="plain">, </span><span class="identifier">variable_ptype</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1579,7 +1504,6 @@
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">MAX_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MAX_HAP</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">MAX_PR_COUNTER</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 

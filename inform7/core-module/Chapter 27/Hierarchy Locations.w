@@ -214,10 +214,10 @@ void HierarchyLocations::create_haps(void) {
 	for (int i=0; i<MAX_HAP; i++) haps_indexed_by_id[i] = NULL;
 }
 
-hierarchy_attachment_point *HierarchyLocations::ap(int ap_id, int submodule_id, int counter_id, inter_symbol *ptype) {
+hierarchy_attachment_point *HierarchyLocations::ap(int ap_id, int submodule_id, text_stream *iterated_text, inter_symbol *ptype) {
 	hierarchy_attachment_point *hap = CREATE(hierarchy_attachment_point);
 	hap->submodule = submodule_id;
-	hap->counter = counter_id;
+	hap->counter = Packaging::register_counter(iterated_text);
 	hap->type = ptype;
 	hap->super_type = NULL;
 	hap->synoptic_flag = FALSE;
@@ -226,14 +226,14 @@ hierarchy_attachment_point *HierarchyLocations::ap(int ap_id, int submodule_id, 
 	return hap;
 }
 
-hierarchy_attachment_point *HierarchyLocations::synoptic_ap(int ap_id, int submodule_id, int counter_id, inter_symbol *ptype) {
-	hierarchy_attachment_point *hap = HierarchyLocations::ap(ap_id, submodule_id, counter_id, ptype);
+hierarchy_attachment_point *HierarchyLocations::synoptic_ap(int ap_id, int submodule_id, text_stream *iterated_text, inter_symbol *ptype) {
+	hierarchy_attachment_point *hap = HierarchyLocations::ap(ap_id, submodule_id, iterated_text, ptype);
 	hap->synoptic_flag = TRUE;
 	return hap;
 }
 
-hierarchy_attachment_point *HierarchyLocations::ap_within(int ap_id, inter_symbol *sptype, int counter_id, inter_symbol *ptype) {
-	hierarchy_attachment_point *hap = HierarchyLocations::ap(ap_id, -1, counter_id, ptype);
+hierarchy_attachment_point *HierarchyLocations::ap_within(int ap_id, inter_symbol *sptype, text_stream *iterated_text, inter_symbol *ptype) {
+	hierarchy_attachment_point *hap = HierarchyLocations::ap(ap_id, -1, iterated_text, ptype);
 	hap->super_type = sptype;
 	return hap;
 }
