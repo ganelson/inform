@@ -49,8 +49,7 @@ label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module
 	lns->label_base_iname = InterNames::label_base_name(lns->label_prefix);
 	
 	package_request *PR2 = Hierarchy::synoptic_package(LABEL_STORAGES_HAP);
-	lns->label_storage_iname = InterNames::one_off(I"label_associated_storage", PR2);
-	Inter::Symbols::set_flag(InterNames::to_symbol(lns->label_storage_iname), MAKE_NAME_UNIQUE);
+	lns->label_storage_iname = Hierarchy::make_iname_in(LABEL_ASSOCIATED_STORAGE_HL, PR2);
 	
 	lns->label_counter = 0;
 	lns->allocate_storage = 0;

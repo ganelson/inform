@@ -238,10 +238,8 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
     test->text_of_script = Str::new();
 
 	package_request *P = Hierarchy::local_package(TESTS_HAP);
-	test->text_iname = InterNames::one_off(I"script", P);
-	test->req_iname = InterNames::one_off(I"requirements", P);
-	Inter::Symbols::set_flag(InterNames::to_symbol(test->text_iname), MAKE_NAME_UNIQUE);
-	Inter::Symbols::set_flag(InterNames::to_symbol(test->req_iname), MAKE_NAME_UNIQUE);
+	test->text_iname = Hierarchy::make_iname_in(SCRIPT_HL, P);
+	test->req_iname = Hierarchy::make_iname_in(REQUIREMENTS_HL, P);
 
 	ts_being_parsed = test;
     <test-sentence-object>(ParseTree::get_text(PN->next->next));

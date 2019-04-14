@@ -67,8 +67,7 @@ adjectival_phrase *Adjectives::from_word_range(wording W, PREFORM_LANGUAGE_TYPE 
 	#endif
 	#ifdef CORE_MODULE
 	aph->aph_package = Hierarchy::package(Modules::current(), ADJECTIVES_HAP);
-	aph->aph_iname = InterNames::one_off(I"adjective", aph->aph_package);
-	Inter::Symbols::set_flag(InterNames::to_symbol(aph->aph_iname), MAKE_NAME_UNIQUE);
+	aph->aph_iname = Hierarchy::make_iname_in(ADJECTIVE_HL, aph->aph_package);
 	#endif
 	if ((nl == NULL) && (Wordings::nonempty(W))) {
 		#ifdef ADJECTIVE_NAME_VETTING

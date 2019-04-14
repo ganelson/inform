@@ -35,8 +35,7 @@ inter_name *ListTogether::new(int include_articles) {
 		InterNames::one_off(I"list_together_fn", PR),
 		PR,
 		InterNames::new(LIST_TOGETHER_ROUTINE_INAMEF));
-	ltr->ltr_array_iname = InterNames::one_off(I"list_together_array", PR);
-	Inter::Symbols::set_flag(InterNames::to_symbol(ltr->ltr_array_iname), MAKE_NAME_UNIQUE);
+	ltr->ltr_array_iname = Hierarchy::make_iname_in(LIST_TOGETHER_ARRAY_HL, PR);
 
 	ltr->articles_bit = include_articles;
 	return ltr->ltr_array_iname;

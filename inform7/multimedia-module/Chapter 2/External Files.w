@@ -239,12 +239,8 @@ void PL::Files::register_file(wording F, wording FN) {
 	exf->IFID_of_owner = Str::duplicate(ifid_of_file);
 
 	package_request *P = Hierarchy::local_package(EXTERNAL_FILES_HAP);
-	exf->exf_iname = InterNames::one_off(I"file", P);
-	InterNames::attach_memo(exf->exf_iname, exf->name);
-	Inter::Symbols::set_flag(InterNames::to_symbol(exf->exf_iname), MAKE_NAME_UNIQUE);
-	exf->IFID_array_iname = InterNames::one_off(I"ifid", P);
-	InterNames::attach_memo(exf->IFID_array_iname, exf->name);
-	Inter::Symbols::set_flag(InterNames::to_symbol(exf->IFID_array_iname), MAKE_NAME_UNIQUE);
+	exf->exf_iname = Hierarchy::make_iname_with_memo(FILE_HL, P, exf->name);
+	exf->IFID_array_iname = Hierarchy::make_iname_with_memo(IFID_HL, P, exf->name);
 
 	LOGIF(FIGURE_CREATIONS, "Created external file <%W> = filename '%N'\n",
 		F, exf->unextended_filename);

@@ -501,36 +501,21 @@ inter_name *Kinds::Behaviour::get_inc_iname(kind *K) {
 	if (K == NULL) internal_error("null kind has no inc routine");
 	if (K->construct->inc_iname) return K->construct->inc_iname;
 	package_request *R = Kinds::RunTime::package(K);
-	K->construct->inc_iname =
-		Packaging::function(
-			InterNames::one_off(I"increment_fn", R),
-			R,
-			NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->inc_iname), MAKE_NAME_UNIQUE);
+	K->construct->inc_iname = Hierarchy::make_iname_in(DECREMENT_FN_HL, R);
 	return K->construct->inc_iname;
 }
 inter_name *Kinds::Behaviour::get_dec_iname(kind *K) {
 	if (K == NULL) internal_error("null kind has no dec routine");
 	if (K->construct->dec_iname) return K->construct->dec_iname;
 	package_request *R = Kinds::RunTime::package(K);
-	K->construct->dec_iname =
-		Packaging::function(
-			InterNames::one_off(I"decrement_fn", R),
-			R,
-			NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->dec_iname), MAKE_NAME_UNIQUE);
+	K->construct->dec_iname = Hierarchy::make_iname_in(INCREMENT_FN_HL, R);
 	return K->construct->dec_iname;
 }
 inter_name *Kinds::Behaviour::get_ranger_iname(kind *K) {
 	if (K == NULL) internal_error("null kind has no inc routine");
 	if (K->construct->ranger_iname) return K->construct->ranger_iname;
 	package_request *R = Kinds::RunTime::package(K);
-	K->construct->ranger_iname =
-		Packaging::function(
-			InterNames::one_off(I"ranger_fn", R),
-			R,
-			NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->ranger_iname), MAKE_NAME_UNIQUE);
+	K->construct->ranger_iname = Hierarchy::make_iname_in(RANGER_FN_HL, R);
 	return K->construct->ranger_iname;
 }
 inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {

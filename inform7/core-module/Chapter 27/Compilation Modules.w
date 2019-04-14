@@ -4,7 +4,7 @@
 typedef struct compilation_module {
 	struct inter_namespace *namespace;
 	struct package_request *resources;
-	struct subpackage_requests subpackages;
+	struct submodule_requests subpackages;
 	struct parse_node *hanging_from;
 	MEMORY_MANAGEMENT
 } compilation_module;
@@ -74,7 +74,7 @@ compilation_module *Modules::new(parse_node *from) {
 	return C;
 }
 
-subpackage_requests *Modules::subpackages(compilation_module *C) {
+submodule_requests *Modules::subpackages(compilation_module *C) {
 	if (C == NULL) internal_error("no module");
 	return &(C->subpackages);
 }

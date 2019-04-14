@@ -587,8 +587,7 @@ compile under Inform 6.
 	DISCARD_TEXT(TEMP);
 	InterNames::attach_memo(rks->rks_iname, W);
 	InterNames::to_symbol(rks->rks_iname);
-	rks->rks_dv_iname = InterNames::one_off(I"default_value", PR);
-	Inter::Symbols::set_flag(InterNames::to_symbol(rks->rks_dv_iname), MAKE_NAME_UNIQUE);
+	rks->rks_dv_iname = Hierarchy::make_iname_in(DEFAULT_VALUE_HL, PR);
 
 @ It's convenient to combine this system with one which constructs default
 values for kinds, since both involve tracking constructions uniquely.

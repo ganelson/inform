@@ -40,14 +40,14 @@ typedef struct package_request {
 	struct inter_package *actual_package;
 	struct package_request *parent_request;
 	struct inter_reading_state write_position;
-	struct linked_list *counters; /* of |subpackage_request_counter| */
+	struct linked_list *counters; /* of |submodule_request_counter| */
 	MEMORY_MANAGEMENT
 } package_request;
-typedef struct subpackage_request_counter {
+typedef struct submodule_request_counter {
 	int counter_id;
 	int counter_value;
 	MEMORY_MANAGEMENT
-} subpackage_request_counter;
+} submodule_request_counter;
 
 @ =
 package_request *Packaging::request(inter_name *name, package_request *parent, inter_symbol *pt) {
@@ -190,28 +190,46 @@ package_request *Packaging::request_synoptic(void) {
 	return synoptic_pr;
 }
 
-typedef struct subpackage_requests {
-	struct package_request *subs[MAX_SUBMODULE];
-} subpackage_requests;
+typedef struct submodule_identity {
+	struct text_stream *submodule_name;
+	MEMORY_MANAGEMENT
+} submodule_identity;
 
-package_request *Packaging::resources_for_new_submodule(text_stream *name, subpackage_requests *SR) {
+submodule_identity *Packaging::register_submodule(text_stream *name) {
+	submodule_identity *sid = CREATE(submodule_identity);
+	sid->submodule_name = Str::duplicate(name);
+	return sid;
+}
+
+
+typedef struct submodule_request {
+	struct submodule_identity *which_submodule;
+	struct package_request *where_found;
+	MEMORY_MANAGEMENT
+} submodule_request;
+
+typedef struct submodule_requests {
+	struct linked_list *submodules; /* of |submodule_identity| */
+} submodule_requests;
+
+package_request *Packaging::resources_for_new_submodule(text_stream *name, submodule_requests *SR) {
 	inter_name *package_iname = InterNames::one_off(name, Hierarchy::resources());
 	package_request *P = Packaging::request(package_iname, Hierarchy::resources(), module_ptype);
-	Packaging::initialise_subpackages(SR);
+	Packaging::initialise_submodules(SR);
 	return P;
 }
 
-void Packaging::initialise_subpackages(subpackage_requests *SR) {
-	for (int i=0; i<MAX_SUBMODULE; i++) SR->subs[i] = NULL;
+void Packaging::initialise_submodules(submodule_requests *SR) {
+	SR->submodules = NEW_LINKED_LIST(submodule_request);
 }
 
 int generic_subpackages_initialised = FALSE;
-subpackage_requests generic_subpackages;
+submodule_requests generic_subpackages;
 int synoptic_subpackages_initialised = FALSE;
-subpackage_requests synoptic_subpackages;
+submodule_requests synoptic_subpackages;
 
-package_request *Packaging::request_resource(compilation_module *C, int ix) {
-	subpackage_requests *SR = NULL;
+package_request *Packaging::request_resource(compilation_module *C, submodule_identity *sid) {
+	submodule_requests *SR = NULL;
 	package_request *parent = NULL;
 	if (C) {
 		SR = Modules::subpackages(C);
@@ -219,7 +237,7 @@ package_request *Packaging::request_resource(compilation_module *C, int ix) {
 	} else {
 		if (generic_subpackages_initialised == FALSE) {
 			generic_subpackages_initialised = TRUE;
-			Packaging::initialise_subpackages(&generic_subpackages);
+			Packaging::initialise_submodules(&generic_subpackages);
 		}
 		SR = &generic_subpackages;
 		parent = Packaging::request_generic();
@@ -227,37 +245,41 @@ package_request *Packaging::request_resource(compilation_module *C, int ix) {
 	@<Handle the resource request@>;
 }
 
-package_request *Packaging::local_resource(int ix) {
-	return Packaging::request_resource(Modules::find(current_sentence), ix);
+package_request *Packaging::local_resource(submodule_identity *sid) {
+	return Packaging::request_resource(Modules::find(current_sentence), sid);
 }
 
-package_request *Packaging::generic_resource(int ix) {
+package_request *Packaging::generic_resource(submodule_identity *sid) {
 	if (generic_subpackages_initialised == FALSE) {
 		generic_subpackages_initialised = TRUE;
-		Packaging::initialise_subpackages(&generic_subpackages);
+		Packaging::initialise_submodules(&generic_subpackages);
 	}
-	subpackage_requests *SR = &generic_subpackages;
+	submodule_requests *SR = &generic_subpackages;
 	package_request *parent = Packaging::request_generic();
 	@<Handle the resource request@>;
 }
 
-package_request *Packaging::synoptic_resource(int ix) {
+package_request *Packaging::synoptic_resource(submodule_identity *sid) {
 	if (synoptic_subpackages_initialised == FALSE) {
 		synoptic_subpackages_initialised = TRUE;
-		Packaging::initialise_subpackages(&synoptic_subpackages);
+		Packaging::initialise_submodules(&synoptic_subpackages);
 	}
-	subpackage_requests *SR = &synoptic_subpackages;
+	submodule_requests *SR = &synoptic_subpackages;
 	package_request *parent = Packaging::request_synoptic();
 	@<Handle the resource request@>;
 }
 
 @<Handle the resource request@> =
-	if (SR->subs[ix] == NULL) {
-		text_stream *N = Hierarchy::submodule_name(ix);
-		inter_name *iname = InterNames::one_off(N, parent);
-		SR->subs[ix] = Packaging::request(iname, parent, plain_ptype);
-	}
-	return SR->subs[ix];
+	submodule_request *sr;
+	LOOP_OVER_LINKED_LIST(sr, submodule_request, SR->submodules)
+		if (sid == sr->which_submodule)
+			return sr->where_found;
+	inter_name *iname = InterNames::one_off(sid->submodule_name, parent);
+	sr = CREATE(submodule_request);
+	sr->which_submodule = sid;
+	sr->where_found = Packaging::request(iname, parent, plain_ptype);
+	ADD_TO_LINKED_LIST(sr, submodule_request, SR->submodules);
+	return sr->where_found;
 
 @ 
 
@@ -283,19 +305,19 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 	if (R == NULL) internal_error("no request");
 	if ((what_for < 0) || (what_for >= no_pr_counters_registered)) internal_error("out of range");
 	if (R->counters == NULL)
-		R->counters = NEW_LINKED_LIST(subpackage_request_counter);
+		R->counters = NEW_LINKED_LIST(submodule_request_counter);
 	int N = -1;
-	subpackage_request_counter *src;
-	LOOP_OVER_LINKED_LIST(src, subpackage_request_counter, R->counters)
+	submodule_request_counter *src;
+	LOOP_OVER_LINKED_LIST(src, submodule_request_counter, R->counters)
 		if (src->counter_id == what_for) {
 			N = ++(src->counter_value); break;
 		}
 	if (N < 0) {
-		subpackage_request_counter *src = CREATE(subpackage_request_counter);
+		submodule_request_counter *src = CREATE(submodule_request_counter);
 		src->counter_id = what_for;
 		src->counter_value = 1;
 		N = 1;
-		ADD_TO_LINKED_LIST(src, subpackage_request_counter, R->counters);
+		ADD_TO_LINKED_LIST(src, submodule_request_counter, R->counters);
 	}
 	TEMPORARY_TEXT(P);
 	WRITE_TO(P, "%S_%d", pr_counter_names[what_for], N);

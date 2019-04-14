@@ -72,10 +72,8 @@ response_message *Strings::response_cue(value_holster *VH, rule *owner, int mark
 	resp->via_I6 = via_I6;
 	resp->via_I6_routine_compiled = FALSE;
 	resp->resp_package = Hierarchy::package_within(RESPONSES_HAP, Rules::package(resp->responding_rule));
-	resp->resp_iname = InterNames::one_off(I"launcher", resp->resp_package);
-	Inter::Symbols::set_flag(InterNames::to_symbol(resp->resp_iname), MAKE_NAME_UNIQUE);
-	resp->constant_iname = InterNames::one_off(I"as_constant", resp->resp_package);
-	Inter::Symbols::set_flag(InterNames::to_symbol(resp->constant_iname), MAKE_NAME_UNIQUE);
+	resp->resp_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, resp->resp_package);
+	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, resp->resp_package);
 	if (VH) {
 		if (Holsters::data_acceptable(VH)) {
 			Emit::val_iname(K_value, Strings::response_launcher_iname(resp));
@@ -107,9 +105,7 @@ a call to an activity based on that value:
 
 @<Compile the actual launcher@> =
 	package_request *R = resp->resp_package;
-	inter_name *launcher =
-		Packaging::function(InterNames::one_off(I"launcher_fn", R), R, NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(launcher), MAKE_NAME_UNIQUE);
+	inter_name *launcher = Hierarchy::make_iname_in(LAUNCHER_HL, R);
 
 	packaging_state save = Routines::begin(launcher);
 

@@ -271,7 +271,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Feeds::feed_text_expanding_strings(L"check");
 		Feeds::feed_wording(an->present_name);
 		wording W = Feeds::end(id);
-		package_request *CR = Hierarchy::package_in_package(CHECK_RB_HL, an->an_package);
+		package_request *CR = Hierarchy::make_package_in(CHECK_RB_HL, an->an_package);
 		an->check_rules =
 			Rulebooks::new_automatic(W, K_action_name,
 				NO_OUTCOME, TRUE, FALSE, FALSE, CR);
@@ -281,7 +281,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Feeds::feed_text_expanding_strings(L"carry out");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
-		package_request *OR = Hierarchy::package_in_package(CARRY_OUT_RB_HL, an->an_package);
+		package_request *OR = Hierarchy::make_package_in(CARRY_OUT_RB_HL, an->an_package);
 		an->carry_out_rules =
 			Rulebooks::new_automatic(W, K_action_name,
 				NO_OUTCOME, TRUE, FALSE, FALSE, OR);
@@ -291,7 +291,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Feeds::feed_text_expanding_strings(L"report");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
-		package_request *RR = Hierarchy::package_in_package(REPORT_RB_HL, an->an_package);
+		package_request *RR = Hierarchy::make_package_in(REPORT_RB_HL, an->an_package);
 		an->report_rules =
 			Rulebooks::new_automatic(W, K_action_name,
 				NO_OUTCOME, TRUE, FALSE, FALSE, RR);

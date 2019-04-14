@@ -1816,8 +1816,7 @@ void Relations::compile_vtov_storage(binary_predicate *bp) {
 		@<Allocate a zeroed-out memory cache for relations with fast route-finding@>;
 
 	package_request *P = BinaryPredicates::package(bp);
-	bp->v2v_bitmap_iname = InterNames::one_off(I"bitmap", P);
-	Inter::Symbols::set_flag(InterNames::to_symbol(bp->v2v_bitmap_iname), MAKE_NAME_UNIQUE);
+	bp->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
 	packaging_state save = Packaging::enter_home_of(bp->v2v_bitmap_iname);
 	Emit::named_array_begin(bp->v2v_bitmap_iname, K_value);
 	@<Compile header information in the V-to-V structure@>;
@@ -1891,8 +1890,7 @@ above: it forces the template layer to generate the cache when first used.
 
 @<Allocate a zeroed-out memory cache for relations with fast route-finding@> =
 	package_request *P = BinaryPredicates::package(bp);
-	inter_name *iname = InterNames::one_off(I"route_cache", P);
-	Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+	inter_name *iname = Hierarchy::make_iname_in(ROUTE_CACHE_HL, P);
 	packaging_state save = Packaging::enter_home_of(iname);
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);

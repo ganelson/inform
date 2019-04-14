@@ -203,8 +203,7 @@ void Rules::set_I7_definition(rule *R, phrase *ph) {
 void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 	TEMPORARY_TEXT(XT);
 	WRITE_TO(XT, "%w", identifier);
-	R->rule_extern_iname = InterNames::one_off(I"exterior_rule", R->rule_package);
-	Inter::Symbols::set_flag(InterNames::to_symbol(R->rule_extern_iname), MAKE_NAME_UNIQUE);
+	R->rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->rule_package);
 
 	inter_name *xiname = Hierarchy::find_by_name(XT);
 	packaging_state save = Packaging::enter(R->rule_package);

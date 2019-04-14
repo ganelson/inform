@@ -205,9 +205,7 @@ table_column_usage Tables::Columns::add_to_table(wording W, table *t) {
 	tcu.observed_kind_cell = NULL;
 
 	package_request *R = Hierarchy::package_within(TABLE_COLUMNS_HAP, t->table_package);
-	
-	tcu.tcu_iname = InterNames::one_off(I"column_data", R);
-	Inter::Symbols::set_flag(InterNames::to_symbol(tcu.tcu_iname), MAKE_NAME_UNIQUE);
+	tcu.tcu_iname = Hierarchy::make_iname_in(COLUMN_DATA_HL, R);
 
 	return tcu;
 }

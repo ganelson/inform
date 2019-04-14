@@ -142,8 +142,7 @@ table *Tables::new_table_structure(void) {
 	t->amendment_of = NULL;
 	t->has_been_amended = FALSE;
 	t->table_package = Hierarchy::local_package(TABLES_HAP);
-	t->table_identifier = InterNames::one_off(I"data", t->table_package);
-	Inter::Symbols::set_flag(InterNames::to_symbol(t->table_identifier), MAKE_NAME_UNIQUE);
+	t->table_identifier = Hierarchy::make_iname_in(TABLE_DATA_HL, t->table_package);
 	t->approximate_array_space_needed = 0;
 	t->disable_block_constant_correction = FALSE;
 	t->no_columns = 0;
