@@ -214,9 +214,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	rb->primary_name = W;
 	rb->alternative_name = EMPTY_WORDING;
 	rb->rb_package = R;
-
-	rb->rb_iname = Packaging::function(InterNames::one_off(I"run_fn", rb->rb_package), rb->rb_package, NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(rb->rb_iname), MAKE_NAME_UNIQUE);
+	rb->rb_iname = Hierarchy::make_iname_in(RUN_FN_HL, rb->rb_package);
 
 	rb->rule_list = Rules::Bookings::list_new();
 
@@ -495,13 +493,9 @@ void Rulebooks::make_stvs_accessible(rulebook *rb, stacked_variable_owner *stvo)
 }
 
 inter_name *Rulebooks::get_stv_creator_iname(rulebook *rb) {
-	if (rb->stv_creator_iname == NULL) {
-		rb->stv_creator_iname = Packaging::function(
-			InterNames::one_off(I"stv_creator_fn", rb->rb_package),
-			rb->rb_package,
-			NULL);
-		Inter::Symbols::set_flag(InterNames::to_symbol(rb->stv_creator_iname), MAKE_NAME_UNIQUE);
-	}
+	if (rb->stv_creator_iname == NULL)
+		rb->stv_creator_iname =
+			Hierarchy::make_iname_in(RULEBOOK_STV_CREATOR_FN_HL, rb->rb_package);
 	return rb->stv_creator_iname;
 }
 

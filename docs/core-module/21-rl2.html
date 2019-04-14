@@ -292,9 +292,7 @@ built (for instance, scene endings).
         <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
         <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;alternative_name</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
-
-        <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"run_fn"</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">), </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">RUN_FN_HL</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">);</span>
 
         <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::list_new</span><span class="plain">();</span>
 
@@ -639,13 +637,9 @@ built (for instance, scene endings).
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Rulebooks::get_stv_creator_iname</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"stv_creator_fn"</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">),</span>
-                <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">,</span>
-                <span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
-        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain"> =</span>
+                <span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">RULEBOOK_STV_CREATOR_FN_HL</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 

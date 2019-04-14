@@ -629,8 +629,7 @@ package_request *BinaryPredicates::package(binary_predicate *bp) {
 inter_name *BinaryPredicates::handler_iname(binary_predicate *bp) {
 	if (bp->handler_iname == NULL) {
 		package_request *R = BinaryPredicates::package(bp);
-		bp->handler_iname = Packaging::function(InterNames::one_off(I"handler_fn", R), R, NULL);
-		Inter::Symbols::set_flag(InterNames::to_symbol(bp->handler_iname), MAKE_NAME_UNIQUE);
+		bp->handler_iname = Hierarchy::make_iname_in(HANDLER_FN_HL, R);
 	}
 	return bp->handler_iname;
 }

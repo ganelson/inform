@@ -62,6 +62,7 @@ typedef struct named_resource_location {
 	struct text_stream *datum_package_name;
 	struct location_requirement requirements;
 	struct inter_name *equates_to_iname;
+	struct inter_symbol *package_type;
 	struct name_translation trans;
 	MEMORY_MANAGEMENT
 } named_resource_location;
@@ -73,6 +74,7 @@ named_resource_location *HierarchyLocations::new(void) {
 	nrl->function_package_name = NULL;
 	nrl->datum_package_name = NULL;
 	nrl->equates_to_iname = NULL;
+	nrl->package_type = NULL;
 	nrl->trans = Translation::same();
 	nrl->requirements = HierarchyLocations::blank();
 	return nrl;
@@ -84,6 +86,16 @@ named_resource_location *HierarchyLocations::con(int id, text_stream *name, name
 	nrl->access_name = Str::duplicate(name);
 	nrl->requirements = req;
 	nrl->trans = nt;
+	HierarchyLocations::index(nrl);
+	return nrl;
+}
+
+named_resource_location *HierarchyLocations::package(int id, text_stream *name, text_stream *ptype_name, location_requirement req) {
+	named_resource_location *nrl = HierarchyLocations::new();
+	nrl->access_number = id;
+	nrl->access_name = Str::duplicate(name);
+	nrl->requirements = req;
+	nrl->package_type = HierarchyLocations::ptype(ptype_name);
 	HierarchyLocations::index(nrl);
 	return nrl;
 }
@@ -202,7 +214,11 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		internal_error("bad nrl ID");
 	named_resource_location *nrl = nrls_indexed_by_id[id];
 	if (nrl->requirements.any_package_of_this_type == NULL) internal_error("NRL accessed inappropriately");
-	if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) internal_error("constant in wrong superpackage");
+	if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) {
+		LOG("AN: %S, FPN: %S\n", nrl->access_name, nrl->function_package_name);
+		LOG("Have type: $3, required: $3\n", P->eventual_type, nrl->requirements.any_package_of_this_type);
+		internal_error("constant in wrong superpackage");
+	}
 	inter_name *iname = NULL;
 	if (Str::len(nrl->function_package_name) > 0) {
 		iname = Packaging::function_text(
@@ -227,7 +243,8 @@ package_request *HierarchyLocations::package_in_package(int id, package_request 
 	named_resource_location *nrl = nrls_indexed_by_id[id];
 	if (nrl->requirements.any_package_of_this_type == NULL) internal_error("NRL accessed inappropriately");
 	if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) internal_error("subpackage in wrong superpackage");
-	return Packaging::request(InterNames::one_off(nrl->access_name, P), P, nrl->requirements.any_package_of_this_type);
+	if (nrl->package_type == NULL) internal_error("package_in_package used wrongly");
+	return Packaging::request(InterNames::one_off(nrl->access_name, P), P, nrl->package_type);
 }
 
 @

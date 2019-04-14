@@ -465,14 +465,7 @@ been asserted true:
         <span class="reserved">backdrop_found_in_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">backdrop_found_in_notice</span><span class="plain">);</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;backdrop</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain"> =</span>
-            <span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"backdrop_found_in_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">),</span>
-            <span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
-        <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BACKDROP_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;many_places</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">;</span>
 </pre>
@@ -497,13 +490,7 @@ code, derived from the old I6 library, requires <code class="display"><span clas
         <span class="reserved">backdrop_found_in_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">backdrop_found_in_notice</span><span class="plain">);</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;backdrop</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain"> =</span>
-            <span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"backdrop_found_in_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">),</span>
-            <span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BACKDROP_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">);</span>
         <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;many_places</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">;</span>

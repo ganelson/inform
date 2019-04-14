@@ -141,6 +141,7 @@ void Hierarchy::establish(void) {
 @e CHECK_RB_HL
 @e CARRY_OUT_RB_HL
 @e REPORT_RB_HL
+@e ACTION_STV_CREATOR_FN_HL
 
 @e ACTIONCODING_HL
 @e ACTIONDATA_HL
@@ -159,9 +160,10 @@ void Hierarchy::establish(void) {
 	location_requirement local_actions = HierarchyLocations::local_submodule(actions);
 	HierarchyLocations::ap(ACTIONS_HAP, local_actions, I"action", I"_action");
 		location_requirement in_action = HierarchyLocations::any_package_of_type(I"_action");
-		HierarchyLocations::con(CHECK_RB_HL, I"check_rb", Translation::same(), in_action);
-		HierarchyLocations::con(CARRY_OUT_RB_HL, I"carry_out_rb", Translation::same(), in_action);
-		HierarchyLocations::con(REPORT_RB_HL, I"report_rb", Translation::same(), in_action);
+		HierarchyLocations::package(CHECK_RB_HL, I"check_rb", I"_rulebook", in_action);
+		HierarchyLocations::package(CARRY_OUT_RB_HL, I"carry_out_rb", I"_rulebook", in_action);
+		HierarchyLocations::package(REPORT_RB_HL, I"report_rb", I"_rulebook", in_action);
+		HierarchyLocations::func(ACTION_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_action);
 
 	location_requirement synoptic_actions = HierarchyLocations::synoptic_submodule(actions);
 	HierarchyLocations::con(ACTIONCODING_HL, I"ActionCoding", Translation::same(), synoptic_actions);
@@ -178,6 +180,7 @@ void Hierarchy::establish(void) {
 @e BEFORE_RB_HL
 @e FOR_RB_HL
 @e AFTER_RB_HL
+@e ACTIVITY_STV_CREATOR_FN_HL
 
 @e ACTIVITY_AFTER_RULEBOOKS_HL
 @e ACTIVITY_ATB_RULEBOOKS_HL
@@ -191,9 +194,10 @@ void Hierarchy::establish(void) {
 	location_requirement local_activities = HierarchyLocations::local_submodule(activities);
 	HierarchyLocations::ap(ACTIVITIES_HAP, local_activities, I"activity", I"_activity");
 		location_requirement in_activity = HierarchyLocations::any_package_of_type(I"_activity");
-		HierarchyLocations::con(BEFORE_RB_HL, I"before_rb", Translation::same(), in_activity);
-		HierarchyLocations::con(FOR_RB_HL, I"for_rb", Translation::same(), in_activity);
-		HierarchyLocations::con(AFTER_RB_HL, I"after_rb", Translation::same(), in_activity);
+		HierarchyLocations::package(BEFORE_RB_HL, I"before_rb", I"_rulebook", in_activity);
+		HierarchyLocations::package(FOR_RB_HL, I"for_rb", I"_rulebook", in_activity);
+		HierarchyLocations::package(AFTER_RB_HL, I"after_rb", I"_rulebook", in_activity);
+		HierarchyLocations::func(ACTIVITY_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_activity);
 
 	location_requirement synoptic_activities = HierarchyLocations::synoptic_submodule(activities);
 	HierarchyLocations::con(ACTIVITY_AFTER_RULEBOOKS_HL, I"Activity_after_rulebooks", Translation::same(), synoptic_activities);
@@ -290,13 +294,16 @@ void Hierarchy::establish(void) {
 @h Equations.
 
 @e EQUATIONS_HAP
+@e SOLVE_FN_HL
 
 @<Establish equations@> =
 	submodule_identity *equations = Packaging::register_submodule(I"equations");
 
 	location_requirement local_equations = HierarchyLocations::local_submodule(equations);
 	HierarchyLocations::ap(EQUATIONS_HAP, local_equations, I"equation", I"_equation");
-	
+		location_requirement in_equation = HierarchyLocations::any_package_of_type(I"_equation");
+		HierarchyLocations::func(SOLVE_FN_HL, I"solve_fn", Translation::uniqued(), in_equation);
+
 @h Extensions.
 
 @e SHOWEXTENSIONVERSIONS_HL
@@ -402,12 +409,15 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
+@e BACKDROP_FOUND_IN_FN_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = Packaging::register_submodule(I"instances");
 
 	location_requirement local_instances = HierarchyLocations::local_submodule(instances);
 	HierarchyLocations::ap(INSTANCES_HAP, local_instances, I"instance", I"_instance");
+		location_requirement in_instance = HierarchyLocations::any_package_of_type(I"_instance");
+		HierarchyLocations::func(BACKDROP_FOUND_IN_FN_HL, I"backdrop_found_in_fn", Translation::uniqued(), in_instance);
 
 @h Interactive Fiction.
 
@@ -454,6 +464,9 @@ void Hierarchy::establish(void) {
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
 @e RANGER_FN_HL
+@e DEFAULT_CLOSURE_FN_HL
+@e GPR_FN_HL
+@e INSTANCE_GPR_FN_HL
 
 @e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
@@ -483,6 +496,9 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::con(DECREMENT_FN_HL, I"decrement_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::con(INCREMENT_FN_HL, I"increment_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::con(RANGER_FN_HL, I"ranger_fn", Translation::uniqued(), in_kind);
+		HierarchyLocations::func(DEFAULT_CLOSURE_FN_HL, I"default_closure_fn", Translation::uniqued(), in_kind);
+		HierarchyLocations::func(GPR_FN_HL, I"gpr_fn", Translation::uniqued(), in_kind);
+		HierarchyLocations::func(INSTANCE_GPR_FN_HL, I"instance_gpr_fn", Translation::uniqued(), in_kind);
 
 	location_requirement synoptic_kinds = HierarchyLocations::synoptic_submodule(kinds);
 	HierarchyLocations::con(BASE_KIND_HWM_HL, I"BASE_KIND_HWM", Translation::same(), synoptic_kinds);
@@ -573,6 +589,14 @@ void Hierarchy::establish(void) {
 @e RELATIONS_HAP
 @e BITMAP_HL
 @e ROUTE_CACHE_HL
+@e HANDLER_FN_HL
+@e RELATION_INITIALISER_FN_HL
+@e GUARD_F0_FN_HL
+@e GUARD_F1_FN_HL
+@e GUARD_TEST_FN_HL
+@e GUARD_MAKE_TRUE_FN_HL
+@e GUARD_MAKE_FALSE_INAME_HL
+@e RELATION_FN_HL
 
 @e CREATEDYNAMICRELATIONS_HL
 @e CCOUNT_BINARY_PREDICATE_HL
@@ -603,9 +627,17 @@ void Hierarchy::establish(void) {
 
 	location_requirement local_rels = HierarchyLocations::local_submodule(relations);
 	HierarchyLocations::ap(RELATIONS_HAP, local_rels, I"relation", I"_relation");
-			location_requirement in_relation = HierarchyLocations::any_package_of_type(I"_relation");
-			HierarchyLocations::con(BITMAP_HL, I"as_constant", Translation::uniqued(), in_relation);
-			HierarchyLocations::con(ROUTE_CACHE_HL, I"route_cache", Translation::uniqued(), in_relation);
+		location_requirement in_relation = HierarchyLocations::any_package_of_type(I"_relation");
+		HierarchyLocations::con(BITMAP_HL, I"as_constant", Translation::uniqued(), in_relation);
+		HierarchyLocations::con(ROUTE_CACHE_HL, I"route_cache", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(HANDLER_FN_HL, I"handler_fn", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(RELATION_INITIALISER_FN_HL, I"relation_initialiser_fn", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(GUARD_F0_FN_HL, I"guard_f0_fn", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(GUARD_F1_FN_HL, I"guard_f1_fn", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(GUARD_TEST_FN_HL, I"guard_test_fn", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(GUARD_MAKE_TRUE_FN_HL, I"guard_make_true_fn", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(GUARD_MAKE_FALSE_INAME_HL, I"guard_make_false_iname", Translation::uniqued(), in_relation);
+		HierarchyLocations::func(RELATION_FN_HL, I"relation_fn", Translation::uniqued(), in_relation);
 
 	location_requirement synoptic_rels = HierarchyLocations::synoptic_submodule(relations);
 	HierarchyLocations::func(CREATEDYNAMICRELATIONS_HL, I"creator_fn", Translation::to(I"CreateDynamicRelations"), synoptic_rels);
@@ -619,6 +651,8 @@ void Hierarchy::establish(void) {
 
 @e OUTCOMES_HAP
 @e RULEBOOKS_HAP
+@e RUN_FN_HL
+@e RULEBOOK_STV_CREATOR_FN_HL
 
 @e NUMBER_RULEBOOKS_CREATED_HL
 @e RULEBOOK_VAR_CREATORS_HL
@@ -635,6 +669,9 @@ void Hierarchy::establish(void) {
 	location_requirement local_rulebooks = HierarchyLocations::local_submodule(rulebooks);
 	HierarchyLocations::ap(OUTCOMES_HAP, local_rulebooks, I"rulebook_outcome", I"_outcome");
 	HierarchyLocations::ap(RULEBOOKS_HAP, local_rulebooks, I"rulebook", I"_rulebook");
+		location_requirement in_rulebook = HierarchyLocations::any_package_of_type(I"_rulebook");
+		HierarchyLocations::func(RUN_FN_HL, I"run_fn", Translation::uniqued(), in_rulebook);
+		HierarchyLocations::func(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_rulebook);
 
 	location_requirement synoptic_rulebooks = HierarchyLocations::synoptic_submodule(rulebooks);
 	HierarchyLocations::con(NUMBER_RULEBOOKS_CREATED_HL, I"NUMBER_RULEBOOKS_CREATED", Translation::same(), synoptic_rulebooks);

@@ -167,8 +167,7 @@ compilation.
 =
 void Phrases::Constants::compile_default_closure(inter_name *closure_identifier, kind *K) {
 	package_request *P = Kinds::RunTime::package(K);
-	inter_name *rname = Packaging::function(InterNames::one_off(I"default_closure_fn", P), P, NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(rname), MAKE_NAME_UNIQUE);
+	inter_name *rname = Hierarchy::make_iname_in(DEFAULT_CLOSURE_FN_HL, P);
 
 	@<Compile the default routine@>;
 	@<Compile the default closure@>;

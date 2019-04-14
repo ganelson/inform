@@ -616,12 +616,7 @@ inter_name *Kinds::RunTime::get_kind_GPR_iname(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->kind_GPR_iname == NULL) {
 		package_request *R = Kinds::RunTime::package(K);
-		con->kind_GPR_iname =
-			Packaging::function(
-				InterNames::one_off(I"gpr_fn", R),
-				R,
-				NULL);
-		Inter::Symbols::set_flag(InterNames::to_symbol(con->kind_GPR_iname), MAKE_NAME_UNIQUE);
+		con->kind_GPR_iname = Hierarchy::make_iname_in(GPR_FN_HL, R);
 	}
 	return con->kind_GPR_iname;
 }
@@ -631,12 +626,7 @@ inter_name *Kinds::RunTime::get_instance_GPR_iname(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->instance_GPR_iname == NULL) {
 		package_request *R = Kinds::RunTime::package(K);
-		con->instance_GPR_iname =
-			Packaging::function(
-				InterNames::one_off(I"instance_gpr_fn", R),
-				R,
-				NULL);
-		Inter::Symbols::set_flag(InterNames::to_symbol(con->instance_GPR_iname), MAKE_NAME_UNIQUE);
+		con->instance_GPR_iname = Hierarchy::make_iname_in(INSTANCE_GPR_FN_HL, R);
 	}
 	return con->instance_GPR_iname;
 }

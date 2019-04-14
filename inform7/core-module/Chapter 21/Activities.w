@@ -362,11 +362,7 @@ void Activities::activity_var_creators(void) {
 	activity *av;
 	LOOP_OVER(av, activity) {
 		if (StackedVariables::owner_empty(av->owned_by_av) == FALSE) {
-			inter_name *iname = Packaging::function(
-				InterNames::one_off(I"stv_creator_fn", av->av_package),
-				av->av_package,
-				NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+			inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_STV_CREATOR_FN_HL, av->av_package);
 			StackedVariables::compile_frame_creator(av->owned_by_av, iname);
 		}
 	}

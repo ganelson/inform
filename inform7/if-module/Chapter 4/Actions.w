@@ -692,12 +692,8 @@ void PL::Actions::compile_action_name_var_creators(void) {
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		if ((an->owned_by_an) &&
-				(StackedVariables::owner_empty(an->owned_by_an) == FALSE)) {
-			inter_name *iname = Packaging::function(
-				InterNames::one_off(I"stv_creator_fn", an->an_package),
-				an->an_package,
-				NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+			(StackedVariables::owner_empty(an->owned_by_an) == FALSE)) {
+			inter_name *iname = Hierarchy::make_iname_in(ACTION_STV_CREATOR_FN_HL, an->an_package);
 			StackedVariables::compile_frame_creator(an->owned_by_an, iname);
 		}
 	}

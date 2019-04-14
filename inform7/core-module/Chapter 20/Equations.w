@@ -161,11 +161,7 @@ equation *Equations::new(wording W, int anonymous) {
 	eqn->examined_already = FALSE;
 
 	package_request *PR = Hierarchy::local_package(EQUATIONS_HAP);
-	eqn->eqn_iname = Packaging::function(
-		InterNames::one_off(I"solve_fn", PR),
-		PR,
-		NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(eqn->eqn_iname), MAKE_NAME_UNIQUE);
+	eqn->eqn_iname = Hierarchy::make_iname_in(SOLVE_FN_HL, PR);
 
 	wording NO = EMPTY_WORDING, NA = EMPTY_WORDING;
 	if (anonymous == FALSE) {

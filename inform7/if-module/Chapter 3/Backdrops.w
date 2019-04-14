@@ -287,14 +287,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
 	notice->backdrop = I;
 	package_request *R = Instances::package(I);
-	notice->found_in_routine_iname =
-		Packaging::function(
-			InterNames::one_off(I"backdrop_found_in_fn", R),
-			R,
-			NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(notice->found_in_routine_iname),
-		MAKE_NAME_UNIQUE);
-	InterNames::to_symbol(notice->found_in_routine_iname);
+	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
 	notice->many_places = TRUE;
 	FOUNDIN = notice->found_in_routine_iname;
 
@@ -307,13 +300,7 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
 	notice->backdrop = I;
 	package_request *R = Instances::package(I);
-	notice->found_in_routine_iname =
-		Packaging::function(
-			InterNames::one_off(I"backdrop_found_in_fn", R),
-			R,
-			NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(notice->found_in_routine_iname),
-		MAKE_NAME_UNIQUE);
+	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
 	InterNames::to_symbol(notice->found_in_routine_iname);
 	notice->many_places = FALSE;
 	FOUNDIN = notice->found_in_routine_iname;

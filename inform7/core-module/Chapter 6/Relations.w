@@ -214,8 +214,7 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 		bp->dynamic_memory = TRUE;
 		bpr->dynamic_memory = TRUE;
 		package_request *P = BinaryPredicates::package(bp);
-		bp->initialiser_iname = Packaging::function(InterNames::one_off(I"relation_initialiser_fn", P), P, NULL);
-		Inter::Symbols::set_flag(InterNames::to_symbol(bp->initialiser_iname), MAKE_NAME_UNIQUE);
+		bp->initialiser_iname = Hierarchy::make_iname_in(RELATION_INITIALISER_FN_HL, P);
 	}
 	BinaryPredicates::mark_as_needed(bp);
 
@@ -260,34 +259,29 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 		rg->guard_make_false_iname = NULL;
 		if (rg->f0) {
 			package_request *R = BinaryPredicates::package(bp);
-			rg->guard_f0_iname = Packaging::function(InterNames::one_off(I"guard_f0_fn", R), R, NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(rg->guard_f0_iname), MAKE_NAME_UNIQUE);
+			rg->guard_f0_iname = Hierarchy::make_iname_in(GUARD_F0_FN_HL, R);
 			BinaryPredicates::set_term_function(&(bp->term_details[0]),
 				Calculus::Schemas::new("(%n(*1))", rg->guard_f0_iname));
 		}
 		if (rg->f1) {
 			package_request *R = BinaryPredicates::package(bp);
-			rg->guard_f1_iname = Packaging::function(InterNames::one_off(I"guard_f1_fn", R), R, NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(rg->guard_f1_iname), MAKE_NAME_UNIQUE);
+			rg->guard_f1_iname = Hierarchy::make_iname_in(GUARD_F1_FN_HL, R);
 			BinaryPredicates::set_term_function(&(bp->term_details[1]),
 				Calculus::Schemas::new("(%n(*1))", rg->guard_f1_iname));
 		}
 		if (bp->test_function) {
 			package_request *R = BinaryPredicates::package(bp);
-			rg->guard_test_iname = Packaging::function(InterNames::one_off(I"guard_test_fn", R), R, NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(rg->guard_test_iname), MAKE_NAME_UNIQUE);
+			rg->guard_test_iname = Hierarchy::make_iname_in(GUARD_TEST_FN_HL, R);
 			bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_test_iname);
 		}
 		if (bp->make_true_function) {
 			package_request *R = BinaryPredicates::package(bp);
-			rg->guard_make_true_iname = Packaging::function(InterNames::one_off(I"guard_make_true_fn", R), R, NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(rg->guard_make_true_iname), MAKE_NAME_UNIQUE);
+			rg->guard_make_true_iname = Hierarchy::make_iname_in(GUARD_MAKE_TRUE_FN_HL, R);
 			bp->make_true_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_true_iname);
 		}
 		if (bp->make_false_function) {
 			package_request *R = BinaryPredicates::package(bp);
-			rg->guard_make_false_iname = Packaging::function(InterNames::one_off(I"guard_make_false_fn", R), R, NULL);
-			Inter::Symbols::set_flag(InterNames::to_symbol(rg->guard_make_false_iname), MAKE_NAME_UNIQUE);
+			rg->guard_make_false_iname = Hierarchy::make_iname_in(GUARD_MAKE_FALSE_INAME_HL, R);
 			bp->make_false_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
 		}
 	}
@@ -734,8 +728,7 @@ K to L when (some condition)".
 @<Complete as a relation-by-routine BP@> =
 	bp->form_of_relation = Relation_ByRoutine;
 	package_request *P = BinaryPredicates::package(bp);
-	bp->bp_by_routine_iname = Packaging::function(InterNames::one_off(I"relation_fn", P), P, NULL);
-	Inter::Symbols::set_flag(InterNames::to_symbol(bp->bp_by_routine_iname), MAKE_NAME_UNIQUE);
+	bp->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
 	bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
 	bp->condition_defn_text = CONW;
 
@@ -1015,8 +1008,8 @@ void Relations::compile_relation_records(void) {
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
 	inter_name *bm_symb = Packaging::supply_iname(bp->bp_package, MISC_PR_COUNTER);
-	Emit::sum_constant_begin(bm_symb, K_value);
 	Inter::Symbols::set_flag(InterNames::to_symbol(bm_symb), MAKE_NAME_UNIQUE);
+	Emit::sum_constant_begin(bm_symb, K_value);
 	if (RELS_TEST_iname == NULL) internal_error("no RELS symbols yet");
 	Emit::array_iname_entry(RELS_TEST_iname);
 	if (minimal == FALSE) {
