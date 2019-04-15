@@ -79,7 +79,7 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 
 	Rules::set_I7_definition(R, ph);
 	package_request *P = Rules::package(R);
-	ph->ph_iname = Packaging::function(InterNames::one_off(I"rule_fn", P), P, InterNames::new_in(PHRASE_INAMEF, ph->owning_module));
+	ph->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, ph->owning_module);
 
 	@<Do some tedious business for indexing the rule later on@>;
 

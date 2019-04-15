@@ -481,12 +481,7 @@ names (e.g., "suitable colour").
             <span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Verbs::gv_new</span><span class="plain">(</span><span class="constant">GV_IS_TOKEN</span><span class="plain">);</span>
             <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
             <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">NAMED_TOKENS_HAP</span><span class="plain">);</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">m_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GPR_FOR_TOKEN_INAMEF</span><span class="plain">);</span>
-            <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_line_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"parse_line_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
-                <span class="identifier">PR</span><span class="plain">,</span>
-                <span class="identifier">m_iname</span><span class="plain">);</span>
-            <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_line_iname</span><span class="plain">);</span>
+            <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_line_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">PARSE_LINE_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gv</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -677,10 +672,7 @@ following routine finds or creates this for a given property.
         <span class="identifier">Properties::EitherOr::set_parsing_grammar</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
         <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;prn_understood</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
-        <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_prn_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
-            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"either_or_GPR_fn"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">),</span>
-            <span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">,</span>
-            <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GPR_FOR_EITHER_OR_PROPERTY_INAMEF</span><span class="plain">));</span>
+        <span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_prn_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">EITHER_OR_GPR_FN_HL</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">eventual_owner</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gv</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

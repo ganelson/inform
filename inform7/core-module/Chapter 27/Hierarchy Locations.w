@@ -208,7 +208,7 @@ inter_name *HierarchyLocations::nrl_to_iname(named_resource_location *nrl) {
 	return nrl->equates_to_iname;
 }
 
-inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W) {
+inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, compilation_module *C) {
 	if (nrls_created == FALSE) HierarchyLocations::create_nrls();
 	if ((id < 0) || (id >= MAX_HL) || (nrls_indexed_by_id[id] == NULL))
 		internal_error("bad nrl ID");
@@ -233,6 +233,17 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		InterNames::translate(iname, nrl->trans.translate_to);
 	if (nrl->trans.then_make_unique)
 		Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+	if (nrl->trans.generate_from >= 0) {
+		inter_name *temp_iname = NULL;
+		if (nrl->trans.localise)
+			temp_iname = InterNames::new_in(nrl->trans.generate_from, C);
+		else
+			temp_iname = InterNames::new(nrl->trans.generate_from);
+		TEMPORARY_TEXT(T);
+		WRITE_TO(T, "%n", temp_iname);
+		InterNames::translate(iname, T);
+		DISCARD_TEXT(T);
+	}
 	return iname;
 }
 

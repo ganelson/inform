@@ -476,17 +476,20 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (Kinds::Compare::eq(K, K_real_number)) external = TRUE;
 	if (Str::len(X) == 0) X = I"DecimalNumber";
 	if (R) {
-		K->construct->pr_iname =
-			Packaging::function_text(
-				InterNames::one_off(I"print_fn", R),
-				R,
-				(external)?NULL:X);
 		if (external) {
-			Inter::Symbols::set_flag(InterNames::to_symbol(K->construct->pr_iname), MAKE_NAME_UNIQUE);
+// LOG("Here for $u with %S\n", K, X);
+			K->construct->pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
+// LOG("Made $3\n", K->construct->pr_iname);
 			inter_name *actual_iname = Hierarchy::find_by_name(X);
 			packaging_state save = Packaging::enter_home_of(K->construct->pr_iname);
 			Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
 			Packaging::exit(save);
+		} else {
+			K->construct->pr_iname =
+				Packaging::function_text(
+					InterNames::one_off(I"print_fn", R),
+					R,
+					X);
 		}
 	} else {
 		if (external) K->construct->pr_iname = Hierarchy::find_by_name(X);

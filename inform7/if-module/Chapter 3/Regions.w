@@ -61,10 +61,7 @@ regions_data *PL::Regions::new_data(inference_subject *subj) {
 inter_name *PL::Regions::found_in_iname(instance *I) {
 	if (PF_I(regions, I)->in_region_iname == NULL) {
 		inter_name *iname = Instances::iname(I);
-		PF_I(regions, I)->in_region_iname = Packaging::function(
-			InterNames::one_off(I"region_found_in_fn", iname->eventual_owner),
-			iname->eventual_owner,
-			InterNames::new(REGION_FOUND_IN_ROUTINE_INAMEF));
+		PF_I(regions, I)->in_region_iname = Hierarchy::make_iname_in(REGION_FOUND_IN_FN_HL, iname->eventual_owner);
 	}
 	return PF_I(regions, I)->in_region_iname;
 }

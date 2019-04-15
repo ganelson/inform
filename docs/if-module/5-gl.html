@@ -128,13 +128,8 @@ to calculate, and useful when sorting grammar lines into applicability order.
 
         <span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">m_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GRAMMAR_LINE_MISTAKE_TOKEN_INAMEF</span><span class="plain">);</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">MISTAKES_HAP</span><span class="plain">);</span>
-        <span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistake_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
-            <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"mistake_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
-            <span class="identifier">PR</span><span class="plain">,</span>
-            <span class="identifier">m_iname</span><span class="plain">);</span>
-        <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistake_iname</span><span class="plain">);</span>
+        <span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistake_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">MISTAKE_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gl</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -314,12 +309,7 @@ a command grammar, we might have:
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;where_grammar_specified</span><span class="plain">;</span>
 
             <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">COND_TOKENS_HAP</span><span class="plain">);</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">c_iname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GRAMMAR_LINE_COND_TOKEN_INAMEF</span><span class="plain">);</span>
-            <span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"conditional_token_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
-                <span class="identifier">PR</span><span class="plain">,</span>
-                <span class="identifier">c_iname</span><span class="plain">);</span>
-            <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain">);</span>
+            <span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">CONDITIONAL_TOKEN_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain">);</span>
 
@@ -1486,11 +1476,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                         <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">slash_class_ANNOT</span><span class="plain">))) </span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
                 <span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;last_choice</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">;</span>
                 <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">SLASH_TOKENS_HAP</span><span class="plain">);</span>
-                <span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;sgpr_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
-                    <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"slash_fn"</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">),</span>
-                    <span class="identifier">PR</span><span class="plain">,</span>
-                    <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">GRAMMAR_SLASH_GPR_INAMEF</span><span class="plain">));</span>
-                <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;sgpr_iname</span><span class="plain">);</span>
+                <span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;sgpr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">SLASH_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
                 <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;sgpr_iname</span><span class="plain">);</span>
                 <span class="identifier">last_token_in_lexeme</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>

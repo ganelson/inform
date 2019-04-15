@@ -31,10 +31,7 @@ prints the name of a routine to be compiled later.
 inter_name *ListTogether::new(int include_articles) {
 	list_together_routine *ltr = CREATE(list_together_routine);
 	package_request *PR = Hierarchy::local_package(LISTS_TOGETHER_HAP);
-	ltr->ltr_routine_iname = Packaging::function(
-		InterNames::one_off(I"list_together_fn", PR),
-		PR,
-		InterNames::new(LIST_TOGETHER_ROUTINE_INAMEF));
+	ltr->ltr_routine_iname = Hierarchy::make_iname_in(LIST_TOGETHER_FN_HL, PR);
 	ltr->ltr_array_iname = Hierarchy::make_iname_in(LIST_TOGETHER_ARRAY_HL, PR);
 
 	ltr->articles_bit = include_articles;

@@ -333,10 +333,7 @@ I6 template files.
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">source_name</span><span class="plain">) == 0) {</span>
             <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::package</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">);</span>
-            <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Packaging::function</span><span class="plain">(</span>
-                <span class="identifier">InterNames::one_off</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"print_fn"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">),</span>
-                <span class="identifier">R</span><span class="plain">,</span>
-                <span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">PRINTING_ROUTINE_INAMEF</span><span class="plain">));</span>
+            <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">PRINT_DASH_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
             <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">endif</span>

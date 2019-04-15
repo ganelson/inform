@@ -350,12 +350,8 @@ inter_schema *Phrases::get_inter_tail(phrase *ph) {
 
 inter_name *Phrases::iname(phrase *ph) {
 	if (ph->ph_iname == NULL) {
-		inter_name *c_iname = InterNames::new(ADJECTIVE_DEFINED_INAMEF);
 		package_request *PR = Hierarchy::package(ph->owning_module, ADJECTIVE_PHRASES_HAP);
-		ph->ph_iname = Packaging::function(
-			InterNames::one_off(I"definition_fn", PR),
-			PR,
-			c_iname);
+		ph->ph_iname = Hierarchy::make_iname_in(DEFINITION_FN_HL, PR);
 	}
 	return ph->ph_iname;
 }

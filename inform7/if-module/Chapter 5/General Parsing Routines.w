@@ -55,12 +55,8 @@ inter_name *PL::Parsing::Tokens::General::print_consultation_gv_name(void) {
 
 inter_name *PL::Parsing::Tokens::General::consult_iname(grammar_verb *gv) {
 	if (gv->gv_consult_iname == NULL) {
-		inter_name *c_iname = InterNames::new(CONSULT_GRAMMAR_INAMEF);
 		package_request *PR = Hierarchy::local_package(CONSULT_TOKENS_HAP);
-		gv->gv_consult_iname = Packaging::function(
-			InterNames::one_off(I"consult_fn", PR),
-			PR,
-			c_iname);
+		gv->gv_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
 	}
 	return gv->gv_consult_iname;
 }
@@ -88,14 +84,9 @@ will simply compile a |parse_name| routine inline, in the usual I6 way.
 =
 inter_name *PL::Parsing::Tokens::General::get_gv_parse_name(grammar_verb *gv) {
 	if (gv->gv_parse_name_iname == NULL) {
-		inter_name *r_iname = InterNames::new(GRAMMAR_PARSE_NAME_ROUTINE_INAMEF);
 		compilation_module *C = Modules::find(gv->where_gv_created);
 		package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
-		gv->gv_parse_name_iname = Packaging::function(
-			InterNames::one_off(I"parse_name_fn", PR),
-			PR,
-			r_iname);
-		InterNames::to_symbol(gv->gv_parse_name_iname);
+		gv->gv_parse_name_iname = Hierarchy::make_iname_in(PARSE_NAME_FN_HL, PR);
 	}
 	return gv->gv_parse_name_iname;
 }
@@ -108,14 +99,9 @@ inter_name *PL::Parsing::Tokens::General::compile_parse_name_property(inference_
 	} else {
 		if (PL::Parsing::Visibility::any_property_visible_to_subject(subj, FALSE)) {
 			parse_name_notice *notice = CREATE(parse_name_notice);
-			inter_name *r_iname = InterNames::new(PARSE_NAME_ROUTINE_INAMEF);
 			compilation_module *C = Modules::find(subj->infs_created_at);
 			package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
-			notice->pnn_iname = Packaging::function(
-				InterNames::one_off(I"parse_name_fn", PR),
-				PR,
-				r_iname);
-			InterNames::to_symbol(notice->pnn_iname);
+			notice->pnn_iname = Hierarchy::make_iname_in(PARSE_NAME_DASH_FN_HL, PR);
 			notice->parse_subject = subj;
 			symb = notice->pnn_iname;
 		}

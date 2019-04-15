@@ -329,11 +329,7 @@ can't normally be unravelled at compile time.
 	mdef->headword_as_adjective = NULL; /* but it will certainly be set below */
 
 	package_request *P = Hierarchy::package(Modules::current(), ADJECTIVE_MEANINGS_HAP);
-	mdef->mdef_iname = Packaging::function(
-		InterNames::one_off(I"measurement_fn", P),
-		P,
-		InterNames::new(MEASUREMENT_ADJECTIVE_INAMEF));
-	InterNames::to_symbol(mdef->mdef_iname);
+	mdef->mdef_iname = Hierarchy::make_iname_in(MEASUREMENT_FN_HL, P);
 
 @<Create the superlative form@> =
 	mdef->superlative = Grading::make_superlative(mdef->headword, language_of_source_text);

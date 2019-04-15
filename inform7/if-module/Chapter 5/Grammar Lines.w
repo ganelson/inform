@@ -97,13 +97,8 @@ grammar_line *PL::Parsing::Lines::new(int wn, action_name *ac,
 
 	gl->cond_token_iname = NULL;
 	
-	inter_name *m_iname = InterNames::new(GRAMMAR_LINE_MISTAKE_TOKEN_INAMEF);
 	package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
-	gl->mistake_iname = Packaging::function(
-		InterNames::one_off(I"mistake_fn", PR),
-		PR,
-		m_iname);
-	InterNames::to_symbol(gl->mistake_iname);
+	gl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
 
 	return gl;
 }
@@ -227,12 +222,7 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 		current_sentence = gl->where_grammar_specified;
 
 		package_request *PR = Hierarchy::local_package(COND_TOKENS_HAP);
-		inter_name *c_iname = InterNames::new(GRAMMAR_LINE_COND_TOKEN_INAMEF);
-		gl->cond_token_iname = Packaging::function(
-			InterNames::one_off(I"conditional_token_fn", PR),
-			PR,
-			c_iname);
-		InterNames::to_symbol(gl->cond_token_iname);
+		gl->cond_token_iname = Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL, PR);
 
 		packaging_state save = Routines::begin(gl->cond_token_iname);
 
@@ -1278,11 +1268,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 					ParseTree::int_annotation(pn, slash_class_ANNOT))) pn = pn->next;
 			sgpr->last_choice = pn;
 			package_request *PR = Hierarchy::local_package(SLASH_TOKENS_HAP);
-			sgpr->sgpr_iname = Packaging::function(
-				InterNames::one_off(I"slash_fn", PR),
-				PR,
-				InterNames::new(GRAMMAR_SLASH_GPR_INAMEF));
-			InterNames::to_symbol(sgpr->sgpr_iname);
+			sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);
 			Emit::array_iname_entry(sgpr->sgpr_iname);
 			last_token_in_lexeme = TRUE;
 		} else {

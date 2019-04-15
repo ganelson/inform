@@ -25,10 +25,7 @@ named_action_pattern *PL::Actions::Patterns::Named::nap_new(wording W) {
 		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap));
 
 	package_request *PR = Hierarchy::local_package(NAMED_ACTION_PATTERNS_HAP);
-	nap->nap_iname = Packaging::function(
-		InterNames::one_off(I"nap_fn", PR),
-		PR,
-		InterNames::new(NAMED_ACTION_PATTERN_INAMEF));
+	nap->nap_iname = Hierarchy::make_iname_in(NAP_FN_HL, PR);
 	return nap;
 }
 

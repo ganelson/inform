@@ -385,12 +385,7 @@ grammar_verb *PL::Parsing::Verbs::named_token_new(wording W) {
 		gv = PL::Parsing::Verbs::gv_new(GV_IS_TOKEN);
 		gv->name = W;
 		package_request *PR = Hierarchy::local_package(NAMED_TOKENS_HAP);
-		inter_name *m_iname = InterNames::new(GPR_FOR_TOKEN_INAMEF);
-		gv->gv_line_iname = Packaging::function(
-			InterNames::one_off(I"parse_line_fn", PR),
-			PR,
-			m_iname);
-		InterNames::to_symbol(gv->gv_line_iname);
+		gv->gv_line_iname = Hierarchy::make_iname_in(PARSE_LINE_FN_HL, PR);
 	}
 	return gv;
 }
@@ -532,10 +527,7 @@ grammar_verb *PL::Parsing::Verbs::for_prn(property *prn) {
 	Properties::EitherOr::set_parsing_grammar(prn, gv);
 	gv->prn_understood = prn;
 	inter_name *iname = Properties::iname(prn);
-	gv->gv_prn_iname = Packaging::function(
-		InterNames::one_off(I"either_or_GPR_fn", iname->eventual_owner),
-		iname->eventual_owner,
-		InterNames::new(GPR_FOR_EITHER_OR_PROPERTY_INAMEF));
+	gv->gv_prn_iname = Hierarchy::make_iname_in(EITHER_OR_GPR_FN_HL, iname->eventual_owner);
 	return gv;
 }
 

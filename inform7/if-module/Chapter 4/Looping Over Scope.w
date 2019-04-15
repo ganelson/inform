@@ -22,11 +22,7 @@ loop_over_scope *PL::Actions::ScopeLoops::new(parse_node *what) {
 		Descriptions::clear_calling(los->what_to_find);
 	}
 	package_request *PR = Hierarchy::local_package(LOOP_OVER_SCOPES_HAP);
-	inter_name *m_iname = InterNames::new(LOOP_OVER_SCOPE_ROUTINE_INAMEF);
-	los->los_iname = Packaging::function(
-		InterNames::one_off(I"loop_over_scope_fn", PR),
-		PR,
-		m_iname);
+	los->los_iname = Hierarchy::make_iname_in(LOOP_OVER_SCOPE_FN_HL, PR);
 	return los;
 }
 

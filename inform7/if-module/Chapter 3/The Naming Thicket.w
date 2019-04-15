@@ -312,36 +312,22 @@ so. These routines allow that to happen.
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
 	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Packaging::function(
-			InterNames::one_off(I"short_name_fn", iname->eventual_owner),
-			iname->eventual_owner,
-			InterNames::new(SHORT_NAME_ROUTINE_INAMEF));
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, iname->eventual_owner);
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = FALSE;
-	notice->snn_iname = Packaging::function(
-			InterNames::one_off(I"short_name_property_fn", iname->eventual_owner),
-			iname->eventual_owner,
-			InterNames::new(SHORT_NAME_PROPERTY_ROUTINE_INAMEF));
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, iname->eventual_owner);
 	faux = notice->snn_iname;
-	InterNames::to_symbol(faux);
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
 	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Packaging::function(
-			InterNames::one_off(I"short_name_fn", iname->eventual_owner),
-			iname->eventual_owner,
-			InterNames::new(SHORT_NAME_ROUTINE_INAMEF));
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, iname->eventual_owner);
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = TRUE;
-	notice->snn_iname = Packaging::function(
-			InterNames::one_off(I"short_name_property_fn", iname->eventual_owner),
-			iname->eventual_owner,
-			InterNames::new(SHORT_NAME_PROPERTY_ROUTINE_INAMEF));
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, iname->eventual_owner);
 	faux = notice->snn_iname;
-	InterNames::to_symbol(faux);
 
 @ Lastly, then. We don't give this to kinds of room, because it's never necessary
 to pluralise them at run-time in practice, so it would carry an unnecessary cost

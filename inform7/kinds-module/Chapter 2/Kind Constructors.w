@@ -277,10 +277,7 @@ I6 template files.
 	con->trace_iname = NULL;
 	if (Str::len(source_name) == 0) {
 		package_request *R = Kinds::Constructors::package(con);
-		con->pr_iname = Packaging::function(
-			InterNames::one_off(I"print_fn", R),
-			R,
-			InterNames::new(PRINTING_ROUTINE_INAMEF));
+		con->pr_iname = Hierarchy::make_iname_in(PRINT_DASH_FN_HL, R);
 		con->trace_iname = con->pr_iname;
 	}
 	#endif

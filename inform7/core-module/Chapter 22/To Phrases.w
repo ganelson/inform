@@ -172,7 +172,7 @@ to_phrase_request *Routines::ToPhrases::make_request(phrase *ph, kind *K,
 	if (ph->declaration_node) cm = Modules::find(ph->declaration_node);
 
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->requests_package);
-	req->req_iname = Packaging::function(InterNames::one_off(I"phrase_fn", P), P, InterNames::new_in(PHRASE_REQUEST_INAMEF, cm));
+	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P, cm);
 
 	for (int i=0; i<27; i++) req->kind_variables_interpretation[i] = NULL;
 	for (; kvd; kvd=kvd->next)
