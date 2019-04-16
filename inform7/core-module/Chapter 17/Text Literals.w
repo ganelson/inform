@@ -179,8 +179,8 @@ which are null pointers.
 	if (encode_constant_text_bibliographically) x->bibliographic_conventions = TRUE;
 	if (write) {
 		if (x->lt_sba_iname == NULL) {
-			x->lt_sba_iname = Packaging::supply_iname(Packaging::current_enclosure(), BLOCK_CONSTANT_PR_COUNTER);
-			Inter::Symbols::set_flag(InterNames::to_symbol(x->lt_sba_iname), MAKE_NAME_UNIQUE);
+			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+			x->lt_sba_iname = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 		}
 		if (VH) InterNames::holster(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
@@ -308,15 +308,14 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 	}
 
 @<Compile a boxed-quotation literal text@> =
+	package_request *PR = Hierarchy::package_in_enclosure(BOX_QUOTATIONS_HAP);
+	inter_name *iname = Hierarchy::make_iname_in(BOX_QUOTATION_FN_HL, PR);
+
 	if (lt->lt_sba_iname == NULL) {
-		lt->lt_sba_iname = Packaging::supply_iname(Packaging::current_enclosure(), BLOCK_CONSTANT_PR_COUNTER);
-		Inter::Symbols::set_flag(InterNames::to_symbol(lt->lt_sba_iname), MAKE_NAME_UNIQUE);
+		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+		lt->lt_sba_iname = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 	}
-	package_request *P = lt->lt_iname->eventual_owner;
-	inter_name *iname = Packaging::function(
-		InterNames::one_off(I"box_quotation_fn", P),
-		P,
-		InterNames::new(PAST_ACTION_ROUTINE_INAMEF));
+
 	packaging_state save = Packaging::enter_home_of(lt->lt_sba_iname);
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
 	Packaging::exit(save);

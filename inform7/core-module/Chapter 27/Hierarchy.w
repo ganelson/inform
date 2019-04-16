@@ -2,28 +2,13 @@
 
 @
 
-@e BLOCK_CONSTANT_PR_COUNTER from 0
-@e BLOCK_PR_COUNTER
-@e INLINE_PR_COUNTER
-@e SUBSTITUTION_PR_COUNTER
-@e SUBSTITUTIONF_PR_COUNTER
-
 =
 location_requirement home_for_weak_type_IDs;
 
 void Hierarchy::establish(void) {
 	home_for_weak_type_IDs = HierarchyLocations::blank();
 
-	Packaging::register_counter(I"block_constant");
-	Packaging::register_counter(I"code_block");
-	Packaging::register_counter(I"form");
-	Packaging::register_counter(I"inline_pval");
-	Packaging::register_counter(I"literal");
-	Packaging::register_counter(I"misc_const");
-	Packaging::register_counter(I"proposition");
-	Packaging::register_counter(I"ts");
-	Packaging::register_counter(I"ts_fn");
-	Packaging::register_counter(I"task");
+	Packaging::register_counter(I"code_block"); // This will be counter number 0
 
 	@<Establish basics@>;
 	@<Establish actions@>;
@@ -402,7 +387,6 @@ void Hierarchy::establish(void) {
 @e VERB_DIRECTIVE_TOPIC_HL
 @e TESTSCRIPTSUB_HL
 @e INTERNALTESTCASES_HL
-@e COMMAND_PR_COUNTER
 @e COMMANDS_HAP
 @e VERB_DECLARATION_ARRAY_HL
 
@@ -476,6 +460,8 @@ void Hierarchy::establish(void) {
 @e SHORT_NAME_PROPERTY_FN_HL
 @e TSD_DOOR_DIR_FN_HL
 @e TSD_DOOR_TO_FN_HL
+@e INLINE_PROPERTIES_HAP
+@e INLINE_PROPERTY_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = Packaging::register_submodule(I"instances");
@@ -489,6 +475,9 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(REGION_FOUND_IN_FN_HL, I"region_found_in_fn", Translation::generate(REGION_FOUND_IN_ROUTINE_INAMEF), in_instance);
 		HierarchyLocations::func(TSD_DOOR_DIR_FN_HL, I"tsd_door_dir_fn", Translation::generate(TWO_SIDED_DOOR_DOOR_DIR_INAMEF), in_instance);
 		HierarchyLocations::func(TSD_DOOR_TO_FN_HL, I"tsd_door_to_fn", Translation::generate(TWO_SIDED_DOOR_DOOR_TO_INAMEF), in_instance);
+		HierarchyLocations::ap(INLINE_PROPERTIES_HAP, in_instance, I"inline_property", I"_inline_property");
+			location_requirement in_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
+			HierarchyLocations::con(INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_inline_property);
 
 @h Interactive Fiction.
 
@@ -541,6 +530,8 @@ void Hierarchy::establish(void) {
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
 @e INSTANCE_GPR_FN_HL
+@e KIND_INLINE_PROPERTIES_HAP
+@e KIND_INLINE_PROPERTY_HL
 
 @e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
@@ -576,6 +567,9 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(DEFAULT_CLOSURE_FN_HL, I"default_closure_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(GPR_FN_HL, I"gpr_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(INSTANCE_GPR_FN_HL, I"instance_gpr_fn", Translation::uniqued(), in_kind);
+		HierarchyLocations::ap(KIND_INLINE_PROPERTIES_HAP, in_kind, I"inline_property", I"_inline_property");
+			location_requirement in_kind_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
+			HierarchyLocations::con(KIND_INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_kind_inline_property);
 
 	location_requirement synoptic_kinds = HierarchyLocations::synoptic_submodule(kinds);
 	HierarchyLocations::con(BASE_KIND_HWM_HL, I"BASE_KIND_HWM", Translation::same(), synoptic_kinds);
@@ -842,26 +836,38 @@ void Hierarchy::establish(void) {
 
 @h Enclosed matter.
 
+@e BLOCK_HL
 @e LITERALS_HAP
 @e TEXT_LITERAL_HL
 @e LIST_LITERAL_HL
+@e TEXT_SUBSTITUTION_HL
+@e TEXT_SUBSTITUTION_FN_HL
 @e PROPOSITIONS_HAP
 @e PROPOSITION_HL
 @e BLOCK_CONSTANTS_HAP
 @e BLOCK_CONSTANT_HL
+@e BOX_QUOTATIONS_HAP
+@e BOX_QUOTATION_FN_HL
+@e TEXT_SUBSTITUTIONS_HAP
 
 @<Establish enclosed matter@> =
 	location_requirement in_any_enclosure = HierarchyLocations::any_enclosure();
+	HierarchyLocations::con(BLOCK_HL, I"block", Translation::uniqued(), in_any_enclosure);
 	HierarchyLocations::ap(LITERALS_HAP, in_any_enclosure, I"literal", I"_literal");
 		location_requirement in_literal = HierarchyLocations::any_package_of_type(I"_literal");
 		HierarchyLocations::con(TEXT_LITERAL_HL, I"text", Translation::uniqued(), in_literal);
 		HierarchyLocations::con(LIST_LITERAL_HL, I"list", Translation::uniqued(), in_literal);
+		HierarchyLocations::con(TEXT_SUBSTITUTION_HL, I"ts_array", Translation::uniqued(), in_literal);
+		HierarchyLocations::func(TEXT_SUBSTITUTION_FN_HL, I"ts_fn", Translation::uniqued(), in_literal);
 	HierarchyLocations::ap(PROPOSITIONS_HAP, in_any_enclosure, I"proposition", I"_proposition");
 		location_requirement in_proposition = HierarchyLocations::any_package_of_type(I"_proposition");
 		HierarchyLocations::func(PROPOSITION_HL, I"prop", Translation::uniqued(), in_proposition);
 	HierarchyLocations::ap(BLOCK_CONSTANTS_HAP, in_any_enclosure, I"block_constant", I"_block_constant");
 		location_requirement in_block_constant = HierarchyLocations::any_package_of_type(I"_block_constant");
 		HierarchyLocations::con(BLOCK_CONSTANT_HL, I"bc", Translation::uniqued(), in_block_constant);
+	HierarchyLocations::ap(BOX_QUOTATIONS_HAP, in_any_enclosure, I"block_constant", I"_box_quotation");
+		location_requirement in_box_quotation = HierarchyLocations::any_package_of_type(I"_box_quotation");
+		HierarchyLocations::func(BOX_QUOTATION_FN_HL, I"quotation_fn", Translation::uniqued(), in_box_quotation);
 
 @
 
@@ -1527,6 +1533,10 @@ inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
 
 inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
 	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, C);
+}
+
+inter_name *Hierarchy::make_block_iname(package_request *P) {
+	return Packaging::supply_iname(P, 0);
 }
 
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {

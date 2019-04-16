@@ -982,10 +982,17 @@ int PL::Actions::can_be_compiled_in_past_tense(action_name *an) {
 
 inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 	package_request *R = NULL;
-	if (I) R = Instances::package(I);
-	else R = Kinds::Behaviour::package(K_object);
-	packaging_state save = Packaging::enter(R);
-	inter_name *N = Packaging::supply_iname(R, INLINE_PR_COUNTER);
+	inter_name *N = NULL;
+	if (I) {
+		R = Instances::package(I);
+		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, R);
+		N = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
+	} else {
+		R = Kinds::Behaviour::package(K_object);
+		package_request *PR = Hierarchy::package_within(KIND_INLINE_PROPERTIES_HAP, R);
+		N = Hierarchy::make_iname_in(KIND_INLINE_PROPERTY_HL, PR);
+	}
+	packaging_state save = Packaging::enter_home_of(N);
 	Emit::named_array_begin(N, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++) Emit::array_numeric_entry(0);
 	Emit::array_end();

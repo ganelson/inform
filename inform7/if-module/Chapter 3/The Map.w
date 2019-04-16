@@ -951,8 +951,9 @@ trust that there is nothing surprising here.
 @ Here |found_in| is a two-entry list.
 
 @<Assert found-in for a two-sided door@> =
-	packaging_state save = Packaging::enter(Instances::package(I));
-	inter_name *S = Packaging::supply_iname(Instances::package(I), INLINE_PR_COUNTER);
+	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
+	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
+	packaging_state save = Packaging::enter_home_of(S);
 	Emit::named_array_begin(S, K_value);
 	Emit::array_iname_entry(Instances::iname(R1));
 	Emit::array_iname_entry(Instances::iname(R2));

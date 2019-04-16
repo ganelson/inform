@@ -186,8 +186,9 @@ for the kinds we inherit from.
 	if (PL::Naming::object_is_privately_named(I) == FALSE) {
 		kind *K = Instances::to_kind(I);
 		int from_kind = FALSE;
-		packaging_state save = Packaging::enter(Instances::package(I));
-		inter_name *name_array = Packaging::supply_iname(Instances::package(I), INLINE_PR_COUNTER);
+		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
+		inter_name *name_array = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
+		packaging_state save = Packaging::enter_home_of(name_array);
 		Emit::named_array_begin(name_array, K_value);
 		wording W = Instances::get_name_in_play(I, FALSE);
 		if (Wordings::empty(W)) W = Kinds::Behaviour::get_name_in_play(K, FALSE, language_of_play);

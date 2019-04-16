@@ -972,9 +972,8 @@ inter_symbol *Emit::block(inter_name *iname) {
 	if (Emit::IRS() == NULL) internal_error("no inter repository");
 	inter_name *block_iname = NULL;
 	if (Packaging::houseed_in_function(iname))
-		block_iname = Packaging::supply_iname(iname->eventual_owner, BLOCK_PR_COUNTER);
+		block_iname = Hierarchy::make_block_iname(iname->eventual_owner);
 	else internal_error("routine outside function package");
-	Packaging::house_with(block_iname, iname);
 	inter_symbol *rsymb = Emit::package(block_iname, code_packagetype, NULL);
 
 	current_inter_routine = rsymb;

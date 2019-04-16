@@ -80,12 +80,10 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 	if ((phrase_being_compiled) &&
 		(LocalVariables::count(Frames::current_stack_frame()) > 0))
 		ts->local_names_existed_at_usage_time = TRUE;
-	ts->ts_iname = Packaging::supply_iname(P, SUBSTITUTION_PR_COUNTER);
-	ts->ts_routine_iname =
-		Packaging::function(Packaging::supply_iname(P, SUBSTITUTIONF_PR_COUNTER), P, NULL);
+	package_request *PR = Hierarchy::package_within(LITERALS_HAP, P);
+	ts->ts_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_HL, PR);
+	ts->ts_routine_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_FN_HL, PR);
 	ts->belongs_to_module = Modules::current();
-	Inter::Symbols::set_flag(InterNames::to_symbol(ts->ts_iname), MAKE_NAME_UNIQUE);
-	Inter::Symbols::set_flag(InterNames::to_symbol(ts->ts_routine_iname), MAKE_NAME_UNIQUE);
 	LOGIF(TEXT_SUBSTITUTIONS, "Requesting text routine %d %08x %W %08x\n",
 		ts->allocation_id, (int) phsf, W, R);
 	return ts;
