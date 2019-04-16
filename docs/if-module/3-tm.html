@@ -474,8 +474,8 @@ no need to translate this to other languages.)
 
 <pre class="displaydefn">
         <span class="identifier">registered_directions</span><span class="plain">++;</span>
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">dname</span><span class="plain"> = </span><span class="identifier">InterNames::new</span><span class="plain">(</span><span class="identifier">DIRECTION_OBJECT_INAMEF</span><span class="plain">);</span>
-        <span class="identifier">Packaging::house</span><span class="plain">(</span><span class="identifier">dname</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_direction</span><span class="plain">));</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="identifier">DIRECTIONS_HAP</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">dname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">DIRECTION_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;direction_iname</span><span class="plain"> = </span><span class="identifier">dname</span><span class="plain">;</span>
         <span class="functiontext">PL::MapDirections::make_mapped_predicate</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">dname</span><span class="plain">);</span>
 </pre>

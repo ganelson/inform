@@ -397,6 +397,7 @@ int InterNames::defined(inter_name *iname) {
 @e LABEL_STORAGE_INAMEF
 @e ICOUNT_CONSTANT_INAMEF
 @e WEAK_ID_CONSTANT_INAMEF
+@e RESPONDER_INAMEF
 
 @e FINAL_INAMEF
 
@@ -440,11 +441,6 @@ inter_name *InterNames::new_overridden(int fnum, text_stream *identifier) {
 inter_name *InterNames::new_derived(int fnum, inter_name *from) {
 	inter_name_family *F = InterNames::get_family(fnum);
 	if (F->fusage != DERIVED_FUSAGE) internal_error("not a derived family");
-//	if (from->family != F->derivative_of) {
-//		LOG("From = %n in $X\n", from, Packaging::home_of(from));
-//		LOG("From family %S but derivative should be of %S\n", from->family->family_name, F->derivative_of->family_name);
-//		internal_error("derived from name of wrong family");
-//	}
 	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
 	Packaging::house_with(N, from);
 	N->derived_from = from;
@@ -522,7 +518,7 @@ inter_name *InterNames::letter_parametrised_name(int family, inter_name *rname, 
 	if ((marker < 0) || (marker >= FINAL_INDERIV)) internal_error("respomse parameter out of range");
 	if (rname->parametrised_derivatives[marker] == NULL) {
 		rname->parametrised_derivatives[marker] = InterNames::new(family);
-		Packaging::house(rname->parametrised_derivatives[marker], R);
+		if (R) Packaging::house(rname->parametrised_derivatives[marker], R);
 		rname->parametrised_derivatives[marker]->derived_from = rname;
 	}
 
@@ -654,6 +650,7 @@ inter_name_family *InterNames::get_family(int fnum) {
 		case VARIABLE_INAMEF:						S = I"V";					break;
 		case VERB_DECLARATION_ARRAY_INAMEF:			S = I"GV_Grammar";			break;
 		case WEAK_ID_CONSTANT_INAMEF:				S = I"always_overridden";	break;
+		case RESPONDER_INAMEF:						D = RULE_SHELL_ROUTINE_INAMEF; Suf = I"M"; break;
 	}
 
 	if ((S) || (D >= 0)) {

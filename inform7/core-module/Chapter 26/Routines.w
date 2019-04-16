@@ -84,7 +84,7 @@ void Routines::end_in_current_package(void) {
 	if ((currently_compiling_in_frame->allocated_pointers) ||
 		(currently_compiling_in_frame->no_formal_parameters_needed > 0)) {
 		if (Packaging::houseed_in_function(public_name)) {
-			kernel_name = InterNames::one_off(I"kernel", public_name->eventual_owner);
+			kernel_name = Hierarchy::make_kernel_iname(public_name->eventual_owner);
 			Inter::Symbols::set_flag(InterNames::to_symbol(kernel_name), MAKE_NAME_UNIQUE);
 		} else {
 			internal_error("routine not housed in function");

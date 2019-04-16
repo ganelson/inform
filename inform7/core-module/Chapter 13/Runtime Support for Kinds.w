@@ -587,15 +587,11 @@ compile under Inform 6.
 	rks->make_default = FALSE;
 	rks->default_requested_here = NULL;
 	package_request *PR = Kinds::Behaviour::package(K);
-//	rks->rks_iname = InterNames::new(KIND_ID_INAMEF);
-//	Packaging::house(rks->rks_iname, PR);
 	TEMPORARY_TEXT(TEMP);
 	Kinds::Textual::write(TEMP, K);
 	wording W = Feeds::feed_stream(TEMP);
 	rks->rks_iname = Hierarchy::make_iname_with_memo(KIND_HL, PR, W);
 	DISCARD_TEXT(TEMP);
-//	InterNames::attach_memo(rks->rks_iname, W);
-//	InterNames::to_symbol(rks->rks_iname);
 	rks->rks_dv_iname = Hierarchy::make_iname_in(DEFAULT_VALUE_HL, PR);
 
 @ It's convenient to combine this system with one which constructs default

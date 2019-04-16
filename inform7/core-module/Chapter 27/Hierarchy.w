@@ -9,6 +9,7 @@ void Hierarchy::establish(void) {
 	home_for_weak_type_IDs = HierarchyLocations::blank();
 
 	Packaging::register_counter(I"code_block"); // This will be counter number 0
+	Packaging::register_counter(I"kernel"); // This will be counter number 1
 
 	@<Establish basics@>;
 	@<Establish actions@>;
@@ -120,6 +121,8 @@ void Hierarchy::establish(void) {
 
 @e ACTIONS_HAP
 @e ACTION_BASE_NAME_HL
+@e DOUBLE_SHARP_NAME_HL
+@e PERFORM_FN_HL
 @e CHECK_RB_HL
 @e CARRY_OUT_RB_HL
 @e REPORT_RB_HL
@@ -143,6 +146,8 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::ap(ACTIONS_HAP, local_actions, I"action", I"_action");
 		location_requirement in_action = HierarchyLocations::any_package_of_type(I"_action");
 		HierarchyLocations::con(ACTION_BASE_NAME_HL, NULL, Translation::generate(ACTION_BASE_INAMEF), in_action);
+		HierarchyLocations::con(DOUBLE_SHARP_NAME_HL, NULL, Translation::derive(ACTION_INAMEF), in_action);
+		HierarchyLocations::func(PERFORM_FN_HL, I"perform_fn", Translation::derive(ACTION_ROUTINE_INAMEF), in_action);
 		HierarchyLocations::package(CHECK_RB_HL, I"check_rb", I"_rulebook", in_action);
 		HierarchyLocations::package(CARRY_OUT_RB_HL, I"carry_out_rb", I"_rulebook", in_action);
 		HierarchyLocations::package(REPORT_RB_HL, I"report_rb", I"_rulebook", in_action);
@@ -454,6 +459,7 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
+@e INSTANCE_HL
 @e BACKDROP_FOUND_IN_FN_HL
 @e REGION_FOUND_IN_FN_HL
 @e SHORT_NAME_FN_HL
@@ -469,6 +475,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_instances = HierarchyLocations::local_submodule(instances);
 	HierarchyLocations::ap(INSTANCES_HAP, local_instances, I"instance", I"_instance");
 		location_requirement in_instance = HierarchyLocations::any_package_of_type(I"_instance");
+		HierarchyLocations::con(INSTANCE_HL, I"I", Translation::uniqued(), in_instance);
 		HierarchyLocations::func(BACKDROP_FOUND_IN_FN_HL, I"backdrop_found_in_fn", Translation::uniqued(), in_instance);
 		HierarchyLocations::func(SHORT_NAME_FN_HL, I"short_name_fn", Translation::generate(SHORT_NAME_ROUTINE_INAMEF), in_instance);
 		HierarchyLocations::func(SHORT_NAME_PROPERTY_FN_HL, I"short_name_property_fn", Translation::generate(SHORT_NAME_PROPERTY_ROUTINE_INAMEF), in_instance);
@@ -493,6 +500,8 @@ void Hierarchy::establish(void) {
 @e START_ROOM_INIS_HL
 @e START_TIME_INIS_HL
 @e DONE_INIS_HL
+@e DIRECTIONS_HAP
+@e DIRECTION_HL
 
 @<Establish int-fiction@> =
 	submodule_identity *interactive_fiction = Packaging::register_submodule(I"interactive_fiction");
@@ -510,6 +519,9 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(START_ROOM_INIS_HL, I"START_ROOM_INIS", Translation::same(), synoptic_IF);
 	HierarchyLocations::con(START_TIME_INIS_HL, I"START_TIME_INIS", Translation::same(), synoptic_IF);
 	HierarchyLocations::con(DONE_INIS_HL, I"DONE_INIS", Translation::same(), synoptic_IF);
+	HierarchyLocations::ap(DIRECTIONS_HAP, synoptic_IF, I"direction", I"_direction");
+		location_requirement in_direction = HierarchyLocations::any_package_of_type(I"_direction");
+		HierarchyLocations::con(DIRECTION_HL, NULL, Translation::generate(DIRECTION_OBJECT_INAMEF), in_direction);
 
 @h Kinds.
 
@@ -530,6 +542,9 @@ void Hierarchy::establish(void) {
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
 @e INSTANCE_GPR_FN_HL
+@e FIRST_INSTANCE_HL
+@e NEXT_INSTANCE_HL
+@e COUNT_INSTANCE_HL
 @e KIND_INLINE_PROPERTIES_HAP
 @e KIND_INLINE_PROPERTY_HL
 
@@ -567,6 +582,9 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(DEFAULT_CLOSURE_FN_HL, I"default_closure_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(GPR_FN_HL, I"gpr_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(INSTANCE_GPR_FN_HL, I"instance_gpr_fn", Translation::uniqued(), in_kind);
+		HierarchyLocations::con(FIRST_INSTANCE_HL, NULL, Translation::derive_lettered(FIRST_INSTANCE_INAMEF, FIRST_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(NEXT_INSTANCE_HL, NULL, Translation::derive_lettered(NEXT_INSTANCE_INAMEF, NEXT_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_HL, NULL, Translation::derive_lettered(COUNT_INSTANCE_INAMEF, COUNT_INSTANCE_INDERIV), in_kind);
 		HierarchyLocations::ap(KIND_INLINE_PROPERTIES_HAP, in_kind, I"inline_property", I"_inline_property");
 			location_requirement in_kind_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
 			HierarchyLocations::con(KIND_INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_kind_inline_property);
@@ -630,6 +648,7 @@ void Hierarchy::establish(void) {
 @h Properties.
 
 @e PROPERTIES_HAP
+@e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
 
 @e CCOUNT_PROPERTY_HL
@@ -640,6 +659,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_properties = HierarchyLocations::local_submodule(properties);
 	HierarchyLocations::ap(PROPERTIES_HAP, local_properties, I"property", I"_property");
 		location_requirement in_property = HierarchyLocations::any_package_of_type(I"_property");
+		HierarchyLocations::con(PROPERTY_HL, I"P", Translation::same(), in_property);
 		HierarchyLocations::func(EITHER_OR_GPR_FN_HL, I"either_or_GPR_fn", Translation::generate(GPR_FOR_EITHER_OR_PROPERTY_INAMEF), in_property);
 
 	location_requirement synoptic_props = HierarchyLocations::synoptic_submodule(properties);
@@ -733,6 +753,7 @@ void Hierarchy::establish(void) {
 @e EMPTY_RULEBOOK_INAME_HL
 
 @e OUTCOMES_HAP
+@e OUTCOME_HL
 @e RULEBOOKS_HAP
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
@@ -751,6 +772,8 @@ void Hierarchy::establish(void) {
 
 	location_requirement local_rulebooks = HierarchyLocations::local_submodule(rulebooks);
 	HierarchyLocations::ap(OUTCOMES_HAP, local_rulebooks, I"rulebook_outcome", I"_outcome");
+		location_requirement in_outcome = HierarchyLocations::any_package_of_type(I"_outcome");
+		HierarchyLocations::con(OUTCOME_HL, I"outcome", Translation::uniqued(), in_outcome);
 	HierarchyLocations::ap(RULEBOOKS_HAP, local_rulebooks, I"rulebook", I"_rulebook");
 		location_requirement in_rulebook = HierarchyLocations::any_package_of_type(I"_rulebook");
 		HierarchyLocations::func(RUN_FN_HL, I"run_fn", Translation::uniqued(), in_rulebook);
@@ -769,6 +792,7 @@ void Hierarchy::establish(void) {
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
+@e RESPONDER_FN_HL
 @e RESPONSES_HAP
 @e AS_CONSTANT_HL
 @e AS_BLOCK_CONSTANT_HL
@@ -786,6 +810,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::generate_in(RULE_SHELL_ROUTINE_INAMEF), in_rule);
 		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::generate_in(PHRASE_INAMEF), in_rule);
 		HierarchyLocations::con(EXTERIOR_RULE_HL, I"exterior_rule", Translation::uniqued(), in_rule);
+		HierarchyLocations::func(RESPONDER_FN_HL, I"responder_fn", Translation::derive(RESPONDER_INAMEF), in_rule);
 		HierarchyLocations::ap(RESPONSES_HAP, in_rule, I"response", I"_response");
 			location_requirement in_response = HierarchyLocations::any_package_of_type(I"_response");
 			HierarchyLocations::con(AS_CONSTANT_HL, I"as_constant", Translation::uniqued(), in_response);
@@ -836,7 +861,6 @@ void Hierarchy::establish(void) {
 
 @h Enclosed matter.
 
-@e BLOCK_HL
 @e LITERALS_HAP
 @e TEXT_LITERAL_HL
 @e LIST_LITERAL_HL
@@ -844,6 +868,7 @@ void Hierarchy::establish(void) {
 @e TEXT_SUBSTITUTION_FN_HL
 @e PROPOSITIONS_HAP
 @e PROPOSITION_HL
+@e RTP_HL
 @e BLOCK_CONSTANTS_HAP
 @e BLOCK_CONSTANT_HL
 @e BOX_QUOTATIONS_HAP
@@ -852,7 +877,6 @@ void Hierarchy::establish(void) {
 
 @<Establish enclosed matter@> =
 	location_requirement in_any_enclosure = HierarchyLocations::any_enclosure();
-	HierarchyLocations::con(BLOCK_HL, I"block", Translation::uniqued(), in_any_enclosure);
 	HierarchyLocations::ap(LITERALS_HAP, in_any_enclosure, I"literal", I"_literal");
 		location_requirement in_literal = HierarchyLocations::any_package_of_type(I"_literal");
 		HierarchyLocations::con(TEXT_LITERAL_HL, I"text", Translation::uniqued(), in_literal);
@@ -868,6 +892,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::ap(BOX_QUOTATIONS_HAP, in_any_enclosure, I"block_constant", I"_box_quotation");
 		location_requirement in_box_quotation = HierarchyLocations::any_package_of_type(I"_box_quotation");
 		HierarchyLocations::func(BOX_QUOTATION_FN_HL, I"quotation_fn", Translation::uniqued(), in_box_quotation);
+	HierarchyLocations::con(RTP_HL, I"rtp", Translation::uniqued(), in_any_enclosure);
 
 @
 
@@ -880,11 +905,16 @@ void Hierarchy::establish(void) {
 @e K_FIGURE_NAME_XPACKAGE
 @e K_SOUND_NAME_XPACKAGE
 @e K_USE_OPTION_XPACKAGE
+@e K_EXTERNAL_FILE_XPACKAGE
+@e K_RULEBOOK_OUTCOME_XPACKAGE
+@e K_RESPONSE_XPACKAGE
+@e K_SCENE_XPACKAGE
 @e V_COMMAND_PROMPT_XPACKAGE
 
 @e NOTHING_HL
 @e OBJECT_HL
 @e TESTUSEOPTION_HL
+@e PRINT_USE_OPTION_HL
 @e TABLEOFTABLES_HL
 @e TABLEOFVERBS_HL
 @e CAPSHORTNAME_HL
@@ -895,6 +925,16 @@ void Hierarchy::establish(void) {
 @e RESOURCEIDSOFSOUNDS_HL
 @e TIME_TOKEN_INNER_HL
 @e TRUTH_STATE_TOKEN_INNER_HL
+
+@e PRINT_TABLE_HL
+@e PRINT_RULEBOOK_OUTCOME_HL
+@e PRINT_RESPONSE_HL
+@e PRINT_FIGURE_NAME_HL
+@e PRINT_SOUND_NAME_HL
+@e PRINT_EXTERNAL_FILE_NAME_HL
+@e NO_EXTERNAL_FILES_HL
+@e TABLEOFEXTERNALFILES_HL
+@e PRINT_SCENE_HL
 
 @
 
@@ -915,22 +955,40 @@ void Hierarchy::establish(void) {
 
 	location_requirement in_K_table = HierarchyLocations::this_exotic_package(K_TABLE_XPACKAGE);
 	HierarchyLocations::con(TABLEOFTABLES_HL, I"TableOfTables", Translation::same(), in_K_table);
+	HierarchyLocations::func(PRINT_TABLE_HL, I"print_fn", Translation::to(I"PrintTableName"), in_K_table);
 
 	location_requirement in_K_verb = HierarchyLocations::this_exotic_package(K_VERB_XPACKAGE);
 	HierarchyLocations::con(TABLEOFVERBS_HL, I"TableOfVerbs", Translation::same(), in_K_verb);
 
 	location_requirement in_K_figure_name = HierarchyLocations::this_exotic_package(K_FIGURE_NAME_XPACKAGE);
 	HierarchyLocations::con(RESOURCEIDSOFFIGURES_HL, I"ResourceIDsOfFigures", Translation::same(), in_K_figure_name);
+	HierarchyLocations::func(PRINT_FIGURE_NAME_HL, I"print_fn", Translation::to(I"PrintFigureName"), in_K_figure_name);
 
 	location_requirement in_K_sound_name = HierarchyLocations::this_exotic_package(K_SOUND_NAME_XPACKAGE);
 	HierarchyLocations::con(RESOURCEIDSOFSOUNDS_HL, I"ResourceIDsOfSounds", Translation::same(), in_K_sound_name);
+	HierarchyLocations::func(PRINT_SOUND_NAME_HL, I"print_fn", Translation::to(I"PrintSoundName"), in_K_sound_name);
 
 	location_requirement in_K_use_option = HierarchyLocations::this_exotic_package(K_USE_OPTION_XPACKAGE);
 	HierarchyLocations::con(NO_USE_OPTIONS_HL, I"NO_USE_OPTIONS", Translation::same(), in_K_use_option);
 	HierarchyLocations::func(TESTUSEOPTION_HL, I"test_fn", Translation::to(I"TestUseOption"), in_K_use_option);
+	HierarchyLocations::func(PRINT_USE_OPTION_HL, I"print_fn", Translation::to(I"PrintUseOption"), in_K_use_option);
 
 	location_requirement in_V_command_prompt = HierarchyLocations::this_exotic_package(V_COMMAND_PROMPT_XPACKAGE);
 	HierarchyLocations::func(COMMANDPROMPTTEXT_HL, I"command_prompt_text_fn", Translation::to(I"CommandPromptText"), in_V_command_prompt);
+
+	location_requirement in_K_external_file = HierarchyLocations::this_exotic_package(K_EXTERNAL_FILE_XPACKAGE);
+	HierarchyLocations::con(NO_EXTERNAL_FILES_HL, I"NO_EXTERNAL_FILES", Translation::same(), in_K_external_file);
+	HierarchyLocations::con(TABLEOFEXTERNALFILES_HL, I"TableOfExternalFiles", Translation::same(), in_K_external_file);
+	HierarchyLocations::func(PRINT_EXTERNAL_FILE_NAME_HL, I"print_fn", Translation::to(I"PrintExternalFileName"), in_K_external_file);
+
+	location_requirement in_K_rulebook_outcome = HierarchyLocations::this_exotic_package(K_RULEBOOK_OUTCOME_XPACKAGE);
+	HierarchyLocations::func(PRINT_RULEBOOK_OUTCOME_HL, I"print_fn", Translation::to(I"RulebookOutcomePrintingRule"), in_K_rulebook_outcome);
+
+	location_requirement in_K_response = HierarchyLocations::this_exotic_package(K_RESPONSE_XPACKAGE);
+	HierarchyLocations::func(PRINT_RESPONSE_HL, I"print_fn", Translation::to(I"PrintResponse"), in_K_response);
+
+	location_requirement in_K_scene = HierarchyLocations::this_exotic_package(K_SCENE_XPACKAGE);
+	HierarchyLocations::func(PRINT_SCENE_HL, I"print_fn", Translation::to(I"PrintSceneName"), in_K_scene);
 
 @
 
@@ -1423,6 +1481,10 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_FIGURE_NAME_XPACKAGE: return Kinds::Behaviour::package(K_figure_name);
 		case K_SOUND_NAME_XPACKAGE: return Kinds::Behaviour::package(K_sound_name);
 		case K_USE_OPTION_XPACKAGE: return Kinds::Behaviour::package(K_use_option);
+		case K_EXTERNAL_FILE_XPACKAGE: return Kinds::Behaviour::package(K_external_file);
+		case K_RULEBOOK_OUTCOME_XPACKAGE: return Kinds::Behaviour::package(K_rulebook_outcome);
+		case K_RESPONSE_XPACKAGE: return Kinds::Behaviour::package(K_response);
+		case K_SCENE_XPACKAGE: return Kinds::Behaviour::package(K_scene);
 		case V_COMMAND_PROMPT_XPACKAGE:
 			return Packaging::home_of(NonlocalVariables::iname(command_prompt_VAR));
 	}
@@ -1528,19 +1590,27 @@ package_request *Hierarchy::package_within(int hap_id, package_request *super) {
 }
 
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, NULL);
+}
+
+inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_request *P) {
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, derive_from);
 }
 
 inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, C);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, C, NULL);
 }
 
 inter_name *Hierarchy::make_block_iname(package_request *P) {
 	return Packaging::supply_iname(P, 0);
 }
 
+inter_name *Hierarchy::make_kernel_iname(package_request *P) {
+	return Packaging::supply_iname(P, 1);
+}
+
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {
-	return HierarchyLocations::find_in_package(id, P, W, NULL);
+	return HierarchyLocations::find_in_package(id, P, W, NULL, NULL);
 }
 
 package_request *Hierarchy::make_package_in(int id, package_request *P) {

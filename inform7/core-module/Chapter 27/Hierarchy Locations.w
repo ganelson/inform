@@ -216,13 +216,17 @@ inter_name *HierarchyLocations::nrl_to_iname(named_resource_location *nrl) {
 	return nrl->equates_to_iname;
 }
 
-inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, compilation_module *C) {
+inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, compilation_module *C, inter_name *derive_from) {
 	if (nrls_created == FALSE) HierarchyLocations::create_nrls();
 	if ((id < 0) || (id >= MAX_HL) || (nrls_indexed_by_id[id] == NULL))
 		internal_error("bad nrl ID");
 	named_resource_location *nrl = nrls_indexed_by_id[id];
-	if (nrl->requirements.any_package_of_this_type == NULL) internal_error("NRL accessed inappropriately");
-	if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) {
+	if ((nrl->requirements.any_package_of_this_type == NULL) &&
+		(nrl->requirements.any_enclosure == FALSE)) internal_error("NRL accessed inappropriately");
+	if (nrl->requirements.any_enclosure) {
+		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
+			internal_error("subpackage not in enclosing superpackage");
+	} else if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) {
 		LOG("AN: %S, FPN: %S\n", nrl->access_name, nrl->function_package_name);
 		LOG("Have type: $3, required: $3\n", P->eventual_type, nrl->requirements.any_package_of_this_type);
 		internal_error("constant in wrong superpackage");
@@ -235,12 +239,20 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 	} else if (nrl->trans.generate_from >= 0) {
 		TEMPORARY_TEXT(T);
 		inter_name *temp_iname = NULL;
-		if (nrl->trans.localise)
-			temp_iname = InterNames::new_in(nrl->trans.generate_from, C);
-		else
-			temp_iname = InterNames::new(nrl->trans.generate_from);
+		if (derive_from) {
+			if (nrl->trans.faux_letter >= 0)
+				temp_iname = InterNames::letter_parametrised_name(nrl->trans.generate_from, derive_from, nrl->trans.faux_letter, P);
+			else
+				temp_iname = InterNames::new_derived(nrl->trans.generate_from, derive_from);
+		} else {
+			if (nrl->trans.localise)
+				temp_iname = InterNames::new_in(nrl->trans.generate_from, C);
+			else
+				temp_iname = InterNames::new(nrl->trans.generate_from);
+		}
 		WRITE_TO(T, "%n", temp_iname);
-		@<Make the actual iname@>;
+		if (nrl->trans.faux_letter >= 0) iname = temp_iname;
+		else @<Make the actual iname@>;
 		DISCARD_TEXT(T);
 	} else {
 		text_stream *T = NULL;

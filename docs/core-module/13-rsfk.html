@@ -750,15 +750,11 @@ compile under Inform 6.
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;make_default</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;default_requested_here</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-    <span class="comment">rks-&gt;rks_iname = InterNames::new(KIND_ID_INAMEF);</span>
-    <span class="comment">Packaging::house(rks-&gt;rks_iname, PR);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">KIND_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-    <span class="comment">InterNames::attach_memo(rks-&gt;rks_iname, W);</span>
-    <span class="comment">InterNames::to_symbol(rks-&gt;rks_iname);</span>
         <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_dv_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFAULT_VALUE_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 </pre>
 

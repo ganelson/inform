@@ -316,10 +316,7 @@ void Tables::create_table(parse_node *PN) {
 	if (connection != TABLE_IS_NEW) @<Require the previous table to exist@>
 	else @<Require the previous table not to exist@>;
 
-//	InterNames::attach_memo(t->table_identifier, t->table_name_text);
-
 	if (connection == TABLE_IS_NEW) {
-//		InterNames::to_symbol(t->table_identifier);
 		@<Register the names of the new table@>;
 		LOGIF(TABLES, "Created: $B\n", t);
 	}

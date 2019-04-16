@@ -1595,8 +1595,7 @@ pcalc_prop *Calculus::Propositions::Deferred::compile_loop_header(int var, local
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K) == FALSE) {
 			if (pdef->rtp_iname == NULL) {
 				package_request *P = Packaging::home_of(pdef->ppd_iname);
-				pdef->rtp_iname = InterNames::one_off(I"rtp", P);
-				Inter::Symbols::set_flag(InterNames::to_symbol(pdef->rtp_iname), MAKE_NAME_UNIQUE);
+				pdef->rtp_iname = Hierarchy::make_iname_in(RTP_HL, P);
 			}
 			Calculus::Schemas::modify(&loop_schema, "if (RunTimeProblem(RTP_CANTITERATE, %n))",
 				pdef->rtp_iname);

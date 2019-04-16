@@ -29,9 +29,7 @@ int UseNouns::iname_set(noun *t) {
 void UseNouns::noun_compose_identifier(package_request *R, noun *t, int N) {
 	if (t->nt_iname == NULL) {
 		wording W = Nouns::get_name(t, FALSE);
-		t->nt_iname = InterNames::one_off(I"I", R);
-		if (Wordings::nonempty(W)) InterNames::attach_memo(t->nt_iname, W);
-		Inter::Symbols::set_flag(InterNames::to_symbol(t->nt_iname), MAKE_NAME_UNIQUE);
+		t->nt_iname = Hierarchy::make_iname_with_memo(INSTANCE_HL, R, W);
 	}
 }
 

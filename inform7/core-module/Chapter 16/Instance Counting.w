@@ -158,20 +158,17 @@ since Inform always compiles code which knows which kind it's looping over.
 
 =
 inter_name *PL::Counting::first_instance(kind *K) {
-	inter_name *iname = InterNames::letter_parametrised_name(
-		FIRST_INSTANCE_INAMEF, Kinds::RunTime::iname(K), FIRST_INSTANCE_INDERIV, Kinds::Behaviour::package(K));
+	inter_name *iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
 	return iname;
 }
 
 inter_name *PL::Counting::next_instance(kind *K) {
-	inter_name *iname = InterNames::letter_parametrised_name(
-		NEXT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), NEXT_INSTANCE_INDERIV, Kinds::Behaviour::package(K));
+	inter_name *iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
 	return iname;
 }
 
 inter_name *PL::Counting::instance_count_iname(kind *K) {
-	inter_name *iname = InterNames::letter_parametrised_name(
-		COUNT_INSTANCE_INAMEF, Kinds::RunTime::iname(K), COUNT_INSTANCE_INDERIV, Kinds::Behaviour::package(K));
+	inter_name *iname = Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
 	return iname;
 }
 
@@ -181,8 +178,7 @@ int PL::Counting::counting_compile_model_tables(void) {
 		if (Kinds::Compare::lt(K, K_object)) {
 			inter_name *iname = PL::Counting::first_instance(K);
 			instance *next = PL::Counting::next_instance_of(NULL, K);
-			package_request *PR = Kinds::Behaviour::package(K);
-			packaging_state save = Packaging::enter(PR);
+			packaging_state save = Packaging::enter_home_of(iname);
 			if (next) {
 				Emit::named_iname_constant(iname, K_object, Instances::emitted_iname(next));
 			} else {

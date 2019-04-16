@@ -681,8 +681,7 @@ inter_name *Properties::iname(property *prn) {
 		return Properties::iname(Properties::EitherOr::get_negation(prn));
 	if (prn->prop_iname == NULL) {
 		package_request *R = Hierarchy::package(prn->owning_module, PROPERTIES_HAP);
-		prn->prop_iname = InterNames::one_off(I"P", R);
-		if (Wordings::nonempty(prn->name)) InterNames::attach_memo(prn->prop_iname, prn->name);
+		prn->prop_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, prn->name);
 	}
 	return prn->prop_iname;
 }

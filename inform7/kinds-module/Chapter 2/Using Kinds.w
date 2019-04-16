@@ -448,20 +448,42 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 		internal_error("null kind has no printing routine");
 	}
 	if (K->construct->pr_iname) return K->construct->pr_iname;
-	package_request *R = NULL;
-	int external = TRUE;
+
 	if (Kinds::Compare::eq(K, K_use_option)) {
-		R = Kinds::Behaviour::package(K); external = FALSE;
-	}
-	if (Kinds::Compare::eq(K, K_rulebook_outcome)) {
-		R = Kinds::Behaviour::package(K); external = FALSE;
-	}
-	if (Kinds::Compare::eq(K, K_response)) {
-		R = Kinds::Behaviour::package(K); external = FALSE;
+		K->construct->pr_iname = Hierarchy::find(PRINT_USE_OPTION_HL);
+		return K->construct->pr_iname;
 	}
 	if (Kinds::Compare::eq(K, K_table))  {
-		R = Kinds::Behaviour::package(K); external = FALSE;
+		K->construct->pr_iname = Hierarchy::find(PRINT_TABLE_HL);
+		return K->construct->pr_iname;
 	}
+	if (Kinds::Compare::eq(K, K_rulebook_outcome))  {
+		K->construct->pr_iname = Hierarchy::find(PRINT_RULEBOOK_OUTCOME_HL);
+		return K->construct->pr_iname;
+	}
+	if (Kinds::Compare::eq(K, K_response))  {
+		K->construct->pr_iname = Hierarchy::find(PRINT_RESPONSE_HL);
+		return K->construct->pr_iname;
+	}
+	if (Kinds::Compare::eq(K, K_figure_name))  {
+		K->construct->pr_iname = Hierarchy::find(PRINT_FIGURE_NAME_HL);
+		return K->construct->pr_iname;
+	}
+	if (Kinds::Compare::eq(K, K_sound_name))  {
+		K->construct->pr_iname = Hierarchy::find(PRINT_SOUND_NAME_HL);
+		return K->construct->pr_iname;
+	}
+	if (Kinds::Compare::eq(K, K_external_file))  {
+		K->construct->pr_iname = Hierarchy::find(PRINT_EXTERNAL_FILE_NAME_HL);
+		return K->construct->pr_iname;
+	}
+	if (Kinds::Compare::eq(K, K_scene))  {
+		K->construct->pr_iname = Hierarchy::find(PRINT_SCENE_HL);
+		return K->construct->pr_iname;
+	}
+
+	package_request *R = NULL;
+	int external = TRUE;
 	if ((Kinds::get_construct(K) == CON_rule) ||
 		(Kinds::get_construct(K) == CON_rulebook)) external = TRUE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
@@ -475,22 +497,15 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (Kinds::Compare::eq(K, K_number)) external = TRUE;
 	if (Kinds::Compare::eq(K, K_real_number)) external = TRUE;
 	if (Str::len(X) == 0) X = I"DecimalNumber";
+
 	if (R) {
 		if (external) {
-// LOG("Here for $u with %S\n", K, X);
 			K->construct->pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
-// LOG("Made $3\n", K->construct->pr_iname);
 			inter_name *actual_iname = Hierarchy::find_by_name(X);
 			packaging_state save = Packaging::enter_home_of(K->construct->pr_iname);
 			Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
 			Packaging::exit(save);
-		} else {
-			K->construct->pr_iname =
-				Packaging::function_text(
-					InterNames::one_off(I"print_fn", R),
-					R,
-					X);
-		}
+		} else internal_error("internal but unknown kind printing routine");
 	} else {
 		if (external) K->construct->pr_iname = Hierarchy::find_by_name(X);
 		else internal_error("internal but unpackaged kind printing routine");

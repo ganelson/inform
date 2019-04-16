@@ -320,8 +320,8 @@ int PL::Map::map_set_kind_notify(instance *I, kind *k) {
 
 @<Assign the object a direction number and a mapped-D-of relation@> =
 	registered_directions++;
-	inter_name *dname = InterNames::new(DIRECTION_OBJECT_INAMEF);
-	Packaging::house(dname, Kinds::Behaviour::package(K_direction));
+	package_request *PR = Hierarchy::synoptic_package(DIRECTIONS_HAP);
+	inter_name *dname = Hierarchy::make_iname_in(DIRECTION_HL, PR);
 	PF_I(map, I)->direction_iname = dname;
 	PL::MapDirections::make_mapped_predicate(I, dname);
 

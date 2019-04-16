@@ -18,6 +18,8 @@
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">then_make_unique</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">generate_from</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">localise</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">derive</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">faux_letter</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">name_translation</span><span class="plain">;</span>
 
     <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::same</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -26,6 +28,8 @@
         <span class="identifier">nt</span><span class="element">.then_make_unique</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">nt</span><span class="element">.generate_from</span><span class="plain"> = -1;</span>
         <span class="identifier">nt</span><span class="element">.localise</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">nt</span><span class="element">.faux_letter</span><span class="plain"> = -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -45,6 +49,21 @@
         <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
         <span class="identifier">nt</span><span class="element">.translate_to</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
         <span class="identifier">nt</span><span class="element">.then_make_unique</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::derive</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">) {</span>
+        <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
+        <span class="identifier">nt</span><span class="element">.generate_from</span><span class="plain"> = </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::derive_lettered</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">faux_letter</span><span class="plain">) {</span>
+        <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
+        <span class="identifier">nt</span><span class="element">.generate_from</span><span class="plain"> = </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">nt</span><span class="element">.faux_letter</span><span class="plain"> = </span><span class="identifier">faux_letter</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -72,7 +91,11 @@
 
 <p class="endnote">The function Translation::to_uniqued appears nowhere else.</p>
 
-<p class="endnote">The function Translation::generate is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>).</p>
+<p class="endnote">The function Translation::derive is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>).</p>
+
+<p class="endnote">The function Translation::derive_lettered is used in 27/hr (<a href="27-hr.html#SP1_28">&#167;1.28</a>).</p>
+
+<p class="endnote">The function Translation::generate is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_26">&#167;1.26</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>).</p>
 
 <p class="endnote">The function Translation::generate_in is used in 27/hr (<a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>).</p>
 

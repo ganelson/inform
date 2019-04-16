@@ -254,9 +254,8 @@ External files are written in I6 as their array names:
 void PL::Files::arrays(void) {
 	if (Plugins::Manage::plugged_in(files_plugin) == FALSE) return;
 
-	package_request *PR = Kinds::Behaviour::package(K_external_file);
-	inter_name *iname = InterNames::one_off(I"NO_EXTERNAL_FILES", PR);
-	packaging_state save = Packaging::enter(PR);
+	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
+	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) (NUMBER_CREATED(external_file)));
 	Packaging::exit(save);
 
@@ -297,8 +296,8 @@ void PL::Files::arrays(void) {
 		Packaging::exit(save);
 	}
 
-	iname = InterNames::one_off(I"TableOfExternalFiles", PR);
-	save = Packaging::enter(PR);
+	iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);
+	save = Packaging::enter_home_of(iname);
 	Emit::named_array_begin(iname, K_value);
 	Emit::array_numeric_entry(0);
 	LOOP_OVER(exf, external_file) Emit::array_iname_entry(exf->exf_iname);

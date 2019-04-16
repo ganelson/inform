@@ -423,8 +423,7 @@ action_name *PL::Actions::Wait(void) {
 
 inter_name *PL::Actions::double_sharp(action_name *an) {
 	if (an->an_iname == NULL) {
-		an->an_iname = InterNames::new_derived(ACTION_INAMEF, an->an_base_iname);
-		Packaging::house(an->an_iname, an->an_package);
+		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, an->an_base_iname, an->an_package);
 		packaging_state save = Packaging::enter(an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
 		InterNames::annotate_i(an->an_iname, ACTION_IANN, 1);
@@ -434,13 +433,8 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 }
 
 inter_name *PL::Actions::Sub(action_name *an) {
-	if (an->an_routine_iname == NULL) {
-		an->an_routine_iname =
-			Packaging::function(
-				InterNames::one_off(I"perform_fn", an->an_package),
-				an->an_package,
-				InterNames::new_derived(ACTION_ROUTINE_INAMEF, an->an_base_iname));
-	}
+	if (an->an_routine_iname == NULL)
+		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, an->an_base_iname, an->an_package);
 	return an->an_routine_iname;
 }
 

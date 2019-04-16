@@ -461,10 +461,7 @@ table and then destroy the temporary one made here.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connection</span><span class="plain"> != </span><span class="constant">TABLE_IS_NEW</span><span class="plain">) </span>&lt;<span class="cwebmacro">Require the previous table to exist</span> <span class="cwebmacronumber">20.5</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Require the previous table not to exist</span> <span class="cwebmacronumber">20.6</span>&gt;<span class="plain">;</span>
 
-    <span class="comment">InterNames::attach_memo(t-&gt;table_identifier, t-&gt;table_name_text);</span>
-
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connection</span><span class="plain"> == </span><span class="constant">TABLE_IS_NEW</span><span class="plain">) {</span>
-    <span class="comment">InterNames::to_symbol(t-&gt;table_identifier);</span>
             &lt;<span class="cwebmacro">Register the names of the new table</span> <span class="cwebmacronumber">20.7</span>&gt;<span class="plain">;</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Created: $B\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="plain">}</span>

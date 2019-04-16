@@ -47,6 +47,7 @@ typedef struct rule {
 	struct inter_name *shell_routine_iname;
 	struct inter_name *rule_extern_iname; /* if externally defined, this is the I6 routine */
 	struct text_stream *rule_extern_iname_as_text; /* and this is it in plain text */
+	struct inter_name *xiname;
 	struct inter_name *rule_extern_response_handler_iname; /* and this produces any response texts it has */
 	int do_not_import; /* veto importation of this from the Standard Rules precompiled inter code */
 	int defn_compiled; /* has the definition of this rule, if needed, been compiled yet? */
@@ -113,6 +114,7 @@ rule *Rules::new(wording W, int named) {
 	R->defn_as_phrase = NULL;
 	R->rule_extern_iname = NULL;
 	R->rule_extern_iname_as_text = NULL;
+	R->xiname = NULL;
 	R->rule_extern_response_handler_iname = NULL;
 	R->name = W;
 	R->italicised_text = EMPTY_WORDING;
@@ -211,18 +213,15 @@ void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 	Inter::Symbols::to_data(Emit::repository(), Packaging::incarnate(R->rule_package), InterNames::to_symbol(xiname), &v1, &v2);
 	Emit::named_generic_constant(R->rule_extern_iname, v1, v2);
 	Packaging::exit(save);
+	R->xiname = xiname;
 	R->rule_extern_iname_as_text = Str::duplicate(XT);
 	DISCARD_TEXT(XT);
 }
 
 inter_name *Rules::get_handler_definition(rule *R) {
-	if (R->rule_extern_response_handler_iname == NULL) {
-		TEMPORARY_TEXT(XT);
-		WRITE_TO(XT, "%SM", R->rule_extern_iname_as_text);
+	if (R->rule_extern_response_handler_iname == NULL)
 		R->rule_extern_response_handler_iname =
-			Packaging::function_text(InterNames::one_off(I"responder_fn", R->rule_package), R->rule_package, XT);
-		DISCARD_TEXT(XT);
-	}
+			Hierarchy::derive_iname_in(RESPONDER_FN_HL, R->xiname, R->rule_package);
 	return R->rule_extern_response_handler_iname;
 }
 
