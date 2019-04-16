@@ -1007,8 +1007,7 @@ void Relations::compile_relation_records(void) {
 @<Write the permissions field of the relation record@> =
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
-	inter_name *bm_symb = Packaging::supply_iname(bp->bp_package, MISC_PR_COUNTER);
-	Inter::Symbols::set_flag(InterNames::to_symbol(bm_symb), MAKE_NAME_UNIQUE);
+	inter_name *bm_symb = Hierarchy::make_iname_in(ABILITIES_HL, bp->bp_package);
 	Emit::sum_constant_begin(bm_symb, K_value);
 	if (RELS_TEST_iname == NULL) internal_error("no RELS symbols yet");
 	Emit::array_iname_entry(RELS_TEST_iname);

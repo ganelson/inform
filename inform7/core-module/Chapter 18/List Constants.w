@@ -258,12 +258,14 @@ inter_name *Lists::compile_literal_list(wording W) {
 	int incipit = Wordings::first_wn(W);
 	literal_list *ll = Lists::find_list_at(incipit+1);
 	if (ll) {
-		kind *K = Lists::kind_of_ll(ll, FALSE);
-		packaging_state save = Packaging::enter_current_enclosure();
-		inter_name *N = Kinds::RunTime::begin_block_constant(K);
+		Lists::kind_of_ll(ll, FALSE);
+		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+		packaging_state save = Packaging::enter_home_of(N);
+		Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Lists::iname(ll));
 		Emit::array_numeric_entry(0);
-		Kinds::RunTime::end_block_constant(K);
+		Emit::array_end();
 		Packaging::exit(save);
 		return N;
 	}
@@ -272,8 +274,8 @@ inter_name *Lists::compile_literal_list(wording W) {
 
 inter_name *Lists::iname(literal_list *ll) {
 	if (ll->ll_iname == NULL) {
-		ll->ll_iname = Packaging::supply_iname(Packaging::current_enclosure(), LITERAL_PR_COUNTER);
-		Inter::Symbols::set_flag(InterNames::to_symbol(ll->ll_iname), MAKE_NAME_UNIQUE);
+		package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
+		ll->ll_iname = Hierarchy::make_iname_in(LIST_LITERAL_HL, PR);
 	}
 	return ll->ll_iname;
 }

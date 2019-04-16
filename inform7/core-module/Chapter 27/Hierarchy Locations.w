@@ -8,6 +8,7 @@ typedef struct location_requirement {
 	struct package_request *this_mundane_package;
 	int this_exotic_package;
 	struct inter_symbol *any_package_of_this_type;
+	int any_enclosure;
 } location_requirement;
 
 location_requirement HierarchyLocations::blank(void) {
@@ -16,6 +17,7 @@ location_requirement HierarchyLocations::blank(void) {
 	req.this_mundane_package = NULL;
 	req.this_exotic_package = -1;
 	req.any_package_of_this_type = NULL;
+	req.any_enclosure = FALSE;
 	return req;
 }
 
@@ -40,6 +42,12 @@ location_requirement HierarchyLocations::synoptic_submodule(submodule_identity *
 location_requirement HierarchyLocations::any_package_of_type(text_stream *ptype_name) {
 	location_requirement req = HierarchyLocations::blank();
 	req.any_package_of_this_type = HierarchyLocations::ptype(ptype_name);
+	return req;
+}
+
+location_requirement HierarchyLocations::any_enclosure(void) {
+	location_requirement req = HierarchyLocations::blank();
+	req.any_enclosure = TRUE;
 	return req;
 }
 
@@ -251,11 +259,8 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 				P,
 				NULL);
 	} else {
-		if (Str::len(nrl->access_name) == 0) {
-		LOG("********** %S\n", T);
-			iname = InterNames::one_off(T, P);
-		} else
-			iname = InterNames::one_off(nrl->access_name, P);
+		if (Str::len(nrl->access_name) == 0) iname = InterNames::one_off(T, P);
+		else iname = InterNames::one_off(nrl->access_name, P);
 	}
 	if (!Wordings::empty(W)) InterNames::attach_memo(iname, W);
 	if ((Str::len(T) > 0) && (nrl->access_name)) InterNames::translate(iname, T);
@@ -266,9 +271,17 @@ package_request *HierarchyLocations::package_in_package(int id, package_request 
 	if ((id < 0) || (id >= MAX_HL) || (nrls_indexed_by_id[id] == NULL))
 		internal_error("bad nrl ID");
 	named_resource_location *nrl = nrls_indexed_by_id[id];
-	if (nrl->requirements.any_package_of_this_type == NULL) internal_error("NRL accessed inappropriately");
-	if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) internal_error("subpackage in wrong superpackage");
+
+	if (P == NULL) internal_error("no superpackage");
 	if (nrl->package_type == NULL) internal_error("package_in_package used wrongly");
+	if (nrl->requirements.any_package_of_this_type) {
+		if (P->eventual_type != nrl->requirements.any_package_of_this_type)
+			internal_error("subpackage in wrong superpackage");
+	} else if (nrl->requirements.any_enclosure) {
+		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
+			internal_error("subpackage not in enclosing superpackage");
+	} else internal_error("NRL accessed inappropriately");
+
 	return Packaging::request(InterNames::one_off(nrl->access_name, P), P, nrl->package_type);
 }
 

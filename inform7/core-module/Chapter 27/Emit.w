@@ -973,8 +973,7 @@ inter_symbol *Emit::block(inter_name *iname) {
 	inter_name *block_iname = NULL;
 	if (Packaging::houseed_in_function(iname))
 		block_iname = Packaging::supply_iname(iname->eventual_owner, BLOCK_PR_COUNTER);
-	else
-		block_iname = InterNames::new_in(ROUTINE_BLOCK_INAMEF, InterNames::to_module(iname));
+	else internal_error("routine outside function package");
 	Packaging::house_with(block_iname, iname);
 	inter_symbol *rsymb = Emit::package(block_iname, code_packagetype, NULL);
 

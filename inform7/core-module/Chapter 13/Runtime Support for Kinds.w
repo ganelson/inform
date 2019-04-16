@@ -77,17 +77,21 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
-			packaging_state save = Packaging::enter_current_enclosure();
-			inter_name *N = Kinds::RunTime::begin_block_constant(K);
+			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+			packaging_state save = Packaging::enter_home_of(N);
+			Emit::named_late_array_begin(N, K_value);
 			inter_name *rks_symb = Kinds::RunTime::compile_default_value_inner(K);
 			Emit::array_iname_entry(rks_symb);
 			Emit::array_numeric_entry(0);
-			Kinds::RunTime::end_block_constant(K);
+			Emit::array_end();
 			Packaging::exit(save);
 			if (N) InterNames::holster(VH, N);
 		} else if (Kinds::Compare::eq(K, K_stored_action)) {
-			packaging_state save = Packaging::enter_current_enclosure();
-			inter_name *N = Kinds::RunTime::begin_block_constant(K_stored_action);
+			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+			packaging_state save = Packaging::enter_home_of(N);
+			Emit::named_late_array_begin(N, K_value);
 			Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
 			Emit::array_iname_entry(PL::Actions::double_sharp(PL::Actions::Wait()));
 			Emit::array_numeric_entry(0);
@@ -100,14 +104,16 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			#endif
 			Emit::array_numeric_entry(0);
 			Emit::array_numeric_entry(0);
-			Kinds::RunTime::end_block_constant(K_stored_action);
+			Emit::array_end();
 			Packaging::exit(save);
 			if (N) InterNames::holster(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
-			packaging_state save = Packaging::enter_current_enclosure();
-			inter_name *N = Kinds::RunTime::begin_block_constant(K);
+			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+			packaging_state save = Packaging::enter_home_of(N);
+			Emit::named_late_array_begin(N, K_value);
 			Relations::compile_blank_relation(K);
-			Kinds::RunTime::end_block_constant(K);
+			Emit::array_end();
 			Packaging::exit(save);
 			if (N) InterNames::holster(VH, N);
 		} else {
@@ -126,11 +132,13 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 	}
 
 	if (Kinds::Compare::eq(K, K_text)) {
-		packaging_state save = Packaging::enter_current_enclosure();
-		inter_name *N = Kinds::RunTime::begin_block_constant(K);
+		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+		packaging_state save = Packaging::enter_home_of(N);
+		Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		Kinds::RunTime::end_block_constant(K);
+		Emit::array_end();
 		Packaging::exit(save);
 		if (N) InterNames::holster(VH, N);
 		return TRUE;
@@ -578,15 +586,16 @@ compile under Inform 6.
 	rks->kind_described = K;
 	rks->make_default = FALSE;
 	rks->default_requested_here = NULL;
-	rks->rks_iname = InterNames::new(KIND_ID_INAMEF);
 	package_request *PR = Kinds::Behaviour::package(K);
-	Packaging::house(rks->rks_iname, PR);
+//	rks->rks_iname = InterNames::new(KIND_ID_INAMEF);
+//	Packaging::house(rks->rks_iname, PR);
 	TEMPORARY_TEXT(TEMP);
 	Kinds::Textual::write(TEMP, K);
 	wording W = Feeds::feed_stream(TEMP);
+	rks->rks_iname = Hierarchy::make_iname_with_memo(KIND_HL, PR, W);
 	DISCARD_TEXT(TEMP);
-	InterNames::attach_memo(rks->rks_iname, W);
-	InterNames::to_symbol(rks->rks_iname);
+//	InterNames::attach_memo(rks->rks_iname, W);
+//	InterNames::to_symbol(rks->rks_iname);
 	rks->rks_dv_iname = Hierarchy::make_iname_in(DEFAULT_VALUE_HL, PR);
 
 @ It's convenient to combine this system with one which constructs default
@@ -804,18 +813,6 @@ has essentially no memory constraints compared with the Z-machine.
 		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), 4*max_heap);
 	LOG("Providing for a total heap of %d, given requirement of %d\n",
 		max_heap, total_heap_allocation);
-
-@ =
-inter_name *Kinds::RunTime::begin_block_constant(kind *K) {
-	inter_name *N = Packaging::supply_iname(Packaging::current_enclosure(), BLOCK_CONSTANT_PR_COUNTER);
-	Inter::Symbols::set_flag(InterNames::to_symbol(N), MAKE_NAME_UNIQUE);
-	Emit::named_late_array_begin(N, K_value);
-	return N;
-}
-
-void Kinds::RunTime::end_block_constant(kind *K) {
-	Emit::array_end();
-}
 
 @ The following routine both compiles code to create a pointer value, and
 also increments the heap allocation suitably. Each pointer-value kind comes

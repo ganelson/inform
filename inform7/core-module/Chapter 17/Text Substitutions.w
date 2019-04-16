@@ -162,13 +162,15 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 	text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
 		adopted_rule_for_compilation, adopted_marker_for_compilation, Packaging::current_enclosure());
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
-		packaging_state save = Packaging::enter_current_enclosure();
-		inter_name *N = Kinds::RunTime::begin_block_constant(K_text);
-		if (N) InterNames::holster(VH, N);
+		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+		packaging_state save = Packaging::enter_home_of(N);
+		Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(ts->ts_routine_iname);
-		Kinds::RunTime::end_block_constant(K_text);
+		Emit::array_end();
 		Packaging::exit(save);
+		if (N) InterNames::holster(VH, N);
 	} else {
 		inter_name *tin = Strings::TextSubstitutions::text_substitution_iname(ts);
 		if (Holsters::data_acceptable(VH)) {

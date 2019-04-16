@@ -429,6 +429,7 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 			text_stream *rvalue = NULL;
 			if (nlv->housed_in_variables_array == FALSE)
 				rvalue = NonlocalVariables::identifier(nlv);
+LOG("Doing stuff with %W %n %S as rvalue\n", nlv->name, iname, rvalue);
 			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
 			if (nlv == command_prompt_VAR) {
 				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_HL));

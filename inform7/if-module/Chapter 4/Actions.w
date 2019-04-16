@@ -233,8 +233,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->translated = FALSE;
 
 	an->an_package = Hierarchy::local_package(ACTIONS_HAP);
-	an->an_base_iname = InterNames::new(ACTION_BASE_INAMEF);
-	InterNames::attach_memo(an->an_base_iname, W);
+	an->an_base_iname = Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->an_package, W);
 	an->use_verb_routine_in_I6_library = TRUE;
 	an->check_rules = NULL;
 	an->carry_out_rules = NULL;

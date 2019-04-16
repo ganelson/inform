@@ -56,9 +56,8 @@ pcalc_prop_deferral *Calculus::Deferrals::new_deferred_proposition(pcalc_prop *p
 	pdef->reason = reason;
 	pdef->deferred_from = current_sentence;
 	pdef->rtp_iname = NULL;
-	pdef->ppd_iname = Packaging::function(Packaging::supply_iname(Packaging::current_enclosure(), PROPOSITION_PR_COUNTER), Packaging::current_enclosure(), NULL);
-
-	Inter::Symbols::set_flag(InterNames::to_symbol(pdef->ppd_iname), MAKE_NAME_UNIQUE);
+	package_request *PR = Hierarchy::package_in_enclosure(PROPOSITIONS_HAP);
+	pdef->ppd_iname = Hierarchy::make_iname_in(PROPOSITION_HL, PR);
 
 	if (no_further_deferrals) internal_error("Too late now to defer propositions");
 	return pdef;

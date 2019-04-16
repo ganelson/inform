@@ -440,7 +440,11 @@ inter_name *InterNames::new_overridden(int fnum, text_stream *identifier) {
 inter_name *InterNames::new_derived(int fnum, inter_name *from) {
 	inter_name_family *F = InterNames::get_family(fnum);
 	if (F->fusage != DERIVED_FUSAGE) internal_error("not a derived family");
-	if (from->family != F->derivative_of) internal_error("derived from name of wrong family");
+//	if (from->family != F->derivative_of) {
+//		LOG("From = %n in $X\n", from, Packaging::home_of(from));
+//		LOG("From family %S but derivative should be of %S\n", from->family->family_name, F->derivative_of->family_name);
+//		internal_error("derived from name of wrong family");
+//	}
 	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
 	Packaging::house_with(N, from);
 	N->derived_from = from;

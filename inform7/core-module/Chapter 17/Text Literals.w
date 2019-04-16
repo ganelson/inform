@@ -105,10 +105,9 @@ literal_text *Strings::TextLiterals::lt_new(int w1, int colour) {
 	x->unexpanded = FALSE;
 	x->small_block_array_needed = FALSE;
 	x->lt_sba_iname = NULL;
-	x->lt_iname = Packaging::supply_iname(Packaging::current_enclosure(), LITERAL_PR_COUNTER);
-	Inter::Symbols::set_flag(InterNames::to_symbol(x->lt_iname), MAKE_NAME_UNIQUE);
+	package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
+	x->lt_iname = Hierarchy::make_iname_in(TEXT_LITERAL_HL, PR);
 	Emit::annotate_symbol_i(InterNames::to_symbol(x->lt_iname), TEXT_LITERAL_IANN, 1);
-	InterNames::to_symbol(x->lt_iname);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
 }
@@ -340,15 +339,17 @@ void Strings::TextLiterals::compile_small_block(OUTPUT_STREAM, literal_text *lt)
 literal_text *Strings::TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 	literal_text *lt = NULL;
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
-		packaging_state save = Packaging::enter_current_enclosure();
-		inter_name *N = Kinds::RunTime::begin_block_constant(K_text);
-		if (N) InterNames::holster(VH, N);
+		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+		packaging_state save = Packaging::enter_home_of(N);
+		Emit::named_late_array_begin(N, K_value);
 		lt = Strings::TextLiterals::compile_literal(NULL, FALSE, W);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		if (lt == NULL) Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 		else Emit::array_iname_entry(lt->lt_iname);
-		Kinds::RunTime::end_block_constant(K_text);
+		Emit::array_end();
 		Packaging::exit(save);
+		if (N) InterNames::holster(VH, N);
 	} else {
 		lt = Strings::TextLiterals::compile_literal(VH, TRUE, W);
 	}

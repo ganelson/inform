@@ -760,9 +760,8 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 	PL::Parsing::Lines::reset_labels();
 	switch(gv->gv_is) {
 		case GV_IS_COMMAND: {
-			inter_name *array_iname = InterNames::new(VERB_DECLARATION_ARRAY_INAMEF);
 			package_request *PR = Hierarchy::synoptic_package(COMMANDS_HAP);
-			Packaging::house(array_iname, PR);
+			inter_name *array_iname = Hierarchy::make_iname_in(VERB_DECLARATION_ARRAY_HL, PR);
 			packaging_state save = Packaging::enter_home_of(array_iname);
 			PL::Parsing::Verbs::gv_compile_Verb_directive_header(gv, array_iname);
 			PL::Parsing::Verbs::gv_compile_lines(NULL, gv);

@@ -87,9 +87,7 @@ void Routines::end_in_current_package(void) {
 			kernel_name = InterNames::one_off(I"kernel", public_name->eventual_owner);
 			Inter::Symbols::set_flag(InterNames::to_symbol(kernel_name), MAKE_NAME_UNIQUE);
 		} else {
-			kernel_name = InterNames::new_in(KERNEL_ROUTINE_INAMEF, InterNames::to_module(public_name));
-			LOG("PN is %n\n", public_name);
-			internal_error("Routine not in function");
+			internal_error("routine not housed in function");
 		}
 		Packaging::house_with(kernel_name, public_name);
 	}

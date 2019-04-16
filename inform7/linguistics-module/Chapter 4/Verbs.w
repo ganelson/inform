@@ -282,11 +282,8 @@ we overwrite that with the new (presumably meaningful) one.
 inter_name *Verbs::form_iname(verb_form *vf) {
 	if (vf->vf_iname == NULL) {
 		package_request *R = Verbs::verb_package(vf->underlying_verb, vf->where_vf_created);
-		vf->vf_iname =
-			Packaging::function(
-				Packaging::supply_iname(R, FORM_PR_COUNTER),
-				R,
-				InterNames::new(CONJUGATE_VERB_FORM_INAMEF));
+		package_request *R2 = Hierarchy::package_within(VERB_FORMS_HAP, R);
+		vf->vf_iname = Hierarchy::make_iname_in(FORM_FN_HL, R2);
 	}
 	return vf->vf_iname;
 }
