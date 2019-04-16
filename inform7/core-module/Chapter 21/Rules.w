@@ -512,10 +512,8 @@ do.
 
 =
 inter_name *Rules::shell_iname(rule *R) {
-	if (R->shell_routine_iname == NULL) {
-		R->shell_routine_iname =
-			Packaging::function(InterNames::one_off(I"shell_fn", R->rule_package), R->rule_package, InterNames::new(RULE_SHELL_ROUTINE_INAMEF));
-	}
+	if (R->shell_routine_iname == NULL)
+		R->shell_routine_iname = Hierarchy::make_iname_in(SHELL_FN_HL, R->rule_package);
 	return R->shell_routine_iname;
 }
 

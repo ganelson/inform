@@ -24,15 +24,15 @@ GLULXEOS = OS_UNIX
 
 .PHONY: all
 
-all: retrospective/6L02/cBlorb retrospective/6L02/ni retrospective/6L30/cBlorb retrospective/6L30/ni retrospective/6M62/cBlorb retrospective/6M62/ni
+all: retrospective/6L02/cBlorb retrospective/6L02/ni retrospective/6L38/cBlorb retrospective/6L38/ni retrospective/6M62/cBlorb retrospective/6M62/ni
 
 retrospective/6L02/cBlorb:
 	$(INDULGENTCC) -o retrospective/6L02/cBlorb.o retrospective/6L02/cBlorb.c
 	$(LINK) -o retrospective/6L02/cBlorb retrospective/6L02/cBlorb.o $(LINKEROPTS)
 
-retrospective/6L30/cBlorb:
-	$(INDULGENTCC) -o retrospective/6L30/cBlorb.o retrospective/6L30/cBlorb.c
-	$(LINK) -o retrospective/6L30/cBlorb retrospective/6L30/cBlorb.o $(LINKEROPTS)
+retrospective/6L38/cBlorb:
+	$(INDULGENTCC) -o retrospective/6L38/cBlorb.o retrospective/6L38/cBlorb.c
+	$(LINK) -o retrospective/6L38/cBlorb retrospective/6L38/cBlorb.o $(LINKEROPTS)
 
 retrospective/6M62/cBlorb:
 	$(INDULGENTCC) -o retrospective/6M62/cBlorb.o retrospective/6M62/cBlorb.c
@@ -42,9 +42,9 @@ retrospective/6L02/ni:
 	$(INDULGENTCC) -o retrospective/6L02/ni.o retrospective/6L02/ni.c
 	$(LINK) -o retrospective/6L02/ni retrospective/6L02/ni.o $(LINKEROPTS)
 
-retrospective/6L30/ni:
-	$(INDULGENTCC) -o retrospective/6L30/ni.o retrospective/6L30/ni.c
-	$(LINK) -o retrospective/6L30/ni retrospective/6L30/ni.o $(LINKEROPTS)
+retrospective/6L38/ni:
+	$(INDULGENTCC) -o retrospective/6L38/ni.o retrospective/6L38/ni.c
+	$(LINK) -o retrospective/6L38/ni retrospective/6L38/ni.o $(LINKEROPTS)
 
 retrospective/6M62/ni:
 	$(INDULGENTCC) -o retrospective/6M62/ni.o retrospective/6M62/ni.c

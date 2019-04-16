@@ -22,7 +22,6 @@
     <span class="definitionkeyword">enum</span> <span class="constant">PROPOSITION_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SUBSTITUTION_PR_COUNTER</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SUBSTITUTIONF_PR_COUNTER</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TASK_PR_COUNTER</span>
 </pre>
 
 <pre class="display">
@@ -217,6 +216,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">ACTIVITIES_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ACTIVITY_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BEFORE_RB_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FOR_RB_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">AFTER_RB_HL</span>
@@ -238,6 +238,7 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_activities</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">activities</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIVITIES_HAP</span><span class="plain">, </span><span class="identifier">local_activities</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"activity"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_activity"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_activity</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_activity"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">ACTIVITY_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">ACTIVITY_INAMEF</span><span class="plain">), </span><span class="identifier">in_activity</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::package</span><span class="plain">(</span><span class="constant">BEFORE_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"before_rb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">, </span><span class="identifier">in_activity</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::package</span><span class="plain">(</span><span class="constant">FOR_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for_rb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">, </span><span class="identifier">in_activity</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::package</span><span class="plain">(</span><span class="constant">AFTER_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"after_rb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">, </span><span class="identifier">in_activity</span><span class="plain">);</span>
@@ -265,6 +266,8 @@
     <span class="definitionkeyword">enum</span> <span class="constant">MEASUREMENT_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_PHRASES_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DEFINITION_FN_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ADJECTIVE_TASKS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TASK_FN_HL</span>
 </pre>
 <p class="inwebparagraph"><a id="SP1_8"></a><b>&#167;1.8.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Establish adjectives</span> <span class="cwebmacronumber">1.8</span>&gt; =
@@ -278,6 +281,9 @@
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVES_HAP</span><span class="plain">, </span><span class="identifier">local_adjectives</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_adjective"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_adjective</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_adjective"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">ADJECTIVE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_adjective</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVE_TASKS_HAP</span><span class="plain">, </span><span class="identifier">in_adjective</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective_task"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_adjective_task"</span><span class="plain">);</span>
+                <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_adjective_task</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_adjective_task"</span><span class="plain">);</span>
+                <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">TASK_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"task_fn"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_adjective_task</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ADJECTIVE_MEANINGS_HAP</span><span class="plain">, </span><span class="identifier">local_adjectives</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective_meaning"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_adjective_meaning"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_adjective_meaning</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_adjective_meaning"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">MEASUREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"measurement_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">MEASUREMENT_ADJECTIVE_INAMEF</span><span class="plain">), </span><span class="identifier">in_adjective_meaning</span><span class="plain">);</span>
@@ -327,6 +333,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">PAST_ACTION_PATTERNS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PAP_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TIMEDEVENTSTABLE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TIMEDEVENTTIMESTABLE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PASTACTIONSI6ROUTINES_HL</span>
@@ -344,6 +351,8 @@
 
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_chronology</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">chronology</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PAST_ACTION_PATTERNS_HAP</span><span class="plain">, </span><span class="identifier">local_chronology</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"past_action_pattern"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_past_action_pattern"</span><span class="plain">);</span>
+            <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_past_action_pattern</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_past_action_pattern"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">PAP_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pap_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">PAST_ACTION_ROUTINE_INAMEF</span><span class="plain">), </span><span class="identifier">in_past_action_pattern</span><span class="plain">);</span>
 
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">synoptic_chronology</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::synoptic_submodule</span><span class="plain">(</span><span class="identifier">chronology</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">TIMEDEVENTSTABLE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TimedEventsTable"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">synoptic_chronology</span><span class="plain">);</span>
@@ -367,7 +376,10 @@
     <span class="definitionkeyword">enum</span> <span class="constant">CV_NEG_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CV_POS_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MVERBS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MODAL_CONJUGATION_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VERBS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">NONMODAL_CONJUGATION_FN_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">CONJUGATION_FN_HL</span>
 </pre>
 <p class="inwebparagraph"><a id="SP1_14"></a><b>&#167;1.14.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Establish conjugations</span> <span class="cwebmacronumber">1.14</span>&gt; =
@@ -385,7 +397,11 @@
 
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_conjugations</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">conjugations</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">MVERBS_HAP</span><span class="plain">, </span><span class="identifier">local_conjugations</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mverb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_modal_verb"</span><span class="plain">);</span>
+            <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_modal_verb</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_modal_verb"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">MODAL_CONJUGATION_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"conjugation_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">CONJUGATE_VERB_ROUTINE_INAMEF</span><span class="plain">), </span><span class="identifier">in_modal_verb</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VERBS_HAP</span><span class="plain">, </span><span class="identifier">local_conjugations</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"verb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_verb"</span><span class="plain">);</span>
+            <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_verb</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_verb"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">NONMODAL_CONJUGATION_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"conjugation_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">CONJUGATE_VERB_ROUTINE_INAMEF</span><span class="plain">), </span><span class="identifier">in_verb</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -859,6 +875,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">TTF_SUM_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MEANINGLESS_RR_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RELATIONS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">RELATION_RECORD_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BITMAP_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ROUTE_CACHE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">HANDLER_FN_HL</span>
@@ -904,6 +921,7 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_rels</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">relations</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RELATIONS_HAP</span><span class="plain">, </span><span class="identifier">local_rels</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"relation"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_relation"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_relation</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_relation"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">RELATION_RECORD_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">RELATION_RECORD_INAMEF</span><span class="plain">), </span><span class="identifier">in_relation</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">BITMAP_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"as_constant"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_relation</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">ROUTE_CACHE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"route_cache"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_relation</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">HANDLER_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"handler_fn"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_relation</span><span class="plain">);</span>
@@ -976,6 +994,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">RULES_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SHELL_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULE_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXTERIOR_RULE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RESPONSES_HAP</span>
@@ -996,6 +1015,7 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_rules</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">rules</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULES_HAP</span><span class="plain">, </span><span class="identifier">local_rules</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rule"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rule"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_rule</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_rule"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">SHELL_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"shell_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate_in</span><span class="plain">(</span><span class="constant">RULE_SHELL_ROUTINE_INAMEF</span><span class="plain">), </span><span class="identifier">in_rule</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">RULE_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rule_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate_in</span><span class="plain">(</span><span class="constant">PHRASE_INAMEF</span><span class="plain">), </span><span class="identifier">in_rule</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">EXTERIOR_RULE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"exterior_rule"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_rule</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RESPONSES_HAP</span><span class="plain">, </span><span class="identifier">in_rule</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"response"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_response"</span><span class="plain">);</span>
@@ -1054,6 +1074,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">VARIABLES_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">VARIABLE_HL</span>
 </pre>
 <p class="inwebparagraph"><a id="SP1_44"></a><b>&#167;1.44.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Establish variables</span> <span class="cwebmacronumber">1.44</span>&gt; =
@@ -1065,6 +1086,8 @@
 
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_variables</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">variables</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VARIABLES_HAP</span><span class="plain">, </span><span class="identifier">local_variables</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"variable"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_variable"</span><span class="plain">);</span>
+            <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_variable</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_variable"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">VARIABLE_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="constant">VARIABLE_INAMEF</span><span class="plain">), </span><span class="identifier">in_variable</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1659,7 +1682,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Hierarchy::exotic_package is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Hierarchy::exotic_package is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
@@ -1802,13 +1825,13 @@
 
 <p class="endnote">The function Hierarchy::local_package is used in 5/ins (<a href="5-ins.html#SP14">&#167;14</a>), 9/tc (<a href="9-tc.html#SP5_4_2_4">&#167;5.4.2.4</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 20/eq (<a href="20-eq.html#SP10_1">&#167;10.1</a>), 21/rl (<a href="21-rl.html#SP5">&#167;5</a>), 21/fao (<a href="21-fao.html#SP10">&#167;10</a>), 21/ac (<a href="21-ac.html#SP6">&#167;6</a>), 24/ch (<a href="24-ch.html#SP3">&#167;3</a>), 26/lt (<a href="26-lt.html#SP3">&#167;3</a>), 26/ts (<a href="26-ts.html#SP9_1">&#167;9.1</a>).</p>
 
-<p class="endnote">The function Hierarchy::package_within is used in 17/rs (<a href="17-rs.html#SP5">&#167;5</a>), 19/tc (<a href="19-tc.html#SP9">&#167;9</a>), 22/pav (<a href="22-pav.html#SP7">&#167;7</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>).</p>
+<p class="endnote">The function Hierarchy::package_within is used in 4/am (<a href="4-am.html#SP6">&#167;6</a>), 17/rs (<a href="17-rs.html#SP5">&#167;5</a>), 19/tc (<a href="19-tc.html#SP9">&#167;9</a>), 22/pav (<a href="22-pav.html#SP7">&#167;7</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>).</p>
 
-<p class="endnote">The function Hierarchy::make_iname_in is used in 6/bp (<a href="6-bp.html#SP32">&#167;32</a>), 6/rlt (<a href="6-rlt.html#SP9">&#167;9</a>, <a href="6-rlt.html#SP9_13">&#167;9.13</a>, <a href="6-rlt.html#SP20">&#167;20</a>, <a href="6-rlt.html#SP20_3">&#167;20.3</a>), 13/rsfk (<a href="13-rsfk.html#SP13_1_1">&#167;13.1.1</a>, <a href="13-rsfk.html#SP15">&#167;15</a>), 15/ma (<a href="15-ma.html#SP11_3">&#167;11.3</a>), 17/rs (<a href="17-rs.html#SP5">&#167;5</a>, <a href="17-rs.html#SP6_1">&#167;6.1</a>), 19/tc (<a href="19-tc.html#SP9">&#167;9</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 20/eq (<a href="20-eq.html#SP10_1">&#167;10.1</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 21/rl2 (<a href="21-rl2.html#SP10">&#167;10</a>, <a href="21-rl2.html#SP14">&#167;14</a>), 21/ac (<a href="21-ac.html#SP8">&#167;8</a>), 22/ph (<a href="22-ph.html#SP11">&#167;11</a>), 22/pav (<a href="22-pav.html#SP7">&#167;7</a>, <a href="22-pav.html#SP9">&#167;9</a>), 26/lt (<a href="26-lt.html#SP3">&#167;3</a>), 26/jl (<a href="26-jl.html#SP3">&#167;3</a>), 26/ts (<a href="26-ts.html#SP9_1">&#167;9.1</a>).</p>
+<p class="endnote">The function Hierarchy::make_iname_in is used in 4/am (<a href="4-am.html#SP6">&#167;6</a>), 6/bp (<a href="6-bp.html#SP32">&#167;32</a>, <a href="6-bp.html#SP42">&#167;42</a>), 6/rlt (<a href="6-rlt.html#SP9">&#167;9</a>, <a href="6-rlt.html#SP9_13">&#167;9.13</a>, <a href="6-rlt.html#SP20">&#167;20</a>, <a href="6-rlt.html#SP20_3">&#167;20.3</a>), 13/rsfk (<a href="13-rsfk.html#SP13_1_1">&#167;13.1.1</a>, <a href="13-rsfk.html#SP15">&#167;15</a>), 15/ma (<a href="15-ma.html#SP11_3">&#167;11.3</a>), 17/rs (<a href="17-rs.html#SP5">&#167;5</a>, <a href="17-rs.html#SP6_1">&#167;6.1</a>), 19/tc (<a href="19-tc.html#SP9">&#167;9</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 20/eq (<a href="20-eq.html#SP10_1">&#167;10.1</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>, <a href="21-rl.html#SP19">&#167;19</a>), 21/rl2 (<a href="21-rl2.html#SP10">&#167;10</a>, <a href="21-rl2.html#SP14">&#167;14</a>), 21/ac (<a href="21-ac.html#SP8">&#167;8</a>), 22/ph (<a href="22-ph.html#SP11">&#167;11</a>), 22/pav (<a href="22-pav.html#SP7">&#167;7</a>, <a href="22-pav.html#SP9">&#167;9</a>), 24/ch (<a href="24-ch.html#SP3">&#167;3</a>), 26/lt (<a href="26-lt.html#SP3">&#167;3</a>), 26/jl (<a href="26-jl.html#SP3">&#167;3</a>), 26/ts (<a href="26-ts.html#SP9_1">&#167;9.1</a>).</p>
 
 <p class="endnote">The function Hierarchy::make_localised_iname_in is used in 22/pu (<a href="22-pu.html#SP6">&#167;6</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>).</p>
 
-<p class="endnote">The function Hierarchy::make_iname_with_memo appears nowhere else.</p>
+<p class="endnote">The function Hierarchy::make_iname_with_memo is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 21/ac (<a href="21-ac.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The function Hierarchy::make_package_in is used in 21/ac (<a href="21-ac.html#SP6">&#167;6</a>).</p>
 

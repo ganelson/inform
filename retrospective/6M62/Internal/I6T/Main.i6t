@@ -1,0 +1,216 @@
+B/maint: Main Template.
+
+@Purpose: The top-level logic of NI: the sequence of operations followed by
+NI up to the point where the output file is opened, resuming after it is
+closed again.
+
+@-------------------------------------------------------------------------------
+
+@p Startup.
+This segment of the template is not like any other. It contains almost the
+complete logical sequence of operations followed by NI -- indeed, NI
+essentially works by parsing some command-line arguments to set switches
+and then asking the template interpreter to run through "Main.i6t", the
+only template file which must always exist. (The other template files are
+only ever involved when called on by the |{-segment:...}| command from a
+template file already running.) Whereas most template segments contain
+I6 code to pass through into NI's output, this one runs both before and
+after NI's output file is being written, and contains only commands.
+
+The Startup paragraph is not in fact modifiable in any easy way, because of
+course "Include..." sentences -- used to tell the template interpreter
+to override the template files -- will not be understood until long after
+this paragraph has been fully dealt with. But perhaps that's no bad thing.
+
+@c
+{-callv:Lexer::start}
+{-callv:Preform::read_definition}
+{-callv:Plugins::Manage::start}
+{-callv:InferenceSubjects::begin}
+
+{-callv:Extensions::Files::handle_census_mode}
+
+
+{-progress-stage:0}
+{-log-phase:Lexical analysis}
+{-callv:SourceFiles::read_primary_source_text}
+{-callv:Sentences::RuleSubtrees::create_standard_csps}
+
+@p Semantic Analysis.
+Similarly: Include... sentences are not read until this paragraph is long
+forgotten.
+
+@c
+{-progress-stage:1}
+{-log-phase:Semantic analysis Ia}
+{-callv:ParseTree::plant_parse_tree} ! Initialise the parse tree
+{-callv:Sentences::break_source} ! Build first tranche of sentences
+{-callv:Extensions::Inclusion::traverse} ! Expand extension inclusions and build sentences
+{-callv:Sentences::Headings::satisfy_dependencies}
+
+{-log-phase:Initialise language semantics}
+{-plugin:load}
+{-callv:BinaryPredicates::make_built_in}
+{-callv:Verbs::stock}
+{-callv:Quantifiers::make_built_in}
+
+{-log-phase:Semantic analysis Ib}
+{-callv:Sentences::VPs::traverse} ! Find verbs in the assertion sentences
+{-callv:Plurals::traverse_for_definitions} ! Build irregular plurals dictionary
+{-callv:Sentences::Rearrangement::tidy_up_ofs_and_froms} ! More "of" wrangling
+{-callv:Sentences::RuleSubtrees::register_recently_lexed_phrases} ! To make commands children of their routines
+{-callv:Sentences::declare_source_loaded}
+{-callv:Kinds::Interpreter::include_templates_for_kinds}
+
+{-log-phase:Semantic analysis II}
+{-callv:ParseTree::verify} ! Purely to check that NI is running correctly
+{-callv:Extensions::Files::check_versions} ! Do the extension version numbers meet needs?
+{-callv:Sentences::Headings::make_tree} ! Stratify headings and subheadings
+{-callv:Sentences::Headings::write_as_xml} ! Dump them to a file for the GUI to use
+
+{-log-phase:Semantic analysis III}
+{-callv:Phrases::Adjectives::traverse}
+{-callv:Equations::traverse_to_create}
+{-callv:Tables::traverse_to_create}
+{-callv:Phrases::Manager::traverse_for_names}
+
+@p Assertion Reading.
+Since Include... sentences are read during pass 2, they might just be able to
+meddle by adding instructions to take place after this paragraph, but would
+be too late to work before or instead of it.
+
+@c
+{-progress-stage:2}
+{-log-phase:First pass through assertions}
+{-read-assertions:1}
+{-callv:Tables::traverse_to_stock}
+{-log-phase:Second pass through assertions}
+{-read-assertions:2}
+
+@p Model Construction.
+
+@c
+{-log-phase:Making the model world}
+{-callv:Properties::ObjectImplementation::allocate_attributes}
+{-callv:PL::Actions::name_all}
+{-callv:Nametags::name_all}
+{-callv:World::complete}
+{-callv:Properties::Measurement::validate_definitions}
+{-callv:BinaryPredicates::make_built_in_further}
+
+@p Tables and Grammar.
+
+@c
+{-log-phase:Tables and grammar}
+{-callv:Tables::check_tables_for_kind_clashes}
+{-callv:PL::Parsing::traverse}
+{-callv:World::complete_additions}
+
+@p Phrases and Rules.
+
+@c
+{-progress-stage:3}
+{-log-phase:Phrases and rules}
+{-callv:LiteralPatterns::define_named_phrases}
+{-callv:Phrases::Manager::traverse}
+{-callv:Phrases::Manager::register_meanings}
+{-callv:Phrases::Manager::parse_rule_parameters}
+{-callv:Phrases::Manager::add_rules_to_rulebooks}
+{-callv:Phrases::Manager::parse_rule_placements}
+{-callv:Equations::traverse_to_stock}
+{-callv:Tables::traverse_to_stock}
+
+@p Code Generation.
+This is where we hand over to regular template files -- containing code
+passed through as I6 source, as well as a few further commands -- starting
+with "Output.i6t".
+
+@c
+{-progress-stage:4}
+{-log-phase:Code generation}
+{-open-file}{-segment:Output.i6t}{-close-file}
+{-log-phase:Compilation now complete}
+
+@p Metadata.
+
+@c
+{-callv:PL::Bibliographic::Release::write_ifiction_and_blurb}
+
+@p Indexing.
+This paragraph can be skipped without harming any of the rest of NI's work:
+the only effect is to suppress the generation of the index. (Indeed, if
+NI is called with the |-noindex| command-line switch, then the template
+interpreter ignores all commands in between |{-open-index}| and
+|{-close-index}|, thus skipping exactly this paragraph.)
+
+@c
+{-open-index}
+
+{-index-page:cf0a38=Contents Index=Like the preliminary pages of a book}
+{-index-element:C Contents=Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>}
+{-index-element:Cd Card=How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>}
+{-index-element:Tb Tables=Tables of information in the source text.|About tables<TABLES>}
+{-index-element:Fi Figures=The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>}
+{-index-element:In Innards=Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>}
+
+{-index-page:ea5b1f=Actions Index=Things that people can try to do}
+{-index-element:A1 Grouped=With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>}
+{-index-element:A2 Alphabetic=Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>}
+{-index-element:Bh Behaviour=Kinds of action, grouped under common names|About kinds of action<KACTIONS>}
+{-index-element:Cm Commands=Commands which the player can type|About commands<UNDERSTANDING>}
+{-index-element:To Tokens=Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>}
+
+{-index-page:e9cf08=Kinds Index=All the different sorts of value}
+{-index-element:Ch Chart=A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>}
+{-index-element:Ar Arithmetic=Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>}
+{-index-element:Vl Values=Values which vary during play, and equations.|About variables<VARIABLES>}
+
+{-index-page:52992f=Phrasebook Index=A short dictionary}
+{-index-element:Ph Phrases=A guide to the phrases allowed|About phrases<PHRASES>}
+{-index-element:Lx Lexicon=Words used in descriptions|About descriptions<DESCRIPTIONS>}
+{-index-element:Rl Relations=Relations give meaning to verbs|About relations<RELATIONS>}
+{-index-element:Vb Verbs=A table of verbs|About verbs<VERBS>}
+
+{-index-page:1d31b4=Rules Index=Inform's general workings}
+{-index-element:St Standards=From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>}
+{-index-element:Xt Extras=Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>}
+
+{-index-page:001860=Scenes Index=Like scenes in a movie}
+{-index-element:Pl Plot=A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>}
+{-index-element:Ev Events=Timed events, if any|About timed events<TIMEDEVENTS>}
+{-index-element:RS Rules=General rules about scenes}
+
+{-index-page:8b58bf=World Index=Like locations, props and actors in a movie}
+{-index-element:Mp Map=A map of the world}
+{-index-element:Gz Gazetteer=An A-Z of places, things, people and so on}
+
+{-index-page:111111=Welcome Index=This text is not actually used}
+{-index-element:Bg Bogus=Does not in fact exist}
+
+{-index:Contents Index=How the source text is organised}
+{-index:Actions Index=Things that people can try to do}
+{-index:Kinds Index=All the different sorts of value}
+{-index:Phrasebook Index=A short dictionary}
+{-index:Rules Index=And the rulebooks they belong to}
+{-index:Scenes Index=Like scenes in a movie}
+{-index:World Index=Like locations, props and actors in a movie}
+{-index:Welcome Index=Navigation only}
+
+{-index-page:cf0a38=Action Details=This text is not actually used}
+{-index-element:Bg Bogus=Does not in fact exist}
+
+{-callv:Index::complete}
+{-close-index}
+
+@p Shutdown.
+Making any final reports to the debugging log, and that's then it.
+
+@c
+{-callv:TemplateFiles::report_unacted_upon_interventions}
+
+{! -callv:ParseTree::write_main_source_to_log}
+{! -callv:Memory::log_statistics}
+{! -callv:Preform::log_language}
+{! -callv:Index::DocReferences::log_statistics}
+{! -callv:Parser::SParser::debug_parser_statistics}
+{! -callv:Verbs::log_all}

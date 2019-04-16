@@ -862,13 +862,12 @@ int BinaryPredicates::allows_function_simplification(binary_predicate *bp) {
 inter_name *default_rr = NULL;
 void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 	if (bp->record_needed == FALSE) {
-		bp->bp_iname = InterNames::new(RELATION_RECORD_INAMEF);
-		bp->bp_iname->eventual_owner = BinaryPredicates::package(bp);
+		bp->bp_iname = Hierarchy::make_iname_in(RELATION_RECORD_HL, BinaryPredicates::package(bp));
 		if (default_rr == NULL) {
 			default_rr = bp->bp_iname;
 			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
 			packaging_state save = Packaging::enter_home_of(iname);
-			Emit::named_iname_constant(iname, K_value, bp->bp_iname);
+			Emit::named_iname_constant(iname, K_value, default_rr);
 			Packaging::exit(save);
 		}
 	}

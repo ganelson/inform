@@ -219,34 +219,48 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		LOG("Have type: $3, required: $3\n", P->eventual_type, nrl->requirements.any_package_of_this_type);
 		internal_error("constant in wrong superpackage");
 	}
+	
 	inter_name *iname = NULL;
+	if (nrl->trans.translate_to)  {
+		text_stream *T = nrl->trans.translate_to;
+		@<Make the actual iname@>;
+	} else if (nrl->trans.generate_from >= 0) {
+		TEMPORARY_TEXT(T);
+		inter_name *temp_iname = NULL;
+		if (nrl->trans.localise)
+			temp_iname = InterNames::new_in(nrl->trans.generate_from, C);
+		else
+			temp_iname = InterNames::new(nrl->trans.generate_from);
+		WRITE_TO(T, "%n", temp_iname);
+		@<Make the actual iname@>;
+		DISCARD_TEXT(T);
+	} else {
+		text_stream *T = NULL;
+		@<Make the actual iname@>;
+	}
+	
+	if (nrl->trans.then_make_unique)
+		Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+	return iname;
+}
+
+@<Make the actual iname@> =
 	if (Str::len(nrl->function_package_name) > 0) {
 		iname = Packaging::function_text(
 				InterNames::one_off(nrl->function_package_name, P),
 				P,
 				NULL);
 	} else {
-		iname = InterNames::one_off(nrl->access_name, P);
+		if (Str::len(nrl->access_name) == 0) {
+		LOG("********** %S\n", T);
+			iname = InterNames::one_off(T, P);
+		} else
+			iname = InterNames::one_off(nrl->access_name, P);
 	}
 	if (!Wordings::empty(W)) InterNames::attach_memo(iname, W);
-	if (nrl->trans.translate_to)
-		InterNames::translate(iname, nrl->trans.translate_to);
-	if (nrl->trans.then_make_unique)
-		Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
-	if (nrl->trans.generate_from >= 0) {
-		inter_name *temp_iname = NULL;
-		if (nrl->trans.localise)
-			temp_iname = InterNames::new_in(nrl->trans.generate_from, C);
-		else
-			temp_iname = InterNames::new(nrl->trans.generate_from);
-		TEMPORARY_TEXT(T);
-		WRITE_TO(T, "%n", temp_iname);
-		InterNames::translate(iname, T);
-		DISCARD_TEXT(T);
-	}
-	return iname;
-}
+	if ((Str::len(T) > 0) && (nrl->access_name)) InterNames::translate(iname, T);
 
+@ =
 package_request *HierarchyLocations::package_in_package(int id, package_request *P) {
 	if (nrls_created == FALSE) HierarchyLocations::create_nrls();
 	if ((id < 0) || (id >= MAX_HL) || (nrls_indexed_by_id[id] == NULL))

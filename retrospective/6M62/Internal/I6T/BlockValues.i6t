@@ -1,0 +1,1047 @@
+B/blkvt: BlockValues Template.
+ 
+@Purpose: Routines for copying, comparing, creating and destroying block
+values, and for reading and writing them as if they were arrays.
+ 
+@-------------------------------------------------------------------------------
+
+@p Overview.
+Each I7 value is represented at run-time by an I6 word: on the Z-machine,
+a 16-bit number, and on Glulx, a 32-bit number. The correspondence between
+these numbers and the original values depends on the kind of value: "number"
+comes out as a signed twos-complement number, but "time" as an integer
+number of minutes since midnight, "rulebook" as the index of the rulebook
+in order of creation, and so on.
+
+Even if a 32-bit number is available, this is not enough to represent the
+full range of values we might want: consider all the possible hundred-word
+essays of text, for instance. So for a whole range of kinds -- "text",
+"list of K", "stored action" and so on -- the I6 value at run-time is only
+a pointer to what is called a "short block". This is typically only a few
+words long, and often only a single word: hence the term "short". It has
+no header or other overhead, and its contents depend on the kind of value.
+
+If we know that a given kind of value can be stored in, say, exactly 128
+bits, then it's possible simply to store the whole thing in the short block.
+More often, though, the data needs to be flexible in size, or needs to
+be large. In that case, the short block will include (and sometimes, will
+consist only of) a pointer to data stored in a "long block". Unlike the
+short block, the long block is a chunk of memory stored using the Flex
+system, and thus is genuinely a "block" in the sense of the Flex
+documentation.
+
+It's possible to have several different short blocks each pointing to the
+same long block of underlying data: for example, the result of the I7 code
+
+	let L1 be { 2, 3, 5, 7, 11 };
+	let L2 be L1;
+
+is to create L1 and L2 as pointers to two different short blocks, but the
+two SBs each point to the same long block, which contains the data for the
+list 2, 3, 5, 7, 11. Note that this makes it very fast to copy L1's contents
+into L2, because only L2's short block needs to change.
+
+The rules for customers who want to deal with values like this are much like
+the rules for allocating memory with Flex. Calling |BlkValueCreate|
+creates a new value, but this must always, and only once, later be disposed
+of using |BlkValueFree|.
+
+So if the short blocks of L1 and L2 both point to the same long block of
+actual data, what happens when only one of them is freed? The answer is that
+every long block has a reference count attached, which counts the number of
+short blocks pointing to it. In our example, this count is 2. If list L1
+is freed, the long block's reference count is decremented to 1, but it
+remains in memory, and only L1's short block is given up; when list L2 is
+subsequently freed, both its short block and the now unwanted long block
+are given up.
+
+The harder case to handle is what happens when L1 and L2 share a long
+block containing 2, 3, 5, 7, 11, but when the source text asks to "add 13
+to L1". If we simply changed the long block, that would affect L2 as well.
+So we must first make L1 "mutable". This means copying the long block
+to make a new unique copy with reference count 1; assigning that to L1
+in place of the original; and decrementing the reference count of the
+original from 2 to 1. L1 and L2 now point to two different long blocks,
+so it's safe to modify L1's.
+
+Subtle and beautiful bugs can occur as a result of making a value mutable
+at the wrong moment. Beware in particular of reading data out of a long
+block, then writing it back again, because the act of writing may force
+the value owning the long block to become mutable; this will make a new
+copy of the data; but you will be left holding the old copy. Since these
+are functionally identical, you may not even notice, but calamities will
+occur later because the version of the value you're holding really
+belongs to somebody else and may be freed at any point.
+
+Finally, note that the I7 compiler also creates block values representing
+constants. For example, the source text
+
+	let L1 be { 2, 3, 5, 7, 11 };
+
+causes a block value representing this list to be stored in memory. The
+long block for a constant needs to be immortal, since this memory must
+never be freed: it's therefore given a reference count of "infinity".
+
+@c
+Constant RC_INFINITY = MAX_POSITIVE_NUMBER;
+
+@p Short Block Format.
+A short block begins with a word which is usually, but not always, a pointer
+to the long block. There are three possibilities:
+
+(a) 0 means the short block has length 1 and the long block begins at the
+very next word in memory. This makes it more convenient for I7 to compile
+BV constants, but isn't otherwise used.
+
+(b) 1 to 255 means the short block has length 2 or more. The value is expected
+to be a bitmap in bits 4 to 8 together with a nonzero ID in bits 1 to 4.
+If the |BLK_BVBITMAP_LONGBLOCK| bit is set, a pointer to the long block
+is stored in the second word of the short block.
+
+(c) Otherwise the short block has length 1 and contains only a pointer to
+the long block.
+
+@c
+Constant BLK_BVBITMAP           = $ff;
+
+Constant BLK_BVBITMAP_LONGBLOCK = $10; ! Word 1 of SB is pointer to LB
+Constant BLK_BVBITMAP_TEXT      = $20; ! BV holds a TEXT_TY value
+Constant BLK_BVBITMAP_CONSTANT  = $40; ! BV holds a TEXT_TY value
+
+#IFTRUE WORDSIZE == 4;
+Constant BLK_BVBITMAP_LONGBLOCKMASK = $ffffff10;
+Constant BLK_BVBITMAP_TEXTMASK      = $ffffff20;
+Constant BLK_BVBITMAP_CONSTANTMASK  = $ffffff40;
+#IFNOT;
+Constant BLK_BVBITMAP_LONGBLOCKMASK = $ff10;
+Constant BLK_BVBITMAP_TEXTMASK      = $ff20;
+Constant BLK_BVBITMAP_CONSTANTMASK  = $ff40;
+#ENDIF;
+
+@p Long Block Access.
+Illustrating this:
+
+@c
+[ BlkValueGetLongBlock bv o;
+	if (bv) {
+		o = bv-->0;
+		if (o == 0) return bv + WORDSIZE;
+		if (o & BLK_BVBITMAP == o) {
+			if (o & BLK_BVBITMAP_LONGBLOCK) return bv-->1;
+			return 0;
+		}
+		return o;
+	}
+	return bv;
+];
+
+@p Weak Kind.
+This returns the weak kind ID of a block value. Most of the time this
+information is stored in the long block, but that poses a problem for BVs
+which have no long block: we must use the bitmap instead.
+
+@c
+[ BlkValueWeakKind bv o;
+	if (bv) {
+		o = bv-->0;
+		if (o == 0) return bv-->(BLK_HEADER_KOV+1);
+		if (o & BLK_BVBITMAP == o) {
+			if (o & BLK_BVBITMAP_TEXT) return TEXT_TY;
+			o = bv-->1;
+		}
+		return o-->BLK_HEADER_KOV;
+	}
+	return NIL_TY;
+];
+
+@p Reference counting.
+Reference counts lie in a word at a fixed offset from the start of the
+long block: doctrinally, any block value with no long block at all (such
+as a piece of packed text) has reference count infinity.
+
+@c
+[ BlkValueGetRefCountPrimitive bv long_block;
+	long_block = BlkValueGetLongBlock(bv);
+	if (long_block) return long_block-->BLK_HEADER_RCOUNT;
+	return RC_INFINITY;
+];
+
+@p Changing Reference Counts.
+When incrementing, infinity's the limit; when decrementing, it never
+reduces. Note that the decrement function returns the new reference count,
+but the increment function returns nothing. It's only when reference counts
+go downwards that we have to worry about whether something happens.
+
+@c
+[ BlkValueIncRefCountPrimitive bv long_block refc;
+	long_block = BlkValueGetLongBlock(bv);
+	if (long_block) {
+		refc = long_block-->BLK_HEADER_RCOUNT;
+		if (refc < RC_INFINITY) long_block-->BLK_HEADER_RCOUNT = refc + 1;
+	}
+];
+
+[ BlkValueDecRefCountPrimitive bv long_block refc;
+	long_block = BlkValueGetLongBlock(bv);
+	if (long_block) {
+		refc = long_block-->BLK_HEADER_RCOUNT;
+		if (refc < RC_INFINITY) {
+			refc--;
+			if (refc < 0) BlkValueError("reference count negative");
+			long_block-->BLK_HEADER_RCOUNT = refc;
+		}
+		return refc;
+	}
+	return RC_INFINITY;
+];
+
+@p Long Block Capacity.
+As we've seen, the long block has some metadata in a header, but otherwise
+it's organised as if it were an array, with entries 8, 16 or 32 bits wide.
+At any given time, the "capacity" of the LB is the number of entries in
+this array: that doesn't mean that the BV is using them all at any given moment.
+
+@c
+[ BlkValueLBCapacity bv  long_block array_size_in_bytes entry_size_in_bytes flags;
+	long_block = BlkValueGetLongBlock(bv);
+	if (long_block == 0) return 0;
+
+	array_size_in_bytes = FlexTotalSize(long_block);
+
+	flags = long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	return array_size_in_bytes / entry_size_in_bytes;
+];
+
+[ BlkValueSetLBCapacity bv new_capacity  long_block flags entry_size_in_bytes;
+	if (bv == 0) rfalse;
+	BlkMakeMutable(bv);
+	long_block = BlkValueGetLongBlock(bv);
+	if (long_block == 0) rfalse;
+
+	flags = long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	FlexResize(long_block, new_capacity*entry_size_in_bytes);
+	rtrue;
+];
+
+@p Long Block Array Access.
+Though the customer thinks he's getting an array, in fact the storage in
+the LB is not necessarily contiguous, since it can span multiple Flex blocks.
+We abstract that with two routines to read and write entries.
+
+|BlkValueRead| takes two compulsory arguments and one optional one. Thus:
+
+	|BlkValueRead(bv, n)|
+
+reads the nth entry in the long block for |bv|, whereas
+
+	|BlkValueRead(long_block, n, true)|
+
+read it from the given long block directly. |BlkValueWrite| is similar.
+
+@c
+[ BlkValueRead from pos do_not_indirect
+	long_block chunk_size_in_bytes header_size_in_bytes flags entry_size_in_bytes seek_byte_position;
+	if (from == 0) rfalse;
+	if (do_not_indirect)
+		long_block = from;
+	else
+		long_block = BlkValueGetLongBlock(from);
+
+	flags = long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	if (flags & BLK_FLAG_MULTIPLE) header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
+	else header_size_in_bytes = BLK_DATA_OFFSET;
+
+	seek_byte_position = pos*entry_size_in_bytes;
+	for (: long_block~=NULL: long_block=long_block-->BLK_NEXT) {
+		chunk_size_in_bytes = FlexSize(long_block) - header_size_in_bytes;
+		if ((seek_byte_position >= 0) && (seek_byte_position<chunk_size_in_bytes)) {
+			long_block = long_block + header_size_in_bytes + seek_byte_position;
+			switch(entry_size_in_bytes) {
+				1: return long_block->0;
+				2:	#Iftrue (WORDSIZE == 2); return long_block-->0;
+					#ifnot; return (long_block->0)*256 + (long_block->1);
+					#endif;
+				4: return long_block-->0;
+			}
+		}
+		seek_byte_position = seek_byte_position - chunk_size_in_bytes;
+	}
+	"*** BlkValueRead: reading from index out of range: ", pos, " in ", from, " ***";
+];
+
+[ BlkValueWrite to pos val do_not_indirect
+	long_block chunk_size_in_bytes header_size_in_bytes flags entry_size_in_bytes seek_byte_position;
+	if (to == 0) rfalse;
+	if (do_not_indirect)
+		long_block = to;
+	else {
+		BlkMakeMutable(to);
+		long_block = BlkValueGetLongBlock(to);
+	}
+
+	flags = long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	if (flags & BLK_FLAG_MULTIPLE) header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
+	else header_size_in_bytes = BLK_DATA_OFFSET;
+
+	seek_byte_position = pos*entry_size_in_bytes;
+	for (:long_block~=NULL:long_block=long_block-->BLK_NEXT) {
+		chunk_size_in_bytes = FlexSize(long_block) - header_size_in_bytes;
+		if ((seek_byte_position >= 0) && (seek_byte_position<chunk_size_in_bytes)) {
+			long_block = long_block + header_size_in_bytes + seek_byte_position;
+			switch(entry_size_in_bytes) {
+				1: long_block->0 = val;
+				2:	#Iftrue (WORDSIZE == 2); long_block-->0 = val;
+					#ifnot; long_block->0 = (val/256)%256; long_block->1 = val%256;
+					#endif;
+				4: long_block-->0 = val;
+			}
+			return;
+		}
+		seek_byte_position = seek_byte_position - chunk_size_in_bytes;
+	}
+	"*** BlkValueWrite: writing to index out of range: ", pos, " in ", to, " ***";
+];
+
+@p First Zero Entry.
+This returns the entry index of the first zero entry in the long block's array,
+or -1 if it has no zeros.
+
+@c
+[ BlkValueSeekZeroEntry from
+	long_block chunk_size_in_bytes header_size_in_bytes flags entry_size_in_bytes
+	byte_position addr from_addr to_addr;
+	if (from == 0) return -1;
+	long_block = BlkValueGetLongBlock(from);
+
+	flags = long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	if (flags & BLK_FLAG_MULTIPLE) header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
+	else header_size_in_bytes = BLK_DATA_OFFSET;
+
+	byte_position = 0;
+	for (: long_block~=NULL: long_block=long_block-->BLK_NEXT) {
+		chunk_size_in_bytes = FlexSize(long_block) - header_size_in_bytes;
+		from_addr = long_block + header_size_in_bytes;
+		to_addr = from_addr + chunk_size_in_bytes;
+		switch(entry_size_in_bytes) {
+			1:
+				for (addr = from_addr: addr < to_addr: addr++)
+					if (addr->0 == 0)
+						return byte_position + addr - from_addr;
+			2:
+				#iftrue (WORDSIZE == 2);
+				for (addr = from_addr: addr < to_addr: addr=addr+2)
+					if (addr-->0 == 0)
+						return (byte_position + addr - from_addr)/2;
+				#ifnot;
+				for (addr = from_addr: addr < to_addr: addr=addr+2)
+					if ((addr->0 == 0) && (addr->1 == 0))
+						return (byte_position + addr - from_addr)/2;
+				#endif;
+			4:
+				for (addr = from_addr: addr < to_addr: addr=addr+4)
+					if (addr-->0 == 0)
+						return (byte_position + addr - from_addr)/4;
+		}
+		byte_position = byte_position + chunk_size_in_bytes;
+	}
+	return -1;
+];
+
+@p Mass Copy Entries.
+This copies a given number of entries from one BV's long block to another;
+they must both be of the same word size but can differ in header size.
+Functionally, it's identical to
+
+	|for (n=0: n<no_entries_to_copy: n++)|
+	|	BlkValueWrite(to_bv, n, BlkValueRead(from_bv, n));|
+
+but it's much, much faster, and runs in a reasonably small number of cycles
+given what it needs to do.
+
+@c
+[ BlkValueMassCopyEntries to_bv from_bv no_entries_to_copy
+	from_long_block from_addr from_bytes_left from_header_size_in_bytes
+	to_long_block to_addr to_bytes_left to_header_size_in_bytes
+	bytes_to_copy flags entry_size_in_bytes min;
+
+	BlkMakeMutable(to_bv);
+
+	from_long_block = BlkValueGetLongBlock(from_bv);
+	to_long_block = BlkValueGetLongBlock(to_bv);
+
+	flags = from_long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	if ((flags & (BLK_FLAG_MULTIPLE + BLK_FLAG_TRUNCMULT)) &&
+		(BlkValueSetLBCapacity(to_bv, no_entries_to_copy) == false))
+		BlkValueError("copy resizing failed");
+
+	if (flags & BLK_FLAG_MULTIPLE) from_header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
+	else from_header_size_in_bytes = BLK_DATA_OFFSET;
+	flags = to_long_block->BLK_HEADER_FLAGS;
+	if (flags & BLK_FLAG_MULTIPLE) to_header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
+	else to_header_size_in_bytes = BLK_DATA_OFFSET;
+
+	from_addr = from_long_block + from_header_size_in_bytes;
+	from_bytes_left = FlexSize(from_long_block) - from_header_size_in_bytes;
+	to_addr = to_long_block + to_header_size_in_bytes;
+	to_bytes_left = FlexSize(to_long_block) - to_header_size_in_bytes;
+
+	bytes_to_copy = entry_size_in_bytes*no_entries_to_copy;
+	while (true) {
+		if (from_bytes_left == 0) {
+			from_long_block = from_long_block-->BLK_NEXT;
+			if (from_long_block == 0) BlkValueError("copy destination exhausted");
+			from_addr = from_long_block + from_header_size_in_bytes;
+			from_bytes_left = FlexSize(from_long_block) - from_header_size_in_bytes;
+		} else if (to_bytes_left == 0) {
+			to_long_block = to_long_block-->BLK_NEXT;
+			if (to_long_block == 0) BlkValueError("copy source exhausted");
+			to_addr = to_long_block + to_header_size_in_bytes;
+			to_bytes_left = FlexSize(to_long_block) - to_header_size_in_bytes;
+		} else {
+			min = from_bytes_left; if (to_bytes_left < min) min = to_bytes_left;
+			if (bytes_to_copy <= min) {
+				Memcpy(to_addr, from_addr, bytes_to_copy);
+				return;
+			}
+			Memcpy(to_addr, from_addr, min);
+			bytes_to_copy = bytes_to_copy - min;
+			from_addr = from_addr + min;
+			from_bytes_left = from_bytes_left - min;
+			to_addr = to_addr + min;
+			to_bytes_left = to_bytes_left - min;
+		}
+	}
+];
+
+@p Mass Copy From Array.
+The following is helpful when reading an array of characters into a text:
+
+@c
+[ BlkValueMassCopyFromArray to_bv from_array from_entry_size no_entries_to_copy
+	to_long_block to_addr to_entries_left to_header_size to_entry_size
+	flags;
+
+	BlkMakeMutable(to_bv);
+
+	to_long_block = BlkValueGetLongBlock(to_bv);
+
+	flags = to_long_block->BLK_HEADER_FLAGS;
+	to_entry_size = 1;
+	if (flags & BLK_FLAG_16_BIT) to_entry_size = 2;
+	else if (flags & BLK_FLAG_WORD) to_entry_size = WORDSIZE;
+
+	if ((flags & (BLK_FLAG_MULTIPLE + BLK_FLAG_TRUNCMULT)) &&
+		(BlkValueSetLBCapacity(to_bv, no_entries_to_copy) == false))
+		BlkValueError("copy resizing failed");
+
+	if (flags & BLK_FLAG_MULTIPLE) to_header_size = BLK_DATA_MULTI_OFFSET;
+	else to_header_size = BLK_DATA_OFFSET;
+
+	to_addr = to_long_block + to_header_size;
+	to_entries_left = (FlexSize(to_long_block) - to_header_size)/to_entry_size;
+
+	while (no_entries_to_copy > to_entries_left) {
+		Arrcpy(to_addr, to_entry_size, from_array, from_entry_size, to_entries_left);
+		no_entries_to_copy = no_entries_to_copy - to_entries_left;
+		from_array = from_array + to_entries_left*from_entry_size;
+		to_long_block = to_long_block-->BLK_NEXT;
+		if (to_long_block == 0) BlkValueError("copy source exhausted");
+		to_addr = to_long_block + to_header_size;
+		to_entries_left = (FlexSize(to_long_block) - to_header_size)/to_entry_size;
+	}
+	if (no_entries_to_copy > 0) {
+		Arrcpy(to_addr, to_entry_size, from_array, from_entry_size, no_entries_to_copy);
+	}
+];
+
+@p KOVS Routines.
+Different kinds of value use different data formats for both their short and
+long blocks, so it follows that each kind needs its own routines to carry out
+the fundamental operations of creating, destroying, copying and comparing.
+This is organised at run-time by giving each kind of block value a "KOVS", a
+"kind of value support" routine. These are named systematically by suffixing
+|_Support|: that is, the support function for |TEXT_TY| is called
+|TEXT_TY_Support| and so on.
+
+I7 automatically compiles a function called |KOVSupportFunction| which returns
+the KOVS for a given kind. Note that this depends only on the weak kind, not
+the strong one: so "list of numbers" and "list of texts", for example, share a
+common KOVS which handles all list support.
+
+The support function can be called with any of the following task constants
+as its first argument: it then has a further one to three arguments
+depending on the task in hand.
+
+@c
+Constant CREATE_KOVS      = 1;
+Constant CAST_KOVS        = 2;
+Constant DESTROY_KOVS     = 3;
+Constant MAKEMUTABLE_KOVS = 4;
+Constant COPYKIND_KOVS    = 5;
+Constant EXTENT_KOVS      = 6;
+Constant COPYQUICK_KOVS   = 7;
+Constant COPYSB_KOVS      = 8;
+Constant KINDDATA_KOVS    = 9;
+Constant COPY_KOVS        = 10;
+Constant COMPARE_KOVS     = 11;
+Constant READ_FILE_KOVS   = 12;
+Constant WRITE_FILE_KOVS  = 13;
+Constant HASH_KOVS        = 14;
+Constant DEBUG_KOVS       = 15;
+
+! Constant BLKVALUE_TRACE; ! Uncomment this to expose masses of tracery
+
+@p Creation.
+To create a block value, call:
+
+	|BlkValueCreate(kind)|
+
+where |K| is its (strong) kind ID. Optionally, call:
+
+	|BlkValueCreate(K, short_block)|
+
+to mandate that the short block needs to be located at the given address
+outside the heap: but don't do this unless you can guarantee that space of the
+necessary length will be available there for as long as the lifetime of
+the value; and please note, it really does matter that this address lies
+outside the heap, for reasons to be seen below.
+
+These work by delegating to:
+
+	|kovs(CREATE_KOVS, strong_kind, short_block)|
+
+which returns the address of the short block for the new value.
+
+@c
+[ BlkValueCreate strong_kind short_block  kovs;
+
+	kovs = KOVSupportFunction(strong_kind, "impossible allocation");
+	short_block = kovs(CREATE_KOVS, strong_kind, short_block);
+
+	#ifdef BLKVALUE_TRACE; print "Created: ", (BlkValueDebug) short_block, "^"; #endif;
+
+	! The new value is represented in I6 as the pointer to its short block:
+	return short_block;
+];
+
+@p Errors.
+No I7 source text should ever result in a call to this, unless it does
+unpleasant things at the I6 level.
+
+@c
+[ BlkValueError reason;
+	print "*** Value handling failed: ", (string) reason, " ***^";
+	RunTimeProblem(RTP_HEAPERROR);
+	@quit;
+];
+
+@p Short Block Allocation.
+The first thing a KOVS does when creating a value is to initialise its 
+short block. The following routines provide for a one-word and a two-word
+short block respectively. The KOVS should pass these routines the same
+|short_block| value it was called with. As can be seen, if this is zero
+then we need to conjure up memory from somewhere: we do this using Flex.
+That incurs a fair amount of overhead in time and memory, though. The
+SB data is stored in the data portion of the Flex block, which is why
+we get its address from by adding the data offset to the block address.
+
+@c
+[ BlkValueCreateSB1 short_block val;
+	if (short_block == 0)
+		short_block = FlexAllocate(WORDSIZE, 0, BLK_FLAG_WORD) + BLK_DATA_OFFSET;
+	short_block-->0 = val;
+	return short_block;
+];
+
+[ BlkValueCreateSB2 short_block val1 val2;
+	if (short_block == 0)
+		short_block = FlexAllocate(2*WORDSIZE, 0, BLK_FLAG_WORD) + BLK_DATA_OFFSET;
+	short_block-->0 = val1; short_block-->1 = val2;
+	return short_block;
+];
+
+@p Block Values On Stack.
+As noted above, it's wasteful to keep allocating short blocks using Flex.
+For the short blocks of block values in local variables, we store them on
+a stack instead. This is a top-down stack, so the current stack frame
+starts out just after the end of the stack area in memory (and therefore
+points to an empty stack frame); it drops down as new frames are created.
+
+|BlkValueCreateOnStack| acts exactly like |BlkValueCreate|, but stores
+the short block at the given word offset in the current stack frame.
+(I7 compiles calls to these routines when compiling code to manage
+local variables.)
+
+@c
+[ StackFramingInitialise;
+	I7SFRAME = blockv_stack + WORDSIZE*BLOCKV_STACK_SIZE;
+];
+
+[ StackFrameCreate size new;
+	new = I7SFRAME - WORDSIZE*size;
+	if (new < blockv_stack) { RunTimeProblem(RTP_HEAPERROR); @quit; }
+	I7SFRAME = new;
+];
+
+[ BlkValueCreateOnStack offset strong_kind;
+	BlkValueCreate(strong_kind, I7SFRAME + WORDSIZE*offset);
+];
+
+[ BlkValueFreeOnStack offset;
+    BlkValueFree(I7SFRAME + WORDSIZE*offset);
+];
+
+@p Freeing.
+As noted above, every value returned by |BlkValueCreate| must later be
+freed by calling the following routine exactly once:
+
+	|BlkValueFree(value)|
+
+In particular, if a block value is stored in any I6 location which is about
+to be overwritten with a new value, it's essential to call this in order
+properly to dispose of the old value.
+
+As noted above, short blocks are sometimes created within Flex blocks on
+the heap, using |FlexAllocate|; and if this is one of those, we need to free
+the relevant Flex block.
+
+@c
+[ BlkValueFree bv kovs d;
+	if (bv == 0) return;
+
+	! Dispose of any data in the long block
+	kovs = KOVSupportFunction(BlkValueWeakKind(bv), "impossible deallocation");
+	BlkValueDestroyPrimitive(bv, kovs);
+
+	! Free any heap memory occupied by the short block
+	d = bv - Flex_Heap;
+	if ((d >= 0) && (d < MEMORY_HEAP_SIZE + 16))
+		FlexFree(bv - BLK_DATA_OFFSET);
+];
+
+@p Quick Copy.
+The basic method of copying block value B into block value A is to destroy the
+old contents of A, which are about to be overwritten; then copy the short
+block of A into the short block of B, a quick process; and increment the
+reference count of B.
+
+The support function should respond to:
+
+	|kovs(COPYSB_KOVS, to_bv, from_bv)|
+
+by copying the short blocks alone.
+
+@c
+[ BlkValueQuickCopyPrimitive to_bv from_bv kovs;
+	BlkValueDestroyPrimitive(to_bv, kovs);
+	kovs(COPYSB_KOVS, to_bv, from_bv);
+	BlkValueIncRefCountPrimitive(from_bv);
+];
+
+@p Short Block Copy.
+In fact, most of the work of copying a short block is standard. If a SB
+consists only a single word pointing to the LB, the first routine below
+handles all the work needed to handle the |COPYSB_KOVS| task. The
+surprising line in this routine is to deal with the convention that a
+pointer value of 0 means the LB immediately follows the SB: if that's
+true in |from_bv|, it won't be true in |to_bv|, so we must correct it.
+
+@c
+[ BlkValueCopySB1 to_bv from_bv;
+	to_bv-->0 = from_bv-->0;
+	if (to_bv-->0 == 0) to_bv-->0 = from_bv + WORDSIZE;
+];
+
+[ BlkValueCopySB2 to_bv from_bv;
+	to_bv-->0 = from_bv-->0;
+	to_bv-->1 = from_bv-->1;
+	if (to_bv-->1 == 0) to_bv-->1 = from_bv + 2*WORDSIZE;
+];
+
+@p Slow Copy.
+Why don't we always do this? Consider the case where B is a list of rooms, and
+A is a list of objects. If we give A's short block a pointer to the long block
+of B, A will suddenly change its kind as well as its contents, because the
+strong kind of a list is stored inside the long block. So there are a few
+cases where it's not safe to make a quick copy. In any case, sooner or later
+you have to duplicate actual data, not just rearrange pointers to it, and
+here's where.
+
+We first call:
+
+	|kovs(KINDDATA_KOVS, to_bv)|
+
+which asks for an ID for the kinds stored in the BV: for example, for a
+list of rooms it would return the kind ID for "room". We ask for this
+because it's information stored in the long block, which is about to be
+overwritten.
+
+As with the quick copy, we must now make sure any data currently in the
+destination is properly destroyed. We could do so by making the destination
+mutable and then destroying its contents, but that would be inefficient,
+in that it might create a whole lot of temporary copies and then delete
+them again. So if the long block has a high reference count, we decrement
+it and then replace the short block (in place) with a fresh one pointing
+to empty data; we only destroy the contents if the long block has reference
+count 1.
+
+All of which finally means we can scribble over the destination without
+spoiling anybody else's day. We resize it to make room for the incoming data;
+we copy the raw data of the long block; and finally we:
+
+	|kovs(COPY_KOVS, to_bv, from_bv, k)|
+
+This is where the KOVS should make a proper copy, using |BlkValueCopy| and
+thus perhaps recursing, if any of that data contained block values in turn:
+as for instance it will if we're copying a list of texts. Note that |k|
+is the value given us by |KINDDATA_KOVS|.
+
+@c
+[ BlkValueSlowCopyPrimitive to_bv from_bv kovs recycling
+	k from_long_block no_entries_to_copy;
+	k = kovs(KINDDATA_KOVS, to_bv, from_bv);
+
+	from_long_block = BlkValueGetLongBlock(from_bv);
+	if (from_long_block) {
+		if (recycling) BlkValueRecyclePrimitive(to_bv, kovs);
+		no_entries_to_copy = kovs(EXTENT_KOVS, from_bv);
+		if (no_entries_to_copy == -1) no_entries_to_copy = BlkValueLBCapacity(from_bv);
+		BlkValueMassCopyEntries(to_bv, from_bv, no_entries_to_copy);
+!print "So to: "; BlkValueDebug(to_bv); print "^";
+
+	}
+
+	kovs(COPY_KOVS, to_bv, from_bv, k);
+!print "Whence to: "; BlkValueDebug(to_bv); print "^";
+];
+
+@p Copy.
+As noted above, some copies are quick, and some are slow. We decide by
+asking the kind's support function:
+
+	|kovs(COPYQUICK_KOVS, to_bv, from_bv)|
+
+which should return true if a quick copy is okay, or false if not.
+
+@c
+[ BlkValueCopy to_bv from_bv  to_kind from_kind kovs;
+	if (to_bv == 0) BlkValueError("copy to null value");
+	if (from_bv == 0) BlkValueError("copy from null value");
+	if (to_bv == from_bv) return;
+
+	#ifdef BLKVALUE_TRACE;
+	print "Copy: ", (BlkValueDebug) to_bv, " to equal ", (BlkValueDebug) from_bv, "^";
+	#endif;
+
+	to_kind = BlkValueWeakKind(to_bv);
+	from_kind = BlkValueWeakKind(from_bv);
+	if (to_kind ~= from_kind) BlkValueError("copy incompatible kinds");
+
+	kovs = KOVSupportFunction(to_kind, "impossible copy");
+	
+	if (kovs(COPYQUICK_KOVS, to_bv, from_bv))
+		BlkValueQuickCopyPrimitive(to_bv, from_bv, kovs);
+	else
+		BlkValueSlowCopyPrimitive(to_bv, from_bv, kovs, true);
+
+	return to_bv;
+];
+
+[ BlkValueCopyAZ to_bv from_bv;
+	if (from_bv) return BlkValueCopy(to_bv, from_bv);
+	return to_bv;
+];
+
+@p Destruction.
+We will also need primitives for two different forms of destruction. This
+is something which should happen whenever a block value is thrown away,
+not to be used again: either because it's being freed, or because new
+contents are being copied into it.
+
+The idea of destruction is that any data stored in the long block should
+safely be disposed of. If the reference count of the long block is 2 or
+more, there's no problem, because we can simply decrement the count and
+let other people worry about the data from now on. But if it's only 1,
+then destroying the data is on us. Since we don't know what's in the
+long block, we have to ask the KOVS to do this by means of:
+
+	|kovs(DESTROY_KOVS, bv)|
+
+Note that all of this frequently causes recursion: destruction leads to
+freeing of some of the data, which in turn means that that data must be
+destroyed, and so on. So it's essential that block values be well-founded:
+a list must not, for example, contain itself.
+
+@c
+[ BlkValueDestroyPrimitive bv kovs long_block;
+	#ifdef BLKVALUE_TRACE; print "Destroying ", (BlkValueDebug) bv, "^"; #endif;
+	if (BlkValueDecRefCountPrimitive(bv) == 0) {
+		kovs(DESTROY_KOVS, bv);
+		long_block = BlkValueGetLongBlock(bv);
+		if (long_block) FlexFree(long_block);
+	}
+];
+
+@p Recycling.
+This is like destruction in that it disposes of the value safely, but it
+tries to keep the long block for reuse, rather than deallocating it. This
+won't work if other people are still using it, so in the case where its
+reference count is 2 or more, we simply reduce the count by 1 and then
+replace the small block with a new one (at the same address).
+
+@c
+[ BlkValueRecyclePrimitive bv kovs;
+	#ifdef BLKVALUE_TRACE; print "Recycling ", (BlkValueDebug) bv, "^"; #endif;
+	if (BlkValueDecRefCountPrimitive(bv) == 0) {
+		kovs(DESTROY_KOVS, bv);
+		BlkValueIncRefCountPrimitive(bv);
+	} else {
+		BlkValueCreate(BlkValueWeakKind(bv), bv);
+	}
+];
+
+@p Mutability.
+A block value is by definition mutable if it has a long block with reference
+count 1, because then the data in the long block can freely be changed without
+corrupting other block values.
+
+We offer the KOVS a chance to handle this for us:
+
+	|kovs(MAKEMUTABLE_KOVS, bv)|
+
+should return 0 to say that it has done so, or else return the size of the
+short block in words to ask us to handle it. The way we do this is to create
+a temporary value to make a safe copy into; it would be unnecessarily slow
+to allocate the short block for this safe copy on the heap and then free it
+again moments later, so instead we put the short block on the stack, making
+a temporary one-value stack frame instead to hold it.
+
+@c
+[ BlkMakeMutable bv block bv_kind kovs sb_size;
+	if (bv == 0) BlkValueError("tried to make null block mutable");
+
+	if (BlkValueGetRefCountPrimitive(bv) > 1) {
+		#ifdef BLKVALUE_TRACE; print "Make mutable: ", (BlkValueDebug) bv, "^"; #endif;
+
+		BlkValueDecRefCountPrimitive(bv);
+
+		bv_kind = BlkValueWeakKind(bv);
+		kovs = KOVSupportFunction(bv_kind, "impossible mutability");
+
+		sb_size = kovs(MAKEMUTABLE_KOVS, bv);
+		if (sb_size > 0) {
+			@push I7SFRAME;
+			StackFrameCreate(sb_size);
+			BlkValueCreateOnStack(0, bv_kind);
+			kovs(COPYKIND_KOVS, I7SFRAME, bv);
+			BlkValueSlowCopyPrimitive(I7SFRAME, bv, kovs, false);
+			kovs(COPYSB_KOVS, bv, I7SFRAME);
+			@pull I7SFRAME;
+		}
+	}
+];
+
+@p Casting.
+We can also perform an assignment to an already-created block value in the
+form of a cast, that is, a conversion of data from one kind to another:
+or at least, for some kinds of value we can.
+
+	|kovs(CAST_KOVS, to_bv, original_kind, original_value)|
+
+casts from the given value, with the given kind, into the existing block
+value |to_bv|. Note that the source value doesn't need to be a BV itself.
+This mechanism is used, for example, to cast snippets to text.
+
+@c
+[ BlkValueCast to_bv original_kind original_value  kovs;
+	kovs = KOVSupportFunction(BlkValueWeakKind(to_bv), "impossible cast");
+	kovs(CAST_KOVS, to_bv, original_kind, original_value);
+	return to_bv;
+];
+
+@p Comparison.
+And it's a similar story with comparison:
+
+	|kovs(COMPARE_KOVS, bv_left, bv_right)|
+
+looks at the data in the two BVs and returns 0 if they are equal, a positive
+number if |bv_right| is "greater than" |bv_left|, and a negative number if
+not. The interpretation of "greater than" depends on the kind, but should be
+something which the user would find natural.
+
+@c
+[ BlkValueCompare bv_left bv_right  kind_left kind_right kovs;
+	if ((bv_left == 0) && (bv_right == 0)) return 0;
+	if (bv_left == 0) return 1;
+	if (bv_right == 0) return -1;
+
+	kind_left = BlkValueWeakKind(bv_left);
+	kind_right = BlkValueWeakKind(bv_right);
+	if (kind_left ~= kind_right) return kind_left - kind_right;
+
+	kovs = KOVSupportFunction(kind_left, "impossible comparison");
+	return kovs(COMPARE_KOVS, bv_left, bv_right);
+];
+
+@p Hashing.
+Given a value of any kind, assign it a hash code which fits in a single
+virtual machine word, maximizing the chances that two different values
+will have different hash codes.
+
+If the value can be stored in a single word already, it can be its own
+hash code. Otherwise, we ask:
+
+	|kovs(HASH_KOVS, bv)|
+
+to return one for us. Whatever this does, it must at minimum have the
+property that two equivalent blocks (for which |COMPARE_KOVS| returns 0)
+produce the same hash value.
+
+@c
+[ GetHashValue kind value;
+	if (KOVIsBlockValue(kind)) return BlkValueHash(value);
+	return value;
+];
+
+[ BlkValueHash bv  bv_kind kovs;
+	if (bv == 0) return 0;
+	bv_kind = BlkValueWeakKind(bv);
+	kovs = KOVSupportFunction(bv_kind, "impossible hashing");
+	return kovs(HASH_KOVS, bv);
+];
+
+@p Serialisation.
+Some block values can be written to external files (on Glulx): others cannot.
+The following routines abstract that.
+
+If |ch| is $-1$, then:
+
+	|kovs(READ_FILE_KOVS, bv, auxf, ch)|
+
+returns |true| or |false| according to whether it is possible to read data
+from an auxiliary file |auxf| into the block value |bv|. If |ch| is any
+other value, then the routine should do exactly that, taking |ch| to be the
+first character of the text read from the file which makes up the serialised
+form of the data.
+
+	|kovs(WRITE_FILE_KOVS, bv)|
+
+is simpler because, strictly speaking, it doesn't write to a file at all: it
+simply prints a serialised form of the data in |bv| to the output stream.
+Since it is called only when that output stream has been redirected to an
+auxiliary file, and since the serialised form would often be illegible on
+screen, it seems reasonable to call it a file input-output function just the
+same. The |WRITE_FILE_KOVS| should return |true| or |false| according to
+whether it was able to write the data.
+
+@c
+[ BlkValueReadFromFile bv auxf ch bv_kind  kovs;
+	kovs = KOVSupportFunction(bv_kind);
+	if (kovs) return kovs(READ_FILE_KOVS, bv, auxf, ch);
+	rfalse;
+];
+
+[ BlkValueWriteToFile bv bv_kind  kovs;
+	kovs = KOVSupportFunction(bv_kind);
+	if (kovs) return kovs(WRITE_FILE_KOVS, bv);
+	rfalse;
+];
+
+@p Debugging.
+Surprisingly, the above system of reference-counted double indirection didn't
+work first time, so it turned out to be useful to have these routines on hand.
+
+@c
+[ BlkValueDebug bv flag refc long_block kovs;
+	print "(BV";
+	if (bv) {
+		BlkDebugAddress(bv, flag);
+		long_block = BlkValueGetLongBlock(bv);
+		if (long_block) {
+			if (bv-->0 == 0) print "..."; else print "-->";
+			print "L"; BlkDebugAddress(long_block, flag);
+			print " 2**", long_block->BLK_HEADER_N;
+			refc = BlkValueGetRefCountPrimitive(bv);
+			if (refc == RC_INFINITY) print " resident";
+			else { print " ", refc, " ref"; if (refc ~= 1) print "s"; }
+		}
+		kovs = KOVSupportFunction(BlkValueWeakKind(bv));
+		if (kovs) kovs(DEBUG_KOVS, bv);
+	}
+	print ")";
+];
+
+@p Printing Memory Addresses.
+The point of the anonymity flag is that, with this set, the output can be
+used as the required output in an Inform test case without tiny movements
+in memory between builds invalidating this required output.
+
+@c
+[ BlkDebugAddress addr flag d;
+	if (flag) { print "###"; return; }
+
+	d = addr - blockv_stack;
+	if ((d >= 0) && (d <= WORDSIZE*BLOCKV_STACK_SIZE)) {
+		print "s+", (BlkPrintHexadecimal) d;
+		d = addr - I7SFRAME;
+		print "=f"; if (d >= 0) print "+"; print d;
+		return;
+	}
+	
+	d = addr - Flex_Heap;
+	if ((d >= 0) && (d < MEMORY_HEAP_SIZE + 16)) {
+		print "h+", (BlkPrintHexadecimal) d;
+		return;
+	}
+
+	print (BlkPrintHexadecimal) addr;
+];
+
+@p Hexadecimal Printing.
+
+@c
+[ BlkPrintHexadecimal v;
+	#iftrue WORDSIZE == 4;
+	if (v & $ffff0000) {
+		if (v & $ff000000) {
+			BlkPrintHexDigit(v / $10000000);
+			BlkPrintHexDigit(v / $1000000);
+		}
+		BlkPrintHexDigit(v / $100000);
+		BlkPrintHexDigit(v / $10000);
+	}
+	#endif;
+	BlkPrintHexDigit(v / $1000);
+	BlkPrintHexDigit(v / $100);
+	BlkPrintHexDigit(v / $10);
+	BlkPrintHexDigit(v);
+];
+
+[ BlkPrintHexDigit v;
+	v = v & $F;
+	if (v < 10) print v; else print (char) 'A' + v - 10;
+];

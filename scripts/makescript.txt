@@ -17,6 +17,7 @@
 {platform-settings}
 
 INTEST = ../intest/Tangled/intest
+INTESTX = ../intest/Tangled/intest
 INTESTWEB = ../intest
 INWEB = ../inweb/Tangled/inweb
 INWEBX = ../inweb/Tangled/inweb
@@ -278,7 +279,6 @@ forcetools:
 ifdef BENEVOLENTOVERLORD
 	$(MAKE) -f $(INPOLICYMAKER)
 endif
-	$(MAKE) -f $(INWEBMAKER) initial
 	{repeatblock}
 ifdef BENEVOLENTOVERLORD
 	$(INPOLICYX) -advance-build $(*WEB)

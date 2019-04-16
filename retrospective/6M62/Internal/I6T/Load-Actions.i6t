@@ -1,0 +1,68 @@
+B/lacts: Load Actions Template.
+ 
+@Purpose: To load the Actions language definition element.
+ 
+@-------------------------------------------------------------------------------
+
+@p Data type definitions.
+
+@c
+{-lines:type}
+DESCRIPTION_OF_ACTION_TY:
+apply-macro:#BASE-KIND
+singular:described action
+plural:described actions
+
+instance-of:WORD_VALUE_TY
+
+constant-compilation-method:special
+
+description:a stored action
+index-priority:0
+! To represent an action test implicitly cast as a conditional rvalue
+
+
+STORED_ACTION_TY:
+apply-macro:#BASE-KIND
+singular:action
+plural:actions
+
+instance-of:POINTER_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+comparison-schema:DESCRIPTION_OF_ACTION_TY>>>*=-((STORED_ACTION_TY_Adopt(*1), SAT_Tmp-->0=(*2), STORED_ACTION_TY_Unadopt()))
+multiple-block:no
+heap-size-estimate:16
+can-exchange:yes
+
+distinguisher:STORED_ACTION_TY_Distinguish
+i6-printing-routine:STORED_ACTION_TY_Say
+comparison-routine:BlkValueCompare
+constant-compilation-method:special
+
+description:a stored action
+documentation-reference:kind_storedaction
+index-default-value:waiting
+specification-text:A stored action, which can later be tried.
+
+
+ACTION_NAME_TY:
+apply-macro:#BASE-KIND
+singular:action name
+plural:action names
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:##Wait
+
+loop-domain-schema:for (*2=0,*1=ActionNumberIndexed(*2): *2<AD_RECORDS: *2++,*1=ActionNumberIndexed(*2))
+i6-printing-routine:SayActionName
+constant-compilation-method:special
+
+description:an action name
+documentation-reference:kind_actionname
+index-priority:6
+index-default-value:waiting action
+specification-text:An action is what happens when one of the people in the simulated world decides to do something. A full action would be something like 'dropping the box', but an action name is just the choice of which sort of thing is being done: here, it's 'the dropping action'. (Action names are always written with the word 'action' at the end, to make sure they aren't mistaken for full actions.)
+
+{-endlines}
+{-callv:Kinds::Interpreter::batch_done}

@@ -11,7 +11,6 @@
 @e PROPOSITION_PR_COUNTER
 @e SUBSTITUTION_PR_COUNTER
 @e SUBSTITUTIONF_PR_COUNTER
-@e TASK_PR_COUNTER
 
 =
 location_requirement home_for_weak_type_IDs;
@@ -177,6 +176,7 @@ void Hierarchy::establish(void) {
 @h Activities.
 
 @e ACTIVITIES_HAP
+@e ACTIVITY_HL
 @e BEFORE_RB_HL
 @e FOR_RB_HL
 @e AFTER_RB_HL
@@ -194,6 +194,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_activities = HierarchyLocations::local_submodule(activities);
 	HierarchyLocations::ap(ACTIVITIES_HAP, local_activities, I"activity", I"_activity");
 		location_requirement in_activity = HierarchyLocations::any_package_of_type(I"_activity");
+		HierarchyLocations::con(ACTIVITY_HL, NULL, Translation::generate(ACTIVITY_INAMEF), in_activity);
 		HierarchyLocations::package(BEFORE_RB_HL, I"before_rb", I"_rulebook", in_activity);
 		HierarchyLocations::package(FOR_RB_HL, I"for_rb", I"_rulebook", in_activity);
 		HierarchyLocations::package(AFTER_RB_HL, I"after_rb", I"_rulebook", in_activity);
@@ -214,6 +215,8 @@ void Hierarchy::establish(void) {
 @e MEASUREMENT_FN_HL
 @e ADJECTIVE_PHRASES_HAP
 @e DEFINITION_FN_HL
+@e ADJECTIVE_TASKS_HAP
+@e TASK_FN_HL
 
 @<Establish adjectives@> =
 	submodule_identity *adjectives = Packaging::register_submodule(I"adjectives");
@@ -222,6 +225,9 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::ap(ADJECTIVES_HAP, local_adjectives, I"adjective", I"_adjective");
 		location_requirement in_adjective = HierarchyLocations::any_package_of_type(I"_adjective");
 		HierarchyLocations::con(ADJECTIVE_HL, I"adjective", Translation::uniqued(), in_adjective);
+		HierarchyLocations::ap(ADJECTIVE_TASKS_HAP, in_adjective, I"adjective_task", I"_adjective_task");
+			location_requirement in_adjective_task = HierarchyLocations::any_package_of_type(I"_adjective_task");
+			HierarchyLocations::func(TASK_FN_HL, I"task_fn", Translation::uniqued(), in_adjective_task);
 	HierarchyLocations::ap(ADJECTIVE_MEANINGS_HAP, local_adjectives, I"adjective_meaning", I"_adjective_meaning");
 		location_requirement in_adjective_meaning = HierarchyLocations::any_package_of_type(I"_adjective_meaning");
 		HierarchyLocations::func(MEASUREMENT_FN_HL, I"measurement_fn", Translation::generate(MEASUREMENT_ADJECTIVE_INAMEF), in_adjective_meaning);
@@ -252,6 +258,7 @@ void Hierarchy::establish(void) {
 @h Chronology.
 
 @e PAST_ACTION_PATTERNS_HAP
+@e PAP_FN_HL
 
 @e TIMEDEVENTSTABLE_HL
 @e TIMEDEVENTTIMESTABLE_HL
@@ -265,6 +272,8 @@ void Hierarchy::establish(void) {
 
 	location_requirement local_chronology = HierarchyLocations::local_submodule(chronology);
 	HierarchyLocations::ap(PAST_ACTION_PATTERNS_HAP, local_chronology, I"past_action_pattern", I"_past_action_pattern");
+		location_requirement in_past_action_pattern = HierarchyLocations::any_package_of_type(I"_past_action_pattern");
+		HierarchyLocations::func(PAP_FN_HL, I"pap_fn", Translation::generate(PAST_ACTION_ROUTINE_INAMEF), in_past_action_pattern);
 
 	location_requirement synoptic_chronology = HierarchyLocations::synoptic_submodule(chronology);
 	HierarchyLocations::con(TIMEDEVENTSTABLE_HL, I"TimedEventsTable", Translation::same(), synoptic_chronology);
@@ -282,7 +291,10 @@ void Hierarchy::establish(void) {
 @e CV_POS_HL
 
 @e MVERBS_HAP
+@e MODAL_CONJUGATION_FN_HL
 @e VERBS_HAP
+@e NONMODAL_CONJUGATION_FN_HL
+@e CONJUGATION_FN_HL
 
 @<Establish conjugations@> =
 	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
@@ -295,7 +307,11 @@ void Hierarchy::establish(void) {
 
 	location_requirement local_conjugations = HierarchyLocations::local_submodule(conjugations);
 	HierarchyLocations::ap(MVERBS_HAP, local_conjugations, I"mverb", I"_modal_verb");
+		location_requirement in_modal_verb = HierarchyLocations::any_package_of_type(I"_modal_verb");
+		HierarchyLocations::func(MODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(CONJUGATE_VERB_ROUTINE_INAMEF), in_modal_verb);
 	HierarchyLocations::ap(VERBS_HAP, local_conjugations, I"verb", I"_verb");
+		location_requirement in_verb = HierarchyLocations::any_package_of_type(I"_verb");
+		HierarchyLocations::func(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(CONJUGATE_VERB_ROUTINE_INAMEF), in_verb);
 
 @h Equations.
 
@@ -647,6 +663,7 @@ void Hierarchy::establish(void) {
 @e MEANINGLESS_RR_HL
 
 @e RELATIONS_HAP
+@e RELATION_RECORD_HL
 @e BITMAP_HL
 @e ROUTE_CACHE_HL
 @e HANDLER_FN_HL
@@ -688,6 +705,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_rels = HierarchyLocations::local_submodule(relations);
 	HierarchyLocations::ap(RELATIONS_HAP, local_rels, I"relation", I"_relation");
 		location_requirement in_relation = HierarchyLocations::any_package_of_type(I"_relation");
+		HierarchyLocations::con(RELATION_RECORD_HL, NULL, Translation::generate(RELATION_RECORD_INAMEF), in_relation);
 		HierarchyLocations::con(BITMAP_HL, I"as_constant", Translation::uniqued(), in_relation);
 		HierarchyLocations::con(ROUTE_CACHE_HL, I"route_cache", Translation::uniqued(), in_relation);
 		HierarchyLocations::func(HANDLER_FN_HL, I"handler_fn", Translation::uniqued(), in_relation);
@@ -743,6 +761,7 @@ void Hierarchy::establish(void) {
 @h Rules.
 
 @e RULES_HAP
+@e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
 @e RESPONSES_HAP
@@ -759,6 +778,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_rules = HierarchyLocations::local_submodule(rules);
 	HierarchyLocations::ap(RULES_HAP, local_rules, I"rule", I"_rule");
 		location_requirement in_rule = HierarchyLocations::any_package_of_type(I"_rule");
+		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::generate_in(RULE_SHELL_ROUTINE_INAMEF), in_rule);
 		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::generate_in(PHRASE_INAMEF), in_rule);
 		HierarchyLocations::con(EXTERIOR_RULE_HL, I"exterior_rule", Translation::uniqued(), in_rule);
 		HierarchyLocations::ap(RESPONSES_HAP, in_rule, I"response", I"_response");
@@ -799,12 +819,15 @@ void Hierarchy::establish(void) {
 @h Variables.
 
 @e VARIABLES_HAP
+@e VARIABLE_HL
 
 @<Establish variables@> =
 	submodule_identity *variables = Packaging::register_submodule(I"variables");
 
 	location_requirement local_variables = HierarchyLocations::local_submodule(variables);
 	HierarchyLocations::ap(VARIABLES_HAP, local_variables, I"variable", I"_variable");
+		location_requirement in_variable = HierarchyLocations::any_package_of_type(I"_variable");
+		HierarchyLocations::con(VARIABLE_HL, NULL, Translation::generate(VARIABLE_INAMEF), in_variable);
 
 @
 

@@ -1,0 +1,708 @@
+B/lcore: Load Core Template.
+ 
+@Purpose: To load the core language definition for Inform, which means creating
+the basis for its hierarchy of kinds.
+
+@-------------------------------------------------------------------------------
+
+@p Header.
+The following mass of type definitions is not heavily subdivided into
+paragraphs since it's read so early in Inform's run that "Include..."
+sentences haven't had time to be read yet -- so they aren't easy to
+customise. (Except by putting a whole customised version of the file into
+the relevant |Materials/I6T| folder.)
+
+The |{-lines:type}| command causes all subsequent lines to be sent as
+parameters to the |{-type:...}| command, until the next |{-endlines}|
+command.
+
+@c
+{-callv:Kinds::Interpreter::start}
+{-lines:type}
+
+#DEFAULTS:
+defined-in-source-text:no
+is-incompletely-defined:no
+comparison-routine:UnsignedCompare
+can-coincide-with-property:no
+named-values-created-with-assertions:no
+has-i6-GPR:no
+multiple-block:no
+constant-compilation-method:none
+
+#KIND-VARIABLE:
+group:1
+constant-compilation-method:none
+i6-printing-routine:DA_Number
+i6-printing-routine-actions:DA_Number
+index-priority:0
+
+#KIND-OF-KIND:
+group:2
+constant-compilation-method:none
+i6-printing-routine:DA_Number
+i6-printing-routine-actions:DA_Number
+index-priority:0
+
+#BASE-KIND:
+group:3
+instance-of:VALUE_TY
+index-priority:3
+
+#KIND-CONSTRUCTOR:
+group:4
+instance-of:VALUE_TY
+index-priority:8
+
+@p Macros.
+New kinds of value cause some I7 source to be generated, following various
+combinations of the macros below. This used to be a mechanism to get around
+the lack of support for generic phrases in Inform, and since generics are
+now part of the design, macros like this are used just to create an awkward
+family of variables which circumvent the typelessness of the I6 parser:
+
+@c
+*UNDERSTOOD-VARIABLE:
+<kind> understood is a <kind> which varies.
+*END
+
+@p Group 1.
+These are kinds used in type-checking but not representing specific kinds at
+run-time.
+
+The |+| notation indicates a type name which NI requires us to construct,
+and with this specific name.
+
+@c
++VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:value
+plural:values
+! Matches any value at all
+
++POINTER_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:pointer value
+plural:pointer values
+! Matches any value whose runtime representation is a pointer to a block
+
++WORD_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:word value
+plural:word values
+! Matches any value whose runtime representation is a single word
+
++ARITHMETIC_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:arithmetic value
+plural:arithmetic values
+
++REAL_ARITHMETIC_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:real arithmetic value
+plural:real arithmetic values
+
++ENUMERATED_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:enumerated value
+plural:enumerated values
+
++SAYABLE_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:sayable value
+plural:sayable values
+
+COMBINED_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:combined value of any arity
+plural:combined values of any arity
+
+@p Group 2.
+Data types.
+
+@c
++OBJECT_TY:
+apply-macro:#BASE-KIND
+singular:object
+plural:objects
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:nothing
+
+i6-printing-routine:PrintShortName
+i6-printing-routine-actions:DA_Name
+constant-compilation-method:special
+can-coincide-with-property:no
+
+description:an object
+index-priority:1
+index-default-value:nothing
+specification-text:Objects are values intended to simulate physical things: places, people, things, and so on. They come in many kinds. The special value 'nothing' is also allowed, and can be used to mean 'no object at all'.
+
+
++NUMBER_TY:
+apply-macro:#BASE-KIND
+singular:number
+plural:numbers
+
+instance-of:WORD_VALUE_TY
+instance-of:ARITHMETIC_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:0
+comparison-routine:signed
+can-exchange:yes
+
+has-i6-GPR:yes
+explicit-i6-GPR:DECIMAL_TOKEN
+i6-printing-routine-actions:DA_Number
+constant-compilation-method:literal
+
+description:a number
+documentation-reference:kind_number
+index-priority:2
+index-default-value:0
+specification-text:Whole number in the range -32768, -32767, ..., -2, -1, 0, 1, 2, 3, ..., 32767: small numbers can be written textually as 'one', 'two', 'three', ..., 'ten', 'eleven', 'twelve'. (A much larger number range is allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)
+
+
++REAL_NUMBER_TY:
+apply-macro:#BASE-KIND
+singular:real number
+plural:real numbers
+
+instance-of:WORD_VALUE_TY
+instance-of:ARITHMETIC_VALUE_TY
+instance-of:REAL_ARITHMETIC_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+comparison-routine:REAL_NUMBER_TY_Compare
+default-value:0
+can-exchange:yes
+cast:NUMBER_TY
+
+has-i6-GPR:yes
+explicit-i6-GPR:FLOAT_TOKEN
+i6-printing-routine:REAL_NUMBER_TY_Say
+i6-printing-routine-actions:REAL_NUMBER_TY_Say
+constant-compilation-method:literal
+
+description:a real number
+documentation-reference:kind_real_number
+index-priority:2
+index-default-value:0
+specification-text: A real, or 'floating-point' number: the difference between this and ordinary "number" is that real numbers can hold values like 3.141, which aren't whole numbers, and can also hold very large or very small quantities in an approximate way. (Use of real numbers is only allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)
+
+
++TRUTH_STATE_TY:
+apply-macro:#BASE-KIND
+singular:truth state
+plural:truth states
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:false
+can-exchange:yes
+
+loop-domain-schema:for (*1=0: *1<=1: *1++)
+has-i6-GPR:yes
+explicit-i6-GPR:TRUTH_STATE_TOKEN
+i6-printing-routine:DA_TruthState
+i6-printing-routine-actions:DA_TruthState
+constant-compilation-method:literal
+
+description:something which is either true or false
+documentation-reference:kind_truthstate
+index-default-value:false
+specification-text:The state of whether something is 'true' or 'false'. (In other computing languages, this might be called 'boolean', after the 19th-century logician George Boole, who first realised this was a kind of value.)
+
+
++TEXT_TY:
+apply-macro:#BASE-KIND
+singular:text
+plural:texts
+
+instance-of:POINTER_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:/PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED
+multiple-block:yes
+heap-size-estimate:256
+small-block-size:2
+cast:SNIPPET_TY
+can-exchange:yes
+
+recognition-only-GPR:TEXT_TY_ROGPR
+distinguisher:TEXT_TY_Distinguish
+comparison-routine:BlkValueCompare
+i6-printing-routine:TEXT_TY_Say
+constant-compilation-method:special
+
+description:some text
+index-default-value:""
+specification-text:Some text in double quotation marks, perhaps with substitutions written in square brackets.
+
+
++UNICODE_CHARACTER_TY:
+apply-macro:#BASE-KIND
+singular:unicode character
+plural:unicode characters
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:32
+
+constant-compilation-method:literal
+
+description:a Unicode character
+index-default-value:unicode 32 (<i>a space</i>)
+specification-text:A single character - a letter or item of punctuation.
+
+
++USE_OPTION_TY:
+apply-macro:#BASE-KIND
+singular:use option
+plural:use options
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:0
+
+loop-domain-schema:for (*1=0: *1<NO_USE_OPTIONS: *1++)
+i6-printing-routine:PrintUseOption
+constant-compilation-method:special
+
+description:the name of a use option
+index-priority:6
+index-default-value:the ineffectual option
+specification-text:One of the optional ways to configure Inform, such as the 'authorial modesty option'.
+
+
++RESPONSE_TY:
+apply-macro:#BASE-KIND
+singular:response
+plural:responses
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:0
+
+loop-domain-schema:for (*1=1: *1<=NO_RESPONSES: *1++)
+i6-printing-routine:PrintResponse
+constant-compilation-method:special
+
+description:the name of a response
+index-priority:6
+index-default-value:?
+specification-text:One of the standard responses issued by the Standard Rules or other extensions.
+
++VERB_TY:
+apply-macro:#BASE-KIND
+singular:verb
+plural:verbs
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:ConjugateVerb_0
+
+loop-domain-schema:for (*2=0, *1=TableOfVerbs-->*2: *1: *2++, *1=TableOfVerbs-->*2)
+i6-printing-routine:PrintVerbAsValue
+constant-compilation-method:special
+
+description:the name of a verb
+documentation-reference:kind_verb
+index-priority:6
+index-default-value:verb be
+specification-text:One of the verbs which Inform knows how to conjugate.
+
+
++SNIPPET_TY:
+apply-macro:#BASE-KIND
+singular:snippet
+plural:snippets
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:101
+
+i6-printing-routine:PrintSnippet
+constant-compilation-method:none
+
+description:a snippet
+documentation-reference:kind_snippet
+index-default-value:<i>word 1 of command</i>
+specification-text:A fragment of the player's most recent typed command, taking in a run of consecutive words.
+
+
++TABLE_TY:
+apply-macro:#BASE-KIND
+singular:table name
+plural:table names
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:TheEmptyTable
+
+loop-domain-schema:for (*2=0, *1=TableOfTables-->*2: *1: *2++, *1=TableOfTables-->*2)
+i6-printing-routine:PrintTableName
+constant-compilation-method:special
+
+description:the name of a table
+documentation-reference:kind_tablename
+index-priority:6
+index-default-value:<i>a table with no rows or columns</i>
+indexed-grey-if-empty:yes
+specification-text:Like tables of information in a book or newspaper, tables in Inform hold values which have been organised into rows and columns. A table name is just a single value, identifying which table is meant - say, 'Table of US Presidents' might be a table name value.
+
+
++EQUATION_TY:
+apply-macro:#BASE-KIND
+singular:equation name
+plural:equation names
+
+instance-of:WORD_VALUE_TY
+default-value:0
+
+i6-printing-routine:DA_Number
+constant-compilation-method:special
+
+description:the name of an equation
+index-priority:6
+index-default-value:<i>an equation doing nothing</i>
+indexed-grey-if-empty:yes
+specification-text:Like formulae in a textbook or a scientific paper, equations in Inform are written out in displayed form and given names.
+
+
++RULEBOOK_OUTCOME_TY:
+apply-macro:#BASE-KIND
+singular:rulebook outcome
+plural:rulebook outcomes
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+
+i6-printing-routine:RulebookOutcomePrintingRule
+constant-compilation-method:special
+index-default-value:allow access
+
+description:the name of a rulebook outcome
+index-priority:6
+
+
++UNDERSTANDING_TY:
+apply-macro:#BASE-KIND
+singular:topic
+plural:topics
+
+instance-of:WORD_VALUE_TY
+cast:TEXT_TY
+default-value:DefaultTopic
+
+i6-printing-routine-actions:DA_Topic
+constant-compilation-method:special
+
+description:a topic
+index-priority:0
+
+
++INTERMEDIATE_TY:
+apply-macro:#BASE-KIND
+
+instance-of:WORD_VALUE_TY
+instance-of:ARITHMETIC_VALUE_TY
+
+i6-printing-routine:DA_Number
+i6-printing-routine-actions:DA_Number
+
+description:the intermediate result of some complex calculation
+index-priority:0
+! Represents intermediate results of arithmetic in dimensional formulae
+
+
++NIL_TY:
+apply-macro:#BASE-KIND
+
+instance-of:WORD_VALUE_TY
+
+description:nothing
+index-priority:0
+! Represents a lack of arguments, or of results
+
+
++KIND_VARIABLE_TY:
+apply-macro:#KIND-VARIABLE
+description:a variable denoting a kind
+
+
+@p Group 3.
+Constructors.
+
+@c
++PHRASE_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:phrase k -> l
+plural:phrases k -> l
+constructor-arity:contravariant list, covariant optional
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+
+i6-printing-routine:SayPhraseName
+constant-compilation-method:special
+
+index-default-value:<i>always the default value of L</i>
+
+
++TUPLE_ENTRY_TY:
+apply-macro:#KIND-CONSTRUCTOR
+constructor-arity:covariant, covariant
+
+instance-of:WORD_VALUE_TY
+
+index-priority:0
+! Represents an entry in a multiple
+
+
++VARIABLE_TY:
+apply-macro:#KIND-CONSTRUCTOR
+constructor-arity:covariant
+singular:variable-pointer | k variable-pointer
+plural:variable-pointers | k variable-pointers
+
+instance-of:WORD_VALUE_TY
+
+index-priority:0
+! Represents a variable name
+
+
++RELATION_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:relation | relation of k to l | relation of k
+plural:relations | relations of k to l | relations of k
+constructor-arity:covariant, covariant
+
+instance-of:POINTER_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:0
+multiple-block:yes
+heap-size-estimate:8
+can-exchange:yes
+
+comparison-routine:BlkValueCompare
+constant-compilation-method:special
+distinguisher:RELATION_TY_Distinguish
+i6-printing-routine:RELATION_TY_Say
+
+description:a relation of K to L
+index-default-value:<i>a relation never holding</i>
+
+
++RULE_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:rule | k based rule | rule producing l | k based rule producing l
+plural:rules | k based rules | rules producing l | k based rules producing l
+constructor-arity:contravariant optional, covariant optional
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+cast:RULEBOOK_TY
+default-value:LITTLE_USED_DO_NOTHING_R
+
+i6-printing-routine:RulePrintingRule
+constant-compilation-method:special
+
+description:the name of a rule
+documentation-reference:kind_rule
+index-default-value:the little-used do nothing rule
+indexed-grey-if-empty:yes
+specification-text:One of many, many rules which determine what happens during play. Rules can be triggered by scenes beginning or ending, by certain actions, at certain times, or in the course of carrying out certain activities.
+
+
++RULEBOOK_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:rulebook | k based rulebook | rulebook producing l | k based rulebook producing l
+plural:rulebooks | k based rulebooks | rulebooks producing l | k based rulebooks producing l
+constructor-arity:contravariant optional, covariant optional
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value: 0
+
+constant-compilation-method:special
+i6-printing-routine:RulePrintingRule
+
+description:the name of a rulebook
+documentation-reference:kind_rulebook
+index-default-value:the action-processing rules
+specification-text:A list of rules to follow, in sequence, to get something done. A rulebook is like a ring-binder, with the individual rules as sheets of paper. Inform normally sorts these into their 'natural' order, with the most specific rules first, but it's easy to shuffle the pages if you need to. When some task is carried out during play, Inform is normally working through a rulebook, turning the pages one by one.
+
+
++ACTIVITY_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:activity | activity on k
+plural:activities | activities on k
+constructor-arity:contravariant optional
+
+instance-of:WORD_VALUE_TY
+default-value:PRINTING_THE_NAME_ACT
+
+constant-compilation-method:special
+
+description:an activity
+documentation-reference:kind_activity
+index-default-value:printing the name
+specification-text:An activity is something which Inform does as part of the mechanics of play - for instance, printing the name of an object, which Inform often has to do. An activity can happen by itself ('printing the banner text', for instance) or can be applied to an object ('printing the name of something', say).
+
+
++LIST_OF_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:list of k
+plural:lists of k
+constructor-arity:covariant
+
+instance-of:POINTER_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:0
+multiple-block:yes
+heap-size-estimate:256
+can-exchange:yes
+
+comparison-routine:BlkValueCompare
+constant-compilation-method:special
+distinguisher:LIST_OF_TY_Distinguish
+i6-printing-routine:LIST_OF_TY_Say
+
+description:a list of
+documentation-reference:kind_listof
+index-default-value:{ }
+specification-text:A flexible-length list of values, where all of the items have to have the same kind of value as each other - for instance, a list of rooms, or a list of lists of numbers. The empty list, with no items yet, is written { }, and a list with items in is written with commas dividing them - say {2, 5, 9}.
+
+
++DESCRIPTION_OF_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:description of k
+plural:descriptions of k
+constructor-arity:covariant
+
+instance-of:WORD_VALUE_TY
+default-value:Prop_Falsity
+
+constant-compilation-method:special
+
+description:a description of
+documentation-reference:kind_description
+index-default-value:<i>matching nothing</i>
+specification-text:A description of a set of values, where all of the items have to have the same kind of value as each other - for instance, 'even numbers' or 'open doors which are in lighted rooms'.
+
+
++PROPERTY_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:property | k valued property
+plural:properties | k valued properties
+constructor-arity:covariant
+
+instance-of:WORD_VALUE_TY
+
+constant-compilation-method:special
+i6-printing-routine:PROPERTY_TY_Say
+
+description:a property of something
+
+
++TABLE_COLUMN_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:table column | k valued table column
+plural:table columns | k valued table columns
+constructor-arity:covariant
+
+instance-of:WORD_VALUE_TY
+
+constant-compilation-method:special
+
+description:the name of a column
+
+
++COMBINATION_TY:
+apply-macro:#KIND-CONSTRUCTOR
+singular:combination | combination k | combination k and l
+plural:combinations | combinations k | combinations k and l
+constructor-arity:covariant list, covariant list
+
+instance-of:POINTER_VALUE_TY
+instance-of:COMBINED_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:0
+multiple-block:yes
+heap-size-estimate:256
+can-exchange:yes
+
+comparison-routine:BlkValueCompare
+constant-compilation-method:special
+distinguisher:COMBINATION_TY_Distinguish
+i6-printing-routine:COMBINATION_TY_Say
+
+description:a list of
+documentation-reference:kind_listof
+index-priority:0
+index-default-value:{ }
+specification-text:A way to combine a fixed small number of values, of possibly different kinds, together.
+
+
+@p Groups 4 and 5.
+Enumerations and units.
+
+@c
+! New kinds of value are initially given these settings:
+
+#NEW:
+apply-macro:#BASE-KIND
+instance-of:WORD_VALUE_TY
+is-incompletely-defined:yes
+named-values-created-with-assertions:yes
+can-coincide-with-property:yes
+defined-in-source-text:yes
+description:a designed type
+
+! When the source text specifies either a named constant value, or a literal
+! pattern, it decides whether the new type is to be an enumeration or a unit,
+! at which point one of the following macros is applied to the type:
+
+#ENUMERATION:
+instance-of:ENUMERATED_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+is-incompletely-defined:no
+named-values-created-with-assertions:yes
+default-value:1
+index-default-value:<first-constant>
+index-priority:5
+has-i6-GPR:yes
+comparison-routine:signed
+can-exchange:yes
+description:a designed type
+constant-compilation-method:quantitative
+apply-template:*UNDERSTOOD-VARIABLE
+
+#LINGUISTIC:
+index-priority:7
+
+#UNIT:
+instance-of:ARITHMETIC_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+is-incompletely-defined:no
+comparison-routine:signed
+can-exchange:yes
+defined-in-source-text:yes
+named-values-created-with-assertions:no
+default-value:0
+index-default-value:<0-in-literal-pattern>
+index-priority:2
+has-i6-GPR:yes
+constant-compilation-method:literal
+apply-template:*UNDERSTOOD-VARIABLE
+
+#REAL:
+instance-of:ARITHMETIC_VALUE_TY
+instance-of:REAL_ARITHMETIC_VALUE_TY
+
+@p Tail.
+
+@c
+{-endlines}
+{-callv:Kinds::Interpreter::batch_done}

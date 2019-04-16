@@ -187,9 +187,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 
 	av->name = W;
 	av->av_package = Hierarchy::local_package(ACTIVITIES_HAP);
-	av->av_iname = InterNames::new(ACTIVITY_INAMEF);
-	av->av_iname->eventual_owner = av->av_package;
-	InterNames::attach_memo(av->av_iname, av->name);
+	av->av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, av->av_package, av->name);
 	packaging_state save = Packaging::enter_home_of(av->av_iname);
 	Emit::named_numeric_constant(av->av_iname, (inter_t) av->allocation_id);
 	Packaging::exit(save);

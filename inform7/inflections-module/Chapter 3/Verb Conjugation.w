@@ -202,17 +202,13 @@ and negative senses.
 #ifdef CORE_MODULE
 inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 	if (vc->vc_iname == NULL) {
-		package_request *R = NULL;
 		if (vc->vc_conjugates == NULL) {
-			R = Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
+			package_request *R = Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
+			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
-			R = Verbs::verb_package(vc->vc_conjugates, vc->where_vc_created);
+			package_request *R = Verbs::verb_package(vc->vc_conjugates, vc->where_vc_created);
+			vc->vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
 		}
-		vc->vc_iname =
-			Packaging::function(
-				InterNames::one_off(I"conjugation_fn", R),
-				R,
-				InterNames::new(CONJUGATE_VERB_ROUTINE_INAMEF));
 	}
 	return vc->vc_iname;
 }

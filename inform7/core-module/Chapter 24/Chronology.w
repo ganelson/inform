@@ -46,10 +46,7 @@ void Chronology::ap_compile_forced_to_present(action_pattern ap) {
 void Chronology::compile_past_action_pattern(value_holster *VH, time_period duration, action_pattern ap) {
 	char *op = duration.inform6_operator;
 	package_request *PR = Hierarchy::local_package(PAST_ACTION_PATTERNS_HAP);
-	inter_name *pta_routine = Packaging::function(
-		InterNames::one_off(I"pap_fn", PR),
-		PR,
-		InterNames::new(PAST_ACTION_ROUTINE_INAMEF));
+	inter_name *pta_routine = Hierarchy::make_iname_in(PAP_FN_HL, PR);
 	LOGIF(TIME_PERIODS,
 		"Chronology::compile_past_action_pattern on: $A\nat: $t\n", &ap, &duration);
 	if (PL::Actions::Patterns::makes_callings(&ap)) {

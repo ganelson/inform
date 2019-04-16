@@ -1,0 +1,244 @@
+B/utilt: Utilities Template.
+
+@Purpose: Miscellaneous utility routines for some fundamental I6 needs.
+
+@-------------------------------------------------------------------------------
+
+@p Saying Phrases.
+
+@c
+[ SayPhraseName closure;
+	if (closure == 0) print "nothing";
+	else print (string) closure-->2;
+];
+
+@p Kinds.
+
+@c
+[ KindAtomic kind;
+	if ((kind >= 0) && (kind < BASE_KIND_HWM)) return kind;
+	return kind-->0;
+];
+
+[ KindBaseArity kind;
+	if ((kind >= 0) && (kind < BASE_KIND_HWM)) return 0;
+	return kind-->1;
+];
+
+[ KindBaseTerm kind n;
+	if ((kind >= 0) && (kind < BASE_KIND_HWM)) return UNKNOWN_TY;
+	return kind-->(2+n);
+];
+
+@p DigitToValue.
+This takes a ZSCII or Unicode character code and returns its value as a digit,
+or returns $-1$ if it isn't a digit.
+
+@c
+[ DigitToValue c n;
+	n = c-'0';
+	if ((n<0) || (n>9)) return -1;
+	return n;
+];
+
+@p GenerateRandomNumber.
+The following uses the virtual machine's RNG (via the I6 built-in function
+|random|) to produce a uniformly random integer in the range $n$ to $m$
+inclusive, where $n$ and $m$ are allowed to be either way around; so that
+a random number between 17 and 4 is the same thing as a random number
+between 4 and 17, and there is therefore no pair of $n$ and $m$ corresponding
+to an empty range of values.
+
+@c
+[ GenerateRandomNumber n m s;
+	if (n==m) return n;
+	if (n>m) { s = n; n = m; m = s; }
+	n--;
+	return random(m-n) + n;
+];
+Constant R_DecimalNumber = GenerateRandomNumber;
+Constant R_PrintTimeOfDay = GenerateRandomNumber;
+
+@p GroupChildren.
+The following runs through the child-objects of |par| in the I6 object tree,
+and moves those having a given |list_property| property value together, to
+become the eldest children. It preserves the ordering in between those
+objects, and also in between those not having that property value.
+
+We do this by temporarily moving objects into and out of |in_obj| and |out_obj|,
+objects which in all other circumstances never have children in the tree.
+
+@c
+[ GroupChildren par value;
+    while (child(par) ~= 0) {
+        if (LT_Compare(child(par).list_together, value) ~= 0)
+        	move child(par) to out_obj;
+        else
+        	move child(par) to in_obj;
+    }
+    while (child(in_obj) ~= 0)  move child(in_obj) to par;
+    while (child(out_obj) ~= 0) move child(out_obj) to par;
+    return child(par);
+];
+
+@p PrintSpaces.
+Which prints a row of $n$ spaces, for $n\geq 0$.
+
+@c
+[ PrintSpaces n;
+    while (n > 0) {
+        print " ";
+        n = n - 1;
+    }
+];
+
+@p RunRoutines.
+This function may not be very well-named, but the idea is to take a property
+of a given object and either to print it (and return |true|) if it's a string,
+and call it (and pass along its return value) if it's a routine. If the
+object does not provide the property, we act on the default value for the
+property if it has one, and otherwise do nothing (and return |false|).
+
+The I6 pseudo-object |thedark| is used to give the impression that Darkness
+is a room in its own right, which is not really true. Note that it is not
+permitted to have properties other than the three named here: all other
+properties are redirected to the current location's object.
+
+Properties with numbers under |INDIV_PROP_START| are "common properties".
+These come along with a table of default values, so that it is meaningful
+(in I6, anyway) to read them even when they are not provided (so that the
+address, returned by the |.&| operator, is zero).
+
+@c
+[ RunRoutines obj prop;
+    if (obj == thedark) obj = real_location;
+    if ((obj.&prop == 0) && (prop >= INDIV_PROP_START)) rfalse;
+    return obj.prop();
+];
+
+@p SwapWorkflags.
+Recall that we have two general-purpose temporary attributes for each object:
+|workflag| and |workflag2|. The following swaps their values over for every
+object at once.
+
+@c
+[ SwapWorkflags obj lst;
+	objectloop (obj ofclass Object) {
+		lst = false;
+		if (obj has workflag2) lst = true;
+		give obj ~workflag2;
+		if (obj has workflag) give obj workflag2;
+		give obj ~workflag;
+		if (lst) give obj workflag;
+	}
+];
+
+@p TestUseOption.
+This routine, compiled by NI, returns |true| if the supplied argument is the
+number of a use option in force for the current run of NI, and |false|
+otherwise.
+
+@c
+{-routine:UseOptions::TestUseOption}
+
+@p IntegerDivide.
+We can't simply use I6's |/| operator, as that translates directly into a
+virtual machine opcode which crashes on divide by zero.
+
+@c
+[ IntegerDivide A B;
+	if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }
+	return A/B;
+];
+
+@p IntegerRemainder.
+Similarly.
+
+@c
+[ IntegerRemainder A B;
+	if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }
+	return A%B;
+];
+
+@p UnsignedCompare.
+Comparison of I6 integers is normally signed, that is, treating the word as
+a twos-complement signed number, so that |$FFFF| is less than |0|, for
+instance. If we want to construe words as being unsigned integers, or as
+addresses, we need to compare them with the following routine, which returns
+1 if $x>y$, 0 if $x=y$ and $-1$ if $x<y$.
+
+@c
+[ UnsignedCompare x y u v;
+	#Ifdef TARGET_GLULX;
+	@jleu x y ?lesseq;
+	return 1;
+	.lesseq;
+	@jeq x y ?equal;
+	return -1;
+	.equal;
+	return 0;
+	#Ifnot;
+    if (x == y) return 0;
+    if (x < 0 && y >= 0) return 1;
+    if (x >= 0 && y < 0) return -1;
+    u = x&~WORD_HIGHBIT; v= y&~WORD_HIGHBIT;
+    if (u > v) return 1;
+    return -1;
+    #Endif;
+];
+
+
+@p SignedCompare.
+This routine is hardly ever needed; it wraps up ordinary comparisons.
+
+@c
+[ SignedCompare x y;
+	if (x > y) return 1;
+	if (x == y) return 0;
+	return -1;
+];
+
+@p ZRegion.
+I7 contains many relics from I6, but here's a relic from I5: a routine which
+used to determine the metaclass of a value, before that concept was given a
+name. In I6 code, it can be implemented simply using |metaclass|, as the
+following shows. (The name is from "region of the Z-machine".)
+
+@c
+[ ZRegion addr;
+    switch (metaclass(addr)) {
+		nothing: return 0;
+		Object, Class: return 1;
+		Routine: return 2;
+		String: return 3;
+    }
+];
+
+@p Memcpy.
+This is equivalent to C's memcpy function, in good ways and bad.
+
+@c
+[ Memcpy to_addr from_addr size  n;
+#Ifdef TARGET_ZCODE;
+	for (n = size/WORDSIZE: (n--) > 0: ) to_addr-->n = from_addr-->n;
+	for (n = size: ((n--) % WORDSIZE ~= 0): ) to_addr->n = from_addr->n;
+#Ifnot; ! TARGET_GLULX
+    @mcopy size from_addr to_addr;
+#Endif; ! TARGET_
+];
+
+@p Arrcpy.
+This is not quite so efficient, but not terrible.
+
+@c
+[ Arrcpy to_array to_entry_size from_array from_entry_size no_entries  n val;
+	if (to_entry_size == from_entry_size)
+		Memcpy(to_array, from_array, to_entry_size*no_entries);
+	else if ((to_entry_size == 2) && (from_entry_size == 4)) {
+		for (n = 0: n<no_entries: n++) {
+			val = from_array-->n;
+			to_array->0 = (val/256)%256; to_array->1 = val%256;
+			to_array = to_array + 2;
+		}
+	} else "*** Arrcpy doesn't support this ***";
+];

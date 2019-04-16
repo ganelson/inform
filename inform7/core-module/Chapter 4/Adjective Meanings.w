@@ -138,10 +138,8 @@ inter_name *Adjectives::Meanings::iname(adjectival_phrase *aph, int task, int we
 	aih->aph_held = aph;
 	aih->task_code = task;
 	aih->weak_ID_of_domain = weak_id;
-
-	aih->iname_held = Packaging::supply_iname(aph->aph_package, TASK_PR_COUNTER);
-	Inter::Symbols::set_flag(InterNames::to_symbol(aih->iname_held), MAKE_NAME_UNIQUE);
-
+	package_request *PR = Hierarchy::package_within(ADJECTIVE_TASKS_HAP, aph->aph_package);
+	aih->iname_held = Hierarchy::make_iname_in(TASK_FN_HL, PR);
 	return aih->iname_held;
 }
 
@@ -983,10 +981,8 @@ known in order to sort.
 	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to $u, task %d\n",
 		W, K, T);
 
-	packaging_state save = Packaging::enter(aph->aph_iname->eventual_owner);
-	Routines::begin_in_current_package(Adjectives::Meanings::iname(aph, T,
-		Kinds::RunTime::weak_id(K)));
-
+	inter_name *iname = Adjectives::Meanings::iname(aph, T, Kinds::RunTime::weak_id(K));
+	packaging_state save = Routines::begin(iname);
 	@<Add an it-variable to represent the value or object in the domain@>;
 
 	TEMPORARY_TEXT(C);
