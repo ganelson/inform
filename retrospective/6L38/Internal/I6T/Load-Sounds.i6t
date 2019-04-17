@@ -1,0 +1,35 @@
+B/lsnd: Load Sounds Template.
+ 
+@Purpose: To load the Sounds language definition element.
+ 
+@-------------------------------------------------------------------------------
+
+@p Data type definitions.
+
+@c
+{-lines:type}
+SOUND_NAME_TY:
+apply-macro:#BASE-KIND
+singular:sound name
+plural:sound names
+
+instance-of:WORD_VALUE_TY
+instance-of:ENUMERATED_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+named-values-created-with-assertions:yes
+default-value:0
+
+i6-printing-routine:PrintSoundName
+has-i6-GPR:yes
+apply-template:*UNDERSTOOD-VARIABLE
+constant-compilation-method:quantitative
+
+description:the name of a sound effect
+documentation-reference:kind_soundname
+index-priority:6
+index-default-value:<i>a silent non-sound</i>
+indexed-grey-if-empty:yes
+specification-text:When made with the Glulx setting, an Inform project can include sound effects or pieces of music. A sound name is just the name of one of these sounds in the current project.
+
+{-endlines}
+{-callv:Kinds::Interpreter::batch_done}
