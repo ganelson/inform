@@ -98,10 +98,8 @@ We need to itemise the structures we'll want to allocate:
 @e dval_written_MT
 @e nascent_array_MT
 @e value_holster_array_MT
-@e inter_namespace_MT
 @e inter_name_MT
 @e inter_name_family_MT
-@e inter_name_consumption_token_MT
 @e adjective_iname_holder_MT
 @e compilation_module_MT
 @e inter_schema_MT
@@ -143,10 +141,8 @@ ALLOCATE_INDIVIDUALLY(i6_memory_setting)
 ALLOCATE_INDIVIDUALLY(implication)
 ALLOCATE_INDIVIDUALLY(inference_subject)
 ALLOCATE_INDIVIDUALLY(instance)
-ALLOCATE_INDIVIDUALLY(inter_namespace)
 ALLOCATE_INDIVIDUALLY(inter_name)
 ALLOCATE_INDIVIDUALLY(inter_name_family)
-ALLOCATE_INDIVIDUALLY(inter_name_consumption_token)
 ALLOCATE_INDIVIDUALLY(internal_test_case)
 ALLOCATE_INDIVIDUALLY(inv_token_problem_token)
 ALLOCATE_INDIVIDUALLY(kind_interaction)

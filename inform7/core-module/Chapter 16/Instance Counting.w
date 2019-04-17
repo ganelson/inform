@@ -158,12 +158,22 @@ since Inform always compiles code which knows which kind it's looping over.
 
 =
 inter_name *PL::Counting::first_instance(kind *K) {
-	inter_name *iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+	kind_constructor *con = Kinds::get_construct(K);
+	inter_name *iname = Kinds::Constructors::first_instance_iname(con);
+	if (iname == NULL) {
+		iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+		Kinds::Constructors::set_first_instance_iname(con, iname);
+	}
 	return iname;
 }
 
 inter_name *PL::Counting::next_instance(kind *K) {
-	inter_name *iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+	kind_constructor *con = Kinds::get_construct(K);
+	inter_name *iname = Kinds::Constructors::next_instance_iname(con);
+	if (iname == NULL) {
+		iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+		Kinds::Constructors::set_next_instance_iname(con, iname);
+	}
 	return iname;
 }
 

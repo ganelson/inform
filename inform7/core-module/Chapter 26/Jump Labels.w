@@ -22,7 +22,6 @@ generates labels |L_0|, |L_1|, ...
 
 =
 typedef struct label_namespace {
-	struct text_stream *base_prefix;
 	struct text_stream *label_prefix;
 	int label_counter; /* next free ID number for this label namespace */
 	int allocate_storage; /* number of words of memory to reserve for each label */
@@ -42,9 +41,7 @@ label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module
 			"a label namespace prefix is too long",
 			"and should be shortened to a few alphabetic characters.");
 	label_namespace *lns = CREATE(label_namespace);
-	lns->base_prefix = Str::duplicate(name);
-	lns->label_prefix = Str::new();
-	WRITE_TO(lns->label_prefix, "%S%S", cm->namespace->namespace_prefix, name);
+	lns->label_prefix = Str::duplicate(name);
 	package_request *PR2 = Hierarchy::synoptic_package(LABEL_STORAGES_HAP);
 	lns->label_storage_iname = Hierarchy::make_iname_in(LABEL_ASSOCIATED_STORAGE_HL, PR2);
 	
@@ -63,7 +60,7 @@ optimising.
 label_namespace *JumpLabels::namespace_by_prefix(text_stream *name, compilation_module *cm) {
 	label_namespace *lns;
 	LOOP_OVER(lns, label_namespace)
-		if ((lns->module == cm) && (Str::eq(name, lns->base_prefix)))
+		if ((lns->module == cm) && (Str::eq(name, lns->label_prefix)))
 			return lns;
 	return NULL;
 }
@@ -126,7 +123,4 @@ void JumpLabels::compile_necessary_storage(void) {
 			Emit::array_end();
 			Packaging::exit(save);
 		}
-}
-
-void JumpLabels::reset(void) {
 }

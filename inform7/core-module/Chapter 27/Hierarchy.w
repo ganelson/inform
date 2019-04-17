@@ -596,8 +596,8 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(DEFAULT_CLOSURE_FN_HL, I"default_closure_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(GPR_FN_HL, I"gpr_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(INSTANCE_GPR_FN_HL, I"instance_gpr_fn", Translation::uniqued(), in_kind);
-		HierarchyLocations::con(FIRST_INSTANCE_HL, NULL, Translation::suffix_special(I"_First", FIRST_INSTANCE_INDERIV), in_kind);
-		HierarchyLocations::con(NEXT_INSTANCE_HL, NULL, Translation::suffix_special(I"_Next", NEXT_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(FIRST_INSTANCE_HL, NULL, Translation::suffix(I"_First"), in_kind);
+		HierarchyLocations::con(NEXT_INSTANCE_HL, NULL, Translation::suffix(I"_Next"), in_kind);
 		HierarchyLocations::con(COUNT_INSTANCE_1_HL, NULL, Translation::to(I"IK1_Count"), in_kind);
 		HierarchyLocations::con(COUNT_INSTANCE_2_HL, NULL, Translation::to(I"IK2_Count"), in_kind);
 		HierarchyLocations::con(COUNT_INSTANCE_3_HL, NULL, Translation::to(I"IK3_Count"), in_kind);
@@ -608,7 +608,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::con(COUNT_INSTANCE_8_HL, NULL, Translation::to(I"IK8_Count"), in_kind);
 		HierarchyLocations::con(COUNT_INSTANCE_9_HL, NULL, Translation::to(I"IK9_Count"), in_kind);
 		HierarchyLocations::con(COUNT_INSTANCE_10_HL, NULL, Translation::to(I"IK10_Count"), in_kind);
-		HierarchyLocations::con(COUNT_INSTANCE_HL, NULL, Translation::suffix_special(I"_Count", COUNT_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_HL, NULL, Translation::suffix(I"_Count"), in_kind);
 		HierarchyLocations::ap(KIND_INLINE_PROPERTIES_HAP, in_kind, I"inline_property", I"_inline_property");
 			location_requirement in_kind_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
 			HierarchyLocations::con(KIND_INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_kind_inline_property);
@@ -661,7 +661,7 @@ void Hierarchy::establish(void) {
 			HierarchyLocations::con(CLOSURE_DATA_HL, I"closure_data", Translation::uniqued(), in_closure);
 		HierarchyLocations::ap(REQUESTS_HAP, in_to_phrase, I"request", I"_request");
 			location_requirement in_request = HierarchyLocations::any_package_of_type(I"_request");
-			HierarchyLocations::func(PHRASE_FN_HL, I"phrase_fn", Translation::generate_in(I"REQ"), in_request);
+			HierarchyLocations::func(PHRASE_FN_HL, I"phrase_fn", Translation::uniqued(), in_request);
 
 	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(phrases);
 	HierarchyLocations::ap(LABEL_STORAGES_HAP, synoptic_phrases, I"label_storage", I"_label_storage");
@@ -830,8 +830,8 @@ void Hierarchy::establish(void) {
 	location_requirement local_rules = HierarchyLocations::local_submodule(rules);
 	HierarchyLocations::ap(RULES_HAP, local_rules, I"rule", I"_rule");
 		location_requirement in_rule = HierarchyLocations::any_package_of_type(I"_rule");
-		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::generate_in(I"I6_Rule_Shell"), in_rule);
-		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::generate_in(I"R"), in_rule);
+		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::uniqued(), in_rule);
+		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::uniqued(), in_rule);
 		HierarchyLocations::con(EXTERIOR_RULE_HL, I"exterior_rule", Translation::uniqued(), in_rule);
 		HierarchyLocations::func(RESPONDER_FN_HL, I"responder_fn", Translation::suffix(I"M"), in_rule);
 		HierarchyLocations::ap(RESPONSES_HAP, in_rule, I"response", I"_response");
@@ -1554,7 +1554,7 @@ inter_name *Hierarchy::find(int id) {
 }
 
 void Hierarchy::make_available(inter_name *iname) {
-	HierarchyLocations::make_as(-1, InterNames::to_symbol(iname)->symbol_name, iname);
+	HierarchyLocations::make_as(-1, InterNames::to_text(iname), iname);
 }
 
 inter_name *Hierarchy::find_by_name(text_stream *name) {
@@ -1570,7 +1570,7 @@ inter_name *Hierarchy::find_by_name(text_stream *name) {
 package_request *main_pr = NULL;
 package_request *Hierarchy::main(void) {
 	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::one_off(I"main", NULL), NULL, plain_ptype);
+		main_pr = Packaging::request(InterNames::make(I"main", NULL), NULL, plain_ptype);
 	return main_pr;
 }
 
@@ -1578,7 +1578,7 @@ package_request *resources_pr = NULL;
 package_request *Hierarchy::resources(void) {
 	if (resources_pr == NULL)
 		resources_pr = Packaging::request(
-			InterNames::one_off(I"resources", Hierarchy::main()),
+			InterNames::make(I"resources", Hierarchy::main()),
 			Hierarchy::main(), plain_ptype);
 	return resources_pr;
 }
@@ -1587,7 +1587,7 @@ package_request *template_pr = NULL;
 package_request *Hierarchy::template(void) {
 	if (template_pr == NULL)
 		template_pr = Packaging::request(
-			InterNames::one_off(I"template", Hierarchy::resources()),
+			InterNames::make(I"template", Hierarchy::resources()),
 			Hierarchy::resources(), module_ptype);
 	return template_pr;
 }

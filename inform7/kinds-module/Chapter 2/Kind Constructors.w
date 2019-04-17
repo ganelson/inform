@@ -91,6 +91,8 @@ typedef struct kind_constructor {
 	#ifdef INTER_MODULE
 	struct inter_name *kind_GPR_iname;
 	struct inter_name *instance_GPR_iname;
+	struct inter_name *first_instance_iname;
+	struct inter_name *next_instance_iname;
 	struct inter_name *pr_iname;
 	struct inter_name *inc_iname;
 	struct inter_name *dec_iname;
@@ -270,6 +272,8 @@ I6 template files.
 	#ifdef INTER_MODULE
 	con->kind_GPR_iname = NULL;
 	con->instance_GPR_iname = NULL;
+	con->first_instance_iname = NULL;
+	con->next_instance_iname = NULL;
 	con->pr_iname = NULL;
 	con->inc_iname = NULL;
 	con->dec_iname = NULL;
@@ -400,6 +404,18 @@ package_request *Kinds::Constructors::package(kind_constructor *con) {
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {
 	if (UNKNOWN_TY_iname == NULL) internal_error("no con symbols yet");
 	return con->con_iname;
+}
+inter_name *Kinds::Constructors::first_instance_iname(kind_constructor *con) {
+	return con->first_instance_iname;
+}
+void Kinds::Constructors::set_first_instance_iname(kind_constructor *con, inter_name *iname) {
+	con->first_instance_iname = iname;
+}
+inter_name *Kinds::Constructors::next_instance_iname(kind_constructor *con) {
+	return con->next_instance_iname;
+}
+void Kinds::Constructors::set_next_instance_iname(kind_constructor *con, inter_name *iname) {
+	con->next_instance_iname = iname;
 }
 #endif
 

@@ -2,10 +2,10 @@
 
 @ =
 typedef struct compilation_module {
-	struct inter_namespace *namespace;
 	struct package_request *resources;
 	struct submodule_requests subpackages;
 	struct parse_node *hanging_from;
+	struct text_stream *abbreviation;
 	MEMORY_MANAGEMENT
 } compilation_module;
 
@@ -41,18 +41,14 @@ compilation_module *Modules::new(parse_node *from) {
 	compilation_module *C = CREATE(compilation_module);
 	C->hanging_from = from;
 	C->resources = NULL;
-	if (C->allocation_id == 0) C->namespace = InterNames::root();
+	if (C->allocation_id == 0) C->abbreviation = I"root";
 	else {
+		C->abbreviation = Str::new();
 		if (from == NULL) internal_error("unlocated CM");
 		if (Modules::markable(from) == FALSE) internal_error("inappropriate CM");
-		TEMPORARY_TEXT(pfx);
 		char *x = "";
 		if ((C->allocation_id == 1) && (export_mode)) x = "x";
-		WRITE_TO(pfx, "m%s%d", x, C->allocation_id);
-		C->namespace = InterNames::new_namespace(pfx);
-		Str::clear(C->namespace->unmarked_prefix);
-		WRITE_TO(C->namespace->unmarked_prefix, "m%d", C->allocation_id);
-		DISCARD_TEXT(pfx);
+		WRITE_TO(C->abbreviation, "m%s%d", x, C->allocation_id);
 		ParseTree::set_module(from, C);
 		Modules::propagate_downwards(from->down, C);
 	}

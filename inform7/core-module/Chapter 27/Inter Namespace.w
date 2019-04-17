@@ -3,151 +3,79 @@
 @
 
 @e UNIQUE_FUSAGE from 1
-@e UNIQUE_PER_NAMESPACE_FUSAGE
-@e MANY_PER_NAMESPACE_FUSAGE
+@e MULTIPLE_FUSAGE
 @e DERIVED_FUSAGE
 
 =
-typedef struct inter_namespace {
-	struct text_stream *namespace_prefix;
-	struct text_stream *unmarked_prefix;
-	int exporting;
-	MEMORY_MANAGEMENT
-} inter_namespace;
-
-inter_namespace *root_namespace = NULL;
-
 typedef struct inter_name_family {
 	int fusage;
 	struct text_stream *family_name;
-	struct inter_name_consumption_token *first_ict;
+	int no_consumed;
 	struct inter_name_family *derivative_of;
 	struct text_stream *derived_prefix;
 	struct text_stream *derived_suffix;
-	int mark_exports;
 	MEMORY_MANAGEMENT
 } inter_name_family;
 
-typedef struct inter_name_consumption_token {
-	struct inter_namespace *for_namespace;
-	int no_consumed;
-	struct inter_name_consumption_token *next_ict;
-	MEMORY_MANAGEMENT
-} inter_name_consumption_token;
-
 typedef struct inter_name {
-	struct inter_namespace *namespace;
 	struct inter_name_family *family;
 	int unique_number;
 	struct inter_symbol *symbol;
 	struct package_request *eventual_owner;
 	struct text_stream *memo;
-	struct text_stream *override;
 	struct inter_name *derived_from;
 	struct inter_name **parametrised_derivatives;
-	struct compilation_module *declared_in;
-	int to_mark;
 	MEMORY_MANAGEMENT
 } inter_name;
 
 @ =
-inter_namespace *InterNames::new_namespace(text_stream *prefix) {
-	inter_namespace *S = CREATE(inter_namespace);
-	S->namespace_prefix = Str::duplicate(prefix);
-	S->unmarked_prefix = Str::duplicate(prefix);
-	S->exporting = FALSE;
-	return S;
-}
-
-inter_namespace *InterNames::root(void) {
-	if (root_namespace == NULL) root_namespace = InterNames::new_namespace(NULL);
-	return root_namespace;
-}
-
 inter_name_family *InterNames::new_family(int fu, text_stream *name) {
 	inter_name_family *F = CREATE(inter_name_family);
 	F->fusage = fu;
 	F->family_name = Str::duplicate(name);
-	F->first_ict = NULL;
 	F->derivative_of = NULL;
 	F->derived_prefix = NULL;
 	F->derived_suffix = NULL;
-	F->mark_exports = TRUE;
 	return F;
 }
 
-inter_name_consumption_token *InterNames::new_ict(inter_namespace *S) {
-	if (S == NULL) internal_error("no namespace");
-	inter_name_consumption_token *T = CREATE(inter_name_consumption_token);
-	T->for_namespace = S;
-	T->no_consumed = 1;
-	T->next_ict = NULL;
-	return T;
-}
-
-inter_name *InterNames::new_in_space(inter_namespace *S, inter_name_family *F, int suppress_count) {
-	if (S == NULL) internal_error("no namespace");
+inter_name *InterNames::make_in_family(inter_name_family *F, int suppress_count) {
 	if (F == NULL) internal_error("no family");
 	inter_name *N = CREATE(inter_name);
-	N->namespace = S;
 	N->family = F;
 	N->unique_number = 0;
 	if (F->fusage == UNIQUE_FUSAGE) internal_error("not a family name");
 	if ((F->fusage != DERIVED_FUSAGE) && (suppress_count == FALSE)) {
-		inter_name_consumption_token *ict = F->first_ict;
-		if (ict == NULL) {
-			F->first_ict = InterNames::new_ict(S);
-			N->unique_number = 1;
-		} else {
-			while (ict) {
-				if (ict->for_namespace == S) {
-					if (F->fusage == UNIQUE_PER_NAMESPACE_FUSAGE) internal_error("one per namespace, please");
-					N->unique_number = ++ict->no_consumed;
-					break;
-				}
-				if (ict->next_ict == NULL) {
-					ict->next_ict = InterNames::new_ict(S);
-					N->unique_number = 1;
-					break;
-				}
-				ict = ict->next_ict;
-			}
-		}
+		N->unique_number = ++F->no_consumed;
 	}
 	N->symbol = NULL;
 	N->memo = NULL;
 	N->derived_from = NULL;
 	N->parametrised_derivatives = NULL;
-	N->declared_in = NULL;
-	N->to_mark = 0;
 	N->eventual_owner = Hierarchy::main();
 	return N;
 }
 
+inter_name *InterNames::make(text_stream *name, package_request *R) {
+	inter_name_family *F = InterNames::new_family(UNIQUE_FUSAGE, name);
+	inter_name *N = CREATE(inter_name);
+	N->family = F;
+	N->unique_number = 1;
+	N->symbol = NULL;
+	N->memo = NULL;
+	N->derived_from = NULL;
+	N->parametrised_derivatives = NULL;
+	N->eventual_owner = R;
+	return N;
+}
+
 inter_name_family *InterNames::name_generator(text_stream *prefix, text_stream *stem, text_stream *suffix) {
-	int fusage = MANY_PER_NAMESPACE_FUSAGE;
+	int fusage = MULTIPLE_FUSAGE;
 	if ((Str::len(prefix) > 0) || (Str::len(suffix) > 0)) fusage = DERIVED_FUSAGE;
 	inter_name_family *family = InterNames::new_family(fusage, stem);
 	if (Str::len(prefix) > 0) family->derived_prefix = Str::duplicate(prefix);
 	if (Str::len(suffix) > 0) family->derived_suffix = Str::duplicate(suffix);
 	return family;
-}
-
-inter_name *InterNames::one_off(text_stream *name, package_request *R) {
-	inter_name_family *F = InterNames::new_family(UNIQUE_FUSAGE, name);
-	inter_name *N = CREATE(inter_name);
-	N->namespace = InterNames::root();
-	N->family = F;
-	N->unique_number = 1;
-	N->symbol = NULL;
-	N->memo = NULL;
-	N->override = NULL;
-	N->derived_from = NULL;
-	N->parametrised_derivatives = NULL;
-	N->declared_in = NULL;
-	N->to_mark = 0;
-	N->eventual_owner = R;
-	return N;
 }
 
 void InterNames::attach_memo(inter_name *N, wording W) {
@@ -180,16 +108,13 @@ text_stream *InterNames::get_translation(inter_name *N) {
 }
 
 inter_symbol *InterNames::to_symbol(inter_name *N) {
-	if (N->symbol) {
-		if (N->to_mark) Inter::Symbols::set_flag(N->symbol, N->to_mark);
-		return N->symbol;
+	if (N->symbol == NULL) {
+		TEMPORARY_TEXT(NBUFF);
+		WRITE_TO(NBUFF, "%n", N);
+		inter_symbols_table *T = Packaging::scope(Emit::repository(), N);
+		N->symbol = Emit::new_symbol(T, NBUFF);
+		DISCARD_TEXT(NBUFF);
 	}
-	TEMPORARY_TEXT(NBUFF);
-	WRITE_TO(NBUFF, "%n", N);
-	inter_symbols_table *T = Packaging::scope(Emit::repository(), N);
-	N->symbol = Emit::new_symbol(T, NBUFF);
-	DISCARD_TEXT(NBUFF);
-	if (N->to_mark) Inter::Symbols::set_flag(N->symbol, N->to_mark);
 	return N->symbol;
 }
 
@@ -236,9 +161,7 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	inter_name *N = (inter_name *) vI;
 	if (N == NULL) WRITE("<no-inter-name>");
 	else {
-		if ((N->family == NULL) || (N->namespace == NULL)) internal_error("bad inter_name");
-		text_stream *NP = N->namespace->namespace_prefix;
-		if (N->family->mark_exports == FALSE) NP = N->namespace->unmarked_prefix;
+		if (N->family == NULL) internal_error("bad inter_name");
 		switch (N->family->fusage) {
 			case DERIVED_FUSAGE:
 				WRITE("%S", N->family->derived_prefix);
@@ -248,12 +171,7 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 			case UNIQUE_FUSAGE:
 				WRITE("%S", N->family->family_name);
 				break;
-			case UNIQUE_PER_NAMESPACE_FUSAGE:
-				if (Str::len(NP) > 0) WRITE("%S_", NP);
-				WRITE("%S", N->family->family_name);
-				break;
-			case MANY_PER_NAMESPACE_FUSAGE:
-				if (Str::len(NP) > 0) WRITE("%S_", NP);
+			case MULTIPLE_FUSAGE:
 				WRITE("%S", N->family->family_name);
 				if (N->unique_number >= 0) WRITE("%d", N->unique_number);
 				break;
@@ -310,61 +228,17 @@ int InterNames::defined(inter_name *iname) {
 }
 
 inter_name *InterNames::new_f(inter_name_family *F, int fix) {
-	inter_name *iname = InterNames::new_in_space(InterNames::root(), F, FALSE);
+	inter_name *iname = InterNames::make_in_family(F, FALSE);
 	if (fix != -1) iname->unique_number = fix;
 	return iname;
-}
-
-inter_name *InterNames::new_in_f(inter_name_family *F, compilation_module *C, int fix) {
-	if (C == NULL) return InterNames::new_f(F, fix);
-	inter_name *iname = InterNames::new_in_space(C->namespace, F, FALSE);
-	if (fix != -1) iname->unique_number = fix;
-	InterNames::mark(F, iname, C);
-	return iname;
-}
-
-void InterNames::mark(inter_name_family *F, inter_name *iname, compilation_module *C) {
-	iname->declared_in = C;
-}
-
-compilation_module *InterNames::to_module(inter_name *iname) {
-	if (iname == NULL) return NULL;
-	return iname->declared_in;
 }
 
 inter_name *InterNames::new_derived_f(inter_name_family *F, inter_name *from) {
 	if (F->fusage != DERIVED_FUSAGE) internal_error("not a derived family");
-	inter_name *N = InterNames::new_in_space(InterNames::root(), F, TRUE);
+	inter_name *N = InterNames::make_in_family(F, TRUE);
 	Packaging::house_with(N, from);
 	N->derived_from = from;
-	compilation_module *C = InterNames::to_module(from);
-	InterNames::mark(F, N, C);
 	return N;
-}
-
-@
-
-@e FIRST_INSTANCE_INDERIV from 26
-@e COUNT_INSTANCE_INDERIV
-@e NEXT_INSTANCE_INDERIV
-
-@e FINAL_INDERIV
-
-inter_name *InterNames::letter_parametrised_name_f(inter_name_family *family, inter_name *rname, int marker, package_request *R) {
-	if (rname == NULL) internal_error("can't parametrise null name");
-	if (rname->parametrised_derivatives == NULL) {
-		rname->parametrised_derivatives =
-			Memory::I7_calloc(FINAL_INDERIV, sizeof(inter_name *), INTER_SYMBOLS_MREASON);
-		for (int i=0; i<FINAL_INDERIV; i++) rname->parametrised_derivatives[i] = NULL;
-	}
-	if ((marker < 0) || (marker >= FINAL_INDERIV)) internal_error("respomse parameter out of range");
-	if (rname->parametrised_derivatives[marker] == NULL) {
-		rname->parametrised_derivatives[marker] = InterNames::new_f(family, -1);
-		if (R) Packaging::house(rname->parametrised_derivatives[marker], R);
-		rname->parametrised_derivatives[marker]->derived_from = rname;
-	}
-
-	return rname->parametrised_derivatives[marker];
 }
 
 void InterNames::override_action_base_iname(inter_name *ab_iname, text_stream *to) {

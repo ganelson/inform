@@ -176,7 +176,7 @@ package_request *generic_pr = NULL;
 package_request *Packaging::request_generic(void) {
 	if (generic_pr == NULL)
 		generic_pr = Packaging::request(
-			InterNames::one_off(I"generic", Hierarchy::resources()),
+			InterNames::make(I"generic", Hierarchy::resources()),
 			Hierarchy::resources(), module_ptype);
 	return generic_pr;
 }
@@ -185,7 +185,7 @@ package_request *synoptic_pr = NULL;
 package_request *Packaging::request_synoptic(void) {
 	if (synoptic_pr == NULL)
 		synoptic_pr = Packaging::request(
-			InterNames::one_off(I"synoptic", Hierarchy::resources()),
+			InterNames::make(I"synoptic", Hierarchy::resources()),
 			Hierarchy::resources(), module_ptype);
 	return synoptic_pr;
 }
@@ -213,7 +213,7 @@ typedef struct submodule_requests {
 } submodule_requests;
 
 package_request *Packaging::resources_for_new_submodule(text_stream *name, submodule_requests *SR) {
-	inter_name *package_iname = InterNames::one_off(name, Hierarchy::resources());
+	inter_name *package_iname = InterNames::make(name, Hierarchy::resources());
 	package_request *P = Packaging::request(package_iname, Hierarchy::resources(), module_ptype);
 	Packaging::initialise_submodules(SR);
 	return P;
@@ -274,7 +274,7 @@ package_request *Packaging::synoptic_resource(submodule_identity *sid) {
 	LOOP_OVER_LINKED_LIST(sr, submodule_request, SR->submodules)
 		if (sid == sr->which_submodule)
 			return sr->where_found;
-	inter_name *iname = InterNames::one_off(sid->submodule_name, parent);
+	inter_name *iname = InterNames::make(sid->submodule_name, parent);
 	sr = CREATE(submodule_request);
 	sr->which_submodule = sid;
 	sr->where_found = Packaging::request(iname, parent, plain_ptype);
@@ -315,14 +315,14 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 	}
 	TEMPORARY_TEXT(P);
 	WRITE_TO(P, "%S_%d", pr_counter_names[what_for], N);
-	inter_name *iname = InterNames::one_off(P, R);
+	inter_name *iname = InterNames::make(P, R);
 	DISCARD_TEXT(P);
 	return iname;
 }
 
 inter_name *Packaging::function(inter_name *function_iname, package_request *R2, inter_name *temp_iname) {
 	package_request *R3 = Packaging::request(function_iname, R2, function_ptype);
-	inter_name *iname = InterNames::one_off(I"call", R3);
+	inter_name *iname = InterNames::make(I"call", R3);
 	Packaging::house(iname, R3);
 	if (temp_iname) {
 		TEMPORARY_TEXT(T);
@@ -335,7 +335,7 @@ inter_name *Packaging::function(inter_name *function_iname, package_request *R2,
 
 inter_name *Packaging::function_text(inter_name *function_iname, package_request *R2, text_stream *translation) {
 	package_request *R3 = Packaging::request(function_iname, R2, function_ptype);
-	inter_name *iname = InterNames::one_off(I"call", R3);
+	inter_name *iname = InterNames::make(I"call", R3);
 	Packaging::house(iname, R3);
 	if (translation)
 		InterNames::change_translation(iname, translation);
@@ -344,7 +344,7 @@ inter_name *Packaging::function_text(inter_name *function_iname, package_request
 
 inter_name *Packaging::datum_text(inter_name *function_iname, package_request *R2, text_stream *translation) {
 	package_request *R3 = Packaging::request(function_iname, R2, data_ptype);
-	inter_name *iname = InterNames::one_off(translation, R3);
+	inter_name *iname = InterNames::make(translation, R3);
 	Packaging::house(iname, R3);
 	return iname;
 }

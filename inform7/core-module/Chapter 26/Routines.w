@@ -42,7 +42,6 @@ void Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
 		internal_error("routine outside of package");
 	}
 	currently_compiling_iname = iname;
-	JumpLabels::reset();
 
 	@<Prepare a suitable stack frame@>;
 
