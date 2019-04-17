@@ -292,6 +292,13 @@ void Emit::begin(void) {
 	Hierarchy::main()->write_position = Emit::bookmark_bubble();
 }
 
+inter_symbol *Emit::packagetype(text_stream *name, int enclosing) {
+	inter_symbol *pt = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), name);
+	Emit::guard(Inter::PackageType::new_packagetype(&package_types_bookmark, pt, Emit::baseline(&package_types_bookmark), NULL));
+	if (enclosing) Emit::annotate_symbol_i(pt, ENCLOSING_IANN, 1);
+	return pt;
+}
+
 int Emit::is_indirect_interp(inter_symbol *s) {
 	if (s == indirect0_interp) return TRUE;
 	if (s == indirect1_interp) return TRUE;

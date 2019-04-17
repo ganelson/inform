@@ -999,7 +999,7 @@ inter_name *Kinds::RunTime::iname(kind *K) {
 int object_kind_count = 1;
 inter_name *Kinds::RunTime::iname_inner(kind *K) {
 	if (Kinds::is_proper_constructor(K)) {
-		return InterNames::constructed_kind_name(K);
+		return Kinds::RunTime::constructed_kind_name(K);
 	}
 	if (Kinds::RunTime::base_represented_in_inter(K)) {
 		return Kinds::RunTime::assure_iname_exists(K);
@@ -1011,11 +1011,22 @@ inter_name *Kinds::RunTime::assure_iname_exists(kind *K) {
 	noun *nt = Kinds::Behaviour::get_noun(K);
 	if (nt) {
 		if (UseNouns::iname_set(nt) == FALSE) {
-			inter_name *iname = InterNames::constructed_kind_name(K);
+			inter_name *iname = Kinds::RunTime::constructed_kind_name(K);
 			UseNouns::noun_impose_identifier(nt, iname);
 		}
 	}
 	return UseNouns::iname(nt);
+}
+
+inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
+	package_request *R2 = Kinds::Behaviour::package(K);
+	TEMPORARY_TEXT(KT);
+	Kinds::Textual::write(KT, K);
+	wording W = Feeds::feed_stream(KT);
+	DISCARD_TEXT(KT);
+	int v = -2;
+	if (Kinds::Compare::lt(K, K_object)) v = Kinds::RunTime::I6_classnumber(K);
+	return Hierarchy::make_iname_with_memo_and_value(KIND_CLASS_HL, R2, W, v);
 }
 
 @ =
@@ -1058,10 +1069,18 @@ void Kinds::RunTime::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Compare::le(K, K_object))) {
-			package_request *PR = Kinds::Behaviour::package(K);
-			packaging_state save = Packaging::enter(PR);
-			inter_name *iname = InterNames::icount_name(K);
-			Packaging::house(iname, PR);
+			TEMPORARY_TEXT(ICN);
+			WRITE_TO(ICN, "ICOUNT_");
+			Kinds::Textual::write(ICN, K);
+			Str::truncate(ICN, 31);
+			LOOP_THROUGH_TEXT(pos, ICN) {
+				Str::put(pos, Characters::toupper(Str::get(pos)));
+				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
+			}
+			Emit::main_render_unique(Emit::main_scope(), ICN);
+			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, ICN, Kinds::Behaviour::package(K));
+			DISCARD_TEXT(ICN);
+			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
 			Packaging::exit(save);
 		}

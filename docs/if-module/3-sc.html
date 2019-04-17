@@ -270,7 +270,7 @@ routine for colours; and the best thing is to print nothing at all.
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
@@ -310,9 +310,9 @@ routine for colours; and the best thing is to print nothing at all.
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TEXT_TY_COMPARE_HL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TEXT_TY_COMPARE_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">)));</span>
+                        <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
@@ -365,7 +365,7 @@ routine for colours; and the best thing is to print nothing at all.
         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1v_interp</span><span class="plain">);</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">)));</span>
+            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
@@ -400,7 +400,7 @@ turn by turn.
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">)) {</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ALLOWINSHOWME_HL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ALLOWINSHOWME_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>

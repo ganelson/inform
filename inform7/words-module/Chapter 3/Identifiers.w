@@ -18,9 +18,25 @@ int Identifiers::valid(wchar_t *p) {
 	return TRUE;
 }
 
+@ The following flattens characters into shape:
+
+=
+void Identifiers::purify(text_stream *identifier) {
+	LOOP_THROUGH_TEXT(pos, identifier) {
+		int x = Str::get(pos);
+		if (!(((x >= '0') && (x <= '9')) ||
+			((x >= 'a') && (x <= 'z')) || ((x >= 'A') && (x <= 'Z')) || (x == '_')))
+			Str::put(pos, '_');
+	}
+}
+
 @h Automatically composed identifiers.
-For the sake of legibility of the compiled code, we adapt natural language
-descriptions to this format as best we can, in a standardised pattern which
+The following routines are no longer used by Inform, but retained in case
+useful for other projects.
+
+The idea here is that we want an identifier based on a natural language
+wording, but which passed the above validity tests, and which does not lead
+tp namespace collisions. Such identifiers are composed in a pattern which
 uses an identifying letter (e.g., A for Action), a unique ID number
 (preventing name-clashes) and then a truncated alphanumeric-safe form of
 the words used in the textual description, if any. For example, an object
@@ -64,16 +80,4 @@ void Identifiers::compose_numberless(text_stream *identifier, text_stream *prefi
 	}
 	Str::truncate(identifier, 28); /* it was at worst 62 chars in size, but is now truncated to 28 */
 	Identifiers::purify(identifier);
-}
-
-@ Where we flatten the characters into shape thus:
-
-=
-void Identifiers::purify(text_stream *identifier) {
-	LOOP_THROUGH_TEXT(pos, identifier) {
-		int x = Str::get(pos);
-		if (!(((x >= '0') && (x <= '9')) ||
-			((x >= 'a') && (x <= 'z')) || ((x >= 'A') && (x <= 'Z')) || (x == '_')))
-			Str::put(pos, '_');
-	}
 }

@@ -284,7 +284,7 @@
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NEXTWORDSTOPPED_HL</span><span class="plain">)));</span>
+                                <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NEXTWORDSTOPPED_HL</span><span class="plain">));</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
                                 <span class="identifier">Emit::val_dword</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>

@@ -2,12 +2,10 @@
 
 @
 
+@e BOGUS_HAP from 0
+
 =
-location_requirement home_for_weak_type_IDs;
-
 void Hierarchy::establish(void) {
-	home_for_weak_type_IDs = HierarchyLocations::blank();
-
 	Packaging::register_counter(I"code_block"); // This will be counter number 0
 	Packaging::register_counter(I"kernel"); // This will be counter number 1
 
@@ -145,9 +143,9 @@ void Hierarchy::establish(void) {
 	location_requirement local_actions = HierarchyLocations::local_submodule(actions);
 	HierarchyLocations::ap(ACTIONS_HAP, local_actions, I"action", I"_action");
 		location_requirement in_action = HierarchyLocations::any_package_of_type(I"_action");
-		HierarchyLocations::con(ACTION_BASE_NAME_HL, NULL, Translation::generate(ACTION_BASE_INAMEF), in_action);
-		HierarchyLocations::con(DOUBLE_SHARP_NAME_HL, NULL, Translation::derive(ACTION_INAMEF), in_action);
-		HierarchyLocations::func(PERFORM_FN_HL, I"perform_fn", Translation::derive(ACTION_ROUTINE_INAMEF), in_action);
+		HierarchyLocations::con(ACTION_BASE_NAME_HL, I"A", Translation::uniqued(), in_action);
+		HierarchyLocations::con(DOUBLE_SHARP_NAME_HL, NULL, Translation::prefix(I"##"), in_action);
+		HierarchyLocations::func(PERFORM_FN_HL, I"perform_fn", Translation::suffix(I"Sub"), in_action);
 		HierarchyLocations::package(CHECK_RB_HL, I"check_rb", I"_rulebook", in_action);
 		HierarchyLocations::package(CARRY_OUT_RB_HL, I"carry_out_rb", I"_rulebook", in_action);
 		HierarchyLocations::package(REPORT_RB_HL, I"report_rb", I"_rulebook", in_action);
@@ -183,7 +181,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_activities = HierarchyLocations::local_submodule(activities);
 	HierarchyLocations::ap(ACTIVITIES_HAP, local_activities, I"activity", I"_activity");
 		location_requirement in_activity = HierarchyLocations::any_package_of_type(I"_activity");
-		HierarchyLocations::con(ACTIVITY_HL, NULL, Translation::generate(ACTIVITY_INAMEF), in_activity);
+		HierarchyLocations::con(ACTIVITY_HL, NULL, Translation::generate(I"V"), in_activity);
 		HierarchyLocations::package(BEFORE_RB_HL, I"before_rb", I"_rulebook", in_activity);
 		HierarchyLocations::package(FOR_RB_HL, I"for_rb", I"_rulebook", in_activity);
 		HierarchyLocations::package(AFTER_RB_HL, I"after_rb", I"_rulebook", in_activity);
@@ -219,10 +217,10 @@ void Hierarchy::establish(void) {
 			HierarchyLocations::func(TASK_FN_HL, I"task_fn", Translation::uniqued(), in_adjective_task);
 	HierarchyLocations::ap(ADJECTIVE_MEANINGS_HAP, local_adjectives, I"adjective_meaning", I"_adjective_meaning");
 		location_requirement in_adjective_meaning = HierarchyLocations::any_package_of_type(I"_adjective_meaning");
-		HierarchyLocations::func(MEASUREMENT_FN_HL, I"measurement_fn", Translation::generate(MEASUREMENT_ADJECTIVE_INAMEF), in_adjective_meaning);
+		HierarchyLocations::func(MEASUREMENT_FN_HL, I"measurement_fn", Translation::generate(I"MADJ_Test"), in_adjective_meaning);
 	HierarchyLocations::ap(ADJECTIVE_PHRASES_HAP, local_adjectives, I"adjective_phrase", I"_adjective_phrase");
 		location_requirement in_adjective_phrase = HierarchyLocations::any_package_of_type(I"_adjective_phrase");
-		HierarchyLocations::func(DEFINITION_FN_HL, I"measurement_fn", Translation::generate(ADJECTIVE_DEFINED_INAMEF), in_adjective_phrase);
+		HierarchyLocations::func(DEFINITION_FN_HL, I"measurement_fn", Translation::generate(I"ADJDEFN"), in_adjective_phrase);
 
 @h Bibliographic.
 
@@ -262,7 +260,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_chronology = HierarchyLocations::local_submodule(chronology);
 	HierarchyLocations::ap(PAST_ACTION_PATTERNS_HAP, local_chronology, I"past_action_pattern", I"_past_action_pattern");
 		location_requirement in_past_action_pattern = HierarchyLocations::any_package_of_type(I"_past_action_pattern");
-		HierarchyLocations::func(PAP_FN_HL, I"pap_fn", Translation::generate(PAST_ACTION_ROUTINE_INAMEF), in_past_action_pattern);
+		HierarchyLocations::func(PAP_FN_HL, I"pap_fn", Translation::generate(I"PAPR"), in_past_action_pattern);
 
 	location_requirement synoptic_chronology = HierarchyLocations::synoptic_submodule(chronology);
 	HierarchyLocations::con(TIMEDEVENTSTABLE_HL, I"TimedEventsTable", Translation::same(), synoptic_chronology);
@@ -299,10 +297,10 @@ void Hierarchy::establish(void) {
 	location_requirement local_conjugations = HierarchyLocations::local_submodule(conjugations);
 	HierarchyLocations::ap(MVERBS_HAP, local_conjugations, I"mverb", I"_modal_verb");
 		location_requirement in_modal_verb = HierarchyLocations::any_package_of_type(I"_modal_verb");
-		HierarchyLocations::func(MODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(CONJUGATE_VERB_ROUTINE_INAMEF), in_modal_verb);
+		HierarchyLocations::func(MODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(I"ConjugateModalVerb"), in_modal_verb);
 	HierarchyLocations::ap(VERBS_HAP, local_conjugations, I"verb", I"_verb");
 		location_requirement in_verb = HierarchyLocations::any_package_of_type(I"_verb");
-		HierarchyLocations::func(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(CONJUGATE_VERB_ROUTINE_INAMEF), in_verb);
+		HierarchyLocations::func(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(I"ConjugateVerb"), in_verb);
 		HierarchyLocations::ap(VERB_FORMS_HAP, in_verb, I"form", I"_verb_form");
 			location_requirement in_verb_form = HierarchyLocations::any_package_of_type(I"_verb_form");
 			HierarchyLocations::func(FORM_FN_HL, I"form_fn", Translation::uniqued(), in_verb_form);
@@ -401,39 +399,39 @@ void Hierarchy::establish(void) {
 	location_requirement local_grammar = HierarchyLocations::local_submodule(grammar);
 	HierarchyLocations::ap(COND_TOKENS_HAP, local_grammar, I"conditional_token", I"_conditional_token");
 		location_requirement in_conditional_token = HierarchyLocations::any_package_of_type(I"_conditional_token");
-		HierarchyLocations::func(CONDITIONAL_TOKEN_FN_HL, I"conditional_token_fn", Translation::generate(GRAMMAR_LINE_COND_TOKEN_INAMEF), in_conditional_token);
+		HierarchyLocations::func(CONDITIONAL_TOKEN_FN_HL, I"conditional_token_fn", Translation::generate(I"Cond_Token"), in_conditional_token);
 	HierarchyLocations::ap(CONSULT_TOKENS_HAP, local_grammar, I"consult_token", I"_consult_token");
 		location_requirement in_consult_token = HierarchyLocations::any_package_of_type(I"_consult_token");
-		HierarchyLocations::func(CONSULT_FN_HL, I"consult_fn", Translation::generate(CONSULT_GRAMMAR_INAMEF), in_consult_token);
+		HierarchyLocations::func(CONSULT_FN_HL, I"consult_fn", Translation::generate(I"Consult_Grammar"), in_consult_token);
 	HierarchyLocations::ap(TESTS_HAP, local_grammar, I"test", I"_test");
 		location_requirement in_test = HierarchyLocations::any_package_of_type(I"_test");
 		HierarchyLocations::con(SCRIPT_HL, I"script", Translation::uniqued(), in_test);
 		HierarchyLocations::con(REQUIREMENTS_HL, I"requirements", Translation::uniqued(), in_test);
 	HierarchyLocations::ap(LOOP_OVER_SCOPES_HAP, local_grammar, I"loop_over_scope", I"_loop_over_scope");
 		location_requirement in_loop_over_scope = HierarchyLocations::any_package_of_type(I"_loop_over_scope");
-		HierarchyLocations::func(LOOP_OVER_SCOPE_FN_HL, I"loop_over_scope_fn", Translation::generate(LOOP_OVER_SCOPE_ROUTINE_INAMEF), in_loop_over_scope);
+		HierarchyLocations::func(LOOP_OVER_SCOPE_FN_HL, I"loop_over_scope_fn", Translation::generate(I"LOS"), in_loop_over_scope);
 	HierarchyLocations::ap(MISTAKES_HAP, local_grammar, I"mistake", I"_mistake");
 		location_requirement in_mistake = HierarchyLocations::any_package_of_type(I"_mistake");
-		HierarchyLocations::func(MISTAKE_FN_HL, I"mistake_fn", Translation::generate(GRAMMAR_LINE_MISTAKE_TOKEN_INAMEF), in_mistake);
+		HierarchyLocations::func(MISTAKE_FN_HL, I"mistake_fn", Translation::generate(I"Mistake_Token"), in_mistake);
 	HierarchyLocations::ap(NAMED_ACTION_PATTERNS_HAP, local_grammar, I"named_action_pattern", I"_named_action_pattern");
 		location_requirement in_named_action_pattern = HierarchyLocations::any_package_of_type(I"_named_action_pattern");
-		HierarchyLocations::func(NAP_FN_HL, I"nap_fn", Translation::generate(NAMED_ACTION_PATTERN_INAMEF), in_named_action_pattern);
+		HierarchyLocations::func(NAP_FN_HL, I"nap_fn", Translation::generate(I"NAP"), in_named_action_pattern);
 	HierarchyLocations::ap(NAMED_TOKENS_HAP, local_grammar, I"named_token", I"_named_token");
 		location_requirement in_named_token = HierarchyLocations::any_package_of_type(I"_named_token");
-		HierarchyLocations::func(PARSE_LINE_FN_HL, I"parse_line_fn", Translation::generate(GPR_FOR_TOKEN_INAMEF), in_named_token);
+		HierarchyLocations::func(PARSE_LINE_FN_HL, I"parse_line_fn", Translation::generate(I"GPR_Line"), in_named_token);
 	HierarchyLocations::ap(NOUN_FILTERS_HAP, local_grammar, I"noun_filter", I"_noun_filter");
 		location_requirement in_noun_filter= HierarchyLocations::any_package_of_type(I"_noun_filter");
-		HierarchyLocations::func(NOUN_FILTER_FN_HL, I"filter_fn", Translation::generate(NOUN_FILTER_INAMEF), in_noun_filter);
+		HierarchyLocations::func(NOUN_FILTER_FN_HL, I"filter_fn", Translation::generate(I"Noun_Filter"), in_noun_filter);
 	HierarchyLocations::ap(SCOPE_FILTERS_HAP, local_grammar, I"scope_filter", I"_scope_filter");
 		location_requirement in_scope_filter = HierarchyLocations::any_package_of_type(I"_scope_filter");
-		HierarchyLocations::func(SCOPE_FILTER_FN_HL, I"filter_fn", Translation::generate(SCOPE_FILTER_INAMEF), in_scope_filter);
+		HierarchyLocations::func(SCOPE_FILTER_FN_HL, I"filter_fn", Translation::generate(I"Scope_Filter"), in_scope_filter);
 	HierarchyLocations::ap(PARSE_NAMES_HAP, local_grammar, I"parse_name", I"_parse_name");
 		location_requirement in_parse_name = HierarchyLocations::any_package_of_type(I"_parse_name");
-		HierarchyLocations::func(PARSE_NAME_FN_HL, I"parse_name_fn", Translation::generate(GRAMMAR_PARSE_NAME_ROUTINE_INAMEF), in_parse_name);
-		HierarchyLocations::func(PARSE_NAME_DASH_FN_HL, I"parse_name_fn", Translation::generate(PARSE_NAME_ROUTINE_INAMEF), in_parse_name);
+		HierarchyLocations::func(PARSE_NAME_FN_HL, I"parse_name_fn", Translation::generate(I"Parse_Name_GV"), in_parse_name);
+		HierarchyLocations::func(PARSE_NAME_DASH_FN_HL, I"parse_name_fn", Translation::generate(I"PN_for_S"), in_parse_name);
 	HierarchyLocations::ap(SLASH_TOKENS_HAP, local_grammar, I"slash_token", I"_slash_token");
 		location_requirement in_slash_token = HierarchyLocations::any_package_of_type(I"_slash_token");
-		HierarchyLocations::func(SLASH_FN_HL, I"slash_fn", Translation::generate(GRAMMAR_SLASH_GPR_INAMEF), in_slash_token);
+		HierarchyLocations::func(SLASH_FN_HL, I"slash_fn", Translation::generate(I"SlashGPR"), in_slash_token);
 
 	location_requirement synoptic_grammar = HierarchyLocations::synoptic_submodule(grammar);
 	HierarchyLocations::con(VERB_DIRECTIVE_CREATURE_HL, I"VERB_DIRECTIVE_CREATURE", Translation::same(), synoptic_grammar);
@@ -454,7 +452,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::func(INTERNALTESTCASES_HL, I"run_tests_fn", Translation::to(I"InternalTestCases"), synoptic_grammar);
 	HierarchyLocations::ap(COMMANDS_HAP, synoptic_grammar, I"command", I"_command");
 		location_requirement in_command = HierarchyLocations::any_package_of_type(I"_command");
-		HierarchyLocations::func(VERB_DECLARATION_ARRAY_HL, NULL, Translation::generate(VERB_DECLARATION_ARRAY_INAMEF), in_command);
+		HierarchyLocations::func(VERB_DECLARATION_ARRAY_HL, NULL, Translation::generate(I"GV_Grammar"), in_command);
 
 @h Instances.
 
@@ -477,11 +475,11 @@ void Hierarchy::establish(void) {
 		location_requirement in_instance = HierarchyLocations::any_package_of_type(I"_instance");
 		HierarchyLocations::con(INSTANCE_HL, I"I", Translation::uniqued(), in_instance);
 		HierarchyLocations::func(BACKDROP_FOUND_IN_FN_HL, I"backdrop_found_in_fn", Translation::uniqued(), in_instance);
-		HierarchyLocations::func(SHORT_NAME_FN_HL, I"short_name_fn", Translation::generate(SHORT_NAME_ROUTINE_INAMEF), in_instance);
-		HierarchyLocations::func(SHORT_NAME_PROPERTY_FN_HL, I"short_name_property_fn", Translation::generate(SHORT_NAME_PROPERTY_ROUTINE_INAMEF), in_instance);
-		HierarchyLocations::func(REGION_FOUND_IN_FN_HL, I"region_found_in_fn", Translation::generate(REGION_FOUND_IN_ROUTINE_INAMEF), in_instance);
-		HierarchyLocations::func(TSD_DOOR_DIR_FN_HL, I"tsd_door_dir_fn", Translation::generate(TWO_SIDED_DOOR_DOOR_DIR_INAMEF), in_instance);
-		HierarchyLocations::func(TSD_DOOR_TO_FN_HL, I"tsd_door_to_fn", Translation::generate(TWO_SIDED_DOOR_DOOR_TO_INAMEF), in_instance);
+		HierarchyLocations::func(SHORT_NAME_FN_HL, I"short_name_fn", Translation::generate(I"SN_R"), in_instance);
+		HierarchyLocations::func(SHORT_NAME_PROPERTY_FN_HL, I"short_name_property_fn", Translation::generate(I"SN_R_A"), in_instance);
+		HierarchyLocations::func(REGION_FOUND_IN_FN_HL, I"region_found_in_fn", Translation::generate(I"RFI_for_I"), in_instance);
+		HierarchyLocations::func(TSD_DOOR_DIR_FN_HL, I"tsd_door_dir_fn", Translation::generate(I"TSD_door_dir_value"), in_instance);
+		HierarchyLocations::func(TSD_DOOR_TO_FN_HL, I"tsd_door_to_fn", Translation::generate(I"TSD_door_to_value"), in_instance);
 		HierarchyLocations::ap(INLINE_PROPERTIES_HAP, in_instance, I"inline_property", I"_inline_property");
 			location_requirement in_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
 			HierarchyLocations::con(INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_inline_property);
@@ -521,7 +519,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(DONE_INIS_HL, I"DONE_INIS", Translation::same(), synoptic_IF);
 	HierarchyLocations::ap(DIRECTIONS_HAP, synoptic_IF, I"direction", I"_direction");
 		location_requirement in_direction = HierarchyLocations::any_package_of_type(I"_direction");
-		HierarchyLocations::con(DIRECTION_HL, NULL, Translation::generate(DIRECTION_OBJECT_INAMEF), in_direction);
+		HierarchyLocations::con(DIRECTION_HL, NULL, Translation::generate(I"DirectionObject"), in_direction);
 
 @h Kinds.
 
@@ -532,7 +530,10 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_STRING_HL
 
 @e KIND_HAP
+@e KIND_CLASS_HL
 @e KIND_HL
+@e WEAK_ID_HL
+@e ICOUNT_HL
 @e DEFAULT_VALUE_HL
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
@@ -544,6 +545,16 @@ void Hierarchy::establish(void) {
 @e INSTANCE_GPR_FN_HL
 @e FIRST_INSTANCE_HL
 @e NEXT_INSTANCE_HL
+@e COUNT_INSTANCE_1_HL
+@e COUNT_INSTANCE_2_HL
+@e COUNT_INSTANCE_3_HL
+@e COUNT_INSTANCE_4_HL
+@e COUNT_INSTANCE_5_HL
+@e COUNT_INSTANCE_6_HL
+@e COUNT_INSTANCE_7_HL
+@e COUNT_INSTANCE_8_HL
+@e COUNT_INSTANCE_9_HL
+@e COUNT_INSTANCE_10_HL
 @e COUNT_INSTANCE_HL
 @e KIND_INLINE_PROPERTIES_HAP
 @e KIND_INLINE_PROPERTY_HL
@@ -572,19 +583,32 @@ void Hierarchy::establish(void) {
 	location_requirement local_kinds = HierarchyLocations::local_submodule(kinds);
 	HierarchyLocations::ap(KIND_HAP, local_kinds, I"kind", I"_kind");
 		location_requirement in_kind = HierarchyLocations::any_package_of_type(I"_kind");
-		HierarchyLocations::con(KIND_HL, NULL, Translation::generate(KIND_ID_INAMEF), in_kind);
+		HierarchyLocations::con(KIND_CLASS_HL, NULL, Translation::generate(I"K"), in_kind);
+		HierarchyLocations::con(KIND_HL, NULL, Translation::generate(I"KD"), in_kind);
+		HierarchyLocations::con(WEAK_ID_HL, NULL, Translation::imposed(), in_kind);
+		HierarchyLocations::con(ICOUNT_HL, NULL, Translation::imposed(), in_kind);
 		HierarchyLocations::con(DEFAULT_VALUE_HL, I"default_value", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(DECREMENT_FN_HL, I"decrement_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(INCREMENT_FN_HL, I"increment_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(PRINT_FN_HL, I"print_fn", Translation::uniqued(), in_kind);
-		HierarchyLocations::func(PRINT_DASH_FN_HL, I"print_fn", Translation::generate(PRINTING_ROUTINE_INAMEF), in_kind);
+		HierarchyLocations::func(PRINT_DASH_FN_HL, I"print_fn", Translation::generate(I"E"), in_kind);
 		HierarchyLocations::func(RANGER_FN_HL, I"ranger_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(DEFAULT_CLOSURE_FN_HL, I"default_closure_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(GPR_FN_HL, I"gpr_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(INSTANCE_GPR_FN_HL, I"instance_gpr_fn", Translation::uniqued(), in_kind);
-		HierarchyLocations::con(FIRST_INSTANCE_HL, NULL, Translation::derive_lettered(FIRST_INSTANCE_INAMEF, FIRST_INSTANCE_INDERIV), in_kind);
-		HierarchyLocations::con(NEXT_INSTANCE_HL, NULL, Translation::derive_lettered(NEXT_INSTANCE_INAMEF, NEXT_INSTANCE_INDERIV), in_kind);
-		HierarchyLocations::con(COUNT_INSTANCE_HL, NULL, Translation::derive_lettered(COUNT_INSTANCE_INAMEF, COUNT_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(FIRST_INSTANCE_HL, NULL, Translation::suffix_special(I"_First", FIRST_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(NEXT_INSTANCE_HL, NULL, Translation::suffix_special(I"_Next", NEXT_INSTANCE_INDERIV), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_1_HL, NULL, Translation::to(I"IK1_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_2_HL, NULL, Translation::to(I"IK2_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_3_HL, NULL, Translation::to(I"IK3_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_4_HL, NULL, Translation::to(I"IK4_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_5_HL, NULL, Translation::to(I"IK5_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_6_HL, NULL, Translation::to(I"IK6_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_7_HL, NULL, Translation::to(I"IK7_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_8_HL, NULL, Translation::to(I"IK8_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_9_HL, NULL, Translation::to(I"IK9_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_10_HL, NULL, Translation::to(I"IK10_Count"), in_kind);
+		HierarchyLocations::con(COUNT_INSTANCE_HL, NULL, Translation::suffix_special(I"_Count", COUNT_INSTANCE_INDERIV), in_kind);
 		HierarchyLocations::ap(KIND_INLINE_PROPERTIES_HAP, in_kind, I"inline_property", I"_inline_property");
 			location_requirement in_kind_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
 			HierarchyLocations::con(KIND_INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_kind_inline_property);
@@ -600,7 +624,6 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::func(I7_KIND_NAME_HL, I"printkindname_fn", Translation::to(I"I7_Kind_Name"), synoptic_kinds);
 	HierarchyLocations::func(KOVSUPPORTFUNCTION_HL, I"support_fn", Translation::to(I"KOVSupportFunction"), synoptic_kinds);
 	HierarchyLocations::func(SHOWMEDETAILS_HL, I"showmedetails_fn", Translation::to(I"ShowMeDetails"), synoptic_kinds);
-	home_for_weak_type_IDs = synoptic_kinds;
 
 @h Listing.
 
@@ -615,7 +638,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::ap(LISTS_TOGETHER_HAP, local_listing, I"list_together", I"_list_together");
 		location_requirement in_list_together = HierarchyLocations::any_package_of_type(I"_list_together");
 		HierarchyLocations::con(LIST_TOGETHER_ARRAY_HL, I"list_together_array", Translation::uniqued(), in_list_together);
-		HierarchyLocations::func(LIST_TOGETHER_FN_HL, I"list_together_fn", Translation::generate(LIST_TOGETHER_ROUTINE_INAMEF), in_list_together);
+		HierarchyLocations::func(LIST_TOGETHER_FN_HL, I"list_together_fn", Translation::generate(I"LTR_R"), in_list_together);
 
 @h Phrases.
 
@@ -638,7 +661,7 @@ void Hierarchy::establish(void) {
 			HierarchyLocations::con(CLOSURE_DATA_HL, I"closure_data", Translation::uniqued(), in_closure);
 		HierarchyLocations::ap(REQUESTS_HAP, in_to_phrase, I"request", I"_request");
 			location_requirement in_request = HierarchyLocations::any_package_of_type(I"_request");
-			HierarchyLocations::func(PHRASE_FN_HL, I"phrase_fn", Translation::generate_in(PHRASE_REQUEST_INAMEF), in_request);
+			HierarchyLocations::func(PHRASE_FN_HL, I"phrase_fn", Translation::generate_in(I"REQ"), in_request);
 
 	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(phrases);
 	HierarchyLocations::ap(LABEL_STORAGES_HAP, synoptic_phrases, I"label_storage", I"_label_storage");
@@ -660,7 +683,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::ap(PROPERTIES_HAP, local_properties, I"property", I"_property");
 		location_requirement in_property = HierarchyLocations::any_package_of_type(I"_property");
 		HierarchyLocations::con(PROPERTY_HL, I"P", Translation::same(), in_property);
-		HierarchyLocations::func(EITHER_OR_GPR_FN_HL, I"either_or_GPR_fn", Translation::generate(GPR_FOR_EITHER_OR_PROPERTY_INAMEF), in_property);
+		HierarchyLocations::func(EITHER_OR_GPR_FN_HL, I"either_or_GPR_fn", Translation::generate(I"PRN_PN"), in_property);
 
 	location_requirement synoptic_props = HierarchyLocations::synoptic_submodule(properties);
 	HierarchyLocations::con(CCOUNT_PROPERTY_HL, I"CCOUNT_PROPERTY", Translation::same(), synoptic_props);
@@ -729,7 +752,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_rels = HierarchyLocations::local_submodule(relations);
 	HierarchyLocations::ap(RELATIONS_HAP, local_rels, I"relation", I"_relation");
 		location_requirement in_relation = HierarchyLocations::any_package_of_type(I"_relation");
-		HierarchyLocations::con(RELATION_RECORD_HL, NULL, Translation::generate(RELATION_RECORD_INAMEF), in_relation);
+		HierarchyLocations::con(RELATION_RECORD_HL, NULL, Translation::generate(I"Rel_Record"), in_relation);
 		HierarchyLocations::con(BITMAP_HL, I"as_constant", Translation::uniqued(), in_relation);
 		HierarchyLocations::con(ABILITIES_HL, I"abilities", Translation::uniqued(), in_relation);
 		HierarchyLocations::con(ROUTE_CACHE_HL, I"route_cache", Translation::uniqued(), in_relation);
@@ -807,10 +830,10 @@ void Hierarchy::establish(void) {
 	location_requirement local_rules = HierarchyLocations::local_submodule(rules);
 	HierarchyLocations::ap(RULES_HAP, local_rules, I"rule", I"_rule");
 		location_requirement in_rule = HierarchyLocations::any_package_of_type(I"_rule");
-		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::generate_in(RULE_SHELL_ROUTINE_INAMEF), in_rule);
-		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::generate_in(PHRASE_INAMEF), in_rule);
+		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::generate_in(I"I6_Rule_Shell"), in_rule);
+		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::generate_in(I"R"), in_rule);
 		HierarchyLocations::con(EXTERIOR_RULE_HL, I"exterior_rule", Translation::uniqued(), in_rule);
-		HierarchyLocations::func(RESPONDER_FN_HL, I"responder_fn", Translation::derive(RESPONDER_INAMEF), in_rule);
+		HierarchyLocations::func(RESPONDER_FN_HL, I"responder_fn", Translation::suffix(I"M"), in_rule);
 		HierarchyLocations::ap(RESPONSES_HAP, in_rule, I"response", I"_response");
 			location_requirement in_response = HierarchyLocations::any_package_of_type(I"_response");
 			HierarchyLocations::con(AS_CONSTANT_HL, I"as_constant", Translation::uniqued(), in_response);
@@ -857,7 +880,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_variables = HierarchyLocations::local_submodule(variables);
 	HierarchyLocations::ap(VARIABLES_HAP, local_variables, I"variable", I"_variable");
 		location_requirement in_variable = HierarchyLocations::any_package_of_type(I"_variable");
-		HierarchyLocations::con(VARIABLE_HL, NULL, Translation::generate(VARIABLE_INAMEF), in_variable);
+		HierarchyLocations::con(VARIABLE_HL, NULL, Translation::generate(I"V"), in_variable);
 
 @h Enclosed matter.
 
@@ -1590,15 +1613,19 @@ package_request *Hierarchy::package_within(int hap_id, package_request *super) {
 }
 
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, NULL);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, NULL, -1, NULL);
+}
+
+inter_name *Hierarchy::make_iname_with_specific_name(int id, text_stream *name, package_request *P) {
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, NULL, -1, name);
 }
 
 inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, derive_from);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, derive_from, -1, NULL);
 }
 
 inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, C, NULL);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, C, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_block_iname(package_request *P) {
@@ -1612,13 +1639,15 @@ inter_name *Hierarchy::make_kernel_iname(package_request *P) {
 }
 
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {
-	return HierarchyLocations::find_in_package(id, P, W, NULL, NULL);
+	return HierarchyLocations::find_in_package(id, P, W, NULL, NULL, -1, NULL);
+}
+
+inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P, wording W, int x) {
+	inter_name *iname = HierarchyLocations::find_in_package(id, P, W, NULL, NULL, x, NULL);
+	Hierarchy::make_available(iname);
+	return iname;
 }
 
 package_request *Hierarchy::make_package_in(int id, package_request *P) {
 	return HierarchyLocations::package_in_package(id, P);
-}
-
-package_request *Hierarchy::home_for_weak_type_IDs(void) {
-	return home_for_weak_type_IDs.this_mundane_package;
 }

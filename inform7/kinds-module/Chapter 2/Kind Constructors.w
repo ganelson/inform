@@ -376,9 +376,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
 		if (Str::len(tn) > 0) {
-			package_request *PR = Hierarchy::home_for_weak_type_IDs();
-			con->con_iname = InterNames::template_weak_ID_name(tn);
-			Packaging::house(con->con_iname, PR);
+			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL, tn, Kinds::Constructors::package(con));
 			Hierarchy::make_available(con->con_iname);
 			packaging_state save = Packaging::enter_home_of(con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);

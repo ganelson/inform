@@ -589,7 +589,7 @@ no subsequent lines are looked at.
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ARGUMENTTYPEFAILED_HL</span><span class="plain">)));</span>
+        <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ARGUMENTTYPEFAILED_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
             <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">);</span>

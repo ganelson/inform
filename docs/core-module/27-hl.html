@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>27/tr</title>
+		<title>27/hr</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -189,7 +189,7 @@
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">HierarchyLocations::function</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">trans</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">), </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trans</span><span class="plain">) </span><span class="identifier">Inter::Symbols::set_translate</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">), </span><span class="identifier">trans</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trans</span><span class="plain">) </span><span class="functiontext">InterNames::change_translation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">trans</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -226,7 +226,7 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;equates_to_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">HierarchyLocations::find_in_package</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">derive_from</span><span class="plain">) {</span>
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">HierarchyLocations::find_in_package</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">derive_from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">imposed_name</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrls_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">HierarchyLocations::create_nrls</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">id</span><span class="plain"> &lt; 0) || (</span><span class="identifier">id</span><span class="plain"> &gt;= </span><span class="constant">MAX_HL</span><span class="plain">) || (</span><span class="identifier">nrls_indexed_by_id</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad nrl ID"</span><span class="plain">);</span>
@@ -237,28 +237,36 @@
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, </span><span class="identifier">ENCLOSING_IANN</span><span class="plain">) != 1)</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"subpackage not in enclosing superpackage"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain"> != </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements.any_package_of_this_type</span><span class="plain">)) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"AN: %S, FPN: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;function_package_name</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Have type: $3, required: $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements.any_package_of_this_type</span><span class="plain">);</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"constant in wrong superpackage"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> != </span><span class="functiontext">Hierarchy::template</span><span class="plain">()) {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"AN: %S, FPN: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;function_package_name</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Have type: $3, required: $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements.any_package_of_this_type</span><span class="plain">);</span>
+                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"constant in wrong superpackage"</span><span class="plain">);</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
 
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.translate_to</span><span class="plain">)  {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.translate_to</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Make the actual iname</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.generate_from</span><span class="plain"> &gt;= 0) {</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.by_imposition</span><span class="plain">) {</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            &lt;<span class="cwebmacro">Make the actual iname</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.name_generator</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">temp_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">derive_from</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.faux_letter</span><span class="plain"> &gt;= 0)</span>
-                    <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::letter_parametrised_name</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.generate_from</span><span class="plain">, </span><span class="identifier">derive_from</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.faux_letter</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+                    <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::letter_parametrised_name_f</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.name_generator</span><span class="plain">, </span><span class="identifier">derive_from</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.faux_letter</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
                 <span class="reserved">else</span>
-                    <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_derived</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.generate_from</span><span class="plain">, </span><span class="identifier">derive_from</span><span class="plain">);</span>
+                    <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_derived_f</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.name_generator</span><span class="plain">, </span><span class="identifier">derive_from</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.localise</span><span class="plain">) {</span>
+                <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_in_f</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.name_generator</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">fix</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.localise</span><span class="plain">)</span>
-                    <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_in</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.generate_from</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-                <span class="reserved">else</span>
-                    <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.generate_from</span><span class="plain">);</span>
+                <span class="identifier">temp_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new_f</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.name_generator</span><span class="plain">, </span><span class="identifier">fix</span><span class="plain">);</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
+                <span class="functiontext">InterNames::attach_memo</span><span class="plain">(</span><span class="identifier">temp_iname</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+                <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">temp_iname</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.faux_letter</span><span class="plain"> &gt;= 0) </span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">temp_iname</span><span class="plain">;</span>
@@ -269,15 +277,14 @@
             &lt;<span class="cwebmacro">Make the actual iname</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.then_make_unique</span><span class="plain">)</span>
-            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.then_make_unique</span><span class="plain">) </span><span class="functiontext">InterNames::set_flag</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function HierarchyLocations::blank is used in 27/hr (<a href="27-hr.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function HierarchyLocations::blank appears nowhere else.</p>
 
 <p class="endnote">The function HierarchyLocations::local_submodule is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_16">&#167;1.16</a>, <a href="27-hr.html#SP1_20">&#167;1.20</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_38">&#167;1.38</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>, <a href="27-hr.html#SP1_42">&#167;1.42</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>).</p>
 
@@ -319,7 +326,7 @@
 
 <p class="endnote">The function HierarchyLocations::find_in_package is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The structure location_requirement is accessed in 27/hr and here.</p>
+<p class="endnote">The structure location_requirement is private to this section.</p>
 
 <p class="endnote">The structure named_resource_location is private to this section.</p>
 
@@ -335,16 +342,17 @@
                     <span class="identifier">P</span><span class="plain">,</span>
                     <span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">) == 0) </span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.by_imposition</span><span class="plain">) </span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">imposed_name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">) == 0) </span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="functiontext">InterNames::attach_memo</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">) &gt; 0) &amp;&amp; (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">)) </span><span class="functiontext">InterNames::translate</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">) &gt; 0) &amp;&amp; (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">)) </span><span class="functiontext">InterNames::change_translation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a> (three times).</p>
+<p class="endnote">This code is used in <a href="#SP1">&#167;1</a> (four times).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -368,20 +376,6 @@
 
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="functiontext">InterNames::one_off</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;package_type</span><span class="plain">);</span>
     <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function HierarchyLocations::package_in_package is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
-
-<pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">BOGUS_HAP</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-</pre>
-
-<pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hierarchy_attachment_point</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">hap_id</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">counter</span><span class="plain">;</span>
@@ -425,8 +419,9 @@
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_exotic_package</span><span class="plain"> &gt;= 0)</span>
             <span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::exotic_package</span><span class="plain">(</span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_exotic_package</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.any_package_of_this_type</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain"> != </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.any_package_of_this_type</span><span class="plain">))</span>
-                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"subpackage in wrong superpackage"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> != </span><span class="functiontext">Hierarchy::template</span><span class="plain">())</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain"> != </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.any_package_of_this_type</span><span class="plain">))</span>
+                    <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"subpackage in wrong superpackage"</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;counter</span><span class="plain">), </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">);</span>
@@ -434,6 +429,8 @@
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function HierarchyLocations::package_in_package is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function HierarchyLocations::create_haps appears nowhere else.</p>
 
@@ -445,7 +442,7 @@
 
 <p class="endnote">The structure hierarchy_attachment_point is accessed in 8/ed and here.</p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 
 <pre class="display">
@@ -459,7 +456,7 @@
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Dictionaries::find</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">inter_symbol</span><span class="plain"> *) </span><span class="identifier">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">new_ptype</span><span class="plain"> = </span><span class="functiontext">Packaging::register_ptype</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">new_ptype</span><span class="plain"> = </span><span class="functiontext">Emit::packagetype</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">Dictionaries::create</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">new_ptype</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">new_ptype</span><span class="plain">;</span>
@@ -469,10 +466,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function HierarchyLocations::ptype is used in <a href="#SP1">&#167;1</a>, <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">The function HierarchyLocations::ptype is used in <a href="#SP1">&#167;1</a>, <a href="#SP2">&#167;2</a>.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="27-tr.html">Back to 'Translation'</a></li><li><a href="27-hr.html">Continue with 'Hierarchy'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="27-hr.html">Back to 'Hierarchy'</a></li><li><a href="27-tr.html">Continue with 'Translation'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

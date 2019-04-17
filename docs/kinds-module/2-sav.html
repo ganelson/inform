@@ -554,18 +554,18 @@ value is held in the I6 variable named <code class="display"><span class="extrac
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_quanta_to_value</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">,</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">label</span><span class="plain">) {</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">label</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
             <span class="functiontext">Kinds::Scalings::compile_scale_and_add</span><span class="plain">(</span>
-                <span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">, </span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">label</span><span class="plain">);</span>
+                <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">V_var</span><span class="plain">), </span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">, </span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">label</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> != 1.0) {</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_real</span><span class="plain">(</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain">);</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -573,19 +573,19 @@ value is held in the I6 variable named <code class="display"><span class="extrac
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain"> != 0.0) {</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_PLUS_HL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_PLUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
+                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_real</span><span class="plain">(</span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">);</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_NAN_HL</span><span class="plain">)));</span>
+                <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_NAN_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
+                    <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -805,7 +805,7 @@ is ignored, since the division can be performed "exactly".
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_MINUS_HL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_MINUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_real</span><span class="plain">(</span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">);</span>
@@ -816,7 +816,7 @@ is ignored, since the division can be performed "exactly".
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">)));</span>
+                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_real</span><span class="plain">(</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain">);</span>
@@ -846,15 +846,15 @@ operator to use: say, <code class="display"><span class="extract">"&gt;="</span>
         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">);</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
-            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_ABS_HL</span><span class="plain">)));</span>
+            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_ABS_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Scalings::quantum</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_COMPARE_HL</span><span class="plain">)));</span>
+            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_COMPARE_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_ABS_HL</span><span class="plain">)));</span>
+                <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_ABS_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -904,7 +904,7 @@ and <code class="display"><span class="extract">S_var</span></code>, which is a 
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_SAY_HL</span><span class="plain">)));</span>
+            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_SAY_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>

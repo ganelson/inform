@@ -172,7 +172,7 @@ a call to an activity based on that value:
             <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">);</span>
 
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RESPONSEVIAACTIVITY_HL</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">));</span>
+        <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -349,7 +349,7 @@ essence here.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEXT_TY_SAY_HL</span><span class="plain">)));</span>
+                <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEXT_TY_SAY_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">str_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -470,7 +470,7 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">()));</span>
+                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">());</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>

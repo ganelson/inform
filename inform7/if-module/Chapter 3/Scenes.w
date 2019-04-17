@@ -568,7 +568,6 @@ There is no significance to the return value.
 void PL::Scenes::DetectSceneChange_routine(void) {
 	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
 	packaging_state save = Routines::begin(iname);
-//	inter_symbol *self = InterNames::to_symbol(iname);
 	inter_symbol *chs_s = LocalVariables::add_internal_local_c_as_symbol(I"chs", "count of changes made");
 	inter_symbol *ch_s = LocalVariables::add_internal_local_c_as_symbol(I"ch", "flag: change made");
 	inter_symbol *CScene_l = Emit::reserve_label(I".CScene");

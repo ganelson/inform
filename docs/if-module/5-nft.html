@@ -88,7 +88,7 @@ their names (used as I6 tokens), and compile their routines.
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">v_s</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">gpr_to_ask</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_explicit_I6_GPR_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gpr_to_ask</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">gpr_to_ask</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">gpr_to_ask</span><span class="plain">));</span>
+                <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">gpr_to_ask</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
@@ -193,7 +193,7 @@ their names (used as I6 tokens), and compile their routines.
                                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                                    <span class="identifier">Emit::inv_call</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PLACEINSCOPE_HL</span><span class="plain">)));</span>
+                                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PLACEINSCOPE_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">o2_s</span><span class="plain">);</span>
                                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>

@@ -294,12 +294,6 @@ int Packaging::register_counter(text_stream *name) {
 	pr_counter_names[id] = Str::duplicate(name);
 	return id;
 }
-inter_symbol *Packaging::register_ptype(text_stream *name, int enclosing) {
-	inter_symbol *pt = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), name);
-	Emit::guard(Inter::PackageType::new_packagetype(&package_types_bookmark, pt, Emit::baseline(&package_types_bookmark), NULL));
-	if (enclosing) Emit::annotate_symbol_i(pt, ENCLOSING_IANN, 1);
-	return pt;
-}
 
 inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 	if (R == NULL) internal_error("no request");

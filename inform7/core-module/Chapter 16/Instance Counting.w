@@ -168,8 +168,18 @@ inter_name *PL::Counting::next_instance(kind *K) {
 }
 
 inter_name *PL::Counting::instance_count_iname(kind *K) {
-	inter_name *iname = Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
-	return iname;
+	int N = Kinds::RunTime::I6_classnumber(K);
+	if (N == 1) return Hierarchy::make_iname_in(COUNT_INSTANCE_1_HL, Kinds::Behaviour::package(K));
+	if (N == 2) return Hierarchy::make_iname_in(COUNT_INSTANCE_2_HL, Kinds::Behaviour::package(K));
+	if (N == 3) return Hierarchy::make_iname_in(COUNT_INSTANCE_3_HL, Kinds::Behaviour::package(K));
+	if (N == 4) return Hierarchy::make_iname_in(COUNT_INSTANCE_4_HL, Kinds::Behaviour::package(K));
+	if (N == 5) return Hierarchy::make_iname_in(COUNT_INSTANCE_5_HL, Kinds::Behaviour::package(K));
+	if (N == 6) return Hierarchy::make_iname_in(COUNT_INSTANCE_6_HL, Kinds::Behaviour::package(K));
+	if (N == 7) return Hierarchy::make_iname_in(COUNT_INSTANCE_7_HL, Kinds::Behaviour::package(K));
+	if (N == 8) return Hierarchy::make_iname_in(COUNT_INSTANCE_8_HL, Kinds::Behaviour::package(K));
+	if (N == 9) return Hierarchy::make_iname_in(COUNT_INSTANCE_9_HL, Kinds::Behaviour::package(K));
+	if (N == 10) return Hierarchy::make_iname_in(COUNT_INSTANCE_10_HL, Kinds::Behaviour::package(K));
+	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
 }
 
 int PL::Counting::counting_compile_model_tables(void) {
@@ -249,8 +259,6 @@ for the relation-route-finding code at run time.
 		if (Kinds::Compare::lt(K, K_object)) {
 			inference_subject *subj = Kinds::Knowledge::as_subject(K);
 			inter_name *count_iname = PL::Counting::instance_count_iname(K);
-			int N = Kinds::RunTime::I6_classnumber(K);
-			InterNames::override_count_iname(count_iname, N);
 
 			PF_S(counting, subj)->instance_count_prop =
 				Properties::Valued::new_nameless_using(K_number, count_iname);

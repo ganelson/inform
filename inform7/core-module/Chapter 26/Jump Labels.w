@@ -26,7 +26,6 @@ typedef struct label_namespace {
 	struct text_stream *label_prefix;
 	int label_counter; /* next free ID number for this label namespace */
 	int allocate_storage; /* number of words of memory to reserve for each label */
-	struct inter_name *label_base_iname;
 	struct inter_name *label_storage_iname;
 	struct compilation_module *module;
 	MEMORY_MANAGEMENT
@@ -46,8 +45,6 @@ label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module
 	lns->base_prefix = Str::duplicate(name);
 	lns->label_prefix = Str::new();
 	WRITE_TO(lns->label_prefix, "%S%S", cm->namespace->namespace_prefix, name);
-	lns->label_base_iname = InterNames::label_base_name(lns->label_prefix);
-	
 	package_request *PR2 = Hierarchy::synoptic_package(LABEL_STORAGES_HAP);
 	lns->label_storage_iname = Hierarchy::make_iname_in(LABEL_ASSOCIATED_STORAGE_HL, PR2);
 	

@@ -362,6 +362,9 @@ the following.
 
 
 <pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Emit::emit_iname_has_property</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
+        <span class="functiontext">Properties::Emit::emit_has_property</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">), </span><span class="identifier">prn</span><span class="plain">);</span>
+    <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Emit::emit_has_property</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::implemented_as_attribute</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::stored_in_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
@@ -407,6 +410,8 @@ the following.
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function Properties::Emit::emit_iname_has_property appears nowhere else.</p>
 
 <p class="endnote">The function Properties::Emit::emit_has_property appears nowhere else.</p>
 

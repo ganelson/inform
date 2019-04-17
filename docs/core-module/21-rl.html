@@ -465,11 +465,10 @@ failing; so it doesn't terminate the following of its rulebook.
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">subbed</span><span class="plain"> = </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">);</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ss</span><span class="plain"> = </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">subbed</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Constant::is_routine</span><span class="plain">(</span><span class="identifier">ss</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Constant::is_routine</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">subbed</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="identifier">ss</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">subbed</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -1004,7 +1003,7 @@ as the definition of the rule in future.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::compile_constraint</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>

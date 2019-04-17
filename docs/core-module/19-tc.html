@@ -247,7 +247,7 @@ by index within the current table.)
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Kinds::Constructors::UNKNOWN_iname</span><span class="plain">()));</span>
+            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Constructors::UNKNOWN_iname</span><span class="plain">());</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>

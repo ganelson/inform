@@ -1262,13 +1262,13 @@ logical properties of the two terms of the BP being defined.
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;dynamic_memory</span><span class="plain">) &amp;&amp; (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain">)) {</span>
 
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATE_HL</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATE_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="functiontext">BinaryPredicates::kind</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_NAME_HL</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_NAME_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">);</span>
@@ -1279,40 +1279,40 @@ logical properties of the two terms of the BP being defined.
 
                     <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;form_of_relation</span><span class="plain">) {</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_OtoO</span><span class="plain">:</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_OTOOADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_OTOOADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_OtoV</span><span class="plain">:</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_OTOVADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_OTOVADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_VtoO</span><span class="plain">:</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_VTOOADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_VTOOADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_Sym_OtoO</span><span class="plain">:</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_OTOOADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_OTOOADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_SYMMETRICADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_SYMMETRICADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_Equiv</span><span class="plain">:</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_EQUIVALENCEADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_EQUIVALENCEADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1320,7 +1320,7 @@ logical properties of the two terms of the BP being defined.
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_VtoV</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_Sym_VtoV</span><span class="plain">:</span>
-                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_SYMMETRICADJECTIVE_HL</span><span class="plain">)));</span>
+                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_TY_SYMMETRICADJECTIVE_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1481,7 +1481,6 @@ logical properties of the two terms of the BP being defined.
                     <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">dbp</span><span class="plain">-</span><span class="element">&gt;v2v_bitmap_iname</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_ByRoutine</span><span class="plain">: </span>    <span class="comment">Field 0 is the routine used to test the relation</span>
-                    <span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">dbp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">dbp</span><span class="plain">-</span><span class="element">&gt;bp_by_routine_iname</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">default</span><span class="plain">:</span>
@@ -1725,7 +1724,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RUNTIMEPROBLEM_HL</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RUNTIMEPROBLEM_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RTP_RELMINIMAL_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">task_s</span><span class="plain">);</span>
@@ -1852,7 +1851,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id_flag</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLNGETF_HL</span><span class="plain">)));</span>
+                <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLNGETF_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rr_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RR_STORAGE_HL</span><span class="plain">));</span>
@@ -1875,7 +1874,7 @@ logical properties of the two terms of the BP being defined.
             <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">follow</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELFOLLOWVECTOR_HL</span><span class="plain">)));</span>
+                <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELFOLLOWVECTOR_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect3_interp</span><span class="plain">);</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1993,7 +1992,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SETLENGTH_HL</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SETLENGTH_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -2018,7 +2017,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SETLENGTH_HL</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SETLENGTH_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -2043,7 +2042,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SETLENGTH_HL</span><span class="plain">)));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SETLENGTH_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -2187,7 +2186,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_HL</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -2230,7 +2229,7 @@ logical properties of the two terms of the BP being defined.
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_INSERTITEM_HL</span><span class="plain">)));</span>
+                                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_INSERTITEM_HL</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Z1_s</span><span class="plain">);</span>
@@ -2278,7 +2277,7 @@ logical properties of the two terms of the BP being defined.
                                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
                                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_INSERTITEM_HL</span><span class="plain">)));</span>
+                                            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_INSERTITEM_HL</span><span class="plain">));</span>
                                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == 0) {</span>
                                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
@@ -3393,7 +3392,7 @@ logical properties of the two terms of the BP being defined.
 
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) { </span><span class="functiontext">Emit::up</span><span class="plain">(); </span><span class="functiontext">Emit::up</span><span class="plain">(); }</span>
 
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RUNTIMEPROBLEM_HL</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RUNTIMEPROBLEM_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RTP_RELKINDVIOLATION_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">L_s</span><span class="plain">);</span>
@@ -3458,7 +3457,7 @@ logical properties of the two terms of the BP being defined.
 
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) { </span><span class="functiontext">Emit::up</span><span class="plain">(); </span><span class="functiontext">Emit::up</span><span class="plain">(); }</span>
 
-                    <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RUNTIMEPROBLEM_HL</span><span class="plain">)));</span>
+                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RUNTIMEPROBLEM_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RTP_RELKINDVIOLATION_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">L_s</span><span class="plain">);</span>

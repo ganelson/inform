@@ -132,7 +132,6 @@ create a new nonphrasal stack frame.
             <span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;no_formal_parameters_needed</span><span class="plain"> &gt; 0)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Packaging::houseed_in_function</span><span class="plain">(</span><span class="identifier">public_name</span><span class="plain">)) {</span>
                 <span class="identifier">kernel_name</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_kernel_iname</span><span class="plain">(</span><span class="identifier">public_name</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
-                <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">kernel_name</span><span class="plain">), </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"routine not housed in function"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -229,7 +228,7 @@ after the call parameters, and is used only as a scratch variable.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_past</span><span class="plain"> &gt; </span><span class="identifier">NBV</span><span class="plain">) </span><span class="identifier">NBV</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_past</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">STACKFRAMECREATE_HL</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
+        <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NBV</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -258,12 +257,12 @@ after the call parameters, and is used only as a scratch variable.
         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">I7RBLK_symbol</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">returns_block_value</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECOPY_HL</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">,</span><span class="identifier">I7RBLK_symbol</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">kernel_name</span><span class="plain">));</span>
+        <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">kernel_name</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="functiontext">LocalVariables::emit_parameter_list</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -295,7 +294,7 @@ after the call parameters, and is used only as a scratch variable.
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUEFREEONSTACK_HL</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">));</span>
+            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>

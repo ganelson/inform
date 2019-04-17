@@ -216,7 +216,7 @@ inter_name *HierarchyLocations::nrl_to_iname(named_resource_location *nrl) {
 	return nrl->equates_to_iname;
 }
 
-inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, compilation_module *C, inter_name *derive_from) {
+inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, compilation_module *C, inter_name *derive_from, int fix, text_stream *imposed_name) {
 	if (nrls_created == FALSE) HierarchyLocations::create_nrls();
 	if ((id < 0) || (id >= MAX_HL) || (nrls_indexed_by_id[id] == NULL))
 		internal_error("bad nrl ID");
@@ -238,19 +238,25 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 	if (nrl->trans.translate_to)  {
 		text_stream *T = nrl->trans.translate_to;
 		@<Make the actual iname@>;
-	} else if (nrl->trans.generate_from >= 0) {
+	} else if (nrl->trans.by_imposition) {
+		text_stream *T = NULL;	
+		@<Make the actual iname@>;
+	} else if (nrl->trans.name_generator) {
 		TEMPORARY_TEXT(T);
 		inter_name *temp_iname = NULL;
 		if (derive_from) {
 			if (nrl->trans.faux_letter >= 0)
-				temp_iname = InterNames::letter_parametrised_name(nrl->trans.generate_from, derive_from, nrl->trans.faux_letter, P);
+				temp_iname = InterNames::letter_parametrised_name_f(nrl->trans.name_generator, derive_from, nrl->trans.faux_letter, P);
 			else
-				temp_iname = InterNames::new_derived(nrl->trans.generate_from, derive_from);
+				temp_iname = InterNames::new_derived_f(nrl->trans.name_generator, derive_from);
+		} else if (nrl->trans.localise) {
+			temp_iname = InterNames::new_in_f(nrl->trans.name_generator, C, fix);
 		} else {
-			if (nrl->trans.localise)
-				temp_iname = InterNames::new_in(nrl->trans.generate_from, C);
-			else
-				temp_iname = InterNames::new(nrl->trans.generate_from);
+			temp_iname = InterNames::new_f(nrl->trans.name_generator, fix);
+		}
+		if (!Wordings::empty(W)) {
+			InterNames::attach_memo(temp_iname, W);
+			W = EMPTY_WORDING;
 		}
 		WRITE_TO(T, "%n", temp_iname);
 		if (nrl->trans.faux_letter >= 0) iname = temp_iname;
@@ -272,7 +278,8 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 				P,
 				NULL);
 	} else {
-		if (Str::len(nrl->access_name) == 0) iname = InterNames::one_off(T, P);
+		if (nrl->trans.by_imposition) iname = InterNames::one_off(imposed_name, P);
+		else if (Str::len(nrl->access_name) == 0) iname = InterNames::one_off(T, P);
 		else iname = InterNames::one_off(nrl->access_name, P);
 	}
 	if (!Wordings::empty(W)) InterNames::attach_memo(iname, W);
@@ -297,10 +304,6 @@ package_request *HierarchyLocations::package_in_package(int id, package_request 
 
 	return Packaging::request(InterNames::one_off(nrl->access_name, P), P, nrl->package_type);
 }
-
-@
-
-@e BOGUS_HAP from 0
 
 =
 typedef struct hierarchy_attachment_point {
@@ -367,7 +370,7 @@ inter_symbol *HierarchyLocations::ptype(text_stream *name) {
 	}
 	if (Dictionaries::find(ptypes_indexed_by_name, name))
 		return (inter_symbol *) Dictionaries::read_value(ptypes_indexed_by_name, name);
-	inter_symbol *new_ptype = Packaging::register_ptype(name, TRUE);
+	inter_symbol *new_ptype = Emit::packagetype(name, TRUE);
 	Dictionaries::create(ptypes_indexed_by_name, name);
 	Dictionaries::write_value(ptypes_indexed_by_name, name, (void *) new_ptype);
 	return new_ptype;
