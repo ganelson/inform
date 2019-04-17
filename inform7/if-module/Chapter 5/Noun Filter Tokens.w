@@ -72,7 +72,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 			Emit::ref_symbol(K_value, v_s);
 			inter_name *gpr_to_ask = Kinds::Behaviour::get_explicit_I6_GPR_iname(R);
 			if (gpr_to_ask == NULL) gpr_to_ask = Kinds::RunTime::get_kind_GPR_iname(R);
-			Emit::inv_call(InterNames::to_symbol(gpr_to_ask));
+			Emit::inv_call_iname(gpr_to_ask);
 		Emit::up();
 
 		Emit::inv_primitive(if_interp);
@@ -177,7 +177,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
 								Emit::up();
 
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PLACEINSCOPE_HL)));
+								Emit::inv_call_iname(Hierarchy::find(PLACEINSCOPE_HL));
 								Emit::down();
 									Emit::val_symbol(K_value, o2_s);
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);

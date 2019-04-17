@@ -315,11 +315,10 @@ failing; so it doesn't terminate the following of its rulebook.
 	Emit::down();
 	if (acl->substituted_rule) {
 		inter_name *subbed = Rules::iname(acl->substituted_rule);
-		inter_symbol *ss = InterNames::to_symbol(subbed);
-		if (Inter::Constant::is_routine(ss) == FALSE) {
+		if (Inter::Constant::is_routine(InterNames::to_symbol(subbed)) == FALSE) {
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		} else {
-			Emit::inv_call(ss);
+			Emit::inv_call_iname(subbed);
 		}
 	} else {
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -718,7 +717,7 @@ as the definition of the rule in future.
 	if (Rules::compile_constraint(R->first_applicability_condition) == FALSE) {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-		Emit::inv_call(InterNames::to_symbol(R->rule_extern_iname));
+		Emit::inv_call_iname(R->rule_extern_iname);
 		Emit::up();
 	}
 	Routines::end(save);

@@ -699,7 +699,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 				parse_node *spec0, *spec1;
 				World::Inferences::get_references_spec(i, &spec0, &spec1);
 				BinaryPredicates::mark_as_needed(bp);
-				Emit::inv_call(InterNames::to_symbol(rtiname));
+				Emit::inv_call_iname(rtiname);
 				Emit::down();
 					Emit::val_iname(K_value, bp->bp_iname);
 					Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));

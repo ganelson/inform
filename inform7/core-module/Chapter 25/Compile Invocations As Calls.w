@@ -40,7 +40,7 @@ void Invocations::AsCalls::emit_function_call(
 	COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
 
 	if (identifier) {
-		Emit::inv_call(InterNames::to_symbol(identifier));
+		Emit::inv_call_iname(identifier);
 		Emit::down();
 	} else if (indirect_spec) {
 		int arity = tokens->tokens_count;

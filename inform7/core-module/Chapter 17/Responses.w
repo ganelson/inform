@@ -113,7 +113,7 @@ a call to an activity based on that value:
 		resp->responding_rule, resp->response_marker);
 
 	inter_name *rname = Hierarchy::find(RESPONSEVIAACTIVITY_HL);
-	Emit::inv_call(InterNames::to_symbol(rname));
+	Emit::inv_call_iname(rname);
 	Emit::down();
 	Emit::val_iname(K_value, iname);
 	Emit::up();
@@ -262,7 +262,7 @@ essence here.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TEXT_TY_SAY_HL)));
+			Emit::inv_call_iname(Hierarchy::find(TEXT_TY_SAY_HL));
 			Emit::down();
 				Emit::val_symbol(K_value, str_s);
 			Emit::up();
@@ -352,7 +352,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(Rules::RulePrintingRule()));
+				Emit::inv_call_iname(Rules::RulePrintingRule());
 				Emit::down();
 					Emit::val_iname(K_value, Rules::iname(resp->responding_rule));
 				Emit::up();

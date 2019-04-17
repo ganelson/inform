@@ -107,7 +107,7 @@ literal_text *Strings::TextLiterals::lt_new(int w1, int colour) {
 	x->lt_sba_iname = NULL;
 	package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
 	x->lt_iname = Hierarchy::make_iname_in(TEXT_LITERAL_HL, PR);
-	Emit::annotate_symbol_i(InterNames::to_symbol(x->lt_iname), TEXT_LITERAL_IANN, 1);
+	InterNames::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
 }
@@ -252,10 +252,8 @@ int Strings::TextLiterals::CCOUNT_QUOTATIONS(void) {
 =
 void Strings::TextLiterals::compile_literal_from_text(inter_t *v1, inter_t *v2, wchar_t *p) {
 	literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Feeds::feed_text(p));
-	inter_name *iname = lt->lt_sba_iname;
-	InterNames::to_symbol(iname);
 	inter_reading_state *IRS = Emit::IRS();
-	InterNames::to_ival(IRS->read_into, IRS->current_package, v1, v2, iname);
+	InterNames::to_ival(IRS->read_into, IRS->current_package, v1, v2, lt->lt_sba_iname);
 }
 
 @ The above gradually piled up the need for |TX_L_*| constants/routines,

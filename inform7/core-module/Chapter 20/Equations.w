@@ -1753,7 +1753,7 @@ void Equations::enode_compile_by_emission(equation *eqn, equation_node *tok) {
 				Specifications::Compiler::emit_as_val(K_value, tok->leaf_symbol->var_const);
 			else if (tok->leaf_symbol->local_map) {
 				if (tok->leaf_symbol->promote_local_to_real) {
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL)));
+					Emit::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
 					Emit::down();
 				}
 				inter_symbol *tok_s = LocalVariables::declare_this(tok->leaf_symbol->local_map, FALSE, 8);

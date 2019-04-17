@@ -1606,7 +1606,9 @@ inter_name *Hierarchy::make_block_iname(package_request *P) {
 }
 
 inter_name *Hierarchy::make_kernel_iname(package_request *P) {
-	return Packaging::supply_iname(P, 1);
+	inter_name *kernel_name = Packaging::supply_iname(P, 1);
+	InterNames::set_flag(kernel_name, MAKE_NAME_UNIQUE);
+	return kernel_name;
 }
 
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {

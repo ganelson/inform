@@ -19,7 +19,7 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 	}
 	@<Choose which form of arithmetic and promotion@>;
 	if (reduce_modulo_1440) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NUMBER_TY_TO_TIME_TY_HL)));
+		Emit::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_TIME_TY_HL));
 		Emit::down();
 	}
 	switch (op) {
@@ -77,7 +77,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit plus@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
@@ -96,7 +96,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit minus@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
@@ -115,7 +115,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit times@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
@@ -136,7 +136,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit divide@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
@@ -146,7 +146,7 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(INTEGERDIVIDE_HL)));
+		Emit::inv_call_iname(Hierarchy::find(INTEGERDIVIDE_HL));
 		Emit::down();
 			Kinds::Dimensions::kind_rescale_division_emit_op(KX, KY);
 			@<Emit the X-operand@>;
@@ -157,7 +157,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit remainder@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_REMAINDER_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_REMAINDER_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
@@ -167,7 +167,7 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(INTEGERREMAINDER_HL)));
+		Emit::inv_call_iname(Hierarchy::find(INTEGERREMAINDER_HL));
 		Emit::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
@@ -176,7 +176,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit approximation@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_APPROXIMATE_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_APPROXIMATE_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
@@ -186,7 +186,7 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ROUNDOFFTIME_HL)));
+		Emit::inv_call_iname(Hierarchy::find(ROUNDOFFTIME_HL));
 		Emit::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
@@ -195,12 +195,12 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit root@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_ROOT_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_ROOT_HL));
 		Emit::down();
 			@<Emit the X-operand@>;
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(SQUAREROOT_HL)));
+		Emit::inv_call_iname(Hierarchy::find(SQUAREROOT_HL));
 		Emit::down();
 			Kinds::Dimensions::kind_rescale_root_emit_op(KX, 2);
 			@<Emit the X-operand@>;
@@ -210,12 +210,12 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit cube root@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_CUBE_ROOT_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_CUBE_ROOT_HL));
 		Emit::down();
 			@<Emit the X-operand@>;
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(CUBEROOT_HL)));
+		Emit::inv_call_iname(Hierarchy::find(CUBEROOT_HL));
 		Emit::down();
 			Kinds::Dimensions::kind_rescale_root_emit_op(KX, 3);
 			@<Emit the X-operand@>;
@@ -237,7 +237,7 @@ and the other operand is promoted from integer to real if necessary.
 
 @<Emit unary minus@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_NEGATE_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_NEGATE_HL));
 		Emit::down();
 			@<Emit the X-operand@>;
 		Emit::up();
@@ -254,7 +254,7 @@ always be small, partly because of the need for scaling to come out right.
 
 @<Emit a power of the left operand@> =
 	if (use_fp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_POW_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_POW_HL));
 		Emit::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;

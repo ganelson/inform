@@ -218,6 +218,9 @@ want the fastest possible access and know that it will be valid, we can use
 the following.
 
 =
+void Properties::Emit::emit_iname_has_property(kind *K, inter_name *N, property *prn) {
+	Properties::Emit::emit_has_property(K, InterNames::to_symbol(N), prn);
+}
 void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn) {
 	if (Properties::EitherOr::implemented_as_attribute(prn)) {
 		if (Properties::EitherOr::stored_in_negation(prn)) {

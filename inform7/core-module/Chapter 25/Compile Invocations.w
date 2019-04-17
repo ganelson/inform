@@ -384,7 +384,7 @@ no subsequent lines are looked at.
 		Emit::code();
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ARGUMENTTYPEFAILED_HL)));
+	Emit::inv_call_iname(Hierarchy::find(ARGUMENTTYPEFAILED_HL));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) sl.line_number);
 		extension_file *ef = SourceFiles::get_extension_corresponding(sl.file_of_origin);

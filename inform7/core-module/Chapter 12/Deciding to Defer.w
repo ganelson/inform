@@ -191,7 +191,7 @@ and the function header of |Prop_19| might then look like so:
 The value of |cinder_count| would then be 2.
 
 @<Compile the call to the test-proposition routine@> =
-	Emit::inv_call(InterNames::to_symbol(pdef->ppd_iname));
+	Emit::inv_call_iname(pdef->ppd_iname);
 	Emit::down();
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 		if (substitution) Specifications::Compiler::emit_as_val(K_value, substitution);
@@ -443,7 +443,7 @@ void Calculus::Deferrals::emit_now_proposition(pcalc_prop *prop) {
 
 	if (quantifier_count > 0) {
 		pcalc_prop_deferral *pdef = Calculus::Deferrals::new_deferred_proposition(prop, NOW_ASSERTION_DEFER);
-		Emit::inv_call(InterNames::to_symbol(pdef->ppd_iname));
+		Emit::inv_call_iname(pdef->ppd_iname);
 		Emit::down();
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 		Emit::up();
@@ -670,7 +670,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 =
 void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_DESC_HL)));
+		Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_DESC_HL));
 		Emit::down();
 			Frames::emit_allocation(K);
 			Specifications::Compiler::emit_as_val(K_value, spec);
@@ -1120,15 +1120,15 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 						Emit::inv_primitive(store_interp);
 						Emit::down();
 							Emit::ref_symbol(K_value, val_var_s);
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECREATE_HL)));
+							Emit::inv_call_iname(Hierarchy::find(BLKVALUECREATE_HL));
 							Emit::down();
 								Kinds::RunTime::emit_strong_id_as_val(CK);
 							Emit::up();
 						Emit::up();
-						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPYAZ_HL)));
+						Emit::inv_call_iname(Hierarchy::find(BLKVALUECOPYAZ_HL));
 						Emit::down();
 							Emit::val_symbol(K_value, val_var_s);
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
+							Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 							Emit::down();
 								Emit::val_symbol(K_value, copy_var_s);
 								Emit::val_symbol(K_value, index_var_s);
@@ -1140,7 +1140,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, val_var_s);
-						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
+						Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 						Emit::down();
 							Emit::val_symbol(K_value, copy_var_s);
 							Emit::val_symbol(K_value, index_var_s);
@@ -1154,7 +1154,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 		Emit::inv_primitive(le_interp);
 		Emit::down();
 			Emit::val_symbol(K_value, index_var_s);
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL)));
+			Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
 			Emit::down();
 				Emit::val_symbol(K_value, copy_var_s);
 			Emit::up();
@@ -1167,10 +1167,10 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 				Emit::ref_symbol(K_value, index_var_s);
 			Emit::up();
 			if (pointery) {
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPYAZ_HL)));
+				Emit::inv_call_iname(Hierarchy::find(BLKVALUECOPYAZ_HL));
 				Emit::down();
 					Emit::val_symbol(K_value, val_var_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
+					Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 					Emit::down();
 						Emit::val_symbol(K_value, copy_var_s);
 						Emit::val_symbol(K_value, index_var_s);
@@ -1181,7 +1181,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, val_var_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
+					Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 					Emit::down();
 						Emit::val_symbol(K_value, copy_var_s);
 						Emit::val_symbol(K_value, index_var_s);

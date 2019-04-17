@@ -1384,7 +1384,7 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 
 	if (ap->request) flag_bits += 1;
 
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYACTION_HL)));
+	Emit::inv_call_iname(Hierarchy::find(TRYACTION_HL));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) flag_bits);
 		if (spec2) PL::Actions::Patterns::emit_try_action_parameter(spec2, K_object);
@@ -1395,7 +1395,7 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 		if (spec1) PL::Actions::Patterns::emit_try_action_parameter(spec1, PL::Actions::get_data_type_of_second_noun(an));
 		else Emit::val(K_number, LITERAL_IVAL, 0);
 		if (store_instead) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(STORED_ACTION_TY_CURRENT_HL)));
+			Emit::inv_call_iname(Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
 			Emit::down();
 				Frames::emit_allocation(K_stored_action);
 			Emit::up();
@@ -1531,7 +1531,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, ct_1_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(EXISTSTABLEROWCORR_HL)));
+				Emit::inv_call_iname(Hierarchy::find(EXISTSTABLEROWCORR_HL));
 				Emit::down();
 					Emit::inv_primitive(store_interp);
 					Emit::down();
@@ -1575,7 +1575,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 				LOGIF(ACTION_PATTERN_PARSING,
 					"$P on $u : $T\n", spec, verify_as_kind, current_sentence);
 				if (adapt_region) {
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTREGIONALCONTAINMENT_HL)));
+					Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					Emit::down();
 						Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
 						Specifications::Compiler::emit_as_val(K_value, spec);
@@ -1590,7 +1590,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			((Descriptions::to_instance(spec)) &&
 			(adapt_region) &&
 			(Instances::of_kind(Descriptions::to_instance(spec), K_region)))) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTREGIONALCONTAINMENT_HL)));
+			Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 			Emit::down();
 				Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
 				Specifications::Compiler::emit_as_val(K_value, spec);
@@ -1649,7 +1649,6 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 			request_bits = request_bits | 16;
 			TEMPORARY_TEXT(BC);
 			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, FALSE, ParseTree::get_text(ap->noun_spec));
-			InterNames::to_symbol(lt->lt_sba_iname);
 			Emit::array_iname_entry(lt->lt_sba_iname);
 			DISCARD_TEXT(BC);
 		} else Specifications::Compiler::emit(ap->noun_spec);
@@ -1660,7 +1659,6 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 		if (Rvalues::is_CONSTANT_of_kind(ap->second_spec, K_understanding)) {
 			request_bits = request_bits | 32;
 			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, ParseTree::get_text(ap->second_spec));
-			InterNames::to_symbol(lt->lt_sba_iname);
 			Emit::array_iname_entry(lt->lt_sba_iname);
 		} else Specifications::Compiler::emit(ap->second_spec);
 	} else {
@@ -2061,7 +2059,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_iname(K_object, Hierarchy::find(ACTOR_LOCATION_HL));
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LOCATIONOF_HL)));
+				Emit::inv_call_iname(Hierarchy::find(LOCATIONOF_HL));
 				Emit::down();
 					Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 				Emit::up();
@@ -2092,7 +2090,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(MSTVON_HL)));
+					Emit::inv_call_iname(Hierarchy::find(MSTVON_HL));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, 20007);
 						Emit::val(K_number, LITERAL_IVAL, 1);
@@ -2115,7 +2113,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(MSTVON_HL)));
+					Emit::inv_call_iname(Hierarchy::find(MSTVON_HL));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, 20007);
 						Emit::val(K_number, LITERAL_IVAL, 1);
@@ -2135,7 +2133,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		case PRESENCE_OF_IN_SCOPE_CPMC: {
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(ap.presence_spec);
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSCOPE_HL)));
+			Emit::inv_call_iname(Hierarchy::find(TESTSCOPE_HL));
 			Emit::down();
 				Emit::val_iname(K_value, Instances::iname(to_be_present));
 				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
@@ -2157,7 +2155,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				Emit::up();
 				Emit::inv_primitive(sequential_interp);
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LOOPOVERSCOPE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, los->los_iname);
 						Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
@@ -2182,7 +2180,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				Emit::up();
 				Emit::inv_primitive(sequential_interp);
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LOOPOVERSCOPE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, los->los_iname);
 						Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
@@ -2239,7 +2237,7 @@ int PL::Actions::Patterns::makes_callings(action_pattern *ap) {
 
 void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 	int bad_form = FALSE;
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTACTIONBITMAP_HL)));
+	Emit::inv_call_iname(Hierarchy::find(TESTACTIONBITMAP_HL));
 	Emit::down();
 	if (ap->noun_spec == NULL)
 		Emit::val(K_number, LITERAL_IVAL, 0);

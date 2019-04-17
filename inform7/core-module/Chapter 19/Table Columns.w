@@ -172,7 +172,7 @@ void Tables::Columns::compile_run_time_support(void) {
 	Emit::up();
 	Emit::inv_primitive(return_interp);
 	Emit::down();
-		Emit::val_symbol(K_value, InterNames::to_symbol(Kinds::Constructors::UNKNOWN_iname()));
+		Emit::val_iname(K_value, Kinds::Constructors::UNKNOWN_iname());
 	Emit::up();
 	Routines::end(save);
 }

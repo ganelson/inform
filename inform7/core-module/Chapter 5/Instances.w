@@ -289,7 +289,6 @@ inter_name *Instances::iname(instance *I) {
 	if (I == NULL) return NULL;
 	package_request *R = Hierarchy::local_package(INSTANCES_HAP);
 	UseNouns::noun_compose_identifier(R, I->tag, I->allocation_id);
-	InterNames::to_symbol(UseNouns::iname(I->tag));
 	return UseNouns::iname(I->tag);
 }
 

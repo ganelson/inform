@@ -302,7 +302,6 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 	notice->backdrop = I;
 	package_request *R = Instances::package(I);
 	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
-	InterNames::to_symbol(notice->found_in_routine_iname);
 	notice->many_places = FALSE;
 	FOUNDIN = notice->found_in_routine_iname;
 	Properties::EitherOr::assert(
@@ -328,7 +327,7 @@ void PL::Backdrops::write_found_in_routines(void) {
 		Emit::inv_primitive(if_interp);
 		Emit::down();
 		if ((K_region) && (Instances::of_kind(loc, K_region))) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTREGIONALCONTAINMENT_HL)));
+			Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
 				Emit::val_iname(K_object, Instances::iname(loc));

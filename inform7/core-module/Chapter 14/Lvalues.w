@@ -310,7 +310,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 		Emit::val_iname(K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(GPROPERTY_HL)));
+			Emit::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
 			Emit::down();
 		}
 		Kinds::RunTime::emit_weak_id_as_val(owner_kind);
@@ -377,7 +377,7 @@ object as produced the original text containing the substitution.
 		Emit::val_iname(K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETITEM_HL)));
+			Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 			Emit::down();
 		}
 		BEGIN_COMPILATION_MODE;
@@ -409,7 +409,7 @@ object as produced the original text containing the substitution.
 				LocalVariables::used_stack_selection();
 				LocalVariables::add_table_lookup();
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Emit::inv_call(InterNames::to_symbol(lookup));
+					Emit::inv_call_iname(lookup);
 					Emit::down();
 				}
 				local_variable *ct_0_lv = LocalVariables::by_name(I"ct_0");
@@ -435,7 +435,7 @@ object as produced the original text containing the substitution.
 				Emit::val_iname(K_value, lookup);
 			} else {
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Emit::inv_call(InterNames::to_symbol(lookup));
+					Emit::inv_call_iname(lookup);
 					Emit::down();
 				}
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next);
@@ -454,7 +454,7 @@ object as produced the original text containing the substitution.
 				Emit::val_iname(K_value, lookup_corr);
 			} else {
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Emit::inv_call(InterNames::to_symbol(lookup_corr));
+					Emit::inv_call_iname(lookup_corr);
 					Emit::down();
 				}
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next->next);

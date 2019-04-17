@@ -1141,7 +1141,7 @@ void PL::Actions::compile_action_routines(void) {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
-			Emit::inv_call(InterNames::to_symbol(generic_iname));
+			Emit::inv_call_iname(generic_iname);
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) an->check_rules->allocation_id);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) an->carry_out_rules->allocation_id);

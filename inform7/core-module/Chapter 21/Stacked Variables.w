@@ -269,7 +269,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEFREE_HL)));
+			Emit::inv_call_iname(Hierarchy::find(BLKVALUEFREE_HL));
 			Emit::down();
 				Emit::inv_primitive(lookup_interp);
 				Emit::down();

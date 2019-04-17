@@ -367,18 +367,18 @@ value is held in the I6 variable named |V_var|.
 =
 #ifdef CORE_MODULE
 void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
-	inter_symbol *V_var, inter_symbol *sgn_var, inter_symbol *x_var, inter_symbol *label) {
+	inter_name *V_var, inter_symbol *sgn_var, inter_symbol *x_var, inter_symbol *label) {
 	if (sc.use_integer_scaling) {
 		Kinds::Scalings::compile_scale_and_add(
-			V_var, sgn_var, sc.int_M, sc.int_O, x_var, label);
+			InterNames::to_symbol(V_var), sgn_var, sc.int_M, sc.int_O, x_var, label);
 	} else {
 		if (sc.real_M != 1.0) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_symbol(K_value, V_var);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL)));
+				Emit::ref_iname(K_value, V_var);
+				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
 				Emit::down();
-					Emit::val_symbol(K_value, V_var);
+					Emit::val_iname(K_value, V_var);
 					Emit::val_real(sc.real_M);
 				Emit::up();
 			Emit::up();
@@ -386,19 +386,19 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 		if (sc.real_O != 0.0) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
-				Emit::ref_symbol(K_value, V_var);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL)));
+				Emit::ref_iname(K_value, V_var);
+				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
 				Emit::down();
-					Emit::val_symbol(K_value, V_var);
+					Emit::val_iname(K_value, V_var);
 					Emit::val_real(sc.real_O);
 				Emit::up();
 			Emit::up();
 		}
 		Emit::inv_primitive(if_interp);
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_NAN_HL)));
+			Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_NAN_HL));
 			Emit::down();
-				Emit::val_symbol(K_value, V_var);
+				Emit::val_iname(K_value, V_var);
 			Emit::up();
 			Emit::code();
 			Emit::down();
@@ -579,7 +579,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, V_var);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL)));
+				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
 				Emit::down();
 					Emit::val_symbol(K_value, V_var);
 					Emit::val_real(sc.real_O);
@@ -590,7 +590,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, V_var);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
 				Emit::down();
 					Emit::val_symbol(K_value, V_var);
 					Emit::val_real(sc.real_M);
@@ -613,15 +613,15 @@ void Kinds::Scalings::compile_threshold_test(scaling_transformation sc,
 	Emit::inv_primitive(op);
 	Emit::down();
 	if (sc.use_integer_scaling) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NUMBER_TY_ABS_HL)));
+		Emit::inv_call_iname(Hierarchy::find(NUMBER_TY_ABS_HL));
 		Emit::down();
 			Emit::val_symbol(K_value, V_var);
 		Emit::up();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Scalings::quantum(sc));
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_COMPARE_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_COMPARE_HL));
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_ABS_HL)));
+			Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_ABS_HL));
 			Emit::down();
 				Emit::val_symbol(K_value, V_var);
 			Emit::up();
@@ -664,7 +664,7 @@ void Kinds::Scalings::compile_print_in_quanta(scaling_transformation sc,
 			Emit::up();
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(REAL_NUMBER_TY_SAY_HL)));
+		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_SAY_HL));
 		Emit::down();
 			Emit::val_symbol(K_value, V_var);
 		Emit::up();

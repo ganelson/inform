@@ -568,7 +568,7 @@ There is no significance to the return value.
 void PL::Scenes::DetectSceneChange_routine(void) {
 	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *self = InterNames::to_symbol(iname);
+//	inter_symbol *self = InterNames::to_symbol(iname);
 	inter_symbol *chs_s = LocalVariables::add_internal_local_c_as_symbol(I"chs", "count of changes made");
 	inter_symbol *ch_s = LocalVariables::add_internal_local_c_as_symbol(I"ch", "flag: change made");
 	inter_symbol *CScene_l = Emit::reserve_label(I".CScene");
@@ -609,7 +609,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_call(self);
+			Emit::inv_call_iname(iname);
 			Emit::down();
 				Emit::inv_primitive(preincrement_interp);
 				Emit::down();
@@ -809,7 +809,7 @@ end actually occurred.)
 		Emit::inv_primitive(ifelse_interp);
 		Emit::down();
 			inter_name *iname = Hierarchy::find(GPROPERTY_HL);
-			Emit::inv_call(InterNames::to_symbol(iname));
+			Emit::inv_call_iname(iname);
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K_scene);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) ix+1);
@@ -844,18 +844,18 @@ end actually occurred.)
 
 @<Compile code to run the scene end rulebooks@> =
 	if (end == 0) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FOLLOWRULEBOOK_HL)));
+		Emit::inv_call_iname(Hierarchy::find(FOLLOWRULEBOOK_HL));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(WHEN_SCENE_BEGINS_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
 		Emit::up();
 	}
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FOLLOWRULEBOOK_HL)));
+	Emit::inv_call_iname(Hierarchy::find(FOLLOWRULEBOOK_HL));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->end_rulebook[end]->allocation_id));
 	Emit::up();
 	if (end == 1) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FOLLOWRULEBOOK_HL)));
+		Emit::inv_call_iname(Hierarchy::find(FOLLOWRULEBOOK_HL));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(WHEN_SCENE_ENDS_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
@@ -1152,7 +1152,7 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 		if (Dash::check_value(spec, Kinds::unary_construction(CON_description, K_scene)) == ALWAYS_MATCH) {
 			parse_node *desc = Descriptions::to_rvalue(spec);
 			if (desc) {
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DURINGSCENEMATCHING_HL)));
+				Emit::inv_call_iname(Hierarchy::find(DURINGSCENEMATCHING_HL));
 				Emit::down();
 					Specifications::Compiler::emit_as_val(K_value, desc);
 				Emit::up();

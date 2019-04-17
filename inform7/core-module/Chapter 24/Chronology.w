@@ -231,7 +231,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		@<Emit the op@>;
 		Emit::down();
 	}
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSINGLEPASTSTATE_HL)));
+	Emit::inv_call_iname(Hierarchy::find(TESTSINGLEPASTSTATE_HL));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) past_flag);
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_tenses);

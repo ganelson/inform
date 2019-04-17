@@ -171,6 +171,14 @@ void InterNames::attach_memo(inter_name *N, wording W) {
 	if (L > 28) Str::truncate(N->memo, Str::len(N->memo) - (L - 28));
 }
 
+void InterNames::change_translation(inter_name *N, text_stream *new_text) {
+	Inter::Symbols::set_translate(InterNames::to_symbol(N), new_text);
+}
+
+text_stream *InterNames::get_translation(inter_name *N) {
+	return Inter::Symbols::get_translate(InterNames::to_symbol(N));
+}
+
 inter_symbol *InterNames::to_symbol(inter_name *N) {
 	if (N->symbol) {
 		if (N->to_mark) Inter::Symbols::set_flag(N->symbol, N->to_mark);
@@ -253,6 +261,14 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 		}
 		if (N->memo) WRITE("_%S", N->memo);
 	}
+}
+
+void InterNames::set_flag(inter_name *iname, int f) {
+	Inter::Symbols::set_flag(InterNames::to_symbol(iname), f);
+}
+
+void InterNames::clear_flag(inter_name *iname, int f) {
+	Inter::Symbols::clear_flag(InterNames::to_symbol(iname), f);
 }
 
 void InterNames::annotate_i(inter_name *iname, inter_t annot_ID, inter_t V) {
@@ -494,10 +510,6 @@ inter_name *InterNames::label_base_name(text_stream *name) {
 inter_name *InterNames::template_weak_ID_name(text_stream *name) {
 	inter_name *iname = InterNames::new_overridden(WEAK_ID_CONSTANT_INAMEF, name);
 	return iname;
-}
-
-void InterNames::translate(inter_name *iname, text_stream *text) {
-	Emit::translate(iname, text);
 }
 
 @

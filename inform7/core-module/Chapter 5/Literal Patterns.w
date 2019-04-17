@@ -711,7 +711,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->cur_word_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+					Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 				Emit::up();
 				Emit::inv_primitive(postdecrement_interp);
 				Emit::down();
@@ -800,8 +800,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Emit::up();
 
 	Kinds::Scalings::compile_quanta_to_value(lp->scaling,
-		InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL)),
-		gprk->sgn_s, gprk->x_s, failed_label);
+		Hierarchy::find(PARSED_NUMBER_HL), gprk->sgn_s, gprk->x_s, failed_label);
 
 	Emit::inv_primitive(ifdebug_interp);
 	Emit::down();
@@ -1023,7 +1022,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_word_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+				Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
@@ -1094,7 +1093,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_word_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+				Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 			Emit::up();
 			Emit::inv_primitive(store_interp);
 			Emit::down();
@@ -1160,7 +1159,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->cur_word_s);
-						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+						Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 					Emit::up();
 					Emit::inv_primitive(store_interp);
 					Emit::down();
@@ -1305,7 +1304,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->x_s);
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(FLOATPARSE_HL)));
+		Emit::inv_call_iname(Hierarchy::find(FLOATPARSE_HL));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->x_s);
 			Emit::val_symbol(K_value, gprk->f_s);
@@ -1364,7 +1363,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::up();
 			Emit::inv_primitive(ge_interp);
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIGITTOVALUE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 				Emit::down();
 					Emit::inv_primitive(lookupbyte_interp);
 					Emit::down();
@@ -1411,7 +1410,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::up();
 			Emit::inv_primitive(ge_interp);
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIGITTOVALUE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 				Emit::down();
 					Emit::inv_primitive(lookupbyte_interp);
 					Emit::down();
@@ -1427,7 +1426,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->f_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIGITTOVALUE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 				Emit::down();
 					Emit::inv_primitive(lookupbyte_interp);
 					Emit::down();
@@ -1508,7 +1507,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->cur_word_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+					Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 				Emit::up();
 				Emit::inv_primitive(store_interp);
 				Emit::down();
@@ -1575,7 +1574,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 									Emit::up();
 									Emit::inv_primitive(ge_interp);
 									Emit::down();
-										Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIGITTOVALUE_HL)));
+										Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 										Emit::down();
 											Emit::inv_primitive(lookupbyte_interp);
 											Emit::down();
@@ -1596,7 +1595,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 									Emit::down();
 										Emit::inv_primitive(times_interp);
 										Emit::down();
-											Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIGITTOVALUE_HL)));
+											Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 											Emit::down();
 												Emit::inv_primitive(lookupbyte_interp);
 												Emit::down();
@@ -1655,7 +1654,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_addr_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(WORDADDRESS_HL)));
+				Emit::inv_call_iname(Hierarchy::find(WORDADDRESS_HL));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::up();
@@ -1663,7 +1662,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_len_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(WORDLENGTH_HL)));
+				Emit::inv_call_iname(Hierarchy::find(WORDLENGTH_HL));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::up();

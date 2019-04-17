@@ -1332,7 +1332,7 @@ void Adjectives::Meanings::agreements(void) {
 				Emit::down();
 					Emit::ref_symbol(K_value, gna_s);
 					inter_name *iname = Hierarchy::find(GETGNAOFOBJECT_HL);
-					Emit::inv_call(InterNames::to_symbol(iname));
+					Emit::inv_call_iname(iname);
 					Emit::down();
 						Emit::val_symbol(K_value, o_s);
 					Emit::up();
@@ -1422,7 +1422,7 @@ void Adjectives::Meanings::agreements(void) {
 }
 
 void Adjectives::Meanings::emit(adjectival_phrase *aph) {
-	Emit::inv_call(InterNames::to_symbol(aph->aph_iname));
+	Emit::inv_call_iname(aph->aph_iname);
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
 		Emit::inv_primitive(ge_interp);

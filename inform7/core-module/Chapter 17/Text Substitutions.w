@@ -109,7 +109,6 @@ void Strings::TextSubstitutions::allow_no_further_text_subs(void) {
 
 =
 inter_name *Strings::TextSubstitutions::text_substitution_iname(text_substitution *ts) {
-	if (ts->ts_sb_needed == FALSE) InterNames::to_symbol(ts->ts_iname);
 	ts->ts_sb_needed = TRUE;
 	return ts->ts_iname;
 }
@@ -137,7 +136,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 				if (phsf == NULL) phsf = Frames::current_stack_frame();
 				downs = LocalVariables::emit_storage(phsf);
 				phsf = Frames::boxed_frame(phsf);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
 				Emit::down();
 					Frames::emit_allocation(K_text);
 			}

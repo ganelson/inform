@@ -333,7 +333,7 @@ inter_name *Packaging::function(inter_name *function_iname, package_request *R2,
 	if (temp_iname) {
 		TEMPORARY_TEXT(T);
 		WRITE_TO(T, "%n", temp_iname);
-		Inter::Symbols::set_translate(InterNames::to_symbol(iname), T);
+		InterNames::change_translation(iname, T);
 		DISCARD_TEXT(T);
 	}
 	return iname;
@@ -343,9 +343,8 @@ inter_name *Packaging::function_text(inter_name *function_iname, package_request
 	package_request *R3 = Packaging::request(function_iname, R2, function_ptype);
 	inter_name *iname = InterNames::one_off(I"call", R3);
 	Packaging::house(iname, R3);
-	if (translation) {
-		Inter::Symbols::set_translate(InterNames::to_symbol(iname), translation);
-	}
+	if (translation)
+		InterNames::change_translation(iname, translation);
 	return iname;
 }
 

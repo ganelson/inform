@@ -339,7 +339,7 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 			Emit::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
 			Emit::code();
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DB_RULE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(DB_RULE_HL));
 				Emit::down();
 					Emit::val_iname(K_value, identifier);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
@@ -470,7 +470,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DB_RULE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(DB_RULE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, identifier);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);

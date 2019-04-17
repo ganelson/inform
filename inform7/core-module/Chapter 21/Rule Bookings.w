@@ -985,7 +985,7 @@ than once for each rule.
 			Emit::val_iname(K_number, Hierarchy::find(SAY__P_HL));
 			Emit::code();
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RULEBOOKPARBREAK_HL)));
+				Emit::inv_call_iname(Hierarchy::find(RULEBOOKPARBREAK_HL));
 				Emit::down();
 					Emit::val_symbol(K_value, forbid_breaks_s);
 				Emit::up();

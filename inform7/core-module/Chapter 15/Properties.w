@@ -498,7 +498,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 		else
 			PUT_TO(T, '_');
 	}
-	Inter::Symbols::set_translate(InterNames::to_symbol(prn->prop_iname), T);
+	InterNames::change_translation(prn->prop_iname, T);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }
@@ -519,7 +519,7 @@ void Properties::set_translation_S(property *prn, text_stream *t) {
 			PUT_TO(T, '_');
 	}
 	Str::truncate(T, 31);
-	Inter::Symbols::set_translate(InterNames::to_symbol(prn->prop_iname), T);
+	InterNames::change_translation(prn->prop_iname, T);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }
@@ -555,7 +555,8 @@ void Properties::translates(wording W, parse_node *p2) {
 			"so cannot be translated.");
 		return;
 	}
-	if ((prn->translated) && (Str::eq_wide_string(Inter::Symbols::get_translate(InterNames::to_symbol(Properties::iname(prn))), text) == FALSE)) {
+	if ((prn->translated) &&
+		(Str::eq_wide_string(InterNames::get_translation(Properties::iname(prn)), text) == FALSE)) {
 		Problems::Issue::sentence_problem(_p_(PM_TranslatedTwice),
 			"this property has already been translated",
 			"so there must be some duplication somewhere.");
@@ -704,11 +705,7 @@ void Properties::emit_single(property *prn) {
 
 		Emit::property(iname, K);
 		if (prn->run_time_only) Emit::permission(prn, K_object, NULL);
-		if (prn->translated) {
-			InterNames::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		} else {
-			Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
-		}
+		if (prn->translated) InterNames::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
 		InterNames::annotate_i(iname, SOURCE_ORDER_IANN, (inter_t) prn->allocation_id);
 		Packaging::exit(save);
 
@@ -723,7 +720,7 @@ void Properties::emit(void) {
 			if (prn->stored_in_negation) continue;
 			K = K_truth_state;
 		}
-		if (K == NULL) { LOG("Is $Y %n\n", prn, prn->prop_iname); internal_error("kindless property"); }
+		if (K == NULL) internal_error("kindless property");
 		Properties::emit_single(prn);
 		property_permission *pp;
 		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {

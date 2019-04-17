@@ -728,7 +728,7 @@ the problem messages are phrased differently if something goes wrong.
 	if (allow_me == ALWAYS_MATCH) {
 		Specifications::Compiler::emit_to_kind(supplied, kind_needed);
 	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Compare::le(kind_needed, K_object))) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(CHECKKINDRETURNED_HL)));
+		Emit::inv_call_iname(Hierarchy::find(CHECKKINDRETURNED_HL));
 		Emit::down();
 			Specifications::Compiler::emit_to_kind(supplied, kind_needed);
 			Emit::val_iname(K_value, Kinds::RunTime::I6_classname(kind_needed));
@@ -778,7 +778,7 @@ the problem messages are phrased differently if something goes wrong.
 		action_pattern *ap = ParseTree::get_constant_action_pattern(supplied);
 		PL::Actions::Patterns::emit_try(ap, FALSE);
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(STORED_ACTION_TY_TRY_HL)));
+		Emit::inv_call_iname(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_stored_action, supplied);
 		Emit::up();
@@ -806,12 +806,12 @@ the problem messages are phrased differently if something goes wrong.
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(SAY__PC_HL));
 		Emit::up();
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(CLEARPARAGRAPHING_HL)));
+		Emit::inv_call_iname(Hierarchy::find(CLEARPARAGRAPHING_HL));
 		Emit::down();
 			Emit::val(K_truth_state, LITERAL_IVAL, 1);
 		Emit::up();
 		PL::Actions::Patterns::emit_try(ap, FALSE);
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL)));
+		Emit::inv_call_iname(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
 		Emit::inv_primitive(pull_interp);
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(SAY__PC_HL));
@@ -820,13 +820,13 @@ the problem messages are phrased differently if something goes wrong.
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(SAY__P_HL));
 		Emit::up();
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL)));
+		Emit::inv_call_iname(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL));
 		Emit::inv_primitive(pull_interp);
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 		Emit::up();
 	} else {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(STORED_ACTION_TY_TRY_HL)));
+		Emit::inv_call_iname(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_stored_action, supplied);
 			Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -1055,7 +1055,7 @@ default values when created, so they are always typesafe anyway.
 
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
 		if (Frames::Blocks::inside_a_loop_body()) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECOPY_HL)));
+			Emit::inv_call_iname(Hierarchy::find(BLKVALUECOPY_HL));
 			Emit::down();
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 				Emit::val_symbol(K_value, lvar_s);
@@ -1294,7 +1294,7 @@ result would be the same without the optimisation.
 	if (Kinds::Compare::eq(K, K_number)) @<Inline say number@>;
 	if (Kinds::Compare::eq(K, K_unicode_character)) @<Inline say unicode character@>;
 	if (K) {
-		Emit::inv_call(InterNames::to_symbol(Kinds::Behaviour::get_iname(K)));
+		Emit::inv_call_iname(Kinds::Behaviour::get_iname(K));
 		Emit::down();
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
@@ -1320,7 +1320,7 @@ result would be the same without the optimisation.
 		kind *K = Specifications::to_kind(to_say);
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Emit::inv_call(InterNames::to_symbol(Kinds::Behaviour::get_iname(K)));
+		Emit::inv_call_iname(Kinds::Behaviour::get_iname(K));
 		Emit::down();
 			Specifications::Compiler::emit_to_kind(to_say, K);
 		Emit::up();

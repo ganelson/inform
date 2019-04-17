@@ -280,7 +280,7 @@ void PL::Parsing::Lines::gl_compile_extra_token_for_condition(gpr_kit *gprk, gra
 			Emit::down();
 				Emit::inv_primitive(eq_interp);
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(gl->cond_token_iname));
+					Emit::inv_call_iname(gl->cond_token_iname);
 					Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 				Emit::up();
 				Emit::code();
@@ -400,7 +400,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (100+gl->allocation_id));
 							Emit::code();
 							Emit::down();
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSERERROR_HL)));
+								Emit::inv_call_iname(Hierarchy::find(PARSERERROR_HL));
 								Emit::down();
 									Specifications::Compiler::emit_constant_to_kind_as_val(spec, K_text);
 								Emit::up();

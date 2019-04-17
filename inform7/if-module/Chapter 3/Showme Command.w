@@ -177,7 +177,7 @@ routine for colours; and the best thing is to print nothing at all.
 			Emit::inv_primitive(if_interp);
 			Emit::down();
 				inter_name *iname = Hierarchy::find(GPROPERTY_HL);
-				Emit::inv_call(InterNames::to_symbol(iname));
+				Emit::inv_call_iname(iname);
 				Emit::down();
 					Kinds::RunTime::emit_weak_id_as_val(K_object);
 					Emit::val_symbol(K_value, t_0_s);
@@ -207,9 +207,9 @@ routine for colours; and the best thing is to print nothing at all.
 		Emit::down();
 			Emit::inv_primitive(eq_interp);
 			Emit::down();
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TEXT_TY_COMPARE_HL)));
+				Emit::inv_call_iname(Hierarchy::find(TEXT_TY_COMPARE_HL));
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(GPROPERTY_HL)));
+					Emit::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
 					Emit::down();
 						Kinds::RunTime::emit_weak_id_as_val(K_object);
 						Emit::val_symbol(K_value, t_0_s);
@@ -252,7 +252,7 @@ routine for colours; and the best thing is to print nothing at all.
 	Emit::inv_primitive(indirect1v_interp);
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Behaviour::get_iname(K));
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(GPROPERTY_HL)));
+		Emit::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
 		Emit::down();
 			Kinds::RunTime::emit_weak_id_as_val(K_object);
 			Emit::val_symbol(K_value, t_0_s);
@@ -275,7 +275,7 @@ turn by turn.
 		Emit::inv_primitive(and_interp);
 		Emit::down();
 			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ALLOWINSHOWME_HL)));
+				Emit::inv_call_iname(Hierarchy::find(ALLOWINSHOWME_HL));
 				Emit::down();
 					Emit::val_iname(K_value, Properties::iname(prn));
 				Emit::up();

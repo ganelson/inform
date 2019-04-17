@@ -283,7 +283,7 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 			Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 			int ex = MSTVO_HL;
 			if (nlv->lvalue_nve.allow_outside) ex = MSTVON_HL;
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ex)));
+			Emit::inv_call_iname(Hierarchy::find(ex));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_ID);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_index);

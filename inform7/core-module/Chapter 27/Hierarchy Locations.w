@@ -179,7 +179,7 @@ inter_name *HierarchyLocations::find_by_name(text_stream *name) {
 
 inter_name *HierarchyLocations::function(package_request *R, text_stream *name, text_stream *trans) {
 	inter_name *iname = Packaging::function(InterNames::one_off(name, R), R, NULL);
-	if (trans) Inter::Symbols::set_translate(InterNames::to_symbol(iname), trans);
+	if (trans) InterNames::change_translation(iname, trans);
 	return iname;
 }
 
@@ -227,9 +227,11 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
 			internal_error("subpackage not in enclosing superpackage");
 	} else if ((P == NULL) || (P->eventual_type != nrl->requirements.any_package_of_this_type)) {
-		LOG("AN: %S, FPN: %S\n", nrl->access_name, nrl->function_package_name);
-		LOG("Have type: $3, required: $3\n", P->eventual_type, nrl->requirements.any_package_of_this_type);
-		internal_error("constant in wrong superpackage");
+		if (P != Hierarchy::template()) {
+			LOG("AN: %S, FPN: %S\n", nrl->access_name, nrl->function_package_name);
+			LOG("Have type: $3, required: $3\n", P->eventual_type, nrl->requirements.any_package_of_this_type);
+			internal_error("constant in wrong superpackage");
+		}
 	}
 	
 	inter_name *iname = NULL;
@@ -259,8 +261,7 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		@<Make the actual iname@>;
 	}
 	
-	if (nrl->trans.then_make_unique)
-		Inter::Symbols::set_flag(InterNames::to_symbol(iname), MAKE_NAME_UNIQUE);
+	if (nrl->trans.then_make_unique) InterNames::set_flag(iname, MAKE_NAME_UNIQUE);
 	return iname;
 }
 
@@ -275,7 +276,7 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		else iname = InterNames::one_off(nrl->access_name, P);
 	}
 	if (!Wordings::empty(W)) InterNames::attach_memo(iname, W);
-	if ((Str::len(T) > 0) && (nrl->access_name)) InterNames::translate(iname, T);
+	if ((Str::len(T) > 0) && (nrl->access_name)) InterNames::change_translation(iname, T);
 
 @ =
 package_request *HierarchyLocations::package_in_package(int id, package_request *P) {
@@ -345,8 +346,9 @@ package_request *HierarchyLocations::attach_new_package(compilation_module *C, p
 	else if (hap->requirements.this_exotic_package >= 0)
 		R = Hierarchy::exotic_package(hap->requirements.this_exotic_package);
 	else if (hap->requirements.any_package_of_this_type) {
-		if ((R == NULL) || (R->eventual_type != hap->requirements.any_package_of_this_type))
-			internal_error("subpackage in wrong superpackage");
+		if (R != Hierarchy::template())
+			if ((R == NULL) || (R->eventual_type != hap->requirements.any_package_of_this_type))
+				internal_error("subpackage in wrong superpackage");
 	}
 	
 	return Packaging::request(Packaging::supply_iname(R, hap->counter), R, hap->type);

@@ -658,35 +658,35 @@ void NewVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 	inter_name *cv_neg = Hierarchy::find(CV_NEG_HL);
 	if (modal) {
 		if (negated) {
-			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(modal)));
+			Emit::inv_call_iname(Conjugation::conj_iname(modal));
 			Emit::down();
 				Emit::val_iname(K_value, cv_neg);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::inv_call_iname(Hierarchy::find(PNTOVP_HL));
 				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 				Emit::val_iname(K_value, Conjugation::conj_iname(vc));
 			Emit::up();
 		} else {
-			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(modal)));
+			Emit::inv_call_iname(Conjugation::conj_iname(modal));
 			Emit::down();
 				Emit::val_iname(K_value, cv_pos);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::inv_call_iname(Hierarchy::find(PNTOVP_HL));
 				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 				Emit::val_iname(K_value, Conjugation::conj_iname(vc));
 			Emit::up();
 		}
 	} else {
 		if (negated) {
-			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(vc)));
+			Emit::inv_call_iname(Conjugation::conj_iname(vc));
 			Emit::down();
 				Emit::val_iname(K_value, cv_neg);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::inv_call_iname(Hierarchy::find(PNTOVP_HL));
 				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 			Emit::up();
 		} else {
-			Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(vc)));
+			Emit::inv_call_iname(Conjugation::conj_iname(vc));
 			Emit::down();
 				Emit::val_iname(K_value, cv_pos);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PNTOVP_HL)));
+				Emit::inv_call_iname(Hierarchy::find(PNTOVP_HL));
 				Emit::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
 			Emit::up();
 		}
@@ -852,7 +852,7 @@ void NewVerbs::ConjugateVerb(void) {
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, t_s);
-		Emit::inv_call(InterNames::to_symbol(Conjugation::conj_iname(vc)));
+		Emit::inv_call_iname(Conjugation::conj_iname(vc));
 		Emit::down();
 			Emit::val_symbol(K_value, fn_s);
 			Emit::val_symbol(K_value, vp_s);

@@ -399,11 +399,6 @@ void Emit::append(inter_name *iname, text_stream *text) {
 	Emit::guard(Inter::Append::new(default_bookmark, symbol, ID, Emit::baseline(default_bookmark), NULL));
 }
 
-void Emit::translate(inter_name *iname, text_stream *text) {
-	inter_symbol *symbol = InterNames::to_symbol(iname);
-	Inter::Symbols::set_translate(symbol, text);
-}
-
 void Emit::import(inter_name *iname, wording W) {
 	inter_symbol *symbol = InterNames::to_symbol(iname);
 	inter_t ID = Inter::create_text(Emit::repository());
@@ -1051,6 +1046,12 @@ void Emit::inv_primitive(inter_symbol *prim_symb) {
 
 void Emit::inv_call(inter_symbol *prim_symb) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
+	Emit::guard(Inter::Inv::new_call(Emit::at(), current_inter_routine, prim_symb, (inter_t) Emit::level(), NULL));
+}
+
+void Emit::inv_call_iname(inter_name *iname) {
+	if (current_inter_routine == NULL) internal_error("not in an inter routine");
+	inter_symbol *prim_symb = InterNames::to_symbol(iname);
 	Emit::guard(Inter::Inv::new_call(Emit::at(), current_inter_routine, prim_symb, (inter_t) Emit::level(), NULL));
 }
 

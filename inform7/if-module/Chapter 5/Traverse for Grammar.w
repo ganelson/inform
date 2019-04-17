@@ -116,7 +116,6 @@ void PL::Parsing::compile_understanding(inter_t *val1, inter_t *val2, wording W,
 			cu = CREATE(cached_understanding);
 			cu->understanding_text = W;
 			cu->cu_iname = iname;
-			InterNames::to_symbol(iname);
 			inter_reading_state *IRS = Emit::IRS();
 			InterNames::to_ival(IRS->read_into, IRS->current_package, val1, val2, iname);
 		}

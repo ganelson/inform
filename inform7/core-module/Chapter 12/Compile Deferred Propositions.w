@@ -1000,7 +1000,7 @@ In the next case, we want to form the list of all $x$ for which $\phi(x)$
 is true. The local |list| holds the list so far, and already exists.
 
 @<Initialisation before LIST search@> =
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEWRITE_HL)));
+	Emit::inv_call_iname(Hierarchy::find(BLKVALUEWRITE_HL));
 	Emit::down();
 		Emit::val_symbol(K_value, list_s);
 		Emit::val_iname(K_value, Hierarchy::find(LIST_ITEM_KOV_F_HL));
@@ -1010,7 +1010,7 @@ is true. The local |list| holds the list so far, and already exists.
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_symbol(K_value, total_s);
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL)));
+		Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
 		Emit::down();
 			Emit::val_symbol(K_value, list_s);
 		Emit::up();
@@ -1059,7 +1059,7 @@ syntax to break or continue a loop other than the innermost one.
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
+			Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
 			Emit::down();
 				Emit::val_symbol(K_value, list_s);
 				Emit::val_symbol(K_value, total_s);
@@ -1067,7 +1067,7 @@ syntax to break or continue a loop other than the innermost one.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEWRITE_HL)));
+	Emit::inv_call_iname(Hierarchy::find(BLKVALUEWRITE_HL));
 	Emit::down();
 		Emit::val_symbol(K_value, list_s);
 		Emit::inv_primitive(minus_interp);
@@ -1090,7 +1090,7 @@ is what we do for multipurpose deferred propositions -- the labels do
 not have clashing names.
 
 @<Winding-up after LIST search@> =
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
+	Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
 	Emit::down();
 		Emit::val_symbol(K_value, list_s);
 		Emit::val_symbol(K_value, counter_s);

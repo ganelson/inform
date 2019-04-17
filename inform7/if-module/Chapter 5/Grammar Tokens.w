@@ -469,7 +469,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::down();
 				Emit::inv_primitive(ne_interp);
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+					Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 					TEMPORARY_TEXT(N);
 					WRITE_TO(N, "%N", wn);
 					Emit::val_dword(N);
@@ -488,7 +488,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 	bp = ParseTree::get_grammar_token_relation(pn);
 	if (bp) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(ARTICLEDESCRIPTORS_HL)));
+		Emit::inv_call_iname(Hierarchy::find(ARTICLEDESCRIPTORS_HL));
 		Emit::inv_primitive(store_interp);
 		Emit::down();
 			Emit::ref_symbol(K_value, gprk->w_s);
@@ -600,7 +600,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::inv_primitive(plus_interp);
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
+							Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->rv_s);
 								Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -666,7 +666,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::inv_primitive(plus_interp);
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
+							Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->rv_s);
 								Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -754,7 +754,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARENT_HL)));
+				Emit::inv_call_iname(Hierarchy::find(PARENT_HL));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 				Emit::up();
@@ -771,7 +771,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::inv_primitive(plus_interp);
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->w_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
+					Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->rv_s);
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -808,7 +808,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::inv_primitive(plus_interp);
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->w_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
+					Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->rv_s);
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -990,7 +990,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(plus_interp);
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TRYGIVENOBJECT_HL)));
+								Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->rv_s);
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -1055,7 +1055,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::inv_primitive(store_interp);
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->w_s);
-						Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+						Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 							if (Str::len(i6_gpr_name) > 0)
@@ -1120,7 +1120,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->w_s);
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+					Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(ELEMENTARY_TT_HL));
 						Emit::val_iname(K_value, i6_token_iname);
@@ -1151,7 +1151,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		 				Emit::inv_primitive(store_interp);
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->w_s);
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+							Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 							Emit::down();
 								PL::Parsing::Tokens::Filters::compile_id(gtc);
 							Emit::up();
@@ -1180,7 +1180,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Emit::down();
 									Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 									if (Str::len(i6_gpr_name) > 0)
@@ -1214,7 +1214,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Emit::down();
 									PL::Parsing::Tokens::Filters::compile_id(gtc);
 								Emit::up();
@@ -1247,7 +1247,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Emit::down();
 									Emit::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 									Emit::val_iname(K_value, PL::Parsing::Verbs::i6_token_as_iname(gv));
@@ -1289,7 +1289,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::inv_primitive(store_interp);
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
-								Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARSETOKENSTOPPED_HL)));
+								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Emit::down();
 									PL::Parsing::Tokens::Filters::compile_id(gtc);
 								Emit::up();

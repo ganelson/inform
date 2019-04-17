@@ -242,7 +242,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 					Emit::down();
 						Emit::inv_primitive(ne_interp);
 						Emit::down();
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(NEXTWORDSTOPPED_HL)));
+							Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 							TEMPORARY_TEXT(W);
 							WRITE_TO(W, "%N", k);
 							Emit::val_dword(W);

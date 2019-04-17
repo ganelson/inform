@@ -904,13 +904,13 @@ void Relations::compile_relation_records(void) {
 	LOOP_OVER(bp, binary_predicate) {
 		if ((bp->dynamic_memory) && (bp->right_way_round)) {
 
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUECREATE_HL)));
+			Emit::inv_call_iname(Hierarchy::find(BLKVALUECREATE_HL));
 			Emit::down();
 				Kinds::RunTime::emit_strong_id_as_val(BinaryPredicates::kind(bp));
 				Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 			Emit::up();
 
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_NAME_HL)));
+			Emit::inv_call_iname(Hierarchy::find(RELATION_TY_NAME_HL));
 			Emit::down();
 				Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 				TEMPORARY_TEXT(A);
@@ -921,40 +921,40 @@ void Relations::compile_relation_records(void) {
 
 			switch(bp->form_of_relation) {
 				case Relation_OtoO:
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_OtoV:
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_VtoO:
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_Sym_OtoO:
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
 					Emit::up();
 					break;
 				case Relation_Equiv:
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -962,7 +962,7 @@ void Relations::compile_relation_records(void) {
 					break;
 				case Relation_VtoV: break;
 				case Relation_Sym_VtoV:
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL)));
+					Emit::inv_call_iname(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, BinaryPredicates::iname(bp));
 						Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -1071,7 +1071,6 @@ void Relations::compile_relation_records(void) {
 			Emit::array_iname_entry(dbp->v2v_bitmap_iname);
 			break;
 		case Relation_ByRoutine: /* Field 0 is the routine used to test the relation */
-			InterNames::to_symbol(dbp->bp_by_routine_iname);
 			Emit::array_iname_entry(dbp->bp_by_routine_iname);
 			break;
 		default:
@@ -1265,7 +1264,7 @@ void Relations::compile_relation_records(void) {
 	Routines::end(save);
 
 @<The default case for minimal relations only@> =
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RUNTIMEPROBLEM_HL)));
+	Emit::inv_call_iname(Hierarchy::find(RUNTIMEPROBLEM_HL));
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(RTP_RELMINIMAL_HL));
 		Emit::val_symbol(K_value, task_s);
@@ -1342,7 +1341,7 @@ void Relations::compile_relation_records(void) {
 
 @<Expand the ID operand@> =
 	if (id_flag) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RLNGETF_HL)));
+		Emit::inv_call_iname(Hierarchy::find(RLNGETF_HL));
 		Emit::down();
 			Emit::val_symbol(K_value, rr_s);
 			Emit::val_iname(K_value, Hierarchy::find(RR_STORAGE_HL));
@@ -1355,7 +1354,7 @@ void Relations::compile_relation_records(void) {
 	Emit::inv_primitive(return_interp);
 	Emit::down();
 	if (follow) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RELFOLLOWVECTOR_HL)));
+		Emit::inv_call_iname(Hierarchy::find(RELFOLLOWVECTOR_HL));
 		Emit::down();
 			Emit::inv_primitive(indirect3_interp);
 			Emit::down();
@@ -1433,7 +1432,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LOOKUP ALL X task@> =
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
+	Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
 	Emit::down();
 		Emit::val_symbol(K_value, Y_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1448,7 +1447,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LOOKUP ALL Y task@> =
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
+	Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
 	Emit::down();
 		Emit::val_symbol(K_value, Y_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1463,7 +1462,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LIST task@> =
-	Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL)));
+	Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
 	Emit::down();
 		Emit::val_symbol(K_value, X_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1597,7 +1596,7 @@ void Relations::compile_relation_records(void) {
 	else {
 		Emit::inv_primitive(return_interp);
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(DEFAULTVALUEOFKOV_HL)));
+			Emit::inv_call_iname(Hierarchy::find(DEFAULTVALUEOFKOV_HL));
 			Emit::down();
 				Kinds::RunTime::emit_strong_id_as_val(K);
 			Emit::up();
@@ -1630,7 +1629,7 @@ void Relations::compile_relation_records(void) {
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL)));
+							Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL));
 							Emit::down();
 								Emit::val_symbol(K_value, Y_s);
 								Emit::val_symbol(K_value, Z1_s);
@@ -1668,7 +1667,7 @@ void Relations::compile_relation_records(void) {
 								Emit::up();
 								Emit::code();
 								Emit::down();
-									Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL)));
+									Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL));
 									Emit::down();
 										if (t == 0) {
 											Emit::val_symbol(K_value, X_s);
@@ -2530,7 +2529,7 @@ void Relations::compile_defined_relations(void) {
 
 			if (downs > 0) { Emit::up(); Emit::up(); }
 
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RUNTIMEPROBLEM_HL)));
+			Emit::inv_call_iname(Hierarchy::find(RUNTIMEPROBLEM_HL));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				Emit::val_symbol(K_value, L_s);
@@ -2585,7 +2584,7 @@ void Relations::compile_defined_relations(void) {
 
 			if (downs > 0) { Emit::up(); Emit::up(); }
 
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(RUNTIMEPROBLEM_HL)));
+			Emit::inv_call_iname(Hierarchy::find(RUNTIMEPROBLEM_HL));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				Emit::val_symbol(K_value, L_s);

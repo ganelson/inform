@@ -948,7 +948,7 @@ void LocalVariables::end_scope(int s) {
 			if (lvar->free_at_end_of_scope) {
 				inter_name *iname = Hierarchy::find(BLKVALUEFREE_HL);
 				inter_symbol *LN = LocalVariables::declare_this(lvar, FALSE, 2);
-				Emit::inv_call(InterNames::to_symbol(iname));
+				Emit::inv_call_iname(iname);
 				Emit::down();
 					Emit::val_symbol(K_value, LN);
 				Emit::up();

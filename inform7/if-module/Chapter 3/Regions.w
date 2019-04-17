@@ -332,7 +332,6 @@ int PL::Regions::regions_complete_model(int stage) {
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
-			InterNames::to_symbol(iname);
 			Properties::Valued::assert(P_regional_found_in, Instances::as_subject(I),
 				Rvalues::from_iname(iname), CERTAIN_CE);
 		}
@@ -346,7 +345,7 @@ void PL::Regions::write_regional_found_in_routines(void) {
 			packaging_state save = Routines::begin(iname);
 			Emit::inv_primitive(if_interp);
 			Emit::down();
-					Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTREGIONALCONTAINMENT_HL)));
+					Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					Emit::down();
 						Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
 						Emit::val_iname(K_object, Instances::iname(I));

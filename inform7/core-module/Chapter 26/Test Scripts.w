@@ -331,7 +331,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 						DISCARD_TEXT(W);
 						Emit::code();
 						Emit::down();
-							Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTSTART_HL)));
+							Emit::inv_call_iname(Hierarchy::find(TESTSTART_HL));
 							Emit::down();
 								Emit::val_iname(K_value, test->text_iname);
 								Emit::val_iname(K_value, test->req_iname);
@@ -565,7 +565,7 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	DISCARD_TEXT(OUT);
 
 	if (Kinds::get_construct(K) == CON_list_of) {
-		Emit::inv_call(InterNames::to_symbol(Hierarchy::find(LIST_OF_TY_SAY_HL)));
+		Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SAY_HL));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			Emit::val(K_number, LITERAL_IVAL, 1);
@@ -573,7 +573,7 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	} else {
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Emit::inv_call(InterNames::to_symbol(Kinds::Behaviour::get_iname(K)));
+		Emit::inv_call_iname(Kinds::Behaviour::get_iname(K));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 		Emit::up();

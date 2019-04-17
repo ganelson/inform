@@ -391,7 +391,7 @@ int Kinds::RunTime::emit_cast_call(kind *from, kind *to, int *down) {
 			Kinds::Behaviour::get_name_in_template_code(to));
 		inter_name *iname = Hierarchy::find_by_name(N);
 		DISCARD_TEXT(N);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		*down = TRUE;
 		Emit::down();
 		if (Kinds::Behaviour::uses_pointer_values(to)) {
@@ -462,7 +462,7 @@ void Kinds::RunTime::emit_weak_id_as_val(kind *K) {
 	if (K == NULL) internal_error("cannot emit null kind as val");
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::iname(con);
-	if (iname) Emit::val_symbol(K_value, InterNames::to_symbol(iname));
+	if (iname) Emit::val_iname(K_value, iname);
 	else Emit::val(K_value, LITERAL_IVAL, (inter_t) (Kinds::RunTime::weak_id(K)));
 }
 
@@ -519,7 +519,7 @@ void Kinds::RunTime::emit_strong_id(kind *K) {
 void Kinds::RunTime::emit_strong_id_as_val(kind *K) {
 	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
 	if (rks) {
-		Emit::val_symbol(K_value, InterNames::to_symbol(rks->rks_iname));
+		Emit::val_iname(K_value, rks->rks_iname);
 	} else {
 		Kinds::RunTime::emit_weak_id_as_val(K);
 	}
@@ -846,14 +846,14 @@ heap_allocation Kinds::RunTime::make_heap_allocation(kind *K, int multiplier,
 void Kinds::RunTime::emit_heap_allocation(heap_allocation ha) {
 	if (ha.stack_offset >= 0) {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATEONSTACK_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) ha.stack_offset);
 		Kinds::RunTime::emit_strong_id_as_val(ha.allocated_kind);
 		Emit::up();
 	} else {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 		Kinds::RunTime::emit_strong_id_as_val(ha.allocated_kind);
 		Emit::up();
@@ -1034,7 +1034,7 @@ void Kinds::RunTime::emit(kind *K) {
 		dt = ENUM_IDT;
 	}
 	Emit::kind(Kinds::RunTime::iname(K), dt, S?Kinds::RunTime::iname(S):NULL, BASE_ICON, 0, NULL);
-	if (K == K_object) InterNames::translate(Kinds::RunTime::iname(K), I"K0_kind");
+	if (K == K_object) InterNames::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
 }
 
 void Kinds::RunTime::kind_declarations(void) {
@@ -1429,7 +1429,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 			Emit::val_symbol(K_value, k_s);
 		Emit::up();
@@ -1449,7 +1449,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 				Emit::code();
 				Emit::down();
 					inter_name *pname = Kinds::Behaviour::get_iname(K);
-					Emit::inv_call(InterNames::to_symbol(pname));
+					Emit::inv_call_iname(pname);
 					Emit::down();
 						Emit::val_symbol(K_value, v_s);
 					Emit::up();
@@ -1485,7 +1485,7 @@ which have to be given some type-safe value to start out at.
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 			Emit::val_symbol(K_value, sk_s);
 		Emit::up();
@@ -1509,7 +1509,7 @@ which have to be given some type-safe value to start out at.
 					Emit::down();
 						if (Kinds::Behaviour::uses_pointer_values(K)) {
 							inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
-							Emit::inv_call(InterNames::to_symbol(iname));
+							Emit::inv_call_iname(iname);
 							Emit::down();
 								Emit::val_symbol(K_value, sk_s);
 							Emit::up();
@@ -1554,7 +1554,7 @@ unless the two values are genuinely equal.
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 			Emit::val_symbol(K_value, k_s);
 		Emit::up();
@@ -1608,7 +1608,7 @@ unless the two values are genuinely equal.
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 			Emit::val_symbol(K_value, k_s);
 		Emit::up();
@@ -1663,7 +1663,7 @@ storing pointers to blocks on the heap.
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 			Emit::val_symbol(K_value, k_s);
 		Emit::up();
@@ -1705,7 +1705,7 @@ such a function does, see "BlockValues.i6t".
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 			Emit::val_symbol(K_value, k_s);
 		Emit::up();
@@ -1741,7 +1741,7 @@ such a function does, see "BlockValues.i6t".
 		Emit::val_symbol(K_value, fail_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(BLKVALUEERROR_HL)));
+			Emit::inv_call_iname(Hierarchy::find(BLKVALUEERROR_HL));
 			Emit::down();
 				Emit::val_symbol(K_value, fail_s);
 			Emit::up();

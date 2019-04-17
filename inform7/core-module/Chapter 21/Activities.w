@@ -584,7 +584,7 @@ void Activities::emit_activity_list(activity_list *al) {
 	while (al != NULL) {
 		if (++ncl < cl) { Emit::inv_primitive(or_interp); Emit::down(); downs++; }
 		if (al->activity != NULL) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(TESTACTIVITY_HL)));
+			Emit::inv_call_iname(Hierarchy::find(TESTACTIVITY_HL));
 			Emit::down();
 				Emit::val_iname(K_value, al->activity->av_iname);
 				if (al->acting_on) {

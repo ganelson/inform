@@ -85,7 +85,6 @@ void Routines::end_in_current_package(void) {
 		(currently_compiling_in_frame->no_formal_parameters_needed > 0)) {
 		if (Packaging::houseed_in_function(public_name)) {
 			kernel_name = Hierarchy::make_kernel_iname(public_name->eventual_owner);
-			Inter::Symbols::set_flag(InterNames::to_symbol(kernel_name), MAKE_NAME_UNIQUE);
 		} else {
 			internal_error("routine not housed in function");
 		}
@@ -146,7 +145,7 @@ after the call parameters, and is used only as a scratch variable.
 		if (pall->offset_past > NBV) NBV = pall->offset_past;
 	}
 	inter_name *iname = Hierarchy::find(STACKFRAMECREATE_HL);
-	Emit::inv_call(InterNames::to_symbol(iname));
+	Emit::inv_call_iname(iname);
 	Emit::down();
 	Emit::val(K_number, LITERAL_IVAL, (inter_t) NBV);
 	Emit::up();
@@ -165,12 +164,12 @@ after the call parameters, and is used only as a scratch variable.
 	Emit::ref_symbol(K_value, I7RBLK_symbol);
 	if (returns_block_value) {
 		inter_name *iname = Hierarchy::find(BLKVALUECOPY_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 		Emit::val_symbol(K_number,I7RBLK_symbol);
 	}
 
-	Emit::inv_call(InterNames::to_symbol(kernel_name));
+	Emit::inv_call_iname(kernel_name);
 	Emit::down();
 	LocalVariables::emit_parameter_list(currently_compiling_in_frame);
 	Emit::up();
@@ -190,7 +189,7 @@ after the call parameters, and is used only as a scratch variable.
 
 	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame) {
 		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
-		Emit::inv_call(InterNames::to_symbol(iname));
+		Emit::inv_call_iname(iname);
 		Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) pall->offset_index);
 		Emit::up();

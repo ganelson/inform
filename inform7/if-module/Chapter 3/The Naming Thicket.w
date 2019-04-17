@@ -443,7 +443,7 @@ void PL::Naming::compile_small_names(void) {
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(porname));
+					Emit::inv_call_iname(porname);
 					Emit::down();
 						Emit::val_iname(K_value, Instances::iname(owner));
 						Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
@@ -452,7 +452,7 @@ void PL::Naming::compile_small_names(void) {
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_call(InterNames::to_symbol(porname));
+					Emit::inv_call_iname(porname);
 					Emit::down();
 						Emit::val_iname(K_value, Instances::iname(owner));
 						Emit::val_iname(K_object, Hierarchy::find(SHORT_NAME_HL));

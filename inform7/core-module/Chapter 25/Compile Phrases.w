@@ -583,7 +583,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 			(ParseTree::get_phrase_invoked(inv)) &&
 			(Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv))) &&
 			(ParseTree::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
-			Emit::inv_call(InterNames::to_symbol(Hierarchy::find(PARACONTENT_HL)));
+			Emit::inv_call_iname(Hierarchy::find(PARACONTENT_HL));
 		}
 	} else {
 		ExParser::parse_void_phrase(p);

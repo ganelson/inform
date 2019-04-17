@@ -86,10 +86,8 @@ relies on adjectival meanings.
 =
 property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	wording W = Feeds::feed_text(I6_form);
-	property *prn = Properties::create(EMPTY_WORDING, NULL);
-	inter_name *iname = Properties::iname(prn);
-	Packaging::house(iname, Hierarchy::template());
-	InterNames::attach_memo(iname, W);
+	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, Hierarchy::template(), W);
+	property *prn = Properties::create(EMPTY_WORDING, iname);
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);
 	Properties::set_translation(prn, I6_form);
