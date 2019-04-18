@@ -61,6 +61,8 @@ The following makes up a new schema from a |printf|-style formatted string:
 @d MAX_I6_SCHEMA_ATTEMPT 1024 /* plenty of room for conjectural schema overruns */
 
 =
+int unique_qi_counter = 0;
+
 i6_schema *Calculus::Schemas::new(char *fmt, ...) {
 	va_list ap; /* the variable argument list signified by the dots */
 	i6_schema *sch = CREATE(i6_schema);
@@ -123,7 +125,7 @@ an integer; |%s|, a C string; |%S|, a text stream; and |%k|, a kind ID.
 			int N = sch->no_quoted_inames++;
 			if (N >= 2) internal_error("too many inter_name quotes");
 			sch->quoted_inames[N] = iname;
-			WRITE("QUOTED_INAME_%d_%08x", N, iname->allocation_id);
+			WRITE("QUOTED_INAME_%d_%08x", N, unique_qi_counter++);
 			break;
 		}
 		case 'N': WRITE("%N", va_arg(ap, int)); break;

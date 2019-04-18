@@ -35,7 +35,7 @@ inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 =
 void Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
 	if (iname == NULL) internal_error("no iname for routine");
-	package_request *R = iname->eventual_owner;
+	package_request *R = Packaging::home_of(iname);
 	if ((R == NULL) || (R == Hierarchy::main())) {
 		LOG("Routine outside of package: ................................................ %n\n", iname);
 		WRITE_TO(STDERR, "Routine outside of package: %n\n", iname);
@@ -83,7 +83,7 @@ void Routines::end_in_current_package(void) {
 	if ((currently_compiling_in_frame->allocated_pointers) ||
 		(currently_compiling_in_frame->no_formal_parameters_needed > 0)) {
 		if (Packaging::houseed_in_function(public_name)) {
-			kernel_name = Hierarchy::make_kernel_iname(public_name->eventual_owner);
+			kernel_name = Hierarchy::make_kernel_iname(Packaging::home_of(public_name));
 		} else {
 			internal_error("routine not housed in function");
 		}

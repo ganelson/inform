@@ -312,21 +312,21 @@ so. These routines allow that to happen.
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
 	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, iname->eventual_owner);
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Packaging::home_of(iname));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = FALSE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, iname->eventual_owner);
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Packaging::home_of(iname));
 	faux = notice->snn_iname;
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
 	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, iname->eventual_owner);
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Packaging::home_of(iname));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = TRUE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, iname->eventual_owner);
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Packaging::home_of(iname));
 	faux = notice->snn_iname;
 
 @ Lastly, then. We don't give this to kinds of room, because it's never necessary

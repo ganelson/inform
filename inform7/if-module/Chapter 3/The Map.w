@@ -968,7 +968,7 @@ always the way to the other room -- the one we are not in.
 @<Assert door-dir for a two-sided door@> =
 	door_dir_notice *notice = CREATE(door_dir_notice);
 	inter_name *iname = Instances::iname(I);
-	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, iname->eventual_owner);
+	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, Packaging::home_of(iname));
 	notice->door = I;
 	notice->R1 = R1;
 	notice->D1 = D1;
@@ -982,7 +982,7 @@ always the other room -- the one we are not in.
 @<Assert door-to for a two-sided door@> =
 	door_to_notice *notice = CREATE(door_to_notice);
 	inter_name *iname = Instances::iname(I);
-	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, iname->eventual_owner);
+	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, Packaging::home_of(iname));
 	notice->door = I;
 	notice->R1 = R1;
 	notice->R2 = R2;

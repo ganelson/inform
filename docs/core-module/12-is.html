@@ -91,6 +91,8 @@ error.
 </pre>
 
 <pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unique_qi_counter</span><span class="plain"> = 0;</span>
+
     <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">fmt</span><span class="plain">, ...) {</span>
         <span class="identifier">va_list</span><span class="plain"> </span><span class="identifier">ap</span><span class="plain">; </span>    <span class="comment">the variable argument list signified by the dots</span>
         <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain">);</span>
@@ -191,7 +193,7 @@ an integer; <code class="display"><span class="extract">%s</span></code>, a C st
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;no_quoted_inames</span><span class="plain">++;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= 2) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too many inter_name quotes"</span><span class="plain">);</span>
                 <span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;quoted_inames</span><span class="plain">[</span><span class="identifier">N</span><span class="plain">] = </span><span class="identifier">iname</span><span class="plain">;</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"QUOTED_INAME_%d_%08x"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"QUOTED_INAME_%d_%08x"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">unique_qi_counter</span><span class="plain">++);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'N'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">va_arg</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">, </span><span class="reserved">int</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>

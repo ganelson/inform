@@ -1218,7 +1218,7 @@ each such kind, and needed at run-time.
 <pre class="display">
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::package</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

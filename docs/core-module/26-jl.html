@@ -36,7 +36,6 @@ generates labels <code class="display"><span class="extract">L_0</span></code>, 
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">label_namespace</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">base_prefix</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">label_prefix</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">label_counter</span><span class="plain">; </span>    <span class="comment">next free ID number for this label namespace</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocate_storage</span><span class="plain">; </span>    <span class="comment">number of words of memory to reserve for each label</span>
@@ -63,9 +62,7 @@ reserves no memory.
                 <span class="string">"a label namespace prefix is too long"</span><span class="plain">,</span>
                 <span class="string">"and should be shortened to a few alphabetic characters."</span><span class="plain">);</span>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">label_namespace</span><span class="plain">);</span>
-        <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;base_prefix</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain">, </span><span class="string">"%S%S"</span><span class="plain">, </span><span class="identifier">cm</span><span class="plain">-</span><span class="element">&gt;namespace</span><span class="plain">-</span><span class="element">&gt;namespace_prefix</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR2</span><span class="plain"> = </span><span class="functiontext">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="constant">LABEL_STORAGES_HAP</span><span class="plain">);</span>
         <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_storage_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LABEL_ASSOCIATED_STORAGE_HL</span><span class="plain">, </span><span class="identifier">PR2</span><span class="plain">);</span>
 
@@ -91,7 +88,7 @@ optimising.
     <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::namespace_by_prefix</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain">) {</span>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">lns</span><span class="plain">, </span><span class="reserved">label_namespace</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;module</span><span class="plain"> == </span><span class="identifier">cm</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;base_prefix</span><span class="plain">)))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;module</span><span class="plain"> == </span><span class="identifier">cm</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain">)))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lns</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -175,9 +172,6 @@ specification <code class="display"><span class="extract">--&gt; 0</span></code>
                 <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">JumpLabels::reset</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -185,8 +179,6 @@ specification <code class="display"><span class="extract">--&gt; 0</span></code>
 <p class="endnote">The function JumpLabels::allocate_counter is used in 25/cii (<a href="25-cii.html#SP3_4_6">&#167;3.4.6</a>).</p>
 
 <p class="endnote">The function JumpLabels::compile_necessary_storage is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
-
-<p class="endnote">The function JumpLabels::reset is used in 26/rt (<a href="26-rt.html#SP3">&#167;3</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="26-lt.html">Back to 'List Together'</a></li><li><a href="26-ct.html">Continue with 'Compiled Text'</a></li></ul><hr class="tocbar">

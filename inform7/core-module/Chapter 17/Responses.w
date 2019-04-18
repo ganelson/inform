@@ -324,7 +324,7 @@ text for the response than the one we first created.
 				}
 				inter_name *ts_iname = Strings::TextSubstitutions::text_substitution_iname(ts);
 				inter_name *rc_iname = Strings::response_constant_iname(R, marker);
-				packaging_state save = Packaging::enter(rc_iname->eventual_owner);
+				packaging_state save = Packaging::enter_home_of(rc_iname);
 				Emit::response(rc_iname, R, marker, ts_iname);
 				Packaging::exit(save);
 			}

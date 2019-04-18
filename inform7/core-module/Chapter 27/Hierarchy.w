@@ -1570,7 +1570,7 @@ inter_name *Hierarchy::find_by_name(text_stream *name) {
 package_request *main_pr = NULL;
 package_request *Hierarchy::main(void) {
 	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::make(I"main", NULL), NULL, plain_ptype);
+		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL), NULL, plain_ptype);
 	return main_pr;
 }
 
@@ -1578,7 +1578,7 @@ package_request *resources_pr = NULL;
 package_request *Hierarchy::resources(void) {
 	if (resources_pr == NULL)
 		resources_pr = Packaging::request(
-			InterNames::make(I"resources", Hierarchy::main()),
+			InterNames::explicitly_named(I"resources", Hierarchy::main()),
 			Hierarchy::main(), plain_ptype);
 	return resources_pr;
 }
@@ -1587,7 +1587,7 @@ package_request *template_pr = NULL;
 package_request *Hierarchy::template(void) {
 	if (template_pr == NULL)
 		template_pr = Packaging::request(
-			InterNames::make(I"template", Hierarchy::resources()),
+			InterNames::explicitly_named(I"template", Hierarchy::resources()),
 			Hierarchy::resources(), module_ptype);
 	return template_pr;
 }

@@ -112,7 +112,7 @@ named_resource_location *HierarchyLocations::make_as(int id, text_stream *name, 
 	named_resource_location *nrl = HierarchyLocations::new();
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
-	nrl->requirements = HierarchyLocations::this_package(iname->eventual_owner);
+	nrl->requirements = HierarchyLocations::this_package(Packaging::home_of(iname));
 	nrl->equates_to_iname = iname;
 	HierarchyLocations::index(nrl);
 	return nrl;
@@ -178,7 +178,7 @@ inter_name *HierarchyLocations::find_by_name(text_stream *name) {
 }
 
 inter_name *HierarchyLocations::function(package_request *R, text_stream *name, text_stream *trans) {
-	inter_name *iname = Packaging::function(InterNames::make(name, R), R, NULL);
+	inter_name *iname = Packaging::function(InterNames::explicitly_named(name, R), R, NULL);
 	if (trans) InterNames::change_translation(iname, trans);
 	return iname;
 }
@@ -193,21 +193,21 @@ inter_name *HierarchyLocations::nrl_to_iname(named_resource_location *nrl) {
 		}
 		if (nrl->requirements.this_mundane_package == Hierarchy::template()) {
 			packaging_state save = Packaging::enter(nrl->requirements.this_mundane_package);
-			nrl->equates_to_iname = InterNames::make(nrl->access_name, Hierarchy::template());
+			nrl->equates_to_iname = InterNames::explicitly_named(nrl->access_name, Hierarchy::template());
 			nrl->equates_to_iname->symbol = Emit::extern(nrl->access_name, K_value);
 			Packaging::exit(save);
 		} else if (Str::len(nrl->function_package_name) > 0) {
 			nrl->equates_to_iname = Packaging::function_text(
-				InterNames::make(nrl->function_package_name, nrl->requirements.this_mundane_package),
+				InterNames::explicitly_named(nrl->function_package_name, nrl->requirements.this_mundane_package),
 				nrl->requirements.this_mundane_package,
 				nrl->access_name);
 		} else if (Str::len(nrl->datum_package_name) > 0) {
 			nrl->equates_to_iname = Packaging::datum_text(
-				InterNames::make(nrl->datum_package_name, nrl->requirements.this_mundane_package),
+				InterNames::explicitly_named(nrl->datum_package_name, nrl->requirements.this_mundane_package),
 				nrl->requirements.this_mundane_package,
 				nrl->access_name);
 		} else if ((nrl->requirements.this_mundane_package) && (nrl->equates_to_iname == NULL)) {
-			nrl->equates_to_iname = InterNames::make(nrl->access_name, nrl->requirements.this_mundane_package);
+			nrl->equates_to_iname = InterNames::explicitly_named(nrl->access_name, nrl->requirements.this_mundane_package);
 		}
 
 		nrl->equates_to_iname = Hierarchy::post_process(nrl->access_number, nrl->equates_to_iname);
@@ -245,14 +245,11 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		TEMPORARY_TEXT(T);
 		inter_name *temp_iname = NULL;
 		if (derive_from) {
-			temp_iname = InterNames::new_derived_f(nrl->trans.name_generator, derive_from);
+			temp_iname = InterNames::derived(nrl->trans.name_generator, derive_from, W);
 		} else {
-			temp_iname = InterNames::new_f(nrl->trans.name_generator, fix);
+			temp_iname = InterNames::generated(nrl->trans.name_generator, fix, W);
 		}
-		if (!Wordings::empty(W)) {
-			InterNames::attach_memo(temp_iname, W);
-			W = EMPTY_WORDING;
-		}
+		W = EMPTY_WORDING;
 		WRITE_TO(T, "%n", temp_iname);
 		@<Make the actual iname@>;
 		DISCARD_TEXT(T);
@@ -267,16 +264,13 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 
 @<Make the actual iname@> =
 	if (Str::len(nrl->function_package_name) > 0) {
-		iname = Packaging::function_text(
-				InterNames::make(nrl->function_package_name, P),
-				P,
-				NULL);
+		iname = Packaging::function(
+			InterNames::explicitly_named(nrl->function_package_name, P), P, NULL);
 	} else {
-		if (nrl->trans.by_imposition) iname = InterNames::make(imposed_name, P);
-		else if (Str::len(nrl->access_name) == 0) iname = InterNames::make(T, P);
-		else iname = InterNames::make(nrl->access_name, P);
+		if (nrl->trans.by_imposition) iname = InterNames::explicitly_named_with_memo(imposed_name, P, W);
+		else if (Str::len(nrl->access_name) == 0) iname = InterNames::explicitly_named_with_memo(T, P, W);
+		else iname = InterNames::explicitly_named_with_memo(nrl->access_name, P, W);
 	}
-	if (!Wordings::empty(W)) InterNames::attach_memo(iname, W);
 	if ((Str::len(T) > 0) && (nrl->access_name)) InterNames::change_translation(iname, T);
 
 @ =
@@ -296,7 +290,7 @@ package_request *HierarchyLocations::package_in_package(int id, package_request 
 			internal_error("subpackage not in enclosing superpackage");
 	} else internal_error("NRL accessed inappropriately");
 
-	return Packaging::request(InterNames::make(nrl->access_name, P), P, nrl->package_type);
+	return Packaging::request(InterNames::explicitly_named(nrl->access_name, P), P, nrl->package_type);
 }
 
 =

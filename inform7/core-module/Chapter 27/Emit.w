@@ -497,7 +497,7 @@ void Emit::guard(inter_error_message *ERR) {
 
 void Emit::kind(inter_name *iname, inter_t TID, inter_name *super,
 	int constructor, int arity, kind **operand_kinds) {
-	packaging_state save = Packaging::enter(iname->eventual_owner);
+	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *S = InterNames::to_symbol(iname);
 	inter_t SID = 0;
 	if (S) SID = Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, S);
@@ -556,7 +556,7 @@ void Emit::permission(property *prn, kind *K, inter_name *name) {
 void Emit::instance_permission(property *prn, inter_name *inst_iname) {
 	inter_name *prop_name = Properties::iname(prn);
 	inter_symbol *inst_name = InterNames::to_symbol(inst_iname);
-	packaging_state save = Packaging::enter(inst_iname->eventual_owner);
+	packaging_state save = Packaging::enter_home_of(inst_iname);
 	Emit::basic_permission(default_bookmark, prop_name, inst_name, NULL);
 	Packaging::exit(save);
 }
@@ -974,7 +974,7 @@ inter_symbol *Emit::block(inter_name *iname) {
 	if (Emit::IRS() == NULL) internal_error("no inter repository");
 	inter_name *block_iname = NULL;
 	if (Packaging::houseed_in_function(iname))
-		block_iname = Hierarchy::make_block_iname(iname->eventual_owner);
+		block_iname = Hierarchy::make_block_iname(Packaging::home_of(iname));
 	else internal_error("routine outside function package");
 	inter_symbol *rsymb = Emit::package(block_iname, code_packagetype, NULL);
 

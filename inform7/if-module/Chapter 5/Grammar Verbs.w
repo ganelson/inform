@@ -527,7 +527,7 @@ grammar_verb *PL::Parsing::Verbs::for_prn(property *prn) {
 	Properties::EitherOr::set_parsing_grammar(prn, gv);
 	gv->prn_understood = prn;
 	inter_name *iname = Properties::iname(prn);
-	gv->gv_prn_iname = Hierarchy::make_iname_in(EITHER_OR_GPR_FN_HL, iname->eventual_owner);
+	gv->gv_prn_iname = Hierarchy::make_iname_in(EITHER_OR_GPR_FN_HL, Packaging::home_of(iname));
 	return gv;
 }
 

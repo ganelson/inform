@@ -415,7 +415,7 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 			(nlv->housed_in_variables_array)) {
 
 			inter_name *iname = NonlocalVariables::iname(nlv);
-			packaging_state save = Packaging::enter(iname->eventual_owner);
+			packaging_state save = Packaging::enter_home_of(iname);
 
 			value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 

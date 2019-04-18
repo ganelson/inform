@@ -595,7 +595,7 @@ there's very little to say.
                 <span class="plain">(</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;housed_in_variables_array</span><span class="plain">)) {</span>
 
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">);</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
 
                 <span class="reserved">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="functiontext">Holsters::new</span><span class="plain">(</span><span class="constant">INTER_DATA_VHMODE</span><span class="plain">);</span>
 

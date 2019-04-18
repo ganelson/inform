@@ -1061,7 +1061,7 @@ declarations) and finally return <code class="display"><span class="extract">TRU
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_emitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_emitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::instance</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain">);</span>
             <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -1070,7 +1070,7 @@ declarations) and finally return <code class="display"><span class="extract">TRU
 
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Instances::package</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;eventual_owner</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

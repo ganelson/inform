@@ -16,11 +16,9 @@
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">name_translation</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">translate_to</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">then_make_unique</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name_family</span><span class="plain"> *</span><span class="identifier">name_generator</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">localise</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">name_generator</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">derive</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">by_imposition</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">faux_letter</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">name_translation</span><span class="plain">;</span>
 
     <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::same</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -28,10 +26,8 @@
         <span class="identifier">nt</span><span class="element">.translate_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">nt</span><span class="element">.then_make_unique</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">nt</span><span class="element">.localise</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">nt</span><span class="element">.by_imposition</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">nt</span><span class="element">.faux_letter</span><span class="plain"> = -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -62,36 +58,21 @@
 
     <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::prefix</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
-        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::name_generator</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple_use_generator</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::suffix</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
-        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::name_generator</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple_use_generator</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
         <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::suffix_special</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">faux_letter</span><span class="plain">) {</span>
-        <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
-        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::name_generator</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="identifier">nt</span><span class="element">.derive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">nt</span><span class="element">.faux_letter</span><span class="plain"> = </span><span class="identifier">faux_letter</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
-        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::name_generator</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">name_translation</span><span class="plain"> </span><span class="functiontext">Translation::generate_in</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="reserved">name_translation</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="functiontext">Translation::same</span><span class="plain">();</span>
-        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::name_generator</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">nt</span><span class="element">.localise</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">nt</span><span class="element">.name_generator</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple_use_generator</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -110,13 +91,9 @@
 
 <p class="endnote">The function Translation::prefix is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>).</p>
 
-<p class="endnote">The function Translation::suffix is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>).</p>
-
-<p class="endnote">The function Translation::suffix_special is used in 27/hr (<a href="27-hr.html#SP1_28">&#167;1.28</a>).</p>
+<p class="endnote">The function Translation::suffix is used in 27/hr (<a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>).</p>
 
 <p class="endnote">The function Translation::generate is used in 27/hr (<a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_26">&#167;1.26</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>).</p>
-
-<p class="endnote">The function Translation::generate_in is used in 27/hr (<a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>).</p>
 
 <p class="endnote">The structure name_translation is accessed in 27/hl and here.</p>
 

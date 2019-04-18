@@ -6,7 +6,7 @@
 typedef struct name_translation {
 	struct text_stream *translate_to;
 	int then_make_unique;
-	struct inter_name_family *name_generator;
+	struct inter_name_generator *name_generator;
 	int derive;
 	int by_imposition;
 } name_translation;
@@ -48,20 +48,20 @@ name_translation Translation::to_uniqued(text_stream *S) {
 
 name_translation Translation::prefix(text_stream *S) {
 	name_translation nt = Translation::same();
-	nt.name_generator = InterNames::name_generator(S, NULL, NULL);
+	nt.name_generator = InterNames::multiple_use_generator(S, NULL, NULL);
 	nt.derive = TRUE;
 	return nt;
 }
 
 name_translation Translation::suffix(text_stream *S) {
 	name_translation nt = Translation::same();
-	nt.name_generator = InterNames::name_generator(NULL, NULL, S);
+	nt.name_generator = InterNames::multiple_use_generator(NULL, NULL, S);
 	nt.derive = TRUE;
 	return nt;
 }
 
 name_translation Translation::generate(text_stream *S) {
 	name_translation nt = Translation::same();
-	nt.name_generator = InterNames::name_generator(NULL, S, NULL);
+	nt.name_generator = InterNames::multiple_use_generator(NULL, S, NULL);
 	return nt;
 }

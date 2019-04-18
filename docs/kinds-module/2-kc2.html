@@ -109,6 +109,8 @@ forge new kind constructors.
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">INTER_MODULE</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">kind_GPR_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">instance_GPR_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">first_instance_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">next_instance_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">pr_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">inc_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">dec_iname</span><span class="plain">;</span>
@@ -326,6 +328,8 @@ I6 template files.
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">INTER_MODULE</span>
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kind_GPR_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;instance_GPR_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_instance_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;next_instance_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;inc_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;dec_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -492,6 +496,18 @@ of the kind which the constructor makes:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">UNKNOWN_TY_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no con symbols yet"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;con_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::first_instance_iname</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_instance_iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::set_first_instance_iname</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">) {</span>
+        <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_instance_iname</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::next_instance_iname</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;next_instance_iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::set_next_instance_iname</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">) {</span>
+        <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;next_instance_iname</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::name_in_template_code</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
@@ -508,6 +524,14 @@ of the kind which the constructor makes:
 <p class="endnote">The function Kinds::Constructors::package is used in <a href="#SP7_1">&#167;7.1</a>, 2/uk (<a href="2-uk.html#SP32">&#167;32</a>).</p>
 
 <p class="endnote">The function Kinds::Constructors::iname appears nowhere else.</p>
+
+<p class="endnote">The function Kinds::Constructors::first_instance_iname appears nowhere else.</p>
+
+<p class="endnote">The function Kinds::Constructors::set_first_instance_iname appears nowhere else.</p>
+
+<p class="endnote">The function Kinds::Constructors::next_instance_iname appears nowhere else.</p>
+
+<p class="endnote">The function Kinds::Constructors::set_next_instance_iname appears nowhere else.</p>
 
 <p class="endnote">The function Kinds::Constructors::name_in_template_code appears nowhere else.</p>
 

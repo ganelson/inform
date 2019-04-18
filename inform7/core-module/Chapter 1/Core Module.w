@@ -98,8 +98,8 @@ We need to itemise the structures we'll want to allocate:
 @e dval_written_MT
 @e nascent_array_MT
 @e value_holster_array_MT
-@e inter_name_MT
-@e inter_name_family_MT
+@e inter_name_array_MT
+@e inter_name_generator_array_MT
 @e adjective_iname_holder_MT
 @e compilation_module_MT
 @e inter_schema_MT
@@ -141,8 +141,6 @@ ALLOCATE_INDIVIDUALLY(i6_memory_setting)
 ALLOCATE_INDIVIDUALLY(implication)
 ALLOCATE_INDIVIDUALLY(inference_subject)
 ALLOCATE_INDIVIDUALLY(instance)
-ALLOCATE_INDIVIDUALLY(inter_name)
-ALLOCATE_INDIVIDUALLY(inter_name_family)
 ALLOCATE_INDIVIDUALLY(internal_test_case)
 ALLOCATE_INDIVIDUALLY(inv_token_problem_token)
 ALLOCATE_INDIVIDUALLY(kind_interaction)
@@ -205,6 +203,8 @@ ALLOCATE_IN_ARRAYS(extension_identifier_database_entry, 100)
 ALLOCATE_IN_ARRAYS(i6_schema, 100)
 ALLOCATE_IN_ARRAYS(inference, 100)
 ALLOCATE_IN_ARRAYS(instance_usage, 200)
+ALLOCATE_IN_ARRAYS(inter_name, 1000)
+ALLOCATE_IN_ARRAYS(inter_name_generator, 1000)
 ALLOCATE_IN_ARRAYS(invocation_options, 100)
 ALLOCATE_IN_ARRAYS(local_variable, 100)
 ALLOCATE_IN_ARRAYS(pcalc_func, 1000)

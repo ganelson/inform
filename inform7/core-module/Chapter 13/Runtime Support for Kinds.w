@@ -907,7 +907,7 @@ typedef struct kind_interaction {
 @ =
 package_request *Kinds::RunTime::package(kind *K) {
 	inter_name *iname = Kinds::RunTime::iname(K);
-	return iname->eventual_owner;
+	return Packaging::home_of(iname);
 }
 
 @

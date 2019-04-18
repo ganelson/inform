@@ -1,184 +1,265 @@
 [InterNames::] Inter Namespace.
 
-@
+To manage identifiers, which have names and positions in the Inter hierarchy.
 
-@e UNIQUE_FUSAGE from 1
-@e MULTIPLE_FUSAGE
-@e DERIVED_FUSAGE
+@h Families.
+Each inter name comes from a "generator". Some are one-shot, and produce just
+one name before being discarded; others produce a numbered sequence of names
+in a given pattern, counting upwards from 1 (|example_1|, |example_2|, ...);
+and others still derive new names from existing ones (for example, turning
+|fish| amd |rumour| into |fishmonger| and |rumourmonger|).
+
+@e UNIQUE_INGEN from 1
+@e MULTIPLE_INGEN
+@e DERIVED_INGEN
 
 =
-typedef struct inter_name_family {
-	int fusage;
-	struct text_stream *family_name;
-	int no_consumed;
-	struct inter_name_family *derivative_of;
-	struct text_stream *derived_prefix;
-	struct text_stream *derived_suffix;
-	MEMORY_MANAGEMENT
-} inter_name_family;
+typedef struct inter_name_generator {
+	int ingen;
+	struct text_stream *name_stem;
+	int no_generated; /* relevamt only for |MULTIPLE_INGEN| */
+	struct text_stream *derived_prefix; /* relevamt only for |DERIVED_INGEN| */
+	struct text_stream *derived_suffix; /* relevamt only for |DERIVED_INGEN| */
+} inter_name_generator;
 
-typedef struct inter_name {
-	struct inter_name_family *family;
-	int unique_number;
-	struct inter_symbol *symbol;
-	struct package_request *eventual_owner;
-	struct text_stream *memo;
-	struct inter_name *derived_from;
-	struct inter_name **parametrised_derivatives;
-	MEMORY_MANAGEMENT
-} inter_name;
-
-@ =
-inter_name_family *InterNames::new_family(int fu, text_stream *name) {
-	inter_name_family *F = CREATE(inter_name_family);
-	F->fusage = fu;
-	F->family_name = Str::duplicate(name);
-	F->derivative_of = NULL;
+inter_name_generator *InterNames::single_use_generator(text_stream *name) {
+	inter_name_generator *F = CREATE(inter_name_generator);
+	F->ingen = UNIQUE_INGEN;
+	F->name_stem = Str::duplicate(name);
 	F->derived_prefix = NULL;
-	F->derived_suffix = NULL;
 	return F;
 }
 
-inter_name *InterNames::make_in_family(inter_name_family *F, int suppress_count) {
-	if (F == NULL) internal_error("no family");
-	inter_name *N = CREATE(inter_name);
-	N->family = F;
-	N->unique_number = 0;
-	if (F->fusage == UNIQUE_FUSAGE) internal_error("not a family name");
-	if ((F->fusage != DERIVED_FUSAGE) && (suppress_count == FALSE)) {
-		N->unique_number = ++F->no_consumed;
+inter_name_generator *InterNames::multiple_use_generator(text_stream *prefix, text_stream *stem, text_stream *suffix) {
+	inter_name_generator *gen = InterNames::single_use_generator(stem);
+	if (Str::len(prefix) > 0) {
+		gen->ingen = DERIVED_INGEN;
+		gen->derived_prefix = Str::duplicate(prefix);
+	} else if (Str::len(suffix) > 0) {
+		gen->ingen = DERIVED_INGEN;
+		gen->derived_suffix = Str::duplicate(suffix);
+	} else gen->ingen = MULTIPLE_INGEN;
+	return gen;
+}
+
+@h Printing inames.
+Inter names are stored not in textual form, but in terms of what would be
+required to generate that text. (The memo field, which in principle allows
+any text to be stored, is used only for a small proportion of inames.)
+
+=
+typedef struct inter_name {
+	struct inter_name_generator *family;
+	int unique_number;
+	struct inter_symbol *symbol;
+	struct package_request *location_in_hierarchy;
+	struct text_stream *memo;
+	struct inter_name *derived_from;
+} inter_name;
+
+@ This implements the |%n| escape, which prints an iname:
+
+=
+void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
+	inter_name *iname = (inter_name *) vI;
+	if (iname == NULL) WRITE("<no-inter-name>");
+	else {
+		if (iname->family == NULL) internal_error("bad inter_name");
+		switch (iname->family->ingen) {
+			case DERIVED_INGEN:
+				WRITE("%S", iname->family->derived_prefix);
+				InterNames::writer(OUT, format_string, iname->derived_from);
+				WRITE("%S", iname->family->derived_suffix);
+				break;
+			case UNIQUE_INGEN:
+				WRITE("%S", iname->family->name_stem);
+				break;
+			case MULTIPLE_INGEN:
+				WRITE("%S", iname->family->name_stem);
+				if (iname->unique_number >= 0) WRITE("%d", iname->unique_number);
+				break;
+			default: internal_error("unknown ingen");
+		}
+		if (Str::len(iname->memo) > 0) WRITE("_%S", iname->memo);
 	}
-	N->symbol = NULL;
-	N->memo = NULL;
-	N->derived_from = NULL;
-	N->parametrised_derivatives = NULL;
-	N->eventual_owner = Hierarchy::main();
-	return N;
 }
 
-inter_name *InterNames::make(text_stream *name, package_request *R) {
-	inter_name_family *F = InterNames::new_family(UNIQUE_FUSAGE, name);
-	inter_name *N = CREATE(inter_name);
-	N->family = F;
-	N->unique_number = 1;
-	N->symbol = NULL;
-	N->memo = NULL;
-	N->derived_from = NULL;
-	N->parametrised_derivatives = NULL;
-	N->eventual_owner = R;
-	return N;
+@h Making new inames.
+We can now make a new iname, which is easy unless there's a memo to attach.
+For example, attaching the wording "printing the name of a dark room" to
+an iname which would otherwise just be |V12| produces |V12_printing_the_name_of_a_da|.
+Memos exist almost largely to make the Inter code easier for human eyes to read,
+as in this case, but sometimes, as with kind names like |K2_thing|, they're
+needed because template or explicit I6 inclusion code makes references to them.
+
+Although most inter names are eventually used to create symbols in the
+Inter hierarchy's symbols table, this does not happen immediately, and
+for some inames it never will.
+
+=
+inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording W) {
+	inter_name *iname = CREATE(inter_name);
+	iname->family = F;
+	iname->unique_number = 0;
+	iname->symbol = NULL;
+	iname->derived_from = NULL;
+	iname->location_in_hierarchy = R;
+	if (Wordings::empty(W)) {
+		iname->memo = NULL;
+	} else {
+		iname->memo = Str::new();
+		@<Fill the memo with up to 28 characters of text from the given wording@>;
+		@<Ensure that the name, as now extended by the memo, is a legal Inter identifier@>;
+	}
+	return iname;
 }
 
-inter_name_family *InterNames::name_generator(text_stream *prefix, text_stream *stem, text_stream *suffix) {
-	int fusage = MULTIPLE_FUSAGE;
-	if ((Str::len(prefix) > 0) || (Str::len(suffix) > 0)) fusage = DERIVED_FUSAGE;
-	inter_name_family *family = InterNames::new_family(fusage, stem);
-	if (Str::len(prefix) > 0) family->derived_prefix = Str::duplicate(prefix);
-	if (Str::len(suffix) > 0) family->derived_suffix = Str::duplicate(suffix);
-	return family;
-}
-
-void InterNames::attach_memo(inter_name *N, wording W) {
-	if (N->symbol) internal_error("too late to attach memo");
-	N->memo = Str::new();
+@<Fill the memo with up to 28 characters of text from the given wording@> =
 	int c = 0;
 	LOOP_THROUGH_WORDING(j, W) {
 		/* identifier is at this point 32 chars or fewer in length: add at most 30 more */
-		if (c++ > 0) WRITE_TO(N->memo, " ");
+		if (c++ > 0) WRITE_TO(iname->memo, " ");
 		if (Wide::len(Lexer::word_text(j)) > 30)
-			WRITE_TO(N->memo, "etc");
-		else WRITE_TO(N->memo, "%N", j);
-		if (Str::len(N->memo) > 32) break;
+			WRITE_TO(iname->memo, "etc");
+		else WRITE_TO(iname->memo, "%N", j);
+		if (Str::len(iname->memo) > 32) break;
 	}
-	Str::truncate(N->memo, 28); /* it was at worst 62 chars in size, but is now truncated to 28 */
-	Identifiers::purify(N->memo);
+	Str::truncate(iname->memo, 28); /* it was at worst 62 chars in size, but is now truncated to 28 */
+
+@<Ensure that the name, as now extended by the memo, is a legal Inter identifier@> =
+	Identifiers::purify(iname->memo);
 	TEMPORARY_TEXT(NBUFF);
-	WRITE_TO(NBUFF, "%n", N);
+	WRITE_TO(NBUFF, "%n", iname);
 	int L = Str::len(NBUFF);
 	DISCARD_TEXT(NBUFF);
-	if (L > 28) Str::truncate(N->memo, Str::len(N->memo) - (L - 28));
+	if (L > 28) Str::truncate(iname->memo, Str::len(iname->memo) - (L - 28));
+
+@ That creation function should be called only by these, which in turn must
+be called only from within the current chapter. First, the single-shot cases,
+where the caller wants a single name with fixed wording (but possibly with
+a memo to attach):
+
+=
+inter_name *InterNames::explicitly_named_with_memo(text_stream *name, package_request *R, wording W) {
+	return InterNames::new(InterNames::single_use_generator(name), R, W);
 }
 
-void InterNames::change_translation(inter_name *N, text_stream *new_text) {
-	Inter::Symbols::set_translate(InterNames::to_symbol(N), new_text);
+inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) {
+	return InterNames::explicitly_named_with_memo(name, R, EMPTY_WORDING);
 }
 
-text_stream *InterNames::get_translation(inter_name *N) {
-	return Inter::Symbols::get_translate(InterNames::to_symbol(N));
+@ Second, the generated or derived cases:
+
+=
+inter_name *InterNames::multiple(inter_name_generator *F, package_request *R, wording W) {
+	if (F == NULL) internal_error("no family");
+	if (F->ingen == UNIQUE_INGEN) internal_error("not a family name");
+	inter_name *iname = InterNames::new(F, R, W);
+	if (F->ingen != DERIVED_INGEN) iname->unique_number = ++F->no_generated;
+	return iname;
 }
 
-inter_symbol *InterNames::to_symbol(inter_name *N) {
-	if (N->symbol == NULL) {
+inter_name *InterNames::generated(inter_name_generator *F, int fix, wording W) {
+	inter_name *iname = InterNames::multiple(F, NULL, W);
+	if (fix != -1) iname->unique_number = fix;
+	return iname;
+}
+
+inter_name *InterNames::derived(inter_name_generator *F, inter_name *from, wording W) {
+	if (F->ingen != DERIVED_INGEN) internal_error("not a derived family");
+	inter_name *iname = InterNames::multiple(F, from->location_in_hierarchy, W);
+	iname->derived_from = from;
+	return iname;
+}
+
+@ An ugly necessity is that a handful of inames representing actions have to
+be renamed after creation, thanks to sentences such as:
+
+>> The taking action translates into I6 as "Take".
+
+=
+void InterNames::override_action_base_iname(inter_name *iname, text_stream *to) {
+	if (iname == NULL) internal_error("no such iname");
+//	if (iname->symbol) internal_error("too late to rename iname");
+	iname->family->name_stem = Str::duplicate(to);
+	Str::clear(iname->memo);
+}
+
+@h Conversion of inames to symbols.
+The purpose of inames is not quite to represent identifier names occurring in
+given packages inside the Inter hierarchy: it would be more accurate to say
+that they represent potential identifiers, which may or may not be used.
+At some point they will probably (but not certainly) undergo "conversion",
+when they are matched up with actual symbols in the symbols tables of the
+given packages. Once this is done, an iname can't be renamed or moved.
+
+Conversion is done on-demand, and thus left as late as possible. It happens
+automatically in the following function:
+
+=
+inter_symbol *InterNames::to_symbol(inter_name *iname) {
+	if (iname->symbol == NULL) {
 		TEMPORARY_TEXT(NBUFF);
-		WRITE_TO(NBUFF, "%n", N);
-		inter_symbols_table *T = Packaging::scope(Emit::repository(), N);
-		N->symbol = Emit::new_symbol(T, NBUFF);
+		WRITE_TO(NBUFF, "%n", iname);
+		inter_symbols_table *T = Packaging::scope(Emit::repository(), iname);
+		iname->symbol = Emit::new_symbol(T, NBUFF);
 		DISCARD_TEXT(NBUFF);
 	}
-	return N->symbol;
+	return iname->symbol;
 }
 
-text_stream *InterNames::to_text(inter_name *N) {
-	if (N == NULL) return NULL;
-	return InterNames::to_symbol(N)->symbol_name;
+
+
+
+
+
+
+
+void InterNames::change_translation(inter_name *iname, text_stream *new_text) {
+	Inter::Symbols::set_translate(InterNames::to_symbol(iname), new_text);
 }
 
-inter_symbol *InterNames::define_symbol(inter_name *N) {
-	InterNames::to_symbol(N);
-	if (N->symbol) {
-		if (Inter::Symbols::is_predeclared(N->symbol)) {
-			Inter::Symbols::undefine(N->symbol);
-		}
-	}
-	if ((N->symbol) && (Inter::Symbols::read_annotation(N->symbol, HOLDING_IANN) == 1)) {
-		if (Inter::Symbols::read_annotation(N->symbol, DELENDA_EST_IANN) != 1) {
-			Emit::annotate_symbol_i(N->symbol, DELENDA_EST_IANN, 1);
-			Inter::Symbols::strike_definition(N->symbol);
-		}
-		return N->symbol;
-	}
-	return N->symbol;
+text_stream *InterNames::get_translation(inter_name *iname) {
+	return Inter::Symbols::get_translate(InterNames::to_symbol(iname));
 }
 
-inter_symbol *InterNames::destroy_symbol(inter_name *N) {
-	InterNames::to_symbol(N);
-	if (N->symbol) {
-		if (Inter::Symbols::is_predeclared(N->symbol)) {
-			Inter::Symbols::undefine(N->symbol);
-		}
-	}
-	if ((N->symbol) && (Inter::Symbols::read_annotation(N->symbol, HOLDING_IANN) == 1)) {
-		if (Inter::Symbols::read_annotation(N->symbol, DELENDA_EST_IANN) != 1) {
-			Emit::annotate_symbol_i(N->symbol, DELENDA_EST_IANN, 1);
-			Inter::Symbols::strike_definition(N->symbol);
-		}
-		return N->symbol;
-	} else if (Inter::Symbols::read_annotation(N->symbol, DELENDA_EST_IANN) != 1) internal_error("Bang");
-	return N->symbol;
+text_stream *InterNames::to_text(inter_name *iname) {
+	if (iname == NULL) return NULL;
+	return InterNames::to_symbol(iname)->symbol_name;
 }
 
-void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
-	inter_name *N = (inter_name *) vI;
-	if (N == NULL) WRITE("<no-inter-name>");
-	else {
-		if (N->family == NULL) internal_error("bad inter_name");
-		switch (N->family->fusage) {
-			case DERIVED_FUSAGE:
-				WRITE("%S", N->family->derived_prefix);
-				InterNames::writer(OUT, format_string, N->derived_from);
-				WRITE("%S", N->family->derived_suffix);
-				break;
-			case UNIQUE_FUSAGE:
-				WRITE("%S", N->family->family_name);
-				break;
-			case MULTIPLE_FUSAGE:
-				WRITE("%S", N->family->family_name);
-				if (N->unique_number >= 0) WRITE("%d", N->unique_number);
-				break;
-			default: internal_error("unknown fusage");
+inter_symbol *InterNames::define_symbol(inter_name *iname) {
+	InterNames::to_symbol(iname);
+	if (iname->symbol) {
+		if (Inter::Symbols::is_predeclared(iname->symbol)) {
+			Inter::Symbols::undefine(iname->symbol);
 		}
-		if (Str::len(N->memo) > 0) WRITE("_%S", N->memo);
 	}
+	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
+		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
+			Emit::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
+			Inter::Symbols::strike_definition(iname->symbol);
+		}
+		return iname->symbol;
+	}
+	return iname->symbol;
+}
+
+inter_symbol *InterNames::destroy_symbol(inter_name *iname) {
+	InterNames::to_symbol(iname);
+	if (iname->symbol) {
+		if (Inter::Symbols::is_predeclared(iname->symbol)) {
+			Inter::Symbols::undefine(iname->symbol);
+		}
+	}
+	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
+		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
+			Emit::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
+			Inter::Symbols::strike_definition(iname->symbol);
+		}
+		return iname->symbol;
+	} else if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) internal_error("Bang");
+	return iname->symbol;
 }
 
 void InterNames::set_flag(inter_name *iname, int f) {
@@ -225,23 +306,4 @@ int InterNames::defined(inter_name *iname) {
 	inter_symbol *S = InterNames::to_symbol(iname);
 	if (Inter::Symbols::is_defined(S)) return TRUE;
 	return FALSE;
-}
-
-inter_name *InterNames::new_f(inter_name_family *F, int fix) {
-	inter_name *iname = InterNames::make_in_family(F, FALSE);
-	if (fix != -1) iname->unique_number = fix;
-	return iname;
-}
-
-inter_name *InterNames::new_derived_f(inter_name_family *F, inter_name *from) {
-	if (F->fusage != DERIVED_FUSAGE) internal_error("not a derived family");
-	inter_name *N = InterNames::make_in_family(F, TRUE);
-	Packaging::house_with(N, from);
-	N->derived_from = from;
-	return N;
-}
-
-void InterNames::override_action_base_iname(inter_name *ab_iname, text_stream *to) {
-	ab_iname->family->family_name = Str::duplicate(to);
-	Str::clear(ab_iname->memo);
 }

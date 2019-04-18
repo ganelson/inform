@@ -711,7 +711,7 @@ inter_name *Instances::emitted_iname(instance *I) {
 	inter_name *iname = Instances::iname(I);
 	if (I->instance_emitted == FALSE) {
 		I->instance_emitted = TRUE;
-		packaging_state save = Packaging::enter(iname->eventual_owner);
+		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::instance(iname, Instances::to_kind(I), I->enumeration_index);
 		Packaging::exit(save);
 	}
@@ -720,7 +720,7 @@ inter_name *Instances::emitted_iname(instance *I) {
 
 package_request *Instances::package(instance *I) {
 	inter_name *iname = Instances::iname(I);
-	return iname->eventual_owner;
+	return Packaging::home_of(iname);
 }
 
 @h Adjectival uses of instances.
