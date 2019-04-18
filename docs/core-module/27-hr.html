@@ -148,6 +148,8 @@
     <span class="definitionkeyword">enum</span> <span class="constant">MISTAKEACTION_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTIONS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTION_BASE_NAME_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">WAIT_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TRANSLATED_BASE_NAME_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DOUBLE_SHARP_NAME_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PERFORM_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CHECK_RB_HL</span>
@@ -177,6 +179,8 @@
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIONS_HAP</span><span class="plain">, </span><span class="identifier">local_actions</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_action</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">ACTION_BASE_NAME_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"A"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_action</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">WAIT_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Wait"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">in_action</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">TRANSLATED_BASE_NAME_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::imposed</span><span class="plain">(), </span><span class="identifier">in_action</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">DOUBLE_SHARP_NAME_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::prefix</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"##"</span><span class="plain">), </span><span class="identifier">in_action</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">PERFORM_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"perform_fn"</span><span class="plain">, </span><span class="functiontext">Translation::suffix</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Sub"</span><span class="plain">), </span><span class="identifier">in_action</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::package</span><span class="plain">(</span><span class="constant">CHECK_RB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"check_rb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">, </span><span class="identifier">in_action</span><span class="plain">);</span>
@@ -1882,7 +1886,7 @@
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">main_pr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Hierarchy::main</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">main_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">main_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"main"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">plain_ptype</span><span class="plain">);</span>
+            <span class="identifier">main_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"main"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">), </span><span class="identifier">plain_ptype</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">main_pr</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -1891,7 +1895,7 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resources_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">resources_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span>
                 <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"resources"</span><span class="plain">, </span><span class="functiontext">Hierarchy::main</span><span class="plain">()),</span>
-                <span class="functiontext">Hierarchy::main</span><span class="plain">(), </span><span class="identifier">plain_ptype</span><span class="plain">);</span>
+                <span class="identifier">plain_ptype</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">resources_pr</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -1900,7 +1904,7 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">template_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span>
                 <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"template"</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">()),</span>
-                <span class="functiontext">Hierarchy::resources</span><span class="plain">(), </span><span class="identifier">module_ptype</span><span class="plain">);</span>
+                <span class="identifier">module_ptype</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">template_pr</span><span class="plain">;</span>
     <span class="plain">}</span>
 

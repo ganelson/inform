@@ -33,6 +33,7 @@ typedef struct action_name {
 	int it_optional; /* noun optional when describing the second noun? */
 	int abbreviable; /* preposition optional when describing the second noun? */
 	int translated;
+	struct text_stream *translated_name;
 	struct inter_name *an_base_iname; /* e.g., |Take| */
 	struct inter_name *an_iname; /* e.g., |##Take| */
 	struct inter_name *an_routine_iname; /* e.g., |TakeSub| */
@@ -231,9 +232,10 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->it_optional = TRUE;
 	an->abbreviable = FALSE;
 	an->translated = FALSE;
+	an->translated_name = NULL;
 
 	an->an_package = Hierarchy::local_package(ACTIONS_HAP);
-	an->an_base_iname = Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->an_package, W);
+	an->an_base_iname = NULL;
 	an->use_verb_routine_in_I6_library = TRUE;
 	an->check_rules = NULL;
 	an->carry_out_rules = NULL;
@@ -308,10 +310,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 				an->it_optional = FALSE;
 				an2->it_optional = FALSE;
 			}
-	if (make_ds) {
-		InterNames::override_action_base_iname(an->an_base_iname, I"Wait");
-		PL::Actions::double_sharp(an);
-	}
+
 	return an;
 }
 
@@ -413,7 +412,7 @@ int PL::Actions::abbreviable(action_name *an) {
 }
 
 text_stream *PL::Actions::identifier(action_name *an) {
-	return InterNames::to_text(an->an_base_iname);
+	return InterNames::to_text(PL::Actions::base_iname(an));
 }
 
 action_name *PL::Actions::Wait(void) {
@@ -421,9 +420,21 @@ action_name *PL::Actions::Wait(void) {
 	return waiting_action;
 }
 
+inter_name *PL::Actions::base_iname(action_name *an) {
+	if (an->an_base_iname == NULL) {
+		if (waiting_action == an)
+			an->an_base_iname = Hierarchy::make_iname_in(WAIT_HL, an->an_package);
+		else if (Str::len(an->translated_name) > 0)
+			an->an_base_iname = Hierarchy::make_iname_with_specific_name(TRANSLATED_BASE_NAME_HL, an->translated_name, an->an_package);
+		else
+			an->an_base_iname = Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->an_package, an->present_name);
+	}
+	return an->an_base_iname;
+}
+
 inter_name *PL::Actions::double_sharp(action_name *an) {
 	if (an->an_iname == NULL) {
-		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, an->an_base_iname, an->an_package);
+		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
 		packaging_state save = Packaging::enter(an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
 		InterNames::annotate_i(an->an_iname, ACTION_IANN, 1);
@@ -434,7 +445,7 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 
 inter_name *PL::Actions::Sub(action_name *an) {
 	if (an->an_routine_iname == NULL)
-		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, an->an_base_iname, an->an_package);
+		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, PL::Actions::base_iname(an), an->an_package);
 	return an->an_routine_iname;
 }
 
@@ -486,18 +497,18 @@ void PL::Actions::translates(wording W, parse_node *p2) {
 		return;
 	}
 	if (an->translated) {
-		LOG("Tried action name %W = %n\n", W, an->an_base_iname);
+		LOG("Tried action name %W = %n\n", W, PL::Actions::base_iname(an));
 		Problems::Issue::sentence_problem(_p_(PM_TranslatesActionAlready),
 			"this action has already been translated",
 			"so there must be some duplication somewhere.");
 		return;
 	}
+	if (an->an_base_iname) internal_error("too late for action base name translation");
+
 	an->translated = TRUE;
-	TEMPORARY_TEXT(TO);
-	WRITE_TO(TO, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
-	InterNames::override_action_base_iname(an->an_base_iname, TO);
-	DISCARD_TEXT(TO);
-	LOGIF(ACTION_CREATIONS, "Translated action: $l as %n\n", an, an->an_base_iname);
+	an->translated_name = Str::new();
+	WRITE_TO(an->translated_name, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
+	LOGIF(ACTION_CREATIONS, "Translated action: $l as %n\n", an, PL::Actions::base_iname(an));
 }
 
 int PL::Actions::get_stem_length(action_name *an) {

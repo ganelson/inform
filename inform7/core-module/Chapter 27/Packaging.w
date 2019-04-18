@@ -50,13 +50,12 @@ typedef struct submodule_request_counter {
 } submodule_request_counter;
 
 @ =
-package_request *Packaging::request(inter_name *name, package_request *parent, inter_symbol *pt) {
+package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
 	package_request *R = CREATE(package_request);
 	R->eventual_name = name;
-	if (parent) name->location_in_hierarchy = parent;
 	R->eventual_type = pt;
 	R->actual_package = NULL;
-	R->parent_request = parent;
+	R->parent_request = InterNames::location(name);
 	R->write_position = Inter::Bookmarks::new_IRS(Emit::repository());
 	R->counters = NULL;
 	return R;
@@ -91,7 +90,7 @@ packaging_state Packaging::stateless(void) {
 }
 
 package_request *Packaging::home_of(inter_name *N) {
-	return N->location_in_hierarchy;
+	return InterNames::location(N);
 }
 
 packaging_state Packaging::enter_home_of(inter_name *N) {
@@ -167,8 +166,9 @@ inter_package *Packaging::incarnate(package_request *R) {
 
 inter_symbols_table *Packaging::scope(inter_repository *I, inter_name *N) {
 	if (N == NULL) internal_error("can't determine scope of null name");
-	if (N->location_in_hierarchy == NULL) return Inter::get_global_symbols(Emit::repository());
-	return Inter::Packages::scope(Packaging::incarnate(N->location_in_hierarchy));
+	package_request *P = InterNames::location(N);
+	if (P == NULL) return Inter::get_global_symbols(Emit::repository());
+	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 
 @ =
@@ -177,7 +177,7 @@ package_request *Packaging::request_generic(void) {
 	if (generic_pr == NULL)
 		generic_pr = Packaging::request(
 			InterNames::explicitly_named(I"generic", Hierarchy::resources()),
-			Hierarchy::resources(), module_ptype);
+			module_ptype);
 	return generic_pr;
 }
 
@@ -186,7 +186,7 @@ package_request *Packaging::request_synoptic(void) {
 	if (synoptic_pr == NULL)
 		synoptic_pr = Packaging::request(
 			InterNames::explicitly_named(I"synoptic", Hierarchy::resources()),
-			Hierarchy::resources(), module_ptype);
+			module_ptype);
 	return synoptic_pr;
 }
 
@@ -214,7 +214,7 @@ typedef struct submodule_requests {
 
 package_request *Packaging::resources_for_new_submodule(text_stream *name, submodule_requests *SR) {
 	inter_name *package_iname = InterNames::explicitly_named(name, Hierarchy::resources());
-	package_request *P = Packaging::request(package_iname, Hierarchy::resources(), module_ptype);
+	package_request *P = Packaging::request(package_iname, module_ptype);
 	Packaging::initialise_submodules(SR);
 	return P;
 }
@@ -277,7 +277,7 @@ package_request *Packaging::synoptic_resource(submodule_identity *sid) {
 	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, parent);
 	sr = CREATE(submodule_request);
 	sr->which_submodule = sid;
-	sr->where_found = Packaging::request(iname, parent, plain_ptype);
+	sr->where_found = Packaging::request(iname, plain_ptype);
 	ADD_TO_LINKED_LIST(sr, submodule_request, SR->submodules);
 	return sr->where_found;
 
@@ -320,10 +320,9 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 	return iname;
 }
 
-inter_name *Packaging::function(inter_name *function_iname, package_request *R2, inter_name *temp_iname) {
-	package_request *R3 = Packaging::request(function_iname, R2, function_ptype);
-	inter_name *iname = InterNames::explicitly_named(I"call", R3);
-	Packaging::house(iname, R3);
+inter_name *Packaging::function(inter_name *function_iname, inter_name *temp_iname) {
+	package_request *P = Packaging::request(function_iname, function_ptype);
+	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (temp_iname) {
 		TEMPORARY_TEXT(T);
 		WRITE_TO(T, "%n", temp_iname);
@@ -333,37 +332,24 @@ inter_name *Packaging::function(inter_name *function_iname, package_request *R2,
 	return iname;
 }
 
-inter_name *Packaging::function_text(inter_name *function_iname, package_request *R2, text_stream *translation) {
-	package_request *R3 = Packaging::request(function_iname, R2, function_ptype);
-	inter_name *iname = InterNames::explicitly_named(I"call", R3);
-	Packaging::house(iname, R3);
+inter_name *Packaging::function_text(inter_name *function_iname, text_stream *translation) {
+	package_request *P = Packaging::request(function_iname, function_ptype);
+	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (translation)
 		InterNames::change_translation(iname, translation);
 	return iname;
 }
 
-inter_name *Packaging::datum_text(inter_name *function_iname, package_request *R2, text_stream *translation) {
-	package_request *R3 = Packaging::request(function_iname, R2, data_ptype);
-	inter_name *iname = InterNames::explicitly_named(translation, R3);
-	Packaging::house(iname, R3);
+inter_name *Packaging::datum_text(inter_name *function_iname, text_stream *translation) {
+	package_request *P = Packaging::request(function_iname, data_ptype);
+	inter_name *iname = InterNames::explicitly_named(translation, P);
 	return iname;
-}
-
-void Packaging::house(inter_name *iname, package_request *at) {
-	if (iname == NULL) internal_error("can't house null name");
-	if (at == NULL) internal_error("can't house nowhere");
-	iname->location_in_hierarchy = at;
-}
-
-void Packaging::house_with(inter_name *iname, inter_name *landlord) {
-	if (iname == NULL) internal_error("can't house null name");
-	if (landlord == NULL) internal_error("can't house with nobody");
-	iname->location_in_hierarchy = landlord->location_in_hierarchy;
 }
 
 int Packaging::houseed_in_function(inter_name *iname) {
 	if (iname == NULL) return FALSE;
-	if (iname->location_in_hierarchy == NULL) return FALSE;
-	if (iname->location_in_hierarchy->eventual_type == function_ptype) return TRUE;
+	package_request *P = InterNames::location(iname);
+	if (P == NULL) return FALSE;
+	if (P->eventual_type == function_ptype) return TRUE;
 	return FALSE;
 }

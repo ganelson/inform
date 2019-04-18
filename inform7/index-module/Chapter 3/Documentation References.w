@@ -25,7 +25,7 @@ documentation.
 
 =
 typedef struct documentation_ref {
-	struct text_stream *symbol; /* Reference is by this piece of text */
+	struct text_stream *doc_symbol; /* Reference is by this piece of text */
 	int section; /* HTML page number */
 	int used_already; /* Has this been used in a problem message already? */
 	int usage_count; /* For statistical purposes */
@@ -81,8 +81,8 @@ void Index::DocReferences::dref_new(parse_node *p) {
 	}
 	LOOP_THROUGH_WORDING(i, SW) {
 		documentation_ref *dr = CREATE(documentation_ref);
-		dr->symbol = Str::new();
-		WRITE_TO(dr->symbol, "%+W", Wordings::one_word(i));
+		dr->doc_symbol = Str::new();
+		WRITE_TO(dr->doc_symbol, "%+W", Wordings::one_word(i));
 		dr->section = Wordings::first_wn(RW);
 		dr->used_already = FALSE;
 		dr->usage_count = 0;
@@ -106,7 +106,7 @@ extension (say |doc24|); if it does not exist, we return NULL.
 int Index::DocReferences::validate_if_possible(text_stream *temp) {
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
-		if (Str::eq(dr->symbol, temp))
+		if (Str::eq(dr->doc_symbol, temp))
 			return TRUE;
 	return FALSE;
 }
@@ -117,7 +117,7 @@ int Index::DocReferences::validate_if_possible(text_stream *temp) {
 wchar_t *Index::DocReferences::link_if_possible_once(text_stream *temp, wchar_t **chap, wchar_t **sec) {
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
-		if (Str::eq(dr->symbol, temp)) {
+		if (Str::eq(dr->doc_symbol, temp)) {
 			if (dr->used_already == FALSE) {
 				wchar_t *leaf = Lexer::word_text(dr->section);
 				*chap = dr->chapter_reference;
@@ -164,7 +164,7 @@ void Index::DocReferences::doc_mark_used(text_stream *symb, int at_word) {
 	if (Log::aspect_switched_on(PHRASE_USAGE_DA)) {
 		documentation_ref *dr;
 		LOOP_OVER(dr, documentation_ref) {
-			if (Str::eq(dr->symbol, symb)) {
+			if (Str::eq(dr->doc_symbol, symb)) {
 				extension_file *loc = NULL;
 				if (at_word >= 0) {
 					source_file *pos = Lexer::file_of_origin(at_word);
@@ -190,8 +190,8 @@ void Index::DocReferences::log_statistics(void) {
 	LOGIF(PHRASE_USAGE, "The following shows how often each built-in phrase was used:\n");
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
-		if (Str::begins_with_wide_string(dr->symbol, L"ph"))
-			LOGIF(PHRASE_USAGE, "USAGE: %S %d %d %d\n", dr->symbol,
+		if (Str::begins_with_wide_string(dr->doc_symbol, L"ph"))
+			LOGIF(PHRASE_USAGE, "USAGE: %S %d %d %d\n", dr->doc_symbol,
 				dr->usage_count, dr->sr_usage_count, dr->ext_usage_count);
 }
 
@@ -314,7 +314,7 @@ and we need to search fairly seldom:
 documentation_ref *Index::DocReferences::name_to_dr(text_stream *fn) {
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
-		if (Str::eq(dr->symbol, fn))
+		if (Str::eq(dr->doc_symbol, fn))
 			return dr;
 	@<Complain about a bad documentation reference@>;
 	return NULL;
@@ -326,6 +326,6 @@ documentation_ref *Index::DocReferences::name_to_dr(text_stream *fn) {
 	if (problem_count == 0) {
 		LOG("Bad ref was <%s>. Known references are:\n", fn);
 		LOOP_OVER(dr, documentation_ref)
-			LOG("%S = %+N\n", dr->symbol, dr->section);
+			LOG("%S = %+N\n", dr->doc_symbol, dr->section);
 		internal_error("Bad index documentation reference");
 	}

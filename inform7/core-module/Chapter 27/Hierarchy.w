@@ -119,6 +119,8 @@ void Hierarchy::establish(void) {
 
 @e ACTIONS_HAP
 @e ACTION_BASE_NAME_HL
+@e WAIT_HL
+@e TRANSLATED_BASE_NAME_HL
 @e DOUBLE_SHARP_NAME_HL
 @e PERFORM_FN_HL
 @e CHECK_RB_HL
@@ -144,6 +146,8 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::ap(ACTIONS_HAP, local_actions, I"action", I"_action");
 		location_requirement in_action = HierarchyLocations::any_package_of_type(I"_action");
 		HierarchyLocations::con(ACTION_BASE_NAME_HL, I"A", Translation::uniqued(), in_action);
+		HierarchyLocations::con(WAIT_HL, I"Wait", Translation::same(), in_action);
+		HierarchyLocations::con(TRANSLATED_BASE_NAME_HL, NULL, Translation::imposed(), in_action);
 		HierarchyLocations::con(DOUBLE_SHARP_NAME_HL, NULL, Translation::prefix(I"##"), in_action);
 		HierarchyLocations::func(PERFORM_FN_HL, I"perform_fn", Translation::suffix(I"Sub"), in_action);
 		HierarchyLocations::package(CHECK_RB_HL, I"check_rb", I"_rulebook", in_action);
@@ -1570,7 +1574,7 @@ inter_name *Hierarchy::find_by_name(text_stream *name) {
 package_request *main_pr = NULL;
 package_request *Hierarchy::main(void) {
 	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL), NULL, plain_ptype);
+		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL), plain_ptype);
 	return main_pr;
 }
 
@@ -1579,7 +1583,7 @@ package_request *Hierarchy::resources(void) {
 	if (resources_pr == NULL)
 		resources_pr = Packaging::request(
 			InterNames::explicitly_named(I"resources", Hierarchy::main()),
-			Hierarchy::main(), plain_ptype);
+			plain_ptype);
 	return resources_pr;
 }
 
@@ -1588,7 +1592,7 @@ package_request *Hierarchy::template(void) {
 	if (template_pr == NULL)
 		template_pr = Packaging::request(
 			InterNames::explicitly_named(I"template", Hierarchy::resources()),
-			Hierarchy::resources(), module_ptype);
+			module_ptype);
 	return template_pr;
 }
 

@@ -73,7 +73,7 @@ any text to be stored, is used only for a small proportion of inames.)
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">family</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">generated_by</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unique_number</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">location_in_hierarchy</span><span class="plain">;</span>
@@ -84,7 +84,7 @@ any text to be stored, is used only for a small proportion of inames.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_name is accessed in 27/hl, 27/pc and here.</p>
+<p class="endnote">The structure inter_name is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>This implements the <code class="display"><span class="extract">%n</span></code> escape, which prints an iname:
 </p>
@@ -95,18 +95,18 @@ any text to be stored, is used only for a small proportion of inames.)
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = (</span><span class="reserved">inter_name</span><span class="plain"> *) </span><span class="identifier">vI</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;no-inter-name&gt;"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad inter_name"</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad inter_name"</span><span class="plain">);</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">DERIVED_INGEN</span><span class="plain">:</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain">-</span><span class="element">&gt;derived_prefix</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain">-</span><span class="element">&gt;derived_prefix</span><span class="plain">);</span>
                     <span class="functiontext">InterNames::writer</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">format_string</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;derived_from</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain">-</span><span class="element">&gt;derived_suffix</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain">-</span><span class="element">&gt;derived_suffix</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNIQUE_INGEN</span><span class="plain">:</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain">-</span><span class="element">&gt;name_stem</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain">-</span><span class="element">&gt;name_stem</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">MULTIPLE_INGEN</span><span class="plain">:</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain">-</span><span class="element">&gt;name_stem</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain">-</span><span class="element">&gt;name_stem</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain"> &gt;= 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown ingen"</span><span class="plain">);</span>
@@ -137,7 +137,7 @@ for some inames it never will.
 <pre class="display">
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain">);</span>
-        <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;generated_by</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain"> = 0;</span>
         <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;derived_from</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -225,23 +225,23 @@ a memo to attach):
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no family"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain"> == </span><span class="constant">UNIQUE_INGEN</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a family name"</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain"> != </span><span class="constant">DERIVED_INGEN</span><span class="plain">) </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain"> = ++</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;no_generated</span><span class="plain">;</span>
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no generator"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain"> == </span><span class="constant">UNIQUE_INGEN</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a generator name"</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::new</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain"> != </span><span class="constant">DERIVED_INGEN</span><span class="plain">) </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain"> = ++</span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;no_generated</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::generated</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::generated</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fix</span><span class="plain"> != -1) </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain"> = </span><span class="identifier">fix</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::derived</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain"> != </span><span class="constant">DERIVED_INGEN</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a derived family"</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;location_in_hierarchy</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::derived</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;ingen</span><span class="plain"> != </span><span class="constant">DERIVED_INGEN</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a derived generator"</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;location_in_hierarchy</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;derived_from</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -255,39 +255,30 @@ a memo to attach):
 
 <p class="endnote">The function InterNames::derived is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
 
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>An ugly necessity is that a handful of inames representing actions have to
-be renamed after creation, thanks to sentences such as:
-</p>
-
-<blockquote>
-    <p>The taking action translates into I6 as "Take".</p>
-
-</blockquote>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InterNames::override_action_base_iname</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such iname"</span><span class="plain">);</span>
-    <span class="comment">if (iname-&gt;symbol) internal_error("too late to rename iname");</span>
-        <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;family</span><span class="plain">-</span><span class="element">&gt;name_stem</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">);</span>
-        <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;memo</span><span class="plain">);</span>
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;location_in_hierarchy</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterNames::override_action_base_iname appears nowhere else.</p>
+<p class="endnote">The function InterNames::location is used in 27/pc (<a href="27-pc.html#SP4">&#167;4</a>, <a href="27-pc.html#SP5">&#167;5</a>, <a href="27-pc.html#SP6">&#167;6</a>, <a href="27-pc.html#SP8">&#167;8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Conversion of inames to symbols. </b>The purpose of inames is not quite to represent identifier names occurring in
 given packages inside the Inter hierarchy: it would be more accurate to say
 that they represent potential identifiers, which may or may not be used.
 At some point they will probably (but not certainly) undergo "conversion",
 when they are matched up with actual symbols in the symbols tables of the
-given packages. Once this is done, an iname can't be renamed or moved.
+given packages.
 </p>
 
 <p class="inwebparagraph">Conversion is done on-demand, and thus left as late as possible. It happens
-automatically in the following function:
+automatically in one of the following two functions:
 </p>
 
 
@@ -301,6 +292,11 @@ automatically in the following function:
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">NBUFF</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InterNames::externalise_symbol</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">ext_iname</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"iname already converted"</span><span class="plain">);</span>
+        <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> = </span><span class="functiontext">Emit::extern</span><span class="plain">(</span><span class="identifier">ext_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);;</span>
     <span class="plain">}</span>
 
 
@@ -407,6 +403,8 @@ automatically in the following function:
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function InterNames::to_symbol is used in 13/rsfk (<a href="13-rsfk.html#SP5">&#167;5</a>), 15/epv (<a href="15-epv.html#SP4">&#167;4</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>, <a href="21-rl.html#SP11_2">&#167;11.2</a>, <a href="21-rl.html#SP22">&#167;22</a>), 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+
+<p class="endnote">The function InterNames::externalise_symbol is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function InterNames::change_translation is used in 5/un (<a href="5-un.html#SP1">&#167;1</a>), 13/rsfk (<a href="13-rsfk.html#SP25">&#167;25</a>), 15/pr (<a href="15-pr.html#SP21">&#167;21</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP1_1">&#167;1.1</a>), 27/pc (<a href="27-pc.html#SP8">&#167;8</a>).</p>
 

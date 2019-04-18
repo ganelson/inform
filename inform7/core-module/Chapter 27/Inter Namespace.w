@@ -49,7 +49,7 @@ any text to be stored, is used only for a small proportion of inames.)
 
 =
 typedef struct inter_name {
-	struct inter_name_generator *family;
+	struct inter_name_generator *generated_by;
 	int unique_number;
 	struct inter_symbol *symbol;
 	struct package_request *location_in_hierarchy;
@@ -64,18 +64,18 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	inter_name *iname = (inter_name *) vI;
 	if (iname == NULL) WRITE("<no-inter-name>");
 	else {
-		if (iname->family == NULL) internal_error("bad inter_name");
-		switch (iname->family->ingen) {
+		if (iname->generated_by == NULL) internal_error("bad inter_name");
+		switch (iname->generated_by->ingen) {
 			case DERIVED_INGEN:
-				WRITE("%S", iname->family->derived_prefix);
+				WRITE("%S", iname->generated_by->derived_prefix);
 				InterNames::writer(OUT, format_string, iname->derived_from);
-				WRITE("%S", iname->family->derived_suffix);
+				WRITE("%S", iname->generated_by->derived_suffix);
 				break;
 			case UNIQUE_INGEN:
-				WRITE("%S", iname->family->name_stem);
+				WRITE("%S", iname->generated_by->name_stem);
 				break;
 			case MULTIPLE_INGEN:
-				WRITE("%S", iname->family->name_stem);
+				WRITE("%S", iname->generated_by->name_stem);
 				if (iname->unique_number >= 0) WRITE("%d", iname->unique_number);
 				break;
 			default: internal_error("unknown ingen");
@@ -99,7 +99,7 @@ for some inames it never will.
 =
 inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording W) {
 	inter_name *iname = CREATE(inter_name);
-	iname->family = F;
+	iname->generated_by = F;
 	iname->unique_number = 0;
 	iname->symbol = NULL;
 	iname->derived_from = NULL;
@@ -151,38 +151,31 @@ inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) 
 @ Second, the generated or derived cases:
 
 =
-inter_name *InterNames::multiple(inter_name_generator *F, package_request *R, wording W) {
-	if (F == NULL) internal_error("no family");
-	if (F->ingen == UNIQUE_INGEN) internal_error("not a family name");
-	inter_name *iname = InterNames::new(F, R, W);
-	if (F->ingen != DERIVED_INGEN) iname->unique_number = ++F->no_generated;
+inter_name *InterNames::multiple(inter_name_generator *G, package_request *R, wording W) {
+	if (G == NULL) internal_error("no generator");
+	if (G->ingen == UNIQUE_INGEN) internal_error("not a generator name");
+	inter_name *iname = InterNames::new(G, R, W);
+	if (G->ingen != DERIVED_INGEN) iname->unique_number = ++G->no_generated;
 	return iname;
 }
 
-inter_name *InterNames::generated(inter_name_generator *F, int fix, wording W) {
-	inter_name *iname = InterNames::multiple(F, NULL, W);
+inter_name *InterNames::generated(inter_name_generator *G, int fix, wording W) {
+	inter_name *iname = InterNames::multiple(G, NULL, W);
 	if (fix != -1) iname->unique_number = fix;
 	return iname;
 }
 
-inter_name *InterNames::derived(inter_name_generator *F, inter_name *from, wording W) {
-	if (F->ingen != DERIVED_INGEN) internal_error("not a derived family");
-	inter_name *iname = InterNames::multiple(F, from->location_in_hierarchy, W);
+inter_name *InterNames::derived(inter_name_generator *G, inter_name *from, wording W) {
+	if (G->ingen != DERIVED_INGEN) internal_error("not a derived generator");
+	inter_name *iname = InterNames::multiple(G, from->location_in_hierarchy, W);
 	iname->derived_from = from;
 	return iname;
 }
 
-@ An ugly necessity is that a handful of inames representing actions have to
-be renamed after creation, thanks to sentences such as:
-
->> The taking action translates into I6 as "Take".
-
-=
-void InterNames::override_action_base_iname(inter_name *iname, text_stream *to) {
-	if (iname == NULL) internal_error("no such iname");
-//	if (iname->symbol) internal_error("too late to rename iname");
-	iname->family->name_stem = Str::duplicate(to);
-	Str::clear(iname->memo);
+@ =
+package_request *InterNames::location(inter_name *iname) {
+	if (iname == NULL) return NULL;
+	return iname->location_in_hierarchy;
 }
 
 @h Conversion of inames to symbols.
@@ -191,10 +184,10 @@ given packages inside the Inter hierarchy: it would be more accurate to say
 that they represent potential identifiers, which may or may not be used.
 At some point they will probably (but not certainly) undergo "conversion",
 when they are matched up with actual symbols in the symbols tables of the
-given packages. Once this is done, an iname can't be renamed or moved.
+given packages.
 
 Conversion is done on-demand, and thus left as late as possible. It happens
-automatically in the following function:
+automatically in one of the following two functions:
 
 =
 inter_symbol *InterNames::to_symbol(inter_name *iname) {
@@ -206,6 +199,11 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 		DISCARD_TEXT(NBUFF);
 	}
 	return iname->symbol;
+}
+
+void InterNames::externalise_symbol(inter_name *iname, inter_name *ext_iname) {
+	if (iname->symbol != NULL) internal_error("iname already converted");
+	iname->symbol = Emit::extern(ext_iname, K_value);;
 }
 
 
