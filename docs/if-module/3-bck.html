@@ -443,14 +443,12 @@ been asserted true:
 <pre class="displaydefn">
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::package_within</span><span class="plain">(</span><span class="identifier">INLINE_PROPERTIES_HAP</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">INLINE_PROPERTY_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
         <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="constant">FOUND_IN_INF</span><span class="plain">)</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">World::Inferences::get_reference_as_object</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">)));</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">();</span>
-        <span class="identifier">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

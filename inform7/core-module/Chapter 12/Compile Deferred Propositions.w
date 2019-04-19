@@ -126,9 +126,7 @@ proposition would be wasteful of space in the Z-machine.
 		WRITE_TO(COTT, "%~W", ParseTree::get_text(pdef->deferred_from));
 	else
 		WRITE_TO(COTT, "not sure where this came from");
-	packaging_state save = Packaging::enter_home_of(pdef->rtp_iname);
 	Emit::named_string_constant(pdef->rtp_iname, COTT);
-	Packaging::exit(save);
 	DISCARD_TEXT(COTT);
 
 @ Just in case this hasn't already been done:

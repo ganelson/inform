@@ -1,35 +1,7 @@
 [Packaging::] Packaging.
 
-@h Package types.
+@h Package requests.
 
-= (early code)
-inter_symbol *plain_ptype = NULL;
-inter_symbol *code_ptype = NULL;
-inter_symbol *module_ptype = NULL;
-inter_symbol *function_ptype = NULL;
-inter_symbol *data_ptype = NULL;
-
-@ =
-void Packaging::emit_types(void) {
-	plain_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_plain");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), plain_ptype, Emit::baseline(Emit::IRS()), NULL));
-
-	code_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_code");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), code_ptype, Emit::baseline(Emit::IRS()), NULL));
-
-	module_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_module");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), module_ptype, Emit::baseline(Emit::IRS()), NULL));
-
-	function_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_function");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), function_ptype, Emit::baseline(Emit::IRS()), NULL));
-	Emit::annotate_symbol_i(function_ptype, ENCLOSING_IANN, 1);
-
-	data_ptype = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), I"_data");
-	Emit::guard(Inter::PackageType::new_packagetype(Emit::IRS(), data_ptype, Emit::baseline(Emit::IRS()), NULL));
-	Emit::annotate_symbol_i(data_ptype, ENCLOSING_IANN, 1);
-}
-
-@
 
 @d MAX_PRCS_AT_ONCE 11
 
@@ -119,7 +91,11 @@ packaging_state Packaging::enter(package_request *R) {
 	inter_reading_state *IRS = Emit::IRS();
 	Packaging::incarnate(R);
 	Emit::move_write_position(&(R->write_position));
-	if (packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH) internal_error("packaging entry too deep");
+	if (packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH) {
+		for (int i=0; i<packaging_entry_sp; i++)
+			LOG("%d: $6\n", i, packaging_entry_stack[i].current_package);
+		internal_error("packaging entry too deep");
+	}
 	packaging_entry_stack[packaging_entry_sp] = Emit::bookmark_bubble();
 	Emit::move_write_position(&packaging_entry_stack[packaging_entry_sp]);
 	packaging_entry_sp++;
@@ -177,7 +153,7 @@ package_request *Packaging::request_generic(void) {
 	if (generic_pr == NULL)
 		generic_pr = Packaging::request(
 			InterNames::explicitly_named(I"generic", Hierarchy::resources()),
-			module_ptype);
+			PackageTypes::get(I"_module"));
 	return generic_pr;
 }
 
@@ -186,7 +162,7 @@ package_request *Packaging::request_synoptic(void) {
 	if (synoptic_pr == NULL)
 		synoptic_pr = Packaging::request(
 			InterNames::explicitly_named(I"synoptic", Hierarchy::resources()),
-			module_ptype);
+			PackageTypes::get(I"_module"));
 	return synoptic_pr;
 }
 
@@ -214,7 +190,7 @@ typedef struct submodule_requests {
 
 package_request *Packaging::resources_for_new_submodule(text_stream *name, submodule_requests *SR) {
 	inter_name *package_iname = InterNames::explicitly_named(name, Hierarchy::resources());
-	package_request *P = Packaging::request(package_iname, module_ptype);
+	package_request *P = Packaging::request(package_iname, PackageTypes::get(I"_module"));
 	Packaging::initialise_submodules(SR);
 	return P;
 }
@@ -277,7 +253,7 @@ package_request *Packaging::synoptic_resource(submodule_identity *sid) {
 	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, parent);
 	sr = CREATE(submodule_request);
 	sr->which_submodule = sid;
-	sr->where_found = Packaging::request(iname, plain_ptype);
+	sr->where_found = Packaging::request(iname, PackageTypes::get(I"_submodule"));
 	ADD_TO_LINKED_LIST(sr, submodule_request, SR->submodules);
 	return sr->where_found;
 
@@ -321,35 +297,35 @@ inter_name *Packaging::supply_iname(package_request *R, int what_for) {
 }
 
 inter_name *Packaging::function(inter_name *function_iname, inter_name *temp_iname) {
-	package_request *P = Packaging::request(function_iname, function_ptype);
+	package_request *P = Packaging::request(function_iname, PackageTypes::function());
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (temp_iname) {
 		TEMPORARY_TEXT(T);
 		WRITE_TO(T, "%n", temp_iname);
-		InterNames::change_translation(iname, T);
+		Emit::change_translation(iname, T);
 		DISCARD_TEXT(T);
 	}
 	return iname;
 }
 
 inter_name *Packaging::function_text(inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(function_iname, function_ptype);
+	package_request *P = Packaging::request(function_iname, PackageTypes::function());
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (translation)
-		InterNames::change_translation(iname, translation);
+		Emit::change_translation(iname, translation);
 	return iname;
 }
 
 inter_name *Packaging::datum_text(inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(function_iname, data_ptype);
+	package_request *P = Packaging::request(function_iname, PackageTypes::get(I"_data"));
 	inter_name *iname = InterNames::explicitly_named(translation, P);
 	return iname;
 }
 
-int Packaging::houseed_in_function(inter_name *iname) {
+int Packaging::housed_in_function(inter_name *iname) {
 	if (iname == NULL) return FALSE;
 	package_request *P = InterNames::location(iname);
 	if (P == NULL) return FALSE;
-	if (P->eventual_type == function_ptype) return TRUE;
+	if (P->eventual_type == PackageTypes::function()) return TRUE;
 	return FALSE;
 }

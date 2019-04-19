@@ -1000,12 +1000,10 @@ foreign verbs (4).
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">CV_MODAL_INAME_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_MODAL_HL</span><span class="plain">);</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">CV_MEANING_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_MEANING_HL</span><span class="plain">);</span>
 
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">CV_POS_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_POS_iname</span><span class="plain">, -1);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_NEG_iname</span><span class="plain">, -2);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_MODAL_INAME_iname</span><span class="plain">, -3);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_MEANING_iname</span><span class="plain">, -4);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::ConjugateVerb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1017,14 +1015,12 @@ foreign verbs (4).
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">NewVerbs::verb_form_is_instance</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">))</span>
                 &lt;<span class="cwebmacro">Compile ConjugateVerbForm routine</span> <span class="cwebmacronumber">18.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TABLEOFVERBS_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">, </span><span class="identifier">verb_form</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">NewVerbs::verb_form_is_instance</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">))</span>
                 <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Verbs::form_iname</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1032,7 +1028,7 @@ foreign verbs (4).
 
 <p class="endnote">The function NewVerbs::verb_form_is_instance appears nowhere else.</p>
 
-<p class="endnote">The function NewVerbs::ConjugateVerbDefinitions is used in 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function NewVerbs::ConjugateVerbDefinitions is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function NewVerbs::ConjugateVerb is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
 

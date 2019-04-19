@@ -172,9 +172,7 @@ proposition would be wasteful of space in the Z-machine.
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"%~W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;deferred_from</span><span class="plain">));</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"not sure where this came from"</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">, </span><span class="identifier">COTT</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">);</span>
 </pre>
 

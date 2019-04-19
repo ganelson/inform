@@ -132,8 +132,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 
 @<Compile the closure array for this constant phrase@> =
 	inter_name *iname = Phrases::Constants::iname(cphr);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 
 	Kinds::RunTime::emit_strong_id(cphr->cphr_kind);
 
@@ -146,8 +145,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 	Emit::array_text_entry(name);
 	DISCARD_TEXT(name);
 
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @ Now we come to something trickier. We want default values for kinds of phrases,
 because otherwise we can't have variables holding phrases unless they are
@@ -177,14 +175,14 @@ void Phrases::Constants::compile_default_closure(inter_name *closure_identifier,
 made above.
 
 @<Compile the default closure@> =
-	Emit::named_array_begin(closure_identifier, K_value);
+	packaging_state save = Emit::named_array_begin(closure_identifier, K_value);
 	Kinds::RunTime::emit_strong_id(K);
 	Emit::array_iname_entry(rname);
 	TEMPORARY_TEXT(DVT);
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
 	Emit::array_text_entry(DVT);
 	DISCARD_TEXT(DVT);
-	Emit::array_end();
+	Emit::array_end(save);
 
 @ And here is the function that refers to:
 

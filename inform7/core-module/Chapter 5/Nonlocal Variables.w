@@ -698,10 +698,12 @@ void NonlocalVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
 	Holsters::to_val_mode(&VH);
 }
 
-void NonlocalVariables::seek_initial_value(inter_t *v1, inter_t *v2, nonlocal_variable *nlv) {
+void NonlocalVariables::seek_initial_value(inter_name *iname, inter_t *v1, inter_t *v2, nonlocal_variable *nlv) {
+	packaging_state save = Packaging::enter_home_of(iname);
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	NonlocalVariables::compile_initial_value_vh(&VH, nlv);
 	Holsters::unholster_pair(&VH, v1, v2);
+	Packaging::exit(save);
 }
 
 void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable *nlv) {

@@ -82,7 +82,7 @@ void Routines::end_in_current_package(void) {
 	inter_name *kernel_name = NULL, *public_name = currently_compiling_iname;
 	if ((currently_compiling_in_frame->allocated_pointers) ||
 		(currently_compiling_in_frame->no_formal_parameters_needed > 0)) {
-		if (Packaging::houseed_in_function(public_name))
+		if (Packaging::housed_in_function(public_name))
 			kernel_name = Hierarchy::make_kernel_iname(Packaging::home_of(public_name));
 		else internal_error("routine not housed in function");
 	}

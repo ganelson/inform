@@ -83,7 +83,7 @@ property *Properties::Valued::new_nameless_using(kind *K, inter_name *using) {
 	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
 	prn->stored_bp = NULL;
 	prn->run_time_only = TRUE;
-	Properties::set_translation_S(prn, InterNames::to_text(using));
+	Properties::set_translation_S(prn, Emit::to_text(using));
 	return prn;
 }
 

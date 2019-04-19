@@ -159,33 +159,25 @@ value for each possible word size.
 =
 inter_name *VirtualMachines::emit_fundamental_constant(int id, inter_t val) {
 	inter_name *iname = Hierarchy::find(id);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, val);
-	Packaging::exit(save);
 	return iname;
 }
 
 inter_name *VirtualMachines::emit_signed_fundamental_constant(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_signed(iname, val);
-	Packaging::exit(save);
 	return iname;
 }
 
 inter_name *VirtualMachines::emit_hex_fundamental_constant(int id, inter_t val) {
 	inter_name *iname = Hierarchy::find(id);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_hex(iname, val);
-	Packaging::exit(save);
 	return iname;
 }
 
 inter_name *VirtualMachines::emit_unchecked_hex_fundamental_constant(int id, inter_t val) {
 	inter_name *iname = Hierarchy::find(id);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_unchecked_constant_hex(iname, val);
-	Packaging::exit(save);
 	return iname;
 }
 

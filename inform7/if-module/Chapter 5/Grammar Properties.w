@@ -188,8 +188,7 @@ for the kinds we inherit from.
 		int from_kind = FALSE;
 		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
 		inter_name *name_array = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-		packaging_state save = Packaging::enter_home_of(name_array);
-		Emit::named_array_begin(name_array, K_value);
+		packaging_state save = Emit::named_array_begin(name_array, K_value);
 		wording W = Instances::get_name_in_play(I, FALSE);
 		if (Wordings::empty(W)) W = Kinds::Behaviour::get_name_in_play(K, FALSE, language_of_play);
 		wording PW = Instances::get_name_in_play(I, TRUE);
@@ -236,9 +235,8 @@ for the kinds we inherit from.
 			}
 		}
 
-		Emit::array_end();
-		InterNames::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
-		Packaging::exit(save);
+		Emit::array_end(save);
+		Emit::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
 		Properties::Valued::assert(P_name, Instances::as_subject(I),
 			Rvalues::from_iname(name_array), CERTAIN_CE);
 	}

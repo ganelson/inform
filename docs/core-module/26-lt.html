@@ -145,12 +145,10 @@ is significant to the run-time list-printing code.
         <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

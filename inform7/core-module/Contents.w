@@ -281,6 +281,8 @@ Chapter 27: Bridge to Inter Module
 	Translation
 	Compilation Modules
 	Packaging
+	Package Types
 	Inter Namespace
 	Inter Schemas
 	Emit
+	Inter Primitives

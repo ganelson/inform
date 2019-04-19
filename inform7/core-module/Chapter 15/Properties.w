@@ -498,7 +498,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 		else
 			PUT_TO(T, '_');
 	}
-	InterNames::change_translation(prn->prop_iname, T);
+	Emit::change_translation(prn->prop_iname, T);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }
@@ -519,7 +519,7 @@ void Properties::set_translation_S(property *prn, text_stream *t) {
 			PUT_TO(T, '_');
 	}
 	Str::truncate(T, 31);
-	InterNames::change_translation(prn->prop_iname, T);
+	Emit::change_translation(prn->prop_iname, T);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }
@@ -556,7 +556,7 @@ void Properties::translates(wording W, parse_node *p2) {
 		return;
 	}
 	if ((prn->translated) &&
-		(Str::eq_wide_string(InterNames::get_translation(Properties::iname(prn)), text) == FALSE)) {
+		(Str::eq_wide_string(Emit::get_translation(Properties::iname(prn)), text) == FALSE)) {
 		Problems::Issue::sentence_problem(_p_(PM_TranslatedTwice),
 			"this property has already been translated",
 			"so there must be some duplication somewhere.");
@@ -701,14 +701,10 @@ void Properties::emit_single(property *prn) {
 		if (K == NULL) internal_error("kindless property");
 		prn->prn_emitted = TRUE;
 
-		packaging_state save = Packaging::enter_home_of(iname);
-
 		Emit::property(iname, K);
 		if (prn->run_time_only) Emit::permission(prn, K_object, NULL);
-		if (prn->translated) InterNames::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		InterNames::annotate_i(iname, SOURCE_ORDER_IANN, (inter_t) prn->allocation_id);
-		Packaging::exit(save);
-
+		if (prn->translated) Emit::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
+		Emit::annotate_i(iname, SOURCE_ORDER_IANN, (inter_t) prn->allocation_id);
 	}
 }
 
@@ -749,15 +745,15 @@ void Properties::annotate_attributes(void) {
 	LOOP_OVER(prn, property) {
 		if (Properties::is_either_or(prn)) {
 			if (prn->stored_in_negation) continue;
-			InterNames::annotate_i(Properties::iname(prn), EITHER_OR_IANN, 0);
+			Emit::annotate_i(Properties::iname(prn), EITHER_OR_IANN, 0);
 			if (Properties::EitherOr::implemented_as_attribute(prn)) {
-				InterNames::annotate_i(Properties::iname(prn), ATTRIBUTE_IANN, 0);
+				Emit::annotate_i(Properties::iname(prn), ATTRIBUTE_IANN, 0);
 			}
 		}
 		if (Wordings::nonempty(prn->name))
-			InterNames::annotate_w(Properties::iname(prn), PROPERTY_NAME_IANN, prn->name);
+			Emit::annotate_w(Properties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 		if (prn->run_time_only)
-			InterNames::annotate_i(Properties::iname(prn), RTO_IANN, 0);
+			Emit::annotate_i(Properties::iname(prn), RTO_IANN, 0);
 	}
 	Properties::emit_default_values();
 }

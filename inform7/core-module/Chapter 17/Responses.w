@@ -120,13 +120,10 @@ a call to an activity based on that value:
 
 	Routines::end(save);
 
-	save = Packaging::enter(R);
-	Emit::named_array_begin(resp->resp_iname, K_value);
+	save = Emit::named_array_begin(resp->resp_iname, K_value);
 	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	Emit::array_iname_entry(launcher);
-	Emit::array_end();
-
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @ Something skated over above is that responses can also be created when the
 source text defines a rule only as an I6 routine. For example:
@@ -324,9 +321,7 @@ text for the response than the one we first created.
 				}
 				inter_name *ts_iname = Strings::TextSubstitutions::text_substitution_iname(ts);
 				inter_name *rc_iname = Strings::response_constant_iname(R, marker);
-				packaging_state save = Packaging::enter_home_of(rc_iname);
 				Emit::response(rc_iname, R, marker, ts_iname);
-				Packaging::exit(save);
 			}
 		}
 	}
@@ -379,8 +374,7 @@ divided up by the extensions containing the rules which produce them.
 
 @<Compile the Response Divisions array@> =
 	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	extension_file *group_ef = NULL;
 	@<Make a ResponseDivisions entry@>;
 	LOOP_OVER(group_ef, extension_file)
@@ -388,8 +382,7 @@ divided up by the extensions containing the rules which produce them.
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @<Make a ResponseDivisions entry@> =
 	rule *R;
@@ -494,7 +487,7 @@ void Strings::compile_general(value_holster *VH, parse_node *str) {
 	if (ParseTree::int_annotation(str, explicit_literal_ANNOT)) {
 		if (ParseTree::get_explicit_iname(str)) {
 			if (Holsters::data_acceptable(VH)) {
-				InterNames::holster(VH, ParseTree::get_explicit_iname(str));
+				Emit::holster(VH, ParseTree::get_explicit_iname(str));
 			} else internal_error("unvalued SCG");
 		} else {
 			int A = ParseTree::int_annotation(str, constant_number_ANNOT);

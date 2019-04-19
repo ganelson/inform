@@ -79,19 +79,16 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		if (Kinds::get_construct(K) == CON_list_of) {
 			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-			packaging_state save = Packaging::enter_home_of(N);
-			Emit::named_late_array_begin(N, K_value);
+			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			inter_name *rks_symb = Kinds::RunTime::compile_default_value_inner(K);
 			Emit::array_iname_entry(rks_symb);
 			Emit::array_numeric_entry(0);
-			Emit::array_end();
-			Packaging::exit(save);
-			if (N) InterNames::holster(VH, N);
+			Emit::array_end(save);
+			if (N) Emit::holster(VH, N);
 		} else if (Kinds::Compare::eq(K, K_stored_action)) {
 			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-			packaging_state save = Packaging::enter_home_of(N);
-			Emit::named_late_array_begin(N, K_value);
+			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
 			Emit::array_iname_entry(PL::Actions::double_sharp(PL::Actions::Wait()));
 			Emit::array_numeric_entry(0);
@@ -104,21 +101,18 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			#endif
 			Emit::array_numeric_entry(0);
 			Emit::array_numeric_entry(0);
-			Emit::array_end();
-			Packaging::exit(save);
-			if (N) InterNames::holster(VH, N);
+			Emit::array_end(save);
+			if (N) Emit::holster(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
 			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-			packaging_state save = Packaging::enter_home_of(N);
-			Emit::named_late_array_begin(N, K_value);
+			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			Relations::compile_blank_relation(K);
-			Emit::array_end();
-			Packaging::exit(save);
-			if (N) InterNames::holster(VH, N);
+			Emit::array_end(save);
+			if (N) Emit::holster(VH, N);
 		} else {
 			inter_name *N = Kinds::RunTime::compile_default_value_inner(K);
-			if (N) InterNames::holster(VH, N);
+			if (N) Emit::holster(VH, N);
 		}
 		return TRUE;
 	}
@@ -127,20 +121,18 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		inter_name *N = Kinds::RunTime::compile_default_value_inner(K);
-		if (N) InterNames::holster(VH, N);
+		if (N) Emit::holster(VH, N);
 		return TRUE;
 	}
 
 	if (Kinds::Compare::eq(K, K_text)) {
 		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-		packaging_state save = Packaging::enter_home_of(N);
-		Emit::named_late_array_begin(N, K_value);
+		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		Emit::array_end();
-		Packaging::exit(save);
-		if (N) InterNames::holster(VH, N);
+		Emit::array_end(save);
+		if (N) Emit::holster(VH, N);
 		return TRUE;
 	}
 
@@ -236,7 +228,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 	LOOP_OVER_INSTANCES(I, K) {
 		inter_name *N = Instances::emitted_iname(I);
 		inter_reading_state *IRS = Emit::IRS();
-		InterNames::to_ival(IRS->read_into, IRS->current_package, v1, v2, N);
+		Emit::to_ival(IRS->read_into, IRS->current_package, v1, v2, N);
 		return;
 	}
 
@@ -251,7 +243,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 
 	if (Kinds::Compare::eq(K, K_rulebook_outcome)) {
 		inter_reading_state *IRS = Emit::IRS();
-		InterNames::to_ival(IRS->read_into, IRS->current_package, v1, v2, Rulebooks::Outcomes::get_default_value());
+		Emit::to_ival(IRS->read_into, IRS->current_package, v1, v2, Rulebooks::Outcomes::get_default_value());
 		return;
 	}
 
@@ -659,13 +651,10 @@ void Kinds::RunTime::compile_structures(void) {
 }
 
 @<Compile the runtime ID structure for this kind@> =
-	package_request *PR = Kinds::Behaviour::package(K);
-	packaging_state save = Packaging::enter(PR);
-	Emit::named_array_begin(rks->rks_iname, K_value);
+	packaging_state save = Emit::named_array_begin(rks->rks_iname, K_value);
 	Kinds::RunTime::emit_weak_id(K);
 	@<Compile the list of strong IDs for the bases@>;
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @<Compile the list of strong IDs for the bases@> =
 	int arity = Kinds::arity_of_constructor(K);
@@ -1032,7 +1021,7 @@ inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
 @ =
 void Kinds::RunTime::emit(kind *K) {
 	if (K == NULL) internal_error("tried to emit null kind");
-	if (InterNames::defined(Kinds::RunTime::iname(K))) return;
+	if (Emit::defined(Kinds::RunTime::iname(K))) return;
 	inter_t dt = INT32_IDT;
 	if (K == K_object) dt = ENUM_IDT;
 	if (Kinds::Behaviour::is_an_enumeration(K)) dt = ENUM_IDT;
@@ -1045,7 +1034,7 @@ void Kinds::RunTime::emit(kind *K) {
 		dt = ENUM_IDT;
 	}
 	Emit::kind(Kinds::RunTime::iname(K), dt, S?Kinds::RunTime::iname(S):NULL, BASE_ICON, 0, NULL);
-	if (K == K_object) InterNames::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
+	if (K == K_object) Emit::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
 }
 
 void Kinds::RunTime::kind_declarations(void) {
@@ -1054,15 +1043,13 @@ void Kinds::RunTime::kind_declarations(void) {
 		if (Kinds::RunTime::base_represented_in_inter(K)) {
 			Kinds::RunTime::emit(K);
 			inter_name *iname = Kinds::RunTime::iname(K);
-			InterNames::annotate_i(iname, WEAK_ID_IANN, (inter_t) Kinds::RunTime::weak_id(K));
-			InterNames::annotate_i(iname, SOURCE_ORDER_IANN, c++);
+			Emit::annotate_i(iname, WEAK_ID_IANN, (inter_t) Kinds::RunTime::weak_id(K));
+			Emit::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
 }
 
 void Kinds::RunTime::compile_nnci(inter_name *name, int val) {
-	packaging_state save = Packaging::enter_home_of(name);
 	Emit::named_numeric_constant(name, (inter_t) val);
-	Packaging::exit(save);
 }
 
 void Kinds::RunTime::compile_instance_counts(void) {
@@ -1080,9 +1067,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 			Emit::main_render_unique(Emit::main_scope(), ICN);
 			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, ICN, Kinds::Behaviour::package(K));
 			DISCARD_TEXT(ICN);
-			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
-			Packaging::exit(save);
 		}
 	}
 

@@ -508,15 +508,13 @@ void Rulebooks::rulebook_var_creators(void) {
 
 	if (memory_economy_in_force == FALSE) {
 		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
-		packaging_state save = Packaging::enter_home_of(iname);
-		Emit::named_array_begin(iname, K_value);
+		packaging_state save = Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(rb, rulebook) {
 			if (StackedVariables::owner_empty(rb->owned_by_rb)) Emit::array_numeric_entry(0);
 			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->owned_by_rb));
 		}
 		Emit::array_numeric_entry(0);
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 	} else @<Make slow lookup routine@>;
 }
 
@@ -854,25 +852,17 @@ void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
 	Rules::Bookings::list_judge_ordering(rb->rule_list);
 	if (Rules::Bookings::list_is_empty_of_i7_rules(rb->rule_list)) return;
 
-	packaging_state save = Packaging::enter(rb->rb_package);
-	TEMPORARY_TEXT(C);
-	WRITE_TO(C, "Rules in rulebook: %~W (%n)", rb->primary_name, rb->rb_iname);
-	Emit::comment(C);
-	DISCARD_TEXT(C);
 	Rules::Bookings::list_compile_rule_phrases(rb->rule_list, i, max_i);
-	Packaging::exit(save);
 }
 
 void Rulebooks::rulebooks_array_array(void) {
 	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook)
 		Emit::array_iname_entry(rb->rb_iname);
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 void Rulebooks::compile_rulebooks(void) {
@@ -884,8 +874,8 @@ void Rulebooks::compile_rulebooks(void) {
 		if (rb->automatically_generated) act = FALSE;
 		int par = FALSE;
 		if (Rulebooks::focus(rb) == PARAMETER_FOCUS) par = TRUE;
-		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n (in $X)\n",
-			rb->primary_name, rb->rb_iname, Packaging::home_of(rb->rb_iname));
+		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n\n",
+			rb->primary_name, rb->rb_iname);
 		packaging_state save = Packaging::enter_home_of(rb->rb_iname);
 		Rules::Bookings::list_compile(rb->rule_list, rb->rb_iname, act, par);
 		Packaging::exit(save);
@@ -895,8 +885,7 @@ void Rulebooks::compile_rulebooks(void) {
 
 void Rulebooks::RulebookNames_array(void) {
 	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	if (memory_economy_in_force) {
 		Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
@@ -909,8 +898,7 @@ void Rulebooks::RulebookNames_array(void) {
 			DISCARD_TEXT(rbt);
 		}
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @h Parsing rulebook properties.

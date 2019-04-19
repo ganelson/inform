@@ -291,8 +291,8 @@ void PL::Parsing::Tokens::Filters::emit_id(int id) {
 			}
 			inter_name *iname = PL::Parsing::Tokens::Filters::nft_compile_routine_iname(nft);
 			if (annot != 0)
-				if (InterNames::read_annotation(iname, annot) != 1)
-					InterNames::annotate_i(iname, annot, 1);
+				if (Emit::read_annotation(iname, annot) != 1)
+					Emit::annotate_i(iname, annot, 1);
 			Emit::array_iname_entry(iname);
 		}
 }

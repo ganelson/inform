@@ -198,13 +198,11 @@ int PL::Counting::counting_compile_model_tables(void) {
 		if (Kinds::Compare::lt(K, K_object)) {
 			inter_name *iname = PL::Counting::first_instance(K);
 			instance *next = PL::Counting::next_instance_of(NULL, K);
-			packaging_state save = Packaging::enter_home_of(iname);
 			if (next) {
 				Emit::named_iname_constant(iname, K_object, Instances::emitted_iname(next));
 			} else {
 				Emit::named_iname_constant(iname, K_object, NULL);
 			}
-			Packaging::exit(save);
 		}
 	return FALSE;
 }

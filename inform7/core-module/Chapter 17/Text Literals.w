@@ -107,7 +107,7 @@ literal_text *Strings::TextLiterals::lt_new(int w1, int colour) {
 	x->lt_sba_iname = NULL;
 	package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
 	x->lt_iname = Hierarchy::make_iname_in(TEXT_LITERAL_HL, PR);
-	InterNames::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
+	Emit::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
 }
@@ -133,7 +133,7 @@ void Strings::TextLiterals::mark_as_unescaped(literal_text *lt) {
 literal_text *Strings::TextLiterals::compile_literal(value_holster *VH, int write, wording W) {
 	int w1 = Wordings::first_wn(W);
 	if (Wide::cmp(Lexer::word_text(w1), L"\"\"") == 0) {
-		if ((write) && (VH)) InterNames::holster(VH, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
+		if ((write) && (VH)) Emit::holster(VH, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
 		return NULL;
 	}
 	if (z_node == NULL) @<Initialise the red-black tree@>;
@@ -182,7 +182,7 @@ which are null pointers.
 			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 			x->lt_sba_iname = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 		}
-		if (VH) InterNames::holster(VH, x->lt_sba_iname);
+		if (VH) Emit::holster(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
 	}
 	return x;
@@ -250,10 +250,12 @@ int Strings::TextLiterals::CCOUNT_QUOTATIONS(void) {
 @ A version from fixed text:
 
 =
-void Strings::TextLiterals::compile_literal_from_text(inter_t *v1, inter_t *v2, wchar_t *p) {
+void Strings::TextLiterals::compile_literal_from_text(inter_name *iname, inter_t *v1, inter_t *v2, wchar_t *p) {
 	literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Feeds::feed_text(p));
+	packaging_state save = Packaging::enter_home_of(iname);
 	inter_reading_state *IRS = Emit::IRS();
-	InterNames::to_ival(IRS->read_into, IRS->current_package, v1, v2, lt->lt_sba_iname);
+	Emit::to_ival(IRS->read_into, IRS->current_package, v1, v2, lt->lt_sba_iname);
+	Packaging::exit(save);
 }
 
 @ The above gradually piled up the need for |TX_L_*| constants/routines,
@@ -281,7 +283,6 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 }
 
 @<Compile a standard literal text@> =
-	packaging_state save = Packaging::enter_home_of(lt->lt_iname);
 	if (existing_story_file) { /* to prevent trouble when no story file is really being made */
 		Emit::named_string_constant(lt->lt_iname, I"--");
 	} else {
@@ -295,14 +296,11 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 		Emit::named_string_constant(lt->lt_iname, TLT);
 		DISCARD_TEXT(TLT);
 	}
-	Packaging::exit(save);
 	if (lt->small_block_array_needed) {
-		packaging_state save = Packaging::enter_home_of(lt->lt_sba_iname);
-		Emit::named_array_begin(lt->lt_sba_iname, K_value);
+		packaging_state save = Emit::named_array_begin(lt->lt_sba_iname, K_value);
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(lt->lt_iname);
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 	}
 
 @<Compile a boxed-quotation literal text@> =
@@ -314,11 +312,9 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 		lt->lt_sba_iname = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 	}
 
-	packaging_state save = Packaging::enter_home_of(lt->lt_sba_iname);
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
-	Packaging::exit(save);
 
-	save = Routines::begin(iname);
+	packaging_state save = Routines::begin(iname);
 	Emit::inv_primitive(box_interp);
 	Emit::down();
 		TEMPORARY_TEXT(T);
@@ -338,15 +334,13 @@ literal_text *Strings::TextLiterals::compile_literal_sb(value_holster *VH, wordi
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
 		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-		packaging_state save = Packaging::enter_home_of(N);
-		Emit::named_late_array_begin(N, K_value);
+		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		lt = Strings::TextLiterals::compile_literal(NULL, FALSE, W);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		if (lt == NULL) Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 		else Emit::array_iname_entry(lt->lt_iname);
-		Emit::array_end();
-		Packaging::exit(save);
-		if (N) InterNames::holster(VH, N);
+		Emit::array_end(save);
+		if (N) Emit::holster(VH, N);
 	} else {
 		lt = Strings::TextLiterals::compile_literal(VH, TRUE, W);
 	}

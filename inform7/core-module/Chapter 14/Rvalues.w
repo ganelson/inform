@@ -625,7 +625,7 @@ a number: all that matters is that the correct integer value is compiled.
 	if (I) {
 		if (Holsters::data_acceptable(VH)) {
 			inter_name *N = Instances::emitted_iname(I);
-			if (N) InterNames::holster(VH, N);
+			if (N) Emit::holster(VH, N);
 			else internal_error("no iname for instance");
 		}
 	} else internal_error("no instance");
@@ -639,7 +639,7 @@ kinds of value:
 	if (Kinds::get_construct(kind_of_constant) == CON_activity) {
 		activity *act = Rvalues::to_activity(spec_found);
 		inter_name *N = Activities::iname(act);
-		if (N) InterNames::holster(VH, N);
+		if (N) Emit::holster(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_combination) {
@@ -660,7 +660,7 @@ kinds of value:
 	if (Kinds::Compare::eq(kind_of_constant, K_equation)) {
 		equation *eqn = Rvalues::to_equation(spec_found);
 		inter_name *N = Equations::identifier(eqn);
-		if (N) InterNames::holster(VH, N);
+		if (N) Emit::holster(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_description) {
@@ -670,19 +670,19 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_list_of) {
 		inter_name *N = Lists::compile_literal_list(ParseTree::get_text(spec_found));
-		if (N) InterNames::holster(VH, N);
+		if (N) Emit::holster(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_phrase) {
 		constant_phrase *cphr = Rvalues::to_constant_phrase(spec_found);
 		inter_name *N = Phrases::Constants::compile(cphr);
-		if (N) InterNames::holster(VH, N);
+		if (N) Emit::holster(VH, N);
 		return;
 	}
 	if (Kinds::Compare::le(kind_of_constant, K_object)) {
 		if (ParseTree::int_annotation(spec_found, self_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH)) {
-				InterNames::holster(VH, Hierarchy::find(SELF_HL));
+				Emit::holster(VH, Hierarchy::find(SELF_HL));
 			}
 		} else if (ParseTree::int_annotation(spec_found, nothing_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH))
@@ -691,7 +691,7 @@ kinds of value:
 			instance *I = Rvalues::to_instance(spec_found);
 			if (I) {
 				inter_name *N = Instances::emitted_iname(I);
-				if (N) InterNames::holster(VH, N);
+				if (N) Emit::holster(VH, N);
 			}
 			parse_node *NB = Routines::Compile::line_being_compiled();
 			if (NB) Instances::note_usage(I, NB);
@@ -706,12 +706,12 @@ kinds of value:
 		binary_predicate *bp = Rvalues::to_binary_predicate(spec_found);
 		BinaryPredicates::mark_as_needed(bp);
 		inter_name *N = BinaryPredicates::iname(bp);
-		if (N) InterNames::holster(VH, N);
+		if (N) Emit::holster(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rule) {
 		rule *R = Rvalues::to_rule(spec_found);
-		InterNames::holster(VH, Rules::iname(R));
+		Emit::holster(VH, Rules::iname(R));
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {
@@ -723,12 +723,12 @@ kinds of value:
 	if (Kinds::Compare::eq(kind_of_constant, K_rulebook_outcome)) {
 		named_rulebook_outcome *rbno =
 			Rvalues::to_named_rulebook_outcome(spec_found);
-		InterNames::holster(VH, rbno->nro_iname);
+		Emit::holster(VH, rbno->nro_iname);
 		return;
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_table)) {
 		table *t = Rvalues::to_table(spec_found);
-		InterNames::holster(VH, Tables::identifier(t));
+		Emit::holster(VH, Tables::identifier(t));
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
@@ -761,14 +761,14 @@ kinds of value:
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_verb)) {
 		verb_form *vf = Rvalues::to_verb_form(spec_found);
-		InterNames::holster(VH, Verbs::form_iname(vf));
+		Emit::holster(VH, Verbs::form_iname(vf));
 		return;
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_response)) {
 		rule *R = Rvalues::to_rule(spec_found);
 		int c = ParseTree::int_annotation(spec_found, response_code_ANNOT);
 		inter_name *iname = Strings::response_constant_iname(R, c);
-		if (iname) InterNames::holster(VH, iname);
+		if (iname) Emit::holster(VH, iname);
 		else Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		Rules::now_rule_needs_response(R, c, EMPTY_WORDING);
 		return;
@@ -802,7 +802,7 @@ in several contexts by using a tilde: |~attr|.
 
 		if (Holsters::data_acceptable(VH)) {
 			if (parity == 1) {
-				InterNames::holster(VH, Properties::iname(prn_to_eval));
+				Emit::holster(VH, Properties::iname(prn_to_eval));
 			} else {
 				Problems::Issue::sentence_problem(_p_(Untestable),
 					"this refers to an either-or property with a negative "
@@ -813,6 +813,6 @@ in several contexts by using a tilde: |~attr|.
 		}
 	} else {
 		if (Holsters::data_acceptable(VH)) {
-			InterNames::holster(VH, Properties::iname(prn));
+			Emit::holster(VH, Properties::iname(prn));
 		}
 	}

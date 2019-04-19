@@ -147,7 +147,7 @@ to calculate, and useful when sorting grammar lines into applicability order.
 
 <p class="endnote">The function PL::Parsing::Lines::new is used in 5/tfg (<a href="5-tfg.html#SP21">&#167;21</a>).</p>
 
-<p class="endnote">The function PL::Parsing::Lines::log is used in 1/im (<a href="1-im.html#SP4">&#167;4</a>, <a href="1-im.html#SP4_3">&#167;4.3</a>).</p>
+<p class="endnote">The function PL::Parsing::Lines::log is used in 1/im (<a href="1-im.html#SP4">&#167;4</a>, <a href="1-im.html#SP4_4">&#167;4.4</a>).</p>
 
 <p class="endnote">The function PL::Parsing::Lines::set_single_type is used in 5/tfg (<a href="5-tfg.html#SP21">&#167;21</a>).</p>
 
@@ -535,10 +535,8 @@ the mistake.
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">MistakeAction_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MISTAKEACTION_HL</span><span class="plain">);</span>
-        <span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">);</span>
         <span class="identifier">Emit::named_pseudo_numeric_constant</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">, 10000);</span>
-        <span class="identifier">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
     <span class="plain">}</span>
 </pre>
 

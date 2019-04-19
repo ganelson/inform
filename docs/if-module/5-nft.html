@@ -317,8 +317,8 @@ that's why.)
                 <span class="plain">}</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Filters::nft_compile_routine_iname</span><span class="plain">(</span><span class="identifier">nft</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">annot</span><span class="plain"> != 0)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InterNames::read_annotation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">annot</span><span class="plain">) != 1)</span>
-                        <span class="identifier">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">annot</span><span class="plain">, 1);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Emit::read_annotation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">annot</span><span class="plain">) != 1)</span>
+                        <span class="identifier">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">annot</span><span class="plain">, 1);</span>
                 <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>

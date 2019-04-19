@@ -41,7 +41,7 @@ location_requirement HierarchyLocations::synoptic_submodule(submodule_identity *
 
 location_requirement HierarchyLocations::any_package_of_type(text_stream *ptype_name) {
 	location_requirement req = HierarchyLocations::blank();
-	req.any_package_of_this_type = HierarchyLocations::ptype(ptype_name);
+	req.any_package_of_this_type = PackageTypes::get(ptype_name);
 	return req;
 }
 
@@ -103,7 +103,7 @@ named_resource_location *HierarchyLocations::package(int id, text_stream *name, 
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
 	nrl->requirements = req;
-	nrl->package_type = HierarchyLocations::ptype(ptype_name);
+	nrl->package_type = PackageTypes::get(ptype_name);
 	HierarchyLocations::index(nrl);
 	return nrl;
 }
@@ -179,7 +179,7 @@ inter_name *HierarchyLocations::find_by_name(text_stream *name) {
 
 inter_name *HierarchyLocations::function(package_request *R, text_stream *name, text_stream *trans) {
 	inter_name *iname = Packaging::function(InterNames::explicitly_named(name, R), NULL);
-	if (trans) InterNames::change_translation(iname, trans);
+	if (trans) Emit::change_translation(iname, trans);
 	return iname;
 }
 
@@ -192,10 +192,7 @@ inter_name *HierarchyLocations::nrl_to_iname(named_resource_location *nrl) {
 			else internal_error("package can't be found'");
 		}
 		if (nrl->requirements.this_mundane_package == Hierarchy::template()) {
-			packaging_state save = Packaging::enter(nrl->requirements.this_mundane_package);
-			nrl->equates_to_iname = InterNames::explicitly_named(nrl->access_name, Hierarchy::template());
-			InterNames::externalise_symbol(nrl->equates_to_iname, nrl->access_name);
-			Packaging::exit(save);
+			nrl->equates_to_iname = InterNames::explicitly_named_in_template(nrl->access_name);
 		} else if (Str::len(nrl->function_package_name) > 0) {
 			nrl->equates_to_iname = Packaging::function_text(
 				InterNames::explicitly_named(nrl->function_package_name, nrl->requirements.this_mundane_package),
@@ -256,7 +253,7 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		@<Make the actual iname@>;
 	}
 	
-	if (nrl->trans.then_make_unique) InterNames::set_flag(iname, MAKE_NAME_UNIQUE);
+	if (nrl->trans.then_make_unique) Emit::set_flag(iname, MAKE_NAME_UNIQUE);
 	return iname;
 }
 
@@ -269,7 +266,7 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		else if (Str::len(nrl->access_name) == 0) iname = InterNames::explicitly_named_with_memo(T, P, W);
 		else iname = InterNames::explicitly_named_with_memo(nrl->access_name, P, W);
 	}
-	if ((Str::len(T) > 0) && (nrl->access_name)) InterNames::change_translation(iname, T);
+	if ((Str::len(T) > 0) && (nrl->access_name)) Emit::change_translation(iname, T);
 
 @ =
 package_request *HierarchyLocations::package_in_package(int id, package_request *P) {
@@ -318,7 +315,7 @@ hierarchy_attachment_point *HierarchyLocations::ap(int ap_id, location_requireme
 	hap->hap_id = ap_id;
 	hap->requirements = req;
 	hap->counter = Packaging::register_counter(iterated_text);
-	hap->type = HierarchyLocations::ptype(ptype_name);
+	hap->type = PackageTypes::get(ptype_name);
 	HierarchyLocations::index_ap(hap);
 	return hap;
 }
@@ -341,24 +338,5 @@ package_request *HierarchyLocations::attach_new_package(compilation_module *C, p
 	}
 	
 	return Packaging::request(Packaging::supply_iname(R, hap->counter), hap->type);
-}
-
-@
-
-=
-dictionary *ptypes_indexed_by_name = NULL;
-
-int ptypes_created = FALSE;
-inter_symbol *HierarchyLocations::ptype(text_stream *name) {
-	if (ptypes_created == FALSE) {
-		ptypes_created = TRUE;
-		ptypes_indexed_by_name = Dictionaries::new(512, FALSE);
-	}
-	if (Dictionaries::find(ptypes_indexed_by_name, name))
-		return (inter_symbol *) Dictionaries::read_value(ptypes_indexed_by_name, name);
-	inter_symbol *new_ptype = Emit::packagetype(name, TRUE);
-	Dictionaries::create(ptypes_indexed_by_name, name);
-	Dictionaries::write_value(ptypes_indexed_by_name, name, (void *) new_ptype);
-	return new_ptype;
 }
 

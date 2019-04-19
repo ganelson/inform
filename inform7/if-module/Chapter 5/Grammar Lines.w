@@ -432,10 +432,8 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	Routines::end(save);
 	
 	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_HL);
-	save = Packaging::enter_home_of(MistakeAction_iname);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
-	InterNames::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
-	Packaging::exit(save);
+	Emit::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
 }
 
 @h Single word optimisation.

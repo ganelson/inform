@@ -507,9 +507,7 @@ one to test them, one to print them.
 =
 void UseOptions::TestUseOption_routine(void) {
 	inter_name *iname = Hierarchy::find(NO_USE_OPTIONS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(use_option));
-	Packaging::exit(save);
 	@<Compile the TestUseOption routine@>;
 	@<Compile the PrintUseOption routine@>;
 }

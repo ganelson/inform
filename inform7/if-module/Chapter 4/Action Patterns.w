@@ -1636,8 +1636,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *ap) {
 	package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 	inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-	packaging_state save = Packaging::enter_home_of(N);
-	Emit::named_late_array_begin(N, K_value);
+	packaging_state save = Emit::named_late_array_begin(N, K_value);
 
 	Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
 	action_name *an = PL::Actions::Lists::get_singleton_action(ap->action);
@@ -1670,9 +1669,8 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 		Emit::array_iname_entry(Instances::iname(I_yourself));
 	Emit::array_numeric_entry((inter_t) request_bits);
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
-	if (N) InterNames::holster(VH, N);
+	Emit::array_end(save);
+	if (N) Emit::holster(VH, N);
 }
 
 void PL::Actions::Patterns::emit_pattern_match(action_pattern ap, int naming_mode) {

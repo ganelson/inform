@@ -256,42 +256,36 @@ void PL::Bibliographic::compile_constants(void) {
 
 @<Compile the I6 Story constant@> =
 	inter_name *iname = Hierarchy::find(STORY_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
 	NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
 	inter_t v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_title_VAR))
-		NonlocalVariables::seek_initial_value(&v1, &v2, story_title_VAR);
+		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
 	else
-		Strings::TextLiterals::compile_literal_from_text(&v1, &v2, L"\"Welcome\"");
+		Strings::TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
 	Emit::named_generic_constant(iname, v1, v2);
-	Packaging::exit(save);
 
 @ And similarly here:
 
 @<Compile the I6 Headline constant@> =
 	inter_name *iname = Hierarchy::find(HEADLINE_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
 	inter_t v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_headline_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_headline_VAR);
-		NonlocalVariables::seek_initial_value(&v1, &v2, story_headline_VAR);
+		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
 	} else {
-		Strings::TextLiterals::compile_literal_from_text(&v1, &v2, L"\"An Interactive Fiction\"");
+		Strings::TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"An Interactive Fiction\"");
 	}
 	Emit::named_generic_constant(iname, v1, v2);
-	Packaging::exit(save);
 
 @ This time we compile nothing if no author is provided:
 
 @<Compile the I6 Story Author constant@> =
 	if (NonlocalVariables::has_initial_value_set(story_author_VAR)) {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
-		packaging_state save = Packaging::enter_home_of(iname);
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
-		NonlocalVariables::seek_initial_value(&v1, &v2, story_author_VAR);
+		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
-		Packaging::exit(save);
 	}
 
 @ Similarly (but numerically):
@@ -299,11 +293,9 @@ void PL::Bibliographic::compile_constants(void) {
 @<Compile the I6 Release directive@> =
 	if (NonlocalVariables::has_initial_value_set(story_release_number_VAR)) {
 		inter_name *iname = Hierarchy::find(RELEASE_HL);
-		packaging_state save = Packaging::enter_home_of(iname);
 		inter_t v1 = 0, v2 = 0;
-		NonlocalVariables::seek_initial_value(&v1, &v2, story_release_number_VAR);
+		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
-		Packaging::exit(save);
 	}
 
 @ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
@@ -312,14 +304,12 @@ should be able to fake the date-stamp with dates of their own choosing.
 
 @<Compile the I6 serial number, based on the date@> =
 	inter_name *iname = Hierarchy::find(SERIAL_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
 	TEMPORARY_TEXT(SN);
 	int year_digits = (the_present->tm_year) % 100;
 	WRITE_TO(SN, "%02d%02d%02d",
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
 	Emit::named_text_constant(iname, SN);
 	DISCARD_TEXT(SN);
-	Packaging::exit(save);
 
 @ The Library Card is part of the Contents index, and is intended as a
 natural way to present bibliographic data to the user. In effect, it's a

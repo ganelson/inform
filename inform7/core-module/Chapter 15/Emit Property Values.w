@@ -23,7 +23,7 @@ void Properties::Emit::emit_subject(inference_subject *subj) {
 	else if (I) iname = Instances::emitted_iname(I);
 	else internal_error("bad subject for emission");
 
-	InterNames::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);
+	Emit::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);
 
 	@<Compile the actual object@>;
 	if (K) {
@@ -60,7 +60,7 @@ each one is marked when visited.
 	#ifdef IF_MODULE
 	if ((I) && (Kinds::Compare::le(Instances::to_kind(I), K_object))) {
 		int AC = PL::Spatial::get_definition_depth(I);
-		if (AC > 0) InterNames::annotate_i(iname, ARROW_COUNT_IANN, (inter_t) AC);
+		if (AC > 0) Emit::annotate_i(iname, ARROW_COUNT_IANN, (inter_t) AC);
 	}
 	#endif
 
@@ -69,14 +69,10 @@ I6 code into object bodies, and the I6 template does make use of this a little.
 In an ideal world we would revoke this ability.
 
 @<Append any inclusions the source text requested@> =
-	packaging_state save = Packaging::enter_home_of(iname);
 	TEMPORARY_TEXT(incl);
 	Config::Inclusions::compile_inclusions_for_subject(incl, subj);
-	if (Str::len(incl) > 0) {
-		Emit::append(iname, incl);
-	}
+	if (Str::len(incl) > 0) Emit::append(iname, incl);
 	DISCARD_TEXT(incl);
-	Packaging::exit(save);
 
 @ Now, here goes with the properties. We first compile clauses for those we
 know about, then for any other properties which are permitted but apparently
@@ -115,13 +111,11 @@ value the property will have, and compiles a clause as appropriate.
 
 =
 int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn) {
-	packaging_state save = Packaging::stateless();
 	package_request *R = NULL;
 	instance *I = InferenceSubjects::as_instance(know);
 	if (I) R = Instances::package(I);
 	kind *K = InferenceSubjects::as_kind(know);
 	if (K) R = Kinds::RunTime::package(K);
-	if (R) save = Packaging::enter(R);
 	int storage_cost = 0;
 	if ((Properties::visited_in_traverse(prn) == FALSE) &&
 		(Properties::can_be_compiled(prn))) {
@@ -132,7 +126,6 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 		Properties::compile_inferred_value(&VH, know, prn);
 		@<Now emit a propertyvalue@>;
 	}
-	if (R) Packaging::exit(save);
 	return storage_cost;
 }
 

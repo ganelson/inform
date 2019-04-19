@@ -368,7 +368,7 @@ STV clauses; (2) get this right:
 
 <p class="endnote">The function PL::Actions::Patterns::compare_specificity_of_apoc_list is used in <a href="#SP27">&#167;27</a>.</p>
 
-<p class="endnote">The function PL::Actions::Patterns::log is used in 1/im (<a href="1-im.html#SP4">&#167;4</a>, <a href="1-im.html#SP4_3">&#167;4.3</a>).</p>
+<p class="endnote">The function PL::Actions::Patterns::log is used in 1/im (<a href="1-im.html#SP4">&#167;4</a>, <a href="1-im.html#SP4_4">&#167;4.4</a>).</p>
 
 <p class="endnote">The function PL::Actions::Patterns::ap_store is used in <a href="#SP22_1">&#167;22.1</a>, <a href="#SP23">&#167;23</a>.</p>
 
@@ -2083,8 +2083,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::Patterns::as_stored_action</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain">) {</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="identifier">BLOCK_CONSTANTS_HAP</span><span class="plain">);</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="identifier">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K_stored_action</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 6);</span>
         <span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain"> = </span><span class="functiontext">PL::Actions::Lists::get_singleton_action</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;action</span><span class="plain">);</span>
@@ -2117,9 +2116,8 @@ and in this case we therefore ignore <code class="display"><span class="extract"
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">I_yourself</span><span class="plain">));</span>
         <span class="identifier">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">request_bits</span><span class="plain">);</span>
         <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">();</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::Patterns::emit_pattern_match</span><span class="plain">(</span><span class="reserved">action_pattern</span><span class="plain"> </span><span class="identifier">ap</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">naming_mode</span><span class="plain">) {</span>

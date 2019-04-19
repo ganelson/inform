@@ -169,9 +169,7 @@ grammar_verb *PL::Parsing::Verbs::find_or_create_command(wording W) {
 
 	if (Wordings::empty(W)) {
 		inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_HL);
-		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) 1);
-		Packaging::exit(save);
 	}
 	else LOGIF(GRAMMAR_CONSTRUCTION, "GV%d has verb %W\n", gv->allocation_id, W);
 
@@ -270,13 +268,13 @@ void PL::Parsing::Verbs::remove_action(grammar_verb *gv, action_name *an) {
 @ Command GVs are destined to be compiled into |Verb| directives, as follows.
 
 =
-void PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv, inter_name *array_iname) {
+packaging_state PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv, inter_name *array_iname) {
 	if (gv->gv_is != GV_IS_COMMAND)
 		internal_error("tried to compile Verb from non-command GV");
 	if (gv->first_line == NULL)
 		internal_error("compiling Verb for empty grammar");
 
-	Emit::named_verb_array_begin(array_iname, K_value);
+	packaging_state save = Emit::named_verb_array_begin(array_iname, K_value);
 
 	if (Wordings::empty(gv->command))
 		Emit::array_dword_entry(I"no.verb");
@@ -308,6 +306,7 @@ void PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_verb *gv, inte
 			DISCARD_TEXT(WD);
 		}
 	}
+	return save;
 }
 
 @ Reserved verb names are collated as the I6 template files are read:
@@ -687,9 +686,7 @@ inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 
 inter_name *PL::Parsing::Verbs::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, 1);
-	Packaging::exit(save);
 	return iname;
 }
 
@@ -762,11 +759,10 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 		case GV_IS_COMMAND: {
 			package_request *PR = Hierarchy::synoptic_package(COMMANDS_HAP);
 			inter_name *array_iname = Hierarchy::make_iname_in(VERB_DECLARATION_ARRAY_HL, PR);
-			packaging_state save = Packaging::enter_home_of(array_iname);
-			PL::Parsing::Verbs::gv_compile_Verb_directive_header(gv, array_iname);
+			packaging_state save = 
+				PL::Parsing::Verbs::gv_compile_Verb_directive_header(gv, array_iname);
 			PL::Parsing::Verbs::gv_compile_lines(NULL, gv);
-			Emit::array_end();
-			Packaging::exit(save);
+			Emit::array_end(save);
 			break;
 		}
 		case GV_IS_TOKEN: {

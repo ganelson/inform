@@ -378,15 +378,11 @@ int PL::Map::map_compile_model_tables(void) {
 
 @<Declare I6 constants for the directions@> =
 	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
-	packaging_state save = Packaging::enter_home_of(ndi);
 	Emit::named_numeric_constant(ndi, (inter_t) registered_directions);
-	Packaging::exit(save);
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction) {
-		packaging_state save = Packaging::enter_home_of(PF_I(map, I)->direction_iname);
 		Emit::named_iname_constant(PF_I(map, I)->direction_iname, K_object, Instances::emitted_iname(I));
-		Packaging::exit(save);
 	}
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
@@ -400,8 +396,7 @@ at run-time, so we can't know now how many we will need.
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		Instances::emitted_iname(I);
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_object);
+	packaging_state save = Emit::named_array_begin(iname, K_object);
 	int words_used = 0;
 	if (existing_story_file) {
 		Emit::array_divider(I"minimal, as there are no rooms");
@@ -430,8 +425,7 @@ at run-time, so we can't know now how many we will need.
 				DISCARD_TEXT(divider);
 			}
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 	VirtualMachines::note_usage("map", EMPTY_WORDING, I"map of rooms and doors",
 		words_used, 0, FALSE);
 
@@ -953,22 +947,19 @@ trust that there is nothing surprising here.
 @<Assert found-in for a two-sided door@> =
 	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
 	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = Packaging::enter_home_of(S);
-	Emit::named_array_begin(S, K_value);
+	packaging_state save = Emit::named_array_begin(S, K_value);
 	Emit::array_iname_entry(Instances::iname(R1));
 	Emit::array_iname_entry(Instances::iname(R2));
-	Emit::array_end();
-	InterNames::annotate_i(S, INLINE_ARRAY_IANN, 1);
+	Emit::array_end(save);
+	Emit::annotate_i(S, INLINE_ARRAY_IANN, 1);
 	PL::Map::set_found_in(I, S);
-	Packaging::exit(save);
 
 @ Here |door_dir| is a routine looking at the current location and returning
 always the way to the other room -- the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
 	door_dir_notice *notice = CREATE(door_dir_notice);
-	inter_name *iname = Instances::iname(I);
-	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, Packaging::home_of(iname));
+	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, Instances::package(I));
 	notice->door = I;
 	notice->R1 = R1;
 	notice->D1 = D1;
@@ -981,8 +972,7 @@ always the other room -- the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
 	door_to_notice *notice = CREATE(door_to_notice);
-	inter_name *iname = Instances::iname(I);
-	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, Packaging::home_of(iname));
+	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, Instances::package(I));
 	notice->door = I;
 	notice->R1 = R1;
 	notice->R2 = R2;

@@ -51,7 +51,7 @@
 
     <span class="reserved">location_requirement</span><span class="plain"> </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ptype_name</span><span class="plain">) {</span>
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::blank</span><span class="plain">();</span>
-        <span class="identifier">req</span><span class="element">.any_package_of_this_type</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::ptype</span><span class="plain">(</span><span class="identifier">ptype_name</span><span class="plain">);</span>
+        <span class="identifier">req</span><span class="element">.any_package_of_this_type</span><span class="plain"> = </span><span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">ptype_name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -113,7 +113,7 @@
         <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_number</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
         <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
-        <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;package_type</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::ptype</span><span class="plain">(</span><span class="identifier">ptype_name</span><span class="plain">);</span>
+        <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;package_type</span><span class="plain"> = </span><span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">ptype_name</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::index</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nrl</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -189,7 +189,7 @@
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">HierarchyLocations::function</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">trans</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function</span><span class="plain">(</span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trans</span><span class="plain">) </span><span class="functiontext">InterNames::change_translation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">trans</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trans</span><span class="plain">) </span><span class="functiontext">Emit::change_translation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">trans</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -202,10 +202,7 @@
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"package can't be found'"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements.this_mundane_package</span><span class="plain"> == </span><span class="functiontext">Hierarchy::template</span><span class="plain">()) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements.this_mundane_package</span><span class="plain">);</span>
-                <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;equates_to_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">, </span><span class="functiontext">Hierarchy::template</span><span class="plain">());</span>
-                <span class="functiontext">InterNames::externalise_symbol</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;equates_to_iname</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">);</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;equates_to_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named_in_template</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;function_package_name</span><span class="plain">) &gt; 0) {</span>
                 <span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;equates_to_iname</span><span class="plain"> = </span><span class="functiontext">Packaging::function_text</span><span class="plain">(</span>
                     <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;function_package_name</span><span class="plain">, </span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;requirements.this_mundane_package</span><span class="plain">),</span>
@@ -266,7 +263,7 @@
             &lt;<span class="cwebmacro">Make the actual iname</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.then_make_unique</span><span class="plain">) </span><span class="functiontext">InterNames::set_flag</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;trans.then_make_unique</span><span class="plain">) </span><span class="functiontext">Emit::set_flag</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -333,7 +330,7 @@
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">) == 0) </span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named_with_memo</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named_with_memo</span><span class="plain">(</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">) &gt; 0) &amp;&amp; (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">)) </span><span class="functiontext">InterNames::change_translation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">) &gt; 0) &amp;&amp; (</span><span class="identifier">nrl</span><span class="plain">-</span><span class="element">&gt;access_name</span><span class="plain">)) </span><span class="functiontext">Emit::change_translation</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -388,7 +385,7 @@
         <span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;hap_id</span><span class="plain"> = </span><span class="identifier">ap_id</span><span class="plain">;</span>
         <span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;counter</span><span class="plain"> = </span><span class="functiontext">Packaging::register_counter</span><span class="plain">(</span><span class="identifier">iterated_text</span><span class="plain">);</span>
-        <span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::ptype</span><span class="plain">(</span><span class="identifier">ptype_name</span><span class="plain">);</span>
+        <span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain"> = </span><span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">ptype_name</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::index_ap</span><span class="plain">(</span><span class="identifier">hap</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">hap</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -412,6 +409,7 @@
 
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="functiontext">Packaging::supply_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;counter</span><span class="plain">), </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">);</span>
     <span class="plain">}</span>
+
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -427,32 +425,6 @@
 <p class="endnote">The function HierarchyLocations::attach_new_package is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The structure hierarchy_attachment_point is accessed in 8/ed and here.</p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
-
-<pre class="display">
-    <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ptypes_created</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">HierarchyLocations::ptype</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ptypes_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">ptypes_created</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">ptypes_indexed_by_name</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(512, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Dictionaries::find</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">inter_symbol</span><span class="plain"> *) </span><span class="identifier">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">new_ptype</span><span class="plain"> = </span><span class="functiontext">Emit::packagetype</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="identifier">Dictionaries::create</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">ptypes_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">new_ptype</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">new_ptype</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function HierarchyLocations::ptype is used in <a href="#SP1">&#167;1</a>, <a href="#SP2">&#167;2</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="27-hr.html">Back to 'Hierarchy'</a></li><li><a href="27-tr.html">Continue with 'Translation'</a></li></ul><hr class="tocbar">

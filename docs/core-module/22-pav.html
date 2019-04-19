@@ -205,8 +205,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 
 <pre class="displaydefn">
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain">);</span>
 
@@ -219,8 +218,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
         <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
 
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -275,14 +273,14 @@ made above.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">, </span><span class="string">"default value of "</span><span class="plain">); </span><span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">);</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

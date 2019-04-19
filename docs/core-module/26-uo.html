@@ -749,9 +749,7 @@ one to test them, one to print them.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::TestUseOption_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_USE_OPTIONS_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">use_option</span><span class="plain">));</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compile the TestUseOption routine</span> <span class="cwebmacronumber">21.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile the PrintUseOption routine</span> <span class="cwebmacronumber">21.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>

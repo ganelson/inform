@@ -29,8 +29,7 @@ typedef struct use_as_event {
 =
 void Phrases::Timed::TimedEventsTable(void) {
 	inter_name *iname = Hierarchy::find(TIMEDEVENTSTABLE_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_table_array_begin(iname, K_value);
+	packaging_state save = Emit::named_table_array_begin(iname, K_value);
 	int when_count = 0;
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
@@ -44,14 +43,12 @@ void Phrases::Timed::TimedEventsTable(void) {
 		Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 void Phrases::Timed::TimedEventTimesTable(void) {
 	inter_name *iname = Hierarchy::find(TIMEDEVENTTIMESTABLE_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_table_array_begin(iname, K_number);
+	packaging_state save = Emit::named_table_array_begin(iname, K_number);
 	int when_count = 0;
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
@@ -65,8 +62,7 @@ void Phrases::Timed::TimedEventTimesTable(void) {
 		Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @ That's it, really: everything else is just indexing.

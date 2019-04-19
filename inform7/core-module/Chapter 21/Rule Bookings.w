@@ -769,6 +769,7 @@ than once for each rule.
 	if (action_based == FALSE) grouping = FALSE;
 
 	inter_symbol *forbid_breaks_s = NULL, *rv_s = NULL, *original_deadflag_s = NULL, *p_s = NULL;
+	packaging_state save_array = Packaging::stateless();
 
 	@<Open the rulebook compilation@>;
 	int group_size = 0, group_started = FALSE, entry_count = 0, action_group_open = FALSE;
@@ -808,10 +809,10 @@ than once for each rule.
 @<Open the rulebook compilation@> =
 	rb_symb = identifier;
 	switch (format) {
-		case ARRAY_RBF: Emit::named_array_begin(identifier, K_value); break;
-		case GROUPED_ARRAY_RBF: Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_t) -2); break;
+		case ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); break;
+		case GROUPED_ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_t) -2); break;
 		case ROUTINE_RBF: {
-			Routines::begin_in_current_package(identifier);
+			save_array = Routines::begin(identifier);
 			forbid_breaks_s = LocalVariables::add_named_call_as_symbol(I"forbid_breaks");
 			rv_s = LocalVariables::add_internal_local_c_as_symbol(I"rv", "return value");
 			if (countup > 1)
@@ -967,14 +968,14 @@ than once for each rule.
 		case ARRAY_RBF:
 		case GROUPED_ARRAY_RBF:
 			Emit::array_null_entry();
-			Emit::array_end();
+			Emit::array_end(save_array);
 			break;
 		case ROUTINE_RBF:
 			Emit::inv_primitive(return_interp);
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Routines::end_in_current_package();
+			Routines::end(save_array);
 			break;
 	}
 

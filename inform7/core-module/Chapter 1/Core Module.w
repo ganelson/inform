@@ -333,8 +333,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e EXPRESSIONS_DA
 @e EXTENSIONS_CENSUS_DA
 @e FIGURE_CREATIONS_DA
-@e GRAMMAR_DA
-@e GRAMMAR_CONSTRUCTION_DA
 @e HEADINGS_DA
 @e IMPLICATIONS_DA
 @e INFERENCES_DA
@@ -384,8 +382,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(EXPRESSIONS_DA, L"expressions", FALSE, FALSE);
 	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);
 	Log::declare_aspect(FIGURE_CREATIONS_DA, L"figure creations", FALSE, FALSE);
-	Log::declare_aspect(GRAMMAR_DA, L"grammar", FALSE, FALSE);
-	Log::declare_aspect(GRAMMAR_CONSTRUCTION_DA, L"grammar construction", FALSE, FALSE);
 	Log::declare_aspect(HEADINGS_DA, L"headings", FALSE, FALSE);
 	Log::declare_aspect(IMPLICATIONS_DA, L"implications", FALSE, TRUE);
 	Log::declare_aspect(INFERENCES_DA, L"inferences", FALSE, TRUE);

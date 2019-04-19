@@ -431,9 +431,7 @@ with the following.
         <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;IFDEF_iname</span><span class="plain">)) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;IFDEF_iname</span><span class="plain">);</span>
                 <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;IFDEF_iname</span><span class="plain">, 0);</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

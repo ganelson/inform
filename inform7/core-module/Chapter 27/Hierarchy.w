@@ -1531,18 +1531,12 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case SIBLING_HL:
 		case THEDARK_HL:
 		case FLOAT_NAN_HL:
-		case RESPONSETEXTS_HL: {
-			packaging_state save = Packaging::enter_home_of(iname);
+		case RESPONSETEXTS_HL:
 			Emit::named_numeric_constant(iname, 0);
-			Packaging::exit(save);
 			break;
-		}
-		case SELF_HL: {
-			packaging_state save = Packaging::enter_home_of(iname);
+		case SELF_HL:
 			Emit::variable(iname, K_value, UNDEF_IVAL, 0, I"self");
-			Packaging::exit(save);
 			break;
-		}
 		case OBJECT_HL:
 			iname = Kinds::RunTime::I6_classname(K_object);
 			break;
@@ -1558,7 +1552,7 @@ inter_name *Hierarchy::find(int id) {
 }
 
 void Hierarchy::make_available(inter_name *iname) {
-	HierarchyLocations::make_as(-1, InterNames::to_text(iname), iname);
+	HierarchyLocations::make_as(-1, Emit::to_text(iname), iname);
 }
 
 inter_name *Hierarchy::find_by_name(text_stream *name) {
@@ -1574,7 +1568,8 @@ inter_name *Hierarchy::find_by_name(text_stream *name) {
 package_request *main_pr = NULL;
 package_request *Hierarchy::main(void) {
 	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL), plain_ptype);
+		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL),
+			PackageTypes::get(I"_plain"));
 	return main_pr;
 }
 
@@ -1583,7 +1578,7 @@ package_request *Hierarchy::resources(void) {
 	if (resources_pr == NULL)
 		resources_pr = Packaging::request(
 			InterNames::explicitly_named(I"resources", Hierarchy::main()),
-			plain_ptype);
+			PackageTypes::get(I"_plain"));
 	return resources_pr;
 }
 
@@ -1592,7 +1587,7 @@ package_request *Hierarchy::template(void) {
 	if (template_pr == NULL)
 		template_pr = Packaging::request(
 			InterNames::explicitly_named(I"template", Hierarchy::resources()),
-			module_ptype);
+			PackageTypes::get(I"_module"));
 	return template_pr;
 }
 
@@ -1638,7 +1633,7 @@ inter_name *Hierarchy::make_block_iname(package_request *P) {
 
 inter_name *Hierarchy::make_kernel_iname(package_request *P) {
 	inter_name *kernel_name = Packaging::supply_iname(P, 1);
-	InterNames::set_flag(kernel_name, MAKE_NAME_UNIQUE);
+	Emit::set_flag(kernel_name, MAKE_NAME_UNIQUE);
 	return kernel_name;
 }
 

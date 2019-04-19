@@ -405,9 +405,7 @@ void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 	LOOP_OVER(rbno, named_rulebook_outcome) {
 		TEMPORARY_TEXT(RV);
 		WRITE_TO(RV, "%+W", Nouns::nominative(rbno->name));
-		packaging_state save = Packaging::enter_home_of(rbno->nro_iname);
 		Emit::named_string_constant(rbno->nro_iname, RV);
-		Packaging::exit(save);
 		DISCARD_TEXT(RV);
 	}
 

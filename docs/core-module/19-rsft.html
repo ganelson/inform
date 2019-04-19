@@ -85,13 +85,11 @@ found at <code class="display"><span class="extract">T--&gt;1</span></code>, <co
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             &lt;<span class="cwebmacro">Compile the inner table array for column j</span> <span class="cwebmacronumber">1.1.1.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
-        <span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">words_used</span><span class="plain"> += </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain"> + 1;</span>
 </pre>
 
@@ -119,8 +117,7 @@ or not.
 
 
 <pre class="displaydefn">
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_table_array_begin</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain">;</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Compiling column: $C\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">);</span>
@@ -145,9 +142,8 @@ or not.
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Pad out the blanks array as needed</span> <span class="cwebmacronumber">1.1.1.1.1.2</span>&gt;<span class="plain">;</span>
 
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Done column: $C\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -327,8 +323,7 @@ case.)
 
 <pre class="displaydefn">
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TB_BLANKS_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;amendment_of</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -345,8 +340,7 @@ case.)
             <span class="plain">}</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -419,8 +413,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 
 <pre class="displaydefn">
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TABLEOFTABLES_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_TABLE_HL</span><span class="plain">));</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">)</span>
@@ -429,8 +422,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
             <span class="plain">}</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

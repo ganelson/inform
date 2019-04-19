@@ -190,7 +190,7 @@ tried later. This is a pointer value; see "StoredAction.i6t".
             <span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain"> = </span><span class="identifier">Rvalues::to_action_name</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">)) {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">PL::Actions::iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -478,7 +478,7 @@ will do: it doesn't have to be "it".)
 
 <p class="endnote">The function PL::Actions::action_names_overlap is used in <a href="#SP16">&#167;16</a>.</p>
 
-<p class="endnote">The function PL::Actions::log is used in 1/im (<a href="1-im.html#SP4">&#167;4</a>, <a href="1-im.html#SP4_3">&#167;4.3</a>).</p>
+<p class="endnote">The function PL::Actions::log is used in 1/im (<a href="1-im.html#SP4">&#167;4</a>, <a href="1-im.html#SP4_4">&#167;4.4</a>).</p>
 
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>And the following matches an action name (with no substitution of noun
 phrases: "unlocking the door with" won't match the unlocking action; only
@@ -551,7 +551,7 @@ then that's what "listening" will match.)
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">PL::Actions::identifier</span><span class="plain">(</span><span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">InterNames::to_text</span><span class="plain">(</span><span class="functiontext">PL::Actions::base_iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Emit::to_text</span><span class="plain">(</span><span class="functiontext">PL::Actions::base_iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">action_name</span><span class="plain"> *</span><span class="functiontext">PL::Actions::Wait</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -574,10 +574,8 @@ then that's what "listening" will match.)
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Actions::double_sharp</span><span class="plain">(</span><span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="identifier">DOUBLE_SHARP_NAME_HL</span><span class="plain">, </span><span class="functiontext">PL::Actions::base_iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_package</span><span class="plain">);</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_package</span><span class="plain">);</span>
             <span class="identifier">Emit::ds_named_pseudo_numeric_constant</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-            <span class="identifier">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
-            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="identifier">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1358,23 +1356,19 @@ in question. This is where we compile the bitmaps in their fresh, empty form.
             <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::package_within</span><span class="plain">(</span><span class="identifier">KIND_INLINE_PROPERTIES_HAP</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
             <span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">KIND_INLINE_PROPERTY_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;=((</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">action_name</span><span class="plain">))/16); </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">();</span>
-        <span class="identifier">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::ActionHappened</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTIONHAPPENED_HL</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;=((</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">action_name</span><span class="plain">))/16); </span><span class="identifier">i</span><span class="plain">++)</span>
             <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">();</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1564,8 +1558,7 @@ infrastructure, and we access it with a single call.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mn</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">, </span><span class="identifier">ml</span><span class="plain">, </span><span class="identifier">mnp</span><span class="plain">, </span><span class="identifier">msp</span><span class="plain">, </span><span class="identifier">hn</span><span class="plain">, </span><span class="identifier">hs</span><span class="plain">, </span><span class="identifier">record_count</span><span class="plain"> = 0;</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTIONDATA_HL</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_table_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_table_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">, </span><span class="reserved">action_name</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;use_verb_routine_in_I6_library</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">mn</span><span class="plain"> = 0; </span><span class="identifier">ms</span><span class="plain"> = 0; </span><span class="identifier">ml</span><span class="plain"> = 0; </span><span class="identifier">mnp</span><span class="plain"> = 1; </span><span class="identifier">msp</span><span class="plain"> = 1; </span><span class="identifier">hn</span><span class="plain"> = 0; </span><span class="identifier">hs</span><span class="plain"> = 0;</span>
@@ -1589,12 +1582,9 @@ infrastructure, and we access it with a single call.
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="identifier">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (20000+</span><span class="identifier">an</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
         <span class="plain">}</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">();</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ad_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">AD_RECORDS_HL</span><span class="plain">);</span>
-        <span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">ad_iname</span><span class="plain">);</span>
         <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">ad_iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">record_count</span><span class="plain">);</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">VirtualMachines::note_usage</span><span class="plain">(</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 12, 0, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 
@@ -1760,15 +1750,13 @@ infrastructure, and we access it with a single call.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::ActionCoding_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTIONCODING_HL</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">, </span><span class="reserved">action_name</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="functiontext">PL::Actions::identifier</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">)) == </span><span class="character">'_'</span><span class="plain">) </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Emit::array_action_entry</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">();</span>
-        <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

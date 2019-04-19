@@ -129,9 +129,9 @@ foundation module does that automatically.)
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">IFModule::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Register this module's stream writers</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Register this module's debugging log aspects</span> <span class="cwebmacronumber">4.2</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Register this module's debugging log writers</span> <span class="cwebmacronumber">4.3</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Register this module's command line switches</span> <span class="cwebmacronumber">4.4</span>&gt;<span class="character">;</span>
+        &lt;<span class="cwebmacro">Register this module's debugging log aspects</span> <span class="cwebmacronumber">4.3</span>&gt;<span class="character">;</span>
+        &lt;<span class="cwebmacro">Register this module's debugging log writers</span> <span class="cwebmacronumber">4.4</span>&gt;<span class="character">;</span>
+        &lt;<span class="cwebmacro">Register this module's command line switches</span> <span class="cwebmacronumber">4.5</span>&gt;<span class="character">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -152,21 +152,29 @@ foundation module does that automatically.)
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Register this module's debugging log aspects</span> <span class="cwebmacronumber">4.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">GRAMMAR_DA</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">GRAMMAR_CONSTRUCTION_DA</span>
+</pre>
+<p class="inwebparagraph"><a id="SP4_3"></a><b>&#167;4.3.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Register this module's debugging log aspects</span> <span class="cwebmacronumber">4.3</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="plain">;</span>
+        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">GRAMMAR_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"grammar"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">GRAMMAR_CONSTRUCTION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"grammar construction"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_3"></a><b>&#167;4.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Register this module's debugging log writers</span> <span class="cwebmacronumber">4.3</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_4"></a><b>&#167;4.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Register this module's debugging log writers</span> <span class="cwebmacronumber">4.4</span>&gt; =
 </code></p>
 
 
@@ -182,8 +190,8 @@ foundation module does that automatically.)
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_4"></a><b>&#167;4.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Register this module's command line switches</span> <span class="cwebmacronumber">4.4</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_5"></a><b>&#167;4.5.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Register this module's command line switches</span> <span class="cwebmacronumber">4.5</span>&gt; =
 </code></p>
 
 

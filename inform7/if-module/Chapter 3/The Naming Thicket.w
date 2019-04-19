@@ -280,9 +280,7 @@ actually means it's rarely needed.)
 			P_cap_short_name = Properties::Valued::new_nameless_using(
 				K_text, property_iname);
 			inter_name *iname = Hierarchy::find(CAP_SHORT_NAME_EXISTS_HL);
-			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_numeric_constant(iname, 1);
-			Packaging::exit(save);
 		}
 		if (faux)
 			Properties::Valued::assert(P_cap_short_name, subj,
@@ -310,23 +308,21 @@ must become "Cleopatra's nose", or at least several bug-reporters thought
 so. These routines allow that to happen.
 
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
-	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Packaging::home_of(iname));
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Instances::package(I));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = FALSE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Packaging::home_of(iname));
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Instances::package(I));
 	faux = notice->snn_iname;
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
-	inter_name *iname = Instances::iname(I);
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Packaging::home_of(iname));
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Instances::package(I));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = TRUE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Packaging::home_of(iname));
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Instances::package(I));
 	faux = notice->snn_iname;
 
 @ Lastly, then. We don't give this to kinds of room, because it's never necessary
@@ -484,12 +480,9 @@ void PL::Naming::compile_small_names(void) {
 		Emit::rtrue();
 		Routines::end(save);
 
-		save = Packaging::enter_home_of(notice->snn_iname);
-		Emit::named_array_begin(notice->snn_iname, NULL);
+		save = Emit::named_array_begin(notice->snn_iname, NULL);
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(notice->routine_iname);
-		Emit::array_end();
-
-		Packaging::exit(save);
+		Emit::array_end(save);
 	}
 }

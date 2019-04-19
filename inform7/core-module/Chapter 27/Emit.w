@@ -4,104 +4,12 @@
 
 @
 
-= (early code)
-inter_symbol *return_interp = NULL;
-inter_symbol *jump_interp = NULL;
-inter_symbol *move_interp = NULL;
-inter_symbol *give_interp = NULL;
-inter_symbol *take_interp = NULL;
-inter_symbol *break_interp = NULL;
-inter_symbol *continue_interp = NULL;
-inter_symbol *quit_interp = NULL;
-inter_symbol *modulo_interp = NULL;
-inter_symbol *random_interp = NULL;
-inter_symbol *not_interp = NULL;
-inter_symbol *and_interp = NULL;
-inter_symbol *or_interp = NULL;
-inter_symbol *bitwiseand_interp = NULL;
-inter_symbol *bitwiseor_interp = NULL;
-inter_symbol *bitwisenot_interp = NULL;
-inter_symbol *eq_interp = NULL;
-inter_symbol *ne_interp = NULL;
-inter_symbol *gt_interp = NULL;
-inter_symbol *ge_interp = NULL;
-inter_symbol *lt_interp = NULL;
-inter_symbol *le_interp = NULL;
-inter_symbol *in_interp = NULL;
-inter_symbol *has_interp = NULL;
-inter_symbol *hasnt_interp = NULL;
-inter_symbol *ofclass_interp = NULL;
-inter_symbol *sequential_interp = NULL;
-inter_symbol *ternarysequential_interp = NULL;
-inter_symbol *plus_interp = NULL;
-inter_symbol *minus_interp = NULL;
-inter_symbol *unaryminus_interp = NULL;
-inter_symbol *times_interp = NULL;
-inter_symbol *divide_interp = NULL;
-inter_symbol *stylebold_interp = NULL;
-inter_symbol *font_interp = NULL;
-inter_symbol *styleroman_interp = NULL;
-inter_symbol *styleunderline_interp = NULL;
-inter_symbol *print_interp = NULL;
-inter_symbol *printchar_interp = NULL;
-inter_symbol *printname_interp = NULL;
-inter_symbol *printnumber_interp = NULL;
-inter_symbol *printnlnumber_interp = NULL;
-inter_symbol *printcindef_interp = NULL;
-inter_symbol *printindef_interp = NULL;
-inter_symbol *printcdef_interp = NULL;
-inter_symbol *printdef_interp = NULL;
-inter_symbol *printaddress_interp = NULL;
-inter_symbol *printstring_interp = NULL;
-inter_symbol *box_interp = NULL;
-inter_symbol *push_interp = NULL;
-inter_symbol *pull_interp = NULL;
-inter_symbol *preincrement_interp = NULL;
-inter_symbol *postincrement_interp = NULL;
-inter_symbol *predecrement_interp = NULL;
-inter_symbol *postdecrement_interp = NULL;
-inter_symbol *lookup_interp = NULL;
-inter_symbol *lookupbyte_interp = NULL;
-inter_symbol *lookupref_interp = NULL;
-inter_symbol *store_interp = NULL;
-inter_symbol *if_interp = NULL;
-inter_symbol *ifdebug_interp = NULL;
-inter_symbol *ifelse_interp = NULL;
-inter_symbol *while_interp = NULL;
-inter_symbol *for_interp = NULL;
-inter_symbol *objectloop_interp = NULL;
-inter_symbol *objectloopx_interp = NULL;
-inter_symbol *switch_interp = NULL;
-inter_symbol *case_interp = NULL;
-inter_symbol *default_interp = NULL;
-inter_symbol *setbit_interp = NULL;
-inter_symbol *clearbit_interp = NULL;
-inter_symbol *indirect0v_interp = NULL;
-inter_symbol *indirect1v_interp = NULL;
-inter_symbol *indirect2v_interp = NULL;
-inter_symbol *indirect3v_interp = NULL;
-inter_symbol *indirect4v_interp = NULL;
-inter_symbol *indirect5v_interp = NULL;
-inter_symbol *indirect0_interp = NULL;
-inter_symbol *indirect1_interp = NULL;
-inter_symbol *indirect2_interp = NULL;
-inter_symbol *indirect3_interp = NULL;
-inter_symbol *indirect4_interp = NULL;
-inter_symbol *indirect5_interp = NULL;
-inter_symbol *propertyaddress_interp = NULL;
-inter_symbol *propertylength_interp = NULL;
-inter_symbol *provides_interp = NULL;
-inter_symbol *propertyvalue_interp = NULL;
-inter_symbol *notin_interp = NULL;
-
+=
 inter_symbol *unchecked_interk = NULL;
 inter_symbol *unchecked_function_interk = NULL;
 inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
-inter_name *nothing_iname = NULL;
-
-@ =
 inter_reading_state IRS;
 inter_reading_state *I7Inter = NULL;
 inter_reading_state *default_bookmark = NULL;
@@ -157,100 +65,14 @@ void Emit::begin(void) {
 
 	Emit::comment(I"Package types:");
 	package_types_bookmark = Emit::bookmark_bubble();
-	Packaging::emit_types();
+	PackageTypes::get(I"_plain");
+	PackageTypes::get(I"_code");
 
 	Emit::comment(I"Pragmas:");
 	pragmas_bookmark = Emit::bookmark_bubble();
 
 	Emit::comment(I"Primitives:");
-	Emit::primitive(I"!font", I"val -> void", &font_interp);
-	Emit::primitive(I"!stylebold", I"void -> void", &stylebold_interp);
-	Emit::primitive(I"!styleunderline", I"void -> void", &styleunderline_interp);
-	Emit::primitive(I"!styleroman", I"void -> void", &styleroman_interp);
-	Emit::primitive(I"!print", I"val -> void", &print_interp);
-	Emit::primitive(I"!printchar", I"val -> void", &printchar_interp);
-	Emit::primitive(I"!printname", I"val -> void", &printname_interp);
-	Emit::primitive(I"!printnumber", I"val -> void", &printnumber_interp);
-	Emit::primitive(I"!printaddress", I"val -> void", &printaddress_interp);
-	Emit::primitive(I"!printstring", I"val -> void", &printstring_interp);
-	Emit::primitive(I"!printnlnumber", I"val -> void", &printnlnumber_interp);
-	Emit::primitive(I"!printdef", I"val -> void", &printdef_interp);
-	Emit::primitive(I"!printcdef", I"val -> void", &printcdef_interp);
-	Emit::primitive(I"!printindef", I"val -> void", &printindef_interp);
-	Emit::primitive(I"!printcindef", I"val -> void", &printcindef_interp);
-	Emit::primitive(I"!box", I"val -> void", &box_interp);
-	Emit::primitive(I"!push", I"val -> void", &push_interp);
-	Emit::primitive(I"!pull", I"ref -> void", &pull_interp);
-	Emit::primitive(I"!postincrement", I"ref -> val", &postincrement_interp);
-	Emit::primitive(I"!preincrement", I"ref -> val", &preincrement_interp);
-	Emit::primitive(I"!postdecrement", I"ref -> val", &postdecrement_interp);
-	Emit::primitive(I"!predecrement", I"ref -> val", &predecrement_interp);
-	Emit::primitive(I"!return", I"val -> void", &return_interp);
-	Emit::primitive(I"!quit", I"void -> void", &quit_interp);
-	Emit::primitive(I"!break", I"void -> void", &break_interp);
-	Emit::primitive(I"!continue", I"void -> void", &continue_interp);
-	Emit::primitive(I"!jump", I"lab -> void", &jump_interp);
-	Emit::primitive(I"!move", I"val val -> void", &move_interp);
-	Emit::primitive(I"!give", I"val val -> void", &give_interp);
-	Emit::primitive(I"!take", I"val val -> void", &take_interp);
-	Emit::primitive(I"!store", I"ref val -> val", &store_interp);
-	Emit::primitive(I"!setbit", I"ref val -> void", &setbit_interp);
-	Emit::primitive(I"!clearbit", I"ref val -> void", &clearbit_interp);
-	Emit::primitive(I"!modulo", I"val val -> val", &modulo_interp);
-	Emit::primitive(I"!random", I"val -> val", &random_interp);
-	Emit::primitive(I"!lookup", I"val val -> val", &lookup_interp);
-	Emit::primitive(I"!lookupbyte", I"val val -> val", &lookupbyte_interp);
-	Emit::primitive(I"!lookupref", I"val val -> ref", &lookupref_interp);
-	Emit::primitive(I"!not", I"val -> val", &not_interp);
-	Emit::primitive(I"!and", I"val val -> val", &and_interp);
-	Emit::primitive(I"!or", I"val val -> val", &or_interp);
-	Emit::primitive(I"!bitwiseand", I"val val -> val", &bitwiseand_interp);
-	Emit::primitive(I"!bitwiseor", I"val val -> val", &bitwiseor_interp);
-	Emit::primitive(I"!bitwisenot", I"val -> val", &bitwisenot_interp);
-	Emit::primitive(I"!eq", I"val val -> val", &eq_interp);
-	Emit::primitive(I"!ne", I"val val -> val", &ne_interp);
-	Emit::primitive(I"!gt", I"val val -> val", &gt_interp);
-	Emit::primitive(I"!ge", I"val val -> val", &ge_interp);
-	Emit::primitive(I"!lt", I"val val -> val", &lt_interp);
-	Emit::primitive(I"!le", I"val val -> val", &le_interp);
-	Emit::primitive(I"!has", I"val val -> val", &has_interp);
-	Emit::primitive(I"!hasnt", I"val val -> val", &hasnt_interp);
-	Emit::primitive(I"!in", I"val val -> val", &in_interp);
-	Emit::primitive(I"!ofclass", I"val val -> val", &ofclass_interp);
-	Emit::primitive(I"!sequential", I"val val -> val", &sequential_interp);
-	Emit::primitive(I"!ternarysequential", I"val val val -> val", &ternarysequential_interp);
-	Emit::primitive(I"!plus", I"val val -> val", &plus_interp);
-	Emit::primitive(I"!minus", I"val val -> val", &minus_interp);
-	Emit::primitive(I"!unaryminus", I"val -> val", &unaryminus_interp);
-	Emit::primitive(I"!times", I"val val -> val", &times_interp);
-	Emit::primitive(I"!divide", I"val val -> val", &divide_interp);
-	Emit::primitive(I"!if", I"val code -> void", &if_interp);
-	Emit::primitive(I"!ifdebug", I"code -> void", &ifdebug_interp);
-	Emit::primitive(I"!ifelse", I"val code code -> void", &ifelse_interp);
-	Emit::primitive(I"!while", I"val code -> void", &while_interp);
-	Emit::primitive(I"!for", I"val val val code -> void", &for_interp);
-	Emit::primitive(I"!objectloop", I"ref val val code -> void", &objectloop_interp);
-	Emit::primitive(I"!objectloopx", I"ref val code -> void", &objectloopx_interp);
-	Emit::primitive(I"!switch", I"val code -> void", &switch_interp);
-	Emit::primitive(I"!case", I"val code -> void", &case_interp);
-	Emit::primitive(I"!default", I"code -> void", &default_interp);
-	Emit::primitive(I"!indirect0v", I"val -> void", &indirect0v_interp);
-	Emit::primitive(I"!indirect1v", I"val val -> void", &indirect1v_interp);
-	Emit::primitive(I"!indirect2v", I"val val val -> void", &indirect2v_interp);
-	Emit::primitive(I"!indirect3v", I"val val val val -> void", &indirect3v_interp);
-	Emit::primitive(I"!indirect4v", I"val val val val val -> void", &indirect4v_interp);
-	Emit::primitive(I"!indirect5v", I"val val val val val val -> void", &indirect5v_interp);
-	Emit::primitive(I"!indirect0", I"val -> val", &indirect0_interp);
-	Emit::primitive(I"!indirect1", I"val val -> val", &indirect1_interp);
-	Emit::primitive(I"!indirect2", I"val val val -> val", &indirect2_interp);
-	Emit::primitive(I"!indirect3", I"val val val val -> val", &indirect3_interp);
-	Emit::primitive(I"!indirect4", I"val val val val val -> val", &indirect4_interp);
-	Emit::primitive(I"!indirect5", I"val val val val val val -> val", &indirect5_interp);
-	Emit::primitive(I"!propertyaddress", I"val val -> val", &propertyaddress_interp);
-	Emit::primitive(I"!propertylength", I"val val -> val", &propertylength_interp);
-	Emit::primitive(I"!provides", I"val val -> val", &provides_interp);
-	Emit::primitive(I"!propertyvalue", I"val val -> val", &propertyvalue_interp);
-	Emit::primitive(I"!notin", I"val val -> val", &notin_interp);
+	Primitives::emit();
 
 	Packaging::enter(Hierarchy::main()); // We never exit this
 
@@ -299,52 +121,6 @@ inter_symbol *Emit::packagetype(text_stream *name, int enclosing) {
 	return pt;
 }
 
-int Emit::is_indirect_interp(inter_symbol *s) {
-	if (s == indirect0_interp) return TRUE;
-	if (s == indirect1_interp) return TRUE;
-	if (s == indirect2_interp) return TRUE;
-	if (s == indirect3_interp) return TRUE;
-	if (s == indirect4_interp) return TRUE;
-	if (s == indirect5_interp) return TRUE;
-	return FALSE;
-}
-
-inter_symbol *Emit::indirect_interp(int arity) {
-	switch (arity) {
-		case 0: return indirect0_interp;
-		case 1: return indirect1_interp;
-		case 2: return indirect2_interp;
-		case 3: return indirect3_interp;
-		case 4: return indirect4_interp;
-		case 5: return indirect5_interp;
-		default: internal_error("indirect function call with too many arguments");
-	}
-	return NULL;
-}
-
-int Emit::is_indirectv_interp(inter_symbol *s) {
-	if (s == indirect0v_interp) return TRUE;
-	if (s == indirect1v_interp) return TRUE;
-	if (s == indirect2v_interp) return TRUE;
-	if (s == indirect3v_interp) return TRUE;
-	if (s == indirect4v_interp) return TRUE;
-	if (s == indirect5v_interp) return TRUE;
-	return FALSE;
-}
-
-inter_symbol *Emit::indirectv_interp(int arity) {
-	switch (arity) {
-		case 0: return indirect0v_interp;
-		case 1: return indirect1v_interp;
-		case 2: return indirect2v_interp;
-		case 3: return indirect3v_interp;
-		case 4: return indirect4v_interp;
-		case 5: return indirect5v_interp;
-		default: internal_error("indirectv function call with too many arguments");
-	}
-	return NULL;
-}
-
 void Emit::comment(text_stream *text) {
 	inter_t ID = Inter::create_text(Emit::repository());
 	Str::copy(Inter::get_text(Emit::repository(), ID), text);
@@ -361,20 +137,24 @@ inter_symbol *Emit::extern(text_stream *name, kind *K) {
 	if (extern_symbols == NULL) extern_symbols = Dictionaries::new(1024, FALSE);
 	if (Dictionaries::find(extern_symbols, name))
 		return Dictionaries::read_value(extern_symbols, name);
+	packaging_state save = Packaging::enter(Hierarchy::template());		
 	inter_symbol *symb = Emit::new_symbol(Emit::main_scope(), name);
 	Inter::Symbols::extern(symb);
 	Dictionaries::create(extern_symbols, name);
 	Dictionaries::write_value(extern_symbols, name, symb);
+	Packaging::exit(save);
 	return symb;
 }
 
 inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name *val_iname) {
+	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symb = InterNames::to_symbol(iname);
 	inter_symbol *rsymb = InterNames::to_symbol(Rules::iname(R));
 	inter_symbol *vsymb = InterNames::to_symbol(val_iname);
 	inter_t val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(default_bookmark->read_into, default_bookmark->current_package, vsymb, &val1, &val2);
 	Emit::guard(Inter::Response::new(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, symb), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, rsymb), (inter_t) marker, val1, val2, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 	return symb;
 }
 
@@ -400,10 +180,12 @@ void Emit::pragma(text_stream *text) {
 }
 
 void Emit::append(inter_name *iname, text_stream *text) {
+	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
 	inter_t ID = Inter::create_text(Emit::repository());
 	Str::copy(Inter::get_text(Emit::repository(), ID), text);
 	Emit::guard(Inter::Append::new(default_bookmark, symbol, ID, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 void Emit::import(inter_name *iname, wording W) {
@@ -524,11 +306,13 @@ void Emit::kind_inner(inter_t SID, inter_t TID, inter_t SUP,
 }
 
 inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, text_stream *rvalue) {
-	inter_symbol *var_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *var_name = Emit::define_symbol(name);
 	inter_symbol *var_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Variable::new(default_bookmark,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, var_kind), v1, v2, Emit::baseline(default_bookmark), NULL));
 	if (rvalue) Emit::annotate_symbol_i(var_name, EXPLICIT_VARIABLE_IANN, 1);
+	Packaging::exit(save);
 	return var_name;
 }
 
@@ -538,10 +322,12 @@ void Emit::marker(text_stream *mark) {
 }
 
 void Emit::property(inter_name *name, kind *K) {
-	inter_symbol *prop_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *prop_name = Emit::define_symbol(name);
 	inter_symbol *prop_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Property::new(default_bookmark,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, prop_kind), Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 void Emit::permission(property *prn, kind *K, inter_name *name) {
@@ -563,7 +349,7 @@ void Emit::instance_permission(property *prn, inter_name *inst_iname) {
 
 int ppi7_counter = 0;
 void Emit::basic_permission(inter_reading_state *at, inter_name *name, inter_symbol *owner_name, inter_symbol *store) {
-	inter_symbol *prop_name = InterNames::define_symbol(name);
+	inter_symbol *prop_name = Emit::define_symbol(name);
 	inter_error_message *E = NULL;
 	TEMPORARY_TEXT(ident);
 	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
@@ -619,29 +405,37 @@ void Emit::instance_propertyvalue(property *P, instance *I, inter_t v1, inter_t 
 }
 
 void Emit::named_string_constant(inter_name *name, text_stream *contents) {
+	packaging_state save = Packaging::enter_home_of(name);
 	inter_t ID = Inter::create_text(Emit::repository());
 	Str::copy(Inter::get_text(Emit::repository(), ID), contents);
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::guard(Inter::Constant::new_textual(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, string_interk), ID, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 void Emit::instance(inter_name *name, kind *K, int v) {
-	inter_symbol *inst_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *inst_name = Emit::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for val");
 	inter_t v1 = LITERAL_IVAL, v2 = (inter_t) v;
 	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
 	Emit::guard(Inter::Instance::new(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), v1, v2, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 void Emit::named_generic_constant(inter_name *name, inter_t val1, inter_t val2) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, unchecked_interk), val1, val2, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 inter_name *Emit::named_numeric_constant(inter_name *name, inter_t val) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, int_interk), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 	return name;
 }
 
@@ -651,48 +445,59 @@ void Emit::hold_numeric_constant(inter_name *name, inter_t val) {
 }
 
 void Emit::named_text_constant(inter_name *name, text_stream *content) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	inter_t v1 = 0, v2 = 0;
 	Emit::text_value(&v1, &v2, content);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, int_interk), v1, v2, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
 void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 }
 
-void Emit::named_late_array_begin(inter_name *name, kind *K) {
-	Emit::named_array_begin(name, K);
+packaging_state Emit::named_late_array_begin(inter_name *name, kind *K) {
+	packaging_state save = Emit::named_array_begin(name, K);
 	Emit::annotate_iname_i(name, LATE_IANN, 1);
+	return save;
 }
 
-void Emit::named_byte_array_begin(inter_name *name, kind *K) {
-	Emit::named_array_begin(name, K);
+packaging_state Emit::named_byte_array_begin(inter_name *name, kind *K) {
+	packaging_state save = Emit::named_array_begin(name, K);
 	Emit::annotate_iname_i(name, BYTEARRAY_IANN, 1);
+	return save;
 }
 
-void Emit::named_table_array_begin(inter_name *name, kind *K) {
-	Emit::named_array_begin(name, K);
+packaging_state Emit::named_table_array_begin(inter_name *name, kind *K) {
+	packaging_state save = Emit::named_array_begin(name, K);
 	Emit::annotate_iname_i(name, TABLEARRAY_IANN, 1);
+	return save;
 }
 
-void Emit::named_string_array_begin(inter_name *name, kind *K) {
-	Emit::named_array_begin(name, K);
+packaging_state Emit::named_string_array_begin(inter_name *name, kind *K) {
+	packaging_state save = Emit::named_array_begin(name, K);
 	Emit::annotate_iname_i(name, STRINGARRAY_IANN, 1);
+	return save;
 }
 
-void Emit::named_verb_array_begin(inter_name *name, kind *K) {
-	Emit::named_array_begin(name, K);
+packaging_state Emit::named_verb_array_begin(inter_name *name, kind *K) {
+	packaging_state save = Emit::named_array_begin(name, K);
 	Emit::annotate_iname_i(name, VERBARRAY_IANN, 1);
 	Emit::annotate_iname_i(name, LATE_IANN, 1);
+	return save;
 }
 
 typedef struct nascent_array {
@@ -773,18 +578,20 @@ void Emit::add_entry(inter_t v1, inter_t v2) {
 	current_A->no_entries++;
 }
 
-inter_name *Emit::sum_constant_begin(inter_name *name, kind *K) {
-	Emit::named_array_begin(name, K);
+packaging_state Emit::sum_constant_begin(inter_name *name, kind *K) {
+	packaging_state save = Emit::named_array_begin(name, K);
 	current_A->array_form = CONSTANT_SUM_LIST;
-	return name;
+	return save;
 }
 
-void Emit::named_array_begin(inter_name *N, kind *K) {
-	inter_symbol *symb = InterNames::define_symbol(N);
+packaging_state Emit::named_array_begin(inter_name *N, kind *K) {
+	packaging_state save = Packaging::enter_home_of(N);
+	inter_symbol *symb = Emit::define_symbol(N);
 	Emit::push_array();
 	if (K == NULL) K = K_value;
 	current_A->entry_kind = K;
 	current_A->array_name_symbol = symb;
+	return save;
 }
 
 void Emit::array_iname_entry(inter_name *iname) {
@@ -861,7 +668,7 @@ inter_reading_state *Emit::array_IRS(void) {
 	return IRS;
 }
 
-void Emit::array_end(void) {
+void Emit::array_end(packaging_state save) {
 	if (current_A == NULL) internal_error("inter array not opened");
 	inter_symbol *con_name = current_A->array_name_symbol;
 	inter_reading_state *IRS = Emit::IRS();
@@ -889,8 +696,10 @@ void Emit::array_end(void) {
 	Emit::guard(Inter::Defn::verify_construct(array_in_progress));
 	Inter::Frame::insert(array_in_progress, default_bookmark);
 	Emit::pull_array();
+	Packaging::exit(save);
 }
 
+inter_name *nothing_iname = NULL;
 inter_name *Emit::nothing(void) {
 	if (K_object == NULL) internal_error("too soon for nothing");
 	if (nothing_iname == NULL) {
@@ -903,7 +712,8 @@ inter_name *Emit::nothing(void) {
 }
 
 inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *iname) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	inter_symbol *alias = (iname)?InterNames::to_symbol(iname):NULL;
 	if (alias == NULL) {
@@ -913,27 +723,34 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 	inter_t val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(default_bookmark->read_into, default_bookmark->current_package, alias, &val1, &val2);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), val1, val2, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 	return name;
 }
 
 inter_name *Emit::named_numeric_constant_hex(inter_name *name, inter_t val) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::annotate_symbol_i(con_name, HEX_IANN, 0);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, int_interk), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 	return name;
 }
 
 inter_name *Emit::named_unchecked_constant_hex(inter_name *name, inter_t val) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::annotate_symbol_i(con_name, HEX_IANN, 0);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, unchecked_interk), LITERAL_IVAL, val, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 	return name;
 }
 
 inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
-	inter_symbol *con_name = InterNames::define_symbol(name);
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::annotate_symbol_i(con_name, SIGNED_IANN, 0);
 	Emit::guard(Inter::Constant::new_numerical(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, int_interk), LITERAL_IVAL, (inter_t) val, Emit::baseline(default_bookmark), NULL));
+	Packaging::exit(save);
 	return name;
 }
 
@@ -957,7 +774,7 @@ void Emit::code_comment(text_stream *text) {
 
 inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_package **P) {
 	inter_t B = Emit::baseline(default_bookmark);
-	inter_symbol *rsymb = InterNames::define_symbol(iname);
+	inter_symbol *rsymb = Emit::define_symbol(iname);
 	if (ptype == NULL) internal_error("no package type");
 	inter_package *IP = NULL;
 	Emit::guard(Inter::Package::new_package(default_bookmark, rsymb, ptype, B, NULL, &IP));
@@ -973,7 +790,7 @@ inter_symbol *Emit::block(inter_name *iname) {
 	if (current_inter_routine) internal_error("nested routines");
 	if (Emit::IRS() == NULL) internal_error("no inter repository");
 	inter_name *block_iname = NULL;
-	if (Packaging::houseed_in_function(iname))
+	if (Packaging::housed_in_function(iname))
 		block_iname = Hierarchy::make_block_iname(Packaging::home_of(iname));
 	else internal_error("routine outside function package");
 	inter_symbol *rsymb = Emit::package(block_iname, code_packagetype, NULL);
@@ -994,7 +811,7 @@ inter_symbol *Emit::block(inter_name *iname) {
 void Emit::routine(inter_name *rname, kind *rkind, inter_symbol *block_name) {
 	if (Emit::IRS() == NULL) internal_error("no inter repository");
 	inter_symbol *AB_symbol = Emit::kind_to_symbol(rkind);
-	inter_symbol *rsymb = InterNames::define_symbol(rname);
+	inter_symbol *rsymb = Emit::define_symbol(rname);
 	Emit::guard(Inter::Constant::new_function(default_bookmark,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, rsymb),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, AB_symbol),
@@ -1441,4 +1258,100 @@ void Emit::intervention(int stage, text_stream *segment, text_stream *part, text
 	Inter::set_ref(Emit::repository(), ref, (void *) current_sentence);
 
 	Emit::guard(Inter::Link::new(default_bookmark, (inter_t) stage, ID1, ID2, ID3, ID4, ref, Emit::baseline(default_bookmark), NULL));
+}
+
+@ =
+
+
+void Emit::change_translation(inter_name *iname, text_stream *new_text) {
+	Inter::Symbols::set_translate(InterNames::to_symbol(iname), new_text);
+}
+
+text_stream *Emit::get_translation(inter_name *iname) {
+	return Inter::Symbols::get_translate(InterNames::to_symbol(iname));
+}
+
+text_stream *Emit::to_text(inter_name *iname) {
+	if (iname == NULL) return NULL;
+	return InterNames::to_symbol(iname)->symbol_name;
+}
+
+inter_symbol *Emit::define_symbol(inter_name *iname) {
+	InterNames::to_symbol(iname);
+	if (iname->symbol) {
+		if (Inter::Symbols::is_predeclared(iname->symbol)) {
+			Inter::Symbols::undefine(iname->symbol);
+		}
+	}
+	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
+		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
+			Emit::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
+			Inter::Symbols::strike_definition(iname->symbol);
+		}
+		return iname->symbol;
+	}
+	return iname->symbol;
+}
+
+inter_symbol *Emit::destroy_symbol(inter_name *iname) {
+	InterNames::to_symbol(iname);
+	if (iname->symbol) {
+		if (Inter::Symbols::is_predeclared(iname->symbol)) {
+			Inter::Symbols::undefine(iname->symbol);
+		}
+	}
+	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
+		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
+			Emit::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
+			Inter::Symbols::strike_definition(iname->symbol);
+		}
+		return iname->symbol;
+	} else if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) internal_error("Bang");
+	return iname->symbol;
+}
+
+void Emit::set_flag(inter_name *iname, int f) {
+	Inter::Symbols::set_flag(InterNames::to_symbol(iname), f);
+}
+
+void Emit::clear_flag(inter_name *iname, int f) {
+	Inter::Symbols::clear_flag(InterNames::to_symbol(iname), f);
+}
+
+void Emit::annotate_i(inter_name *iname, inter_t annot_ID, inter_t V) {
+	if (iname) Emit::annotate_symbol_i(InterNames::to_symbol(iname), annot_ID, V);
+}
+
+void Emit::annotate_t(inter_name *iname, inter_t annot_ID, text_stream *text) {
+	if (iname) Emit::annotate_symbol_t(InterNames::to_symbol(iname), annot_ID, text);
+}
+
+void Emit::annotate_w(inter_name *iname, inter_t annot_ID, wording W) {
+	if (iname) Emit::annotate_symbol_w(InterNames::to_symbol(iname), annot_ID, W);
+}
+
+int Emit::read_annotation(inter_name *iname, inter_t annot) {
+	return Inter::Symbols::read_annotation(InterNames::to_symbol(iname), annot);
+}
+
+void Emit::holster(value_holster *VH, inter_name *iname) {
+	if (Holsters::data_acceptable(VH)) {
+		inter_t v1 = 0, v2 = 0;
+		inter_reading_state *IRS = Emit::IRS();
+		Emit::to_ival(IRS->read_into, IRS->current_package, &v1, &v2, iname);
+		Holsters::holster_pair(VH, v1, v2);
+	}
+}
+
+void Emit::to_ival(inter_repository *I, inter_package *pack, inter_t *val1, inter_t *val2, inter_name *iname) {
+	inter_symbol *S = InterNames::to_symbol(iname);
+	if (S) { Inter::Symbols::to_data(I, pack, S, val1, val2); return; }
+	*val1 = LITERAL_IVAL; *val2 = 0;
+}
+
+int Emit::defined(inter_name *iname) {
+	if (iname == NULL) return FALSE;
+	inter_symbol *S = InterNames::to_symbol(iname);
+	if (Inter::Symbols::is_defined(S)) return TRUE;
+	return FALSE;
 }

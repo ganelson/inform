@@ -372,9 +372,7 @@ of the kind which the constructor makes:
 inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
 	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_HL);
-	packaging_state save = Packaging::enter_home_of(UNKNOWN_TY_iname);
 	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_t) UNKNOWN_NT);
-	Packaging::exit(save);
 
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor) {
@@ -382,16 +380,12 @@ void Kinds::Constructors::compile_I6_constants(void) {
 		if (Str::len(tn) > 0) {
 			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL, tn, Kinds::Constructors::package(con));
 			Hierarchy::make_available(con->con_iname);
-			packaging_state save = Packaging::enter_home_of(con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
-			Packaging::exit(save);
 		}
 	}
 
 	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
-	save = Packaging::enter_home_of(hwm);
 	Emit::named_numeric_constant(hwm, (inter_t) next_free_data_type_ID);
-	Packaging::exit(save);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	if (UNKNOWN_TY_iname == NULL) internal_error("no unknown yet");

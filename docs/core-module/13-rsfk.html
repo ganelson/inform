@@ -107,19 +107,16 @@ chosen), but no problem message has been issued about this, or
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) {</span>
                 <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANTS_HAP</span><span class="plain">);</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-                <span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rks_symb</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::compile_default_value_inner</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rks_symb</span><span class="plain">);</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-                <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+                <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_stored_action</span><span class="plain">)) {</span>
                 <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANTS_HAP</span><span class="plain">);</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-                <span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
                 <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K_stored_action</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 6);</span>
                 <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">PL::Actions::Wait</span><span class="plain">()));</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
@@ -132,21 +129,18 @@ chosen), but no problem message has been issued about this, or
                 <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-                <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+                <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">) {</span>
                 <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANTS_HAP</span><span class="plain">);</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-                <span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
                 <span class="functiontext">Relations::compile_blank_relation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+                <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::compile_default_value_inner</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -155,20 +149,18 @@ chosen), but no problem message has been issued about this, or
             <span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_phrase</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">)) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::compile_default_value_inner</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">)) {</span>
             <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANTS_HAP</span><span class="plain">);</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-            <span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_TEXT_PACKED_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">InterNames::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -306,7 +298,7 @@ absence of rooms would otherwise result in.
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
             <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="functiontext">InterNames::to_ival</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -321,7 +313,7 @@ absence of rooms would otherwise result in.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_rulebook_outcome</span><span class="plain">)) {</span>
             <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="functiontext">InterNames::to_ival</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="functiontext">Rulebooks::Outcomes::get_default_value</span><span class="plain">());</span>
+            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="functiontext">Rulebooks::Outcomes::get_default_value</span><span class="plain">());</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -364,7 +356,7 @@ absence of rooms would otherwise result in.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::get_default_value is used in <a href="#SP4">&#167;4</a>, 27/ei (<a href="27-ei.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Kinds::RunTime::get_default_value is used in <a href="#SP4">&#167;4</a>, 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Equality tests. </b>For most word-value kinds, it's easy to compare two values to see if they are
 equal: all we need is the <code class="display"><span class="extract">==</span></code> operator. But for pointer-value kinds, that
@@ -858,13 +850,10 @@ K, we have also seen its bases.
 
 
 <pre class="displaydefn">
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Kinds::RunTime::emit_weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compile the list of strong IDs for the bases</span> <span class="cwebmacronumber">16.1.1</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1224,7 +1213,7 @@ each such kind, and needed at run-time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::package is used in <a href="#SP15">&#167;15</a>, 15/epv (<a href="15-epv.html#SP2">&#167;2</a>), 22/pav (<a href="22-pav.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Kinds::RunTime::package is used in <a href="#SP15">&#167;15</a>, 15/epv (<a href="15-epv.html#SP2">&#167;2</a>), 22/pav (<a href="22-pav.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b></p>
 
@@ -1270,7 +1259,7 @@ each such kind, and needed at run-time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::iname is used in <a href="#SP3">&#167;3</a>, <a href="#SP22">&#167;22</a>, <a href="#SP25">&#167;25</a>, 15/epv (<a href="15-epv.html#SP1">&#167;1</a>), 16/ic (<a href="16-ic.html#SP10">&#167;10</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Kinds::RunTime::iname is used in <a href="#SP3">&#167;3</a>, <a href="#SP22">&#167;22</a>, <a href="#SP25">&#167;25</a>, 15/epv (<a href="15-epv.html#SP1">&#167;1</a>), 16/ic (<a href="16-ic.html#SP10">&#167;10</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP23_1"></a><b>&#167;23.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Run out inter kind for list</span> <span class="cwebmacronumber">23.1</span>&gt; =
@@ -1441,7 +1430,7 @@ each such kind, and needed at run-time.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to emit null kind"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InterNames::defined</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Emit::defined</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">dt</span><span class="plain"> = </span><span class="identifier">INT32_IDT</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">K_object</span><span class="plain">) </span><span class="identifier">dt</span><span class="plain"> = </span><span class="identifier">ENUM_IDT</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="identifier">dt</span><span class="plain"> = </span><span class="identifier">ENUM_IDT</span><span class="plain">;</span>
@@ -1454,7 +1443,7 @@ each such kind, and needed at run-time.
             <span class="identifier">dt</span><span class="plain"> = </span><span class="identifier">ENUM_IDT</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::kind</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">dt</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">?</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">BASE_ICON</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">K_object</span><span class="plain">) </span><span class="functiontext">InterNames::change_translation</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"K0_kind"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">K_object</span><span class="plain">) </span><span class="functiontext">Emit::change_translation</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"K0_kind"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::kind_declarations</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1463,15 +1452,13 @@ each such kind, and needed at run-time.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::base_represented_in_inter</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
                 <span class="functiontext">Kinds::RunTime::emit</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="functiontext">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">WEAK_ID_IANN</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-                <span class="functiontext">InterNames::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">SOURCE_ORDER_IANN</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">++);</span>
+                <span class="functiontext">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">WEAK_ID_IANN</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+                <span class="functiontext">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">SOURCE_ORDER_IANN</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">++);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">val</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_instance_counts</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1489,9 +1476,7 @@ each such kind, and needed at run-time.
                 <span class="functiontext">Emit::main_render_unique</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">ICN</span><span class="plain">);</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_specific_name</span><span class="plain">(</span><span class="constant">ICOUNT_HL</span><span class="plain">, </span><span class="identifier">ICN</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">);</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-                <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 

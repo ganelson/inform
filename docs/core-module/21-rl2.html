@@ -652,15 +652,13 @@ built (for instance, scene endings).
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">memory_economy_in_force</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOK_VAR_CREATORS_HL</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-            <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">StackedVariables::owner_empty</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;owned_by_rb</span><span class="plain">)) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">StackedVariables::frame_creator</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;owned_by_rb</span><span class="plain">));</span>
             <span class="plain">}</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Make slow lookup routine</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1083,25 +1081,17 @@ code are the real outcome of the code in this section.
         <span class="functiontext">Rules::Bookings::list_judge_ordering</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::Bookings::list_is_empty_of_i7_rules</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">);</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Rules in rulebook: %~W (%n)"</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="functiontext">Rules::Bookings::list_compile_rule_phrases</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">max_i</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::rulebooks_array_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKS_ARRAY_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">)</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::compile_rulebooks</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1113,8 +1103,8 @@ code are the real outcome of the code in this section.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;automatically_generated</span><span class="plain">) </span><span class="identifier">act</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">par</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rulebooks::focus</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">) == </span><span class="constant">PARAMETER_FOCUS</span><span class="plain">) </span><span class="identifier">par</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULEBOOK_COMPILATION</span><span class="plain">, </span><span class="string">"Compiling rulebook: %W = %n (in $X)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">, </span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">));</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULEBOOK_COMPILATION</span><span class="plain">, </span><span class="string">"Compiling rulebook: %W = %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">);</span>
             <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">);</span>
             <span class="functiontext">Rules::Bookings::list_compile</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rule_list</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">, </span><span class="identifier">act</span><span class="plain">, </span><span class="identifier">par</span><span class="plain">);</span>
             <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -1124,8 +1114,7 @@ code are the real outcome of the code in this section.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::RulebookNames_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKNAMES_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">memory_economy_in_force</span><span class="plain">) {</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
@@ -1138,8 +1127,7 @@ code are the real outcome of the code in this section.
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">rbt</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

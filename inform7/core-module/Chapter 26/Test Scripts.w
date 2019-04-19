@@ -268,17 +268,16 @@ void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
 void PL::Parsing::TestScripts::write_text(void) {
 	test_scenario *test;
 	LOOP_OVER(test, test_scenario) {
-		packaging_state save = Packaging::enter_home_of(test->text_iname);
-		Emit::named_byte_array_begin(test->text_iname, K_text);
+		packaging_state save = Emit::named_byte_array_begin(test->text_iname, K_text);
 		TEMPORARY_TEXT(tttext);
 		CompiledText::from_stream(tttext, test->text_of_script,
 			CT_EXPAND_APOSTROPHES + CT_RECOGNISE_APOSTROPHE_SUBSTITUTION);
 		WRITE_TO(tttext, "||||");
 		Emit::array_text_entry(tttext);
 		DISCARD_TEXT(tttext);
-		Emit::array_end();
+		Emit::array_end(save);
 
-		Emit::named_array_begin(test->req_iname, K_value);
+		save = Emit::named_array_begin(test->req_iname, K_value);
 		if (test->place == NULL) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(Instances::iname(test->place));
 		for (int j=0; j<test->no_possessions; j++) {
@@ -286,17 +285,14 @@ void PL::Parsing::TestScripts::write_text(void) {
 			else Emit::array_iname_entry(Instances::iname(test->possessions[j]));
 		}
 		Emit::array_numeric_entry(0);
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 	}
 }
 
 void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 	if (NUMBER_CREATED(test_scenario) > 0) {
 		inter_name *iname = Hierarchy::find(NO_TEST_SCENARIOS_HL);
-		packaging_state save = Packaging::enter_home_of(iname);
 		Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(test_scenario));
-		Packaging::exit(save);
 	}
 }
 

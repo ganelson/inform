@@ -188,9 +188,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	av->name = W;
 	av->av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	av->av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, av->av_package, av->name);
-	packaging_state save = Packaging::enter_home_of(av->av_iname);
 	Emit::named_numeric_constant(av->av_iname, (inter_t) av->allocation_id);
-	Packaging::exit(save);
 
 	LOGIF(ACTION_CREATIONS, "Created activity: %n = %W\n", av->av_iname, av->name);
 
@@ -366,15 +364,13 @@ void Activities::activity_var_creators(void) {
 	}
 
 	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(av, activity) {
 		if (StackedVariables::owner_empty(av->owned_by_av)) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(StackedVariables::frame_creator(av->owned_by_av));
 	}
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @h Activity indexing.
@@ -611,62 +607,54 @@ void Activities::compile_activity_constants(void) {
 
 void Activities::Activity_before_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
+	packaging_state save = Emit::named_array_begin(iname, K_number);
 	activity *av; int i = 0;
-	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) av->before_rules->allocation_id);
 		i++;
 	}
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 void Activities::Activity_for_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
+	packaging_state save = Emit::named_array_begin(iname, K_number);
 	activity *av; int i = 0;
-	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) av->for_rules->allocation_id);
 		i++;
 	}
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 void Activities::Activity_after_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
+	packaging_state save = Emit::named_array_begin(iname, K_number);
 	activity *av; int i = 0;
-	Emit::named_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) av->after_rules->allocation_id);
 		i++;
 	}
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 void Activities::Activity_atb_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
+	packaging_state save = Emit::named_byte_array_begin(iname, K_number);
 	activity *av; int i = 0;
-	Emit::named_byte_array_begin(iname, K_number);
 	LOOP_OVER(av, activity) {
 		Emit::array_numeric_entry((inter_t) Rulebooks::used_by_future_actions(av->before_rules));
 		i++;
 	}
 	if (i==0) Emit::array_numeric_entry(255);
 	Emit::array_numeric_entry(255);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 void Activities::annotate_list_for_cross_references(activity_list *avl, phrase *ph) {

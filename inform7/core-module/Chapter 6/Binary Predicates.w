@@ -866,9 +866,7 @@ void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 		if (default_rr == NULL) {
 			default_rr = bp->bp_iname;
 			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
-			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(iname, K_value, default_rr);
-			Packaging::exit(save);
 		}
 	}
 	bp->record_needed = TRUE;

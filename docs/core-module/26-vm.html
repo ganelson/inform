@@ -219,33 +219,25 @@ value for each possible word size.
 <pre class="display">
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">VirtualMachines::emit_signed_fundamental_constant</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">VirtualMachines::emit_hex_fundamental_constant</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant_hex</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">VirtualMachines::emit_unchecked_hex_fundamental_constant</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_unchecked_constant_hex</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -295,7 +287,7 @@ value for each possible word size.
 
 <p class="endnote">The function VirtualMachines::emit_unchecked_hex_fundamental_constant appears nowhere else.</p>
 
-<p class="endnote">The function VirtualMachines::emit_fundamental_constants is used in 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function VirtualMachines::emit_fundamental_constants is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Using which:
 </p>

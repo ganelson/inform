@@ -144,7 +144,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 				adopted_rule_for_compilation, adopted_marker_for_compilation, Packaging::current_enclosure());
 			inter_name *tin = Strings::TextSubstitutions::text_substitution_iname(ts);
 			if (VH->vhmode_wanted == INTER_DATA_VHMODE)
-				InterNames::holster(VH, tin);
+				Emit::holster(VH, tin);
 			else
 				Emit::val_iname(K_value, tin);
 			if (TEST_COMPILATION_MODE(PERMIT_LOCALS_IN_TEXT_CMODE)) {
@@ -161,17 +161,15 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
 		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-		packaging_state save = Packaging::enter_home_of(N);
-		Emit::named_late_array_begin(N, K_value);
+		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(ts->ts_routine_iname);
-		Emit::array_end();
-		Packaging::exit(save);
-		if (N) InterNames::holster(VH, N);
+		Emit::array_end(save);
+		if (N) Emit::holster(VH, N);
 	} else {
 		inter_name *tin = Strings::TextSubstitutions::text_substitution_iname(ts);
 		if (Holsters::data_acceptable(VH)) {
-			if (tin) InterNames::holster(VH, tin);
+			if (tin) Emit::holster(VH, tin);
 		}
 	}
 
@@ -271,15 +269,13 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 	Routines::end(save);
 
 	if (ts->ts_sb_needed) {
-		packaging_state save = Packaging::enter_home_of(ts->ts_iname);
-		Emit::named_array_begin(ts->ts_iname, K_value);
+		packaging_state save = Emit::named_array_begin(ts->ts_iname, K_value);
 		if (makes_local_references)
 			Emit::array_iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
 		else
 			Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(ts->ts_routine_iname);
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 	}
 	current_ts_being_compiled = NULL;
 }

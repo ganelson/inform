@@ -80,7 +80,7 @@ ordinals within the VM-representable range.)
 
 
 <pre class="display">
-    <span class="plain">&lt;</span><span class="identifier">integer</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 1 {</span>
+    <span class="plain">&lt;</span><span class="identifier">any</span><span class="plain">-</span><span class="identifier">integer</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 1 {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Vocabulary::test_flags</span><span class="plain">(</span><span class="functiontext">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="constant">NUMBER_MC</span><span class="plain">)) {</span>
             <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Vocabulary::get_literal_number_value</span><span class="plain">(</span><span class="functiontext">Lexer::word</span><span class="plain">(</span><span class="functiontext">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>

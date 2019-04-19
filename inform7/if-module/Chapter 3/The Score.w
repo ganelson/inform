@@ -41,9 +41,7 @@ void PL::Score::compile_max_score(void) {
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
 			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
 			inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
-			packaging_state save = Packaging::enter_home_of(iname);
 			Emit::named_iname_constant(iname, K_value, Tables::identifier(t));
-			Packaging::exit(save);
 			parse_node *PN = Tables::cells_in_ith_column(t, 0);
 			while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
 			if ((PN != NULL) && (max_score_VAR) &&
@@ -54,13 +52,11 @@ void PL::Score::compile_max_score(void) {
 		}
 	}
 	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
 	if (NonlocalVariables::has_initial_value_set(max_score_VAR)) {
 		inter_t v1 = 0, v2 = 0;
-		NonlocalVariables::seek_initial_value(&v1, &v2, max_score_VAR);
+		NonlocalVariables::seek_initial_value(iname, &v1, &v2, max_score_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
 	} else {
 		Emit::named_numeric_constant(iname, 0);
 	}
-	Packaging::exit(save);
 }

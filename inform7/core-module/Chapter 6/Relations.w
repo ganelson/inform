@@ -851,9 +851,7 @@ inter_name *TTF_iname = NULL;
 
 inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
 	inter_name *iname = Hierarchy::find(id);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant_hex(iname, val);
-	Packaging::exit(save);
 	return iname;
 }
 
@@ -980,8 +978,7 @@ void Relations::compile_relation_records(void) {
 
 @<Write the relation record for this BP@> =
 	if (BinaryPredicates::iname(bp) == NULL) internal_error("no bp symbol");
-	packaging_state save = Packaging::enter_home_of(BinaryPredicates::iname(bp));
-	Emit::named_array_begin(BinaryPredicates::iname(bp), K_value);
+	packaging_state save = Emit::named_array_begin(BinaryPredicates::iname(bp), K_value);
 	if (bp->dynamic_memory) {
 		Emit::array_numeric_entry((inter_t) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
@@ -995,8 +992,7 @@ void Relations::compile_relation_records(void) {
 		@<Write the handler field of the relation record@>;
 		@<Write the description field of the relation record@>;
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @<Write the name field of the relation record@> =
 	TEMPORARY_TEXT(NF);
@@ -1008,7 +1004,7 @@ void Relations::compile_relation_records(void) {
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
 	inter_name *bm_symb = Hierarchy::make_iname_in(ABILITIES_HL, bp->bp_package);
-	Emit::sum_constant_begin(bm_symb, K_value);
+	packaging_state save_sum = Emit::sum_constant_begin(bm_symb, K_value);
 	if (RELS_TEST_iname == NULL) internal_error("no RELS symbols yet");
 	Emit::array_iname_entry(RELS_TEST_iname);
 	if (minimal == FALSE) {
@@ -1040,7 +1036,7 @@ void Relations::compile_relation_records(void) {
 		default:
 			internal_error("Binary predicate with unknown structural type");
 	}
-	Emit::array_end(); /* of the summation, that is */
+	Emit::array_end(save_sum); /* of the summation, that is */
 	Emit::array_iname_entry(bm_symb);
 
 @<Throw in the full suite@> =
@@ -1697,7 +1693,7 @@ between numbers and texts.
 
 =
 void Relations::compile_default_relation(inter_name *identifier, kind *K) {
-	Emit::named_array_begin(identifier, K_value);
+	packaging_state save = Emit::named_array_begin(identifier, K_value);
 	Kinds::RunTime::emit_block_value_header(K, FALSE, 8);
 	Emit::array_null_entry();
 	Emit::array_null_entry();
@@ -1710,7 +1706,7 @@ void Relations::compile_default_relation(inter_name *identifier, kind *K) {
 	Emit::array_iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
 	Emit::array_text_entry(DVT);
 	DISCARD_TEXT(DVT);
-	Emit::array_end();
+	Emit::array_end(save);
 }
 
 void Relations::compile_blank_relation(kind *K) {
@@ -1808,15 +1804,13 @@ void Relations::compile_vtov_storage(binary_predicate *bp) {
 
 	package_request *P = BinaryPredicates::package(bp);
 	bp->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
-	packaging_state save = Packaging::enter_home_of(bp->v2v_bitmap_iname);
-	Emit::named_array_begin(bp->v2v_bitmap_iname, K_value);
+	packaging_state save = Emit::named_array_begin(bp->v2v_bitmap_iname, K_value);
 	@<Compile header information in the V-to-V structure@>;
 
 	if ((left_count > 0) && (right_count > 0))
 		@<Compile bitmap pre-initialised to the V-to-V relation at start of play@>;
 
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 	TEMPORARY_TEXT(rname);
 	WRITE_TO(rname, "%A", &(bp->relation_name));
@@ -1882,7 +1876,6 @@ above: it forces the template layer to generate the cache when first used.
 @<Allocate a zeroed-out memory cache for relations with fast route-finding@> =
 	package_request *P = BinaryPredicates::package(bp);
 	inter_name *iname = Hierarchy::make_iname_in(ROUTE_CACHE_HL, P);
-	packaging_state save = Packaging::enter_home_of(iname);
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 	if ((bp->fast_route_finding) &&
@@ -1891,21 +1884,20 @@ above: it forces the template layer to generate the cache when first used.
 		(left_count == right_count)) {
 		if (left_count < 256) {
 			v2v_iname = iname;
-			Emit::named_byte_array_begin(iname, K_number);
+			packaging_state save = Emit::named_byte_array_begin(iname, K_number);
 			Emit::array_numeric_entry((inter_t) (2*left_count*left_count));
-			Emit::array_end();
+			Emit::array_end(save);
 			bytes_used += 2*left_count*left_count;
 		} else {
 			v2v_iname = iname;
-			Emit::named_array_begin(iname, K_number);
+			packaging_state save = Emit::named_array_begin(iname, K_number);
 			Emit::array_numeric_entry((inter_t) (2*left_count*left_count));
-			Emit::array_end();
+			Emit::array_end(save);
 			words_used += 2*left_count*left_count;
 		}
 	} else {
 		v2v_iname = Emit::named_numeric_constant(iname, 0);
 	}
-	Packaging::exit(save);
 
 @ The following routine conveniently determines whether a given INFS is
 within the domain of one of the terms of a relation; the rule is that it

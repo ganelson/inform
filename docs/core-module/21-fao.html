@@ -531,9 +531,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">, </span><span class="reserved">named_rulebook_outcome</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">, </span><span class="identifier">RV</span><span class="plain">);</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">);</span>
         <span class="plain">}</span>
 

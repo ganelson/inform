@@ -329,9 +329,7 @@ code to set things up correctly at run-time.
 void PL::Player::InitialSituation_define(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
 	Emit::named_array_begin(iname, K_value);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) val);
-	Packaging::exit(save);
 }
 
 void PL::Player::InitialSituation(void) {
@@ -343,8 +341,7 @@ void PL::Player::InitialSituation(void) {
 		PL::Player::InitialSituation_define(DONE_INIS_HL, 4);
 		
 		inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
-		Emit::named_array_begin(iname, K_value);
-		packaging_state save = Packaging::enter_home_of(iname);
+		packaging_state save = Emit::named_array_begin(iname, K_value);
 		NonlocalVariables::emit_initial_value(player_VAR);
 		if (start_object == NULL) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(Instances::iname(start_object));
@@ -352,8 +349,7 @@ void PL::Player::InitialSituation(void) {
 		else Emit::array_iname_entry(Instances::iname(start_room));
 		NonlocalVariables::emit_initial_value(time_of_day_VAR);
 		Emit::array_numeric_entry(0);
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 	}
 }
 

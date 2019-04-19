@@ -1199,9 +1199,7 @@ logical properties of the two terms of the BP being defined.
 
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Relations::compile_defined_relation_constant</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::named_numeric_constant_hex</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -1348,8 +1346,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no bp symbol"</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
-            <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;dynamic_memory</span><span class="plain">) {</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) 1); </span>    <span class="comment">meaning one entry, which is 0; to be filled in later</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -1363,8 +1360,7 @@ logical properties of the two terms of the BP being defined.
                 &lt;<span class="cwebmacro">Write the handler field of the relation record</span> <span class="cwebmacronumber">15.1.6</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Write the description field of the relation record</span> <span class="cwebmacronumber">15.1.5</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     </pre>
 
     <p class="inwebparagraph"></p>
@@ -1396,7 +1392,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">dbp</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">dbp</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;reversal</span><span class="plain">;</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">bm_symb</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">ABILITIES_HL</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_package</span><span class="plain">);</span>
-            <span class="functiontext">Emit::sum_constant_begin</span><span class="plain">(</span><span class="identifier">bm_symb</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save_sum</span><span class="plain"> = </span><span class="functiontext">Emit::sum_constant_begin</span><span class="plain">(</span><span class="identifier">bm_symb</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RELS_TEST_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no RELS symbols yet"</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">RELS_TEST_iname</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">minimal</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -1428,7 +1424,7 @@ logical properties of the two terms of the BP being defined.
                 <span class="reserved">default</span><span class="plain">:</span>
                     <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Binary predicate with unknown structural type"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">(); </span>    <span class="comment">of the summation, that is</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save_sum</span><span class="plain">); </span>    <span class="comment">of the summation, that is</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">bm_symb</span><span class="plain">);</span>
     </pre>
 
@@ -2314,7 +2310,7 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="display">
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::compile_default_relation</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
             <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
             <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
@@ -2327,7 +2323,7 @@ logical properties of the two terms of the BP being defined.
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTYRELATIONHANDLER_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">);</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::compile_blank_relation</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -2451,15 +2447,13 @@ logical properties of the two terms of the BP being defined.
 
             <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;v2v_bitmap_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BITMAP_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;v2v_bitmap_iname</span><span class="plain">);</span>
-            <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;v2v_bitmap_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;v2v_bitmap_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Compile header information in the V-to-V structure</span> <span class="cwebmacronumber">20.2</span>&gt;<span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_count</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">right_count</span><span class="plain"> &gt; 0))</span>
                 &lt;<span class="cwebmacro">Compile bitmap pre-initialised to the V-to-V relation at start of play</span> <span class="cwebmacronumber">20.5</span>&gt;<span class="plain">;</span>
 
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">, </span><span class="string">"%A"</span><span class="plain">, &amp;(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;relation_name</span><span class="plain">));</span>
@@ -2566,7 +2560,6 @@ logical properties of the two terms of the BP being defined.
     <pre class="displaydefn">
             <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">ROUTE_CACHE_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">left_kind</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::term_kind</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, 0);</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">right_kind</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::term_kind</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, 1);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;fast_route_finding</span><span class="plain">) &amp;&amp;</span>
@@ -2575,21 +2568,20 @@ logical properties of the two terms of the BP being defined.
                 <span class="plain">(</span><span class="identifier">left_count</span><span class="plain"> == </span><span class="identifier">right_count</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">left_count</span><span class="plain"> &lt; 256) {</span>
                     <span class="identifier">v2v_iname</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">;</span>
-                    <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+                    <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
                     <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (2*</span><span class="identifier">left_count</span><span class="plain">*</span><span class="identifier">left_count</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+                    <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
                     <span class="identifier">bytes_used</span><span class="plain"> += 2*</span><span class="identifier">left_count</span><span class="plain">*</span><span class="identifier">left_count</span><span class="plain">;</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="identifier">v2v_iname</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">;</span>
-                    <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+                    <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
                     <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (2*</span><span class="identifier">left_count</span><span class="plain">*</span><span class="identifier">left_count</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+                    <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
                     <span class="identifier">words_used</span><span class="plain"> += 2*</span><span class="identifier">left_count</span><span class="plain">*</span><span class="identifier">left_count</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">v2v_iname</span><span class="plain"> = </span><span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, 0);</span>
             <span class="plain">}</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     </pre>
 
     <p class="inwebparagraph"></p>

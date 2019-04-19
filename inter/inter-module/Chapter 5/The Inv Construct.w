@@ -166,11 +166,11 @@ inter_error_message *Inter::Inv::no_more_children(inter_frame P) {
 	if ((Inter::Inv::arity(P) != -1) &&
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
-		if (Emit::is_indirect_interp(invokee)) {
-			inter_symbol *better = Emit::indirect_interp(arity_as_invoked - 1);
+		if (Primitives::is_indirect_interp(invokee)) {
+			inter_symbol *better = Primitives::indirect_interp(arity_as_invoked - 1);
 			P.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol(I, NULL, better);
-		} else if (Emit::is_indirectv_interp(invokee)) {
-			inter_symbol *better = Emit::indirectv_interp(arity_as_invoked - 1);
+		} else if (Primitives::is_indirectv_interp(invokee)) {
+			inter_symbol *better = Primitives::indirectv_interp(arity_as_invoked - 1);
 			P.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol(I, NULL, better);
 		}
 	}

@@ -427,17 +427,16 @@ without notice.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::write_text</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">test_scenario</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="reserved">test_scenario</span><span class="plain">) {</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain">);</span>
-            <span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
+            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">);</span>
             <span class="functiontext">CompiledText::from_stream</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">,</span>
                 <span class="constant">CT_EXPAND_APOSTROPHES</span><span class="plain"> + </span><span class="constant">CT_RECOGNISE_APOSTROPHE_SUBSTITUTION</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">, </span><span class="string">"||||"</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">);</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-            <span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;place</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;place</span><span class="plain">));</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;no_possessions</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
@@ -445,17 +444,14 @@ without notice.
                 <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;possessions</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]));</span>
             <span class="plain">}</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-            <span class="functiontext">Emit::array_end</span><span class="plain">();</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) &gt; 0) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_TEST_SCENARIOS_HL</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">));</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

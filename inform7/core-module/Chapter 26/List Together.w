@@ -104,9 +104,7 @@ int ListTogether::compilation_coroutine(void) {
 	Emit::rfalse();
 	Routines::end(save);
 
-	save = Packaging::enter_home_of(ltr->ltr_array_iname);
-	Emit::named_array_begin(ltr->ltr_array_iname, K_value);
+	save = Emit::named_array_begin(ltr->ltr_array_iname, K_value);
 	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	Emit::array_iname_entry(ltr->ltr_routine_iname);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);

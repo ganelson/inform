@@ -715,12 +715,10 @@ void NewVerbs::ConjugateVerbDefinitions(void) {
 	inter_name *CV_MODAL_INAME_iname = Hierarchy::find(CV_MODAL_HL);
 	inter_name *CV_MEANING_iname = Hierarchy::find(CV_MEANING_HL);
 
-	packaging_state save = Packaging::enter_home_of(CV_POS_iname);
 	Emit::named_numeric_constant_signed(CV_POS_iname, -1);
 	Emit::named_numeric_constant_signed(CV_NEG_iname, -2);
 	Emit::named_numeric_constant_signed(CV_MODAL_INAME_iname, -3);
 	Emit::named_numeric_constant_signed(CV_MEANING_iname, -4);
-	Packaging::exit(save);
 }
 
 void NewVerbs::ConjugateVerb(void) {
@@ -732,14 +730,12 @@ void NewVerbs::ConjugateVerb(void) {
 		if (NewVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
 	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(vf, verb_form)
 		if (NewVerbs::verb_form_is_instance(vf))
 			Emit::array_iname_entry(Verbs::form_iname(vf));
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @<Compile ConjugateVerb routine@> =

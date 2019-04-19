@@ -132,7 +132,7 @@ int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node
 		action_name *an = Rvalues::to_action_name(spec);
 		if (Holsters::data_acceptable(VH)) {
 			inter_name *N = PL::Actions::iname(an);
-			if (N) InterNames::holster(VH, N);
+			if (N) Emit::holster(VH, N);
 		}
 		return TRUE;
 	}
@@ -412,7 +412,7 @@ int PL::Actions::abbreviable(action_name *an) {
 }
 
 text_stream *PL::Actions::identifier(action_name *an) {
-	return InterNames::to_text(PL::Actions::base_iname(an));
+	return Emit::to_text(PL::Actions::base_iname(an));
 }
 
 action_name *PL::Actions::Wait(void) {
@@ -435,10 +435,8 @@ inter_name *PL::Actions::base_iname(action_name *an) {
 inter_name *PL::Actions::double_sharp(action_name *an) {
 	if (an->an_iname == NULL) {
 		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
-		packaging_state save = Packaging::enter(an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
-		InterNames::annotate_i(an->an_iname, ACTION_IANN, 1);
-		Packaging::exit(save);
+		Emit::annotate_i(an->an_iname, ACTION_IANN, 1);
 	}
 	return an->an_iname;
 }
@@ -997,23 +995,19 @@ inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 		package_request *PR = Hierarchy::package_within(KIND_INLINE_PROPERTIES_HAP, R);
 		N = Hierarchy::make_iname_in(KIND_INLINE_PROPERTY_HL, PR);
 	}
-	packaging_state save = Packaging::enter_home_of(N);
-	Emit::named_array_begin(N, K_number);
+	packaging_state save = Emit::named_array_begin(N, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++) Emit::array_numeric_entry(0);
-	Emit::array_end();
-	InterNames::annotate_i(N, INLINE_ARRAY_IANN, 1);
-	Packaging::exit(save);
+	Emit::array_end(save);
+	Emit::annotate_i(N, INLINE_ARRAY_IANN, 1);
 	return N;
 }
 
 void PL::Actions::ActionHappened(void) {
 	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_number);
+	packaging_state save = Emit::named_array_begin(iname, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
 		Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @h The grammar list.
@@ -1173,8 +1167,7 @@ void PL::Actions::ActionData(void) {
 	int mn, ms, ml, mnp, msp, hn, hs, record_count = 0;
 
 	inter_name *iname = Hierarchy::find(ACTIONDATA_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_table_array_begin(iname, K_value);
+	packaging_state save = Emit::named_table_array_begin(iname, K_value);
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
 		mn = 0; ms = 0; ml = 0; mnp = 1; msp = 1; hn = 0; hs = 0;
@@ -1198,12 +1191,9 @@ void PL::Actions::ActionData(void) {
 		else Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry((inter_t) (20000+an->allocation_id));
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
-	save = Packaging::enter_home_of(ad_iname);
 	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
-	Packaging::exit(save);
 
 	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
 
@@ -1351,15 +1341,13 @@ void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
 
 void PL::Actions::ActionCoding_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIONCODING_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		if (Str::get_first_char(PL::Actions::identifier(an)) == '_') Emit::array_numeric_entry(0);
 		else Emit::array_action_entry(an);
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @h Indexing.

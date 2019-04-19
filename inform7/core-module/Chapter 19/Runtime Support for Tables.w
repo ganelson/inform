@@ -41,13 +41,11 @@ found at |T-->1|, |T-->2|, ..., |T-->C|.
 	for (int j=0; j<t->no_columns; j++) {
 		@<Compile the inner table array for column j@>;
 	}
-	packaging_state save = Packaging::enter_home_of(Tables::identifier(t));
-	Emit::named_table_array_begin(Tables::identifier(t), K_value);
+	packaging_state save = Emit::named_table_array_begin(Tables::identifier(t), K_value);
 	for (int j=0; j<t->no_columns; j++) {
 		Emit::array_iname_entry(t->columns[j].tcu_iname);
 	}
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 	words_used += t->no_columns + 1;
 
 @ Each column table |C| has its identifying number and bitmap combined in
@@ -62,8 +60,7 @@ a single bit in the "blanks array" which records whether the cell is blank
 or not.
 
 @<Compile the inner table array for column j@> =
-	packaging_state save = Packaging::enter_home_of(t->columns[j].tcu_iname);
-	Emit::named_table_array_begin(t->columns[j].tcu_iname, K_value);
+	packaging_state save = Emit::named_table_array_begin(t->columns[j].tcu_iname, K_value);
 
 	table_column *tc = t->columns[j].column_identity;
 	LOGIF(TABLES, "Compiling column: $C\n", tc);
@@ -88,9 +85,8 @@ or not.
 	}
 	@<Pad out the blanks array as needed@>;
 
-	Emit::array_end();
+	Emit::array_end(save);
 	LOGIF(TABLES, "Done column: $C\n", tc);
-	Packaging::exit(save);
 
 @ In this part of the code we're carefully keeping track of how much blank
 array storage we need (perhaps none!), but not compiling it. The sole aim
@@ -197,8 +193,7 @@ case.)
 
 @<Compile the blanks bitmap table@> =
 	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_byte_array_begin(iname, K_number);
+	packaging_state save = Emit::named_byte_array_begin(iname, K_number);
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
@@ -215,8 +210,7 @@ case.)
 		}
 	Emit::array_null_entry();
 	Emit::array_null_entry();
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;
@@ -247,8 +241,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 
 @<Compile the Table of Tables@> =
 	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	Emit::array_iname_entry(Hierarchy::find(EMPTY_TABLE_HL));
 	table *t;
 	LOOP_OVER(t, table)
@@ -257,8 +250,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 		}
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @<Note the usage of run-time memory for tables@> =
 	table *t;

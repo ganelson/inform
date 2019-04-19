@@ -113,8 +113,14 @@ void IFModule::start(void) {
 @<Register this module's stream writers@> =
 	;
 
+@
+
+@e GRAMMAR_DA
+@e GRAMMAR_CONSTRUCTION_DA
+
 @<Register this module's debugging log aspects@> =
-	;
+	Log::declare_aspect(GRAMMAR_DA, L"grammar", FALSE, FALSE);
+	Log::declare_aspect(GRAMMAR_CONSTRUCTION_DA, L"grammar construction", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	REGISTER_WRITER('A', PL::Actions::Patterns::log);

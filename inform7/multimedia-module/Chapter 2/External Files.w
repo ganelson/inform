@@ -255,27 +255,22 @@ void PL::Files::arrays(void) {
 	if (Plugins::Manage::plugged_in(files_plugin) == FALSE) return;
 
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
 	Emit::named_numeric_constant(iname, (inter_t) (NUMBER_CREATED(external_file)));
-	Packaging::exit(save);
 
 	external_file *exf;
 	LOOP_OVER(exf, external_file) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
-			packaging_state save = Packaging::enter_home_of(exf->IFID_array_iname);
-			Emit::named_string_array_begin(exf->IFID_array_iname, K_value);
+			packaging_state save = Emit::named_string_array_begin(exf->IFID_array_iname, K_value);
 			TEMPORARY_TEXT(II);
 			WRITE_TO(II, "//%S//", exf->IFID_of_owner);
 			Emit::array_text_entry(II);
 			DISCARD_TEXT(II);
-			Emit::array_end();
-			Packaging::exit(save);
+			Emit::array_end(save);
 		}
 	}
 
 	LOOP_OVER(exf, external_file) {
-		packaging_state save = Packaging::enter_home_of(exf->exf_iname);
-		Emit::named_array_begin(exf->exf_iname, K_value);
+		packaging_state save = Emit::named_array_begin(exf->exf_iname, K_value);
 		Emit::array_iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
 		Emit::array_iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
 		if (exf->file_is_binary) Emit::array_numeric_entry(1);
@@ -292,18 +287,15 @@ void PL::Files::arrays(void) {
 			case OWNED_BY_ANOTHER_PROJECT: Emit::array_null_entry(); break;
 			case OWNED_BY_SPECIFIC_PROJECT: Emit::array_iname_entry(exf->IFID_array_iname); break;
 		}
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 	}
 
 	iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);
-	save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	Emit::array_numeric_entry(0);
 	LOOP_OVER(exf, external_file) Emit::array_iname_entry(exf->exf_iname);
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 }
 
 @h External Files Index.

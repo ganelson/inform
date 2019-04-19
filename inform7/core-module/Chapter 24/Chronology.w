@@ -335,14 +335,12 @@ void Chronology::past_actions_i6_routines(void) {
 		Routines::end(save);
 	}
 	inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_HL);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Emit::named_array_begin(iname, K_value);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(pta, past_tense_action_record)
 		Emit::array_iname_entry(pta->pta_iname);
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 #endif
 }
 
@@ -786,12 +784,8 @@ times".
 =
 void Chronology::chronology_extents_i6_escape(void) {
 	inter_name *iname1 = Hierarchy::find(NO_PAST_TENSE_CONDS_HL);
-	packaging_state save = Packaging::enter_home_of(iname1);
 	Emit::named_numeric_constant(iname1, (inter_t) no_past_tenses);
-	Packaging::exit(save);
 
 	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_HL);
-	save = Packaging::enter_home_of(iname2);
 	Emit::named_numeric_constant(iname2, (inter_t) no_past_actions);
-	Packaging::exit(save);
 }

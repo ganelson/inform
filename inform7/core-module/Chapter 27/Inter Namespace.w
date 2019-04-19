@@ -148,6 +148,12 @@ inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) 
 	return InterNames::explicitly_named_with_memo(name, R, EMPTY_WORDING);
 }
 
+inter_name *InterNames::explicitly_named_in_template(text_stream *name) {
+	inter_name *iname = InterNames::explicitly_named(name, Hierarchy::template());
+	iname->symbol = Emit::extern(name, K_value);
+	return iname;
+}
+
 @ Second, the generated or derived cases:
 
 =
@@ -184,10 +190,11 @@ given packages inside the Inter hierarchy: it would be more accurate to say
 that they represent potential identifiers, which may or may not be used.
 At some point they will probably (but not certainly) undergo "conversion",
 when they are matched up with actual symbols in the symbols tables of the
-given packages.
+given packages. An exception to this is that inames pointing to externally
+defined resources in the template are never converted: see above.
 
 Conversion is done on-demand, and thus left as late as possible. It happens
-automatically in one of the following two functions:
+automatically here:
 
 =
 inter_symbol *InterNames::to_symbol(inter_name *iname) {
@@ -199,109 +206,4 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 		DISCARD_TEXT(NBUFF);
 	}
 	return iname->symbol;
-}
-
-void InterNames::externalise_symbol(inter_name *iname, text_stream *ext_name) {
-	if (iname->symbol != NULL) internal_error("iname already converted");
-	iname->symbol = Emit::extern(ext_name, K_value);;
-}
-
-
-
-
-
-
-
-
-void InterNames::change_translation(inter_name *iname, text_stream *new_text) {
-	Inter::Symbols::set_translate(InterNames::to_symbol(iname), new_text);
-}
-
-text_stream *InterNames::get_translation(inter_name *iname) {
-	return Inter::Symbols::get_translate(InterNames::to_symbol(iname));
-}
-
-text_stream *InterNames::to_text(inter_name *iname) {
-	if (iname == NULL) return NULL;
-	return InterNames::to_symbol(iname)->symbol_name;
-}
-
-inter_symbol *InterNames::define_symbol(inter_name *iname) {
-	InterNames::to_symbol(iname);
-	if (iname->symbol) {
-		if (Inter::Symbols::is_predeclared(iname->symbol)) {
-			Inter::Symbols::undefine(iname->symbol);
-		}
-	}
-	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
-		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
-			Emit::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
-			Inter::Symbols::strike_definition(iname->symbol);
-		}
-		return iname->symbol;
-	}
-	return iname->symbol;
-}
-
-inter_symbol *InterNames::destroy_symbol(inter_name *iname) {
-	InterNames::to_symbol(iname);
-	if (iname->symbol) {
-		if (Inter::Symbols::is_predeclared(iname->symbol)) {
-			Inter::Symbols::undefine(iname->symbol);
-		}
-	}
-	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
-		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
-			Emit::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
-			Inter::Symbols::strike_definition(iname->symbol);
-		}
-		return iname->symbol;
-	} else if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) internal_error("Bang");
-	return iname->symbol;
-}
-
-void InterNames::set_flag(inter_name *iname, int f) {
-	Inter::Symbols::set_flag(InterNames::to_symbol(iname), f);
-}
-
-void InterNames::clear_flag(inter_name *iname, int f) {
-	Inter::Symbols::clear_flag(InterNames::to_symbol(iname), f);
-}
-
-void InterNames::annotate_i(inter_name *iname, inter_t annot_ID, inter_t V) {
-	if (iname) Emit::annotate_symbol_i(InterNames::to_symbol(iname), annot_ID, V);
-}
-
-void InterNames::annotate_t(inter_name *iname, inter_t annot_ID, text_stream *text) {
-	if (iname) Emit::annotate_symbol_t(InterNames::to_symbol(iname), annot_ID, text);
-}
-
-void InterNames::annotate_w(inter_name *iname, inter_t annot_ID, wording W) {
-	if (iname) Emit::annotate_symbol_w(InterNames::to_symbol(iname), annot_ID, W);
-}
-
-int InterNames::read_annotation(inter_name *iname, inter_t annot) {
-	return Inter::Symbols::read_annotation(InterNames::to_symbol(iname), annot);
-}
-
-void InterNames::holster(value_holster *VH, inter_name *iname) {
-	if (Holsters::data_acceptable(VH)) {
-		inter_t v1 = 0, v2 = 0;
-		inter_reading_state *IRS = Emit::IRS();
-		InterNames::to_ival(IRS->read_into, IRS->current_package, &v1, &v2, iname);
-		Holsters::holster_pair(VH, v1, v2);
-	}
-}
-
-void InterNames::to_ival(inter_repository *I, inter_package *pack, inter_t *val1, inter_t *val2, inter_name *iname) {
-	inter_symbol *S = InterNames::to_symbol(iname);
-	if (S) { Inter::Symbols::to_data(I, pack, S, val1, val2); return; }
-	*val1 = LITERAL_IVAL; *val2 = 0;
-}
-
-int InterNames::defined(inter_name *iname) {
-	if (iname == NULL) return FALSE;
-	inter_symbol *S = InterNames::to_symbol(iname);
-	if (Inter::Symbols::is_defined(S)) return TRUE;
-	return FALSE;
 }

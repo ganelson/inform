@@ -317,9 +317,7 @@ void Plugins::Manage::define_IFDEF_symbols(void) {
 	plugin *P;
 	LOOP_OVER(P, plugin)
 		if ((P->now_plugged_in) && (P->IFDEF_iname)) {
-			packaging_state save = Packaging::enter_home_of(P->IFDEF_iname);
 			Emit::named_numeric_constant(P->IFDEF_iname, 0);
-			Packaging::exit(save);
 		}
 }
 

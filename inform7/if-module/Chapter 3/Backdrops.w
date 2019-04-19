@@ -275,14 +275,12 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 @<The object is found only in a few rooms, and no regions, so make it a list@> =
 	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
 	FOUNDIN = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = Packaging::enter_home_of(FOUNDIN);
-	Emit::named_array_begin(FOUNDIN, K_value);
+	packaging_state save = Emit::named_array_begin(FOUNDIN, K_value);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF)
 		Emit::array_iname_entry(Instances::iname(World::Inferences::get_reference_as_object(inf)));
-	Emit::array_end();
-	InterNames::annotate_i(FOUNDIN, INLINE_ARRAY_IANN, 1);
-	Packaging::exit(save);
+	Emit::array_end(save);
+	Emit::annotate_i(FOUNDIN, INLINE_ARRAY_IANN, 1);
 
 @<The object is found in many rooms or in whole regions, so make it a routine@> =
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);

@@ -261,12 +261,10 @@ inter_name *Lists::compile_literal_list(wording W) {
 		Lists::kind_of_ll(ll, FALSE);
 		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-		packaging_state save = Packaging::enter_home_of(N);
-		Emit::named_late_array_begin(N, K_value);
+		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Lists::iname(ll));
 		Emit::array_numeric_entry(0);
-		Emit::array_end();
-		Packaging::exit(save);
+		Emit::array_end(save);
 		return N;
 	}
 	return NULL;
@@ -305,8 +303,7 @@ the list!);
 (d) that number of values, each representing one entry.
 
 @<Actually compile the list array@> =
-	packaging_state save = Packaging::enter_home_of(ll->ll_iname);
-	Emit::named_array_begin(ll->ll_iname, K_value);
+	packaging_state save = Emit::named_array_begin(ll->ll_iname, K_value);
 	llist_entry *lle;
 	int n = 0;
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry) n++;
@@ -319,16 +316,15 @@ the list!);
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry)
 		Specifications::Compiler::emit_constant_to_kind(
 			lle->llist_entry_value, ll->entry_kind);
-	Emit::array_end();
-	Packaging::exit(save);
+	Emit::array_end(save);
 
 @ The default list of any given kind is empty.
 
 =
 void Lists::compile_default_list(inter_name *identifier, kind *K) {
-	Emit::named_array_begin(identifier, K_value);
+	packaging_state save = Emit::named_array_begin(identifier, K_value);
 	Kinds::RunTime::emit_block_value_header(K, TRUE, 2);
 	Kinds::RunTime::emit_strong_id(Kinds::unary_construction_material(K));
 	Emit::array_numeric_entry(0);
-	Emit::array_end();
+	Emit::array_end(save);
 }
