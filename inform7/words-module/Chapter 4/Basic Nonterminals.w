@@ -46,7 +46,7 @@ that the comma matches only if not in brackets.
 ordinals within the VM-representable range.)
 
 =
-<integer> internal 1 {
+<any-integer> internal 1 {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), NUMBER_MC)) {
 		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
 		return TRUE;

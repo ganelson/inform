@@ -201,9 +201,9 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 	return iname->symbol;
 }
 
-void InterNames::externalise_symbol(inter_name *iname, inter_name *ext_iname) {
+void InterNames::externalise_symbol(inter_name *iname, text_stream *ext_name) {
 	if (iname->symbol != NULL) internal_error("iname already converted");
-	iname->symbol = Emit::extern(ext_iname, K_value);;
+	iname->symbol = Emit::extern(ext_name, K_value);;
 }
 
 
