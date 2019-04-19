@@ -1,7 +1,10 @@
 [Packaging::] Packaging.
 
 @h Package requests.
-
+In the same way that inames are created as shadows of eventual inter symbols,
+and omly converted into the real thing on demand, "package requests" are
+shadowy packages. The process of turning them into real inter packages is
+called "incarnation".
 
 @d MAX_PRCS_AT_ONCE 11
 
@@ -15,6 +18,7 @@ typedef struct package_request {
 	struct linked_list *counters; /* of |submodule_request_counter| */
 	MEMORY_MANAGEMENT
 } package_request;
+
 typedef struct submodule_request_counter {
 	int counter_id;
 	int counter_value;
@@ -33,27 +37,51 @@ package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
 	return R;
 }
 
+@ In the debugging log, package requests are printed in a form looking a
+little like URLs, except that they run in the reverse order, innermost first
+and outermost last: to make this more visually clear, backslashes rather
+than forward slashes are used as dividers.
+
+=
 void Packaging::log(package_request *R) {
 	if (R == NULL) LOG("<null-package>");
 	else {
 		int c = 0;
 		while (R) {
 			if (c++ > 0) LOG("\\");
-			if (R->actual_package) LOG("%S(%d)", R->actual_package->package_name->symbol_name, R->allocation_id);
-			else LOG("--(%d)", R->allocation_id);
+			if (R->actual_package)
+				LOG("%S", R->actual_package->package_name->symbol_name);
+			else
+				LOG("'%n'", R->eventual_name);
 			R = R->parent_request;
 		}
 	}
 }
 
-@ =
-package_request *current_enclosure = NULL;
+@h State, entry and exit.
+PRs continue to be useful even after incarnation, though, because each one
+also contains a "write position". This is where emitted Inter code will go;
+and it means that not all of the code inside a package needs to be written
+at the same time. We can come and go as we please, adding code to packages
+all over the hierarchy, simply by switching to the write position in the
+package we wsnt to extend next.
 
+That switching is called "entering" a package. Every entry must be followed
+by a matching exit, which restores the write position to where it was before
+the entry. To restore state we need a way to record it, so:
+
+=
 typedef struct packaging_state {
 	inter_reading_state *saved_IRS;
 	package_request *saved_enclosure;
 } packaging_state;
 
+@ It is not legal to write to the following state, which exists only to
+initialise variables to neutral contents (and thus to avoid warnings
+generated because clang is not able to prove that they will not be used
+in an uninitialised state -- though in fact they will not).
+
+=
 packaging_state Packaging::stateless(void) {
 	packaging_state PS;
 	PS.saved_IRS = NULL;
@@ -61,77 +89,114 @@ packaging_state Packaging::stateless(void) {
 	return PS;
 }
 
-package_request *Packaging::home_of(inter_name *N) {
-	return InterNames::location(N);
+@ We will store the current state at all times in the following:
+
+=
+packaging_state current_state;
+
+inter_reading_state *Packaging::at(void) {
+	return current_state.saved_IRS;
 }
 
-packaging_state Packaging::enter_home_of(inter_name *N) {
-	return Packaging::enter(Packaging::home_of(N));
+package_request *Packaging::enclosure(void) {
+	return current_state.saved_enclosure;
 }
 
-package_request *Packaging::current_enclosure(void) {
-	return current_enclosure;
-}
+@ States are intentionally very lightweight, and in particular they contain
+pointers to the IRS structures rather than containing a copy thereof. But
+those pointers have to point somewhere, and this is where: to a stack of
+IRS structures.
 
-@
+The maximum here is beyond plenty: it's not the maximum hierarchical depth
+of the Inter output, it's the maximum number of times that Inform interrupts
+itself during compilation.
 
-@d MAX_PACKAGING_ENTRY_DEPTH 32
+@d MAX_PACKAGING_ENTRY_DEPTH 128
 
 =
 int packaging_entry_sp = 0;
 inter_reading_state packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
 
+inter_reading_state *Packaging::push_IRS(inter_reading_state IRS) {
+	if (packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH)
+		internal_error("packaging entry too deep");
+	packaging_entry_stack[packaging_entry_sp] = IRS;
+	return &(packaging_entry_stack[packaging_entry_sp++]);
+}
+
+void Packaging::pop_IRS(void) {
+	if (packaging_entry_sp <= 0) internal_error("package stack underflow");
+	packaging_entry_sp--;
+}
+
+@ The "current enclosure" ceases to be null the moment the |main| package
+is created, and from then on, it is always an enclosing package:
+
+=
+void Packaging::initialise_IRS(inter_repository *I) {
+	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS(I));
+	current_state.saved_enclosure = NULL;
+}
+
+void Packaging::set_packaging_state(inter_reading_state *to, package_request *PR) {
+	current_state.saved_IRS = to;
+	while ((PR) && (PR->parent_request) &&
+		(Inter::Symbols::read_annotation(PR->eventual_type, ENCLOSING_IANN) != 1))
+		PR = PR->parent_request;
+	current_state.saved_enclosure = PR;
+}
+
+void Packaging::move_write_position(inter_reading_state *to) {
+	Packaging::set_packaging_state(to, Packaging::enclosure());
+}
+
+packaging_state Packaging::enter_home_of(inter_name *N) {
+	return Packaging::enter(InterNames::location(N));
+}
+
 packaging_state Packaging::enter(package_request *R) {
 	if (R == NULL) R = Hierarchy::main();
 	LOGIF(PACKAGING, "Entering $X\n", R);
-
-	inter_reading_state *IRS = Emit::IRS();
+	packaging_state save = current_state;
 	Packaging::incarnate(R);
-	Emit::move_write_position(&(R->write_position));
-	if (packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH) {
-		for (int i=0; i<packaging_entry_sp; i++)
-			LOG("%d: $6\n", i, packaging_entry_stack[i].current_package);
-		internal_error("packaging entry too deep");
-	}
-	packaging_entry_stack[packaging_entry_sp] = Emit::bookmark_bubble();
-	Emit::move_write_position(&packaging_entry_stack[packaging_entry_sp]);
-	packaging_entry_sp++;
-	packaging_state PS;
-	PS.saved_IRS = IRS;
-	PS.saved_enclosure = current_enclosure;
-	for (package_request *S = R; S; S = S->parent_request)
-		if ((Inter::Symbols::read_annotation(S->eventual_type, ENCLOSING_IANN) == 1) ||
-			(S->parent_request == NULL)) {
-			current_enclosure = S;
-			break;
-		}
-	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", packaging_entry_sp, current_enclosure);
-	return PS;
+	Packaging::set_packaging_state(&(R->write_position), Packaging::enclosure());
+	inter_reading_state *bubble = Packaging::push_IRS(Emit::bookmark_bubble());
+	Packaging::set_packaging_state(bubble, R);
+	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", packaging_entry_sp, Packaging::enclosure());
+	return save;
 }
 
-void Packaging::exit(packaging_state PS) {
-	current_enclosure = PS.saved_enclosure;
-	packaging_entry_sp--;
-	LOGIF(PACKAGING, "[%d] Back to $X\n", packaging_entry_sp, current_enclosure);
-	Emit::move_write_position(PS.saved_IRS);
+void Packaging::exit(packaging_state save) {
+	Packaging::set_packaging_state(save.saved_IRS, save.saved_enclosure);
+	Packaging::pop_IRS();
+	LOGIF(PACKAGING, "[%d] Back to $X\n", packaging_entry_sp, Packaging::enclosure());
 }
 
+@h Incarnation.
+
+=
 inter_package *Packaging::incarnate(package_request *R) {
 	if (R == NULL) internal_error("can't incarnate null request");
 	if (R->actual_package == NULL) {
 		LOGIF(PACKAGING, "Request to make incarnate $X\n", R);
-		if (R->parent_request) Packaging::incarnate(R->parent_request);
-
-		inter_reading_state *save_IRS = NULL;
-		if (R->parent_request)
-			save_IRS = Emit::move_write_position(&(R->parent_request->write_position));
-		inter_reading_state snapshot = Emit::bookmark_bubble();
-		inter_reading_state *save_save_IRS = Emit::move_write_position(&snapshot);
-		Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
-		R->write_position = Emit::bookmark_bubble();
-		Emit::move_write_position(save_save_IRS);
-		if (R->parent_request)
-			Emit::move_write_position(save_IRS);
+		package_request *E = Packaging::enclosure(); // This will not change
+		if (R->parent_request) {
+			Packaging::incarnate(R->parent_request);
+			inter_reading_state *save_IRS = Packaging::at();
+			Packaging::set_packaging_state(&(R->parent_request->write_position), E);
+			inter_reading_state snapshot = Emit::bookmark_bubble();
+			Packaging::set_packaging_state(&snapshot, E);
+			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
+			R->write_position = Emit::bookmark_bubble();
+			Packaging::set_packaging_state(save_IRS, E);
+		} else {
+			inter_reading_state snapshot = Emit::bookmark_bubble();
+			inter_reading_state *save_IRS = Packaging::at();
+			Packaging::set_packaging_state(&snapshot, E);
+			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
+			R->write_position = Emit::bookmark_bubble();
+			Packaging::set_packaging_state(save_IRS, E);
+		}
 		LOGIF(PACKAGING, "Made incarnate $X bookmark $5\n", R, &(R->write_position));
 	}
 	return R->actual_package;

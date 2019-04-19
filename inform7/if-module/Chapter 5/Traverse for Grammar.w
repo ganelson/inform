@@ -96,8 +96,7 @@ void PL::Parsing::compile_understanding(inter_t *val1, inter_t *val2, wording W,
 		cached_understanding *cu;
 		LOOP_OVER(cu, cached_understanding)
 			if (Wordings::match(cu->understanding_text, W)) {
-				inter_reading_state *IRS = Emit::IRS();
-				Emit::to_ival(IRS->read_into, IRS->current_package, val1, val2, cu->cu_iname);
+				Emit::to_ival(val1, val2, cu->cu_iname);
 				return;
 			}
 		base_problem_count = problem_count;
@@ -116,8 +115,7 @@ void PL::Parsing::compile_understanding(inter_t *val1, inter_t *val2, wording W,
 			cu = CREATE(cached_understanding);
 			cu->understanding_text = W;
 			cu->cu_iname = iname;
-			inter_reading_state *IRS = Emit::IRS();
-			Emit::to_ival(IRS->read_into, IRS->current_package, val1, val2, iname);
+			Emit::to_ival(val1, val2, iname);
 		}
 	}
 }

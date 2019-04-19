@@ -112,7 +112,7 @@ named_resource_location *HierarchyLocations::make_as(int id, text_stream *name, 
 	named_resource_location *nrl = HierarchyLocations::new();
 	nrl->access_number = id;
 	nrl->access_name = Str::duplicate(name);
-	nrl->requirements = HierarchyLocations::this_package(Packaging::home_of(iname));
+	nrl->requirements = HierarchyLocations::this_package(InterNames::location(iname));
 	nrl->equates_to_iname = iname;
 	HierarchyLocations::index(nrl);
 	return nrl;
@@ -206,7 +206,7 @@ inter_name *HierarchyLocations::nrl_to_iname(named_resource_location *nrl) {
 		}
 
 		nrl->equates_to_iname = Hierarchy::post_process(nrl->access_number, nrl->equates_to_iname);
-		nrl->requirements.this_mundane_package = Packaging::home_of(nrl->equates_to_iname);
+		nrl->requirements.this_mundane_package = InterNames::location(nrl->equates_to_iname);
 	}
 	return nrl->equates_to_iname;
 }

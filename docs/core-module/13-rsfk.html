@@ -297,8 +297,7 @@ absence of rooms would otherwise result in.
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-            <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -312,15 +311,13 @@ absence of rooms would otherwise result in.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_rulebook_outcome</span><span class="plain">)) {</span>
-            <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="functiontext">Rulebooks::Outcomes::get_default_value</span><span class="plain">());</span>
+            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="functiontext">Rulebooks::Outcomes::get_default_value</span><span class="plain">());</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">)) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">wait</span><span class="plain"> = </span><span class="identifier">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">PL::Actions::Wait</span><span class="plain">());</span>
-            <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="identifier">Inter::Symbols::to_data</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">wait</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">wait</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -335,8 +332,7 @@ absence of rooms would otherwise result in.
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Emit::seek_symbol</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) {</span>
-            <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="identifier">Inter::Symbols::to_data</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="functiontext">Emit::symbol_to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -345,8 +341,7 @@ absence of rooms would otherwise result in.
 
         <span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Emit::holding_symbol</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) {</span>
-            <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
-            <span class="identifier">Inter::Symbols::to_data</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">, </span><span class="identifier">IRS</span><span class="plain">-&gt;</span><span class="identifier">current_package</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="functiontext">Emit::symbol_to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 

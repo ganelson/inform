@@ -1813,7 +1813,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_RESPONSE_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_response</span><span class="plain">);</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">K_SCENE_XPACKAGE</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K_scene</span><span class="plain">);</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">V_COMMAND_PROMPT_XPACKAGE</span><span class="plain">:</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">command_prompt_VAR</span><span class="plain">));</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">command_prompt_VAR</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown exotic package"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -1916,7 +1916,7 @@
     <span class="plain">}</span>
 
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">hap_id</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">HierarchyLocations::attach_new_package</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">(), </span><span class="identifier">hap_id</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">HierarchyLocations::attach_new_package</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Packaging::enclosure</span><span class="plain">(), </span><span class="identifier">hap_id</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">hap_id</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
@@ -1972,9 +1972,9 @@
 
 <p class="endnote">The function Hierarchy::find_by_name is used in 5/nv (<a href="5-nv.html#SP10">&#167;10</a>), 13/rsfk (<a href="13-rsfk.html#SP7">&#167;7</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 22/tp (<a href="22-tp.html#SP8">&#167;8</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>).</p>
 
-<p class="endnote">The function Hierarchy::main is used in 27/pc (<a href="27-pc.html#SP4">&#167;4</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Hierarchy::main is used in 27/pc (<a href="27-pc.html#SP8">&#167;8</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Hierarchy::resources is used in 27/pc (<a href="27-pc.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Hierarchy::resources is used in 27/pc (<a href="27-pc.html#SP10">&#167;10</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Hierarchy::template is used in <a href="#SP1_50">&#167;1.50</a>, 15/ep (<a href="15-ep.html#SP4">&#167;4</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP2">&#167;2</a>), 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 

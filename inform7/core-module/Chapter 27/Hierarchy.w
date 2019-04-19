@@ -1513,7 +1513,7 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_RESPONSE_XPACKAGE: return Kinds::Behaviour::package(K_response);
 		case K_SCENE_XPACKAGE: return Kinds::Behaviour::package(K_scene);
 		case V_COMMAND_PROMPT_XPACKAGE:
-			return Packaging::home_of(NonlocalVariables::iname(command_prompt_VAR));
+			return InterNames::location(NonlocalVariables::iname(command_prompt_VAR));
 	}
 	internal_error("unknown exotic package");
 	return NULL;
@@ -1604,7 +1604,7 @@ package_request *Hierarchy::local_package(int hap_id) {
 }
 
 package_request *Hierarchy::package_in_enclosure(int hap_id) {
-	return HierarchyLocations::attach_new_package(NULL, Packaging::current_enclosure(), hap_id);
+	return HierarchyLocations::attach_new_package(NULL, Packaging::enclosure(), hap_id);
 }
 
 package_request *Hierarchy::package_within(int hap_id, package_request *super) {

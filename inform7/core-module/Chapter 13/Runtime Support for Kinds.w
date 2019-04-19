@@ -227,8 +227,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) {
 		inter_name *N = Instances::emitted_iname(I);
-		inter_reading_state *IRS = Emit::IRS();
-		Emit::to_ival(IRS->read_into, IRS->current_package, v1, v2, N);
+		Emit::to_ival(v1, v2, N);
 		return;
 	}
 
@@ -242,15 +241,13 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) return;
 
 	if (Kinds::Compare::eq(K, K_rulebook_outcome)) {
-		inter_reading_state *IRS = Emit::IRS();
-		Emit::to_ival(IRS->read_into, IRS->current_package, v1, v2, Rulebooks::Outcomes::get_default_value());
+		Emit::to_ival(v1, v2, Rulebooks::Outcomes::get_default_value());
 		return;
 	}
 
 	if (Kinds::Compare::eq(K, K_action_name)) {
 		inter_name *wait = PL::Actions::double_sharp(PL::Actions::Wait());
-		inter_reading_state *IRS = Emit::IRS();
-		Inter::Symbols::to_data(IRS->read_into, IRS->current_package, InterNames::to_symbol(wait), v1, v2);
+		Emit::to_ival(v1, v2, wait);
 		return;
 	}
 
@@ -265,8 +262,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 
 	inter_symbol *S = Emit::seek_symbol(Emit::main_scope(), name);
 	if (S) {
-		inter_reading_state *IRS = Emit::IRS();
-		Inter::Symbols::to_data(IRS->read_into, IRS->current_package, S, v1, v2);
+		Emit::symbol_to_ival(v1, v2, S);
 		return;
 	}
 
@@ -275,8 +271,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 
 	S = Emit::holding_symbol(Emit::main_scope(), name);
 	if (S) {
-		inter_reading_state *IRS = Emit::IRS();
-		Inter::Symbols::to_data(IRS->read_into, IRS->current_package, S, v1, v2);
+		Emit::symbol_to_ival(v1, v2, S);
 		return;
 	}
 
