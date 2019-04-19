@@ -102,10 +102,6 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="functiontext">Packaging::home_of</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">));</span>
     <span class="plain">}</span>
 
-    <span class="reserved">packaging_state</span><span class="plain"> </span><span class="functiontext">Packaging::enter_current_enclosure</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">current_enclosure</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::current_enclosure</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_enclosure</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -113,15 +109,13 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::stateless is used in 21/rb (<a href="21-rb.html#SP24_1">&#167;24.1</a>).</p>
+<p class="endnote">The function Packaging::stateless is used in 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Packaging::home_of is used in 5/ins (<a href="5-ins.html#SP34">&#167;34</a>), 12/cdp (<a href="12-cdp.html#SP5">&#167;5</a>), 13/rsfk (<a href="13-rsfk.html#SP22">&#167;22</a>), 26/rt (<a href="26-rt.html#SP3">&#167;3</a>, <a href="26-rt.html#SP4">&#167;4</a>), 27/hr (<a href="27-hr.html#SP3">&#167;3</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Packaging::home_of is used in 27/hr (<a href="27-hr.html#SP3">&#167;3</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Packaging::enter_home_of is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>, <a href="5-nv.html#SP25">&#167;25</a>), 13/rsfk (<a href="13-rsfk.html#SP16_2">&#167;16.2</a>), 17/tl (<a href="17-tl.html#SP13">&#167;13</a>), 21/rl2 (<a href="21-rl2.html#SP20">&#167;20</a>), 22/ph (<a href="22-ph.html#SP12">&#167;12</a>), 26/rt (<a href="26-rt.html#SP1">&#167;1</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Packaging::enter_home_of is used in 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Packaging::enter_current_enclosure appears nowhere else.</p>
-
-<p class="endnote">The function Packaging::current_enclosure is used in 17/ts (<a href="17-ts.html#SP8">&#167;8</a>, <a href="17-ts.html#SP8_1">&#167;8.1</a>), 18/lc (<a href="18-lc.html#SP5">&#167;5</a>), 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Packaging::current_enclosure is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The structure packaging_state is private to this section.</p>
 
@@ -137,6 +131,7 @@
     <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">packaging_entry_stack</span><span class="plain">[</span><span class="constant">MAX_PACKAGING_ENTRY_DEPTH</span><span class="plain">];</span>
 
     <span class="reserved">packaging_state</span><span class="plain"> </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::main</span><span class="plain">();</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PACKAGING</span><span class="plain">, </span><span class="string">"Entering $X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
 
         <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain"> = </span><span class="functiontext">Emit::IRS</span><span class="plain">();</span>
@@ -201,11 +196,11 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::enter is used in <a href="#SP3">&#167;3</a>, 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Packaging::enter is used in <a href="#SP3">&#167;3</a>, 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Packaging::exit is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>, <a href="5-nv.html#SP25">&#167;25</a>), 13/rsfk (<a href="13-rsfk.html#SP16_2">&#167;16.2</a>), 17/tl (<a href="17-tl.html#SP13">&#167;13</a>), 21/rl2 (<a href="21-rl2.html#SP20">&#167;20</a>), 22/ph (<a href="22-ph.html#SP12">&#167;12</a>), 26/rt (<a href="26-rt.html#SP4">&#167;4</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Packaging::exit is used in 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Packaging::incarnate is used in 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Packaging::incarnate is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Packaging::scope is used in 27/in (<a href="27-in.html#SP8">&#167;8</a>).</p>
 
@@ -448,7 +443,7 @@
 
 <p class="endnote">The function Packaging::datum_text is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Packaging::housed_in_function is used in 26/rt (<a href="26-rt.html#SP4">&#167;4</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Packaging::housed_in_function is used in 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="27-cm.html">Back to 'Compilation Modules'</a></li><li><a href="27-pt.html">Continue with 'Package Types'</a></li></ul><hr class="tocbar">

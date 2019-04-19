@@ -41,11 +41,11 @@ void Routines::Compile::routine(phrase *ph,
 
 	@<Compile some commentary about the routine to follow@>;
 
-	Routines::begin_framed(Routines::Compile::iname(ph, req), &(ph->stack_frame));
+	packaging_state save = Routines::begin_framed(Routines::Compile::iname(ph, req), &(ph->stack_frame));
 
 	@<Compile the body of the routine@>;
 
-	Routines::end_in_current_package();
+	Routines::end(save);
 
 	phrase_being_compiled = NULL;
 	current_sentence = NULL;

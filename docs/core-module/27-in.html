@@ -215,7 +215,9 @@ a memo to attach):
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::explicitly_named_in_template</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="functiontext">Hierarchy::template</span><span class="plain">());</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> = </span><span class="functiontext">Emit::extern</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -275,7 +277,7 @@ a memo to attach):
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterNames::location is used in 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP3">&#167;3</a>, <a href="27-pc.html#SP4">&#167;4</a>, <a href="27-pc.html#SP6">&#167;6</a>).</p>
+<p class="endnote">The function InterNames::location is used in 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP3">&#167;3</a>, <a href="27-pc.html#SP4">&#167;4</a>, <a href="27-pc.html#SP6">&#167;6</a>), 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Conversion of inames to symbols. </b>The purpose of inames is not quite to represent identifier names occurring in
 given packages inside the Inter hierarchy: it would be more accurate to say
@@ -306,7 +308,7 @@ automatically here:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterNames::to_symbol is used in 13/rsfk (<a href="13-rsfk.html#SP5">&#167;5</a>), 15/epv (<a href="15-epv.html#SP4">&#167;4</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>, <a href="21-rl.html#SP11_2">&#167;11.2</a>, <a href="21-rl.html#SP22">&#167;22</a>), 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function InterNames::to_symbol is used in 13/rsfk (<a href="13-rsfk.html#SP5">&#167;5</a>), 15/epv (<a href="15-epv.html#SP4">&#167;4</a>), 21/rl (<a href="21-rl.html#SP11_2">&#167;11.2</a>, <a href="21-rl.html#SP22">&#167;22</a>), 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="27-pt.html">Back to 'Package Types'</a></li><li><a href="27-is.html">Continue with 'Inter Schemas'</a></li></ul><hr class="tocbar">

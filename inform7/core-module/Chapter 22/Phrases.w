@@ -377,15 +377,11 @@ void Phrases::compile(phrase *ph, int *i, int max_i,
 	int effect = Phrases::Usage::get_effect(&(ph->usage_data));
 	if (effect == RULE_NOT_IN_RULEBOOK_EFF) effect = RULE_IN_RULEBOOK_EFF;
 	if (effect == TO_PHRASE_EFF) {
-		packaging_state save = Packaging::enter_home_of(req->req_iname);
 		Routines::Compile::routine(ph, legible, req, acl);
-		Packaging::exit(save);
 		@<Move along the progress bar if it's this phrase's first compilation@>;
 	} else {
 		if (ph->at_least_one_compiled_form_needed) {
-			packaging_state save = Packaging::enter_home_of(Phrases::iname(ph));
 			Routines::Compile::routine(ph, legible, NULL, acl);
-			Packaging::exit(save);
 			@<Move along the progress bar if it's this phrase's first compilation@>;
 		}
 	}

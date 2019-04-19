@@ -414,17 +414,15 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 		if ((nlv->constant_at_run_time == FALSE) ||
 			(nlv->housed_in_variables_array)) {
 
-			inter_name *iname = NonlocalVariables::iname(nlv);
-			packaging_state save = Packaging::enter_home_of(iname);
-
-			value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-			NonlocalVariables::compile_initial_value_vh(&VH, nlv);
-			END_COMPILATION_MODE;
+
+			inter_name *iname = NonlocalVariables::iname(nlv);
 			inter_t v1 = 0, v2 = 0;
-			Holsters::unholster_pair(&VH, &v1, &v2);
+
+			NonlocalVariables::seek_initial_value(iname, &v1, &v2, nlv);
+
+			END_COMPILATION_MODE;
 
 			text_stream *rvalue = NULL;
 			if (nlv->housed_in_variables_array == FALSE)
@@ -439,7 +437,6 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 				Routines::end(save);
 			}
 
-			Packaging::exit(save);
 		}
 	return TRUE;
 }
@@ -699,11 +696,9 @@ void NonlocalVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
 }
 
 void NonlocalVariables::seek_initial_value(inter_name *iname, inter_t *v1, inter_t *v2, nonlocal_variable *nlv) {
-	packaging_state save = Packaging::enter_home_of(iname);
-	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	NonlocalVariables::compile_initial_value_vh(&VH, nlv);
-	Holsters::unholster_pair(&VH, v1, v2);
-	Packaging::exit(save);
+	ival_emission IE = Emit::begin_ival_emission(iname);
+	NonlocalVariables::compile_initial_value_vh(Emit::ival_holster(&IE), nlv);
+	Emit::end_ival_emission(&IE, v1, v2);
 }
 
 void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable *nlv) {

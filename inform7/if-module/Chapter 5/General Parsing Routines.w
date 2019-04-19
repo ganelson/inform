@@ -113,13 +113,12 @@ void PL::Parsing::Tokens::General::write_parse_name_routines(void) {
 	parse_name_notice *notice;
 	LOOP_OVER(notice, parse_name_notice) {
 		gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-		packaging_state save = Packaging::enter_home_of(notice->pnn_iname);
-		if (PL::Parsing::Tokens::General::compile_parse_name_head(&gprk,
+		packaging_state save = Emit::unused_packaging_state();
+		if (PL::Parsing::Tokens::General::compile_parse_name_head(&save, &gprk,
 			notice->parse_subject, NULL, notice->pnn_iname)) {
 			PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
-			Routines::end_in_current_package();
+			Routines::end(save);
 		}
-		Packaging::exit(save);
 	}
 }
 
@@ -168,8 +167,10 @@ the absence of either I7-level grammar lines or visible properties, that
 will be the correct decision.
 
 =
-int PL::Parsing::Tokens::General::compile_parse_name_head(gpr_kit *gprk, inference_subject *subj,
+int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
+	gpr_kit *gprk, inference_subject *subj,
 	grammar_verb *gv, inter_name *rname) {
+STREAM_FLUSH(DL);
 	int test_distinguishability = FALSE, sometimes_has_visible_properties = FALSE;
 	inter_name *N = NULL;
 
@@ -186,9 +187,15 @@ int PL::Parsing::Tokens::General::compile_parse_name_head(gpr_kit *gprk, inferen
 
 	if (InferenceSubjects::domain(subj)) test_distinguishability = TRUE;
 
-	if (rname)  Routines::begin_in_current_package(rname);
-	else if (N) Routines::begin_in_current_package(N);
-	else internal_error("no parse name routine name given");
+	inter_name *compile_to = rname;
+	if (compile_to == NULL) compile_to = N;
+	if (compile_to == NULL) internal_error("no parse name routine name given");
+
+LOG("\n\nAND %n\n", compile_to);
+STREAM_FLUSH(DL);
+
+	*save = Routines::begin(compile_to);
+
 	PL::Parsing::Tokens::Values::add_parse_name_vars(gprk);
 
 	PL::Parsing::Tokens::General::top_of_head(gprk, N, subj,

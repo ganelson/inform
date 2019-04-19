@@ -115,7 +115,7 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 	instance *I = InferenceSubjects::as_instance(know);
 	if (I) R = Instances::package(I);
 	kind *K = InferenceSubjects::as_kind(know);
-	if (K) R = Kinds::RunTime::package(K);
+	if (K) R = Kinds::Behaviour::package(K);
 	int storage_cost = 0;
 	if ((Properties::visited_in_traverse(prn) == FALSE) &&
 		(Properties::can_be_compiled(prn))) {

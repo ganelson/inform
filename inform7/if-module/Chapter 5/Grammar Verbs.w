@@ -525,8 +525,7 @@ grammar_verb *PL::Parsing::Verbs::for_prn(property *prn) {
 	gv = PL::Parsing::Verbs::gv_new(GV_IS_PROPERTY_NAME);
 	Properties::EitherOr::set_parsing_grammar(prn, gv);
 	gv->prn_understood = prn;
-	inter_name *iname = Properties::iname(prn);
-	gv->gv_prn_iname = Hierarchy::make_iname_in(EITHER_OR_GPR_FN_HL, Packaging::home_of(iname));
+	gv->gv_prn_iname = Hierarchy::make_iname_in(EITHER_OR_GPR_FN_HL, Properties::package(prn));
 	return gv;
 }
 
@@ -821,13 +820,13 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 		}
 		case GV_IS_OBJECT: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-			packaging_state save = Packaging::enter_home_of(PL::Parsing::Tokens::General::get_gv_parse_name(gv));
-			if (PL::Parsing::Tokens::General::compile_parse_name_head(&gprk, gv->subj_understood, gv, NULL)) {
+			packaging_state save = Emit::unused_packaging_state();
+			LOG("\n\nSo %n\n", PL::Parsing::Tokens::General::get_gv_parse_name(gv));
+			if (PL::Parsing::Tokens::General::compile_parse_name_head(&save, &gprk, gv->subj_understood, gv, NULL)) {
 				PL::Parsing::Verbs::gv_compile_parse_name_lines(&gprk, gv);
 				PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
-				Routines::end_in_current_package();
+				Routines::end(save);
 			}
-			Packaging::exit(save);
 			break;
 		}
 		case GV_IS_VALUE:

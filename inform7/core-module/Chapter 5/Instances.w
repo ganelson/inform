@@ -27,6 +27,8 @@ evidence turns up to suggest otherwise).
 =
 typedef struct instance {
 	struct noun *tag;
+	struct package_request *instance_package;
+	struct inter_name *instance_iname;
 	int instance_emitted;
 	struct parse_node *creating_sentence; /* sentence creating the instance */
 	struct parse_node *instance_of_set_at; /* and identifying its kind */
@@ -105,6 +107,8 @@ later on.)
 	K = Kinds::weaken(K);
 
 @<Initialise the instance except for its noun@> =
+	I->instance_package = NULL;
+	I->instance_iname = NULL;
 	I->instance_emitted = FALSE;
 	I->creating_sentence = current_sentence;
 	I->instance_of_set_at = current_sentence;
@@ -287,9 +291,12 @@ text_stream *Instances::identifier(instance *I) {
 
 inter_name *Instances::iname(instance *I) {
 	if (I == NULL) return NULL;
-	package_request *R = Hierarchy::local_package(INSTANCES_HAP);
-	UseNouns::noun_compose_identifier(R, I->tag, I->allocation_id);
-	return UseNouns::iname(I->tag);
+	if (I->instance_iname == NULL) {
+		I->instance_package = Hierarchy::local_package(INSTANCES_HAP);
+		UseNouns::noun_compose_identifier(I->instance_package, I->tag, I->allocation_id);
+		I->instance_iname = UseNouns::iname(I->tag);
+	}
+	return I->instance_iname;
 }
 
 @h Writer.
@@ -717,8 +724,8 @@ inter_name *Instances::emitted_iname(instance *I) {
 }
 
 package_request *Instances::package(instance *I) {
-	inter_name *iname = Instances::iname(I);
-	return Packaging::home_of(iname);
+	Instances::iname(I); // Thus forcing this to exist...
+	return I->instance_package;
 }
 
 @h Adjectival uses of instances.

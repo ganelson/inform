@@ -87,7 +87,7 @@ relies on adjectival meanings.
 property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	wording W = Feeds::feed_text(I6_form);
 	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, Hierarchy::template(), W);
-	property *prn = Properties::create(EMPTY_WORDING, iname);
+	property *prn = Properties::create(EMPTY_WORDING, Hierarchy::template(), iname);
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);
 	Properties::set_translation(prn, I6_form);

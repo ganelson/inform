@@ -74,7 +74,7 @@ void Emit::begin(void) {
 	Emit::comment(I"Primitives:");
 	Primitives::emit();
 
-	Packaging::enter(Hierarchy::main()); // We never exit this
+	Packaging::enter_home_of(NULL); // Enters main, which we never exit
 
 	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
 	packaging_state save = Packaging::enter_home_of(KU);
@@ -137,12 +137,10 @@ inter_symbol *Emit::extern(text_stream *name, kind *K) {
 	if (extern_symbols == NULL) extern_symbols = Dictionaries::new(1024, FALSE);
 	if (Dictionaries::find(extern_symbols, name))
 		return Dictionaries::read_value(extern_symbols, name);
-	packaging_state save = Packaging::enter(Hierarchy::template());		
 	inter_symbol *symb = Emit::new_symbol(Emit::main_scope(), name);
 	Inter::Symbols::extern(symb);
 	Dictionaries::create(extern_symbols, name);
 	Dictionaries::write_value(extern_symbols, name, symb);
-	Packaging::exit(save);
 	return symb;
 }
 
@@ -331,7 +329,7 @@ void Emit::property(inter_name *name, kind *K) {
 }
 
 void Emit::permission(property *prn, kind *K, inter_name *name) {
-	packaging_state save = Packaging::enter(Kinds::RunTime::package(K));
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
 	inter_name *prop_name = Properties::iname(prn);
 	inter_symbol *owner_kind = Emit::kind_to_symbol(K);
 	inter_symbol *store = (name)?InterNames::to_symbol(name):NULL;
@@ -381,7 +379,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 }
 
 void Emit::defaultvalue(kind *K, inter_t v1, inter_t v2) {
-	packaging_state save = Packaging::enter(Kinds::RunTime::package(K));
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
 	inter_symbol *owner_kind = Emit::kind_to_symbol(K);
 	Emit::guard(Inter::DefaultValue::new(default_bookmark,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, owner_kind), v1, v2, Emit::baseline(default_bookmark), NULL));
@@ -422,6 +420,12 @@ void Emit::instance(inter_name *name, kind *K, int v) {
 	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
 	Emit::guard(Inter::Instance::new(default_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(default_bookmark, val_kind), v1, v2, Emit::baseline(default_bookmark), NULL));
 	Packaging::exit(save);
+}
+
+void Emit::named_generic_constant_xiname(package_request *PR, inter_name *name, inter_name *xiname) {
+	inter_t v1 = 0, v2 = 0;
+	Inter::Symbols::to_data(Emit::repository(), Packaging::incarnate(PR), InterNames::to_symbol(xiname), &v1, &v2);
+	Emit::named_generic_constant(name, v1, v2);
 }
 
 void Emit::named_generic_constant(inter_name *name, inter_t val1, inter_t val2) {
@@ -786,9 +790,19 @@ inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_packag
 	return rsymb;
 }
 
-inter_symbol *Emit::block(inter_name *iname) {
+inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 	if (current_inter_routine) internal_error("nested routines");
 	if (Emit::IRS() == NULL) internal_error("no inter repository");
+
+	if (save) {
+		*save = Packaging::enter_home_of(iname);
+		package_request *R = Packaging::home_of(iname);
+		if ((R == NULL) || (R == Hierarchy::main())) {
+			LOG("Routine outside of package: %n\n", iname);
+			internal_error("routine outside of package");
+		}
+	}
+
 	inter_name *block_iname = NULL;
 	if (Packaging::housed_in_function(iname))
 		block_iname = Hierarchy::make_block_iname(Packaging::home_of(iname));
@@ -806,6 +820,16 @@ inter_symbol *Emit::block(inter_name *iname) {
 	code_insertion_point cip = Emit::new_cip(&code_bookmark);
 	Emit::push_code_position(cip);
 	return rsymb;
+}
+
+inter_name *Emit::kernel(inter_name *public_name) {
+	if (Packaging::housed_in_function(public_name) == FALSE)
+		internal_error("routine not housed in function");
+	return Hierarchy::make_kernel_iname(Packaging::home_of(public_name));
+}
+
+void Emit::end_main_block(packaging_state save) {
+	Packaging::exit(save);
 }
 
 void Emit::routine(inter_name *rname, kind *rkind, inter_symbol *block_name) {
@@ -1349,9 +1373,46 @@ void Emit::to_ival(inter_repository *I, inter_package *pack, inter_t *val1, inte
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 
+void Emit::to_ival_in_context(inter_name *context, inter_t *val1, inter_t *val2, inter_name *iname) {
+	package_request *PR = InterNames::location(context);
+	inter_package *pack = Packaging::incarnate(PR);
+	inter_symbol *S = InterNames::to_symbol(iname);
+	if (S) { Inter::Symbols::to_data(pack->stored_in, pack, S, val1, val2); return; }
+	*val1 = LITERAL_IVAL; *val2 = 0;
+}
+
 int Emit::defined(inter_name *iname) {
 	if (iname == NULL) return FALSE;
 	inter_symbol *S = InterNames::to_symbol(iname);
 	if (Inter::Symbols::is_defined(S)) return TRUE;
 	return FALSE;
+}
+
+typedef struct ival_emission {
+	value_holster emission_VH;
+	packaging_state saved_PS;
+} ival_emission;
+
+ival_emission Emit::begin_ival_emission(inter_name *iname) {
+	ival_emission IE;
+	IE.emission_VH = Holsters::new(INTER_DATA_VHMODE);
+	IE.saved_PS = Packaging::enter_home_of(iname);
+	return IE;
+}
+
+value_holster *Emit::ival_holster(ival_emission *IE) {
+	return &(IE->emission_VH);
+}
+
+void Emit::end_ival_emission(ival_emission *IE, inter_t *v1, inter_t *v2) {
+	Holsters::unholster_pair(&(IE->emission_VH), v1, v2);
+	Packaging::exit(IE->saved_PS);
+}
+
+package_request *Emit::current_enclosure(void) {
+	return Packaging::current_enclosure();
+}
+
+packaging_state Emit::unused_packaging_state(void) {
+	return Packaging::stateless();
 }

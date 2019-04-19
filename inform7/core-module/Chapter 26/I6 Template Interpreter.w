@@ -582,7 +582,7 @@ void TemplateFiles::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT
 			Holsters::unholster_pair(&VH2, &v1, &v2);
 			if (v1 == ALIAS_IVAL) {
 				PUT(URL_SYMBOL_CHAR);
-				inter_symbols_table *T = Inter::Packages::scope(Packaging::current_enclosure()->actual_package);
+				inter_symbols_table *T = Inter::Packages::scope(Emit::current_enclosure()->actual_package);
 				inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, v2);
 				Inter::SymbolsTables::symbol_to_url_name(OUT, S);
 				PUT(URL_SYMBOL_CHAR);

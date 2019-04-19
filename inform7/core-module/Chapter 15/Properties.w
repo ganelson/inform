@@ -36,6 +36,7 @@ typedef struct property {
 
 	/* runtime implementation */
 	int metadata_table_offset; /* position in the |property_metadata| word array at run-time */
+	struct package_request *prop_package; /* where to find: */
 	struct inter_name *prop_iname; /* the identifier we would like to use at run-time for this property */
 	int translated; /* has this been given an explicit translation? */
 	int prn_emitted; /* has this been emitted to Inter yet? */
@@ -91,7 +92,7 @@ property *Properties::obtain(wording W, int valued) {
 	parse_node *p = ExParser::parse_excerpt(PROPERTY_MC, W);
 	property *prn;
 	if (p == NULL) {
-		prn = Properties::create(W, NULL);
+		prn = Properties::create(W, NULL, NULL);
 		if (valued) {
 			Properties::Valued::make_setting_relation(prn, W);
 			prn->either_or = FALSE;
@@ -111,7 +112,7 @@ property *Properties::obtain(wording W, int valued) {
 @ And: (2) To create a new structure outright.
 
 =
-property *Properties::create(wording W, inter_name *using_iname) {
+property *Properties::create(wording W, package_request *using_package, inter_name *using_iname) {
 	W = Articles::remove_article(W);
 	@<Ensure that the new property name is one we can live with@>;
 	@<See if the property name already has a meaning, which may or may not be okay@>;
@@ -196,6 +197,7 @@ something.
 	prn->ambiguous_name = <name-looking-like-property-test>(W);
 	prn->applicable_to = NULL;
 	prn->either_or = FALSE;
+	prn->prop_package = using_package;
 	prn->prop_iname = using_iname;
 	prn->prn_emitted = FALSE;
 	prn->translated = FALSE;
@@ -681,10 +683,18 @@ inter_name *Properties::iname(property *prn) {
 	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation))
 		return Properties::iname(Properties::EitherOr::get_negation(prn));
 	if (prn->prop_iname == NULL) {
-		package_request *R = Hierarchy::package(prn->owning_module, PROPERTIES_HAP);
-		prn->prop_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, prn->name);
+		prn->prop_package = Hierarchy::package(prn->owning_module, PROPERTIES_HAP);
+		prn->prop_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, prn->prop_package, prn->name);
 	}
 	return prn->prop_iname;
+}
+
+package_request *Properties::package(property *prn) {
+	if (prn == NULL) internal_error("tried to find package for null property");
+	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation))
+		return Properties::package(Properties::EitherOr::get_negation(prn));
+	Properties::iname(prn);
+	return prn->prop_package;
 }
 
 void Properties::emit_single(property *prn) {

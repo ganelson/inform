@@ -612,7 +612,7 @@ inter_name *Kinds::RunTime::get_kind_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->kind_GPR_iname == NULL) {
-		package_request *R = Kinds::RunTime::package(K);
+		package_request *R = Kinds::Behaviour::package(K);
 		con->kind_GPR_iname = Hierarchy::make_iname_in(GPR_FN_HL, R);
 	}
 	return con->kind_GPR_iname;
@@ -622,7 +622,7 @@ inter_name *Kinds::RunTime::get_instance_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->instance_GPR_iname == NULL) {
-		package_request *R = Kinds::RunTime::package(K);
+		package_request *R = Kinds::Behaviour::package(K);
 		con->instance_GPR_iname = Hierarchy::make_iname_in(INSTANCE_GPR_FN_HL, R);
 	}
 	return con->instance_GPR_iname;
@@ -706,7 +706,6 @@ void Kinds::RunTime::compile_structures(void) {
 @<Compile a constructed default value for this kind@> =
 	inter_name *identifier = rks->rks_dv_iname;
 	current_sentence = rks->default_requested_here;
-	packaging_state save = Packaging::enter_home_of(identifier);
 	if (Kinds::get_construct(K) == CON_phrase) {
 		Phrases::Constants::compile_default_closure(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_relation) {
@@ -722,7 +721,6 @@ void Kinds::RunTime::compile_structures(void) {
 			"for the kind '%2', but there's no obvious way to make one.");
 		Problems::issue_problem_end();
 	}
-	Packaging::exit(save);
 
 @<Compile the default value finder@> =
 	packaging_state save = Routines::begin(Hierarchy::find(DEFAULTVALUEFINDER_HL));
@@ -892,12 +890,6 @@ typedef struct kind_interaction {
 	struct inter_name *noted_iname;
 	MEMORY_MANAGEMENT
 } kind_interaction;
-
-@ =
-package_request *Kinds::RunTime::package(kind *K) {
-	inter_name *iname = Kinds::RunTime::iname(K);
-	return Packaging::home_of(iname);
-}
 
 @
 

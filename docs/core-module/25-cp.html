@@ -62,11 +62,11 @@ should always be supplied for "To..." phrases, but left null for rules.
 
         &lt;<span class="cwebmacro">Compile some commentary about the routine to follow</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
 
-        <span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">));</span>
+        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">));</span>
 
         &lt;<span class="cwebmacro">Compile the body of the routine</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
 
-        <span class="functiontext">Routines::end_in_current_package</span><span class="plain">();</span>
+        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">phrase_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>

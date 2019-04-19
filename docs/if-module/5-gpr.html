@@ -147,13 +147,12 @@ will simply compile a <code class="display"><span class="extract">parse_name</sp
         <span class="reserved">parse_name_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">parse_name_notice</span><span class="plain">) {</span>
             <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext">PL::Parsing::Tokens::Values::new_kit</span><span class="plain">();</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_head</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">,</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::unused_packaging_state</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_head</span><span class="plain">(&amp;</span><span class="identifier">save</span><span class="plain">, &amp;</span><span class="identifier">gprk</span><span class="plain">,</span>
                 <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;parse_subject</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;pnn_iname</span><span class="plain">)) {</span>
                 <span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_tail</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="identifier">Routines::end_in_current_package</span><span class="plain">();</span>
+                <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -218,8 +217,10 @@ will be the correct decision.
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_head</span><span class="plain">(</span><span class="reserved">gpr_kit</span><span class="plain"> *</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::General::compile_parse_name_head</span><span class="plain">(</span><span class="identifier">packaging_state</span><span class="plain"> *</span><span class="identifier">save</span><span class="plain">,</span>
+        <span class="reserved">gpr_kit</span><span class="plain"> *</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">,</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain">, </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain">) {</span>
+    <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">test_distinguishability</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">sometimes_has_visible_properties</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -236,9 +237,15 @@ will be the correct decision.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">)) </span><span class="identifier">test_distinguishability</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rname</span><span class="plain">)  </span><span class="identifier">Routines::begin_in_current_package</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="identifier">Routines::begin_in_current_package</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no parse name routine name given"</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">compile_to</span><span class="plain"> = </span><span class="identifier">rname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compile_to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">compile_to</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compile_to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no parse name routine name given"</span><span class="plain">);</span>
+
+    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">AND %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">compile_to</span><span class="plain">);</span>
+    <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
+
+        <span class="plain">*</span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">compile_to</span><span class="plain">);</span>
+
         <span class="functiontext">PL::Parsing::Tokens::Values::add_parse_name_vars</span><span class="plain">(</span><span class="identifier">gprk</span><span class="plain">);</span>
 
         <span class="functiontext">PL::Parsing::Tokens::General::top_of_head</span><span class="plain">(</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">,</span>

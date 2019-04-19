@@ -250,12 +250,9 @@ int Strings::TextLiterals::CCOUNT_QUOTATIONS(void) {
 @ A version from fixed text:
 
 =
-void Strings::TextLiterals::compile_literal_from_text(inter_name *iname, inter_t *v1, inter_t *v2, wchar_t *p) {
+void Strings::TextLiterals::compile_literal_from_text(inter_name *context, inter_t *v1, inter_t *v2, wchar_t *p) {
 	literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Feeds::feed_text(p));
-	packaging_state save = Packaging::enter_home_of(iname);
-	inter_reading_state *IRS = Emit::IRS();
-	Emit::to_ival(IRS->read_into, IRS->current_package, v1, v2, lt->lt_sba_iname);
-	Packaging::exit(save);
+	Emit::to_ival_in_context(context, v1, v2, lt->lt_sba_iname);
 }
 
 @ The above gradually piled up the need for |TX_L_*| constants/routines,

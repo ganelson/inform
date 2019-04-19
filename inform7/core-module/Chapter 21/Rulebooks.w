@@ -876,9 +876,7 @@ void Rulebooks::compile_rulebooks(void) {
 		if (Rulebooks::focus(rb) == PARAMETER_FOCUS) par = TRUE;
 		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n\n",
 			rb->primary_name, rb->rb_iname);
-		packaging_state save = Packaging::enter_home_of(rb->rb_iname);
 		Rules::Bookings::list_compile(rb->rule_list, rb->rb_iname, act, par);
-		Packaging::exit(save);
 	}
 	Rules::check_placement_safety();
 }

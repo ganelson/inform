@@ -769,7 +769,7 @@ than once for each rule.
 	if (action_based == FALSE) grouping = FALSE;
 
 	inter_symbol *forbid_breaks_s = NULL, *rv_s = NULL, *original_deadflag_s = NULL, *p_s = NULL;
-	packaging_state save_array = Packaging::stateless();
+	packaging_state save_array = Emit::unused_packaging_state();
 
 	@<Open the rulebook compilation@>;
 	int group_size = 0, group_started = FALSE, entry_count = 0, action_group_open = FALSE;

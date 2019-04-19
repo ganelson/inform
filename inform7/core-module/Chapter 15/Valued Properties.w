@@ -63,7 +63,7 @@ property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	if (K == NULL) internal_error("new nameless property without kind");
 	package_request *R = Hierarchy::package(Modules::find(current_sentence), PROPERTIES_HAP);
 	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
-	property *prn = Properties::create(EMPTY_WORDING, using_iname);
+	property *prn = Properties::create(EMPTY_WORDING, R, using_iname);
 	Properties::exclude_from_index(prn);
 	prn->either_or = FALSE;
 	Properties::set_translation_S(prn, I6_form);
@@ -74,9 +74,9 @@ property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	return prn;
 }
 
-property *Properties::Valued::new_nameless_using(kind *K, inter_name *using) {
+property *Properties::Valued::new_nameless_using(kind *K, package_request *R, inter_name *using) {
 	if (K == NULL) internal_error("new nameless property without kind");
-	property *prn = Properties::create(EMPTY_WORDING, using);
+	property *prn = Properties::create(EMPTY_WORDING, R, using);
 	Properties::exclude_from_index(prn);
 	prn->either_or = FALSE;
 	prn->property_value_kind = K;

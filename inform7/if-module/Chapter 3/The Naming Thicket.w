@@ -278,7 +278,7 @@ actually means it's rarely needed.)
 		if (P_cap_short_name == NULL) {
 			inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
 			P_cap_short_name = Properties::Valued::new_nameless_using(
-				K_text, property_iname);
+				K_text, Kinds::Behaviour::package(K_object), property_iname);
 			inter_name *iname = Hierarchy::find(CAP_SHORT_NAME_EXISTS_HL);
 			Emit::named_numeric_constant(iname, 1);
 		}

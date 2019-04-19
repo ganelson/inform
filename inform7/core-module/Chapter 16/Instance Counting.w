@@ -269,11 +269,11 @@ for the relation-route-finding code at run time.
 			inter_name *count_iname = PL::Counting::instance_count_iname(K);
 
 			PF_S(counting, subj)->instance_count_prop =
-				Properties::Valued::new_nameless_using(K_number, count_iname);
+				Properties::Valued::new_nameless_using(K_number, Kinds::Behaviour::package(K), count_iname);
 
 			inter_name *next_iname = PL::Counting::next_instance(K);
 			PF_S(counting, subj)->instance_link_prop =
-				Properties::Valued::new_nameless_using(K_object, next_iname);
+				Properties::Valued::new_nameless_using(K_object, Kinds::Behaviour::package(K), next_iname);
 		}
 	P_KD_Count = Properties::Valued::new_nameless(I"KD_Count", K_number);
 

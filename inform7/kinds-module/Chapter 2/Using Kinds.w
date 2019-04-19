@@ -516,21 +516,21 @@ package_request *Kinds::Behaviour::package(kind *K) {
 inter_name *Kinds::Behaviour::get_inc_iname(kind *K) {
 	if (K == NULL) internal_error("null kind has no inc routine");
 	if (K->construct->inc_iname) return K->construct->inc_iname;
-	package_request *R = Kinds::RunTime::package(K);
+	package_request *R = Kinds::Behaviour::package(K);
 	K->construct->inc_iname = Hierarchy::make_iname_in(DECREMENT_FN_HL, R);
 	return K->construct->inc_iname;
 }
 inter_name *Kinds::Behaviour::get_dec_iname(kind *K) {
 	if (K == NULL) internal_error("null kind has no dec routine");
 	if (K->construct->dec_iname) return K->construct->dec_iname;
-	package_request *R = Kinds::RunTime::package(K);
+	package_request *R = Kinds::Behaviour::package(K);
 	K->construct->dec_iname = Hierarchy::make_iname_in(INCREMENT_FN_HL, R);
 	return K->construct->dec_iname;
 }
 inter_name *Kinds::Behaviour::get_ranger_iname(kind *K) {
 	if (K == NULL) internal_error("null kind has no inc routine");
 	if (K->construct->ranger_iname) return K->construct->ranger_iname;
-	package_request *R = Kinds::RunTime::package(K);
+	package_request *R = Kinds::Behaviour::package(K);
 	K->construct->ranger_iname = Hierarchy::make_iname_in(RANGER_FN_HL, R);
 	return K->construct->ranger_iname;
 }

@@ -1,24 +1,16 @@
 [Routines::] Routines.
 
-To compile the bones of routines, and their local variable
-declarations.
+To compile the bones of functions, and their local variable declarations.
 
 @ The code following is used throughout Inform, whenever we want to compile
-an I6 routine. Sometimes that's in order to define a phrase, but often not.
+a function. Sometimes that's in order to define a phrase, but often not.
 
-We then compile the body code of our routine, and conclude with:
-
-	|Routines::end_in_current_package();|
+There are two ways to begin a function: specifying a stack frame which has
+already been set up, or not. Here's not:
 
 =
 packaging_state Routines::begin(inter_name *name) {
-	packaging_state save = Packaging::enter_home_of(name);
-	Routines::begin_framed(name, NULL);
-	return save;
-}
-
-void Routines::begin_in_current_package(inter_name *name) {
-	Routines::begin_framed(name, NULL);
+	return Routines::begin_framed(name, NULL);
 }
 
 @ During the time when we're compiling the body of the routine,
@@ -30,25 +22,22 @@ int currently_compiling_nnp = FALSE; /* is this a nonphrasal stack frame we made
 inter_symbol *currently_compiling_inter_block = NULL; /* where Inter is being emitted to */
 inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 
-@ So here is the flip:
+@ So here is the general version, in which |phsf| may or may not be a
+pre-existing stack frame:
 
 =
-void Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
+packaging_state Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
 	if (iname == NULL) internal_error("no iname for routine");
-	package_request *R = Packaging::home_of(iname);
-	if ((R == NULL) || (R == Hierarchy::main())) {
-		LOG("Routine outside of package: ................................................ %n\n", iname);
-		WRITE_TO(STDERR, "Routine outside of package: %n\n", iname);
-		internal_error("routine outside of package");
-	}
 	currently_compiling_iname = iname;
 
 	@<Prepare a suitable stack frame@>;
 
 	Frames::Blocks::begin_code_blocks();
 
-	currently_compiling_inter_block = Emit::block(iname);
+	packaging_state save = Emit::unused_packaging_state();
+	currently_compiling_inter_block = Emit::block(&save, iname);
 	LocalVariables::declare(phsf, FALSE);
+	return save;
 }
 
 inter_symbol *Routines::self(void) {
@@ -68,24 +57,20 @@ create a new nonphrasal stack frame.
 	currently_compiling_in_frame = phsf;
 	Frames::make_current(phsf);
 
-@ And here is the flop:
+@ As can be seen, very much more work is involved in finishing a function
+than in starting it. This is because we need to split into two cases: one
+where the code we've just compiled required allocation of heap memory
+(e.g. for dynamic strings or lists), and another simpler case where it
+did not.
 
 =
 void Routines::end(packaging_state save) {
-	Routines::end_in_current_package();
-	Packaging::exit(save);
-}
-
-void Routines::end_in_current_package(void) {
 	kind *R_kind = LocalVariables::deduced_function_kind(currently_compiling_in_frame);
 
 	inter_name *kernel_name = NULL, *public_name = currently_compiling_iname;
 	if ((currently_compiling_in_frame->allocated_pointers) ||
-		(currently_compiling_in_frame->no_formal_parameters_needed > 0)) {
-		if (Packaging::housed_in_function(public_name))
-			kernel_name = Hierarchy::make_kernel_iname(Packaging::home_of(public_name));
-		else internal_error("routine not housed in function");
-	}
+		(currently_compiling_in_frame->no_formal_parameters_needed > 0))
+		kernel_name = Emit::kernel(public_name);
 
 	int needed = LocalVariables::count(currently_compiling_in_frame);
 	if (kernel_name) needed++;
@@ -103,13 +88,14 @@ void Routines::end_in_current_package(void) {
 	Frames::Blocks::end_code_blocks();
 	if (currently_compiling_nnp) Frames::remove_nonphrase_stack_frame();
 	Frames::remove_current();
+	Emit::end_main_block(save);
 }
 
 @<Compile an outer shell routine with the public-facing name@> =
 	int returns_block_value =
 		Kinds::Behaviour::uses_pointer_values(currently_compiling_in_frame->kind_returned);
 
-	inter_symbol *rsymb = Emit::block(public_name);
+	inter_symbol *rsymb = Emit::block(NULL, public_name);
 	inter_symbol *I7RBLK_symbol = NULL;
 	@<Compile I6 locals for the outer shell@>;
 	int NBV = 0;

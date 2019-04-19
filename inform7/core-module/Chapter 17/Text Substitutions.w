@@ -141,7 +141,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 					Frames::emit_allocation(K_text);
 			}
 			text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
-				adopted_rule_for_compilation, adopted_marker_for_compilation, Packaging::current_enclosure());
+				adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 			inter_name *tin = Strings::TextSubstitutions::text_substitution_iname(ts);
 			if (VH->vhmode_wanted == INTER_DATA_VHMODE)
 				Emit::holster(VH, tin);
@@ -157,7 +157,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 
 @<Write the actual cue@> =
 	text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
-		adopted_rule_for_compilation, adopted_marker_for_compilation, Packaging::current_enclosure());
+		adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
 		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);

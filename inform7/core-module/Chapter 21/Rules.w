@@ -208,9 +208,8 @@ void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 	R->rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->rule_package);
 
 	inter_name *xiname = Hierarchy::find_by_name(XT);
-	inter_t v1 = 0, v2 = 0;
-	Inter::Symbols::to_data(Emit::repository(), Packaging::incarnate(R->rule_package), InterNames::to_symbol(xiname), &v1, &v2);
-	Emit::named_generic_constant(R->rule_extern_iname, v1, v2);
+	Emit::named_generic_constant_xiname(R->rule_package, R->rule_extern_iname, xiname);
+
 	R->xiname = xiname;
 	R->rule_extern_iname_as_text = Str::duplicate(XT);
 	DISCARD_TEXT(XT);

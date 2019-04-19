@@ -69,10 +69,6 @@ packaging_state Packaging::enter_home_of(inter_name *N) {
 	return Packaging::enter(Packaging::home_of(N));
 }
 
-packaging_state Packaging::enter_current_enclosure(void) {
-	return Packaging::enter(current_enclosure);
-}
-
 package_request *Packaging::current_enclosure(void) {
 	return current_enclosure;
 }
@@ -86,6 +82,7 @@ int packaging_entry_sp = 0;
 inter_reading_state packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
 
 packaging_state Packaging::enter(package_request *R) {
+	if (R == NULL) R = Hierarchy::main();
 	LOGIF(PACKAGING, "Entering $X\n", R);
 
 	inter_reading_state *IRS = Emit::IRS();
