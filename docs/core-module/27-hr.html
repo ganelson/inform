@@ -1896,10 +1896,10 @@
 
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">template_pr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Hierarchy::template</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">template_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"template"</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">()),</span>
-                <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_module"</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="reserved">module_package</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"template"</span><span class="plain">);</span>
+            <span class="identifier">template_pr</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain">;</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">template_pr</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -1972,11 +1972,11 @@
 
 <p class="endnote">The function Hierarchy::find_by_name is used in 5/nv (<a href="5-nv.html#SP10">&#167;10</a>), 13/rsfk (<a href="13-rsfk.html#SP7">&#167;7</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 22/tp (<a href="22-tp.html#SP8">&#167;8</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>).</p>
 
-<p class="endnote">The function Hierarchy::main is used in 27/pc (<a href="27-pc.html#SP8">&#167;8</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Hierarchy::main is used in 27/pc (<a href="27-pc.html#SP10">&#167;10</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Hierarchy::resources is used in 27/pc (<a href="27-pc.html#SP10">&#167;10</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Hierarchy::resources is used in 27/pc (<a href="27-pc.html#SP13">&#167;13</a>).</p>
 
-<p class="endnote">The function Hierarchy::template is used in <a href="#SP1_50">&#167;1.50</a>, 15/ep (<a href="15-ep.html#SP4">&#167;4</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP2">&#167;2</a>), 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Hierarchy::template is used in <a href="#SP1_50">&#167;1.50</a>, 15/ep (<a href="15-ep.html#SP4">&#167;4</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP2">&#167;2</a>), 27/in (<a href="27-in.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Hierarchy::package is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP27">&#167;27</a>), 15/vp (<a href="15-vp.html#SP3">&#167;3</a>), 15/ma (<a href="15-ma.html#SP11_3">&#167;11.3</a>), 22/ph (<a href="22-ph.html#SP11">&#167;11</a>), 22/tp (<a href="22-tp.html#SP5">&#167;5</a>).</p>
 

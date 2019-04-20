@@ -26,16 +26,9 @@ inter_reading_state Emit::bookmark(void) {
 	return b;
 }
 
-inter_reading_state Emit::bookmark_bubble(void) {
+void Emit::nop(void) {
 	Emit::guard(Inter::Nop::new(Packaging::at(), Emit::baseline(Packaging::at()), NULL));
-	inter_reading_state b = Emit::bookmark();
-	Emit::guard(Inter::Nop::new(Packaging::at(), Emit::baseline(Packaging::at()), NULL));
-	return b;
 }
-
-inter_reading_state pragmas_bookmark;
-inter_reading_state package_types_bookmark;
-inter_reading_state holdings_bookmark;
 
 dictionary *extern_symbols = NULL;
 
@@ -43,22 +36,8 @@ int glob_count = 0;
 
 void Emit::begin(void) {
 	inter_repository *repo = Inter::create(1, 4096);
-	Packaging::initialise_IRS(repo);
-
-	Emit::guard(Inter::Version::new(Packaging::at(), 1, Emit::baseline(Packaging::at()), NULL));
-
-	Emit::comment(I"Package types:");
-	package_types_bookmark = Emit::bookmark_bubble();
-	PackageTypes::get(I"_plain");
-	PackageTypes::get(I"_code");
-
-	Emit::comment(I"Pragmas:");
-	pragmas_bookmark = Emit::bookmark_bubble();
-
-	Emit::comment(I"Primitives:");
-	Primitives::emit();
-
-	Packaging::enter_home_of(NULL); // Enters main, which we never exit
+	Packaging::initialise_state(repo);
+	Packaging::outside_all_packages();
 
 	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
 	packaging_state save = Packaging::enter_home_of(KU);
@@ -89,13 +68,10 @@ void Emit::begin(void) {
 
 	VirtualMachines::emit_fundamental_constants();
 	NewVerbs::ConjugateVerbDefinitions();
+}
 
-	holdings_bookmark = Emit::bookmark_bubble();
-
-	Packaging::incarnate(Hierarchy::resources());
-	Packaging::incarnate(Hierarchy::template());
-
-	Hierarchy::main()->write_position = Emit::bookmark_bubble();
+void Emit::version(int N) {
+	Emit::guard(Inter::Version::new(Packaging::at(), N, Emit::baseline(Packaging::at()), NULL));
 }
 
 inter_symbol *Emit::packagetype(text_stream *name, int enclosing) {

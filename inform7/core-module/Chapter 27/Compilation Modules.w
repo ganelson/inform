@@ -3,7 +3,7 @@
 @ =
 typedef struct compilation_module {
 	struct package_request *resources;
-	struct submodule_requests subpackages;
+	struct module_package *inter_presence;
 	struct parse_node *hanging_from;
 	struct text_stream *abbreviation;
 	MEMORY_MANAGEMENT
@@ -64,15 +64,16 @@ compilation_module *Modules::new(parse_node *from) {
 			else
 				Str::put(pos, Characters::tolower(Str::get(pos)));
 	}
-	C->resources = Packaging::resources_for_new_submodule(PN, &(C->subpackages));
+	C->inter_presence = Packaging::get_module(PN);
+	C->resources = C->inter_presence->the_package;
 	DISCARD_TEXT(PN);
 
 	return C;
 }
 
-submodule_requests *Modules::subpackages(compilation_module *C) {
+module_package *Modules::inter_presence(compilation_module *C) {
 	if (C == NULL) internal_error("no module");
-	return &(C->subpackages);
+	return C->inter_presence;
 }
 
 void Modules::propagate_downwards(parse_node *P, compilation_module *C) {

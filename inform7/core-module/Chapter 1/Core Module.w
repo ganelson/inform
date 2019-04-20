@@ -111,6 +111,7 @@ We need to itemise the structures we'll want to allocate:
 @e submodule_request_counter_MT
 @e submodule_identity_MT
 @e submodule_request_MT
+@e module_package_MT
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -192,6 +193,7 @@ ALLOCATE_INDIVIDUALLY(hierarchy_attachment_point)
 ALLOCATE_INDIVIDUALLY(submodule_request_counter)
 ALLOCATE_INDIVIDUALLY(submodule_identity)
 ALLOCATE_INDIVIDUALLY(submodule_request)
+ALLOCATE_INDIVIDUALLY(module_package)
 
 @ So much for the managed structures: now for the unmanaged structures.
 

@@ -180,10 +180,19 @@ inter_name *InterNames::derived(inter_name_generator *G, inter_name *from, wordi
 	return iname;
 }
 
-@ =
+@ Now that inames have been created, we allow their locations to be read:
+
+=
 package_request *InterNames::location(inter_name *iname) {
 	if (iname == NULL) return NULL;
 	return iname->location_in_hierarchy;
+}
+
+inter_symbols_table *InterNames::scope(inter_name *iname) {
+	if (iname == NULL) internal_error("can't determine scope of null name");
+	package_request *P = InterNames::location(iname);
+	if (P == NULL) return Inter::get_global_symbols(Emit::repository());
+	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 
 @h Conversion of inames to symbols.
@@ -203,7 +212,7 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 	if (iname->symbol == NULL) {
 		TEMPORARY_TEXT(NBUFF);
 		WRITE_TO(NBUFF, "%n", iname);
-		inter_symbols_table *T = Packaging::scope(Emit::repository(), iname);
+		inter_symbols_table *T = InterNames::scope(iname);
 		iname->symbol = Emit::new_symbol(T, NBUFF);
 		DISCARD_TEXT(NBUFF);
 	}

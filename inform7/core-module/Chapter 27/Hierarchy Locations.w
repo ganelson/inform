@@ -29,13 +29,13 @@ location_requirement HierarchyLocations::local_submodule(submodule_identity *sid
 
 location_requirement HierarchyLocations::generic_submodule(submodule_identity *sid) {
 	location_requirement req = HierarchyLocations::blank();
-	req.this_mundane_package = Packaging::generic_resource(sid);
+	req.this_mundane_package = Packaging::generic_submodule(sid);
 	return req;
 }
 
 location_requirement HierarchyLocations::synoptic_submodule(submodule_identity *sid) {
 	location_requirement req = HierarchyLocations::blank();
-	req.this_mundane_package = Packaging::synoptic_resource(sid);
+	req.this_mundane_package = Packaging::synoptic_submodule(sid);
 	return req;
 }
 
@@ -326,7 +326,7 @@ package_request *HierarchyLocations::attach_new_package(compilation_module *C, p
 	hierarchy_attachment_point *hap = haps_indexed_by_id[hap_id];
 
 	if (hap->requirements.this_local_submodule)
-		R = Packaging::request_resource(C, hap->requirements.this_local_submodule);
+		R = Packaging::request_submodule(C, hap->requirements.this_local_submodule);
 	else if (hap->requirements.this_mundane_package)
 		R = hap->requirements.this_mundane_package;
 	else if (hap->requirements.this_exotic_package >= 0)

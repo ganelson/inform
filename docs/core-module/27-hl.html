@@ -39,13 +39,13 @@
 
     <span class="reserved">location_requirement</span><span class="plain"> </span><span class="functiontext">HierarchyLocations::generic_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::blank</span><span class="plain">();</span>
-        <span class="identifier">req</span><span class="element">.this_mundane_package</span><span class="plain"> = </span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">);</span>
+        <span class="identifier">req</span><span class="element">.this_mundane_package</span><span class="plain"> = </span><span class="functiontext">Packaging::generic_submodule</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">location_requirement</span><span class="plain"> </span><span class="functiontext">HierarchyLocations::synoptic_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::blank</span><span class="plain">();</span>
-        <span class="identifier">req</span><span class="element">.this_mundane_package</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">);</span>
+        <span class="identifier">req</span><span class="element">.this_mundane_package</span><span class="plain"> = </span><span class="functiontext">Packaging::synoptic_submodule</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -396,7 +396,7 @@
         <span class="reserved">hierarchy_attachment_point</span><span class="plain"> *</span><span class="identifier">hap</span><span class="plain"> = </span><span class="identifier">haps_indexed_by_id</span><span class="plain">[</span><span class="identifier">hap_id</span><span class="plain">];</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_local_submodule</span><span class="plain">)</span>
-            <span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_local_submodule</span><span class="plain">);</span>
+            <span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Packaging::request_submodule</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_local_submodule</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_mundane_package</span><span class="plain">)</span>
             <span class="identifier">R</span><span class="plain"> = </span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_mundane_package</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hap</span><span class="plain">-</span><span class="element">&gt;requirements.this_exotic_package</span><span class="plain"> &gt;= 0)</span>

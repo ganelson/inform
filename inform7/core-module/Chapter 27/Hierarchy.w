@@ -1584,10 +1584,10 @@ package_request *Hierarchy::resources(void) {
 
 package_request *template_pr = NULL;
 package_request *Hierarchy::template(void) {
-	if (template_pr == NULL)
-		template_pr = Packaging::request(
-			InterNames::explicitly_named(I"template", Hierarchy::resources()),
-			PackageTypes::get(I"_module"));
+	if (template_pr == NULL) {
+		module_package *T = Packaging::get_module(I"template");
+		template_pr = T->the_package;
+	}
 	return template_pr;
 }
 

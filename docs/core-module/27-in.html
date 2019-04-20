@@ -226,7 +226,7 @@ a memo to attach):
 
 <p class="endnote">The function InterNames::explicitly_named_with_memo is used in 27/hl (<a href="27-hl.html#SP1_1">&#167;1.1</a>).</p>
 
-<p class="endnote">The function InterNames::explicitly_named is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP1_1">&#167;1.1</a>, <a href="27-hl.html#SP2">&#167;2</a>), 27/pc (<a href="27-pc.html#SP10">&#167;10</a>, <a href="27-pc.html#SP10_1">&#167;10.1</a>, <a href="27-pc.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function InterNames::explicitly_named is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP1_1">&#167;1.1</a>, <a href="27-hl.html#SP2">&#167;2</a>), 27/pc (<a href="27-pc.html#SP13">&#167;13</a>, <a href="27-pc.html#SP14">&#167;14</a>).</p>
 
 <p class="endnote">The function InterNames::explicitly_named_in_template is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
 
@@ -265,7 +265,8 @@ a memo to attach):
 
 <p class="endnote">The function InterNames::derived is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
 
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Now that inames have been created, we allow their locations to be read:
+</p>
 
 
 <pre class="display">
@@ -273,11 +274,20 @@ a memo to attach):
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;location_in_hierarchy</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="functiontext">InterNames::scope</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't determine scope of null name"</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Inter::get_global_symbols</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterNames::location is used in 27/hr (<a href="27-hr.html#SP3">&#167;3</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>), 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP8">&#167;8</a>, <a href="27-pc.html#SP9">&#167;9</a>, <a href="27-pc.html#SP11">&#167;11</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function InterNames::location is used in 27/hr (<a href="27-hr.html#SP3">&#167;3</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>), 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP11">&#167;11</a>, <a href="27-pc.html#SP14">&#167;14</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+
+<p class="endnote">The function InterNames::scope is used in <a href="#SP8">&#167;8</a>.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Conversion of inames to symbols. </b>The purpose of inames is not quite to represent identifier names occurring in
 given packages inside the Inter hierarchy: it would be more accurate to say
@@ -298,7 +308,7 @@ automatically here:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">NBUFF</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NBUFF</span><span class="plain">, </span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
-            <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">Packaging::scope</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+            <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">InterNames::scope</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;symbol</span><span class="plain"> = </span><span class="functiontext">Emit::new_symbol</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">NBUFF</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">NBUFF</span><span class="plain">);</span>
         <span class="plain">}</span>

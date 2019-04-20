@@ -36,16 +36,9 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::nop</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Nop::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
-        <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark</span><span class="plain">();</span>
-        <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Nop::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">pragmas_bookmark</span><span class="plain">;</span>
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_types_bookmark</span><span class="plain">;</span>
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">holdings_bookmark</span><span class="plain">;</span>
 
     <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">extern_symbols</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -53,22 +46,8 @@
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::begin</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">repo</span><span class="plain"> = </span><span class="identifier">Inter::create</span><span class="plain">(1, 4096);</span>
-        <span class="functiontext">Packaging::initialise_IRS</span><span class="plain">(</span><span class="identifier">repo</span><span class="plain">);</span>
-
-        <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Version::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), 1, </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
-
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Package types:"</span><span class="plain">);</span>
-        <span class="identifier">package_types_bookmark</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
-        <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_plain"</span><span class="plain">);</span>
-        <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_code"</span><span class="plain">);</span>
-
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Pragmas:"</span><span class="plain">);</span>
-        <span class="identifier">pragmas_bookmark</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
-
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Primitives:"</span><span class="plain">);</span>
-        <span class="functiontext">Primitives::emit</span><span class="plain">();</span>
-
-        <span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">); </span>    <span class="comment">Enters main, which we never exit</span>
+        <span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">repo</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::outside_all_packages</span><span class="plain">();</span>
 
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">KU</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">K_UNCHECKED_HL</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">KU</span><span class="plain">);</span>
@@ -99,13 +78,10 @@
 
         <span class="functiontext">VirtualMachines::emit_fundamental_constants</span><span class="plain">();</span>
         <span class="functiontext">NewVerbs::ConjugateVerbDefinitions</span><span class="plain">();</span>
+    <span class="plain">}</span>
 
-        <span class="identifier">holdings_bookmark</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
-
-        <span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="functiontext">Hierarchy::resources</span><span class="plain">());</span>
-        <span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="functiontext">Hierarchy::template</span><span class="plain">());</span>
-
-        <span class="functiontext">Hierarchy::main</span><span class="plain">()-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::version</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
+        <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Version::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="identifier">N</span><span class="plain">, </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Emit::packagetype</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">enclosing</span><span class="plain">) {</span>
@@ -153,19 +129,21 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Emit::repository is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>), 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP9">&#167;9</a>), 27/in (<a href="27-in.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Emit::repository is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>), 27/pc (<a href="27-pc.html#SP2">&#167;2</a>), 27/in (<a href="27-in.html#SP7">&#167;7</a>).</p>
 
 <p class="endnote">The function Emit::baseline is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>.</p>
 
-<p class="endnote">The function Emit::bookmark is used in <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">The function Emit::bookmark is used in <a href="#SP3">&#167;3</a>, 27/pc (<a href="27-pc.html#SP9">&#167;9</a>).</p>
 
-<p class="endnote">The function Emit::bookmark_bubble is used in 27/pc (<a href="27-pc.html#SP8">&#167;8</a>, <a href="27-pc.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function Emit::nop is used in 27/pc (<a href="27-pc.html#SP9">&#167;9</a>).</p>
 
 <p class="endnote">The function Emit::begin is used in 1/mr (<a href="1-mr.html#SP4_7">&#167;4.7</a>).</p>
 
+<p class="endnote">The function Emit::version is used in 27/pc (<a href="27-pc.html#SP10">&#167;10</a>).</p>
+
 <p class="endnote">The function Emit::packagetype is used in 27/pt (<a href="27-pt.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Emit::comment is used in 6/rlt (<a href="6-rlt.html#SP29">&#167;29</a>), 8/ef (<a href="8-ef.html#SP16">&#167;16</a>), 21/rl (<a href="21-rl.html#SP21">&#167;21</a>), 21/rb (<a href="21-rb.html#SP22">&#167;22</a>), 22/pu (<a href="22-pu.html#SP17">&#167;17</a>), 22/tp (<a href="22-tp.html#SP10">&#167;10</a>), 25/ci (<a href="25-ci.html#SP3_2">&#167;3.2</a>), 26/ct (<a href="26-ct.html#SP7">&#167;7</a>).</p>
+<p class="endnote">The function Emit::comment is used in 6/rlt (<a href="6-rlt.html#SP29">&#167;29</a>), 8/ef (<a href="8-ef.html#SP16">&#167;16</a>), 21/rl (<a href="21-rl.html#SP21">&#167;21</a>), 21/rb (<a href="21-rb.html#SP22">&#167;22</a>), 22/pu (<a href="22-pu.html#SP17">&#167;17</a>), 22/tp (<a href="22-tp.html#SP10">&#167;10</a>), 25/ci (<a href="25-ci.html#SP3_2">&#167;3.2</a>), 26/ct (<a href="26-ct.html#SP7">&#167;7</a>), 27/pc (<a href="27-pc.html#SP10">&#167;10</a>).</p>
 
 <p class="endnote">The function Emit::kind_to_symbol is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>.</p>
 
@@ -1114,7 +1092,7 @@ insert them into the Inter stream close to the top.
 
 <p class="endnote">The function Emit::code_comment is used in 4/am (<a href="4-am.html#SP34_2">&#167;34.2</a>), 5/lp (<a href="5-lp.html#SP27">&#167;27</a>, <a href="5-lp.html#SP29">&#167;29</a>, <a href="5-lp.html#SP30">&#167;30</a>), 6/nv (<a href="6-nv.html#SP18_2">&#167;18.2</a>), 12/cdp (<a href="12-cdp.html#SP1">&#167;1</a>), 13/rsfk (<a href="13-rsfk.html#SP24_1">&#167;24.1</a>), 20/eq (<a href="20-eq.html#SP47">&#167;47</a>), 25/ci (<a href="25-ci.html#SP3_2_3">&#167;3.2.3</a>), 25/cp (<a href="25-cp.html#SP5_1">&#167;5.1</a>).</p>
 
-<p class="endnote">The function Emit::package is used in 27/pc (<a href="27-pc.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function Emit::package is used in 27/pc (<a href="27-pc.html#SP12">&#167;12</a>).</p>
 
 <p class="endnote">The function Emit::block is used in 26/rt (<a href="26-rt.html#SP3">&#167;3</a>, <a href="26-rt.html#SP4_1">&#167;4.1</a>).</p>
 
@@ -1722,7 +1700,7 @@ insert them into the Inter stream close to the top.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Emit::change_translation is used in 5/un (<a href="5-un.html#SP1">&#167;1</a>), 13/rsfk (<a href="13-rsfk.html#SP24">&#167;24</a>), 15/pr (<a href="15-pr.html#SP21">&#167;21</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP1_1">&#167;1.1</a>), 27/pc (<a href="27-pc.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Emit::change_translation is used in 5/un (<a href="5-un.html#SP1">&#167;1</a>), 13/rsfk (<a href="13-rsfk.html#SP24">&#167;24</a>), 15/pr (<a href="15-pr.html#SP21">&#167;21</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP1_1">&#167;1.1</a>), 27/pc (<a href="27-pc.html#SP14">&#167;14</a>).</p>
 
 <p class="endnote">The function Emit::get_translation is used in 15/pr (<a href="15-pr.html#SP22_1">&#167;22.1</a>).</p>
 

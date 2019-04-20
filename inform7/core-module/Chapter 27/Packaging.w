@@ -58,17 +58,9 @@ void Packaging::log(package_request *R) {
 	}
 }
 
-@h State, entry and exit.
-PRs continue to be useful even after incarnation, though, because each one
-also contains a "write position". This is where emitted Inter code will go;
-and it means that not all of the code inside a package needs to be written
-at the same time. We can come and go as we please, adding code to packages
-all over the hierarchy, simply by switching to the write position in the
-package we wsnt to extend next.
-
-That switching is called "entering" a package. Every entry must be followed
-by a matching exit, which restores the write position to where it was before
-the entry. To restore state we need a way to record it, so:
+@ At any given time, emission of Inter is occurring to a particular position
+(in some incarnated package) and in the context of a given enclosure. This
+is summarised by the following state:
 
 =
 typedef struct packaging_state {
@@ -129,16 +121,19 @@ void Packaging::pop_IRS(void) {
 	packaging_entry_sp--;
 }
 
-@ The "current enclosure" ceases to be null the moment the |main| package
-is created, and from then on, it is always an enclosing package:
+@ The current state has the following invariant: the IRS part always points tp
+a validly initialised |inter_reading_state|, and the enclosure part is always
+either |NULL| or a package request which has an enclosing package type. (In
+fact, it is null only fleetingly: as soon as the |main| package is created,
+very early on, the enclosure is always an enclosing package.)
 
 =
-void Packaging::initialise_IRS(inter_repository *I) {
+void Packaging::initialise_state(inter_repository *I) {
 	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS(I));
 	current_state.saved_enclosure = NULL;
 }
 
-void Packaging::set_packaging_state(inter_reading_state *to, package_request *PR) {
+void Packaging::set_state(inter_reading_state *to, package_request *PR) {
 	current_state.saved_IRS = to;
 	while ((PR) && (PR->parent_request) &&
 		(Inter::Symbols::read_annotation(PR->eventual_type, ENCLOSING_IANN) != 1))
@@ -146,33 +141,94 @@ void Packaging::set_packaging_state(inter_reading_state *to, package_request *PR
 	current_state.saved_enclosure = PR;
 }
 
-void Packaging::move_write_position(inter_reading_state *to) {
-	Packaging::set_packaging_state(to, Packaging::enclosure());
+@h Bubbles.
+Inter code is stored in memory as a singly-linked list. This is fast and
+compact, but can make it awkward to insert material other than at the end,
+particularly if one insertion leads to another close by, midway in the
+process -- which is exactly what can happen when incarnating a nested set
+of packages.
+
+We avoid all such difficulties by placing "bubbles" at positions in the
+linked list where we will later need to return and place new material.
+A bubble is simply a pair of nops (no operations); any later inserted
+material will be placed between them.
+
+=
+inter_reading_state Packaging::bubble(void) {
+	Emit::nop();
+	inter_reading_state b = Emit::bookmark();
+	Emit::nop();
+	return b;
 }
 
+@h Outside the packages.
+The Inter specification calls for just a handful of resources to be placed
+at the top level, outside even the |main| package. Using bubbles, we leave
+room to insert those resources, then incarnate |main| and enter it.
+
+=
+inter_reading_state pragmas_bookmark;
+inter_reading_state package_types_bookmark;
+inter_reading_state holdings_bookmark;
+
+void Packaging::outside_all_packages(void) {
+	Emit::version(1);
+
+	Emit::comment(I"Package types:");
+	package_types_bookmark = Packaging::bubble();
+	PackageTypes::get(I"_plain"); // To ensure this is the first emitted ptype
+	PackageTypes::get(I"_code"); // And this the second
+
+	Emit::comment(I"Pragmas:");
+	pragmas_bookmark = Packaging::bubble();
+
+	Emit::comment(I"Primitives:");
+	Primitives::emit();
+
+	Packaging::enter(Hierarchy::main()); // Which we never exit
+	holdings_bookmark = Packaging::bubble();
+}
+
+@h Entry and exit.
+Each PR contains a "write position". This is where emitted Inter code will go;
+and it means that not all of the code inside a package needs to be written
+at the same time. We can come and go as we please, adding code to packages
+all over the hierarchy, simply by switching to the write position in the
+package we wsnt to extend next.
+
+That switching is called "entering" a package. Every entry must be followed
+by a matching exit, which restores the write position to where it was before
+the entry. (The one exception is that the entry into |main|, made above,
+is never followed by an exit.)
+
+=
 packaging_state Packaging::enter_home_of(inter_name *N) {
 	return Packaging::enter(InterNames::location(N));
 }
 
 packaging_state Packaging::enter(package_request *R) {
-	if (R == NULL) R = Hierarchy::main();
 	LOGIF(PACKAGING, "Entering $X\n", R);
 	packaging_state save = current_state;
 	Packaging::incarnate(R);
-	Packaging::set_packaging_state(&(R->write_position), Packaging::enclosure());
-	inter_reading_state *bubble = Packaging::push_IRS(Emit::bookmark_bubble());
-	Packaging::set_packaging_state(bubble, R);
+	Packaging::set_state(&(R->write_position), Packaging::enclosure());
+	inter_reading_state *bubble = Packaging::push_IRS(Packaging::bubble());
+	Packaging::set_state(bubble, R);
 	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", packaging_entry_sp, Packaging::enclosure());
 	return save;
 }
 
 void Packaging::exit(packaging_state save) {
-	Packaging::set_packaging_state(save.saved_IRS, save.saved_enclosure);
+	Packaging::set_state(save.saved_IRS, save.saved_enclosure);
 	Packaging::pop_IRS();
 	LOGIF(PACKAGING, "[%d] Back to $X\n", packaging_entry_sp, Packaging::enclosure());
 }
 
 @h Incarnation.
+The subtlety here is that if a package is incarnated, its parent must be
+incarnated first, and we need to make sure that their bubbles do not lie
+inside each other: if they did, material compiled to the parent and to the
+child would end up interleaved, in a way which violates the Inter
+specification.
 
 =
 inter_package *Packaging::incarnate(package_request *R) {
@@ -183,55 +239,60 @@ inter_package *Packaging::incarnate(package_request *R) {
 		if (R->parent_request) {
 			Packaging::incarnate(R->parent_request);
 			inter_reading_state *save_IRS = Packaging::at();
-			Packaging::set_packaging_state(&(R->parent_request->write_position), E);
-			inter_reading_state snapshot = Emit::bookmark_bubble();
-			Packaging::set_packaging_state(&snapshot, E);
+			Packaging::set_state(&(R->parent_request->write_position), E);
+			inter_reading_state package_bubble = Packaging::bubble();
+			Packaging::set_state(&package_bubble, E);
 			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
-			R->write_position = Emit::bookmark_bubble();
-			Packaging::set_packaging_state(save_IRS, E);
+			R->write_position = Packaging::bubble();
+			Packaging::set_state(save_IRS, E);
 		} else {
-			inter_reading_state snapshot = Emit::bookmark_bubble();
+			inter_reading_state package_bubble = Packaging::bubble();
 			inter_reading_state *save_IRS = Packaging::at();
-			Packaging::set_packaging_state(&snapshot, E);
+			Packaging::set_state(&package_bubble, E);
 			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
-			R->write_position = Emit::bookmark_bubble();
-			Packaging::set_packaging_state(save_IRS, E);
+			R->write_position = Packaging::bubble();
+			Packaging::set_state(save_IRS, E);
 		}
 		LOGIF(PACKAGING, "Made incarnate $X bookmark $5\n", R, &(R->write_position));
 	}
 	return R->actual_package;
 }
 
-inter_symbols_table *Packaging::scope(inter_repository *I, inter_name *N) {
-	if (N == NULL) internal_error("can't determine scope of null name");
-	package_request *P = InterNames::location(N);
-	if (P == NULL) return Inter::get_global_symbols(Emit::repository());
-	return Inter::Packages::scope(Packaging::incarnate(P));
-}
+@h Modules and submodules.
+With the code above, then, we can get the Inter hierarchy of packages set up
+as far as creating |main|. After that the Hierarchy code takes over, but it
+calls the routines below to assist.
 
-@ =
-package_request *generic_pr = NULL;
-package_request *Packaging::request_generic(void) {
-	if (generic_pr == NULL)
-		generic_pr = Packaging::request(
-			InterNames::explicitly_named(I"generic", Hierarchy::resources()),
-			PackageTypes::get(I"_module"));
-	return generic_pr;
-}
+In particular, 
 
-package_request *synoptic_pr = NULL;
-package_request *Packaging::request_synoptic(void) {
-	if (synoptic_pr == NULL)
-		synoptic_pr = Packaging::request(
-			InterNames::explicitly_named(I"synoptic", Hierarchy::resources()),
-			PackageTypes::get(I"_module"));
-	return synoptic_pr;
-}
+=
+dictionary *modules_indexed_by_name = NULL;
+int modules_created = FALSE;
 
-typedef struct submodule_identity {
-	struct text_stream *submodule_name;
+typedef struct module_package {
+	struct package_request *the_package;
+	struct linked_list *submodules; /* of |submodule_request| */
 	MEMORY_MANAGEMENT
-} submodule_identity;
+} module_package;
+
+module_package *Packaging::get_module(text_stream *name) {
+	if (modules_created == FALSE) {
+		modules_created = TRUE;
+		modules_indexed_by_name = Dictionaries::new(512, FALSE);
+	}
+	if (Dictionaries::find(modules_indexed_by_name, name))
+		return (module_package *) Dictionaries::read_value(modules_indexed_by_name, name);
+	
+	module_package *new_module = CREATE(module_package);
+	new_module->the_package =
+		Packaging::request(
+			InterNames::explicitly_named(name, Hierarchy::resources()),
+			PackageTypes::get(I"_module"));
+	new_module->submodules = NEW_LINKED_LIST(submodule_request);
+	Dictionaries::create(modules_indexed_by_name, name);
+	Dictionaries::write_value(modules_indexed_by_name, name, (void *) new_module);
+	return new_module;
+}
 
 submodule_identity *Packaging::register_submodule(text_stream *name) {
 	submodule_identity *sid = CREATE(submodule_identity);
@@ -239,85 +300,46 @@ submodule_identity *Packaging::register_submodule(text_stream *name) {
 	return sid;
 }
 
-
 typedef struct submodule_request {
 	struct submodule_identity *which_submodule;
 	struct package_request *where_found;
 	MEMORY_MANAGEMENT
 } submodule_request;
 
-typedef struct submodule_requests {
-	struct linked_list *submodules; /* of |submodule_identity| */
-} submodule_requests;
+typedef struct submodule_identity {
+	struct text_stream *submodule_name;
+	MEMORY_MANAGEMENT
+} submodule_identity;
 
-package_request *Packaging::resources_for_new_submodule(text_stream *name, submodule_requests *SR) {
-	inter_name *package_iname = InterNames::explicitly_named(name, Hierarchy::resources());
-	package_request *P = Packaging::request(package_iname, PackageTypes::get(I"_module"));
-	Packaging::initialise_submodules(SR);
-	return P;
+package_request *Packaging::request_submodule(compilation_module *C, submodule_identity *sid) {
+	if (C == NULL) return Packaging::generic_submodule(sid);
+	return Packaging::new_submodule_inner(Modules::inter_presence(C), sid);
 }
 
-void Packaging::initialise_submodules(submodule_requests *SR) {
-	SR->submodules = NEW_LINKED_LIST(submodule_request);
+package_request *Packaging::local_submodule(submodule_identity *sid) {
+	return Packaging::request_submodule(Modules::find(current_sentence), sid);
 }
 
-int generic_subpackages_initialised = FALSE;
-submodule_requests generic_subpackages;
-int synoptic_subpackages_initialised = FALSE;
-submodule_requests synoptic_subpackages;
-
-package_request *Packaging::request_resource(compilation_module *C, submodule_identity *sid) {
-	submodule_requests *SR = NULL;
-	package_request *parent = NULL;
-	if (C) {
-		SR = Modules::subpackages(C);
-		parent = C->resources;
-	} else {
-		if (generic_subpackages_initialised == FALSE) {
-			generic_subpackages_initialised = TRUE;
-			Packaging::initialise_submodules(&generic_subpackages);
-		}
-		SR = &generic_subpackages;
-		parent = Packaging::request_generic();
-	}
-	@<Handle the resource request@>;
+package_request *Packaging::generic_submodule(submodule_identity *sid) {
+	return Packaging::new_submodule_inner(Packaging::get_module(I"generic"), sid);
 }
 
-package_request *Packaging::local_resource(submodule_identity *sid) {
-	return Packaging::request_resource(Modules::find(current_sentence), sid);
+package_request *Packaging::synoptic_submodule(submodule_identity *sid) {
+	return Packaging::new_submodule_inner(Packaging::get_module(I"synoptic"), sid);
 }
 
-package_request *Packaging::generic_resource(submodule_identity *sid) {
-	if (generic_subpackages_initialised == FALSE) {
-		generic_subpackages_initialised = TRUE;
-		Packaging::initialise_submodules(&generic_subpackages);
-	}
-	submodule_requests *SR = &generic_subpackages;
-	package_request *parent = Packaging::request_generic();
-	@<Handle the resource request@>;
-}
-
-package_request *Packaging::synoptic_resource(submodule_identity *sid) {
-	if (synoptic_subpackages_initialised == FALSE) {
-		synoptic_subpackages_initialised = TRUE;
-		Packaging::initialise_submodules(&synoptic_subpackages);
-	}
-	submodule_requests *SR = &synoptic_subpackages;
-	package_request *parent = Packaging::request_synoptic();
-	@<Handle the resource request@>;
-}
-
-@<Handle the resource request@> =
+package_request *Packaging::new_submodule_inner(module_package *M, submodule_identity *sid) {
 	submodule_request *sr;
-	LOOP_OVER_LINKED_LIST(sr, submodule_request, SR->submodules)
+	LOOP_OVER_LINKED_LIST(sr, submodule_request, M->submodules)
 		if (sid == sr->which_submodule)
 			return sr->where_found;
-	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, parent);
+	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, M->the_package);
 	sr = CREATE(submodule_request);
 	sr->which_submodule = sid;
 	sr->where_found = Packaging::request(iname, PackageTypes::get(I"_submodule"));
-	ADD_TO_LINKED_LIST(sr, submodule_request, SR->submodules);
+	ADD_TO_LINKED_LIST(sr, submodule_request, M->submodules);
 	return sr->where_found;
+}
 
 @ 
 

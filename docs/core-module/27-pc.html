@@ -40,7 +40,7 @@ called "incarnation".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure package_request is accessed in 26/iti, 27/hl, 27/ei and here.</p>
+<p class="endnote">The structure package_request is accessed in 26/iti, 27/hl and here.</p>
 
 <p class="endnote">The structure submodule_request_counter is private to this section.</p>
 
@@ -62,7 +62,7 @@ called "incarnation".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::request is used in <a href="#SP10">&#167;10</a>, <a href="#SP10_1">&#167;10.1</a>, <a href="#SP11">&#167;11</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/hl (<a href="27-hl.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Packaging::request is used in <a href="#SP13">&#167;13</a>, <a href="#SP14">&#167;14</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/hl (<a href="27-hl.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>In the debugging log, package requests are printed in a form looking a
 little like URLs, except that they run in the reverse order, innermost first
@@ -92,17 +92,9 @@ than forward slashes are used as dividers.
 
 <p class="endnote">The function Packaging::log is used in 1/cm (<a href="1-cm.html#SP5">&#167;5</a>, <a href="1-cm.html#SP6_6">&#167;6.6</a>).</p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. State, entry and exit. </b>PRs continue to be useful even after incarnation, though, because each one
-also contains a "write position". This is where emitted Inter code will go;
-and it means that not all of the code inside a package needs to be written
-at the same time. We can come and go as we please, adding code to packages
-all over the hierarchy, simply by switching to the write position in the
-package we wsnt to extend next.
-</p>
-
-<p class="inwebparagraph">That switching is called "entering" a package. Every entry must be followed
-by a matching exit, which restores the write position to where it was before
-the entry. To restore state we need a way to record it, so:
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>At any given time, emission of Inter is occurring to a particular position
+(in some incarnated package) and in the context of a given enclosure. This
+is summarised by the following state:
 </p>
 
 
@@ -155,9 +147,9 @@ in an uninitialised state &mdash; though in fact they will not).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::at is used in <a href="#SP9">&#167;9</a>, 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Packaging::at is used in <a href="#SP12">&#167;12</a>, 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Packaging::enclosure is used in <a href="#SP8">&#167;8</a>, <a href="#SP9">&#167;9</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Packaging::enclosure is used in <a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>States are intentionally very lightweight, and in particular they contain
 pointers to the IRS structures rather than containing a copy thereof. But
@@ -194,51 +186,132 @@ itself during compilation.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::push_IRS is used in <a href="#SP8">&#167;8</a>.</p>
+<p class="endnote">The function Packaging::push_IRS is used in <a href="#SP8">&#167;8</a>, <a href="#SP11">&#167;11</a>.</p>
 
-<p class="endnote">The function Packaging::pop_IRS is used in <a href="#SP8">&#167;8</a>.</p>
+<p class="endnote">The function Packaging::pop_IRS is used in <a href="#SP11">&#167;11</a>.</p>
 
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The "current enclosure" ceases to be null the moment the <code class="display"><span class="extract">main</span></code> package
-is created, and from then on, it is always an enclosing package:
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The current state has the following invariant: the IRS part always points tp
+a validly initialised <code class="display"><span class="extract">inter_reading_state</span></code>, and the enclosure part is always
+either <code class="display"><span class="extract">NULL</span></code> or a package request which has an enclosing package type. (In
+fact, it is null only fleetingly: as soon as the <code class="display"><span class="extract">main</span></code> package is created,
+very early on, the enclosure is always an enclosing package.)
 </p>
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_IRS</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="identifier">current_state</span><span class="element">.saved_enclosure</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain">) {</span>
         <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">PR</span><span class="plain">) &amp;&amp; (</span><span class="identifier">PR</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, </span><span class="identifier">ENCLOSING_IANN</span><span class="plain">) != 1))</span>
             <span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">PR</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">;</span>
         <span class="identifier">current_state</span><span class="element">.saved_enclosure</span><span class="plain"> = </span><span class="identifier">PR</span><span class="plain">;</span>
     <span class="plain">}</span>
+</pre>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::move_write_position</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
-        <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Packaging::initialise_state is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Packaging::set_state is used in <a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>.</p>
+
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Bubbles. </b>Inter code is stored in memory as a singly-linked list. This is fast and
+compact, but can make it awkward to insert material other than at the end,
+particularly if one insertion leads to another close by, midway in the
+process &mdash; which is exactly what can happen when incarnating a nested set
+of packages.
+</p>
+
+<p class="inwebparagraph">We avoid all such difficulties by placing "bubbles" at positions in the
+linked list where we will later need to return and place new material.
+A bubble is simply a pair of nops (no operations); any later inserted
+material will be placed between them.
+</p>
+
+
+<pre class="display">
+    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="functiontext">Packaging::bubble</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext">Emit::nop</span><span class="plain">();</span>
+        <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark</span><span class="plain">();</span>
+        <span class="functiontext">Emit::nop</span><span class="plain">();</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
     <span class="plain">}</span>
+</pre>
 
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Packaging::bubble is used in <a href="#SP10">&#167;10</a>, <a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>.</p>
+
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Outside the packages. </b>The Inter specification calls for just a handful of resources to be placed
+at the top level, outside even the <code class="display"><span class="extract">main</span></code> package. Using bubbles, we leave
+room to insert those resources, then incarnate <code class="display"><span class="extract">main</span></code> and enter it.
+</p>
+
+
+<pre class="display">
+    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">pragmas_bookmark</span><span class="plain">;</span>
+    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_types_bookmark</span><span class="plain">;</span>
+    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">holdings_bookmark</span><span class="plain">;</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::outside_all_packages</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext">Emit::version</span><span class="plain">(1);</span>
+
+        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Package types:"</span><span class="plain">);</span>
+        <span class="identifier">package_types_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+        <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_plain"</span><span class="plain">); </span>    <span class="comment">To ensure this is the first emitted ptype</span>
+        <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_code"</span><span class="plain">); </span>    <span class="comment">And this the second</span>
+
+        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Pragmas:"</span><span class="plain">);</span>
+        <span class="identifier">pragmas_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+
+        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Primitives:"</span><span class="plain">);</span>
+        <span class="functiontext">Primitives::emit</span><span class="plain">();</span>
+
+        <span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="functiontext">Hierarchy::main</span><span class="plain">()); </span>    <span class="comment">Which we never exit</span>
+        <span class="identifier">holdings_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Packaging::outside_all_packages is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Entry and exit. </b>Each PR contains a "write position". This is where emitted Inter code will go;
+and it means that not all of the code inside a package needs to be written
+at the same time. We can come and go as we please, adding code to packages
+all over the hierarchy, simply by switching to the write position in the
+package we wsnt to extend next.
+</p>
+
+<p class="inwebparagraph">That switching is called "entering" a package. Every entry must be followed
+by a matching exit, which restores the write position to where it was before
+the entry. (The one exception is that the entry into <code class="display"><span class="extract">main</span></code>, made above,
+is never followed by an exit.)
+</p>
+
+
+<pre class="display">
     <span class="reserved">packaging_state</span><span class="plain"> </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">packaging_state</span><span class="plain"> </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::main</span><span class="plain">();</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PACKAGING</span><span class="plain">, </span><span class="string">"Entering $X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">current_state</span><span class="plain">;</span>
         <span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">), </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
-        <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">());</span>
-        <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(</span><span class="identifier">bubble</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">), </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
+        <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="functiontext">Packaging::bubble</span><span class="plain">());</span>
+        <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">bubble</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PACKAGING</span><span class="plain">, </span><span class="string">"[%d] Current enclosure is $X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">packaging_entry_sp</span><span class="plain">, </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">save</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain">) {</span>
-        <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(</span><span class="identifier">save</span><span class="element">.saved_IRS</span><span class="plain">, </span><span class="identifier">save</span><span class="element">.saved_enclosure</span><span class="plain">);</span>
+        <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">save</span><span class="element">.saved_IRS</span><span class="plain">, </span><span class="identifier">save</span><span class="element">.saved_enclosure</span><span class="plain">);</span>
         <span class="functiontext">Packaging::pop_IRS</span><span class="plain">();</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PACKAGING</span><span class="plain">, </span><span class="string">"[%d] Back to $X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">packaging_entry_sp</span><span class="plain">, </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
     <span class="plain">}</span>
@@ -246,19 +319,18 @@ is created, and from then on, it is always an enclosing package:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::initialise_IRS is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Packaging::set_packaging_state is used in <a href="#SP9">&#167;9</a>.</p>
-
-<p class="endnote">The function Packaging::move_write_position appears nowhere else.</p>
-
 <p class="endnote">The function Packaging::enter_home_of is used in 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Packaging::enter is used in 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Packaging::enter is used in <a href="#SP10">&#167;10</a>, 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Packaging::exit is used in 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Incarnation. </b></p>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Incarnation. </b>The subtlety here is that if a package is incarnated, its parent must be
+incarnated first, and we need to make sure that their bubbles do not lie
+inside each other: if they did, material compiled to the parent and to the
+child would end up interleaved, in a way which violates the Inter
+specification.
+</p>
 
 
 <pre class="display">
@@ -270,65 +342,67 @@ is created, and from then on, it is always an enclosing package:
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">) {</span>
                 <span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">);</span>
                 <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">), </span><span class="identifier">E</span><span class="plain">);</span>
-                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">snapshot</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(&amp;</span><span class="identifier">snapshot</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
+                <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">), </span><span class="identifier">E</span><span class="plain">);</span>
+                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+                <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;</span><span class="identifier">package_bubble</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="functiontext">Emit::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain">));</span>
-                <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(</span><span class="identifier">save_IRS</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
+                <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+                <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">save_IRS</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">snapshot</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
+                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
                 <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(&amp;</span><span class="identifier">snapshot</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
+                <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;</span><span class="identifier">package_bubble</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="functiontext">Emit::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain">));</span>
-                <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_bubble</span><span class="plain">();</span>
-                <span class="functiontext">Packaging::set_packaging_state</span><span class="plain">(</span><span class="identifier">save_IRS</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
+                <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+                <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">save_IRS</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PACKAGING</span><span class="plain">, </span><span class="string">"Made incarnate $X bookmark $5\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="functiontext">Packaging::scope</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't determine scope of null name"</span><span class="plain">);</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Inter::get_global_symbols</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::incarnate is used in <a href="#SP8">&#167;8</a>, 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Packaging::incarnate is used in <a href="#SP11">&#167;11</a>, 27/in (<a href="27-in.html#SP7">&#167;7</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Packaging::scope is used in 27/in (<a href="27-in.html#SP8">&#167;8</a>).</p>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Modules and submodules. </b>With the code above, then, we can get the Inter hierarchy of packages set up
+as far as creating <code class="display"><span class="extract">main</span></code>. After that the Hierarchy code takes over, but it
+calls the routines below to assist.
+</p>
 
-<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="inwebparagraph">In particular,
+</p>
 
 
 <pre class="display">
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">generic_pr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::request_generic</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">generic_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">generic_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"generic"</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">()),</span>
-                <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_module"</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">generic_pr</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">modules_indexed_by_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">modules_created</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">synoptic_pr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::request_synoptic</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">synoptic_pr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">synoptic_pr</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"synoptic"</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">()),</span>
-                <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_module"</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">synoptic_pr</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">submodule_identity</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">submodule_name</span><span class="plain">;</span>
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module_package</span><span class="plain"> {</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">the_package</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">submodules</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">submodule_request</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">submodule_identity</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="reserved">module_package</span><span class="plain">;</span>
+
+    <span class="reserved">module_package</span><span class="plain"> *</span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">modules_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">modules_created</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">modules_indexed_by_name</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(512, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Dictionaries::find</span><span class="plain">(</span><span class="identifier">modules_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">module_package</span><span class="plain"> *) </span><span class="identifier">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">modules_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+
+        <span class="reserved">module_package</span><span class="plain"> *</span><span class="identifier">new_module</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">module_package</span><span class="plain">);</span>
+        <span class="identifier">new_module</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain"> =</span>
+            <span class="functiontext">Packaging::request</span><span class="plain">(</span>
+                <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">()),</span>
+                <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_module"</span><span class="plain">));</span>
+        <span class="identifier">new_module</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">submodule_request</span><span class="plain">);</span>
+        <span class="identifier">Dictionaries::create</span><span class="plain">(</span><span class="identifier">modules_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">modules_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">new_module</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">new_module</span><span class="plain">;</span>
+    <span class="plain">}</span>
 
     <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="functiontext">Packaging::register_submodule</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain">);</span>
@@ -336,124 +410,71 @@ is created, and from then on, it is always an enclosing package:
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sid</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">submodule_request</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">which_submodule</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">where_found</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">submodule_request</span><span class="plain">;</span>
 
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">submodule_requests</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">submodules</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">submodule_identity</span></code></span>
-    <span class="plain">} </span><span class="reserved">submodule_requests</span><span class="plain">;</span>
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">submodule_identity</span><span class="plain"> {</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">submodule_name</span><span class="plain">;</span>
+        <span class="identifier">MEMORY_MANAGEMENT</span>
+    <span class="plain">} </span><span class="reserved">submodule_identity</span><span class="plain">;</span>
 
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::resources_for_new_submodule</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">submodule_requests</span><span class="plain"> *</span><span class="identifier">SR</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">package_iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">());</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="identifier">package_iname</span><span class="plain">, </span><span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_module"</span><span class="plain">));</span>
-        <span class="functiontext">Packaging::initialise_submodules</span><span class="plain">(</span><span class="identifier">SR</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::request_submodule</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::generic_submodule</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::new_submodule_inner</span><span class="plain">(</span><span class="functiontext">Modules::inter_presence</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_submodules</span><span class="plain">(</span><span class="reserved">submodule_requests</span><span class="plain"> *</span><span class="identifier">SR</span><span class="plain">) {</span>
-        <span class="identifier">SR</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">submodule_request</span><span class="plain">);</span>
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::local_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::request_submodule</span><span class="plain">(</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">generic_subpackages_initialised</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">submodule_requests</span><span class="plain"> </span><span class="identifier">generic_subpackages</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">synoptic_subpackages_initialised</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">submodule_requests</span><span class="plain"> </span><span class="identifier">synoptic_subpackages</span><span class="plain">;</span>
-
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
-        <span class="reserved">submodule_requests</span><span class="plain"> *</span><span class="identifier">SR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">) {</span>
-            <span class="identifier">SR</span><span class="plain"> = </span><span class="functiontext">Modules::subpackages</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="identifier">parent</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;resources</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">generic_subpackages_initialised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">generic_subpackages_initialised</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="functiontext">Packaging::initialise_submodules</span><span class="plain">(&amp;</span><span class="identifier">generic_subpackages</span><span class="plain">);</span>
-            <span class="plain">}</span>
-            <span class="identifier">SR</span><span class="plain"> = &amp;</span><span class="identifier">generic_subpackages</span><span class="plain">;</span>
-            <span class="identifier">parent</span><span class="plain"> = </span><span class="functiontext">Packaging::request_generic</span><span class="plain">();</span>
-        <span class="plain">}</span>
-        &lt;<span class="cwebmacro">Handle the resource request</span> <span class="cwebmacronumber">10.1</span>&gt;<span class="plain">;</span>
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::generic_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::new_submodule_inner</span><span class="plain">(</span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"generic"</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::local_resource</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::request_resource</span><span class="plain">(</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::synoptic_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::new_submodule_inner</span><span class="plain">(</span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"synoptic"</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::generic_resource</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">generic_subpackages_initialised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">generic_subpackages_initialised</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="functiontext">Packaging::initialise_submodules</span><span class="plain">(&amp;</span><span class="identifier">generic_subpackages</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">submodule_requests</span><span class="plain"> *</span><span class="identifier">SR</span><span class="plain"> = &amp;</span><span class="identifier">generic_subpackages</span><span class="plain">;</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">parent</span><span class="plain"> = </span><span class="functiontext">Packaging::request_generic</span><span class="plain">();</span>
-        &lt;<span class="cwebmacro">Handle the resource request</span> <span class="cwebmacronumber">10.1</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::synoptic_resource</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">synoptic_subpackages_initialised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">synoptic_subpackages_initialised</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="functiontext">Packaging::initialise_submodules</span><span class="plain">(&amp;</span><span class="identifier">synoptic_subpackages</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">submodule_requests</span><span class="plain"> *</span><span class="identifier">SR</span><span class="plain"> = &amp;</span><span class="identifier">synoptic_subpackages</span><span class="plain">;</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">parent</span><span class="plain"> = </span><span class="functiontext">Packaging::request_synoptic</span><span class="plain">();</span>
-        &lt;<span class="cwebmacro">Handle the resource request</span> <span class="cwebmacronumber">10.1</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function Packaging::request_generic appears nowhere else.</p>
-
-<p class="endnote">The function Packaging::request_synoptic appears nowhere else.</p>
-
-<p class="endnote">The function Packaging::register_submodule is used in 27/hr (<a href="27-hr.html#SP1_2">&#167;1.2</a>, <a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_10">&#167;1.10</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_16">&#167;1.16</a>, <a href="27-hr.html#SP1_18">&#167;1.18</a>, <a href="27-hr.html#SP1_20">&#167;1.20</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_26">&#167;1.26</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_38">&#167;1.38</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>, <a href="27-hr.html#SP1_42">&#167;1.42</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>).</p>
-
-<p class="endnote">The function Packaging::resources_for_new_submodule is used in 27/cm (<a href="27-cm.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Packaging::initialise_submodules appears nowhere else.</p>
-
-<p class="endnote">The function Packaging::request_resource is used in 27/hl (<a href="27-hl.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Packaging::local_resource appears nowhere else.</p>
-
-<p class="endnote">The function Packaging::generic_resource is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
-
-<p class="endnote">The function Packaging::synoptic_resource is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
-
-<p class="endnote">The structure submodule_identity is private to this section.</p>
-
-<p class="endnote">The structure submodule_request is private to this section.</p>
-
-<p class="endnote">The structure submodule_requests is private to this section.</p>
-
-<p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Handle the resource request</span> <span class="cwebmacronumber">10.1</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::new_submodule_inner</span><span class="plain">(</span><span class="reserved">module_package</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
         <span class="reserved">submodule_request</span><span class="plain"> *</span><span class="identifier">sr</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">sr</span><span class="plain">, </span><span class="reserved">submodule_request</span><span class="plain">, </span><span class="identifier">SR</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain">)</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">sr</span><span class="plain">, </span><span class="reserved">submodule_request</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sid</span><span class="plain"> == </span><span class="identifier">sr</span><span class="plain">-</span><span class="element">&gt;which_submodule</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sr</span><span class="plain">-</span><span class="element">&gt;where_found</span><span class="plain">;</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">-</span><span class="element">&gt;submodule_name</span><span class="plain">, </span><span class="identifier">parent</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">-</span><span class="element">&gt;submodule_name</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain">);</span>
         <span class="identifier">sr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">submodule_request</span><span class="plain">);</span>
         <span class="identifier">sr</span><span class="plain">-</span><span class="element">&gt;which_submodule</span><span class="plain"> = </span><span class="identifier">sid</span><span class="plain">;</span>
         <span class="identifier">sr</span><span class="plain">-</span><span class="element">&gt;where_found</span><span class="plain"> = </span><span class="functiontext">Packaging::request</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_submodule"</span><span class="plain">));</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">sr</span><span class="plain">, </span><span class="reserved">submodule_request</span><span class="plain">, </span><span class="identifier">SR</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain">);</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">sr</span><span class="plain">, </span><span class="reserved">submodule_request</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sr</span><span class="plain">-</span><span class="element">&gt;where_found</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP10">&#167;10</a> (three times).</p>
+<p class="endnote">The function Packaging::get_module is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/cm (<a href="27-cm.html#SP2">&#167;2</a>).</p>
 
-<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
+<p class="endnote">The function Packaging::register_submodule is used in 27/hr (<a href="27-hr.html#SP1_2">&#167;1.2</a>, <a href="27-hr.html#SP1_4">&#167;1.4</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_10">&#167;1.10</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_16">&#167;1.16</a>, <a href="27-hr.html#SP1_18">&#167;1.18</a>, <a href="27-hr.html#SP1_20">&#167;1.20</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_26">&#167;1.26</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_38">&#167;1.38</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>, <a href="27-hr.html#SP1_42">&#167;1.42</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>).</p>
+
+<p class="endnote">The function Packaging::request_submodule is used in 27/hl (<a href="27-hl.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Packaging::local_submodule appears nowhere else.</p>
+
+<p class="endnote">The function Packaging::generic_submodule is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Packaging::synoptic_submodule is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Packaging::new_submodule_inner appears nowhere else.</p>
+
+<p class="endnote">The structure module_package is accessed in 27/hr, 27/cm and here.</p>
+
+<p class="endnote">The structure submodule_request is private to this section.</p>
+
+<p class="endnote">The structure submodule_identity is private to this section.</p>
+
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
 
 
 <pre class="definitions">
