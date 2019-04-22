@@ -38,7 +38,7 @@ definition (of, say, a property or kind) belongs.
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">compilation_module</span><span class="plain">;</span>
 
-    <span class="comment">compilation_module *pool_module = NULL;</span>
+    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">source_text_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the main text</span>
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the Standard Rules</span>
 
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::SR</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -59,7 +59,6 @@ level-0 headings, which are the nodes from which these blocks of source text han
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::traverse_to_define</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-    <span class="comment">pool_module = Modules::new(NULL);</span>
         <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Modules::look_for_cu</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -68,47 +67,30 @@ level-0 headings, which are the nodes from which these blocks of source text han
             <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">ParseTree::get_embodying_heading</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">) &amp;&amp; (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> == 0)) {</span>
                 <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SR_module</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">cm</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="comment">if ((from) &amp;&amp; (Wordings::nonempty(ParseTree::get_text(from)))) {</span>
-    <span class="comment">WRITE_TO(STDOUT, "MN: %W\n", ParseTree::get_text(from));</span>
-            <span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">Wordings::location</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">standard_rules_extension</span><span class="plain">;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
-                <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">))));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="comment">} else {</span>
-    <span class="comment">WRITE_TO(STDOUT, "MN: Blank!\n");</span>
-    <span class="comment">return NULL;</span>
-    <span class="comment">}</span>
-
-    <span class="comment">if ((owner == NULL) &amp;&amp; (pool_module != NULL)) return pool_module;</span>
+        <span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">Wordings::location</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">standard_rules_extension</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
+            <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">))));</span>
 
         <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain">);</span>
         <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;hanging_from</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
-    <span class="comment">if (C-&gt;allocation_id == 0) C-&gt;abbreviation = I"root";</span>
-    <span class="comment">else {</span>
-    <span class="comment">C-&gt;abbreviation = Str::new();</span>
-    <span class="comment">if (from == NULL) internal_error("unlocated CM");</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inappropriate CM"</span><span class="plain">);</span>
-    <span class="comment">char *x = "";</span>
-    <span class="comment">if ((C-&gt;allocation_id == 1) &amp;&amp; (export_mode)) x = "x";</span>
-    <span class="comment">if ((C-&gt;allocation_id == 0) &amp;&amp; (export_mode)) x = "x";</span>
-    <span class="comment">WRITE_TO(C-&gt;abbreviation, "m%s%d", x, C-&gt;allocation_id);</span>
-            <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-    <span class="comment">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inappropriate CM"</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compose a name for the module package this will lead to</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain"> = </span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
+        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain"> = </span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">);</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">);</span>
 
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">standard_rules_extension</span><span class="plain">) </span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">source_text_module</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -132,11 +114,11 @@ compiled from the compilation module will go into a package of that name.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">standard_rules_extension</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="string">"standard_rules"</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="string">"source_text"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">standard_rules_extension</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">, </span><span class="string">"standard_rules"</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">, </span><span class="string">"source_text"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="string">"%X"</span><span class="plain">, </span><span class="functiontext">Extensions::Files::get_eid</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
-            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">PN</span><span class="plain">)</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">, </span><span class="string">"%X"</span><span class="plain">, </span><span class="functiontext">Extensions::Files::get_eid</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
+            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">package_name</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">' '</span><span class="plain">)</span>
                     <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
                 <span class="reserved">else</span>
@@ -194,8 +176,7 @@ but that's now easy, as we just have to read off the annotation made above &mdas
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ParseTree::get_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
-    <span class="comment">return pool_module;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">source_text_module</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -211,22 +192,9 @@ a concept of "current sentence".
 <pre class="display">
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">current_CM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::current_or_null</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
-    <span class="comment">if (current_CM) return current_CM;</span>
-    <span class="comment">return NULL;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::current</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_CM</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_CM</span><span class="plain">;</span>
-    <span class="comment">return pool_module;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_CM</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="comment">void Modules::set_current_to_SR(void) {</span>
-    <span class="comment">if (SR_module == NULL) internal_error("too soon");</span>
-    <span class="comment">current_CM = SR_module;</span>
-    <span class="comment">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">CM</span><span class="plain">) {</span>
         <span class="identifier">current_CM</span><span class="plain"> = </span><span class="identifier">CM</span><span class="plain">;</span>
@@ -239,8 +207,6 @@ a concept of "current sentence".
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Modules::current_or_null appears nowhere else.</p>
 
 <p class="endnote">The function Modules::current is used in 9/tfa (<a href="9-tfa.html#SP7_2">&#167;7.2</a>), 15/ep (<a href="15-ep.html#SP4">&#167;4</a>), 15/ma (<a href="15-ma.html#SP11_3">&#167;11.3</a>), 17/ts (<a href="17-ts.html#SP5">&#167;5</a>, <a href="17-ts.html#SP11_1">&#167;11.1</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 23/ad (<a href="23-ad.html#SP5">&#167;5</a>), 26/jl (<a href="26-jl.html#SP4">&#167;4</a>).</p>
 
@@ -266,7 +232,7 @@ Packaging code.
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="27-tr.html">Back to 'Translation'</a></li><li><a href="27-pc.html">Continue with 'Packaging'</a></li></ul><hr class="tocbar">
-<!--End of weave: 187 lines from a web of 94125-->
+<!--End of weave-->
 	</body>
 </html>
 
