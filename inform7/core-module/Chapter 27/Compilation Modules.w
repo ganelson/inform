@@ -42,9 +42,7 @@ void Modules::traverse_to_define(void) {
 void Modules::look_for_cu(parse_node *p) {
 	if (ParseTree::get_type(p) == HEADING_NT) {
 		heading *h = ParseTree::get_embodying_heading(p);
-		if ((h) && (h->level == 0)) {
-			compilation_module *cm = Modules::new(p);
-		}
+		if ((h) && (h->level == 0)) Modules::new(p);
 	}
 }
 
@@ -65,6 +63,15 @@ compilation_module *Modules::new(parse_node *from) {
 	@<Compose a name for the module package this will lead to@>;
 	C->inter_presence = Packaging::get_module(package_name);
 	DISCARD_TEXT(package_name);
+
+	if (owner) {
+		Emit::metadata(C->inter_presence->the_package, I"`author", owner->ef_id.raw_author_name);
+		Emit::metadata(C->inter_presence->the_package, I"`title", owner->ef_id.raw_title);
+		TEMPORARY_TEXT(V);
+		WRITE_TO(V, "%+W", Wordings::one_word(owner->version_loaded));
+		Emit::metadata(C->inter_presence->the_package, I"`version", V);
+		DISCARD_TEXT(V);
+	}
 
 	if (owner == standard_rules_extension) SR_module = C;
 	if (owner == NULL) source_text_module = C;

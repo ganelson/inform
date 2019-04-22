@@ -170,7 +170,6 @@ will be the correct decision.
 int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
 	gpr_kit *gprk, inference_subject *subj,
 	grammar_verb *gv, inter_name *rname) {
-STREAM_FLUSH(DL);
 	int test_distinguishability = FALSE, sometimes_has_visible_properties = FALSE;
 	inter_name *N = NULL;
 
@@ -190,9 +189,6 @@ STREAM_FLUSH(DL);
 	inter_name *compile_to = rname;
 	if (compile_to == NULL) compile_to = N;
 	if (compile_to == NULL) internal_error("no parse name routine name given");
-
-LOG("\n\nAND %n\n", compile_to);
-STREAM_FLUSH(DL);
 
 	*save = Routines::begin(compile_to);
 

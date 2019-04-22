@@ -273,6 +273,18 @@ high-level Inform 7 code these are labelled with the letters A to Z, but in
 inter, the numbers 0 to 25 must be used. The |VALUE| must be textual, that is,
 must be a |text| literal.
 
+@h Metadata.
+This has no effect on the code generated, and is simply semantic markup for
+the benefit of onlookers. The scheme here is that any package can have a
+dictionary of textual key-value pairs, specified by:
+
+	|metadata KEY: VALUE|
+
+Here |KEY| must be a (public) symbol whose name begins with a backtick, and
+|VALUE| must be literal text. For example:
+
+	|metadata `name: "blue book"|
+
 @h Import and Export.
 These are experimental constructs used at one time for an earlier try at
 caching Standard Rules inter. They are not likely to survive into the final

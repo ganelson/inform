@@ -56,6 +56,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">GENERATE_INTER_STAGESTEP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">GENERATE_INTER_BINARY_STAGESTEP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SUMMARISE_STAGESTEP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INVENTORY_STAGESTEP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">STOP_STAGESTEP</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Parsing. </b></p>
@@ -133,6 +134,7 @@
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"generate-inter"</span><span class="plain">)) </span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;step_code</span><span class="plain"> = </span><span class="constant">GENERATE_INTER_STAGESTEP</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"generate-inter-binary"</span><span class="plain">)) </span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;step_code</span><span class="plain"> = </span><span class="constant">GENERATE_INTER_BINARY_STAGESTEP</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"summarise"</span><span class="plain">)) </span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;step_code</span><span class="plain"> = </span><span class="constant">SUMMARISE_STAGESTEP</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inventory"</span><span class="plain">)) </span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;step_code</span><span class="plain"> = </span><span class="constant">INVENTORY_STAGESTEP</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"stop"</span><span class="plain">)) </span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;step_code</span><span class="plain"> = </span><span class="constant">STOP_STAGESTEP</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such step code"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ST</span><span class="plain">;</span>
@@ -321,6 +323,16 @@
                     <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">text_out_file</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">INVENTORY_STAGESTEP</span><span class="plain">: {</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">, </span><span class="string">"inventory:%S"</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
+                    <span class="identifier">Log::new_stage</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">);</span>
+                    <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">CodeGen::Stage::extricate</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
+                    &lt;<span class="cwebmacro">Open the file for text output</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
+                    <span class="functiontext">CodeGen::Inventory::print</span><span class="plain">(</span><span class="identifier">text_out_file</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
+                    <span class="functiontext">CodeGen::Inventory::print</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
+                    <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">text_out_file</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">STOP_STAGESTEP</span><span class="plain">: </span><span class="identifier">active</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown stage step"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -352,7 +364,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP4">&#167;4</a> (five times).</p>
+<p class="endnote">This code is used in <a href="#SP4">&#167;4</a> (6 times).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 

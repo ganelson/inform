@@ -11,4 +11,8 @@ package main _plain
 	package sub _plain
 		symbol public misc y
 		symbol external misc K_number == /main/K_number
+		symbol public misc `name
+		symbol public misc `purpose
+		metadata `name: "My test subpackage"
+		metadata `purpose: "No real purpose, honestly"
 		constant y K_number = 17

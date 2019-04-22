@@ -371,6 +371,16 @@ void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 	Packaging::exit(save);
 }
 
+void Emit::metadata(package_request *P, text_stream *key, text_stream *value) {
+	inter_t ID = Inter::create_text(Emit::repository());
+	Str::copy(Inter::get_text(Emit::repository(), ID), value);
+	inter_name *iname = InterNames::explicitly_named(key, P);
+	inter_symbol *key_name = Emit::define_symbol(iname);
+	packaging_state save = Packaging::enter_home_of(iname);
+	Emit::guard(Inter::Metadata::new(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), key_name), ID, Emit::baseline(Packaging::at()), NULL));
+	Packaging::exit(save);
+}
+
 void Emit::instance(inter_name *name, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *inst_name = Emit::define_symbol(name);

@@ -421,7 +421,7 @@ following creates modules on demand.
         <span class="reserved">module_package</span><span class="plain"> *</span><span class="identifier">new_module</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">module_package</span><span class="plain">);</span>
         <span class="identifier">new_module</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain"> =</span>
             <span class="functiontext">Packaging::request</span><span class="plain">(</span>
-                <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="functiontext">Hierarchy::resources</span><span class="plain">()),</span>
+                <span class="functiontext">InterNames::explicitly_named</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="functiontext">Hierarchy::main</span><span class="plain">()),</span>
                 <span class="functiontext">PackageTypes::get</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_module"</span><span class="plain">));</span>
         <span class="identifier">new_module</span><span class="plain">-</span><span class="element">&gt;submodules</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">submodule_request</span><span class="plain">);</span>
         <span class="identifier">Dictionaries::create</span><span class="plain">(</span><span class="identifier">modules_indexed_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
@@ -434,7 +434,7 @@ following creates modules on demand.
 
 <p class="endnote">The function Packaging::get_module is used in <a href="#SP16">&#167;16</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/cm (<a href="27-cm.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The structure module_package is accessed in 27/hr and here.</p>
+<p class="endnote">The structure module_package is accessed in 27/hr, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Submodules. </b>Submodules have names such as <code class="display"><span class="extract">properties</span></code>, and the idea is that the same submodule
 (or rather, submodules with the same name) can be found in multiple modules. The

@@ -274,7 +274,7 @@ void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_repository *I, inter
 int Inter::Symbols::is_predeclared(inter_symbol *S) {
 	if (S == NULL) return FALSE;
 	if (S->symbol_scope != PUBLIC_ISYMS) return FALSE;
-	if (S->symbol_scope != MISC_ISYMT) return FALSE;
+	if (S->symbol_type != MISC_ISYMT) return FALSE;
 	if (S->definition_status != UNDEFINED_ISYMD) return FALSE;
 	return TRUE;
 }
@@ -282,7 +282,7 @@ int Inter::Symbols::is_predeclared(inter_symbol *S) {
 int Inter::Symbols::is_predeclared_local(inter_symbol *S) {
 	if (S == NULL) return FALSE;
 	if (S->symbol_scope != PRIVATE_ISYMS) return FALSE;
-	if (S->symbol_scope != MISC_ISYMT) return FALSE;
+	if (S->symbol_type != MISC_ISYMT) return FALSE;
 	if (S->definition_status != UNDEFINED_ISYMD) return FALSE;
 	return TRUE;
 }

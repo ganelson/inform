@@ -20,6 +20,7 @@ Chapter 2: Linking
 	Uniqueness
 	Reconcile Verbs
 	Eliminate Redundant Matter
+	Inventory
 
 Chapter 3: Generating Inform 6
 	Code Generation

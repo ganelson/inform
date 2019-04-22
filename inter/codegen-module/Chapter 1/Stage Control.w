@@ -35,6 +35,7 @@ typedef struct stage_step {
 @e GENERATE_INTER_STAGESTEP
 @e GENERATE_INTER_BINARY_STAGESTEP
 @e SUMMARISE_STAGESTEP
+@e INVENTORY_STAGESTEP
 @e STOP_STAGESTEP
 
 @h Parsing.
@@ -111,6 +112,7 @@ stage_step *CodeGen::Stage::parse_step(stage_set *S, text_stream *step, text_str
 	else if (Str::eq(step, I"generate-inter")) ST->step_code = GENERATE_INTER_STAGESTEP;
 	else if (Str::eq(step, I"generate-inter-binary")) ST->step_code = GENERATE_INTER_BINARY_STAGESTEP;
 	else if (Str::eq(step, I"summarise")) ST->step_code = SUMMARISE_STAGESTEP;
+	else if (Str::eq(step, I"inventory")) ST->step_code = INVENTORY_STAGESTEP;
 	else if (Str::eq(step, I"stop")) ST->step_code = STOP_STAGESTEP;
 	else internal_error("no such step code");
 	return ST;
@@ -282,6 +284,16 @@ void CodeGen::Stage::follow(pathname *P, stage_set *S, inter_repository *I, int 
 				filename *F = CodeGen::Stage::extricate(P, step->step_argument);
 				@<Open the file for text output@>;
 				Inter::Summary::write(text_out_file, I);
+				STREAM_CLOSE(text_out_file);
+				break;
+			}
+			case INVENTORY_STAGESTEP: {
+				WRITE_TO(STAGE_NAME, "inventory:%S", step->step_argument);
+				Log::new_stage(STAGE_NAME);
+				filename *F = CodeGen::Stage::extricate(P, step->step_argument);
+				@<Open the file for text output@>;
+				CodeGen::Inventory::print(text_out_file, I);
+				CodeGen::Inventory::print(DL, I);
 				STREAM_CLOSE(text_out_file);
 				break;
 			}

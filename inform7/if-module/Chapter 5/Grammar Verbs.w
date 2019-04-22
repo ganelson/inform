@@ -821,7 +821,6 @@ void PL::Parsing::Verbs::compile(grammar_verb *gv) {
 		case GV_IS_OBJECT: {
 			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 			packaging_state save = Emit::unused_packaging_state();
-			LOG("\n\nSo %n\n", PL::Parsing::Tokens::General::get_gv_parse_name(gv));
 			if (PL::Parsing::Tokens::General::compile_parse_name_head(&save, &gprk, gv->subj_understood, gv, NULL)) {
 				PL::Parsing::Verbs::gv_compile_parse_name_lines(&gprk, gv);
 				PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);

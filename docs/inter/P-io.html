@@ -27,13 +27,12 @@ primitives for the standard Inform set: it always declares the same set
 of primitives on every run.
 </p>
 
-<p class="inwebparagraph">As required, the rest of the program is in the <code class="display"><span class="extract">main</span></code> package, and much of
-it in a plain module called <code class="display"><span class="extract">/main/resources</span></code>.
+<p class="inwebparagraph">As required, the rest of the program is in the <code class="display"><span class="extract">main</span></code> package, which has
+type <code class="display"><span class="extract">_plain</span></code>.
 </p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Compilation modules. </b>Inform divides up its material into compilation modules, as follows. Each
-one becomes an inter package of type <code class="display"><span class="extract">_module</span></code>, as a subpackage
-of <code class="display"><span class="extract">/main/resources</span></code>.
+one becomes an inter package of type <code class="display"><span class="extract">_module</span></code>, and is a subpackage of <code class="display"><span class="extract">main</span></code>.
 </p>
 
 <p class="inwebparagraph"></p>
@@ -41,17 +40,17 @@ of <code class="display"><span class="extract">/main/resources</span></code>.
 <ul class="items"><li>(a) The "generic module" contains built-in definitions of kinds, and the like.
 No source text directly leads to this, and indeed, it can entirely be defined
 without having seen any source text: it will be the same on every run. The
-package is <code class="display"><span class="extract">/main/resources/generic</span></code>.
+package is <code class="display"><span class="extract">/main/generic</span></code>.
 </li></ul>
 <ul class="items"><li>(b) Material from the Inform 6 template is assimilated into inter code in
-the "template module", which is <code class="display"><span class="extract">/main/resources/template</span></code>.
+the "template module", which is <code class="display"><span class="extract">/main/template</span></code>.
 </li></ul>
 <ul class="items"><li>(c) Each extension is a compilation module, including of course the Standard
-Rules, which is <code class="display"><span class="extract">/main/resources/standard_rules</span></code>. Subsequent extensions have
-longer names, such as <code class="display"><span class="extract">/main/resources/locksmith_by_emily_short</span></code>.
+Rules, which is <code class="display"><span class="extract">/main/standard_rules</span></code>. Subsequent extensions have
+longer names, such as <code class="display"><span class="extract">/main/locksmith_by_emily_short</span></code>.
 </li></ul>
 <ul class="items"><li>(d) Material in the main source text is a single compilation module, and
-goes into <code class="display"><span class="extract">/main/resources/source_text</span></code>.
+goes into <code class="display"><span class="extract">/main/source_text</span></code>.
 </li></ul>
 <ul class="items"><li>(e) The "synoptic module" contains material which was synthesised from all
 of the source material in the other modules, and which can't meaningfully
@@ -59,7 +58,7 @@ be localised. For example, a function at run-time which returns the default
 value for a kind given its weak kind ID has to be synoptic, because its
 definition will include references to every kind defined in the program.
 Such a function doesn't belong to any one block of source text. The
-package is <code class="display"><span class="extract">/main/resources/synoptic</span></code>.
+package is <code class="display"><span class="extract">/main/synoptic</span></code>.
 </li></ul>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Except for the template module, which is necessarily more free-form,
 each module package then contains some or all of a standard set of
@@ -71,24 +70,24 @@ range of possible subpackages is:
 
 
 <pre class="display">
-        <span class="plain">/main/resources/M/actions</span>
-        <span class="plain">/main/resources/M/activities</span>
-        <span class="plain">/main/resources/M/adjectives</span>
-        <span class="plain">/main/resources/M/chronology</span>
-        <span class="plain">/main/resources/M/conjugations</span>
-        <span class="plain">/main/resources/M/equations</span>
-        <span class="plain">/main/resources/M/extensions</span>
-        <span class="plain">/main/resources/M/grammar</span>
-        <span class="plain">/main/resources/M/instances</span>
-        <span class="plain">/main/resources/M/kinds</span>
-        <span class="plain">/main/resources/M/listing</span>
-        <span class="plain">/main/resources/M/phrases</span>
-        <span class="plain">/main/resources/M/properties</span>
-        <span class="plain">/main/resources/M/relations</span>
-        <span class="plain">/main/resources/M/rulebooks</span>
-        <span class="plain">/main/resources/M/rules</span>
-        <span class="plain">/main/resources/M/tables</span>
-        <span class="plain">/main/resources/M/variables</span>
+        <span class="plain">/main/M/actions</span>
+        <span class="plain">/main/M/activities</span>
+        <span class="plain">/main/M/adjectives</span>
+        <span class="plain">/main/M/chronology</span>
+        <span class="plain">/main/M/conjugations</span>
+        <span class="plain">/main/M/equations</span>
+        <span class="plain">/main/M/extensions</span>
+        <span class="plain">/main/M/grammar</span>
+        <span class="plain">/main/M/instances</span>
+        <span class="plain">/main/M/kinds</span>
+        <span class="plain">/main/M/listing</span>
+        <span class="plain">/main/M/phrases</span>
+        <span class="plain">/main/M/properties</span>
+        <span class="plain">/main/M/relations</span>
+        <span class="plain">/main/M/rulebooks</span>
+        <span class="plain">/main/M/rules</span>
+        <span class="plain">/main/M/tables</span>
+        <span class="plain">/main/M/variables</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -102,7 +101,7 @@ what is invoked. For example:
 
 
 <pre class="display">
-        <span class="plain">symbol X == /main/resources/kinds/kind_6/gpr_fn/call</span>
+        <span class="plain">symbol X == /main/kinds/kind_6/gpr_fn/call</span>
         <span class="plain">...</span>
         <span class="plain">        inv X</span>
 </pre>
@@ -114,7 +113,7 @@ what is invoked. For example:
 
 
 <pre class="display">
-        <span class="plain">inv /main/resources/kinds/kind_6/gpr_fn</span>
+        <span class="plain">inv /main/kinds/kind_6/gpr_fn</span>
 </pre>
 
 <p class="inwebparagraph">(Inform conventionally uses names ending in <code class="display"><span class="extract">_fn</span></code> for function packages.)

@@ -88,8 +88,10 @@ inter_symbol *Inter::Packages::search_main_exhaustively(inter_repository *I, tex
 }
 
 inter_symbol *Inter::Packages::search_resources_exhaustively(inter_repository *I, text_stream *S) {
-	inter_symbol *res = Inter::Packages::search_main_exhaustively(I, I"resources");
-	if (res) return Inter::Packages::search_exhaustively(Inter::Package::which(res), S);
+	for (inter_package *P = Inter::Packages::main(I)->child_package; P; P = P->next_package) {
+		inter_symbol *found = Inter::Packages::search_exhaustively(P, S);
+		if (found) return found;
+	}
 	return NULL;
 }
 

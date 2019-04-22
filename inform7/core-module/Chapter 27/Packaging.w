@@ -305,7 +305,7 @@ module_package *Packaging::get_module(text_stream *name) {
 	module_package *new_module = CREATE(module_package);
 	new_module->the_package =
 		Packaging::request(
-			InterNames::explicitly_named(name, Hierarchy::resources()),
+			InterNames::explicitly_named(name, Hierarchy::main()),
 			PackageTypes::get(I"_module"));
 	new_module->submodules = NEW_LINKED_LIST(submodule_request);
 	Dictionaries::create(modules_indexed_by_name, name);

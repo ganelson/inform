@@ -22,7 +22,7 @@ void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, i
 			TemplateReader::new_intervention((int) P.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
 		}
 
-	inter_symbol *TP = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/resources/template");
+	inter_symbol *TP = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
 	if (TP == NULL) internal_error("unable to find template");
 	inter_frame D = TP->definition;
 	if (Inter::Frame::valid(&D) == FALSE) internal_error("template definition broken");

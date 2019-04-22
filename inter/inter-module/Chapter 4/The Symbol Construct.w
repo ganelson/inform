@@ -10,7 +10,7 @@ Defining the symbol construct.
 void Inter::Symbol::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		SYMBOL_IST,
-		L"symbol (%i+) (%i+) (%c+)",
+		L"symbol (%C+) (%i+) (%c+)",
 		&Inter::Symbol::read,
 		NULL,
 		&Inter::Symbol::verify,
