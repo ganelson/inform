@@ -7,7 +7,7 @@ Each inter name comes from a "generator". Some are one-shot, and produce just
 one name before being discarded; others produce a numbered sequence of names
 in a given pattern, counting upwards from 1 (|example_1|, |example_2|, ...);
 and others still derive new names from existing ones (for example, turning
-|fish| amd |rumour| into |fishmonger| and |rumourmonger|).
+|fish| and |rumour| into |fishmonger| and |rumourmonger|).
 
 @e UNIQUE_INGEN from 1
 @e MULTIPLE_INGEN
@@ -88,7 +88,7 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 We can now make a new iname, which is easy unless there's a memo to attach.
 For example, attaching the wording "printing the name of a dark room" to
 an iname which would otherwise just be |V12| produces |V12_printing_the_name_of_a_da|.
-Memos exist almost largely to make the Inter code easier for human eyes to read,
+Memos exist largely to make the Inter code easier for human eyes to read,
 as in this case, but sometimes, as with kind names like |K2_thing|, they're
 needed because template or explicit I6 inclusion code makes references to them.
 
@@ -167,10 +167,14 @@ inter_name *InterNames::multiple(inter_name_generator *G, package_request *R, wo
 	return iname;
 }
 
-inter_name *InterNames::generated(inter_name_generator *G, int fix, wording W) {
-	inter_name *iname = InterNames::multiple(G, NULL, W);
+inter_name *InterNames::generated_in(inter_name_generator *G, int fix, wording W, package_request *R) {
+	inter_name *iname = InterNames::multiple(G, R, W);
 	if (fix != -1) iname->unique_number = fix;
 	return iname;
+}
+
+inter_name *InterNames::generated(inter_name_generator *G, int fix, wording W) {
+	return InterNames::generated_in(G, fix, W, NULL);
 }
 
 inter_name *InterNames::derived(inter_name_generator *G, inter_name *from, wording W) {

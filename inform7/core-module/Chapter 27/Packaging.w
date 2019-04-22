@@ -1,5 +1,8 @@
 [Packaging::] Packaging.
 
+To manage requests to build Inter packages, and then to generate inames within
+them; and to create modules and submodules.
+
 @h Package requests.
 In the same way that inames are created as shadows of eventual inter symbols,
 and omly converted into the real thing on demand, "package requests" are
@@ -15,15 +18,9 @@ typedef struct package_request {
 	struct inter_package *actual_package;
 	struct package_request *parent_request;
 	struct inter_reading_state write_position;
-	struct linked_list *counters; /* of |submodule_request_counter| */
+	struct linked_list *iname_generators; /* of |inter_name_generator| */
 	MEMORY_MANAGEMENT
 } package_request;
-
-typedef struct submodule_request_counter {
-	int counter_id;
-	int counter_value;
-	MEMORY_MANAGEMENT
-} submodule_request_counter;
 
 @ =
 package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
@@ -33,7 +30,7 @@ package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
 	R->actual_package = NULL;
 	R->parent_request = InterNames::location(name);
 	R->write_position = Inter::Bookmarks::new_IRS(Emit::repository());
-	R->counters = NULL;
+	R->iname_generators = NULL;
 	return R;
 }
 
@@ -56,6 +53,26 @@ void Packaging::log(package_request *R) {
 			R = R->parent_request;
 		}
 	}
+}
+
+@ The following allows a sequence of different inames to be generated inside a
+package: for example, |Packaging::make_iname_within(R, I"acorn")| produces a
+sequence of inames |acorn1|, |acorn2|, ..., as it's called over and over again.
+
+=
+inter_name *Packaging::make_iname_within(package_request *R, text_stream *what_for) {
+	if (R == NULL) internal_error("no request");
+	if (R->iname_generators == NULL)
+		R->iname_generators = NEW_LINKED_LIST(inter_name_generator);
+
+	inter_name_generator *gen;
+	LOOP_OVER_LINKED_LIST(gen, inter_name_generator, R->iname_generators)
+		if (Str::eq(what_for, gen->name_stem))
+			return InterNames::generated_in(gen, -1, EMPTY_WORDING, R);
+
+	gen = InterNames::multiple_use_generator(NULL, what_for, NULL);
+	ADD_TO_LINKED_LIST(gen, inter_name_generator, R->iname_generators);
+	return InterNames::generated_in(gen, -1, EMPTY_WORDING, R);
 }
 
 @ At any given time, emission of Inter is occurring to a particular position
@@ -121,7 +138,7 @@ void Packaging::pop_IRS(void) {
 	packaging_entry_sp--;
 }
 
-@ The current state has the following invariant: the IRS part always points tp
+@ The current state has the following invariant: the IRS part always points to
 a validly initialised |inter_reading_state|, and the enclosure part is always
 either |NULL| or a package request which has an enclosing package type. (In
 fact, it is null only fleetingly: as soon as the |main| package is created,
@@ -258,12 +275,14 @@ inter_package *Packaging::incarnate(package_request *R) {
 	return R->actual_package;
 }
 
-@h Modules and submodules.
+@h Modules.
 With the code above, then, we can get the Inter hierarchy of packages set up
 as far as creating |main|. After that the Hierarchy code takes over, but it
-calls the routines below to assist.
+calls the routines below to assist. It will want to create a number of "modules"
+and, within them, "submodules".
 
-In particular, 
+Modules are identified by name: |generic|, |Standard_Rules|, and so on. The
+following creates modules on demand.
 
 =
 dictionary *modules_indexed_by_name = NULL;
@@ -294,23 +313,28 @@ module_package *Packaging::get_module(text_stream *name) {
 	return new_module;
 }
 
+@h Submodules.
+Submodules have names such as |properties|, and the idea is that the same submodule
+(or rather, submodules with the same name) can be found in multiple modules. The
+different sorts of submodule are identified by |submodule_identity| pointers, though
+as it turns out, this is presently just a wrapper for a name.
+
+=
+typedef struct submodule_identity {
+	struct text_stream *submodule_name;
+	MEMORY_MANAGEMENT
+} submodule_identity;
+
 submodule_identity *Packaging::register_submodule(text_stream *name) {
 	submodule_identity *sid = CREATE(submodule_identity);
 	sid->submodule_name = Str::duplicate(name);
 	return sid;
 }
 
-typedef struct submodule_request {
-	struct submodule_identity *which_submodule;
-	struct package_request *where_found;
-	MEMORY_MANAGEMENT
-} submodule_request;
+@ Once the Hierarchy code has registered a submodule, it can request an existing
+module to have this submodule. It should call one of the following four functions:
 
-typedef struct submodule_identity {
-	struct text_stream *submodule_name;
-	MEMORY_MANAGEMENT
-} submodule_identity;
-
+=
 package_request *Packaging::request_submodule(compilation_module *C, submodule_identity *sid) {
 	if (C == NULL) return Packaging::generic_submodule(sid);
 	return Packaging::new_submodule_inner(Modules::inter_presence(C), sid);
@@ -328,6 +352,15 @@ package_request *Packaging::synoptic_submodule(submodule_identity *sid) {
 	return Packaging::new_submodule_inner(Packaging::get_module(I"synoptic"), sid);
 }
 
+@ Those in turn all make use of this back-end function:
+
+=
+typedef struct submodule_request {
+	struct submodule_identity *which_submodule;
+	struct package_request *where_found;
+	MEMORY_MANAGEMENT
+} submodule_request;
+
 package_request *Packaging::new_submodule_inner(module_package *M, submodule_identity *sid) {
 	submodule_request *sr;
 	LOOP_OVER_LINKED_LIST(sr, submodule_request, M->submodules)
@@ -341,45 +374,12 @@ package_request *Packaging::new_submodule_inner(module_package *M, submodule_ide
 	return sr->where_found;
 }
 
-@ 
-
-@d MAX_PRCS 500
+@h Functions.
+Inter code has a standard layout for functions: an outer, enclosing, package of type
+|_function|, inside which is an iname |call| for the actual code to call. All such
+functions are produced by the following routines:
 
 =
-int no_pr_counters_registered = 0;
-text_stream *pr_counter_names[MAX_PRCS];
-int Packaging::register_counter(text_stream *name) {
-	int id = no_pr_counters_registered++;
-	if ((id < 0) || (id >= MAX_PRCS)) internal_error("out of range");
-	pr_counter_names[id] = Str::duplicate(name);
-	return id;
-}
-
-inter_name *Packaging::supply_iname(package_request *R, int what_for) {
-	if (R == NULL) internal_error("no request");
-	if ((what_for < 0) || (what_for >= no_pr_counters_registered)) internal_error("out of range");
-	if (R->counters == NULL)
-		R->counters = NEW_LINKED_LIST(submodule_request_counter);
-	int N = -1;
-	submodule_request_counter *src;
-	LOOP_OVER_LINKED_LIST(src, submodule_request_counter, R->counters)
-		if (src->counter_id == what_for) {
-			N = ++(src->counter_value); break;
-		}
-	if (N < 0) {
-		submodule_request_counter *src = CREATE(submodule_request_counter);
-		src->counter_id = what_for;
-		src->counter_value = 1;
-		N = 1;
-		ADD_TO_LINKED_LIST(src, submodule_request_counter, R->counters);
-	}
-	TEMPORARY_TEXT(P);
-	WRITE_TO(P, "%S_%d", pr_counter_names[what_for], N);
-	inter_name *iname = InterNames::explicitly_named(P, R);
-	DISCARD_TEXT(P);
-	return iname;
-}
-
 inter_name *Packaging::function(inter_name *function_iname, inter_name *temp_iname) {
 	package_request *P = Packaging::request(function_iname, PackageTypes::function());
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
@@ -400,16 +400,19 @@ inter_name *Packaging::function_text(inter_name *function_iname, text_stream *tr
 	return iname;
 }
 
-inter_name *Packaging::datum_text(inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(function_iname, PackageTypes::get(I"_data"));
-	inter_name *iname = InterNames::explicitly_named(translation, P);
-	return iname;
-}
-
 int Packaging::housed_in_function(inter_name *iname) {
 	if (iname == NULL) return FALSE;
 	package_request *P = InterNames::location(iname);
 	if (P == NULL) return FALSE;
 	if (P->eventual_type == PackageTypes::function()) return TRUE;
 	return FALSE;
+}
+
+@ Datum is very similar.
+
+=
+inter_name *Packaging::datum_text(inter_name *function_iname, text_stream *translation) {
+	package_request *P = Packaging::request(function_iname, PackageTypes::get(I"_data"));
+	inter_name *iname = InterNames::explicitly_named(translation, P);
+	return iname;
 }

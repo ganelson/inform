@@ -114,10 +114,10 @@ relies on adjectival meanings.
         <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Properties::exclude_from_index</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">I6_form</span><span class="plain">);</span>
-        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
-        <span class="functiontext">Modules::set_current_to_SR</span><span class="plain">();</span>
+    <span class="comment">compilation_module *cm = Modules::current();</span>
+    <span class="comment">Modules::set_current_to_SR();</span>
         <span class="functiontext">Properties::EitherOr::create_adjective_from_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
-        <span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">cm</span><span class="plain">);</span>
+    <span class="comment">Modules::set_current_to(cm);</span>
         <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;run_time_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -546,7 +546,7 @@ property.
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="15-pr.html">Back to 'Properties'</a></li><li><a href="15-vp.html">Continue with 'Valued Properties'</a></li></ul><hr class="tocbar">
-<!--End of weave-->
+<!--End of weave: 395 lines from a web of 94125-->
 	</body>
 </html>
 

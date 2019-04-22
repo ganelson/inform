@@ -91,10 +91,10 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);
 	Properties::set_translation(prn, I6_form);
-	compilation_module *cm = Modules::current();
-	Modules::set_current_to_SR();
+//	compilation_module *cm = Modules::current();
+//	Modules::set_current_to_SR();
 	Properties::EitherOr::create_adjective_from_property(prn, EMPTY_WORDING, K_object);
-	Modules::set_current_to(cm);
+//	Modules::set_current_to(cm);
 	prn->run_time_only = TRUE;	
 	return prn;
 }

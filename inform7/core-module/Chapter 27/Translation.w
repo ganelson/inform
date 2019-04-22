@@ -1,6 +1,10 @@
 [Translation::] Translation.
 
-@
+A way to express rules for how to translate names from the Inter namespace into the
+target language's namespace.
+
+@ This section of code is pleasingly simple: it has no functionality, and exists as
+a stand-alone section just to give these functions legible names.
 
 =
 typedef struct name_translation {

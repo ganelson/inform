@@ -6,9 +6,6 @@
 
 =
 void Hierarchy::establish(void) {
-	Packaging::register_counter(I"code_block"); // This will be counter number 0
-	Packaging::register_counter(I"kernel"); // This will be counter number 1
-
 	@<Establish basics@>;
 	@<Establish actions@>;
 	@<Establish activities@>;
@@ -1628,11 +1625,11 @@ inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compi
 }
 
 inter_name *Hierarchy::make_block_iname(package_request *P) {
-	return Packaging::supply_iname(P, 0);
+	return Packaging::make_iname_within(P, I"block");
 }
 
 inter_name *Hierarchy::make_kernel_iname(package_request *P) {
-	inter_name *kernel_name = Packaging::supply_iname(P, 1);
+	inter_name *kernel_name = Packaging::make_iname_within(P, I"kernel");
 	Emit::set_flag(kernel_name, MAKE_NAME_UNIQUE);
 	return kernel_name;
 }

@@ -1,5 +1,7 @@
 [PackageTypes::] Package Types.
 
+To manage the different types of packages emitted by Inform.
+
 @h Package types.
 Inter code is a nested hierarchy of "packages", which can be assigned "types".
 Inter requires two types to exist, |_plain| and |_code|, and leaves the rest

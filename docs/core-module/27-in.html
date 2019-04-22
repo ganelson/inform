@@ -17,7 +17,7 @@
 one name before being discarded; others produce a numbered sequence of names
 in a given pattern, counting upwards from 1 (<code class="display"><span class="extract">example_1</span></code>, <code class="display"><span class="extract">example_2</span></code>, ...);
 and others still derive new names from existing ones (for example, turning
-<code class="display"><span class="extract">fish</span></code> amd <code class="display"><span class="extract">rumour</span></code> into <code class="display"><span class="extract">fishmonger</span></code> and <code class="display"><span class="extract">rumourmonger</span></code>).
+<code class="display"><span class="extract">fish</span></code> and <code class="display"><span class="extract">rumour</span></code> into <code class="display"><span class="extract">fishmonger</span></code> and <code class="display"><span class="extract">rumourmonger</span></code>).
 </p>
 
 
@@ -61,9 +61,9 @@ and others still derive new names from existing ones (for example, turning
 
 <p class="endnote">The function InterNames::single_use_generator is used in <a href="#SP5">&#167;5</a>.</p>
 
-<p class="endnote">The function InterNames::multiple_use_generator is used in 27/tr (<a href="27-tr.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function InterNames::multiple_use_generator is used in 27/tr (<a href="27-tr.html#SP1">&#167;1</a>), 27/pc (<a href="27-pc.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The structure inter_name_generator is private to this section.</p>
+<p class="endnote">The structure inter_name_generator is accessed in 27/hl, 27/pc and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Printing inames. </b>Inter names are stored not in textual form, but in terms of what would be
 required to generate that text. (The memo field, which in principle allows
@@ -123,7 +123,7 @@ any text to be stored, is used only for a small proportion of inames.)
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Making new inames. </b>We can now make a new iname, which is easy unless there's a memo to attach.
 For example, attaching the wording "printing the name of a dark room" to
 an iname which would otherwise just be <code class="display"><span class="extract">V12</span></code> produces <code class="display"><span class="extract">V12_printing_the_name_of_a_da</span></code>.
-Memos exist almost largely to make the Inter code easier for human eyes to read,
+Memos exist largely to make the Inter code easier for human eyes to read,
 as in this case, but sometimes, as with kind names like <code class="display"><span class="extract">K2_thing</span></code>, they're
 needed because template or explicit I6 inclusion code makes references to them.
 </p>
@@ -224,11 +224,11 @@ a memo to attach):
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterNames::explicitly_named_with_memo is used in 27/hl (<a href="27-hl.html#SP1_1">&#167;1.1</a>).</p>
+<p class="endnote">The function InterNames::explicitly_named_with_memo is used in 27/hl (<a href="27-hl.html#SP3_1">&#167;3.1</a>).</p>
 
-<p class="endnote">The function InterNames::explicitly_named is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>, <a href="27-hl.html#SP1_1">&#167;1.1</a>, <a href="27-hl.html#SP2">&#167;2</a>), 27/pc (<a href="27-pc.html#SP13">&#167;13</a>, <a href="27-pc.html#SP14">&#167;14</a>).</p>
+<p class="endnote">The function InterNames::explicitly_named is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/hl (<a href="27-hl.html#SP3">&#167;3</a>, <a href="27-hl.html#SP3_1">&#167;3.1</a>, <a href="27-hl.html#SP4">&#167;4</a>), 27/pc (<a href="27-pc.html#SP14">&#167;14</a>, <a href="27-pc.html#SP17">&#167;17</a>, <a href="27-pc.html#SP18">&#167;18</a>, <a href="27-pc.html#SP19">&#167;19</a>).</p>
 
-<p class="endnote">The function InterNames::explicitly_named_in_template is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function InterNames::explicitly_named_in_template is used in 27/hl (<a href="27-hl.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Second, the generated or derived cases:
 </p>
@@ -243,10 +243,14 @@ a memo to attach):
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::generated</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::generated_in</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">InterNames::multiple</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fix</span><span class="plain"> != -1) </span><span class="identifier">iname</span><span class="plain">-</span><span class="element">&gt;unique_number</span><span class="plain"> = </span><span class="identifier">fix</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::generated</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InterNames::generated_in</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="identifier">fix</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">InterNames::derived</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -261,9 +265,11 @@ a memo to attach):
 
 <p class="endnote">The function InterNames::multiple appears nowhere else.</p>
 
-<p class="endnote">The function InterNames::generated is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function InterNames::generated_in is used in 27/pc (<a href="27-pc.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The function InterNames::derived is used in 27/hl (<a href="27-hl.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function InterNames::generated is used in 27/hl (<a href="27-hl.html#SP3">&#167;3</a>).</p>
+
+<p class="endnote">The function InterNames::derived is used in 27/hl (<a href="27-hl.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Now that inames have been created, we allow their locations to be read:
 </p>
@@ -285,7 +291,7 @@ a memo to attach):
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterNames::location is used in 27/hr (<a href="27-hr.html#SP3">&#167;3</a>), 27/hl (<a href="27-hl.html#SP1">&#167;1</a>), 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP11">&#167;11</a>, <a href="27-pc.html#SP14">&#167;14</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function InterNames::location is used in 27/hr (<a href="27-hr.html#SP3">&#167;3</a>), 27/hl (<a href="27-hl.html#SP3">&#167;3</a>), 27/pc (<a href="27-pc.html#SP2">&#167;2</a>, <a href="27-pc.html#SP12">&#167;12</a>, <a href="27-pc.html#SP18">&#167;18</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function InterNames::scope is used in <a href="#SP8">&#167;8</a>.</p>
 
@@ -322,7 +328,7 @@ automatically here:
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="27-pt.html">Back to 'Package Types'</a></li><li><a href="27-is.html">Continue with 'Inter Schemas'</a></li></ul><hr class="tocbar">
-<!--End of weave-->
+<!--End of weave: 227 lines from a web of 94125-->
 	</body>
 </html>
 
