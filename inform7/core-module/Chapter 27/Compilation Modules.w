@@ -65,11 +65,11 @@ compilation_module *Modules::new(parse_node *from) {
 	DISCARD_TEXT(package_name);
 
 	if (owner) {
-		Emit::metadata(C->inter_presence->the_package, I"`author", owner->ef_id.raw_author_name);
-		Emit::metadata(C->inter_presence->the_package, I"`title", owner->ef_id.raw_title);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_id.raw_author_name);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->ef_id.raw_title);
 		TEMPORARY_TEXT(V);
 		WRITE_TO(V, "%+W", Wordings::one_word(owner->version_loaded));
-		Emit::metadata(C->inter_presence->the_package, I"`version", V);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
 		DISCARD_TEXT(V);
 	}
 

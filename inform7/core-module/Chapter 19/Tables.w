@@ -306,6 +306,7 @@ void Tables::create_table(parse_node *PN) {
 	wording HW = Wordings::up_to(W, Wordings::last_word_of_formatted_text(W, FALSE));
 	if (Wordings::length(HW) == 1) @<Reject this lexically malformed table declaration@>;
 	t->headline_fragment = NounPhrases::new_raw(HW);
+	Hierarchy::markup_wording(t->table_package, TABLE_NAME_HMD, HW);
 	current_sentence = t->headline_fragment;
 
 	@<Parse the table's header for a name and/or number, and connection to other tables@>;

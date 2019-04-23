@@ -7,6 +7,7 @@
 =
 void Hierarchy::establish(void) {
 	@<Establish basics@>;
+	@<Establish modules@>;
 	@<Establish actions@>;
 	@<Establish activities@>;
 	@<Establish adjectives@>;
@@ -110,11 +111,24 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(MAX_FRAME_SIZE_NEEDED_HL, I"MAX_FRAME_SIZE_NEEDED", Translation::same(), synoptic_basics);
 	HierarchyLocations::con(RNG_SEED_AT_START_OF_PLAY_HL, I"RNG_SEED_AT_START_OF_PLAY", Translation::same(), synoptic_basics);
 
+@h Modules.
+
+@e EXT_TITLE_HMD from 0
+@e EXT_AUTHOR_HMD
+@e EXT_VERSION_HMD
+
+@<Establish modules@> =
+	location_requirement in_module = HierarchyLocations::any_package_of_type(I"_module");
+	HierarchyLocations::metadata(EXT_TITLE_HMD, in_module, I"`title");
+	HierarchyLocations::metadata(EXT_AUTHOR_HMD, in_module, I"`author");
+	HierarchyLocations::metadata(EXT_VERSION_HMD, in_module, I"`version");
+
 @h Actions.
 
 @e MISTAKEACTION_HL
 
 @e ACTIONS_HAP
+@e ACTION_NAME_HMD
 @e ACTION_BASE_NAME_HL
 @e WAIT_HL
 @e TRANSLATED_BASE_NAME_HL
@@ -142,6 +156,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_actions = HierarchyLocations::local_submodule(actions);
 	HierarchyLocations::ap(ACTIONS_HAP, local_actions, I"action", I"_action");
 		location_requirement in_action = HierarchyLocations::any_package_of_type(I"_action");
+		HierarchyLocations::metadata(ACTION_NAME_HMD, in_action, I"`name");
 		HierarchyLocations::con(ACTION_BASE_NAME_HL, I"A", Translation::uniqued(), in_action);
 		HierarchyLocations::con(WAIT_HL, I"Wait", Translation::same(), in_action);
 		HierarchyLocations::con(TRANSLATED_BASE_NAME_HL, NULL, Translation::imposed(), in_action);
@@ -164,6 +179,7 @@ void Hierarchy::establish(void) {
 @h Activities.
 
 @e ACTIVITIES_HAP
+@e ACTIVITY_NAME_HMD
 @e ACTIVITY_HL
 @e BEFORE_RB_HL
 @e FOR_RB_HL
@@ -182,6 +198,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_activities = HierarchyLocations::local_submodule(activities);
 	HierarchyLocations::ap(ACTIVITIES_HAP, local_activities, I"activity", I"_activity");
 		location_requirement in_activity = HierarchyLocations::any_package_of_type(I"_activity");
+		HierarchyLocations::metadata(ACTIVITY_NAME_HMD, in_activity, I"`name");
 		HierarchyLocations::con(ACTIVITY_HL, NULL, Translation::generate(I"V"), in_activity);
 		HierarchyLocations::package(BEFORE_RB_HL, I"before_rb", I"_rulebook", in_activity);
 		HierarchyLocations::package(FOR_RB_HL, I"for_rb", I"_rulebook", in_activity);
@@ -458,6 +475,7 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
+@e INSTANCE_NAME_HMD
 @e INSTANCE_HL
 @e BACKDROP_FOUND_IN_FN_HL
 @e REGION_FOUND_IN_FN_HL
@@ -474,6 +492,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_instances = HierarchyLocations::local_submodule(instances);
 	HierarchyLocations::ap(INSTANCES_HAP, local_instances, I"instance", I"_instance");
 		location_requirement in_instance = HierarchyLocations::any_package_of_type(I"_instance");
+		HierarchyLocations::metadata(INSTANCE_NAME_HMD, in_instance, I"`name");
 		HierarchyLocations::con(INSTANCE_HL, I"I", Translation::uniqued(), in_instance);
 		HierarchyLocations::func(BACKDROP_FOUND_IN_FN_HL, I"backdrop_found_in_fn", Translation::uniqued(), in_instance);
 		HierarchyLocations::func(SHORT_NAME_FN_HL, I"short_name_fn", Translation::generate(I"SN_R"), in_instance);
@@ -848,6 +867,7 @@ void Hierarchy::establish(void) {
 @h Tables.
 
 @e TABLES_HAP
+@e TABLE_NAME_HMD
 @e TABLE_DATA_HL
 @e TABLE_COLUMNS_HAP
 @e COLUMN_DATA_HL
@@ -861,6 +881,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_tables = HierarchyLocations::local_submodule(tables);
 	HierarchyLocations::ap(TABLES_HAP, local_tables, I"table", I"_table");
 		location_requirement in_table = HierarchyLocations::any_package_of_type(I"_table");
+		HierarchyLocations::metadata(TABLE_NAME_HMD, in_table, I"`name");
 		HierarchyLocations::con(TABLE_DATA_HL, I"table_data", Translation::uniqued(), in_table);
 		HierarchyLocations::ap(TABLE_COLUMNS_HAP, in_table, I"table_column", I"_table_column");
 			location_requirement in_table_column = HierarchyLocations::any_package_of_type(I"_table_column");
@@ -873,6 +894,7 @@ void Hierarchy::establish(void) {
 @h Variables.
 
 @e VARIABLES_HAP
+@e VARIABLE_NAME_HMD
 @e VARIABLE_HL
 
 @<Establish variables@> =
@@ -881,6 +903,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_variables = HierarchyLocations::local_submodule(variables);
 	HierarchyLocations::ap(VARIABLES_HAP, local_variables, I"variable", I"_variable");
 		location_requirement in_variable = HierarchyLocations::any_package_of_type(I"_variable");
+		HierarchyLocations::metadata(VARIABLE_NAME_HMD, in_variable, I"`name");
 		HierarchyLocations::con(VARIABLE_HL, NULL, Translation::generate(I"V"), in_variable);
 
 @h Enclosed matter.
@@ -1490,6 +1513,7 @@ void Hierarchy::establish(void) {
 
 @e MAX_HL
 @e MAX_HAP
+@e MAX_HMD
 
 @
 
@@ -1646,4 +1670,15 @@ inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P
 
 package_request *Hierarchy::make_package_in(int id, package_request *P) {
 	return HierarchyLocations::package_in_package(id, P);
+}
+
+void Hierarchy::markup(package_request *R, int hm_id, text_stream *value) {
+	HierarchyLocations::markup(R, hm_id, value);
+}
+
+void Hierarchy::markup_wording(package_request *R, int hm_id, wording W) {
+	TEMPORARY_TEXT(ANT);
+	WRITE_TO(ANT, "%W", W);
+	Hierarchy::markup(R, hm_id, ANT);
+	DISCARD_TEXT(ANT);
 }

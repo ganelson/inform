@@ -14,16 +14,25 @@ void CodeGen::Inventory::print(OUTPUT_STREAM, inter_repository *I) {
 		if (title) WRITE("From extension '%S by %S' version %S\n", title,
 			CodeGen::Inventory::read_metadata(M, I"`author"),
 			CodeGen::Inventory::read_metadata(M, I"`version"));
-		INDENT;
-		for (inter_package *SM = M->child_package; SM; SM = SM->next_package) {
-			WRITE("%S:\n", SM->package_name->symbol_name);
+		if (Str::ne(M->package_name->symbol_name, I"template")) {
 			INDENT;
-				for (inter_package *R = SM->child_package; R; R = R->next_package) {
-					WRITE("%S\n", R->package_name->symbol_name);
-				}
-			OUTDENT;	
+			for (inter_package *SM = M->child_package; SM; SM = SM->next_package) {
+				WRITE("%S:\n", SM->package_name->symbol_name);
+				INDENT;
+					int pos = 0;
+					for (inter_package *R = SM->child_package; R; R = R->next_package) {
+						text_stream *name = CodeGen::Inventory::read_metadata(R, I"`name");
+						if (name == NULL) name = R->package_name->symbol_name;
+						if (pos > 0) WRITE(", ");
+						pos += Str::len(name) + 2;
+						if (pos > 80) { WRITE("\n"); pos = Str::len(name) + 2; }
+						WRITE("%S", name);
+					}
+					if (pos > 0) WRITE("\n");
+				OUTDENT;	
+			}
+			OUTDENT;
 		}
-		OUTDENT;
 	}
 }
 

@@ -396,6 +396,7 @@ inference_subject *NonlocalVariables::get_knowledge(nonlocal_variable *nlv) {
 inter_name *NonlocalVariables::iname(nonlocal_variable *nlv) {
 	if (nlv->nlv_iname == NULL) {
 		package_request *R = Hierarchy::package(Modules::find(nlv->nlv_created_at), VARIABLES_HAP);
+		Hierarchy::markup_wording(R, VARIABLE_NAME_HMD, nlv->name);
 		nlv->nlv_iname = Hierarchy::make_iname_with_memo(VARIABLE_HL, R, nlv->name);
 	}
 	return nlv->nlv_iname;

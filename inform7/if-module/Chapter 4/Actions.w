@@ -235,6 +235,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->translated_name = NULL;
 
 	an->an_package = Hierarchy::local_package(ACTIONS_HAP);
+	Hierarchy::markup_wording(an->an_package, ACTION_NAME_HMD, W);
 	an->an_base_iname = NULL;
 	an->use_verb_routine_in_I6_library = TRUE;
 	an->check_rules = NULL;

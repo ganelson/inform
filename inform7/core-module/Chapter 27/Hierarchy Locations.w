@@ -354,3 +354,57 @@ package_request *HierarchyLocations::attach_new_package(compilation_module *C, p
 	return Packaging::request(Packaging::make_iname_within(R, hap->name_stem), hap->type);
 }
 
+@h Hierarchy metadata.
+
+=
+typedef struct hierarchy_metadatum {
+	int hm_id;
+	struct text_stream *key;
+	struct location_requirement requirements;
+	MEMORY_MANAGEMENT
+} hierarchy_metadatum;
+
+hierarchy_metadatum *hmds_indexed_by_id[MAX_HMD];
+
+int hmds_created = FALSE;
+void HierarchyLocations::create_hmds(void) {
+	hmds_created = TRUE;
+	for (int i=0; i<MAX_HMD; i++) hmds_indexed_by_id[i] = NULL;
+}
+
+void HierarchyLocations::index_md(hierarchy_metadatum *hmd) {
+	if (hmds_created == FALSE) HierarchyLocations::create_hmds();
+	if (hmd->hm_id >= 0) hmds_indexed_by_id[hmd->hm_id] = hmd;
+}
+
+hierarchy_metadatum *HierarchyLocations::metadata(int hm_id, location_requirement req, text_stream *key) {
+	hierarchy_metadatum *hmd = CREATE(hierarchy_metadatum);
+	hmd->hm_id = hm_id;
+	hmd->requirements = req;
+	hmd->key = Str::duplicate(key);
+	HierarchyLocations::index_md(hmd);
+	return hmd;
+}
+
+void HierarchyLocations::markup(package_request *R, int hm_id, text_stream *value) {
+	if ((hm_id < 0) || (hm_id >= MAX_HAP) || (hmds_created == FALSE) || (hmds_indexed_by_id[hm_id] == NULL))
+		internal_error("invalid HMD request");
+	hierarchy_metadatum *hmd = hmds_indexed_by_id[hm_id];
+
+	int wrong = FALSE;
+	if (hmd->requirements.any_submodule_package_of_this_identity) {
+		wrong = TRUE;
+	} else if (hmd->requirements.this_exact_package) {
+		if (R != hmd->requirements.this_exact_package)
+			wrong = TRUE;
+	} else if (hmd->requirements.this_exact_package_not_yet_created >= 0) {
+		if (R != Hierarchy::exotic_package(hmd->requirements.this_exact_package_not_yet_created))
+			wrong = TRUE;
+	} else if (hmd->requirements.any_package_of_this_type) {
+		if ((R == NULL) || (R->eventual_type != hmd->requirements.any_package_of_this_type))
+			wrong = TRUE;
+	}
+	if (wrong) internal_error("misapplied metadata");
+	
+	Emit::metadata(R, hmd->key, value);
+}

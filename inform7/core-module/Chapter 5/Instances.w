@@ -295,6 +295,7 @@ inter_name *Instances::iname(instance *I) {
 		I->instance_package = Hierarchy::local_package(INSTANCES_HAP);
 		UseNouns::noun_compose_identifier(I->instance_package, I->tag, I->allocation_id);
 		I->instance_iname = UseNouns::iname(I->tag);
+		Hierarchy::markup_wording(I->instance_package, INSTANCE_NAME_HMD, Nouns::get_name(I->tag, FALSE));
 	}
 	return I->instance_iname;
 }
