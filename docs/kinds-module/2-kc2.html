@@ -445,7 +445,7 @@ of the constructor:
 
 <p class="endnote">The function Kinds::Constructors::attach_noun is used in 2/knd (<a href="2-knd.html#SP33_2">&#167;33.2</a>).</p>
 
-<p class="endnote">The function Kinds::Constructors::get_name is used in 2/ki (<a href="2-ki.html#SP21">&#167;21</a>), 2/uk (<a href="2-uk.html#SP1">&#167;1</a>), 2/dk (<a href="2-dk.html#SP14">&#167;14</a>).</p>
+<p class="endnote">The function Kinds::Constructors::get_name is used in <a href="#SP9">&#167;9</a>, 2/ki (<a href="2-ki.html#SP21">&#167;21</a>), 2/uk (<a href="2-uk.html#SP1">&#167;1</a>), 2/dk (<a href="2-dk.html#SP14">&#167;14</a>).</p>
 
 <p class="endnote">The function Kinds::Constructors::get_name_in_play is used in 2/uk (<a href="2-uk.html#SP1">&#167;1</a>).</p>
 
@@ -483,7 +483,16 @@ of the kind which the constructor makes:
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">UNKNOWN_TY_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::package</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">KIND_HAP</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">KIND_HAP</span><span class="plain">);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::get_name</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
+                <span class="identifier">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain">, </span><span class="identifier">KIND_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;name_in_template_code</span><span class="plain">) &gt; 0)</span>
+                <span class="identifier">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain">, </span><span class="identifier">KIND_NAME_HMD</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;name_in_template_code</span><span class="plain">);</span>
+            <span class="reserved">else</span>
+                <span class="identifier">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain">, </span><span class="identifier">KIND_NAME_HMD</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"(anonymous kind)"</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;kc_package</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::iname</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>

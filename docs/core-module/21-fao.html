@@ -349,6 +349,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="plain">}</span>
 
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">OUTCOMES_HAP</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">OUTCOME_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
         <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">named_rulebook_outcome</span><span class="plain">);</span>
         <span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>

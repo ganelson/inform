@@ -393,8 +393,10 @@
     <span class="definitionkeyword">enum</span> <span class="constant">CV_NEG_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CV_POS_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MVERBS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MVERB_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MODAL_CONJUGATION_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VERBS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">VERB_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NONMODAL_CONJUGATION_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">VERB_FORMS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FORM_FN_HL</span>
@@ -417,9 +419,11 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_conjugations</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">conjugations</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">MVERBS_HAP</span><span class="plain">, </span><span class="identifier">local_conjugations</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mverb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_modal_verb"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_modal_verb</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_modal_verb"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">MVERB_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_modal_verb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">MODAL_CONJUGATION_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"conjugation_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ConjugateModalVerb"</span><span class="plain">), </span><span class="identifier">in_modal_verb</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VERBS_HAP</span><span class="plain">, </span><span class="identifier">local_conjugations</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"verb"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_verb"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_verb</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_verb"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">VERB_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_verb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">NONMODAL_CONJUGATION_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"conjugation_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ConjugateVerb"</span><span class="plain">), </span><span class="identifier">in_verb</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">VERB_FORMS_HAP</span><span class="plain">, </span><span class="identifier">in_verb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"form"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_verb_form"</span><span class="plain">);</span>
                 <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_verb_form</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_verb_form"</span><span class="plain">);</span>
@@ -729,6 +733,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">K_TYPELESS_INT_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">K_TYPELESS_STRING_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">KIND_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">KIND_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">KIND_CLASS_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">KIND_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAK_ID_HL</span>
@@ -786,6 +791,7 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_kinds</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">kinds</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">KIND_HAP</span><span class="plain">, </span><span class="identifier">local_kinds</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kind"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_kind"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_kind</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_kind"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">KIND_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_kind</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">KIND_CLASS_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"K"</span><span class="plain">), </span><span class="identifier">in_kind</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">KIND_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"KD"</span><span class="plain">), </span><span class="identifier">in_kind</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">WEAK_ID_HL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">Translation::imposed</span><span class="plain">(), </span><span class="identifier">in_kind</span><span class="plain">);</span>
@@ -905,6 +911,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">PROPERTIES_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PROPERTY_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PROPERTY_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EITHER_OR_GPR_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CCOUNT_PROPERTY_HL</span>
@@ -920,6 +927,7 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_properties</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">properties</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">PROPERTIES_HAP</span><span class="plain">, </span><span class="identifier">local_properties</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"property"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_property"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_property</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_property"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">PROPERTY_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_property</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">PROPERTY_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"P"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">in_property</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">EITHER_OR_GPR_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"either_or_GPR_fn"</span><span class="plain">, </span><span class="functiontext">Translation::generate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"PRN_PN"</span><span class="plain">), </span><span class="identifier">in_property</span><span class="plain">);</span>
 
@@ -1030,8 +1038,10 @@
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">EMPTY_RULEBOOK_INAME_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OUTCOMES_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">OUTCOME_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OUTCOME_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOKS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOK_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RUN_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOK_STV_CREATOR_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NUMBER_RULEBOOKS_CREATED_HL</span>
@@ -1054,9 +1064,11 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_rulebooks</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">rulebooks</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">OUTCOMES_HAP</span><span class="plain">, </span><span class="identifier">local_rulebooks</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rulebook_outcome"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_outcome"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_outcome</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_outcome"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">OUTCOME_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_outcome</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">OUTCOME_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"outcome"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_outcome</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULEBOOKS_HAP</span><span class="plain">, </span><span class="identifier">local_rulebooks</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rulebook"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_rulebook</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_rulebook"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">RULEBOOK_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_rulebook</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">RUN_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"run_fn"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_rulebook</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">RULEBOOK_STV_CREATOR_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"stv_creator_fn"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_rulebook</span><span class="plain">);</span>
 
@@ -1077,6 +1089,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">RULES_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">RULE_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SHELL_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULE_FN_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXTERIOR_RULE_HL</span>
@@ -1099,6 +1112,7 @@
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_rules</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">rules</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">RULES_HAP</span><span class="plain">, </span><span class="identifier">local_rules</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rule"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_rule"</span><span class="plain">);</span>
             <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">in_rule</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::any_package_of_type</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"_rule"</span><span class="plain">);</span>
+            <span class="functiontext">HierarchyLocations::metadata</span><span class="plain">(</span><span class="constant">RULE_NAME_HMD</span><span class="plain">, </span><span class="identifier">in_rule</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"`name"</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">SHELL_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"shell_fn"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_rule</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">RULE_FN_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rule_fn"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_rule</span><span class="plain">);</span>
             <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">EXTERIOR_RULE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"exterior_rule"</span><span class="plain">, </span><span class="functiontext">Translation::uniqued</span><span class="plain">(), </span><span class="identifier">in_rule</span><span class="plain">);</span>
@@ -2006,6 +2020,13 @@
         <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">hm_id</span><span class="plain">, </span><span class="identifier">ANT</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ANT</span><span class="plain">);</span>
     <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hierarchy::markup_wa</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">hm_id</span><span class="plain">, </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">WA</span><span class="plain">) {</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ANT</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ANT</span><span class="plain">, </span><span class="string">"%A"</span><span class="plain">, </span><span class="identifier">WA</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">hm_id</span><span class="plain">, </span><span class="identifier">ANT</span><span class="plain">);</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ANT</span><span class="plain">);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2050,9 +2071,11 @@
 
 <p class="endnote">The function Hierarchy::make_package_in is used in 21/ac (<a href="21-ac.html#SP6">&#167;6</a>).</p>
 
-<p class="endnote">The function Hierarchy::markup is used in 27/cm (<a href="27-cm.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Hierarchy::markup is used in 15/vp (<a href="15-vp.html#SP3">&#167;3</a>), 27/cm (<a href="27-cm.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Hierarchy::markup_wording is used in 5/ins (<a href="5-ins.html#SP14">&#167;14</a>), 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 19/tb (<a href="19-tb.html#SP20">&#167;20</a>), 21/ac (<a href="21-ac.html#SP6">&#167;6</a>).</p>
+<p class="endnote">The function Hierarchy::markup_wording is used in 5/ins (<a href="5-ins.html#SP14">&#167;14</a>), 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 15/pr (<a href="15-pr.html#SP27">&#167;27</a>), 19/tb (<a href="19-tb.html#SP20">&#167;20</a>), 21/rl (<a href="21-rl.html#SP5">&#167;5</a>), 21/rl2 (<a href="21-rl2.html#SP10">&#167;10</a>), 21/fao (<a href="21-fao.html#SP10">&#167;10</a>), 21/ac (<a href="21-ac.html#SP6">&#167;6</a>), 22/pu (<a href="22-pu.html#SP6">&#167;6</a>).</p>
+
+<p class="endnote">The function Hierarchy::markup_wa appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 27: Bridge to Inter Module.)</i></li><li><a href="27-hl.html">Continue with 'Hierarchy Locations'</a></li></ul><hr class="tocbar">

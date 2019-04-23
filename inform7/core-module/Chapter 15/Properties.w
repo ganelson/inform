@@ -684,6 +684,7 @@ inter_name *Properties::iname(property *prn) {
 		return Properties::iname(Properties::EitherOr::get_negation(prn));
 	if (prn->prop_iname == NULL) {
 		prn->prop_package = Hierarchy::package(prn->owning_module, PROPERTIES_HAP);
+		Hierarchy::markup_wording(prn->prop_package, PROPERTY_NAME_HMD, prn->name);
 		prn->prop_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, prn->prop_package, prn->name);
 	}
 	return prn->prop_iname;

@@ -17,19 +17,42 @@ void CodeGen::Inventory::print(OUTPUT_STREAM, inter_repository *I) {
 		if (Str::ne(M->package_name->symbol_name, I"template")) {
 			INDENT;
 			for (inter_package *SM = M->child_package; SM; SM = SM->next_package) {
-				WRITE("%S:\n", SM->package_name->symbol_name);
-				INDENT;
-					int pos = 0;
-					for (inter_package *R = SM->child_package; R; R = R->next_package) {
-						text_stream *name = CodeGen::Inventory::read_metadata(R, I"`name");
-						if (name == NULL) name = R->package_name->symbol_name;
-						if (pos > 0) WRITE(", ");
-						pos += Str::len(name) + 2;
-						if (pos > 80) { WRITE("\n"); pos = Str::len(name) + 2; }
-						WRITE("%S", name);
-					}
-					if (pos > 0) WRITE("\n");
-				OUTDENT;	
+				if (SM->child_package) {
+					WRITE("%S:\n", SM->package_name->symbol_name);
+					INDENT;
+						for (inter_package *R = SM->child_package; R; R = R->next_package)
+							CodeGen::unmark(R->package_name);
+						for (inter_package *R = SM->child_package; R; R = R->next_package) {
+							if (CodeGen::marked(R->package_name)) continue;
+							inter_symbol *ptype = Inter::Packages::type(R);
+							OUTDENT;
+							WRITE("  %S ", ptype->symbol_name);
+							int N = 1;
+							for (inter_package *R2 = R->next_package; R2; R2 = R2->next_package)
+								if (Inter::Packages::type(R2) == ptype)
+									N++;
+							WRITE("x %d: ", N);
+							INDENT;
+							int pos = Str::len(ptype->symbol_name) + 7;
+							int first = TRUE;
+							for (inter_package *R2 = R; R2; R2 = R2->next_package) {
+								if (Inter::Packages::type(R2) == ptype) {
+									text_stream *name = CodeGen::Inventory::read_metadata(R2, I"`name");
+									if (name == NULL) name = R2->package_name->symbol_name;
+									if ((pos > 0) && (first == FALSE)) WRITE(", ");
+									pos += Str::len(name) + 2;
+									if (pos > 80) { WRITE("\n"); pos = Str::len(name) + 2; }
+									WRITE("%S", name);
+									CodeGen::mark(R2->package_name);
+									first = FALSE;
+								}
+							}
+							if (pos > 0) WRITE("\n");
+						}
+						for (inter_package *R = SM->child_package; R; R = R->next_package)
+							CodeGen::unmark(R->package_name);
+					OUTDENT;
+				}
 			}
 			OUTDENT;
 		}

@@ -392,7 +392,16 @@ inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	return UNKNOWN_TY_iname;
 }
 package_request *Kinds::Constructors::package(kind_constructor *con) {
-	if (con->kc_package == NULL) con->kc_package = Hierarchy::local_package(KIND_HAP);
+	if (con->kc_package == NULL) {
+		con->kc_package = Hierarchy::local_package(KIND_HAP);
+		wording W = Kinds::Constructors::get_name(con, FALSE);
+		if (Wordings::nonempty(W))
+			Hierarchy::markup_wording(con->kc_package, KIND_NAME_HMD, W);
+		else if (Str::len(con->name_in_template_code) > 0)
+			Hierarchy::markup(con->kc_package, KIND_NAME_HMD, con->name_in_template_code);
+		else
+			Hierarchy::markup(con->kc_package, KIND_NAME_HMD, I"(anonymous kind)");
+	}
 	return con->kc_package;
 }
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {

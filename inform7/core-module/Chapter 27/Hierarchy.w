@@ -296,8 +296,10 @@ void Hierarchy::establish(void) {
 @e CV_POS_HL
 
 @e MVERBS_HAP
+@e MVERB_NAME_HMD
 @e MODAL_CONJUGATION_FN_HL
 @e VERBS_HAP
+@e VERB_NAME_HMD
 @e NONMODAL_CONJUGATION_FN_HL
 @e VERB_FORMS_HAP
 @e FORM_FN_HL
@@ -315,9 +317,11 @@ void Hierarchy::establish(void) {
 	location_requirement local_conjugations = HierarchyLocations::local_submodule(conjugations);
 	HierarchyLocations::ap(MVERBS_HAP, local_conjugations, I"mverb", I"_modal_verb");
 		location_requirement in_modal_verb = HierarchyLocations::any_package_of_type(I"_modal_verb");
+		HierarchyLocations::metadata(MVERB_NAME_HMD, in_modal_verb, I"`name");
 		HierarchyLocations::func(MODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(I"ConjugateModalVerb"), in_modal_verb);
 	HierarchyLocations::ap(VERBS_HAP, local_conjugations, I"verb", I"_verb");
 		location_requirement in_verb = HierarchyLocations::any_package_of_type(I"_verb");
+		HierarchyLocations::metadata(VERB_NAME_HMD, in_verb, I"`name");
 		HierarchyLocations::func(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", Translation::generate(I"ConjugateVerb"), in_verb);
 		HierarchyLocations::ap(VERB_FORMS_HAP, in_verb, I"form", I"_verb_form");
 			location_requirement in_verb_form = HierarchyLocations::any_package_of_type(I"_verb_form");
@@ -550,6 +554,7 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_STRING_HL
 
 @e KIND_HAP
+@e KIND_NAME_HMD
 @e KIND_CLASS_HL
 @e KIND_HL
 @e WEAK_ID_HL
@@ -603,6 +608,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_kinds = HierarchyLocations::local_submodule(kinds);
 	HierarchyLocations::ap(KIND_HAP, local_kinds, I"kind", I"_kind");
 		location_requirement in_kind = HierarchyLocations::any_package_of_type(I"_kind");
+		HierarchyLocations::metadata(KIND_NAME_HMD, in_kind, I"`name");
 		HierarchyLocations::con(KIND_CLASS_HL, NULL, Translation::generate(I"K"), in_kind);
 		HierarchyLocations::con(KIND_HL, NULL, Translation::generate(I"KD"), in_kind);
 		HierarchyLocations::con(WEAK_ID_HL, NULL, Translation::imposed(), in_kind);
@@ -691,6 +697,7 @@ void Hierarchy::establish(void) {
 @h Properties.
 
 @e PROPERTIES_HAP
+@e PROPERTY_NAME_HMD
 @e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
 
@@ -702,6 +709,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_properties = HierarchyLocations::local_submodule(properties);
 	HierarchyLocations::ap(PROPERTIES_HAP, local_properties, I"property", I"_property");
 		location_requirement in_property = HierarchyLocations::any_package_of_type(I"_property");
+		HierarchyLocations::metadata(PROPERTY_NAME_HMD, in_property, I"`name");
 		HierarchyLocations::con(PROPERTY_HL, I"P", Translation::same(), in_property);
 		HierarchyLocations::func(EITHER_OR_GPR_FN_HL, I"either_or_GPR_fn", Translation::generate(I"PRN_PN"), in_property);
 
@@ -796,8 +804,10 @@ void Hierarchy::establish(void) {
 @e EMPTY_RULEBOOK_INAME_HL
 
 @e OUTCOMES_HAP
+@e OUTCOME_NAME_HMD
 @e OUTCOME_HL
 @e RULEBOOKS_HAP
+@e RULEBOOK_NAME_HMD
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
 
@@ -816,9 +826,11 @@ void Hierarchy::establish(void) {
 	location_requirement local_rulebooks = HierarchyLocations::local_submodule(rulebooks);
 	HierarchyLocations::ap(OUTCOMES_HAP, local_rulebooks, I"rulebook_outcome", I"_outcome");
 		location_requirement in_outcome = HierarchyLocations::any_package_of_type(I"_outcome");
+		HierarchyLocations::metadata(OUTCOME_NAME_HMD, in_outcome, I"`name");
 		HierarchyLocations::con(OUTCOME_HL, I"outcome", Translation::uniqued(), in_outcome);
 	HierarchyLocations::ap(RULEBOOKS_HAP, local_rulebooks, I"rulebook", I"_rulebook");
 		location_requirement in_rulebook = HierarchyLocations::any_package_of_type(I"_rulebook");
+		HierarchyLocations::metadata(RULEBOOK_NAME_HMD, in_rulebook, I"`name");
 		HierarchyLocations::func(RUN_FN_HL, I"run_fn", Translation::uniqued(), in_rulebook);
 		HierarchyLocations::func(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_rulebook);
 
@@ -832,6 +844,7 @@ void Hierarchy::establish(void) {
 @h Rules.
 
 @e RULES_HAP
+@e RULE_NAME_HMD
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
@@ -850,6 +863,7 @@ void Hierarchy::establish(void) {
 	location_requirement local_rules = HierarchyLocations::local_submodule(rules);
 	HierarchyLocations::ap(RULES_HAP, local_rules, I"rule", I"_rule");
 		location_requirement in_rule = HierarchyLocations::any_package_of_type(I"_rule");
+		HierarchyLocations::metadata(RULE_NAME_HMD, in_rule, I"`name");
 		HierarchyLocations::func(SHELL_FN_HL, I"shell_fn", Translation::uniqued(), in_rule);
 		HierarchyLocations::func(RULE_FN_HL, I"rule_fn", Translation::uniqued(), in_rule);
 		HierarchyLocations::con(EXTERIOR_RULE_HL, I"exterior_rule", Translation::uniqued(), in_rule);
@@ -1679,6 +1693,13 @@ void Hierarchy::markup(package_request *R, int hm_id, text_stream *value) {
 void Hierarchy::markup_wording(package_request *R, int hm_id, wording W) {
 	TEMPORARY_TEXT(ANT);
 	WRITE_TO(ANT, "%W", W);
+	Hierarchy::markup(R, hm_id, ANT);
+	DISCARD_TEXT(ANT);
+}
+
+void Hierarchy::markup_wa(package_request *R, int hm_id, word_assemblage WA) {
+	TEMPORARY_TEXT(ANT);
+	WRITE_TO(ANT, "%A", WA);
 	Hierarchy::markup(R, hm_id, ANT);
 	DISCARD_TEXT(ANT);
 }

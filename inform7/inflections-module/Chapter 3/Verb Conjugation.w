@@ -204,9 +204,17 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 	if (vc->vc_iname == NULL) {
 		if (vc->vc_conjugates == NULL) {
 			package_request *R = Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
+			TEMPORARY_TEXT(ANT);
+			WRITE_TO(ANT, "%A (modal)", vc->tabulations[ACTIVE_MOOD].vc_text[0][0][2]);
+			Hierarchy::markup(R, MVERB_NAME_HMD, ANT);
+			DISCARD_TEXT(ANT);
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
 			package_request *R = Verbs::verb_package(vc->vc_conjugates, vc->where_vc_created);
+			TEMPORARY_TEXT(ANT);
+			WRITE_TO(ANT, "to %A", vc->infinitive);
+			Hierarchy::markup(R, VERB_NAME_HMD, ANT);
+			DISCARD_TEXT(ANT);
 			vc->vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
 		}
 	}

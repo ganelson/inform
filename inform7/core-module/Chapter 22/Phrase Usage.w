@@ -76,6 +76,8 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	if (Wordings::nonempty(W)) R = Rules::by_name(W);
 	if (R) @<Check that this isn't duplicating the name of a rule already made@>
 	else R = Rules::new(W, explicitly);
+	if (Wordings::empty(W))
+		Hierarchy::markup_wording(R->rule_package, RULE_NAME_HMD, ParseTree::get_text(ph->declaration_node));
 
 	Rules::set_I7_definition(R, ph);
 	package_request *P = Rules::package(R);

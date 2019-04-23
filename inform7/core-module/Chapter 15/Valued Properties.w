@@ -62,6 +62,7 @@ property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	wording W = Feeds::feed_stream(I6_form);
 	if (K == NULL) internal_error("new nameless property without kind");
 	package_request *R = Hierarchy::package(Modules::find(current_sentence), PROPERTIES_HAP);
+	Hierarchy::markup(R, PROPERTY_NAME_HMD, I6_form);
 	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
 	property *prn = Properties::create(EMPTY_WORDING, R, using_iname);
 	Properties::exclude_from_index(prn);

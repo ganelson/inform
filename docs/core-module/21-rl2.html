@@ -284,6 +284,8 @@ built (for instance, scene endings).
 
 <pre class="display">
     <span class="reserved">rulebook</span><span class="plain"> *</span><span class="functiontext">Rulebooks::new</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">create_as</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
+        <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">RULEBOOK_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain">);</span>
 
         <span class="plain">&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>

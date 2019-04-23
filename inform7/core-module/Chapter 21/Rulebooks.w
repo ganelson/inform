@@ -206,6 +206,8 @@ built (for instance, scene endings).
 
 =
 rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
+	Hierarchy::markup_wording(R, RULEBOOK_NAME_HMD, W);
+
 	rulebook *rb = CREATE(rulebook);
 
 	<new-rulebook-name>(W);

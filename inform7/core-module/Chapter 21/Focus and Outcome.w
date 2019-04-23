@@ -223,6 +223,7 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 	}
 
 	package_request *R = Hierarchy::local_package(OUTCOMES_HAP);
+	Hierarchy::markup_wording(R, OUTCOME_NAME_HMD, W);
 
 	named_rulebook_outcome *rbno = CREATE(named_rulebook_outcome);
 	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER,

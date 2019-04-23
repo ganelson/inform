@@ -126,6 +126,8 @@ rule *Rules::new(wording W, int named) {
 	R->explicitly_named = named;
 	R->shell_routine_iname = NULL;
 	R->rule_package = Hierarchy::local_package(RULES_HAP);
+	if (Wordings::nonempty(W))
+		Hierarchy::markup_wording(R->rule_package, RULE_NAME_HMD, W);
 	for (int l=0; l<26; l++) {
 		R->lettered_responses[l] = NULL;
 		R->lettered_responses_used[l] = NULL;
