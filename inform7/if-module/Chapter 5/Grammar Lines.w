@@ -96,9 +96,7 @@ grammar_line *PL::Parsing::Lines::new(int wn, action_name *ac,
 	gl->understanding_sort_bonus = UNCALCULATED_BONUS;
 
 	gl->cond_token_iname = NULL;
-	
-	package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
-	gl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
+	gl->mistake_iname = NULL;
 
 	return gl;
 }
@@ -320,6 +318,10 @@ the mistake.
 void PL::Parsing::Lines::set_mistake(grammar_line *gl, int wn) {
 	gl->mistaken = TRUE;
 	gl->mistake_response_text = Wordings::one_word(wn);
+	if (gl->mistake_iname == NULL) {
+		package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
+		gl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
+	}
 }
 
 void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {

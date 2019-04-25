@@ -78,7 +78,6 @@ level-0 headings, which are the nodes from which these blocks of source text han
 
         <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain">);</span>
         <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;hanging_from</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inappropriate CM"</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 
@@ -142,8 +141,7 @@ tree and say which compilation module it belongs to. If there were a fast way
 to go up in the tree, that would be easy &mdash; we could simply run upward until we
 reach a level-0 heading. But the node links all run downwards. Instead, we'll
 "mark" nodes in the tree, annotating them with the compilation module which owns
-them. This is done by "propagating downwards", as follows, and marks only nodes
-of certain structural kinds.
+them. This is done by "propagating downwards", as follows.
 </p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
@@ -152,27 +150,16 @@ of certain structural kinds.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">)) </span><span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
         <span class="plain">}</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="identifier">ROOT_NT</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="identifier">HEADING_NT</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="identifier">SENTENCE_NT</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="constant">ROUTINE_NT</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Modules::propagate_downwards is used in <a href="#SP2">&#167;2</a>.</p>
-
-<p class="endnote">The function Modules::markable is used in <a href="#SP2">&#167;2</a>, <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>As promised, then, given a parse node, we have to return its compilation module:
 but that's now easy, as we just have to read off the annotation made above &mdash;
@@ -182,14 +169,13 @@ but that's now easy, as we just have to read off the annotation made above &mdas
 <pre class="display">
     <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Modules::markable</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ParseTree::get_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">source_text_module</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ParseTree::get_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Modules::find is used in <a href="#SP6">&#167;6</a>, 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP5_3">&#167;5.3</a>), 15/vp (<a href="15-vp.html#SP3">&#167;3</a>), 21/rl (<a href="21-rl.html#SP26">&#167;26</a>), 22/ph (<a href="22-ph.html#SP6_8">&#167;6.8</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/pc (<a href="27-pc.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Modules::find is used in <a href="#SP6">&#167;6</a>, 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP5_3">&#167;5.3</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 21/rl (<a href="21-rl.html#SP26">&#167;26</a>), 22/ph (<a href="22-ph.html#SP6_8">&#167;6.8</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/pc (<a href="27-pc.html#SP16">&#167;16</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Current module. </b>Inform has a concept of the "current module" it's working on, much as it has
 a concept of "current sentence".

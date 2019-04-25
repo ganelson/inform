@@ -33,7 +33,6 @@ void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, i
 	link_search_list_len = 2;
 
 	inter_reading_state link_bookmark = Inter::Bookmarks::from_package(Inter::Package::which(package_name));
-	LOG("\n\nLinker using $5\n", &link_bookmark);
 
 	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::Link::receive_raw),  &(CodeGen::Link::receive_command), NULL);
 	kit.no_i6t_file_areas = N;
@@ -45,11 +44,45 @@ void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, i
 	TemplateReader::extract(template_file, &kit);
 }
 
-inter_symbol *CodeGen::Link::find_name(inter_repository *I, text_stream *S) {
+dictionary *linkable_namespace = NULL;
+int linkable_namespace_created = FALSE;
+
+inter_symbol *CodeGen::Link::find_in_namespace(inter_repository *I, text_stream *name) {
+	if (linkable_namespace_created == FALSE) {
+		linkable_namespace_created = TRUE;
+		linkable_namespace = Dictionaries::new(512, FALSE);
+		for (inter_package *P = Inter::Packages::main(I)->child_package; P; P = P->next_package)
+			if (Str::ne(P->package_name->symbol_name, I"template"))
+				CodeGen::Link::build_r(P);
+	}
+	if (Dictionaries::find(linkable_namespace, name))
+		return (inter_symbol *) Dictionaries::read_value(linkable_namespace, name);
+	return NULL;
+}
+
+void CodeGen::Link::build_r(inter_package *P) {
+	inter_symbols_table *T = Inter::Packages::scope(P);
+	if (T) {
+		for (int i=0; i<T->size; i++) {
+			inter_symbol *S = T->symbol_array[i];
+			if ((Inter::Symbols::is_defined(S)) && (S->equated_to == NULL) &&
+				(Inter::Symbols::get_flag(S, MAKE_NAME_UNIQUE) == FALSE)) {
+				text_stream *name = S->symbol_name;
+				if (Str::len(S->translate_text) > 0) name = S->translate_text;
+				Dictionaries::create(linkable_namespace, name);
+				Dictionaries::write_value(linkable_namespace, name, (void *) S);
+			}
+		}
+	}
+	for (P = P->child_package; P; P = P->next_package) CodeGen::Link::build_r(P);
+}
+
+inter_symbol *CodeGen::Link::find_name(inter_repository *I, text_stream *S, int deeply) {
 	for (int i=0; i<link_search_list_len; i++) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
 		if (symb) return symb;
 	}
+	if (deeply) return CodeGen::Link::find_in_namespace(I, S);
 	return NULL;
 }
 

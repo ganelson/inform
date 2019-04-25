@@ -125,7 +125,7 @@ The following makes a blank structure for a table, but it isn't valid until
 some of these fields have been properly filled in.
 
 =
-table *Tables::new_table_structure(void) {
+table *Tables::new_table_structure(parse_node *PN) {
 	table *t = CREATE(table);
 	t->table_no_text = EMPTY_WORDING;
 	t->table_name_text = EMPTY_WORDING;
@@ -141,7 +141,7 @@ table *Tables::new_table_structure(void) {
 	t->preserve_row_order_at_run_time = FALSE;
 	t->amendment_of = NULL;
 	t->has_been_amended = FALSE;
-	t->table_package = Hierarchy::local_package(TABLES_HAP);
+	t->table_package = Hierarchy::package(Modules::find(PN), TABLES_HAP);
 	t->table_identifier = Hierarchy::make_iname_in(TABLE_DATA_HL, t->table_package);
 	t->approximate_array_space_needed = 0;
 	t->disable_block_constant_correction = FALSE;
@@ -301,7 +301,7 @@ table and then destroy the temporary one made here.
 void Tables::create_table(parse_node *PN) {
 	wording W = ParseTree::get_text(PN);
 	int connection = TABLE_IS_NEW; /* i.e., no connection with existing tables */
-	table *t = Tables::new_table_structure();
+	table *t = Tables::new_table_structure(PN);
 
 	wording HW = Wordings::up_to(W, Wordings::last_word_of_formatted_text(W, FALSE));
 	if (Wordings::length(HW) == 1) @<Reject this lexically malformed table declaration@>;

@@ -393,7 +393,15 @@ inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 }
 package_request *Kinds::Constructors::package(kind_constructor *con) {
 	if (con->kc_package == NULL) {
-		con->kc_package = Hierarchy::local_package(KIND_HAP);
+		if (con->defined_in_source_text) {
+			compilation_module *C = Modules::find(con->where_defined_in_source_text);
+			con->kc_package = Hierarchy::package(C, KIND_HAP);
+		} else if (con->superkind_set_at) {
+			compilation_module *C = Modules::find(con->superkind_set_at);
+			con->kc_package = Hierarchy::package(C, KIND_HAP);
+		} else {
+			con->kc_package = Hierarchy::synoptic_package(KIND_HAP);
+		}
 		wording W = Kinds::Constructors::get_name(con, FALSE);
 		if (Wordings::nonempty(W))
 			Hierarchy::markup_wording(con->kc_package, KIND_NAME_HMD, W);

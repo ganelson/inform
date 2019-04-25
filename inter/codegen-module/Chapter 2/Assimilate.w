@@ -109,7 +109,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		inter_t switch_on = P.data[PLM_SPLAT_IFLD];
 
 		if (switch_on == DEFAULT_PLM) {
-			inter_symbol *symbol = CodeGen::Link::find_name(I, identifier);
+			inter_symbol *symbol = CodeGen::Link::find_name(I, identifier, TRUE);
 			if (symbol == NULL) switch_on = CONSTANT_PLM;
 		}
 
@@ -196,7 +196,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 						if (next_is_action) WRITE_TO(value, "##");
 						@<Extract a token@>;
 						if ((next_is_action) && (action_kind_symbol)) {
-							if (CodeGen::Link::find_name(I, value) == NULL) {
+							if (CodeGen::Link::find_name(I, value, TRUE) == NULL) {
 								inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, into_scope);
 								CodeGen::Link::guard(Inter::Constant::new_numerical(&ib,
 									Inter::SymbolsTables::id_from_symbol(I, outer, asymb),
@@ -365,7 +365,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 
 @ =
 inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream *identifier, inter_symbols_table *into_scope) {
-	inter_symbol *rsymb = CodeGen::Link::find_name(I, identifier);
+	inter_symbol *rsymb = CodeGen::Link::find_name(I, identifier, FALSE);
 	if (rsymb) {
 		if (Inter::Symbols::is_extern(rsymb)) {
 			if (rsymb->definition_status == DEFINED_ISYMD) {
@@ -496,7 +496,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, text_s
 		}
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L"scope=(%i+)")) {
-			inter_symbol *symb = CodeGen::Link::find_name(I, mr.exp[0]);
+			inter_symbol *symb = CodeGen::Link::find_name(I, mr.exp[0], TRUE);
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
 					Inter::Symbols::annotate_i(I, symb, SCOPE_FILTER_IANN, 1);
@@ -504,7 +504,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, text_s
 			}
 		}
 		if (Regexp::match(&mr, S, L"noun=(%i+)")) {
-			inter_symbol *symb = CodeGen::Link::find_name(I, mr.exp[0]);
+			inter_symbol *symb = CodeGen::Link::find_name(I, mr.exp[0], TRUE);
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
 					Inter::Symbols::annotate_i(I, symb, NOUN_FILTER_IANN, 1);
@@ -513,7 +513,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, text_s
 		}
 	}
 
-	inter_symbol *symb = CodeGen::Link::find_name(I, S);
+	inter_symbol *symb = CodeGen::Link::find_name(I, S, TRUE);
 	if (symb) {
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}

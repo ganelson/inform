@@ -55,7 +55,6 @@ compilation_module *Modules::new(parse_node *from) {
 
 	compilation_module *C = CREATE(compilation_module);
 	C->hanging_from = from;
-	if (Modules::markable(from) == FALSE) internal_error("inappropriate CM");
 	ParseTree::set_module(from, C);
 	Modules::propagate_downwards(from->down, C);
 
@@ -98,25 +97,15 @@ tree and say which compilation module it belongs to. If there were a fast way
 to go up in the tree, that would be easy -- we could simply run upward until we
 reach a level-0 heading. But the node links all run downwards. Instead, we'll
 "mark" nodes in the tree, annotating them with the compilation module which owns
-them. This is done by "propagating downwards", as follows, and marks only nodes
-of certain structural kinds.
+them. This is done by "propagating downwards", as follows.
 
 @ =
 void Modules::propagate_downwards(parse_node *P, compilation_module *C) {
 	while (P) {
-		if (Modules::markable(P)) ParseTree::set_module(P, C);
+		ParseTree::set_module(P, C);
 		Modules::propagate_downwards(P->down, C);
 		P = P->next;
 	}
-}
-
-int Modules::markable(parse_node *from) {
-	if (from == NULL) return FALSE;
-	if ((ParseTree::get_type(from) == ROOT_NT) ||
-		(ParseTree::get_type(from) == HEADING_NT) ||
-		(ParseTree::get_type(from) == SENTENCE_NT) ||
-		(ParseTree::get_type(from) == ROUTINE_NT)) return TRUE;
-	return FALSE;
 }
 
 @ As promised, then, given a parse node, we have to return its compilation module:
@@ -125,8 +114,7 @@ but that's now easy, as we just have to read off the annotation made above --
 =
 compilation_module *Modules::find(parse_node *from) {
 	if (from == NULL) return NULL;
-	if (Modules::markable(from)) return ParseTree::get_module(from);
-	return source_text_module;
+	return ParseTree::get_module(from);
 }
 
 @h Current module.

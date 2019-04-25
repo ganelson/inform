@@ -424,22 +424,22 @@ void ParseTreeUsage::write_permissions(void) {
 	ParseTree::allow_annotation(HEADING_NT, embodying_heading_ANNOT);
 	ParseTree::allow_annotation(HEADING_NT, interpretation_of_subject_ANNOT);
 	ParseTree::allow_annotation(HEADING_NT, suppress_heading_dependencies_ANNOT);
-	ParseTree::allow_annotation(HEADING_NT, module_ANNOT);
+	ParseTree::allow_annotation_to_category(L1_NCAT, module_ANNOT);
 
 	ParseTree::allow_annotation_to_category(L2_NCAT, clears_pronouns_ANNOT);
 	ParseTree::allow_annotation_to_category(L2_NCAT, interpretation_of_subject_ANNOT);
 	ParseTree::allow_annotation_to_category(L2_NCAT, sentence_unparsed_ANNOT);
 	ParseTree::allow_annotation_to_category(L2_NCAT, verb_problem_issued_ANNOT);
 	ParseTree::allow_annotation(ROUTINE_NT, indentation_level_ANNOT);
-	ParseTree::allow_annotation(ROUTINE_NT, module_ANNOT);
 	ParseTree::allow_annotation(SENTENCE_NT, implicit_in_creation_of_ANNOT);
 	ParseTree::allow_annotation(SENTENCE_NT, implicitness_count_ANNOT);
 	ParseTree::allow_annotation(SENTENCE_NT, you_can_ignore_ANNOT);
-	ParseTree::allow_annotation(SENTENCE_NT, module_ANNOT);
+	ParseTree::allow_annotation_to_category(L2_NCAT, module_ANNOT);
 	LOOP_OVER_NODE_TYPES(t)
 		if (ParseTree::test_flag(t, ASSERT_NFLAG))
 			ParseTree::allow_annotation(t, resolved_ANNOT);
 
+	ParseTree::allow_annotation_to_category(L3_NCAT, module_ANNOT);
 	ParseTree::allow_annotation_to_category(L3_NCAT, creation_proposition_ANNOT);
 	ParseTree::allow_annotation_to_category(L3_NCAT, evaluation_ANNOT);
 	ParseTree::allow_annotation_to_category(L3_NCAT, subject_ANNOT);
@@ -494,6 +494,7 @@ void ParseTreeUsage::write_permissions(void) {
 	ParseTree::allow_annotation_to_category(L4_NCAT, token_to_be_parsed_against_ANNOT);
 	ParseTree::allow_annotation_to_category(L4_NCAT, verb_problem_issued_ANNOT);
 	ParseTree::allow_annotation_to_category(L4_NCAT, problem_falls_under_ANNOT);
+	ParseTree::allow_annotation_to_category(L4_NCAT, module_ANNOT);
 	ParseTree::allow_annotation(CODE_BLOCK_NT, sentence_unparsed_ANNOT);
 	ParseTree::allow_annotation(INVOCATION_LIST_NT, from_text_substitution_ANNOT);
 	ParseTree::allow_annotation(INVOCATION_LIST_NT, sentence_unparsed_ANNOT);

@@ -55,6 +55,7 @@ inter_name *PL::Parsing::Tokens::General::print_consultation_gv_name(void) {
 
 inter_name *PL::Parsing::Tokens::General::consult_iname(grammar_verb *gv) {
 	if (gv->gv_consult_iname == NULL) {
+		current_sentence = gv->where_gv_created;
 		package_request *PR = Hierarchy::local_package(CONSULT_TOKENS_HAP);
 		gv->gv_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
 	}
