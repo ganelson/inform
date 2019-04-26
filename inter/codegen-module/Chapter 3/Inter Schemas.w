@@ -222,8 +222,9 @@ typedef struct inter_schema_token {
 	struct inter_symbol *operation_primitive;	/* |OPERATOR_ISTT| only: e.g. |plus_interp| for |+| */
 	int reserved_word;							/* |RESERVED_ISTT| only: which one */
 	int constant_number;						/* |NUMBER_ISTT| only: if non-negative, value of number */
+	#ifdef CORE_MODULE
 	struct inter_name *as_quoted;				/* |IDENTIFIER_ISTT| only: the identified symbol if known */
-
+	#endif
 	int inline_command;							/* |INLINE_ISTT| only: one of the |*_ISINC| values */
 	int inline_modifiers;
 	int inline_subcommand;						/* |INLINE_ISTT| only: one of the |*_ISINSC| values */
@@ -231,8 +232,10 @@ typedef struct inter_schema_token {
 	struct text_stream *command;
 	struct text_stream *operand;
 	struct text_stream *operand2;
+	#ifdef CORE_MODULE
 	struct property *extremal_property;
 	int extremal_property_sign;
+	#endif
 
 	int preinsert;								/* fleeting markers only */
 	int postinsert;
@@ -249,14 +252,18 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 	t->command = NULL;
 	t->operand = NULL;
 	t->operand2 = NULL;
+	#ifdef CORE_MODULE
 	t->extremal_property = NULL; /* that is, none given */
 	t->extremal_property_sign = MEASURE_T_EXACTLY; /* that is, none given */
+	#endif
 	t->inline_command = no_ISINC;
 	t->inline_subcommand = no_ISINSC;
 	t->next = NULL;
 	t->owner = NULL;
 	t->operation_primitive = operation_primitive;
+	#ifdef CORE_MODULE
 	t->as_quoted = NULL;
+	#endif
 	t->reserved_word = reserved_word;
 	t->constant_number = n;
 	t->preinsert = FALSE;
@@ -541,7 +548,7 @@ text_stream *InterSchemas::lint_isn(inter_schema_node *isn, int depth) {
 =
 dictionary *compiled_i6s_dict = NULL;
 
-inter_schema *InterSchemas::from_i6s(text_stream *prototype, int no_quoted_inames, inter_name **quoted_inames) {
+inter_schema *InterSchemas::from_i6s(text_stream *prototype, int no_quoted_inames, void **quoted_inames) {
 	if (compiled_i6s_dict == NULL) {
 		compiled_i6s_dict = Dictionaries::new(512, FALSE);
 	}
@@ -637,7 +644,7 @@ and Inform would then have allocated a new variable as loop counter each time.
 This is a two-stage process.
 
 =
-inter_schema *InterSchemas::from_text(text_stream *from, int abbreviated, int no_quoted_inames, inter_name **quoted_inames) {
+inter_schema *InterSchemas::from_text(text_stream *from, int abbreviated, int no_quoted_inames, void **quoted_inames) {
 	inter_schema *sch = InterSchemas::new(from);
 
 	if ((Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) ||
@@ -914,8 +921,10 @@ optional, operand in |operand2|.
 					break;
 				case 2:
 					if (c == ':') portion = 3;
+					#ifdef CORE_MODULE
 					else if (c == '<') { t->extremal_property_sign = MEASURE_T_OR_LESS; portion = 4; }
 					else if (c == '>') { t->extremal_property_sign = MEASURE_T_OR_MORE; portion = 4; }
+					#endif
 					else PUT_TO(t->operand, c);
 					break;
 				case 3:
@@ -924,10 +933,12 @@ optional, operand in |operand2|.
 					PUT_TO(pname, c); break;
 			}
 		}
+		#ifdef CORE_MODULE
 		if (t->extremal_property_sign != MEASURE_T_EXACTLY) {
 			wording W = Feeds::feed_stream(pname);
 			if (<property-name>(W)) t->extremal_property = <<rp>>;
 		}
+		#endif
 		Str::copy(t->bracing, t->operand);
 	}
 	DISCARD_TEXT(pname);
@@ -1174,7 +1185,9 @@ inclusive; we ignore an empty token.
 		@<Identify this new token@>;
 
 		inter_schema_token *n = InterSchemas::new_token(is, T, which, which_rw, which_number);
+		#ifdef CORE_MODULE
 		if (which_quote >= 0) n->as_quoted = quoted_inames[which_quote];
+		#endif
 		InterSchemas::add_token(sch, n);
 		if (n->ist_type != WHITE_SPACE_ISTT) preceding_token = n;
 		DISCARD_TEXT(T);
@@ -2624,288 +2637,3 @@ int InterSchemas::ip_prim_cat(inter_symbol *O, int i) {
 	if ((InterSchemas::ip_loopy(O)) && (i == InterSchemas::ip_arity(O) - 1)) ok = CODE_PRIM_CAT;
 	return ok;
 }
-
-@h Compilation.
-
-=
-void InterSchemas::emit(value_holster *VH, inter_schema *sch, void *opaque_state,
-	int to_code, int to_val,
-	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
-	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
-	if (sch->mid_case) { Emit::to_last_level(4); }
-	int prim_cat = VAL_PRIM_CAT;
-	if (to_code) prim_cat = CODE_PRIM_CAT;
-	for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
-		InterSchemas::emit_inner(isn, VH, sch, opaque_state, prim_cat, inline_command_handler, i7_source_handler);
-}
-
-@ =
-void InterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
-	inter_schema *sch, void *opaque_state, int prim_cat,
-	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
-	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
-	if (isn == NULL) return;
-	switch (isn->isn_type) {
-		case LABEL_ISNT: @<Label@>; break;
-		case CODE_ISNT: @<Code block@>; break;
-		case EVAL_ISNT: @<Eval block@>; break;
-		case EXPRESSION_ISNT: @<Expression@>; break;
-		case SUBEXPRESSION_ISNT: @<Subexpression@>; break;
-		case STATEMENT_ISNT: @<Statement@>; break;
-		case OPERATION_ISNT: @<Operation@>; break;
-		case ASSEMBLY_ISNT: @<Assembly@>; break;
-		case CALL_ISNT: @<Call@>; break;
-		default: internal_error("unknown schema node type");
-	}
-}
-
-@<Label@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("label outside code");
-	TEMPORARY_TEXT(L);
-	WRITE_TO(L, ".");
-	for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
-		for (inter_schema_token *t = at->expression_tokens; t; t=t->next) {
-			if (t->ist_type == IDENTIFIER_ISTT)
-				WRITE_TO(L, "%S", t->material);
-			else if ((t->ist_type == INLINE_ISTT) && (t->inline_command == label_ISINC)) {
-				JumpLabels::write(L, t->operand);
-			} else if ((t->ist_type == INLINE_ISTT) &&
-				((t->inline_command == counter_up_ISINC) || (t->inline_command == counter_down_ISINC))) {
-				value_holster VN = Holsters::new(INTER_DATA_VHMODE);
-				(*inline_command_handler)(&VN, t, opaque_state, VAL_PRIM_CAT);
-			} else internal_error("bad label stuff");
-		}
-	}
-	Emit::place_label(Emit::reserve_label(L), TRUE);
-	DISCARD_TEXT(L);
-
-@<Code block@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("code block in expression");
-	if (isn->unopened == FALSE) {
-		Emit::code();
-		Emit::down();
-	}
-	for (inter_schema_node *at = isn->child_node; at; at=at->next_node)
-		InterSchemas::emit_inner(at,
-			VH, sch, opaque_state, CODE_PRIM_CAT, inline_command_handler, i7_source_handler);
-	if (isn->unclosed == FALSE) {
-		Emit::up();
-	}
-	if (isn->unopened) Emit::to_last_level(0);
-
-@<Assembly@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("assembly in expression");
-	inter_schema_node *at = isn->child_node;
-	if (at) {
-		text_stream *opcode_text = NULL;
-		if (at->isn_type == EXPRESSION_ISNT) {
-			inter_schema_token *tok = at->expression_tokens;
-			if ((tok->ist_type == OPCODE_ISTT) && (tok->next == NULL))
-				opcode_text = tok->material;
-		}
-		if (opcode_text == NULL) internal_error("assembly malformed");
-		Emit::inv_assembly(opcode_text);
-		Emit::down();
-		for (at = at->next_node; at; at=at->next_node)
-			InterSchemas::emit_inner(at, VH, sch, opaque_state,
-				VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
-		Emit::up();
-	}
-
-@<Call@> =
-	if (isn->child_node) {
-		inter_schema_node *at = isn->child_node;
-		inter_schema_token *to_call = NULL;
-		if (at->isn_type == EXPRESSION_ISNT) {
-			inter_schema_token *tok = at->expression_tokens;
-			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL))
-				to_call = tok;
-		}
-		if (to_call) {
-			Emit::inv_call(InterSchemas::find_identifier(to_call));
-			at = at->next_node;
-		} else {
-			int argc = 0;
-			for (inter_schema_node *n = isn->child_node; n; n=n->next_node) {
-				if ((n->expression_tokens) && (n->expression_tokens->inline_command == combine_ISINC)) argc++;
-				argc++;
-			}
-			switch (argc) {
-				case 1: Emit::inv_primitive(indirect0_interp); break;
-				case 2: Emit::inv_primitive(indirect1_interp); break;
-				case 3: Emit::inv_primitive(indirect2_interp); break;
-				case 4: Emit::inv_primitive(indirect3_interp); break;
-				case 5: Emit::inv_primitive(indirect4_interp); break;
-				default: internal_error("too many args for indirect call"); break;
-			}
-		}
-		Emit::down();
-		for (; at; at=at->next_node)
-			InterSchemas::emit_inner(at,
-				VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
-		Emit::up();
-	}
-
-@<Eval block@> =
-	if ((prim_cat != CODE_PRIM_CAT) && (prim_cat != VAL_PRIM_CAT))
-		internal_error("eval block outside evaluation context");
-	if (isn->child_node == NULL) Emit::val(K_truth_state, LITERAL_IVAL, 1);
-	else {
-		int d = 0;
-		for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
-			if (at->next_node) {
-				d++;
-				Emit::inv_primitive(sequential_interp);
-				Emit::down();
-			}
-			InterSchemas::emit_inner(at,
-				VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
-		}
-		while (d > 0) { Emit::up(); d--; }
-	}
-
-@<Operation@> =
-	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
-
-	Emit::inv_primitive(isn->isn_clarifier);
-	Emit::down();
-	int pc = VAL_PRIM_CAT;
-	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
-	InterSchemas::emit_inner(isn->child_node,
-		VH, sch, opaque_state, pc, inline_command_handler, i7_source_handler);
-	if (InterSchemas::arity(isn->isn_clarifier) == 2)
-		InterSchemas::emit_inner(isn->child_node->next_node,
-			VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
-	Emit::up();
-
-	if (prim_cat == REF_PRIM_CAT) { Emit::up(); }
-
-@<Subexpression@> =
-	int d = 0;
-	for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
-		if (at->next_node) {
-			d++;
-			Emit::inv_primitive(sequential_interp);
-			Emit::down();
-		}
-		InterSchemas::emit_inner(at,
-			VH, sch, opaque_state, prim_cat, inline_command_handler, i7_source_handler);
-	}
-	while (d > 0) { Emit::up(); d--; }
-
-@<Statement@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
-	if (isn->isn_clarifier == case_interp) Emit::to_last_level(2);
-	Emit::inv_primitive(isn->isn_clarifier);
-	int arity = InterSchemas::ip_arity(isn->isn_clarifier);
-	if (arity > 0) {
-		Emit::down();
-		if (isn->isn_clarifier == objectloop_interp)
-			@<Add the objectloop range tokens@>;
-		inter_schema_node *at = isn->child_node;
-		inter_schema_node *last = NULL;
-		int actual_arity = 0;
-		for (int i = 0; ((at) && (i<arity)); i++) {
-			actual_arity++;
-			InterSchemas::emit_inner(at, VH, sch, opaque_state,
-				InterSchemas::ip_prim_cat(isn->isn_clarifier, i), inline_command_handler, i7_source_handler);
-			last = at;
-			at = at->next_node;
-		}
-		if (!((last) && (last->unclosed))) {
-			Emit::up();
-		}
-	}
-
-@<Add the objectloop range tokens@> =
-	inter_schema_node *oc_node = isn->child_node;
-	while ((oc_node) &&
-		((oc_node->isn_type != OPERATION_ISNT) ||
-		(oc_node->isn_clarifier != ofclass_interp)))
-		oc_node = oc_node->child_node;
-	if (oc_node) {
-		inter_schema_node *var_node = oc_node->child_node;
-		inter_schema_node *cl_node = var_node?(var_node->next_node):NULL;
-		if ((var_node) && (cl_node)) {
-			InterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT, inline_command_handler, i7_source_handler);
-			InterSchemas::emit_inner(cl_node, VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
-		} else internal_error("malformed OC node");
-	} else {
-		inter_schema_node *var_node = isn->child_node;
-		while ((var_node) && (var_node->isn_type != EXPRESSION_ISNT))
-			var_node = var_node->child_node;
-		if (var_node) {
-			InterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT, inline_command_handler, i7_source_handler);
-			Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
-		} else internal_error("objectloop without visible variable");
-	}
-
-@<Expression@> =
-	int cat_me = FALSE;
-	int tc = 0; for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) tc++;
-	if ((tc > 1) && (prim_cat == VAL_PRIM_CAT)) cat_me = TRUE;
-
-	if (cat_me) { Emit::evaluation(); Emit::down(); }
-	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
-
-	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
-		switch (t->ist_type) {
-			case IDENTIFIER_ISTT: {
-				local_variable *lvar = LocalVariables::by_name_any(t->material);
-				if (lvar) {
-					inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-					Emit::val_symbol(K_value, lvar_s);
-				} else {
-					Emit::val_symbol(K_value, InterSchemas::find_identifier(t));
-				}
-				break;
-			}
-			case NUMBER_ISTT:
-			case BIN_NUMBER_ISTT:
-			case HEX_NUMBER_ISTT: {
-				inter_t v1 = 0, v2 = 0;
-				if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_t) t->constant_number; }
-				else if (Inter::Types::read_I6_decimal(t->material, &v1, &v2) == FALSE)
-					internal_error("bad number");
-				Emit::val(K_number, v1, v2);
-				break;
-			}
-			case REAL_NUMBER_ISTT:
-				Emit::val_real_from_text(t->material);
-				break;
-			case DQUOTED_ISTT:
-				Emit::val_text(t->material);
-				break;
-			case SQUOTED_ISTT:
-				if (Str::len(t->material) == 1) {
-					Emit::val_char(Str::get_at(t->material, 0));
-				} else {
-					Emit::val_dword(t->material);
-				}
-				break;
-			case I7_ISTT:
-				(*i7_source_handler)(VH, NULL, t->material);
-				break;
-			case INLINE_ISTT:
-				(*inline_command_handler)(VH, t, opaque_state, prim_cat);
-				break;
-			default:
-				internal_error("bad expression token");
-		}
-	}
-
-	if (cat_me) { Emit::up(); }
-	if (prim_cat == REF_PRIM_CAT) { Emit::up(); }
-
-@ =
-inter_symbol *InterSchemas::find_identifier(inter_schema_token *t) {
-	if (t->as_quoted) return InterNames::to_symbol(t->as_quoted);
-	return InterSchemas::find_identifier_text(t->material);
-}
-
-inter_symbol *InterSchemas::find_identifier_text(text_stream *S) {
-	inter_symbol *I = Emit::seek_symbol(Emit::main_scope(), S);
-	if (I) return I;
-	return InterNames::to_symbol(Hierarchy::find_by_name(S));
-}
-

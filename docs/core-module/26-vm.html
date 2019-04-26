@@ -253,6 +253,7 @@ value for each possible word size.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">table_of_VM_data</span><span class="plain">[</span><span class="identifier">target_VM</span><span class="plain">]</span><span class="element">.VM_code</span><span class="plain"> == </span><span class="constant">GLULX_VM</span><span class="plain">) {</span>
             <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">TARGET_GLULX_HL</span><span class="plain">, 1);</span>
             <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">DICT_WORD_SIZE_HL</span><span class="plain">, 9);</span>
+            <span class="functiontext">VirtualMachines::emit_fundamental_constant</span><span class="plain">(</span><span class="constant">INDIV_PROP_START_HL</span><span class="plain">, 0);</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">table_of_VM_data</span><span class="plain">[</span><span class="identifier">target_VM</span><span class="plain">]</span><span class="element">.VM_is_32_bit</span><span class="plain">) {</span>

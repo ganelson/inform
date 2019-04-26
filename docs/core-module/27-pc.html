@@ -170,7 +170,7 @@ in an uninitialised state &mdash; though in fact they will not).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::at is used in <a href="#SP13">&#167;13</a>, 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Packaging::at is used in <a href="#SP11">&#167;11</a>, <a href="#SP13">&#167;13</a>, 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Packaging::enclosure is used in <a href="#SP12">&#167;12</a>, <a href="#SP13">&#167;13</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
 
@@ -292,7 +292,7 @@ room to insert those resources, then incarnate <code class="display"><span class
         <span class="identifier">pragmas_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
 
         <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Primitives:"</span><span class="plain">);</span>
-        <span class="functiontext">Primitives::emit</span><span class="plain">();</span>
+        <span class="identifier">Primitives::emit</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">(), </span><span class="functiontext">Packaging::at</span><span class="plain">());</span>
 
         <span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="functiontext">Hierarchy::main</span><span class="plain">()); </span>    <span class="comment">Which we never exit</span>
         <span class="identifier">holdings_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>

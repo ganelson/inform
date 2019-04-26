@@ -117,9 +117,6 @@
     <span class="definitionkeyword">enum</span> <span class="constant">inter_name_generator_array_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">adjective_iname_holder_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">compilation_module_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_node_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_token_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">package_request_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_location_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_attachment_point_MT</span>
@@ -201,9 +198,6 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">VM_usage_note</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">runtime_kind_structure</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">adjective_iname_holder</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_token</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_location</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_attachment_point</span><span class="plain">)</span>
@@ -279,7 +273,7 @@ foundation module does that automatically.)
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *, </span><span class="functiontext">Phrases::TypeData::Textual::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">inference</span><span class="plain"> *, </span><span class="functiontext">World::Inferences::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain"> *, </span><span class="functiontext">Calculus::Schemas::log</span><span class="plain">)</span>
-    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">inter_schema</span><span class="plain"> *, </span><span class="functiontext">InterSchemas::log</span><span class="plain">)</span>
+    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">inter_schema</span><span class="plain"> *, </span><span class="identifier">InterSchemas::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">natural_language</span><span class="plain"> *, </span><span class="functiontext">NaturalLanguages::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *, </span><span class="functiontext">InferenceSubjects::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain"> *, </span><span class="functiontext">Rulebooks::log</span><span class="plain">)</span>
@@ -421,8 +415,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
     <span class="definitionkeyword">enum</span> <span class="constant">RELATION_DEFINITIONS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULE_ATTACHMENTS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RULEBOOK_COMPILATION_DA</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SCHEMA_COMPILATION_DA</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SCHEMA_COMPILATION_DETAILS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SPATIAL_MAP_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SPATIAL_MAP_WORKINGS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SPECIFICATION_PERMISSIONS_DA</span>
@@ -475,8 +467,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">RELATION_DEFINITIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"relation definitions"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">RULE_ATTACHMENTS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"rule attachments"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">RULEBOOK_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"rulebook compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SCHEMA_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"schema compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SCHEMA_COMPILATION_DETAILS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"schema compilation details"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SPATIAL_MAP_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"spatial map"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SPATIAL_MAP_WORKINGS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"spatial map workings"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SPECIFICATION_PERMISSIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"specification permissions"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -498,7 +488,7 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 <pre class="displaydefn">
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'0'</span><span class="plain">, </span><span class="functiontext">Calculus::Terms::log</span><span class="plain">);</span>
-        <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'1'</span><span class="plain">, </span><span class="functiontext">InterSchemas::log</span><span class="plain">);</span>
+        <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'1'</span><span class="plain">, </span><span class="identifier">InterSchemas::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'2'</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">, </span><span class="functiontext">Tables::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'b'</span><span class="plain">, </span><span class="functiontext">Rules::Bookings::log</span><span class="plain">);</span>

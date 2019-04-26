@@ -44,9 +44,11 @@ void Hierarchy::establish(void) {
 @e SIBLING_HL
 @e SELF_HL
 @e THEDARK_HL
+@e INFORMLIBRARY_HL
 @e DEBUG_HL
 @e TARGET_ZCODE_HL
 @e TARGET_GLULX_HL
+@e INDIV_PROP_START_HL
 @e DICT_WORD_SIZE_HL
 @e WORDSIZE_HL
 @e NULL_HL
@@ -83,10 +85,12 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(SIBLING_HL, I"sibling", Translation::same(), generic_basics);
 	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), generic_basics);
 	HierarchyLocations::con(THEDARK_HL, I"thedark", Translation::same(), generic_basics);
+	HierarchyLocations::con(INFORMLIBRARY_HL, I"InformLibrary", Translation::same(), generic_basics);
 	HierarchyLocations::con(RESPONSETEXTS_HL, I"ResponseTexts", Translation::same(), generic_basics);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), generic_basics);
 	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), generic_basics);
 	HierarchyLocations::con(TARGET_GLULX_HL, I"TARGET_GLULX", Translation::same(), generic_basics);
+	HierarchyLocations::con(INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), generic_basics);
 	HierarchyLocations::con(DICT_WORD_SIZE_HL, I"DICT_WORD_SIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(WORDSIZE_HL, I"WORDSIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(NULL_HL, I"NULL", Translation::same(), generic_basics);
@@ -1565,6 +1569,7 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case CHILD_HL:
 		case SIBLING_HL:
 		case THEDARK_HL:
+		case INFORMLIBRARY_HL:
 		case FLOAT_NAN_HL:
 		case RESPONSETEXTS_HL:
 			Emit::named_numeric_constant(iname, 0);

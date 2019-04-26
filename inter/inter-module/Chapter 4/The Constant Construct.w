@@ -32,9 +32,12 @@ void Inter::Constant::define(void) {
 @d CONSTANT_DIRECT 0
 @d CONSTANT_INDIRECT_LIST 1
 @d CONSTANT_SUM_LIST 2
-@d CONSTANT_INDIRECT_TEXT 3
-@d CONSTANT_ROUTINE 4
-@d CONSTANT_STRUCT 5
+@d CONSTANT_PRODUCT_LIST 3
+@d CONSTANT_DIFFERENCE_LIST 4
+@d CONSTANT_QUOTIENT_LIST 5
+@d CONSTANT_INDIRECT_TEXT 6
+@d CONSTANT_ROUTINE 7
+@d CONSTANT_STRUCT 8
 
 =
 inter_error_message *Inter::Constant::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
@@ -53,9 +56,14 @@ inter_error_message *Inter::Constant::read(inter_reading_state *IRS, inter_line_
 
 	inter_data_type *idt = Inter::Kind::data_type(con_kind);
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, S, L"sum{ (%c*) }")) {
+	inter_t op = 0;
+	if (Regexp::match(&mr2, S, L"sum{ (%c*) }")) op = CONSTANT_SUM_LIST;
+	else if (Regexp::match(&mr2, S, L"product{ (%c*) }")) op = CONSTANT_PRODUCT_LIST;
+	else if (Regexp::match(&mr2, S, L"difference{ (%c*) }")) op = CONSTANT_DIFFERENCE_LIST;
+	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONSTANT_QUOTIENT_LIST;
+	if (op != 0) {
 		inter_frame P =
-			Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), CONSTANT_SUM_LIST, eloc, (inter_t) ilp->indent_level);
+			Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), op, eloc, (inter_t) ilp->indent_level);
 		E = Inter::Defn::verify_construct(P);
 		if (E) return E;
 		text_stream *conts = mr2.exp[0];
@@ -80,6 +88,9 @@ inter_error_message *Inter::Constant::read(inter_reading_state *IRS, inter_line_
 			inter_t form = 0;
 			if (Regexp::match(&mr2, S, L"{ (%c*) }")) form = CONSTANT_INDIRECT_LIST;
 			else if (Regexp::match(&mr2, S, L"sum{ (%c*) }")) form = CONSTANT_SUM_LIST;
+			else if (Regexp::match(&mr2, S, L"product{ (%c*) }")) form = CONSTANT_PRODUCT_LIST;
+			else if (Regexp::match(&mr2, S, L"difference{ (%c*) }")) form = CONSTANT_DIFFERENCE_LIST;
+			else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) form = CONSTANT_QUOTIENT_LIST;
 			if (form != 0) {
 				inter_frame P =
 					Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), form, eloc, (inter_t) ilp->indent_level);
@@ -279,6 +290,9 @@ inter_error_message *Inter::Constant::verify(inter_frame P) {
 			E = Inter::Verify::value(P, DATA_CONST_IFLD, con_kind); if (E) return E;
 			break;
 		case CONSTANT_SUM_LIST:
+		case CONSTANT_PRODUCT_LIST:
+		case CONSTANT_DIFFERENCE_LIST:
+		case CONSTANT_QUOTIENT_LIST:
 			if ((P.extent % 2) != 1) return Inter::Frame::error(&P, I"extent wrong", NULL);
 			for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 				E = Inter::Verify::value(P, i, con_kind); if (E) return E;
@@ -353,9 +367,15 @@ inter_error_message *Inter::Constant::write(OUTPUT_STREAM, inter_frame P) {
 				Inter::Types::write(OUT, P.repo_segment->owning_repo, con_kind,
 					P.data[DATA_CONST_IFLD], P.data[DATA_CONST_IFLD+1], Inter::Packages::scope_of(P), hex);
 				break;
-			case CONSTANT_SUM_LIST:
-				WRITE("sum");
+			case CONSTANT_SUM_LIST:			
+			case CONSTANT_PRODUCT_LIST:
+			case CONSTANT_DIFFERENCE_LIST:
+			case CONSTANT_QUOTIENT_LIST:
 			case CONSTANT_INDIRECT_LIST: {
+				if (P.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE("sum");
+				if (P.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE("product");
+				if (P.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE("difference");
+				if (P.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE("quotient");
 				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, 0);
 				WRITE("{");
 				for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
@@ -409,6 +429,9 @@ void Inter::Constant::show_dependencies(inter_frame P, void (*callback)(struct i
 				break;
 			}
 			case CONSTANT_SUM_LIST:
+			case CONSTANT_PRODUCT_LIST:
+			case CONSTANT_DIFFERENCE_LIST:
+			case CONSTANT_QUOTIENT_LIST:
 			case CONSTANT_INDIRECT_LIST:
 			case CONSTANT_STRUCT: {
 				for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {

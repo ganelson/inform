@@ -29,6 +29,9 @@
     <span class="definitionkeyword">enum</span> <span class="constant">stage_step_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">uniqueness_count_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">text_literal_holder_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_node_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_token_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>With allocation functions:
 </p>
@@ -40,6 +43,9 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">stage_step</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">uniqueness_count</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">text_literal_holder</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_token</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -102,6 +108,8 @@ foundation module does that automatically.)
     <span class="definitionkeyword">enum</span> <span class="constant">TEMPLATE_READING_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">RESOLVING_CONDITIONAL_COMPILATION_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXTERNAL_SYMBOL_RESOLUTION_DA</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SCHEMA_COMPILATION_DA</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SCHEMA_COMPILATION_DETAILS_DA</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4_5"></a><b>&#167;4.5.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register this module's debugging log aspects</span> <span class="cwebmacronumber">4.5</span>&gt; =
@@ -112,6 +120,8 @@ foundation module does that automatically.)
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">TEMPLATE_READING_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"template reading"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">RESOLVING_CONDITIONAL_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"resolving conditional compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">EXTERNAL_SYMBOL_RESOLUTION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"external symbol resolution"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SCHEMA_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"schema compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SCHEMA_COMPILATION_DETAILS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"schema compilation details"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

@@ -48,6 +48,7 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 
 	Inter::Symbols::clear_transient_flags();
 
+	text_stream *pragmatic_matter = Str::new();
 	text_stream *early_matter = Str::new();
 	text_stream *summations_at_eof = Str::new();
 	text_stream *attributes_at_eof = Str::new();
@@ -87,9 +88,12 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) TO = arrays_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) TO = arrays_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) TO = arrays_at_eof;
-						if (P.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) TO = summations_at_eof;
+//						if (P.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) TO = summations_at_eof;
 						if (P.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) TO = arrays_at_eof;
-						if ((P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) && (P.data[DATA_CONST_IFLD] == GLOB_IVAL)) TO = summations_at_eof;
+//						if ((P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) && (P.data[DATA_CONST_IFLD] == GLOB_IVAL)) {
+//							LOG("$3 is globby\n", con_name);
+//							 TO = summations_at_eof;
+//						}
 						if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) TO = verbs_at_eof;
 						if (Inter::Constant::is_routine(con_name)) {
 							TO = routines_at_eof;
@@ -97,7 +101,7 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						CodeGen::frame(TO, I, P); break;
 					}
 					case PRAGMA_IST:
-						CodeGen::frame(early_matter, I, P); break;
+						CodeGen::frame(pragmatic_matter, I, P); break;
 					case INSTANCE_IST:
 						CodeGen::frame(TO, I, P); break;
 					case SPLAT_IST:
@@ -156,6 +160,8 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 
 	if (properties_written == FALSE) { text_stream *TO = main_matter; @<Property knowledge@>; }
 
+	WRITE("%S", pragmatic_matter);
+	WRITE("%S", attributes_at_eof);
 	WRITE("%S", early_matter);
 
 	int no_tlh = NUMBER_CREATED(text_literal_holder);
@@ -174,7 +180,7 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	}
 	
 	WRITE("%S", summations_at_eof);
-	WRITE("%S", attributes_at_eof);
+//	WRITE("%S", attributes_at_eof);
 	WRITE("%S", arrays_at_eof);
 	WRITE("%S", main_matter);
 	WRITE("%S", routines_at_eof);
@@ -288,6 +294,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"child")) return;
 	if (Str::eq(con_name->symbol_name, I"sibling")) return;
 	if (Str::eq(con_name->symbol_name, I"thedark")) return;
+	if (Str::eq(con_name->symbol_name, I"InformLibrary")) return;
 	if (Str::eq(con_name->symbol_name, I"ResponseTexts")) return;
 	if (Str::eq(con_name->symbol_name, I"FLOAT_NAN")) return;
 
@@ -330,6 +337,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	int ifndef_me = FALSE;
 	if ((Str::eq(con_name->symbol_name, I"WORDSIZE")) ||
 		(Str::eq(con_name->symbol_name, I"TARGET_ZCODE")) ||
+		(Str::eq(con_name->symbol_name, I"INDIV_PROP_START")) ||
 		(Str::eq(con_name->symbol_name, I"TARGET_GLULX")) ||
 		(Str::eq(con_name->symbol_name, I"DICT_WORD_SIZE")) ||
 		(Str::eq(con_name->symbol_name, I"DEBUG")))
@@ -379,9 +387,17 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			break;
 		}
 		case CONSTANT_SUM_LIST:
+		case CONSTANT_PRODUCT_LIST:
+		case CONSTANT_DIFFERENCE_LIST:
+		case CONSTANT_QUOTIENT_LIST:
 			WRITE("Constant %S = ", CodeGen::name(con_name));
 			for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
-				if (i>DATA_CONST_IFLD) WRITE(" + ");
+				if (i>DATA_CONST_IFLD) {
+					if (P.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
+					if (P.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE(" * ");
+					if (P.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE(" - ");
+					if (P.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
+				}
 				int bracket = TRUE;
 				if ((P.data[i] == LITERAL_IVAL) || (Inter::Symbols::is_stored_in_data(P.data[i], P.data[i+1]))) bracket = FALSE;
 				if (bracket) WRITE("(");
@@ -564,200 +580,6 @@ void CodeGen::reference(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	void_level = old_level;
 }
 
-@
-
-@e NOT_BIP from 1
-@e AND_BIP
-@e OR_BIP
-@e BITWISEAND_BIP
-@e BITWISEOR_BIP
-@e BITWISENOT_BIP
-@e EQ_BIP
-@e NE_BIP
-@e GT_BIP
-@e GE_BIP
-@e LT_BIP
-@e LE_BIP
-@e OFCLASS_BIP
-@e HAS_BIP
-@e HASNT_BIP
-@e IN_BIP
-@e NOTIN_BIP
-@e SEQUENTIAL_BIP
-@e TERNARYSEQUENTIAL_BIP
-@e PLUS_BIP
-@e MINUS_BIP
-@e UNARYMINUS_BIP
-@e TIMES_BIP
-@e DIVIDE_BIP
-@e MODULO_BIP
-@e RANDOM_BIP
-@e RETURN_BIP
-@e MOVE_BIP
-@e GIVE_BIP
-@e TAKE_BIP
-@e JUMP_BIP
-@e QUIT_BIP
-@e BREAK_BIP
-@e CONTINUE_BIP
-@e STYLEROMAN_BIP
-@e FONT_BIP
-@e STYLEBOLD_BIP
-@e STYLEUNDERLINE_BIP
-@e PRINT_BIP
-@e PRINTCHAR_BIP
-@e PRINTNAME_BIP
-@e PRINTNUMBER_BIP
-@e PRINTADDRESS_BIP
-@e PRINTSTRING_BIP
-@e PRINTNLNUMBER_BIP
-@e PRINTDEF_BIP
-@e PRINTCDEF_BIP
-@e PRINTINDEF_BIP
-@e PRINTCINDEF_BIP
-@e BOX_BIP
-@e PUSH_BIP
-@e PULL_BIP
-@e PREINCREMENT_BIP
-@e POSTINCREMENT_BIP
-@e PREDECREMENT_BIP
-@e POSTDECREMENT_BIP
-@e STORE_BIP
-@e SETBIT_BIP
-@e CLEARBIT_BIP
-@e IF_BIP
-@e IFDEBUG_BIP
-@e IFELSE_BIP
-@e WHILE_BIP
-@e FOR_BIP
-@e OBJECTLOOP_BIP
-@e OBJECTLOOPX_BIP
-@e LOOKUP_BIP
-@e LOOKUPBYTE_BIP
-@e LOOKUPREF_BIP
-@e LOOP_BIP
-@e SWITCH_BIP
-@e CASE_BIP
-@e DEFAULT_BIP
-@e INDIRECT0V_BIP
-@e INDIRECT1V_BIP
-@e INDIRECT2V_BIP
-@e INDIRECT3V_BIP
-@e INDIRECT4V_BIP
-@e INDIRECT5V_BIP
-@e INDIRECT0_BIP
-@e INDIRECT1_BIP
-@e INDIRECT2_BIP
-@e INDIRECT3_BIP
-@e INDIRECT4_BIP
-@e INDIRECT5_BIP
-@e PROPERTYADDRESS_BIP
-@e PROPERTYLENGTH_BIP
-@e PROVIDES_BIP
-@e PROPERTYVALUE_BIP
-
-=
-inter_t CodeGen::built_in_primitive(inter_repository *I, inter_symbol *symb) {
-	if (symb == NULL) return 0;
-	int B = Inter::Symbols::read_annotation(symb, BIP_CODE_IANN);
-	inter_t bip = (B > 0)?((inter_t) B):0;
-	if (bip != 0) return bip;
-	if (Str::eq(symb->symbol_name, I"!not")) bip = NOT_BIP;
-	if (Str::eq(symb->symbol_name, I"!and")) bip = AND_BIP;
-	if (Str::eq(symb->symbol_name, I"!or")) bip = OR_BIP;
-	if (Str::eq(symb->symbol_name, I"!bitwiseand")) bip = BITWISEAND_BIP;
-	if (Str::eq(symb->symbol_name, I"!bitwiseor")) bip = BITWISEOR_BIP;
-	if (Str::eq(symb->symbol_name, I"!bitwisenot")) bip = BITWISENOT_BIP;
-	if (Str::eq(symb->symbol_name, I"!eq")) bip = EQ_BIP;
-	if (Str::eq(symb->symbol_name, I"!ne")) bip = NE_BIP;
-	if (Str::eq(symb->symbol_name, I"!gt")) bip = GT_BIP;
-	if (Str::eq(symb->symbol_name, I"!ge")) bip = GE_BIP;
-	if (Str::eq(symb->symbol_name, I"!lt")) bip = LT_BIP;
-	if (Str::eq(symb->symbol_name, I"!le")) bip = LE_BIP;
-	if (Str::eq(symb->symbol_name, I"!ofclass")) bip = OFCLASS_BIP;
-	if (Str::eq(symb->symbol_name, I"!has")) bip = HAS_BIP;
-	if (Str::eq(symb->symbol_name, I"!hasnt")) bip = HASNT_BIP;
-	if (Str::eq(symb->symbol_name, I"!in")) bip = IN_BIP;
-	if (Str::eq(symb->symbol_name, I"!notin")) bip = NOTIN_BIP;
-	if (Str::eq(symb->symbol_name, I"!sequential")) bip = SEQUENTIAL_BIP;
-	if (Str::eq(symb->symbol_name, I"!ternarysequential")) bip = TERNARYSEQUENTIAL_BIP;
-	if (Str::eq(symb->symbol_name, I"!plus")) bip = PLUS_BIP;
-	if (Str::eq(symb->symbol_name, I"!minus")) bip = MINUS_BIP;
-	if (Str::eq(symb->symbol_name, I"!unaryminus")) bip = UNARYMINUS_BIP;
-	if (Str::eq(symb->symbol_name, I"!times")) bip = TIMES_BIP;
-	if (Str::eq(symb->symbol_name, I"!divide")) bip = DIVIDE_BIP;
-	if (Str::eq(symb->symbol_name, I"!modulo")) bip = MODULO_BIP;
-	if (Str::eq(symb->symbol_name, I"!random")) bip = RANDOM_BIP;
-	if (Str::eq(symb->symbol_name, I"!return")) bip = RETURN_BIP;
-	if (Str::eq(symb->symbol_name, I"!jump")) bip = JUMP_BIP;
-	if (Str::eq(symb->symbol_name, I"!give")) bip = GIVE_BIP;
-	if (Str::eq(symb->symbol_name, I"!take")) bip = TAKE_BIP;
-	if (Str::eq(symb->symbol_name, I"!move")) bip = MOVE_BIP;
-	if (Str::eq(symb->symbol_name, I"!quit")) bip = QUIT_BIP;
-	if (Str::eq(symb->symbol_name, I"!break")) bip = BREAK_BIP;
-	if (Str::eq(symb->symbol_name, I"!continue")) bip = CONTINUE_BIP;
-	if (Str::eq(symb->symbol_name, I"!font")) bip = FONT_BIP;
-	if (Str::eq(symb->symbol_name, I"!styleroman")) bip = STYLEROMAN_BIP;
-	if (Str::eq(symb->symbol_name, I"!stylebold")) bip = STYLEBOLD_BIP;
-	if (Str::eq(symb->symbol_name, I"!styleunderline")) bip = STYLEUNDERLINE_BIP;
-	if (Str::eq(symb->symbol_name, I"!print")) bip = PRINT_BIP;
-	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
-	if (Str::eq(symb->symbol_name, I"!printname")) bip = PRINTNAME_BIP;
-	if (Str::eq(symb->symbol_name, I"!printnumber")) bip = PRINTNUMBER_BIP;
-	if (Str::eq(symb->symbol_name, I"!printaddress")) bip = PRINTADDRESS_BIP;
-	if (Str::eq(symb->symbol_name, I"!printstring")) bip = PRINTSTRING_BIP;
-	if (Str::eq(symb->symbol_name, I"!printnlnumber")) bip = PRINTNLNUMBER_BIP;
-	if (Str::eq(symb->symbol_name, I"!printdef")) bip = PRINTDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!printcdef")) bip = PRINTCDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!printindef")) bip = PRINTINDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!printcindef")) bip = PRINTCINDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!box")) bip = BOX_BIP;
-	if (Str::eq(symb->symbol_name, I"!push")) bip = PUSH_BIP;
-	if (Str::eq(symb->symbol_name, I"!pull")) bip = PULL_BIP;
-	if (Str::eq(symb->symbol_name, I"!preincrement")) bip = PREINCREMENT_BIP;
-	if (Str::eq(symb->symbol_name, I"!postincrement")) bip = POSTINCREMENT_BIP;
-	if (Str::eq(symb->symbol_name, I"!predecrement")) bip = PREDECREMENT_BIP;
-	if (Str::eq(symb->symbol_name, I"!postdecrement")) bip = POSTDECREMENT_BIP;
-	if (Str::eq(symb->symbol_name, I"!store")) bip = STORE_BIP;
-	if (Str::eq(symb->symbol_name, I"!setbit")) bip = SETBIT_BIP;
-	if (Str::eq(symb->symbol_name, I"!clearbit")) bip = CLEARBIT_BIP;
-	if (Str::eq(symb->symbol_name, I"!if")) bip = IF_BIP;
-	if (Str::eq(symb->symbol_name, I"!ifdebug")) bip = IFDEBUG_BIP;
-	if (Str::eq(symb->symbol_name, I"!ifelse")) bip = IFELSE_BIP;
-	if (Str::eq(symb->symbol_name, I"!while")) bip = WHILE_BIP;
-	if (Str::eq(symb->symbol_name, I"!for")) bip = FOR_BIP;
-	if (Str::eq(symb->symbol_name, I"!objectloop")) bip = OBJECTLOOP_BIP;
-	if (Str::eq(symb->symbol_name, I"!objectloopx")) bip = OBJECTLOOPX_BIP;
-	if (Str::eq(symb->symbol_name, I"!lookup")) bip = LOOKUP_BIP;
-	if (Str::eq(symb->symbol_name, I"!lookupbyte")) bip = LOOKUPBYTE_BIP;
-	if (Str::eq(symb->symbol_name, I"!lookupref")) bip = LOOKUPREF_BIP;
-	if (Str::eq(symb->symbol_name, I"!loop")) bip = LOOP_BIP;
-	if (Str::eq(symb->symbol_name, I"!switch")) bip = SWITCH_BIP;
-	if (Str::eq(symb->symbol_name, I"!case")) bip = CASE_BIP;
-	if (Str::eq(symb->symbol_name, I"!default")) bip = DEFAULT_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect0v")) bip = INDIRECT0V_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect1v")) bip = INDIRECT1V_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect2v")) bip = INDIRECT2V_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect3v")) bip = INDIRECT3V_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect4v")) bip = INDIRECT4V_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect5v")) bip = INDIRECT5V_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect0")) bip = INDIRECT0_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect1")) bip = INDIRECT1_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect2")) bip = INDIRECT2_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect3")) bip = INDIRECT3_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect4")) bip = INDIRECT4_BIP;
-	if (Str::eq(symb->symbol_name, I"!indirect5")) bip = INDIRECT5_BIP;
-	if (Str::eq(symb->symbol_name, I"!propertyaddress")) bip = PROPERTYADDRESS_BIP;
-	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
-	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;
-	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
-	if (bip != 0) {
-		Inter::Symbols::annotate_i(I, symb, BIP_CODE_IANN, bip);
-		return bip;
-	}
-	return 0;
-}
-
 void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	int suppress_terminal_semicolon = FALSE;
 	inter_frame_list *ifl = Inter::Inv::children_of_frame(P);
@@ -767,7 +589,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		case INVOKED_PRIMITIVE: {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			if (prim == NULL) internal_error("bad prim");
-			inter_t bip = CodeGen::built_in_primitive(I, prim);
+			inter_t bip = Primitives::to_bip(I, prim);
 			switch (bip) {
 				case RETURN_BIP: @<Generate primitive for return@>; break;
 				case JUMP_BIP: @<Generate primitive for jump@>; break;
@@ -1394,7 +1216,7 @@ then the result.
 	inter_frame U = Inter::third_in_frame_list(ifl);
 	if ((U.data[ID_IFLD] == INV_IST) && (U.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
-		if ((prim) && (CodeGen::built_in_primitive(I, prim) == IN_BIP)) in_flag = TRUE;
+		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
 	WRITE("objectloop ");

@@ -68,6 +68,8 @@ void Emit::begin(void) {
 
 	VirtualMachines::emit_fundamental_constants();
 	NewVerbs::ConjugateVerbDefinitions();
+	Hierarchy::find(INFORMLIBRARY_HL);
+	Hierarchy::find(INDIV_PROP_START_HL);
 }
 
 void Emit::version(int N) {
@@ -158,17 +160,6 @@ void Emit::export(inter_name *iname, wording W) {
 	inter_t ID = Inter::create_text(Emit::repository());
 	WRITE_TO(Inter::get_text(Emit::repository(), ID), "%W", W);
 	Emit::guard(Inter::Export::new(Packaging::at(), symbol, ID, Emit::baseline(Packaging::at()), NULL));
-}
-
-void Emit::primitive(text_stream *prim, text_stream *category, inter_symbol **to) {
-	if (to == NULL) internal_error("no symbol");
-	TEMPORARY_TEXT(prim_command);
-	WRITE_TO(prim_command, "primitive %S %S", prim, category);
-	Emit::guard(Inter::Defn::read_construct_text(prim_command, NULL, Packaging::at()));
-	inter_error_message *E = NULL;
-	*to = Inter::Textual::find_symbol(Emit::repository(), NULL, Inter::get_global_symbols(Emit::repository()), prim, PRIMITIVE_IST, &E);
-	Emit::guard(E);
-	DISCARD_TEXT(prim_command);
 }
 
 inter_symbols_table *Emit::main_scope(void) {
@@ -1186,6 +1177,7 @@ void Emit::glob_value(inter_t *v1, inter_t *v2, text_stream *glob, char *clue) {
 	*v2 = ID;
 	LOG("Glob (I7/%s): %S\n", clue, glob);
 	glob_count++;
+	internal_error("Reduced to glob in generation");
 }
 
 void Emit::text_value(inter_t *v1, inter_t *v2, text_stream *text) {

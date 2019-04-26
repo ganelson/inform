@@ -63,9 +63,11 @@
     <span class="definitionkeyword">enum</span> <span class="constant">SIBLING_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SELF_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">THEDARK_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INFORMLIBRARY_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DEBUG_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TARGET_ZCODE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TARGET_GLULX_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INDIV_PROP_START_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DICT_WORD_SIZE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WORDSIZE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NULL_HL</span>
@@ -106,10 +108,12 @@
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">SIBLING_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"sibling"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"self"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">THEDARK_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"thedark"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">INFORMLIBRARY_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformLibrary"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">RESPONSETEXTS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"ResponseTexts"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">DEBUG_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"DEBUG"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">TARGET_ZCODE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TARGET_ZCODE"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">TARGET_GLULX_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TARGET_GLULX"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">INDIV_PROP_START_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"INDIV_PROP_START"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">DICT_WORD_SIZE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"DICT_WORD_SIZE"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">WORDSIZE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"WORDSIZE"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">NULL_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NULL"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
@@ -1883,6 +1887,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CHILD_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SIBLING_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">THEDARK_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INFORMLIBRARY_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FLOAT_NAN_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">RESPONSETEXTS_HL</span><span class="plain">:</span>
                 <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, 0);</span>
@@ -2035,7 +2040,7 @@
 
 <p class="endnote">The function Hierarchy::make_available appears nowhere else.</p>
 
-<p class="endnote">The function Hierarchy::find_by_name is used in 5/nv (<a href="5-nv.html#SP10">&#167;10</a>), 13/rsfk (<a href="13-rsfk.html#SP7">&#167;7</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 22/tp (<a href="22-tp.html#SP8">&#167;8</a>), 27/is (<a href="27-is.html#SP32">&#167;32</a>).</p>
+<p class="endnote">The function Hierarchy::find_by_name is used in 5/nv (<a href="5-nv.html#SP10">&#167;10</a>), 13/rsfk (<a href="13-rsfk.html#SP7">&#167;7</a>), 21/rl (<a href="21-rl.html#SP9">&#167;9</a>), 22/tp (<a href="22-tp.html#SP8">&#167;8</a>), 27/eis (<a href="27-eis.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Hierarchy::main is used in 27/pc (<a href="27-pc.html#SP11">&#167;11</a>, <a href="27-pc.html#SP14">&#167;14</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 

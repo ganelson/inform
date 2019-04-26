@@ -71,7 +71,7 @@ i6_schema *Calculus::Schemas::new(char *fmt, ...) {
 	text_stream *OUT = &(sch->prototype);
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
-	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, sch->quoted_inames);
+	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, (void **) sch->quoted_inames);
 	return sch;
 }
 
@@ -85,7 +85,7 @@ void Calculus::Schemas::modify(i6_schema *sch, char *fmt, ...) {
 	text_stream *OUT = &(sch->prototype);
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
-	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, sch->quoted_inames);
+	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, (void **) sch->quoted_inames);
 }
 
 @ And another:
@@ -96,7 +96,7 @@ void Calculus::Schemas::append(i6_schema *sch, char *fmt, ...) {
 	text_stream *OUT = &(sch->prototype);
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
-	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, sch->quoted_inames);
+	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, (void **) sch->quoted_inames);
 }
 
 @ Either way, the schema's prototype is written as follows:
@@ -213,7 +213,7 @@ void Calculus::Schemas::sch_emit_inner(i6_schema *sch, i6s_emission_state *ems, 
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	int val_mode = FALSE;
 	if (code_mode == FALSE) val_mode = TRUE;
-	InterSchemas::emit(&VH, sch->compiled, ems, code_mode, val_mode,
+	EmitInterSchemas::emit(&VH, sch->compiled, ems, code_mode, val_mode,
 		&Calculus::Schemas::sch_inline, NULL);
 
 	END_COMPILATION_MODE;

@@ -270,7 +270,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
-		CodeGen::Assimilate::value(I, outer, value, &v1, &v2,
+		CodeGen::Assimilate::value(I, outer, &ib, value, &v1, &v2,
 			(switch_on == VERB_PLM)?TRUE:FALSE);
 	} else {
 		v1 = LITERAL_IVAL; v2 = 0;
@@ -406,7 +406,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 }
 
 @ =
-void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, text_stream *S, inter_t *val1, inter_t *val2, int Verbal) {
+void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, inter_reading_state *IRS, text_stream *S, inter_t *val1, inter_t *val2, int Verbal) {
 	int sign = 1, base = 10, from = 0, to = Str::len(S)-1, bad = FALSE;
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
 		from++;
@@ -517,10 +517,126 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, text_s
 	if (symb) {
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
-	LOG("Glob: %S\n", S);
-	// CodeGen::Link::log_search_path();
+
+	inter_schema *sch = InterSchemas::from_text(S, FALSE, 0, NULL);
+	inter_symbol *mcc_name = CodeGen::Assimilate::compute_constant(I, pack, IRS, sch);
+	Inter::Symbols::to_data(I, pack, mcc_name, val1, val2);
+}
+
+inter_symbol *CodeGen::Assimilate::compute_constant(inter_repository *I, inter_package *pack, inter_reading_state *IRS, inter_schema *sch) {
+
+	inter_symbol *try = CodeGen::Assimilate::compute_constant_r(I, pack, IRS, sch->node_tree);
+	if (try) return try;
+
+	InterSchemas::log(sch);
+	LOG("Forced to glob: %S\n", sch->converted_from);
+	internal_error("Reduced to glob in assimilation");
+
 	inter_t ID = Inter::create_text(I);
 	text_stream *glob_storage = Inter::get_text(I, ID);
-	Str::copy(glob_storage, S);
-	*val1 = GLOB_IVAL; *val2 = ID;
+	Str::copy(glob_storage, sch->converted_from);
+
+	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
+	CodeGen::Link::guard(Inter::Constant::new_numerical(IRS,
+		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
+		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
+		(inter_t) IRS->cp_indent + 1, NULL));
+
+	return mcc_name;
+}
+
+inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_repository *I, inter_package *pack, inter_reading_state *IRS, inter_schema_node *isn) {
+	if (isn->isn_type == SUBEXPRESSION_ISNT) 
+		return CodeGen::Assimilate::compute_constant_r(I, pack, IRS, isn->child_node);
+	if (isn->isn_type == OPERATION_ISNT) {
+		inter_t op = 0;
+		if (isn->isn_clarifier == plus_interp) op = CONSTANT_SUM_LIST;
+		else if (isn->isn_clarifier == times_interp) op = CONSTANT_PRODUCT_LIST;
+		else if (isn->isn_clarifier == minus_interp) op = CONSTANT_DIFFERENCE_LIST;
+		else if (isn->isn_clarifier == divide_interp) op = CONSTANT_QUOTIENT_LIST;
+		else if (isn->isn_clarifier == unaryminus_interp)
+			return CodeGen::Assimilate::compute_constant_unary_operation(I, pack, IRS, isn->child_node);
+		else return NULL;
+		inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, pack, IRS, isn->child_node);
+		inter_symbol *i2 = CodeGen::Assimilate::compute_constant_r(I, pack, IRS, isn->child_node->next_node);
+		if ((i1 == NULL) || (i2 == NULL)) return NULL;
+		return CodeGen::Assimilate::compute_constant_binary_operation(op, I, pack, IRS, i1, i2);
+	}
+	if (isn->isn_type == EXPRESSION_ISNT) {
+		inter_schema_token *t = isn->expression_tokens;
+		if (t->next) {
+			if (t->next->next) return NULL;
+			inter_symbol *i1 = CodeGen::Assimilate::compute_constant_eval(I, pack, IRS, t);
+			inter_symbol *i2 = CodeGen::Assimilate::compute_constant_eval(I, pack, IRS, t->next);
+			if ((i1 == NULL) || (i2 == NULL)) return NULL;
+			return CodeGen::Assimilate::compute_constant_binary_operation(CONSTANT_SUM_LIST, I, pack, IRS, i1, i2);
+		}
+		return CodeGen::Assimilate::compute_constant_eval(I, pack, IRS, t);
+	}
+	return NULL;
+}
+
+inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_repository *I, inter_package *pack, inter_reading_state *IRS, inter_schema_token *t) {
+	inter_t v1 = UNDEF_IVAL, v2 = 0;
+	switch (t->ist_type) {
+		case IDENTIFIER_ISTT: {
+			inter_symbol *symb = CodeGen::Link::find_name(I, t->material, TRUE);
+			if (symb) return symb;
+			LOG("Failed to identify %S\n", t->material);
+			break;
+		}
+		case NUMBER_ISTT:
+		case BIN_NUMBER_ISTT:
+		case HEX_NUMBER_ISTT:
+			if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_t) t->constant_number; }
+			else if (Inter::Types::read_I6_decimal(t->material, &v1, &v2) == FALSE)
+				internal_error("bad number");
+			break;
+	}
+	if (v1 == UNDEF_IVAL) return NULL;
+	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
+	CodeGen::Link::guard(Inter::Constant::new_numerical(IRS,
+		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
+		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
+		(inter_t) IRS->cp_indent + 1, NULL));
+	return mcc_name;
+}
+
+inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_repository *I, inter_package *pack, inter_reading_state *IRS, inter_schema_node *operand1) {
+	inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, pack, IRS, operand1);
+	if (i1 == NULL) return NULL;
+	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
+	inter_frame array_in_progress =
+		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) IRS->cp_indent + 1);
+	int pos = array_in_progress.extent;
+	if (Inter::Frame::extend(&array_in_progress, 4) == FALSE)
+		internal_error("can't extend frame");
+	array_in_progress.data[pos] = LITERAL_IVAL; array_in_progress.data[pos+1] = 0;
+	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress.data[pos+2]), &(array_in_progress.data[pos+3]));
+	CodeGen::Link::guard(Inter::Defn::verify_construct(array_in_progress));
+	Inter::Frame::insert(array_in_progress, IRS);
+	return mcc_name;
+}
+
+inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op, inter_repository *I, inter_package *pack, inter_reading_state *IRS, inter_symbol *i1, inter_symbol *i2) {
+	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
+	inter_frame array_in_progress =
+		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) IRS->cp_indent + 1);
+	int pos = array_in_progress.extent;
+	if (Inter::Frame::extend(&array_in_progress, 4) == FALSE)
+		internal_error("can't extend frame");
+	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress.data[pos]), &(array_in_progress.data[pos+1]));
+	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress.data[pos+2]), &(array_in_progress.data[pos+3]));
+	CodeGen::Link::guard(Inter::Defn::verify_construct(array_in_progress));
+	Inter::Frame::insert(array_in_progress, IRS);
+	return mcc_name;
+}
+
+int minor_const_count = 0;
+inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack) {
+	TEMPORARY_TEXT(NN);
+	WRITE_TO(NN, "Computed_Constant_Value_%d", minor_const_count++);
+	inter_symbol *mcc_name = Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
+	DISCARD_TEXT(NN);
+	return mcc_name;
 }

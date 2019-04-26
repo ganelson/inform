@@ -283,6 +283,5 @@ Chapter 27: Bridge to Inter Module
 	Packaging
 	Package Types
 	Inter Namespace
-	Inter Schemas
+	Emitting Inter Schemas
 	Emit
-	Inter Primitives

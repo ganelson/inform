@@ -22,7 +22,11 @@ Chapter 2: Linking
 	Eliminate Redundant Matter
 	Inventory
 
-Chapter 3: Generating Inform 6
+Chapter 3: Inform 6 to Inter
+	Inter Primitives
+	Inter Schemas
+
+Chapter 4: Inter to Inform 6
 	Code Generation
 	Instances and Properties
 	Variables

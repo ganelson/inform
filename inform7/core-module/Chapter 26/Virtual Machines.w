@@ -193,6 +193,7 @@ void VirtualMachines::emit_fundamental_constants(void) {
 	} else if (table_of_VM_data[target_VM].VM_code == GLULX_VM) {
 		VirtualMachines::emit_fundamental_constant(TARGET_GLULX_HL, 1);
 		VirtualMachines::emit_fundamental_constant(DICT_WORD_SIZE_HL, 9);
+		VirtualMachines::emit_fundamental_constant(INDIV_PROP_START_HL, 0);
 	}
 
 	if (table_of_VM_data[target_VM].VM_is_32_bit) {

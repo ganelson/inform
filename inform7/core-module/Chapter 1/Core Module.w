@@ -102,9 +102,6 @@ We need to itemise the structures we'll want to allocate:
 @e inter_name_generator_array_MT
 @e adjective_iname_holder_MT
 @e compilation_module_MT
-@e inter_schema_MT
-@e inter_schema_node_MT
-@e inter_schema_token_MT
 @e package_request_MT
 @e hierarchy_location_MT
 @e hierarchy_attachment_point_MT
@@ -184,9 +181,6 @@ ALLOCATE_INDIVIDUALLY(use_option)
 ALLOCATE_INDIVIDUALLY(VM_usage_note)
 ALLOCATE_INDIVIDUALLY(runtime_kind_structure)
 ALLOCATE_INDIVIDUALLY(adjective_iname_holder)
-ALLOCATE_INDIVIDUALLY(inter_schema)
-ALLOCATE_INDIVIDUALLY(inter_schema_node)
-ALLOCATE_INDIVIDUALLY(inter_schema_token)
 ALLOCATE_INDIVIDUALLY(package_request)
 ALLOCATE_INDIVIDUALLY(hierarchy_location)
 ALLOCATE_INDIVIDUALLY(hierarchy_attachment_point)
@@ -360,8 +354,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e RELATION_DEFINITIONS_DA
 @e RULE_ATTACHMENTS_DA
 @e RULEBOOK_COMPILATION_DA
-@e SCHEMA_COMPILATION_DA
-@e SCHEMA_COMPILATION_DETAILS_DA
 @e SPATIAL_MAP_DA
 @e SPATIAL_MAP_WORKINGS_DA
 @e SPECIFICATION_PERMISSIONS_DA
@@ -409,8 +401,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(RELATION_DEFINITIONS_DA, L"relation definitions", FALSE, FALSE);
 	Log::declare_aspect(RULE_ATTACHMENTS_DA, L"rule attachments", FALSE, FALSE);
 	Log::declare_aspect(RULEBOOK_COMPILATION_DA, L"rulebook compilation", FALSE, FALSE);
-	Log::declare_aspect(SCHEMA_COMPILATION_DA, L"schema compilation", FALSE, FALSE);
-	Log::declare_aspect(SCHEMA_COMPILATION_DETAILS_DA, L"schema compilation details", FALSE, FALSE);
 	Log::declare_aspect(SPATIAL_MAP_DA, L"spatial map", FALSE, FALSE);
 	Log::declare_aspect(SPATIAL_MAP_WORKINGS_DA, L"spatial map workings", FALSE, FALSE);
 	Log::declare_aspect(SPECIFICATION_PERMISSIONS_DA, L"specification permissions", FALSE, FALSE);

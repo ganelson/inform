@@ -200,7 +200,7 @@ void Packaging::outside_all_packages(void) {
 	pragmas_bookmark = Packaging::bubble();
 
 	Emit::comment(I"Primitives:");
-	Primitives::emit();
+	Primitives::emit(Emit::repository(), Packaging::at());
 
 	Packaging::enter(Hierarchy::main()); // Which we never exit
 	holdings_bookmark = Packaging::bubble();
