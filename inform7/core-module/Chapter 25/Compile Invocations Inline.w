@@ -145,7 +145,7 @@ void Invocations::Inline::csi_inline_inner(value_holster *VH, inter_schema *sch,
 	int to_val = FALSE;
 	if (VH->vhmode_wanted == INTER_VAL_VHMODE) { to_val = TRUE; to_code = FALSE; }
 
-	EmitInterSchemas::emit(VH, sch, CSIS, to_code, to_val,
+	EmitInterSchemas::emit(VH, sch, CSIS, to_code, to_val, NULL, NULL,
 		&Invocations::Inline::csi_inline_inner_inner, &TemplateFiles::compile_I7_from_I6);
 }
 
@@ -1412,7 +1412,7 @@ very special circumstances.
 	} else {
 		TEMPORARY_TEXT(T);
 		WRITE_TO(T, "%~W", Wordings::one_word(ParseTree::int_annotation(inv, ssp_closing_segment_wn_ANNOT)));
-		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(T);
+		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(T, NULL, NULL);
 		Emit::val_symbol(K_value, T_s);
 		DISCARD_TEXT(T);
 	}

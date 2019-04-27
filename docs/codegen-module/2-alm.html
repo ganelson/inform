@@ -57,6 +57,7 @@
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DEFAULT_PLM</span><span class="plain">:</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_PLM</span><span class="plain">:</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAKEACTION_PLM</span><span class="plain">:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OBJECT_PLM</span><span class="plain">:</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERB_PLM</span><span class="plain">:</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unchecked_kind_symbol</span><span class="plain">) </span>&lt;<span class="cwebmacro">Assimilate definition</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
@@ -143,11 +144,15 @@
                     <span class="identifier">identifier</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">"##%S"</span><span class="plain">, </span><span class="identifier">old</span><span class="plain">);</span>
                 <span class="plain">}</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain"> == </span><span class="identifier">OBJECT_PLM</span><span class="plain">) </span><span class="identifier">value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain"> != </span><span class="identifier">DEFAULT_PLM</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Assum identifier is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">);</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="functiontext">CodeGen::Assimilate::maybe_extern</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">into_scope</span><span class="plain">);</span>
                     <span class="identifier">Inter::Symbols::annotate_i</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">, 1);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain"> == </span><span class="identifier">FAKEACTION_PLM</span><span class="plain">)</span>
+                        <span class="identifier">Inter::Symbols::annotate_i</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">FAKE_ACTION_IANN</span><span class="plain">, 1);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain"> == </span><span class="identifier">OBJECT_PLM</span><span class="plain">)</span>
+                        <span class="identifier">Inter::Symbols::annotate_i</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">OBJECT_IANN</span><span class="plain">, 1);</span>
 
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">equated_to</span><span class="plain">) {</span>
                         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">external_name</span><span class="plain"> = </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">equated_to</span><span class="plain">;</span>
@@ -159,19 +164,13 @@
 
                     <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain">) {</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_PLM</span><span class="plain">:</span>
-                            &lt;<span class="cwebmacro">Assimilate a value</span> <span class="cwebmacronumber">1.1.2</span>&gt;<span class="plain">;</span>
-                            <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Constant::new_numerical</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">,</span>
-                                <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">),</span>
-                                <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">unchecked_kind_symbol</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">,</span>
-                                <span class="identifier">baseline</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">));</span>
-                            <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAKEACTION_PLM</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OBJECT_PLM</span><span class="plain">:</span>
                             &lt;<span class="cwebmacro">Assimilate a value</span> <span class="cwebmacronumber">1.1.2</span>&gt;<span class="plain">;</span>
                             <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Constant::new_numerical</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">,</span>
                                 <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">),</span>
                                 <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">unchecked_kind_symbol</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">,</span>
                                 <span class="identifier">baseline</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">));</span>
-                            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"So FAPLM made $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GLOBAL_PLM</span><span class="plain">:</span>
                             &lt;<span class="cwebmacro">Assimilate a value</span> <span class="cwebmacronumber">1.1.2</span>&gt;<span class="plain">;</span>
@@ -339,7 +338,7 @@
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a> (four times).</p>
+    <p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a> (three times).</p>
 
     <p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Assimilate routine</span> <span class="cwebmacronumber">1.2</span>&gt; =
@@ -397,6 +396,7 @@
                         <span class="identifier">var_count</span><span class="plain">++;</span>
 
                         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span><span class="identifier">Inter::Package::local_symbols</span><span class="plain">(</span><span class="identifier">block_name</span><span class="plain">), </span><span class="identifier">value</span><span class="plain">);</span>
+                        <span class="identifier">Inter::Symbols::local</span><span class="plain">(</span><span class="identifier">loc_name</span><span class="plain">);</span>
                         <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Local::new</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">, </span><span class="identifier">block_name</span><span class="plain">, </span><span class="identifier">loc_name</span><span class="plain">, </span><span class="identifier">unchecked_kind_symbol</span><span class="plain">, 0, </span><span class="identifier">baseline</span><span class="plain">+1, </span><span class="identifier">NULL</span><span class="plain">));</span>
 
                         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">);</span>
@@ -415,7 +415,7 @@
                     <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">&gt;0) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">body</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">) != </span><span class="character">']'</span><span class="plain">)) </span><span class="identifier">L</span><span class="plain">--;</span>
                     <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">&gt;0) &amp;&amp; (</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">body</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-1)))) </span><span class="identifier">L</span><span class="plain">--;</span>
                     <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">body</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-                    <span class="functiontext">CodeGen::Link::entire_splat</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">body</span><span class="plain">, </span><span class="identifier">baseline</span><span class="plain">+2, </span><span class="identifier">block_name</span><span class="plain">);</span>
+                    <span class="functiontext">CodeGen::Assimilate::routine_body</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">, </span><span class="identifier">block_name</span><span class="plain">, </span><span class="identifier">baseline</span><span class="plain">+2, </span><span class="identifier">body</span><span class="plain">);</span>
                 <span class="plain">}</span>
 
                 <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Label::new</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">, </span><span class="identifier">block_name</span><span class="plain">, </span><span class="identifier">end_name</span><span class="plain">, </span><span class="identifier">baseline</span><span class="plain">+1, </span><span class="identifier">NULL</span><span class="plain">));</span>
@@ -726,6 +726,36 @@
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">NN</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mcc_name</span><span class="plain">;</span>
         <span class="plain">}</span>
+
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rb_splat_count</span><span class="plain"> = 1;</span>
+        <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Assimilate::routine_body</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">block_name</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">offset</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">body</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::is_whitespace</span><span class="plain">(</span><span class="identifier">body</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">body</span><span class="plain">) &lt; 20) {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=======\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">Candidate (%S): '%S'\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">block_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">body</span><span class="plain">);</span>
+                <span class="reserved">inter_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain"> = </span><span class="functiontext">InterSchemas::from_text</span><span class="plain">(</span><span class="identifier">body</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">);</span>
+
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sch</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"NULL SCH\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;node_tree</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Lint fail: Non-empty text but empty scheme\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                    <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inter schema empty"</span><span class="plain">);</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="functiontext">InterSchemas::log</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">);</span>
+
+                <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+                <span class="identifier">current_inter_routine</span><span class="plain"> = </span><span class="identifier">block_name</span><span class="plain">;</span>
+                <span class="identifier">Packaging::set_state</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">, </span><span class="identifier">Packaging::enclosure</span><span class="plain">());</span>
+                <span class="identifier">Emit::push_code_position</span><span class="plain">(</span><span class="identifier">Emit::new_cip</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">));</span>
+                <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">INTER_VOID_VHMODE</span><span class="plain">);</span>
+                <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">scope1</span><span class="plain"> = </span><span class="identifier">Inter::Package::local_symbols</span><span class="plain">(</span><span class="identifier">block_name</span><span class="plain">);</span>
+                <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">scope2</span><span class="plain"> = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">Hierarchy::template</span><span class="plain">()));</span>
+                <span class="identifier">EmitInterSchemas::emit</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">sch</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">scope1</span><span class="plain">, </span><span class="identifier">scope2</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                <span class="identifier">Emit::pop_code_position</span><span class="plain">();</span>
+                <span class="identifier">current_inter_routine</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain">;</span>
+                <span class="plain">#</span><span class="identifier">endif</span>
+            <span class="plain">}</span>
+            <span class="functiontext">CodeGen::Link::entire_splat</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">body</span><span class="plain">, </span><span class="identifier">offset</span><span class="plain">, </span><span class="identifier">block_name</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Splat %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">rb_splat_count</span><span class="plain">++);</span>
+        <span class="plain">}</span>
     </pre>
 
     <p class="inwebparagraph"></p>
@@ -743,6 +773,8 @@
     <p class="endnote">The function CodeGen::Assimilate::compute_constant_binary_operation appears nowhere else.</p>
 
     <p class="endnote">The function CodeGen::Assimilate::computed_constant_symbol appears nowhere else.</p>
+
+    <p class="endnote">The function CodeGen::Assimilate::routine_body is used in <a href="#SP1_2">&#167;1.2</a>.</p>
 
     <hr class="tocbar">
     <ul class="toc"><li><a href="2-rcc.html">Back to 'Resolving Conditional Compilation'</a></li><li><a href="2-res.html">Continue with 'Resolve External Symbols'</a></li></ul><hr class="tocbar">

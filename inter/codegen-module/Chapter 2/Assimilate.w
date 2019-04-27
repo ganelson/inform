@@ -45,6 +45,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 				case DEFAULT_PLM:
 				case CONSTANT_PLM:
 				case FAKEACTION_PLM:
+				case OBJECT_PLM:
 				case VERB_PLM:
 					if (unchecked_kind_symbol) @<Assimilate definition@>;
 					break;
@@ -119,10 +120,15 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			identifier = Str::new();
 			WRITE_TO(identifier, "##%S", old);
 		}
+		if (switch_on == OBJECT_PLM) value = NULL;
 
 		if (switch_on != DEFAULT_PLM) {
 			inter_symbol *con_name = CodeGen::Assimilate::maybe_extern(I, identifier, into_scope);
 			Inter::Symbols::annotate_i(I, con_name, ASSIMILATED_IANN, 1);
+			if (switch_on == FAKEACTION_PLM)
+				Inter::Symbols::annotate_i(I, con_name, FAKE_ACTION_IANN, 1);
+			if (switch_on == OBJECT_PLM)
+				Inter::Symbols::annotate_i(I, con_name, OBJECT_IANN, 1);
 
 			if (con_name->equated_to) {
 				inter_symbol *external_name = con_name->equated_to;
@@ -134,13 +140,8 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 
 			switch (switch_on) {
 				case CONSTANT_PLM:
-					@<Assimilate a value@>;
-					CodeGen::Link::guard(Inter::Constant::new_numerical(&ib,
-						Inter::SymbolsTables::id_from_symbol(I, outer, con_name),
-						Inter::SymbolsTables::id_from_symbol(I, outer, unchecked_kind_symbol), v1, v2,
-						baseline, NULL));
-					break;
 				case FAKEACTION_PLM:
+				case OBJECT_PLM:
 					@<Assimilate a value@>;
 					CodeGen::Link::guard(Inter::Constant::new_numerical(&ib,
 						Inter::SymbolsTables::id_from_symbol(I, outer, con_name),
@@ -341,6 +342,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 				var_count++;
 
 				inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Package::local_symbols(block_name), value);
+				Inter::Symbols::local(loc_name);
 				CodeGen::Link::guard(Inter::Local::new(&ib, block_name, loc_name, unchecked_kind_symbol, 0, baseline+1, NULL));
 
 				DISCARD_TEXT(value);
@@ -359,7 +361,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			while ((L>0) && (Str::get_at(body, L) != ']')) L--;
 			while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 			Str::truncate(body, L);
-			CodeGen::Link::entire_splat(&ib, NULL, body, baseline+2, block_name);
+			CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body);
 		}
 
 		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, end_name, baseline+1, NULL));
@@ -653,4 +655,34 @@ inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack)
 	inter_symbol *mcc_name = Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
 	DISCARD_TEXT(NN);
 	return mcc_name;
+}
+
+int rb_splat_count = 1;
+void CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body) {
+	if (Str::is_whitespace(body)) return;
+	if (Str::len(body) < 20) {
+		LOG("=======\n\nCandidate (%S): '%S'\n\n", block_name->symbol_name, body);
+		inter_schema *sch = InterSchemas::from_text(body, FALSE, 0, NULL);
+		
+		if (sch == NULL) LOG("NULL SCH\n");
+		else if (sch->node_tree == NULL) {
+			LOG("Lint fail: Non-empty text but empty scheme\n");
+			internal_error("inter schema empty");
+		} else InterSchemas::log(sch);
+		
+		#ifdef CORE_MODULE
+		current_inter_routine = block_name;
+		Packaging::set_state(IRS, Packaging::enclosure());
+		Emit::push_code_position(Emit::new_cip(IRS));
+		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
+		inter_symbols_table *scope1 = Inter::Package::local_symbols(block_name);
+		inter_symbols_table *scope2 = Inter::Packages::scope(Packaging::incarnate(Hierarchy::template()));
+		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
+		Emit::pop_code_position();
+		current_inter_routine = NULL;
+		return;
+		#endif
+	}
+	CodeGen::Link::entire_splat(IRS, NULL, body, offset, block_name);
+	LOG("Splat %d\n", rb_splat_count++);
 }

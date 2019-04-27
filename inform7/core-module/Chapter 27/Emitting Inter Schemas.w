@@ -4,19 +4,19 @@
 
 =
 void EmitInterSchemas::emit(value_holster *VH, inter_schema *sch, void *opaque_state,
-	int to_code, int to_val,
+	int to_code, int to_val, inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
 	if (sch->mid_case) { Emit::to_last_level(4); }
 	int prim_cat = VAL_PRIM_CAT;
 	if (to_code) prim_cat = CODE_PRIM_CAT;
 	for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
-		EmitInterSchemas::emit_inner(isn, VH, sch, opaque_state, prim_cat, inline_command_handler, i7_source_handler);
+		EmitInterSchemas::emit_inner(isn, VH, sch, opaque_state, prim_cat, first_call, second_call, inline_command_handler, i7_source_handler);
 }
 
 @ =
 void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
-	inter_schema *sch, void *opaque_state, int prim_cat,
+	inter_schema *sch, void *opaque_state, int prim_cat, inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
 	if (isn == NULL) return;
@@ -47,7 +47,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 			} else if ((t->ist_type == INLINE_ISTT) &&
 				((t->inline_command == counter_up_ISINC) || (t->inline_command == counter_down_ISINC))) {
 				value_holster VN = Holsters::new(INTER_DATA_VHMODE);
-				(*inline_command_handler)(&VN, t, opaque_state, VAL_PRIM_CAT);
+				if (inline_command_handler)
+					(*inline_command_handler)(&VN, t, opaque_state, VAL_PRIM_CAT);
 			} else internal_error("bad label stuff");
 		}
 	}
@@ -62,7 +63,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	}
 	for (inter_schema_node *at = isn->child_node; at; at=at->next_node)
 		EmitInterSchemas::emit_inner(at,
-			VH, sch, opaque_state, CODE_PRIM_CAT, inline_command_handler, i7_source_handler);
+			VH, sch, opaque_state, CODE_PRIM_CAT, first_call, second_call,
+			inline_command_handler, i7_source_handler);
 	if (isn->unclosed == FALSE) {
 		Emit::up();
 	}
@@ -83,7 +85,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		Emit::down();
 		for (at = at->next_node; at; at=at->next_node)
 			EmitInterSchemas::emit_inner(at, VH, sch, opaque_state,
-				VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
+				VAL_PRIM_CAT, first_call, second_call,
+				inline_command_handler, i7_source_handler);
 		Emit::up();
 	}
 
@@ -97,7 +100,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				to_call = tok;
 		}
 		if (to_call) {
-			Emit::inv_call(EmitInterSchemas::find_identifier(to_call));
+			Emit::inv_call(EmitInterSchemas::find_identifier(to_call, first_call, second_call));
 			at = at->next_node;
 		} else {
 			int argc = 0;
@@ -117,7 +120,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		Emit::down();
 		for (; at; at=at->next_node)
 			EmitInterSchemas::emit_inner(at,
-				VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
+				VH, sch, opaque_state, VAL_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
 		Emit::up();
 	}
 
@@ -134,7 +138,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				Emit::down();
 			}
 			EmitInterSchemas::emit_inner(at,
-				VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
+				VH, sch, opaque_state, VAL_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
 		}
 		while (d > 0) { Emit::up(); d--; }
 	}
@@ -147,10 +152,13 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	int pc = VAL_PRIM_CAT;
 	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
 	EmitInterSchemas::emit_inner(isn->child_node,
-		VH, sch, opaque_state, pc, inline_command_handler, i7_source_handler);
+		VH, sch, opaque_state, pc, first_call, second_call,
+		inline_command_handler, i7_source_handler);
 	if (InterSchemas::arity(isn->isn_clarifier) == 2)
 		EmitInterSchemas::emit_inner(isn->child_node->next_node,
-			VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
+			VH, sch, opaque_state, VAL_PRIM_CAT,
+			first_call, second_call,
+			inline_command_handler, i7_source_handler);
 	Emit::up();
 
 	if (prim_cat == REF_PRIM_CAT) { Emit::up(); }
@@ -164,7 +172,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 			Emit::down();
 		}
 		EmitInterSchemas::emit_inner(at,
-			VH, sch, opaque_state, prim_cat, inline_command_handler, i7_source_handler);
+			VH, sch, opaque_state, prim_cat, first_call, second_call,
+			inline_command_handler, i7_source_handler);
 	}
 	while (d > 0) { Emit::up(); d--; }
 
@@ -183,7 +192,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		for (int i = 0; ((at) && (i<arity)); i++) {
 			actual_arity++;
 			EmitInterSchemas::emit_inner(at, VH, sch, opaque_state,
-				InterSchemas::ip_prim_cat(isn->isn_clarifier, i), inline_command_handler, i7_source_handler);
+				InterSchemas::ip_prim_cat(isn->isn_clarifier, i),
+				first_call, second_call, inline_command_handler, i7_source_handler);
 			last = at;
 			at = at->next_node;
 		}
@@ -202,15 +212,18 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		inter_schema_node *var_node = oc_node->child_node;
 		inter_schema_node *cl_node = var_node?(var_node->next_node):NULL;
 		if ((var_node) && (cl_node)) {
-			EmitInterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT, inline_command_handler, i7_source_handler);
-			EmitInterSchemas::emit_inner(cl_node, VH, sch, opaque_state, VAL_PRIM_CAT, inline_command_handler, i7_source_handler);
+			EmitInterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
+			EmitInterSchemas::emit_inner(cl_node, VH, sch, opaque_state, VAL_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
 		} else internal_error("malformed OC node");
 	} else {
 		inter_schema_node *var_node = isn->child_node;
 		while ((var_node) && (var_node->isn_type != EXPRESSION_ISNT))
 			var_node = var_node->child_node;
 		if (var_node) {
-			EmitInterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT, inline_command_handler, i7_source_handler);
+			EmitInterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
 			Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
 		} else internal_error("objectloop without visible variable");
 	}
@@ -231,7 +244,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 					inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 					Emit::val_symbol(K_value, lvar_s);
 				} else {
-					Emit::val_symbol(K_value, EmitInterSchemas::find_identifier(t));
+					Emit::val_symbol(K_value, EmitInterSchemas::find_identifier(t, first_call, second_call));
 				}
 				break;
 			}
@@ -262,7 +275,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				(*i7_source_handler)(VH, NULL, t->material);
 				break;
 			case INLINE_ISTT:
-				(*inline_command_handler)(VH, t, opaque_state, prim_cat);
+				if (inline_command_handler)
+					(*inline_command_handler)(VH, t, opaque_state, prim_cat);
 				break;
 			default:
 				internal_error("bad expression token");
@@ -273,14 +287,25 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	if (prim_cat == REF_PRIM_CAT) { Emit::up(); }
 
 @ =
-inter_symbol *EmitInterSchemas::find_identifier(inter_schema_token *t) {
+inter_symbol *EmitInterSchemas::find_identifier(inter_schema_token *t, inter_symbols_table *first_call, inter_symbols_table *second_call) {
 	if (t->as_quoted) return InterNames::to_symbol(t->as_quoted);
-	return EmitInterSchemas::find_identifier_text(t->material);
+	return EmitInterSchemas::find_identifier_text(t->material, first_call, second_call);
 }
 
-inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S) {
+inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+	if (first_call) {
+		inter_symbol *I = Emit::seek_symbol(first_call, S);
+		if (I) return I;
+	}
+	if (second_call) {
+		inter_symbol *I = Emit::seek_symbol(second_call, S);
+		if (I) return I;
+	}
 	inter_symbol *I = Emit::seek_symbol(Emit::main_scope(), S);
 	if (I) return I;
-	return InterNames::to_symbol(Hierarchy::find_by_name(S));
+	I = InterNames::to_symbol(Hierarchy::find_by_name(S));
+	if (I) return I;
+	LOG("Defeated on %S\n", S);
+	internal_error("unable to find identifier");
+	return NULL;
 }
-

@@ -208,6 +208,7 @@ for parsing:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 5) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
             <span class="identifier">P_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"name"</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">PL::Parsing::Visibility::name_name</span><span class="plain">());</span>
             <span class="identifier">P_parse_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"parse_name"</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="identifier">P_action_bitmap</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"action_bitmap"</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 

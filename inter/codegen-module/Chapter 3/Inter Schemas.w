@@ -188,8 +188,8 @@ compilation process, and never survive into the final schema:
 
 @e RAW_ISTT from 1			/* something unidentified as yet */
 @e WHITE_SPACE_ISTT			/* a stretch of white space */
-@e RESERVED_ISTT				/* am I6 reserved word such as |while| */
-@e OPERATOR_ISTT				/* an I6 operator such as |-->| or |+| */
+@e RESERVED_ISTT			/* am I6 reserved word such as |while| */
+@e OPERATOR_ISTT			/* an I6 operator such as |-->| or |+| */
 @e DIVIDER_ISTT				/* a semicolon used to divide I6 statements */
 @e OPEN_ROUND_ISTT			/* open round bracket */
 @e CLOSE_ROUND_ISTT			/* close round bracket */
@@ -398,7 +398,8 @@ we go to some trouble here.
 
 =
 void InterSchemas::log(inter_schema *sch) {
-	if (sch == NULL) LOG("<null schema>");
+	if (sch == NULL) LOG("<null schema>\n");
+	else if (sch->node_tree == NULL) LOG("<schema without nodes>\n");
 	else InterSchemas::log_depth(sch->node_tree, 0);
 }
 
@@ -653,6 +654,7 @@ inter_schema *InterSchemas::from_text(text_stream *from, int abbreviated, int no
 
 	@<Begin the schema as a single expression node with a linked list of tokens@>;
 	@<Perform transformations to grow the tree and reduce the token count@>;
+
 	InterSchemas::lint(sch);
 
 	if ((Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) ||
@@ -1125,6 +1127,7 @@ language opcodes such as |@pull|.
 @<Break off here for operators@> =
 	int monograph = TRUE, digraph = FALSE, trigraph = FALSE;
 	if ((Characters::isalnum(c1)) || (c1 == '_')) monograph = FALSE;
+	if ((c1 == '#') && (Characters::isalpha(c2))) monograph = FALSE;
 	if ((c1 == '@') && (Characters::isalpha(c2))) monograph = FALSE;
 
 	if ((c1 == '+') && (c2 == '+')) digraph = TRUE;
@@ -1197,6 +1200,15 @@ inclusive; we ignore an empty token.
 
 @<Identify this new token@> =
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
+	if ((Str::get_at(T, 0) == '#') && (Characters::isalpha(Str::get_at(T, 1)))) {
+		is = IDENTIFIER_ISTT;
+		LOOP_THROUGH_TEXT(P, T) {
+			int c = Str::get(P);
+			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
+				is = RAW_ISTT;
+		}
+		LOG("Looks hashy! %S\n", T);;
+	}
 	if (Characters::isalpha(Str::get_at(T, 0))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
@@ -1799,6 +1811,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 									} else if (Str::eq(pr->material, I"string")) {
 										subordinate_to = printstring_interp;
 										operand1 = n;
+									} else if (Str::eq(pr->material, I"name")) {
+										subordinate_to = printname_interp;
+										operand1 = n;
 									} else if (Str::eq(pr->material, I"the")) {
 										subordinate_to = printdef_interp;
 										operand1 = n;
@@ -1966,6 +1981,10 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						if (l->ist_type != WHITE_SPACE_ISTT) {
 							inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 							new_isn->expression_tokens = l; l->next = NULL; l->owner = new_isn;
+							if (l->operation_primitive) {
+								l->ist_type = IDENTIFIER_ISTT;
+								l->operation_primitive = NULL;
+							}
 							if (isn->child_node == NULL) isn->child_node = new_isn;
 							else if (prev_node) prev_node->next_node = new_isn;
 							new_isn->parent_node = isn;
@@ -2136,7 +2155,7 @@ int InterSchemas::remove_empties(inter_schema_node *par, inter_schema_node *isn)
 		if ((isn->isn_type == EXPRESSION_ISNT) && (isn->expression_tokens == NULL)) {
 			if (prev) prev->next_node = isn->next_node;
 			else if (par) par->child_node = isn->next_node;
-			else isn->parent_schema->node_tree = NULL;
+			else isn->parent_schema->node_tree = isn->next_node;
 			return TRUE;
 		}
 		if (InterSchemas::remove_empties(isn, isn->child_node)) return TRUE;

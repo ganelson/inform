@@ -24,6 +24,7 @@ Defining the one true set of Inter annotation codes.
 @e EITHER_OR_IANN
 @e ENCLOSING_IANN
 @e FAKE_ACTION_IANN
+@e OBJECT_IANN
 @e HOLDING_IANN
 @e INLINE_ARRAY_IANN
 @e LATE_IANN
@@ -76,6 +77,7 @@ void Inter::Canon::declare(void) {
 	Inter::Defn::create_annotation(EITHER_OR_IANN, I"__either_or", FALSE);
 	Inter::Defn::create_annotation(ENCLOSING_IANN, I"__enclosing", FALSE);
 	Inter::Defn::create_annotation(FAKE_ACTION_IANN, I"__fake_action", FALSE);
+	Inter::Defn::create_annotation(OBJECT_IANN, I"__object", FALSE);
 	Inter::Defn::create_annotation(HOLDING_IANN, I"__holding", FALSE);
 	Inter::Defn::create_annotation(INLINE_ARRAY_IANN, I"__inline_array", FALSE);
 	Inter::Defn::create_annotation(LATE_IANN, I"__late", FALSE);

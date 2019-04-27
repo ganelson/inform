@@ -37,14 +37,10 @@ void Hierarchy::establish(void) {
 
 @h Basics.
 
-@e THESAME_HL from 0
-@e PLURALFOUND_HL
-@e PARENT_HL
+@e PARENT_HL from 0
 @e CHILD_HL
 @e SIBLING_HL
 @e SELF_HL
-@e THEDARK_HL
-@e INFORMLIBRARY_HL
 @e DEBUG_HL
 @e TARGET_ZCODE_HL
 @e TARGET_GLULX_HL
@@ -82,8 +78,6 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(CHILD_HL, I"child", Translation::same(), generic_basics);
 	HierarchyLocations::con(SIBLING_HL, I"sibling", Translation::same(), generic_basics);
 	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), generic_basics);
-	HierarchyLocations::con(THEDARK_HL, I"thedark", Translation::same(), generic_basics);
-	HierarchyLocations::con(INFORMLIBRARY_HL, I"InformLibrary", Translation::same(), generic_basics);
 	HierarchyLocations::con(RESPONSETEXTS_HL, I"ResponseTexts", Translation::same(), generic_basics);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), generic_basics);
 	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), generic_basics);
@@ -1055,6 +1049,10 @@ void Hierarchy::establish(void) {
 
 @
 
+@e THESAME_HL
+@e PLURALFOUND_HL
+@e THEDARK_HL
+@e INFORMLIBRARY_HL
 @e ACT_REQUESTER_HL
 @e ACTION_HL
 @e ACTIONCURRENTLYHAPPENINGFLAG_HL
@@ -1293,6 +1291,8 @@ void Hierarchy::establish(void) {
 	location_requirement template = HierarchyLocations::this_package(Hierarchy::template());
 	HierarchyLocations::con(THESAME_HL, I"##TheSame", Translation::same(), template);
 	HierarchyLocations::con(PLURALFOUND_HL, I"##PluralFound", Translation::same(), template);
+	HierarchyLocations::con(THEDARK_HL, I"thedark", Translation::same(), template);
+	HierarchyLocations::con(INFORMLIBRARY_HL, I"InformLibrary", Translation::same(), template);
 	HierarchyLocations::con(ACT_REQUESTER_HL, I"act_requester", Translation::same(), template);
 	HierarchyLocations::con(ACTION_HL, I"action", Translation::same(), template);
 	HierarchyLocations::con(ACTIONCURRENTLYHAPPENINGFLAG_HL, I"ActionCurrentlyHappeningFlag", Translation::same(), template);
@@ -1563,13 +1563,11 @@ package_request *Hierarchy::exotic_package(int x) {
 =
 inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 	switch (HL_id) {
-//		case THESAME_HL:
-//		case PLURALFOUND_HL:
 		case PARENT_HL:
 		case CHILD_HL:
 		case SIBLING_HL:
-		case THEDARK_HL:
-		case INFORMLIBRARY_HL:
+//		case THEDARK_HL:
+//		case INFORMLIBRARY_HL:
 		case FLOAT_NAN_HL:
 		case RESPONSETEXTS_HL:
 			Emit::named_numeric_constant(iname, 0);
@@ -1592,7 +1590,10 @@ inter_name *Hierarchy::find(int id) {
 }
 
 void Hierarchy::make_available(inter_name *iname) {
-	HierarchyLocations::make_as(-1, Emit::to_text(iname), iname);
+	text_stream *ma_as = Emit::get_translation(iname);
+	if (Str::len(ma_as) == 0) ma_as = Emit::to_text(iname);
+	LOG("MA: %S = $3\n", ma_as, InterNames::to_symbol(iname));
+	HierarchyLocations::make_as(-1, ma_as, iname);
 }
 
 inter_name *Hierarchy::find_by_name(text_stream *name) {
@@ -1611,15 +1612,6 @@ package_request *Hierarchy::main(void) {
 		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL),
 			PackageTypes::get(I"_plain"));
 	return main_pr;
-}
-
-package_request *resources_pr = NULL;
-package_request *Hierarchy::resources(void) {
-	if (resources_pr == NULL)
-		resources_pr = Packaging::request(
-			InterNames::explicitly_named(I"resources", Hierarchy::main()),
-			PackageTypes::get(I"_plain"));
-	return resources_pr;
 }
 
 package_request *template_pr = NULL;

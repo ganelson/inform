@@ -44,7 +44,6 @@ inter_reading_state Inter::Bookmarks::from_package(inter_package *pack) {
 			IRS.pos = pos;
 			return IRS;
 		}
-	LOG("Didn't nail it.");
 	return IRS;
 }
 
@@ -59,7 +58,6 @@ inter_reading_state Inter::Bookmarks::from_frame(inter_frame D) {
 			IRS.pos = pos;
 			return IRS;
 		}
-	LOG("Didn't nail it.");
 	return IRS;
 }
 

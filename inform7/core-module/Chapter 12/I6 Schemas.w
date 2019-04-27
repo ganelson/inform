@@ -213,7 +213,7 @@ void Calculus::Schemas::sch_emit_inner(i6_schema *sch, i6s_emission_state *ems, 
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	int val_mode = FALSE;
 	if (code_mode == FALSE) val_mode = TRUE;
-	EmitInterSchemas::emit(&VH, sch->compiled, ems, code_mode, val_mode,
+	EmitInterSchemas::emit(&VH, sch->compiled, ems, code_mode, val_mode, NULL, NULL,
 		&Calculus::Schemas::sch_inline, NULL);
 
 	END_COMPILATION_MODE;

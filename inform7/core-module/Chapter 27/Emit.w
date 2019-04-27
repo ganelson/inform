@@ -38,6 +38,11 @@ void Emit::begin(void) {
 	inter_repository *repo = Inter::create(1, 4096);
 	Packaging::initialise_state(repo);
 	Packaging::outside_all_packages();
+	
+	Packaging::incarnate(Packaging::get_module(I"generic")->the_package);
+	Packaging::incarnate(Packaging::get_module(I"synoptic")->the_package);
+	Packaging::incarnate(Packaging::get_module(I"standard_rules")->the_package);	
+	Packaging::incarnate(Hierarchy::template());
 
 	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
 	packaging_state save = Packaging::enter_home_of(KU);

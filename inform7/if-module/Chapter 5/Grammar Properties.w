@@ -138,6 +138,7 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 	if (stage == 5) {
 		instance *I;
 		P_name = Properties::Valued::new_nameless(I"name", K_text);
+		Hierarchy::make_available(PL::Parsing::Visibility::name_name());
 		P_parse_name = Properties::Valued::new_nameless(I"parse_name", K_value);
 		P_action_bitmap = Properties::Valued::new_nameless(I"action_bitmap", K_value);
 

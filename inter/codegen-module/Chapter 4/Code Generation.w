@@ -71,6 +71,7 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 					case CONSTANT_IST: {
 						inter_symbol *con_name =
 							Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+						if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 						if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
 							WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
 							internal_error("constant defined in main");
@@ -105,7 +106,8 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 					case INSTANCE_IST:
 						CodeGen::frame(TO, I, P); break;
 					case SPLAT_IST:
-						if (P.data[PLM_SPLAT_IFLD] != OBJECT_PLM) CodeGen::frame(TO, I, P);
+						internal_error("top-level splat remaining");
+//						if (P.data[PLM_SPLAT_IFLD] != OBJECT_PLM) CodeGen::frame(TO, I, P);
 						break;
 					case PROPERTYVALUE_IST:
 						@<Property knowledge@>;
@@ -180,8 +182,8 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	}
 	
 	WRITE("%S", summations_at_eof);
-//	WRITE("%S", attributes_at_eof);
 	WRITE("%S", arrays_at_eof);
+
 	WRITE("%S", main_matter);
 	WRITE("%S", routines_at_eof);
 	WRITE("%S", code_at_eof);
@@ -190,14 +192,10 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 
 @<Property knowledge@> =
 	if (properties_written == FALSE) {
-		for (int j=0; j<no_repos; j++) {
-			inter_repository *I = repos[j];
-			inter_frame P;
-			LOOP_THROUGH_FRAMES(P, I) {
-				if ((P.data[ID_IFLD] == SPLAT_IST) && (P.data[PLM_SPLAT_IFLD] == OBJECT_PLM))
-					CodeGen::frame(TO, I, P);
-			}
-		}
+		WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
+		WRITE_TO(TO, "Object thedark \"(darkness object)\";\n");
+		WRITE_TO(TO, "Object InformParser \"(Inform Parser)\" has proper;\n");
+		WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
 		properties_written = TRUE;
 		CodeGen::IP::knowledge(TO, I, code_at_eof, attributes_at_eof);
 	}
@@ -278,20 +276,11 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 
 	if (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1) return;
-
-	if (Inter::Symbols::read_annotation(con_name,ACTION_IANN) == 1) {
-		if (Inter::Symbols::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
-			WRITE("Fake_action %S;\n", con_name->symbol_name);
-		}
-		return;
-	}
+	if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1) return;
 
 	if (Str::eq(con_name->symbol_name, I"nothing")) return;
 
-	if ((Str::eq(con_name->symbol_name, I"##TheSame")) ||
-		(Str::eq(con_name->symbol_name, I"##PluralFound")) ||
-		(Str::eq(con_name->symbol_name, I"##Miscellany")) ||
-		(Str::eq(con_name->symbol_name, I"##ListMiscellany"))) {
+	if (Inter::Symbols::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
 		Str::delete_first_character(fa);
@@ -302,8 +291,23 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"parent")) return;
 	if (Str::eq(con_name->symbol_name, I"child")) return;
 	if (Str::eq(con_name->symbol_name, I"sibling")) return;
-	if (Str::eq(con_name->symbol_name, I"thedark")) return;
-	if (Str::eq(con_name->symbol_name, I"InformLibrary")) return;
+	if (Str::eq(con_name->symbol_name, I"thedark")) {
+//		WRITE("Object thedark \"(darkness object)\";\n");
+		return;
+	}
+	if (Str::eq(con_name->symbol_name, I"InformLibrary")) {
+//		WRITE("Object InformLibrary \"(Inform Library)\" has proper;\n");
+		return;
+	}
+	if (Str::eq(con_name->symbol_name, I"InformParser")) {
+//		WRITE("Object InformParser \"(Inform Parser)\" has proper;\n");
+		return;
+	}
+	if (Str::eq(con_name->symbol_name, I"Compass")) {
+//		WRITE("Object Compass \"compass\" has concealed;\n");
+		return;
+	}
+	
 	if (Str::eq(con_name->symbol_name, I"ResponseTexts")) return;
 	if (Str::eq(con_name->symbol_name, I"FLOAT_NAN")) return;
 
