@@ -288,8 +288,17 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 
 	if (Str::eq(con_name->symbol_name, I"nothing")) return;
 
-	if (Str::eq(con_name->symbol_name, I"##TheSame")) return;
-	if (Str::eq(con_name->symbol_name, I"##PluralFound")) return;
+	if ((Str::eq(con_name->symbol_name, I"##TheSame")) ||
+		(Str::eq(con_name->symbol_name, I"##PluralFound")) ||
+		(Str::eq(con_name->symbol_name, I"##Miscellany")) ||
+		(Str::eq(con_name->symbol_name, I"##ListMiscellany"))) {
+		text_stream *fa = Str::duplicate(con_name->symbol_name);
+		Str::delete_first_character(fa);
+		Str::delete_first_character(fa);
+		WRITE("Fake_Action %S;\n", fa);
+		return;
+	}
+		
 	if (Str::eq(con_name->symbol_name, I"parent")) return;
 	if (Str::eq(con_name->symbol_name, I"child")) return;
 	if (Str::eq(con_name->symbol_name, I"sibling")) return;

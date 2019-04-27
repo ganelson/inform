@@ -44,6 +44,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			switch (P.data[PLM_SPLAT_IFLD]) {
 				case DEFAULT_PLM:
 				case CONSTANT_PLM:
+				case FAKEACTION_PLM:
 				case VERB_PLM:
 					if (unchecked_kind_symbol) @<Assimilate definition@>;
 					break;
@@ -100,9 +101,9 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		} else LOG("Stuck on this! %S\n", S);
 	}
 
-		inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
-		ib.in_frame_list = &(I->sequence);
-		ib.pos = P_entry;
+	inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
+	ib.in_frame_list = &(I->sequence);
+	ib.pos = P_entry;
 
 	if ((identifier) && (unchecked_kind_symbol)) {
 		Str::trim_all_white_space_at_end(identifier);
@@ -111,6 +112,12 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		if (switch_on == DEFAULT_PLM) {
 			inter_symbol *symbol = CodeGen::Link::find_name(I, identifier, TRUE);
 			if (symbol == NULL) switch_on = CONSTANT_PLM;
+		}
+		
+		if (switch_on == FAKEACTION_PLM) {
+			text_stream *old = identifier;
+			identifier = Str::new();
+			WRITE_TO(identifier, "##%S", old);
 		}
 
 		if (switch_on != DEFAULT_PLM) {
@@ -127,6 +134,13 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 
 			switch (switch_on) {
 				case CONSTANT_PLM:
+					@<Assimilate a value@>;
+					CodeGen::Link::guard(Inter::Constant::new_numerical(&ib,
+						Inter::SymbolsTables::id_from_symbol(I, outer, con_name),
+						Inter::SymbolsTables::id_from_symbol(I, outer, unchecked_kind_symbol), v1, v2,
+						baseline, NULL));
+					break;
+				case FAKEACTION_PLM:
 					@<Assimilate a value@>;
 					CodeGen::Link::guard(Inter::Constant::new_numerical(&ib,
 						Inter::SymbolsTables::id_from_symbol(I, outer, con_name),

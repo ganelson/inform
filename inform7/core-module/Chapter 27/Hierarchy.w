@@ -78,8 +78,6 @@ void Hierarchy::establish(void) {
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
 
 	location_requirement generic_basics = HierarchyLocations::generic_submodule(basics);
-	HierarchyLocations::con(THESAME_HL, I"##TheSame", Translation::same(), generic_basics);
-	HierarchyLocations::con(PLURALFOUND_HL, I"##PluralFound", Translation::same(), generic_basics);
 	HierarchyLocations::con(PARENT_HL, I"parent", Translation::same(), generic_basics);
 	HierarchyLocations::con(CHILD_HL, I"child", Translation::same(), generic_basics);
 	HierarchyLocations::con(SIBLING_HL, I"sibling", Translation::same(), generic_basics);
@@ -1293,6 +1291,8 @@ void Hierarchy::establish(void) {
 
 @<Establish template resources@> =
 	location_requirement template = HierarchyLocations::this_package(Hierarchy::template());
+	HierarchyLocations::con(THESAME_HL, I"##TheSame", Translation::same(), template);
+	HierarchyLocations::con(PLURALFOUND_HL, I"##PluralFound", Translation::same(), template);
 	HierarchyLocations::con(ACT_REQUESTER_HL, I"act_requester", Translation::same(), template);
 	HierarchyLocations::con(ACTION_HL, I"action", Translation::same(), template);
 	HierarchyLocations::con(ACTIONCURRENTLYHAPPENINGFLAG_HL, I"ActionCurrentlyHappeningFlag", Translation::same(), template);
@@ -1563,8 +1563,8 @@ package_request *Hierarchy::exotic_package(int x) {
 =
 inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 	switch (HL_id) {
-		case THESAME_HL:
-		case PLURALFOUND_HL:
+//		case THESAME_HL:
+//		case PLURALFOUND_HL:
 		case PARENT_HL:
 		case CHILD_HL:
 		case SIBLING_HL:

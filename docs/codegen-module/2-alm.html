@@ -56,6 +56,7 @@
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">PLM_SPLAT_IFLD</span><span class="plain">]) {</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DEFAULT_PLM</span><span class="plain">:</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_PLM</span><span class="plain">:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAKEACTION_PLM</span><span class="plain">:</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERB_PLM</span><span class="plain">:</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unchecked_kind_symbol</span><span class="plain">) </span>&lt;<span class="cwebmacro">Assimilate definition</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
@@ -124,9 +125,9 @@
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Stuck on this! %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="plain">}</span>
 
-                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">ib</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::snapshot</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
-                <span class="identifier">ib</span><span class="plain">.</span><span class="identifier">in_frame_list</span><span class="plain"> = &amp;(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">sequence</span><span class="plain">);</span>
-                <span class="identifier">ib</span><span class="plain">.</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">P_entry</span><span class="plain">;</span>
+            <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">ib</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::snapshot</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
+            <span class="identifier">ib</span><span class="plain">.</span><span class="identifier">in_frame_list</span><span class="plain"> = &amp;(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">sequence</span><span class="plain">);</span>
+            <span class="identifier">ib</span><span class="plain">.</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">P_entry</span><span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">identifier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">unchecked_kind_symbol</span><span class="plain">)) {</span>
                 <span class="identifier">Str::trim_all_white_space_at_end</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
@@ -137,7 +138,14 @@
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">switch_on</span><span class="plain"> = </span><span class="identifier">CONSTANT_PLM</span><span class="plain">;</span>
                 <span class="plain">}</span>
 
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain"> == </span><span class="identifier">FAKEACTION_PLM</span><span class="plain">) {</span>
+                    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">old</span><span class="plain"> = </span><span class="identifier">identifier</span><span class="plain">;</span>
+                    <span class="identifier">identifier</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">"##%S"</span><span class="plain">, </span><span class="identifier">old</span><span class="plain">);</span>
+                <span class="plain">}</span>
+
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_on</span><span class="plain"> != </span><span class="identifier">DEFAULT_PLM</span><span class="plain">) {</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Assum identifier is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">);</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="functiontext">CodeGen::Assimilate::maybe_extern</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">into_scope</span><span class="plain">);</span>
                     <span class="identifier">Inter::Symbols::annotate_i</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">, 1);</span>
 
@@ -156,6 +164,14 @@
                                 <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">),</span>
                                 <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">unchecked_kind_symbol</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">,</span>
                                 <span class="identifier">baseline</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">));</span>
+                            <span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAKEACTION_PLM</span><span class="plain">:</span>
+                            &lt;<span class="cwebmacro">Assimilate a value</span> <span class="cwebmacronumber">1.1.2</span>&gt;<span class="plain">;</span>
+                            <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Constant::new_numerical</span><span class="plain">(&amp;</span><span class="identifier">ib</span><span class="plain">,</span>
+                                <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">),</span>
+                                <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">, </span><span class="identifier">unchecked_kind_symbol</span><span class="plain">), </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">,</span>
+                                <span class="identifier">baseline</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">));</span>
+                            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"So FAPLM made $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GLOBAL_PLM</span><span class="plain">:</span>
                             &lt;<span class="cwebmacro">Assimilate a value</span> <span class="cwebmacronumber">1.1.2</span>&gt;<span class="plain">;</span>
@@ -323,7 +339,7 @@
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a> (three times).</p>
+    <p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a> (four times).</p>
 
     <p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Assimilate routine</span> <span class="cwebmacronumber">1.2</span>&gt; =
