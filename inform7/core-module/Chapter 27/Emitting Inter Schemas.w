@@ -93,14 +93,16 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 @<Call@> =
 	if (isn->child_node) {
 		inter_schema_node *at = isn->child_node;
-		inter_schema_token *to_call = NULL;
+		inter_symbol *to_call = NULL;
 		if (at->isn_type == EXPRESSION_ISNT) {
 			inter_schema_token *tok = at->expression_tokens;
-			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL))
-				to_call = tok;
+			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL)) {
+				to_call = EmitInterSchemas::find_identifier(tok, first_call, second_call);
+				if (Inter::Symbols::is_local(to_call)) to_call = NULL;
+			}
 		}
 		if (to_call) {
-			Emit::inv_call(EmitInterSchemas::find_identifier(to_call, first_call, second_call));
+			Emit::inv_call(to_call);
 			at = at->next_node;
 		} else {
 			int argc = 0;
@@ -229,9 +231,12 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	}
 
 @<Expression@> =
-	int cat_me = FALSE;
+	int cat_me = FALSE, print_ret_me = FALSE;
 	int tc = 0; for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) tc++;
 	if ((tc > 1) && (prim_cat == VAL_PRIM_CAT)) cat_me = TRUE;
+
+	if ((tc == 1) && (prim_cat == CODE_PRIM_CAT) && (isn->expression_tokens->ist_type == DQUOTED_ISTT))
+		print_ret_me = TRUE;
 
 	if (cat_me) { Emit::evaluation(); Emit::down(); }
 	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
@@ -248,6 +253,15 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				}
 				break;
 			}
+			case ASM_ARROW_ISTT:
+				Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_ARROW_HL)));
+				break;
+			case ASM_SP_ISTT:
+				Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_SP_HL)));
+				break;
+			case ASM_LABEL_ISTT:
+				Emit::lab(Emit::reserve_label(t->material));
+				break;
 			case NUMBER_ISTT:
 			case BIN_NUMBER_ISTT:
 			case HEX_NUMBER_ISTT: {
@@ -262,7 +276,14 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				Emit::val_real_from_text(t->material);
 				break;
 			case DQUOTED_ISTT:
+				if (print_ret_me) {
+					Emit::inv_primitive(printret_interp);
+					Emit::down();
+				}
 				Emit::val_text(t->material);
+				if (print_ret_me) {
+					Emit::up();
+				}
 				break;
 			case SQUOTED_ISTT:
 				if (Str::len(t->material) == 1) {

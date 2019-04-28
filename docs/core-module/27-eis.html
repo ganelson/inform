@@ -151,14 +151,16 @@
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">) {</span>
             <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">;</span>
-            <span class="identifier">inter_schema_token</span><span class="plain"> *</span><span class="identifier">to_call</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">to_call</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">isn_type</span><span class="plain"> == </span><span class="identifier">EXPRESSION_ISNT</span><span class="plain">) {</span>
                 <span class="identifier">inter_schema_token</span><span class="plain"> *</span><span class="identifier">tok</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tok</span><span class="plain">-&gt;</span><span class="identifier">ist_type</span><span class="plain"> == </span><span class="identifier">IDENTIFIER_ISTT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-                    <span class="identifier">to_call</span><span class="plain"> = </span><span class="identifier">tok</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tok</span><span class="plain">-&gt;</span><span class="identifier">ist_type</span><span class="plain"> == </span><span class="identifier">IDENTIFIER_ISTT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+                    <span class="identifier">to_call</span><span class="plain"> = </span><span class="functiontext">EmitInterSchemas::find_identifier</span><span class="plain">(</span><span class="identifier">tok</span><span class="plain">, </span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::is_local</span><span class="plain">(</span><span class="identifier">to_call</span><span class="plain">)) </span><span class="identifier">to_call</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_call</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="functiontext">EmitInterSchemas::find_identifier</span><span class="plain">(</span><span class="identifier">to_call</span><span class="plain">, </span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">));</span>
+                <span class="functiontext">Emit::inv_call</span><span class="plain">(</span><span class="identifier">to_call</span><span class="plain">);</span>
                 <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain"> = 0;</span>
@@ -347,9 +349,12 @@
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat_me</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat_me</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">print_ret_me</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> = 0; </span><span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_schema_token</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">; </span><span class="identifier">t</span><span class="plain">; </span><span class="identifier">t</span><span class="plain">=</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">tc</span><span class="plain">++;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tc</span><span class="plain"> &gt; 1) &amp;&amp; (</span><span class="identifier">prim_cat</span><span class="plain"> == </span><span class="identifier">VAL_PRIM_CAT</span><span class="plain">)) </span><span class="identifier">cat_me</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tc</span><span class="plain"> == 1) &amp;&amp; (</span><span class="identifier">prim_cat</span><span class="plain"> == </span><span class="identifier">CODE_PRIM_CAT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">ist_type</span><span class="plain"> == </span><span class="identifier">DQUOTED_ISTT</span><span class="plain">))</span>
+            <span class="identifier">print_ret_me</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cat_me</span><span class="plain">) { </span><span class="functiontext">Emit::evaluation</span><span class="plain">(); </span><span class="functiontext">Emit::down</span><span class="plain">(); }</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prim_cat</span><span class="plain"> == </span><span class="identifier">REF_PRIM_CAT</span><span class="plain">) { </span><span class="functiontext">Emit::reference</span><span class="plain">(); </span><span class="functiontext">Emit::down</span><span class="plain">(); }</span>
@@ -366,6 +371,15 @@
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASM_ARROW_ISTT</span><span class="plain">:</span>
+                    <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_ARROW_HL</span><span class="plain">)));</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASM_SP_ISTT</span><span class="plain">:</span>
+                    <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_SP_HL</span><span class="plain">)));</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASM_LABEL_ISTT</span><span class="plain">:</span>
+                    <span class="functiontext">Emit::lab</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">));</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_ISTT</span><span class="plain">:</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BIN_NUMBER_ISTT</span><span class="plain">:</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HEX_NUMBER_ISTT</span><span class="plain">: {</span>
@@ -380,7 +394,14 @@
                     <span class="functiontext">Emit::val_real_from_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DQUOTED_ISTT</span><span class="plain">:</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">print_ret_me</span><span class="plain">) {</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printret_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                    <span class="plain">}</span>
                     <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">print_ret_me</span><span class="plain">) {</span>
+                        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                    <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SQUOTED_ISTT</span><span class="plain">:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">) == 1) {</span>

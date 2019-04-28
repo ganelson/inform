@@ -73,6 +73,11 @@ void Emit::begin(void) {
 
 	VirtualMachines::emit_fundamental_constants();
 	NewVerbs::ConjugateVerbDefinitions();
+	
+//	Emit::named_numeric_constant(Hierarchy::find(INDIRECT_HL), 0);
+//	Emit::named_numeric_constant(Hierarchy::find(ACTIONS_TABLE_HL), 0);
+//	Emit::named_numeric_constant(Hierarchy::find(ASM_ARROW_HL), 0);
+//	Emit::named_numeric_constant(Hierarchy::find(ASM_SP_HL), 0);
 	Hierarchy::find(INFORMLIBRARY_HL);
 	Hierarchy::find(INDIV_PROP_START_HL);
 }

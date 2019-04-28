@@ -219,6 +219,8 @@ inter_name *HierarchyLocations::hl_to_iname(hierarchy_location *hl) {
 
 		hl->equates_to_iname = Hierarchy::post_process(hl->access_number, hl->equates_to_iname);
 		hl->requirements.this_exact_package = InterNames::location(hl->equates_to_iname);
+		
+		if (hl->trans.translate_to) Emit::change_translation(hl->equates_to_iname, hl->trans.translate_to);
 	}
 	return hl->equates_to_iname;
 }

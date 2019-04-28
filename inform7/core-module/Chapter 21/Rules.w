@@ -218,9 +218,11 @@ void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 }
 
 inter_name *Rules::get_handler_definition(rule *R) {
-	if (R->rule_extern_response_handler_iname == NULL)
+	if (R->rule_extern_response_handler_iname == NULL) {
 		R->rule_extern_response_handler_iname =
 			Hierarchy::derive_iname_in(RESPONDER_FN_HL, R->xiname, R->rule_package);
+		Hierarchy::make_available(R->rule_extern_response_handler_iname);
+	}
 	return R->rule_extern_response_handler_iname;
 }
 

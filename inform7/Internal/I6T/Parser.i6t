@@ -156,7 +156,7 @@ The current word marker |wn| is always advanced.
 #Ifnot;
 [ WordCount; return parse-->0; ];
 [ WordAddress wordnum; return buffer + parse-->(wordnum*3); ];
-[ WordLength wordnum; return parse-->(wordnum*3-1); ];
+[ WordLength wordnum; return parse-->(wordnum*3 - 1); ];
 #Endif;
 
 [ WordFrom w p i j wc;

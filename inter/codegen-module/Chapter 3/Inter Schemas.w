@@ -210,6 +210,9 @@ compilation process, and never survive into the final schema:
 @e SQUOTED_ISTT				/* a constant piece of text such as |'x'| */
 @e I7_ISTT					/* I7 material in |(+ ... +)| notation */
 @e INLINE_ISTT				/* an inline command such as |{-my:1}| */
+@e ASM_ARROW_ISTT			/* the arrow sign |->| used in assembly language only */
+@e ASM_SP_ISTT				/* the stack pointer pseudo-variable |sp| */
+@e ASM_LABEL_ISTT			/* the label sign |?| used in assembly language only */
 
 =
 typedef struct inter_schema_token {
@@ -283,6 +286,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e OBJECTLOOP_I6RW
 @e WHILE_I6RW
 @e PRINT_I6RW
+@e PRINTRET_I6RW
 @e NEWLINE_I6RW
 @e GIVE_I6RW
 @e MOVE_I6RW
@@ -465,6 +469,9 @@ void InterSchemas::log_depth(inter_schema_node *isn, int depth) {
 						case COLON_ISTT:		LOG("COLON       "); break;
 						case I7_ISTT:			LOG("I7          "); break;
 						case INLINE_ISTT:		LOG("INLINE      "); break;
+						case ASM_ARROW_ISTT:	LOG("ASM_ARROW   "); break;
+						case ASM_SP_ISTT:		LOG("ASM_SP      "); break;
+						case ASM_LABEL_ISTT:	LOG("ASM_LABEL   "); break;
 						default: LOG("<unknown>"); break;
 					}
 					LOG("%S", t->material);
@@ -1128,6 +1135,8 @@ language opcodes such as |@pull|.
 	int monograph = TRUE, digraph = FALSE, trigraph = FALSE;
 	if ((Characters::isalnum(c1)) || (c1 == '_')) monograph = FALSE;
 	if ((c1 == '#') && (Characters::isalpha(c2))) monograph = FALSE;
+	if ((c1 == '_') && (Characters::isalpha(c2))) monograph = FALSE;
+	if ((c1 == '#') && (c2 == '#') && (Characters::isalpha(c3))) monograph = FALSE;
 	if ((c1 == '@') && (Characters::isalpha(c2))) monograph = FALSE;
 
 	if ((c1 == '+') && (c2 == '+')) digraph = TRUE;
@@ -1200,6 +1209,14 @@ inclusive; we ignore an empty token.
 
 @<Identify this new token@> =
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
+	if ((Str::get_at(T, 0) == '#') && (Str::get_at(T, 1) == '#') && (Characters::isalpha(Str::get_at(T, 2)))) {
+		is = IDENTIFIER_ISTT;
+		LOOP_THROUGH_TEXT(P, T) {
+			int c = Str::get(P);
+			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
+				is = RAW_ISTT;
+		}
+	}
 	if ((Str::get_at(T, 0) == '#') && (Characters::isalpha(Str::get_at(T, 1)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
@@ -1207,7 +1224,14 @@ inclusive; we ignore an empty token.
 			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
 				is = RAW_ISTT;
 		}
-		LOG("Looks hashy! %S\n", T);;
+	}
+	if ((Str::get_at(T, 0) == '_') && (Characters::isalpha(Str::get_at(T, 1)))) {
+		is = IDENTIFIER_ISTT;
+		LOOP_THROUGH_TEXT(P, T) {
+			int c = Str::get(P);
+			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
+				is = RAW_ISTT;
+		}
 	}
 	if (Characters::isalpha(Str::get_at(T, 0))) {
 		is = IDENTIFIER_ISTT;
@@ -1250,6 +1274,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"objectloop")) { is = RESERVED_ISTT; which_rw = OBJECTLOOP_I6RW; }
 	if (Str::eq(T, I"while")) { is = RESERVED_ISTT; which_rw = WHILE_I6RW; }
 	if (Str::eq(T, I"print")) { is = RESERVED_ISTT; which_rw = PRINT_I6RW; }
+	if (Str::eq(T, I"print_ret")) { is = RESERVED_ISTT; which_rw = PRINTRET_I6RW; }
 	if (Str::eq(T, I"new_line")) { is = RESERVED_ISTT; which_rw = NEWLINE_I6RW; }
 	if (Str::eq(T, I"give")) { is = RESERVED_ISTT; which_rw = GIVE_I6RW; }
 	if (Str::eq(T, I"move")) { is = RESERVED_ISTT; which_rw = MOVE_I6RW; }
@@ -1365,6 +1390,7 @@ void InterSchemas::unmark(inter_schema_node *isn) {
 	REPEATEDLY_APPLY(InterSchemas::outer_subexpressions);
 	REPEATEDLY_APPLY(InterSchemas::strip_all_spacing);
 	REPEATEDLY_APPLY(InterSchemas::debracket);
+	REPEATEDLY_APPLY(InterSchemas::implied_return_values);
 
 @ =
 int InterSchemas::implied_braces(inter_schema_node *par, inter_schema_node *at) {
@@ -1672,7 +1698,8 @@ int InterSchemas::splitprints(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
 			if ((isn->expression_tokens->ist_type == RESERVED_ISTT)
-				&& (isn->expression_tokens->reserved_word == PRINT_I6RW)) {
+				&& ((isn->expression_tokens->reserved_word == PRINT_I6RW) ||
+					(isn->expression_tokens->reserved_word == PRINTRET_I6RW))) {
 				inter_schema_token *n = isn->expression_tokens->next, *prev = isn->expression_tokens;
 				int bl = 0;
 				while (n) {
@@ -1681,8 +1708,11 @@ int InterSchemas::splitprints(inter_schema_node *par, inter_schema_node *isn) {
 					if ((n->ist_type == COMMA_ISTT) && (bl == 0)) {
 						prev->next = NULL;
 						n->ist_type = RESERVED_ISTT;
-						n->material = I"print";
-						n->reserved_word = PRINT_I6RW;
+						n->reserved_word = isn->expression_tokens->reserved_word;
+						isn->expression_tokens->reserved_word = PRINT_I6RW;
+						isn->expression_tokens->material = I"print";
+						if (n->reserved_word == PRINT_I6RW) n->material = I"print";
+						else n->material = I"print_ret";
 						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 						new_isn->expression_tokens = n;
 						new_isn->parent_node = isn->parent_node;
@@ -1786,6 +1816,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 			if (isn->expression_tokens->ist_type == RESERVED_ISTT) {
 				switch (isn->expression_tokens->reserved_word) {
 					case PRINT_I6RW:
+					case PRINTRET_I6RW:
 						subordinate_to = printnumber_interp;
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
@@ -1855,6 +1886,13 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 										Str::put(P, '\"');
 								}
 							}
+						}
+						if (isn->expression_tokens->reserved_word == PRINTRET_I6RW) {
+							inter_schema_node *save_next = isn->next_node;
+							isn->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
+							isn->next_node->parent_node = isn->parent_node;
+							isn->next_node->next_node = save_next;
+							isn->next_node->isn_clarifier = return_interp;
 						}
 						break;
 					case STYLE_I6RW: {
@@ -1984,6 +2022,18 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							if (l->operation_primitive) {
 								l->ist_type = IDENTIFIER_ISTT;
 								l->operation_primitive = NULL;
+							}
+							if (Str::eq(l->material, I"->")) l->ist_type = ASM_ARROW_ISTT;
+							if (Str::eq(l->material, I"sp")) l->ist_type = ASM_SP_ISTT;
+							if ((Str::eq(l->material, I"?")) && (n)) {
+								l->ist_type = ASM_LABEL_ISTT;
+								l->material = n->material;
+								n = n->next;
+//								if ((n) && (n->ist_type = IDENTIFIER_ISTT)) {
+//									text_stream *x = Str::new();
+//									WRITE_TO(x, ".%S", n->material);
+//									n->material = x;
+//								}
 							}
 							if (isn->child_node == NULL) isn->child_node = new_isn;
 							else if (prev_node) prev_node->next_node = new_isn;
@@ -2428,6 +2478,21 @@ int InterSchemas::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 		}
 		new_isn->parent_node = isn;
 	}
+
+@ =
+int InterSchemas::implied_return_values(inter_schema_node *par, inter_schema_node *isn) {
+	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == return_interp) && (isn->child_node == FALSE)) {
+			isn->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+			isn->child_node->parent_node = isn;
+			isn->child_node->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", NULL, 0, -1);
+			isn->child_node->expression_tokens->owner = isn->child_node;
+			return TRUE;
+		}
+		if (InterSchemas::implied_return_values(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
 
 @h Operators in I6.
 The following routines return data which is essentially the content of the

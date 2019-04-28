@@ -40,6 +40,15 @@ void Hierarchy::establish(void) {
 @e PARENT_HL from 0
 @e CHILD_HL
 @e SIBLING_HL
+@e RANDOM_HL
+@e INDIRECT_HL
+@e ASM_ARROW_HL
+@e ASM_SP_HL
+@e ASM_LABEL_HL
+@e ACTIONS_TABLE_HL
+@e GRAMMAR_TABLE_HL
+@e VERSION_NUMBER_HL
+@e PROPERTY_METADATA_HL
 @e SELF_HL
 @e DEBUG_HL
 @e TARGET_ZCODE_HL
@@ -77,6 +86,15 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(PARENT_HL, I"parent", Translation::same(), generic_basics);
 	HierarchyLocations::con(CHILD_HL, I"child", Translation::same(), generic_basics);
 	HierarchyLocations::con(SIBLING_HL, I"sibling", Translation::same(), generic_basics);
+	HierarchyLocations::con(INDIRECT_HL, I"indirect", Translation::same(), generic_basics);
+	HierarchyLocations::con(RANDOM_HL, I"random", Translation::same(), generic_basics);
+	HierarchyLocations::con(ASM_ARROW_HL, I"__assembly_arrow", Translation::to(I"->"), generic_basics);
+	HierarchyLocations::con(ASM_SP_HL, I"__assembly_sp", Translation::to(I"sp"), generic_basics);
+	HierarchyLocations::con(ASM_LABEL_HL, I"__assembly_label", Translation::to(I"?"), generic_basics);
+	HierarchyLocations::con(ACTIONS_TABLE_HL, I"#actions_table", Translation::same(), generic_basics);
+	HierarchyLocations::con(GRAMMAR_TABLE_HL, I"#grammar_table", Translation::same(), generic_basics);
+	HierarchyLocations::con(VERSION_NUMBER_HL, I"#version_number", Translation::same(), generic_basics);
+	HierarchyLocations::con(PROPERTY_METADATA_HL, I"property_metadata", Translation::same(), generic_basics);
 	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), generic_basics);
 	HierarchyLocations::con(RESPONSETEXTS_HL, I"ResponseTexts", Translation::same(), generic_basics);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), generic_basics);
@@ -1566,10 +1584,17 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case PARENT_HL:
 		case CHILD_HL:
 		case SIBLING_HL:
-//		case THEDARK_HL:
-//		case INFORMLIBRARY_HL:
+		case RANDOM_HL:
+		case VERSION_NUMBER_HL:
+		case PROPERTY_METADATA_HL:
 		case FLOAT_NAN_HL:
 		case RESPONSETEXTS_HL:
+		case INDIRECT_HL:
+		case ACTIONS_TABLE_HL:
+		case GRAMMAR_TABLE_HL:
+		case ASM_ARROW_HL:
+		case ASM_SP_HL:
+		case ASM_LABEL_HL:
 			Emit::named_numeric_constant(iname, 0);
 			break;
 		case SELF_HL:

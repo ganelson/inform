@@ -232,6 +232,7 @@ int CodeGen::repo_list(inter_repository *I, inter_repository **repos) {
 	return no_repos;
 }
 
+int query_labels_mode = FALSE;
 void CodeGen::frame(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	switch (P.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
@@ -291,6 +292,14 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"parent")) return;
 	if (Str::eq(con_name->symbol_name, I"child")) return;
 	if (Str::eq(con_name->symbol_name, I"sibling")) return;
+	if (Str::eq(con_name->symbol_name, I"indirect")) return;
+	if (Str::eq(con_name->symbol_name, I"random")) return;
+	if (Str::eq(con_name->symbol_name, I"#actions_table")) return;
+	if (Str::eq(con_name->symbol_name, I"#grammar_table")) return;
+	if (Str::eq(con_name->symbol_name, I"#version_number")) return;
+	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_arrow")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_sp")) return;
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
 //		WRITE("Object thedark \"(darkness object)\";\n");
 		return;
@@ -643,6 +652,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case STYLEBOLD_BIP: @<Generate primitive for stylebold@>; break;
 				case STYLEUNDERLINE_BIP: @<Generate primitive for styleunderline@>; break;
 				case PRINT_BIP: @<Generate primitive for print@>; break;
+				case PRINTRET_BIP: @<Generate primitive for printret@>; break;
 				case PRINTCHAR_BIP: @<Generate primitive for printchar@>; break;
 				case PRINTNAME_BIP: @<Generate primitive for printname@>; break;
 				case PRINTNUMBER_BIP: @<Generate primitive for printnumber@>; break;
@@ -717,7 +727,9 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			inter_frame F;
 			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
 				WRITE(" ");
+				query_labels_mode = TRUE;
 				CodeGen::frame(OUT, I, F);
+				query_labels_mode = FALSE;
 			}
 			break;
 		}
@@ -739,10 +751,11 @@ void CodeGen::lab(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Inter::Package::is(routine) == FALSE) internal_error("bad lab");
 	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
+	if (query_labels_mode) PUT('?');
 	text_stream *S = CodeGen::name(lab);
-		LOOP_THROUGH_TEXT(pos, S)
-			if (Str::get(pos) != '.')
-				PUT(Str::get(pos));
+	LOOP_THROUGH_TEXT(pos, S)
+		if (Str::get(pos) != '.')
+			PUT(Str::get(pos));
 }
 
 void CodeGen::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1, inter_t val2) {
@@ -1078,6 +1091,11 @@ then the result.
 
 @<Generate primitive for print@> =
 	WRITE("print ");
+	CodeGen::enter_print_mode();
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::exit_print_mode();
+
+@<Generate primitive for printret@> =
 	CodeGen::enter_print_mode();
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
 	CodeGen::exit_print_mode();

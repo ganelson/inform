@@ -41,6 +41,7 @@ inter_symbol *font_interp = NULL;
 inter_symbol *styleroman_interp = NULL;
 inter_symbol *styleunderline_interp = NULL;
 inter_symbol *print_interp = NULL;
+inter_symbol *printret_interp = NULL;
 inter_symbol *printchar_interp = NULL;
 inter_symbol *printname_interp = NULL;
 inter_symbol *printnumber_interp = NULL;
@@ -99,6 +100,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!styleunderline", I"void -> void", &styleunderline_interp);
 	Primitives::emit_one(I, IRS, I"!styleroman", I"void -> void", &styleroman_interp);
 	Primitives::emit_one(I, IRS, I"!print", I"val -> void", &print_interp);
+	Primitives::emit_one(I, IRS, I"!printret", I"val -> void", &printret_interp);
 	Primitives::emit_one(I, IRS, I"!printchar", I"val -> void", &printchar_interp);
 	Primitives::emit_one(I, IRS, I"!printname", I"val -> void", &printname_interp);
 	Primitives::emit_one(I, IRS, I"!printnumber", I"val -> void", &printnumber_interp);
@@ -282,6 +284,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e STYLEBOLD_BIP
 @e STYLEUNDERLINE_BIP
 @e PRINT_BIP
+@e PRINTRET_BIP
 @e PRINTCHAR_BIP
 @e PRINTNAME_BIP
 @e PRINTNUMBER_BIP
@@ -378,6 +381,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!stylebold")) bip = STYLEBOLD_BIP;
 	if (Str::eq(symb->symbol_name, I"!styleunderline")) bip = STYLEUNDERLINE_BIP;
 	if (Str::eq(symb->symbol_name, I"!print")) bip = PRINT_BIP;
+	if (Str::eq(symb->symbol_name, I"!printret")) bip = PRINTRET_BIP;
 	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
 	if (Str::eq(symb->symbol_name, I"!printname")) bip = PRINTNAME_BIP;
 	if (Str::eq(symb->symbol_name, I"!printnumber")) bip = PRINTNUMBER_BIP;

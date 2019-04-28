@@ -660,7 +660,7 @@ inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack)
 int rb_splat_count = 1;
 void CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body) {
 	if (Str::is_whitespace(body)) return;
-	if (Str::len(body) < 20) {
+	if (Str::len(body) < 50) {
 		LOG("=======\n\nCandidate (%S): '%S'\n\n", block_name->symbol_name, body);
 		inter_schema *sch = InterSchemas::from_text(body, FALSE, 0, NULL);
 		

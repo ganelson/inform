@@ -266,6 +266,7 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">no_repos</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">]) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SYMBOL_IST</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
@@ -295,7 +296,7 @@
 
 <p class="endnote">The function CodeGen::repo_list is used in <a href="#SP1">&#167;1</a>, 2/erm (<a href="2-erm.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function CodeGen::frame is used in <a href="#SP1">&#167;1</a>, <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, <a href="#SP4_1">&#167;4.1</a>, <a href="#SP4_2">&#167;4.2</a>, <a href="#SP4_6">&#167;4.6</a>, <a href="#SP4_7">&#167;4.7</a>, <a href="#SP4_8">&#167;4.8</a>, <a href="#SP4_9">&#167;4.9</a>, <a href="#SP4_10">&#167;4.10</a>, <a href="#SP4_11">&#167;4.11</a>, <a href="#SP4_12">&#167;4.12</a>, <a href="#SP4_13">&#167;4.13</a>, <a href="#SP4_14">&#167;4.14</a>, <a href="#SP4_15">&#167;4.15</a>, <a href="#SP4_16">&#167;4.16</a>, <a href="#SP4_17">&#167;4.17</a>, <a href="#SP4_18">&#167;4.18</a>, <a href="#SP4_19">&#167;4.19</a>, <a href="#SP4_20">&#167;4.20</a>, <a href="#SP4_21">&#167;4.21</a>, <a href="#SP4_22">&#167;4.22</a>, <a href="#SP4_23">&#167;4.23</a>, <a href="#SP4_24">&#167;4.24</a>, <a href="#SP4_25">&#167;4.25</a>, <a href="#SP4_26">&#167;4.26</a>, <a href="#SP4_27">&#167;4.27</a>, <a href="#SP4_28">&#167;4.28</a>, <a href="#SP4_29">&#167;4.29</a>, <a href="#SP4_30">&#167;4.30</a>, <a href="#SP4_31">&#167;4.31</a>, <a href="#SP4_32">&#167;4.32</a>, <a href="#SP4_33">&#167;4.33</a>, <a href="#SP4_34">&#167;4.34</a>, <a href="#SP4_35">&#167;4.35</a>, <a href="#SP4_39">&#167;4.39</a>, <a href="#SP4_40">&#167;4.40</a>, <a href="#SP4_41">&#167;4.41</a>, <a href="#SP4_42">&#167;4.42</a>, <a href="#SP4_43">&#167;4.43</a>, <a href="#SP4_44">&#167;4.44</a>, <a href="#SP4_45">&#167;4.45</a>, <a href="#SP4_46">&#167;4.46</a>, <a href="#SP4_47">&#167;4.47</a>, <a href="#SP4_48">&#167;4.48</a>, <a href="#SP4_49">&#167;4.49</a>, <a href="#SP4_50">&#167;4.50</a>, <a href="#SP4_51">&#167;4.51</a>, <a href="#SP4_52">&#167;4.52</a>, <a href="#SP4_53">&#167;4.53</a>, <a href="#SP4_54">&#167;4.54</a>, <a href="#SP4_55">&#167;4.55</a>, <a href="#SP4_56">&#167;4.56</a>, <a href="#SP4_57">&#167;4.57</a>, <a href="#SP4_58">&#167;4.58</a>, <a href="#SP4_59">&#167;4.59</a>, <a href="#SP4_60">&#167;4.60</a>, <a href="#SP4_61">&#167;4.61</a>, <a href="#SP4_62">&#167;4.62</a>, <a href="#SP4_63">&#167;4.63</a>, <a href="#SP4_64">&#167;4.64</a>, <a href="#SP4_65">&#167;4.65</a>, <a href="#SP4_66">&#167;4.66</a>, <a href="#SP4_67">&#167;4.67</a>, <a href="#SP4_68">&#167;4.68</a>, <a href="#SP4_69">&#167;4.69</a>, <a href="#SP4_70">&#167;4.70</a>, <a href="#SP4_71">&#167;4.71</a>, <a href="#SP4_72">&#167;4.72</a>, <a href="#SP4_73">&#167;4.73</a>, <a href="#SP4_74">&#167;4.74</a>, <a href="#SP4_75">&#167;4.75</a>, <a href="#SP4_76">&#167;4.76</a>, <a href="#SP4_77">&#167;4.77</a>, <a href="#SP4_78">&#167;4.78</a>, <a href="#SP4_79">&#167;4.79</a>, <a href="#SP4_80">&#167;4.80</a>, <a href="#SP4_81">&#167;4.81</a>, <a href="#SP4_82">&#167;4.82</a>, <a href="#SP4_83">&#167;4.83</a>, <a href="#SP4_84">&#167;4.84</a>, <a href="#SP4_85">&#167;4.85</a>, <a href="#SP4_86">&#167;4.86</a>, <a href="#SP4_87">&#167;4.87</a>, <a href="#SP4_88">&#167;4.88</a>, <a href="#SP4_89">&#167;4.89</a>.</p>
+<p class="endnote">The function CodeGen::frame is used in <a href="#SP1">&#167;1</a>, <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, <a href="#SP4_1">&#167;4.1</a>, <a href="#SP4_2">&#167;4.2</a>, <a href="#SP4_6">&#167;4.6</a>, <a href="#SP4_7">&#167;4.7</a>, <a href="#SP4_8">&#167;4.8</a>, <a href="#SP4_9">&#167;4.9</a>, <a href="#SP4_10">&#167;4.10</a>, <a href="#SP4_11">&#167;4.11</a>, <a href="#SP4_12">&#167;4.12</a>, <a href="#SP4_13">&#167;4.13</a>, <a href="#SP4_14">&#167;4.14</a>, <a href="#SP4_15">&#167;4.15</a>, <a href="#SP4_16">&#167;4.16</a>, <a href="#SP4_17">&#167;4.17</a>, <a href="#SP4_18">&#167;4.18</a>, <a href="#SP4_19">&#167;4.19</a>, <a href="#SP4_20">&#167;4.20</a>, <a href="#SP4_21">&#167;4.21</a>, <a href="#SP4_22">&#167;4.22</a>, <a href="#SP4_23">&#167;4.23</a>, <a href="#SP4_24">&#167;4.24</a>, <a href="#SP4_25">&#167;4.25</a>, <a href="#SP4_26">&#167;4.26</a>, <a href="#SP4_27">&#167;4.27</a>, <a href="#SP4_28">&#167;4.28</a>, <a href="#SP4_29">&#167;4.29</a>, <a href="#SP4_30">&#167;4.30</a>, <a href="#SP4_31">&#167;4.31</a>, <a href="#SP4_32">&#167;4.32</a>, <a href="#SP4_33">&#167;4.33</a>, <a href="#SP4_34">&#167;4.34</a>, <a href="#SP4_35">&#167;4.35</a>, <a href="#SP4_39">&#167;4.39</a>, <a href="#SP4_40">&#167;4.40</a>, <a href="#SP4_41">&#167;4.41</a>, <a href="#SP4_42">&#167;4.42</a>, <a href="#SP4_43">&#167;4.43</a>, <a href="#SP4_44">&#167;4.44</a>, <a href="#SP4_45">&#167;4.45</a>, <a href="#SP4_46">&#167;4.46</a>, <a href="#SP4_47">&#167;4.47</a>, <a href="#SP4_48">&#167;4.48</a>, <a href="#SP4_49">&#167;4.49</a>, <a href="#SP4_50">&#167;4.50</a>, <a href="#SP4_51">&#167;4.51</a>, <a href="#SP4_52">&#167;4.52</a>, <a href="#SP4_53">&#167;4.53</a>, <a href="#SP4_54">&#167;4.54</a>, <a href="#SP4_55">&#167;4.55</a>, <a href="#SP4_56">&#167;4.56</a>, <a href="#SP4_57">&#167;4.57</a>, <a href="#SP4_58">&#167;4.58</a>, <a href="#SP4_59">&#167;4.59</a>, <a href="#SP4_60">&#167;4.60</a>, <a href="#SP4_61">&#167;4.61</a>, <a href="#SP4_62">&#167;4.62</a>, <a href="#SP4_63">&#167;4.63</a>, <a href="#SP4_64">&#167;4.64</a>, <a href="#SP4_65">&#167;4.65</a>, <a href="#SP4_66">&#167;4.66</a>, <a href="#SP4_67">&#167;4.67</a>, <a href="#SP4_68">&#167;4.68</a>, <a href="#SP4_69">&#167;4.69</a>, <a href="#SP4_70">&#167;4.70</a>, <a href="#SP4_71">&#167;4.71</a>, <a href="#SP4_72">&#167;4.72</a>, <a href="#SP4_73">&#167;4.73</a>, <a href="#SP4_74">&#167;4.74</a>, <a href="#SP4_75">&#167;4.75</a>, <a href="#SP4_76">&#167;4.76</a>, <a href="#SP4_77">&#167;4.77</a>, <a href="#SP4_78">&#167;4.78</a>, <a href="#SP4_79">&#167;4.79</a>, <a href="#SP4_80">&#167;4.80</a>, <a href="#SP4_81">&#167;4.81</a>, <a href="#SP4_82">&#167;4.82</a>, <a href="#SP4_83">&#167;4.83</a>, <a href="#SP4_84">&#167;4.84</a>, <a href="#SP4_85">&#167;4.85</a>, <a href="#SP4_86">&#167;4.86</a>, <a href="#SP4_87">&#167;4.87</a>, <a href="#SP4_88">&#167;4.88</a>, <a href="#SP4_89">&#167;4.89</a>, <a href="#SP4_90">&#167;4.90</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
 an array written in the form
@@ -339,6 +340,14 @@ is 20. We instead compile this as
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"parent"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"child"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"sibling"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"indirect"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"random"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"#actions_table"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"#grammar_table"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"#version_number"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"property_metadata"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"__assembly_arrow"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"__assembly_sp"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"thedark"</span><span class="plain">)) {</span>
     <span class="comment">WRITE("Object thedark \"(darkness object)\";\n");</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -703,56 +712,57 @@ is 20. We instead compile this as
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">STYLEBOLD_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for stylebold</span> <span class="cwebmacronumber">4.37</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">STYLEUNDERLINE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for styleunderline</span> <span class="cwebmacronumber">4.38</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for print</span> <span class="cwebmacronumber">4.39</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTCHAR_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printchar</span> <span class="cwebmacronumber">4.40</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTNAME_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printname</span> <span class="cwebmacronumber">4.41</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTNUMBER_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printnumber</span> <span class="cwebmacronumber">4.42</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTADDRESS_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printaddress</span> <span class="cwebmacronumber">4.43</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTSTRING_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printstring</span> <span class="cwebmacronumber">4.44</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTNLNUMBER_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printnlnumber</span> <span class="cwebmacronumber">4.45</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printdef</span> <span class="cwebmacronumber">4.46</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTCDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printcdef</span> <span class="cwebmacronumber">4.47</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTINDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printindef</span> <span class="cwebmacronumber">4.48</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTCINDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printcindef</span> <span class="cwebmacronumber">4.49</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">BOX_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for box</span> <span class="cwebmacronumber">4.50</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PUSH_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for push</span> <span class="cwebmacronumber">4.51</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PULL_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for pull</span> <span class="cwebmacronumber">4.52</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREINCREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for preincrement</span> <span class="cwebmacronumber">4.53</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">POSTINCREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for postincrement</span> <span class="cwebmacronumber">4.54</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREDECREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for predecrement</span> <span class="cwebmacronumber">4.55</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">POSTDECREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for postdecrement</span> <span class="cwebmacronumber">4.56</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">STORE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for store</span> <span class="cwebmacronumber">4.57</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SETBIT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for setbit</span> <span class="cwebmacronumber">4.58</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">CLEARBIT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for clearbit</span> <span class="cwebmacronumber">4.59</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for if</span> <span class="cwebmacronumber">4.60</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IFDEBUG_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for ifdebug</span> <span class="cwebmacronumber">4.61</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IFELSE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for ifelse</span> <span class="cwebmacronumber">4.62</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">WHILE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for while</span> <span class="cwebmacronumber">4.63</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">FOR_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for for</span> <span class="cwebmacronumber">4.64</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">OBJECTLOOP_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for objectloop</span> <span class="cwebmacronumber">4.65</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">OBJECTLOOPX_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for objectloopx</span> <span class="cwebmacronumber">4.66</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for loop</span> <span class="cwebmacronumber">4.67</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOKUP_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for lookup</span> <span class="cwebmacronumber">4.68</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOKUPBYTE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for lookupbyte</span> <span class="cwebmacronumber">4.69</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOKUPREF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for lookupref</span> <span class="cwebmacronumber">4.70</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SWITCH_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for switch</span> <span class="cwebmacronumber">4.71</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">CASE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for case</span> <span class="cwebmacronumber">4.72</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEFAULT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for default</span> <span class="cwebmacronumber">4.73</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT0V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect0v</span> <span class="cwebmacronumber">4.74</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT1V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect1v</span> <span class="cwebmacronumber">4.75</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT2V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect2v</span> <span class="cwebmacronumber">4.76</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT3V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect3v</span> <span class="cwebmacronumber">4.77</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT4V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect4v</span> <span class="cwebmacronumber">4.78</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT5V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect5v</span> <span class="cwebmacronumber">4.79</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT0_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect0</span> <span class="cwebmacronumber">4.80</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT1_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect1</span> <span class="cwebmacronumber">4.81</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT2_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect2</span> <span class="cwebmacronumber">4.82</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT3_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect3</span> <span class="cwebmacronumber">4.83</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT4_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect4</span> <span class="cwebmacronumber">4.84</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT5_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect5</span> <span class="cwebmacronumber">4.85</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTYADDRESS_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for propertyaddress</span> <span class="cwebmacronumber">4.86</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTYLENGTH_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for propertylength</span> <span class="cwebmacronumber">4.87</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROVIDES_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for provides</span> <span class="cwebmacronumber">4.88</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTYVALUE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for propertyvalue</span> <span class="cwebmacronumber">4.89</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTRET_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printret</span> <span class="cwebmacronumber">4.40</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTCHAR_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printchar</span> <span class="cwebmacronumber">4.41</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTNAME_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printname</span> <span class="cwebmacronumber">4.42</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTNUMBER_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printnumber</span> <span class="cwebmacronumber">4.43</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTADDRESS_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printaddress</span> <span class="cwebmacronumber">4.44</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTSTRING_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printstring</span> <span class="cwebmacronumber">4.45</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTNLNUMBER_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printnlnumber</span> <span class="cwebmacronumber">4.46</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printdef</span> <span class="cwebmacronumber">4.47</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTCDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printcdef</span> <span class="cwebmacronumber">4.48</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTINDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printindef</span> <span class="cwebmacronumber">4.49</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRINTCINDEF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for printcindef</span> <span class="cwebmacronumber">4.50</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">BOX_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for box</span> <span class="cwebmacronumber">4.51</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PUSH_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for push</span> <span class="cwebmacronumber">4.52</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PULL_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for pull</span> <span class="cwebmacronumber">4.53</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREINCREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for preincrement</span> <span class="cwebmacronumber">4.54</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">POSTINCREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for postincrement</span> <span class="cwebmacronumber">4.55</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREDECREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for predecrement</span> <span class="cwebmacronumber">4.56</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">POSTDECREMENT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for postdecrement</span> <span class="cwebmacronumber">4.57</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">STORE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for store</span> <span class="cwebmacronumber">4.58</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SETBIT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for setbit</span> <span class="cwebmacronumber">4.59</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">CLEARBIT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for clearbit</span> <span class="cwebmacronumber">4.60</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for if</span> <span class="cwebmacronumber">4.61</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IFDEBUG_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for ifdebug</span> <span class="cwebmacronumber">4.62</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IFELSE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for ifelse</span> <span class="cwebmacronumber">4.63</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">WHILE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for while</span> <span class="cwebmacronumber">4.64</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">FOR_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for for</span> <span class="cwebmacronumber">4.65</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">OBJECTLOOP_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for objectloop</span> <span class="cwebmacronumber">4.66</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">OBJECTLOOPX_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for objectloopx</span> <span class="cwebmacronumber">4.67</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for loop</span> <span class="cwebmacronumber">4.68</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOKUP_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for lookup</span> <span class="cwebmacronumber">4.69</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOKUPBYTE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for lookupbyte</span> <span class="cwebmacronumber">4.70</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOKUPREF_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for lookupref</span> <span class="cwebmacronumber">4.71</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SWITCH_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for switch</span> <span class="cwebmacronumber">4.72</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">CASE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for case</span> <span class="cwebmacronumber">4.73</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEFAULT_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for default</span> <span class="cwebmacronumber">4.74</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT0V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect0v</span> <span class="cwebmacronumber">4.75</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT1V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect1v</span> <span class="cwebmacronumber">4.76</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT2V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect2v</span> <span class="cwebmacronumber">4.77</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT3V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect3v</span> <span class="cwebmacronumber">4.78</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT4V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect4v</span> <span class="cwebmacronumber">4.79</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT5V_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect5v</span> <span class="cwebmacronumber">4.80</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT0_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect0</span> <span class="cwebmacronumber">4.81</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT1_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect1</span> <span class="cwebmacronumber">4.82</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT2_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect2</span> <span class="cwebmacronumber">4.83</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT3_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect3</span> <span class="cwebmacronumber">4.84</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT4_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect4</span> <span class="cwebmacronumber">4.85</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT5_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for indirect5</span> <span class="cwebmacronumber">4.86</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTYADDRESS_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for propertyaddress</span> <span class="cwebmacronumber">4.87</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTYLENGTH_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for propertylength</span> <span class="cwebmacronumber">4.88</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROVIDES_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for provides</span> <span class="cwebmacronumber">4.89</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTYVALUE_BIP</span><span class="plain">: </span>&lt;<span class="cwebmacro">Generate primitive for propertyvalue</span> <span class="cwebmacronumber">4.90</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Prim: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prim</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">); </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented prim"</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -777,7 +787,9 @@ is 20. We instead compile this as
                 <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
                 <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">) {</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
+                    <span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+                    <span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -799,10 +811,11 @@ is 20. We instead compile this as
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Package::is</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad lab"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lab</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::local_symbol_from_id</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">LABEL_LAB_IFLD</span><span class="plain">]);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lab</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad lab"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">query_labels_mode</span><span class="plain">) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">'?'</span><span class="plain">);</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">CodeGen::name</span><span class="plain">(</span><span class="identifier">lab</span><span class="plain">);</span>
-            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">'.'</span><span class="plain">)</span>
-                    <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
+        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">'.'</span><span class="plain">)</span>
+                <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::val_from</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val2</span><span class="plain">) {</span>
@@ -1581,7 +1594,22 @@ then the result.
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4_40"></a><b>&#167;4.40.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printchar</span> <span class="cwebmacronumber">4.40</span>&gt; =
+&lt;<span class="cwebmacrodefn">Generate primitive for printret</span> <span class="cwebmacronumber">4.40</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="functiontext">CodeGen::enter_print_mode</span><span class="plain">();</span>
+        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::top_of_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
+        <span class="functiontext">CodeGen::exit_print_mode</span><span class="plain">();</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
+
+<p class="inwebparagraph"><a id="SP4_41"></a><b>&#167;4.41.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printchar</span> <span class="cwebmacronumber">4.41</span>&gt; =
 </code></p>
 
 
@@ -1594,8 +1622,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_41"></a><b>&#167;4.41.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printname</span> <span class="cwebmacronumber">4.41</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_42"></a><b>&#167;4.42.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printname</span> <span class="cwebmacronumber">4.42</span>&gt; =
 </code></p>
 
 
@@ -1608,8 +1636,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_42"></a><b>&#167;4.42.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printnumber</span> <span class="cwebmacronumber">4.42</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_43"></a><b>&#167;4.43.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printnumber</span> <span class="cwebmacronumber">4.43</span>&gt; =
 </code></p>
 
 
@@ -1622,8 +1650,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_43"></a><b>&#167;4.43.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printaddress</span> <span class="cwebmacronumber">4.43</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_44"></a><b>&#167;4.44.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printaddress</span> <span class="cwebmacronumber">4.44</span>&gt; =
 </code></p>
 
 
@@ -1636,8 +1664,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_44"></a><b>&#167;4.44.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printstring</span> <span class="cwebmacronumber">4.44</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_45"></a><b>&#167;4.45.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printstring</span> <span class="cwebmacronumber">4.45</span>&gt; =
 </code></p>
 
 
@@ -1650,8 +1678,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_45"></a><b>&#167;4.45.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printnlnumber</span> <span class="cwebmacronumber">4.45</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_46"></a><b>&#167;4.46.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printnlnumber</span> <span class="cwebmacronumber">4.46</span>&gt; =
 </code></p>
 
 
@@ -1664,8 +1692,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_46"></a><b>&#167;4.46.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printdef</span> <span class="cwebmacronumber">4.46</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_47"></a><b>&#167;4.47.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printdef</span> <span class="cwebmacronumber">4.47</span>&gt; =
 </code></p>
 
 
@@ -1678,8 +1706,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_47"></a><b>&#167;4.47.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printcdef</span> <span class="cwebmacronumber">4.47</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_48"></a><b>&#167;4.48.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printcdef</span> <span class="cwebmacronumber">4.48</span>&gt; =
 </code></p>
 
 
@@ -1692,8 +1720,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_48"></a><b>&#167;4.48.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printindef</span> <span class="cwebmacronumber">4.48</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_49"></a><b>&#167;4.49.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printindef</span> <span class="cwebmacronumber">4.49</span>&gt; =
 </code></p>
 
 
@@ -1706,8 +1734,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_49"></a><b>&#167;4.49.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for printcindef</span> <span class="cwebmacronumber">4.49</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_50"></a><b>&#167;4.50.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for printcindef</span> <span class="cwebmacronumber">4.50</span>&gt; =
 </code></p>
 
 
@@ -1720,8 +1748,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_50"></a><b>&#167;4.50.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for box</span> <span class="cwebmacronumber">4.50</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_51"></a><b>&#167;4.51.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for box</span> <span class="cwebmacronumber">4.51</span>&gt; =
 </code></p>
 
 
@@ -1736,8 +1764,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_51"></a><b>&#167;4.51.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for push</span> <span class="cwebmacronumber">4.51</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_52"></a><b>&#167;4.52.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for push</span> <span class="cwebmacronumber">4.52</span>&gt; =
 </code></p>
 
 
@@ -1750,8 +1778,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_52"></a><b>&#167;4.52.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for pull</span> <span class="cwebmacronumber">4.52</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_53"></a><b>&#167;4.53.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for pull</span> <span class="cwebmacronumber">4.53</span>&gt; =
 </code></p>
 
 
@@ -1764,8 +1792,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_53"></a><b>&#167;4.53.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for preincrement</span> <span class="cwebmacronumber">4.53</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_54"></a><b>&#167;4.54.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for preincrement</span> <span class="cwebmacronumber">4.54</span>&gt; =
 </code></p>
 
 
@@ -1779,8 +1807,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_54"></a><b>&#167;4.54.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for postincrement</span> <span class="cwebmacronumber">4.54</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_55"></a><b>&#167;4.55.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for postincrement</span> <span class="cwebmacronumber">4.55</span>&gt; =
 </code></p>
 
 
@@ -1794,8 +1822,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_55"></a><b>&#167;4.55.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for predecrement</span> <span class="cwebmacronumber">4.55</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_56"></a><b>&#167;4.56.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for predecrement</span> <span class="cwebmacronumber">4.56</span>&gt; =
 </code></p>
 
 
@@ -1809,8 +1837,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_56"></a><b>&#167;4.56.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for postdecrement</span> <span class="cwebmacronumber">4.56</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_57"></a><b>&#167;4.57.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for postdecrement</span> <span class="cwebmacronumber">4.57</span>&gt; =
 </code></p>
 
 
@@ -1824,8 +1852,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_57"></a><b>&#167;4.57.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for store</span> <span class="cwebmacronumber">4.57</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_58"></a><b>&#167;4.58.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for store</span> <span class="cwebmacronumber">4.58</span>&gt; =
 </code></p>
 
 
@@ -1841,8 +1869,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_58"></a><b>&#167;4.58.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for setbit</span> <span class="cwebmacronumber">4.58</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_59"></a><b>&#167;4.59.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for setbit</span> <span class="cwebmacronumber">4.59</span>&gt; =
 </code></p>
 
 
@@ -1858,8 +1886,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_59"></a><b>&#167;4.59.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for clearbit</span> <span class="cwebmacronumber">4.59</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_60"></a><b>&#167;4.60.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for clearbit</span> <span class="cwebmacronumber">4.60</span>&gt; =
 </code></p>
 
 
@@ -1876,8 +1904,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_60"></a><b>&#167;4.60.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for if</span> <span class="cwebmacronumber">4.60</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_61"></a><b>&#167;4.61.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for if</span> <span class="cwebmacronumber">4.61</span>&gt; =
 </code></p>
 
 
@@ -1894,8 +1922,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_61"></a><b>&#167;4.61.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for ifdebug</span> <span class="cwebmacronumber">4.61</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_62"></a><b>&#167;4.62.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for ifdebug</span> <span class="cwebmacronumber">4.62</span>&gt; =
 </code></p>
 
 
@@ -1910,8 +1938,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_62"></a><b>&#167;4.62.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for ifelse</span> <span class="cwebmacronumber">4.62</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_63"></a><b>&#167;4.63.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for ifelse</span> <span class="cwebmacronumber">4.63</span>&gt; =
 </code></p>
 
 
@@ -1930,8 +1958,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_63"></a><b>&#167;4.63.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for while</span> <span class="cwebmacronumber">4.63</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_64"></a><b>&#167;4.64.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for while</span> <span class="cwebmacronumber">4.64</span>&gt; =
 </code></p>
 
 
@@ -1948,8 +1976,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_64"></a><b>&#167;4.64.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for for</span> <span class="cwebmacronumber">4.64</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_65"></a><b>&#167;4.65.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for for</span> <span class="cwebmacronumber">4.65</span>&gt; =
 </code></p>
 
 
@@ -1972,8 +2000,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_65"></a><b>&#167;4.65.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for objectloop</span> <span class="cwebmacronumber">4.65</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_66"></a><b>&#167;4.66.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for objectloop</span> <span class="cwebmacronumber">4.66</span>&gt; =
 </code></p>
 
 
@@ -2007,8 +2035,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_66"></a><b>&#167;4.66.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for objectloopx</span> <span class="cwebmacronumber">4.66</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_67"></a><b>&#167;4.67.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for objectloopx</span> <span class="cwebmacronumber">4.67</span>&gt; =
 </code></p>
 
 
@@ -2027,8 +2055,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_67"></a><b>&#167;4.67.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for loop</span> <span class="cwebmacronumber">4.67</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_68"></a><b>&#167;4.68.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for loop</span> <span class="cwebmacronumber">4.68</span>&gt; =
 </code></p>
 
 
@@ -2043,8 +2071,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_68"></a><b>&#167;4.68.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for lookup</span> <span class="cwebmacronumber">4.68</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_69"></a><b>&#167;4.69.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for lookup</span> <span class="cwebmacronumber">4.69</span>&gt; =
 </code></p>
 
 
@@ -2060,8 +2088,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_69"></a><b>&#167;4.69.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for lookupbyte</span> <span class="cwebmacronumber">4.69</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_70"></a><b>&#167;4.70.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for lookupbyte</span> <span class="cwebmacronumber">4.70</span>&gt; =
 </code></p>
 
 
@@ -2077,8 +2105,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_70"></a><b>&#167;4.70.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for lookupref</span> <span class="cwebmacronumber">4.70</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_71"></a><b>&#167;4.71.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for lookupref</span> <span class="cwebmacronumber">4.71</span>&gt; =
 </code></p>
 
 
@@ -2094,8 +2122,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_71"></a><b>&#167;4.71.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for switch</span> <span class="cwebmacronumber">4.71</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_72"></a><b>&#167;4.72.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for switch</span> <span class="cwebmacronumber">4.72</span>&gt; =
 </code></p>
 
 
@@ -2112,8 +2140,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_72"></a><b>&#167;4.72.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for case</span> <span class="cwebmacronumber">4.72</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_73"></a><b>&#167;4.73.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for case</span> <span class="cwebmacronumber">4.73</span>&gt; =
 </code></p>
 
 
@@ -2130,8 +2158,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_73"></a><b>&#167;4.73.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for default</span> <span class="cwebmacronumber">4.73</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_74"></a><b>&#167;4.74.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for default</span> <span class="cwebmacronumber">4.74</span>&gt; =
 </code></p>
 
 
@@ -2147,8 +2175,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_74"></a><b>&#167;4.74.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect0v</span> <span class="cwebmacronumber">4.74</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_75"></a><b>&#167;4.75.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect0v</span> <span class="cwebmacronumber">4.75</span>&gt; =
 </code></p>
 
 
@@ -2162,25 +2190,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_75"></a><b>&#167;4.75.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect1v</span> <span class="cwebmacronumber">4.75</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"("</span><span class="plain">);</span>
-        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::top_of_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")("</span><span class="plain">);</span>
-        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::second_in_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
-
 <p class="inwebparagraph"><a id="SP4_76"></a><b>&#167;4.76.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect2v</span> <span class="cwebmacronumber">4.76</span>&gt; =
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect1v</span> <span class="cwebmacronumber">4.76</span>&gt; =
 </code></p>
 
 
@@ -2189,8 +2200,6 @@ then the result.
         <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::top_of_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")("</span><span class="plain">);</span>
         <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::second_in_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">","</span><span class="plain">);</span>
-        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::third_in_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
 </pre>
 
@@ -2199,7 +2208,26 @@ then the result.
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4_77"></a><b>&#167;4.77.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect3v</span> <span class="cwebmacronumber">4.77</span>&gt; =
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect2v</span> <span class="cwebmacronumber">4.77</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"("</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::top_of_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")("</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::second_in_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">","</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::third_in_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">));</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
+
+<p class="inwebparagraph"><a id="SP4_78"></a><b>&#167;4.78.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect3v</span> <span class="cwebmacronumber">4.78</span>&gt; =
 </code></p>
 
 
@@ -2219,8 +2247,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_78"></a><b>&#167;4.78.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect4v</span> <span class="cwebmacronumber">4.78</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_79"></a><b>&#167;4.79.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect4v</span> <span class="cwebmacronumber">4.79</span>&gt; =
 </code></p>
 
 
@@ -2242,8 +2270,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_79"></a><b>&#167;4.79.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect5v</span> <span class="cwebmacronumber">4.79</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_80"></a><b>&#167;4.80.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect5v</span> <span class="cwebmacronumber">4.80</span>&gt; =
 </code></p>
 
 
@@ -2267,8 +2295,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_80"></a><b>&#167;4.80.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect0</span> <span class="cwebmacronumber">4.80</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_81"></a><b>&#167;4.81.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect0</span> <span class="cwebmacronumber">4.81</span>&gt; =
 </code></p>
 
 
@@ -2282,8 +2310,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_81"></a><b>&#167;4.81.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect1</span> <span class="cwebmacronumber">4.81</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_82"></a><b>&#167;4.82.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect1</span> <span class="cwebmacronumber">4.82</span>&gt; =
 </code></p>
 
 
@@ -2299,8 +2327,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_82"></a><b>&#167;4.82.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect2</span> <span class="cwebmacronumber">4.82</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_83"></a><b>&#167;4.83.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect2</span> <span class="cwebmacronumber">4.83</span>&gt; =
 </code></p>
 
 
@@ -2318,8 +2346,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_83"></a><b>&#167;4.83.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect3</span> <span class="cwebmacronumber">4.83</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_84"></a><b>&#167;4.84.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect3</span> <span class="cwebmacronumber">4.84</span>&gt; =
 </code></p>
 
 
@@ -2339,8 +2367,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_84"></a><b>&#167;4.84.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect4</span> <span class="cwebmacronumber">4.84</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_85"></a><b>&#167;4.85.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect4</span> <span class="cwebmacronumber">4.85</span>&gt; =
 </code></p>
 
 
@@ -2362,8 +2390,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_85"></a><b>&#167;4.85.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for indirect5</span> <span class="cwebmacronumber">4.85</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_86"></a><b>&#167;4.86.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for indirect5</span> <span class="cwebmacronumber">4.86</span>&gt; =
 </code></p>
 
 
@@ -2387,8 +2415,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_86"></a><b>&#167;4.86.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for propertyaddress</span> <span class="cwebmacronumber">4.86</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_87"></a><b>&#167;4.87.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for propertyaddress</span> <span class="cwebmacronumber">4.87</span>&gt; =
 </code></p>
 
 
@@ -2404,8 +2432,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_87"></a><b>&#167;4.87.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for propertylength</span> <span class="cwebmacronumber">4.87</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_88"></a><b>&#167;4.88.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for propertylength</span> <span class="cwebmacronumber">4.88</span>&gt; =
 </code></p>
 
 
@@ -2421,8 +2449,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_88"></a><b>&#167;4.88.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for provides</span> <span class="cwebmacronumber">4.88</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_89"></a><b>&#167;4.89.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for provides</span> <span class="cwebmacronumber">4.89</span>&gt; =
 </code></p>
 
 
@@ -2438,8 +2466,8 @@ then the result.
 
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP4_89"></a><b>&#167;4.89.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate primitive for propertyvalue</span> <span class="cwebmacronumber">4.89</span>&gt; =
+<p class="inwebparagraph"><a id="SP4_90"></a><b>&#167;4.90.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate primitive for propertyvalue</span> <span class="cwebmacronumber">4.90</span>&gt; =
 </code></p>
 
 
@@ -2720,13 +2748,13 @@ then the result.
 
 <p class="endnote">The function CodeGen::compile_to_I6_dictionary is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="endnote">The function CodeGen::enter_box_mode is used in <a href="#SP4_50">&#167;4.50</a>.</p>
+<p class="endnote">The function CodeGen::enter_box_mode is used in <a href="#SP4_51">&#167;4.51</a>.</p>
 
-<p class="endnote">The function CodeGen::exit_box_mode is used in <a href="#SP4_50">&#167;4.50</a>.</p>
+<p class="endnote">The function CodeGen::exit_box_mode is used in <a href="#SP4_51">&#167;4.51</a>.</p>
 
-<p class="endnote">The function CodeGen::enter_print_mode is used in <a href="#SP4_39">&#167;4.39</a>.</p>
+<p class="endnote">The function CodeGen::enter_print_mode is used in <a href="#SP4_39">&#167;4.39</a>, <a href="#SP4_40">&#167;4.40</a>.</p>
 
-<p class="endnote">The function CodeGen::exit_print_mode is used in <a href="#SP4_39">&#167;4.39</a>.</p>
+<p class="endnote">The function CodeGen::exit_print_mode is used in <a href="#SP4_39">&#167;4.39</a>, <a href="#SP4_40">&#167;4.40</a>.</p>
 
 <p class="endnote">The function CodeGen::compile_to_I6_text is used in <a href="#SP3">&#167;3</a>.</p>
 

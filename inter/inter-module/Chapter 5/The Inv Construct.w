@@ -190,7 +190,7 @@ inter_error_message *Inter::Inv::no_more_children(inter_frame P) {
 		if (C.data[0] == SPLAT_IST) continue;
 		inter_t cat_as_invoked = Inter::Inv::evaluated_category(C);
 		inter_t cat_needed = Inter::Inv::operand_category(P, i-1);
-		if (cat_as_invoked != cat_needed) {
+		if ((cat_as_invoked != cat_needed) && (P.data[METHOD_INV_IFLD] != INVOKED_OPCODE)) {
 			inter_symbol *invokee = Inter::Inv::invokee(P);
 			text_stream *err = Str::new();
 			WRITE_TO(err, "operand %d of inv '%S' should be %s, but this is %s",

@@ -302,7 +302,7 @@ void Inter::Symbols::extern(inter_symbol *S) {
 int Inter::Symbols::is_label(inter_symbol *S) {
 	if (S == NULL) return FALSE;
 	if (S->symbol_scope != PRIVATE_ISYMS) return FALSE;
-	if (S->symbol_scope != LABEL_ISYMT) return FALSE;
+	if (S->symbol_type != LABEL_ISYMT) return FALSE;
 	return TRUE;
 }
 
@@ -316,4 +316,11 @@ void Inter::Symbols::local(inter_symbol *S) {
 	S->symbol_scope = PRIVATE_ISYMS;
 	S->symbol_type = MISC_ISYMT;
 	S->definition_status = UNDEFINED_ISYMD;
+}
+
+int Inter::Symbols::is_local(inter_symbol *S) {
+	if (S == NULL) return FALSE;
+	if (S->symbol_scope != PRIVATE_ISYMS) return FALSE;
+	if (S->symbol_type != MISC_ISYMT) return FALSE;
+	return TRUE;
 }

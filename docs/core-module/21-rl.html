@@ -307,9 +307,11 @@ must be added after the rule has been created:
     <span class="plain">}</span>
 
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::get_handler_definition</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain"> =</span>
                 <span class="functiontext">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="constant">RESPONDER_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;xiname</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
