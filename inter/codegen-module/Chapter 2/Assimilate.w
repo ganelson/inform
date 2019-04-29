@@ -169,8 +169,17 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 						Inter::Symbols::annotate_i(I, attr_symbol, ATTRIBUTE_IANN, 1);
 						Inter::Symbols::annotate_i(I, attr_symbol, EITHER_OR_IANN, 1);
 						Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
-					} else if (attr_symbol) Inter::Symbols::annotate_i(I, attr_symbol, ASSIMILATED_IANN, 1);
-
+						if (Str::ne(attr_symbol->symbol_name, con_name->symbol_name)) {
+							inter_symbol *alias_symbol = Inter::SymbolsTables::symbol_from_name_creating(into_scope, con_name->symbol_name);
+							Inter::SymbolsTables::equate(alias_symbol, attr_symbol);
+						}
+					} else {
+						Inter::Symbols::annotate_i(I, attr_symbol, ASSIMILATED_IANN, 1);
+						if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol))) {
+							inter_symbol *alias_symbol = Inter::SymbolsTables::symbol_from_name_creating(into_scope, Inter::Symbols::get_translate(attr_symbol));
+							Inter::SymbolsTables::equate(alias_symbol, attr_symbol);
+						}
+					}
 					DISCARD_TEXT(A);
 					break;
 				}
@@ -660,8 +669,8 @@ inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack)
 int rb_splat_count = 1;
 void CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body) {
 	if (Str::is_whitespace(body)) return;
-	if (Str::len(body) < 50) {
-		LOG("=======\n\nCandidate (%S): '%S'\n\n", block_name->symbol_name, body);
+	if (Str::len(body) < 100) {
+		LOG("=======\n\nCandidate (%S) len %d: '%S'\n\n", block_name->symbol_name, Str::len(body), body);
 		inter_schema *sch = InterSchemas::from_text(body, FALSE, 0, NULL);
 		
 		if (sch == NULL) LOG("NULL SCH\n");

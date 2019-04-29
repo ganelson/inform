@@ -573,7 +573,7 @@ is the default "for" rule for that activity:
 @c
 [ STANDARD_RESPONSE_ISSUING_R;
 	RegardingSingleObject();
-	TEXT_TY_Say(ResponseTexts-->(parameter_value-1));
+	TEXT_TY_Say(ResponseTexts-->(parameter_value - 1));
 ];
 
 @p Internal Rule.

@@ -114,10 +114,7 @@ relies on adjectival meanings.
         <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Properties::exclude_from_index</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">I6_form</span><span class="plain">);</span>
-    <span class="comment">compilation_module *cm = Modules::current();</span>
-    <span class="comment">Modules::set_current_to_SR();</span>
         <span class="functiontext">Properties::EitherOr::create_adjective_from_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
-    <span class="comment">Modules::set_current_to(cm);</span>
         <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;run_time_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">;</span>
     <span class="plain">}</span>

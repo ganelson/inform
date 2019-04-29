@@ -89,12 +89,7 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) TO = arrays_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) TO = arrays_at_eof;
 						if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) TO = arrays_at_eof;
-//						if (P.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) TO = summations_at_eof;
 						if (P.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) TO = arrays_at_eof;
-//						if ((P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) && (P.data[DATA_CONST_IFLD] == GLOB_IVAL)) {
-//							LOG("$3 is globby\n", con_name);
-//							 TO = summations_at_eof;
-//						}
 						if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) TO = verbs_at_eof;
 						if (Inter::Constant::is_routine(con_name)) {
 							TO = routines_at_eof;
@@ -107,7 +102,6 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						CodeGen::frame(TO, I, P); break;
 					case SPLAT_IST:
 						internal_error("top-level splat remaining");
-//						if (P.data[PLM_SPLAT_IFLD] != OBJECT_PLM) CodeGen::frame(TO, I, P);
 						break;
 					case PROPERTYVALUE_IST:
 						@<Property knowledge@>;

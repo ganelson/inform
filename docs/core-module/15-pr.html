@@ -717,6 +717,7 @@ run-time support code to work.
                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::change_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>

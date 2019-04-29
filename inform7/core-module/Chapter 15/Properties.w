@@ -501,6 +501,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 			PUT_TO(T, '_');
 	}
 	Emit::change_translation(prn->prop_iname, T);
+	Hierarchy::make_available(prn->prop_iname);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }

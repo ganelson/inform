@@ -294,8 +294,14 @@ void Inter::SymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
 	S_from->equated_to = S_to;
 	S_from->symbol_scope = EXTERNAL_ISYMS;
 	LOGIF(INTER_SYMBOLS, "Equate $3 to $3\n", S_from, S_to);
-	for (int c=0; S_from; S_from = S_from->equated_to, c++)
-		if (c == 20) internal_error("probably circular symbol equation");
+	int c = 0;
+	for (inter_symbol *S = S_from; S; S = S->equated_to, c++)
+		if (c == 20) {
+			c = 0;
+			for (inter_symbol *S = S_from; c < 20; S = S->equated_to, c++)
+				LOG("%d. %S\n", c, S->symbol_name);
+			internal_error("probably circular symbol equation");
+		}
 }
 
 void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *name) {
