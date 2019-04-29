@@ -304,7 +304,7 @@ it can be |nothing|, and we must check that it matches a given I7 kind |K|
 @c
 [ CheckKindReturned V K;
 	if (V ofclass K) return V;
-	if (v == nothing) RunTimeProblem(RTP_DECIDEONNOTHING);
+	if (V == nothing) RunTimeProblem(RTP_DECIDEONNOTHING);
 	else RunTimeProblem(RTP_DECIDEONWRONGKIND);
 	return V;
 ];

@@ -61,6 +61,7 @@ but the need to do this went away.)
 @e STATEMENT_ISNT
 @e OPERATION_ISNT
 @e SUBEXPRESSION_ISNT
+@e DIRECTIVE_ISNT
 @e ASSEMBLY_ISNT
 @e LABEL_ISNT
 @e CALL_ISNT
@@ -76,6 +77,7 @@ typedef struct inter_schema_node {
 
 	int isn_type;									/* one of the |*_ISNT| values */
 	struct inter_symbol *isn_clarifier;				/* for |STATEMENT_ISNT| and |OPERATION_ISNT| only */
+	int dir_clarifier;								/* for |DIRECTIVE_ISNT| only */
 	struct inter_schema_token *expression_tokens;	/* for |EXPRESSION_ISNT| only */
 
 	int semicolon_terminated;						/* for |EXPRESSION_ISNT| only */
@@ -99,6 +101,7 @@ inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt) {
 
 	isn->expression_tokens = NULL;
 	isn->isn_clarifier = NULL;
+	isn->dir_clarifier = -1;
 
 	isn->semicolon_terminated = FALSE;
 	isn->unclosed = FALSE;
@@ -202,6 +205,7 @@ compilation process, and never survive into the final schema:
 
 @e IDENTIFIER_ISTT			/* an I6 identifier such as |my_var12| */
 @e OPCODE_ISTT				/* an Inform assembly language opcode such as |@pull| */
+@e DIRECTIVE_ISTT			/* an Inform compiler directive such as |#iftrue| */
 @e NUMBER_ISTT				/* a constant number */
 @e BIN_NUMBER_ISTT			/* a constant number */
 @e HEX_NUMBER_ISTT			/* a constant number */
@@ -297,6 +301,13 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e BREAK_I6RW
 @e CONTINUE_I6RW
 @e QUIT_I6RW
+
+@e IFDEF_I6RW
+@e IFNDEF_I6RW
+@e IFTRUE_I6RW
+@e IFFALSE_I6RW
+@e IFNOT_I6RW
+@e ENDIF_I6RW
 
 @ The value of |inline_command|, in an |INLINE_ISTT| node, must be one of:
 
@@ -408,87 +419,103 @@ void InterSchemas::log(inter_schema *sch) {
 }
 
 void InterSchemas::log_depth(inter_schema_node *isn, int depth) {
-	for (; isn; isn=isn->next_node) {
-		for (int d = 0; d < depth; d++) LOG("    ");
-		switch (isn->isn_type) {
-			case STATEMENT_ISNT:
-				LOG("* (statement) %S\n", isn->isn_clarifier->symbol_name);
-				break;
-			case OPERATION_ISNT:
-				LOG("* (operation) %S\n", isn->isn_clarifier->symbol_name);
-				break;
-			case CODE_ISNT:
-				LOG("* (code)");
-				if (isn->unclosed) LOG(" <");
-				if (isn->unopened) LOG(" >");
-				LOG("\n");
-				break;
-			case EVAL_ISNT:
-				LOG("* (eval)\n");
-				break;
-			case ASSEMBLY_ISNT:
-				LOG("* (assembly)\n");
-				break;
-			case LABEL_ISNT:
-				LOG("* (label)\n");
-				break;
-			case CALL_ISNT:
-				LOG("* (call)\n");
-				break;
-			case SUBEXPRESSION_ISNT:
-				LOG("* (subexpression)\n");
-				break;
-			case EXPRESSION_ISNT:
-				LOG("* (expr)");
-				if (isn->semicolon_terminated) LOG(" ;");
-				if (isn->unclosed) LOG(" <");
-				if (isn->unopened) LOG(" >");
-				if (isn->expression_tokens == NULL) LOG(" - empty");
-				LOG("\n");
-				for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
-					for (int d = 0; d < depth + 1; d++) LOG("    ");
-					switch (t->ist_type) {
-						case RAW_ISTT:			LOG("RAW         "); break;
-						case OPERATOR_ISTT:		LOG("OPERATOR    "); break;
-						case OPCODE_ISTT:		LOG("OPCODE      "); break;
-						case IDENTIFIER_ISTT:	LOG("IDENTIFIER  "); break;
-						case RESERVED_ISTT:		LOG("RESERVED    "); break;
-						case NUMBER_ISTT:		LOG("NUMBER      "); break;
-						case BIN_NUMBER_ISTT:	LOG("BIN_NUMBER  "); break;
-						case HEX_NUMBER_ISTT:	LOG("HEX_NUMBER  "); break;
-						case REAL_NUMBER_ISTT:	LOG("REAL_NUMBER "); break;
-						case DQUOTED_ISTT:		LOG("DQUOTED     "); break;
-						case SQUOTED_ISTT:		LOG("SQUOTED     "); break;
-						case WHITE_SPACE_ISTT:	LOG("WHITE_SPACE "); break;
-						case DIVIDER_ISTT:		LOG("DIVIDER     "); break;
-						case OPEN_ROUND_ISTT:	LOG("OPEN_ROUND  "); break;
-						case CLOSE_ROUND_ISTT:	LOG("CLOSE_ROUND "); break;
-						case OPEN_BRACE_ISTT:	LOG("OPEN_BRACE  "); break;
-						case CLOSE_BRACE_ISTT:	LOG("CLOSE_BRACE "); break;
-						case COMMA_ISTT:		LOG("COMMA       "); break;
-						case COLON_ISTT:		LOG("COLON       "); break;
-						case I7_ISTT:			LOG("I7          "); break;
-						case INLINE_ISTT:		LOG("INLINE      "); break;
-						case ASM_ARROW_ISTT:	LOG("ASM_ARROW   "); break;
-						case ASM_SP_ISTT:		LOG("ASM_SP      "); break;
-						case ASM_LABEL_ISTT:	LOG("ASM_LABEL   "); break;
-						default: LOG("<unknown>"); break;
-					}
-					LOG("%S", t->material);
-					if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) LOG(" GIVE_KIND_ID");
-					if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) LOG(" GIVE_COMPARISON_ROUTINE");
-					if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) LOG(" DEREFERENCE_PROPERTY");
-					if (t->inline_modifiers & ADOPT_LOCAL_STACK_FRAME_ISSBM) LOG(" ADOPT_LOCAL_STACK_FRAME");
-					if (t->inline_modifiers & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) LOG(" CAST_TO_KIND_OF_OTHER_TERM");
-					if (t->inline_modifiers & BY_REFERENCE_ISSBM) LOG(" BY_REFERENCE");
-					if (t->inline_modifiers & PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM) LOG(" PERMIT_LOCALS_IN_TEXT_CMODE");
-					if (isn != t->owner) LOG(" !!! ownership incorrect here");
-					LOG("\n");
+	for (; isn; isn=isn->next_node)
+		InterSchemas::log_just(isn, depth);
+}
+void InterSchemas::log_just(inter_schema_node *isn, int depth) {
+	for (int d = 0; d < depth; d++) LOG("    ");
+	switch (isn->isn_type) {
+		case STATEMENT_ISNT:
+			LOG("* (statement) %S\n", isn->isn_clarifier->symbol_name);
+			break;
+		case OPERATION_ISNT:
+			LOG("* (operation) %S\n", isn->isn_clarifier->symbol_name);
+			break;
+		case CODE_ISNT:
+			LOG("* (code)");
+			if (isn->unclosed) LOG(" <");
+			if (isn->unopened) LOG(" >");
+			LOG("\n");
+			break;
+		case EVAL_ISNT:
+			LOG("* (eval)\n");
+			break;
+		case ASSEMBLY_ISNT:
+			LOG("* (assembly)\n");
+			break;
+		case DIRECTIVE_ISNT:
+			LOG("* (directive) ");
+			switch(isn->dir_clarifier) {
+				case IFDEF_I6RW: LOG("#ifdef"); break;
+				case IFNDEF_I6RW: LOG("#ifndef"); break;
+				case IFTRUE_I6RW: LOG("#iftrue"); break;
+				case IFFALSE_I6RW: LOG("#iffalse"); break;
+				case IFNOT_I6RW: LOG("#ifnot"); break;
+				case ENDIF_I6RW: LOG("#endif"); break;
+				default: LOG("<unknown>"); break;
+			}
+			LOG("\n");
+			break;
+		case LABEL_ISNT:
+			LOG("* (label)\n");
+			break;
+		case CALL_ISNT:
+			LOG("* (call)\n");
+			break;
+		case SUBEXPRESSION_ISNT:
+			LOG("* (subexpression)\n");
+			break;
+		case EXPRESSION_ISNT:
+			LOG("* (expr)");
+			if (isn->semicolon_terminated) LOG(" ;");
+			if (isn->unclosed) LOG(" <");
+			if (isn->unopened) LOG(" >");
+			if (isn->expression_tokens == NULL) LOG(" - empty");
+			LOG("\n");
+			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
+				for (int d = 0; d < depth + 1; d++) LOG("    ");
+				switch (t->ist_type) {
+					case RAW_ISTT:			LOG("RAW         "); break;
+					case OPERATOR_ISTT:		LOG("OPERATOR    "); break;
+					case OPCODE_ISTT:		LOG("OPCODE      "); break;
+					case DIRECTIVE_ISTT:	LOG("DIRECTIVE   "); break;
+					case IDENTIFIER_ISTT:	LOG("IDENTIFIER  "); break;
+					case RESERVED_ISTT:		LOG("RESERVED    "); break;
+					case NUMBER_ISTT:		LOG("NUMBER      "); break;
+					case BIN_NUMBER_ISTT:	LOG("BIN_NUMBER  "); break;
+					case HEX_NUMBER_ISTT:	LOG("HEX_NUMBER  "); break;
+					case REAL_NUMBER_ISTT:	LOG("REAL_NUMBER "); break;
+					case DQUOTED_ISTT:		LOG("DQUOTED     "); break;
+					case SQUOTED_ISTT:		LOG("SQUOTED     "); break;
+					case WHITE_SPACE_ISTT:	LOG("WHITE_SPACE "); break;
+					case DIVIDER_ISTT:		LOG("DIVIDER     "); break;
+					case OPEN_ROUND_ISTT:	LOG("OPEN_ROUND  "); break;
+					case CLOSE_ROUND_ISTT:	LOG("CLOSE_ROUND "); break;
+					case OPEN_BRACE_ISTT:	LOG("OPEN_BRACE  "); break;
+					case CLOSE_BRACE_ISTT:	LOG("CLOSE_BRACE "); break;
+					case COMMA_ISTT:		LOG("COMMA       "); break;
+					case COLON_ISTT:		LOG("COLON       "); break;
+					case I7_ISTT:			LOG("I7          "); break;
+					case INLINE_ISTT:		LOG("INLINE      "); break;
+					case ASM_ARROW_ISTT:	LOG("ASM_ARROW   "); break;
+					case ASM_SP_ISTT:		LOG("ASM_SP      "); break;
+					case ASM_LABEL_ISTT:	LOG("ASM_LABEL   "); break;
+					default: LOG("<unknown>"); break;
 				}
-				break;
-		}
-		InterSchemas::log_depth(isn->child_node, depth+1);
+				LOG("%S", t->material);
+				if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) LOG(" GIVE_KIND_ID");
+				if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) LOG(" GIVE_COMPARISON_ROUTINE");
+				if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) LOG(" DEREFERENCE_PROPERTY");
+				if (t->inline_modifiers & ADOPT_LOCAL_STACK_FRAME_ISSBM) LOG(" ADOPT_LOCAL_STACK_FRAME");
+				if (t->inline_modifiers & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) LOG(" CAST_TO_KIND_OF_OTHER_TERM");
+				if (t->inline_modifiers & BY_REFERENCE_ISSBM) LOG(" BY_REFERENCE");
+				if (t->inline_modifiers & PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM) LOG(" PERMIT_LOCALS_IN_TEXT_CMODE");
+				if (isn != t->owner) LOG(" !!! ownership incorrect here");
+				LOG("\n");
+			}
+			break;
 	}
+	InterSchemas::log_depth(isn->child_node, depth+1);
 }
 
 @h Lint.
@@ -1286,6 +1313,13 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"break")) { is = RESERVED_ISTT; which_rw = BREAK_I6RW; }
 	if (Str::eq(T, I"quit")) { is = RESERVED_ISTT; which_rw = QUIT_I6RW; }
 
+	if (Str::eq_insensitive(T, I"#IFDEF")) { is = DIRECTIVE_ISTT; which_rw = IFDEF_I6RW; }
+	if (Str::eq_insensitive(T, I"#IFNDEF")) { is = DIRECTIVE_ISTT; which_rw = IFNDEF_I6RW; }
+	if (Str::eq_insensitive(T, I"#IFTRUE")) { is = DIRECTIVE_ISTT; which_rw = IFTRUE_I6RW; }
+	if (Str::eq_insensitive(T, I"#IFFALSE")) { is = DIRECTIVE_ISTT; which_rw = IFFALSE_I6RW; }
+	if (Str::eq_insensitive(T, I"#IFNOT")) { is = DIRECTIVE_ISTT; which_rw = IFNOT_I6RW; }
+	if (Str::eq_insensitive(T, I"#ENDIF")) { is = DIRECTIVE_ISTT; which_rw = ENDIF_I6RW; }
+
 	if (Str::eq(T, I",")) is = COMMA_ISTT;
 	if (Str::eq(T, I":")) is = COLON_ISTT;
 	if (Str::eq(T, I"(")) is = OPEN_ROUND_ISTT;
@@ -1316,6 +1350,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"~~")) { is = OPERATOR_ISTT; which = not_interp; }
 	if (Str::eq(T, I"&&")) { is = OPERATOR_ISTT; which = and_interp; }
 	if (Str::eq(T, I"||")) { is = OPERATOR_ISTT; which = or_interp; }
+	if (Str::eq(T, I"or")) { is = OPERATOR_ISTT; which = alternative_interp; }
 
 	if (Str::eq(T, I"ofclass")) { is = OPERATOR_ISTT; which = ofclass_interp; }
 	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = has_interp; }
@@ -1381,12 +1416,14 @@ void InterSchemas::unmark(inter_schema_node *isn) {
 	REPEATEDLY_APPLY(InterSchemas::strip_spacing);
 	REPEATEDLY_APPLY(InterSchemas::splitprints);
 	REPEATEDLY_APPLY(InterSchemas::splitcases);
+	REPEATEDLY_APPLY(InterSchemas::strip_spacing);
 	REPEATEDLY_APPLY(InterSchemas::identify_constructs);
 	REPEATEDLY_APPLY(InterSchemas::treat_constructs);
 	REPEATEDLY_APPLY(InterSchemas::add_missing_bodies);
 	REPEATEDLY_APPLY(InterSchemas::remove_empties);
 	REPEATEDLY_APPLY(InterSchemas::outer_subexpressions);
 	REPEATEDLY_APPLY(InterSchemas::top_level_commas);
+	REPEATEDLY_APPLY(InterSchemas::alternatecases);
 	REPEATEDLY_APPLY(InterSchemas::outer_subexpressions);
 	REPEATEDLY_APPLY(InterSchemas::strip_all_spacing);
 	REPEATEDLY_APPLY(InterSchemas::debracket);
@@ -1805,6 +1842,27 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 }
 
 @ =
+int InterSchemas::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
+	for (; isn; isn=isn->next_node) {
+		if (isn->isn_clarifier == case_interp) {
+			inter_schema_node *A = isn->child_node;
+			inter_schema_node *B = isn->child_node->next_node;
+			if ((A->isn_type == EXPRESSION_ISNT) && (B->isn_type == EXPRESSION_ISNT)) {
+				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
+				C->isn_clarifier = alternativecase_interp;
+				C->child_node = A;
+				A->parent_node = C; B->parent_node = C;
+				isn->child_node = C; C->next_node = B->next_node; B->next_node = NULL;
+				C->parent_node = isn;
+				return TRUE;
+			}				
+		}
+		if (InterSchemas::alternatecases(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
+
+@ =
 int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
@@ -2009,7 +2067,21 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					}
 				}
 			}
-			if (isn->expression_tokens->ist_type == OPCODE_ISTT) {
+			if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == DIRECTIVE_ISTT)) {
+				isn->isn_type = DIRECTIVE_ISNT;
+				isn->dir_clarifier = isn->expression_tokens->reserved_word;
+				if (isn->expression_tokens->next) {
+					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					isn->child_node = new_isn;
+					new_isn->parent_node = isn;
+					new_isn->expression_tokens = isn->expression_tokens->next;
+					for (inter_schema_token *n = new_isn->expression_tokens; n; n = n->next)
+						n->owner = new_isn;
+				}
+				isn->expression_tokens = NULL;
+				subordinate_to = NULL;
+			}
+			if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == OPCODE_ISTT)) {
 				if (Str::eq(isn->expression_tokens->material, I"@push")) subordinate_to = push_interp;
 				else if (Str::eq(isn->expression_tokens->material, I"@pull")) subordinate_to = pull_interp;
 				else {
@@ -2029,11 +2101,6 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 								l->ist_type = ASM_LABEL_ISTT;
 								l->material = n->material;
 								n = n->next;
-//								if ((n) && (n->ist_type = IDENTIFIER_ISTT)) {
-//									text_stream *x = Str::new();
-//									WRITE_TO(x, ".%S", n->material);
-//									n->material = x;
-//								}
 							}
 							if (isn->child_node == NULL) isn->child_node = new_isn;
 							else if (prev_node) prev_node->next_node = new_isn;
@@ -2043,7 +2110,6 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					}
 					isn->expression_tokens = NULL;
 				}
-
 			}
 			if (subordinate_to) {
 				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
@@ -2094,7 +2160,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				return 1;
 			}
 		}
-		if (isn->isn_type != ASSEMBLY_ISNT)
+		if ((isn->isn_type != ASSEMBLY_ISNT) && (isn->isn_type != DIRECTIVE_ISNT))
 			if (InterSchemas::identify_constructs(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
@@ -2341,49 +2407,57 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 					}
 					new_isn->parent_node = isn;
 					has_operand_before = TRUE;
-				}
-				n = break_at->next;
-				while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-				from = n; to = NULL;
-				if ((from) && (from != to)) {
-					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					new_isn->expression_tokens = from;
-					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-						l->owner = new_isn;
-						if (l->next == to) l->next = NULL;
-					}
-					if (isn->child_node == NULL) {
-						isn->child_node = new_isn;
-					} else {
-						isn->child_node->next_node = new_isn;
-					}
-					new_isn->parent_node = isn;
-					has_operand_after = TRUE;
-				}
-
-				isn->isn_type = OPERATION_ISNT;
-				isn->expression_tokens = NULL;
-				isn->isn_clarifier = break_at->operation_primitive;
-				if ((break_at->operation_primitive == minus_interp) && (has_operand_before == FALSE))
-					isn->isn_clarifier = unaryminus_interp;
-				if ((break_at->operation_primitive == postincrement_interp) && (has_operand_before == FALSE))
-					isn->isn_clarifier = preincrement_interp;
-				if ((break_at->operation_primitive == postdecrement_interp) && (has_operand_before == FALSE))
-					isn->isn_clarifier = predecrement_interp;
-				if ((break_at->operation_primitive == propertyvalue_interp) && (has_operand_before == FALSE)) {
-					isn->isn_type = LABEL_ISNT;
-					isn->isn_clarifier = NULL;
 				} else {
-					int a = 0;
-					if (has_operand_before) a++;
-					if (has_operand_after) a++;
-					if (a != InterSchemas::arity(isn->isn_clarifier)) {
-						LOG("Seem to have arity %d with isn %S\n", a, isn->isn_clarifier->symbol_name);
-						LOG("$1\n", isn->parent_schema);
-						internal_error("bad arity");
+					if (best_operator == in_interp) {
+						break_at->ist_type = IDENTIFIER_ISTT;
+						break_at->operation_primitive = NULL;
+						break_at = NULL;
 					}
 				}
-				return TRUE;
+				if (break_at) {
+					n = break_at->next;
+					while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+					from = n; to = NULL;
+					if ((from) && (from != to)) {
+						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						new_isn->expression_tokens = from;
+						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
+							l->owner = new_isn;
+							if (l->next == to) l->next = NULL;
+						}
+						if (isn->child_node == NULL) {
+							isn->child_node = new_isn;
+						} else {
+							isn->child_node->next_node = new_isn;
+						}
+						new_isn->parent_node = isn;
+						has_operand_after = TRUE;
+					}
+
+					isn->isn_type = OPERATION_ISNT;
+					isn->expression_tokens = NULL;
+					isn->isn_clarifier = break_at->operation_primitive;
+					if ((break_at->operation_primitive == minus_interp) && (has_operand_before == FALSE))
+						isn->isn_clarifier = unaryminus_interp;
+					if ((break_at->operation_primitive == postincrement_interp) && (has_operand_before == FALSE))
+						isn->isn_clarifier = preincrement_interp;
+					if ((break_at->operation_primitive == postdecrement_interp) && (has_operand_before == FALSE))
+						isn->isn_clarifier = predecrement_interp;
+					if ((break_at->operation_primitive == propertyvalue_interp) && (has_operand_before == FALSE)) {
+						isn->isn_type = LABEL_ISNT;
+						isn->isn_clarifier = NULL;
+					} else {
+						int a = 0;
+						if (has_operand_before) a++;
+						if (has_operand_after) a++;
+						if (a != InterSchemas::arity(isn->isn_clarifier)) {
+							LOG("Seem to have arity %d with isn %S\n", a, isn->isn_clarifier->symbol_name);
+							LOG("$1\n", isn->parent_schema);
+							internal_error("bad arity");
+						}
+					}
+					return TRUE;
+				}
 			}
 		}
 		if (InterSchemas::op_subexpressions(isn, isn->child_node)) return TRUE;
@@ -2525,6 +2599,9 @@ int InterSchemas::precedence(inter_symbol *O) {
 	if (O == in_interp) return 3;
 	if (O == notin_interp) return 3;
 
+	if (O == alternative_interp) return 4;
+	if (O == alternativecase_interp) return 4;
+
 	if (O == plus_interp) return 5;
 	if (O == minus_interp) return 5;
 
@@ -2582,6 +2659,8 @@ text_stream *InterSchemas::text_form(inter_symbol *O) {
 	if (O == in_interp) return I"in";
 	if (O == notin_interp) return I"notin";
 
+	if (O == alternative_interp) return I"or";
+
 	if (O == plus_interp) return I"+";
 	if (O == minus_interp) return I"-";
 
@@ -2616,6 +2695,9 @@ int InterSchemas::arity(inter_symbol *O) {
 	if (O == and_interp) return 2;
 	if (O == or_interp) return 2;
 	if (O == not_interp) return 1;
+
+	if (O == alternative_interp) return 2;
+	if (O == alternativecase_interp) return 2;
 
 	if (O == eq_interp) return 2;
 	if (O == gt_interp) return 2;

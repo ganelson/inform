@@ -229,7 +229,7 @@ Array Allocated_Match_Vars --> 10; ! Indexed text to hold values of the variable
 
 [ TEXT_TY_RE_EmptyMatchVars txt
 	n;
-	for (n=0:(n<RE_Subexpressions-->10) && (n<10): n++)
+	for (n=0:((n<RE_Subexpressions-->10) && (n<10)): n++)
 		if (Allocated_Match_Vars-->n ~= 0)
 			BlkValueWrite(Allocated_Match_Vars-->n, 0, 0);
 ];

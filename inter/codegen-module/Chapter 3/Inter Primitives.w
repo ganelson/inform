@@ -16,6 +16,8 @@ inter_symbol *random_interp = NULL;
 inter_symbol *not_interp = NULL;
 inter_symbol *and_interp = NULL;
 inter_symbol *or_interp = NULL;
+inter_symbol *alternative_interp = NULL;
+inter_symbol *alternativecase_interp = NULL;
 inter_symbol *bitwiseand_interp = NULL;
 inter_symbol *bitwiseor_interp = NULL;
 inter_symbol *bitwisenot_interp = NULL;
@@ -137,6 +139,8 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!not", I"val -> val", &not_interp);
 	Primitives::emit_one(I, IRS, I"!and", I"val val -> val", &and_interp);
 	Primitives::emit_one(I, IRS, I"!or", I"val val -> val", &or_interp);
+	Primitives::emit_one(I, IRS, I"!alternative", I"val val -> val", &alternative_interp);
+	Primitives::emit_one(I, IRS, I"!alternativecase", I"val val -> val", &alternativecase_interp);
 	Primitives::emit_one(I, IRS, I"!bitwiseand", I"val val -> val", &bitwiseand_interp);
 	Primitives::emit_one(I, IRS, I"!bitwiseor", I"val val -> val", &bitwiseor_interp);
 	Primitives::emit_one(I, IRS, I"!bitwisenot", I"val -> val", &bitwisenot_interp);
@@ -248,6 +252,8 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e NOT_BIP from 1
 @e AND_BIP
 @e OR_BIP
+@e ALTERNATIVE_BIP
+@e ALTERNATIVECASE_BIP
 @e BITWISEAND_BIP
 @e BITWISEOR_BIP
 @e BITWISENOT_BIP
@@ -345,6 +351,8 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!not")) bip = NOT_BIP;
 	if (Str::eq(symb->symbol_name, I"!and")) bip = AND_BIP;
 	if (Str::eq(symb->symbol_name, I"!or")) bip = OR_BIP;
+	if (Str::eq(symb->symbol_name, I"!alternative")) bip = ALTERNATIVE_BIP;
+	if (Str::eq(symb->symbol_name, I"!alternativecase")) bip = ALTERNATIVECASE_BIP;
 	if (Str::eq(symb->symbol_name, I"!bitwiseand")) bip = BITWISEAND_BIP;
 	if (Str::eq(symb->symbol_name, I"!bitwiseor")) bip = BITWISEOR_BIP;
 	if (Str::eq(symb->symbol_name, I"!bitwisenot")) bip = BITWISENOT_BIP;

@@ -42,6 +42,12 @@ void Hierarchy::establish(void) {
 @e SIBLING_HL
 @e RANDOM_HL
 @e INDIRECT_HL
+@e SPACES_HL
+@e METACLASS_HL
+@e ROUTINE_HL
+@e STRING_HL
+@e CLASS_HL
+@e DICT_PAR2_HL
 @e ASM_ARROW_HL
 @e ASM_SP_HL
 @e ASM_LABEL_HL
@@ -49,6 +55,7 @@ void Hierarchy::establish(void) {
 @e GRAMMAR_TABLE_HL
 @e VERSION_NUMBER_HL
 @e PROPERTY_METADATA_HL
+@e FBNA_PROP_NUMBER_HL
 @e SELF_HL
 @e DEBUG_HL
 @e TARGET_ZCODE_HL
@@ -87,6 +94,12 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(CHILD_HL, I"child", Translation::same(), generic_basics);
 	HierarchyLocations::con(SIBLING_HL, I"sibling", Translation::same(), generic_basics);
 	HierarchyLocations::con(INDIRECT_HL, I"indirect", Translation::same(), generic_basics);
+	HierarchyLocations::con(SPACES_HL, I"spaces", Translation::same(), generic_basics);
+	HierarchyLocations::con(METACLASS_HL, I"metaclass", Translation::same(), generic_basics);
+	HierarchyLocations::con(ROUTINE_HL, I"Routine", Translation::same(), generic_basics);
+	HierarchyLocations::con(STRING_HL, I"String", Translation::same(), generic_basics);
+	HierarchyLocations::con(CLASS_HL, I"Class", Translation::same(), generic_basics);
+	HierarchyLocations::con(DICT_PAR2_HL, I"#dict_par2", Translation::same(), generic_basics);
 	HierarchyLocations::con(RANDOM_HL, I"random", Translation::same(), generic_basics);
 	HierarchyLocations::con(ASM_ARROW_HL, I"__assembly_arrow", Translation::to(I"->"), generic_basics);
 	HierarchyLocations::con(ASM_SP_HL, I"__assembly_sp", Translation::to(I"sp"), generic_basics);
@@ -95,6 +108,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(GRAMMAR_TABLE_HL, I"#grammar_table", Translation::same(), generic_basics);
 	HierarchyLocations::con(VERSION_NUMBER_HL, I"#version_number", Translation::same(), generic_basics);
 	HierarchyLocations::con(PROPERTY_METADATA_HL, I"property_metadata", Translation::same(), generic_basics);
+	HierarchyLocations::con(FBNA_PROP_NUMBER_HL, I"FBNA_PROP_NUMBER", Translation::same(), generic_basics);
 	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), generic_basics);
 	HierarchyLocations::con(RESPONSETEXTS_HL, I"ResponseTexts", Translation::same(), generic_basics);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), generic_basics);
@@ -1587,9 +1601,16 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case RANDOM_HL:
 		case VERSION_NUMBER_HL:
 		case PROPERTY_METADATA_HL:
+		case FBNA_PROP_NUMBER_HL:
 		case FLOAT_NAN_HL:
 		case RESPONSETEXTS_HL:
 		case INDIRECT_HL:
+		case SPACES_HL:
+		case METACLASS_HL:
+		case ROUTINE_HL:
+		case STRING_HL:
+		case CLASS_HL:
+		case DICT_PAR2_HL:
 		case ACTIONS_TABLE_HL:
 		case GRAMMAR_TABLE_HL:
 		case ASM_ARROW_HL:

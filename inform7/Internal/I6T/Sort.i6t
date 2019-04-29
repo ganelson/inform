@@ -21,10 +21,6 @@ Global I7S_Dir; ! The direction of sorting: ascending (1) or descending (-1)
 Global I7S_Swap; ! The current routine for swapping two fields
 Global I7S_Comp; ! The current routine for comparing two fields
 
-#ifdef MEASURE_SORT_PERFORMANCE;
-Global I7S_CCOUNT; Global I7S_CCOUNT2; Global I7S_XCOUNT; ! For testing only
-#endif;
-
 @p Front End.
 To perform a sort, we first call |SetSortDomain| to declare the swap and
 compare functions to be used, and then call |SortArray| actually to sort. (It
@@ -49,17 +45,7 @@ greater in value.
 	I7S_Tab = tab;
 	I7S_Col = col;
 	I7S_Dir = dir;
-	#ifdef MEASURE_SORT_PERFORMANCE;
-	I7S_CCOUNT = 0;
-	I7S_CCOUNT2 = 0;
-	I7S_XCOUNT = 0;
-	#endif;
 	SortRange(0, size, algorithm);
-	#ifdef MEASURE_SORT_PERFORMANCE;
-	if (test_flag)
-		print "Sorted array of size ", size, " with ", I7S_CCOUNT2, "*10000 + ", I7S_CCOUNT,
-			" comparisons and ", I7S_XCOUNT, " exchanges^";
-	#endif;
 ];
 
 @p Sort Range.
@@ -87,20 +73,11 @@ algorithms have to the actual data being sorted is through these routines.
 
 @c
 [ CompareFields x y;
-	#ifdef MEASURE_SORT_PERFORMANCE;
-	I7S_CCOUNT++;
-	if (I7S_CCOUNT == 10000) { I7S_CCOUNT = 0; I7S_CCOUNT2++; }
-	#endif;
 	return I7S_Dir*I7S_Comp(I7S_Tab, I7S_Col, x+1, y+1, I7S_Dir);
 ];
 
 [ ExchangeFields x y r;
-	#ifdef MEASURE_SORT_PERFORMANCE;
-	I7S_XCOUNT++;
-	if (I7S_XCOUNT < 0) { print "XO^"; I7S_XCOUNT = 0; }
-	#endif;
-	r = I7S_Swap(I7S_Tab, x+1, y+1);
-	
+	r = I7S_Swap(I7S_Tab, x+1, y+1);	
 	return r; 
 ];
 

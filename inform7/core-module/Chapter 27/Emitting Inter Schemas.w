@@ -30,6 +30,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		case OPERATION_ISNT: @<Operation@>; break;
 		case ASSEMBLY_ISNT: @<Assembly@>; break;
 		case CALL_ISNT: @<Call@>; break;
+		case DIRECTIVE_ISNT: @<Directive@>; break;
 		default: internal_error("unknown schema node type");
 	}
 }
@@ -231,12 +232,14 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	}
 
 @<Expression@> =
-	int cat_me = FALSE, print_ret_me = FALSE;
+	int cat_me = FALSE, lab_me = FALSE, print_ret_me = FALSE;
 	int tc = 0; for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) tc++;
 	if ((tc > 1) && (prim_cat == VAL_PRIM_CAT)) cat_me = TRUE;
 
 	if ((tc == 1) && (prim_cat == CODE_PRIM_CAT) && (isn->expression_tokens->ist_type == DQUOTED_ISTT))
 		print_ret_me = TRUE;
+
+	if ((tc == 1) && (prim_cat == LAB_PRIM_CAT)) lab_me = TRUE;
 
 	if (cat_me) { Emit::evaluation(); Emit::down(); }
 	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
@@ -244,12 +247,16 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
 		switch (t->ist_type) {
 			case IDENTIFIER_ISTT: {
-				local_variable *lvar = LocalVariables::by_name_any(t->material);
-				if (lvar) {
-					inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-					Emit::val_symbol(K_value, lvar_s);
-				} else {
-					Emit::val_symbol(K_value, EmitInterSchemas::find_identifier(t, first_call, second_call));
+				if (lab_me)
+					Emit::lab(Emit::reserve_label(t->material));
+				else {
+					local_variable *lvar = LocalVariables::by_name_any(t->material);
+					if (lvar) {
+						inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+						Emit::val_symbol(K_value, lvar_s);
+					} else {
+						Emit::val_symbol(K_value, EmitInterSchemas::find_identifier(t, first_call, second_call));
+					}
 				}
 				break;
 			}
@@ -306,6 +313,44 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 
 	if (cat_me) { Emit::up(); }
 	if (prim_cat == REF_PRIM_CAT) { Emit::up(); }
+
+@<Directive@> =
+	LOG("Gen on dir!\n");
+	InterSchemas::log_just(isn, 0);
+	if (isn->dir_clarifier == ENDIF_I6RW) {
+		Emit::entire_splat_code(I"#endif;");
+	} else if (isn->dir_clarifier == IFNOT_I6RW) {
+		Emit::entire_splat_code(I"#ifnot;");
+	} else if ((isn->dir_clarifier == IFDEF_I6RW) || (isn->dir_clarifier == IFNDEF_I6RW)) {
+		TEMPORARY_TEXT(T);
+		switch(isn->dir_clarifier) {
+			case IFDEF_I6RW: WRITE_TO(T, "#ifdef %S;", isn->child_node->expression_tokens->material); break;
+			case IFNDEF_I6RW: WRITE_TO(T, "#ifndef %S;", isn->child_node->expression_tokens->material); break;
+		}
+		Emit::entire_splat_code(T);
+		LOG("Resorted to %S\n", T);
+		DISCARD_TEXT(T);
+	} else {
+		TEMPORARY_TEXT(T);
+		switch(isn->dir_clarifier) {
+			case IFTRUE_I6RW: WRITE_TO(T, "#iftrue "); break;
+			case IFFALSE_I6RW: WRITE_TO(T, "#iffalse "); break;
+			default: internal_error("unknown directive"); break;
+		}
+		WRITE_TO(T, "%S", isn->child_node->child_node->expression_tokens->material);
+		if (isn->child_node->isn_clarifier == eq_interp) WRITE_TO(T, " == ");
+		else if (isn->child_node->isn_clarifier == ne_interp) WRITE_TO(T, " ~= ");
+		else if (isn->child_node->isn_clarifier == gt_interp) WRITE_TO(T, " > ");
+		else if (isn->child_node->isn_clarifier == ge_interp) WRITE_TO(T, " >= ");
+		else if (isn->child_node->isn_clarifier == lt_interp) WRITE_TO(T, " < ");
+		else if (isn->child_node->isn_clarifier == le_interp) WRITE_TO(T, " <= ");
+		else internal_error("unknown operator");
+		WRITE_TO(T, "%S;", isn->child_node->child_node->next_node->expression_tokens->material);
+
+		Emit::entire_splat_code(T);
+		LOG("Resorted to %S\n", T);
+		DISCARD_TEXT(T);
+	}
 
 @ =
 inter_symbol *EmitInterSchemas::find_identifier(inter_schema_token *t, inter_symbols_table *first_call, inter_symbols_table *second_call) {

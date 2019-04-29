@@ -294,10 +294,17 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"sibling")) return;
 	if (Str::eq(con_name->symbol_name, I"indirect")) return;
 	if (Str::eq(con_name->symbol_name, I"random")) return;
+	if (Str::eq(con_name->symbol_name, I"spaces")) return;
+	if (Str::eq(con_name->symbol_name, I"metaclass")) return;
+	if (Str::eq(con_name->symbol_name, I"Routine")) return;
+	if (Str::eq(con_name->symbol_name, I"String")) return;
+	if (Str::eq(con_name->symbol_name, I"Class")) return;
+	if (Str::eq(con_name->symbol_name, I"#dict_par2")) return;
 	if (Str::eq(con_name->symbol_name, I"#actions_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#grammar_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#version_number")) return;
 	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
+	if (Str::eq(con_name->symbol_name, I"FBNA_PROP_NUMBER")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_arrow")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_sp")) return;
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
@@ -624,6 +631,8 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case NOT_BIP: @<Generate primitive for not@>; break;
 				case AND_BIP: @<Generate primitive for and@>; break;
 				case OR_BIP: @<Generate primitive for or@>; break;
+				case ALTERNATIVE_BIP: @<Generate primitive for alternative@>; break;
+				case ALTERNATIVECASE_BIP: @<Generate primitive for alternativecase@>; break;
 				case BITWISEAND_BIP: @<Generate primitive for bitwiseand@>; break;
 				case BITWISEOR_BIP: @<Generate primitive for bitwiseor@>; break;
 				case BITWISENOT_BIP: @<Generate primitive for bitwisenot@>; break;
@@ -1034,6 +1043,15 @@ then the result.
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
+@<Generate primitive for alternative@> =
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(" or ");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+
+@<Generate primitive for alternativecase@> =
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(", ");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for bitwiseand@> =
 	WRITE("((");

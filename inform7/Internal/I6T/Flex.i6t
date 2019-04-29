@@ -615,7 +615,7 @@ These two routines are purely for testing the above code.
 
 [ FlexDebugDecomposition from to txb pf;
 	if (to==0) to = NULL;
-	for (txb=from:(txb~=to) && (txb~=NULL):txb=txb-->BLK_NEXT) {
+	for (txb=from:((txb~=to) && (txb~=NULL)):txb=txb-->BLK_NEXT) {
 		if (pf) print "+";
 		print FlexSize(txb);
 		pf = true;

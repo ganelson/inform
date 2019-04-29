@@ -57,7 +57,7 @@ To PURLOIN is to acquire something without reference to any rules on accessibili
 @c
 [ XPurloinSub;
     if (XTestMove(noun, player)) return;
-    move noun to player; give noun moved ~concealed;
+    move noun to player; give noun moved; give noun ~concealed;
     say__p = 1;
     "[Purloined.]";
 ];

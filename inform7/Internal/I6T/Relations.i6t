@@ -397,7 +397,7 @@ implements the RELATIONS testing command. Speed is unimportant here.
 				if (Relation_TestVtoV(obj1, relation, obj2)) {
 					if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 					print "  ", (The) obj1, "  >=>  ";
-					(proutine2).call(obj2);
+					proutine2.call(obj2);
 					print "^";
 				}
 		  }
@@ -409,7 +409,7 @@ implements the RELATIONS testing command. Speed is unimportant here.
 				if (Relation_TestVtoV(obj1, relation, obj2)) {
 					if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 					print "  ";
-					(proutine1).call(obj1);
+					proutine1.call(obj1);
 					print "  >=>  ", (the) obj2, "^";
 				}
 		  }
@@ -420,9 +420,9 @@ implements the RELATIONS testing command. Speed is unimportant here.
 			if (Relation_TestVtoV(obj1, relation, obj2)) {
 				if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 				print "  ";
-				(proutine1).call(obj1);
+				proutine1.call(obj1);
 				print "  >=>  ";
-				(proutine2).call(obj2);
+				proutine2.call(obj2);
 				print "^";
 		  }
 ];
