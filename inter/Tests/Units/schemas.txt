@@ -1,0 +1,1536 @@
+schema
+	{-say:val:K} 
+end
+
+schema
+	print (number) say__n=({something}); 
+end
+
+schema
+	STextSubstitution(); 
+end
+
+schema
+	print (PrintTimeOfDayEnglish) {something}; 
+end
+
+schema
+	print (a) {something}; 
+end
+
+schema
+	print (a) {something}; 
+end
+
+schema
+	CIndefArt({something}); 
+end
+
+schema
+	CIndefArt({something}); 
+end
+
+schema
+	print (the) {something}; 
+end
+
+schema
+	print (The) {something}; 
+end
+
+schema
+	@nop; {-segment-count}: 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	{-close-brace} 
+end
+
+schema
+	new_line; 
+end
+
+schema
+	DivideParagraphPoint(); 
+end
+
+schema
+	CommandClarificationBreak(); 
+end
+
+schema
+	DivideParagraphPoint(); new_line; 
+end
+
+schema
+	RunParagraphOn(); 
+end
+
+schema
+	SpecialLookSpacingBreak(); 
+end
+
+schema
+	(say__p) 
+end
+
+schema
+	print "["; 
+end
+
+schema
+	print "]"; 
+end
+
+schema
+	print "'"; 
+end
+
+schema
+	print "~"; 
+end
+
+schema
+	style bold; 
+end
+
+schema
+	style underline; 
+end
+
+schema
+	style roman; 
+end
+
+schema
+	font off; 
+end
+
+schema
+	font on; 
+end
+
+schema
+	DisplayBoxedQuotation({-box-quotation-text:Q}); 
+end
+
+schema
+	Banner(); 
+end
+
+schema
+	ShowExtensionVersions(); 
+end
+
+schema
+	ShowFullExtensionVersions(); 
+end
+
+schema
+	SL_Location(true); 
+end
+
+schema
+	WriteListFrom(child({O}), {phrase options}); 
+end
+
+schema
+	c_style = c_style &~ (RECURSE_BIT+FULLINV_BIT+PARTINV_BIT); 
+end
+
+schema
+	LIST_OF_TY_Say({-by-reference:L}, 1); 
+end
+
+schema
+	LIST_OF_TY_Say({-by-reference:L}, 2); 
+end
+
+schema
+	LIST_OF_TY_Say({-by-reference:L}, 3); 
+end
+
+schema
+	list_filter_routine = {D}; 
+end
+
+schema
+	list_filter_routine = 0; 
+end
+
+schema
+	{cn} 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X:Y}) 
+end
+
+schema
+	({-arithmetic-operation:X}) 
+end
+
+schema
+	({-arithmetic-operation:X}) 
+end
+
+schema
+	{-primitive-definition:total-of} 
+end
+
+schema
+	Float({R}, {N}); 
+end
+
+schema
+	FloatDec({R}); 
+end
+
+schema
+	FloatDec({R}, {N}); 
+end
+
+schema
+	FloatExp({R}); 
+end
+
+schema
+	FloatExp({R}, {N}); 
+end
+
+schema
+	REAL_NUMBER_TY_Reciprocal({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Abs({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Root({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Ceiling({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Floor({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_to_NUMBER_TY({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Log({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_BLog({R}, {N}) 
+end
+
+schema
+	REAL_NUMBER_TY_Exp({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Pow({R}, {P}) 
+end
+
+schema
+	REAL_NUMBER_TY_Times({R}, $+0.0174532925) 
+end
+
+schema
+	REAL_NUMBER_TY_Sin({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Cos({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Tan({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Arcsin({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Arccos({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Arctan({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Sinh({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Cosh({R}) 
+end
+
+schema
+	REAL_NUMBER_TY_Tanh({R}) 
+end
+
+schema
+	{-primitive-definition:number-of} 
+end
+
+schema
+	{-next-routine:K}({X}) 
+end
+
+schema
+	{-previous-routine:K}({X}) 
+end
+
+schema
+	({C}) 
+end
+
+schema
+	{-primitive-definition:random-of} 
+end
+
+schema
+	{-ranger-routine:K}({first value}, {second value}) 
+end
+
+schema
+	{-ranger-routine:K}({first value}, {second value}) 
+end
+
+schema
+	{-ranger-routine:K}({first value}, {second value}) 
+end
+
+schema
+	{-ranger-routine:K}({first value}, {second value}) 
+end
+
+schema
+	(GenerateRandomNumber(1, {M}) <= {N}) 
+end
+
+schema
+	VM_Seed_RNG({N}); 
+end
+
+schema
+	{-my:ct_0} = {T}; {-my:ct_1} = {N}; 
+end
+
+schema
+	{-my:ct_0} = {T}; {-my:ct_1} = TableRowCorr(ct_0, {TC}, {w}); 
+end
+
+schema
+	{-my:ct_0} = {T}; {-my:ct_1} = TableBlankRow(ct_0); 
+end
+
+schema
+	{-my:ct_0} = {T}; {-my:ct_1} = TableRandomRow(ct_0); 
+end
+
+schema
+	TableRows({T}) 
+end
+
+schema
+	TableBlankRows({T}) 
+end
+
+schema
+	TableFilledRows({T}) 
+end
+
+schema
+	({-reference-exists:TR}) 
+end
+
+schema
+	({-reference-exists:TR} == false) 
+end
+
+schema
+	{-by-reference-blank-out:tr}; 
+end
+
+schema
+	TableBlankOutRow({-my:ct_0}, {-my:ct_1}); 
+end
+
+schema
+	TableBlankOutColumn({T}, {TC}); 
+end
+
+schema
+	TableBlankOutAll({T}); 
+end
+
+schema
+	TableDebug({T}); 
+end
+
+schema
+	TableRowDebug({-my:ct_0}, {-my:ct_1}); 
+end
+
+schema
+	TableRowDebug({T}, {N}); 
+end
+
+schema
+	TableColumnDebug({T}, {TC}); 
+end
+
+schema
+	TableShuffle({T}); 
+end
+
+schema
+	TableSort({T}, {TC}, 1); 
+end
+
+schema
+	TableSort({T}, {TC}, -1); 
+end
+
+schema
+	TEXT_TY_BlobAccess({-by-reference:T}, CHR_BLOB) 
+end
+
+schema
+	TEXT_TY_BlobAccess({-by-reference:T}, WORD_BLOB) 
+end
+
+schema
+	TEXT_TY_BlobAccess({-by-reference:T}, PWORD_BLOB) 
+end
+
+schema
+	TEXT_TY_BlobAccess({-by-reference:T}, UWORD_BLOB) 
+end
+
+schema
+	TEXT_TY_BlobAccess({-by-reference:T}, LINE_BLOB) 
+end
+
+schema
+	TEXT_TY_BlobAccess({-by-reference:T}, PARA_BLOB) 
+end
+
+schema
+	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, CHR_BLOB) 
+end
+
+schema
+	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, WORD_BLOB) 
+end
+
+schema
+	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, PWORD_BLOB) 
+end
+
+schema
+	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, UWORD_BLOB) 
+end
+
+schema
+	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, LINE_BLOB) 
+end
+
+schema
+	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, PARA_BLOB) 
+end
+
+schema
+	TEXT_TY_SubstitutedForm({-new:text}, {-by-reference:T}) 
+end
+
+schema
+	TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) 
+end
+
+schema
+	TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) 
+end
+
+schema
+	TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) 
+end
+
+schema
+	TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) 
+end
+
+schema
+	TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) 
+end
+
+schema
+	TEXT_TY_RE_GetMatchVar(0) 
+end
+
+schema
+	TEXT_TY_RE_GetMatchVar({N}) 
+end
+
+schema
+	TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) 
+end
+
+schema
+	TEXT_TY_ReplaceText(WORD_BLOB, {-lvalue-by-reference:T}, {-by-reference:find}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceText(PWORD_BLOB, {-lvalue-by-reference:T}, {-by-reference:find}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceBlob(CHR_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceBlob(WORD_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceBlob(PWORD_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceBlob(UWORD_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceBlob(LINE_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_ReplaceBlob(PARA_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
+end
+
+schema
+	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 0) 
+end
+
+schema
+	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 1) 
+end
+
+schema
+	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 2) 
+end
+
+schema
+	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 3) 
+end
+
+schema
+	TEXT_TY_CharactersOfCase({-by-reference:T}, 0) 
+end
+
+schema
+	TEXT_TY_CharactersOfCase({-by-reference:T}, 1) 
+end
+
+schema
+	{V}(1); 
+end
+
+schema
+	{V}(2); 
+end
+
+schema
+	{V}(3); 
+end
+
+schema
+	{V}(CV_POS, PNToVP(), story_tense); 
+end
+
+schema
+	{V}(CV_POS, PNToVP(), {T}); 
+end
+
+schema
+	{V}(CV_POS, {P}, story_tense); 
+end
+
+schema
+	{V}(CV_POS, {P}, {T}); 
+end
+
+schema
+	{V}(CV_NEG, PNToVP(), story_tense); 
+end
+
+schema
+	{V}(CV_NEG, PNToVP(), {T}); 
+end
+
+schema
+	{V}(CV_NEG, {P}, story_tense); 
+end
+
+schema
+	{V}(CV_NEG, {P}, {T}); 
+end
+
+schema
+	{V}(CV_MEANING) 
+end
+
+schema
+	LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 0, 0, {phrase options}); 
+end
+
+schema
+	LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 1, {E}, {phrase options}); 
+end
+
+schema
+	LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 0, 0, {phrase options}); 
+end
+
+schema
+	LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 1, {E}, 0); 
+end
+
+schema
+	LIST_OF_TY_RemoveValue({-lvalue-by-reference:L}, {existing entry}, {phrase options}); 
+end
+
+schema
+	LIST_OF_TY_Remove_List({-lvalue-by-reference:L}, {-by-reference:N}, {phrase options}); 
+end
+
+schema
+	LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N}, {phrase options}); 
+end
+
+schema
+	LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); 
+end
+
+schema
+	(LIST_OF_TY_FindItem({-by-reference:L}, {N})) 
+end
+
+schema
+	(LIST_OF_TY_FindItem({-by-reference:L}, {N}) == false) 
+end
+
+schema
+	{-new-list-of:list of K} 
+end
+
+schema
+	LIST_OF_TY_Mol({-new:list of objects}) 
+end
+
+schema
+	LIST_OF_TY_Set_Mol({-by-reference:L}); 
+end
+
+schema
+	LIST_OF_TY_GetLength({-by-reference:L}) 
+end
+
+schema
+	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, 1); 
+end
+
+schema
+	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, 1); 
+end
+
+schema
+	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, -1); 
+end
+
+schema
+	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, 1); 
+end
+
+schema
+	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, 0); 
+end
+
+schema
+	LIST_OF_TY_Reverse({-lvalue-by-reference:L}); 
+end
+
+schema
+	LIST_OF_TY_Rotate({-lvalue-by-reference:L}, 0); 
+end
+
+schema
+	LIST_OF_TY_Rotate({-lvalue-by-reference:L}, 1); 
+end
+
+schema
+	LIST_OF_TY_Sort({-lvalue-by-reference:L}, 1); 
+end
+
+schema
+	LIST_OF_TY_Sort({-lvalue-by-reference:L}, -1); 
+end
+
+schema
+	LIST_OF_TY_Sort({-lvalue-by-reference:L}, 2); 
+end
+
+schema
+	LIST_OF_TY_Sort({-lvalue-by-reference:L}, 1, {P}, {-property-holds-block-value:P}); 
+end
+
+schema
+	LIST_OF_TY_Sort({-lvalue-by-reference:L}, -1, {P}, {-property-holds-block-value:P}); 
+end
+
+schema
+	{-show-me:R}; RelationTest({-by-reference:R}, RELS_SHOW); 
+end
+
+schema
+	RelationRouteTo({-by-reference:R},{O1},{O2},false) 
+end
+
+schema
+	RelationRouteTo({-by-reference:R},{O1},{O2},true) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LIST, {-new:list of K}, RLIST_ALL_X) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_X, {Y}, {-new:list of K}) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_CAN_GET_X) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_CAN_GET_Y) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_GET_X) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) 
+end
+
+schema
+	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) 
+end
+
+schema
+	{-primitive-definition:description-application} 
+end
+
+schema
+	{-primitive-definition:function-application} 
+end
+
+schema
+	{-primitive-definition:function-application} 
+end
+
+schema
+	{-primitive-definition:function-application} 
+end
+
+schema
+	{-primitive-definition:function-application} 
+end
+
+schema
+	{-primitive-definition:function-application}; 
+end
+
+schema
+	{-primitive-definition:function-application}; 
+end
+
+schema
+	{-primitive-definition:function-application}; 
+end
+
+schema
+	{-primitive-definition:function-application}; 
+end
+
+schema
+	{-show-me:V} 
+end
+
+schema
+	{-new:K} 
+end
+
+schema
+	FileIO_GetTable({filename}, {T}); 
+end
+
+schema
+	FileIO_PutTable({filename}, {T}); 
+end
+
+schema
+	(FileIO_Exists({filename}, false)) 
+end
+
+schema
+	(FileIO_Ready({filename}, false)) 
+end
+
+schema
+	FileIO_MarkReady({filename}, true); 
+end
+
+schema
+	FileIO_MarkReady({filename}, false); 
+end
+
+schema
+	FileIO_PutContents({FN}, {T}, false); 
+end
+
+schema
+	FileIO_PutContents({FN}, {T}, true); 
+end
+
+schema
+	FileIO_PrintContents({FN}); say__p = 1; 
+end
+
+schema
+	DisplayFigure(ResourceIDsOfFigures-->{F}, {phrase options}); 
+end
+
+schema
+	ResourceIDsOfFigures-->{F} 
+end
+
+schema
+	PlaySound(ResourceIDsOfSounds-->{SFX}, {phrase options}); 
+end
+
+schema
+	ResourceIDsOfSounds-->{SFX} 
+end
+
+schema
+	{c}  
+end
+
+schema
+	(~~{c})  
+end
+
+schema
+	end
+
+schema
+	end
+
+schemawhile {c}  
+end
+
+schema
+	for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  
+end
+
+schema
+	for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  
+end
+
+schema
+	{-primitive-definition:repeat-through} 
+end
+
+schema
+	{-primitive-definition:repeat-through-list} 
+end
+
+schema
+	{-primitive-definition:break} 
+end
+
+schema
+	continue; 
+end
+
+schema
+	rtrue; 
+end
+
+schema
+	rtrue; 
+end
+
+schema
+	rfalse; 
+end
+
+schema
+	rfalse; 
+end
+
+schema
+	return {-return-value:something}; 
+end
+
+schema
+	; 
+end
+
+schema
+	rtrue; 
+end
+
+schema
+	{-try-action:S} 
+end
+
+schema
+	{-try-action-silently:S} 
+end
+
+schema
+	{-try-action-silently:S} 
+end
+
+schema
+	(keep_silent == false) 
+end
+
+schema
+	(NeedToTouchNoun()) 
+end
+
+schema
+	(NeedToTouchSecondNoun()) 
+end
+
+schema
+	(NeedToCarryNoun()) 
+end
+
+schema
+	(NeedToCarrySecondNoun()) 
+end
+
+schema
+	(NeedLightForAction()) 
+end
+
+schema
+	rtrue; 
+end
+
+schema
+	rfalse; 
+end
+
+schema
+	STORED_ACTION_TY_Current({-new:action}) 
+end
+
+schema
+	{A} 
+end
+
+schema
+	(STORED_ACTION_TY_Involves({-by-reference:act}, {X})) 
+end
+
+schema
+	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_ACTION_F)) 
+end
+
+schema
+	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_NOUN_F)) 
+end
+
+schema
+	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_SECOND_F)) 
+end
+
+schema
+	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_ACTOR_F)) 
+end
+
+schema
+	CarryOutActivity({A}); 
+end
+
+schema
+	CarryOutActivity({A}, {val}); 
+end
+
+schema
+	rfalse; 
+end
+
+schema
+	BeginActivity({A}); 
+end
+
+schema
+	BeginActivity({A}, {val}); 
+end
+
+schema
+	(~~(ForActivity({A}))) 
+end
+
+schema
+	(~~(ForActivity({A}, {val}))) 
+end
+
+schema
+	EndActivity({A}); 
+end
+
+schema
+	EndActivity({A}, {val}); 
+end
+
+schema
+	AbandonActivity({A}); 
+end
+
+schema
+	AbandonActivity({A}, {val}); 
+end
+
+schema
+	FollowRulebook({RL}); 
+end
+
+schema
+	FollowRulebook({RL}, {V}, true); 
+end
+
+schema
+	FollowRulebook({RL}); 
+end
+
+schema
+	ResultOfRule({RL}, 0, true, {-strong-kind:K}) 
+end
+
+schema
+	ResultOfRule({RL}, {V}, true, {-strong-kind:L}) 
+end
+
+schema
+	ResultOfRule({RL}, 0, true, {-strong-kind:K}) 
+end
+
+schema
+	if (FollowRulebook({RL})) rtrue; 
+end
+
+schema
+	if (FollowRulebook({RL}, {V}, true)) rtrue; 
+end
+
+schema
+	if (FollowRulebook({RL})) rtrue; 
+end
+
+schema
+	rfalse; 
+end
+
+schema
+	RulebookSucceeds(); rtrue; 
+end
+
+schema
+	RulebookFails(); rtrue; 
+end
+
+schema
+	RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; 
+end
+
+schema
+	(RulebookSucceeded()) 
+end
+
+schema
+	(RulebookFailed()) 
+end
+
+schema
+	(ResultOfRule()) 
+end
+
+schema
+	deadflag=3; story_complete=false; 
+end
+
+schema
+	deadflag=3; story_complete=true; 
+end
+
+schema
+	deadflag={-by-reference:finale}; story_complete=false; 
+end
+
+schema
+	deadflag={-by-reference:finale}; story_complete=true; 
+end
+
+schema
+	(deadflag~=0) 
+end
+
+schema
+	(story_complete) 
+end
+
+schema
+	(deadflag==0) 
+end
+
+schema
+	(story_complete==false) 
+end
+
+schema
+	resurrect_please = true; 
+end
+
+schema
+	({t}%ONE_HOUR) 
+end
+
+schema
+	({t}/ONE_HOUR) 
+end
+
+schema
+	((({t}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))<(({t2}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))) 
+end
+
+schema
+	((({t}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))>(({t2}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))) 
+end
+
+schema
+	(({t2}-{t}+TWENTY_FOUR_HOURS)%(TWENTY_FOUR_HOURS)) 
+end
+
+schema
+	(({t2}+{t}+TWENTY_FOUR_HOURS)%(TWENTY_FOUR_HOURS)) 
+end
+
+schema
+	(({n})%(TWENTY_FOUR_HOURS)) 
+end
+
+schema
+	(({n}*ONE_HOUR)%(TWENTY_FOUR_HOURS)) 
+end
+
+schema
+	SetTimedEvent({-mark-event-used:R}, {t}+1, 0); 
+end
+
+schema
+	SetTimedEvent({-mark-event-used:R}, {t}, 1); 
+end
+
+schema
+	SetTimedEvent({-mark-event-used:R}, (the_time+{t})%(TWENTY_FOUR_HOURS), 1); 
+end
+
+schema
+	(scene_endings-->({sc}-1)) 
+end
+
+schema
+	(scene_endings-->({sc}-1) == 0) 
+end
+
+schema
+	(scene_endings-->({sc}-1) > 1) 
+end
+
+schema
+	(scene_endings-->({sc}-1) <= 1) 
+end
+
+schema
+	(SceneUtility({sc}, 1)) 
+end
+
+schema
+	(SceneUtility({sc}, 2)) 
+end
+
+schema
+	(SceneUtility({sc}, 3)) 
+end
+
+schema
+	(SceneUtility({sc}, 4)) 
+end
+
+schema
+	(location==thedark) 
+end
+
+schema
+	MoveObject({something}, {something else}, {phrase options}, false); 
+end
+
+schema
+	RemoveFromPlay({something}); 
+end
+
+schema
+	MoveBackdrop({O}, {D}); 
+end
+
+schema
+	MoveFloatingObjects(); 
+end
+
+schema
+	LocationOf({O}) 
+end
+
+schema
+	MapConnection({R1},{D}) 
+end
+
+schema
+	DoorFrom({R1},{D}) 
+end
+
+schema
+	OtherSideOfDoor({D},{R1}) 
+end
+
+schema
+	DirectionDoorLeadsIn({D},{R1}) 
+end
+
+schema
+	RoomOrDoorFrom({R1},{D}) 
+end
+
+schema
+	AssertMapConnection({R1},{D},{R2}); 
+end
+
+schema
+	AssertMapConnection({R1},{D},nothing); 
+end
+
+schema
+	FrontSideOfDoor({D}) 
+end
+
+schema
+	BackSideOfDoor({D}) 
+end
+
+schema
+	MapRouteTo({R1},{R2},0,{phrase options}) 
+end
+
+schema
+	MapRouteTo({R1},{R2},0,{phrase options},true) 
+end
+
+schema
+	MapRouteTo({R1},{R2},{RS},{phrase options}) 
+end
+
+schema
+	MapRouteTo({R1},{R2},{RS},{phrase options},true) 
+end
+
+schema
+	(HolderOf({something})) 
+end
+
+schema
+	(sibling({something})) 
+end
+
+schema
+	(child({something})) 
+end
+
+schema
+	YesOrNo() 
+end
+
+schema
+	(SnippetMatches({S}, {T})) 
+end
+
+schema
+	(SnippetMatches({S}, {T}) == false) 
+end
+
+schema
+	(matched_text=SnippetIncludes({T},{S})) 
+end
+
+schema
+	(SnippetIncludes({T},{S})==0) 
+end
+
+schema
+	SetPlayersCommand({-by-reference:T}); 
+end
+
+schema
+	SpliceSnippet({S}, {-by-reference:T}); 
+end
+
+schema
+	SpliceSnippet({S}, 0); 
+end
+
+schema
+	RulebookFails(); rtrue; 
+end
+
+schema
+	PlaceInScope({O}, {phrase options}); 
+end
+
+schema
+	ScopeWithin({O}); 
+end
+
+schema
+	PronounNotice({O}); 
+end
+
+schema
+	NotifyTheScore(); 
+end
+
+schema
+	print (address) pronoun_word; 
+end
+
+schema
+	PrintCommand(); 
+end
+
+schema
+	print (address) pronoun_word; 
+end
+
+schema
+	PrintCommand(); 
+end
+
+schema
+	CoreOf({X}) 
+end
+
+schema
+	(CommonAncestor({O}, {P})) 
+end
+
+schema
+	(CoreOfParentOfCoreOf({O})) 
+end
+
+schema
+	VisibilityParent({O}) 
+end
+
+schema
+	FindVisibilityLevels(); 
+end
+
+schema
+	TouchabilityCeiling({O}) 
+end
+
+schema
+	visibility_levels 
+end
+
+schema
+	visibility_ceiling 
+end
+
+schema
+	LookAfterGoing(); 
+end
+
+schema
+	PrintOrRun(location, description); 
+end
+
+schema
+	say__comp 
+end
+
+schema
+	(multiflag==1) 
+end
+
+schema
+	(lookmode == 1) 
+end
+
+schema
+	(lookmode == 2) 
+end
+
+schema
+	(lookmode == 3) 
+end
+
+schema
+	return GVS_Convert({AN},{O},0); 
+end
+
+schema
+	return ConvertToRequest({X}, {AN}, {Y}, {Z}); 
+end
+
+schema
+	return ConvertToGoingWithPush(); 
+end
+
+schema
+	move {something} to {something else}; 
+end
+
+schema
+	MoveDuringGoing({something}, {something else}); 
+end
+
+schema
+	SilentlyConsiderLight(); 
+end
+
+schema
+	{-primitive-definition:verbose-checking} 
+end
+
+schema
+	{-primitive-definition:verbose-checking} 
+end

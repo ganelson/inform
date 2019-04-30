@@ -553,7 +553,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_repository *I, inter_p
 	inter_symbol *try = CodeGen::Assimilate::compute_constant_r(I, pack, IRS, sch->node_tree);
 	if (try) return try;
 
-	InterSchemas::log(sch);
+	InterSchemas::log(DL, sch);
 	LOG("Forced to glob: %S\n", sch->converted_from);
 	internal_error("Reduced to glob in assimilation");
 
@@ -677,7 +677,7 @@ void CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *b
 		else if (sch->node_tree == NULL) {
 			LOG("Lint fail: Non-empty text but empty scheme\n");
 			internal_error("inter schema empty");
-		} else InterSchemas::log(sch);
+		} else InterSchemas::log(DL, sch);
 		
 		#ifdef CORE_MODULE
 		current_inter_routine = block_name;

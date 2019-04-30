@@ -10,6 +10,7 @@ this plan out.
 @e INTER_CLSW
 @e DOMAIN_CLSW
 @e TEMPLATE_CLSW
+@e TEST_CLSW
 
 =
 int main(int argc, char **argv) {
@@ -29,6 +30,8 @@ int main(int argc, char **argv) {
 		L"specify code-generation chain for inter code");
 	CommandLine::declare_switch(TEMPLATE_CLSW, L"template", 2,
 		L"specify folder holding i6t template files");
+	CommandLine::declare_switch(TEST_CLSW, L"test", 2,
+		L"perform unit tests from file X");
 	CommandLine::declare_switch(DOMAIN_CLSW, L"domain", 2,
 		L"specify folder to read/write inter files from/to");
 
@@ -49,6 +52,7 @@ pathname *template_path = NULL;
 pathname *domain_path = NULL;
 filename *output_textually = NULL;
 filename *output_binarily = NULL;
+filename *unit_test_file = NULL;
 text_stream *inter_processing_chain = NULL;
 
 void Main::respond(int id, int val, text_stream *arg, void *state) {
@@ -58,6 +62,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case INTER_CLSW: inter_processing_chain = Str::duplicate(arg); inter_processing_chain = NULL; break;
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); inter_processing_chain = NULL; break;
 		case TEMPLATE_CLSW: template_path = Pathnames::from_text(arg); inter_processing_chain = NULL; break;
+		case TEST_CLSW: unit_test_file = Filenames::from_text(arg); break;
 	}
 }
 
@@ -87,6 +92,8 @@ void Main::act(void) {
 		if (template_path) { NO_FS_AREAS = 1; pathname_of_i6t_files[0] = template_path; }
 		stage_set *SS = CodeGen::Stage::parse(inter_processing_chain, I"output.i6");
 		CodeGen::Stage::follow(domain_path, SS, I, NO_FS_AREAS, pathname_of_i6t_files, template_path, NULL);
+	} else if (unit_test_file) {
+		UnitTests::run(unit_test_file);
 	} else {
 		if (output_textually) {
 			text_stream C_struct; text_stream *OUT = &C_struct;

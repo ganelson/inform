@@ -412,7 +412,8 @@ It is invaluable to be able to see compiled schemas in the debugging log, so
 we go to some trouble here.
 
 =
-void InterSchemas::log(inter_schema *sch) {
+void InterSchemas::log(OUTPUT_STREAM, void *vis) {
+	inter_schema *sch = (inter_schema *) vis;
 	if (sch == NULL) LOG("<null schema>\n");
 	else if (sch->node_tree == NULL) LOG("<schema without nodes>\n");
 	else InterSchemas::log_depth(sch->node_tree, 0);
@@ -1624,6 +1625,7 @@ int InterSchemas::undivide_schema(inter_schema_node *par, inter_schema_node *isn
 int InterSchemas::resolve_halfopen_blocks(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		inter_schema_token *t = isn->expression_tokens;
+		while ((t) && (t->ist_type == WHITE_SPACE_ISTT)) t = t->next;
 		if ((t) && (t->ist_type == INLINE_ISTT) && (t->inline_command == open_brace_ISINC)) {
 			InterSchemas::mark_unclosed(isn);
 			t->ist_type = WHITE_SPACE_ISTT;

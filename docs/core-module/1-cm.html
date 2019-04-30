@@ -273,7 +273,6 @@ foundation module does that automatically.)
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *, </span><span class="functiontext">Phrases::TypeData::Textual::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">inference</span><span class="plain"> *, </span><span class="functiontext">World::Inferences::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain"> *, </span><span class="functiontext">Calculus::Schemas::log</span><span class="plain">)</span>
-    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">inter_schema</span><span class="plain"> *, </span><span class="identifier">InterSchemas::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">natural_language</span><span class="plain"> *, </span><span class="functiontext">NaturalLanguages::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *, </span><span class="functiontext">InferenceSubjects::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain"> *, </span><span class="functiontext">Rulebooks::log</span><span class="plain">)</span>
@@ -488,7 +487,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 <pre class="displaydefn">
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'0'</span><span class="plain">, </span><span class="functiontext">Calculus::Terms::log</span><span class="plain">);</span>
-        <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'1'</span><span class="plain">, </span><span class="identifier">InterSchemas::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'2'</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">, </span><span class="functiontext">Tables::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'b'</span><span class="plain">, </span><span class="functiontext">Rules::Bookings::log</span><span class="plain">);</span>

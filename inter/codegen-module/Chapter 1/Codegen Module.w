@@ -69,7 +69,7 @@ void CodegenModule::start(void) {
 	Log::declare_aspect(SCHEMA_COMPILATION_DETAILS_DA, L"schema compilation details", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
-	;
+	Writers::register_logger('1', InterSchemas::log);
 
 @<Register this module's command line switches@> =
 	;

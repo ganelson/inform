@@ -19,3 +19,4 @@ Tests/RCC/_Console/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/
+Tests/Units/_Results_Actual/

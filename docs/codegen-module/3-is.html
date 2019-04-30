@@ -554,7 +554,8 @@ we go to some trouble here.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InterSchemas::log</span><span class="plain">(</span><span class="reserved">inter_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InterSchemas::log</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vis</span><span class="plain">) {</span>
+        <span class="reserved">inter_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain"> = (</span><span class="reserved">inter_schema</span><span class="plain"> *) </span><span class="identifier">vis</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sch</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null schema&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;node_tree</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;schema without nodes&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">InterSchemas::log_depth</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;node_tree</span><span class="plain">, 0);</span>
@@ -663,7 +664,7 @@ we go to some trouble here.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterSchemas::log is used in 2/alm (<a href="2-alm.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function InterSchemas::log is used in 1/cm (<a href="1-cm.html#SP4_6">&#167;4.6</a>), 2/alm (<a href="2-alm.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function InterSchemas::log_depth appears nowhere else.</p>
 
@@ -2092,6 +2093,7 @@ these out at the start of each iteration.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InterSchemas::resolve_halfopen_blocks</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">par</span><span class="plain">, </span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">) {</span>
             <span class="reserved">inter_schema_token</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">t</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">WHITE_SPACE_ISTT</span><span class="plain">)) </span><span class="identifier">t</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">INLINE_ISTT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;inline_command</span><span class="plain"> == </span><span class="constant">open_brace_ISINC</span><span class="plain">)) {</span>
                 <span class="functiontext">InterSchemas::mark_unclosed</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">);</span>
                 <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> = </span><span class="constant">WHITE_SPACE_ISTT</span><span class="plain">;</span>

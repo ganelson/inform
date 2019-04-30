@@ -248,7 +248,6 @@ COMPILE_WRITER(heading *, Sentences::Headings::log)
 COMPILE_WRITER(ph_type_data *, Phrases::TypeData::Textual::log)
 COMPILE_WRITER(inference *, World::Inferences::log)
 COMPILE_WRITER(i6_schema *, Calculus::Schemas::log)
-COMPILE_WRITER(inter_schema *, InterSchemas::log)
 COMPILE_WRITER(natural_language *, NaturalLanguages::log)
 COMPILE_WRITER(inference_subject *, InferenceSubjects::log)
 COMPILE_WRITER(rulebook *, Rulebooks::log)
@@ -412,7 +411,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 
 @<Register this module's debugging log writers@> =
 	REGISTER_WRITER('0', Calculus::Terms::log);
-	REGISTER_WRITER('1', InterSchemas::log);
 	REGISTER_WRITER('2', BinaryPredicates::log);
 	REGISTER_WRITER('B', Tables::log);
 	REGISTER_WRITER('b', Rules::Bookings::log);
