@@ -41,14 +41,16 @@
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">isn_type</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LABEL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Label</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CODE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Code block</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EVAL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Eval block</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Expression</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUBEXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Subexpression</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STATEMENT_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Statement</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPERATION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Operation</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EVAL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Eval block</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Expression</span> <span class="cwebmacronumber">2.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUBEXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Subexpression</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STATEMENT_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Statement</span> <span class="cwebmacronumber">2.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPERATION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Operation</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASSEMBLY_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Assembly</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Call</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIRECTIVE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Directive</span> <span class="cwebmacronumber">2.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MESSAGE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Message</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALLMESSAGE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Call-message</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIRECTIVE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Directive</span> <span class="cwebmacronumber">2.12</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown schema node type"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -56,7 +58,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function EmitInterSchemas::emit_inner is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_2">&#167;2.2</a>, <a href="#SP2_3">&#167;2.3</a>, <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_5">&#167;2.5</a>, <a href="#SP2_6">&#167;2.6</a>, <a href="#SP2_7">&#167;2.7</a>, <a href="#SP2_8">&#167;2.8</a>, <a href="#SP2_8_1">&#167;2.8.1</a>.</p>
+<p class="endnote">The function EmitInterSchemas::emit_inner is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_2">&#167;2.2</a>, <a href="#SP2_3">&#167;2.3</a>, <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_5">&#167;2.5</a>, <a href="#SP2_6">&#167;2.6</a>, <a href="#SP2_7">&#167;2.7</a>, <a href="#SP2_8">&#167;2.8</a>, <a href="#SP2_9">&#167;2.9</a>, <a href="#SP2_10">&#167;2.10</a>, <a href="#SP2_10_1">&#167;2.10.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Label</span> <span class="cwebmacronumber">2.1</span>&gt; =
@@ -192,7 +194,67 @@
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Eval block</span> <span class="cwebmacronumber">2.5</span>&gt; =
+&lt;<span class="cwebmacrodefn">Message</span> <span class="cwebmacronumber">2.5</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">) {</span>
+            <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain"> = 0;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">=</span><span class="identifier">n</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">) </span><span class="identifier">argc</span><span class="plain">++;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">argc</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">message0_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">message1_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">message2_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 5: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">message3_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too many args for message"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">at</span><span class="plain">=</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">)</span>
+                <span class="functiontext">EmitInterSchemas::emit_inner</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">,</span>
+                    <span class="identifier">VH</span><span class="plain">, </span><span class="identifier">sch</span><span class="plain">, </span><span class="identifier">opaque_state</span><span class="plain">, </span><span class="identifier">VAL_PRIM_CAT</span><span class="plain">,</span>
+                    <span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">, </span><span class="identifier">inline_command_handler</span><span class="plain">, </span><span class="identifier">i7_source_handler</span><span class="plain">);</span>
+            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Call-message</span> <span class="cwebmacronumber">2.6</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">) {</span>
+            <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain"> = 0;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">=</span><span class="identifier">n</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">) </span><span class="identifier">argc</span><span class="plain">++;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">argc</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">callmessage0_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">callmessage1_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">callmessage2_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">callmessage3_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too many args for call-message"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">at</span><span class="plain">=</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">)</span>
+                <span class="functiontext">EmitInterSchemas::emit_inner</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">,</span>
+                    <span class="identifier">VH</span><span class="plain">, </span><span class="identifier">sch</span><span class="plain">, </span><span class="identifier">opaque_state</span><span class="plain">, </span><span class="identifier">VAL_PRIM_CAT</span><span class="plain">,</span>
+                    <span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">, </span><span class="identifier">inline_command_handler</span><span class="plain">, </span><span class="identifier">i7_source_handler</span><span class="plain">);</span>
+            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_7"></a><b>&#167;2.7.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Eval block</span> <span class="cwebmacronumber">2.7</span>&gt; =
 </code></p>
 
 
@@ -220,8 +282,8 @@
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Operation</span> <span class="cwebmacronumber">2.6</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Operation</span> <span class="cwebmacronumber">2.8</span>&gt; =
 </code></p>
 
 
@@ -249,8 +311,8 @@
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_7"></a><b>&#167;2.7.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Subexpression</span> <span class="cwebmacronumber">2.7</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Subexpression</span> <span class="cwebmacronumber">2.9</span>&gt; =
 </code></p>
 
 
@@ -273,8 +335,8 @@
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Statement</span> <span class="cwebmacronumber">2.8</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_10"></a><b>&#167;2.10.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Statement</span> <span class="cwebmacronumber">2.10</span>&gt; =
 </code></p>
 
 
@@ -286,7 +348,7 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain"> &gt; 0) {</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">objectloop_interp</span><span class="plain">)</span>
-                &lt;<span class="cwebmacro">Add the objectloop range tokens</span> <span class="cwebmacronumber">2.8.1</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Add the objectloop range tokens</span> <span class="cwebmacronumber">2.10.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">;</span>
             <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">actual_arity</span><span class="plain"> = 0;</span>
@@ -308,8 +370,8 @@
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_8_1"></a><b>&#167;2.8.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Add the objectloop range tokens</span> <span class="cwebmacronumber">2.8.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_10_1"></a><b>&#167;2.10.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Add the objectloop range tokens</span> <span class="cwebmacronumber">2.10.1</span>&gt; =
 </code></p>
 
 
@@ -342,10 +404,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2_8">&#167;2.8</a>.</p>
+<p class="endnote">This code is used in <a href="#SP2_10">&#167;2.10</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expression</span> <span class="cwebmacronumber">2.9</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_11"></a><b>&#167;2.11.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expression</span> <span class="cwebmacronumber">2.11</span>&gt; =
 </code></p>
 
 
@@ -437,8 +499,8 @@
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_10"></a><b>&#167;2.10.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Directive</span> <span class="cwebmacronumber">2.10</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_12"></a><b>&#167;2.12.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Directive</span> <span class="cwebmacronumber">2.12</span>&gt; =
 </code></p>
 
 
@@ -515,7 +577,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function EmitInterSchemas::find_identifier is used in <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_9">&#167;2.9</a>.</p>
+<p class="endnote">The function EmitInterSchemas::find_identifier is used in <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_11">&#167;2.11</a>.</p>
 
 <p class="endnote">The function EmitInterSchemas::find_identifier_text is used in 25/cii (<a href="25-cii.html#SP3_6_2">&#167;3.6.2</a>).</p>
 

@@ -89,6 +89,14 @@ inter_symbol *indirect2_interp = NULL;
 inter_symbol *indirect3_interp = NULL;
 inter_symbol *indirect4_interp = NULL;
 inter_symbol *indirect5_interp = NULL;
+inter_symbol *message0_interp = NULL;
+inter_symbol *message1_interp = NULL;
+inter_symbol *message2_interp = NULL;
+inter_symbol *message3_interp = NULL;
+inter_symbol *callmessage0_interp = NULL;
+inter_symbol *callmessage1_interp = NULL;
+inter_symbol *callmessage2_interp = NULL;
+inter_symbol *callmessage3_interp = NULL;
 inter_symbol *propertyaddress_interp = NULL;
 inter_symbol *propertylength_interp = NULL;
 inter_symbol *provides_interp = NULL;
@@ -183,6 +191,14 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!indirect3", I"val val val val -> val", &indirect3_interp);
 	Primitives::emit_one(I, IRS, I"!indirect4", I"val val val val val -> val", &indirect4_interp);
 	Primitives::emit_one(I, IRS, I"!indirect5", I"val val val val val val -> val", &indirect5_interp);
+	Primitives::emit_one(I, IRS, I"!message0", I"val val -> val", &message0_interp);
+	Primitives::emit_one(I, IRS, I"!message1", I"val val val -> val", &message1_interp);
+	Primitives::emit_one(I, IRS, I"!message2", I"val val val val -> val", &message2_interp);
+	Primitives::emit_one(I, IRS, I"!message3", I"val val val val val -> val", &message3_interp);
+	Primitives::emit_one(I, IRS, I"!callmessage0", I"val -> val", &callmessage0_interp);
+	Primitives::emit_one(I, IRS, I"!callmessage1", I"val val -> val", &callmessage1_interp);
+	Primitives::emit_one(I, IRS, I"!callmessage2", I"val val val -> val", &callmessage2_interp);
+	Primitives::emit_one(I, IRS, I"!callmessage3", I"val val val val -> val", &callmessage3_interp);
 	Primitives::emit_one(I, IRS, I"!propertyaddress", I"val val -> val", &propertyaddress_interp);
 	Primitives::emit_one(I, IRS, I"!propertylength", I"val val -> val", &propertylength_interp);
 	Primitives::emit_one(I, IRS, I"!provides", I"val val -> val", &provides_interp);
@@ -337,6 +353,14 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e INDIRECT3_BIP
 @e INDIRECT4_BIP
 @e INDIRECT5_BIP
+@e MESSAGE0_BIP
+@e MESSAGE1_BIP
+@e MESSAGE2_BIP
+@e MESSAGE3_BIP
+@e CALLMESSAGE0_BIP
+@e CALLMESSAGE1_BIP
+@e CALLMESSAGE2_BIP
+@e CALLMESSAGE3_BIP
 @e PROPERTYADDRESS_BIP
 @e PROPERTYLENGTH_BIP
 @e PROVIDES_BIP
@@ -436,6 +460,14 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!indirect3")) bip = INDIRECT3_BIP;
 	if (Str::eq(symb->symbol_name, I"!indirect4")) bip = INDIRECT4_BIP;
 	if (Str::eq(symb->symbol_name, I"!indirect5")) bip = INDIRECT5_BIP;
+	if (Str::eq(symb->symbol_name, I"!message0")) bip = MESSAGE0_BIP;
+	if (Str::eq(symb->symbol_name, I"!message1")) bip = MESSAGE1_BIP;
+	if (Str::eq(symb->symbol_name, I"!message2")) bip = MESSAGE2_BIP;
+	if (Str::eq(symb->symbol_name, I"!message3")) bip = MESSAGE3_BIP;
+	if (Str::eq(symb->symbol_name, I"!callmessage0")) bip = CALLMESSAGE0_BIP;
+	if (Str::eq(symb->symbol_name, I"!callmessage1")) bip = CALLMESSAGE1_BIP;
+	if (Str::eq(symb->symbol_name, I"!callmessage2")) bip = CALLMESSAGE2_BIP;
+	if (Str::eq(symb->symbol_name, I"!callmessage3")) bip = CALLMESSAGE3_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyaddress")) bip = PROPERTYADDRESS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
 	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;

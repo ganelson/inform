@@ -30,6 +30,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		case OPERATION_ISNT: @<Operation@>; break;
 		case ASSEMBLY_ISNT: @<Assembly@>; break;
 		case CALL_ISNT: @<Call@>; break;
+		case MESSAGE_ISNT: @<Message@>; break;
+		case CALLMESSAGE_ISNT: @<Call-message@>; break;
 		case DIRECTIVE_ISNT: @<Directive@>; break;
 		default: internal_error("unknown schema node type");
 	}
@@ -119,6 +121,46 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				case 5: Emit::inv_primitive(indirect4_interp); break;
 				default: internal_error("too many args for indirect call"); break;
 			}
+		}
+		Emit::down();
+		for (; at; at=at->next_node)
+			EmitInterSchemas::emit_inner(at,
+				VH, sch, opaque_state, VAL_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
+		Emit::up();
+	}
+
+@<Message@> =
+	if (isn->child_node) {
+		inter_schema_node *at = isn->child_node;
+		int argc = 0;
+		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
+		switch (argc) {
+			case 2: Emit::inv_primitive(message0_interp); break;
+			case 3: Emit::inv_primitive(message1_interp); break;
+			case 4: Emit::inv_primitive(message2_interp); break;
+			case 5: Emit::inv_primitive(message3_interp); break;
+			default: internal_error("too many args for message"); break;
+		}
+		Emit::down();
+		for (; at; at=at->next_node)
+			EmitInterSchemas::emit_inner(at,
+				VH, sch, opaque_state, VAL_PRIM_CAT,
+				first_call, second_call, inline_command_handler, i7_source_handler);
+		Emit::up();
+	}
+
+@<Call-message@> =
+	if (isn->child_node) {
+		inter_schema_node *at = isn->child_node;
+		int argc = 0;
+		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
+		switch (argc) {
+			case 1: Emit::inv_primitive(callmessage0_interp); break;
+			case 2: Emit::inv_primitive(callmessage1_interp); break;
+			case 3: Emit::inv_primitive(callmessage2_interp); break;
+			case 4: Emit::inv_primitive(callmessage3_interp); break;
+			default: internal_error("too many args for call-message"); break;
 		}
 		Emit::down();
 		for (; at; at=at->next_node)

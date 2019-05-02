@@ -109,6 +109,8 @@ but the need to do this went away.)
     <span class="definitionkeyword">enum</span> <span class="constant">ASSEMBLY_ISNT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LABEL_ISNT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CALL_ISNT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MESSAGE_ISNT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">CALLMESSAGE_ISNT</span>
 </pre>
 
 <pre class="display">
@@ -605,6 +607,12 @@ we go to some trouble here.
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CALL_ISNT</span><span class="plain">:</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"* (call)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MESSAGE_ISNT</span><span class="plain">:</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"* (message)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CALLMESSAGE_ISNT</span><span class="plain">:</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"* (call-message)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUBEXPRESSION_ISNT</span><span class="plain">:</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"* (subexpression)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -1037,6 +1045,7 @@ out for the two extra syntaxes allowed, <code class="display"><span class="extra
                     <span class="functiontext">InterSchemas::add_token</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="functiontext">InterSchemas::new_token</span><span class="plain">(</span><span class="constant">WHITE_SPACE_ISTT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0, -1));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">DQUOTED_TOKSTATE</span><span class="plain">:</span>
+                    <span class="functiontext">InterSchemas::de_escape_text</span><span class="plain">(</span><span class="identifier">current_raw</span><span class="plain">);</span>
                     <span class="functiontext">InterSchemas::add_token</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="functiontext">InterSchemas::new_token</span><span class="plain">(</span><span class="constant">DQUOTED_ISTT</span><span class="plain">, </span><span class="identifier">current_raw</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0, -1));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">SQUOTED_TOKSTATE</span><span class="plain">:</span>
@@ -1871,6 +1880,7 @@ these out at the start of each iteration.
         <span class="identifier">REPEATEDLY_APPLY</span><span class="plain">(</span><span class="functiontext">InterSchemas::strip_all_spacing</span><span class="plain">);</span>
         <span class="identifier">REPEATEDLY_APPLY</span><span class="plain">(</span><span class="functiontext">InterSchemas::debracket</span><span class="plain">);</span>
         <span class="identifier">REPEATEDLY_APPLY</span><span class="plain">(</span><span class="functiontext">InterSchemas::implied_return_values</span><span class="plain">);</span>
+        <span class="identifier">REPEATEDLY_APPLY</span><span class="plain">(</span><span class="functiontext">InterSchemas::message_calls</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2352,10 +2362,10 @@ these out at the start of each iteration.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InterSchemas::alternatecases</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">par</span><span class="plain">, </span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_clarifier</span><span class="plain"> == </span><span class="identifier">case_interp</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_clarifier</span><span class="plain"> == </span><span class="identifier">case_interp</span><span class="plain">) &amp;&amp; (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">)) {</span>
                 <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">;</span>
                 <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> == </span><span class="constant">EXPRESSION_ISNT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> == </span><span class="constant">EXPRESSION_ISNT</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">A</span><span class="plain">) &amp;&amp; (</span><span class="identifier">B</span><span class="plain">) &amp;&amp; (</span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">)) {</span>
                     <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">InterSchemas::new_node</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;parent_schema</span><span class="plain">, </span><span class="constant">OPERATION_ISNT</span><span class="plain">);</span>
                     <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;isn_clarifier</span><span class="plain"> = </span><span class="identifier">alternativecase_interp</span><span class="plain">;</span>
                     <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">;</span>
@@ -2453,12 +2463,7 @@ these out at the start of each iteration.
                                 <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">WHITE_SPACE_ISTT</span><span class="plain">)) </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
                                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">DQUOTED_ISTT</span><span class="plain">)) {</span>
                                     <span class="identifier">subordinate_to</span><span class="plain"> = </span><span class="identifier">print_interp</span><span class="plain">;</span>
-                                    <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;material</span><span class="plain">) {</span>
-                                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="character">'^'</span><span class="plain">)</span>
-                                            <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
-                                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="character">'~'</span><span class="plain">)</span>
-                                            <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">);</span>
-                                    <span class="plain">}</span>
+                                    <span class="functiontext">InterSchemas::de_escape_text</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;material</span><span class="plain">);</span>
                                 <span class="plain">}</span>
                             <span class="plain">}</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;reserved_word</span><span class="plain"> == </span><span class="constant">PRINTRET_I6RW</span><span class="plain">) {</span>
@@ -2650,6 +2655,7 @@ these out at the start of each iteration.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dangle_text</span><span class="plain">) {</span>
                         <span class="identifier">new_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain"> = </span><span class="functiontext">InterSchemas::new_token</span><span class="plain">(</span><span class="constant">DQUOTED_ISTT</span><span class="plain">, </span><span class="identifier">dangle_text</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0, -1);</span>
                         <span class="identifier">new_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;owner</span><span class="plain"> = </span><span class="identifier">new_isn</span><span class="plain">;</span>
+                        <span class="functiontext">InterSchemas::de_escape_text</span><span class="plain">(</span><span class="identifier">new_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;material</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operand2</span><span class="plain">) {</span>
                         <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">new_new_isn</span><span class="plain"> = </span><span class="functiontext">InterSchemas::new_node</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;parent_schema</span><span class="plain">, </span><span class="constant">EXPRESSION_ISNT</span><span class="plain">);</span>
@@ -3157,7 +3163,57 @@ these out at the start of each iteration.
 
 <p class="endnote">The function InterSchemas::implied_return_values is used in <a href="#SP20_4">&#167;20.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP30"></a><b>&#167;30. Operators in I6. </b>The following routines return data which is essentially the content of the
+<p class="inwebparagraph"><a id="SP30"></a><b>&#167;30.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InterSchemas::message_calls</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">par</span><span class="plain">, </span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">, </span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> == </span><span class="constant">OPERATION_ISNT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_clarifier</span><span class="plain"> == </span><span class="identifier">propertyvalue_interp</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">) &amp;&amp; (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">) &amp;&amp; (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> == </span><span class="constant">CALL_ISNT</span><span class="plain">)) {</span>
+                <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">;</span>
+                <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">;</span>
+                <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">;</span>
+                <span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> = </span><span class="constant">MESSAGE_ISNT</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_clarifier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">obj</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">message</span><span class="plain">; </span><span class="identifier">message</span><span class="plain">-</span><span class="element">&gt;parent_node</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">message</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">args</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">message</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> == </span><span class="constant">EXPRESSION_ISNT</span><span class="plain">) {</span>
+                    <span class="reserved">inter_schema_token</span><span class="plain"> *</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">message</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;material</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"call"</span><span class="plain">))) {</span>
+                        <span class="identifier">obj</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">args</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;isn_type</span><span class="plain"> = </span><span class="constant">CALLMESSAGE_ISNT</span><span class="plain">;</span>
+                    <span class="plain">}</span>
+                <span class="plain">}</span>
+                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">) { </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;parent_node</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">args</span><span class="plain"> = </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">; }</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InterSchemas::message_calls</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">, </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function InterSchemas::message_calls is used in <a href="#SP20_4">&#167;20.4</a>.</p>
+
+<p class="inwebparagraph"><a id="SP31"></a><b>&#167;31.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InterSchemas::de_escape_text</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">m</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">m</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="character">'^'</span><span class="plain">)</span>
+                <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="character">'~'</span><span class="plain">)</span>
+                <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">);</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function InterSchemas::de_escape_text is used in <a href="#SP20_2_2">&#167;20.2.2</a>, <a href="#SP26">&#167;26</a>.</p>
+
+<p class="inwebparagraph"><a id="SP32"></a><b>&#167;32. Operators in I6. </b>The following routines return data which is essentially the content of the
 table shown in section 6.2 of the Inform 6 Technical Manual: which operators
 take precedence over which others, which are right or left associative,
 which are prefix or postfix, and so on.
@@ -3365,7 +3421,7 @@ which are prefix or postfix, and so on.
 
 <p class="endnote">The function InterSchemas::right_associative is used in <a href="#SP28">&#167;28</a>.</p>
 
-<p class="inwebparagraph"><a id="SP31"></a><b>&#167;31. Metadata on inter primitives. </b></p>
+<p class="inwebparagraph"><a id="SP33"></a><b>&#167;33. Metadata on inter primitives. </b></p>
 
 
 <pre class="display">

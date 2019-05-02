@@ -702,6 +702,14 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case INDIRECT3_BIP: @<Generate primitive for indirect3@>; break;
 				case INDIRECT4_BIP: @<Generate primitive for indirect4@>; break;
 				case INDIRECT5_BIP: @<Generate primitive for indirect5@>; break;
+				case MESSAGE0_BIP: @<Generate primitive for message0@>; break;
+				case MESSAGE1_BIP: @<Generate primitive for message1@>; break;
+				case MESSAGE2_BIP: @<Generate primitive for message2@>; break;
+				case MESSAGE3_BIP: @<Generate primitive for message3@>; break;
+				case CALLMESSAGE0_BIP: @<Generate primitive for callmessage0@>; break;
+				case CALLMESSAGE1_BIP: @<Generate primitive for callmessage1@>; break;
+				case CALLMESSAGE2_BIP: @<Generate primitive for callmessage2@>; break;
+				case CALLMESSAGE3_BIP: @<Generate primitive for callmessage3@>; break;
 				case PROPERTYADDRESS_BIP: @<Generate primitive for propertyaddress@>; break;
 				case PROPERTYLENGTH_BIP: @<Generate primitive for propertylength@>; break;
 				case PROVIDES_BIP: @<Generate primitive for provides@>; break;
@@ -1458,6 +1466,78 @@ then the result.
 	WRITE(",");
 	CodeGen::frame(OUT, I, Inter::sixth_in_frame_list(ifl));
 	WRITE(")");
+
+@<Generate primitive for message0@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE("())");
+
+@<Generate primitive for message1@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	WRITE("))");
+
+@<Generate primitive for message2@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	WRITE(",");
+	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	WRITE("))");
+
+@<Generate primitive for message3@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	WRITE(",");
+	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	WRITE(",");
+	CodeGen::frame(OUT, I, Inter::fifth_in_frame_list(ifl));
+	WRITE("))");
+
+@<Generate primitive for callmessage0@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".call())");
+
+@<Generate primitive for callmessage1@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".call(");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE("))");
+
+@<Generate primitive for callmessage2@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".call(");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE(",");
+	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	WRITE("))");
+
+@<Generate primitive for callmessage3@> =
+	WRITE("(");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(".call(");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE(",");
+	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	WRITE(",");
+	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	WRITE("))");
 
 @<Generate primitive for propertyaddress@> =
 	WRITE("(");

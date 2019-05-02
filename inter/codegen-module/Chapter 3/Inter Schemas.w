@@ -65,6 +65,8 @@ but the need to do this went away.)
 @e ASSEMBLY_ISNT
 @e LABEL_ISNT
 @e CALL_ISNT
+@e MESSAGE_ISNT
+@e CALLMESSAGE_ISNT
 
 =
 typedef struct inter_schema_node {
@@ -463,6 +465,12 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 		case CALL_ISNT:
 			LOG("* (call)\n");
 			break;
+		case MESSAGE_ISNT:
+			LOG("* (message)\n");
+			break;
+		case CALLMESSAGE_ISNT:
+			LOG("* (call-message)\n");
+			break;
 		case SUBEXPRESSION_ISNT:
 			LOG("* (subexpression)\n");
 			break;
@@ -791,6 +799,7 @@ out for the two extra syntaxes allowed, |{-bracing}| and |(+ Inform 7 interpolat
 				InterSchemas::add_token(sch, InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", NULL, 0, -1));
 				break;
 			case DQUOTED_TOKSTATE:
+				InterSchemas::de_escape_text(current_raw);
 				InterSchemas::add_token(sch, InterSchemas::new_token(DQUOTED_ISTT, current_raw, NULL, 0, -1));
 				break;
 			case SQUOTED_TOKSTATE:
@@ -1429,6 +1438,7 @@ void InterSchemas::unmark(inter_schema_node *isn) {
 	REPEATEDLY_APPLY(InterSchemas::strip_all_spacing);
 	REPEATEDLY_APPLY(InterSchemas::debracket);
 	REPEATEDLY_APPLY(InterSchemas::implied_return_values);
+	REPEATEDLY_APPLY(InterSchemas::message_calls);
 
 @ =
 int InterSchemas::implied_braces(inter_schema_node *par, inter_schema_node *at) {
@@ -1846,10 +1856,10 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 @ =
 int InterSchemas::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
-		if (isn->isn_clarifier == case_interp) {
+		if ((isn->isn_clarifier == case_interp) && (isn->child_node)) {
 			inter_schema_node *A = isn->child_node;
 			inter_schema_node *B = isn->child_node->next_node;
-			if ((A->isn_type == EXPRESSION_ISNT) && (B->isn_type == EXPRESSION_ISNT)) {
+			if ((A) && (B) && (B->next_node)) {
 				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
 				C->isn_clarifier = alternativecase_interp;
 				C->child_node = A;
@@ -1939,12 +1949,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 							if ((n) && (n->ist_type == DQUOTED_ISTT)) {
 								subordinate_to = print_interp;
-								LOOP_THROUGH_TEXT(P, n->material) {
-									if (Str::get(P) == '^')
-										Str::put(P, '\n');
-									if (Str::get(P) == '~')
-										Str::put(P, '\"');
-								}
+								InterSchemas::de_escape_text(n->material);
 							}
 						}
 						if (isn->expression_tokens->reserved_word == PRINTRET_I6RW) {
@@ -2136,6 +2141,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				if (dangle_text) {
 					new_isn->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, NULL, 0, -1);
 					new_isn->expression_tokens->owner = new_isn;
+					InterSchemas::de_escape_text(new_isn->expression_tokens->material);
 				}
 				if (operand2) {
 					inter_schema_node *new_new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
@@ -2568,6 +2574,40 @@ int InterSchemas::implied_return_values(inter_schema_node *par, inter_schema_nod
 		if (InterSchemas::implied_return_values(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
+}
+
+@ =
+int InterSchemas::message_calls(inter_schema_node *par, inter_schema_node *isn) {
+	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
+		if ((isn->isn_type == OPERATION_ISNT) && (isn->isn_clarifier == propertyvalue_interp) &&
+			(isn->child_node) && (isn->child_node->next_node) && (isn->child_node->next_node->isn_type == CALL_ISNT)) {
+			inter_schema_node *obj = isn->child_node;
+			inter_schema_node *message = isn->child_node->next_node->child_node;
+			inter_schema_node *args = isn->child_node->next_node->child_node->next_node;
+			isn->isn_type = MESSAGE_ISNT; isn->isn_clarifier = NULL;
+			obj->next_node = message; message->parent_node = isn; message->next_node = args;
+			if (message->isn_type == EXPRESSION_ISNT) {
+				inter_schema_token *n = message->expression_tokens;
+				if ((n) && (Str::eq(n->material, I"call"))) {
+					obj->next_node = args; isn->isn_type = CALLMESSAGE_ISNT;
+				}
+			}
+			while (args) { args->parent_node = isn; args = args->next_node; }
+			return TRUE;
+		}
+		if (InterSchemas::message_calls(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
+
+@ =
+void InterSchemas::de_escape_text(text_stream *m) {
+	LOOP_THROUGH_TEXT(P, m) {
+		if (Str::get(P) == '^')
+			Str::put(P, '\n');
+		if (Str::get(P) == '~')
+			Str::put(P, '\"');
+	}
 }
 
 @h Operators in I6.

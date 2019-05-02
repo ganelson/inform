@@ -1,0 +1,16 @@
+schema
+	alpha.beta()
+end
+schema
+	alpha.beta(x)
+end
+schema
+	routine.call(x)
+end
+schema
+	(alpha.beta)(x)
+end
+schema
+	debug_rules = 2; say__p = 1;
+	"Rules tracing now switched to ~all~. Type ~rules off~ to switch it off again.";
+end

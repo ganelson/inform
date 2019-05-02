@@ -1,0 +1,59 @@
+Test: parse schema from:
+	alpha.beta()
+
+* (message)
+    * (expr)
+        IDENTIFIER  alpha
+    * (expr)
+        IDENTIFIER  beta
+=========
+Test: parse schema from:
+	alpha.beta(x)
+
+* (message)
+    * (expr)
+        IDENTIFIER  alpha
+    * (expr)
+        IDENTIFIER  beta
+    * (expr)
+        IDENTIFIER  x
+=========
+Test: parse schema from:
+	routine.call(x)
+
+* (call-message)
+    * (expr)
+        IDENTIFIER  routine
+    * (expr)
+        IDENTIFIER  x
+=========
+Test: parse schema from:
+	(alpha.beta)(x)
+
+* (call)
+    * (subexpression)
+        * (operation) !propertyvalue
+            * (expr)
+                IDENTIFIER  alpha
+            * (expr)
+                IDENTIFIER  beta
+    * (expr)
+        IDENTIFIER  x
+=========
+Test: parse schema from:
+	debug_rules = 2; say__p = 1;
+	"Rules tracing now switched to ~all~. Type ~rules off~ to switch it off again.";
+
+* (operation) !store
+    * (expr)
+        IDENTIFIER  debug_rules
+    * (expr)
+        NUMBER      2
+* (operation) !store
+    * (expr)
+        IDENTIFIER  say__p
+    * (expr)
+        NUMBER      1
+* (expr) ;
+    DQUOTED     Rules tracing now switched to "all". Type "rules off" to switch it off again.
+=========
