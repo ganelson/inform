@@ -303,6 +303,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e BREAK_I6RW
 @e CONTINUE_I6RW
 @e QUIT_I6RW
+@e RESTORE_I6RW
 
 @e IFDEF_I6RW
 @e IFNDEF_I6RW
@@ -1322,6 +1323,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"continue")) { is = RESERVED_ISTT; which_rw = CONTINUE_I6RW; }
 	if (Str::eq(T, I"break")) { is = RESERVED_ISTT; which_rw = BREAK_I6RW; }
 	if (Str::eq(T, I"quit")) { is = RESERVED_ISTT; which_rw = QUIT_I6RW; }
+	if (Str::eq(T, I"restore")) { is = RESERVED_ISTT; which_rw = RESTORE_I6RW; }
 
 	if (Str::eq_insensitive(T, I"#IFDEF")) { is = DIRECTIVE_ISTT; which_rw = IFDEF_I6RW; }
 	if (Str::eq_insensitive(T, I"#IFNDEF")) { is = DIRECTIVE_ISTT; which_rw = IFNDEF_I6RW; }
@@ -2032,6 +2034,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						break;
 					case QUIT_I6RW:
 						subordinate_to = quit_interp;
+						break;
+					case RESTORE_I6RW:
+						subordinate_to = restore_interp;
 						break;
 					case NEWLINE_I6RW:
 						subordinate_to = print_interp;
@@ -2841,6 +2846,7 @@ int InterSchemas::ip_loopy(inter_symbol *O) {
 int InterSchemas::ip_prim_cat(inter_symbol *O, int i) {
 	int ok = VAL_PRIM_CAT;
 	if (O == jump_interp) ok = LAB_PRIM_CAT;
+	if (O == restore_interp) ok = LAB_PRIM_CAT;
 	if (O == pull_interp) ok = REF_PRIM_CAT;
 
 	if ((O == if_interp) && (i == 1)) ok = CODE_PRIM_CAT;

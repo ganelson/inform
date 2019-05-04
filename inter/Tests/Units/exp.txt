@@ -17,3 +17,7 @@ end
 schema
 	@erase_window -1;
 end
+schema
+	restore Somewhere;
+	.Somewhere; print "Here!";
+end

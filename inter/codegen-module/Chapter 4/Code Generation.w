@@ -620,6 +620,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case GIVE_BIP: @<Generate primitive for give@>; break;
 				case TAKE_BIP: @<Generate primitive for take@>; break;
 				case QUIT_BIP: @<Generate primitive for quit@>; break;
+				case RESTORE_BIP: @<Generate primitive for restore@>; break;
 				case BREAK_BIP: @<Generate primitive for break@>; break;
 				case CONTINUE_BIP: @<Generate primitive for continue@>; break;
 				case NOT_BIP: @<Generate primitive for not@>; break;
@@ -844,6 +845,10 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 
 @<Generate primitive for quit@> =
 	WRITE("quit");
+
+@<Generate primitive for restore@> =
+	WRITE("restore ");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for break@> =
 	WRITE("break");
