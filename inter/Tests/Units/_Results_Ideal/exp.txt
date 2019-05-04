@@ -57,3 +57,12 @@ Test: parse schema from:
 * (expr) ;
     DQUOTED     Rules tracing now switched to "all". Type "rules off" to switch it off again.
 =========
+Test: parse schema from:
+	@erase_window -1;
+
+* (assembly)
+    * (expr)
+        OPCODE      @erase_window
+    * (expr)
+        NUMBER      -1
+=========

@@ -2102,6 +2102,12 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 								l->ist_type = IDENTIFIER_ISTT;
 								l->operation_primitive = NULL;
 							}
+							if ((n) && (Str::eq(l->material, I"-"))) {
+								l->material = Str::new();
+								WRITE_TO(l->material, "-%S", n->material);
+								l->ist_type = NUMBER_ISTT;
+								n = n->next;
+							}
 							if (Str::eq(l->material, I"->")) l->ist_type = ASM_ARROW_ISTT;
 							if (Str::eq(l->material, I"sp")) l->ist_type = ASM_SP_ISTT;
 							if ((Str::eq(l->material, I"?")) && (n)) {

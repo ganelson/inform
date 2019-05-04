@@ -1638,7 +1638,6 @@ inter_name *Hierarchy::find(int id) {
 void Hierarchy::make_available(inter_name *iname) {
 	text_stream *ma_as = Emit::get_translation(iname);
 	if (Str::len(ma_as) == 0) ma_as = Emit::to_text(iname);
-	LOG("MA: %S = $3\n", ma_as, InterNames::to_symbol(iname));
 	HierarchyLocations::make_as(-1, ma_as, iname);
 }
 
