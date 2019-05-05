@@ -47,6 +47,9 @@ void Hierarchy::establish(void) {
 @e ROUTINE_HL
 @e STRING_HL
 @e CLASS_HL
+@e NUM_ATTR_BYTES_HL
+@e DICTIONARY_TABLE_HL
+@e DICT_PAR1_HL
 @e DICT_PAR2_HL
 @e ASM_ARROW_HL
 @e ASM_SP_HL
@@ -104,6 +107,9 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(ROUTINE_HL, I"Routine", Translation::same(), generic_basics);
 	HierarchyLocations::con(STRING_HL, I"String", Translation::same(), generic_basics);
 	HierarchyLocations::con(CLASS_HL, I"Class", Translation::same(), generic_basics);
+	HierarchyLocations::con(NUM_ATTR_BYTES_HL, I"NUM_ATTR_BYTES", Translation::same(), generic_basics);
+	HierarchyLocations::con(DICTIONARY_TABLE_HL, I"#dictionary_table", Translation::same(), generic_basics);
+	HierarchyLocations::con(DICT_PAR1_HL, I"#dict_par1", Translation::same(), generic_basics);
 	HierarchyLocations::con(DICT_PAR2_HL, I"#dict_par2", Translation::same(), generic_basics);
 	HierarchyLocations::con(RANDOM_HL, I"random", Translation::same(), generic_basics);
 	HierarchyLocations::con(ASM_ARROW_HL, I"__assembly_arrow", Translation::to(I"->"), generic_basics);
@@ -1620,6 +1626,8 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case ROUTINE_HL:
 		case STRING_HL:
 		case CLASS_HL:
+		case DICTIONARY_TABLE_HL:
+		case DICT_PAR1_HL:
 		case DICT_PAR2_HL:
 		case ACTIONS_TABLE_HL:
 		case IDENTIFIERS_TABLE_HL:
@@ -1631,6 +1639,7 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case ASM_RFALSE_HL:
 		case ASM_NEG_RTRUE_HL:
 		case ASM_NEG_RFALSE_HL:
+		case NUM_ATTR_BYTES_HL:
 			Emit::named_numeric_constant(iname, 0);
 			break;
 		case SELF_HL:

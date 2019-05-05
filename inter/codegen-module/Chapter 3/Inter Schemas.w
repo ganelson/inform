@@ -295,11 +295,14 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e FOR_I6RW
 @e OBJECTLOOP_I6RW
 @e WHILE_I6RW
+@e DO_I6RW
+@e UNTIL_I6RW
 @e PRINT_I6RW
 @e PRINTRET_I6RW
 @e NEWLINE_I6RW
 @e GIVE_I6RW
 @e MOVE_I6RW
+@e REMOVE_I6RW
 @e JUMP_I6RW
 @e SWITCH_I6RW
 @e DEFAULT_I6RW
@@ -1163,7 +1166,9 @@ This requires context, that is, remembering what the previous token was.
 		(preceding_token->ist_type == OPEN_ROUND_ISTT) ||
 		(preceding_token->ist_type == OPERATOR_ISTT) ||
 		(preceding_token->ist_type == DIVIDER_ISTT)) &&
+		(c_start == p) &&
 		(!((abbreviated) && (preceding_token->ist_type == INLINE_ISTT)))) {
+// LOG("Spec nn cs %d p %d\n", c_start, p);
 		int dc = p+1;
 		while (Characters::isdigit(Str::get_at(current_raw, dc))) dc++;
 		if (dc > p+1) {
@@ -1299,6 +1304,7 @@ inclusive; we ignore an empty token.
 		if (Str::begins_with_wide_string(T, L"QUOTED_INAME_0_")) which_quote = 0;
 		else if (Str::begins_with_wide_string(T, L"QUOTED_INAME_1_")) which_quote = 1;
 		if (Str::eq(T, I"I7_string")) { Str::clear(T); WRITE_TO(T, "I7_String"); }
+		if (Str::eq(T, I"COMMA_WORD")) { Str::clear(T); WRITE_TO(T, "comma_word"); }
 	}
 	if (Characters::isdigit(Str::get_at(T, 0))) {
 		is = NUMBER_ISTT;
@@ -1330,11 +1336,14 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"for")) { is = RESERVED_ISTT; which_rw = FOR_I6RW; }
 	if (Str::eq(T, I"objectloop")) { is = RESERVED_ISTT; which_rw = OBJECTLOOP_I6RW; }
 	if (Str::eq(T, I"while")) { is = RESERVED_ISTT; which_rw = WHILE_I6RW; }
+	if (Str::eq(T, I"do")) { is = RESERVED_ISTT; which_rw = DO_I6RW; }
+	if (Str::eq(T, I"until")) { is = RESERVED_ISTT; which_rw = UNTIL_I6RW; }
 	if (Str::eq(T, I"print")) { is = RESERVED_ISTT; which_rw = PRINT_I6RW; }
 	if (Str::eq(T, I"print_ret")) { is = RESERVED_ISTT; which_rw = PRINTRET_I6RW; }
 	if (Str::eq(T, I"new_line")) { is = RESERVED_ISTT; which_rw = NEWLINE_I6RW; }
 	if (Str::eq(T, I"give")) { is = RESERVED_ISTT; which_rw = GIVE_I6RW; }
 	if (Str::eq(T, I"move")) { is = RESERVED_ISTT; which_rw = MOVE_I6RW; }
+	if (Str::eq(T, I"remove")) { is = RESERVED_ISTT; which_rw = REMOVE_I6RW; }
 	if (Str::eq(T, I"jump")) { is = RESERVED_ISTT; which_rw = JUMP_I6RW; }
 	if (Str::eq(T, I"switch")) { is = RESERVED_ISTT; which_rw = SWITCH_I6RW; }
 	if (Str::eq(T, I"default")) { is = RESERVED_ISTT; which_rw = DEFAULT_I6RW; }
@@ -1449,6 +1458,7 @@ void InterSchemas::unmark(inter_schema_node *isn) {
 	REPEATEDLY_APPLY(InterSchemas::splitprints);
 	REPEATEDLY_APPLY(InterSchemas::splitcases);
 	REPEATEDLY_APPLY(InterSchemas::strip_spacing);
+	REPEATEDLY_APPLY(InterSchemas::splitprints);
 	REPEATEDLY_APPLY(InterSchemas::identify_constructs);
 	REPEATEDLY_APPLY(InterSchemas::treat_constructs);
 	REPEATEDLY_APPLY(InterSchemas::add_missing_bodies);
@@ -1524,16 +1534,18 @@ int InterSchemas::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 
 @<Make pre and post markers from here@> =
 	n->preinsert++;
-	int found_if = FALSE, brl = 0, posted = FALSE;
+	int found_if = FALSE, brl = 0, posted = FALSE, upped = FALSE;
 	inter_schema_token *last_n = n;
 	while (n) {
-		if (n->ist_type == OPEN_BRACE_ISTT) brl++;
+		if (n->ist_type == OPEN_BRACE_ISTT) { brl++; upped = TRUE; }
 		if (n->ist_type == CLOSE_BRACE_ISTT) brl--;
 		if (n->ist_type == OPEN_ROUND_ISTT) brl++;
 		if (n->ist_type == CLOSE_ROUND_ISTT) brl--;
 		if ((brl == 0) && (n->ist_type == RESERVED_ISTT) && (n->reserved_word == IF_I6RW))
 			found_if = TRUE;
-		if ((brl == 0) && (n->ist_type == DIVIDER_ISTT)) {
+		if ((brl == 0) &&
+			((n->ist_type == DIVIDER_ISTT) ||
+				((upped) && (n->ist_type == CLOSE_BRACE_ISTT)))) {
 			inter_schema_token *m = n->next;
 			while ((m) && (m->ist_type == WHITE_SPACE_ISTT)) m = m->next;
 			if ((found_if == FALSE) || (m == NULL) || (m->ist_type != RESERVED_ISTT) || (m->reserved_word != ELSE_I6RW)) {
@@ -1815,6 +1827,8 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
 				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
 				if ((n->ist_type == COLON_ISTT) && (bl == 0)) {
+					inter_schema_node *original_child = isn->child_node;
+
 					int defaulter = FALSE;
 					if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == RESERVED_ISTT) &&
 						(isn->expression_tokens->reserved_word == DEFAULT_I6RW)) defaulter = TRUE;
@@ -1864,6 +1878,8 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 							t->owner = sw_val;
 					for (inter_schema_token *t = sw_code_exp->expression_tokens; t; t = t->next)
 						t->owner = sw_code_exp;
+					
+					sw_code_exp->child_node = original_child;
 
 					return TRUE;
 				}
@@ -1988,6 +2004,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						if ((n) && (Str::eq(n->material, I"roman"))) subordinate_to = styleroman_interp;
 						if ((n) && (Str::eq(n->material, I"bold"))) subordinate_to = stylebold_interp;
 						if ((n) && (Str::eq(n->material, I"underline"))) subordinate_to = styleunderline_interp;
+						if ((n) && (Str::eq(n->material, I"reverse"))) subordinate_to = stylereverse_interp;
 						if (subordinate_to) isn->expression_tokens->next = NULL;
 						break;
 					}
@@ -2031,6 +2048,25 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						break;
 					case WHILE_I6RW:
 						subordinate_to = while_interp;
+						break;
+					case DO_I6RW:
+						subordinate_to = do_interp;
+						inter_schema_node *next_isn = isn->next_node;
+						if ((next_isn) && (next_isn->expression_tokens) &&
+							(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
+							(next_isn->expression_tokens->reserved_word == UNTIL_I6RW)) {
+	//						operand2_node = next_isn->child_node;
+							isn->next_node = next_isn->next_node;
+							inter_schema_token *n = next_isn->expression_tokens->next;
+							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+							operand1 = n;
+//							while (n) {
+//								n->owner = operand2_node;
+//								n = n->next;
+//							}
+						} else {
+							internal_error("do without until");
+						}
 						break;
 					case JUMP_I6RW:
 						subordinate_to = jump_interp;
@@ -2083,6 +2119,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						if ((operand1) && (operand2)) subordinate_to = move_interp;
 						break;
 					}
+					case REMOVE_I6RW:
+						subordinate_to = remove_interp;
+						break;
 					case GIVE_I6RW: {
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
@@ -2194,7 +2233,8 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					}
 					new_new_isn->parent_node = isn;
 					new_new_isn->expression_tokens = operand2;
-					if ((new_new_isn->expression_tokens) && (new_new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT)) new_new_isn->expression_tokens = new_new_isn->expression_tokens->next;
+					if ((new_new_isn->expression_tokens) && (new_new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
+						new_new_isn->expression_tokens = new_new_isn->expression_tokens->next;
 					for (inter_schema_token *l = new_new_isn->expression_tokens; l; l=l->next) {
 						l->owner = new_new_isn;
 					}
@@ -2203,6 +2243,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					operand2_node->next_node = NULL;
 					new_isn->next_node->next_node = operand2_node;
 					operand2_node->parent_node = isn;
+					for (inter_schema_token *l = operand2_node->child_node->expression_tokens; l; l=l->next) {
+						l->owner = operand2_node->child_node;
+					}
 				}
 				return 1;
 			}
@@ -2869,7 +2912,8 @@ int InterSchemas::ip_arity(inter_symbol *O) {
 	int arity = 1;
 	if ((O == styleroman_interp) ||
 		(O == stylebold_interp) ||
-		(O == styleunderline_interp)) arity = 0;
+		(O == styleunderline_interp) ||
+		(O == stylereverse_interp)) arity = 0;
 	if (O == break_interp) arity = 0;
 	if (O == continue_interp) arity = 0;
 	if (O == quit_interp) arity = 0;
@@ -2884,6 +2928,7 @@ int InterSchemas::ip_arity(inter_symbol *O) {
 	if (O == ifelse_interp) arity = 3;
 	if (O == for_interp) arity = 4;
 	if (O == while_interp) arity = 2;
+	if (O == do_interp) arity = 2;
 	return arity;
 }
 
@@ -2892,6 +2937,7 @@ int InterSchemas::ip_loopy(inter_symbol *O) {
 	if (O == objectloop_interp) loopy = TRUE;
 	if (O == for_interp) loopy = TRUE;
 	if (O == while_interp) loopy = TRUE;
+	if (O == do_interp) loopy = TRUE;
 	return loopy;
 }
 

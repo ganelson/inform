@@ -6,6 +6,7 @@
 inter_symbol *return_interp = NULL;
 inter_symbol *jump_interp = NULL;
 inter_symbol *move_interp = NULL;
+inter_symbol *remove_interp = NULL;
 inter_symbol *give_interp = NULL;
 inter_symbol *take_interp = NULL;
 inter_symbol *break_interp = NULL;
@@ -44,6 +45,7 @@ inter_symbol *stylebold_interp = NULL;
 inter_symbol *font_interp = NULL;
 inter_symbol *styleroman_interp = NULL;
 inter_symbol *styleunderline_interp = NULL;
+inter_symbol *stylereverse_interp = NULL;
 inter_symbol *print_interp = NULL;
 inter_symbol *printret_interp = NULL;
 inter_symbol *printchar_interp = NULL;
@@ -71,6 +73,7 @@ inter_symbol *if_interp = NULL;
 inter_symbol *ifdebug_interp = NULL;
 inter_symbol *ifelse_interp = NULL;
 inter_symbol *while_interp = NULL;
+inter_symbol *do_interp = NULL;
 inter_symbol *for_interp = NULL;
 inter_symbol *objectloop_interp = NULL;
 inter_symbol *objectloopx_interp = NULL;
@@ -110,6 +113,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!font", I"val -> void", &font_interp);
 	Primitives::emit_one(I, IRS, I"!stylebold", I"void -> void", &stylebold_interp);
 	Primitives::emit_one(I, IRS, I"!styleunderline", I"void -> void", &styleunderline_interp);
+	Primitives::emit_one(I, IRS, I"!stylereverse", I"void -> void", &stylereverse_interp);
 	Primitives::emit_one(I, IRS, I"!styleroman", I"void -> void", &styleroman_interp);
 	Primitives::emit_one(I, IRS, I"!print", I"val -> void", &print_interp);
 	Primitives::emit_one(I, IRS, I"!printret", I"val -> void", &printret_interp);
@@ -138,6 +142,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!continue", I"void -> void", &continue_interp);
 	Primitives::emit_one(I, IRS, I"!jump", I"lab -> void", &jump_interp);
 	Primitives::emit_one(I, IRS, I"!move", I"val val -> void", &move_interp);
+	Primitives::emit_one(I, IRS, I"!remove", I"val -> void", &remove_interp);
 	Primitives::emit_one(I, IRS, I"!give", I"val val -> void", &give_interp);
 	Primitives::emit_one(I, IRS, I"!take", I"val val -> void", &take_interp);
 	Primitives::emit_one(I, IRS, I"!store", I"ref val -> val", &store_interp);
@@ -177,6 +182,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!ifdebug", I"code -> void", &ifdebug_interp);
 	Primitives::emit_one(I, IRS, I"!ifelse", I"val code code -> void", &ifelse_interp);
 	Primitives::emit_one(I, IRS, I"!while", I"val code -> void", &while_interp);
+	Primitives::emit_one(I, IRS, I"!do", I"val code -> void", &do_interp);
 	Primitives::emit_one(I, IRS, I"!for", I"val val val code -> void", &for_interp);
 	Primitives::emit_one(I, IRS, I"!objectloop", I"ref val val code -> void", &objectloop_interp);
 	Primitives::emit_one(I, IRS, I"!objectloopx", I"ref val code -> void", &objectloopx_interp);
@@ -299,6 +305,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e RANDOM_BIP
 @e RETURN_BIP
 @e MOVE_BIP
+@e REMOVE_BIP
 @e GIVE_BIP
 @e TAKE_BIP
 @e JUMP_BIP
@@ -311,6 +318,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e FONT_BIP
 @e STYLEBOLD_BIP
 @e STYLEUNDERLINE_BIP
+@e STYLEREVERSE_BIP
 @e PRINT_BIP
 @e PRINTRET_BIP
 @e PRINTCHAR_BIP
@@ -337,6 +345,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e IFDEBUG_BIP
 @e IFELSE_BIP
 @e WHILE_BIP
+@e DO_BIP
 @e FOR_BIP
 @e OBJECTLOOP_BIP
 @e OBJECTLOOPX_BIP
@@ -411,6 +420,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!give")) bip = GIVE_BIP;
 	if (Str::eq(symb->symbol_name, I"!take")) bip = TAKE_BIP;
 	if (Str::eq(symb->symbol_name, I"!move")) bip = MOVE_BIP;
+	if (Str::eq(symb->symbol_name, I"!remove")) bip = REMOVE_BIP;
 	if (Str::eq(symb->symbol_name, I"!quit")) bip = QUIT_BIP;
 	if (Str::eq(symb->symbol_name, I"!restore")) bip = RESTORE_BIP;
 	if (Str::eq(symb->symbol_name, I"!spaces")) bip = SPACES_BIP;
@@ -420,6 +430,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!styleroman")) bip = STYLEROMAN_BIP;
 	if (Str::eq(symb->symbol_name, I"!stylebold")) bip = STYLEBOLD_BIP;
 	if (Str::eq(symb->symbol_name, I"!styleunderline")) bip = STYLEUNDERLINE_BIP;
+	if (Str::eq(symb->symbol_name, I"!stylereverse")) bip = STYLEREVERSE_BIP;
 	if (Str::eq(symb->symbol_name, I"!print")) bip = PRINT_BIP;
 	if (Str::eq(symb->symbol_name, I"!printret")) bip = PRINTRET_BIP;
 	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
@@ -446,6 +457,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!ifdebug")) bip = IFDEBUG_BIP;
 	if (Str::eq(symb->symbol_name, I"!ifelse")) bip = IFELSE_BIP;
 	if (Str::eq(symb->symbol_name, I"!while")) bip = WHILE_BIP;
+	if (Str::eq(symb->symbol_name, I"!do")) bip = DO_BIP;
 	if (Str::eq(symb->symbol_name, I"!for")) bip = FOR_BIP;
 	if (Str::eq(symb->symbol_name, I"!objectloop")) bip = OBJECTLOOP_BIP;
 	if (Str::eq(symb->symbol_name, I"!objectloopx")) bip = OBJECTLOOPX_BIP;

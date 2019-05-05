@@ -129,7 +129,7 @@ Not actually used: simply for testing the tables.
 
 @c
 [ CharTestCases case i j;
-	for (i=32: i<$E0; i++) {
+	for (i=32: i<$E0: i++) {
 		if ((i>=127) && (i<155)) continue;
 		print i, " - ", (char) i, " -";
 		if (CharIsOfCase(i, 0)) print "  lower";

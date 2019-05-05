@@ -36,3 +36,57 @@ schema
 	spaces j;
 	print (I7_string) str; 
 end
+schema
+	if (i == 1) print "Okay";
+	else "*** Arrcpy doesn't support this ***";
+end
+schema
+	a-1
+end
+schema
+	do {
+		print "Hi!";
+	} until (x);
+end
+schema
+    do {
+        if (a) return wd;
+    } until (a);
+end
+schema
+    do {
+        if (line_tdata-->index == wd) return wd;
+        index++;
+    } until ((line_token-->index == ENDIT_TOKEN) || (((line_token-->index)->0 & $10) == 0));
+end
+schema
+    print "<string ~", (string) o, "~>"; 
+end
+schema
+    switch (Y) {
+		X:   print "A ", (string) o;
+    }
+end
+schema
+	#ifdef RANKING_TABLE;
+	ANNOUNCE_SCORE_RM('B');
+	j = TableRows(RANKING_TABLE);
+	for (i=j:i>=1:i--)
+		if (score >= TableLookUpEntry(RANKING_TABLE, 1, i)) {
+		    v = TableLookUpEntry(RANKING_TABLE, 2, i);
+		    TEXT_TY_Say(v);
+		    ".";
+		}
+	#endif;
+	".";'
+end
+schema
+	if (B) if (A) { print "Yes"; }
+	print "No";
+end
+schema-workings
+	switch (scope_stage) {
+		2: objectloop (obj)
+        	PlaceInScope(obj, true);
+    }
+end

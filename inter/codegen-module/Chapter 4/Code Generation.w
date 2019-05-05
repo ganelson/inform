@@ -293,6 +293,9 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"Routine")) return;
 	if (Str::eq(con_name->symbol_name, I"String")) return;
 	if (Str::eq(con_name->symbol_name, I"Class")) return;
+	if (Str::eq(con_name->symbol_name, I"NUM_ATTR_BYTES")) return;
+	if (Str::eq(con_name->symbol_name, I"#dictionary_table")) return;
+	if (Str::eq(con_name->symbol_name, I"#dict_par1")) return;
 	if (Str::eq(con_name->symbol_name, I"#dict_par2")) return;
 	if (Str::eq(con_name->symbol_name, I"#actions_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#identifiers_table")) return;
@@ -629,6 +632,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case RETURN_BIP: @<Generate primitive for return@>; break;
 				case JUMP_BIP: @<Generate primitive for jump@>; break;
 				case MOVE_BIP: @<Generate primitive for move@>; break;
+				case REMOVE_BIP: @<Generate primitive for remove@>; break;
 				case GIVE_BIP: @<Generate primitive for give@>; break;
 				case TAKE_BIP: @<Generate primitive for take@>; break;
 				case QUIT_BIP: @<Generate primitive for quit@>; break;
@@ -668,6 +672,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case STYLEROMAN_BIP: @<Generate primitive for styleroman@>; break;
 				case STYLEBOLD_BIP: @<Generate primitive for stylebold@>; break;
 				case STYLEUNDERLINE_BIP: @<Generate primitive for styleunderline@>; break;
+				case STYLEREVERSE_BIP: @<Generate primitive for stylereverse@>; break;
 				case PRINT_BIP: @<Generate primitive for print@>; break;
 				case PRINTRET_BIP: @<Generate primitive for printret@>; break;
 				case PRINTCHAR_BIP: @<Generate primitive for printchar@>; break;
@@ -694,6 +699,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
 				case IFELSE_BIP: @<Generate primitive for ifelse@>; break;
 				case WHILE_BIP: @<Generate primitive for while@>; break;
+				case DO_BIP: @<Generate primitive for do@>; break;
 				case FOR_BIP: @<Generate primitive for for@>; break;
 				case OBJECTLOOP_BIP: @<Generate primitive for objectloop@>; break;
 				case OBJECTLOOPX_BIP: @<Generate primitive for objectloopx@>; break;
@@ -946,6 +952,10 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	WRITE(" to ");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 
+@<Generate primitive for remove@> =
+	WRITE("remove ");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+
 @<Generate primitive for give@> =
 	WRITE("give ");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
@@ -1131,6 +1141,9 @@ then the result.
 @<Generate primitive for styleunderline@> =
 	WRITE("style underline");
 
+@<Generate primitive for stylereverse@> =
+	WRITE("style reverse");
+
 @<Generate primitive for print@> =
 	WRITE("print ");
 	CodeGen::enter_print_mode();
@@ -1270,9 +1283,18 @@ then the result.
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
+@<Generate primitive for do@> =
+	WRITE("do {");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	WRITE("} until (\n"); INDENT;
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	OUTDENT; WRITE(")\n");
+
 @<Generate primitive for for@> =
 	WRITE("for (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	inter_frame INIT = Inter::top_of_frame_list(ifl);
+	if (!((INIT.data[ID_IFLD] == VAL_IST) && (INIT.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT.data[VAL2_VAL_IFLD] == 1)))
+		CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
 	WRITE(":");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 	WRITE(":");

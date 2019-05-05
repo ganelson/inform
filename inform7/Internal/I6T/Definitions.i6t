@@ -655,6 +655,7 @@ Property IK4_Count; ! since this results in a slightly smaller story file
 Property IK5_Count;
 Property IK6_Count;
 Property IK8_Count;
+Property IK3_Count;
 
 Property IK1_link; ! These are for linked lists used to make searches faster
 Property IK2_link; ! and again it's memory-efficient to declare the common ones

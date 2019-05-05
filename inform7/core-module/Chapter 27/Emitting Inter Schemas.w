@@ -60,9 +60,14 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 			(isn->dir_clarifier == IFNDEF_I6RW)) {
 			symbol_to_check = isn->child_node->expression_tokens->material;
 		} else {
-			symbol_to_check = isn->child_node->child_node->expression_tokens->material;
-			operation_to_check = isn->child_node->isn_clarifier;
-			value_to_check = isn->child_node->child_node->next_node->expression_tokens->material;
+			inter_schema_node *to_eval = isn->child_node;
+			while ((to_eval) && (to_eval->isn_type == SUBEXPRESSION_ISNT))
+				to_eval = to_eval->child_node;
+			if ((to_eval == NULL) || (to_eval->child_node->expression_tokens == NULL))
+				internal_error("bad iftrue");
+			symbol_to_check = to_eval->child_node->expression_tokens->material;
+			operation_to_check = to_eval->isn_clarifier;
+			value_to_check = to_eval->child_node->next_node->expression_tokens->material;
 		}
 		LOG("Means checking %S\n", symbol_to_check);
 		if (value_to_check) LOG("Against %S\n", value_to_check);

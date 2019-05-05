@@ -863,6 +863,7 @@ void Emit::inv_primitive(inter_symbol *prim_symb) {
 		(prim_symb == ifelse_interp) ||
 		(prim_symb == for_interp) ||
 		(prim_symb == while_interp) ||
+		(prim_symb == do_interp) ||
 		(prim_symb == objectloop_interp)) Emit::note_level(prim_symb);
 
 	Emit::guard(Inter::Inv::new_primitive(Emit::at(), current_inter_routine, prim_symb, (inter_t) Emit::level(), NULL));

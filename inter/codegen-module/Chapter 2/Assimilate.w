@@ -687,10 +687,7 @@ int CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *bl
 		routine_body_request *req = CREATE(routine_body_request);
 		req->block_bookmark = bb;
 		req->enclosure = Packaging::enclosure();
-//		CodeGen::Link::entire_splat(IRS, NULL, I"! Magic\n", offset, block_name);
-//		CodeGen::Link::entire_splat(IRS, NULL, I"! Yay\n", offset, block_name);
 		req->position = Packaging::bubble_at(IRS);
-//		CodeGen::Link::entire_splat(IRS, NULL, I"! Manic\n", offset, block_name);
 		req->block_name = block_name;
 		req->pass2_offset = (int) offset - 2;
 		req->body = Str::duplicate(body);

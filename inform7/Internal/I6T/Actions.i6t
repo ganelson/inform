@@ -636,7 +636,7 @@ see the account in the Standard Rules for details.
 		say__p = 0;
 		rv = FollowRulebook(PERSUADE_RB);
 		if (RulebookSucceeded() == false) {
-			if ((deadflag == false) && (say__p == FALSE)) {
+			if ((deadflag == false) && (say__p == false)) {
 				REQUESTED_ACTIONS_REQUIRE_RM('A', actor);
 				new_line;
 			}

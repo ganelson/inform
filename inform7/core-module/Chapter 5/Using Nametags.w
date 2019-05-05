@@ -47,6 +47,7 @@ void UseNouns::noun_set_I6_representation(noun *t, text_stream *new) {
 		Str::delete_last_character(t->nt_I6_identifier);
 	Emit::change_translation(t->nt_iname, t->nt_I6_identifier);
 	Emit::clear_flag(t->nt_iname, MAKE_NAME_UNIQUE);
+	Hierarchy::make_available(t->nt_iname);
 }
 
 @ The identifiers are created all at once, but the process is complicated by
