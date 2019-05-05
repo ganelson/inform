@@ -10,9 +10,114 @@ void EmitInterSchemas::emit(value_holster *VH, inter_schema *sch, void *opaque_s
 	if (sch->mid_case) { Emit::to_last_level(4); }
 	int prim_cat = VAL_PRIM_CAT;
 	if (to_code) prim_cat = CODE_PRIM_CAT;
+	int again = TRUE;
+	while (again) {
+		again = FALSE;
+		for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
+			if (EmitInterSchemas::process_conditionals(isn, first_call, second_call))
+				again = TRUE;
+	}
 	for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
 		EmitInterSchemas::emit_inner(isn, VH, sch, opaque_state, prim_cat, first_call, second_call, inline_command_handler, i7_source_handler);
 }
+
+@ =
+int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+	if (isn == NULL) return FALSE;
+	if (isn->blocked_by_conditional) return FALSE;
+	if (isn->isn_type == DIRECTIVE_ISNT) @<Directive@>;
+	for (isn=isn->child_node; isn; isn=isn->next_node)
+		if (EmitInterSchemas::process_conditionals(isn, first_call, second_call))
+			return TRUE;
+	return FALSE;
+}
+
+@<Directive@> =
+	if ((isn->dir_clarifier == IFDEF_I6RW) ||
+		(isn->dir_clarifier == IFNDEF_I6RW) ||
+		(isn->dir_clarifier == IFTRUE_I6RW) ||
+		(isn->dir_clarifier == IFFALSE_I6RW)) {
+		LOG("Cond dir!\n");
+		inter_schema_node *ifnot_node = NULL, *endif_node = NULL;
+		inter_schema_node *at = isn->next_node;
+		while (at) {
+			if (at->blocked_by_conditional == FALSE) {
+				if (at->dir_clarifier == IFDEF_I6RW) { isn = at; ifnot_node = NULL; }
+				if (at->dir_clarifier == IFNDEF_I6RW) { isn = at; ifnot_node = NULL; }
+				if (at->dir_clarifier == IFTRUE_I6RW) { isn = at; ifnot_node = NULL; }
+				if (at->dir_clarifier == IFFALSE_I6RW) { isn = at; ifnot_node = NULL; }
+				if (at->dir_clarifier == IFNOT_I6RW) ifnot_node = at;
+				if (at->dir_clarifier == ENDIF_I6RW) { endif_node = at; break; }
+			}
+			at = at->next_node;
+		}
+		if (endif_node == NULL) internal_error("no matching #endif");
+		
+		text_stream *symbol_to_check = NULL;
+		text_stream *value_to_check = NULL;
+		inter_symbol *operation_to_check = NULL;
+		if ((isn->dir_clarifier == IFDEF_I6RW) ||
+			(isn->dir_clarifier == IFNDEF_I6RW)) {
+			symbol_to_check = isn->child_node->expression_tokens->material;
+		} else {
+			symbol_to_check = isn->child_node->child_node->expression_tokens->material;
+			operation_to_check = isn->child_node->isn_clarifier;
+			value_to_check = isn->child_node->child_node->next_node->expression_tokens->material;
+		}
+		LOG("Means checking %S\n", symbol_to_check);
+		if (value_to_check) LOG("Against %S\n", value_to_check);
+		int val = -1, def = FALSE;
+		if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
+		else {
+			inter_symbol *symb = EmitInterSchemas::find_identifier_text(symbol_to_check, NULL, second_call);
+			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
+			LOG("Symb is $3\n", symb);
+			if (Inter::Symbols::is_defined(symb)) {
+				def = TRUE;
+				val = Inter::Symbols::evaluate_to_int(symb);
+			}			
+		}
+		LOG("Defined: %d, value: %d\n", def, val);
+		
+		int decision = TRUE;
+		
+		if ((isn->dir_clarifier == IFNDEF_I6RW)
+			|| (isn->dir_clarifier == IFDEF_I6RW)) decision = def;
+		else {
+			int h = Str::atoi(value_to_check, 0);
+			LOG("Want value %d\n", h);
+			if (operation_to_check == eq_interp) decision = (val == h)?TRUE:FALSE;
+			if (operation_to_check == ne_interp) decision = (val != h)?TRUE:FALSE;
+			if (operation_to_check == ge_interp) decision = (val >= h)?TRUE:FALSE;
+			if (operation_to_check == gt_interp) decision = (val > h)?TRUE:FALSE;
+			if (operation_to_check == le_interp) decision = (val <= h)?TRUE:FALSE;
+			if (operation_to_check == lt_interp) decision = (val < h)?TRUE:FALSE;
+		}
+		
+		if (isn->dir_clarifier == IFNDEF_I6RW) decision = decision?FALSE:TRUE;
+		if (isn->dir_clarifier == IFFALSE_I6RW) decision = decision?FALSE:TRUE;
+		isn->blocked_by_conditional = TRUE;
+		endif_node->blocked_by_conditional = TRUE;
+		if (ifnot_node) ifnot_node->blocked_by_conditional = TRUE;
+		if (decision) {
+			inter_schema_node *at = ifnot_node;
+			while ((at) && (at != endif_node)) {
+				at->blocked_by_conditional = TRUE;
+				at = at->next_node;
+			}
+		} else {
+			inter_schema_node *at = isn;
+			while ((at) && (at != endif_node) && (at != ifnot_node)) {
+				at->blocked_by_conditional = TRUE;
+				at = at->next_node;
+			}
+		}
+		LOG("--- Resulting in: ---\n");
+		for (inter_schema_node *at = isn; at; at = at->next_node)
+			InterSchemas::log_just(at, 0);
+		LOG("------\n");
+		return TRUE;
+	}
 
 @ =
 void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
@@ -20,6 +125,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
 	if (isn == NULL) return;
+	if (isn->blocked_by_conditional) return;
 	switch (isn->isn_type) {
 		case LABEL_ISNT: @<Label@>; break;
 		case CODE_ISNT: @<Code block@>; break;
@@ -32,7 +138,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		case CALL_ISNT: @<Call@>; break;
 		case MESSAGE_ISNT: @<Message@>; break;
 		case CALLMESSAGE_ISNT: @<Call-message@>; break;
-		case DIRECTIVE_ISNT: @<Directive@>; break;
+		case DIRECTIVE_ISNT: @<Non-conditional directive@>; break;
 		default: internal_error("unknown schema node type");
 	}
 }
@@ -308,8 +414,19 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 			case ASM_SP_ISTT:
 				Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_SP_HL)));
 				break;
+			case ASM_NEGATED_LABEL_ISTT:
+				if (Str::eq(t->material, I"rtrue")) 
+					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_RTRUE_HL)));
+				else if (Str::eq(t->material, I"rfalse")) 
+					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_RFALSE_HL)));
+				else internal_error("can only negate rtrue or rfalse");
+				break;
 			case ASM_LABEL_ISTT:
-				Emit::lab(Emit::reserve_label(t->material));
+				if (Str::eq(t->material, I"rtrue")) 
+					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_RTRUE_HL)));
+				else if (Str::eq(t->material, I"rfalse")) 
+					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_RFALSE_HL)));
+				else Emit::lab(Emit::reserve_label(t->material));
 				break;
 			case NUMBER_ISTT:
 			case BIN_NUMBER_ISTT:
@@ -356,43 +473,8 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	if (cat_me) { Emit::up(); }
 	if (prim_cat == REF_PRIM_CAT) { Emit::up(); }
 
-@<Directive@> =
-	LOG("Gen on dir!\n");
-	InterSchemas::log_just(isn, 0);
-	if (isn->dir_clarifier == ENDIF_I6RW) {
-		Emit::entire_splat_code(I"#endif;");
-	} else if (isn->dir_clarifier == IFNOT_I6RW) {
-		Emit::entire_splat_code(I"#ifnot;");
-	} else if ((isn->dir_clarifier == IFDEF_I6RW) || (isn->dir_clarifier == IFNDEF_I6RW)) {
-		TEMPORARY_TEXT(T);
-		switch(isn->dir_clarifier) {
-			case IFDEF_I6RW: WRITE_TO(T, "#ifdef %S;", isn->child_node->expression_tokens->material); break;
-			case IFNDEF_I6RW: WRITE_TO(T, "#ifndef %S;", isn->child_node->expression_tokens->material); break;
-		}
-		Emit::entire_splat_code(T);
-		LOG("Resorted to %S\n", T);
-		DISCARD_TEXT(T);
-	} else {
-		TEMPORARY_TEXT(T);
-		switch(isn->dir_clarifier) {
-			case IFTRUE_I6RW: WRITE_TO(T, "#iftrue "); break;
-			case IFFALSE_I6RW: WRITE_TO(T, "#iffalse "); break;
-			default: internal_error("unknown directive"); break;
-		}
-		WRITE_TO(T, "%S", isn->child_node->child_node->expression_tokens->material);
-		if (isn->child_node->isn_clarifier == eq_interp) WRITE_TO(T, " == ");
-		else if (isn->child_node->isn_clarifier == ne_interp) WRITE_TO(T, " ~= ");
-		else if (isn->child_node->isn_clarifier == gt_interp) WRITE_TO(T, " > ");
-		else if (isn->child_node->isn_clarifier == ge_interp) WRITE_TO(T, " >= ");
-		else if (isn->child_node->isn_clarifier == lt_interp) WRITE_TO(T, " < ");
-		else if (isn->child_node->isn_clarifier == le_interp) WRITE_TO(T, " <= ");
-		else internal_error("unknown operator");
-		WRITE_TO(T, "%S;", isn->child_node->child_node->next_node->expression_tokens->material);
-
-		Emit::entire_splat_code(T);
-		LOG("Resorted to %S\n", T);
-		DISCARD_TEXT(T);
-	}
+@<Non-conditional directive@> =
+	internal_error("unknown directive");
 
 @ =
 inter_symbol *EmitInterSchemas::find_identifier(inter_schema_token *t, inter_symbols_table *first_call, inter_symbols_table *second_call) {
@@ -401,6 +483,15 @@ inter_symbol *EmitInterSchemas::find_identifier(inter_schema_token *t, inter_sym
 }
 
 inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+	if (Str::get_at(S, 0) == 0x00A7) {
+		TEMPORARY_TEXT(SR);
+		Str::copy(SR, S);
+		Str::delete_first_character(SR);
+		Str::delete_last_character(SR);
+		inter_symbol *I = Inter::SymbolsTables::url_name_to_symbol(Emit::repository(), NULL, SR);
+		DISCARD_TEXT(SR);
+		if (I) return I;
+	}
 	if (first_call) {
 		inter_symbol *I = Emit::seek_symbol(first_call, S);
 		if (I) return I;

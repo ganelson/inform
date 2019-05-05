@@ -139,6 +139,25 @@ int Inter::Symbols::is_defined(inter_symbol *S) {
 	return FALSE;
 }
 
+int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
+	inter_frame P = Inter::Symbols::defining_frame(S);
+	if ((Inter::Frame::valid(&P)) &&
+		(P.data[ID_IFLD] == CONSTANT_IST) &&
+		(P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
+		return (int) P.data[DATA_CONST_IFLD + 1];
+	}
+	if ((Inter::Frame::valid(&P)) &&
+		(P.data[ID_IFLD] == CONSTANT_IST) &&
+		(P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
+		inter_symbols_table *scope = S->owning_table;
+		inter_symbol *alias_to = Inter::SymbolsTables::symbol_from_id(scope, P.data[DATA_CONST_IFLD + 1]);
+		return Inter::Symbols::evaluate_to_int(alias_to);
+	}
+	return -1;
+}
+
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
 		inter_frame D = Inter::Symbols::defining_frame(S);

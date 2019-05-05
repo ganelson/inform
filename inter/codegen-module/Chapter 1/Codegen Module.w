@@ -17,6 +17,7 @@ We need to itemise the structures we'll want to allocate:
 @e inter_schema_MT
 @e inter_schema_node_MT
 @e inter_schema_token_MT
+@e routine_body_request_MT
 
 @ With allocation functions:
 
@@ -29,6 +30,7 @@ ALLOCATE_INDIVIDUALLY(text_literal_holder)
 ALLOCATE_INDIVIDUALLY(inter_schema)
 ALLOCATE_INDIVIDUALLY(inter_schema_node)
 ALLOCATE_INDIVIDUALLY(inter_schema_token)
+ALLOCATE_INDIVIDUALLY(routine_body_request)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

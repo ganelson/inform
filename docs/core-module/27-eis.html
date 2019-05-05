@@ -20,6 +20,13 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sch</span><span class="plain">-&gt;</span><span class="identifier">mid_case</span><span class="plain">) { </span><span class="functiontext">Emit::to_last_level</span><span class="plain">(4); }</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">prim_cat</span><span class="plain"> = </span><span class="identifier">VAL_PRIM_CAT</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_code</span><span class="plain">) </span><span class="identifier">prim_cat</span><span class="plain"> = </span><span class="identifier">CODE_PRIM_CAT</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">again</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">again</span><span class="plain">) {</span>
+            <span class="identifier">again</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">sch</span><span class="plain">-&gt;</span><span class="identifier">node_tree</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">EmitInterSchemas::process_conditionals</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">, </span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">))</span>
+                    <span class="identifier">again</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="plain">}</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">sch</span><span class="plain">-&gt;</span><span class="identifier">node_tree</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">)</span>
             <span class="functiontext">EmitInterSchemas::emit_inner</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">, </span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">sch</span><span class="plain">, </span><span class="identifier">opaque_state</span><span class="plain">, </span><span class="identifier">prim_cat</span><span class="plain">, </span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">, </span><span class="identifier">inline_command_handler</span><span class="plain">, </span><span class="identifier">i7_source_handler</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -33,24 +40,141 @@
 
 
 <pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">EmitInterSchemas::process_conditionals</span><span class="plain">(</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">, </span><span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">second_call</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">isn_type</span><span class="plain"> == </span><span class="identifier">DIRECTIVE_ISNT</span><span class="plain">) </span>&lt;<span class="cwebmacro">Directive</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">EmitInterSchemas::process_conditionals</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">, </span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">))</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function EmitInterSchemas::process_conditionals is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Directive</span> <span class="cwebmacronumber">2.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFDEF_I6RW</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFTRUE_I6RW</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFFALSE_I6RW</span><span class="plain">)) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Cond dir!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">ifnot_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">endif_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFDEF_I6RW</span><span class="plain">) { </span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">ifnot_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">) { </span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">ifnot_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFTRUE_I6RW</span><span class="plain">) { </span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">ifnot_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFFALSE_I6RW</span><span class="plain">) { </span><span class="identifier">isn</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">ifnot_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNOT_I6RW</span><span class="plain">) </span><span class="identifier">ifnot_node</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">ENDIF_I6RW</span><span class="plain">) { </span><span class="identifier">endif_node</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
+                <span class="plain">}</span>
+                <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">endif_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no matching #endif"</span><span class="plain">);</span>
+
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">symbol_to_check</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">value_to_check</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">operation_to_check</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFDEF_I6RW</span><span class="plain">) ||</span>
+                <span class="plain">(</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">)) {</span>
+                <span class="identifier">symbol_to_check</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">symbol_to_check</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">;</span>
+                <span class="identifier">operation_to_check</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain">;</span>
+                <span class="identifier">value_to_check</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Means checking %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">symbol_to_check</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">value_to_check</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Against %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">value_to_check</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> = -1, </span><span class="identifier">def</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">symbol_to_check</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"#version_number"</span><span class="plain">)) { </span><span class="identifier">val</span><span class="plain"> = 8; </span><span class="identifier">def</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; }</span>
+            <span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="functiontext">EmitInterSchemas::find_identifier_text</span><span class="plain">(</span><span class="identifier">symbol_to_check</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">second_call</span><span class="plain">);</span>
+                <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">symb</span><span class="plain">) &amp;&amp; (</span><span class="identifier">symb</span><span class="plain">-&gt;</span><span class="identifier">equated_to</span><span class="plain">)) </span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-&gt;</span><span class="identifier">equated_to</span><span class="plain">;</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Symb is $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">symb</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::is_defined</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">)) {</span>
+                    <span class="identifier">def</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::evaluate_to_int</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Defined: %d, value: %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">def</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
+
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">)</span>
+                <span class="plain">|| (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFDEF_I6RW</span><span class="plain">)) </span><span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">def</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">value_to_check</span><span class="plain">, 0);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Want value %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operation_to_check</span><span class="plain"> == </span><span class="identifier">eq_interp</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = (</span><span class="identifier">val</span><span class="plain"> == </span><span class="identifier">h</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operation_to_check</span><span class="plain"> == </span><span class="identifier">ne_interp</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = (</span><span class="identifier">val</span><span class="plain"> != </span><span class="identifier">h</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operation_to_check</span><span class="plain"> == </span><span class="identifier">ge_interp</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = (</span><span class="identifier">val</span><span class="plain"> &gt;= </span><span class="identifier">h</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operation_to_check</span><span class="plain"> == </span><span class="identifier">gt_interp</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = (</span><span class="identifier">val</span><span class="plain"> &gt; </span><span class="identifier">h</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operation_to_check</span><span class="plain"> == </span><span class="identifier">le_interp</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = (</span><span class="identifier">val</span><span class="plain"> &lt;= </span><span class="identifier">h</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">operation_to_check</span><span class="plain"> == </span><span class="identifier">lt_interp</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = (</span><span class="identifier">val</span><span class="plain"> &lt; </span><span class="identifier">h</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="plain">}</span>
+
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">decision</span><span class="plain">?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFFALSE_I6RW</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">decision</span><span class="plain">?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">endif_node</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifnot_node</span><span class="plain">) </span><span class="identifier">ifnot_node</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">decision</span><span class="plain">) {</span>
+                <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">ifnot_node</span><span class="plain">;</span>
+                <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">at</span><span class="plain">) &amp;&amp; (</span><span class="identifier">at</span><span class="plain"> != </span><span class="identifier">endif_node</span><span class="plain">)) {</span>
+                    <span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">;</span>
+                <span class="plain">}</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">;</span>
+                <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">at</span><span class="plain">) &amp;&amp; (</span><span class="identifier">at</span><span class="plain"> != </span><span class="identifier">endif_node</span><span class="plain">) &amp;&amp; (</span><span class="identifier">at</span><span class="plain"> != </span><span class="identifier">ifnot_node</span><span class="plain">)) {</span>
+                    <span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">;</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"--- Resulting in: ---\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">at</span><span class="plain">; </span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">)</span>
+                <span class="identifier">InterSchemas::log_just</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, 0);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"------\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+
+
+<pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">EmitInterSchemas::emit_inner</span><span class="plain">(</span><span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">, </span><span class="reserved">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">,</span>
         <span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">opaque_state</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">prim_cat</span><span class="plain">, </span><span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">second_call</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">inline_command_handler</span><span class="plain">)(</span><span class="reserved">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">inter_schema_token</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">opaque_state</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">prim_cat</span><span class="plain">),</span>
         <span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">i7_source_handler</span><span class="plain">)(</span><span class="reserved">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">)) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">blocked_by_conditional</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">isn_type</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LABEL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Label</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CODE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Code block</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EVAL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Eval block</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Expression</span> <span class="cwebmacronumber">2.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUBEXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Subexpression</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STATEMENT_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Statement</span> <span class="cwebmacronumber">2.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPERATION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Operation</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASSEMBLY_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Assembly</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Call</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MESSAGE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Message</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALLMESSAGE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Call-message</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIRECTIVE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Directive</span> <span class="cwebmacronumber">2.12</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LABEL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Label</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CODE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Code block</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EVAL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Eval block</span> <span class="cwebmacronumber">3.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Expression</span> <span class="cwebmacronumber">3.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUBEXPRESSION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Subexpression</span> <span class="cwebmacronumber">3.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STATEMENT_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Statement</span> <span class="cwebmacronumber">3.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPERATION_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Operation</span> <span class="cwebmacronumber">3.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASSEMBLY_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Assembly</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALL_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Call</span> <span class="cwebmacronumber">3.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MESSAGE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Message</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALLMESSAGE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Call-message</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIRECTIVE_ISNT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Non-conditional directive</span> <span class="cwebmacronumber">3.12</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown schema node type"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -58,10 +182,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function EmitInterSchemas::emit_inner is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_2">&#167;2.2</a>, <a href="#SP2_3">&#167;2.3</a>, <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_5">&#167;2.5</a>, <a href="#SP2_6">&#167;2.6</a>, <a href="#SP2_7">&#167;2.7</a>, <a href="#SP2_8">&#167;2.8</a>, <a href="#SP2_9">&#167;2.9</a>, <a href="#SP2_10">&#167;2.10</a>, <a href="#SP2_10_1">&#167;2.10.1</a>.</p>
+<p class="endnote">The function EmitInterSchemas::emit_inner is used in <a href="#SP1">&#167;1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>, <a href="#SP3_6">&#167;3.6</a>, <a href="#SP3_7">&#167;3.7</a>, <a href="#SP3_8">&#167;3.8</a>, <a href="#SP3_9">&#167;3.9</a>, <a href="#SP3_10">&#167;3.10</a>, <a href="#SP3_10_1">&#167;3.10.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Label</span> <span class="cwebmacronumber">2.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Label</span> <span class="cwebmacronumber">3.1</span>&gt; =
 </code></p>
 
 
@@ -89,10 +213,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Code block</span> <span class="cwebmacronumber">2.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Code block</span> <span class="cwebmacronumber">3.2</span>&gt; =
 </code></p>
 
 
@@ -114,10 +238,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Assembly</span> <span class="cwebmacronumber">2.3</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_3"></a><b>&#167;3.3.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Assembly</span> <span class="cwebmacronumber">3.3</span>&gt; =
 </code></p>
 
 
@@ -144,10 +268,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Call</span> <span class="cwebmacronumber">2.4</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_4"></a><b>&#167;3.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Call</span> <span class="cwebmacronumber">3.4</span>&gt; =
 </code></p>
 
 
@@ -191,10 +315,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Message</span> <span class="cwebmacronumber">2.5</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Message</span> <span class="cwebmacronumber">3.5</span>&gt; =
 </code></p>
 
 
@@ -221,10 +345,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Call-message</span> <span class="cwebmacronumber">2.6</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_6"></a><b>&#167;3.6.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Call-message</span> <span class="cwebmacronumber">3.6</span>&gt; =
 </code></p>
 
 
@@ -251,10 +375,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_7"></a><b>&#167;2.7.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Eval block</span> <span class="cwebmacronumber">2.7</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_7"></a><b>&#167;3.7.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Eval block</span> <span class="cwebmacronumber">3.7</span>&gt; =
 </code></p>
 
 
@@ -280,10 +404,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Operation</span> <span class="cwebmacronumber">2.8</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_8"></a><b>&#167;3.8.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Operation</span> <span class="cwebmacronumber">3.8</span>&gt; =
 </code></p>
 
 
@@ -309,10 +433,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Subexpression</span> <span class="cwebmacronumber">2.9</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_9"></a><b>&#167;3.9.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Subexpression</span> <span class="cwebmacronumber">3.9</span>&gt; =
 </code></p>
 
 
@@ -333,10 +457,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_10"></a><b>&#167;2.10.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Statement</span> <span class="cwebmacronumber">2.10</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_10"></a><b>&#167;3.10.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Statement</span> <span class="cwebmacronumber">3.10</span>&gt; =
 </code></p>
 
 
@@ -348,7 +472,7 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain"> &gt; 0) {</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">objectloop_interp</span><span class="plain">)</span>
-                &lt;<span class="cwebmacro">Add the objectloop range tokens</span> <span class="cwebmacronumber">2.10.1</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Add the objectloop range tokens</span> <span class="cwebmacronumber">3.10.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">;</span>
             <span class="identifier">inter_schema_node</span><span class="plain"> *</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">actual_arity</span><span class="plain"> = 0;</span>
@@ -368,10 +492,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_10_1"></a><b>&#167;2.10.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Add the objectloop range tokens</span> <span class="cwebmacronumber">2.10.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_10_1"></a><b>&#167;3.10.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Add the objectloop range tokens</span> <span class="cwebmacronumber">3.10.1</span>&gt; =
 </code></p>
 
 
@@ -404,10 +528,10 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2_10">&#167;2.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3_10">&#167;3.10</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_11"></a><b>&#167;2.11.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expression</span> <span class="cwebmacronumber">2.11</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_11"></a><b>&#167;3.11.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expression</span> <span class="cwebmacronumber">3.11</span>&gt; =
 </code></p>
 
 
@@ -446,8 +570,19 @@
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASM_SP_ISTT</span><span class="plain">:</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_SP_HL</span><span class="plain">)));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASM_NEGATED_LABEL_ISTT</span><span class="plain">:</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rtrue"</span><span class="plain">))</span>
+                        <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_NEG_RTRUE_HL</span><span class="plain">)));</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rfalse"</span><span class="plain">))</span>
+                        <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_NEG_RFALSE_HL</span><span class="plain">)));</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can only negate rtrue or rfalse"</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASM_LABEL_ISTT</span><span class="plain">:</span>
-                    <span class="functiontext">Emit::lab</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">));</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rtrue"</span><span class="plain">))</span>
+                        <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_RTRUE_HL</span><span class="plain">)));</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"rfalse"</span><span class="plain">))</span>
+                        <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ASM_RFALSE_HL</span><span class="plain">)));</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::lab</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_ISTT</span><span class="plain">:</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BIN_NUMBER_ISTT</span><span class="plain">:</span>
@@ -497,57 +632,22 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_12"></a><b>&#167;2.12.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Directive</span> <span class="cwebmacronumber">2.12</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_12"></a><b>&#167;3.12.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Non-conditional directive</span> <span class="cwebmacronumber">3.12</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Gen on dir!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">InterSchemas::log_just</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">, 0);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">ENDIF_I6RW</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::entire_splat_code</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#endif;"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNOT_I6RW</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::entire_splat_code</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#ifnot;"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFDEF_I6RW</span><span class="plain">) || (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain"> == </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">)) {</span>
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IFDEF_I6RW</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"#ifdef %S;"</span><span class="plain">, </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IFNDEF_I6RW</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"#ifndef %S;"</span><span class="plain">, </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="functiontext">Emit::entire_splat_code</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Resorted to %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">dir_clarifier</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IFTRUE_I6RW</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"#iftrue "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IFFALSE_I6RW</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"#iffalse "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown directive"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">eq_interp</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" == "</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">ne_interp</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" ~= "</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">gt_interp</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" &gt; "</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">ge_interp</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" &gt;= "</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">lt_interp</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" &lt; "</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">isn_clarifier</span><span class="plain"> == </span><span class="identifier">le_interp</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" &lt;= "</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown operator"</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S;"</span><span class="plain">, </span><span class="identifier">isn</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">child_node</span><span class="plain">-&gt;</span><span class="identifier">next_node</span><span class="plain">-&gt;</span><span class="identifier">expression_tokens</span><span class="plain">-&gt;</span><span class="identifier">material</span><span class="plain">);</span>
-
-            <span class="functiontext">Emit::entire_splat_code</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Resorted to %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="plain">}</span>
+        <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown directive"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 
 <pre class="display">
@@ -557,6 +657,15 @@
     <span class="plain">}</span>
 
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">EmitInterSchemas::find_identifier_text</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">second_call</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, 0) == 0</span><span class="identifier">x00A7</span><span class="plain">) {</span>
+            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">SR</span><span class="plain">);</span>
+            <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">SR</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">SR</span><span class="plain">);</span>
+            <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">SR</span><span class="plain">);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::url_name_to_symbol</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">(), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">SR</span><span class="plain">);</span>
+            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SR</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first_call</span><span class="plain">) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Emit::seek_symbol</span><span class="plain">(</span><span class="identifier">first_call</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
@@ -577,9 +686,9 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function EmitInterSchemas::find_identifier is used in <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_11">&#167;2.11</a>.</p>
+<p class="endnote">The function EmitInterSchemas::find_identifier is used in <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_11">&#167;3.11</a>.</p>
 
-<p class="endnote">The function EmitInterSchemas::find_identifier_text is used in 25/cii (<a href="25-cii.html#SP3_6_2">&#167;3.6.2</a>).</p>
+<p class="endnote">The function EmitInterSchemas::find_identifier_text is used in <a href="#SP2_1">&#167;2.1</a>, 25/cii (<a href="25-cii.html#SP3_6_2">&#167;3.6.2</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="27-in.html">Back to 'Inter Namespace'</a></li><li><a href="27-ei.html">Continue with 'Emitting Inter'</a></li></ul><hr class="tocbar">

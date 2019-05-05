@@ -21,3 +21,18 @@ schema
 	restore Somewhere;
 	.Somewhere; print "Here!";
 end
+schema
+	@jl y 0 ?~rtrue;
+end
+schema
+	"Hello, this
+	is a multiline string literal";
+end
+schema
+	for (n=0:((n<RE_Subexpressions-->10) && (n<10)): n++)
+		print n;
+end
+schema
+	spaces j;
+	print (I7_string) str; 
+end

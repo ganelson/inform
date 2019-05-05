@@ -55,6 +55,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			}
 		}
 	}
+	CodeGen::Assimilate::routine_bodies();
 	LOOP_THROUGH_FRAMES(P, I) {
 		inter_package *outer = Inter::Packages::container(P);
 		if (((outer == NULL) || (outer->codelike_package == FALSE)) &&
@@ -109,7 +110,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	if ((identifier) && (unchecked_kind_symbol)) {
 		Str::trim_all_white_space_at_end(identifier);
 		inter_t switch_on = P.data[PLM_SPLAT_IFLD];
-
+LOG("ASSIM: %S\n", identifier);
 		if (switch_on == DEFAULT_PLM) {
 			inter_symbol *symbol = CodeGen::Link::find_name(I, identifier, TRUE);
 			if (symbol == NULL) switch_on = CONSTANT_PLM;
@@ -364,18 +365,18 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		Inter::Symbols::label(end_name);
 
 		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, begin_name, baseline+1, NULL));
-
+		int veto = FALSE;
 		if (Str::len(body) > 0) {
 			int L = Str::len(body) - 1;
 			while ((L>0) && (Str::get_at(body, L) != ']')) L--;
 			while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 			Str::truncate(body, L);
-			CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body);
+			veto = CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body, block_bookmark);
 		}
 
 		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, end_name, baseline+1, NULL));
 
-		CodeGen::Link::guard(Inter::Defn::pass2(I, FALSE, &block_bookmark, TRUE, (int) baseline));
+		if (!veto) CodeGen::Link::guard(Inter::Defn::pass2(I, FALSE, &block_bookmark, TRUE, (int) baseline));
 
 		Inter::Defn::unset_current_package(&ib, IP, 0);
 
@@ -666,12 +667,46 @@ inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack)
 	return mcc_name;
 }
 
+typedef struct routine_body_request {
+	struct inter_reading_state position;
+	struct inter_reading_state block_bookmark;
+	#ifdef CORE_MODULE
+	struct package_request *enclosure;
+	#endif
+	struct inter_symbol *block_name;
+	int pass2_offset;
+	struct text_stream *body;
+	MEMORY_MANAGEMENT
+} routine_body_request;
+
 int rb_splat_count = 1;
-void CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body) {
-	if (Str::is_whitespace(body)) return;
-	if (Str::len(body) < 150) {
-		LOG("=======\n\nCandidate (%S) len %d: '%S'\n\n", block_name->symbol_name, Str::len(body), body);
-		inter_schema *sch = InterSchemas::from_text(body, FALSE, 0, NULL);
+int CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body, inter_reading_state bb) {
+	if (Str::is_whitespace(body)) return FALSE;
+	#ifdef CORE_MODULE
+	if (Str::len(body) < 200) {
+		routine_body_request *req = CREATE(routine_body_request);
+		req->block_bookmark = bb;
+		req->enclosure = Packaging::enclosure();
+//		CodeGen::Link::entire_splat(IRS, NULL, I"! Magic\n", offset, block_name);
+//		CodeGen::Link::entire_splat(IRS, NULL, I"! Yay\n", offset, block_name);
+		req->position = Packaging::bubble_at(IRS);
+//		CodeGen::Link::entire_splat(IRS, NULL, I"! Manic\n", offset, block_name);
+		req->block_name = block_name;
+		req->pass2_offset = (int) offset - 2;
+		req->body = Str::duplicate(body);
+		return TRUE;
+	}
+	#endif
+	CodeGen::Link::entire_splat(IRS, NULL, body, offset, block_name);
+	LOG("Splat %d\n", rb_splat_count++);
+	return FALSE;
+}
+
+void CodeGen::Assimilate::routine_bodies(void) {
+	routine_body_request *req;
+	LOOP_OVER(req, routine_body_request) {
+		LOG("=======\n\nCandidate (%S) len %d: '%S'\n\n", req->block_name->symbol_name, Str::len(req->body), req->body);
+		inter_schema *sch = InterSchemas::from_text(req->body, FALSE, 0, NULL);
 		
 		if (sch == NULL) LOG("NULL SCH\n");
 		else if (sch->node_tree == NULL) {
@@ -680,18 +715,17 @@ void CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *b
 		} else InterSchemas::log(DL, sch);
 		
 		#ifdef CORE_MODULE
-		current_inter_routine = block_name;
-		Packaging::set_state(IRS, Packaging::enclosure());
-		Emit::push_code_position(Emit::new_cip(IRS));
+		current_inter_routine = req->block_name;
+		Packaging::set_state(&(req->position), req->enclosure);
+		Emit::push_code_position(Emit::new_cip(&(req->position)));
 		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
-		inter_symbols_table *scope1 = Inter::Package::local_symbols(block_name);
+		inter_symbols_table *scope1 = Inter::Package::local_symbols(req->block_name);
 		inter_symbols_table *scope2 = Inter::Packages::scope(Packaging::incarnate(Hierarchy::template()));
 		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
 		Emit::pop_code_position();
 		current_inter_routine = NULL;
-		return;
+
+		CodeGen::Link::guard(Inter::Defn::pass2(req->block_bookmark.read_into, FALSE, &(req->block_bookmark), TRUE, req->pass2_offset));
 		#endif
 	}
-	CodeGen::Link::entire_splat(IRS, NULL, body, offset, block_name);
-	LOG("Splat %d\n", rb_splat_count++);
 }

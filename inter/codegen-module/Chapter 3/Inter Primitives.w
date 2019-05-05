@@ -12,6 +12,7 @@ inter_symbol *break_interp = NULL;
 inter_symbol *continue_interp = NULL;
 inter_symbol *quit_interp = NULL;
 inter_symbol *restore_interp = NULL;
+inter_symbol *spaces_interp = NULL;
 inter_symbol *modulo_interp = NULL;
 inter_symbol *random_interp = NULL;
 inter_symbol *not_interp = NULL;
@@ -132,6 +133,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!return", I"val -> void", &return_interp);
 	Primitives::emit_one(I, IRS, I"!quit", I"void -> void", &quit_interp);
 	Primitives::emit_one(I, IRS, I"!restore", I"lab -> void", &restore_interp);
+	Primitives::emit_one(I, IRS, I"!spaces", I"val -> void", &spaces_interp);
 	Primitives::emit_one(I, IRS, I"!break", I"void -> void", &break_interp);
 	Primitives::emit_one(I, IRS, I"!continue", I"void -> void", &continue_interp);
 	Primitives::emit_one(I, IRS, I"!jump", I"lab -> void", &jump_interp);
@@ -302,6 +304,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e JUMP_BIP
 @e QUIT_BIP
 @e RESTORE_BIP
+@e SPACES_BIP
 @e BREAK_BIP
 @e CONTINUE_BIP
 @e STYLEROMAN_BIP
@@ -410,6 +413,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!move")) bip = MOVE_BIP;
 	if (Str::eq(symb->symbol_name, I"!quit")) bip = QUIT_BIP;
 	if (Str::eq(symb->symbol_name, I"!restore")) bip = RESTORE_BIP;
+	if (Str::eq(symb->symbol_name, I"!spaces")) bip = SPACES_BIP;
 	if (Str::eq(symb->symbol_name, I"!break")) bip = BREAK_BIP;
 	if (Str::eq(symb->symbol_name, I"!continue")) bip = CONTINUE_BIP;
 	if (Str::eq(symb->symbol_name, I"!font")) bip = FONT_BIP;

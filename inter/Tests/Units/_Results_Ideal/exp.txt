@@ -1,68 +1,153 @@
 Test: parse schema from:
 	alpha.beta()
 
-* (message)
-    * (expr)
+  * (message)
+      * (expr)
         IDENTIFIER  alpha
-    * (expr)
+      * (expr)
         IDENTIFIER  beta
 =========
 Test: parse schema from:
 	alpha.beta(x)
 
-* (message)
-    * (expr)
+  * (message)
+      * (expr)
         IDENTIFIER  alpha
-    * (expr)
+      * (expr)
         IDENTIFIER  beta
-    * (expr)
+      * (expr)
         IDENTIFIER  x
 =========
 Test: parse schema from:
 	routine.call(x)
 
-* (call-message)
-    * (expr)
+  * (call-message)
+      * (expr)
         IDENTIFIER  routine
-    * (expr)
+      * (expr)
         IDENTIFIER  x
 =========
 Test: parse schema from:
 	(alpha.beta)(x)
 
-* (call)
-    * (subexpression)
-        * (operation) !propertyvalue
-            * (expr)
+  * (call)
+      * (subexpression)
+          * (operation) !propertyvalue
+              * (expr)
                 IDENTIFIER  alpha
-            * (expr)
+              * (expr)
                 IDENTIFIER  beta
-    * (expr)
+      * (expr)
         IDENTIFIER  x
 =========
 Test: parse schema from:
 	debug_rules = 2; say__p = 1;
 	"Rules tracing now switched to ~all~. Type ~rules off~ to switch it off again.";
 
-* (operation) !store
-    * (expr)
+  * (operation) !store
+      * (expr)
         IDENTIFIER  debug_rules
-    * (expr)
+      * (expr)
         NUMBER      2
-* (operation) !store
-    * (expr)
+  * (operation) !store
+      * (expr)
         IDENTIFIER  say__p
-    * (expr)
+      * (expr)
         NUMBER      1
-* (expr) ;
+  * (expr) ;
     DQUOTED     Rules tracing now switched to "all". Type "rules off" to switch it off again.
 =========
 Test: parse schema from:
 	@erase_window -1;
 
-* (assembly)
-    * (expr)
+  * (assembly)
+      * (expr)
         OPCODE      @erase_window
-    * (expr)
+      * (expr)
         NUMBER      -1
+=========
+Test: parse schema from:
+	restore Somewhere;
+	.Somewhere; print "Here!";
+
+  * (statement) !restore
+      * (expr)
+        IDENTIFIER  Somewhere
+  * (label)
+      * (expr)
+        IDENTIFIER  Somewhere
+  * (statement) !print
+      * (expr)
+        DQUOTED     Here!
+=========
+Test: parse schema from:
+	@jl y 0 ?~rtrue;
+
+  * (assembly)
+      * (expr)
+        OPCODE      @jl
+      * (expr)
+        IDENTIFIER  y
+      * (expr)
+        NUMBER      0
+      * (expr)
+        NEGASM_LABEL rtrue
+=========
+Test: parse schema from:
+	"Hello, this
+	is a multiline string literal";
+
+  * (expr) ;
+    DQUOTED     Hello, this is a multiline string literal
+=========
+Test: parse schema from:
+	for (n=0:((n<RE_Subexpressions-->10) && (n<10)): n++)
+		print n;
+
+  * (statement) !for
+      * (eval)
+          * (operation) !store
+              * (expr)
+                IDENTIFIER  n
+              * (expr)
+                NUMBER      0
+      * (eval)
+          * (subexpression)
+              * (operation) !and
+                  * (subexpression)
+                      * (operation) !lt
+                          * (expr)
+                            IDENTIFIER  n
+                          * (operation) !lookup
+                              * (expr)
+                                IDENTIFIER  RE_Subexpressions
+                              * (expr)
+                                NUMBER      10
+                  * (subexpression)
+                      * (operation) !lt
+                          * (expr)
+                            IDENTIFIER  n
+                          * (expr)
+                            NUMBER      10
+      * (eval)
+          * (operation) !postincrement
+              * (expr)
+                IDENTIFIER  n
+      * (code)
+          * (statement) !printnumber
+              * (expr)
+                IDENTIFIER  n
+=========
+Test: parse schema from:
+	spaces j;
+	print (I7_string) str; 
+
+  * (statement) !spaces
+      * (expr)
+        IDENTIFIER  j
+  * (call)
+      * (expr)
+        IDENTIFIER  I7_String
+      * (expr)
+        IDENTIFIER  str
 =========

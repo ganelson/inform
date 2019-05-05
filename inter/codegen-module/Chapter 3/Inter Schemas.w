@@ -86,6 +86,8 @@ typedef struct inter_schema_node {
 	int unclosed;									/* for |CODE_ISNT| only */
 	int unopened;									/* for |CODE_ISNT| only */
 
+	int blocked_by_conditional;						/* used in code generation */
+
 	MEMORY_MANAGEMENT
 } inter_schema_node;
 
@@ -108,6 +110,7 @@ inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt) {
 	isn->semicolon_terminated = FALSE;
 	isn->unclosed = FALSE;
 	isn->unopened = FALSE;
+	isn->blocked_by_conditional = FALSE;
 
 	return isn;
 }
@@ -219,6 +222,7 @@ compilation process, and never survive into the final schema:
 @e ASM_ARROW_ISTT			/* the arrow sign |->| used in assembly language only */
 @e ASM_SP_ISTT				/* the stack pointer pseudo-variable |sp| */
 @e ASM_LABEL_ISTT			/* the label sign |?| used in assembly language only */
+@e ASM_NEGATED_LABEL_ISTT   /* the label sign |?~| used in assembly language only */
 
 =
 typedef struct inter_schema_token {
@@ -304,6 +308,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e CONTINUE_I6RW
 @e QUIT_I6RW
 @e RESTORE_I6RW
+@e SPACES_I6RW
 
 @e IFDEF_I6RW
 @e IFNDEF_I6RW
@@ -427,6 +432,7 @@ void InterSchemas::log_depth(inter_schema_node *isn, int depth) {
 		InterSchemas::log_just(isn, depth);
 }
 void InterSchemas::log_just(inter_schema_node *isn, int depth) {
+	if (isn->blocked_by_conditional) LOG("XX"); else LOG("  ");
 	for (int d = 0; d < depth; d++) LOG("    ");
 	switch (isn->isn_type) {
 		case STATEMENT_ISNT:
@@ -484,48 +490,54 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 			LOG("\n");
 			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
 				for (int d = 0; d < depth + 1; d++) LOG("    ");
-				switch (t->ist_type) {
-					case RAW_ISTT:			LOG("RAW         "); break;
-					case OPERATOR_ISTT:		LOG("OPERATOR    "); break;
-					case OPCODE_ISTT:		LOG("OPCODE      "); break;
-					case DIRECTIVE_ISTT:	LOG("DIRECTIVE   "); break;
-					case IDENTIFIER_ISTT:	LOG("IDENTIFIER  "); break;
-					case RESERVED_ISTT:		LOG("RESERVED    "); break;
-					case NUMBER_ISTT:		LOG("NUMBER      "); break;
-					case BIN_NUMBER_ISTT:	LOG("BIN_NUMBER  "); break;
-					case HEX_NUMBER_ISTT:	LOG("HEX_NUMBER  "); break;
-					case REAL_NUMBER_ISTT:	LOG("REAL_NUMBER "); break;
-					case DQUOTED_ISTT:		LOG("DQUOTED     "); break;
-					case SQUOTED_ISTT:		LOG("SQUOTED     "); break;
-					case WHITE_SPACE_ISTT:	LOG("WHITE_SPACE "); break;
-					case DIVIDER_ISTT:		LOG("DIVIDER     "); break;
-					case OPEN_ROUND_ISTT:	LOG("OPEN_ROUND  "); break;
-					case CLOSE_ROUND_ISTT:	LOG("CLOSE_ROUND "); break;
-					case OPEN_BRACE_ISTT:	LOG("OPEN_BRACE  "); break;
-					case CLOSE_BRACE_ISTT:	LOG("CLOSE_BRACE "); break;
-					case COMMA_ISTT:		LOG("COMMA       "); break;
-					case COLON_ISTT:		LOG("COLON       "); break;
-					case I7_ISTT:			LOG("I7          "); break;
-					case INLINE_ISTT:		LOG("INLINE      "); break;
-					case ASM_ARROW_ISTT:	LOG("ASM_ARROW   "); break;
-					case ASM_SP_ISTT:		LOG("ASM_SP      "); break;
-					case ASM_LABEL_ISTT:	LOG("ASM_LABEL   "); break;
-					default: LOG("<unknown>"); break;
-				}
-				LOG("%S", t->material);
-				if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) LOG(" GIVE_KIND_ID");
-				if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) LOG(" GIVE_COMPARISON_ROUTINE");
-				if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) LOG(" DEREFERENCE_PROPERTY");
-				if (t->inline_modifiers & ADOPT_LOCAL_STACK_FRAME_ISSBM) LOG(" ADOPT_LOCAL_STACK_FRAME");
-				if (t->inline_modifiers & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) LOG(" CAST_TO_KIND_OF_OTHER_TERM");
-				if (t->inline_modifiers & BY_REFERENCE_ISSBM) LOG(" BY_REFERENCE");
-				if (t->inline_modifiers & PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM) LOG(" PERMIT_LOCALS_IN_TEXT_CMODE");
+				InterSchemas::log_ist(t);
 				if (isn != t->owner) LOG(" !!! ownership incorrect here");
 				LOG("\n");
 			}
 			break;
 	}
 	InterSchemas::log_depth(isn->child_node, depth+1);
+}
+
+void InterSchemas::log_ist(inter_schema_token *t) {
+	if (t == NULL) { LOG("<NULL-IST>"); return; }
+	switch (t->ist_type) {
+		case RAW_ISTT:			LOG("RAW         "); break;
+		case OPERATOR_ISTT:		LOG("OPERATOR    "); break;
+		case OPCODE_ISTT:		LOG("OPCODE      "); break;
+		case DIRECTIVE_ISTT:	LOG("DIRECTIVE   "); break;
+		case IDENTIFIER_ISTT:	LOG("IDENTIFIER  "); break;
+		case RESERVED_ISTT:		LOG("RESERVED    "); break;
+		case NUMBER_ISTT:		LOG("NUMBER      "); break;
+		case BIN_NUMBER_ISTT:	LOG("BIN_NUMBER  "); break;
+		case HEX_NUMBER_ISTT:	LOG("HEX_NUMBER  "); break;
+		case REAL_NUMBER_ISTT:	LOG("REAL_NUMBER "); break;
+		case DQUOTED_ISTT:		LOG("DQUOTED     "); break;
+		case SQUOTED_ISTT:		LOG("SQUOTED     "); break;
+		case WHITE_SPACE_ISTT:	LOG("WHITE_SPACE "); break;
+		case DIVIDER_ISTT:		LOG("DIVIDER     "); break;
+		case OPEN_ROUND_ISTT:	LOG("OPEN_ROUND  "); break;
+		case CLOSE_ROUND_ISTT:	LOG("CLOSE_ROUND "); break;
+		case OPEN_BRACE_ISTT:	LOG("OPEN_BRACE  "); break;
+		case CLOSE_BRACE_ISTT:	LOG("CLOSE_BRACE "); break;
+		case COMMA_ISTT:		LOG("COMMA       "); break;
+		case COLON_ISTT:		LOG("COLON       "); break;
+		case I7_ISTT:			LOG("I7          "); break;
+		case INLINE_ISTT:		LOG("INLINE      "); break;
+		case ASM_ARROW_ISTT:	LOG("ASM_ARROW   "); break;
+		case ASM_SP_ISTT:		LOG("ASM_SP      "); break;
+		case ASM_LABEL_ISTT:	LOG("ASM_LABEL   "); break;
+		case ASM_NEGATED_LABEL_ISTT:	LOG("NEGASM_LABEL "); break;
+		default: LOG("<unknown>"); break;
+	}
+	LOG("%S", t->material);
+	if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) LOG(" GIVE_KIND_ID");
+	if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) LOG(" GIVE_COMPARISON_ROUTINE");
+	if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) LOG(" DEREFERENCE_PROPERTY");
+	if (t->inline_modifiers & ADOPT_LOCAL_STACK_FRAME_ISSBM) LOG(" ADOPT_LOCAL_STACK_FRAME");
+	if (t->inline_modifiers & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) LOG(" CAST_TO_KIND_OF_OTHER_TERM");
+	if (t->inline_modifiers & BY_REFERENCE_ISSBM) LOG(" BY_REFERENCE");
+	if (t->inline_modifiers & PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM) LOG(" PERMIT_LOCALS_IN_TEXT_CMODE");
 }
 
 @h Lint.
@@ -1075,15 +1087,18 @@ scanned through since the last time.
 
 @<Look for individual tokens@> =
 	int L = Str::len(current_raw);
-	int c_start = 0;
+	int c_start = 0, escaped = FALSE;
 	for (int p = 0; p < L; p++) {
 		int c1 = Str::get_at(current_raw, p), c2 = 0, c3 = 0;
 		if (p < L-1) c2 = Str::get_at(current_raw, p+1);
 		if (p < L-2) c3 = Str::get_at(current_raw, p+2);
 
-		if (c1 == '$') @<Break off here for real, binary or hexadecimal notation@>;
-		if (c1 == '-') @<Break off here for negative number@>;
-		@<Break off here for operators@>;
+		if (escaped == FALSE) {
+			if (c1 == '$') @<Break off here for real, binary or hexadecimal notation@>;
+			if (c1 == '-') @<Break off here for negative number@>;
+			@<Break off here for operators@>;
+		}
+		if (c1 == 0x00A7) escaped = escaped?FALSE:TRUE;
 	}
 	if (c_start < L) {
 		int x = c_start, y = L-1;
@@ -1172,6 +1187,7 @@ language opcodes such as |@pull|.
 @<Break off here for operators@> =
 	int monograph = TRUE, digraph = FALSE, trigraph = FALSE;
 	if ((Characters::isalnum(c1)) || (c1 == '_')) monograph = FALSE;
+	if (c1 == 0x00A7) monograph = FALSE;
 	if ((c1 == '#') && (Characters::isalpha(c2))) monograph = FALSE;
 	if ((c1 == '_') && (Characters::isalpha(c2))) monograph = FALSE;
 	if ((c1 == '#') && (c2 == '#') && (Characters::isalpha(c3))) monograph = FALSE;
@@ -1247,6 +1263,8 @@ inclusive; we ignore an empty token.
 
 @<Identify this new token@> =
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
+	if (Str::get_at(T, 0) == 0x00A7)
+		is = IDENTIFIER_ISTT;
 	if ((Str::get_at(T, 0) == '#') && (Str::get_at(T, 1) == '#') && (Characters::isalpha(Str::get_at(T, 2)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
@@ -1280,6 +1298,7 @@ inclusive; we ignore an empty token.
 		}
 		if (Str::begins_with_wide_string(T, L"QUOTED_INAME_0_")) which_quote = 0;
 		else if (Str::begins_with_wide_string(T, L"QUOTED_INAME_1_")) which_quote = 1;
+		if (Str::eq(T, I"I7_string")) { Str::clear(T); WRITE_TO(T, "I7_String"); }
 	}
 	if (Characters::isdigit(Str::get_at(T, 0))) {
 		is = NUMBER_ISTT;
@@ -1324,6 +1343,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"break")) { is = RESERVED_ISTT; which_rw = BREAK_I6RW; }
 	if (Str::eq(T, I"quit")) { is = RESERVED_ISTT; which_rw = QUIT_I6RW; }
 	if (Str::eq(T, I"restore")) { is = RESERVED_ISTT; which_rw = RESTORE_I6RW; }
+	if (Str::eq(T, I"spaces")) { is = RESERVED_ISTT; which_rw = SPACES_I6RW; }
 
 	if (Str::eq_insensitive(T, I"#IFDEF")) { is = DIRECTIVE_ISTT; which_rw = IFDEF_I6RW; }
 	if (Str::eq_insensitive(T, I"#IFNDEF")) { is = DIRECTIVE_ISTT; which_rw = IFNDEF_I6RW; }
@@ -2038,6 +2058,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					case RESTORE_I6RW:
 						subordinate_to = restore_interp;
 						break;
+					case SPACES_I6RW:
+						subordinate_to = spaces_interp;
+						break;
 					case NEWLINE_I6RW:
 						subordinate_to = print_interp;
 						dangle_text = I"\n";
@@ -2119,6 +2142,11 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 								l->ist_type = ASM_LABEL_ISTT;
 								l->material = n->material;
 								n = n->next;
+								if (Str::eq(l->material, I"~")) {
+									l->ist_type = ASM_NEGATED_LABEL_ISTT;
+									l->material = n->material;
+									n = n->next;
+								}
 							}
 							if (isn->child_node == NULL) isn->child_node = new_isn;
 							else if (prev_node) prev_node->next_node = new_isn;
@@ -2200,8 +2228,10 @@ int InterSchemas::treat_constructs(inter_schema_node *par, inter_schema_node *is
 			inter_schema_token *from[3], *to[3];
 			for (int i=0; i<3; i++) { from[i] = 0; to[i] = 0; }
 			while (n) {
-				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
-				else if (n->ist_type == CLOSE_ROUND_ISTT) {
+				if (n->ist_type == OPEN_ROUND_ISTT) {
+					if ((bl > 0) && (from[cw] == NULL)) from[cw] = n;
+					bl++;
+				} else if (n->ist_type == CLOSE_ROUND_ISTT) {
 					bl--;
 					if (bl == 0) @<End a wodge@>;
 				} else if (bl == 1) {
@@ -2214,6 +2244,7 @@ int InterSchemas::treat_constructs(inter_schema_node *par, inter_schema_node *is
 			}
 			if (cw != 3) internal_error("malformed for prototype");
 			for (int i=0; i<3; i++) {
+// LOG("For clause %d is :", i); InterSchemas::log_ist(from[i]); LOG(" to "); InterSchemas::log_ist(to[i]); LOG("\n");
 				inter_schema_node *eval_isn = InterSchemas::new_node(isn->parent_schema, EVAL_ISNT);
 				if (i == 0) isn->child_node = eval_isn;
 				if (i == 1) isn->child_node->next_node = eval_isn;
@@ -2613,6 +2644,27 @@ int InterSchemas::message_calls(inter_schema_node *par, inter_schema_node *isn) 
 
 @ =
 void InterSchemas::de_escape_text(text_stream *m) {
+	int run_start = -1, run_len = 0, run_includes = FALSE;
+	for (int i=0; i<Str::len(m); i++) {
+		wchar_t c = Str::get_at(m, i);
+		if ((c == ' ') || (c == '\t') || (c == '\n')) {
+			if (run_start == -1) {
+				run_start = i;
+				run_len = 0;
+				run_includes = FALSE;
+			}
+			run_len++;
+			if (c == '\n') run_includes = TRUE;
+		} else {
+			if ((run_start >= 0) && (run_includes)) {
+				Str::put_at(m, run_start, ' ');
+				for (int j=0; j<run_len-1; j++)
+					Str::delete_nth_character(m, run_start+1);
+				i = run_start;
+			}
+			run_start = -1;
+		}
+	}
 	LOOP_THROUGH_TEXT(P, m) {
 		if (Str::get(P) == '^')
 			Str::put(P, '\n');

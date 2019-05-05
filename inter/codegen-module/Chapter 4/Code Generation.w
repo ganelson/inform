@@ -295,12 +295,18 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"Class")) return;
 	if (Str::eq(con_name->symbol_name, I"#dict_par2")) return;
 	if (Str::eq(con_name->symbol_name, I"#actions_table")) return;
+	if (Str::eq(con_name->symbol_name, I"#identifiers_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#grammar_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#version_number")) return;
 	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
 	if (Str::eq(con_name->symbol_name, I"FBNA_PROP_NUMBER")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_arrow")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_sp")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_label")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_rtrue_label")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_rfalse_label")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_negated_rtrue_label")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_negated_rfalse_label")) return;
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
 //		WRITE("Object thedark \"(darkness object)\";\n");
 		return;
@@ -371,6 +377,8 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		void_level = Inter::Defn::get_level(P) + 2;
 		if (code_block) {
 			inter_frame D = Inter::Symbols::defining_frame(code_block);
+//			LOG("I see code block\n");
+//			Inter::Defn::write_construct_text(DL, D);
 			CodeGen::frame(OUT, I, D);
 		}
 		return;
@@ -561,12 +569,16 @@ void CodeGen::label(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 }
 
 void CodeGen::block(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+//	LOG("\nBLOCK\n");
 	inter_symbol *block = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
 	inter_frame_list *ifl = Inter::Package::code_list(block);
 	if (ifl == NULL) internal_error("block without code list");
 	inter_frame F;
-	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
+	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
+//		Inter::Defn::write_construct_text(DL, F);
 		CodeGen::frame(OUT, I, F);
+	}
+//	LOG("----\n");
 }
 
 void CodeGen::code(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
@@ -621,6 +633,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case TAKE_BIP: @<Generate primitive for take@>; break;
 				case QUIT_BIP: @<Generate primitive for quit@>; break;
 				case RESTORE_BIP: @<Generate primitive for restore@>; break;
+				case SPACES_BIP: @<Generate primitive for spaces@>; break;
 				case BREAK_BIP: @<Generate primitive for break@>; break;
 				case CONTINUE_BIP: @<Generate primitive for continue@>; break;
 				case NOT_BIP: @<Generate primitive for not@>; break;
@@ -848,6 +861,10 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 
 @<Generate primitive for restore@> =
 	WRITE("restore ");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+
+@<Generate primitive for spaces@> =
+	WRITE("spaces ");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for break@> =
@@ -1311,23 +1328,23 @@ then the result.
 @<Generate primitive for lookup@> =
 	WRITE("(");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
-	WRITE("-->");
+	WRITE("-->(");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
-	WRITE(")");
+	WRITE("))");
 
 @<Generate primitive for lookupbyte@> =
 	WRITE("(");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
-	WRITE("->");
+	WRITE("->(");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
-	WRITE(")");
+	WRITE("))");
 
 @<Generate primitive for lookupref@> =
 	WRITE("(");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
-	WRITE("-->");
+	WRITE("-->(");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
-	WRITE(")");
+	WRITE("))");
 
 @<Generate primitive for switch@> =
 	WRITE("switch (");

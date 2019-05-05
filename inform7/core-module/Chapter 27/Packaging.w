@@ -178,6 +178,13 @@ inter_reading_state Packaging::bubble(void) {
 	return b;
 }
 
+inter_reading_state Packaging::bubble_at(inter_reading_state *IRS) {
+	Emit::nop_at(IRS);
+	inter_reading_state b = Emit::bookmark_at(IRS);
+	Emit::nop_at(IRS);
+	return b;
+}
+
 @h Outside the packages.
 The Inter specification calls for just a handful of resources to be placed
 at the top level, outside even the |main| package. Using bubbles, we leave

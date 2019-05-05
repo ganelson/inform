@@ -26,8 +26,17 @@ inter_reading_state Emit::bookmark(void) {
 	return b;
 }
 
+inter_reading_state Emit::bookmark_at(inter_reading_state *IRS) {
+	inter_reading_state b = Inter::Bookmarks::snapshot(IRS);
+	return b;
+}
+
 void Emit::nop(void) {
 	Emit::guard(Inter::Nop::new(Packaging::at(), Emit::baseline(Packaging::at()), NULL));
+}
+
+void Emit::nop_at(inter_reading_state *IRS) {
+	Emit::guard(Inter::Nop::new(IRS, Emit::baseline(IRS) + 2, NULL));
 }
 
 dictionary *extern_symbols = NULL;
@@ -74,12 +83,8 @@ void Emit::begin(void) {
 	VirtualMachines::emit_fundamental_constants();
 	NewVerbs::ConjugateVerbDefinitions();
 	
-//	Emit::named_numeric_constant(Hierarchy::find(INDIRECT_HL), 0);
-//	Emit::named_numeric_constant(Hierarchy::find(ACTIONS_TABLE_HL), 0);
-//	Emit::named_numeric_constant(Hierarchy::find(ASM_ARROW_HL), 0);
-//	Emit::named_numeric_constant(Hierarchy::find(ASM_SP_HL), 0);
 	Hierarchy::find(INFORMLIBRARY_HL);
-	Hierarchy::find(INDIV_PROP_START_HL);
+//	Hierarchy::find(INDIV_PROP_START_HL);
 }
 
 void Emit::version(int N) {

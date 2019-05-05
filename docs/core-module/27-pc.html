@@ -263,11 +263,20 @@ material will be placed between them.
         <span class="functiontext">Emit::nop</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="functiontext">Packaging::bubble_at</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain">) {</span>
+        <span class="functiontext">Emit::nop_at</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
+        <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_at</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
+        <span class="functiontext">Emit::nop_at</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Packaging::bubble is used in <a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>, <a href="#SP13">&#167;13</a>.</p>
+
+<p class="endnote">The function Packaging::bubble_at appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Outside the packages. </b>The Inter specification calls for just a handful of resources to be placed
 at the top level, outside even the <code class="display"><span class="extract">main</span></code> package. Using bubbles, we leave
