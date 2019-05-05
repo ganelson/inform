@@ -914,7 +914,7 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 @<Generate primitive for gt@> =
 	WRITE("(");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
-	WRITE(">");
+	WRITE(" > ");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
