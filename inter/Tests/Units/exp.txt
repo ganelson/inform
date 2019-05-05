@@ -84,9 +84,19 @@ schema
 	if (B) if (A) { print "Yes"; }
 	print "No";
 end
-schema-workings
+schema
 	switch (scope_stage) {
 		2: objectloop (obj)
         	PlaceInScope(obj, true);
     }
+end
+schema-workings
+	while (token ~= NULL) {
+		switch (token-->RE_CCLASS) {
+			DISJUNCTION_RE_CC: token-->RE_CONSTRAINT = -1;
+			QUANTIFIER_RE_CC: token-->RE_CONSTRAINT = -1;
+		}
+		if (token-->RE_DOWN) TEXT_TY_RE_EraseConstraints(token-->RE_DOWN);
+		token = token-->RE_NEXT;
+	}
 end

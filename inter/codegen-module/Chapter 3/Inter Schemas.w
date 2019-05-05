@@ -1847,17 +1847,23 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 						sw_code->parent_node = isn;
 					}
 
-					InterSchemas::mark_unclosed(sw_code);
-
-					int in_switch = FALSE;
+					int switch_begins = FALSE;
+					int switch_ends = FALSE;
 					inter_schema_node *pn = isn->parent_node;
 					while (pn) {
 						if ((pn->expression_tokens) && (pn->expression_tokens->ist_type == RESERVED_ISTT) &&
-							(pn->expression_tokens->reserved_word == SWITCH_I6RW)) in_switch = TRUE;
+							(pn->expression_tokens->reserved_word == SWITCH_I6RW)) {
+							switch_begins = TRUE;
+							if (isn->next_node) switch_ends = TRUE;
+						}
 						pn = pn->parent_node;
 					}
-					if (in_switch == FALSE) InterSchemas::mark_case_closed(isn);
-
+	if (switch_begins) LOG("My switch begins!\n");
+	else LOG("My switch does not begin!\n");
+	if (switch_ends) LOG("My switch ends!\n");
+	else LOG("My switch does not end!\n");
+					if (switch_ends == FALSE) InterSchemas::mark_unclosed(sw_code);
+					if (switch_begins == FALSE) InterSchemas::mark_case_closed(isn);
 					if (sw_val) sw_val->expression_tokens = isn->expression_tokens;
 					prev->next = NULL;
 					isn->expression_tokens = NULL;
