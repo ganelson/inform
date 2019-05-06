@@ -1874,7 +1874,12 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 						if ((pn->expression_tokens) && (pn->expression_tokens->ist_type == RESERVED_ISTT) &&
 							(pn->expression_tokens->reserved_word == SWITCH_I6RW)) {
 							switch_begins = TRUE;
-							if (isn->next_node) switch_ends = TRUE;
+							inter_schema_node *pn2 = isn;
+							while (pn2) {
+								if (pn2->next_node) { switch_ends = TRUE; break; }
+								pn2 = pn2->parent_node;
+							}
+							break;
 						}
 						pn = pn->parent_node;
 					}
