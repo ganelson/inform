@@ -226,7 +226,7 @@ int CodeGen::repo_list(inter_repository *I, inter_repository **repos) {
 	return no_repos;
 }
 
-int query_labels_mode = FALSE;
+int query_labels_mode = FALSE, negate_label_mode = FALSE;
 void CodeGen::frame(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	switch (P.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
@@ -315,6 +315,12 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"RV__Pr")) return;
 	if (Str::eq(con_name->symbol_name, I"OP__Pr")) return;
 	if (Str::eq(con_name->symbol_name, I"CA__Pr")) return;	
+	if (Str::eq(con_name->symbol_name, I"RT__Err")) return;	
+	if (Str::eq(con_name->symbol_name, I"children")) return;	
+	if (Str::eq(con_name->symbol_name, I"KindHierarchy")) return;	
+	if (Str::eq(con_name->symbol_name, I"saved_short_name")) return;	
+	if (Str::eq(con_name->symbol_name, I"NO_RESPONSES")) return;	
+
 	if (Str::eq(con_name->symbol_name, I"CreatePropertyOffsets")) return;
 	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
 	if (Str::eq(con_name->symbol_name, I"FBNA_PROP_NUMBER")) return;
@@ -323,6 +329,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"__assembly_arrow")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_sp")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_label")) return;
+	if (Str::eq(con_name->symbol_name, I"__assembly_negated_label")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_rtrue_label")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_rfalse_label")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_negated_rtrue_label")) return;
@@ -694,6 +701,8 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case PRINTRET_BIP: @<Generate primitive for printret@>; break;
 				case PRINTCHAR_BIP: @<Generate primitive for printchar@>; break;
 				case PRINTNAME_BIP: @<Generate primitive for printname@>; break;
+				case PRINTOBJ_BIP: @<Generate primitive for printobj@>; break;
+				case PRINTPROPERTY_BIP: @<Generate primitive for printproperty@>; break;
 				case PRINTNUMBER_BIP: @<Generate primitive for printnumber@>; break;
 				case PRINTADDRESS_BIP: @<Generate primitive for printaddress@>; break;
 				case PRINTSTRING_BIP: @<Generate primitive for printstring@>; break;
@@ -775,13 +784,25 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			inter_t ID = P.data[INVOKEE_INV_IFLD];
 			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
 			WRITE("%S", S);
-			inter_frame F;
+			inter_frame F; negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
-				WRITE(" ");
 				query_labels_mode = TRUE;
+				if (F.data[ID_IFLD] == VAL_IST) {
+					inter_t val1 = F.data[VAL1_VAL_IFLD];
+					inter_t val2 = F.data[VAL2_VAL_IFLD];
+					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+						inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
+						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
+							negate_label_mode = TRUE;
+							continue;
+						}
+					}
+				}
+				WRITE(" ");
 				CodeGen::frame(OUT, I, F);
 				query_labels_mode = FALSE;
 			}
+			negate_label_mode = FALSE;
 			break;
 		}
 		default: internal_error("bad inv");
@@ -803,6 +824,7 @@ void CodeGen::lab(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	if (query_labels_mode) PUT('?');
+	if (negate_label_mode) PUT('~');
 	text_stream *S = CodeGen::name(lab);
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Str::get(pos) != '.')
@@ -1181,6 +1203,14 @@ then the result.
 
 @<Generate primitive for printname@> =
 	WRITE("print (name) ");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+
+@<Generate primitive for printobj@> =
+	WRITE("print (object) ");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+
+@<Generate primitive for printproperty@> =
+	WRITE("print (property) ");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printnumber@> =

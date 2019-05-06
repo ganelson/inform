@@ -50,6 +50,8 @@ inter_symbol *print_interp = NULL;
 inter_symbol *printret_interp = NULL;
 inter_symbol *printchar_interp = NULL;
 inter_symbol *printname_interp = NULL;
+inter_symbol *printobj_interp = NULL;
+inter_symbol *printproperty_interp = NULL;
 inter_symbol *printnumber_interp = NULL;
 inter_symbol *printnlnumber_interp = NULL;
 inter_symbol *printcindef_interp = NULL;
@@ -122,6 +124,8 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!printret", I"val -> void", &printret_interp);
 	Primitives::emit_one(I, IRS, I"!printchar", I"val -> void", &printchar_interp);
 	Primitives::emit_one(I, IRS, I"!printname", I"val -> void", &printname_interp);
+	Primitives::emit_one(I, IRS, I"!printobj", I"val -> void", &printobj_interp);
+	Primitives::emit_one(I, IRS, I"!printproperty", I"val -> void", &printproperty_interp);
 	Primitives::emit_one(I, IRS, I"!printnumber", I"val -> void", &printnumber_interp);
 	Primitives::emit_one(I, IRS, I"!printaddress", I"val -> void", &printaddress_interp);
 	Primitives::emit_one(I, IRS, I"!printstring", I"val -> void", &printstring_interp);
@@ -329,6 +333,8 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e PRINTRET_BIP
 @e PRINTCHAR_BIP
 @e PRINTNAME_BIP
+@e PRINTOBJ_BIP
+@e PRINTPROPERTY_BIP
 @e PRINTNUMBER_BIP
 @e PRINTADDRESS_BIP
 @e PRINTSTRING_BIP
@@ -444,6 +450,8 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!printret")) bip = PRINTRET_BIP;
 	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
 	if (Str::eq(symb->symbol_name, I"!printname")) bip = PRINTNAME_BIP;
+	if (Str::eq(symb->symbol_name, I"!printobj")) bip = PRINTOBJ_BIP;
+	if (Str::eq(symb->symbol_name, I"!printproperty")) bip = PRINTPROPERTY_BIP;
 	if (Str::eq(symb->symbol_name, I"!printnumber")) bip = PRINTNUMBER_BIP;
 	if (Str::eq(symb->symbol_name, I"!printaddress")) bip = PRINTADDRESS_BIP;
 	if (Str::eq(symb->symbol_name, I"!printstring")) bip = PRINTSTRING_BIP;

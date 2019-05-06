@@ -1992,6 +1992,12 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 									} else if (Str::eq(pr->material, I"name")) {
 										subordinate_to = printname_interp;
 										operand1 = n;
+									} else if (Str::eq(pr->material, I"object")) {
+										subordinate_to = printobj_interp;
+										operand1 = n;
+									} else if (Str::eq(pr->material, I"property")) {
+										subordinate_to = printproperty_interp;
+										operand1 = n;
 									} else if (Str::eq(pr->material, I"the")) {
 										subordinate_to = printdef_interp;
 										operand1 = n;

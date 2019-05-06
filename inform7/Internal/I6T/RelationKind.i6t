@@ -116,6 +116,7 @@ powers of two.
 @c
 Constant RRP_MIN_SIZE      8;   ! minimum number of entries (DO NOT CHANGE)
 Constant RRP_PERTURB_SHIFT 5;   ! affects the probe sequence
+Constant MINUS_RRP_PERTURB_SHIFT -5;   ! affects the probe sequence
 Constant RRP_RESIZE_SMALL  4;   ! resize factor for small tables
 Constant RRP_RESIZE_LARGE  2;   ! resize factor for large tables
 Constant RRP_LARGE_IS      256; ! how many entries make a table "large"?
@@ -592,7 +593,7 @@ if so.
 
 [ DoubleHashSetLookUp rel kx ky X Y  hashv i free mask perturb flags;
 	! calculate a hash value for the pair
-	hashv = GetHashValue(kx, x) + GetHashValue(ky, y);
+	hashv = GetHashValue(kx, X) + GetHashValue(ky, Y);
 	! look in the first expected slot
 	mask = BlkValueRead(rel, RRV_STORAGE);
 	i = hashv & mask;
@@ -616,7 +617,7 @@ if so.
 			return i;
 		if ((free < 0) && (flags & RRF_DELETED)) free = i;
 		#ifdef TARGET_ZCODE;
-		@log_shift perturb (-RRP_PERTURB_SHIFT) -> perturb;
+		@log_shift perturb MINUS_RRP_PERTURB_SHIFT -> perturb;
 		#ifnot;
 		@ushiftr perturb RRP_PERTURB_SHIFT perturb;
 		#endif;
@@ -1109,7 +1110,7 @@ the existing pair $(X, Y)$.
 [ HashCoreLookUp rel kx X  hashv i free mask perturb flags;
 !print "[HCLU rel=", rel, " kx=", kx, " X=", X, ": ";
 	! calculate a hash value for the key
-	hashv = GetHashValue(kx, x);
+	hashv = GetHashValue(kx, X);
 	! look in the first expected slot
 	mask = BlkValueRead(rel, RRV_STORAGE);
 	i = hashv & mask;
@@ -1144,7 +1145,7 @@ the existing pair $(X, Y)$.
 		}
 		if ((free < 0) && (flags & RRF_DELETED)) free = i;
 		#ifdef TARGET_ZCODE;
-		@log_shift perturb (-RRP_PERTURB_SHIFT) -> perturb;
+		@log_shift perturb MINUS_RRP_PERTURB_SHIFT -> perturb;
 		#ifnot;
 		@ushiftr perturb RRP_PERTURB_SHIFT perturb;
 		#endif;
@@ -1825,7 +1826,7 @@ and $Y$ are the same kind of value.)
 		}
 		if ((free < 0) && (flags & RRF_DELETED)) free = i;
 		#ifdef TARGET_ZCODE;
-		@log_shift perturb (-RRP_PERTURB_SHIFT) -> perturb;
+		@log_shift perturb MINUS_RRP_PERTURB_SHIFT -> perturb;
 		#ifnot;
 		@ushiftr perturb RRP_PERTURB_SHIFT perturb;
 		#endif;

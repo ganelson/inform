@@ -55,7 +55,8 @@ Array RTP_Buffer --> 7;
 	file = RTP_Buffer-->5;
 	RTP_Buffer-->0 = -2;
 
-	print "^*** Run-time problem P", n;
+	new_line;
+	print "*** Run-time problem P", n;
 	if (ln) {
 		print " (at paragraph ", ln, " in ";
 		if (file == 0) print "the source text";

@@ -143,38 +143,41 @@ Array LanguageNumbers table
     #Ifnot;
     if (f == 1) print " and ";
     #Endif;
-    switch (n) {
-      1:    print "one";
-      2:    print "two";
-      3:    print "three";
-      4:    print "four";
-      5:    print "five";
-      6:    print "six";
-      7:    print "seven";
-      8:    print "eight";
-      9:    print "nine";
-      10:   print "ten";
-      11:   print "eleven";
-      12:   print "twelve";
-      13:   print "thirteen";
-      14:   print "fourteen";
-      15:   print "fifteen";
-      16:   print "sixteen";
-      17:   print "seventeen";
-      18:   print "eighteen";
-      19:   print "nineteen";
-      20 to 99: switch (n/10) {
-        2:  print "twenty";
-        3:  print "thirty";
-        4:  print "forty";
-        5:  print "fifty";
-        6:  print "sixty";
-        7:  print "seventy";
-        8:  print "eighty";
-        9:  print "ninety";
-        }
-        if (n%10 ~= 0) print "-", (LanguageNumber) n%10;
-    }
+    if ((n >= 20) && (n<100)) {
+		switch (n/10) {
+			2:  print "twenty";
+			3:  print "thirty";
+			4:  print "forty";
+			5:  print "fifty";
+			6:  print "sixty";
+			7:  print "seventy";
+			8:  print "eighty";
+			9:  print "ninety";
+		}
+		if (n%10 ~= 0) print "-", (LanguageNumber) n%10;
+    } else {
+		switch (n) {
+		  1:    print "one";
+		  2:    print "two";
+		  3:    print "three";
+		  4:    print "four";
+		  5:    print "five";
+		  6:    print "six";
+		  7:    print "seven";
+		  8:    print "eight";
+		  9:    print "nine";
+		  10:   print "ten";
+		  11:   print "eleven";
+		  12:   print "twelve";
+		  13:   print "thirteen";
+		  14:   print "fourteen";
+		  15:   print "fifteen";
+		  16:   print "sixteen";
+		  17:   print "seventeen";
+		  18:   print "eighteen";
+		  19:   print "nineteen";
+		}
+	}
 ];
 
 @p Time.

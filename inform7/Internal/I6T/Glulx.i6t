@@ -1059,17 +1059,23 @@ light to the Dark Room.")
 
     id = glk_stream_iterate(0, gg_arguments);
     while (id) {
+	    #ifdef DEBUG;
         switch (gg_arguments-->0) {
             GG_SAVESTR_ROCK: gg_savestr = id;
             GG_SCRIPTSTR_ROCK: gg_scriptstr = id;
-            #Ifdef DEBUG;
             GG_COMMANDWSTR_ROCK: gg_commandstr = id;
                                  gg_command_reading = false;
             GG_COMMANDRSTR_ROCK: gg_commandstr = id;
                                  gg_command_reading = true;
-            #Endif; ! DEBUG
             default: IdentifyGlkObject(1, 1, id, gg_arguments-->0);
         }
+        #ifnot;
+        switch (gg_arguments-->0) {
+            GG_SAVESTR_ROCK: gg_savestr = id;
+            GG_SCRIPTSTR_ROCK: gg_scriptstr = id;
+            default: IdentifyGlkObject(1, 1, id, gg_arguments-->0);
+        }
+        #endif;
         id = glk_stream_iterate(id, gg_arguments);
     }
 

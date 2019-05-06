@@ -1025,6 +1025,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 			ALWAYS_RE_CC:
 				outcome = true;
 			NEVER_RE_CC:
+				;
 			START_RE_CC:
 				if (ipos == 0) outcome = true;
 			END_RE_CC:
@@ -1399,8 +1400,7 @@ more useful to suggest that the reader observe it in action by setting
 |TEXT_TY_RE_Trace| and trying a few regular expressions.
 
 @c
-[ TEXT_TY_RE_SeekBacktrack token ftxt downwards ito report_only
-	untried;
+[ TEXT_TY_RE_SeekBacktrack token ftxt downwards ito report_only untried;
 	for (: token ~= NULL: token = token-->RE_NEXT) {
 		if ((TEXT_TY_RE_Trace) && (report_only == false)) {
 			print "Scan for rewind: ";

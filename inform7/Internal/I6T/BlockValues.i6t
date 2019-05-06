@@ -278,7 +278,7 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 		}
 		seek_byte_position = seek_byte_position - chunk_size_in_bytes;
 	}
-	"*** BlkValueRead: reading from index out of range: ", pos, " in ", from, " ***";
+	print_ret "*** BlkValueRead: reading from index out of range: ", pos, " in ", from, " ***";
 ];
 
 [ BlkValueWrite to pos val do_not_indirect
@@ -315,7 +315,7 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 		}
 		seek_byte_position = seek_byte_position - chunk_size_in_bytes;
 	}
-	"*** BlkValueWrite: writing to index out of range: ", pos, " in ", to, " ***";
+	print_ret "*** BlkValueWrite: writing to index out of range: ", pos, " in ", to, " ***";
 ];
 
 @p First Zero Entry.

@@ -37,7 +37,7 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 		(isn->dir_clarifier == IFNDEF_I6RW) ||
 		(isn->dir_clarifier == IFTRUE_I6RW) ||
 		(isn->dir_clarifier == IFFALSE_I6RW)) {
-		LOG("Cond dir!\n");
+		LOGIF(SCHEMA_COMPILATION, "Conditional directive in schema!\n");
 		inter_schema_node *ifnot_node = NULL, *endif_node = NULL;
 		inter_schema_node *at = isn->next_node;
 		while (at) {
@@ -69,21 +69,21 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 			operation_to_check = to_eval->isn_clarifier;
 			value_to_check = to_eval->child_node->next_node->expression_tokens->material;
 		}
-		LOG("Means checking %S\n", symbol_to_check);
-		if (value_to_check) LOG("Against %S\n", value_to_check);
+		LOGIF(SCHEMA_COMPILATION, "Means checking %S\n", symbol_to_check);
+		if (value_to_check) LOGIF(SCHEMA_COMPILATION, "Against %S\n", value_to_check);
 		int val = -1, def = FALSE;
 		if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
 		else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 		else {
 			inter_symbol *symb = EmitInterSchemas::find_identifier_text(symbol_to_check, NULL, second_call);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
-			LOG("Symb is $3\n", symb);
+			LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
 			if (Inter::Symbols::is_defined(symb)) {
 				def = TRUE;
 				val = Inter::Symbols::evaluate_to_int(symb);
 			}			
 		}
-		LOG("Defined: %d, value: %d\n", def, val);
+		LOGIF(SCHEMA_COMPILATION, "Defined: %d, value: %d\n", def, val);
 		
 		int decision = TRUE;
 		
@@ -91,7 +91,7 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 			|| (isn->dir_clarifier == IFDEF_I6RW)) decision = def;
 		else {
 			int h = Str::atoi(value_to_check, 0);
-			LOG("Want value %d\n", h);
+			LOGIF(SCHEMA_COMPILATION, "Want value %d\n", h);
 			if (operation_to_check == eq_interp) decision = (val == h)?TRUE:FALSE;
 			if (operation_to_check == ne_interp) decision = (val != h)?TRUE:FALSE;
 			if (operation_to_check == ge_interp) decision = (val >= h)?TRUE:FALSE;
@@ -118,10 +118,12 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 				at = at->next_node;
 			}
 		}
-		LOG("--- Resulting in: ---\n");
-		for (inter_schema_node *at = isn; at; at = at->next_node)
-			InterSchemas::log_just(at, 0);
-		LOG("------\n");
+		if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) {
+			LOG("--- Resulting in: ---\n");
+			for (inter_schema_node *at = isn; at; at = at->next_node)
+				InterSchemas::log_just(at, 0);
+			LOG("------\n");
+		}
 		return TRUE;
 	}
 
@@ -425,7 +427,10 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_RTRUE_HL)));
 				else if (Str::eq(t->material, I"rfalse")) 
 					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_RFALSE_HL)));
-				else internal_error("can only negate rtrue or rfalse");
+				else {
+					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_HL)));
+					Emit::lab(Emit::reserve_label(t->material));
+				}
 				break;
 			case ASM_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 

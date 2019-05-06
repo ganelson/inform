@@ -22,9 +22,6 @@ schema
 	.Somewhere; print "Here!";
 end
 schema
-	@jl y 0 ?~rtrue;
-end
-schema
 	"Hello, this
 	is a multiline string literal";
 end
@@ -109,6 +106,38 @@ end
 schema
 	print_ret "This is ", (char) X, ".";
 end
-schema-workings
-	"This is ", (char) X, ".";
+schema
+	@jl y 0 ?X;
+	@jl y 0 ?~X;
+	@jl y 0 ?rtrue;
+	@jl y 0 ?rfalse;
+	@jl y 0 ?~rtrue;
+	@jl y 0 ?~rfalse;
+end
+schema
+		switch (token-->RE_CCLASS) {
+			
+			! Should never happen
+			
+			CHOICE_RE_CC: return "internal error";
+			
+			! Mode switches
+			
+			SENSITIVITY_RE_CC:
+				if (token-->RE_PAR1) mode_flags = mode_flags | CIS_MFLAG;
+				else mode_flags = mode_flags & (~CIS_MFLAG);
+				outcome = true;
+		
+			! Zero-length positional markers
+			
+			ALWAYS_RE_CC:
+				outcome = true;
+			NEVER_RE_CC:
+			START_RE_CC:
+				if (ipos == 0) outcome = true;
+			END_RE_CC:
+				if (BlkValueRead(txt, ipos) == 0) outcome = true;
+			SOMETIMES_RE_CC:
+				outcome = true;
+		}
 end

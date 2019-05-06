@@ -433,7 +433,8 @@ etc. -- in the source text.
     	player.short_name = player.saved_short_name;
     }
     if (player hasnt proper) give player remove_proper; ! when changing out again
-    give player concealed proper;
+    give player concealed;
+    give player proper;
 
     location = LocationOf(player); real_location = location;
     MoveFloatingObjects();

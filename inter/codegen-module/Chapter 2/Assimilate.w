@@ -110,7 +110,6 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	if ((identifier) && (unchecked_kind_symbol)) {
 		Str::trim_all_white_space_at_end(identifier);
 		inter_t switch_on = P.data[PLM_SPLAT_IFLD];
-LOG("ASSIM: %S\n", identifier);
 		if (switch_on == DEFAULT_PLM) {
 			inter_symbol *symbol = CodeGen::Link::find_name(I, identifier, TRUE);
 			if (symbol == NULL) switch_on = CONSTANT_PLM;
@@ -683,33 +682,35 @@ int rb_splat_count = 1;
 int CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body, inter_reading_state bb) {
 	if (Str::is_whitespace(body)) return FALSE;
 	#ifdef CORE_MODULE
-	if (Str::len(body) < 750) {
-		routine_body_request *req = CREATE(routine_body_request);
-		req->block_bookmark = bb;
-		req->enclosure = Packaging::enclosure();
-		req->position = Packaging::bubble_at(IRS);
-		req->block_name = block_name;
-		req->pass2_offset = (int) offset - 2;
-		req->body = Str::duplicate(body);
-		return TRUE;
-	}
+	routine_body_request *req = CREATE(routine_body_request);
+	req->block_bookmark = bb;
+	req->enclosure = Packaging::enclosure();
+	req->position = Packaging::bubble_at(IRS);
+	req->block_name = block_name;
+	req->pass2_offset = (int) offset - 2;
+	req->body = Str::duplicate(body);
+	return TRUE;
 	#endif
+	#ifndef CORE_MODULE
 	CodeGen::Link::entire_splat(IRS, NULL, body, offset, block_name);
 	LOG("Splat %d\n", rb_splat_count++);
 	return FALSE;
+	#endif
 }
 
 void CodeGen::Assimilate::routine_bodies(void) {
 	routine_body_request *req;
 	LOOP_OVER(req, routine_body_request) {
-		LOG("=======\n\nCandidate (%S) len %d: '%S'\n\n", req->block_name->symbol_name, Str::len(req->body), req->body);
+		LOGIF(SCHEMA_COMPILATION, "=======\n\nRoutine (%S) len %d: '%S'\n\n", req->block_name->symbol_name, Str::len(req->body), req->body);
 		inter_schema *sch = InterSchemas::from_text(req->body, FALSE, 0, NULL);
 		
-		if (sch == NULL) LOG("NULL SCH\n");
-		else if (sch->node_tree == NULL) {
-			LOG("Lint fail: Non-empty text but empty scheme\n");
-			internal_error("inter schema empty");
-		} else InterSchemas::log(DL, sch);
+		if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) {
+			if (sch == NULL) LOG("NULL SCH\n");
+			else if (sch->node_tree == NULL) {
+				LOG("Lint fail: Non-empty text but empty scheme\n");
+				internal_error("inter schema empty");
+			} else InterSchemas::log(DL, sch);
+		}
 		
 		#ifdef CORE_MODULE
 		current_inter_routine = req->block_name;

@@ -152,7 +152,7 @@ before objects in Room B if A was created before B in the source text).
 Global MarkedObjectArray = 0;
 Global MarkedObjectLength = 0;
 
-[ WriteListOfMarkedObjects style
+[ WriteListOfMarkedObjects in_style
 	obj common_parent first mixed_parentage length g gc;
 
 	gc = -2;
@@ -167,8 +167,8 @@ Global MarkedObjectLength = 0;
 	if (mixed_parentage) common_parent = nothing;
 
 	if (length == 0) {
-    	if (style & ISARE_BIT ~= 0) LIST_WRITER_INTERNAL_RM('W');
-    	else if (style & CFIRSTART_BIT ~= 0) LIST_WRITER_INTERNAL_RM('X');
+    	if (in_style & ISARE_BIT ~= 0) LIST_WRITER_INTERNAL_RM('W');
+    	else if (in_style & CFIRSTART_BIT ~= 0) LIST_WRITER_INTERNAL_RM('X');
 		else LIST_WRITER_INTERNAL_RM('Y');
 	} else {
 		@push MarkedObjectArray; @push MarkedObjectLength;
@@ -187,7 +187,7 @@ Global MarkedObjectLength = 0;
 				if (obj has workflag2) MarkedObjectArray-->length++ = obj;
 		}
 
-		WriteListFrom(first, style, 0, false, MarkedListIterator);
+		WriteListFrom(first, in_style, 0, false, MarkedListIterator);
 
 		FreeStack(MarkedObjectArray);
 		@pull MarkedObjectLength; @pull MarkedObjectArray;
@@ -465,11 +465,11 @@ And here we go at last. Or at any rate we initialise the quartet of global
 variables detailing the current list-writing process, and begin.
 
 @c
-[ WriteListFrom first style depth noactivity iter a ol;
+[ WriteListFrom first in_style depth noactivity iter a ol;
 	@push c_iterator; @push c_style; @push c_depth; @push c_margin;
     if (iter) c_iterator = iter; else c_iterator = ObjectTreeIterator;
-    c_style = style; c_depth = depth;
-	c_margin = 0; if (style & EXTRAINDENT_BIT) c_margin = 1;
+    c_style = in_style; c_depth = depth;
+	c_margin = 0; if (in_style & EXTRAINDENT_BIT) c_margin = 1;
 
 	objectloop (a ofclass Object) {
 		give a list_filter_permits;
@@ -479,9 +479,9 @@ variables detailing the current list-writing process, and begin.
 
     first = c_iterator(first, depth, 0, START_ITF);
 	if (first == nothing) {
-		if (style & ISARE_BIT ~= 0) LIST_WRITER_INTERNAL_RM('W');
+		if (in_style & ISARE_BIT ~= 0) LIST_WRITER_INTERNAL_RM('W');
         else LIST_WRITER_INTERNAL_RM('Y');
-        if (style & NEWLINE_BIT ~= 0) new_line;
+        if (in_style & NEWLINE_BIT ~= 0) new_line;
     } else {
 		if ((noactivity) || (iter)) {
 			WriteListR(first, c_depth, true);
@@ -940,25 +940,28 @@ the iterator used at the top level) and increasing the depth by 1.
 				if (o has worn)            { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('L', o); parenth_flag = true; }
 			}
 	
-			if (o has container)
+			if (o has container) {
 				if (o has openable) {
 					if (parenth_flag) {
 						#Ifdef SERIAL_COMMA; print ","; #Endif;
 						LIST_WRITER_INTERNAL_RM('C');
 					} else            LIST_WRITER_INTERNAL_RM('A', o);
-					if (o has open)
+					if (o has open) {
 						if (child(o)) LIST_WRITER_INTERNAL_RM('M', o);
 						else          LIST_WRITER_INTERNAL_RM('N', o);
-					else
+					} else {
 						if (o has lockable && o has locked) LIST_WRITER_INTERNAL_RM('P', o);
 						else                                LIST_WRITER_INTERNAL_RM('O', o);
+					}
 					parenth_flag = true;
 				}
-				else
-					if (child(o)==0 && o has transparent)
+				else {
+					if (child(o)==0 && o has transparent) {
 						if (parenth_flag) { LIST_WRITER_INTERNAL_RM('C'); LIST_WRITER_INTERNAL_RM('F'); }
 						else              { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('F'); LIST_WRITER_INTERNAL_RM('B'); }
-	
+					}
+				}
+			}
 			if (parenth_flag) LIST_WRITER_INTERNAL_RM('B');
 		}
         EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);

@@ -58,6 +58,7 @@ void Hierarchy::establish(void) {
 @e ASM_LABEL_HL
 @e ASM_RTRUE_HL
 @e ASM_RFALSE_HL
+@e ASM_NEG_HL
 @e ASM_NEG_RTRUE_HL
 @e ASM_NEG_RFALSE_HL
 @e ACTIONS_TABLE_HL
@@ -104,6 +105,11 @@ void Hierarchy::establish(void) {
 @e RV__PR_HL
 @e OP__PR_HL
 @e CA__PR_HL
+@e RT__ERR_HL
+@e CHILDREN_HL
+@e KINDHIERARCHY_HL
+@e SAVED_SHORT_NAME_HL
+@e NO_RESPONSES_HL
 
 @e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
@@ -136,6 +142,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(ASM_LABEL_HL, I"__assembly_label", Translation::to(I"?"), generic_basics);
 	HierarchyLocations::con(ASM_RTRUE_HL, I"__assembly_rtrue_label", Translation::to(I"?rtrue"), generic_basics);
 	HierarchyLocations::con(ASM_RFALSE_HL, I"__assembly_rfalse_label", Translation::to(I"?rfalse"), generic_basics);
+	HierarchyLocations::con(ASM_NEG_HL, I"__assembly_negated_label", Translation::to(I"~"), generic_basics);
 	HierarchyLocations::con(ASM_NEG_RTRUE_HL, I"__assembly_negated_rtrue_label", Translation::to(I"?~rtrue"), generic_basics);
 	HierarchyLocations::con(ASM_NEG_RFALSE_HL, I"__assembly_negated_rfalse_label", Translation::to(I"?~rfalse"), generic_basics);
 	HierarchyLocations::con(ACTIONS_TABLE_HL, I"#actions_table", Translation::same(), generic_basics);
@@ -182,6 +189,11 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(RV__PR_HL, I"RV__Pr", Translation::same(), generic_basics);
 	HierarchyLocations::con(OP__PR_HL, I"OP__Pr", Translation::same(), generic_basics);
 	HierarchyLocations::con(CA__PR_HL, I"CA__Pr", Translation::same(), generic_basics);
+	HierarchyLocations::con(RT__ERR_HL, I"RT__Err", Translation::same(), generic_basics);
+	HierarchyLocations::con(CHILDREN_HL, I"children", Translation::same(), generic_basics);
+	HierarchyLocations::con(KINDHIERARCHY_HL, I"KindHierarchy", Translation::same(), generic_basics);
+	HierarchyLocations::con(SAVED_SHORT_NAME_HL, I"saved_short_name", Translation::same(), generic_basics);
+	HierarchyLocations::con(NO_RESPONSES_HL, I"NO_RESPONSES", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(basics);
 	HierarchyLocations::con(CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
@@ -1674,6 +1686,7 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case ASM_LABEL_HL:
 		case ASM_RTRUE_HL:
 		case ASM_RFALSE_HL:
+		case ASM_NEG_HL:
 		case ASM_NEG_RTRUE_HL:
 		case ASM_NEG_RFALSE_HL:
 		case NUM_ATTR_BYTES_HL:
@@ -1690,6 +1703,11 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case OP__PR_HL:
 		case CA__PR_HL:
 		case OBJECT_HL:
+		case RT__ERR_HL:
+		case CHILDREN_HL:
+		case KINDHIERARCHY_HL:
+		case SAVED_SHORT_NAME_HL:
+		case NO_RESPONSES_HL:
 			Emit::named_numeric_constant(iname, 0);
 			break;
 		case SELF_HL:

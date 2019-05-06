@@ -718,7 +718,7 @@ Is the command a direction name, and so an implicit GO? If so, go to (K).
         wn = verb_wordnum; indef_mode = false; token_filter = 0; parameters = 0;
         @push actor; @push action; @push action_to_be;
         actor = player; meta = false; action = ##Go; action_to_be = ##Go;
-        l = NounDomain(compass, 0, 0);
+        l = NounDomain(Compass, 0, 0);
         @pull action_to_be; @pull action; @pull actor;
         if (l == REPARSE_CODE) jump ReParse;
 
@@ -1550,8 +1550,9 @@ Analyse token; handle all not involving object lists, break down others.
                	RunTimeProblem(RTP_TEXTTOKENTOOHARD);
                	return GPR_PREPOSITION;
         	}
-            do o = NextWordStopped();
-            until (o == -1 || PrepositionChain(o, token_n+1) ~= -1);
+            do {
+            	o = NextWordStopped();
+            } until (o == -1 || PrepositionChain(o, token_n+1) ~= -1);
             wn--;
             consult_words = wn-consult_from;
             if (consult_words == 0) return GPR_FAIL;
@@ -2915,7 +2916,7 @@ Constant PREFER_HELD;
             else
                 if (its_owner == actors_location) its_score = its_score + l_s;
                 else
-                    if (its_owner ~= compass) its_score = its_score + SCORE__NOTCOMPASS;
+                    if (its_owner ~= Compass) its_score = its_score + SCORE__NOTCOMPASS;
 
             its_score = its_score + SCORE__CHOOSEOBJ * ChooseObjects(obj, 2);
 
@@ -3351,7 +3352,7 @@ OPEN BOX only to be told that he can't see any such thing.)
 			! (c.2)
 			if ((scope_reason == PARSING_REASON) && (context ~= CREATURE_TOKEN) &&
 				(indef_mode == 0) && (domain1 == actors_location))
-					ScopeWithin(compass);
+					ScopeWithin(Compass);
 			! (c.3)
 			if (domain1 has supporter or container) DoScopeAction(domain1);
 			ScopeWithin(domain1, domain2, context);
