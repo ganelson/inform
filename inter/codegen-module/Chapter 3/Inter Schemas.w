@@ -1818,6 +1818,21 @@ int InterSchemas::splitprints(inter_schema_node *par, inter_schema_node *isn) {
 }
 
 @ =
+int InterSchemas::casey(inter_schema_node *isn) {
+	if (isn == NULL) return FALSE;
+	if (isn->expression_tokens) {
+		inter_schema_token *n = isn->expression_tokens;
+		int bl = 0;
+		while (n) {
+			if (n->ist_type == OPEN_ROUND_ISTT) bl++;
+			if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
+			if ((n->ist_type == COLON_ISTT) && (bl == 0)) return TRUE;
+			n = n->next;
+		}
+	}
+	return FALSE;
+}
+
 int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
@@ -1858,10 +1873,6 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 						}
 						pn = pn->parent_node;
 					}
-	if (switch_begins) LOG("My switch begins!\n");
-	else LOG("My switch does not begin!\n");
-	if (switch_ends) LOG("My switch ends!\n");
-	else LOG("My switch does not end!\n");
 					if (switch_ends == FALSE) InterSchemas::mark_unclosed(sw_code);
 					if (switch_begins == FALSE) InterSchemas::mark_case_closed(isn);
 					if (sw_val) sw_val->expression_tokens = isn->expression_tokens;
@@ -1886,6 +1897,18 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 						t->owner = sw_code_exp;
 					
 					sw_code_exp->child_node = original_child;
+
+					inter_schema_node *at = isn->next_node;
+					inter_schema_node *attach = sw_code_exp;
+					while ((at) && (InterSchemas::casey(at) == FALSE)) {
+						inter_schema_node *next_at = at->next_node;
+						at->next_node = NULL;
+						at->parent_node = sw_code;
+						attach->next_node = at;
+						attach = at;
+						isn->next_node = next_at;
+						at = next_at;
+					}
 
 					return TRUE;
 				}

@@ -635,18 +635,12 @@ These simply wrap the relevant opcodes.
 @c
 [ SAVE_THE_GAME_R flag;
 	if (actor ~= player) rfalse;
-	#IFV5;
 	@save -> flag;
 	switch (flag) {
 		0: SAVE_THE_GAME_RM('A'); new_line;
 		1: SAVE_THE_GAME_RM('B'); new_line;
 		2: RESTORE_THE_GAME_RM('B'); new_line;
 	}
-	#IFNOT;
-	save Smaybe;
-	SAVE_THE_GAME_RM('A'); new_line; rtrue;
-	.SMaybe; SAVE_THE_GAME_RM('B'); new_line;
-	#ENDIF;
 ];
 
 @p Verify The Story File Rule.

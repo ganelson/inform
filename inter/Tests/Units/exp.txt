@@ -90,7 +90,7 @@ schema
         	PlaceInScope(obj, true);
     }
 end
-schema-workings
+schema
 	while (token ~= NULL) {
 		switch (token-->RE_CCLASS) {
 			DISJUNCTION_RE_CC: token-->RE_CONSTRAINT = -1;
@@ -99,4 +99,10 @@ schema-workings
 		if (token-->RE_DOWN) TEXT_TY_RE_EraseConstraints(token-->RE_DOWN);
 		token = token-->RE_NEXT;
 	}
+end
+schema-workings
+		if (b) print 1; else print 2;
+end
+schema-workings
+		a: if (b) print 1; else print 2;
 end

@@ -2318,6 +2318,21 @@ these out at the start of each iteration.
 
 
 <pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InterSchemas::casey</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">) {</span>
+            <span class="reserved">inter_schema_token</span><span class="plain"> *</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = 0;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">OPEN_ROUND_ISTT</span><span class="plain">) </span><span class="identifier">bl</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">CLOSE_ROUND_ISTT</span><span class="plain">) </span><span class="identifier">bl</span><span class="plain">--;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">COLON_ISTT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">bl</span><span class="plain"> == 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InterSchemas::splitcases</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">par</span><span class="plain">, </span><span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">isn</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">isn</span><span class="plain">; </span><span class="identifier">isn</span><span class="plain">=</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">) {</span>
@@ -2358,10 +2373,6 @@ these out at the start of each iteration.
                             <span class="plain">}</span>
                             <span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;parent_node</span><span class="plain">;</span>
                         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_begins</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"My switch begins!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"My switch does not begin!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_ends</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"My switch ends!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"My switch does not end!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_ends</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">InterSchemas::mark_unclosed</span><span class="plain">(</span><span class="identifier">sw_code</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">switch_begins</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">InterSchemas::mark_case_closed</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sw_val</span><span class="plain">) </span><span class="identifier">sw_val</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">;</span>
@@ -2387,6 +2398,18 @@ these out at the start of each iteration.
 
                         <span class="identifier">sw_code_exp</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain"> = </span><span class="identifier">original_child</span><span class="plain">;</span>
 
+                        <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">;</span>
+                        <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">attach</span><span class="plain"> = </span><span class="identifier">sw_code_exp</span><span class="plain">;</span>
+                        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">at</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">InterSchemas::casey</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+                            <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">next_at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">;</span>
+                            <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                            <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;parent_node</span><span class="plain"> = </span><span class="identifier">sw_code</span><span class="plain">;</span>
+                            <span class="identifier">attach</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
+                            <span class="identifier">attach</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
+                            <span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">next_at</span><span class="plain">;</span>
+                            <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">next_at</span><span class="plain">;</span>
+                        <span class="plain">}</span>
+
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
@@ -2399,6 +2422,8 @@ these out at the start of each iteration.
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function InterSchemas::casey appears nowhere else.</p>
 
 <p class="endnote">The function InterSchemas::splitcases is used in <a href="#SP20_4">&#167;20.4</a>.</p>
 

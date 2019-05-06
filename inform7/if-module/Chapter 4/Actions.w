@@ -444,8 +444,10 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 }
 
 inter_name *PL::Actions::Sub(action_name *an) {
-	if (an->an_routine_iname == NULL)
+	if (an->an_routine_iname == NULL) {
 		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, PL::Actions::base_iname(an), an->an_package);
+		Hierarchy::make_available(an->an_routine_iname);
+	}
 	return an->an_routine_iname;
 }
 
