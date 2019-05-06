@@ -71,6 +71,7 @@ inter_symbol *lookupref_interp = NULL;
 inter_symbol *store_interp = NULL;
 inter_symbol *if_interp = NULL;
 inter_symbol *ifdebug_interp = NULL;
+inter_symbol *ifstrict_interp = NULL;
 inter_symbol *ifelse_interp = NULL;
 inter_symbol *while_interp = NULL;
 inter_symbol *do_interp = NULL;
@@ -108,6 +109,7 @@ inter_symbol *provides_interp = NULL;
 inter_symbol *propertyvalue_interp = NULL;
 inter_symbol *notin_interp = NULL;
 inter_symbol *read_interp = NULL;
+inter_symbol *inversion_interp = NULL;
 
 @ =
 void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
@@ -181,6 +183,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!divide", I"val val -> val", &divide_interp);
 	Primitives::emit_one(I, IRS, I"!if", I"val code -> void", &if_interp);
 	Primitives::emit_one(I, IRS, I"!ifdebug", I"code -> void", &ifdebug_interp);
+	Primitives::emit_one(I, IRS, I"!ifstrict", I"code -> void", &ifstrict_interp);
 	Primitives::emit_one(I, IRS, I"!ifelse", I"val code code -> void", &ifelse_interp);
 	Primitives::emit_one(I, IRS, I"!while", I"val code -> void", &while_interp);
 	Primitives::emit_one(I, IRS, I"!do", I"val code -> void", &do_interp);
@@ -216,6 +219,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!propertyvalue", I"val val -> val", &propertyvalue_interp);
 	Primitives::emit_one(I, IRS, I"!notin", I"val val -> val", &notin_interp);
 	Primitives::emit_one(I, IRS, I"!read", I"val val -> void", &read_interp);
+	Primitives::emit_one(I, IRS, I"!inversion", I"void -> void", &inversion_interp);
 }
 
 void Primitives::emit_one(inter_repository *I, inter_reading_state *IRS, text_stream *prim, text_stream *category, inter_symbol **to) {
@@ -345,6 +349,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e CLEARBIT_BIP
 @e IF_BIP
 @e IFDEBUG_BIP
+@e IFSTRICT_BIP
 @e IFELSE_BIP
 @e WHILE_BIP
 @e DO_BIP
@@ -383,6 +388,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e PROVIDES_BIP
 @e PROPERTYVALUE_BIP
 @e READ_BIP
+@e INVERSION_BIP
 
 =
 inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
@@ -458,6 +464,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!clearbit")) bip = CLEARBIT_BIP;
 	if (Str::eq(symb->symbol_name, I"!if")) bip = IF_BIP;
 	if (Str::eq(symb->symbol_name, I"!ifdebug")) bip = IFDEBUG_BIP;
+	if (Str::eq(symb->symbol_name, I"!ifstrict")) bip = IFSTRICT_BIP;
 	if (Str::eq(symb->symbol_name, I"!ifelse")) bip = IFELSE_BIP;
 	if (Str::eq(symb->symbol_name, I"!while")) bip = WHILE_BIP;
 	if (Str::eq(symb->symbol_name, I"!do")) bip = DO_BIP;
@@ -496,6 +503,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
 	if (Str::eq(symb->symbol_name, I"!read")) bip = READ_BIP;
+	if (Str::eq(symb->symbol_name, I"!inversion")) bip = INVERSION_BIP;
 	if (bip != 0) {
 		Inter::Symbols::annotate_i(I, symb, BIP_CODE_IANN, bip);
 		return bip;

@@ -352,7 +352,7 @@ witnessed where they need to be.
     MoveFloatingObjects();
     SilentlyConsiderLight();
     DivideParagraphPoint();
-    if (flag == 0) <Look>;
+    if (flag == 0) R_Process(##Look);
     if (flag == 1) give location visited;
     if (flag == 2) AbbreviatedRoomDescription();
     @pull actor;

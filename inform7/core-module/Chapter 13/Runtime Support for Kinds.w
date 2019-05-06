@@ -1021,7 +1021,10 @@ void Kinds::RunTime::emit(kind *K) {
 		dt = ENUM_IDT;
 	}
 	Emit::kind(Kinds::RunTime::iname(K), dt, S?Kinds::RunTime::iname(S):NULL, BASE_ICON, 0, NULL);
-	if (K == K_object) Emit::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
+	if (K == K_object) {
+		Emit::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
+		Hierarchy::make_available(Kinds::RunTime::iname(K));
+	}
 }
 
 void Kinds::RunTime::kind_declarations(void) {

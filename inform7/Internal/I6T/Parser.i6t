@@ -3072,10 +3072,10 @@ the preposition |n|.)
 
 @c
 [ PrintInferredCommand from singleton_noun;
-	singleton_noun = FALSE;
+	singleton_noun = false;
 	if ((from ~= 0) && (from == pcount-1) &&
 		(pattern-->from > 1) && (pattern-->from < REPARSE_CODE))
-			singleton_noun = TRUE;
+			singleton_noun = true;
 
 	if (singleton_noun) {
 		BeginActivity(CLARIFYING_PARSERS_CHOICE_ACT, pattern-->from);

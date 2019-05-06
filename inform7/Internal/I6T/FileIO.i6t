@@ -194,7 +194,7 @@ asterisk or hyphen into the initial character as needed.
 		else
 			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_WRITE;
 		glk_stream_set_current(str);
-		if ((append_flag == FALSE) || (force_header)) {
+		if ((append_flag == false) || (force_header)) {
 			print "- ";
 			for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
 			print " ", (string) struc-->AUXF_FILENAME, "^";

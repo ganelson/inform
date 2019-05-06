@@ -313,6 +313,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e RESTORE_I6RW
 @e SPACES_I6RW
 @e READ_I6RW
+@e INVERSION_I6RW
 
 @e IFDEF_I6RW
 @e IFNDEF_I6RW
@@ -1098,7 +1099,8 @@ scanned through since the last time.
 		if (p < L-2) c3 = Str::get_at(current_raw, p+2);
 
 		if (escaped == FALSE) {
-			if (c1 == '$') @<Break off here for real, binary or hexadecimal notation@>;
+			if ((c1 == '$') && ((p == 0) || (Characters::isalpha(Str::get_at(current_raw, p-1)) == FALSE)))
+				@<Break off here for real, binary or hexadecimal notation@>;
 			if (c1 == '-') @<Break off here for negative number@>;
 			@<Break off here for operators@>;
 		}
@@ -1192,7 +1194,7 @@ language opcodes such as |@pull|.
 
 @<Break off here for operators@> =
 	int monograph = TRUE, digraph = FALSE, trigraph = FALSE;
-	if ((Characters::isalnum(c1)) || (c1 == '_')) monograph = FALSE;
+	if ((Characters::isalnum(c1)) || (c1 == '_') || (c1 == '$')) monograph = FALSE;
 	if (c1 == 0x00A7) monograph = FALSE;
 	if ((c1 == '#') && (Characters::isalpha(c2))) monograph = FALSE;
 	if ((c1 == '_') && (Characters::isalpha(c2))) monograph = FALSE;
@@ -1283,7 +1285,7 @@ inclusive; we ignore an empty token.
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
 			int c = Str::get(P);
-			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
+			if ((c != '_') && (c != '#') && (c != '$') && (!Characters::isalnum(c)))
 				is = RAW_ISTT;
 		}
 	}
@@ -1355,6 +1357,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"restore")) { is = RESERVED_ISTT; which_rw = RESTORE_I6RW; }
 	if (Str::eq(T, I"spaces")) { is = RESERVED_ISTT; which_rw = SPACES_I6RW; }
 	if (Str::eq(T, I"read")) { is = RESERVED_ISTT; which_rw = READ_I6RW; }
+	if (Str::eq(T, I"inversion")) { is = RESERVED_ISTT; which_rw = INVERSION_I6RW; }
 
 	if (Str::eq_insensitive(T, I"#IFDEF")) { is = DIRECTIVE_ISTT; which_rw = IFDEF_I6RW; }
 	if (Str::eq_insensitive(T, I"#IFNDEF")) { is = DIRECTIVE_ISTT; which_rw = IFNDEF_I6RW; }
@@ -2045,6 +2048,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						if (subordinate_to) isn->expression_tokens->next = NULL;
 						break;
 					}
+					case INVERSION_I6RW:
+						subordinate_to = inversion_interp;
+						break;
 					case FONT_I6RW: {
 						subordinate_to = font_interp;
 						inter_schema_token *n = isn->expression_tokens->next;
@@ -2962,7 +2968,8 @@ int InterSchemas::ip_arity(inter_symbol *O) {
 	if ((O == styleroman_interp) ||
 		(O == stylebold_interp) ||
 		(O == styleunderline_interp) ||
-		(O == stylereverse_interp)) arity = 0;
+		(O == stylereverse_interp) ||
+		(O == inversion_interp)) arity = 0;
 	if (O == break_interp) arity = 0;
 	if (O == continue_interp) arity = 0;
 	if (O == quit_interp) arity = 0;

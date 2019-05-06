@@ -73,6 +73,7 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 		if (value_to_check) LOG("Against %S\n", value_to_check);
 		int val = -1, def = FALSE;
 		if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
+		else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 		else {
 			inter_symbol *symb = EmitInterSchemas::find_identifier_text(symbol_to_check, NULL, second_call);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;

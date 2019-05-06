@@ -51,6 +51,8 @@ void Hierarchy::establish(void) {
 @e DICTIONARY_TABLE_HL
 @e DICT_PAR1_HL
 @e DICT_PAR2_HL
+@e LARGEST_OBJECT_HL
+@e CREATEPROPERTYOFFSETS_HL
 @e ASM_ARROW_HL
 @e ASM_SP_HL
 @e ASM_LABEL_HL
@@ -90,6 +92,18 @@ void Hierarchy::establish(void) {
 @e NO_VERB_VERB_DEFINED_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
+@e CLASSES_TABLE_HL
+@e GLOBALS_ARRAY_HL
+@e GSELF_HL
+@e CPV__START_HL
+@e Z__REGION_HL
+@e CP__TAB_HL
+@e RA__PR_HL
+@e RL__PR_HL
+@e OC__CL_HL
+@e RV__PR_HL
+@e OP__PR_HL
+@e CA__PR_HL
 
 @e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
@@ -109,10 +123,13 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(ROUTINE_HL, I"Routine", Translation::same(), generic_basics);
 	HierarchyLocations::con(STRING_HL, I"String", Translation::same(), generic_basics);
 	HierarchyLocations::con(CLASS_HL, I"Class", Translation::same(), generic_basics);
+	HierarchyLocations::con(OBJECT_HL, I"Object", Translation::same(), generic_basics);
 	HierarchyLocations::con(NUM_ATTR_BYTES_HL, I"NUM_ATTR_BYTES", Translation::same(), generic_basics);
 	HierarchyLocations::con(DICTIONARY_TABLE_HL, I"#dictionary_table", Translation::same(), generic_basics);
 	HierarchyLocations::con(DICT_PAR1_HL, I"#dict_par1", Translation::same(), generic_basics);
 	HierarchyLocations::con(DICT_PAR2_HL, I"#dict_par2", Translation::same(), generic_basics);
+	HierarchyLocations::con(LARGEST_OBJECT_HL, I"#largest_object", Translation::same(), generic_basics);
+	HierarchyLocations::con(CREATEPROPERTYOFFSETS_HL, I"CreatePropertyOffsets", Translation::same(), generic_basics);
 	HierarchyLocations::con(RANDOM_HL, I"random", Translation::same(), generic_basics);
 	HierarchyLocations::con(ASM_ARROW_HL, I"__assembly_arrow", Translation::to(I"->"), generic_basics);
 	HierarchyLocations::con(ASM_SP_HL, I"__assembly_sp", Translation::to(I"sp"), generic_basics);
@@ -153,6 +170,18 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), generic_basics);
 	HierarchyLocations::con(VALUE_PROPERTY_HOLDERS_HL, I"value_property_holders", Translation::same(), generic_basics);
 	HierarchyLocations::con(VALUE_RANGE_HL, I"value_range", Translation::same(), generic_basics);
+	HierarchyLocations::con(CLASSES_TABLE_HL, I"#classes_table", Translation::same(), generic_basics);
+	HierarchyLocations::con(GLOBALS_ARRAY_HL, I"#globals_array", Translation::same(), generic_basics);
+	HierarchyLocations::con(GSELF_HL, I"#g$self", Translation::same(), generic_basics);
+	HierarchyLocations::con(CPV__START_HL, I"#cpv__start", Translation::same(), generic_basics);
+	HierarchyLocations::con(Z__REGION_HL, I"Z__Region", Translation::same(), generic_basics);
+	HierarchyLocations::con(CP__TAB_HL, I"CP__Tab", Translation::same(), generic_basics);
+	HierarchyLocations::con(RA__PR_HL, I"RA__Pr", Translation::same(), generic_basics);
+	HierarchyLocations::con(RL__PR_HL, I"RL__Pr", Translation::same(), generic_basics);
+	HierarchyLocations::con(OC__CL_HL, I"OC__Cl", Translation::same(), generic_basics);
+	HierarchyLocations::con(RV__PR_HL, I"RV__Pr", Translation::same(), generic_basics);
+	HierarchyLocations::con(OP__PR_HL, I"OP__Pr", Translation::same(), generic_basics);
+	HierarchyLocations::con(CA__PR_HL, I"CA__Pr", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(basics);
 	HierarchyLocations::con(CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
@@ -1049,7 +1078,7 @@ void Hierarchy::establish(void) {
 
 @<The rest@> =
 	location_requirement in_K_object = HierarchyLocations::this_exotic_package(K_OBJECT_XPACKAGE);
-	HierarchyLocations::con(OBJECT_HL, I"Object", Translation::same(), in_K_object);
+//	HierarchyLocations::con(OBJECT_HL, I"Object", Translation::same(), in_K_object);
 	HierarchyLocations::con(NOTHING_HL, I"nothing", Translation::same(), in_K_object);
 	HierarchyLocations::con(CAPSHORTNAME_HL, I"cap_short_name", Translation::same(), in_K_object);
 
@@ -1635,6 +1664,8 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case DICTIONARY_TABLE_HL:
 		case DICT_PAR1_HL:
 		case DICT_PAR2_HL:
+		case LARGEST_OBJECT_HL:
+		case CREATEPROPERTYOFFSETS_HL:
 		case ACTIONS_TABLE_HL:
 		case IDENTIFIERS_TABLE_HL:
 		case GRAMMAR_TABLE_HL:
@@ -1646,14 +1677,26 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case ASM_NEG_RTRUE_HL:
 		case ASM_NEG_RFALSE_HL:
 		case NUM_ATTR_BYTES_HL:
+		case CLASSES_TABLE_HL:
+		case GLOBALS_ARRAY_HL:
+		case GSELF_HL:
+		case CPV__START_HL:
+		case Z__REGION_HL:
+		case CP__TAB_HL:
+		case RA__PR_HL:
+		case RL__PR_HL:
+		case OC__CL_HL:
+		case RV__PR_HL:
+		case OP__PR_HL:
+		case CA__PR_HL:
+		case OBJECT_HL:
 			Emit::named_numeric_constant(iname, 0);
 			break;
 		case SELF_HL:
 			Emit::variable(iname, K_value, UNDEF_IVAL, 0, I"self");
 			break;
-		case OBJECT_HL:
-			iname = Kinds::RunTime::I6_classname(K_object);
-			break;
+//			iname = Kinds::RunTime::I6_classname(K_object);
+//			break;
 	}
 	return iname;
 }

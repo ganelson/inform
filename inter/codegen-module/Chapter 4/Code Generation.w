@@ -293,6 +293,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"Routine")) return;
 	if (Str::eq(con_name->symbol_name, I"String")) return;
 	if (Str::eq(con_name->symbol_name, I"Class")) return;
+	if (Str::eq(con_name->symbol_name, I"Object")) return;
 	if (Str::eq(con_name->symbol_name, I"NUM_ATTR_BYTES")) return;
 	if (Str::eq(con_name->symbol_name, I"#dictionary_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#dict_par1")) return;
@@ -301,6 +302,20 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"#identifiers_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#grammar_table")) return;
 	if (Str::eq(con_name->symbol_name, I"#version_number")) return;
+	if (Str::eq(con_name->symbol_name, I"#largest_object")) return;
+	if (Str::eq(con_name->symbol_name, I"#classes_table")) return;
+	if (Str::eq(con_name->symbol_name, I"#globals_array")) return;
+	if (Str::eq(con_name->symbol_name, I"#g$self")) return;
+	if (Str::eq(con_name->symbol_name, I"#cpv__start")) return;
+	if (Str::eq(con_name->symbol_name, I"Z__Region")) return;
+	if (Str::eq(con_name->symbol_name, I"CP__Tab")) return;
+	if (Str::eq(con_name->symbol_name, I"RA__Pr")) return;
+	if (Str::eq(con_name->symbol_name, I"RL__Pr")) return;
+	if (Str::eq(con_name->symbol_name, I"OC__Cl")) return;
+	if (Str::eq(con_name->symbol_name, I"RV__Pr")) return;
+	if (Str::eq(con_name->symbol_name, I"OP__Pr")) return;
+	if (Str::eq(con_name->symbol_name, I"CA__Pr")) return;	
+	if (Str::eq(con_name->symbol_name, I"CreatePropertyOffsets")) return;
 	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
 	if (Str::eq(con_name->symbol_name, I"FBNA_PROP_NUMBER")) return;
 	if (Str::eq(con_name->symbol_name, I"value_property_holders")) return;
@@ -699,6 +714,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case CLEARBIT_BIP: @<Generate primitive for clearbit@>; break;
 				case IF_BIP: @<Generate primitive for if@>; break;
 				case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
+				case IFSTRICT_BIP: @<Generate primitive for ifstrict@>; break;
 				case IFELSE_BIP: @<Generate primitive for ifelse@>; break;
 				case WHILE_BIP: @<Generate primitive for while@>; break;
 				case DO_BIP: @<Generate primitive for do@>; break;
@@ -737,6 +753,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case PROVIDES_BIP: @<Generate primitive for provides@>; break;
 				case PROPERTYVALUE_BIP: @<Generate primitive for propertyvalue@>; break;
 				case READ_BIP: @<Generate primitive for read@>; break;
+				case INVERSION_BIP: @<Generate primitive for inversion@>; break;
 				default: LOG("Prim: %S\n", prim->symbol_name); internal_error("unimplemented prim");
 			}
 			break;
@@ -1268,6 +1285,12 @@ then the result.
 	OUTDENT; WRITE("#endif;\n");
 	suppress_terminal_semicolon = TRUE;
 
+@<Generate primitive for ifstrict@> =
+	WRITE("#ifdef STRICT_MODE;\n"); INDENT;
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	OUTDENT; WRITE("#endif;\n");
+	suppress_terminal_semicolon = TRUE;
+
 @<Generate primitive for ifelse@> =
 	WRITE("if (");
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
@@ -1619,6 +1642,9 @@ then the result.
 	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
 	WRITE(" ");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+
+@<Generate primitive for inversion@> =
+	WRITE("inversion");
 
 @ =
 int CodeGen::compare_tlh(const void *elem1, const void *elem2) {
