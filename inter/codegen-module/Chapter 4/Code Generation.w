@@ -303,6 +303,8 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Str::eq(con_name->symbol_name, I"#version_number")) return;
 	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
 	if (Str::eq(con_name->symbol_name, I"FBNA_PROP_NUMBER")) return;
+	if (Str::eq(con_name->symbol_name, I"value_property_holders")) return;
+	if (Str::eq(con_name->symbol_name, I"value_range")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_arrow")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_sp")) return;
 	if (Str::eq(con_name->symbol_name, I"__assembly_label")) return;
@@ -734,6 +736,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				case PROPERTYLENGTH_BIP: @<Generate primitive for propertylength@>; break;
 				case PROVIDES_BIP: @<Generate primitive for provides@>; break;
 				case PROPERTYVALUE_BIP: @<Generate primitive for propertyvalue@>; break;
+				case READ_BIP: @<Generate primitive for read@>; break;
 				default: LOG("Prim: %S\n", prim->symbol_name); internal_error("unimplemented prim");
 			}
 			break;
@@ -1610,6 +1613,12 @@ then the result.
 	WRITE(".");
 	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 	WRITE(")");
+
+@<Generate primitive for read@> =
+	WRITE("read ");
+	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	WRITE(" ");
+	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
 
 @ =
 int CodeGen::compare_tlh(const void *elem1, const void *elem2) {

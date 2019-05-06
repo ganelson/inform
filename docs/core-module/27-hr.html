@@ -88,6 +88,8 @@
     <span class="definitionkeyword">enum</span> <span class="constant">TARGET_ZCODE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TARGET_GLULX_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INDIV_PROP_START_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">VALUE_PROPERTY_HOLDERS_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">VALUE_RANGE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DICT_WORD_SIZE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WORDSIZE_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">NULL_HL</span>
@@ -172,6 +174,8 @@
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">NO_TEST_SCENARIOS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_TEST_SCENARIOS"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"MEMORY_HEAP_SIZE"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">INDIV_PROP_START_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"INDIV_PROP_START"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">VALUE_PROPERTY_HOLDERS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"value_property_holders"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">VALUE_RANGE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"value_range"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_basics</span><span class="plain">);</span>
 
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">synoptic_basics</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::synoptic_submodule</span><span class="plain">(</span><span class="identifier">basics</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">CCOUNT_QUOTATIONS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CCOUNT_QUOTATIONS"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">synoptic_basics</span><span class="plain">);</span>
@@ -1936,6 +1940,8 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERSION_NUMBER_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_METADATA_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FBNA_PROP_NUMBER_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VALUE_PROPERTY_HOLDERS_HL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VALUE_RANGE_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FLOAT_NAN_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">RESPONSETEXTS_HL</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDIRECT_HL</span><span class="plain">:</span>

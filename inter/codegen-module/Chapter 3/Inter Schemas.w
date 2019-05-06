@@ -312,6 +312,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e QUIT_I6RW
 @e RESTORE_I6RW
 @e SPACES_I6RW
+@e READ_I6RW
 
 @e IFDEF_I6RW
 @e IFNDEF_I6RW
@@ -1353,6 +1354,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"quit")) { is = RESERVED_ISTT; which_rw = QUIT_I6RW; }
 	if (Str::eq(T, I"restore")) { is = RESERVED_ISTT; which_rw = RESTORE_I6RW; }
 	if (Str::eq(T, I"spaces")) { is = RESERVED_ISTT; which_rw = SPACES_I6RW; }
+	if (Str::eq(T, I"read")) { is = RESERVED_ISTT; which_rw = READ_I6RW; }
 
 	if (Str::eq_insensitive(T, I"#IFDEF")) { is = DIRECTIVE_ISTT; which_rw = IFDEF_I6RW; }
 	if (Str::eq_insensitive(T, I"#IFNDEF")) { is = DIRECTIVE_ISTT; which_rw = IFNDEF_I6RW; }
@@ -2023,8 +2025,14 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							inter_schema_node *save_next = isn->next_node;
 							isn->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
 							isn->next_node->parent_node = isn->parent_node;
-							isn->next_node->next_node = save_next;
-							isn->next_node->isn_clarifier = return_interp;
+							isn->next_node->isn_clarifier = print_interp;
+							isn->next_node->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+							isn->next_node->child_node->parent_node = isn->next_node;
+							InterSchemas::add_token_to_node(isn->next_node->child_node, InterSchemas::new_token(DQUOTED_ISTT, I"\n", NULL, 0, -1));
+							isn->next_node->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
+							isn->next_node->next_node->parent_node = isn->parent_node;
+							isn->next_node->next_node->isn_clarifier = return_interp;
+							isn->next_node->next_node->next_node = save_next;
 						}
 						break;
 					case STYLE_I6RW: {
@@ -2146,6 +2154,18 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							n = n->next;
 						}
 						if ((operand1) && (operand2)) subordinate_to = move_interp;
+						break;
+					}
+					case READ_I6RW: {
+						inter_schema_token *n = isn->expression_tokens->next;
+						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+						operand1 = n;
+						n = n->next;
+						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+						operand2 = n;
+						operand1->next = NULL;
+						operand2->next = NULL;
+						if ((operand1) && (operand2)) subordinate_to = read_interp;
 						break;
 					}
 					case REMOVE_I6RW:
@@ -2958,6 +2978,7 @@ int InterSchemas::ip_arity(inter_symbol *O) {
 	if (O == for_interp) arity = 4;
 	if (O == while_interp) arity = 2;
 	if (O == do_interp) arity = 2;
+	if (O == read_interp) arity = 2;
 	return arity;
 }
 

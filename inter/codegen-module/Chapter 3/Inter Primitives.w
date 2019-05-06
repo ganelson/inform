@@ -107,6 +107,7 @@ inter_symbol *propertylength_interp = NULL;
 inter_symbol *provides_interp = NULL;
 inter_symbol *propertyvalue_interp = NULL;
 inter_symbol *notin_interp = NULL;
+inter_symbol *read_interp = NULL;
 
 @ =
 void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
@@ -214,6 +215,7 @@ void Primitives::emit(inter_repository *I, inter_reading_state *IRS) {
 	Primitives::emit_one(I, IRS, I"!provides", I"val val -> val", &provides_interp);
 	Primitives::emit_one(I, IRS, I"!propertyvalue", I"val val -> val", &propertyvalue_interp);
 	Primitives::emit_one(I, IRS, I"!notin", I"val val -> val", &notin_interp);
+	Primitives::emit_one(I, IRS, I"!read", I"val val -> void", &read_interp);
 }
 
 void Primitives::emit_one(inter_repository *I, inter_reading_state *IRS, text_stream *prim, text_stream *category, inter_symbol **to) {
@@ -380,6 +382,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e PROPERTYLENGTH_BIP
 @e PROVIDES_BIP
 @e PROPERTYVALUE_BIP
+@e READ_BIP
 
 =
 inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
@@ -492,6 +495,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
 	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
+	if (Str::eq(symb->symbol_name, I"!read")) bip = READ_BIP;
 	if (bip != 0) {
 		Inter::Symbols::annotate_i(I, symb, BIP_CODE_IANN, bip);
 		return bip;

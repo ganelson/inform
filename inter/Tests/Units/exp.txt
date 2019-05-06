@@ -100,9 +100,15 @@ schema
 		token = token-->RE_NEXT;
 	}
 end
-schema-workings
+schema
 		if (b) print 1; else print 2;
 end
-schema-workings
+schema
 		a: if (b) print 1; else print 2;
+end
+schema
+	print_ret "This is ", (char) X, ".";
+end
+schema-workings
+	"This is ", (char) X, ".";
 end

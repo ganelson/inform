@@ -683,7 +683,7 @@ int rb_splat_count = 1;
 int CodeGen::Assimilate::routine_body(inter_reading_state *IRS, inter_symbol *block_name, inter_t offset, text_stream *body, inter_reading_state bb) {
 	if (Str::is_whitespace(body)) return FALSE;
 	#ifdef CORE_MODULE
-	if (Str::len(body) < 350) {
+	if (Str::len(body) < 420) {
 		routine_body_request *req = CREATE(routine_body_request);
 		req->block_bookmark = bb;
 		req->enclosure = Packaging::enclosure();

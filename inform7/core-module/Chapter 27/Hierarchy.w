@@ -69,6 +69,8 @@ void Hierarchy::establish(void) {
 @e TARGET_ZCODE_HL
 @e TARGET_GLULX_HL
 @e INDIV_PROP_START_HL
+@e VALUE_PROPERTY_HOLDERS_HL
+@e VALUE_RANGE_HL
 @e DICT_WORD_SIZE_HL
 @e WORDSIZE_HL
 @e NULL_HL
@@ -149,6 +151,8 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(NO_TEST_SCENARIOS_HL, I"NO_TEST_SCENARIOS", Translation::same(), generic_basics);
 	HierarchyLocations::con(MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), generic_basics);
+	HierarchyLocations::con(VALUE_PROPERTY_HOLDERS_HL, I"value_property_holders", Translation::same(), generic_basics);
+	HierarchyLocations::con(VALUE_RANGE_HL, I"value_range", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(basics);
 	HierarchyLocations::con(CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
@@ -1618,6 +1622,8 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 		case VERSION_NUMBER_HL:
 		case PROPERTY_METADATA_HL:
 		case FBNA_PROP_NUMBER_HL:
+		case VALUE_PROPERTY_HOLDERS_HL:
+		case VALUE_RANGE_HL:
 		case FLOAT_NAN_HL:
 		case RESPONSETEXTS_HL:
 		case INDIRECT_HL:

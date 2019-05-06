@@ -26,11 +26,11 @@ moves an object to a new position in the object tree.
 ];
 
 [ XTestMove obj dest;
-    if (obj <= InformLibrary) "[Can't move ", (name) obj, ": it's a system object.]";
-    if (obj.component_parent) "[Can't move ", (name) obj, ": it's part of ",
+    if (obj <= InformLibrary) print_ret "[Can't move ", (name) obj, ": it's a system object.]";
+    if (obj.component_parent) print_ret "[Can't move ", (name) obj, ": it's part of ",
         (the) obj.component_parent, ".]";
     while (dest) {
-        if (dest == obj) "[Can't move ", (name) obj, ": it would contain itself.]";
+        if (dest == obj) print_ret "[Can't move ", (name) obj, ": it would contain itself.]";
         dest = CoreOfParentOfCoreOf(dest);
     }
     rfalse;
