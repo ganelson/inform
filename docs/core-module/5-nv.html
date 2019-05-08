@@ -27,6 +27,7 @@ exist; we can simply record inferences about its value.
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">nonlocal_variable_emission</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname_form</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">textual_form</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nothing_form</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stv_ID</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stv_index</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_outside</span><span class="plain">;</span>
@@ -306,9 +307,14 @@ variable should hold it:
         <span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;nlv_name_translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">)));</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">as_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="functiontext">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::nve_from_iname</span><span class="plain">(</span><span class="identifier">as_iname</span><span class="plain">));</span>
-        <span class="functiontext">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::nve_from_iname</span><span class="plain">(</span><span class="identifier">as_iname</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"nothing"</span><span class="plain">)) {</span>
+            <span class="functiontext">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::nve_from_nothing</span><span class="plain">());</span>
+            <span class="functiontext">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::nve_from_nothing</span><span class="plain">());</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">as_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="functiontext">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::nve_from_iname</span><span class="plain">(</span><span class="identifier">as_iname</span><span class="plain">));</span>
+            <span class="functiontext">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::nve_from_iname</span><span class="plain">(</span><span class="identifier">as_iname</span><span class="plain">));</span>
+        <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VARIABLE_CREATIONS</span><span class="plain">,</span>
             <span class="string">"Translated variable: $Z as %N\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">)));</span>
@@ -343,6 +349,14 @@ not always.
         <span class="identifier">nve</span><span class="element">.stv_index</span><span class="plain"> = -1;</span>
         <span class="identifier">nve</span><span class="element">.allow_outside</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">nve</span><span class="element">.use_own_iname</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">nve</span><span class="element">.nothing_form</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nve</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">nonlocal_variable_emission</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::nve_from_nothing</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">nonlocal_variable_emission</span><span class="plain"> </span><span class="identifier">nve</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::new_nve</span><span class="plain">();</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">nve</span><span class="element">.textual_form</span><span class="plain">, </span><span class="string">"nothing"</span><span class="plain">);</span>
+        <span class="identifier">nve</span><span class="element">.nothing_form</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nve</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -377,6 +391,8 @@ not always.
 <p class="endnote">The function NonlocalVariables::set_I6_identifier is used in <a href="#SP10">&#167;10</a>, <a href="#SP13">&#167;13</a>, <a href="#SP20">&#167;20</a>, 21/sv (<a href="21-sv.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function NonlocalVariables::new_nve appears nowhere else.</p>
+
+<p class="endnote">The function NonlocalVariables::nve_from_nothing is used in <a href="#SP10">&#167;10</a>.</p>
 
 <p class="endnote">The function NonlocalVariables::nve_from_iname is used in <a href="#SP10">&#167;10</a>, <a href="#SP20">&#167;20</a>, 21/sv (<a href="21-sv.html#SP3">&#167;3</a>).</p>
 
@@ -413,6 +429,8 @@ run-time locations to any variable without them:
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">}  </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;lvalue_nve.use_own_iname</span><span class="plain">) {</span>
             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">));</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;lvalue_nve.nothing_form</span><span class="plain">) {</span>
+            <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::veneer_symbol</span><span class="plain">(</span><span class="identifier">NOTHING_VSYMB</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"improperly formed nve"</span><span class="plain">);</span>
         <span class="plain">}</span>

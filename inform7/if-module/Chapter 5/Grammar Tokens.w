@@ -754,7 +754,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::inv_call_iname(Hierarchy::find(PARENT_HL));
+				Emit::inv_call(Hierarchy::veneer_symbol(PARENT_VSYMB));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 				Emit::up();

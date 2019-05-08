@@ -417,26 +417,26 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				break;
 			}
 			case ASM_ARROW_ISTT:
-				Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_ARROW_HL)));
+				Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_ARROW_VSYMB));
 				break;
 			case ASM_SP_ISTT:
-				Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_SP_HL)));
+				Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_SP_VSYMB));
 				break;
 			case ASM_NEGATED_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 
-					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_RTRUE_HL)));
+					Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_NEG_RTRUE_VSYMB));
 				else if (Str::eq(t->material, I"rfalse")) 
-					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_RFALSE_HL)));
+					Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_NEG_RFALSE_VSYMB));
 				else {
-					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_NEG_HL)));
+					Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_NEG_VSYMB));
 					Emit::lab(Emit::reserve_label(t->material));
 				}
 				break;
 			case ASM_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 
-					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_RTRUE_HL)));
+					Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_RTRUE_VSYMB));
 				else if (Str::eq(t->material, I"rfalse")) 
-					Emit::val_symbol(K_value, InterNames::to_symbol(Hierarchy::find(ASM_RFALSE_HL)));
+					Emit::val_symbol(K_value, Hierarchy::veneer_symbol(ASM_RFALSE_VSYMB));
 				else Emit::lab(Emit::reserve_label(t->material));
 				break;
 			case NUMBER_ISTT:
@@ -511,7 +511,9 @@ inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbo
 		inter_symbol *I = Emit::seek_symbol(second_call, S);
 		if (I) return I;
 	}
-	inter_symbol *I = Emit::seek_symbol(Emit::main_scope(), S);
+	inter_symbol *I = Veneer::find(Packaging::incarnate(Hierarchy::veneer()), Hierarchy::veneer_booknark(), S, Emit::kind_to_symbol(NULL));
+	if (I) return I;
+	I = Emit::seek_symbol(Emit::main_scope(), S);
 	if (I) return I;
 	I = InterNames::to_symbol(Hierarchy::find_by_name(S));
 	if (I) return I;

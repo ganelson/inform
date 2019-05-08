@@ -24,6 +24,7 @@ Chapter 2: Linking
 
 Chapter 3: Inform 6 to Inter
 	Inter Primitives
+	The Veneer
 	Inter Schemas
 
 Chapter 4: Inter to Inform 6

@@ -41,6 +41,7 @@ Defining the one true set of Inter annotation codes.
 @e EXPLICIT_ATTRIBUTE_IANN
 @e EXPLICIT_VARIABLE_IANN
 @e TEXT_LITERAL_IANN
+@e VENEER_IANN
 
 @ And also the canonical set of bits to use in the flags word for an Inter
 symbol.
@@ -94,4 +95,5 @@ void Inter::Canon::declare(void) {
 	Inter::Defn::create_annotation(EXPLICIT_ATTRIBUTE_IANN, I"__explicit_attribute", FALSE);
 	Inter::Defn::create_annotation(EXPLICIT_VARIABLE_IANN, I"__explicit_variable", FALSE);
 	Inter::Defn::create_annotation(TEXT_LITERAL_IANN, I"__text_literal", FALSE);
+	Inter::Defn::create_annotation(VENEER_IANN, I"__veneer", FALSE);
 }

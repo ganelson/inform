@@ -48,6 +48,7 @@ void Emit::begin(void) {
 	Packaging::initialise_state(repo);
 	Packaging::outside_all_packages();
 	
+	Packaging::incarnate(Hierarchy::veneer());
 	Packaging::incarnate(Packaging::get_module(I"generic")->the_package);
 	Packaging::incarnate(Packaging::get_module(I"synoptic")->the_package);
 	Packaging::incarnate(Packaging::get_module(I"standard_rules")->the_package);	
@@ -577,7 +578,7 @@ packaging_state Emit::named_array_begin(inter_name *N, kind *K) {
 void Emit::array_iname_entry(inter_name *iname) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_symbol *alias;
-	if (iname == NULL) alias = InterNames::to_symbol(Emit::nothing());
+	if (iname == NULL) alias = Hierarchy::veneer_symbol(NOTHING_VSYMB);
 	else alias = InterNames::to_symbol(iname);
 	inter_t val1 = 0, val2 = 0;
 	inter_reading_state *IRS = Emit::array_IRS();
@@ -679,25 +680,13 @@ void Emit::array_end(packaging_state save) {
 	Packaging::exit(save);
 }
 
-inter_name *nothing_iname = NULL;
-inter_name *Emit::nothing(void) {
-	if (K_object == NULL) internal_error("too soon for nothing");
-	if (nothing_iname == NULL) {
-		nothing_iname = Hierarchy::find(NOTHING_HL);
-		packaging_state save = Packaging::enter_home_of(nothing_iname);
-		Emit::named_pseudo_numeric_constant(nothing_iname, K_object, 0);
-		Packaging::exit(save);
-	}
-	return nothing_iname;
-}
-
 inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *iname) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Emit::define_symbol(name);
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	inter_symbol *alias = (iname)?InterNames::to_symbol(iname):NULL;
 	if (alias == NULL) {
-		if (Kinds::Compare::le(K, K_object)) alias = InterNames::to_symbol(Emit::nothing());
+		if (Kinds::Compare::le(K, K_object)) alias = Hierarchy::veneer_symbol(NOTHING_VSYMB);
 		else internal_error("can't handle a null alias");
 	}
 	inter_t val1 = 0, val2 = 0;

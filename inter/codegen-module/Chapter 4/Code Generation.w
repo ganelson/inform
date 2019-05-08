@@ -273,8 +273,6 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1) return;
 	if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1) return;
 
-	if (Str::eq(con_name->symbol_name, I"nothing")) return;
-
 	if (Inter::Symbols::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
@@ -282,58 +280,9 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		WRITE("Fake_Action %S;\n", fa);
 		return;
 	}
-		
-	if (Str::eq(con_name->symbol_name, I"parent")) return;
-	if (Str::eq(con_name->symbol_name, I"child")) return;
-	if (Str::eq(con_name->symbol_name, I"sibling")) return;
-	if (Str::eq(con_name->symbol_name, I"indirect")) return;
-	if (Str::eq(con_name->symbol_name, I"random")) return;
-	if (Str::eq(con_name->symbol_name, I"spaces")) return;
-	if (Str::eq(con_name->symbol_name, I"metaclass")) return;
-	if (Str::eq(con_name->symbol_name, I"Routine")) return;
-	if (Str::eq(con_name->symbol_name, I"String")) return;
-	if (Str::eq(con_name->symbol_name, I"Class")) return;
-	if (Str::eq(con_name->symbol_name, I"Object")) return;
-	if (Str::eq(con_name->symbol_name, I"NUM_ATTR_BYTES")) return;
-	if (Str::eq(con_name->symbol_name, I"#dictionary_table")) return;
-	if (Str::eq(con_name->symbol_name, I"#dict_par1")) return;
-	if (Str::eq(con_name->symbol_name, I"#dict_par2")) return;
-	if (Str::eq(con_name->symbol_name, I"#actions_table")) return;
-	if (Str::eq(con_name->symbol_name, I"#identifiers_table")) return;
-	if (Str::eq(con_name->symbol_name, I"#grammar_table")) return;
-	if (Str::eq(con_name->symbol_name, I"#version_number")) return;
-	if (Str::eq(con_name->symbol_name, I"#largest_object")) return;
-	if (Str::eq(con_name->symbol_name, I"#classes_table")) return;
-	if (Str::eq(con_name->symbol_name, I"#globals_array")) return;
-	if (Str::eq(con_name->symbol_name, I"#g$self")) return;
-	if (Str::eq(con_name->symbol_name, I"#cpv__start")) return;
-	if (Str::eq(con_name->symbol_name, I"Z__Region")) return;
-	if (Str::eq(con_name->symbol_name, I"CP__Tab")) return;
-	if (Str::eq(con_name->symbol_name, I"RA__Pr")) return;
-	if (Str::eq(con_name->symbol_name, I"RL__Pr")) return;
-	if (Str::eq(con_name->symbol_name, I"OC__Cl")) return;
-	if (Str::eq(con_name->symbol_name, I"RV__Pr")) return;
-	if (Str::eq(con_name->symbol_name, I"OP__Pr")) return;
-	if (Str::eq(con_name->symbol_name, I"CA__Pr")) return;	
-	if (Str::eq(con_name->symbol_name, I"RT__Err")) return;	
-	if (Str::eq(con_name->symbol_name, I"children")) return;	
-	if (Str::eq(con_name->symbol_name, I"KindHierarchy")) return;	
-	if (Str::eq(con_name->symbol_name, I"saved_short_name")) return;	
-	if (Str::eq(con_name->symbol_name, I"NO_RESPONSES")) return;	
 
-	if (Str::eq(con_name->symbol_name, I"CreatePropertyOffsets")) return;
-	if (Str::eq(con_name->symbol_name, I"property_metadata")) return;
-	if (Str::eq(con_name->symbol_name, I"FBNA_PROP_NUMBER")) return;
-	if (Str::eq(con_name->symbol_name, I"value_property_holders")) return;
-	if (Str::eq(con_name->symbol_name, I"value_range")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_arrow")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_sp")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_label")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_negated_label")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_rtrue_label")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_rfalse_label")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_negated_rtrue_label")) return;
-	if (Str::eq(con_name->symbol_name, I"__assembly_negated_rfalse_label")) return;
+	if (Inter::Symbols::read_annotation(con_name, VENEER_IANN) == 1) return;
+
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
 //		WRITE("Object thedark \"(darkness object)\";\n");
 		return;
@@ -351,9 +300,6 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		return;
 	}
 	
-	if (Str::eq(con_name->symbol_name, I"ResponseTexts")) return;
-	if (Str::eq(con_name->symbol_name, I"FLOAT_NAN")) return;
-
 	if (Str::eq(con_name->symbol_name, I"Release")) {
 		inter_t val1 = P.data[DATA_CONST_IFLD];
 		inter_t val2 = P.data[DATA_CONST_IFLD + 1];
@@ -404,8 +350,6 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		void_level = Inter::Defn::get_level(P) + 2;
 		if (code_block) {
 			inter_frame D = Inter::Symbols::defining_frame(code_block);
-//			LOG("I see code block\n");
-//			Inter::Defn::write_construct_text(DL, D);
 			CodeGen::frame(OUT, I, D);
 		}
 		return;

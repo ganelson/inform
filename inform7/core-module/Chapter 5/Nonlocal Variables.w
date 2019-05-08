@@ -14,6 +14,7 @@ exist; we can simply record inferences about its value.
 typedef struct nonlocal_variable_emission {
 	struct inter_name *iname_form;
 	struct text_stream *textual_form;
+	int nothing_form;
 	int stv_ID;
 	int stv_index;
 	int allow_outside;
@@ -206,9 +207,14 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 	nlv->nlv_name_translated = TRUE;
 	TEMPORARY_TEXT(name);
 	WRITE_TO(name, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
-	inter_name *as_iname = Hierarchy::find_by_name(name);
-	NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_iname(as_iname));
-	NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_iname(as_iname));
+	if (Str::eq(name, I"nothing")) {
+		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_nothing());
+		NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_nothing());
+	} else {
+		inter_name *as_iname = Hierarchy::find_by_name(name);
+		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_iname(as_iname));
+		NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_iname(as_iname));
+	}
 	DISCARD_TEXT(name);
 	LOGIF(VARIABLE_CREATIONS,
 		"Translated variable: $Z as %N\n", nlv, Wordings::first_wn(ParseTree::get_text(p2)));
@@ -236,6 +242,14 @@ nonlocal_variable_emission NonlocalVariables::new_nve(void) {
 	nve.stv_index = -1;
 	nve.allow_outside = FALSE;
 	nve.use_own_iname = FALSE;
+	nve.nothing_form = FALSE;
+	return nve;
+}
+
+nonlocal_variable_emission NonlocalVariables::nve_from_nothing(void) {
+	nonlocal_variable_emission nve = NonlocalVariables::new_nve();
+	WRITE_TO(nve.textual_form, "nothing");
+	nve.nothing_form = TRUE;
 	return nve;
 }
 
@@ -291,6 +305,8 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 		Emit::up();
 	}  else if (nlv->lvalue_nve.use_own_iname) {
 		Emit::val_iname(K_value, NonlocalVariables::iname(nlv));
+	} else if (nlv->lvalue_nve.nothing_form) {
+		Emit::val_symbol(K_value, Hierarchy::veneer_symbol(NOTHING_VSYMB));
 	} else {
 		internal_error("improperly formed nve");
 	}

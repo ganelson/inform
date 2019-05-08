@@ -37,43 +37,11 @@ void Hierarchy::establish(void) {
 
 @h Basics.
 
-@e PARENT_HL from 0
-@e CHILD_HL
-@e SIBLING_HL
-@e RANDOM_HL
-@e INDIRECT_HL
-@e SPACES_HL
-@e METACLASS_HL
-@e ROUTINE_HL
-@e STRING_HL
-@e CLASS_HL
-@e NUM_ATTR_BYTES_HL
-@e DICTIONARY_TABLE_HL
-@e DICT_PAR1_HL
-@e DICT_PAR2_HL
-@e LARGEST_OBJECT_HL
-@e CREATEPROPERTYOFFSETS_HL
-@e ASM_ARROW_HL
-@e ASM_SP_HL
-@e ASM_LABEL_HL
-@e ASM_RTRUE_HL
-@e ASM_RFALSE_HL
-@e ASM_NEG_HL
-@e ASM_NEG_RTRUE_HL
-@e ASM_NEG_RFALSE_HL
-@e ACTIONS_TABLE_HL
-@e IDENTIFIERS_TABLE_HL
-@e GRAMMAR_TABLE_HL
-@e VERSION_NUMBER_HL
-@e PROPERTY_METADATA_HL
-@e FBNA_PROP_NUMBER_HL
-@e SELF_HL
+@e SELF_HL from 0
 @e DEBUG_HL
 @e TARGET_ZCODE_HL
 @e TARGET_GLULX_HL
 @e INDIV_PROP_START_HL
-@e VALUE_PROPERTY_HOLDERS_HL
-@e VALUE_RANGE_HL
 @e DICT_WORD_SIZE_HL
 @e WORDSIZE_HL
 @e NULL_HL
@@ -83,8 +51,6 @@ void Hierarchy::establish(void) {
 @e REPARSE_CODE_HL
 @e MAX_POSITIVE_NUMBER_HL
 @e MIN_NEGATIVE_NUMBER_HL
-@e FLOAT_NAN_HL
-@e RESPONSETEXTS_HL
 @e CAP_SHORT_NAME_EXISTS_HL
 @e NI_BUILD_COUNT_HL
 @e RANKING_TABLE_HL
@@ -93,66 +59,18 @@ void Hierarchy::establish(void) {
 @e NO_VERB_VERB_DEFINED_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
-@e CLASSES_TABLE_HL
-@e GLOBALS_ARRAY_HL
-@e GSELF_HL
-@e CPV__START_HL
-@e Z__REGION_HL
-@e CP__TAB_HL
-@e RA__PR_HL
-@e RL__PR_HL
-@e OC__CL_HL
-@e RV__PR_HL
-@e OP__PR_HL
-@e CA__PR_HL
-@e RT__ERR_HL
-@e CHILDREN_HL
-@e KINDHIERARCHY_HL
-@e SAVED_SHORT_NAME_HL
-@e NO_RESPONSES_HL
 
 @e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e RNG_SEED_AT_START_OF_PLAY_HL
 
 @<Establish basics@> =
+	location_requirement veneer = HierarchyLocations::this_package(Hierarchy::veneer());
+	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), veneer);
 
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
 
 	location_requirement generic_basics = HierarchyLocations::generic_submodule(basics);
-	HierarchyLocations::con(PARENT_HL, I"parent", Translation::same(), generic_basics);
-	HierarchyLocations::con(CHILD_HL, I"child", Translation::same(), generic_basics);
-	HierarchyLocations::con(SIBLING_HL, I"sibling", Translation::same(), generic_basics);
-	HierarchyLocations::con(INDIRECT_HL, I"indirect", Translation::same(), generic_basics);
-	HierarchyLocations::con(SPACES_HL, I"spaces", Translation::same(), generic_basics);
-	HierarchyLocations::con(METACLASS_HL, I"metaclass", Translation::same(), generic_basics);
-	HierarchyLocations::con(ROUTINE_HL, I"Routine", Translation::same(), generic_basics);
-	HierarchyLocations::con(STRING_HL, I"String", Translation::same(), generic_basics);
-	HierarchyLocations::con(CLASS_HL, I"Class", Translation::same(), generic_basics);
-	HierarchyLocations::con(OBJECT_HL, I"Object", Translation::same(), generic_basics);
-	HierarchyLocations::con(NUM_ATTR_BYTES_HL, I"NUM_ATTR_BYTES", Translation::same(), generic_basics);
-	HierarchyLocations::con(DICTIONARY_TABLE_HL, I"#dictionary_table", Translation::same(), generic_basics);
-	HierarchyLocations::con(DICT_PAR1_HL, I"#dict_par1", Translation::same(), generic_basics);
-	HierarchyLocations::con(DICT_PAR2_HL, I"#dict_par2", Translation::same(), generic_basics);
-	HierarchyLocations::con(LARGEST_OBJECT_HL, I"#largest_object", Translation::same(), generic_basics);
-	HierarchyLocations::con(CREATEPROPERTYOFFSETS_HL, I"CreatePropertyOffsets", Translation::same(), generic_basics);
-	HierarchyLocations::con(RANDOM_HL, I"random", Translation::same(), generic_basics);
-	HierarchyLocations::con(ASM_ARROW_HL, I"__assembly_arrow", Translation::to(I"->"), generic_basics);
-	HierarchyLocations::con(ASM_SP_HL, I"__assembly_sp", Translation::to(I"sp"), generic_basics);
-	HierarchyLocations::con(ASM_LABEL_HL, I"__assembly_label", Translation::to(I"?"), generic_basics);
-	HierarchyLocations::con(ASM_RTRUE_HL, I"__assembly_rtrue_label", Translation::to(I"?rtrue"), generic_basics);
-	HierarchyLocations::con(ASM_RFALSE_HL, I"__assembly_rfalse_label", Translation::to(I"?rfalse"), generic_basics);
-	HierarchyLocations::con(ASM_NEG_HL, I"__assembly_negated_label", Translation::to(I"~"), generic_basics);
-	HierarchyLocations::con(ASM_NEG_RTRUE_HL, I"__assembly_negated_rtrue_label", Translation::to(I"?~rtrue"), generic_basics);
-	HierarchyLocations::con(ASM_NEG_RFALSE_HL, I"__assembly_negated_rfalse_label", Translation::to(I"?~rfalse"), generic_basics);
-	HierarchyLocations::con(ACTIONS_TABLE_HL, I"#actions_table", Translation::same(), generic_basics);
-	HierarchyLocations::con(IDENTIFIERS_TABLE_HL, I"#identifiers_table", Translation::same(), generic_basics);
-	HierarchyLocations::con(GRAMMAR_TABLE_HL, I"#grammar_table", Translation::same(), generic_basics);
-	HierarchyLocations::con(VERSION_NUMBER_HL, I"#version_number", Translation::same(), generic_basics);
-	HierarchyLocations::con(PROPERTY_METADATA_HL, I"property_metadata", Translation::same(), generic_basics);
-	HierarchyLocations::con(FBNA_PROP_NUMBER_HL, I"FBNA_PROP_NUMBER", Translation::same(), generic_basics);
-	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), generic_basics);
-	HierarchyLocations::con(RESPONSETEXTS_HL, I"ResponseTexts", Translation::same(), generic_basics);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), generic_basics);
 	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), generic_basics);
 	HierarchyLocations::con(TARGET_GLULX_HL, I"TARGET_GLULX", Translation::same(), generic_basics);
@@ -165,7 +83,6 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(REPARSE_CODE_HL, I"REPARSE_CODE", Translation::same(), generic_basics);
 	HierarchyLocations::con(MAX_POSITIVE_NUMBER_HL, I"MAX_POSITIVE_NUMBER", Translation::same(), generic_basics);
 	HierarchyLocations::con(MIN_NEGATIVE_NUMBER_HL, I"MIN_NEGATIVE_NUMBER", Translation::same(), generic_basics);
-	HierarchyLocations::con(FLOAT_NAN_HL, I"FLOAT_NAN", Translation::same(), generic_basics);
 	HierarchyLocations::con(CAP_SHORT_NAME_EXISTS_HL, I"CAP_SHORT_NAME_EXISTS", Translation::same(), generic_basics);
 	HierarchyLocations::con(NI_BUILD_COUNT_HL, I"NI_BUILD_COUNT", Translation::same(), generic_basics);
 	HierarchyLocations::con(RANKING_TABLE_HL, I"RANKING_TABLE", Translation::same(), generic_basics);
@@ -175,25 +92,6 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(NO_TEST_SCENARIOS_HL, I"NO_TEST_SCENARIOS", Translation::same(), generic_basics);
 	HierarchyLocations::con(MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), generic_basics);
-	HierarchyLocations::con(VALUE_PROPERTY_HOLDERS_HL, I"value_property_holders", Translation::same(), generic_basics);
-	HierarchyLocations::con(VALUE_RANGE_HL, I"value_range", Translation::same(), generic_basics);
-	HierarchyLocations::con(CLASSES_TABLE_HL, I"#classes_table", Translation::same(), generic_basics);
-	HierarchyLocations::con(GLOBALS_ARRAY_HL, I"#globals_array", Translation::same(), generic_basics);
-	HierarchyLocations::con(GSELF_HL, I"#g$self", Translation::same(), generic_basics);
-	HierarchyLocations::con(CPV__START_HL, I"#cpv__start", Translation::same(), generic_basics);
-	HierarchyLocations::con(Z__REGION_HL, I"Z__Region", Translation::same(), generic_basics);
-	HierarchyLocations::con(CP__TAB_HL, I"CP__Tab", Translation::same(), generic_basics);
-	HierarchyLocations::con(RA__PR_HL, I"RA__Pr", Translation::same(), generic_basics);
-	HierarchyLocations::con(RL__PR_HL, I"RL__Pr", Translation::same(), generic_basics);
-	HierarchyLocations::con(OC__CL_HL, I"OC__Cl", Translation::same(), generic_basics);
-	HierarchyLocations::con(RV__PR_HL, I"RV__Pr", Translation::same(), generic_basics);
-	HierarchyLocations::con(OP__PR_HL, I"OP__Pr", Translation::same(), generic_basics);
-	HierarchyLocations::con(CA__PR_HL, I"CA__Pr", Translation::same(), generic_basics);
-	HierarchyLocations::con(RT__ERR_HL, I"RT__Err", Translation::same(), generic_basics);
-	HierarchyLocations::con(CHILDREN_HL, I"children", Translation::same(), generic_basics);
-	HierarchyLocations::con(KINDHIERARCHY_HL, I"KindHierarchy", Translation::same(), generic_basics);
-	HierarchyLocations::con(SAVED_SHORT_NAME_HL, I"saved_short_name", Translation::same(), generic_basics);
-	HierarchyLocations::con(NO_RESPONSES_HL, I"NO_RESPONSES", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(basics);
 	HierarchyLocations::con(CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
@@ -1061,8 +959,6 @@ void Hierarchy::establish(void) {
 @e K_SCENE_XPACKAGE
 @e V_COMMAND_PROMPT_XPACKAGE
 
-@e NOTHING_HL
-@e OBJECT_HL
 @e TESTUSEOPTION_HL
 @e PRINT_USE_OPTION_HL
 @e TABLEOFTABLES_HL
@@ -1090,8 +986,6 @@ void Hierarchy::establish(void) {
 
 @<The rest@> =
 	location_requirement in_K_object = HierarchyLocations::this_exotic_package(K_OBJECT_XPACKAGE);
-//	HierarchyLocations::con(OBJECT_HL, I"Object", Translation::same(), in_K_object);
-	HierarchyLocations::con(NOTHING_HL, I"nothing", Translation::same(), in_K_object);
 	HierarchyLocations::con(CAPSHORTNAME_HL, I"cap_short_name", Translation::same(), in_K_object);
 
 	location_requirement in_K_number = HierarchyLocations::this_exotic_package(K_NUMBER_XPACKAGE);
@@ -1656,65 +1550,9 @@ package_request *Hierarchy::exotic_package(int x) {
 =
 inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 	switch (HL_id) {
-		case PARENT_HL:
-		case CHILD_HL:
-		case SIBLING_HL:
-		case RANDOM_HL:
-		case VERSION_NUMBER_HL:
-		case PROPERTY_METADATA_HL:
-		case FBNA_PROP_NUMBER_HL:
-		case VALUE_PROPERTY_HOLDERS_HL:
-		case VALUE_RANGE_HL:
-		case FLOAT_NAN_HL:
-		case RESPONSETEXTS_HL:
-		case INDIRECT_HL:
-		case SPACES_HL:
-		case METACLASS_HL:
-		case ROUTINE_HL:
-		case STRING_HL:
-		case CLASS_HL:
-		case DICTIONARY_TABLE_HL:
-		case DICT_PAR1_HL:
-		case DICT_PAR2_HL:
-		case LARGEST_OBJECT_HL:
-		case CREATEPROPERTYOFFSETS_HL:
-		case ACTIONS_TABLE_HL:
-		case IDENTIFIERS_TABLE_HL:
-		case GRAMMAR_TABLE_HL:
-		case ASM_ARROW_HL:
-		case ASM_SP_HL:
-		case ASM_LABEL_HL:
-		case ASM_RTRUE_HL:
-		case ASM_RFALSE_HL:
-		case ASM_NEG_HL:
-		case ASM_NEG_RTRUE_HL:
-		case ASM_NEG_RFALSE_HL:
-		case NUM_ATTR_BYTES_HL:
-		case CLASSES_TABLE_HL:
-		case GLOBALS_ARRAY_HL:
-		case GSELF_HL:
-		case CPV__START_HL:
-		case Z__REGION_HL:
-		case CP__TAB_HL:
-		case RA__PR_HL:
-		case RL__PR_HL:
-		case OC__CL_HL:
-		case RV__PR_HL:
-		case OP__PR_HL:
-		case CA__PR_HL:
-		case OBJECT_HL:
-		case RT__ERR_HL:
-		case CHILDREN_HL:
-		case KINDHIERARCHY_HL:
-		case SAVED_SHORT_NAME_HL:
-		case NO_RESPONSES_HL:
-			Emit::named_numeric_constant(iname, 0);
-			break;
 		case SELF_HL:
 			Emit::variable(iname, K_value, UNDEF_IVAL, 0, I"self");
 			break;
-//			iname = Kinds::RunTime::I6_classname(K_object);
-//			break;
 	}
 	return iname;
 }
@@ -1757,6 +1595,28 @@ package_request *Hierarchy::template(void) {
 		template_pr = T->the_package;
 	}
 	return template_pr;
+}
+
+package_request *veneer_pr = NULL;
+inter_reading_state veneer_bm;
+package_request *Hierarchy::veneer(void) {
+	if (veneer_pr == NULL) {
+		module_package *T = Packaging::get_module(I"veneer");
+		veneer_pr = T->the_package;
+		packaging_state save = Packaging::enter(veneer_pr);
+		veneer_bm = Packaging::bubble();
+		Packaging::exit(save);
+	}
+	return veneer_pr;
+}
+inter_reading_state *Hierarchy::veneer_booknark(void) {
+	Hierarchy::veneer();
+	return &veneer_bm;
+}
+inter_symbol *Hierarchy::veneer_symbol(int ix) {
+	inter_symbol *symb = Veneer::find_by_index(Packaging::incarnate(Hierarchy::veneer()), Hierarchy::veneer_booknark(), ix, Emit::kind_to_symbol(NULL));
+LOG("VS is $3\n", symb);
+	return symb;
 }
 
 package_request *Hierarchy::package(compilation_module *C, int hap_id) {

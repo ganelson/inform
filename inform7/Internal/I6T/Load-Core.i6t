@@ -127,7 +127,7 @@ plural:objects
 
 instance-of:WORD_VALUE_TY
 instance-of:SAYABLE_VALUE_TY
-default-value:nothing
+default-value:0
 
 i6-printing-routine:PrintShortName
 i6-printing-routine-actions:DA_Name
