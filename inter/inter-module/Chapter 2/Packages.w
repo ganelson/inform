@@ -15,8 +15,14 @@ typedef struct inter_package {
 	struct inter_symbols_table *package_scope;
 	int codelike_package;
 	inter_t I7_baseline;
+	int package_flags;
 	MEMORY_MANAGEMENT
 } inter_package;
+
+@
+
+@d EXCLUDE_PACKAGE_FLAG 1
+@d USED_PACKAGE_FLAG 2
 
 @ =
 inter_package *Inter::Packages::new(inter_package *par, inter_repository *I, inter_t n) {
@@ -24,6 +30,7 @@ inter_package *Inter::Packages::new(inter_package *par, inter_repository *I, int
 	pack->stored_in = I;
 	pack->package_scope = NULL;
 	pack->package_name = NULL;
+	pack->package_flags = 0;
 	pack->parent_package = par;
 	if (par) {
 		if (par->child_package == NULL) par->child_package = pack;
@@ -73,6 +80,18 @@ inter_package *Inter::Packages::basics(inter_repository *I) {
 	return NULL;
 }
 
+inter_package *Inter::Packages::veneer(inter_repository *I) {
+	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"veneer");
+	if (S) return Inter::Package::which(S);
+	return NULL;
+}
+
+inter_package *Inter::Packages::template(inter_repository *I) {
+	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"template");
+	if (S) return Inter::Package::which(S);
+	return NULL;
+}
+
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 	if (found) return found;
@@ -108,6 +127,11 @@ inter_package *Inter::Packages::from_PID(inter_repository *I, inter_t PID) {
 inter_package *Inter::Packages::container(inter_frame P) {
 	if (P.repo_segment == NULL) return NULL;
 	return Inter::Packages::from_PID(P.repo_segment->owning_repo, Inter::Frame::get_package(P));
+}
+
+inter_package *Inter::Packages::container_p(inter_frame *P) {
+	if (P->repo_segment == NULL) return NULL;
+	return Inter::Packages::from_PID(P->repo_segment->owning_repo, Inter::Frame::get_package_p(P));
 }
 
 inter_symbols_table *Inter::Packages::scope(inter_package *pack) {

@@ -65,17 +65,9 @@ void Hierarchy::establish(void) {
 @e RNG_SEED_AT_START_OF_PLAY_HL
 
 @<Establish basics@> =
-	location_requirement veneer = HierarchyLocations::this_package(Hierarchy::veneer());
-	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), veneer);
-
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
 
 	location_requirement generic_basics = HierarchyLocations::generic_submodule(basics);
-	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), generic_basics);
-	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), generic_basics);
-	HierarchyLocations::con(TARGET_GLULX_HL, I"TARGET_GLULX", Translation::same(), generic_basics);
-	HierarchyLocations::con(DICT_WORD_SIZE_HL, I"DICT_WORD_SIZE", Translation::same(), generic_basics);
-	HierarchyLocations::con(WORDSIZE_HL, I"WORDSIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(NULL_HL, I"NULL", Translation::same(), generic_basics);
 	HierarchyLocations::con(WORD_HIGHBIT_HL, I"WORD_HIGHBIT", Translation::same(), generic_basics);
 	HierarchyLocations::con(WORD_NEXTTOHIGHBIT_HL, I"WORD_NEXTTOHIGHBIT", Translation::same(), generic_basics);
@@ -91,12 +83,20 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(NO_VERB_VERB_DEFINED_HL, I"NO_VERB_VERB_DEFINED", Translation::same(), generic_basics);
 	HierarchyLocations::con(NO_TEST_SCENARIOS_HL, I"NO_TEST_SCENARIOS", Translation::same(), generic_basics);
 	HierarchyLocations::con(MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
-	HierarchyLocations::con(INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(basics);
 	HierarchyLocations::con(CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
 	HierarchyLocations::con(MAX_FRAME_SIZE_NEEDED_HL, I"MAX_FRAME_SIZE_NEEDED", Translation::same(), synoptic_basics);
 	HierarchyLocations::con(RNG_SEED_AT_START_OF_PLAY_HL, I"RNG_SEED_AT_START_OF_PLAY", Translation::same(), synoptic_basics);
+
+	location_requirement veneer = HierarchyLocations::this_package(Hierarchy::veneer());
+	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), veneer);
+	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), veneer);
+	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), veneer);
+	HierarchyLocations::con(TARGET_GLULX_HL, I"TARGET_GLULX", Translation::same(), veneer);
+	HierarchyLocations::con(DICT_WORD_SIZE_HL, I"DICT_WORD_SIZE", Translation::same(), veneer);
+	HierarchyLocations::con(WORDSIZE_HL, I"WORDSIZE", Translation::same(), veneer);
+	HierarchyLocations::con(INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), veneer);
 
 @h Modules.
 
@@ -1593,6 +1593,12 @@ package_request *Hierarchy::template(void) {
 	if (template_pr == NULL) {
 		module_package *T = Packaging::get_module(I"template");
 		template_pr = T->the_package;
+		submodule_identity *actions = Packaging::register_submodule(I"actions");
+		package_request *template_actions = Packaging::template_submodule(actions);
+		packaging_state save = Packaging::enter(template_actions);
+		inter_reading_state bubble = Packaging::bubble();
+		CodeGen::Assimilate::divert(ACTION_ASSIM_BM, bubble);
+		Packaging::exit(save);
 	}
 	return template_pr;
 }
@@ -1615,7 +1621,6 @@ inter_reading_state *Hierarchy::veneer_booknark(void) {
 }
 inter_symbol *Hierarchy::veneer_symbol(int ix) {
 	inter_symbol *symb = Veneer::find_by_index(Packaging::incarnate(Hierarchy::veneer()), Hierarchy::veneer_booknark(), ix, Emit::kind_to_symbol(NULL));
-LOG("VS is $3\n", symb);
 	return symb;
 }
 

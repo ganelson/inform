@@ -4,10 +4,40 @@ To generate the initial state of storage for variables.
 
 @h Parsing.
 
+@e ACTION_ASSIM_BM from 0
+@d NO_ASSIM_BOOKMARKS 1
+
 =
+int assimilation_diversions_set = FALSE;
+inter_reading_state assim_bookmarks[NO_ASSIM_BOOKMARKS];
+inter_reading_state *assim_bookmark_pointers[NO_ASSIM_BOOKMARKS];
+
+void CodeGen::Assimilate::ensure_bms(void) {
+	if (assimilation_diversions_set == FALSE) {
+		assimilation_diversions_set = TRUE;
+		for (int i=0; i<NO_ASSIM_BOOKMARKS; i++) assim_bookmark_pointers[i] = NULL;
+	}
+}
+
+void CodeGen::Assimilate::divert(int cause, inter_reading_state IBS) {
+	CodeGen::Assimilate::ensure_bms();
+	assim_bookmarks[cause] = IBS;
+	assim_bookmark_pointers[cause] = &(assim_bookmarks[cause]);
+}
+
+inter_reading_state *CodeGen::Assimilate::diversion(int cause) {
+	return assim_bookmark_pointers[cause];
+}
+
 int assim_verb_count = 0;
+inter_reading_state assimilated_actions_b;
+inter_reading_state *assimilated_actions;
+
+
+
 void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	inter_repository *I = IRS->read_into;
+	assimilated_actions = IRS;
 	inter_frame P;
 	LOOP_THROUGH_FRAMES(P, I) {
 		inter_package *outer = Inter::Packages::container(P);
@@ -79,6 +109,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 @d MAX_ASSIMILATED_ARRAY_ENTRIES 2048
 
 @<Assimilate definition@> =
+	text_stream *outer_housing = NULL;
 	text_stream *identifier = NULL;
 	text_stream *value = NULL;
 	match_results mr = Regexp::create_mr();
@@ -96,8 +127,10 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			identifier = mr.exp[0]; value = mr.exp[1];
 		} else LOG("Stuck on this! %S\n", S);
 	} else {
+		outer_housing = Str::new();
+		WRITE_TO(outer_housing, "assim_command%d", assim_verb_count);
 		identifier = Str::new();
-		WRITE_TO(identifier, "assim_verb_%d", ++assim_verb_count);
+		WRITE_TO(identifier, "assim_gv%d", ++assim_verb_count);
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
 			value = mr.exp[0];
 		} else LOG("Stuck on this! %S\n", S);
@@ -106,6 +139,23 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
 	ib.in_frame_list = &(I->sequence);
 	ib.pos = P_entry;
+	inter_package *housing_package = NULL;
+	inter_symbols_table *save_into_scope = NULL;
+		
+	if (outer_housing) {
+	LOG("Housing in %S\n", outer_housing);
+		inter_symbol *housing_symbol = Inter::SymbolsTables::create_with_unique_name(into_scope, outer_housing);
+		inter_symbol *ptype = plain_packagetype;
+		#ifdef CORE_MODULE
+		ptype = PackageTypes::get(I"_command");
+		#endif
+		CodeGen::Link::guard(Inter::Package::new_package(&ib, housing_symbol,
+			ptype, baseline, NULL, &housing_package));
+		Inter::Defn::set_current_package(&ib, housing_package);
+		outer = housing_package;
+		save_into_scope = into_scope;
+		into_scope = Inter::Packages::scope(outer);
+	}
 
 	if ((identifier) && (unchecked_kind_symbol)) {
 		Str::trim_all_white_space_at_end(identifier);
@@ -220,14 +270,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 						if (next_is_action) WRITE_TO(value, "##");
 						@<Extract a token@>;
 						if ((next_is_action) && (action_kind_symbol)) {
-							if (CodeGen::Link::find_name(I, value, TRUE) == NULL) {
-								inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, into_scope);
-								CodeGen::Link::guard(Inter::Constant::new_numerical(&ib,
-									Inter::SymbolsTables::id_from_symbol(I, outer, asymb),
-									Inter::SymbolsTables::id_from_symbol(I, outer, action_kind_symbol),
-									LITERAL_IVAL, 10000, baseline, NULL));
-								Inter::Symbols::annotate_i(I, asymb, ACTION_IANN, 1);
-							}
+							CodeGen::Assimilate::ensure_action(I, IRS, value);
 						}
 						next_is_action = FALSE;
 						if (P.data[PLM_SPLAT_IFLD] == ARRAY_PLM) {
@@ -275,6 +318,11 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			}
 		}
 		Inter::Nop::nop_out(I, P);
+	}
+	if (outer_housing) {
+		LOG("Exit!\n");
+		Inter::Defn::unset_current_package(&ib, housing_package, 0);
+		into_scope = save_into_scope;
 	}
 
 @<Extract a token@> =
@@ -431,7 +479,57 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 }
 
 @ =
+int no_assimilated_actions = 0;
+void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state *IRS, text_stream *value) {
+LOG("NIA %S\n", value);
+	if (CodeGen::Link::find_name(I, value, TRUE) == NULL) {
+		#ifdef CORE_MODULE_XXXXXXX
+		if (no_assimilated_actions == 0) {
+			assimilated_actions_b = Packaging::bubble_at(IRS);
+			assimilated_actions = &assimilated_actions_b;
+			inter_package *apack = NULL;
+			inter_package *tpack = Inter::Packages::template(I);
+			Inter::Defn::set_current_package(&assimilated_actions_b, tpack);
+			inter_symbol *apack_name = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(tpack), I"actions");
+			CodeGen::Link::guard(Inter::Package::new_package(&assimilated_actions_b, apack_name,
+				plain_packagetype, (inter_t) assimilated_actions->latest_indent, NULL, &apack));
+			Inter::Defn::set_current_package(&assimilated_actions_b, apack);
+		}
+		#endif
+
+		assimilated_actions = CodeGen::Assimilate::diversion(ACTION_ASSIM_BM);
+
+		assimilated_actions->cp_indent = 1;
+		LOG("AA is $5 indent %d\n", assimilated_actions, assimilated_actions->cp_indent);
+		inter_symbols_table *scope = Inter::Packages::scope(assimilated_actions->current_package);
+		LOG("scope is $4\n", scope);
+		TEMPORARY_TEXT(an);
+		WRITE_TO(an, "assim_action%d", no_assimilated_actions++);
+		inter_symbol *housing_symbol = Inter::SymbolsTables::create_with_unique_name(scope, an);
+		DISCARD_TEXT(an);
+		inter_package *housing_package = NULL;
+		inter_symbol *ptype = plain_packagetype;
+		#ifdef CORE_MODULE
+		ptype = PackageTypes::get(I"_action");
+		#endif
+		CodeGen::Link::guard(Inter::Package::new_package(assimilated_actions, housing_symbol,
+			ptype, (inter_t) assimilated_actions->cp_indent + 2, NULL, &housing_package));
+		Inter::Defn::set_current_package(assimilated_actions, housing_package);
+		inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, Inter::Packages::scope(housing_package));
+LOG("Asymb $3\n", asymb);
+		CodeGen::Link::guard(Inter::Constant::new_numerical(assimilated_actions,
+			Inter::SymbolsTables::id_from_symbol(I, assimilated_actions->current_package, asymb),
+			Inter::SymbolsTables::id_from_symbol(I, assimilated_actions->current_package, action_kind_symbol),
+			LITERAL_IVAL, 10000, (inter_t) assimilated_actions->cp_indent + 3, NULL));
+		Inter::Symbols::annotate_i(I, asymb, ACTION_IANN, 1);
+		Inter::Defn::unset_current_package(assimilated_actions, housing_package, 0);
+		CodeGen::Link::build_r(housing_package);
+	}
+}
+
+@ =
 void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, inter_reading_state *IRS, text_stream *S, inter_t *val1, inter_t *val2, int Verbal) {
+LOG("Assum val %S verbal %d\n", S, Verbal);
 	int sign = 1, base = 10, from = 0, to = Str::len(S)-1, bad = FALSE;
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
 		from++;
@@ -500,6 +598,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, inter_
 	if (Str::eq(S, I"false")) {
 		*val1 = LITERAL_IVAL; *val2 = 0; return;
 	}
+LOG("Still assym\n");
 	if (Verbal) {
 		if ((Str::eq(S, I"*")) && (verb_directive_divider_symbol)) {
 			Inter::Symbols::to_data(I, pack, verb_directive_divider_symbol, val1, val2); return;

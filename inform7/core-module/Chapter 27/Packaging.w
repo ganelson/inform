@@ -333,7 +333,11 @@ typedef struct submodule_identity {
 } submodule_identity;
 
 submodule_identity *Packaging::register_submodule(text_stream *name) {
-	submodule_identity *sid = CREATE(submodule_identity);
+	submodule_identity *sid;
+	LOOP_OVER(sid, submodule_identity)
+		if (Str::eq(sid->submodule_name, name))
+			return sid;
+	sid = CREATE(submodule_identity);
 	sid->submodule_name = Str::duplicate(name);
 	return sid;
 }
@@ -357,6 +361,10 @@ package_request *Packaging::generic_submodule(submodule_identity *sid) {
 
 package_request *Packaging::synoptic_submodule(submodule_identity *sid) {
 	return Packaging::new_submodule_inner(Packaging::get_module(I"synoptic"), sid);
+}
+
+package_request *Packaging::template_submodule(submodule_identity *sid) {
+	return Packaging::new_submodule_inner(Packaging::get_module(I"template"), sid);
 }
 
 @ Those in turn all make use of this back-end function:

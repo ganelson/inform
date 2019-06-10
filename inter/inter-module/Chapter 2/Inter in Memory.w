@@ -254,11 +254,13 @@ inter_t Inter::create_frame_list(inter_repository *I) {
 
 @d LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
 	for (inter_frame_list_entry *F##_entry = ifl->first_in_ifl; F##_entry; F##_entry = F##_entry->next_in_ifl)
-		if (Inter::Frame::valid(((F = F##_entry->listed_frame), &F)))
+		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
+			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
 
 @d LOOP_THROUGH_INTER_FRAME_LIST_FROM(F, ifl, entry)
 	for (inter_frame_list_entry *F##_entry = entry; F##_entry; F##_entry = F##_entry->next_in_ifl)
-		if (Inter::Frame::valid(((F = F##_entry->listed_frame), &F)))
+		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
+			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
 
 =
 inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {

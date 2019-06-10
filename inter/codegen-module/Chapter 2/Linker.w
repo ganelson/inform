@@ -79,10 +79,16 @@ void CodeGen::Link::build_r(inter_package *P) {
 
 inter_symbol *CodeGen::Link::find_name(inter_repository *I, text_stream *S, int deeply) {
 	for (int i=0; i<link_search_list_len; i++) {
+		LOG("Look for %S in %d: $4\n", S, i, link_search_list[i]);
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
 		if (symb) return symb;
 	}
-	if (deeply) return CodeGen::Link::find_in_namespace(I, S);
+	if (deeply) {
+		LOG("Look for %S deeper\n", S);
+		inter_symbol *symb = CodeGen::Link::find_in_namespace(I, S);
+		if (symb) return symb;
+	}
+	LOG("Failed\n");
 	return NULL;
 }
 

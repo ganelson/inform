@@ -5,89 +5,77 @@ To reconcile clashes between assimilated and originally generated verbs.
 @h Parsing.
 
 =
+void CodeGen::Eliminate::require(inter_package *pack, inter_symbol *witness) {
+	if ((pack->package_flags) & USED_PACKAGE_FLAG) return;
+	pack->package_flags |= USED_PACKAGE_FLAG;
+	if (witness) LOG("Need $6 because of $3\n", pack, witness); else LOG("Need $6\n", pack);
+	inter_symbols_table *tab = Inter::Packages::scope(pack);
+	for (int i=0; i<tab->size; i++) {
+		inter_symbol *symb = tab->symbol_array[i];
+		if ((symb) && (symb->equated_to)) {
+			inter_symbol *to = symb->equated_to;
+			CodeGen::Eliminate::require(to->owning_table->owning_package, to);
+		}
+	}
+	inter_symbol *ptype = Inter::Packages::type(pack);
+	if ((ptype) && (Str::eq(ptype->symbol_name, I"_function"))) {
+		for (inter_package *P = pack->child_package; P; P = P->next_package) {
+			CodeGen::Eliminate::require(P, NULL);
+		}
+	}
+	if ((ptype) && (Str::eq(ptype->symbol_name, I"_action"))) {
+		for (inter_package *P = pack->child_package; P; P = P->next_package) {
+			CodeGen::Eliminate::require(P, NULL);
+		}
+	}
+}
+
 int notes_made = 0, log_elims = FALSE;
+
+int elims_made = FALSE;
 void CodeGen::Eliminate::go(inter_repository *I) {
-	CodeGen::Eliminate::keep(I, I"Main");
-	CodeGen::Eliminate::keep(I, I"DefArt");
-	CodeGen::Eliminate::keep(I, I"CDefArt");
-	CodeGen::Eliminate::keep(I, I"IndefArt");
-	CodeGen::Eliminate::keep(I, I"I7_String");
-	CodeGen::Eliminate::keep(I, I"R_Process");
-
-	inter_repository *repos[MAX_REPOS_AT_ONCE];
-	int no_repos = CodeGen::repo_list(I, repos);
-
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *J = repos[j];
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, J) {
-			Inter::Defn::callback_dependencies(P, &(CodeGen::Eliminate::note), I);
-		}
-		LOOP_THROUGH_FRAMES(P, J) {
-			if (P.data[ID_IFLD] == CONSTANT_IST) {
-				inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-				if ((con_name) && (Inter::Symbols::get_flag(con_name, USED_MARK_BIT)) &&
-					(Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1)) {
-					TEMPORARY_TEXT(blurg);
-					WRITE_TO(blurg, "%SSub", con_name->symbol_name);
-					Str::delete_first_character(blurg);
-					Str::delete_first_character(blurg);
-					inter_symbol *IS = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope_of(P), blurg);
-					if (IS) Inter::Symbols::set_flag(IS, USED_MARK_BIT);
-					DISCARD_TEXT(blurg);
+	elims_made = TRUE;
+	inter_symbol *Main_block = Inter::SymbolsTables::symbol_from_name_in_template(I, I"Main_B");
+	inter_package *Main_package = Inter::Package::which(Main_block);
+	if (Main_package == NULL) {
+		LOG("Eliminate failed: can't find Main code block\n");
+		return;
+	}
+	CodeGen::Eliminate::require(Main_package, NULL);
+	inter_frame P;
+	LOOP_THROUGH_FRAMES(P, I) {
+		if (P.data[ID_IFLD] == PACKAGE_IST) {
+			inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
+			inter_package *which = Inter::Package::which(package_name);
+			if (which) {
+				inter_symbol *ptype = Inter::Packages::type(which);
+				if ((ptype) && (Str::eq(ptype->symbol_name, I"_action"))) {
+					CodeGen::Eliminate::require(which, NULL);
+				}
+				if ((ptype) && (Str::eq(ptype->symbol_name, I"_command"))) {
+					CodeGen::Eliminate::require(which, NULL);
 				}
 			}
 		}
 	}
-	if (log_elims) LOG("notes_made = %d\n", notes_made);
-	if (log_elims) LOG("The following routines are unnecessary:\n");
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *J = repos[j];
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, J) {
-			if (P.data[ID_IFLD] == CONSTANT_IST) {
-				inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-				if ((con_name) && (Inter::Constant::is_routine(con_name)) &&
-					(Inter::Symbols::get_flag(con_name, USED_MARK_BIT) == FALSE)) {
-					int consecutives = 0, keep_me = FALSE;
-					LOOP_THROUGH_TEXT(pos, con_name->symbol_name) {
-						if (Str::get(pos) == '_') consecutives++;
-						else if (consecutives >= 2) keep_me = TRUE;
-						else consecutives = 0;
-					}
-					if (keep_me == FALSE) {
-						if (log_elims) LOG("-- %S %08x\n", con_name->symbol_name, con_name);
-						Inter::Nop::nop_out(J, P);
-					}
+	LOOP_THROUGH_FRAMES(P, I) {
+		if (P.data[ID_IFLD] == PACKAGE_IST) {
+			inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
+			inter_package *which = Inter::Package::which(package_name);
+			if (which) {
+				if ((which->package_flags & USED_PACKAGE_FLAG) == 0) {
+					LOG("Not used: $6\n", which);
 				}
 			}
 		}
 	}
+}
 
-	if (log_elims) LOG("The following table arrays are unnecessary:\n");
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *J = repos[j];
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, J) {
-			if (P.data[ID_IFLD] == CONSTANT_IST) {
-				inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-				if ((con_name) && (P.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) &&
-					(Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == FALSE) &&
-					(Inter::Symbols::get_flag(con_name, USED_MARK_BIT) == FALSE)) {
-					int consecutives = 0, keep_me = FALSE;
-					LOOP_THROUGH_TEXT(pos, con_name->symbol_name) {
-						if (Str::get(pos) == '_') consecutives++;
-						else if (consecutives >= 2) keep_me = TRUE;
-						else consecutives = 0;
-					}
-					if (keep_me == FALSE) {
-						if (log_elims) LOG("-- %S\n", con_name->symbol_name);
-						Inter::Nop::nop_out(J, P);
-					}
-				}
-			}
-		}
-	}
+int CodeGen::Eliminate::gone(inter_symbol *code_block) {
+	inter_package *which = Inter::Package::which(code_block);
+	if ((elims_made) && (which) && ((which->package_flags & USED_PACKAGE_FLAG) == 0))
+		return TRUE;
+	return FALSE;
 }
 
 void CodeGen::Eliminate::keep(inter_repository *I, text_stream *N) {

@@ -30,6 +30,13 @@ int Inter::Frame::valid(inter_frame *F) {
 	return TRUE;
 }
 
+int Inter::Frame::included(inter_frame *F) {
+	if (F == NULL) return FALSE;
+	inter_package *pack = Inter::Packages::container_p(F);
+	if ((pack) && (((pack->package_flags) & (EXCLUDE_PACKAGE_FLAG)))) return FALSE;
+	return TRUE;
+}
+
 int Inter::Frame::eq(inter_frame *F1, inter_frame *F2) {
 	if ((F1 == NULL) || (F2 == NULL)) {
 		if (F1 == F2) return TRUE;
@@ -233,6 +240,13 @@ void Inter::Frame::attach_comment(inter_frame F, inter_t ID) {
 inter_t Inter::Frame::get_package(inter_frame F) {
 	if (F.repo_segment) {
 		return F.repo_segment->bytecode[F.index + PREFRAME_PACKAGE];
+	}
+	return 0;
+}
+
+inter_t Inter::Frame::get_package_p(inter_frame *F) {
+	if (F->repo_segment) {
+		return F->repo_segment->bytecode[F->index + PREFRAME_PACKAGE];
 	}
 	return 0;
 }

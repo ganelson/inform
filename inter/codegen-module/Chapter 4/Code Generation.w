@@ -281,7 +281,15 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		return;
 	}
 
+	int ifndef_me = FALSE;
 	if (Inter::Symbols::read_annotation(con_name, VENEER_IANN) == 1) return;
+	if ((Str::eq(con_name->symbol_name, I"WORDSIZE")) ||
+		(Str::eq(con_name->symbol_name, I"TARGET_ZCODE")) ||
+		(Str::eq(con_name->symbol_name, I"INDIV_PROP_START")) ||
+		(Str::eq(con_name->symbol_name, I"TARGET_GLULX")) ||
+		(Str::eq(con_name->symbol_name, I"DICT_WORD_SIZE")) ||
+		(Str::eq(con_name->symbol_name, I"DEBUG")))
+		ifndef_me = TRUE;
 
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
 //		WRITE("Object thedark \"(darkness object)\";\n");
@@ -336,19 +344,11 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		return;
 	}
 
-	int ifndef_me = FALSE;
-	if ((Str::eq(con_name->symbol_name, I"WORDSIZE")) ||
-		(Str::eq(con_name->symbol_name, I"TARGET_ZCODE")) ||
-		(Str::eq(con_name->symbol_name, I"INDIV_PROP_START")) ||
-		(Str::eq(con_name->symbol_name, I"TARGET_GLULX")) ||
-		(Str::eq(con_name->symbol_name, I"DICT_WORD_SIZE")) ||
-		(Str::eq(con_name->symbol_name, I"DEBUG")))
-		ifndef_me = TRUE;
 	if (Inter::Constant::is_routine(con_name)) {
-		WRITE("[ %S", CodeGen::name(con_name));
 		inter_symbol *code_block = Inter::Constant::code_block(con_name);
-		void_level = Inter::Defn::get_level(P) + 2;
-		if (code_block) {
+		if (CodeGen::Eliminate::gone(code_block) == FALSE) {
+			WRITE("[ %S", CodeGen::name(con_name));
+			void_level = Inter::Defn::get_level(P) + 2;
 			inter_frame D = Inter::Symbols::defining_frame(code_block);
 			CodeGen::frame(OUT, I, D);
 		}
