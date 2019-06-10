@@ -9,7 +9,7 @@ void CodeGen::PLM::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"parse-linked-matter", CodeGen::PLM::run_pipeline_stage, NO_STAGE_ARG);
 }
 
-int CodeGen::PLM::run_pipeline_stage(stage_step *step) {
+int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
 	CodeGen::PLM::parse(step->repository);
 	return TRUE;
 }

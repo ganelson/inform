@@ -21,6 +21,7 @@ Chapter 2: Linking
 	Uniqueness
 	Reconcile Verbs
 	Eliminate Redundant Matter
+	Eliminate Redundant Labels
 	Inventory
 
 Chapter 3: Inform 6 to Inter

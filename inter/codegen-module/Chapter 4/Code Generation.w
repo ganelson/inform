@@ -9,7 +9,7 @@ void CodeGen::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"generate-i6", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
 }
 
-int CodeGen::run_pipeline_stage(stage_step *step) {
+int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	CodeGen::to_I6(step->repository, step->text_out_file);
 	return TRUE;
 }
@@ -25,6 +25,7 @@ typedef struct text_literal_holder {
 	MEMORY_MANAGEMENT
 } text_literal_holder;
 
+int the_quartet_found = FALSE;
 void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	if (I == NULL) internal_error("no inter to generate from");
 
@@ -198,10 +199,12 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 
 @<Property knowledge@> =
 	if (properties_written == FALSE) {
-		WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
-		WRITE_TO(TO, "Object thedark \"(darkness object)\";\n");
-		WRITE_TO(TO, "Object InformParser \"(Inform Parser)\" has proper;\n");
-		WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
+		if (the_quartet_found) {
+			WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
+			WRITE_TO(TO, "Object thedark \"(darkness object)\";\n");
+			WRITE_TO(TO, "Object InformParser \"(Inform Parser)\" has proper;\n");
+			WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
+		}
 		properties_written = TRUE;
 		CodeGen::IP::knowledge(TO, I, code_at_eof, attributes_at_eof);
 	}
@@ -304,18 +307,22 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		ifndef_me = TRUE;
 
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
+		the_quartet_found = TRUE;
 //		WRITE("Object thedark \"(darkness object)\";\n");
 		return;
 	}
 	if (Str::eq(con_name->symbol_name, I"InformLibrary")) {
+		the_quartet_found = TRUE;
 //		WRITE("Object InformLibrary \"(Inform Library)\" has proper;\n");
 		return;
 	}
 	if (Str::eq(con_name->symbol_name, I"InformParser")) {
+		the_quartet_found = TRUE;
 //		WRITE("Object InformParser \"(Inform Parser)\" has proper;\n");
 		return;
 	}
 	if (Str::eq(con_name->symbol_name, I"Compass")) {
+		the_quartet_found = TRUE;
 //		WRITE("Object Compass \"compass\" has concealed;\n");
 		return;
 	}

@@ -441,10 +441,10 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 	for (int d = 0; d < depth; d++) LOG("    ");
 	switch (isn->isn_type) {
 		case STATEMENT_ISNT:
-			LOG("* (statement) %S\n", isn->isn_clarifier->symbol_name);
+			LOG("* (statement) %S\n", (isn->isn_clarifier)?(isn->isn_clarifier->symbol_name):(I"<none>"));
 			break;
 		case OPERATION_ISNT:
-			LOG("* (operation) %S\n", isn->isn_clarifier->symbol_name);
+			LOG("* (operation) %S\n", (isn->isn_clarifier)?(isn->isn_clarifier->symbol_name):(I"<none>"));
 			break;
 		case CODE_ISNT:
 			LOG("* (code)");

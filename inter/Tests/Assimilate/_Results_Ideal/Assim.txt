@@ -26,13 +26,15 @@ package main _plain
 		symbol public misc Badger
 		symbol public misc XA
 		symbol public misc XB
+		symbol public misc Computed_Constant_Value_0
+		symbol public misc Computed_Constant_Value_1
+		symbol public misc Computed_Constant_Value_2
 		symbol public misc XC
 		symbol public misc XD
 		symbol public misc XE
 		symbol public misc XF
 		symbol public misc Bodger
 		symbol public misc Budger
-		symbol public misc assim_verb_1
 		symbol public misc Bodger_1
 		symbol public misc Bydger
 		symbol public misc nitwit
@@ -53,9 +55,9 @@ package main _plain
 			.end
 		constant Falsity_1 K_unchecked_function = Falsity_B __assimilated=1
 		package Demo_B _code
-			symbol public misc x
+			symbol private misc x
 			symbol external misc K_unchecked == /main/resources/K_unchecked
-			symbol public misc y
+			symbol private misc y
 			symbol private label .begin
 			symbol private label .end
 			local x K_unchecked
@@ -65,7 +67,10 @@ package main _plain
 			.end
 		constant Demo K_unchecked_function = Demo_B __assimilated=1
 		constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
-		constant XB K_list_of_values = { &"(71 + 3)" } __assimilated=1
+		constant Computed_Constant_Value_0 K_unchecked = 71
+		constant Computed_Constant_Value_1 K_unchecked = 3
+		constant Computed_Constant_Value_2 K_unchecked = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
+		constant XB K_list_of_values = { Computed_Constant_Value_2 } __assimilated=1
 		constant XC K_list_of_values = { 17, 91 } __assimilated=1 __byte_array=1
 		constant XD K_list_of_values = { 8, 6 } __assimilated=1 __byte_array=1
 		constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __table_array=1
@@ -73,13 +78,12 @@ package main _plain
 		constant Bodger K_unchecked = 157 __assimilated=1
 		constant Budger K_unchecked = 32738 __assimilated=1
 		variable nitwit K_unchecked = 2 __assimilated=1
-		constant assim_verb_1 K_list_of_values = { dw'purloin', VERB_DIRECTIVE_DIVIDER, &"scope=testcommandnoun", VERB_DIRECTIVE_RESULT, &"##XPurloin" } __assimilated=1 __verb=1 __meta_verb=1
 		constant Bodger_1 K_unchecked = 77 __assimilated=1
 		constant Bydger K_unchecked = 777 __assimilated=1
 		package Banana_B _code
-			symbol public misc x1
+			symbol private misc x1
 			symbol external misc K_unchecked == /main/resources/K_unchecked
-			symbol public misc x2
+			symbol private misc x2
 			symbol private label .begin
 			symbol private label .end
 			local x1 K_unchecked

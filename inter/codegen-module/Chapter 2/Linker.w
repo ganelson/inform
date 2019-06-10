@@ -9,7 +9,7 @@ void CodeGen::Link::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"link", CodeGen::Link::run_pipeline_stage, TEMPLATE_FILE_STAGE_ARG);	
 }
 
-int CodeGen::Link::run_pipeline_stage(stage_step *step) {
+int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
 	inter_reading_state IRS = Inter::Bookmarks::new_IRS(step->repository);
 	IRS.current_package = Inter::Packages::main(step->repository);
 	IRS.cp_indent = 1;

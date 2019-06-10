@@ -128,7 +128,6 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 	int active = TRUE;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
-			text_stream text_output_struct; /* For any text file we might write */
 			CodeGen::Pipeline::clean_step(step);
 			step->the_N = N;
 			step->the_PP = PP;
@@ -142,18 +141,25 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 			DISCARD_TEXT(STAGE_NAME);
 
 			if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
-				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG)) {
+				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+				(step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
+				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
 				int slashes = FALSE;
 				LOOP_THROUGH_TEXT(pos, step->step_argument)
 					if (Str::get(pos) == '/')
 						slashes = TRUE;
 				if (slashes) step->parsed_filename = Filenames::from_text(step->step_argument);
-				else step->parsed_filename =  Filenames::in_folder(FM, step->step_argument);
+				else if ((step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
+						(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG))
+					step->parsed_filename = Filenames::in_folder(FM, step->step_argument);
+				else step->parsed_filename = Filenames::in_folder(P, step->step_argument);
 			}
 
-			if (step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) {
-				step->text_out_file = &text_output_struct;
-				if (STREAM_OPEN_TO_FILE(step->text_out_file, step->parsed_filename, ISO_ENC) == FALSE) {
+			text_stream text_output_struct; /* For any text file we might write */
+			text_stream *T = &text_output_struct;
+			if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
+				if (STREAM_OPEN_TO_FILE(T, step->parsed_filename, ISO_ENC) == FALSE) {
 					#ifdef PROBLEMS_MODULE
 					Problems::Fatal::filename_related("Can't open output file", step->parsed_filename);
 					#endif
@@ -162,12 +168,14 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 					exit(1);
 					#endif
 				}
+				step->text_out_file = T;
 			}
 
 			active = (*(step->step_stage->execute))(step);
 
-			if (step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) {
-				STREAM_CLOSE(step->text_out_file);
+			if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
+				STREAM_CLOSE(T);
 			}
 		}
 }

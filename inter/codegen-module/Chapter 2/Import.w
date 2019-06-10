@@ -6,11 +6,11 @@ To import inter from a secondary file.
 
 =
 void CodeGen::Import::create_pipeline_stage(void) {
-	pipeline_stage *im = CodeGen::Stage::new(I"import", CodeGen::Import::run_pipeline_stage, FILE_STAGE_ARG);
+	pipeline_stage *im = CodeGen::Stage::new(I"import", CodeGen::Import::run_pipeline_stage, EXT_FILE_STAGE_ARG);
 	im->port_direction = -1;
 }
 
-int CodeGen::Import::run_pipeline_stage(stage_step *step) {
+int CodeGen::Import::run_pipeline_stage(pipeline_step *step) {
 	CodeGen::Import::import(step->repository, step->parsed_filename);
 	return TRUE;
 }

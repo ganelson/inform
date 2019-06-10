@@ -9,7 +9,7 @@ void CodeGen::Assimilate::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"assimilate", CodeGen::Assimilate::run_pipeline_stage, NO_STAGE_ARG);
 }
 
-int CodeGen::Assimilate::run_pipeline_stage(stage_step *step) {
+int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	inter_reading_state IRS = Inter::Bookmarks::new_IRS(step->repository);
 	CodeGen::Assimilate::assimilate(&IRS);
 	return TRUE;
@@ -667,6 +667,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_repository *I, inter_p
 
 	InterSchemas::log(DL, sch);
 	LOG("Forced to glob: %S\n", sch->converted_from);
+	WRITE_TO(STDERR, "Forced to glob: %S\n", sch->converted_from);
 	internal_error("Reduced to glob in assimilation");
 
 	inter_t ID = Inter::create_text(I);

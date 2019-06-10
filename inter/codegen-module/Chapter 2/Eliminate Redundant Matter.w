@@ -9,7 +9,7 @@ void CodeGen::Eliminate::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"eliminate-redundant-code", CodeGen::Eliminate::run_pipeline_stage, NO_STAGE_ARG);
 }
 
-int CodeGen::Eliminate::run_pipeline_stage(stage_step *step) {
+int CodeGen::Eliminate::run_pipeline_stage(pipeline_step *step) {
 	CodeGen::Eliminate::go(step->repository);
 	return TRUE;
 }

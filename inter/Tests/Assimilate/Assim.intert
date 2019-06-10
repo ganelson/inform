@@ -23,7 +23,6 @@ package main _plain
 		splat &"Constant Bodger $$10011101;\n"
 		splat &"Constant Budger $7fe2  ;\n"
 		splat &"Global nitwit = 2;\n"
-		splat &"Verb meta 'purloin'\n    * scope=testcommandnoun                     -> XPurloin;\n"
 		splat &"Default Bodger = 77;\n"
 		splat &"Default Bydger = 777;\n"
 		splat &"#Stub Banana 2;\n"

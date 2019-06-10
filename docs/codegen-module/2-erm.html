@@ -21,7 +21,7 @@
         <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"eliminate-redundant-code"</span><span class="plain">, </span><span class="functiontext">CodeGen::Eliminate::run_pipeline_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Eliminate::run_pipeline_stage</span><span class="plain">(</span><span class="identifier">stage_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Eliminate::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="functiontext">CodeGen::Eliminate::go</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -140,7 +140,7 @@
 <p class="endnote">The function CodeGen::Eliminate::note appears nowhere else.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="2-rv.html">Back to 'Reconcile Verbs'</a></li><li><a href="2-inv.html">Continue with 'Inventory'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-rv.html">Back to 'Reconcile Verbs'</a></li><li><a href="2-erl.html">Continue with 'Eliminate Redundant Labels'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

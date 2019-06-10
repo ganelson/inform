@@ -9,7 +9,7 @@ void CodeGen::Uniqueness::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"make-identifiers-unique", CodeGen::Uniqueness::run_pipeline_stage, NO_STAGE_ARG);
 }
 
-int CodeGen::Uniqueness::run_pipeline_stage(stage_step *step) {
+int CodeGen::Uniqueness::run_pipeline_stage(pipeline_step *step) {
 	CodeGen::Uniqueness::ensure(step->repository);
 	return TRUE;
 }
