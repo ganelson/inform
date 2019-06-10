@@ -2,6 +2,18 @@
 
 To generate the initial state of storage for variables.
 
+@h Pipeline stage.
+
+=
+void CodeGen::RCC::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"resolve-conditional-compilation", CodeGen::RCC::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::RCC::run_pipeline_stage(stage_step *step) {
+	CodeGen::RCC::resolve(step->repository);
+	return TRUE;
+}
+
 @h Resolution.
 
 @d MAX_CC_STACK_SIZE 32

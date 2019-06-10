@@ -90,8 +90,8 @@ void Main::act(void) {
 		int NO_FS_AREAS = 0;
 		pathname *pathname_of_i6t_files[1];
 		if (template_path) { NO_FS_AREAS = 1; pathname_of_i6t_files[0] = template_path; }
-		stage_set *SS = CodeGen::Stage::parse(inter_processing_chain, I"output.i6");
-		CodeGen::Stage::follow(domain_path, SS, I, NO_FS_AREAS, pathname_of_i6t_files, template_path, NULL);
+		codegen_pipeline *SS = CodeGen::Pipeline::parse(inter_processing_chain, I"output.i6");
+		CodeGen::Pipeline::run(domain_path, SS, I, NO_FS_AREAS, pathname_of_i6t_files, template_path, NULL);
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);
 	} else {

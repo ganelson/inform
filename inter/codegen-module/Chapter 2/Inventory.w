@@ -2,6 +2,19 @@
 
 To print a summary of the contents of a repository.
 
+@h Pipeline stage.
+
+=
+void CodeGen::Inventory::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"inventory", CodeGen::Inventory::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
+}
+
+int CodeGen::Inventory::run_pipeline_stage(stage_step *step) {
+	CodeGen::Inventory::print(step->text_out_file, step->repository);
+	CodeGen::Inventory::print(DL, step->repository);
+	return TRUE;
+}
+
 @h The whole shebang.
 
 =

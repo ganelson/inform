@@ -2,6 +2,18 @@
 
 To reconcile clashes between assimilated and originally generated verbs.
 
+@h Pipeline stage.
+
+=
+void CodeGen::Eliminate::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"eliminate-redundant-code", CodeGen::Eliminate::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::Eliminate::run_pipeline_stage(stage_step *step) {
+	CodeGen::Eliminate::go(step->repository);
+	return TRUE;
+}
+
 @h Parsing.
 
 =

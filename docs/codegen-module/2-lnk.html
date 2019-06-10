@@ -17,6 +17,18 @@
 
 
 <pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Link::create_pipeline_stage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"link"</span><span class="plain">, </span><span class="functiontext">CodeGen::Link::run_pipeline_stage</span><span class="plain">, </span><span class="constant">TEMPLATE_FILE_STAGE_ARG</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Link::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">stage_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+        <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">IRS</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
+        <span class="identifier">IRS</span><span class="plain">.</span><span class="identifier">current_package</span><span class="plain"> = </span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
+        <span class="identifier">IRS</span><span class="plain">.</span><span class="identifier">cp_indent</span><span class="plain"> = 1;</span>
+        <span class="functiontext">CodeGen::Link::link</span><span class="plain">(&amp;</span><span class="identifier">IRS</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_N</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">link_search_list</span><span class="plain">[10];</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">link_search_list_len</span><span class="plain"> = 0;</span>
 
@@ -91,10 +103,16 @@
 
     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">CodeGen::Link::find_name</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">deeply</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">link_search_list_len</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Look for %S in %d: $4\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">link_search_list</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_name_not_equating</span><span class="plain">(</span><span class="identifier">link_search_list</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deeply</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">CodeGen::Link::find_in_namespace</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deeply</span><span class="plain">) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Look for %S deeper\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="functiontext">CodeGen::Link::find_in_namespace</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -120,19 +138,23 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Link::link is used in 1/sc (<a href="1-sc.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function CodeGen::Link::create_pipeline_stage is used in 1/stg (<a href="1-stg.html#SP3">&#167;3</a>).</p>
+
+<p class="endnote">The function CodeGen::Link::run_pipeline_stage appears nowhere else.</p>
+
+<p class="endnote">The function CodeGen::Link::link appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Link::find_in_namespace appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Link::build_r appears nowhere else.</p>
+<p class="endnote">The function CodeGen::Link::build_r is used in 2/alm (<a href="2-alm.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The function CodeGen::Link::find_name is used in 2/alm (<a href="2-alm.html#SP1_1">&#167;1.1</a>, <a href="2-alm.html#SP2">&#167;2</a>, <a href="2-alm.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::Link::find_name is used in 2/alm (<a href="2-alm.html#SP2_1">&#167;2.1</a>, <a href="2-alm.html#SP3">&#167;3</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function CodeGen::Link::log_search_path appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Link::guard is used in 2/alm (<a href="2-alm.html#SP1_1">&#167;1.1</a>, <a href="2-alm.html#SP1_2">&#167;1.2</a>, <a href="2-alm.html#SP3">&#167;3</a>), 3/ip (<a href="3-ip.html#SP2">&#167;2</a>), 3/tv (<a href="3-tv.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::Link::guard is used in 2/alm (<a href="2-alm.html#SP2_1">&#167;2.1</a>, <a href="2-alm.html#SP2_2">&#167;2.2</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>), 3/ip (<a href="3-ip.html#SP2">&#167;2</a>), 3/tv (<a href="3-tv.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function CodeGen::Link::entire_splat is used in <a href="#SP2">&#167;2</a>, 2/alm (<a href="2-alm.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::Link::entire_splat is used in <a href="#SP2">&#167;2</a>, 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 

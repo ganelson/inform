@@ -2,6 +2,18 @@
 
 To make sure certain symbol names translate into globally unique target symbols.
 
+@h Pipeline stage.
+
+=
+void CodeGen::Externals::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"resolve-external-symbols", CodeGen::Externals::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::Externals::run_pipeline_stage(stage_step *step) {
+	CodeGen::Externals::resolve(step->repository);
+	return TRUE;
+}
+
 @h The whole shebang.
 
 =

@@ -2,6 +2,19 @@
 
 To generate the initial state of storage for variables.
 
+@h Pipeline stage.
+
+=
+void CodeGen::Assimilate::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"assimilate", CodeGen::Assimilate::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::Assimilate::run_pipeline_stage(stage_step *step) {
+	inter_reading_state IRS = Inter::Bookmarks::new_IRS(step->repository);
+	CodeGen::Assimilate::assimilate(&IRS);
+	return TRUE;
+}
+
 @h Parsing.
 
 @e ACTION_ASSIM_BM from 0

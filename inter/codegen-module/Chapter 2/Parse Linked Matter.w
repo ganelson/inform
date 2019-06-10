@@ -2,6 +2,18 @@
 
 To generate the initial state of storage for variables.
 
+@h Pipeline stage.
+
+=
+void CodeGen::PLM::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"parse-linked-matter", CodeGen::PLM::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::PLM::run_pipeline_stage(stage_step *step) {
+	CodeGen::PLM::parse(step->repository);
+	return TRUE;
+}
+
 @h Parsing.
 
 =

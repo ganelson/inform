@@ -5,6 +5,18 @@ To link inter from I7 with template code.
 @h Link.
 
 =
+void CodeGen::Link::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"link", CodeGen::Link::run_pipeline_stage, TEMPLATE_FILE_STAGE_ARG);	
+}
+
+int CodeGen::Link::run_pipeline_stage(stage_step *step) {
+	inter_reading_state IRS = Inter::Bookmarks::new_IRS(step->repository);
+	IRS.current_package = Inter::Packages::main(step->repository);
+	IRS.cp_indent = 1;
+	CodeGen::Link::link(&IRS, step->step_argument, step->the_N, step->the_PP, NULL);
+	return TRUE;
+}
+
 inter_symbols_table *link_search_list[10];
 int link_search_list_len = 0;
 

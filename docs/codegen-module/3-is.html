@@ -690,7 +690,7 @@ we go to some trouble here.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterSchemas::log is used in 1/cm (<a href="1-cm.html#SP4_6">&#167;4.6</a>), 2/alm (<a href="2-alm.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function InterSchemas::log is used in 1/cm (<a href="1-cm.html#SP4_6">&#167;4.6</a>), 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function InterSchemas::log_depth appears nowhere else.</p>
 
@@ -943,7 +943,7 @@ for instance, we could simply have defined:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterSchemas::from_text is used in <a href="#SP18">&#167;18</a>, <a href="#SP19">&#167;19</a>, 2/alm (<a href="2-alm.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function InterSchemas::from_text is used in <a href="#SP18">&#167;18</a>, <a href="#SP19">&#167;19</a>, 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP20_1"></a><b>&#167;20.1. Stage 1. </b>Our method is to tokenise the source code as if it were Inform 6, but to look
 out for the two extra syntaxes allowed, <code class="display"><span class="extract">{-bracing}</span></code> and <code class="display"><span class="extract">(+ Inform 7 interpolation +)</span></code>.
@@ -1557,7 +1557,6 @@ For example, we need to tokenise <code class="display"><span class="extract">x-1
             <span class="plain">(</span><span class="identifier">preceding_token</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">DIVIDER_ISTT</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">c_start</span><span class="plain"> == </span><span class="identifier">p</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(!((</span><span class="identifier">abbreviated</span><span class="plain">) &amp;&amp; (</span><span class="identifier">preceding_token</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">INLINE_ISTT</span><span class="plain">)))) {</span>
-    <span class="comment">LOG("Spec nn cs %d p %d\n", c_start, p);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dc</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">+1;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">current_raw</span><span class="plain">, </span><span class="identifier">dc</span><span class="plain">))) </span><span class="identifier">dc</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dc</span><span class="plain"> &gt; </span><span class="identifier">p</span><span class="plain">+1) {</span>

@@ -2,6 +2,18 @@
 
 To reconcile clashes between assimilated and originally generated verbs.
 
+@h Pipeline stage.
+
+=
+void CodeGen::ReconcileVerbs::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"reconcile-verbs", CodeGen::ReconcileVerbs::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::ReconcileVerbs::run_pipeline_stage(stage_step *step) {
+	CodeGen::ReconcileVerbs::reconcile(step->repository);
+	return TRUE;
+}
+
 @h Parsing.
 
 =

@@ -242,8 +242,6 @@ inter_error_message *Inter::Defn::pass2(inter_repository *I, int issue, inter_re
 		inter_frame P; int F = 0;
 		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->sequence)), just_this->pos) {
 			F++;
-//		LOG("P2 F = %d baseline = %d gl = %d\n", F, baseline, Inter::Defn::get_level(P));
-//		Inter::Defn::write_construct_text(DL, P);
 			if ((stop_at_top) && (F > 1) && (Inter::Defn::get_level(P) == baseline)) break;
 
 			E = Inter::Errors::gather_first(E, Inter::Defn::pass2_on_frame(P, issue));

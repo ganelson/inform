@@ -2,6 +2,18 @@
 
 To make sure certain symbol names translate into globally unique target symbols.
 
+@h Pipeline stage.
+
+=
+void CodeGen::Uniqueness::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"make-identifiers-unique", CodeGen::Uniqueness::run_pipeline_stage, NO_STAGE_ARG);
+}
+
+int CodeGen::Uniqueness::run_pipeline_stage(stage_step *step) {
+	CodeGen::Uniqueness::ensure(step->repository);
+	return TRUE;
+}
+
 @h The whole shebang.
 
 =

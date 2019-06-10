@@ -399,16 +399,16 @@ with "Output.i6t".
 		LOG("Front end elapsed time: %dcs\n", ((int) (front_end - start)) / (CLOCKS_PER_SEC/100));
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
-			stage_set *SS = CodeGen::Stage::new_set();
+			codegen_pipeline *SS = CodeGen::Pipeline::new();
 			if ((import_mode) && (filename_of_SR_module))
-				CodeGen::Stage::parse_into(SS, I"import:*",
+				CodeGen::Pipeline::parse_into(SS, I"import:*",
 					Filenames::get_leafname(filename_of_SR_module));
 			else if ((export_mode) && (filename_of_SR_module))
-				CodeGen::Stage::parse_into(SS, I"export:*",
+				CodeGen::Pipeline::parse_into(SS, I"export:*",
 					Filenames::get_leafname(filename_of_SR_module));
-			CodeGen::Stage::parse_into(SS, inter_processing_chain,
+			CodeGen::Pipeline::parse_into(SS, inter_processing_chain,
 				Filenames::get_leafname(filename_of_compiled_i6_code));
-			CodeGen::Stage::follow(Filenames::get_path_to(filename_of_compiled_i6_code),
+			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
 				SS, Emit::repository(), NO_FS_AREAS, pathname_of_i6t_files,
 				pathname_of_i6t_files[INTERNAL_FS_AREA],
 				pathname_of_i6t_files[INTERNAL_FS_AREA]);
@@ -516,7 +516,8 @@ void CoreMain::set_inter_chain(wording W) {
 }
 void CoreMain::set_inter_chain_modes() {
 	import_mode = FALSE; export_mode = FALSE;
-	int port = CodeGen::Stage::port(inter_processing_chain);
+	codegen_pipeline *pipeline = CodeGen::Pipeline::parse(inter_processing_chain, I"nowhere");
+	int port = CodeGen::Pipeline::port_direction(pipeline);
 	if (port == 1) export_mode = TRUE;
 	if ((port == -1) && (disable_import == FALSE)) import_mode = TRUE;
 }

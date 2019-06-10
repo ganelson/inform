@@ -1171,7 +1171,6 @@ This requires context, that is, remembering what the previous token was.
 		(preceding_token->ist_type == DIVIDER_ISTT)) &&
 		(c_start == p) &&
 		(!((abbreviated) && (preceding_token->ist_type == INLINE_ISTT)))) {
-// LOG("Spec nn cs %d p %d\n", c_start, p);
 		int dc = p+1;
 		while (Characters::isdigit(Str::get_at(current_raw, dc))) dc++;
 		if (dc > p+1) {

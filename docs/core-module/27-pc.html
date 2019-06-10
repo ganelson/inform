@@ -459,7 +459,11 @@ as it turns out, this is presently just a wrapper for a name.
     <span class="plain">} </span><span class="reserved">submodule_identity</span><span class="plain">;</span>
 
     <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="functiontext">Packaging::register_submodule</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain">);</span>
+        <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">, </span><span class="reserved">submodule_identity</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">sid</span><span class="plain">-</span><span class="element">&gt;submodule_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sid</span><span class="plain">;</span>
+        <span class="identifier">sid</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain">);</span>
         <span class="identifier">sid</span><span class="plain">-</span><span class="element">&gt;submodule_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sid</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -467,7 +471,7 @@ as it turns out, this is presently just a wrapper for a name.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::register_submodule is used in 27/hr (<a href="27-hr.html#SP1_2">&#167;1.2</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_10">&#167;1.10</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_16">&#167;1.16</a>, <a href="27-hr.html#SP1_18">&#167;1.18</a>, <a href="27-hr.html#SP1_20">&#167;1.20</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_26">&#167;1.26</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_38">&#167;1.38</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>, <a href="27-hr.html#SP1_42">&#167;1.42</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>, <a href="27-hr.html#SP1_46">&#167;1.46</a>).</p>
+<p class="endnote">The function Packaging::register_submodule is used in 27/hr (<a href="27-hr.html#SP1_2">&#167;1.2</a>, <a href="27-hr.html#SP1_6">&#167;1.6</a>, <a href="27-hr.html#SP1_8">&#167;1.8</a>, <a href="27-hr.html#SP1_10">&#167;1.10</a>, <a href="27-hr.html#SP1_12">&#167;1.12</a>, <a href="27-hr.html#SP1_14">&#167;1.14</a>, <a href="27-hr.html#SP1_16">&#167;1.16</a>, <a href="27-hr.html#SP1_18">&#167;1.18</a>, <a href="27-hr.html#SP1_20">&#167;1.20</a>, <a href="27-hr.html#SP1_22">&#167;1.22</a>, <a href="27-hr.html#SP1_24">&#167;1.24</a>, <a href="27-hr.html#SP1_26">&#167;1.26</a>, <a href="27-hr.html#SP1_28">&#167;1.28</a>, <a href="27-hr.html#SP1_30">&#167;1.30</a>, <a href="27-hr.html#SP1_32">&#167;1.32</a>, <a href="27-hr.html#SP1_34">&#167;1.34</a>, <a href="27-hr.html#SP1_36">&#167;1.36</a>, <a href="27-hr.html#SP1_38">&#167;1.38</a>, <a href="27-hr.html#SP1_40">&#167;1.40</a>, <a href="27-hr.html#SP1_42">&#167;1.42</a>, <a href="27-hr.html#SP1_44">&#167;1.44</a>, <a href="27-hr.html#SP1_46">&#167;1.46</a>, <a href="27-hr.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The structure submodule_identity is private to this section.</p>
 
@@ -493,6 +497,10 @@ module to have this submodule. It should call one of the following four function
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::synoptic_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::new_submodule_inner</span><span class="plain">(</span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"synoptic"</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
     <span class="plain">}</span>
+
+    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Packaging::template_submodule</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">sid</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Packaging::new_submodule_inner</span><span class="plain">(</span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"template"</span><span class="plain">), </span><span class="identifier">sid</span><span class="plain">);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -504,6 +512,8 @@ module to have this submodule. It should call one of the following four function
 <p class="endnote">The function Packaging::generic_submodule is used in 27/hl (<a href="27-hl.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Packaging::synoptic_submodule is used in 27/hl (<a href="27-hl.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Packaging::template_submodule is used in 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>Those in turn all make use of this back-end function:
 </p>

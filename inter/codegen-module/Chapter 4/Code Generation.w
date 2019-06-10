@@ -2,6 +2,18 @@
 
 To generate I6 code from intermediate code.
 
+@h Pipeline stage.
+
+=
+void CodeGen::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"generate-i6", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
+}
+
+int CodeGen::run_pipeline_stage(stage_step *step) {
+	CodeGen::to_I6(step->repository, step->text_out_file);
+	return TRUE;
+}
+
 @h Hello.
 
 @d MAX_REPOS_AT_ONCE 8

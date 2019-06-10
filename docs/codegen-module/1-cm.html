@@ -25,7 +25,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">I6T_intervention_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">stage_set_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">codegen_pipeline_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">stage_step_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">uniqueness_count_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">text_literal_holder_MT</span>
@@ -33,6 +33,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_node_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">inter_schema_token_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">routine_body_request_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">pipeline_stage_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>With allocation functions:
 </p>
@@ -40,7 +41,7 @@
 
 <pre class="display">
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">I6T_intervention</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">stage_set</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">codegen_pipeline</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">stage_step</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">uniqueness_count</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">text_literal_holder</span><span class="plain">)</span>
@@ -48,6 +49,7 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_token</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">routine_body_request</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">pipeline_stage</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -169,7 +171,7 @@ foundation module does that automatically.)
 <p class="endnote">The function CodegenModule::end appears nowhere else.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><i>(This section begins Chapter 1: Setting Up.)</i></li><li><a href="1-sc.html">Continue with 'Stage Control'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 1: Setting Up.)</i></li><li><a href="1-stg.html">Continue with 'Stages'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

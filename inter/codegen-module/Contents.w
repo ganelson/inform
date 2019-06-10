@@ -7,7 +7,8 @@ Licence: Artistic License 2.0
 Chapter 1: Setting Up
 "Loading this module."
 	Codegen Module
-	Stage Control
+	Stages
+	Pipelines
 
 Chapter 2: Linking
 	Import
