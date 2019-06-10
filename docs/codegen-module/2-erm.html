@@ -21,7 +21,7 @@
         <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"eliminate-redundant-code"</span><span class="plain">, </span><span class="functiontext">CodeGen::Eliminate::run_pipeline_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Eliminate::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">stage_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Eliminate::run_pipeline_stage</span><span class="plain">(</span><span class="identifier">stage_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="functiontext">CodeGen::Eliminate::go</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>

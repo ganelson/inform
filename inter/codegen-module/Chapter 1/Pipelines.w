@@ -9,8 +9,8 @@ are all temporary storage for information needed when the step is run; they
 have no meaningful contents when the step is not running.
 
 =
-typedef struct stage_step {
-	struct pipeline_stage *step_code;
+typedef struct pipeline_step {
+	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
 	
 	struct filename *parsed_filename;
@@ -19,11 +19,11 @@ typedef struct stage_step {
 	struct text_stream *text_out_file;
 	struct inter_repository *repository;
 	MEMORY_MANAGEMENT
-} stage_step;
+} pipeline_step;
 
-stage_step *CodeGen::Pipeline::new_step(void) {
-	stage_step *step = CREATE(stage_step);
-	step->step_code = NULL;
+pipeline_step *CodeGen::Pipeline::new_step(void) {
+	pipeline_step *step = CREATE(pipeline_step);
+	step->step_stage = NULL;
 	step->step_argument = NULL;
 	CodeGen::Pipeline::clean_step(step);
 	return step;
@@ -32,7 +32,7 @@ stage_step *CodeGen::Pipeline::new_step(void) {
 @ This wipes clean the temporary storage for a step.
 
 =
-void CodeGen::Pipeline::clean_step(stage_step *step) {
+void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->parsed_filename = NULL;
 	step->text_out_file = NULL;
 	step->the_N = -1;
@@ -44,16 +44,16 @@ void CodeGen::Pipeline::clean_step(stage_step *step) {
 logging:
 
 =
-void CodeGen::Pipeline::write_step(OUTPUT_STREAM, stage_step *step) {
-	if (step->step_code->stage_arg == NO_STAGE_ARG)
-		WRITE("%S", step->step_code->stage_name);
+void CodeGen::Pipeline::write_step(OUTPUT_STREAM, pipeline_step *step) {
+	if (step->step_stage->stage_arg == NO_STAGE_ARG)
+		WRITE("%S", step->step_stage->stage_name);
 	else
-		WRITE("%S:%S", step->step_code->stage_name, step->step_argument);
+		WRITE("%S:%S", step->step_stage->stage_name, step->step_argument);
 }
 
-stage_step *CodeGen::Pipeline::read_step(text_stream *step, text_stream *leafname) {
+pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, text_stream *leafname) {
 	CodeGen::Stage::make_stages();
-	stage_step *ST = CodeGen::Pipeline::new_step();
+	pipeline_step *ST = CodeGen::Pipeline::new_step();
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, step, L"(%c+?) *: *(%c*)")) {
 		ST->step_argument = Str::new();
@@ -64,8 +64,8 @@ stage_step *CodeGen::Pipeline::read_step(text_stream *step, text_stream *leafnam
 	pipeline_stage *stage;
 	LOOP_OVER(stage, pipeline_stage)
 		if (Str::eq(step, stage->stage_name))
-			ST->step_code = stage;
-	if (ST->step_code == NULL) internal_error("no such step code");
+			ST->step_stage = stage;
+	if (ST->step_stage == NULL) internal_error("no such step code");
 	return ST;
 }
 
@@ -74,13 +74,13 @@ And then a pipeline is just a linked list of steps.
 
 =
 typedef struct codegen_pipeline {
-	struct linked_list *steps; /* of |stage_step| */
+	struct linked_list *steps; /* of |pipeline_step| */
 	MEMORY_MANAGEMENT
 } codegen_pipeline;
 
 codegen_pipeline *CodeGen::Pipeline::new(void) {
 	codegen_pipeline *S = CREATE(codegen_pipeline);
-	S->steps = NEW_LINKED_LIST(stage_step);
+	S->steps = NEW_LINKED_LIST(pipeline_step);
 	return S;
 }
 
@@ -97,21 +97,21 @@ void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instruction
 	Str::copy(T, instructions);
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, T, L" *(%c+?) *, *(%c*)")) {
-		stage_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], leafname);
-		ADD_TO_LINKED_LIST(ST, stage_step, S->steps);
+		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], leafname);
+		ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
 		Str::copy(T, mr.exp[1]);
 	}
 	if (Regexp::match(&mr, T, L" *(%c+?) *")) {
-		stage_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], leafname);
-		ADD_TO_LINKED_LIST(ST, stage_step, S->steps);
+		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], leafname);
+		ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
 	}
 }
 
 int CodeGen::Pipeline::port_direction(codegen_pipeline *pipeline) {
-	stage_step *SS;
-	LOOP_OVER_LINKED_LIST(SS, stage_step, pipeline->steps)
-		if (SS->step_code->port_direction != 0)
-			return SS->step_code->port_direction;
+	pipeline_step *SS;
+	LOOP_OVER_LINKED_LIST(SS, pipeline_step, pipeline->steps)
+		if (SS->step_stage->port_direction != 0)
+			return SS->step_stage->port_direction;
 	return 0;
 }
 
@@ -122,11 +122,11 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 	CodeGen::Pipeline::prepare_to_run(I);
 
 	int step_count = 0, step_total = 0;
-	stage_step *step;
-	LOOP_OVER_LINKED_LIST(step, stage_step, S->steps) step_total++;
+	pipeline_step *step;
+	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps) step_total++;
 
 	int active = TRUE;
-	LOOP_OVER_LINKED_LIST(step, stage_step, S->steps)
+	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
 			text_stream text_output_struct; /* For any text file we might write */
 			CodeGen::Pipeline::clean_step(step);
@@ -141,8 +141,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 			Log::new_stage(STAGE_NAME);
 			DISCARD_TEXT(STAGE_NAME);
 
-			if ((step->step_code->stage_arg == FILE_STAGE_ARG) ||
-				(step->step_code->stage_arg == TEXT_OUT_STAGE_ARG)) {
+			if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
+				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG)) {
 				int slashes = FALSE;
 				LOOP_THROUGH_TEXT(pos, step->step_argument)
 					if (Str::get(pos) == '/')
@@ -151,7 +151,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 				else step->parsed_filename =  Filenames::in_folder(FM, step->step_argument);
 			}
 
-			if (step->step_code->stage_arg == TEXT_OUT_STAGE_ARG) {
+			if (step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) {
 				step->text_out_file = &text_output_struct;
 				if (STREAM_OPEN_TO_FILE(step->text_out_file, step->parsed_filename, ISO_ENC) == FALSE) {
 					#ifdef PROBLEMS_MODULE
@@ -164,9 +164,9 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 				}
 			}
 
-			active = (*(step->step_code->execute))(step);
+			active = (*(step->step_stage->execute))(step);
 
-			if (step->step_code->stage_arg == TEXT_OUT_STAGE_ARG) {
+			if (step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) {
 				STREAM_CLOSE(step->text_out_file);
 			}
 		}

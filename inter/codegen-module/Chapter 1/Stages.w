@@ -38,7 +38,12 @@ int CodeGen::Stage::stage_disabled(stage_step *step) {
 	return TRUE;
 }
 
-@ =
+@h Creation.
+To add a new pipeline stage, put the code for it into a new section in
+Chapter 2, and then add a call to its |create_pipeline_stage| routine
+to the routine below.
+
+=
 int stages_made = FALSE;
 void CodeGen::Stage::make_stages(void) {
 	if (stages_made == FALSE) {
@@ -76,7 +81,7 @@ int CodeGen::Stage::run_stop_stage(stage_step *step) {
 }
 
 @ The remaining stages declared here are all just wrappers for features of the
-Inter module.
+Inter module. (It doesn't seem worth making 10-line sections for each of them.)
 
 =
 int CodeGen::Stage::run_show_dependencies_stage(stage_step *step) {

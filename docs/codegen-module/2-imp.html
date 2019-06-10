@@ -22,7 +22,7 @@
         <span class="identifier">im</span><span class="plain">-</span><span class="element">&gt;port_direction</span><span class="plain"> = -1;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Import::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">stage_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Import::run_pipeline_stage</span><span class="plain">(</span><span class="identifier">stage_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="functiontext">CodeGen::Import::import</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;parsed_filename</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>

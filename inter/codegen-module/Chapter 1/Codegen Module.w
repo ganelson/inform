@@ -11,7 +11,7 @@ We need to itemise the structures we'll want to allocate:
 
 @e I6T_intervention_MT
 @e codegen_pipeline_MT
-@e stage_step_MT
+@e pipeline_step_MT
 @e uniqueness_count_MT
 @e text_literal_holder_MT
 @e inter_schema_MT
@@ -25,7 +25,7 @@ We need to itemise the structures we'll want to allocate:
 =
 ALLOCATE_INDIVIDUALLY(I6T_intervention)
 ALLOCATE_INDIVIDUALLY(codegen_pipeline)
-ALLOCATE_INDIVIDUALLY(stage_step)
+ALLOCATE_INDIVIDUALLY(pipeline_step)
 ALLOCATE_INDIVIDUALLY(uniqueness_count)
 ALLOCATE_INDIVIDUALLY(text_literal_holder)
 ALLOCATE_INDIVIDUALLY(inter_schema)
