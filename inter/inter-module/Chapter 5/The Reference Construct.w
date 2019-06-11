@@ -16,6 +16,7 @@ void Inter::Reference::define(void) {
 		&Inter::Reference::verify,
 		&Inter::Reference::write,
 		NULL,
+		&Inter::Reference::list_of_children,
 		&Inter::Reference::accept_child,
 		&Inter::Reference::no_more_children,
 		&Inter::Reference::show_dependencies,
@@ -64,6 +65,12 @@ inter_error_message *Inter::Reference::write(OUTPUT_STREAM, inter_frame P) {
 }
 
 void Inter::Reference::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
+}
+
+inter_frame_list *Inter::Reference::list_of_children(inter_frame P) {
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	if (P.data[ID_IFLD] != REF_IST) return NULL;
+	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_RCE_IFLD]);
 }
 
 inter_error_message *Inter::Reference::accept_child(inter_frame P, inter_frame C) {

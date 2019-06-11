@@ -19,6 +19,7 @@ void Inter::Primitive::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"primitive", I"primitives");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
 }

@@ -16,6 +16,7 @@ void Inter::Label::define(void) {
 		&Inter::Label::verify,
 		&Inter::Label::write,
 		NULL,
+		&Inter::Label::list_of_children,
 		&Inter::Label::accept_child,
 		&Inter::Label::no_more_children,
 		NULL,
@@ -65,6 +66,9 @@ inter_error_message *Inter::Label::verify(inter_frame P) {
 		return Inter::Frame::error(&P, I"not a label", (lab_name)?(lab_name->symbol_name):NULL);
 	}
 	if (P.data[LEVEL_IFLD] < 1) return Inter::Frame::error(&P, I"label with bad level", NULL);
+	inter_symbols_table *locals = Inter::Packages::scope_of(P);
+	if (locals == NULL) return Inter::Frame::error(&P, I"no symbols table in function", NULL);
+	inter_error_message *E = Inter::Verify::local_defn(P, DEFN_LABEL_IFLD, locals); if (E) return E;
 	return NULL;
 }
 
@@ -76,6 +80,12 @@ inter_error_message *Inter::Label::write(OUTPUT_STREAM, inter_frame P) {
 		WRITE("%S", lab_name->symbol_name);
 	} else return Inter::Frame::error(&P, I"cannot write label", NULL);
 	return NULL;
+}
+
+inter_frame_list *Inter::Label::list_of_children(inter_frame P) {
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	if (P.data[ID_IFLD] != LABEL_IST) return NULL;
+	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_LABEL_IFLD]);
 }
 
 inter_error_message *Inter::Label::accept_child(inter_frame P, inter_frame C) {

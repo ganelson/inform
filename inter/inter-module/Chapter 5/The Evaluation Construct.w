@@ -16,6 +16,7 @@ void Inter::Evaluation::define(void) {
 		&Inter::Evaluation::verify,
 		&Inter::Evaluation::write,
 		NULL,
+		&Inter::Evaluation::list_of_children,
 		&Inter::Evaluation::accept_child,
 		&Inter::Evaluation::no_more_children,
 		&Inter::Evaluation::show_dependencies,
@@ -64,6 +65,12 @@ inter_error_message *Inter::Evaluation::write(OUTPUT_STREAM, inter_frame P) {
 }
 
 void Inter::Evaluation::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
+}
+
+inter_frame_list *Inter::Evaluation::list_of_children(inter_frame P) {
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	if (P.data[ID_IFLD] != EVALUATION_IST) return NULL;
+	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_EVAL_IFLD]);
 }
 
 inter_error_message *Inter::Evaluation::accept_child(inter_frame P, inter_frame C) {

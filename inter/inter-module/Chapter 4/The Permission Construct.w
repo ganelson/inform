@@ -18,6 +18,7 @@ void Inter::Permission::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Permission::show_dependencies,
 		I"permission", I"permissions");
 }

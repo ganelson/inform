@@ -18,6 +18,7 @@ void Inter::Kind::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Kind::show_dependencies,
 		I"kind", I"kinds");
 }

@@ -16,6 +16,7 @@ void Inter::Cast::define(void) {
 		&Inter::Cast::verify,
 		&Inter::Cast::write,
 		NULL,
+		&Inter::Cast::list_of_children,
 		&Inter::Cast::accept_child,
 		&Inter::Cast::no_more_children,
 		&Inter::Cast::show_dependencies,
@@ -86,6 +87,12 @@ void Inter::Cast::show_dependencies(inter_frame P, void (*callback)(struct inter
 		(*callback)(routine, from_kind, state);
 		(*callback)(routine, to_kind, state);
 	}
+}
+
+inter_frame_list *Inter::Cast::list_of_children(inter_frame P) {
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	if (P.data[ID_IFLD] != CAST_IST) return NULL;
+	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_CAST_IFLD]);
 }
 
 inter_error_message *Inter::Cast::accept_child(inter_frame P, inter_frame C) {

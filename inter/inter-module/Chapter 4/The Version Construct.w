@@ -19,6 +19,7 @@ void Inter::Version::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"version", I"versions");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
 }

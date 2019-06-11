@@ -16,6 +16,7 @@ void Inter::Code::define(void) {
 		&Inter::Code::verify,
 		&Inter::Code::write,
 		NULL,
+		&Inter::Code::list_of_children,
 		&Inter::Code::accept_child,
 		&Inter::Code::no_more_children,
 		&Inter::Code::show_dependencies,
@@ -63,6 +64,12 @@ inter_error_message *Inter::Code::write(OUTPUT_STREAM, inter_frame P) {
 }
 
 void Inter::Code::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
+}
+
+inter_frame_list *Inter::Code::list_of_children(inter_frame P) {
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	if (P.data[ID_IFLD] != CODE_IST) return NULL;
+	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_CODE_IFLD]);
 }
 
 inter_error_message *Inter::Code::accept_child(inter_frame P, inter_frame C) {

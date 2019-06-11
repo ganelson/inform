@@ -18,6 +18,7 @@ void Inter::Ref::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Ref::show_dependencies,
 		I"ref", I"refs");
 	IC->min_level = 1;

@@ -19,6 +19,7 @@ void Inter::Nop::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"nop", I"nops");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
 }

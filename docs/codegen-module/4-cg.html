@@ -47,7 +47,13 @@
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">text_literal_holder</span><span class="plain">;</span>
 
+    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">endif</span>
+    <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">endif</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::to_I6</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no inter to generate from"</span><span class="plain">);</span>
 
@@ -302,6 +308,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REF_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::val</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAB_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::lab</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PRAGMA_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::pragma</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOP_IST</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">:</span>
                 <span class="identifier">Inter::Defn::write_construct_text</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>

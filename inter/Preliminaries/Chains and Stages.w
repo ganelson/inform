@@ -136,6 +136,13 @@ up with two command verbs: |abstract|, with its source text meaning, and
 
 At the end of this stage, all parser verbs have distinct textual forms.
 
+@ |eliminate-redundant-labels| performs peephole optimisation on all of
+the functions in the repository to remove all labels which are declared
+but can never be jumped to.
+
+At the end of this stage, all labels inside functions are targets of some
+branch, either by |inv !jump| or in assembly language.
+
 @ |generate-inter:F| writes out the repository as a textual inter file |F|.
 (By default, Inform doesn't do this: the inter ordinarily stays in memory
 throughout.)

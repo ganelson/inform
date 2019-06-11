@@ -21,6 +21,7 @@ void Inter::Comment::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"comment", I"comments");
 	IC->min_level = 0;
 	IC->max_level = 100000000;

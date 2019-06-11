@@ -19,6 +19,7 @@ void Inter::Pragma::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"pragma", I"pragmas"); /* pragmae? pragmata? */
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
 }

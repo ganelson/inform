@@ -18,6 +18,7 @@ void Inter::Splat::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Splat::show_dependencies,
 		I"splat", I"splats");
 	IC->min_level = 0;

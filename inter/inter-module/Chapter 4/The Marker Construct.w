@@ -23,6 +23,7 @@ void Inter::Marker::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"marker", I"markers");
 }
 

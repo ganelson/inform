@@ -810,6 +810,13 @@ void Emit::routine(inter_name *rname, kind *rkind, inter_symbol *block_name) {
 
 inter_symbol *Emit::reserve_label(text_stream *lname) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
+	if (Str::get_first_char(lname) != '.') {
+		TEMPORARY_TEXT(dotted);
+		WRITE_TO(dotted, ".%S", lname);
+		inter_symbol *lab_name = Emit::reserve_label(dotted);
+		DISCARD_TEXT(dotted);
+		return lab_name;
+	}
 	inter_symbol *lab_name = Emit::local_exists(lname);
 	if (lab_name) return lab_name;
 	lab_name = Emit::new_local_symbol(current_inter_routine, lname);

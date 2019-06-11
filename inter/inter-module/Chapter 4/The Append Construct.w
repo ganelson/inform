@@ -18,6 +18,7 @@ void Inter::Append::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Append::show_dependencies,
 		I"append", I"appends");
 }

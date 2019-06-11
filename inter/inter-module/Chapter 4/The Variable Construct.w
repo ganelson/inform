@@ -18,6 +18,7 @@ void Inter::Variable::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Variable::show_dependencies,
 		I"variable", I"variables");
 }

@@ -19,6 +19,7 @@ void Inter::Symbol::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"symbol", I"symbols");
 	IC->min_level = 0;
 	IC->max_level = 1;

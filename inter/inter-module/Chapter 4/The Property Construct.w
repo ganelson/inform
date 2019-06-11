@@ -18,6 +18,7 @@ void Inter::Property::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Property::show_dependencies,
 		I"property", I"properties");
 }

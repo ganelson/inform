@@ -33,7 +33,7 @@ void Unit::test_lexer(text_stream *arg) {
 =
 <text> ::=
 	invade ... |				==>	TRUE; PRINT("Invading %+W\n", GET_RW(<text>, 1));
-	proclaim <integer> |		==>	TRUE; PRINT("It is now %d.\n", R[1]);
+	proclaim <any-integer> |	==>	TRUE; PRINT("It is now %d.\n", R[1]);
 	announce <quoted-text> |	==>	TRUE; PRINT("Attention: %w.\n", Lexer::word_text(R[1]));
 	<declaration> |				==> TRUE; PRINT("Dominion %d now independent\n", R[1]);
 	...							==>	FALSE; PRINT("Unknown command\n");

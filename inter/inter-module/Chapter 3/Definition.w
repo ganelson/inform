@@ -40,6 +40,7 @@ typedef struct inter_construct {
 	struct inter_error_message *(*construct_verifier)(struct inter_frame);
 	struct inter_error_message *(*construct_writer)(struct text_stream *, struct inter_frame);
 	struct inter_error_message *(*construct_pass2)(struct inter_frame);
+	struct inter_frame_list *(*list_of_children)(inter_frame);
 	struct inter_error_message *(*accept_child)(inter_frame, inter_frame);
 	struct inter_error_message *(*no_more_children)(inter_frame);
 	void (*dependencies)(struct inter_frame, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *);
@@ -60,9 +61,12 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	inter_error_message *(*V)(inter_frame),
 	inter_error_message *(*W)(text_stream *, inter_frame),
 	int (*REP)(inter_frame),
+	inter_frame_list *(*LP)(inter_frame),
 	inter_error_message *(*BP)(inter_frame, inter_frame),
 	inter_error_message *(*EP)(inter_frame),
-	void (*DEP)(inter_frame, void (*callback)(inter_symbol *, inter_symbol *, void *), void *), text_stream *sing, text_stream *plur) {
+	void (*DEP)(inter_frame, void (*callback)(inter_symbol *, inter_symbol *, void *), void *),
+	text_stream *sing,
+	text_stream *plur) {
 	inter_construct *IC = CREATE(inter_construct);
 	IC->construct_ID = ID;
 	IC->construct_syntax = syntax;
@@ -73,6 +77,7 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	IC->construct_writer = W;
 	IC->report_level = REP;
 	IC->accept_child = BP;
+	IC->list_of_children = LP;
 	IC->no_more_children = EP;
 	IC->dependencies = DEP;
 	IC->min_level = 0;
@@ -99,7 +104,7 @@ inter_symbol *code_packagetype = NULL;
 void Inter::Defn::create_language(void) {
 	for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) IC_lookup[i] = NULL;
 
-	Inter::Defn::create_construct(INVALID_IST, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, I"nothing", I"nothings");
+	Inter::Defn::create_construct(INVALID_IST, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, I"nothing", I"nothings");
 	Inter::Canon::declare();
 
 	Inter::Nop::define();
@@ -485,6 +490,14 @@ inter_error_message *Inter::Defn::pass2_on_frame_inner(inter_frame P) {
 	if (E) return E;
 	if (IC->construct_pass2 == NULL) return NULL;
 	return (*(IC->construct_pass2))(P);
+}
+
+inter_frame_list *Inter::Defn::list_of_children(inter_frame P) {
+	inter_construct *IC = NULL;
+	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	if (E) return NULL;
+	if (IC->list_of_children == NULL) return NULL;
+	return (*(IC->list_of_children))(P);
 }
 
 inter_error_message *Inter::Defn::accept_child(inter_frame P, inter_frame C, int issue) {

@@ -19,6 +19,7 @@ void Inter::PackageType::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"packagetype", I"packagetypes");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
 }

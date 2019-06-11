@@ -25,7 +25,13 @@ typedef struct text_literal_holder {
 	MEMORY_MANAGEMENT
 } text_literal_holder;
 
+#ifdef CORE_MODULE
+int the_quartet_found = TRUE;
+#endif
+#ifndef CORE_MODULE
 int the_quartet_found = FALSE;
+#endif
+
 void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	if (I == NULL) internal_error("no inter to generate from");
 
@@ -260,6 +266,7 @@ void CodeGen::frame(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		case REF_IST: CodeGen::val(OUT, I, P); break;
 		case LAB_IST: CodeGen::lab(OUT, I, P); break;
 		case PRAGMA_IST: CodeGen::pragma(OUT, I, P); break;
+		case NOP_IST: break;
 		default:
 			Inter::Defn::write_construct_text(DL, P);
 			internal_error("unimplemented\n");

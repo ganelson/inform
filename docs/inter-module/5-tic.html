@@ -28,6 +28,7 @@
             <span class="plain">&amp;</span><span class="functiontext">Inter::Inv::verify</span><span class="plain">,</span>
             <span class="plain">&amp;</span><span class="functiontext">Inter::Inv::write</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
+            <span class="plain">&amp;</span><span class="functiontext">Inter::Inv::list_of_children</span><span class="plain">,</span>
             <span class="plain">&amp;</span><span class="functiontext">Inter::Inv::accept_child</span><span class="plain">,</span>
             <span class="plain">&amp;</span><span class="functiontext">Inter::Inv::no_more_children</span><span class="plain">,</span>
             <span class="plain">&amp;</span><span class="functiontext">Inter::Inv::show_dependencies</span><span class="plain">,</span>
@@ -155,6 +156,12 @@
             <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">invokee</span><span class="plain"> = </span><span class="functiontext">Inter::Inv::invokee</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
             <span class="plain">(*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">invokee</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
         <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="functiontext">Inter::Inv::list_of_children</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] != </span><span class="constant">INV_IST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Inv::children_of_frame</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="functiontext">Inter::Inv::children_of_frame</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
@@ -297,6 +304,8 @@
 <p class="endnote">The function Inter::Inv::write is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Inv::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function Inter::Inv::list_of_children is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Inv::children_of_frame appears nowhere else.</p>
 

@@ -16,6 +16,7 @@ void Inter::Inv::define(void) {
 		&Inter::Inv::verify,
 		&Inter::Inv::write,
 		NULL,
+		&Inter::Inv::list_of_children,
 		&Inter::Inv::accept_child,
 		&Inter::Inv::no_more_children,
 		&Inter::Inv::show_dependencies,
@@ -137,6 +138,12 @@ void Inter::Inv::show_dependencies(inter_frame P, void (*callback)(struct inter_
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		(*callback)(routine, invokee, state);
 	}
+}
+
+inter_frame_list *Inter::Inv::list_of_children(inter_frame P) {
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	if (P.data[ID_IFLD] != INV_IST) return NULL;
+	return Inter::Inv::children_of_frame(P);
 }
 
 inter_frame_list *Inter::Inv::children_of_frame(inter_frame P) {

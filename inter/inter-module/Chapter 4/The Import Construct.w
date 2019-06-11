@@ -24,6 +24,7 @@ void Inter::Import::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"import", I"imports");
 }
 

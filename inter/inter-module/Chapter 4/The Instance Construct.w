@@ -18,6 +18,7 @@ void Inter::Instance::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Instance::show_dependencies,
 		I"instance", I"instances");
 }

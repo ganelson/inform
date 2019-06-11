@@ -169,6 +169,11 @@ void Inter::Symbols::strike_definition(inter_symbol *S) {
 	}
 }
 
+void Inter::Symbols::remove_from_table(inter_symbol *S) {
+	int index = (int) S->symbol_ID - (int) SYMBOL_BASE_VAL;
+	S->owning_table->symbol_array[index] = NULL;
+}
+
 void Inter::Symbols::undefine(inter_symbol *S) {
 	if (S == NULL) internal_error("tried to undefine null symbol");
 	S->definition = Inter::Frame::around(NULL, -1);
@@ -306,6 +311,13 @@ int Inter::Symbols::is_predeclared_local(inter_symbol *S) {
 	return TRUE;
 }
 
+int Inter::Symbols::is_undefined_private(inter_symbol *S) {
+	if (S == NULL) return FALSE;
+	if (S->symbol_scope != PRIVATE_ISYMS) return FALSE;
+	if (S->definition_status != UNDEFINED_ISYMD) return FALSE;
+	return TRUE;
+}
+
 int Inter::Symbols::is_extern(inter_symbol *S) {
 	if (S == NULL) return FALSE;
 	if (S->symbol_scope == EXTERNAL_ISYMS) return TRUE;
@@ -326,6 +338,10 @@ int Inter::Symbols::is_label(inter_symbol *S) {
 }
 
 void Inter::Symbols::label(inter_symbol *S) {
+	if (Str::get_first_char(S->symbol_name) != '.') {
+		LOG("Name is %S\n", S->symbol_name);
+		internal_error("not a label name");
+	}
 	S->symbol_scope = PRIVATE_ISYMS;
 	S->symbol_type = LABEL_ISYMT;
 	S->definition_status = UNDEFINED_ISYMD;

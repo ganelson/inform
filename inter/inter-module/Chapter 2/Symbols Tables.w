@@ -44,25 +44,35 @@ void Inter::SymbolsTables::log(OUTPUT_STREAM, void *vst) {
 	}
 }
 
+@
+
+@d LOOP_OVER_SYMBOLS_TABLE(S, T)
+	for (int i=0; i<T->size; i++)
+		for (inter_symbol *S = T->symbol_array[i]; S; S = NULL)
+
+=
 void Inter::SymbolsTables::write_declarations(OUTPUT_STREAM, inter_symbols_table *ST, int L) {
 	if (ST == NULL) return;
 	for (int i=0; i<ST->size; i++) {
 		inter_symbol *S = ST->symbol_array[i];
-		if (S) { Inter::Symbols::write_declaration(OUT, S, L); WRITE("\n"); }
+		if (S) {
+			Inter::Symbols::write_declaration(OUT, S, L); WRITE("\n");
+		}
 	}
 }
 
 inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_stream *S, int create, inter_t ID, int equating) {
 	if (T == NULL) internal_error("no IST");
 	if (S == NULL) return NULL;
-
 	dict_entry *de = Dictionaries::find(T->name_lookup, S);
 	if (de) {
 		inter_symbol *A = (inter_symbol *) Dictionaries::read_value(T->name_lookup, S);
-		if (equating) {
-			while (A->equated_to) A = A->equated_to;
+		if (A) {
+			if (equating) {
+				while (A->equated_to) A = A->equated_to;
+			}
+			return A;
 		}
-		return A;
 	}
 	if (create == FALSE) return NULL;
 

@@ -18,6 +18,7 @@ void Inter::Response::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Response::show_dependencies,
 		I"response", I"responses");
 }

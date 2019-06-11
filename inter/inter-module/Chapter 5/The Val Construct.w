@@ -18,6 +18,7 @@ void Inter::Val::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Val::show_dependencies,
 		I"val", I"vals");
 	IC->min_level = 1;

@@ -3195,7 +3195,7 @@ out anything without the given attribute |attr| set.
     i = multiple_object-->0;
     for (j=1 : j<=i : j++) {
         o = multiple_object-->j;
-        if (o hasnt attr) { MultiSub(o); jump Mfiltl; }
+        if (o hasnt attr) { MultiSub(o); jump MFiltl; }
     }
 ];
 

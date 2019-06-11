@@ -30,6 +30,7 @@
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="plain">&amp;</span><span class="functiontext">Inter::Lab::show_dependencies</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="string">"lab"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"labs"</span><span class="plain">);</span>
         <span class="identifier">IC</span><span class="plain">-</span><span class="element">&gt;min_level</span><span class="plain"> = 1;</span>
@@ -95,6 +96,15 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Lab::label_symbol</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">routine</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Package::is</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad lab"</span><span class="plain">);</span>
+        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">lab</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::local_symbol_from_id</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">LABEL_LAB_IFLD</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lab</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad lab"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lab</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Lab::show_dependencies</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
     <span class="plain">}</span>
 </pre>
@@ -108,6 +118,8 @@
 <p class="endnote">The function Inter::Lab::verify is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Lab::write is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function Inter::Lab::label_symbol appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Lab::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
 

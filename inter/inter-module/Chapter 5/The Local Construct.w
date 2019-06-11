@@ -18,6 +18,7 @@ void Inter::Local::define(void) {
 		&Inter::Local::report_level,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Local::show_dependencies,
 		I"local", I"locals");
 	IC->min_level = 0;

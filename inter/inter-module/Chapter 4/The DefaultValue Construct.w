@@ -18,6 +18,7 @@ void Inter::DefaultValue::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::DefaultValue::show_dependencies,
 		I"defaultvalue", I"defaultvalues");
 }

@@ -24,6 +24,7 @@ void Inter::Export::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"export", I"exports");
 }
 

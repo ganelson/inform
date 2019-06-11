@@ -19,6 +19,7 @@ void Inter::Metadata::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"metadata", I"metadatas");
 }
 

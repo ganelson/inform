@@ -19,6 +19,7 @@ void Inter::Link::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		I"link", I"links");
 }
 

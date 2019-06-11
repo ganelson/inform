@@ -18,6 +18,7 @@ void Inter::Constant::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Constant::show_dependencies,
 		I"constant", I"constants");
 }

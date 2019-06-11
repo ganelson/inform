@@ -18,6 +18,7 @@ void Inter::Lab::define(void) {
 		NULL,
 		NULL,
 		NULL,
+		NULL,
 		&Inter::Lab::show_dependencies,
 		I"lab", I"labs");
 	IC->min_level = 1;
@@ -74,6 +75,15 @@ inter_error_message *Inter::Lab::write(OUTPUT_STREAM, inter_frame P) {
 		WRITE("lab %S", label->symbol_name);
 	} else return Inter::Frame::error(&P, I"cannot write lab", NULL);
 	return NULL;
+}
+
+inter_symbol *Inter::Lab::label_symbol(inter_frame P) {
+	inter_package *pack = Inter::Packages::container(P);
+	inter_symbol *routine = pack->package_name;
+	if (Inter::Package::is(routine) == FALSE) internal_error("bad lab");
+	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
+	if (lab == NULL) internal_error("bad lab");
+	return lab;
 }
 
 void Inter::Lab::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
