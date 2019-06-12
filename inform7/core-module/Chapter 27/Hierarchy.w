@@ -112,8 +112,6 @@ void Hierarchy::establish(void) {
 
 @h Actions.
 
-@e MISTAKEACTION_HL
-
 @e ACTIONS_HAP
 @e ACTION_NAME_HMD
 @e ACTION_BASE_NAME_HL
@@ -132,13 +130,13 @@ void Hierarchy::establish(void) {
 @e AD_RECORDS_HL
 @e CCOUNT_ACTION_NAME_HL
 @e DB_ACTION_DETAILS_HL
+@e SACTIONS_HAP
+@e MISTAKEACTIONPACKAGE_HL
+@e MISTAKEACTION_HL
 @e MISTAKEACTIONSUB_HL
 
 @<Establish actions@> =
 	submodule_identity *actions = Packaging::register_submodule(I"actions");
-
-	location_requirement generic_actions = HierarchyLocations::generic_submodule(actions);
-	HierarchyLocations::con(MISTAKEACTION_HL, I"##MistakeAction", Translation::same(), generic_actions);
 
 	location_requirement local_actions = HierarchyLocations::local_submodule(actions);
 	HierarchyLocations::ap(ACTIONS_HAP, local_actions, I"action", I"_action");
@@ -161,7 +159,10 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(AD_RECORDS_HL, I"AD_RECORDS", Translation::same(), synoptic_actions);
 	HierarchyLocations::con(CCOUNT_ACTION_NAME_HL, I"CCOUNT_ACTION_NAME", Translation::same(), synoptic_actions);
 	HierarchyLocations::func(DB_ACTION_DETAILS_HL, I"DB_Action_Details_fn", Translation::to(I"DB_Action_Details"), synoptic_actions);
-	HierarchyLocations::func(MISTAKEACTIONSUB_HL, I"MistakeActionSub_fn", Translation::to(I"MistakeActionSub"), synoptic_actions);
+	HierarchyLocations::ap(SACTIONS_HAP, synoptic_actions, I"action", I"_action");
+	HierarchyLocations::package(MISTAKEACTIONPACKAGE_HL, I"mistake_action", I"_action", synoptic_actions);
+	HierarchyLocations::con(MISTAKEACTION_HL, I"##MistakeAction", Translation::same(), in_action);
+	HierarchyLocations::func(MISTAKEACTIONSUB_HL, I"MistakeActionSub_fn", Translation::to(I"MistakeActionSub"), in_action);
 
 @h Activities.
 

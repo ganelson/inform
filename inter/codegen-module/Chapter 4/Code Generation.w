@@ -90,6 +90,13 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 					case CONSTANT_IST: {
 						inter_symbol *con_name =
 							Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+				if ((outer) && (CodeGen::Eliminate::gone(outer->package_name)) && (Inter::Constant::code_block(con_name) == NULL)) {
+					LOG("Yeah, so reject $3\n", outer->package_name);
+					continue;
+				}
+
+
+
 						if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 						if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
 							WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
@@ -126,6 +133,10 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						@<Property knowledge@>;
 						break;
 					case VARIABLE_IST:
+				if ((outer) && (CodeGen::Eliminate::gone(outer->package_name))) {
+					LOG("Yeah, so reject $3\n", outer->package_name);
+					continue;
+				}
 						if (variables_written == FALSE) {
 							variables_written = TRUE;
 							CodeGen::Var::knowledge(TO, I);

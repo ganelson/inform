@@ -524,6 +524,17 @@ void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state
 			ptype, (inter_t) assimilated_actions->cp_indent + 2, NULL, &housing_package));
 		Inter::Defn::set_current_package(assimilated_actions, housing_package);
 		inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, Inter::Packages::scope(housing_package));
+LOG("Well, it's $3\n", asymb);
+		TEMPORARY_TEXT(unsharped);
+		WRITE_TO(unsharped, "%SSub", value);
+		Str::delete_first_character(unsharped);
+		Str::delete_first_character(unsharped);
+inter_symbol *txsymb = CodeGen::Link::find_name(I, unsharped, TRUE);
+LOG("Found $3\n", txsymb);
+		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(housing_package), unsharped);
+LOG("Made $3\n", xsymb);
+		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
+		DISCARD_TEXT(unsharped);
 		CodeGen::Link::guard(Inter::Constant::new_numerical(assimilated_actions,
 			Inter::SymbolsTables::id_from_symbol(I, assimilated_actions->current_package, asymb),
 			Inter::SymbolsTables::id_from_symbol(I, assimilated_actions->current_package, action_kind_symbol),

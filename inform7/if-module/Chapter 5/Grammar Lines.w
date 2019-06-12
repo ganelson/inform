@@ -381,7 +381,8 @@ int PL::Parsing::Lines::gl_compile_result_of_mistake(gpr_kit *gprk, grammar_line
 }
 
 void PL::Parsing::Lines::MistakeActionSub_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(MISTAKEACTIONSUB_HL));
+	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
+	packaging_state save = Routines::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
 
 	Emit::inv_primitive(switch_interp);
 	Emit::down();
@@ -433,9 +434,10 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 
 	Routines::end(save);
 	
-	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_HL);
+	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
 	Emit::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
+	Hierarchy::make_available(MistakeAction_iname);
 }
 
 @h Single word optimisation.
