@@ -29,7 +29,8 @@ Chapter 3: Inform 6 to Inter
 	The Veneer
 	Inter Schemas
 
-Chapter 4: Inter to Inform 6
+Chapter 4: Inter to Higher-Level Languages
 	Code Generation
 	Instances and Properties
 	Variables
+	Generating Inform 6

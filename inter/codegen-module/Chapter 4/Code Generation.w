@@ -1,17 +1,12 @@
 [CodeGen::] Code Generation.
 
-To generate I6 code from intermediate code.
+To generate final code from intermediate code.
 
 @h Pipeline stage.
 
 =
 void CodeGen::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"generate", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
-}
-
-code_generation_target *Inform_6_cgt = NULL;
-void CodeGen::create_code_targets(void) {
-	Inform_6_cgt = CodeGen::Targets::new(I"inform6");
 }
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
@@ -23,14 +18,88 @@ int CodeGen::run_pipeline_stage(pipeline_step *step) {
 		Inter::Textual::write(step->text_out_file, step->repository, NULL, 1);
 	else if (step->target_argument == summary_cgt)
 		Inter::Summary::write(step->text_out_file, step->repository);
-	else CodeGen::generate(step);
-
+	else {
+		code_generation *gen = CodeGen::new_generation(step->repository, step->target_argument);
+		CodeGen::Targets::begin_generation(gen);
+		CodeGen::generate(gen);
+		CodeGen::write(step->text_out_file, gen);
+	}
 	return TRUE;
 }
 
-@h Hello.
+@h Generations.
+A "generation" is a single act of translating inter code into final code.
+That final code will be a text file written in some other programming
+language, though probably a low-level one.
+
+The "target" of a generation is the final language: for example, Inform 6.
+
+During a generation, textual output is assembled as a set of "segments".
+Different targets may need different segments. This is all to facilitate
+rearranging content as necessary to get it to compile in the target language:
+for example, one might need to have all constants defined first, then all
+arrays, and one could do this by creating two segments, one to accumulate
+the constants in, one to accumulate the arrays.
+
+@d MAX_CG_SEGMENTS 100
 
 =
+typedef struct code_generation {
+	struct inter_repository *from;
+	struct code_generation_target *target;
+	struct generated_segment *segments[MAX_CG_SEGMENTS];
+	struct generated_segment *current_segment;
+	MEMORY_MANAGEMENT
+} code_generation;
+
+typedef struct generated_segment {
+	struct text_stream *generated_code;
+	MEMORY_MANAGEMENT
+} generated_segment;
+
+code_generation *CodeGen::new_generation(inter_repository *I, code_generation_target *target) {
+	code_generation *gen = CREATE(code_generation);
+	gen->from = I;
+	gen->target = target;
+	gen->current_segment = NULL;
+	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;
+	return gen;
+}
+
+generated_segment *CodeGen::new_segment(void) {
+	generated_segment *seg = CREATE(generated_segment);
+	seg->generated_code = Str::new();
+	return seg;
+}
+
+@
+
+=
+void CodeGen::select(code_generation *gen, int i) {
+	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
+	gen->current_segment = gen->segments[i];
+}
+
+void CodeGen::deselect(code_generation *gen) {
+	gen->current_segment = NULL;
+}
+
+text_stream *CodeGen::seg(code_generation *gen, int i) {
+	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
+	return gen->segments[i]->generated_code;
+}
+
+text_stream *CodeGen::current(code_generation *gen) {
+	if (gen->current_segment == NULL) return NULL;
+	return gen->current_segment->generated_code;
+}
+
+void CodeGen::write(OUTPUT_STREAM, code_generation *gen) {
+	for (int i=0; i<MAX_CG_SEGMENTS; i++)
+		if (gen->segments[i])
+			WRITE("%S", CodeGen::seg(gen, i));
+}
+
 typedef struct text_literal_holder {
 	struct text_stream *definition_code;
 	struct text_stream *literal_content;
@@ -44,28 +113,18 @@ int the_quartet_found = TRUE;
 int the_quartet_found = FALSE;
 #endif
 
-void CodeGen::generate(pipeline_step *step) {
-inter_repository *I = step->repository;
-text_stream *OUT = step->text_out_file;
+void CodeGen::generate(code_generation *gen) {
+	inter_repository *I = gen->from;
 
 	if (I == NULL) internal_error("no inter to generate from");
 
 	CodeGen::Var::set_translates(I);
 
-	LOG("Generating to %S\n", step->target_argument->target_name);
+	LOG("Generating to %S\n", gen->target->target_name);
 
 	Inter::Symbols::clear_transient_flags();
 
-	text_stream *pragmatic_matter = Str::new();
-	text_stream *early_matter = Str::new();
-	text_stream *summations_at_eof = Str::new();
-	text_stream *attributes_at_eof = Str::new();
-	text_stream *arrays_at_eof = Str::new();
-	text_stream *main_matter = Str::new();
-	text_stream *code_at_eof = Str::new();
-	text_stream *verbs_at_eof = Str::new();
-	text_stream *routines_at_eof = Str::new();
-	text_stream *text_literals_code = Str::new();
+
 	int properties_written = FALSE;
 	int variables_written = FALSE;
 
@@ -73,7 +132,7 @@ text_stream *OUT = step->text_out_file;
 		LOOP_THROUGH_FRAMES(P, I) {
 			inter_package *outer = Inter::Packages::container(P);
 			if ((outer == NULL) || (outer->codelike_package == FALSE)) {
-				text_stream *TO = main_matter;
+				CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
 				switch (P.data[ID_IFLD]) {
 					case CONSTANT_IST: {
 						inter_symbol *con_name =
@@ -87,7 +146,7 @@ text_stream *OUT = step->text_out_file;
 							WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
 							internal_error("constant defined in main");
 						}
-						TO = early_matter;
+						text_stream *TO = CodeGen::current(gen);
 						if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
 							text_literal_holder *tlh = CREATE(text_literal_holder);
 							tlh->definition_code = Str::new();
@@ -95,22 +154,14 @@ text_stream *OUT = step->text_out_file;
 							tlh->literal_content = Inter::get_text(P.repo_segment->owning_repo, ID);
 							TO = tlh->definition_code;
 						}
-						if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) TO = code_at_eof;
-						if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) TO = arrays_at_eof;
-						if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) TO = arrays_at_eof;
-						if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) TO = arrays_at_eof;
-						if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) TO = arrays_at_eof;
-						if (P.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) TO = arrays_at_eof;
-						if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) TO = verbs_at_eof;
-						if (Inter::Constant::is_routine(con_name)) {
-							TO = routines_at_eof;
-						}
 						CodeGen::frame(TO, I, P); break;
 					}
 					case PRAGMA_IST:
-						CodeGen::frame(pragmatic_matter, I, P); break;
+						CodeGen::frame(CodeGen::current(gen), I, P);
+						break;
 					case INSTANCE_IST:
-						CodeGen::frame(TO, I, P); break;
+						CodeGen::frame(CodeGen::current(gen), I, P);
+						break;
 					case SPLAT_IST:
 						internal_error("top-level splat remaining");
 						break;
@@ -124,10 +175,11 @@ text_stream *OUT = step->text_out_file;
 						}
 						if (variables_written == FALSE) {
 							variables_written = TRUE;
-							CodeGen::Var::knowledge(TO, I);
+							CodeGen::Var::knowledge(CodeGen::current(gen), I);
 						}
 						break;
 				}
+				CodeGen::deselect(gen);
 			}
 		}
 
@@ -135,7 +187,7 @@ text_stream *OUT = step->text_out_file;
 	@<Define constants for the responses@>;
 	if (NR > 0) @<Define an array of the responses@>;
 
-	if (properties_written == FALSE) { text_stream *TO = main_matter; @<Property knowledge@>; }
+	if (properties_written == FALSE) @<Property knowledge@>;
 
 	int no_tlh = NUMBER_CREATED(text_literal_holder);
 	text_literal_holder **sorted = (text_literal_holder **)
@@ -144,50 +196,50 @@ text_stream *OUT = step->text_out_file;
 	text_literal_holder *tlh;
 	LOOP_OVER(tlh, text_literal_holder) sorted[i++] = tlh;
 
-	qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *),
-		CodeGen::compare_tlh);
+	qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *), CodeGen::compare_tlh);
 	for (int i=0; i<no_tlh; i++) {
 		text_literal_holder *tlh = sorted[i];
-		WRITE_TO(text_literals_code, "! TLH %d <%S>\n", tlh->allocation_id, tlh->literal_content);
-		WRITE_TO(text_literals_code, "%S", tlh->definition_code);
+		CodeGen::select(gen, CodeGen::Targets::tl_segment(gen));
+		text_stream *TO = CodeGen::current(gen);
+		WRITE_TO(TO, "%S", tlh->definition_code);
+		CodeGen::deselect(gen);
 	}
 	
-	WRITE("%S", pragmatic_matter);
-	WRITE("%S", attributes_at_eof);
-	WRITE("%S", early_matter);
-	WRITE("%S", text_literals_code);
-	WRITE("%S", summations_at_eof);
-	WRITE("%S", arrays_at_eof);
-	WRITE("%S", main_matter);
-	WRITE("%S", routines_at_eof);
-	WRITE("%S", code_at_eof);
-	WRITE("%S", verbs_at_eof);
 }
 
 @<Define constants for the responses@> =
 	inter_frame P;
 	LOOP_THROUGH_FRAMES(P, I) {
 		if (P.data[ID_IFLD] == RESPONSE_IST) {
+			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+			text_stream *TO = CodeGen::current(gen);
 			inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-			WRITE_TO(early_matter, "Constant %S = %d;\n", CodeGen::name(resp_name), ++NR);
+			WRITE_TO(TO, "Constant %S = %d;\n", CodeGen::name(resp_name), ++NR);
+			CodeGen::deselect(gen);
 		}
 	}
 
 @<Define an array of the responses@> =
-	WRITE_TO(early_matter, "Constant NO_RESPONSES = %d;\n", NR);
-	WRITE_TO(main_matter, "Array ResponseTexts --> ");
+	CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+	WRITE_TO(CodeGen::current(gen), "Constant NO_RESPONSES = %d;\n", NR);
+	CodeGen::deselect(gen);
+	CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+	WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
 		inter_frame P;
 		LOOP_THROUGH_FRAMES(P, I) {
 			if (P.data[ID_IFLD] == RESPONSE_IST) {
 				NR++;
-				CodeGen::literal(main_matter, I, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
-				WRITE_TO(main_matter, " ");
+				CodeGen::literal(CodeGen::current(gen), I, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
+				WRITE_TO(CodeGen::current(gen), " ");
 			}
 		}
-	WRITE_TO(main_matter, "0 0;\n");
+	WRITE_TO(CodeGen::current(gen), "0 0;\n");
+	CodeGen::deselect(gen);
 
 @<Property knowledge@> =
 	if (properties_written == FALSE) {
+		CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+		text_stream *TO = CodeGen::current(gen);
 		if (the_quartet_found) {
 			WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
 			WRITE_TO(TO, "Object thedark \"(darkness object)\";\n");
@@ -195,7 +247,8 @@ text_stream *OUT = step->text_out_file;
 			WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
 		}
 		properties_written = TRUE;
-		CodeGen::IP::knowledge(TO, I, code_at_eof, attributes_at_eof);
+		CodeGen::IP::knowledge(TO, I, gen);
+		CodeGen::deselect(gen);				
 	}
 
 @ =

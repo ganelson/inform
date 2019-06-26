@@ -20,19 +20,21 @@
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">code_generation_target</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">target_name</span><span class="plain">;</span>
+        <span class="identifier">METHOD_CALLS</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">code_generation_target</span><span class="plain">;</span>
 
     <span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="functiontext">CodeGen::Targets::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain">);</span>
         <span class="identifier">cgt</span><span class="plain">-</span><span class="element">&gt;target_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">ENABLE_METHOD_CALLS</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cgt</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::new is used in <a href="#SP2">&#167;2</a>, 4/cg (<a href="4-cg.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::Targets::new is used in <a href="#SP2">&#167;2</a>, 4/gi6 (<a href="4-gi6.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The structure code_generation_target is accessed in 1/ppl, 4/cg and here.</p>
 
@@ -53,7 +55,7 @@
             <span class="identifier">binary_inter_cgt</span><span class="plain"> = </span><span class="functiontext">CodeGen::Targets::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"binary"</span><span class="plain">);</span>
             <span class="identifier">textual_inter_cgt</span><span class="plain"> = </span><span class="functiontext">CodeGen::Targets::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"text"</span><span class="plain">);</span>
             <span class="identifier">summary_cgt</span><span class="plain"> = </span><span class="functiontext">CodeGen::Targets::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"summary"</span><span class="plain">);</span>
-            <span class="functiontext">CodeGen::create_code_targets</span><span class="plain">();</span>
+            <span class="functiontext">CodeGen::I6::create_target</span><span class="plain">();</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -61,6 +63,105 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Targets::make_targets is used in 1/ppl (<a href="1-ppl.html#SP3">&#167;3</a>).</p>
+
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">BEGIN_GENERATION_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">BEGIN_GENERATION_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">)</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::begin_generation</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">BEGIN_GENERATION_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::begin_generation is used in 4/cg (<a href="4-cg.html#SP1">&#167;1</a>).</p>
+
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">GENERAL_SEGMENT_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">DEFAULT_SEGMENT_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">CONSTANT_SEGMENT_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PROPERTY_SEGMENT_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TL_SEGMENT_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">GENERAL_SEGMENT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">)</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">DEFAULT_SEGMENT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">)</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">CONSTANT_SEGMENT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">)</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">PROPERTY_SEGMENT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">)</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">TL_SEGMENT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">)</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::general_segment</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">GENERAL_SEGMENT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::default_segment</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">DEFAULT_SEGMENT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::constant_segment</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">CONSTANT_SEGMENT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::property_segment</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">PROPERTY_SEGMENT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::tl_segment</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">TL_SEGMENT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::general_segment is used in 4/cg (<a href="4-cg.html#SP3">&#167;3</a>, <a href="4-cg.html#SP3_1">&#167;3.1</a>).</p>
+
+<p class="endnote">The function CodeGen::Targets::default_segment is used in 4/cg (<a href="4-cg.html#SP3_2">&#167;3.2</a>, <a href="4-cg.html#SP3_3">&#167;3.3</a>).</p>
+
+<p class="endnote">The function CodeGen::Targets::constant_segment is used in 4/cg (<a href="4-cg.html#SP3_2">&#167;3.2</a>), 4/iap (<a href="4-iap.html#SP3_5">&#167;3.5</a>, <a href="4-iap.html#SP3_6">&#167;3.6</a>, <a href="4-iap.html#SP4">&#167;4</a>).</p>
+
+<p class="endnote">The function CodeGen::Targets::property_segment appears nowhere else.</p>
+
+<p class="endnote">The function CodeGen::Targets::tl_segment is used in 4/cg (<a href="4-cg.html#SP3">&#167;3</a>).</p>
+
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">DECLARE_PROPERTY_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">DECLARE_PROPERTY_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">used</span><span class="plain">)</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::declare_property</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">used</span><span class="plain">) {</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">DECLARE_PROPERTY_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">used</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::declare_property is used in 4/iap (<a href="4-iap.html#SP4_1">&#167;4.1</a>, <a href="4-iap.html#SP4_12">&#167;4.12</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-stg.html">Back to 'Stages'</a></li><li><a href="1-ppl.html">Continue with 'Pipelines'</a></li></ul><hr class="tocbar">

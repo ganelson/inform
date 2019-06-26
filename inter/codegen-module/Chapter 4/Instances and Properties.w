@@ -78,7 +78,7 @@ limited number can be stored this way. Here we choose which.
 
 =
 int FBNA_found = FALSE, properties_found = FALSE, attribute_slots_used = 0;
-void CodeGen::IP::property(OUTPUT_STREAM, inter_repository *I, inter_symbol *prop_name, text_stream *attributes) {
+void CodeGen::IP::property(inter_repository *I, inter_symbol *prop_name, code_generation *gen) {
 	if (prop_name == NULL) internal_error("bad property");
 	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) {
 		int translated = FALSE;
@@ -176,14 +176,16 @@ we assume that's the name of an attribute already declared (for example
 in the I6 template, or some extension), and we therefore do nothing.
 
 @<Declare as an I6 attribute@> =
+	CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
 		if (A == NULL) A = CodeGen::name(prop_name);
-		WRITE_TO(attributes, "Attribute %S;\n", A);
+		WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", A);
 	} else {
 		if (translated == FALSE)
-			WRITE_TO(attributes, "Attribute %S;\n", CodeGen::name(prop_name));
+			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", CodeGen::name(prop_name));
 	}
+	CodeGen::deselect(gen);
 
 @ The weak point in our scheme for making some either/or properties into
 Attributes is that run-time code is going to need a fast way to determine
@@ -206,17 +208,21 @@ compiles an I6 constant for this value.
 @<Worry about the FBNA@> =
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
-		WRITE_TO(attributes, "Constant FBNA_PROP_NUMBER = %S;\n", CodeGen::name(prop_name));
+		CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = %S;\n", CodeGen::name(prop_name));
+		CodeGen::deselect(gen);
 	}
 
 @ It's unlikely, but just possible, that no FBNAs ever exist, so after the
 above has been tried on all properties:
 
 =
-void CodeGen::IP::knowledge(OUTPUT_STREAM, inter_repository *I, text_stream *code_at_eof, text_stream *attributes) {
-	if ((FBNA_found == FALSE) && (properties_found))
-		WRITE_TO(attributes, "Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER; ! No actual FBNA\n");
-
+void CodeGen::IP::knowledge(OUTPUT_STREAM, inter_repository *I, code_generation *gen) {
+	if ((FBNA_found == FALSE) && (properties_found)) {
+		CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER; ! No actual FBNA\n");
+		CodeGen::deselect(gen);
+	}
 	inter_symbol **all_props_in_source_order = NULL;
 	inter_symbol **props_in_source_order = NULL;
 	int no_properties = 0, total_no_properties = 0;
@@ -265,13 +271,13 @@ void CodeGen::IP::knowledge(OUTPUT_STREAM, inter_repository *I, text_stream *cod
 				if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 					all_props_in_source_order[c++] = prop_name;
 				else
-					CodeGen::IP::property(OUT, I, prop_name, attributes);
+					CodeGen::IP::property(I, prop_name, gen);
 			}
 		qsort(all_props_in_source_order, (size_t) total_no_properties, sizeof(inter_symbol *),
 			CodeGen::compare_kind_symbols);
 		for (int p=0; p<total_no_properties; p++) {
 			inter_symbol *prop_name = all_props_in_source_order[p];
-			CodeGen::IP::property(OUT, I, prop_name, attributes);
+			CodeGen::IP::property(I, prop_name, gen);
 		}
 	}
 
@@ -291,8 +297,8 @@ void CodeGen::IP::knowledge(OUTPUT_STREAM, inter_repository *I, text_stream *cod
 				inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 				if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
 					(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
-					// props_in_source_order[c++] = prop_name;
-					WRITE_TO(attributes, "Property %S;\n", prop_name->symbol_name);
+					LOG("True on $3\n", prop_name);
+					CodeGen::Targets::declare_property(gen, prop_name, TRUE);
 				}
 			}
 	}
@@ -766,20 +772,15 @@ linearly with the size of the source text, even though $N$ does.
 		}
 	}
 
-@ Because in I6 source code properties aren't declared before use, it follows
-that if not used by any object then they won't ever be created. This is a
-problem since it means that I6 code can't refer to them, because it would need
-to mention an I6 symbol which doesn't exist. To get around this, we create the
-property names which don't exist as constant symbols with the harmless value
-0; we do this right at the end of the compiled I6 code. (This is a standard I6
-trick called "stubbing", these being "stub definitions".)
+@ 
 
 @<Stub the properties@> =
 	for (int p=0; p<no_properties; p++) {
 		inter_symbol *prop_name = props_in_source_order[p];
-		text_stream *name = CodeGen::name(prop_name);
-		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-			WRITE_TO(code_at_eof, "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
+		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1) {
+			LOG("False on $3\n", prop_name);
+			CodeGen::Targets::declare_property(gen, prop_name, FALSE);
+		}
 	}
 
 @h Instances.
