@@ -366,7 +366,7 @@ It should be the only thing on its line.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rawl</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?)///(%c*?).txt/// *"</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rawl</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?)///(%c*?.txt)/// *"</span><span class="plain">)) {</span>
             <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rawl</span><span class="plain">, </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[0]);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) {</span>
                 <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">rawl</span><span class="plain">);</span>

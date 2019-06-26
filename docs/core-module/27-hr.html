@@ -154,7 +154,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">MISTAKEACTION_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTIONS_HAP</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTION_NAME_HMD</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ACTION_BASE_NAME_HL</span>
@@ -172,6 +171,9 @@
     <span class="definitionkeyword">enum</span> <span class="constant">AD_RECORDS_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CCOUNT_ACTION_NAME_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DB_ACTION_DETAILS_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SACTIONS_HAP</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MISTAKEACTIONPACKAGE_HL</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MISTAKEACTION_HL</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MISTAKEACTIONSUB_HL</span>
 </pre>
 <p class="inwebparagraph"><a id="SP1_6"></a><b>&#167;1.6.  </b><code class="display">
@@ -181,9 +183,6 @@
 
 <pre class="displaydefn">
         <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">actions</span><span class="plain"> = </span><span class="functiontext">Packaging::register_submodule</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"actions"</span><span class="plain">);</span>
-
-        <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">generic_actions</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::generic_submodule</span><span class="plain">(</span><span class="identifier">actions</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">MISTAKEACTION_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"##MistakeAction"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">generic_actions</span><span class="plain">);</span>
 
         <span class="reserved">location_requirement</span><span class="plain"> </span><span class="identifier">local_actions</span><span class="plain"> = </span><span class="functiontext">HierarchyLocations::local_submodule</span><span class="plain">(</span><span class="identifier">actions</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">ACTIONS_HAP</span><span class="plain">, </span><span class="identifier">local_actions</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">);</span>
@@ -206,7 +205,10 @@
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">AD_RECORDS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"AD_RECORDS"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">synoptic_actions</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">CCOUNT_ACTION_NAME_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CCOUNT_ACTION_NAME"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">synoptic_actions</span><span class="plain">);</span>
         <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">DB_ACTION_DETAILS_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"DB_Action_Details_fn"</span><span class="plain">, </span><span class="functiontext">Translation::to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DB_Action_Details"</span><span class="plain">), </span><span class="identifier">synoptic_actions</span><span class="plain">);</span>
-        <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">MISTAKEACTIONSUB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"MistakeActionSub_fn"</span><span class="plain">, </span><span class="functiontext">Translation::to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MistakeActionSub"</span><span class="plain">), </span><span class="identifier">synoptic_actions</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::ap</span><span class="plain">(</span><span class="constant">SACTIONS_HAP</span><span class="plain">, </span><span class="identifier">synoptic_actions</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::package</span><span class="plain">(</span><span class="constant">MISTAKEACTIONPACKAGE_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mistake_action"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">, </span><span class="identifier">synoptic_actions</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::con</span><span class="plain">(</span><span class="constant">MISTAKEACTION_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"##MistakeAction"</span><span class="plain">, </span><span class="functiontext">Translation::same</span><span class="plain">(), </span><span class="identifier">in_action</span><span class="plain">);</span>
+        <span class="functiontext">HierarchyLocations::func</span><span class="plain">(</span><span class="constant">MISTAKEACTIONSUB_HL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"MistakeActionSub_fn"</span><span class="plain">, </span><span class="functiontext">Translation::to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"MistakeActionSub"</span><span class="plain">), </span><span class="identifier">in_action</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

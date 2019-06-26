@@ -34,7 +34,6 @@ text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname
 		HTML::begin_body(OUT, I"paper papertint");
 	}
 	DISCARD_TEXT(head);
-
 	Nav::render_navigation_index_top(OUT, leafname, title);
 	return OUT;
 }

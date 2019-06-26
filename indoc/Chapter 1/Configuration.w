@@ -48,6 +48,7 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 @e REWRITE_CLSW
 @e FROM_CLSW
 @e TO_CLSW
+@e INSERTION_CLSW
 @e INSTRUCTIONS_CLSW
 
 @<Read the command line@> =
@@ -66,6 +67,8 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 		L"use documentation in directory X (instead of 'Documentation' in cwd)");
 	CommandLine::declare_switch(TO_CLSW, L"to", 2,
 		L"redirect output to folder X (which must already exist)");
+	CommandLine::declare_switch(INSERTION_CLSW, L"insertion", 2,
+		L"insert HTML in file X at the top of each page head");
 	CommandLine::declare_switch(INSTRUCTIONS_CLSW, L"instructions", 2,
 		L"read further instructions from file X");
 
@@ -82,6 +85,7 @@ void Configuration::switch(int id, int val, text_stream *arg, void *v_cl_state) 
 		case FROM_CLSW: settings->book_folder = Pathnames::from_text(arg); break;
 		case TO_CLSW: settings->destination = Pathnames::from_text(arg);
 			settings->destination_modifiable = FALSE; break;
+		case INSERTION_CLSW: settings->insertion_filename = Filenames::from_text(arg); break;
 		case INSTRUCTIONS_CLSW: Configuration::add_instructions_file(Filenames::from_text(arg)); break;
 		default: internal_error("unimplemented switch");
 	}

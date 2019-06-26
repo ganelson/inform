@@ -484,7 +484,8 @@ the mistake.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Lines::MistakeActionSub_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MISTAKEACTIONSUB_HL</span><span class="plain">));</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">MAP</span><span class="plain"> = </span><span class="identifier">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="identifier">SACTIONS_HAP</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">MISTAKEACTIONSUB_HL</span><span class="plain">, </span><span class="identifier">MAP</span><span class="plain">));</span>
 
         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -536,9 +537,10 @@ the mistake.
 
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="identifier">MistakeAction_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MISTAKEACTION_HL</span><span class="plain">);</span>
+        <span class="identifier">MistakeAction_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">MISTAKEACTION_HL</span><span class="plain">, </span><span class="identifier">MAP</span><span class="plain">);</span>
         <span class="identifier">Emit::named_pseudo_numeric_constant</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">, 10000);</span>
         <span class="identifier">Emit::annotate_i</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">MistakeAction_iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

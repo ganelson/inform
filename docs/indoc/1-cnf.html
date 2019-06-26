@@ -77,6 +77,7 @@ files, and we store a list of those here:
     <span class="definitionkeyword">enum</span> <span class="constant">REWRITE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FROM_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TO_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INSERTION_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INSTRUCTIONS_CLSW</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
@@ -100,6 +101,8 @@ files, and we store a list of those here:
             <span class="identifier">L</span><span class="string">"use documentation in directory X (instead of 'Documentation' in cwd)"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TO_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"to"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"redirect output to folder X (which must already exist)"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">INSERTION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"insertion"</span><span class="plain">, 2,</span>
+            <span class="identifier">L</span><span class="string">"insert HTML in file X at the top of each page head"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">INSTRUCTIONS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"instructions"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"read further instructions from file X"</span><span class="plain">);</span>
 
@@ -124,6 +127,7 @@ files, and we store a list of those here:
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FROM_CLSW</span><span class="plain">: </span><span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;book_folder</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TO_CLSW</span><span class="plain">: </span><span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;destination</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
                 <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;destination_modifiable</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INSERTION_CLSW</span><span class="plain">: </span><span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;insertion_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">INSTRUCTIONS_CLSW</span><span class="plain">: </span><span class="functiontext">Configuration::add_instructions_file</span><span class="plain">(</span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented switch"</span><span class="plain">);</span>
         <span class="plain">}</span>

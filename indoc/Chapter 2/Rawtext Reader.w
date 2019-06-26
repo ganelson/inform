@@ -230,7 +230,7 @@ rectangles.)
 It should be the only thing on its line.
 
 @<Deal with an insert-change-log notation@> =
- 	if (Regexp::match(&mr2, rawl, L"(%c*?)///(%c*?).txt/// *")) {
+ 	if (Regexp::match(&mr2, rawl, L"(%c*?)///(%c*?.txt)/// *")) {
  		Str::copy(rawl, mr2.exp[0]);
  		if (indoc_settings->format == HTML_FORMAT) {
  			Str::clear(rawl);

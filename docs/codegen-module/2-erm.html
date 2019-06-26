@@ -46,7 +46,12 @@
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">-&gt;</span><span class="identifier">symbol_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">symb</span><span class="plain">) &amp;&amp; (</span><span class="identifier">symb</span><span class="plain">-&gt;</span><span class="identifier">equated_to</span><span class="plain">)) {</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-&gt;</span><span class="identifier">equated_to</span><span class="plain">;</span>
-                <span class="functiontext">CodeGen::Eliminate::require</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">owning_table</span><span class="plain">-&gt;</span><span class="identifier">owning_package</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
+                <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">needed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">cb</span><span class="plain"> = </span><span class="identifier">Inter::Constant::code_block</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"To $3 cb $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">cb</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cb</span><span class="plain">) </span><span class="identifier">needed</span><span class="plain"> = </span><span class="identifier">Inter::Package::which</span><span class="plain">(</span><span class="identifier">cb</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">needed</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">owning_table</span><span class="plain">-&gt;</span><span class="identifier">owning_package</span><span class="plain">;</span>
+                <span class="functiontext">CodeGen::Eliminate::require</span><span class="plain">(</span><span class="identifier">needed</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ptype</span><span class="plain"> = </span><span class="identifier">Inter::Packages::type</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">);</span>
@@ -56,6 +61,11 @@
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ptype</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">ptype</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_action"</span><span class="plain">))) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">child_package</span><span class="plain">; </span><span class="identifier">P</span><span class="plain">; </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">next_package</span><span class="plain">) {</span>
+                <span class="functiontext">CodeGen::Eliminate::require</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ptype</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">ptype</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_to_phrase"</span><span class="plain">))) {</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">child_package</span><span class="plain">; </span><span class="identifier">P</span><span class="plain">; </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">next_package</span><span class="plain">) {</span>
                 <span class="functiontext">CodeGen::Eliminate::require</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -87,6 +97,8 @@
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ptype</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">ptype</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"_command"</span><span class="plain">))) {</span>
                         <span class="functiontext">CodeGen::Eliminate::require</span><span class="plain">(</span><span class="identifier">which</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                     <span class="plain">}</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"SL_Score_Moves_B"</span><span class="plain">))</span>
+                        <span class="functiontext">CodeGen::Eliminate::require</span><span class="plain">(</span><span class="identifier">which</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -94,10 +106,18 @@
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">PACKAGE_IST</span><span class="plain">) {</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">package_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_PACKAGE_IFLD</span><span class="plain">);</span>
                 <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">which</span><span class="plain"> = </span><span class="identifier">Inter::Package::which</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">which</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">which</span><span class="plain">-&gt;</span><span class="identifier">package_flags</span><span class="plain"> &amp; </span><span class="identifier">USED_PACKAGE_FLAG</span><span class="plain">) == 0) {</span>
-                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Not used: $6\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">which</span><span class="plain">);</span>
-                    <span class="plain">}</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">which</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">which</span><span class="plain">-&gt;</span><span class="identifier">package_flags</span><span class="plain"> &amp; </span><span class="identifier">USED_PACKAGE_FLAG</span><span class="plain">) == 0)) {</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Not used: $6\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">which</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">VARIABLE_IST</span><span class="plain">) {</span>
+                <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">outer</span><span class="plain"> = </span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">))) {</span>
+                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_VAR_IFLD</span><span class="plain">);</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Striking variable $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">);</span>
+                    <span class="identifier">Inter::Symbols::strike_definition</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">);</span>
+                    <span class="identifier">Inter::Symbols::remove_from_table</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">);</span>
+                    <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -109,22 +129,6 @@
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Eliminate::keep</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_name_in_main_or_basics</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">USED_MARK_BIT</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Eliminate::note</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = (</span><span class="identifier">inter_repository</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">Tdash</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_name_in_main_or_basics</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Tdash</span><span class="plain">) {</span>
-            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">Tdash</span><span class="plain">, </span><span class="identifier">USED_MARK_BIT</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">USED_MARK_BIT</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">notes_made</span><span class="plain">++;</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -133,11 +137,7 @@
 
 <p class="endnote">The function CodeGen::Eliminate::go is used in <a href="#SP1">&#167;1</a>.</p>
 
-<p class="endnote">The function CodeGen::Eliminate::gone is used in 4/cg (<a href="4-cg.html#SP4">&#167;4</a>).</p>
-
-<p class="endnote">The function CodeGen::Eliminate::keep appears nowhere else.</p>
-
-<p class="endnote">The function CodeGen::Eliminate::note appears nowhere else.</p>
+<p class="endnote">The function CodeGen::Eliminate::gone is used in 4/cg (<a href="4-cg.html#SP2">&#167;2</a>, <a href="4-cg.html#SP4">&#167;4</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-rv.html">Back to 'Reconcile Verbs'</a></li><li><a href="2-erl.html">Continue with 'Eliminate Redundant Labels'</a></li></ul><hr class="tocbar">

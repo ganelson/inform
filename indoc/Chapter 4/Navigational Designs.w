@@ -83,6 +83,9 @@ VMETHOD_TYPE(RENDER_CHAPTER_TITLE_MTID, navigation_design *ND, text_stream *OUT,
 VMETHOD_TYPE(RENDER_SECTION_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, chapter *C, section *S)
 
 void Nav::render_navigation_top(OUTPUT_STREAM, volume *V, section *S) {
+	if (indoc_settings->insertion_filename)
+		HTML::incorporate_HTML(OUT, indoc_settings->insertion_filename);
+
 	if (V->sections[0] == S) VMETHOD_CALL(indoc_settings->navigation, RENDER_VOLUME_TITLE_MTID, OUT, V);
 
 	chapter *C = S->begins_which_chapter;
@@ -116,6 +119,9 @@ And this is a variant for index pages, such as the index of examples.
 VMETHOD_TYPE(RENDER_INDEX_TOP_MTID, navigation_design *ND, text_stream *OUT, text_stream *filename, text_stream *title)
 
 void Nav::render_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
+	if (indoc_settings->insertion_filename)
+		HTML::incorporate_HTML(OUT, indoc_settings->insertion_filename);
+
 	VMETHOD_CALL(indoc_settings->navigation, RENDER_INDEX_TOP_MTID, OUT, filename, title);
 }
 

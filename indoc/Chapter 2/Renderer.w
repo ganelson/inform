@@ -84,7 +84,6 @@ routine which doesn't surround the text with navigational gadgets and headings.
 =
 text_stream *Renderer::render_block(OUTPUT_STREAM, volume *V, section *S) {
 	OUT = Renderer::formatted_file_must_be(OUT, V, S);
-
  	Nav::render_navigation_top(OUT, V, S);
  	Renderer::render_text_of_block(OUT, V, S);
  	Nav::render_navigation_middle(OUT, V, S);

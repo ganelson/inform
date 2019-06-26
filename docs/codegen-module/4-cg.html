@@ -112,6 +112,13 @@
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_IST</span><span class="plain">: {</span>
                             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> =</span>
                                 <span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Inter::Constant::code_block</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Yeah, so reject $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+                        <span class="reserved">continue</span><span class="plain">;</span>
+                    <span class="plain">}</span>
+
+
+
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">OBJECT_IANN</span><span class="plain">) == 1) </span><span class="reserved">break</span><span class="plain">;</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"Bad constant: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
@@ -148,6 +155,10 @@
                             &lt;<span class="cwebmacro">Property knowledge</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARIABLE_IST</span><span class="plain">:</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">))) {</span>
+                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Yeah, so reject $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+                        <span class="reserved">continue</span><span class="plain">;</span>
+                    <span class="plain">}</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">variables_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                                 <span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                                 <span class="functiontext">CodeGen::Var::knowledge</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>

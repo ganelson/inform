@@ -27,4 +27,5 @@ retrospective/*/*.o
 retrospective/makefile
 
 inform7/*-test/Tests/Test Cases/_Results_Actual/
+rsync.log
 

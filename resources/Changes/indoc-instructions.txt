@@ -46,9 +46,13 @@ website {
 	destination = Website/content/learn/man/
 	images_copy = no
 	examples_mode = openable
-#	examples_mode = external
-#	top_and_tail = Website/models/www-inform7-com-model.html
-#	top_and_tail_sections = Website/models/www-inform7-com-model.html
+}
+
+newwebsite {
+	# HTML for the I7 website
+	images_copy = no
+	images_path = /assets/images/doc_images/
+	examples_mode = openable
 }
 
 html_for_chm {
