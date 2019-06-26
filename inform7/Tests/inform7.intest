@@ -79,15 +79,8 @@
 	else
 		set: $SRINTERB = inform7/Internal/I6T/sr-Z.interb
 	endif
-!	if: $CASE Imp_%c*
-!		set: $INTERCHAIN = import:$SRINTERB,link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-inter:haha.txt,generate-i6:*
-!		set: $IMPORT = -import $SRINTERB
-!	else
-!		set: $INTERCHAIN = import:$SRINTERB,link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-inter:haha.txt,generate-i6:*
-!		set: $IMPORT = -import $SRINTERB
-!	endif
 
-	set: $INTERCHAIN = link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-i6:*
+	set: $INTERCHAIN = link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate:inform6->*
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
@@ -95,7 +88,6 @@
 	if: $TYPE problem
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
-!		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -import $SRINTERB -inter $INTERCHAIN >$A 2>&1
 		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -inter $INTERCHAIN >$A 2>&1
 		or: 'failed to produce its namesake Problem message' $A
 		show: $A
@@ -109,7 +101,6 @@
 	! And then the general case.
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-!	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -import $SRINTERB -inter $INTERCHAIN >$I7CONSOLE 2>&1
 	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -inter $INTERCHAIN >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE

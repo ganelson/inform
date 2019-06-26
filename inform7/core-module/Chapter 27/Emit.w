@@ -164,20 +164,6 @@ void Emit::append(inter_name *iname, text_stream *text) {
 	Packaging::exit(save);
 }
 
-void Emit::import(inter_name *iname, wording W) {
-	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_t ID = Inter::create_text(Emit::repository());
-	WRITE_TO(Inter::get_text(Emit::repository(), ID), "%W", W);
-	Emit::guard(Inter::Import::new(Packaging::at(), symbol, ID, Emit::baseline(Packaging::at()), NULL));
-}
-
-void Emit::export(inter_name *iname, wording W) {
-	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_t ID = Inter::create_text(Emit::repository());
-	WRITE_TO(Inter::get_text(Emit::repository(), ID), "%W", W);
-	Emit::guard(Inter::Export::new(Packaging::at(), symbol, ID, Emit::baseline(Packaging::at()), NULL));
-}
-
 inter_symbols_table *Emit::main_scope(void) {
 	return Inter::Packages::scope(Inter::Packages::main(Emit::repository()));
 }

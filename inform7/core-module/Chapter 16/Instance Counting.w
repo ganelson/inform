@@ -367,7 +367,7 @@ constants, and use the Link constants to progress; we stop at |nothing|.
 int PL::Counting::optimise_loop(i6_schema *sch, kind *K) {
 	if (Plugins::Manage::plugged_in(counting_plugin) == FALSE) return FALSE;
 	inference_subject *subj = Kinds::Knowledge::as_subject(K);
-	if ((export_mode == FALSE) && (PF_S(counting, subj)->has_instances == FALSE)) /* (to avoid writing misleading code) */
+	if (PF_S(counting, subj)->has_instances == FALSE) /* (to avoid writing misleading code) */
 		Calculus::Schemas::modify(sch,
 			"for (*1=nothing: false: )");
 	else {

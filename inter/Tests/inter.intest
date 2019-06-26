@@ -1,7 +1,6 @@
 -cases [Valid] 'inter/Tests/Valid'
 -cases [Invalid] 'inter/Tests/Invalid'
 -cases [Generations] 'inter/Tests/Generations'
--cases [Graph] 'inter/Tests/Graph'
 -cases [RCC] 'inter/Tests/RCC'
 -cases [PLM] 'inter/Tests/PLM'
 -cases [Assimilate] 'inter/Tests/Assimilate'
@@ -61,7 +60,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, assimilate, generate-i6:$A' >$T 2>&1
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, assimilate, generate: inform6 -> $A' >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A
@@ -82,28 +81,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, generate-inter:$A' >$T 2>&1
-	or: 'failed to produce output' $T
-
-	show: $A
-
-	match text: $A $I
-	or: 'produced incorrect output'
-
--end
-
--recipe [Graph]
-
-	set: $O = $PATH/$CASE.intert
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	set: $T = $PATH/_Console/$CASE.txt
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Console
-
-	step: inter/Tangled/inter $O -inter 'show-dependencies:$A' >$T 2>&1
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, generate: text ->$A' >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A
@@ -124,7 +102,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, generate-inter:$A' >$T 2>&1
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, generate: text ->$A' >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A
@@ -145,7 +123,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, assimilate, generate-inter:$A' >$T 2>&1
+	step: inter/Tangled/inter $O -inter 'parse-linked-matter, assimilate, generate: text ->$A' >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A

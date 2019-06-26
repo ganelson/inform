@@ -493,20 +493,6 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 int no_assimilated_actions = 0;
 void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state *IRS, text_stream *value) {
 	if (CodeGen::Link::find_name(I, value, TRUE) == NULL) {
-		#ifdef CORE_MODULE_XXXXXXX
-		if (no_assimilated_actions == 0) {
-			assimilated_actions_b = Packaging::bubble_at(IRS);
-			assimilated_actions = &assimilated_actions_b;
-			inter_package *apack = NULL;
-			inter_package *tpack = Inter::Packages::template(I);
-			Inter::Defn::set_current_package(&assimilated_actions_b, tpack);
-			inter_symbol *apack_name = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(tpack), I"actions");
-			CodeGen::Link::guard(Inter::Package::new_package(&assimilated_actions_b, apack_name,
-				plain_packagetype, (inter_t) assimilated_actions->latest_indent, NULL, &apack));
-			Inter::Defn::set_current_package(&assimilated_actions_b, apack);
-		}
-		#endif
-
 		assimilated_actions = CodeGen::Assimilate::diversion(ACTION_ASSIM_BM);
 
 		assimilated_actions->cp_indent = 1;
@@ -524,15 +510,12 @@ void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state
 			ptype, (inter_t) assimilated_actions->cp_indent + 2, NULL, &housing_package));
 		Inter::Defn::set_current_package(assimilated_actions, housing_package);
 		inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, Inter::Packages::scope(housing_package));
-LOG("Well, it's $3\n", asymb);
 		TEMPORARY_TEXT(unsharped);
 		WRITE_TO(unsharped, "%SSub", value);
 		Str::delete_first_character(unsharped);
 		Str::delete_first_character(unsharped);
-inter_symbol *txsymb = CodeGen::Link::find_name(I, unsharped, TRUE);
-LOG("Found $3\n", txsymb);
+		inter_symbol *txsymb = CodeGen::Link::find_name(I, unsharped, TRUE);
 		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(housing_package), unsharped);
-LOG("Made $3\n", xsymb);
 		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
 		DISCARD_TEXT(unsharped);
 		CodeGen::Link::guard(Inter::Constant::new_numerical(assimilated_actions,

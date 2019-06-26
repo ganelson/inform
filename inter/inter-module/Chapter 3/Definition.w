@@ -113,8 +113,6 @@ void Inter::Defn::create_language(void) {
 	Inter::Symbol::define();
 	Inter::Version::define();
 	Inter::Pragma::define();
-	Inter::Import::define();
-	Inter::Export::define();
 	Inter::Link::define();
 	Inter::Append::define();
 	Inter::Kind::define();

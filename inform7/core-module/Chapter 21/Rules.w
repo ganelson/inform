@@ -677,14 +677,9 @@ void Rules::compile_definition(rule *R, int *i, int max_i) {
 	if (R->defn_compiled == FALSE) {
 		R->defn_compiled = TRUE;
 		rule_being_compiled = R;
-		if (R->defn_as_phrase) {
-			if ((import_mode) && (R->do_not_import == FALSE) && (Rules::portable(R))) {
-				Emit::import(Rules::iname(R), R->name);
-				Phrases::import(R->defn_as_phrase);
-			}
+		if (R->defn_as_phrase)
 			Phrases::compile(R->defn_as_phrase, i, max_i,
 				R->listed_stv_owners, NULL, R->first_applicability_condition);
-		}
 		if ((R->rule_extern_iname) && (R->first_applicability_condition))
 			@<Compile a shell routine to apply conditions to an I6 rule@>;
 		rule_being_compiled = NULL;
@@ -975,15 +970,6 @@ int Rules::portable(rule *R) {
 		(Modules::find(R->defn_as_phrase->declaration_node) == Modules::SR()))
 		return TRUE;
 	return FALSE;
-}
-
-void Rules::export_named_rules(void) {
-	if (export_mode) {
-		rule *R;
-		LOOP_OVER(R, rule)
-			if (Rules::portable(R))
-				Emit::export(Rules::iname(R), R->name);
-	}
 }
 
 package_request *Rules::package(rule *R) {

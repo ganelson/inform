@@ -58,7 +58,6 @@ int indexing_stage = FALSE; /* Everything is done except indexing */
 @ =
 int report_clock_time = FALSE;
 time_t right_now;
-int export_mode = FALSE, import_mode = FALSE;
 text_stream *inter_processing_chain = NULL;
 pathname *path_to_inform7 = NULL;
 
@@ -98,8 +97,7 @@ int CoreMain::main(int argc, char *argv[]) {
 @<Banner and startup@> =
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	story_filename_extension = I"ulx";
-	inter_processing_chain = I"link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-i6:*";
-	CoreMain::set_inter_chain_modes();
+	inter_processing_chain = I"link: Output.i6t, parse-linked-matter, resolve-conditional-compilation, assimilate, make-identifiers-unique, resolve-external-symbols, reconcile-verbs, generate: inform6 -> *";
 
 	PRINT("%B build %B has started.\n", FALSE, TRUE);
 	STREAM_FLUSH(STDOUT);
@@ -125,8 +123,6 @@ list is not exhaustive.
 @e SIGILS_CLSW
 @e TRANSIENT_CLSW
 @e INTER_CLSW
-@e IMPORT_CLSW
-@e EXPORT_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::declare_heading(
@@ -159,10 +155,6 @@ list is not exhaustive.
 		L"return 0 unless exactly this Problem message is generated (for testing)");
 	CommandLine::declare_switch(INTER_CLSW, L"inter", 2,
 		L"specify code-generation chain for inter code");
-	CommandLine::declare_switch(IMPORT_CLSW, L"import", 2,
-		L"import Standard Rules as module (experimental)");
-	CommandLine::declare_switch(EXPORT_CLSW, L"export", 2,
-		L"export Standard Rules as module (experimental)");
 
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
@@ -391,7 +383,6 @@ with "Output.i6t".
 	COMPILATION_STEP(PL::Showme::compile_SHOWME_details, I"PL::Showme::compile_SHOWME_details")
 	COMPILATION_STEP(Phrases::Timed::TimedEventsTable, I"Phrases::Timed::TimedEventsTable")
 	COMPILATION_STEP(Phrases::Timed::TimedEventTimesTable, I"Phrases::Timed::TimedEventTimesTable")
-	COMPILATION_STEP(Rules::export_named_rules, I"Rules::export_named_rules")
 
 @<Convert inter to Inform 6@> =
 	if ((problem_count == 0) && (existing_story_file == FALSE)) {
@@ -400,12 +391,6 @@ with "Output.i6t".
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
 			codegen_pipeline *SS = CodeGen::Pipeline::new();
-			if ((import_mode) && (filename_of_SR_module))
-				CodeGen::Pipeline::parse_into(SS, I"import:*",
-					Filenames::get_leafname(filename_of_SR_module));
-			else if ((export_mode) && (filename_of_SR_module))
-				CodeGen::Pipeline::parse_into(SS, I"export:*",
-					Filenames::get_leafname(filename_of_SR_module));
 			CodeGen::Pipeline::parse_into(SS, inter_processing_chain,
 				Filenames::get_leafname(filename_of_compiled_i6_code));
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
@@ -489,8 +474,6 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case INTERNAL_CLSW: Locations::set_internal(arg); break;
 		case EXTERNAL_CLSW: Locations::set_external(arg); break;
 		case TRANSIENT_CLSW: Locations::set_transient(arg); break;
-		case IMPORT_CLSW: if (disable_import == FALSE) { import_mode = TRUE; Locations::set_SR_module(arg); } break;
-		case EXPORT_CLSW: export_mode = TRUE; Locations::set_SR_module(arg); break;
 
 		default: internal_error("unimplemented switch");
 	}
@@ -503,7 +486,6 @@ void CoreMain::bareword(int id, text_stream *opt, void *state) {
 
 void CoreMain::disable_importation(void) {
 	disable_import = TRUE;
-	import_mode = FALSE;
 }
 
 void CoreMain::set_inter_chain(wording W) {
@@ -512,12 +494,4 @@ void CoreMain::set_inter_chain(wording W) {
 	Str::delete_first_character(inter_processing_chain);
 	Str::delete_last_character(inter_processing_chain);
 	LOG("Setting chain %S\n", inter_processing_chain);
-	CoreMain::set_inter_chain_modes();
-}
-void CoreMain::set_inter_chain_modes() {
-	import_mode = FALSE; export_mode = FALSE;
-	codegen_pipeline *pipeline = CodeGen::Pipeline::parse(inter_processing_chain, I"nowhere");
-	int port = CodeGen::Pipeline::port_direction(pipeline);
-	if (port == 1) export_mode = TRUE;
-	if ((port == -1) && (disable_import == FALSE)) import_mode = TRUE;
 }

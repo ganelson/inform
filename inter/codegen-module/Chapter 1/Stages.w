@@ -18,7 +18,6 @@ write output to; others are not.
 typedef struct pipeline_stage {
 	struct text_stream *stage_name;
 	int (*execute)(void *);
-	int port_direction;
 	int stage_arg; /* one of the |*_ARG| values above */
 	MEMORY_MANAGEMENT
 } pipeline_stage;
@@ -27,17 +26,8 @@ pipeline_stage *CodeGen::Stage::new(text_stream *name, int (*X)(struct pipeline_
 	pipeline_stage *stage = CREATE(pipeline_stage);
 	stage->stage_name = Str::duplicate(name);
 	stage->execute = (int (*)(void *)) X;
-	stage->port_direction = 0;
 	stage->stage_arg = arg;
 	return stage;
-}
-
-@ Supplying this as the execute routine for a stage marks it as disabled.
-
-=
-int CodeGen::Stage::stage_disabled(pipeline_step *step) {
-	WRITE_TO(step->text_out_file, "Currently disabled\n");
-	return TRUE;
 }
 
 @h Creation.
@@ -52,19 +42,10 @@ void CodeGen::Stage::make_stages(void) {
 		stages_made = TRUE;
 		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG);
 
-		CodeGen::Stage::new(I"show-dependencies", CodeGen::Stage::run_show_dependencies_stage, EXT_TEXT_OUT_STAGE_ARG);
-		CodeGen::Stage::new(I"log-dependencies", CodeGen::Stage::run_log_dependencies_stage, NO_STAGE_ARG);
-		CodeGen::Stage::new(I"generate-inter", CodeGen::Stage::run_generate_inter_stage, TEXT_OUT_STAGE_ARG);
-		CodeGen::Stage::new(I"generate-inter-binary", CodeGen::Stage::run_generate_inter_binary_stage, FILE_STAGE_ARG);
-		CodeGen::Stage::new(I"summarise", CodeGen::Stage::run_summarise_stage, TEXT_OUT_STAGE_ARG);
-		pipeline_stage *ex = CodeGen::Stage::new(I"export", CodeGen::Stage::stage_disabled, EXT_TEXT_OUT_STAGE_ARG);
-		ex->port_direction = 1;
-
 		CodeGen::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();
 		CodeGen::Externals::create_pipeline_stage();
-		CodeGen::Import::create_pipeline_stage();
 		CodeGen::Inventory::create_pipeline_stage();
 		CodeGen::Labels::create_pipeline_stage();
 		CodeGen::Link::create_pipeline_stage();
@@ -81,33 +62,4 @@ the pipeline:
 =
 int CodeGen::Stage::run_stop_stage(pipeline_step *step) {
 	return FALSE;
-}
-
-@ The remaining stages declared here are all just wrappers for features of the
-Inter module. (It doesn't seem worth making 10-line sections for each of them.)
-
-=
-int CodeGen::Stage::run_show_dependencies_stage(pipeline_step *step) {
-	Inter::Graph::show_dependencies(step->text_out_file, step->repository);
-	return TRUE;
-}
-
-int CodeGen::Stage::run_log_dependencies_stage(pipeline_step *step) {
-	Inter::Graph::show_dependencies(DL, step->repository);
-	return TRUE;
-}
-
-int CodeGen::Stage::run_generate_inter_stage(pipeline_step *step) {
-	Inter::Textual::write(step->text_out_file, step->repository, NULL, 1);
-	return TRUE;
-}
-
-int CodeGen::Stage::run_generate_inter_binary_stage(pipeline_step *step) {
-	Inter::Binary::write(step->parsed_filename, step->repository);
-	return TRUE;
-}
-
-int CodeGen::Stage::run_summarise_stage(pipeline_step *step) {
-	Inter::Summary::write(step->text_out_file, step->repository);
-	return TRUE;
 }

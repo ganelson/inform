@@ -12,6 +12,7 @@ have no meaningful contents when the step is not running.
 typedef struct pipeline_step {
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
+	struct code_generation_target *target_argument;
 	
 	struct filename *parsed_filename;
 	struct pathname **the_PP;
@@ -45,17 +46,33 @@ logging:
 
 =
 void CodeGen::Pipeline::write_step(OUTPUT_STREAM, pipeline_step *step) {
-	if (step->step_stage->stage_arg == NO_STAGE_ARG)
-		WRITE("%S", step->step_stage->stage_name);
-	else
-		WRITE("%S:%S", step->step_stage->stage_name, step->step_argument);
+	WRITE("%S", step->step_stage->stage_name);
+	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
+		WRITE(":");
+		if (step->target_argument) WRITE(" %S ->", step->target_argument->target_name);
+		WRITE(" %S", step->step_argument);
+	}
 }
 
 pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, text_stream *leafname) {
 	CodeGen::Stage::make_stages();
+	CodeGen::Targets::make_targets();
 	pipeline_step *ST = CodeGen::Pipeline::new_step();
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, step, L"(%c+?) *: *(%c*)")) {
+	if (Regexp::match(&mr, step, L"(%c+?) *: *(%C*) *-> *(%c*)")) {
+		ST->step_argument = Str::new();
+		code_generation_target *cgt;
+		LOOP_OVER(cgt, code_generation_target)
+			if (Str::eq(mr.exp[1], cgt->target_name))
+				ST->target_argument = cgt;
+		if (ST->target_argument == NULL) {
+			WRITE_TO(STDERR, "No such code generation target as '%S'\n", mr.exp[1]);
+			internal_error("no such target");
+		}
+		Str::copy(ST->step_argument, mr.exp[2]);
+		Str::copy(step, mr.exp[0]);
+		if (Str::eq(ST->step_argument, I"*")) Str::copy(ST->step_argument, leafname);
+	} else if (Regexp::match(&mr, step, L"(%c+?) *: *(%c*)")) {
 		ST->step_argument = Str::new();
 		Str::copy(ST->step_argument, mr.exp[1]);
 		Str::copy(step, mr.exp[0]);
@@ -65,7 +82,11 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, text_stream *leaf
 	LOOP_OVER(stage, pipeline_stage)
 		if (Str::eq(step, stage->stage_name))
 			ST->step_stage = stage;
-	if (ST->step_stage == NULL) internal_error("no such step code");
+	if (ST->step_stage == NULL) {
+		WRITE_TO(STDERR, "No such step as '%S'\n", step);
+		internal_error("no such step code");
+	}
+	Regexp::dispose_of(&mr);
 	return ST;
 }
 
@@ -92,11 +113,15 @@ codegen_pipeline *CodeGen::Pipeline::parse(text_stream *instructions, text_strea
 
 void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instructions, text_stream *leafname) {
 	if (instructions == NULL)
-		instructions = I"link:Output.i6t, parse-linked-matter, resolve-conditional-compilation, assimilate, reconcile-verbs, generate-i6:*";
+		instructions = I"link:Output.i6t, parse-linked-matter, resolve-conditional-compilation, assimilate, reconcile-verbs, generate: inform6 -> *";
 	TEMPORARY_TEXT(T);
-	Str::copy(T, instructions);
+	LOOP_THROUGH_TEXT(P, instructions)
+		if (Characters::is_babel_whitespace(Str::get(P)))
+			PUT_TO(T, ' ');
+		else
+			PUT_TO(T, Str::get(P));
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, T, L" *(%c+?) *, *(%c*)")) {
+	while (Regexp::match(&mr, T, L" *(%c+?) *, *(%c*?) *")) {
 		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], leafname);
 		ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
 		Str::copy(T, mr.exp[1]);
@@ -105,14 +130,6 @@ void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instruction
 		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], leafname);
 		ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
 	}
-}
-
-int CodeGen::Pipeline::port_direction(codegen_pipeline *pipeline) {
-	pipeline_step *SS;
-	LOOP_OVER_LINKED_LIST(SS, pipeline_step, pipeline->steps)
-		if (SS->step_stage->port_direction != 0)
-			return SS->step_stage->port_direction;
-	return 0;
 }
 
 void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *I, int N, pathname **PP, pathname *PM, pathname *FM) {

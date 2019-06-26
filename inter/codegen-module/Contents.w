@@ -8,10 +8,10 @@ Chapter 1: Setting Up
 "Loading this module."
 	Codegen Module
 	Stages
+	Targets
 	Pipelines
 
 Chapter 2: Linking
-	Import
 	Linker
 	Template Reader
 	Parse Linked Matter

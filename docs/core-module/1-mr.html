@@ -87,7 +87,6 @@ Inform 6 code is complete.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">report_clock_time</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="identifier">time_t</span><span class="plain"> </span><span class="identifier">right_now</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">export_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">import_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">inter_processing_chain</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inform7</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -139,8 +138,7 @@ Inform 6 code is complete.
 <pre class="displaydefn">
         <span class="identifier">Errors::set_internal_handler</span><span class="plain">(&amp;</span><span class="identifier">Problems::Issue::internal_error_fn</span><span class="plain">);</span>
         <span class="identifier">story_filename_extension</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"ulx"</span><span class="plain">;</span>
-        <span class="identifier">inter_processing_chain</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate-i6:*"</span><span class="plain">;</span>
-        <span class="functiontext">CoreMain::set_inter_chain_modes</span><span class="plain">();</span>
+        <span class="identifier">inter_processing_chain</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"link: Output.i6t, parse-linked-matter, resolve-conditional-compilation, assimilate, make-identifiers-unique, resolve-external-symbols, reconcile-verbs, generate: inform6 -&gt; *"</span><span class="plain">;</span>
 
         <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"%B build %B has started.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">);</span>
@@ -174,8 +172,6 @@ list is not exhaustive.
     <span class="definitionkeyword">enum</span> <span class="constant">SIGILS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TRANSIENT_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INTER_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">IMPORT_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">EXPORT_CLSW</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4_3"></a><b>&#167;4.3.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register command-line arguments</span> <span class="cwebmacronumber">4.3</span>&gt; =
@@ -213,10 +209,6 @@ list is not exhaustive.
             <span class="identifier">L</span><span class="string">"return 0 unless exactly this Problem message is generated (for testing)"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">INTER_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"inter"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"specify code-generation chain for inter code"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">IMPORT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"import"</span><span class="plain">, 2,</span>
-            <span class="identifier">L</span><span class="string">"import Standard Rules as module (experimental)"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">EXPORT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"export"</span><span class="plain">, 2,</span>
-            <span class="identifier">L</span><span class="string">"export Standard Rules as module (experimental)"</span><span class="plain">);</span>
 
         <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PROJECT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"project"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"work within the Inform project X"</span><span class="plain">);</span>
@@ -559,7 +551,6 @@ list is not exhaustive.
             <span class="identifier">COMPILATION_STEP</span><span class="plain">(</span><span class="identifier">PL::Showme::compile_SHOWME_details</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"PL::Showme::compile_SHOWME_details"</span><span class="plain">)</span>
             <span class="identifier">COMPILATION_STEP</span><span class="plain">(</span><span class="functiontext">Phrases::Timed::TimedEventsTable</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Phrases::Timed::TimedEventsTable"</span><span class="plain">)</span>
             <span class="identifier">COMPILATION_STEP</span><span class="plain">(</span><span class="functiontext">Phrases::Timed::TimedEventTimesTable</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Phrases::Timed::TimedEventTimesTable"</span><span class="plain">)</span>
-            <span class="identifier">COMPILATION_STEP</span><span class="plain">(</span><span class="functiontext">Rules::export_named_rules</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Rules::export_named_rules"</span><span class="plain">)</span>
     </pre>
 
     <p class="inwebparagraph"></p>
@@ -578,12 +569,6 @@ list is not exhaustive.
                 <span class="functiontext">CoreMain::go_to_log_phase</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Converting inter to Inform 6"</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                     <span class="identifier">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::new</span><span class="plain">();</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">import_mode</span><span class="plain">) &amp;&amp; (</span><span class="identifier">filename_of_SR_module</span><span class="plain">))</span>
-                        <span class="identifier">CodeGen::Pipeline::parse_into</span><span class="plain">(</span><span class="identifier">SS</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"import:*"</span><span class="plain">,</span>
-                            <span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">filename_of_SR_module</span><span class="plain">));</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">export_mode</span><span class="plain">) &amp;&amp; (</span><span class="identifier">filename_of_SR_module</span><span class="plain">))</span>
-                        <span class="identifier">CodeGen::Pipeline::parse_into</span><span class="plain">(</span><span class="identifier">SS</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"export:*"</span><span class="plain">,</span>
-                            <span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">filename_of_SR_module</span><span class="plain">));</span>
                     <span class="identifier">CodeGen::Pipeline::parse_into</span><span class="plain">(</span><span class="identifier">SS</span><span class="plain">, </span><span class="identifier">inter_processing_chain</span><span class="plain">,</span>
                         <span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">filename_of_compiled_i6_code</span><span class="plain">));</span>
                     <span class="identifier">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">filename_of_compiled_i6_code</span><span class="plain">),</span>
@@ -715,8 +700,6 @@ list is not exhaustive.
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTERNAL_CLSW</span><span class="plain">: </span><span class="functiontext">Locations::set_internal</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTERNAL_CLSW</span><span class="plain">: </span><span class="functiontext">Locations::set_external</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRANSIENT_CLSW</span><span class="plain">: </span><span class="functiontext">Locations::set_transient</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">IMPORT_CLSW</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disable_import</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">import_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="functiontext">Locations::set_SR_module</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); } </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXPORT_CLSW</span><span class="plain">: </span><span class="identifier">export_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="functiontext">Locations::set_SR_module</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
 
                 <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented switch"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -729,7 +712,6 @@ list is not exhaustive.
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CoreMain::disable_importation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
             <span class="identifier">disable_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">import_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CoreMain::set_inter_chain</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -738,14 +720,6 @@ list is not exhaustive.
             <span class="identifier">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">inter_processing_chain</span><span class="plain">);</span>
             <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">inter_processing_chain</span><span class="plain">);</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Setting chain %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">inter_processing_chain</span><span class="plain">);</span>
-            <span class="functiontext">CoreMain::set_inter_chain_modes</span><span class="plain">();</span>
-        <span class="plain">}</span>
-        <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CoreMain::set_inter_chain_modes</span><span class="plain">() {</span>
-            <span class="identifier">import_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">export_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">pipeline</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse</span><span class="plain">(</span><span class="identifier">inter_processing_chain</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"nowhere"</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">port</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::port_direction</span><span class="plain">(</span><span class="identifier">pipeline</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">port</span><span class="plain"> == 1) </span><span class="identifier">export_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">port</span><span class="plain"> == -1) &amp;&amp; (</span><span class="identifier">disable_import</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">import_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
     </pre>
 
@@ -758,8 +732,6 @@ list is not exhaustive.
     <p class="endnote">The function CoreMain::disable_importation is used in 7/hdn (<a href="7-hdn.html#SP10_2">&#167;10.2</a>).</p>
 
     <p class="endnote">The function CoreMain::set_inter_chain is used in 26/uo (<a href="26-uo.html#SP11_2">&#167;11.2</a>).</p>
-
-    <p class="endnote">The function CoreMain::set_inter_chain_modes is used in <a href="#SP4_1">&#167;4.1</a>.</p>
 
     <hr class="tocbar">
     <ul class="toc"><li><i>(This section begins Chapter 1: Configuration and Control.)</i></li><li><a href="1-cm.html">Continue with 'Core Module'</a></li></ul><hr class="tocbar">

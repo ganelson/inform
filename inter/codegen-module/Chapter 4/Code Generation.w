@@ -6,17 +6,29 @@ To generate I6 code from intermediate code.
 
 =
 void CodeGen::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"generate-i6", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
+	CodeGen::Stage::new(I"generate", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
+}
+
+code_generation_target *Inform_6_cgt = NULL;
+void CodeGen::create_code_targets(void) {
+	Inform_6_cgt = CodeGen::Targets::new(I"inform6");
 }
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
-	CodeGen::to_I6(step->repository, step->text_out_file);
+	if (step->target_argument == NULL) internal_error("no target specified");
+
+	if (step->target_argument == binary_inter_cgt)
+		Inter::Binary::write(step->parsed_filename, step->repository);
+	else if (step->target_argument == textual_inter_cgt)
+		Inter::Textual::write(step->text_out_file, step->repository, NULL, 1);
+	else if (step->target_argument == summary_cgt)
+		Inter::Summary::write(step->text_out_file, step->repository);
+	else CodeGen::generate(step);
+
 	return TRUE;
 }
 
 @h Hello.
-
-@d MAX_REPOS_AT_ONCE 8
 
 =
 typedef struct text_literal_holder {
@@ -32,38 +44,15 @@ int the_quartet_found = TRUE;
 int the_quartet_found = FALSE;
 #endif
 
-void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
+void CodeGen::generate(pipeline_step *step) {
+inter_repository *I = step->repository;
+text_stream *OUT = step->text_out_file;
+
 	if (I == NULL) internal_error("no inter to generate from");
 
-	inter_repository *repos[MAX_REPOS_AT_ONCE];
-	int no_repos = CodeGen::repo_list(I, repos);
+	CodeGen::Var::set_translates(I);
 
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *I = repos[j];
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, I)
-			if (P.data[ID_IFLD] == IMPORT_IST) {
-				inter_symbol *imp_name = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_IMPORT_IFLD);
-				inter_symbol *exp_name = Inter::Symbols::get_bridge(imp_name);
-				if (exp_name) {
-					inter_repository *repo = Inter::Symbols::defining_frame(exp_name).repo_segment->owning_repo;
-					int found = FALSE;
-					for (int i=0; i<no_repos; i++) if (repos[i] == repo) found = TRUE;
-					if (found == FALSE) {
-						if (no_repos >= MAX_REPOS_AT_ONCE)
-							internal_error("too many repos to import");
-						repos[no_repos++] = repo;
-					}
-				}
-			}
-	}
-
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *I = repos[j];
-		CodeGen::Var::set_translates(I);
-	}
-
-	LOG("Generating I6 from %d repository/ies\n", no_repos);
+	LOG("Generating to %S\n", step->target_argument->target_name);
 
 	Inter::Symbols::clear_transient_flags();
 
@@ -76,11 +65,10 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	text_stream *code_at_eof = Str::new();
 	text_stream *verbs_at_eof = Str::new();
 	text_stream *routines_at_eof = Str::new();
+	text_stream *text_literals_code = Str::new();
 	int properties_written = FALSE;
 	int variables_written = FALSE;
 
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *I = repos[j];
 		inter_frame P;
 		LOOP_THROUGH_FRAMES(P, I) {
 			inter_package *outer = Inter::Packages::container(P);
@@ -90,13 +78,10 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 					case CONSTANT_IST: {
 						inter_symbol *con_name =
 							Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-				if ((outer) && (CodeGen::Eliminate::gone(outer->package_name)) && (Inter::Constant::code_block(con_name) == NULL)) {
-					LOG("Yeah, so reject $3\n", outer->package_name);
-					continue;
-				}
-
-
-
+						if ((outer) && (CodeGen::Eliminate::gone(outer->package_name)) && (Inter::Constant::code_block(con_name) == NULL)) {
+							LOG("Yeah, so reject $3\n", outer->package_name);
+							continue;
+						}
 						if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 						if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
 							WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
@@ -133,62 +118,24 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 						@<Property knowledge@>;
 						break;
 					case VARIABLE_IST:
-				if ((outer) && (CodeGen::Eliminate::gone(outer->package_name))) {
-					LOG("Yeah, so reject $3\n", outer->package_name);
-					continue;
-				}
+						if ((outer) && (CodeGen::Eliminate::gone(outer->package_name))) {
+							LOG("Yeah, so reject $3\n", outer->package_name);
+							continue;
+						}
 						if (variables_written == FALSE) {
 							variables_written = TRUE;
 							CodeGen::Var::knowledge(TO, I);
 						}
 						break;
-					case IMPORT_IST: {
-						inter_symbol *imp_name =
-							Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_IMPORT_IFLD);
-						inter_symbol *exp_name = Inter::Symbols::get_bridge(imp_name);
-						if (exp_name) {
-							WRITE_TO(early_matter, "Constant %S = %S;\n", CodeGen::name(imp_name), CodeGen::name(exp_name));
-						}
-						break;
-					}
 				}
 			}
 		}
-	}
 
 	int NR = 0;
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *I = repos[j];
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, I) {
-			if (P.data[ID_IFLD] == RESPONSE_IST) {
-				inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-				WRITE_TO(early_matter, "Constant %S = %d;\n", CodeGen::name(resp_name), ++NR);
-			}
-		}
-	}
-	if (NR > 0) {
-		WRITE_TO(early_matter, "Constant NO_RESPONSES = %d;\n", NR);
-		WRITE_TO(main_matter, "Array ResponseTexts --> ");
-		for (int j=0; j<no_repos; j++) {
-			inter_repository *I = repos[j];
-			inter_frame P;
-			LOOP_THROUGH_FRAMES(P, I) {
-				if (P.data[ID_IFLD] == RESPONSE_IST) {
-					NR++;
-					CodeGen::literal(main_matter, I, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
-					WRITE_TO(main_matter, " ");
-				}
-			}
-		}
-		WRITE_TO(main_matter, "0 0;\n");
-	}
+	@<Define constants for the responses@>;
+	if (NR > 0) @<Define an array of the responses@>;
 
 	if (properties_written == FALSE) { text_stream *TO = main_matter; @<Property knowledge@>; }
-
-	WRITE("%S", pragmatic_matter);
-	WRITE("%S", attributes_at_eof);
-	WRITE("%S", early_matter);
 
 	int no_tlh = NUMBER_CREATED(text_literal_holder);
 	text_literal_holder **sorted = (text_literal_holder **)
@@ -201,18 +148,43 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 		CodeGen::compare_tlh);
 	for (int i=0; i<no_tlh; i++) {
 		text_literal_holder *tlh = sorted[i];
-		WRITE("! TLH %d <%S>\n", tlh->allocation_id, tlh->literal_content);
-		WRITE("%S", tlh->definition_code);
+		WRITE_TO(text_literals_code, "! TLH %d <%S>\n", tlh->allocation_id, tlh->literal_content);
+		WRITE_TO(text_literals_code, "%S", tlh->definition_code);
 	}
 	
+	WRITE("%S", pragmatic_matter);
+	WRITE("%S", attributes_at_eof);
+	WRITE("%S", early_matter);
+	WRITE("%S", text_literals_code);
 	WRITE("%S", summations_at_eof);
 	WRITE("%S", arrays_at_eof);
-
 	WRITE("%S", main_matter);
 	WRITE("%S", routines_at_eof);
 	WRITE("%S", code_at_eof);
 	WRITE("%S", verbs_at_eof);
 }
+
+@<Define constants for the responses@> =
+	inter_frame P;
+	LOOP_THROUGH_FRAMES(P, I) {
+		if (P.data[ID_IFLD] == RESPONSE_IST) {
+			inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
+			WRITE_TO(early_matter, "Constant %S = %d;\n", CodeGen::name(resp_name), ++NR);
+		}
+	}
+
+@<Define an array of the responses@> =
+	WRITE_TO(early_matter, "Constant NO_RESPONSES = %d;\n", NR);
+	WRITE_TO(main_matter, "Array ResponseTexts --> ");
+		inter_frame P;
+		LOOP_THROUGH_FRAMES(P, I) {
+			if (P.data[ID_IFLD] == RESPONSE_IST) {
+				NR++;
+				CodeGen::literal(main_matter, I, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
+				WRITE_TO(main_matter, " ");
+			}
+		}
+	WRITE_TO(main_matter, "0 0;\n");
 
 @<Property knowledge@> =
 	if (properties_written == FALSE) {
@@ -227,37 +199,6 @@ void CodeGen::to_I6(inter_repository *I, OUTPUT_STREAM) {
 	}
 
 @ =
-int CodeGen::repo_list(inter_repository *I, inter_repository **repos) {
-	int no_repos = 0;
-	repos[no_repos++] = I;
-
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *J = repos[j];
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, J)
-			if (P.data[ID_IFLD] == IMPORT_IST) {
-				inter_symbol *imp_name = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_IMPORT_IFLD);
-				inter_symbol *exp_name = Inter::Symbols::get_bridge(imp_name);
-				if (exp_name) {
-					inter_repository *repo = Inter::Symbols::defining_frame(exp_name).repo_segment->owning_repo;
-					int found = FALSE;
-					for (int i=0; i<no_repos; i++) if (repos[i] == repo) found = TRUE;
-					if (found == FALSE) {
-						if (no_repos >= MAX_REPOS_AT_ONCE)
-							internal_error("too many repos to import");
-						repos[no_repos++] = repo;
-					}
-				}
-			}
-	}
-
-	for (int j=0; j<no_repos; j++) {
-		inter_repository *J = repos[j];
-		if (J != I) J->main_repo = I;
-	}
-	return no_repos;
-}
-
 int query_labels_mode = FALSE, negate_label_mode = FALSE;
 void CodeGen::frame(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	switch (P.data[ID_IFLD]) {

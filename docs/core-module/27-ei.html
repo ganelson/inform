@@ -206,20 +206,6 @@ insert them into the Inter stream close to the top.
         <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::import</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain"> = </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain"> = </span><span class="identifier">Inter::create_text</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">(), </span><span class="identifier">ID</span><span class="plain">), </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Import::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">ID</span><span class="plain">, </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::export</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain"> = </span><span class="functiontext">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain"> = </span><span class="identifier">Inter::create_text</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">(), </span><span class="identifier">ID</span><span class="plain">), </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Export::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">ID</span><span class="plain">, </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
-    <span class="plain">}</span>
-
     <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="functiontext">Emit::main_scope</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">()));</span>
     <span class="plain">}</span>
@@ -978,10 +964,6 @@ insert them into the Inter stream close to the top.
 <p class="endnote">The function Emit::pragma is used in 26/uo (<a href="26-uo.html#SP18">&#167;18</a>).</p>
 
 <p class="endnote">The function Emit::append is used in 15/epv (<a href="15-epv.html#SP1_1_2">&#167;1.1.2</a>).</p>
-
-<p class="endnote">The function Emit::import is used in 21/rl (<a href="21-rl.html#SP22">&#167;22</a>).</p>
-
-<p class="endnote">The function Emit::export is used in 21/rl (<a href="21-rl.html#SP26">&#167;26</a>).</p>
 
 <p class="endnote">The function Emit::main_scope is used in <a href="#SP2">&#167;2</a>, 13/rsfk (<a href="13-rsfk.html#SP5">&#167;5</a>, <a href="13-rsfk.html#SP24">&#167;24</a>), 27/eis (<a href="27-eis.html#SP4">&#167;4</a>).</p>
 

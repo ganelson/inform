@@ -33,8 +33,6 @@ Chapter 4: Void Constructs
 	The Metadata Construct
 	The Marker Construct
 	The Symbol Construct
-	The Import Construct
-	The Export Construct
 	The Version Construct
 	The Pragma Construct
 	The Link Construct

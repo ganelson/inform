@@ -41,8 +41,7 @@ Equivalently, a replacement chain can be specified at the Inform 7 command line:
 
 When using a chain within Inform, one further description syntax is allowed:
 the filename |*| means "the filename Inform wants to use for the final
-Inform 6 file". This tends to be used for the final stage in the chain, which
-is normally |generate-i6:*|.
+Inform 6 file".
 
 @h The code-generation stages.
 The following are all experimental, and have probably not yet reached their

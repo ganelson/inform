@@ -18,27 +18,39 @@
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::create_pipeline_stage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"generate-i6"</span><span class="plain">, </span><span class="functiontext">CodeGen::run_pipeline_stage</span><span class="plain">, </span><span class="constant">TEXT_OUT_STAGE_ARG</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"generate"</span><span class="plain">, </span><span class="functiontext">CodeGen::run_pipeline_stage</span><span class="plain">, </span><span class="constant">TEXT_OUT_STAGE_ARG</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">Inform_6_cgt</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::create_code_targets</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">Inform_6_cgt</span><span class="plain"> = </span><span class="functiontext">CodeGen::Targets::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"inform6"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
-        <span class="functiontext">CodeGen::to_I6</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;target_argument</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no target specified"</span><span class="plain">);</span>
+
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;target_argument</span><span class="plain"> == </span><span class="identifier">binary_inter_cgt</span><span class="plain">)</span>
+            <span class="identifier">Inter::Binary::write</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;parsed_filename</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;target_argument</span><span class="plain"> == </span><span class="identifier">textual_inter_cgt</span><span class="plain">)</span>
+            <span class="identifier">Inter::Textual::write</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 1);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;target_argument</span><span class="plain"> == </span><span class="identifier">summary_cgt</span><span class="plain">)</span>
+            <span class="identifier">Inter::Summary::write</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">CodeGen::generate</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">);</span>
+
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::create_pipeline_stage is used in 1/stg (<a href="1-stg.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::create_pipeline_stage is used in 1/stg (<a href="1-stg.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function CodeGen::create_code_targets is used in 1/trg (<a href="1-trg.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function CodeGen::run_pipeline_stage appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Hello. </b></p>
 
-
-<pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_REPOS_AT_ONCE</span><span class="plain"> 8</span>
-</pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_literal_holder</span><span class="plain"> {</span>
@@ -54,38 +66,15 @@
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::to_I6</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::generate</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+    <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">;</span>
+    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain">;</span>
+
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no inter to generate from"</span><span class="plain">);</span>
 
-        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">repos</span><span class="plain">[</span><span class="constant">MAX_REPOS_AT_ONCE</span><span class="plain">];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_repos</span><span class="plain"> = </span><span class="functiontext">CodeGen::repo_list</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">repos</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Var::set_translates</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-            <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">IMPORT_IST</span><span class="plain">) {</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">imp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">SYMBOL_IMPORT_IFLD</span><span class="plain">);</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">exp_name</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::get_bridge</span><span class="plain">(</span><span class="identifier">imp_name</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exp_name</span><span class="plain">) {</span>
-                        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">repo</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">exp_name</span><span class="plain">).</span><span class="identifier">repo_segment</span><span class="plain">-&gt;</span><span class="identifier">owning_repo</span><span class="plain">;</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="identifier">repo</span><span class="plain">) </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_repos</span><span class="plain"> &gt;= </span><span class="constant">MAX_REPOS_AT_ONCE</span><span class="plain">)</span>
-                                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too many repos to import"</span><span class="plain">);</span>
-                            <span class="identifier">repos</span><span class="plain">[</span><span class="identifier">no_repos</span><span class="plain">++] = </span><span class="identifier">repo</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-        <span class="plain">}</span>
-
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="functiontext">CodeGen::Var::set_translates</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="plain">}</span>
-
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Generating I6 from %d repository/ies\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">no_repos</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Generating to %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;target_argument</span><span class="plain">-</span><span class="element">&gt;target_name</span><span class="plain">);</span>
 
         <span class="identifier">Inter::Symbols::clear_transient_flags</span><span class="plain">();</span>
 
@@ -98,11 +87,10 @@
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">code_at_eof</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">verbs_at_eof</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">routines_at_eof</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text_literals_code</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">properties_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
             <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
             <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
                 <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">outer</span><span class="plain"> = </span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
@@ -112,13 +100,10 @@
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_IST</span><span class="plain">: {</span>
                             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> =</span>
                                 <span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Inter::Constant::code_block</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
-                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Yeah, so reject $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
-                        <span class="reserved">continue</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-
-
-
+                            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Inter::Constant::code_block</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+                                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Yeah, so reject $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+                                <span class="reserved">continue</span><span class="plain">;</span>
+                            <span class="plain">}</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">OBJECT_IANN</span><span class="plain">) == 1) </span><span class="reserved">break</span><span class="plain">;</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"Bad constant: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
@@ -152,65 +137,27 @@
                             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"top-level splat remaining"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTYVALUE_IST</span><span class="plain">:</span>
-                            &lt;<span class="cwebmacro">Property knowledge</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+                            &lt;<span class="cwebmacro">Property knowledge</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARIABLE_IST</span><span class="plain">:</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">))) {</span>
-                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Yeah, so reject $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
-                        <span class="reserved">continue</span><span class="plain">;</span>
-                    <span class="plain">}</span>
+                            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">CodeGen::Eliminate::gone</span><span class="plain">(</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">))) {</span>
+                                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Yeah, so reject $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+                                <span class="reserved">continue</span><span class="plain">;</span>
+                            <span class="plain">}</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">variables_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                                 <span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                                 <span class="functiontext">CodeGen::Var::knowledge</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
                             <span class="plain">}</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IMPORT_IST</span><span class="plain">: {</span>
-                            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">imp_name</span><span class="plain"> =</span>
-                                <span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">SYMBOL_IMPORT_IFLD</span><span class="plain">);</span>
-                            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">exp_name</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::get_bridge</span><span class="plain">(</span><span class="identifier">imp_name</span><span class="plain">);</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exp_name</span><span class="plain">) {</span>
-                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">early_matter</span><span class="plain">, </span><span class="string">"Constant %S = %S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::name</span><span class="plain">(</span><span class="identifier">imp_name</span><span class="plain">), </span><span class="functiontext">CodeGen::name</span><span class="plain">(</span><span class="identifier">exp_name</span><span class="plain">));</span>
-                            <span class="plain">}</span>
-                            <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="plain">}</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-        <span class="plain">}</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NR</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-            <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">resp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_RESPONSE_IFLD</span><span class="plain">);</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">early_matter</span><span class="plain">, </span><span class="string">"Constant %S = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">), ++</span><span class="identifier">NR</span><span class="plain">);</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NR</span><span class="plain"> &gt; 0) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">early_matter</span><span class="plain">, </span><span class="string">"Constant NO_RESPONSES = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">NR</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="string">"Array ResponseTexts --&gt; "</span><span class="plain">);</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-                <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-                <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-                <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
-                        <span class="identifier">NR</span><span class="plain">++;</span>
-                        <span class="functiontext">CodeGen::literal</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">+1], </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="string">"0 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="plain">}</span>
+        &lt;<span class="cwebmacro">Define constants for the responses</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NR</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Define an array of the responses</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">properties_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">TO</span><span class="plain"> = </span><span class="identifier">main_matter</span><span class="plain">; </span>&lt;<span class="cwebmacro">Property knowledge</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">; }</span>
-
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pragmatic_matter</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">attributes_at_eof</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">early_matter</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">properties_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">TO</span><span class="plain"> = </span><span class="identifier">main_matter</span><span class="plain">; </span>&lt;<span class="cwebmacro">Property knowledge</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">; }</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_tlh</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">text_literal_holder</span><span class="plain">);</span>
         <span class="reserved">text_literal_holder</span><span class="plain"> **</span><span class="identifier">sorted</span><span class="plain"> = (</span><span class="reserved">text_literal_holder</span><span class="plain"> **)</span>
@@ -223,13 +170,16 @@
             <span class="functiontext">CodeGen::compare_tlh</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_tlh</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">text_literal_holder</span><span class="plain"> *</span><span class="identifier">tlh</span><span class="plain"> = </span><span class="identifier">sorted</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"! TLH %d &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tlh</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">tlh</span><span class="plain">-</span><span class="element">&gt;literal_content</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">tlh</span><span class="plain">-</span><span class="element">&gt;definition_code</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text_literals_code</span><span class="plain">, </span><span class="string">"! TLH %d &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tlh</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">tlh</span><span class="plain">-</span><span class="element">&gt;literal_content</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text_literals_code</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">tlh</span><span class="plain">-</span><span class="element">&gt;definition_code</span><span class="plain">);</span>
         <span class="plain">}</span>
 
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pragmatic_matter</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">attributes_at_eof</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">early_matter</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">text_literals_code</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">summations_at_eof</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">arrays_at_eof</span><span class="plain">);</span>
-
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">main_matter</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">routines_at_eof</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">code_at_eof</span><span class="plain">);</span>
@@ -239,12 +189,54 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::to_I6 is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">The function CodeGen::generate is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The structure text_literal_holder is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Property knowledge</span> <span class="cwebmacronumber">2.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Define constants for the responses</span> <span class="cwebmacronumber">2.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
+                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">resp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_RESPONSE_IFLD</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">early_matter</span><span class="plain">, </span><span class="string">"Constant %S = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">), ++</span><span class="identifier">NR</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Define an array of the responses</span> <span class="cwebmacronumber">2.2</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">early_matter</span><span class="plain">, </span><span class="string">"Constant NO_RESPONSES = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">NR</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="string">"Array ResponseTexts --&gt; "</span><span class="plain">);</span>
+            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+            <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
+                    <span class="identifier">NR</span><span class="plain">++;</span>
+                    <span class="functiontext">CodeGen::literal</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">+1], </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">main_matter</span><span class="plain">, </span><span class="string">"0 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Property knowledge</span> <span class="cwebmacronumber">2.3</span>&gt; =
 </code></p>
 
 
@@ -269,37 +261,6 @@
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::repo_list</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_repository</span><span class="plain"> **</span><span class="identifier">repos</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_repos</span><span class="plain"> = 0;</span>
-        <span class="identifier">repos</span><span class="plain">[</span><span class="identifier">no_repos</span><span class="plain">++] = </span><span class="identifier">I</span><span class="plain">;</span>
-
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">J</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-            <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">J</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">IMPORT_IST</span><span class="plain">) {</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">imp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">SYMBOL_IMPORT_IFLD</span><span class="plain">);</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">exp_name</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::get_bridge</span><span class="plain">(</span><span class="identifier">imp_name</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exp_name</span><span class="plain">) {</span>
-                        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">repo</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">exp_name</span><span class="plain">).</span><span class="identifier">repo_segment</span><span class="plain">-&gt;</span><span class="identifier">owning_repo</span><span class="plain">;</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="identifier">repo</span><span class="plain">) </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_repos</span><span class="plain"> &gt;= </span><span class="constant">MAX_REPOS_AT_ONCE</span><span class="plain">)</span>
-                                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too many repos to import"</span><span class="plain">);</span>
-                            <span class="identifier">repos</span><span class="plain">[</span><span class="identifier">no_repos</span><span class="plain">++] = </span><span class="identifier">repo</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-        <span class="plain">}</span>
-
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_repos</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">J</span><span class="plain"> = </span><span class="identifier">repos</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">J</span><span class="plain"> != </span><span class="identifier">I</span><span class="plain">) </span><span class="identifier">J</span><span class="plain">-&gt;</span><span class="identifier">main_repo</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">no_repos</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">negate_label_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::frame</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">]) {</span>
@@ -328,8 +289,6 @@
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function CodeGen::repo_list is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="endnote">The function CodeGen::frame is used in <a href="#SP2">&#167;2</a>, <a href="#SP4">&#167;4</a>, <a href="#SP5">&#167;5</a>, <a href="#SP5_1">&#167;5.1</a>, <a href="#SP5_2">&#167;5.2</a>, <a href="#SP5_4">&#167;5.4</a>, <a href="#SP5_5">&#167;5.5</a>, <a href="#SP5_8">&#167;5.8</a>, <a href="#SP5_9">&#167;5.9</a>, <a href="#SP5_10">&#167;5.10</a>, <a href="#SP5_11">&#167;5.11</a>, <a href="#SP5_12">&#167;5.12</a>, <a href="#SP5_13">&#167;5.13</a>, <a href="#SP5_14">&#167;5.14</a>, <a href="#SP5_15">&#167;5.15</a>, <a href="#SP5_16">&#167;5.16</a>, <a href="#SP5_17">&#167;5.17</a>, <a href="#SP5_18">&#167;5.18</a>, <a href="#SP5_19">&#167;5.19</a>, <a href="#SP5_20">&#167;5.20</a>, <a href="#SP5_21">&#167;5.21</a>, <a href="#SP5_22">&#167;5.22</a>, <a href="#SP5_23">&#167;5.23</a>, <a href="#SP5_24">&#167;5.24</a>, <a href="#SP5_25">&#167;5.25</a>, <a href="#SP5_26">&#167;5.26</a>, <a href="#SP5_27">&#167;5.27</a>, <a href="#SP5_28">&#167;5.28</a>, <a href="#SP5_29">&#167;5.29</a>, <a href="#SP5_30">&#167;5.30</a>, <a href="#SP5_31">&#167;5.31</a>, <a href="#SP5_32">&#167;5.32</a>, <a href="#SP5_33">&#167;5.33</a>, <a href="#SP5_34">&#167;5.34</a>, <a href="#SP5_35">&#167;5.35</a>, <a href="#SP5_36">&#167;5.36</a>, <a href="#SP5_37">&#167;5.37</a>, <a href="#SP5_38">&#167;5.38</a>, <a href="#SP5_39">&#167;5.39</a>, <a href="#SP5_40">&#167;5.40</a>, <a href="#SP5_45">&#167;5.45</a>, <a href="#SP5_46">&#167;5.46</a>, <a href="#SP5_47">&#167;5.47</a>, <a href="#SP5_48">&#167;5.48</a>, <a href="#SP5_49">&#167;5.49</a>, <a href="#SP5_50">&#167;5.50</a>, <a href="#SP5_51">&#167;5.51</a>, <a href="#SP5_52">&#167;5.52</a>, <a href="#SP5_53">&#167;5.53</a>, <a href="#SP5_54">&#167;5.54</a>, <a href="#SP5_55">&#167;5.55</a>, <a href="#SP5_56">&#167;5.56</a>, <a href="#SP5_57">&#167;5.57</a>, <a href="#SP5_58">&#167;5.58</a>, <a href="#SP5_59">&#167;5.59</a>, <a href="#SP5_60">&#167;5.60</a>, <a href="#SP5_61">&#167;5.61</a>, <a href="#SP5_62">&#167;5.62</a>, <a href="#SP5_63">&#167;5.63</a>, <a href="#SP5_64">&#167;5.64</a>, <a href="#SP5_65">&#167;5.65</a>, <a href="#SP5_66">&#167;5.66</a>, <a href="#SP5_67">&#167;5.67</a>, <a href="#SP5_68">&#167;5.68</a>, <a href="#SP5_69">&#167;5.69</a>, <a href="#SP5_70">&#167;5.70</a>, <a href="#SP5_71">&#167;5.71</a>, <a href="#SP5_72">&#167;5.72</a>, <a href="#SP5_73">&#167;5.73</a>, <a href="#SP5_74">&#167;5.74</a>, <a href="#SP5_75">&#167;5.75</a>, <a href="#SP5_76">&#167;5.76</a>, <a href="#SP5_77">&#167;5.77</a>, <a href="#SP5_78">&#167;5.78</a>, <a href="#SP5_79">&#167;5.79</a>, <a href="#SP5_80">&#167;5.80</a>, <a href="#SP5_81">&#167;5.81</a>, <a href="#SP5_82">&#167;5.82</a>, <a href="#SP5_83">&#167;5.83</a>, <a href="#SP5_84">&#167;5.84</a>, <a href="#SP5_85">&#167;5.85</a>, <a href="#SP5_86">&#167;5.86</a>, <a href="#SP5_87">&#167;5.87</a>, <a href="#SP5_88">&#167;5.88</a>, <a href="#SP5_89">&#167;5.89</a>, <a href="#SP5_90">&#167;5.90</a>, <a href="#SP5_91">&#167;5.91</a>, <a href="#SP5_92">&#167;5.92</a>, <a href="#SP5_93">&#167;5.93</a>, <a href="#SP5_94">&#167;5.94</a>, <a href="#SP5_95">&#167;5.95</a>, <a href="#SP5_96">&#167;5.96</a>, <a href="#SP5_97">&#167;5.97</a>, <a href="#SP5_98">&#167;5.98</a>, <a href="#SP5_99">&#167;5.99</a>, <a href="#SP5_100">&#167;5.100</a>, <a href="#SP5_101">&#167;5.101</a>, <a href="#SP5_102">&#167;5.102</a>, <a href="#SP5_103">&#167;5.103</a>, <a href="#SP5_104">&#167;5.104</a>, <a href="#SP5_105">&#167;5.105</a>, <a href="#SP5_106">&#167;5.106</a>, <a href="#SP5_107">&#167;5.107</a>, <a href="#SP5_108">&#167;5.108</a>, <a href="#SP5_109">&#167;5.109</a>.</p>
 
@@ -592,7 +551,7 @@ is 20. We instead compile this as
 
 <p class="endnote">The function CodeGen::constant is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="endnote">The function CodeGen::literal is used in <a href="#SP2">&#167;2</a>, <a href="#SP5">&#167;5</a>, 4/iap (<a href="4-iap.html#SP4_8_4_1_1">&#167;4.8.4.1.1</a>, <a href="4-iap.html#SP6">&#167;6</a>), 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::literal is used in <a href="#SP2_2">&#167;2.2</a>, <a href="#SP5">&#167;5</a>, 4/iap (<a href="4-iap.html#SP4_8_4_1_1">&#167;4.8.4.1.1</a>, <a href="4-iap.html#SP6">&#167;6</a>), 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function CodeGen::pragma is used in <a href="#SP3">&#167;3</a>.</p>
 
@@ -3039,7 +2998,7 @@ then the result.
 
 <p class="endnote">The function CodeGen::append is used in 4/iap (<a href="4-iap.html#SP4_9">&#167;4.9</a>, <a href="4-iap.html#SP6">&#167;6</a>).</p>
 
-<p class="endnote">The function CodeGen::name is used in <a href="#SP2">&#167;2</a>, <a href="#SP4">&#167;4</a>, <a href="#SP5">&#167;5</a>, 4/iap (<a href="4-iap.html#SP3_5">&#167;3.5</a>, <a href="4-iap.html#SP3_6">&#167;3.6</a>, <a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_7">&#167;4.7</a>, <a href="4-iap.html#SP4_8_4">&#167;4.8.4</a>, <a href="4-iap.html#SP4_9">&#167;4.9</a>, <a href="4-iap.html#SP4_11">&#167;4.11</a>, <a href="4-iap.html#SP4_11_2">&#167;4.11.2</a>, <a href="4-iap.html#SP4_11_2_1">&#167;4.11.2.1</a>, <a href="4-iap.html#SP4_11_2_2">&#167;4.11.2.2</a>, <a href="4-iap.html#SP4_12">&#167;4.12</a>, <a href="4-iap.html#SP5">&#167;5</a>, <a href="4-iap.html#SP6">&#167;6</a>), 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::name is used in <a href="#SP2_1">&#167;2.1</a>, <a href="#SP4">&#167;4</a>, <a href="#SP5">&#167;5</a>, 4/iap (<a href="4-iap.html#SP3_5">&#167;3.5</a>, <a href="4-iap.html#SP3_6">&#167;3.6</a>, <a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_7">&#167;4.7</a>, <a href="4-iap.html#SP4_8_4">&#167;4.8.4</a>, <a href="4-iap.html#SP4_9">&#167;4.9</a>, <a href="4-iap.html#SP4_11">&#167;4.11</a>, <a href="4-iap.html#SP4_11_2">&#167;4.11.2</a>, <a href="4-iap.html#SP4_11_2_1">&#167;4.11.2.1</a>, <a href="4-iap.html#SP4_11_2_2">&#167;4.11.2.2</a>, <a href="4-iap.html#SP4_12">&#167;4.12</a>, <a href="4-iap.html#SP5">&#167;5</a>, <a href="4-iap.html#SP6">&#167;6</a>), 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 

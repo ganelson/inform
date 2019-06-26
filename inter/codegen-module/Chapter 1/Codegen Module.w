@@ -19,6 +19,7 @@ We need to itemise the structures we'll want to allocate:
 @e inter_schema_token_MT
 @e routine_body_request_MT
 @e pipeline_stage_MT
+@e code_generation_target_MT
 
 @ With allocation functions:
 
@@ -33,6 +34,7 @@ ALLOCATE_INDIVIDUALLY(inter_schema_node)
 ALLOCATE_INDIVIDUALLY(inter_schema_token)
 ALLOCATE_INDIVIDUALLY(routine_body_request)
 ALLOCATE_INDIVIDUALLY(pipeline_stage)
+ALLOCATE_INDIVIDUALLY(code_generation_target)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

@@ -240,7 +240,7 @@ void UseOptions::set_use_options(parse_node *p) {
 
 @<Set the chain given in this word range@> =
 	wording CW = GET_RW(<use-inter-chain>, 1);
-	CoreMain::set_inter_chain(CW);
+	if (traverse == 1) CoreMain::set_inter_chain(CW);
 	return;
 
 @<Adjust the minimum setting@> =
