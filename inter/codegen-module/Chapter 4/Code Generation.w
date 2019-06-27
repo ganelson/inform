@@ -476,6 +476,24 @@ void CodeGen::constant(code_generation *gen, inter_frame P) {
 	}
 }
 
+int box_mode = FALSE, printing_mode = FALSE;
+
+void CodeGen::enter_box_mode(void) {
+	box_mode = TRUE;
+}
+
+void CodeGen::exit_box_mode(void) {
+	box_mode = FALSE;
+}
+
+void CodeGen::enter_print_mode(void) {
+	printing_mode = TRUE;
+}
+
+void CodeGen::exit_print_mode(void) {
+	printing_mode = FALSE;
+}
+
 void CodeGen::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_t val1, inter_t val2, int unsub) {
 	inter_repository *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
@@ -532,7 +550,7 @@ void CodeGen::literal(code_generation *gen, inter_symbol *con_name, inter_symbol
 		CodeGen::compile_to_I6_dictionary(OUT, glob_text, TRUE);
 	} else if (val1 == LITERAL_TEXT_IVAL) {
 		text_stream *glob_text = Inter::get_text(I, val2);
-		CodeGen::compile_to_I6_text(OUT, glob_text);
+		CodeGen::Targets::compile_literal_text(gen, glob_text, printing_mode, box_mode);
 	} else if (val1 == GLOB_IVAL) {
 		text_stream *glob_text = Inter::get_text(I, val2);
 		WRITE("%S", glob_text);
@@ -600,16 +618,12 @@ void CodeGen::label(code_generation *gen, inter_frame P) {
 }
 
 void CodeGen::block(code_generation *gen, inter_frame P) {
-//	LOG("\nBLOCK\n");
 	inter_symbol *block = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
 	inter_frame_list *ifl = Inter::Package::code_list(block);
 	if (ifl == NULL) internal_error("block without code list");
 	inter_frame F;
-	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
-//		Inter::Defn::write_construct_text(DL, F);
+	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
 		CodeGen::frame(gen, F);
-	}
-//	LOG("----\n");
 }
 
 void CodeGen::code(code_generation *gen, inter_frame P) {
@@ -644,177 +658,6 @@ void CodeGen::reference(code_generation *gen, inter_frame P) {
 			CodeGen::frame(gen, F);
 	}
 	void_level = old_level;
-}
-
-void CodeGen::inv(code_generation *gen, inter_frame P) {
-	text_stream *OUT = CodeGen::current(gen);
-	int suppress_terminal_semicolon = FALSE;
-	inter_frame_list *ifl = Inter::Inv::children_of_frame(P);
-	if (ifl == NULL) internal_error("cast without code list");
-
-	switch (P.data[METHOD_INV_IFLD]) {
-		case INVOKED_PRIMITIVE: {
-			inter_symbol *prim = Inter::Inv::invokee(P);
-			if (prim == NULL) internal_error("bad prim");
-			inter_repository *I = gen->from;
-			inter_t bip = Primitives::to_bip(I, prim);
-			switch (bip) {
-				case RETURN_BIP: @<Generate primitive for return@>; break;
-				case JUMP_BIP: @<Generate primitive for jump@>; break;
-				case MOVE_BIP: @<Generate primitive for move@>; break;
-				case REMOVE_BIP: @<Generate primitive for remove@>; break;
-				case GIVE_BIP: @<Generate primitive for give@>; break;
-				case TAKE_BIP: @<Generate primitive for take@>; break;
-				case QUIT_BIP: @<Generate primitive for quit@>; break;
-				case RESTORE_BIP: @<Generate primitive for restore@>; break;
-				case SPACES_BIP: @<Generate primitive for spaces@>; break;
-				case BREAK_BIP: @<Generate primitive for break@>; break;
-				case CONTINUE_BIP: @<Generate primitive for continue@>; break;
-				case NOT_BIP: @<Generate primitive for not@>; break;
-				case AND_BIP: @<Generate primitive for and@>; break;
-				case OR_BIP: @<Generate primitive for or@>; break;
-				case ALTERNATIVE_BIP: @<Generate primitive for alternative@>; break;
-				case ALTERNATIVECASE_BIP: @<Generate primitive for alternativecase@>; break;
-				case BITWISEAND_BIP: @<Generate primitive for bitwiseand@>; break;
-				case BITWISEOR_BIP: @<Generate primitive for bitwiseor@>; break;
-				case BITWISENOT_BIP: @<Generate primitive for bitwisenot@>; break;
-				case EQ_BIP: @<Generate primitive for eq@>; break;
-				case NE_BIP: @<Generate primitive for ne@>; break;
-				case GT_BIP: @<Generate primitive for gt@>; break;
-				case GE_BIP: @<Generate primitive for ge@>; break;
-				case LT_BIP: @<Generate primitive for lt@>; break;
-				case LE_BIP: @<Generate primitive for le@>; break;
-				case OFCLASS_BIP: @<Generate primitive for ofclass@>; break;
-				case HAS_BIP: @<Generate primitive for has@>; break;
-				case HASNT_BIP: @<Generate primitive for hasnt@>; break;
-				case IN_BIP: @<Generate primitive for in@>; break;
-				case NOTIN_BIP: @<Generate primitive for notin@>; break;
-				case SEQUENTIAL_BIP: @<Generate primitive for sequential@>; break;
-				case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
-				case PLUS_BIP: @<Generate primitive for plus@>; break;
-				case MINUS_BIP: @<Generate primitive for minus@>; break;
-				case UNARYMINUS_BIP: @<Generate primitive for unaryminus@>; break;
-				case TIMES_BIP: @<Generate primitive for times@>; break;
-				case DIVIDE_BIP: @<Generate primitive for divide@>; break;
-				case MODULO_BIP: @<Generate primitive for modulo@>; break;
-				case RANDOM_BIP: @<Generate primitive for random@>; break;
-				case FONT_BIP: @<Generate primitive for font@>; break;
-				case STYLEROMAN_BIP: @<Generate primitive for styleroman@>; break;
-				case STYLEBOLD_BIP: @<Generate primitive for stylebold@>; break;
-				case STYLEUNDERLINE_BIP: @<Generate primitive for styleunderline@>; break;
-				case STYLEREVERSE_BIP: @<Generate primitive for stylereverse@>; break;
-				case PRINT_BIP: @<Generate primitive for print@>; break;
-				case PRINTRET_BIP: @<Generate primitive for printret@>; break;
-				case PRINTCHAR_BIP: @<Generate primitive for printchar@>; break;
-				case PRINTNAME_BIP: @<Generate primitive for printname@>; break;
-				case PRINTOBJ_BIP: @<Generate primitive for printobj@>; break;
-				case PRINTPROPERTY_BIP: @<Generate primitive for printproperty@>; break;
-				case PRINTNUMBER_BIP: @<Generate primitive for printnumber@>; break;
-				case PRINTADDRESS_BIP: @<Generate primitive for printaddress@>; break;
-				case PRINTSTRING_BIP: @<Generate primitive for printstring@>; break;
-				case PRINTNLNUMBER_BIP: @<Generate primitive for printnlnumber@>; break;
-				case PRINTDEF_BIP: @<Generate primitive for printdef@>; break;
-				case PRINTCDEF_BIP: @<Generate primitive for printcdef@>; break;
-				case PRINTINDEF_BIP: @<Generate primitive for printindef@>; break;
-				case PRINTCINDEF_BIP: @<Generate primitive for printcindef@>; break;
-				case BOX_BIP: @<Generate primitive for box@>; break;
-				case PUSH_BIP: @<Generate primitive for push@>; break;
-				case PULL_BIP: @<Generate primitive for pull@>; break;
-				case PREINCREMENT_BIP: @<Generate primitive for preincrement@>; break;
-				case POSTINCREMENT_BIP: @<Generate primitive for postincrement@>; break;
-				case PREDECREMENT_BIP: @<Generate primitive for predecrement@>; break;
-				case POSTDECREMENT_BIP: @<Generate primitive for postdecrement@>; break;
-				case STORE_BIP: @<Generate primitive for store@>; break;
-				case SETBIT_BIP: @<Generate primitive for setbit@>; break;
-				case CLEARBIT_BIP: @<Generate primitive for clearbit@>; break;
-				case IF_BIP: @<Generate primitive for if@>; break;
-				case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
-				case IFSTRICT_BIP: @<Generate primitive for ifstrict@>; break;
-				case IFELSE_BIP: @<Generate primitive for ifelse@>; break;
-				case WHILE_BIP: @<Generate primitive for while@>; break;
-				case DO_BIP: @<Generate primitive for do@>; break;
-				case FOR_BIP: @<Generate primitive for for@>; break;
-				case OBJECTLOOP_BIP: @<Generate primitive for objectloop@>; break;
-				case OBJECTLOOPX_BIP: @<Generate primitive for objectloopx@>; break;
-				case LOOP_BIP: @<Generate primitive for loop@>; break;
-				case LOOKUP_BIP: @<Generate primitive for lookup@>; break;
-				case LOOKUPBYTE_BIP: @<Generate primitive for lookupbyte@>; break;
-				case LOOKUPREF_BIP: @<Generate primitive for lookupref@>; break;
-				case SWITCH_BIP: @<Generate primitive for switch@>; break;
-				case CASE_BIP: @<Generate primitive for case@>; break;
-				case DEFAULT_BIP: @<Generate primitive for default@>; break;
-				case INDIRECT0V_BIP: @<Generate primitive for indirect0v@>; break;
-				case INDIRECT1V_BIP: @<Generate primitive for indirect1v@>; break;
-				case INDIRECT2V_BIP: @<Generate primitive for indirect2v@>; break;
-				case INDIRECT3V_BIP: @<Generate primitive for indirect3v@>; break;
-				case INDIRECT4V_BIP: @<Generate primitive for indirect4v@>; break;
-				case INDIRECT5V_BIP: @<Generate primitive for indirect5v@>; break;
-				case INDIRECT0_BIP: @<Generate primitive for indirect0@>; break;
-				case INDIRECT1_BIP: @<Generate primitive for indirect1@>; break;
-				case INDIRECT2_BIP: @<Generate primitive for indirect2@>; break;
-				case INDIRECT3_BIP: @<Generate primitive for indirect3@>; break;
-				case INDIRECT4_BIP: @<Generate primitive for indirect4@>; break;
-				case INDIRECT5_BIP: @<Generate primitive for indirect5@>; break;
-				case MESSAGE0_BIP: @<Generate primitive for message0@>; break;
-				case MESSAGE1_BIP: @<Generate primitive for message1@>; break;
-				case MESSAGE2_BIP: @<Generate primitive for message2@>; break;
-				case MESSAGE3_BIP: @<Generate primitive for message3@>; break;
-				case CALLMESSAGE0_BIP: @<Generate primitive for callmessage0@>; break;
-				case CALLMESSAGE1_BIP: @<Generate primitive for callmessage1@>; break;
-				case CALLMESSAGE2_BIP: @<Generate primitive for callmessage2@>; break;
-				case CALLMESSAGE3_BIP: @<Generate primitive for callmessage3@>; break;
-				case PROPERTYADDRESS_BIP: @<Generate primitive for propertyaddress@>; break;
-				case PROPERTYLENGTH_BIP: @<Generate primitive for propertylength@>; break;
-				case PROVIDES_BIP: @<Generate primitive for provides@>; break;
-				case PROPERTYVALUE_BIP: @<Generate primitive for propertyvalue@>; break;
-				case READ_BIP: @<Generate primitive for read@>; break;
-				case INVERSION_BIP: @<Generate primitive for inversion@>; break;
-				default: LOG("Prim: %S\n", prim->symbol_name); internal_error("unimplemented prim");
-			}
-			break;
-		}
-		case INVOKED_ROUTINE: {
-			inter_symbol *routine = Inter::SymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
-			if (routine == NULL) internal_error("bad routine");
-			WRITE("%S(", CodeGen::name(routine));
-			inter_frame F;
-			int argc = 0;
-			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
-				if (argc++ > 0) WRITE(", ");
-				CodeGen::frame(gen, F);
-			}
-			WRITE(")");
-			break;
-		}
-		case INVOKED_OPCODE: {
-			inter_t ID = P.data[INVOKEE_INV_IFLD];
-			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
-			WRITE("%S", S);
-			inter_frame F; negate_label_mode = FALSE;
-			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
-				query_labels_mode = TRUE;
-				if (F.data[ID_IFLD] == VAL_IST) {
-					inter_t val1 = F.data[VAL1_VAL_IFLD];
-					inter_t val2 = F.data[VAL2_VAL_IFLD];
-					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-						inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
-						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
-							negate_label_mode = TRUE;
-							continue;
-						}
-					}
-				}
-				WRITE(" ");
-				CodeGen::frame(gen, F);
-				query_labels_mode = FALSE;
-			}
-			negate_label_mode = FALSE;
-			break;
-		}
-		default: internal_error("bad inv");
-	}
-	if ((Inter::Defn::get_level(P) == void_level) &&
-		(suppress_terminal_semicolon == FALSE)) WRITE(";\n");
 }
 
 void CodeGen::cast(code_generation *gen, inter_frame P) {
@@ -898,798 +741,74 @@ void CodeGen::val(code_generation *gen, inter_frame P) {
 	internal_error("bad val");
 }
 
-@<Generate primitive for return@> =
-	int rboolean = NOT_APPLICABLE;
-	inter_frame V = Inter::top_of_frame_list(ifl);
-	if (V.data[ID_IFLD] == VAL_IST) {
-		inter_t val1 = V.data[VAL1_VAL_IFLD];
-		inter_t val2 = V.data[VAL2_VAL_IFLD];
-		if (val1 == LITERAL_IVAL) {
-			if (val2 == 0) rboolean = FALSE;
-			if (val2 == 1) rboolean = TRUE;
+@
+
+@d INV_A1 CodeGen::frame(gen, Inter::top_of_frame_list(ifl))
+@d INV_A1_PRINTMODE CodeGen::enter_print_mode(); INV_A1; CodeGen::exit_print_mode();
+@d INV_A1_BOXMODE CodeGen::enter_box_mode(); INV_A1; CodeGen::exit_box_mode();
+@d INV_A2 CodeGen::frame(gen, Inter::second_in_frame_list(ifl))
+@d INV_A3 CodeGen::frame(gen, Inter::third_in_frame_list(ifl))
+@d INV_A4 CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl))
+@d INV_A5 CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl))
+@d INV_A6 CodeGen::frame(gen, Inter::sixth_in_frame_list(ifl))
+
+=
+void CodeGen::inv(code_generation *gen, inter_frame P) {
+	text_stream *OUT = CodeGen::current(gen);
+	int suppress_terminal_semicolon = FALSE;
+	inter_frame_list *ifl = Inter::Inv::children_of_frame(P);
+	if (ifl == NULL) internal_error("cast without code list");
+
+	switch (P.data[METHOD_INV_IFLD]) {
+		case INVOKED_PRIMITIVE: {
+			inter_symbol *prim = Inter::Inv::invokee(P);
+			if (prim == NULL) internal_error("bad prim");
+			suppress_terminal_semicolon = CodeGen::Targets::compile_primitive(gen, prim, ifl);
+			break;
 		}
+		case INVOKED_ROUTINE: {
+			inter_symbol *routine = Inter::SymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
+			if (routine == NULL) internal_error("bad routine");
+			WRITE("%S(", CodeGen::name(routine));
+			inter_frame F;
+			int argc = 0;
+			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
+				if (argc++ > 0) WRITE(", ");
+				CodeGen::frame(gen, F);
+			}
+			WRITE(")");
+			break;
+		}
+		case INVOKED_OPCODE: {
+			inter_t ID = P.data[INVOKEE_INV_IFLD];
+			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+			WRITE("%S", S);
+			inter_frame F; negate_label_mode = FALSE;
+			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
+				query_labels_mode = TRUE;
+				if (F.data[ID_IFLD] == VAL_IST) {
+					inter_t val1 = F.data[VAL1_VAL_IFLD];
+					inter_t val2 = F.data[VAL2_VAL_IFLD];
+					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+						inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
+						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
+							negate_label_mode = TRUE;
+							continue;
+						}
+					}
+				}
+				WRITE(" ");
+				CodeGen::frame(gen, F);
+				query_labels_mode = FALSE;
+			}
+			negate_label_mode = FALSE;
+			break;
+		}
+		default: internal_error("bad inv");
 	}
-	switch (rboolean) {
-		case FALSE: WRITE("rfalse"); break;
-		case TRUE: WRITE("rtrue"); break;
-		case NOT_APPLICABLE: WRITE("return "); CodeGen::frame(gen, V); break;
-	}
-
-@<Generate primitive for jump@> =
-	WRITE("jump ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for quit@> =
-	WRITE("quit");
-
-@<Generate primitive for restore@> =
-	WRITE("restore ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for spaces@> =
-	WRITE("spaces ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for break@> =
-	WRITE("break");
-
-@<Generate primitive for continue@> =
-	WRITE("continue");
-
-@<Generate primitive for modulo@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("%%");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for random@> =
-	WRITE("random(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for font@> =
-	WRITE("if (");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(") { font on; } else { font off; }");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for eq@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("==");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for ne@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" ~= ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for gt@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" > ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for ge@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(">=");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for lt@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("<");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for le@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("<=");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for ofclass@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" ofclass ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for move@> =
-	WRITE("move ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" to ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for remove@> =
-	WRITE("remove ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for give@> =
-	WRITE("give ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for take@> =
-	WRITE("give ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" ~");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for has@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" has ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for hasnt@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" hasnt ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for in@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" in ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for notin@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" notin ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for sequential@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@ Here we need some gymnastics. We need to produce a value which the
-sometimes shaky I6 expression parser will accept, which turns out to be
-quite a constraint. If we were compiling to C, we might try this:
-
-	|(a, b, c)|
-
-using the serial comma operator -- that is, where the expression |(a, b)|
-evaluates |a| then |b| and returns the value of |b|, discarding |a|.
-Now I6 does support the comma operator, and this makes a workable scheme,
-right up to the point where some of the token values themselves include
-invocations of functions, because I6's syntax analyser won't always
-allow the serial comma to be mixed in the same expression with the
-function argument comma, i.e., I6 is unable properly to handle expressions
-like this one:
-
-	|(a(b, c), d)|
-
-where the first comma constructs a list and the second is the operator.
-(Many such expressions work fine, but not all.) That being so, the scheme
-I actually use is:
-
-	|(c) + 0*((b) + (a))|
-
-Because I6 evaluates the leaves in an expression tree right-to-left, not
-left-to-right, the parameter assignments happen first, then the conditions,
-then the result.
-
-
-@<Generate primitive for ternarysequential@> =
-	WRITE("(\n"); INDENT;
-	WRITE("! This value evaluates third (i.e., last)\n");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	OUTDENT; WRITE("+\n"); INDENT;
-	WRITE("0*(\n"); INDENT;
-	WRITE("! The following condition evaluates second\n");
-	WRITE("((\n"); INDENT;
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	OUTDENT; WRITE("\n))\n");
-	OUTDENT; WRITE("+\n"); INDENT;
-	WRITE("! The following assignments evaluate first\n");
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")");
-	OUTDENT; WRITE(")\n");
-	OUTDENT; WRITE(")\n");
-
-@<Generate primitive for plus@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("+");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for not@> =
-	WRITE("(~~(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for and@> =
-	WRITE("((");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")");
-	WRITE("&&");
-	WRITE("(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for or@> =
-	WRITE("((");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")||(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for alternative@> =
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" or ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for alternativecase@> =
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(", ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for bitwiseand@> =
-	WRITE("((");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")&(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for bitwiseor@> =
-	WRITE("((");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")|(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for bitwisenot@> =
-	WRITE("(~(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for minus@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("-");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for unaryminus@> =
-	WRITE("(-(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for times@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("*");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for divide@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("/");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for styleroman@> =
-	WRITE("style roman");
-
-@<Generate primitive for stylebold@> =
-	WRITE("style bold");
-
-@<Generate primitive for styleunderline@> =
-	WRITE("style underline");
-
-@<Generate primitive for stylereverse@> =
-	WRITE("style reverse");
-
-@<Generate primitive for print@> =
-	WRITE("print ");
-	CodeGen::enter_print_mode();
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	CodeGen::exit_print_mode();
-
-@<Generate primitive for printret@> =
-	CodeGen::enter_print_mode();
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	CodeGen::exit_print_mode();
-
-@<Generate primitive for printchar@> =
-	WRITE("print (char) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printname@> =
-	WRITE("print (name) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printobj@> =
-	WRITE("print (object) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printproperty@> =
-	WRITE("print (property) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printnumber@> =
-	WRITE("print ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printaddress@> =
-	WRITE("print (address) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printstring@> =
-	WRITE("print (string) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printnlnumber@> =
-	WRITE("print (number) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printdef@> =
-	WRITE("print (the) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printcdef@> =
-	WRITE("print (The) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printindef@> =
-	WRITE("print (a) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for printcindef@> =
-	WRITE("print (A) ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for box@> =
-	WRITE("box ");
-	CodeGen::enter_box_mode();
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	CodeGen::exit_box_mode();
-
-@<Generate primitive for push@> =
-	WRITE("@push ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for pull@> =
-	WRITE("@pull ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-
-@<Generate primitive for preincrement@> =
-	WRITE("++(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for postincrement@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")++");
-
-@<Generate primitive for predecrement@> =
-	WRITE("--(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for postdecrement@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")--");
-
-@<Generate primitive for store@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" = ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for setbit@> =
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" = ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" | ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for clearbit@> =
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" = ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" &~ (");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for if@> =
-	WRITE("if (");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(") {\n"); INDENT;
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for ifdebug@> =
-	WRITE("#ifdef DEBUG;\n"); INDENT;
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	OUTDENT; WRITE("#endif;\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for ifstrict@> =
-	WRITE("#ifdef STRICT_MODE;\n"); INDENT;
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	OUTDENT; WRITE("#endif;\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for ifelse@> =
-	WRITE("if (");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(") {\n"); INDENT;
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	OUTDENT; WRITE("} else {\n"); INDENT;
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for while@> =
-	WRITE("while (");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(") {\n"); INDENT;
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for do@> =
-	WRITE("do {");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("} until (\n"); INDENT;
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	OUTDENT; WRITE(")\n");
-
-@<Generate primitive for for@> =
-	WRITE("for (");
-	inter_frame INIT = Inter::top_of_frame_list(ifl);
-	if (!((INIT.data[ID_IFLD] == VAL_IST) && (INIT.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT.data[VAL2_VAL_IFLD] == 1)))
-		CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(":");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(":");
-	inter_frame U = Inter::third_in_frame_list(ifl);
-	if (U.data[ID_IFLD] != VAL_IST)
-	CodeGen::frame(gen, U);
-	WRITE(") {\n"); INDENT;
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for objectloop@> =
-	int in_flag = FALSE;
-	inter_frame U = Inter::third_in_frame_list(ifl);
-	if ((U.data[ID_IFLD] == INV_IST) && (U.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-		inter_symbol *prim = Inter::Inv::invokee(U);
-		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
-	}
-
-	WRITE("objectloop ");
-	if (in_flag == FALSE) {
-		WRITE("(");
-		CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-		WRITE(" ofclass ");
-		CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-		WRITE(" && ");
-	}
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	if (in_flag == FALSE) {
-		WRITE(")");
-	}
-	WRITE(" {\n"); INDENT;
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for objectloopx@> =
-	WRITE("objectloop (");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" ofclass ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(") {\n"); INDENT;
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for loop@> =
-	WRITE("{\n"); INDENT;
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for lookup@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("-->(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for lookupbyte@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("->(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for lookupref@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE("-->(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for switch@> =
-	WRITE("switch (");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(") {\n"); INDENT;
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for case@> =
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(":\n"); INDENT;
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(";\n");
-	OUTDENT;
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for default@> =
-	WRITE("default:\n"); INDENT;
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(";\n");
-	OUTDENT;
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for indirect0v@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")()");
-
-@<Generate primitive for indirect1v@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect2v@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect3v@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect4v@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect5v@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::sixth_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect0@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")()");
-
-@<Generate primitive for indirect1@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect2@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect3@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect4@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for indirect5@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(")(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::sixth_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for message0@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("())");
-
-@<Generate primitive for message1@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("(");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for message2@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("(");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for message3@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("(");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for callmessage0@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".call())");
-
-@<Generate primitive for callmessage1@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".call(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for callmessage2@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".call(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for callmessage3@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".call(");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
-	WRITE(",");
-	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
-	WRITE("))");
-
-@<Generate primitive for propertyaddress@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".& ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for propertylength@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".# ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for provides@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" provides ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for propertyvalue@> =
-	WRITE("(");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(".");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-	WRITE(")");
-
-@<Generate primitive for read@> =
-	WRITE("read ");
-	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
-	WRITE(" ");
-	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
-
-@<Generate primitive for inversion@> =
-	WRITE("inversion");
+	if ((Inter::Defn::get_level(P) == void_level) &&
+		(suppress_terminal_semicolon == FALSE)) WRITE(";\n");
+}
 
 @ =
 int CodeGen::compare_tlh(const void *elem1, const void *elem2) {
@@ -1835,72 +954,4 @@ void CodeGen::compile_to_I6_dictionary(OUTPUT_STREAM, text_stream *S, int plural
 	if (pluralise) WRITE("//p");
 	else if (Str::len(S) == 1) WRITE("//");
 	WRITE("'");
-}
-
-int box_mode = FALSE, printing_mode = FALSE;
-
-void CodeGen::enter_box_mode(void) {
-	box_mode = TRUE;
-}
-
-void CodeGen::exit_box_mode(void) {
-	box_mode = FALSE;
-}
-
-void CodeGen::enter_print_mode(void) {
-	printing_mode = TRUE;
-}
-
-void CodeGen::exit_print_mode(void) {
-	printing_mode = FALSE;
-}
-
-void CodeGen::compile_to_I6_text(OUTPUT_STREAM, text_stream *S) {
-	WRITE("\"");
-	int esc_char = FALSE;
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		if (box_mode) {
-			switch(c) {
-				case '@': WRITE("@{40}"); break;
-				case '"': WRITE("~"); break;
-				case '^': WRITE("@{5E}"); break;
-				case '~': WRITE("@{7E}"); break;
-				case '\\': WRITE("@{5C}"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("\"\n\""); break;
-				case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
-				default: PUT(c);
-			}
-		} else {
-			switch(c) {
-				case '@':
-					if (printing_mode) {
-						WRITE("@@64"); esc_char = TRUE; continue;
-					}
-					WRITE("@{40}"); break;
-				case '"': WRITE("~"); break;
-				case '^':
-					if (printing_mode) {
-						WRITE("@@94"); esc_char = TRUE; continue;
-					}
-					WRITE("@{5E}"); break;
-				case '~':
-					if (printing_mode) {
-						WRITE("@@126"); esc_char = TRUE; continue;
-					}
-					WRITE("@{7E}"); break;
-				case '\\': WRITE("@{5C}"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("^"); break;
-				case NEWLINE_IN_STRING: WRITE("^"); break;
-				default: {
-					if (esc_char) WRITE("@{%02x}", c);
-					else PUT(c);
-				}
-			}
-			esc_char = FALSE;
-		}
-	}
-	WRITE("\"");
 }

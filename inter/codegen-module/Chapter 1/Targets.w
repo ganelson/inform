@@ -95,6 +95,28 @@ int CodeGen::Targets::tl_segment(code_generation *gen) {
 
 @
 
+@e COMPILE_PRIMITIVE_MTID
+
+=
+IMETHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prim_name, inter_frame_list *ifl)
+int CodeGen::Targets::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_frame_list *ifl) {
+	int rv = FALSE;
+	IMETHOD_CALL(rv, gen->target, COMPILE_PRIMITIVE_MTID, gen, prim_name, ifl);
+	return rv;
+}
+
+@
+
+@e COMPILE_LITERAL_TEXT_MTID
+
+=
+VMETHOD_TYPE(COMPILE_LITERAL_TEXT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *S, int print_mode, int box_mode)
+void CodeGen::Targets::compile_literal_text(code_generation *gen, text_stream *S, int print_mode, int box_mode) {
+	VMETHOD_CALL(gen->target, COMPILE_LITERAL_TEXT_MTID, gen, S, print_mode, box_mode);
+}
+
+@
+
 @e DECLARE_PROPERTY_MTID
 
 =
@@ -102,5 +124,3 @@ VMETHOD_TYPE(DECLARE_PROPERTY_MTID, code_generation_target *cgt, code_generation
 void CodeGen::Targets::declare_property(code_generation *gen, inter_symbol *prop_name, int used) {
 	VMETHOD_CALL(gen->target, DECLARE_PROPERTY_MTID, gen, prop_name, used);
 }
-
-

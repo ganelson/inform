@@ -147,6 +147,44 @@
 
 
 <pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">COMPILE_PRIMITIVE_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">COMPILE_PRIMITIVE_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain">)</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::compile_primitive</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">COMPILE_PRIMITIVE_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::compile_primitive is used in 4/cg (<a href="4-cg.html#SP7">&#167;7</a>).</p>
+
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">COMPILE_LITERAL_TEXT_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">COMPILE_LITERAL_TEXT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">print_mode</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">box_mode</span><span class="plain">)</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::compile_literal_text</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">print_mode</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">box_mode</span><span class="plain">) {</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">COMPILE_LITERAL_TEXT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">print_mode</span><span class="plain">, </span><span class="identifier">box_mode</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::compile_literal_text is used in 4/cg (<a href="4-cg.html#SP5">&#167;5</a>).</p>
+
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
+
+
+<pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">DECLARE_PROPERTY_MTID</span>
 </pre>
 
@@ -155,8 +193,6 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::declare_property</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">used</span><span class="plain">) {</span>
         <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">DECLARE_PROPERTY_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">used</span><span class="plain">);</span>
     <span class="plain">}</span>
-
-
 </pre>
 
 <p class="inwebparagraph"></p>
