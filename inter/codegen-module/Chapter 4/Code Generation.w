@@ -42,6 +42,7 @@ arrays, and one could do this by creating two segments, one to accumulate
 the constants in, one to accumulate the arrays.
 
 @d MAX_CG_SEGMENTS 100
+@d TEMP_CG_SEGMENT 99
 
 =
 typedef struct code_generation {
@@ -49,6 +50,7 @@ typedef struct code_generation {
 	struct code_generation_target *target;
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
 	struct generated_segment *current_segment;
+	int temporarily_diverted;
 	MEMORY_MANAGEMENT
 } code_generation;
 
@@ -62,6 +64,7 @@ code_generation *CodeGen::new_generation(inter_repository *I, code_generation_ta
 	gen->from = I;
 	gen->target = target;
 	gen->current_segment = NULL;
+	gen->temporarily_diverted = FALSE;
 	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;
 	return gen;
 }
@@ -75,29 +78,44 @@ generated_segment *CodeGen::new_segment(void) {
 @
 
 =
-void CodeGen::select(code_generation *gen, int i) {
+generated_segment *CodeGen::select(code_generation *gen, int i) {
+	generated_segment *saved = gen->current_segment;
 	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
+	if (gen->temporarily_diverted) internal_error("poorly timed selection");
 	gen->current_segment = gen->segments[i];
+	return saved;
 }
 
-void CodeGen::deselect(code_generation *gen) {
-	gen->current_segment = NULL;
+void CodeGen::select_temporary(code_generation *gen, text_stream *T) {
+	if (gen->segments[TEMP_CG_SEGMENT] == NULL) {
+		gen->segments[TEMP_CG_SEGMENT] = CodeGen::new_segment();
+		gen->segments[TEMP_CG_SEGMENT]->generated_code = NULL;
+	}
+	if (gen->temporarily_diverted)
+		internal_error("nested temporary cgs");
+	gen->temporarily_diverted = TRUE;
+	gen->segments[TEMP_CG_SEGMENT]->generated_code = T;
 }
 
-text_stream *CodeGen::seg(code_generation *gen, int i) {
-	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
-	return gen->segments[i]->generated_code;
+void CodeGen::deselect(code_generation *gen, generated_segment *saved) {
+	if (gen->temporarily_diverted) internal_error("poorly timed deselection");
+	gen->current_segment = saved;
+}
+
+void CodeGen::deselect_temporary(code_generation *gen) {
+	gen->temporarily_diverted = FALSE;
 }
 
 text_stream *CodeGen::current(code_generation *gen) {
+	if (gen->temporarily_diverted) return gen->segments[TEMP_CG_SEGMENT]->generated_code;
 	if (gen->current_segment == NULL) return NULL;
 	return gen->current_segment->generated_code;
 }
 
 void CodeGen::write(OUTPUT_STREAM, code_generation *gen) {
 	for (int i=0; i<MAX_CG_SEGMENTS; i++)
-		if (gen->segments[i])
-			WRITE("%S", CodeGen::seg(gen, i));
+		if ((gen->segments[i]) && (i != TEMP_CG_SEGMENT))
+			WRITE("%S", gen->segments[i]->generated_code);
 }
 
 typedef struct text_literal_holder {
@@ -132,7 +150,7 @@ void CodeGen::generate(code_generation *gen) {
 		LOOP_THROUGH_FRAMES(P, I) {
 			inter_package *outer = Inter::Packages::container(P);
 			if ((outer == NULL) || (outer->codelike_package == FALSE)) {
-				CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+				generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
 				switch (P.data[ID_IFLD]) {
 					case CONSTANT_IST: {
 						inter_symbol *con_name =
@@ -146,21 +164,24 @@ void CodeGen::generate(code_generation *gen) {
 							WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
 							internal_error("constant defined in main");
 						}
-						text_stream *TO = CodeGen::current(gen);
 						if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
 							text_literal_holder *tlh = CREATE(text_literal_holder);
 							tlh->definition_code = Str::new();
 							inter_t ID = P.data[DATA_CONST_IFLD];
 							tlh->literal_content = Inter::get_text(P.repo_segment->owning_repo, ID);
-							TO = tlh->definition_code;
+							CodeGen::select_temporary(gen, tlh->definition_code);
+							CodeGen::frame(gen, P);
+							CodeGen::deselect_temporary(gen);
+						} else {
+							CodeGen::frame(gen, P);
 						}
-						CodeGen::frame(TO, I, P); break;
+						break;
 					}
 					case PRAGMA_IST:
-						CodeGen::frame(CodeGen::current(gen), I, P);
+						CodeGen::frame(gen, P);
 						break;
 					case INSTANCE_IST:
-						CodeGen::frame(CodeGen::current(gen), I, P);
+						CodeGen::frame(gen, P);
 						break;
 					case SPLAT_IST:
 						internal_error("top-level splat remaining");
@@ -175,11 +196,11 @@ void CodeGen::generate(code_generation *gen) {
 						}
 						if (variables_written == FALSE) {
 							variables_written = TRUE;
-							CodeGen::Var::knowledge(CodeGen::current(gen), I);
+							CodeGen::Var::knowledge(gen);
 						}
 						break;
 				}
-				CodeGen::deselect(gen);
+				CodeGen::deselect(gen, saved);
 			}
 		}
 
@@ -199,10 +220,10 @@ void CodeGen::generate(code_generation *gen) {
 	qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *), CodeGen::compare_tlh);
 	for (int i=0; i<no_tlh; i++) {
 		text_literal_holder *tlh = sorted[i];
-		CodeGen::select(gen, CodeGen::Targets::tl_segment(gen));
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::tl_segment(gen));
 		text_stream *TO = CodeGen::current(gen);
 		WRITE_TO(TO, "%S", tlh->definition_code);
-		CodeGen::deselect(gen);
+		CodeGen::deselect(gen, saved);
 	}
 	
 }
@@ -211,34 +232,34 @@ void CodeGen::generate(code_generation *gen) {
 	inter_frame P;
 	LOOP_THROUGH_FRAMES(P, I) {
 		if (P.data[ID_IFLD] == RESPONSE_IST) {
-			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
 			text_stream *TO = CodeGen::current(gen);
 			inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
 			WRITE_TO(TO, "Constant %S = %d;\n", CodeGen::name(resp_name), ++NR);
-			CodeGen::deselect(gen);
+			CodeGen::deselect(gen, saved);
 		}
 	}
 
 @<Define an array of the responses@> =
-	CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 	WRITE_TO(CodeGen::current(gen), "Constant NO_RESPONSES = %d;\n", NR);
-	CodeGen::deselect(gen);
-	CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+	CodeGen::deselect(gen, saved);
+	saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
 	WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
 		inter_frame P;
 		LOOP_THROUGH_FRAMES(P, I) {
 			if (P.data[ID_IFLD] == RESPONSE_IST) {
 				NR++;
-				CodeGen::literal(CodeGen::current(gen), I, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
+				CodeGen::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
 				WRITE_TO(CodeGen::current(gen), " ");
 			}
 		}
 	WRITE_TO(CodeGen::current(gen), "0 0;\n");
-	CodeGen::deselect(gen);
+	CodeGen::deselect(gen, saved);
 
 @<Property knowledge@> =
 	if (properties_written == FALSE) {
-		CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
 		text_stream *TO = CodeGen::current(gen);
 		if (the_quartet_found) {
 			WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
@@ -247,30 +268,30 @@ void CodeGen::generate(code_generation *gen) {
 			WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
 		}
 		properties_written = TRUE;
-		CodeGen::IP::knowledge(TO, I, gen);
-		CodeGen::deselect(gen);				
+		CodeGen::IP::knowledge(gen);
+		CodeGen::deselect(gen, saved);				
 	}
 
 @ =
 int query_labels_mode = FALSE, negate_label_mode = FALSE;
-void CodeGen::frame(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::frame(code_generation *gen, inter_frame P) {
 	switch (P.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
-		case CONSTANT_IST: CodeGen::constant(OUT, I, P); break;
-		case INSTANCE_IST: CodeGen::IP::instance(OUT, I, P); break;
-		case SPLAT_IST: CodeGen::splat(OUT, I, P); break;
-		case LOCAL_IST: CodeGen::local(OUT, I, P); break;
-		case LABEL_IST: CodeGen::label(OUT, I, P); break;
-		case CODE_IST: CodeGen::code(OUT, I, P); break;
-		case EVALUATION_IST: CodeGen::evaluation(OUT, I, P); break;
-		case REFERENCE_IST: CodeGen::reference(OUT, I, P); break;
-		case PACKAGE_IST: CodeGen::block(OUT, I, P); break;
-		case INV_IST: CodeGen::inv(OUT, I, P); break;
-		case CAST_IST: CodeGen::cast(OUT, I, P); break;
+		case CONSTANT_IST: CodeGen::constant(gen, P); break;
+		case INSTANCE_IST: CodeGen::IP::instance(gen, P); break;
+		case SPLAT_IST: CodeGen::splat(gen, P); break;
+		case LOCAL_IST: CodeGen::local(gen, P); break;
+		case LABEL_IST: CodeGen::label(gen, P); break;
+		case CODE_IST: CodeGen::code(gen, P); break;
+		case EVALUATION_IST: CodeGen::evaluation(gen, P); break;
+		case REFERENCE_IST: CodeGen::reference(gen, P); break;
+		case PACKAGE_IST: CodeGen::block(gen, P); break;
+		case INV_IST: CodeGen::inv(gen, P); break;
+		case CAST_IST: CodeGen::cast(gen, P); break;
 		case VAL_IST:
-		case REF_IST: CodeGen::val(OUT, I, P); break;
-		case LAB_IST: CodeGen::lab(OUT, I, P); break;
-		case PRAGMA_IST: CodeGen::pragma(OUT, I, P); break;
+		case REF_IST: CodeGen::val(gen, P); break;
+		case LAB_IST: CodeGen::lab(gen, P); break;
+		case PRAGMA_IST: CodeGen::pragma(gen, P); break;
 		case NOP_IST: break;
 		default:
 			Inter::Defn::write_construct_text(DL, P);
@@ -294,7 +315,8 @@ is 20. We instead compile this as
 
 int void_level = 3;
 
-void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::constant(code_generation *gen, inter_frame P) {
+	text_stream *OUT = CodeGen::current(gen);
 	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 
 	if (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1) return;
@@ -343,7 +365,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		inter_t val1 = P.data[DATA_CONST_IFLD];
 		inter_t val2 = P.data[DATA_CONST_IFLD + 1];
 		WRITE("Release ");
-		CodeGen::literal(OUT, I, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		CodeGen::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
 		return;
 	}
@@ -352,7 +374,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		inter_t val1 = P.data[DATA_CONST_IFLD];
 		inter_t val2 = P.data[DATA_CONST_IFLD + 1];
 		WRITE("Global Story = ");
-		CodeGen::literal(OUT, I, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		CodeGen::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
 		return;
 	}
@@ -361,7 +383,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		inter_t val1 = P.data[DATA_CONST_IFLD];
 		inter_t val2 = P.data[DATA_CONST_IFLD + 1];
 		WRITE("Serial ");
-		CodeGen::literal(OUT, I, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		CodeGen::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
 		return;
 	}
@@ -381,7 +403,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			WRITE("[ %S", CodeGen::name(con_name));
 			void_level = Inter::Defn::get_level(P) + 2;
 			inter_frame D = Inter::Symbols::defining_frame(code_block);
-			CodeGen::frame(OUT, I, D);
+			CodeGen::frame(gen, D);
 		}
 		return;
 	}
@@ -413,7 +435,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 				WRITE(" ");
 				if ((do_not_bracket == FALSE) && (P.data[i] != DIVIDER_IVAL)) WRITE("(");
-				CodeGen::literal(OUT, I, con_name, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], unsub);
+				CodeGen::literal(gen, con_name, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], unsub);
 				if ((do_not_bracket == FALSE) && (P.data[i] != DIVIDER_IVAL)) WRITE(")");
 			}
 			WRITE(";\n");
@@ -434,7 +456,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 				int bracket = TRUE;
 				if ((P.data[i] == LITERAL_IVAL) || (Inter::Symbols::is_stored_in_data(P.data[i], P.data[i+1]))) bracket = FALSE;
 				if (bracket) WRITE("(");
-				CodeGen::literal(OUT, I, con_name, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
+				CodeGen::literal(gen, con_name, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
 				if (bracket) WRITE(")");
 			}
 			WRITE(";\n");
@@ -444,7 +466,7 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			inter_t val2 = P.data[DATA_CONST_IFLD + 1];
 			if (ifndef_me) WRITE("#ifndef %S; ", CodeGen::name(con_name));
 			WRITE("Constant %S = ", CodeGen::name(con_name));
-			CodeGen::literal(OUT, I, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
+			CodeGen::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
 			WRITE(";");
 			if (ifndef_me) WRITE(" #endif;");
 			WRITE("\n");
@@ -454,7 +476,9 @@ void CodeGen::constant(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	}
 }
 
-void CodeGen::literal(OUTPUT_STREAM, inter_repository *I, inter_symbol *con_name, inter_symbols_table *T, inter_t val1, inter_t val2, int unsub) {
+void CodeGen::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_t val1, inter_t val2, int unsub) {
+	inter_repository *I = gen->from;
+	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {
 		int hex = FALSE;
 		if (con_name)
@@ -515,12 +539,13 @@ void CodeGen::literal(OUTPUT_STREAM, inter_repository *I, inter_symbol *con_name
 	} else internal_error("unimplemented direct constant");
 }
 
-void CodeGen::pragma(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::pragma(code_generation *gen, inter_frame P) {
 	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_symbol == NULL) internal_error("bad pragma");
 	if (Str::eq(target_symbol->symbol_name, I"target_I6")) {
 		inter_t ID = P.data[TEXT_PRAGMA_IFLD];
 		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+		text_stream *OUT = CodeGen::current(gen);
 		WRITE("!%% %S\n", S);
 	}
 }
@@ -530,7 +555,9 @@ void CodeGen::pragma(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 @d URL_SYMBOL_CHAR 0x00A7
 
 =
-void CodeGen::splat(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::splat(code_generation *gen, inter_frame P) {
+	text_stream *OUT = CodeGen::current(gen);
+	inter_repository *I = gen->from;
 	text_stream *S = Inter::get_text(I, P.data[MATTER_SPLAT_IFLD]);
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
@@ -549,14 +576,16 @@ void CodeGen::splat(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	}
 }
 
-void CodeGen::local(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::local(code_generation *gen, inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LOCAL_IFLD]);
+	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" %S", var_name->symbol_name);
 }
 
-void CodeGen::label(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::label(code_generation *gen, inter_frame P) {
+	text_stream *OUT = CodeGen::current(gen);
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
@@ -567,10 +596,10 @@ void CodeGen::label(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	if (ifl == NULL) internal_error("block without code list");
 	inter_frame F;
 	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-		CodeGen::frame(OUT, I, F);
+		CodeGen::frame(gen, F);
 }
 
-void CodeGen::block(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::block(code_generation *gen, inter_frame P) {
 //	LOG("\nBLOCK\n");
 	inter_symbol *block = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
 	inter_frame_list *ifl = Inter::Package::code_list(block);
@@ -578,46 +607,47 @@ void CodeGen::block(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	inter_frame F;
 	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
 //		Inter::Defn::write_construct_text(DL, F);
-		CodeGen::frame(OUT, I, F);
+		CodeGen::frame(gen, F);
 	}
 //	LOG("----\n");
 }
 
-void CodeGen::code(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::code(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
 	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_CODE_IFLD]);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-			CodeGen::frame(OUT, I, F);
+			CodeGen::frame(gen, F);
 	}
 	void_level = old_level;
 }
 
-void CodeGen::evaluation(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::evaluation(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_EVAL_IFLD]);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-			CodeGen::frame(OUT, I, F);
+			CodeGen::frame(gen, F);
 	}
 	void_level = old_level;
 }
 
-void CodeGen::reference(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::reference(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_RCE_IFLD]);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-			CodeGen::frame(OUT, I, F);
+			CodeGen::frame(gen, F);
 	}
 	void_level = old_level;
 }
 
-void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::inv(code_generation *gen, inter_frame P) {
+	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 	inter_frame_list *ifl = Inter::Inv::children_of_frame(P);
 	if (ifl == NULL) internal_error("cast without code list");
@@ -626,6 +656,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		case INVOKED_PRIMITIVE: {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			if (prim == NULL) internal_error("bad prim");
+			inter_repository *I = gen->from;
 			inter_t bip = Primitives::to_bip(I, prim);
 			switch (bip) {
 				case RETURN_BIP: @<Generate primitive for return@>; break;
@@ -750,7 +781,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			int argc = 0;
 			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
 				if (argc++ > 0) WRITE(", ");
-				CodeGen::frame(OUT, I, F);
+				CodeGen::frame(gen, F);
 			}
 			WRITE(")");
 			break;
@@ -774,7 +805,7 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 					}
 				}
 				WRITE(" ");
-				CodeGen::frame(OUT, I, F);
+				CodeGen::frame(gen, F);
 				query_labels_mode = FALSE;
 			}
 			negate_label_mode = FALSE;
@@ -786,18 +817,19 @@ void CodeGen::inv(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 		(suppress_terminal_semicolon == FALSE)) WRITE(";\n");
 }
 
-void CodeGen::cast(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::cast(code_generation *gen, inter_frame P) {
 	inter_frame_list *ifl = Inter::Cast::children_of_frame(P);
 	if (ifl == NULL) internal_error("cast without code list");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 }
 
-void CodeGen::lab(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::lab(code_generation *gen, inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	if (Inter::Package::is(routine) == FALSE) internal_error("bad lab");
 	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
+	text_stream *OUT = CodeGen::current(gen);
 	if (query_labels_mode) PUT('?');
 	if (negate_label_mode) PUT('~');
 	text_stream *S = CodeGen::name(lab);
@@ -806,6 +838,7 @@ void CodeGen::lab(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			PUT(Str::get(pos));
 }
 
+code_generation *temporary_generation = NULL;
 void CodeGen::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1, inter_t val2) {
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(
@@ -823,12 +856,18 @@ void CodeGen::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1, in
 		case DWORD_IVAL:
 		case REAL_IVAL:
 		case PDWORD_IVAL:
-			CodeGen::literal(OUT, IRS->read_into, NULL, NULL, val1, val2, FALSE);
+			if (temporary_generation == NULL) {
+				CodeGen::Targets::make_targets();
+				temporary_generation = CodeGen::new_generation(IRS->read_into, CodeGen::I6::target());
+			}
+			CodeGen::select_temporary(temporary_generation, OUT);
+			CodeGen::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);
+			CodeGen::deselect_temporary(temporary_generation);
 			break;
 	}
 }
 
-void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::val(code_generation *gen, inter_frame P) {
 	inter_symbol *val_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
 	if (val_kind) {
 		inter_t val1 = P.data[VAL1_VAL_IFLD];
@@ -839,6 +878,7 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			inter_symbol *symb = Inter::SymbolsTables::local_symbol_from_id(routine, val2);
 			if (symb == NULL) symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
 			if (symb == NULL) internal_error("bad val");
+			text_stream *OUT = CodeGen::current(gen);
 			WRITE("%S", CodeGen::name(symb));
 			return;
 		}
@@ -851,7 +891,7 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 			case DWORD_IVAL:
 			case REAL_IVAL:
 			case PDWORD_IVAL:
-				CodeGen::literal(OUT, I, NULL, NULL, val1, val2, FALSE);
+				CodeGen::literal(gen, NULL, NULL, val1, val2, FALSE);
 				return;
 		}
 	}
@@ -872,23 +912,23 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 	switch (rboolean) {
 		case FALSE: WRITE("rfalse"); break;
 		case TRUE: WRITE("rtrue"); break;
-		case NOT_APPLICABLE: WRITE("return "); CodeGen::frame(OUT, I, V); break;
+		case NOT_APPLICABLE: WRITE("return "); CodeGen::frame(gen, V); break;
 	}
 
 @<Generate primitive for jump@> =
 	WRITE("jump ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for quit@> =
 	WRITE("quit");
 
 @<Generate primitive for restore@> =
 	WRITE("restore ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for spaces@> =
 	WRITE("spaces ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for break@> =
 	WRITE("break");
@@ -898,126 +938,126 @@ void CodeGen::val(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
 
 @<Generate primitive for modulo@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("%%");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for random@> =
 	WRITE("random(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for font@> =
 	WRITE("if (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(") { font on; } else { font off; }");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for eq@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("==");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for ne@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" ~= ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for gt@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" > ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for ge@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(">=");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for lt@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("<");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for le@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("<=");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for ofclass@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" ofclass ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for move@> =
 	WRITE("move ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" to ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for remove@> =
 	WRITE("remove ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for give@> =
 	WRITE("give ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for take@> =
 	WRITE("give ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" ~");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for has@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" has ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for hasnt@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" hasnt ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for in@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" in ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for notin@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" notin ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for sequential@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @ Here we need some gymnastics. We need to produce a value which the
@@ -1051,102 +1091,102 @@ then the result.
 @<Generate primitive for ternarysequential@> =
 	WRITE("(\n"); INDENT;
 	WRITE("! This value evaluates third (i.e., last)\n");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	OUTDENT; WRITE("+\n"); INDENT;
 	WRITE("0*(\n"); INDENT;
 	WRITE("! The following condition evaluates second\n");
 	WRITE("((\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	OUTDENT; WRITE("\n))\n");
 	OUTDENT; WRITE("+\n"); INDENT;
 	WRITE("! The following assignments evaluate first\n");
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")");
 	OUTDENT; WRITE(")\n");
 	OUTDENT; WRITE(")\n");
 
 @<Generate primitive for plus@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("+");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for not@> =
 	WRITE("(~~(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for and@> =
 	WRITE("((");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")");
 	WRITE("&&");
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for or@> =
 	WRITE("((");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")||(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for alternative@> =
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" or ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for alternativecase@> =
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(", ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for bitwiseand@> =
 	WRITE("((");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")&(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for bitwiseor@> =
 	WRITE("((");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")|(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for bitwisenot@> =
 	WRITE("(~(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for minus@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("-");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for unaryminus@> =
 	WRITE("(-(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for times@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("*");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for divide@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("/");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for styleroman@> =
@@ -1164,176 +1204,176 @@ then the result.
 @<Generate primitive for print@> =
 	WRITE("print ");
 	CodeGen::enter_print_mode();
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	CodeGen::exit_print_mode();
 
 @<Generate primitive for printret@> =
 	CodeGen::enter_print_mode();
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	CodeGen::exit_print_mode();
 
 @<Generate primitive for printchar@> =
 	WRITE("print (char) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printname@> =
 	WRITE("print (name) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printobj@> =
 	WRITE("print (object) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printproperty@> =
 	WRITE("print (property) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printnumber@> =
 	WRITE("print ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printaddress@> =
 	WRITE("print (address) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printstring@> =
 	WRITE("print (string) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printnlnumber@> =
 	WRITE("print (number) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printdef@> =
 	WRITE("print (the) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printcdef@> =
 	WRITE("print (The) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printindef@> =
 	WRITE("print (a) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for printcindef@> =
 	WRITE("print (A) ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for box@> =
 	WRITE("box ");
 	CodeGen::enter_box_mode();
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	CodeGen::exit_box_mode();
 
 @<Generate primitive for push@> =
 	WRITE("@push ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for pull@> =
 	WRITE("@pull ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 
 @<Generate primitive for preincrement@> =
 	WRITE("++(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for postincrement@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")++");
 
 @<Generate primitive for predecrement@> =
 	WRITE("--(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for postdecrement@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")--");
 
 @<Generate primitive for store@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" = ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for setbit@> =
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" = ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" | ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for clearbit@> =
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" = ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" &~ (");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for if@> =
 	WRITE("if (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(") {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifdebug@> =
 	WRITE("#ifdef DEBUG;\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	OUTDENT; WRITE("#endif;\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifstrict@> =
 	WRITE("#ifdef STRICT_MODE;\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	OUTDENT; WRITE("#endif;\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifelse@> =
 	WRITE("if (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(") {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	OUTDENT; WRITE("} else {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for while@> =
 	WRITE("while (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(") {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for do@> =
 	WRITE("do {");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("} until (\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	OUTDENT; WRITE(")\n");
 
 @<Generate primitive for for@> =
 	WRITE("for (");
 	inter_frame INIT = Inter::top_of_frame_list(ifl);
 	if (!((INIT.data[ID_IFLD] == VAL_IST) && (INIT.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT.data[VAL2_VAL_IFLD] == 1)))
-		CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+		CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(":");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(":");
 	inter_frame U = Inter::third_in_frame_list(ifl);
 	if (U.data[ID_IFLD] != VAL_IST)
-	CodeGen::frame(OUT, I, U);
+	CodeGen::frame(gen, U);
 	WRITE(") {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
@@ -1348,305 +1388,305 @@ then the result.
 	WRITE("objectloop ");
 	if (in_flag == FALSE) {
 		WRITE("(");
-		CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+		CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 		WRITE(" ofclass ");
-		CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+		CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 		WRITE(" && ");
 	}
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	if (in_flag == FALSE) {
 		WRITE(")");
 	}
 	WRITE(" {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for objectloopx@> =
 	WRITE("objectloop (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" ofclass ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(") {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for loop@> =
 	WRITE("{\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for lookup@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("-->(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for lookupbyte@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("->(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for lookupref@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE("-->(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for switch@> =
 	WRITE("switch (");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(") {\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for case@> =
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(":\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(";\n");
 	OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for default@> =
 	WRITE("default:\n"); INDENT;
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(";\n");
 	OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for indirect0v@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")()");
 
 @<Generate primitive for indirect1v@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect2v@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect3v@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect4v@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fifth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect5v@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fifth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::sixth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::sixth_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect0@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")()");
 
 @<Generate primitive for indirect1@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect2@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect3@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect4@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fifth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for indirect5@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(")(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fifth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::sixth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::sixth_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for message0@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("())");
 
 @<Generate primitive for message1@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for message2@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for message3@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fifth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fifth_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for callmessage0@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".call())");
 
 @<Generate primitive for callmessage1@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".call(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for callmessage2@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".call(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for callmessage3@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".call(");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::third_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::third_in_frame_list(ifl));
 	WRITE(",");
-	CodeGen::frame(OUT, I, Inter::fourth_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::fourth_in_frame_list(ifl));
 	WRITE("))");
 
 @<Generate primitive for propertyaddress@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".& ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for propertylength@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".# ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for provides@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" provides ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for propertyvalue@> =
 	WRITE("(");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(".");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 	WRITE(")");
 
 @<Generate primitive for read@> =
 	WRITE("read ");
-	CodeGen::frame(OUT, I, Inter::top_of_frame_list(ifl));
+	CodeGen::frame(gen, Inter::top_of_frame_list(ifl));
 	WRITE(" ");
-	CodeGen::frame(OUT, I, Inter::second_in_frame_list(ifl));
+	CodeGen::frame(gen, Inter::second_in_frame_list(ifl));
 
 @<Generate primitive for inversion@> =
 	WRITE("inversion");
@@ -1746,7 +1786,9 @@ inter_t CodeGen::kind_of_object_count(inter_symbol *kind_name) {
 	return 0;
 }
 
-void CodeGen::append(OUTPUT_STREAM, inter_repository *I, inter_symbol *symb) {
+void CodeGen::append(code_generation *gen, inter_symbol *symb) {
+	text_stream *OUT = CodeGen::current(gen);
+	inter_repository *I = gen->from;
 	text_stream *S = Inter::Symbols::get_append(symb);
 	if (Str::len(S) == 0) return;
 	WRITE("    ");

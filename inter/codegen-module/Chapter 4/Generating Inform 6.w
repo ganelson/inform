@@ -2,9 +2,10 @@
 
 To generate I6 code from intermediate code.
 
-@h Pipeline stage.
+@h Target.
 
 =
+code_generation_target *inform6_target = NULL;
 void CodeGen::I6::create_target(void) {
 	code_generation_target *cgt = CodeGen::Targets::new(I"inform6");
 	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, CodeGen::I6::begin_generation);
@@ -14,9 +15,14 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::I6::constant_segment);
 	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
+	inform6_target = cgt;
 }
 
-@
+code_generation_target *CodeGen::I6::target(void) {
+	return inform6_target;
+}
+
+@h Segmentation.
 
 @e pragmatic_matter_I7CGS from 0
 @e attributes_at_eof_I7CGS
@@ -92,8 +98,12 @@ trick called "stubbing", these being "stub definitions".)
 void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::name(prop_name);
 	if (used) {
-		WRITE_TO(CodeGen::seg(gen, attributes_at_eof_I7CGS), "Property %S;\n", prop_name->symbol_name);
+		generated_segment *saved = CodeGen::select(gen, attributes_at_eof_I7CGS);
+		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
+		CodeGen::deselect(gen, saved);
 	} else {
-		WRITE_TO(CodeGen::seg(gen, code_at_eof_I7CGS), "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
+		generated_segment *saved = CodeGen::select(gen, code_at_eof_I7CGS);
+		WRITE_TO(CodeGen::current(gen), "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
+		CodeGen::deselect(gen, saved);
 	}
 }

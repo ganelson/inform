@@ -176,7 +176,7 @@ we assume that's the name of an attribute already declared (for example
 in the I6 template, or some extension), and we therefore do nothing.
 
 @<Declare as an I6 attribute@> =
-	CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
 		if (A == NULL) A = CodeGen::name(prop_name);
@@ -185,7 +185,7 @@ in the I6 template, or some extension), and we therefore do nothing.
 		if (translated == FALSE)
 			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", CodeGen::name(prop_name));
 	}
-	CodeGen::deselect(gen);
+	CodeGen::deselect(gen, saved);
 
 @ The weak point in our scheme for making some either/or properties into
 Attributes is that run-time code is going to need a fast way to determine
@@ -208,20 +208,22 @@ compiles an I6 constant for this value.
 @<Worry about the FBNA@> =
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
-		CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = %S;\n", CodeGen::name(prop_name));
-		CodeGen::deselect(gen);
+		CodeGen::deselect(gen, saved);
 	}
 
 @ It's unlikely, but just possible, that no FBNAs ever exist, so after the
 above has been tried on all properties:
 
 =
-void CodeGen::IP::knowledge(OUTPUT_STREAM, inter_repository *I, code_generation *gen) {
+void CodeGen::IP::knowledge(code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	inter_repository *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
-		CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER; ! No actual FBNA\n");
-		CodeGen::deselect(gen);
+		CodeGen::deselect(gen, saved);
 	}
 	inter_symbol **all_props_in_source_order = NULL;
 	inter_symbol **props_in_source_order = NULL;
@@ -612,7 +614,9 @@ because I6 doesn't allow function calls in a constant context.
 			inter_t v1 = Y.data[DVAL1_PVAL_IFLD];
 			inter_t v2 = Y.data[DVAL2_PVAL_IFLD];
 			WRITE_TO(sticks, " (");
-			CodeGen::literal(sticks, I, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
+			CodeGen::select_temporary(gen, sticks);
+			CodeGen::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
+			CodeGen::deselect_temporary(gen);
 			WRITE_TO(sticks, ")");
 		}
 	}
@@ -625,10 +629,10 @@ because I6 doesn't allow function calls in a constant context.
 			WRITE("Class %S\n", CodeGen::name(kind_name));
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if (super_name) WRITE("    class %S\n", CodeGen::name(super_name));
-			CodeGen::append(OUT, I, kind_name);
+			CodeGen::append(gen, kind_name);
 			inter_frame_list *FL =
 				Inter::find_frame_list(I, Inter::Kind::properties_list(kind_name));
-			CodeGen::IP::plist(OUT, I, FL);
+			CodeGen::IP::plist(gen, FL);
 			WRITE(";\n\n");
 		}
 	}
@@ -636,7 +640,7 @@ because I6 doesn't allow function calls in a constant context.
 @<Write an I6 Object definition for each object instance@> =
 	for (int i=0; i<no_instances; i++) {
 		inter_symbol *inst_name = instances_in_declaration_order[i];
-		CodeGen::IP::object_instance(OUT, I, Inter::Symbols::defining_frame(inst_name));
+		CodeGen::IP::object_instance(gen, Inter::Symbols::defining_frame(inst_name));
 	}
 
 @ The following lets the run-time environment know what properties are
@@ -786,13 +790,14 @@ linearly with the size of the source text, even though $N$ does.
 @h Instances.
 
 =
-void CodeGen::IP::instance(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::IP::instance(code_generation *gen, inter_frame P) {
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE) {
 		inter_t val1 = P.data[VAL1_INST_IFLD];
 		inter_t val2 = P.data[VAL2_INST_IFLD];
+		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Constant %S", CodeGen::name(inst_name));
 		if (val1 != UNDEF_IVAL) {
 			WRITE(" = ");
@@ -821,11 +826,12 @@ really make much conceptual sense, and I7 dropped the idea -- it has no
 "compass".
 
 =
-void CodeGen::IP::object_instance(OUTPUT_STREAM, inter_repository *I, inter_frame P) {
+void CodeGen::IP::object_instance(code_generation *gen, inter_frame P) {
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
+		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Object ");
 		int c = 0;
 		for (int i=0; i<inst_name->no_symbol_annotations; i++)
@@ -835,17 +841,18 @@ void CodeGen::IP::object_instance(OUTPUT_STREAM, inter_repository *I, inter_fram
 		WRITE("%S \"\"", CodeGen::name(inst_name));
 		if (Inter::Kind::is_a(inst_kind, direction_kind_symbol)) { WRITE(" Compass"); }
 		WRITE("\n    class %S\n", CodeGen::name(inst_kind));
-		CodeGen::append(OUT, I, inst_name);
+		CodeGen::append(gen, inst_name);
 		inter_frame_list *FL =
 			Inter::find_frame_list(
 				P.repo_segment->owning_repo,
 				Inter::Instance::properties_list(inst_name));
-		CodeGen::IP::plist(OUT, I, FL);
+		CodeGen::IP::plist(gen, FL);
 		WRITE(";\n\n");
 	}
 }
 
-void CodeGen::IP::plist(OUTPUT_STREAM, inter_repository *I, inter_frame_list *FL) {
+void CodeGen::IP::plist(code_generation *gen, inter_frame_list *FL) {
+	text_stream *OUT = CodeGen::current(gen);
 	if (FL == NULL) internal_error("no properties list");
 	inter_frame X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
@@ -866,13 +873,13 @@ void CodeGen::IP::plist(OUTPUT_STREAM, inter_repository *I, inter_frame_list *FL
 					inter_frame P = Inter::Symbols::defining_frame(S);
 					for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 						if (i>DATA_CONST_IFLD) WRITE(" ");
-						CodeGen::literal(OUT, I, NULL, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
+						CodeGen::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
 					}
 					done = TRUE;
 				}
 			}
 			if (done == FALSE)
-				CodeGen::literal(OUT, I, NULL, Inter::Packages::scope_of(X),
+				CodeGen::literal(gen, NULL, Inter::Packages::scope_of(X),
 					X.data[DVAL1_PVAL_IFLD], X.data[DVAL2_PVAL_IFLD], FALSE);
 			WRITE("\n");
 		}
