@@ -587,7 +587,7 @@ void TemplateFiles::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT
 				Inter::SymbolsTables::symbol_to_url_name(OUT, S);
 				PUT(URL_SYMBOL_CHAR);
 			} else {
-				CodeGen::val_from(OUT, Packaging::at(), v1, v2);
+				CodeGen::FC::val_from(OUT, Packaging::at(), v1, v2);
 			}
 		}
 	}

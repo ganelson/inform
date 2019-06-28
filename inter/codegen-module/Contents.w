@@ -8,10 +8,9 @@ Chapter 1: Setting Up
 "Loading this module."
 	Codegen Module
 	Stages
-	Targets
 	Pipelines
 
-Chapter 2: Linking
+Chapter 2: Miscellaneous Pipeline Stages
 	Linker
 	Template Reader
 	Parse Linked Matter
@@ -22,15 +21,23 @@ Chapter 2: Linking
 	Reconcile Verbs
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
-	Inventory
 
 Chapter 3: Inform 6 to Inter
 	Inter Primitives
 	The Veneer
 	Inter Schemas
 
-Chapter 4: Inter to Higher-Level Languages
+Chapter 4: Inter to Final Code
 	Code Generation
+	Frame Control
+	Constants and Literals
 	Instances and Properties
 	Variables
-	Generating Inform 6
+
+Chapter 5: Final Code
+	Final Targets
+	Final Textual Inter
+	Final Binary Inter
+	Final Inventory
+	Final Summarised Inter
+	Final Inform 6

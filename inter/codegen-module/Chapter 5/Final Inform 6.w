@@ -15,6 +15,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::I6::constant_segment);
 	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
 	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::I6::compile_primitive);
+	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
 	inform6_target = cgt;
@@ -38,7 +39,7 @@ code_generation_target *CodeGen::I6::target(void) {
 @e verbs_at_eof_I7CGS
 
 =
-void CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *cg) {
+int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *cg) {
 	cg->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	cg->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
 	cg->segments[early_matter_I7CGS] = CodeGen::new_segment();
@@ -49,6 +50,7 @@ void CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation 
 	cg->segments[routines_at_eof_I7CGS] = CodeGen::new_segment();
 	cg->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
 	cg->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
+	return FALSE;
 }
 
 int CodeGen::I6::general_segment(code_generation_target *cgt, inter_frame P) {
@@ -253,7 +255,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 	switch (rboolean) {
 		case FALSE: WRITE("rfalse"); break;
 		case TRUE: WRITE("rtrue"); break;
-		case NOT_APPLICABLE: WRITE("return "); CodeGen::frame(gen, V); break;
+		case NOT_APPLICABLE: WRITE("return "); CodeGen::FC::frame(gen, V); break;
 	}
 	
 
@@ -332,7 +334,7 @@ then the result.
 	WRITE(":");
 	inter_frame U = Inter::third_in_frame_list(ifl);
 	if (U.data[ID_IFLD] != VAL_IST)
-	CodeGen::frame(gen, U);
+	CodeGen::FC::frame(gen, U);
 	WRITE(") {\n"); INDENT; INV_A4;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
@@ -381,6 +383,30 @@ then the result.
 
 @
 
+=
+void CodeGen::I6::compile_dictionary_word(code_generation_target *cgt, code_generation *gen,
+	text_stream *S, int pluralise) {
+	text_stream *OUT = CodeGen::current(gen);
+	int n = 0;
+	WRITE("'");
+	LOOP_THROUGH_TEXT(pos, S) {
+		wchar_t c = Str::get(pos);
+		switch(c) {
+			case '/': if (Str::len(S) == 1) WRITE("@{2F}"); else WRITE("/"); break;
+			case '\'': WRITE("^"); break;
+			case '^': WRITE("@{5E}"); break;
+			case '~': WRITE("@{7E}"); break;
+			case '@': WRITE("@{40}"); break;
+			default: PUT(c);
+		}
+		if (n++ > 32) break;
+	}
+	if (pluralise) WRITE("//p");
+	else if (Str::len(S) == 1) WRITE("//");
+	WRITE("'");
+}
+
+@
 
 =
 void CodeGen::I6::compile_literal_text(code_generation_target *cgt, code_generation *gen,
@@ -446,7 +472,7 @@ trick called "stubbing", these being "stub definitions".)
 =
 void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = CodeGen::name(prop_name);
+	text_stream *name = CodeGen::CL::name(prop_name);
 	if (used) {
 		generated_segment *saved = CodeGen::select(gen, attributes_at_eof_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);

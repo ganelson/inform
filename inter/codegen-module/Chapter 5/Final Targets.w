@@ -1,4 +1,4 @@
-[CodeGen::Targets::] Targets.
+[CodeGen::Targets::] Final Targets.
 
 To create the range of possible targets into which Inter can be converted.
 
@@ -24,16 +24,13 @@ code_generation_target *CodeGen::Targets::new(text_stream *name) {
 =
 int cgts_made = FALSE;
 
-code_generation_target *binary_inter_cgt = NULL;
-code_generation_target *textual_inter_cgt = NULL;
-code_generation_target *summary_cgt = NULL;
-
 void CodeGen::Targets::make_targets(void) {
 	if (cgts_made == FALSE) {
 		cgts_made = TRUE;
-		binary_inter_cgt = CodeGen::Targets::new(I"binary");
-		textual_inter_cgt = CodeGen::Targets::new(I"text");
-		summary_cgt = CodeGen::Targets::new(I"summary");
+		CodeGen::Textual::create_target();
+		CodeGen::Binary::create_target();
+		CodeGen::Inventory::create_target();
+		CodeGen::Summarised::create_target();
 		CodeGen::I6::create_target();
 	}
 }
@@ -43,9 +40,11 @@ void CodeGen::Targets::make_targets(void) {
 @e BEGIN_GENERATION_MTID
 
 =
-VMETHOD_TYPE(BEGIN_GENERATION_MTID, code_generation_target *cgt, code_generation *gen)
-void CodeGen::Targets::begin_generation(code_generation *gen) {
-	VMETHOD_CALL(gen->target, BEGIN_GENERATION_MTID, gen);
+IMETHOD_TYPE(BEGIN_GENERATION_MTID, code_generation_target *cgt, code_generation *gen)
+int CodeGen::Targets::begin_generation(code_generation *gen) {
+	int rv = FALSE;
+	IMETHOD_CALL(rv, gen->target, BEGIN_GENERATION_MTID, gen);
+	return rv;
 }
 
 @
@@ -103,6 +102,16 @@ int CodeGen::Targets::compile_primitive(code_generation *gen, inter_symbol *prim
 	int rv = FALSE;
 	IMETHOD_CALL(rv, gen->target, COMPILE_PRIMITIVE_MTID, gen, prim_name, ifl);
 	return rv;
+}
+
+@
+
+@e COMPILE_DICTIONARY_WORD_MTID
+
+=
+VMETHOD_TYPE(COMPILE_DICTIONARY_WORD_MTID, code_generation_target *cgt, code_generation *gen, text_stream *S, int pluralise)
+void CodeGen::Targets::compile_dictionary_word(code_generation *gen, text_stream *S, int pluralise) {
+	VMETHOD_CALL(gen->target, COMPILE_DICTIONARY_WORD_MTID, gen, S, pluralise);
 }
 
 @

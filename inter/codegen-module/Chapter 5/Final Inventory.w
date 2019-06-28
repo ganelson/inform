@@ -1,23 +1,23 @@
-[CodeGen::Inventory::] Inventory.
+[CodeGen::Inventory::] Final Inventory.
 
 To print a summary of the contents of a repository.
 
-@h Pipeline stage.
+@ This target is fairly simple: when we get the message to begin generation,
+we simply ask the Inter module to output some text, and return true to
+tell the generator that nothing more need be done.
 
 =
-void CodeGen::Inventory::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"inventory", CodeGen::Inventory::run_pipeline_stage, TEXT_OUT_STAGE_ARG);
+void CodeGen::Inventory::create_target(void) {
+	code_generation_target *inv_cgt = CodeGen::Targets::new(I"inventory");
+	METHOD_ADD(inv_cgt, BEGIN_GENERATION_MTID, CodeGen::Inventory::inv);
 }
 
-int CodeGen::Inventory::run_pipeline_stage(pipeline_step *step) {
-	CodeGen::Inventory::print(step->text_out_file, step->repository);
-	CodeGen::Inventory::print(DL, step->repository);
+int CodeGen::Inventory::inv(code_generation_target *cgt, code_generation *gen) {
+	if (gen->from_step == NULL) internal_error("temporary generations cannot be output");
+	CodeGen::Inventory::print(gen->from_step->text_out_file, gen->from);
 	return TRUE;
 }
 
-@h The whole shebang.
-
-=
 void CodeGen::Inventory::print(OUTPUT_STREAM, inter_repository *I) {
 	if (I == NULL) internal_error("no repository");
 	inter_package *main_package = Inter::Packages::main(I);

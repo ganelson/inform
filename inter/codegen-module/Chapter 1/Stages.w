@@ -46,7 +46,6 @@ void CodeGen::Stage::make_stages(void) {
 		CodeGen::Assimilate::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();
 		CodeGen::Externals::create_pipeline_stage();
-		CodeGen::Inventory::create_pipeline_stage();
 		CodeGen::Labels::create_pipeline_stage();
 		CodeGen::Link::create_pipeline_stage();
 		CodeGen::PLM::create_pipeline_stage();

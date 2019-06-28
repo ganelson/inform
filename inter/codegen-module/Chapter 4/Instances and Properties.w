@@ -3,6 +3,26 @@
 To generate the initial state of storage for instances and their
 properties, and all associated metadata.
 
+@
+
+=
+int properties_written = FALSE;
+void CodeGen::IP::write_properties(code_generation *gen) {
+	if (properties_written == FALSE) {
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+		text_stream *TO = CodeGen::current(gen);
+		if (CodeGen::CL::quartet_present()) {
+			WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
+			WRITE_TO(TO, "Object thedark \"(darkness object)\";\n");
+			WRITE_TO(TO, "Object InformParser \"(Inform Parser)\" has proper;\n");
+			WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
+		}
+		CodeGen::IP::knowledge(gen);
+		CodeGen::deselect(gen, saved);
+		properties_written = TRUE;		
+	}
+}
+
 @h Representing instances in I6.
 Partly for historical reasons, partly to squeeze performance out of the
 virtual machines used in traditional parser IF, the I6 run-time
@@ -122,7 +142,7 @@ must rule out any property which might belong to any value.
 		} else {
 			owner_kind = owner_name;
 		}
-		if (CodeGen::is_kind_of_object(owner_kind) == FALSE) make_attribute = FALSE;
+		if (CodeGen::IP::is_kind_of_object(owner_kind) == FALSE) make_attribute = FALSE;
 	}
 
 @ An either/or property which has been deliberately equated to an I6
@@ -179,11 +199,11 @@ in the I6 template, or some extension), and we therefore do nothing.
 	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
-		if (A == NULL) A = CodeGen::name(prop_name);
+		if (A == NULL) A = CodeGen::CL::name(prop_name);
 		WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", A);
 	} else {
 		if (translated == FALSE)
-			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", CodeGen::name(prop_name));
+			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", CodeGen::CL::name(prop_name));
 	}
 	CodeGen::deselect(gen, saved);
 
@@ -209,7 +229,7 @@ compiles an I6 constant for this value.
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = %S;\n", CodeGen::name(prop_name));
+		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = %S;\n", CodeGen::CL::name(prop_name));
 		CodeGen::deselect(gen, saved);
 	}
 
@@ -276,7 +296,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 					CodeGen::IP::property(I, prop_name, gen);
 			}
 		qsort(all_props_in_source_order, (size_t) total_no_properties, sizeof(inter_symbol *),
-			CodeGen::compare_kind_symbols);
+			CodeGen::IP::compare_kind_symbols);
 		for (int p=0; p<total_no_properties; p++) {
 			inter_symbol *prop_name = all_props_in_source_order[p];
 			CodeGen::IP::property(I, prop_name, gen);
@@ -321,7 +341,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 			kinds_in_source_order[c++] = kind_name;
 		}
 	qsort(kinds_in_source_order, (size_t) no_kinds, sizeof(inter_symbol *),
-		CodeGen::compare_kind_symbols);
+		CodeGen::IP::compare_kind_symbols);
 
 @<Make a list of kinds in declaration order@> =
 	inter_frame P;
@@ -334,7 +354,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 			kinds_in_declaration_order[c++] = kind_name;
 		}
 	qsort(kinds_in_declaration_order, (size_t) no_kinds, sizeof(inter_symbol *),
-		CodeGen::compare_kind_symbols_decl);
+		CodeGen::IP::compare_kind_symbols_decl);
 
 @<Make a list of instances in declaration order@> =
 	inter_frame P;
@@ -351,7 +371,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 				instances_in_declaration_order[c++] = inst_name;
 			}
 		qsort(instances_in_declaration_order, (size_t) no_instances, sizeof(inter_symbol *),
-			CodeGen::compare_kind_symbols_decl);
+			CodeGen::IP::compare_kind_symbols_decl);
 	}
 
 @ But there's a snag. The above assumes that property values will have the
@@ -375,7 +395,7 @@ bother to force them.)
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
 				inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
 				if (kind_name == truth_state_kind_symbol) {
-					WRITE("  with %S false\n", CodeGen::name(prop_name));
+					WRITE("  with %S false\n", CodeGen::CL::name(prop_name));
 				}
 			}
 		}
@@ -386,7 +406,7 @@ bother to force them.)
 	inter_t c = 1;
 	for (int i=0; i<no_kinds; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
-		if (CodeGen::is_kind_of_object(kind_name))
+		if (CodeGen::IP::is_kind_of_object(kind_name))
 			Inter::Symbols::annotate_i(I, kind_name, OBJECT_KIND_COUNTER_IANN,  c++);
 	}
 
@@ -405,20 +425,20 @@ property usage is legal.
 	int no_kos = 0;
 	for (int i=0; i<no_kinds; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
-		if (CodeGen::is_kind_of_object(kind_name)) no_kos++;
+		if (CodeGen::IP::is_kind_of_object(kind_name)) no_kos++;
 	}
 
 	if (no_kos > 0) {
 		WRITE("Array KindHierarchy --> K0_kind (0)");
 		for (int i=0; i<no_kinds; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
-			if (CodeGen::is_kind_of_object(kind_name)) {
+			if (CodeGen::IP::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
 				if ((super_name) && (super_name != object_kind_symbol)) {
-					WRITE(" %S (%d)", CodeGen::name(kind_name),
-						CodeGen::kind_of_object_count(super_name));
+					WRITE(" %S (%d)", CodeGen::CL::name(kind_name),
+						CodeGen::IP::kind_of_object_count(super_name));
 				} else {
-					WRITE(" %S (0)", CodeGen::name(kind_name));
+					WRITE(" %S (0)", CodeGen::CL::name(kind_name));
 				}
 			}
 		}
@@ -455,7 +475,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 		for (int w=1; w<M; w++) {
 			for (int i=0; i<no_kinds; i++) {
 				inter_symbol *kind_name = kinds_in_source_order[i];
-				if (CodeGen::weak_id(kind_name) == w) {
+				if (CodeGen::IP::weak_id(kind_name) == w) {
 					if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 						TEMPORARY_TEXT(sticks);
 						WRITE("VPH_Class VPH_%d\n    with value_range %d\n",
@@ -497,7 +517,7 @@ words, the number of instances of this kind.
 @<Decide who gets a VPH@> =
 	for (int i=0; i<no_kinds; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
-		if (CodeGen::is_kind_of_object(kind_name)) continue;
+		if (CodeGen::IP::is_kind_of_object(kind_name)) continue;
 		if (kind_name == object_kind_symbol) continue;
 		if (kind_name == unchecked_kind_symbol) continue;
 		int vph_me = FALSE;
@@ -527,7 +547,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 		int written = FALSE;
 		for (int i=0; i<no_kinds; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
-			if (CodeGen::weak_id(kind_name) == w) {
+			if (CodeGen::IP::weak_id(kind_name) == w) {
 				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 					written = TRUE;
 					WRITE(" VPH_%d", w);
@@ -555,12 +575,12 @@ just to force the property into being.
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
-			text_stream *call_it = CodeGen::name(prop_name);
+			text_stream *call_it = CodeGen::CL::name(prop_name);
 			WRITE("    with %S ", call_it);
 			if (X.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = Inter::SymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				WRITE("%S", CodeGen::name(store));
+				WRITE("%S", CodeGen::CL::name(store));
 			} else {
 				@<Compile a stick of property values and put its address here@>;
 			}
@@ -584,7 +604,7 @@ because I6 doesn't allow function calls in a constant context.
 
 @<Compile a stick of property values and put its address here@> =
 	TEMPORARY_TEXT(ident);
-	WRITE_TO(ident, "KOVP_%d_P%d", w, CodeGen::pnum(prop_name));
+	WRITE_TO(ident, "KOVP_%d_P%d", w, CodeGen::IP::pnum(prop_name));
 	WRITE("%S", ident);
 	WRITE_TO(sticks, "Array %S table 0 0", ident);
 	for (int j=0; j<no_instances; j++) {
@@ -615,7 +635,7 @@ because I6 doesn't allow function calls in a constant context.
 			inter_t v2 = Y.data[DVAL2_PVAL_IFLD];
 			WRITE_TO(sticks, " (");
 			CodeGen::select_temporary(gen, sticks);
-			CodeGen::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
+			CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
 			CodeGen::deselect_temporary(gen);
 			WRITE_TO(sticks, ")");
 		}
@@ -625,11 +645,11 @@ because I6 doesn't allow function calls in a constant context.
 	for (int i=0; i<no_kinds; i++) {
 		inter_symbol *kind_name = kinds_in_declaration_order[i];
 		if ((kind_name == object_kind_symbol) ||
-			(CodeGen::is_kind_of_object(kind_name))) {
-			WRITE("Class %S\n", CodeGen::name(kind_name));
+			(CodeGen::IP::is_kind_of_object(kind_name))) {
+			WRITE("Class %S\n", CodeGen::CL::name(kind_name));
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
-			if (super_name) WRITE("    class %S\n", CodeGen::name(super_name));
-			CodeGen::append(gen, kind_name);
+			if (super_name) WRITE("    class %S\n", CodeGen::CL::name(super_name));
+			CodeGen::IP::append(gen, kind_name);
 			inter_frame_list *FL =
 				Inter::find_frame_list(I, Inter::Kind::properties_list(kind_name));
 			CodeGen::IP::plist(gen, FL);
@@ -678,12 +698,12 @@ though this won't happen for any property created by I7 source text.
 		int pos = 0;
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
-			WRITE("! offset %d: property %S\n", pos, CodeGen::name(prop_name));
+			WRITE("! offset %d: property %S\n", pos, CodeGen::CL::name(prop_name));
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT))
 				WRITE_TO(pm_writer, "attributed_property_offsets");
 			else
 				WRITE_TO(pm_writer, "valued_property_offsets");
-			WRITE_TO(pm_writer, "-->%S = %d;\n", CodeGen::name(prop_name), pos);
+			WRITE_TO(pm_writer, "-->%S = %d;\n", CodeGen::CL::name(prop_name), pos);
 
 			@<Write the property name in double quotes@>;
 			@<Write a list of kinds or objects which are permitted to have this property@>;
@@ -722,7 +742,7 @@ linearly with the size of the source text, even though $N$ does.
 @<Write a list of kinds or objects which are permitted to have this property@> =
 	for (int e=0; e<no_properties; e++) {
 		inter_symbol *eprop_name = props_in_source_order[e];
-		if (Str::eq(CodeGen::name(eprop_name), CodeGen::name(prop_name))) {
+		if (Str::eq(CodeGen::CL::name(eprop_name), CodeGen::CL::name(prop_name))) {
 			inter_frame_list *EVL =
 				Inter::find_frame_list(I, Inter::Property::permissions_list(eprop_name));
 
@@ -734,12 +754,12 @@ linearly with the size of the source text, even though $N$ does.
 @<List any O with an explicit permission@> =
 	for (int k=0; k<no_kinds; k++) {
 		inter_symbol *kind_name = kinds_in_source_order[k];
-		if (CodeGen::is_kind_of_object(kind_name)) {
+		if (CodeGen::IP::is_kind_of_object(kind_name)) {
 			inter_frame X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, EVL) {
 				inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
-					WRITE("%S ", CodeGen::name(kind_name));
+					WRITE("%S ", CodeGen::CL::name(kind_name));
 					pos++;
 				}
 			}
@@ -747,12 +767,12 @@ linearly with the size of the source text, even though $N$ does.
 	}
 	for (int in=0; in<no_instances; in++) {
 		inter_symbol *inst_name = instances_in_declaration_order[in];
-		if (CodeGen::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
+		if (CodeGen::IP::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
 			inter_frame X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, EVL) {
 				inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
-					WRITE("%S ", CodeGen::name(inst_name));
+					WRITE("%S ", CodeGen::CL::name(inst_name));
 					pos++;
 				}
 			}
@@ -768,7 +788,7 @@ linearly with the size of the source text, even though $N$ does.
 				for (int k=0; k<no_kinds; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-						WRITE("%S ", CodeGen::name(kind_name));
+						WRITE("%S ", CodeGen::CL::name(kind_name));
 						pos++;
 					}
 				}
@@ -798,7 +818,7 @@ void CodeGen::IP::instance(code_generation *gen, inter_frame P) {
 		inter_t val1 = P.data[VAL1_INST_IFLD];
 		inter_t val2 = P.data[VAL2_INST_IFLD];
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("Constant %S", CodeGen::name(inst_name));
+		WRITE("Constant %S", CodeGen::CL::name(inst_name));
 		if (val1 != UNDEF_IVAL) {
 			WRITE(" = ");
 			int hex = FALSE;
@@ -811,6 +831,61 @@ void CodeGen::IP::instance(code_generation *gen, inter_frame P) {
 		WRITE(";\n");
 	}
 }
+
+@ =
+int CodeGen::IP::pnum(inter_symbol *prop_name) {
+	for (int i=0; i<prop_name->no_symbol_annotations; i++)
+		if (prop_name->symbol_annotations[i].annot->annotation_ID == SOURCE_ORDER_IANN)
+			return (int) prop_name->symbol_annotations[i].annot_value;
+	return 0;
+}
+
+int CodeGen::IP::compare_kind_symbols(const void *elem1, const void *elem2) {
+	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = CodeGen::IP::kind_sequence_number(*e1);
+	int s2 = CodeGen::IP::kind_sequence_number(*e2);
+	if (s1 != s2) return s1-s2;
+	return (*e1)->allocation_id - (*e2)->allocation_id;
+}
+
+int CodeGen::IP::compare_kind_symbols_decl(const void *elem1, const void *elem2) {
+	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = CodeGen::IP::kind_sequence_number_decl(*e1);
+	int s2 = CodeGen::IP::kind_sequence_number_decl(*e2);
+	if (s1 != s2) return s1-s2;
+	return (*e1)->allocation_id - (*e2)->allocation_id;
+}
+
+int CodeGen::IP::kind_sequence_number(const inter_symbol *kind_name) {
+	int A = 100000000;
+	for (int i=0; i<kind_name->no_symbol_annotations; i++)
+		if (kind_name->symbol_annotations[i].annot->annotation_ID == SOURCE_ORDER_IANN)
+			A = (int) kind_name->symbol_annotations[i].annot_value;
+	return A;
+}
+
+int CodeGen::IP::kind_sequence_number_decl(const inter_symbol *kind_name) {
+	int A = 100000000;
+	for (int i=0; i<kind_name->no_symbol_annotations; i++)
+		if (kind_name->symbol_annotations[i].annot->annotation_ID == DECLARATION_ORDER_IANN)
+			A = (int) kind_name->symbol_annotations[i].annot_value;
+	return A;
+}
+
+int CodeGen::IP::weak_id(inter_symbol *kind_name) {
+	for (int i=0; i<kind_name->no_symbol_annotations; i++)
+		if (kind_name->symbol_annotations[i].annot->annotation_ID == WEAK_ID_IANN)
+			return (int) kind_name->symbol_annotations[i].annot_value;
+	return 0;
+}
+
+
 
 @ For the I6 header syntax, see the DM4. Note that the "hardwired" short
 name is intentionally made blank: we always use I6's |short_name| property
@@ -838,10 +913,10 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_frame P) {
 			if (inst_name->symbol_annotations[i].annot->annotation_ID == ARROW_COUNT_IANN)
 				c = (int) inst_name->symbol_annotations[i].annot_value;
 		for (int i=0; i<c; i++) WRITE("-> ");
-		WRITE("%S \"\"", CodeGen::name(inst_name));
+		WRITE("%S \"\"", CodeGen::CL::name(inst_name));
 		if (Inter::Kind::is_a(inst_kind, direction_kind_symbol)) { WRITE(" Compass"); }
-		WRITE("\n    class %S\n", CodeGen::name(inst_kind));
-		CodeGen::append(gen, inst_name);
+		WRITE("\n    class %S\n", CodeGen::CL::name(inst_kind));
+		CodeGen::IP::append(gen, inst_name);
 		inter_frame_list *FL =
 			Inter::find_frame_list(
 				P.repo_segment->owning_repo,
@@ -858,7 +933,7 @@ void CodeGen::IP::plist(code_generation *gen, inter_frame_list *FL) {
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_name == NULL) internal_error("no property");
-		text_stream *call_it = CodeGen::name(prop_name);
+		text_stream *call_it = CodeGen::CL::name(prop_name);
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 			char *maybe = "";
 			if ((X.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
@@ -873,15 +948,59 @@ void CodeGen::IP::plist(code_generation *gen, inter_frame_list *FL) {
 					inter_frame P = Inter::Symbols::defining_frame(S);
 					for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 						if (i>DATA_CONST_IFLD) WRITE(" ");
-						CodeGen::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
+						CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
 					}
 					done = TRUE;
 				}
 			}
 			if (done == FALSE)
-				CodeGen::literal(gen, NULL, Inter::Packages::scope_of(X),
+				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(X),
 					X.data[DVAL1_PVAL_IFLD], X.data[DVAL2_PVAL_IFLD], FALSE);
 			WRITE("\n");
 		}
 	}
+}
+
+void CodeGen::IP::append(code_generation *gen, inter_symbol *symb) {
+	text_stream *OUT = CodeGen::current(gen);
+	inter_repository *I = gen->from;
+	text_stream *S = Inter::Symbols::get_append(symb);
+	if (Str::len(S) == 0) return;
+	WRITE("    ");
+	int L = Str::len(S);
+	for (int i=0; i<L; i++) {
+		wchar_t c = Str::get_at(S, i);
+		if (c == URL_SYMBOL_CHAR) {
+			TEMPORARY_TEXT(T);
+			for (i++; i<L; i++) {
+				wchar_t c = Str::get_at(S, i);
+				if (c == URL_SYMBOL_CHAR) break;
+				PUT_TO(T, c);
+			}
+			inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(I, NULL, T);
+			WRITE("%S", CodeGen::CL::name(symb));
+			DISCARD_TEXT(T);
+		} else PUT(c);
+		if ((c == '\n') && (i != Str::len(S)-1)) WRITE("    ");
+	}
+}
+
+@ =
+int CodeGen::IP::is_kind_of_object(inter_symbol *kind_name) {
+	if (kind_name == object_kind_symbol) return FALSE;
+	inter_data_type *idt = Inter::Kind::data_type(kind_name);
+	if (idt == unchecked_idt) return FALSE;
+	if (Inter::Kind::is_a(kind_name, object_kind_symbol)) return TRUE;
+	return FALSE;
+}
+
+@ Counting kinds of object, not very quickly:
+
+=
+inter_t CodeGen::IP::kind_of_object_count(inter_symbol *kind_name) {
+	if ((kind_name == NULL) || (kind_name == object_kind_symbol)) return 0;
+	for (int i=0; i<kind_name->no_symbol_annotations; i++)
+		if (kind_name->symbol_annotations[i].annot->annotation_ID == OBJECT_KIND_COUNTER_IANN)
+			return kind_name->symbol_annotations[i].annot_value;
+	return 0;
 }
