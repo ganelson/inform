@@ -20,7 +20,6 @@ Chapter 2: Interoperability
 	Inter in Text Files
 	Verifying Inter
 	Inter Data Types
-	Dependency Graph
 
 Chapter 3: Language Definition
 	Canonical Annotations
