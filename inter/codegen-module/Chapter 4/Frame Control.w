@@ -70,15 +70,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 			}
 			break;
 		}
-		case VARIABLE_IST: {
-			inter_package *outer = Inter::Packages::container(P);
-			if ((outer) && (CodeGen::Eliminate::gone(outer->package_name))) {
-				LOG("Yeah, so reject $3\n", outer->package_name);
-				return;
-			}
-			CodeGen::Var::knowledge(gen);
-			break;
-		}
+		case VARIABLE_IST: CodeGen::Var::knowledge(gen); break;
 		case INSTANCE_IST: CodeGen::IP::instance(gen, P); break;
 		case SPLAT_IST: CodeGen::FC::splat(gen, P); break;
 		case LOCAL_IST: CodeGen::FC::local(gen, P); break;
@@ -243,7 +235,8 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1
 		case PDWORD_IVAL:
 			if (temporary_generation == NULL) {
 				CodeGen::Targets::make_targets();
-				temporary_generation = CodeGen::new_generation(NULL, IRS->read_into, CodeGen::I6::target());
+				temporary_generation =
+					CodeGen::new_generation(NULL, IRS->read_into, NULL, CodeGen::I6::target());
 			}
 			CodeGen::select_temporary(temporary_generation, OUT);
 			CodeGen::CL::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);

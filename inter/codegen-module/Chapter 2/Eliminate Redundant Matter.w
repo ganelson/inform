@@ -87,7 +87,8 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 			inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
 			inter_package *which = Inter::Package::which(package_name);
 			if ((which) && ((which->package_flags & USED_PACKAGE_FLAG) == 0)) {
-				LOG("Not used: $6\n", which);
+				LOG("Not used: $3\n", package_name);
+				CodeGen::Eliminate::remove_package(which);
 			}
 		}
 		if (P.data[ID_IFLD] == VARIABLE_IST) {
@@ -99,6 +100,14 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 				Inter::Symbols::remove_from_table(var_name);
 				continue;
 			}
+		}
+	}
+}
+
+void CodeGen::Eliminate::remove_package(inter_package *pack) {
+	for (inter_package *P = pack->child_package; P; P = P->next_package) {
+		if ((P) && ((P->package_flags & USED_PACKAGE_FLAG) != 0)) {
+			LOG("Warning: eliminating necessary $6\n", P);
 		}
 	}
 }

@@ -330,7 +330,6 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 				inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 				if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
 					(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
-					LOG("True on $3\n", prop_name);
 					CodeGen::Targets::declare_property(gen, prop_name, TRUE);
 				}
 			}
@@ -813,7 +812,6 @@ linearly with the size of the source text, even though $N$ does.
 	for (int p=0; p<no_properties; p++) {
 		inter_symbol *prop_name = props_in_source_order[p];
 		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1) {
-			LOG("False on $3\n", prop_name);
 			CodeGen::Targets::declare_property(gen, prop_name, FALSE);
 		}
 	}

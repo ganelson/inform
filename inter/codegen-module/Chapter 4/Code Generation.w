@@ -11,8 +11,22 @@ void CodeGen::create_pipeline_stage(void) {
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->target_argument == NULL) internal_error("no target specified");
+	inter_package *which = NULL;
+	if (Str::len(step->package_argument) > 0) {
+		inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(step->repository,
+			NULL, step->package_argument);
+		if (symb == NULL) {
+			LOG("Arg %S\n", step->package_argument);
+			internal_error("no such package name");
+		}
+		which = Inter::Package::which(symb);
+		if (which == NULL) {
+			LOG("Arg %S\n", step->package_argument);
+			internal_error("that's not a package name");
+		}
+	}
 	code_generation *gen =
-		CodeGen::new_generation(step, step->repository, step->target_argument);
+		CodeGen::new_generation(step, step->repository, which, step->target_argument);
 	if (CodeGen::Targets::begin_generation(gen) == FALSE) {
 		CodeGen::generate(gen);
 		CodeGen::write(step->text_out_file, gen);
@@ -46,6 +60,7 @@ typedef struct code_generation {
 	struct pipeline_step *from_step;
 	struct inter_repository *from;
 	struct code_generation_target *target;
+	struct inter_package *just_this_package;
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
 	struct generated_segment *current_segment; /* an entry in that array, or null */
 	int temporarily_diverted; /* to the temporary segment */
@@ -53,11 +68,13 @@ typedef struct code_generation {
 } code_generation;
 
 code_generation *CodeGen::new_generation(pipeline_step *step, inter_repository *I,
-	code_generation_target *target) {
+	inter_package *just, code_generation_target *target) {
 	code_generation *gen = CREATE(code_generation);
 	gen->from_step = step;
 	gen->from = I;
 	gen->target = target;
+	if (just) gen->just_this_package = just;
+	else gen->just_this_package = Inter::Packages::main(I);
 	gen->current_segment = NULL;
 	gen->temporarily_diverted = FALSE;
 	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;

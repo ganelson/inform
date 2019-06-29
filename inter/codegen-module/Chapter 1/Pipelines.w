@@ -13,10 +13,11 @@ typedef struct pipeline_step {
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
 	struct code_generation_target *target_argument;
-	
+	struct text_stream *package_argument;
 	struct filename *parsed_filename;
 	struct pathname **the_PP;
 	int the_N;
+	int to_debugging_log;
 	struct text_stream *text_out_file;
 	struct inter_repository *repository;
 	MEMORY_MANAGEMENT
@@ -26,6 +27,7 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 	pipeline_step *step = CREATE(pipeline_step);
 	step->step_stage = NULL;
 	step->step_argument = NULL;
+	step->package_argument = NULL;
 	CodeGen::Pipeline::clean_step(step);
 	return step;
 }
@@ -37,6 +39,7 @@ void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->parsed_filename = NULL;
 	step->text_out_file = NULL;
 	step->the_N = -1;
+	step->to_debugging_log = FALSE;
 	step->the_PP = NULL;
 	step->repository = NULL;
 }
@@ -48,6 +51,7 @@ logging:
 void CodeGen::Pipeline::write_step(OUTPUT_STREAM, pipeline_step *step) {
 	WRITE("%S", step->step_stage->stage_name);
 	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
+		if (step->package_argument) WRITE(" %S", step->package_argument);
 		WRITE(":");
 		if (step->target_argument) WRITE(" %S ->", step->target_argument->target_name);
 		WRITE(" %S", step->step_argument);
@@ -78,6 +82,12 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, text_stream *leaf
 		Str::copy(step, mr.exp[0]);
 		if (Str::eq(ST->step_argument, I"*")) Str::copy(ST->step_argument, leafname);
 	}
+	if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
+		ST->package_argument = Str::new();
+		Str::copy(ST->package_argument, mr.exp[1]);
+		Str::copy(step, mr.exp[0]);
+	}
+
 	pipeline_stage *stage;
 	LOOP_OVER(stage, pipeline_stage)
 		if (Str::eq(step, stage->stage_name))
@@ -161,20 +171,26 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
-				int slashes = FALSE;
-				LOOP_THROUGH_TEXT(pos, step->step_argument)
-					if (Str::get(pos) == '/')
-						slashes = TRUE;
-				if (slashes) step->parsed_filename = Filenames::from_text(step->step_argument);
-				else if ((step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
-						(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG))
-					step->parsed_filename = Filenames::in_folder(FM, step->step_argument);
-				else step->parsed_filename = Filenames::in_folder(P, step->step_argument);
+				if (Str::eq(step->step_argument, I"log")) {
+					step->to_debugging_log = TRUE;
+				} else {
+					int slashes = FALSE;
+					LOOP_THROUGH_TEXT(pos, step->step_argument)
+						if (Str::get(pos) == '/')
+							slashes = TRUE;
+					if (slashes) step->parsed_filename = Filenames::from_text(step->step_argument);
+					else if ((step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
+							(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG))
+						step->parsed_filename = Filenames::in_folder(FM, step->step_argument);
+					else step->parsed_filename = Filenames::in_folder(P, step->step_argument);
+				}
 			}
 
 			text_stream text_output_struct; /* For any text file we might write */
 			text_stream *T = &text_output_struct;
-			if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+			if (step->to_debugging_log) {
+				step->text_out_file = DL;
+			} else if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
 				if (STREAM_OPEN_TO_FILE(T, step->parsed_filename, ISO_ENC) == FALSE) {
 					#ifdef PROBLEMS_MODULE
@@ -190,8 +206,9 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 
 			active = (*(step->step_stage->execute))(step);
 
-			if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
-				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
+			if (((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) &&
+				(step->to_debugging_log == FALSE)) {
 				STREAM_CLOSE(T);
 			}
 		}
