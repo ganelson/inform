@@ -17,6 +17,17 @@
 
 
 <pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">negate_label_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">void_level</span><span class="plain"> = 3;</span>
+    <span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">temporary_generation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::prepare</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">negate_label_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">void_level</span><span class="plain"> = 3;</span>
+        <span class="identifier">temporary_generation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::iterate</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
         <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -42,7 +53,6 @@
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">query_labels_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">negate_label_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::frame</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">]) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SYMBOL_IST</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
@@ -103,9 +113,6 @@
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">void_level</span><span class="plain"> = 3;</span>
-
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::pragma</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">target_symbol</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">TARGET_PRAGMA_IFLD</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad pragma"</span><span class="plain">);</span>
@@ -120,9 +127,11 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::FC::iterate is used in 4/cg (<a href="4-cg.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::FC::prepare is used in 4/cg (<a href="4-cg.html#SP8_1">&#167;8.1</a>).</p>
 
-<p class="endnote">The function CodeGen::FC::frame is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, 4/cal (<a href="4-cal.html#SP2">&#167;2</a>), 5/gi6 (<a href="5-gi6.html#SP2_1">&#167;2.1</a>, <a href="5-gi6.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function CodeGen::FC::iterate is used in 4/cg (<a href="4-cg.html#SP8_2">&#167;8.2</a>).</p>
+
+<p class="endnote">The function CodeGen::FC::frame is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, 4/cal (<a href="4-cal.html#SP3">&#167;3</a>), 5/gi6 (<a href="5-gi6.html#SP2_1">&#167;2.1</a>, <a href="5-gi6.html#SP2_9">&#167;2.9</a>).</p>
 
 <p class="endnote">The function CodeGen::FC::pragma appears nowhere else.</p>
 
@@ -159,8 +168,7 @@
         <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">routine</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">;</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::local_symbol_from_id</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DEFN_LOCAL_IFLD</span><span class="plain">]);</span>
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %S"</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Targets::declare_local_variable</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::label</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
@@ -242,7 +250,6 @@
                 <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
     <span class="plain">}</span>
 
-    <span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">temporary_generation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::val_from</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val2</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::is_stored_in_data</span><span class="plain">(</span><span class="identifier">val1</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain">)) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_data_pair_and_table</span><span class="plain">(</span>

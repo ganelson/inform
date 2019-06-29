@@ -132,15 +132,15 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::general_segment is used in 4/fc (<a href="4-fc.html#SP2">&#167;2</a>), 4/cal (<a href="4-cal.html#SP1_1">&#167;1.1</a>).</p>
+<p class="endnote">The function CodeGen::Targets::general_segment is used in 4/fc (<a href="4-fc.html#SP2">&#167;2</a>), 4/cal (<a href="4-cal.html#SP2_1">&#167;2.1</a>).</p>
 
-<p class="endnote">The function CodeGen::Targets::default_segment is used in 4/cal (<a href="4-cal.html#SP1_2">&#167;1.2</a>), 4/iap (<a href="4-iap.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::Targets::default_segment is used in 4/cal (<a href="4-cal.html#SP2_2">&#167;2.2</a>), 4/iap (<a href="4-iap.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function CodeGen::Targets::constant_segment is used in 4/cal (<a href="4-cal.html#SP1_2">&#167;1.2</a>), 4/iap (<a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function CodeGen::Targets::constant_segment is used in 4/cal (<a href="4-cal.html#SP2_2">&#167;2.2</a>), 4/iap (<a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function CodeGen::Targets::property_segment appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Targets::tl_segment is used in 4/cal (<a href="4-cal.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function CodeGen::Targets::tl_segment is used in 4/cal (<a href="4-cal.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
@@ -178,7 +178,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::compile_dictionary_word is used in 4/cal (<a href="4-cal.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function CodeGen::Targets::compile_dictionary_word is used in 4/cal (<a href="4-cal.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
@@ -196,7 +196,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::compile_literal_text is used in 4/cal (<a href="4-cal.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function CodeGen::Targets::compile_literal_text is used in 4/cal (<a href="4-cal.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
@@ -215,6 +215,67 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Targets::declare_property is used in 4/iap (<a href="4-iap.html#SP5_1">&#167;5.1</a>, <a href="4-iap.html#SP5_12">&#167;5.12</a>).</p>
+
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">PREPARE_VARIABLE_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">DECLARE_VARIABLE_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">DECLARE_LOCAL_VARIABLE_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">PREPARE_VARIABLE_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">)</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">DECLARE_VARIABLE_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">of</span><span class="plain">)</span>
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">DECLARE_LOCAL_VARIABLE_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">)</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::prepare_variable</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">PREPARE_VARIABLE_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::declare_variable</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">of</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = 0;</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">DECLARE_VARIABLE_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::declare_local_variable</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">) {</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">DECLARE_LOCAL_VARIABLE_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::prepare_variable is used in 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function CodeGen::Targets::declare_variable is used in 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function CodeGen::Targets::declare_local_variable is used in 4/fc (<a href="4-fc.html#SP3">&#167;3</a>).</p>
+
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">BEGIN_CONSTANT_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">END_CONSTANT_MTID</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">BEGIN_CONSTANT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">const_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">continues</span><span class="plain">)</span>
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">END_CONSTANT_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">const_name</span><span class="plain">)</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">const_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">continues</span><span class="plain">) {</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">BEGIN_CONSTANT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">const_name</span><span class="plain">, </span><span class="identifier">continues</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">const_name</span><span class="plain">) {</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">END_CONSTANT_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">const_name</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::Targets::begin_constant is used in 4/cal (<a href="4-cal.html#SP2_1">&#167;2.1</a>, <a href="4-cal.html#SP2_2">&#167;2.2</a>, <a href="4-cal.html#SP3">&#167;3</a>), 4/iap (<a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5">&#167;5</a>, <a href="4-iap.html#SP6">&#167;6</a>).</p>
+
+<p class="endnote">The function CodeGen::Targets::end_constant is used in 4/cal (<a href="4-cal.html#SP2_1">&#167;2.1</a>, <a href="4-cal.html#SP2_2">&#167;2.2</a>, <a href="4-cal.html#SP3">&#167;3</a>), 4/iap (<a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5">&#167;5</a>, <a href="4-iap.html#SP6">&#167;6</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 5: Final Code.)</i></li><li><a href="5-fti.html">Continue with 'Final Textual Inter'</a></li></ul><hr class="tocbar">

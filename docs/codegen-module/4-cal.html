@@ -15,20 +15,37 @@
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::responses</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
-        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NR</span><span class="plain"> = 0;</span>
-        &lt;<span class="cwebmacro">Define constants for the responses</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NR</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Define an array of the responses</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">box_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">printing_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::prepare</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">box_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">printing_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::CL::responses is used in 4/cg (<a href="4-cg.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::CL::prepare is used in 4/cg (<a href="4-cg.html#SP8_1">&#167;8.1</a>).</p>
 
-<p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Define constants for the responses</span> <span class="cwebmacronumber">1.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::responses</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NR</span><span class="plain"> = 0;</span>
+        &lt;<span class="cwebmacro">Define constants for the responses</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NR</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Define an array of the responses</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::CL::responses is used in 4/cg (<a href="4-cg.html#SP8_3">&#167;8.3</a>).</p>
+
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Define constants for the responses</span> <span class="cwebmacronumber">2.1</span>&gt; =
 </code></p>
 
 
@@ -37,9 +54,11 @@
         <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
                 <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::general_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">));</span>
-                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">TO</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">resp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_RESPONSE_IFLD</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Constant %S = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">), ++</span><span class="identifier">NR</span><span class="plain">);</span>
+                <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, ++</span><span class="identifier">NR</span><span class="plain">);</span>
+                <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">));</span>
                 <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -47,16 +66,18 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Define an array of the responses</span> <span class="cwebmacronumber">1.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Define an array of the responses</span> <span class="cwebmacronumber">2.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Constant NO_RESPONSES = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">NR</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_RESPONSES"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">NR</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_RESPONSES"</span><span class="plain">);</span>
         <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
         <span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::default_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Array ResponseTexts --&gt; "</span><span class="plain">);</span>
@@ -74,9 +95,9 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
 an array written in the form
 </p>
 
@@ -96,8 +117,6 @@ is 20. We instead compile this as
 
 <pre class="display">
         <span class="plain">Array X --&gt; 1 20;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::quartet_present</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -203,7 +222,9 @@ is 20. We instead compile this as
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_INDIRECT_TEXT</span><span class="plain">: {</span>
                 <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">];</span>
                 <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">repo_segment</span><span class="plain">-&gt;</span><span class="identifier">owning_repo</span><span class="plain">, </span><span class="identifier">ID</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Constant %S = \</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string">;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
+                <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+                <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_INDIRECT_LIST</span><span class="plain">: {</span>
@@ -237,7 +258,7 @@ is 20. We instead compile this as
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_PRODUCT_LIST</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_DIFFERENCE_LIST</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_QUOTIENT_LIST</span><span class="plain">:</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Constant %S = "</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
+                <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">extent</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+2) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">) {</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">FORMAT_CONST_IFLD</span><span class="plain">] == </span><span class="identifier">CONSTANT_SUM_LIST</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" + "</span><span class="plain">);</span>
@@ -251,17 +272,16 @@ is 20. We instead compile this as
                     <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1], </span><span class="identifier">FALSE</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bracket</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
                 <span class="plain">}</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_DIRECT</span><span class="plain">: {</span>
                 <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">];</span>
                 <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val2</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain"> + 1];</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifndef_me</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#ifndef %S; "</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Constant %S = "</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifndef_me</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#ifndef %S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
+                <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">val1</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifndef_me</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" #endif;"</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifndef_me</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" #endif;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"ungenerated constant format"</span><span class="plain">);</span>
@@ -308,8 +328,6 @@ is 20. We instead compile this as
             <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
-
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">box_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">printing_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::enter_box_mode</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">box_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -407,7 +425,7 @@ is 20. We instead compile this as
 
 <p class="endnote">The function CodeGen::CL::compare_tlh appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::CL::sort_literals is used in 4/cg (<a href="4-cg.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::CL::sort_literals is used in 4/cg (<a href="4-cg.html#SP8_3">&#167;8.3</a>).</p>
 
 <p class="endnote">The function CodeGen::CL::enter_box_mode is used in 4/fc (<a href="4-fc.html#SP4">&#167;4</a>).</p>
 
@@ -417,9 +435,9 @@ is 20. We instead compile this as
 
 <p class="endnote">The function CodeGen::CL::exit_print_mode is used in 4/fc (<a href="4-fc.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The function CodeGen::CL::literal is used in <a href="#SP1_2">&#167;1.2</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>), 4/iap (<a href="4-iap.html#SP5_8_4_1_1">&#167;5.8.4.1.1</a>, <a href="4-iap.html#SP8">&#167;8</a>), 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::CL::literal is used in <a href="#SP2_2">&#167;2.2</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>), 4/iap (<a href="4-iap.html#SP5_8_4_1_1">&#167;5.8.4.1.1</a>, <a href="4-iap.html#SP8">&#167;8</a>), 5/gi6 (<a href="5-gi6.html#SP6">&#167;6</a>).</p>
 
-<p class="endnote">The function CodeGen::CL::name is used in <a href="#SP1_1">&#167;1.1</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>, <a href="4-fc.html#SP4">&#167;4</a>), 4/iap (<a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5_5">&#167;5.5</a>, <a href="4-iap.html#SP5_7">&#167;5.7</a>, <a href="4-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="4-iap.html#SP5_9">&#167;5.9</a>, <a href="4-iap.html#SP5_11">&#167;5.11</a>, <a href="4-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="4-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="4-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="4-iap.html#SP6">&#167;6</a>, <a href="4-iap.html#SP8">&#167;8</a>), 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>), 5/gi6 (<a href="5-gi6.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function CodeGen::CL::name is used in <a href="#SP2_1">&#167;2.1</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>, <a href="4-fc.html#SP4">&#167;4</a>), 4/iap (<a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5_5">&#167;5.5</a>, <a href="4-iap.html#SP5_7">&#167;5.7</a>, <a href="4-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="4-iap.html#SP5_9">&#167;5.9</a>, <a href="4-iap.html#SP5_11">&#167;5.11</a>, <a href="4-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="4-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="4-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="4-iap.html#SP6">&#167;6</a>, <a href="4-iap.html#SP8">&#167;8</a>), 5/gi6 (<a href="5-gi6.html#SP5">&#167;5</a>, <a href="5-gi6.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The structure text_literal_holder is private to this section.</p>
 

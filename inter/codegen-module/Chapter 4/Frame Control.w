@@ -5,6 +5,17 @@ To manage the final-code process, at the frame level.
 @
 
 @ =
+int query_labels_mode = FALSE, negate_label_mode = FALSE;
+int void_level = 3;
+code_generation *temporary_generation = NULL;
+
+void CodeGen::FC::prepare(code_generation *gen) {
+	query_labels_mode = FALSE;
+	negate_label_mode = FALSE;
+	void_level = 3;
+	temporary_generation = NULL;
+}
+
 void CodeGen::FC::iterate(code_generation *gen) {
 	inter_repository *I = gen->from;
 	if (I) {
@@ -30,7 +41,6 @@ void CodeGen::FC::iterate(code_generation *gen) {
 	}
 }
 
-int query_labels_mode = FALSE, negate_label_mode = FALSE;
 void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 	switch (P.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
@@ -91,9 +101,6 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 	}
 }
 
-int void_level = 3;
-
-
 void CodeGen::FC::pragma(code_generation *gen, inter_frame P) {
 	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_symbol == NULL) internal_error("bad pragma");
@@ -135,8 +142,7 @@ void CodeGen::FC::local(code_generation *gen, inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LOCAL_IFLD]);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" %S", var_name->symbol_name);
+	CodeGen::Targets::declare_local_variable(gen, P, var_name);
 }
 
 void CodeGen::FC::label(code_generation *gen, inter_frame P) {
@@ -218,7 +224,6 @@ void CodeGen::FC::lab(code_generation *gen, inter_frame P) {
 			PUT(Str::get(pos));
 }
 
-code_generation *temporary_generation = NULL;
 void CodeGen::FC::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1, inter_t val2) {
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(

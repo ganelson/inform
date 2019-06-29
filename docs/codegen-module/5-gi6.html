@@ -30,6 +30,11 @@
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">COMPILE_DICTIONARY_WORD_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::compile_dictionary_word</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">COMPILE_LITERAL_TEXT_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::compile_literal_text</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">DECLARE_PROPERTY_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::declare_property</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">PREPARE_VARIABLE_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::prepare_variable</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">DECLARE_VARIABLE_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::declare_variable</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">DECLARE_LOCAL_VARIABLE_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::declare_local_variable</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">BEGIN_CONSTANT_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::begin_constant</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">END_CONSTANT_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::end_constant</span><span class="plain">);</span>
         <span class="identifier">inform6_target</span><span class="plain"> = </span><span class="identifier">cgt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -54,6 +59,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">text_literals_code_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">summations_at_eof_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">arrays_at_eof_I7CGS</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">globals_array_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">main_matter_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">routines_at_eof_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">code_at_eof_I7CGS</span>
@@ -68,6 +74,7 @@
         <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">text_literals_code_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
         <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">summations_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
         <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">arrays_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">globals_array_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
         <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">main_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
         <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">routines_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
         <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">code_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
@@ -712,6 +719,80 @@ trick called "stubbing", these being "stub definitions".)
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::I6::declare_property is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::prepare_variable</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">,</span>
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">EXPLICIT_VARIABLE_IANN</span><span class="plain">) != 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != 1) {</span>
+                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"(Global_Vars--&gt;%d)"</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+                <span class="identifier">Inter::Symbols::set_translate</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="plain">}</span>
+            <span class="identifier">k</span><span class="plain">++;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::declare_variable</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">,</span>
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">of</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) == 1) {</span>
+            <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="constant">main_matter_I7CGS</span><span class="plain">);</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Global %S = "</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">));</span>
+            <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_VAR_IFLD</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL2_VAR_IFLD</span><span class="plain">], </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">EXPLICIT_VARIABLE_IANN</span><span class="plain">) != 1) {</span>
+            <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="constant">attributes_at_eof_I7CGS</span><span class="plain">);</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array Global_Vars --&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  ("</span><span class="plain">);</span>
+            <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">globals</span><span class="plain"> = </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">globals</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_VAR_IFLD</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL2_VAR_IFLD</span><span class="plain">], </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">") ! --&gt;%d = %S (%S)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">), </span><span class="identifier">var_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
+            <span class="identifier">k</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="identifier">of</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &lt; 2) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  NULL NULL"</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="plain">}</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::declare_local_variable</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">,</span>
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_name</span><span class="plain">) {</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %S"</span><span class="plain">, </span><span class="identifier">var_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::begin_constant</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">const_name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">continues</span><span class="plain">) {</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Constant %S"</span><span class="plain">, </span><span class="identifier">const_name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">continues</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" = "</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::end_constant</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">const_name</span><span class="plain">) {</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function CodeGen::I6::prepare_variable is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function CodeGen::I6::declare_variable is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function CodeGen::I6::declare_local_variable is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function CodeGen::I6::begin_constant is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function CodeGen::I6::end_constant is used in <a href="#SP1">&#167;1</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-fsi.html">Back to 'Final Summarised Inter'</a></li><li><i>(This section ends Chapter 5: Final Code.)</i></li></ul><hr class="tocbar">

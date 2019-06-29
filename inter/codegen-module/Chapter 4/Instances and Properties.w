@@ -7,6 +7,14 @@ properties, and all associated metadata.
 
 =
 int properties_written = FALSE;
+int FBNA_found = FALSE, properties_found = FALSE, attribute_slots_used = 0;
+void CodeGen::IP::prepare(code_generation *gen) {
+	properties_written = FALSE;
+	FBNA_found = FALSE;
+	properties_found = FALSE;
+	attribute_slots_used = 0;
+}
+
 void CodeGen::IP::write_properties(code_generation *gen) {
 	if (properties_written == FALSE) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
@@ -97,7 +105,6 @@ Some either-or properties of object instances can be stored as I6
 limited number can be stored this way. Here we choose which.
 
 =
-int FBNA_found = FALSE, properties_found = FALSE, attribute_slots_used = 0;
 void CodeGen::IP::property(inter_repository *I, inter_symbol *prop_name, code_generation *gen) {
 	if (prop_name == NULL) internal_error("bad property");
 	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) {
@@ -229,7 +236,9 @@ compiles an I6 constant for this value.
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = %S;\n", CodeGen::CL::name(prop_name));
+		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE);
+		WRITE_TO(CodeGen::current(gen), "%S", CodeGen::CL::name(prop_name));
+		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER");
 		CodeGen::deselect(gen, saved);
 	}
 
@@ -242,7 +251,9 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	inter_repository *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		WRITE_TO(CodeGen::current(gen), "Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER; ! No actual FBNA\n");
+		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE);
+		WRITE_TO(CodeGen::current(gen), "MAX_POSITIVE_NUMBER");
+		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER");
 		CodeGen::deselect(gen, saved);
 	}
 	inter_symbol **all_props_in_source_order = NULL;
@@ -818,17 +829,17 @@ void CodeGen::IP::instance(code_generation *gen, inter_frame P) {
 		inter_t val1 = P.data[VAL1_INST_IFLD];
 		inter_t val2 = P.data[VAL2_INST_IFLD];
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("Constant %S", CodeGen::CL::name(inst_name));
-		if (val1 != UNDEF_IVAL) {
-			WRITE(" = ");
+		int defined = TRUE;
+		if (val1 == UNDEF_IVAL) defined = FALSE;
+		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), defined);
+		if (defined) {
 			int hex = FALSE;
 			for (int i=0; i<inst_name->no_symbol_annotations; i++)
 				if (inst_name->symbol_annotations[i].annot->annotation_ID == HEX_IANN)
 					hex = TRUE;
-			if (hex) WRITE("$%x", val2);
-			else WRITE("%d", val2);
+			if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
 		}
-		WRITE(";\n");
+		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name));
 	}
 }
 

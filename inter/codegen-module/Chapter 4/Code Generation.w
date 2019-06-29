@@ -11,7 +11,8 @@ void CodeGen::create_pipeline_stage(void) {
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->target_argument == NULL) internal_error("no target specified");
-	code_generation *gen = CodeGen::new_generation(step, step->repository, step->target_argument);
+	code_generation *gen =
+		CodeGen::new_generation(step, step->repository, step->target_argument);
 	if (CodeGen::Targets::begin_generation(gen) == FALSE) {
 		CodeGen::generate(gen);
 		CodeGen::write(step->text_out_file, gen);
@@ -33,6 +34,10 @@ for example, one might need to have all constants defined first, then all
 arrays, and one could do this by creating two segments, one to accumulate
 the constants in, one to accumulate the arrays.
 
+At any given time, a generation has a "current" segment, to which output
+is being written. Ome segment is special: the temporary one, which is used
+only when assembling other material, and not for the final output.
+
 @d MAX_CG_SEGMENTS 100
 @d TEMP_CG_SEGMENT 99
 
@@ -42,17 +47,13 @@ typedef struct code_generation {
 	struct inter_repository *from;
 	struct code_generation_target *target;
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
-	struct generated_segment *current_segment;
-	int temporarily_diverted;
+	struct generated_segment *current_segment; /* an entry in that array, or null */
+	int temporarily_diverted; /* to the temporary segment */
 	MEMORY_MANAGEMENT
 } code_generation;
 
-typedef struct generated_segment {
-	struct text_stream *generated_code;
-	MEMORY_MANAGEMENT
-} generated_segment;
-
-code_generation *CodeGen::new_generation(pipeline_step *step, inter_repository *I, code_generation_target *target) {
+code_generation *CodeGen::new_generation(pipeline_step *step, inter_repository *I,
+	code_generation_target *target) {
 	code_generation *gen = CREATE(code_generation);
 	gen->from_step = step;
 	gen->from = I;
@@ -63,13 +64,33 @@ code_generation *CodeGen::new_generation(pipeline_step *step, inter_repository *
 	return gen;
 }
 
+@ At present, at least, a "segment" is nothing more than a wrapper for a text.
+But we abstract it in case it's ever useful for it to be more.
+
+=
+typedef struct generated_segment {
+	struct text_stream *generated_code;
+	MEMORY_MANAGEMENT
+} generated_segment;
+
 generated_segment *CodeGen::new_segment(void) {
 	generated_segment *seg = CREATE(generated_segment);
 	seg->generated_code = Str::new();
 	return seg;
 }
 
-@
+@ The segments should be numbered in the order they will appear in the final
+output, because:
+
+=
+void CodeGen::write(OUTPUT_STREAM, code_generation *gen) {
+	for (int i=0; i<MAX_CG_SEGMENTS; i++)
+		if ((gen->segments[i]) && (i != TEMP_CG_SEGMENT))
+			WRITE("%S", gen->segments[i]->generated_code);
+}
+
+@ Here we switch the output, by changing the segment selection. This must
+always be done in a way which is then undone, restoring the previous state:
 
 =
 generated_segment *CodeGen::select(code_generation *gen, int i) {
@@ -80,6 +101,15 @@ generated_segment *CodeGen::select(code_generation *gen, int i) {
 	return saved;
 }
 
+void CodeGen::deselect(code_generation *gen, generated_segment *saved) {
+	if (gen->temporarily_diverted) internal_error("poorly timed deselection");
+	gen->current_segment = saved;
+}
+
+@ The procedure for selecting the temporary segment is different, because
+we also have to direct it to a given text.
+
+=
 void CodeGen::select_temporary(code_generation *gen, text_stream *T) {
 	if (gen->segments[TEMP_CG_SEGMENT] == NULL) {
 		gen->segments[TEMP_CG_SEGMENT] = CodeGen::new_segment();
@@ -91,36 +121,48 @@ void CodeGen::select_temporary(code_generation *gen, text_stream *T) {
 	gen->segments[TEMP_CG_SEGMENT]->generated_code = T;
 }
 
-void CodeGen::deselect(code_generation *gen, generated_segment *saved) {
-	if (gen->temporarily_diverted) internal_error("poorly timed deselection");
-	gen->current_segment = saved;
-}
-
 void CodeGen::deselect_temporary(code_generation *gen) {
 	gen->temporarily_diverted = FALSE;
 }
 
+@  Note that temporary selections take precedence over the regular selection.
+
+=
 text_stream *CodeGen::current(code_generation *gen) {
-	if (gen->temporarily_diverted) return gen->segments[TEMP_CG_SEGMENT]->generated_code;
+	if (gen->temporarily_diverted)
+		return gen->segments[TEMP_CG_SEGMENT]->generated_code;
 	if (gen->current_segment == NULL) return NULL;
 	return gen->current_segment->generated_code;
 }
 
-void CodeGen::write(OUTPUT_STREAM, code_generation *gen) {
-	for (int i=0; i<MAX_CG_SEGMENTS; i++)
-		if ((gen->segments[i]) && (i != TEMP_CG_SEGMENT))
-			WRITE("%S", gen->segments[i]->generated_code);
+@h Actual generation happens in three phases:
+
+=
+void CodeGen::generate(code_generation *gen) {
+	@<Phase one - preparation@>;
+	@<Phase two - traverse@>;
+	@<Phase three - consolidation@>;
 }
 
-void CodeGen::generate(code_generation *gen) {
+@<Phase one - preparation@> =
 	Inter::Symbols::clear_transient_flags();
-	CodeGen::Var::set_translates(gen);
+	CodeGen::FC::prepare(gen);
+	CodeGen::CL::prepare(gen);
+	CodeGen::Var::prepare(gen);
+	CodeGen::IP::prepare(gen);
+
+@<Phase two - traverse@> =
 	CodeGen::FC::iterate(gen);
+
+@<Phase three - consolidation@> =
 	CodeGen::CL::responses(gen);
 	CodeGen::IP::write_properties(gen);
-	CodeGen::CL::sort_literals(gen);	
-}
+	CodeGen::CL::sort_literals(gen);
 
+@h Marking.
+We use a transient flag on symbols, but abstract that here:
+
+=
 int CodeGen::marked(inter_symbol *symb_name) {
 	return Inter::Symbols::get_flag(symb_name, TRAVERSE_MARK_BIT);
 }

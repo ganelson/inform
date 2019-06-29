@@ -133,3 +133,42 @@ VMETHOD_TYPE(DECLARE_PROPERTY_MTID, code_generation_target *cgt, code_generation
 void CodeGen::Targets::declare_property(code_generation *gen, inter_symbol *prop_name, int used) {
 	VMETHOD_CALL(gen->target, DECLARE_PROPERTY_MTID, gen, prop_name, used);
 }
+
+@
+
+@e PREPARE_VARIABLE_MTID
+@e DECLARE_VARIABLE_MTID
+@e DECLARE_LOCAL_VARIABLE_MTID
+
+=
+IMETHOD_TYPE(PREPARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_frame P, inter_symbol *var_name, int k)
+IMETHOD_TYPE(DECLARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_frame P, inter_symbol *var_name, int k, int of)
+VMETHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_frame P, inter_symbol *var_name)
+int CodeGen::Targets::prepare_variable(code_generation *gen, inter_frame P, inter_symbol *var_name, int k) {
+	int rv = 0;
+	IMETHOD_CALL(rv, gen->target, PREPARE_VARIABLE_MTID, gen, P, var_name, k);
+	return rv;
+}
+int CodeGen::Targets::declare_variable(code_generation *gen, inter_frame P, inter_symbol *var_name, int k, int of) {
+	int rv = 0;
+	IMETHOD_CALL(rv, gen->target, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
+	return rv;
+}
+void CodeGen::Targets::declare_local_variable(code_generation *gen, inter_frame P, inter_symbol *var_name) {
+	VMETHOD_CALL(gen->target, DECLARE_LOCAL_VARIABLE_MTID, gen, P, var_name);
+}
+
+@
+
+@e BEGIN_CONSTANT_MTID
+@e END_CONSTANT_MTID
+
+=
+VMETHOD_TYPE(BEGIN_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues)
+VMETHOD_TYPE(END_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name)
+void CodeGen::Targets::begin_constant(code_generation *gen, text_stream *const_name, int continues) {
+	VMETHOD_CALL(gen->target, BEGIN_CONSTANT_MTID, gen, const_name, continues);
+}
+void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_name) {
+	VMETHOD_CALL(gen->target, END_CONSTANT_MTID, gen, const_name);
+}

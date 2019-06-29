@@ -18,6 +18,11 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
+	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::I6::prepare_variable);
+	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::I6::declare_variable);
+	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
+	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
+	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
 	inform6_target = cgt;
 }
 
@@ -33,6 +38,7 @@ code_generation_target *CodeGen::I6::target(void) {
 @e text_literals_code_I7CGS
 @e summations_at_eof_I7CGS
 @e arrays_at_eof_I7CGS
+@e globals_array_I7CGS
 @e main_matter_I7CGS
 @e routines_at_eof_I7CGS
 @e code_at_eof_I7CGS
@@ -46,6 +52,7 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	cg->segments[text_literals_code_I7CGS] = CodeGen::new_segment();
 	cg->segments[summations_at_eof_I7CGS] = CodeGen::new_segment();
 	cg->segments[arrays_at_eof_I7CGS] = CodeGen::new_segment();
+	cg->segments[globals_array_I7CGS] = CodeGen::new_segment();
 	cg->segments[main_matter_I7CGS] = CodeGen::new_segment();
 	cg->segments[routines_at_eof_I7CGS] = CodeGen::new_segment();
 	cg->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
@@ -482,4 +489,64 @@ void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation 
 		WRITE_TO(CodeGen::current(gen), "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
 		CodeGen::deselect(gen, saved);
 	}
+}
+
+@
+
+=
+int CodeGen::I6::prepare_variable(code_generation_target *cgt, code_generation *gen,
+	inter_frame P, inter_symbol *var_name, int k) {
+	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
+			text_stream *S = Str::new();
+			WRITE_TO(S, "(Global_Vars-->%d)", k);
+			Inter::Symbols::set_translate(var_name, S);
+		}
+		k++;
+	}
+	return k;
+}
+
+int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *gen,
+	inter_frame P, inter_symbol *var_name, int k, int of) {
+	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
+		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("Global %S = ", CodeGen::CL::name(var_name));
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_VAR_IFLD], P.data[VAL2_VAR_IFLD], FALSE);
+		WRITE(";\n");
+		CodeGen::deselect(gen, saved);
+	}
+	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+		generated_segment *saved = CodeGen::select(gen, attributes_at_eof_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		if (k == 0) WRITE("Array Global_Vars -->\n");
+		WRITE("  (");
+		inter_symbols_table *globals = Inter::Packages::scope_of(P);
+		CodeGen::CL::literal(gen, NULL, globals, P.data[VAL1_VAR_IFLD], P.data[VAL2_VAR_IFLD], FALSE);
+		WRITE(") ! -->%d = %S (%S)\n", k, CodeGen::CL::name(var_name), var_name->symbol_name);
+		k++;
+		if (k == of) {
+			if (k < 2) WRITE("  NULL NULL");
+			WRITE(";\n");
+		}
+		CodeGen::deselect(gen, saved);
+	}
+	return k;
+}
+
+void CodeGen::I6::declare_local_variable(code_generation_target *cgt, code_generation *gen,
+	inter_frame P, inter_symbol *var_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(" %S", var_name->symbol_name);
+}
+
+void CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Constant %S", const_name);
+	if (continues) WRITE(" = ");
+}
+void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(";\n");
 }

@@ -5,6 +5,17 @@ To generate final code for constants, including arrays.
 @
 
 =
+int the_quartet_found = FALSE;
+int box_mode = FALSE, printing_mode = FALSE;
+
+void CodeGen::CL::prepare(code_generation *gen) {
+	the_quartet_found = FALSE;
+	box_mode = FALSE; printing_mode = FALSE;
+}
+
+@
+
+=
 void CodeGen::CL::responses(code_generation *gen) {
 	inter_repository *I = gen->from;
 	int NR = 0;
@@ -17,16 +28,20 @@ void CodeGen::CL::responses(code_generation *gen) {
 	LOOP_THROUGH_FRAMES(P, I) {
 		if (P.data[ID_IFLD] == RESPONSE_IST) {
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
-			text_stream *TO = CodeGen::current(gen);
 			inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-			WRITE_TO(TO, "Constant %S = %d;\n", CodeGen::CL::name(resp_name), ++NR);
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(resp_name), TRUE);
+			text_stream *OUT = CodeGen::current(gen);
+			WRITE("%d", ++NR);
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(resp_name));
 			CodeGen::deselect(gen, saved);
 		}
 	}
 
 @<Define an array of the responses@> =
 	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-	WRITE_TO(CodeGen::current(gen), "Constant NO_RESPONSES = %d;\n", NR);
+	CodeGen::Targets::begin_constant(gen, I"NO_RESPONSES", TRUE);
+	WRITE_TO(CodeGen::current(gen), "%d", NR);
+	CodeGen::Targets::end_constant(gen, I"NO_RESPONSES");
 	CodeGen::deselect(gen, saved);
 	saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
 	WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
@@ -54,8 +69,6 @@ is 20. We instead compile this as
 	|Array X --> 1 20;|
 
 =
-int the_quartet_found = FALSE;
-
 int CodeGen::CL::quartet_present(void) {
 	#ifdef CORE_MODULE
 	return TRUE;
@@ -161,7 +174,9 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_t ID = P.data[DATA_CONST_IFLD];
 			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
-			WRITE("Constant %S = \"%S\";\n", CodeGen::CL::name(con_name), S);
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
+			WRITE("\"%S\"", S);
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
 			break;
 		}
 		case CONSTANT_INDIRECT_LIST: {
@@ -195,7 +210,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 		case CONSTANT_PRODUCT_LIST:
 		case CONSTANT_DIFFERENCE_LIST:
 		case CONSTANT_QUOTIENT_LIST:
-			WRITE("Constant %S = ", CodeGen::CL::name(con_name));
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
 			for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) {
 					if (P.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
@@ -209,17 +224,16 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P.data[i], P.data[i+1], FALSE);
 				if (bracket) WRITE(")");
 			}
-			WRITE(";\n");
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
 			break;
 		case CONSTANT_DIRECT: {
 			inter_t val1 = P.data[DATA_CONST_IFLD];
 			inter_t val2 = P.data[DATA_CONST_IFLD + 1];
-			if (ifndef_me) WRITE("#ifndef %S; ", CodeGen::CL::name(con_name));
-			WRITE("Constant %S = ", CodeGen::CL::name(con_name));
+			if (ifndef_me) WRITE("#ifndef %S;\n", CodeGen::CL::name(con_name));
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
 			CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
-			WRITE(";");
-			if (ifndef_me) WRITE(" #endif;");
-			WRITE("\n");
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
+			if (ifndef_me) WRITE(" #endif;\n");
 			break;
 		}
 		default: internal_error("ungenerated constant format");
@@ -266,8 +280,6 @@ void CodeGen::CL::sort_literals(code_generation *gen) {
 		CodeGen::deselect(gen, saved);
 	}
 }
-
-int box_mode = FALSE, printing_mode = FALSE;
 
 void CodeGen::CL::enter_box_mode(void) {
 	box_mode = TRUE;
