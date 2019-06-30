@@ -242,6 +242,8 @@ inter_symbol *verb_directive_topic_symbol = NULL;
 inter_symbol *verb_directive_multiexcept_symbol = NULL;
 
 void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
+	Inter::Packages::restring(I);
+
 	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");
 	typeless_int_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_typeless_int");

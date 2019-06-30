@@ -160,6 +160,16 @@ void CodeGen::Targets::declare_local_variable(code_generation *gen, inter_frame 
 
 @
 
+@e OFFER_PRAGMA_MTID
+
+=
+VMETHOD_TYPE(OFFER_PRAGMA_MTID, code_generation_target *cgt, code_generation *gen, inter_frame P, text_stream *tag, text_stream *content)
+void CodeGen::Targets::offer_pragma(code_generation *gen, inter_frame P, text_stream *tag, text_stream *content) {
+	VMETHOD_CALL(gen->target, OFFER_PRAGMA_MTID, gen, P, tag, content);
+}
+
+@
+
 @e BEGIN_CONSTANT_MTID
 @e END_CONSTANT_MTID
 

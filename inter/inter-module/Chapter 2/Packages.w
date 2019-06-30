@@ -134,6 +134,55 @@ inter_package *Inter::Packages::container_p(inter_frame *P) {
 	return Inter::Packages::from_PID(P->repo_segment->owning_repo, Inter::Frame::get_package_p(P));
 }
 
+void Inter::Packages::restring(inter_repository *I) {
+	Inter::Packages::destring(Inter::Packages::main(I));
+	inter_frame P;
+	LOOP_THROUGH_FRAMES(P, I) {
+		inter_package *pack = Inter::Packages::container(P);
+		if ((pack) && (pack->codelike_package == FALSE)) {
+			inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+			Inter::Package::accept_child(D, P);
+		}
+	}
+}
+
+void Inter::Packages::destring(inter_package *pack) {
+	if (pack->codelike_package == FALSE) {
+		inter_frame_list *ifl = Inter::Package::code_list(pack->package_name);
+		ifl->first_in_ifl = NULL;
+		ifl->last_in_ifl = NULL;
+	}
+	for (inter_package *P = pack->child_package; P; P = P->next_package)
+		Inter::Packages::destring(P);
+}
+
+void Inter::Packages::traverse_global(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
+	inter_frame P;
+	LOOP_THROUGH_FRAMES(P, gen->from) {
+		if (Inter::Packages::container(P)) return;
+		if (P.data[ID_IFLD] != PACKAGE_IST) {
+			(*visitor)(gen, P, state);
+		}
+	}
+}
+
+void Inter::Packages::traverse(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
+	Inter::Packages::traverse_inner(gen, Inter::Packages::contents(gen->just_this_package), visitor, state);
+}
+void Inter::Packages::traverse_inner(code_generation *gen, inter_frame_list *ifl, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
+	if (ifl) {
+		inter_frame P;
+		LOOP_THROUGH_INTER_FRAME_LIST(P, ifl) {
+			if (P.data[ID_IFLD] == PACKAGE_IST) {
+				inter_frame_list *ifl = Inter::Package::list_of_children(P);
+				if (ifl) Inter::Packages::traverse_inner(gen, ifl, visitor, state);
+			} else {
+				(*visitor)(gen, P, state);
+			}
+		}
+	}
+}
+
 inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
 	if (pack == NULL) return NULL;
 	return pack->package_scope;
@@ -155,4 +204,9 @@ int Inter::Packages::baseline(inter_package *P) {
 	if (P == NULL) return 0;
 	if (P->package_name == NULL) return 0;
 	return Inter::Defn::get_level(Inter::Symbols::defining_frame(P->package_name));
+}
+
+inter_frame_list *Inter::Packages::contents(inter_package *P) {
+	if (P == NULL) return NULL;
+	return Inter::Package::code_list(P->package_name);
 }

@@ -162,6 +162,7 @@ void CodeGen::generate(code_generation *gen) {
 }
 
 @<Phase one - preparation@> =
+	Inter::Packages::restring(gen->from);
 	Inter::Symbols::clear_transient_flags();
 	CodeGen::FC::prepare(gen);
 	CodeGen::CL::prepare(gen);
@@ -169,12 +170,26 @@ void CodeGen::generate(code_generation *gen) {
 	CodeGen::IP::prepare(gen);
 
 @<Phase two - traverse@> =
-	CodeGen::FC::iterate(gen);
+	Inter::Packages::traverse_global(gen, CodeGen::pragma, NULL);
+	Inter::Packages::traverse(gen, CodeGen::FC::iterate, NULL);
 
 @<Phase three - consolidation@> =
 	CodeGen::CL::responses(gen);
 	CodeGen::IP::write_properties(gen);
 	CodeGen::CL::sort_literals(gen);
+
+@
+
+=
+void CodeGen::pragma(code_generation *gen, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == PRAGMA_IST) {
+		inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+		if (target_symbol == NULL) internal_error("bad pragma");
+		inter_t ID = P.data[TEXT_PRAGMA_IFLD];
+		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+		CodeGen::Targets::offer_pragma(gen, P, target_symbol->symbol_name, S);
+	}
+}
 
 @h Marking.
 We use a transient flag on symbols, but abstract that here:

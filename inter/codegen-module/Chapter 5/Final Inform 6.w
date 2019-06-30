@@ -23,6 +23,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
+	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
 	inform6_target = cgt;
 }
 
@@ -78,8 +79,6 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, inter_frame P) {
 		}
 		case RESPONSE_IST:
 			return early_matter_I7CGS;
-		case PRAGMA_IST:
-			return pragmatic_matter_I7CGS;
 	}
 	return CodeGen::I6::default_segment(cgt);
 }
@@ -95,6 +94,16 @@ int CodeGen::I6::property_segment(code_generation_target *cgt) {
 }
 int CodeGen::I6::tl_segment(code_generation_target *cgt) {
 	return text_literals_code_I7CGS;
+}
+
+void CodeGen::I6::offer_pragma(code_generation_target *cgt, code_generation *gen,
+	inter_frame P, text_stream *tag, text_stream *content) {
+	if (Str::eq(tag, I"target_I6")) {
+		generated_segment *saved = CodeGen::select(gen, pragmatic_matter_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("!%% %S\n", content);
+		CodeGen::deselect(gen, saved);
+	}
 }
 
 int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation *gen,

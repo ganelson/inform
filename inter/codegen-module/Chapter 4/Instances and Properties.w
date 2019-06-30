@@ -8,11 +8,42 @@ properties, and all associated metadata.
 =
 int properties_written = FALSE;
 int FBNA_found = FALSE, properties_found = FALSE, attribute_slots_used = 0;
+
+int no_property_frames = 0, no_instance_frames = 0, no_kind_frames = 0;
+inter_frame *property_frames = NULL;
+inter_frame *instance_frames = NULL;
+inter_frame *kind_frames = NULL;
+
 void CodeGen::IP::prepare(code_generation *gen) {
 	properties_written = FALSE;
 	FBNA_found = FALSE;
 	properties_found = FALSE;
 	attribute_slots_used = 0;
+	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
+	Inter::Packages::traverse(gen, CodeGen::IP::count, NULL);
+	if (no_property_frames > 0)
+		property_frames = (inter_frame *)
+			(Memory::I7_calloc(no_property_frames, sizeof(inter_frame), CODE_GENERATION_MREASON));
+	if (no_instance_frames > 0)
+		instance_frames = (inter_frame *)
+			(Memory::I7_calloc(no_instance_frames, sizeof(inter_frame), CODE_GENERATION_MREASON));
+	if (no_kind_frames > 0)
+		kind_frames = (inter_frame *)
+			(Memory::I7_calloc(no_kind_frames, sizeof(inter_frame), CODE_GENERATION_MREASON));
+	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
+	Inter::Packages::traverse(gen, CodeGen::IP::store, NULL);
+}
+
+void CodeGen::IP::count(code_generation *gen, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == PROPERTY_IST) no_property_frames++;
+	if (P.data[ID_IFLD] == INSTANCE_IST) no_instance_frames++;
+	if (P.data[ID_IFLD] == KIND_IST) no_kind_frames++;
+}
+
+void CodeGen::IP::store(code_generation *gen, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == PROPERTY_IST) property_frames[no_property_frames++] = P;
+	if (P.data[ID_IFLD] == INSTANCE_IST) instance_frames[no_instance_frames++] = P;
+	if (P.data[ID_IFLD] == KIND_IST) kind_frames[no_kind_frames++] = P;
 }
 
 void CodeGen::IP::write_properties(code_generation *gen) {
@@ -264,11 +295,9 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 
 	inter_symbol **kinds_in_source_order = NULL;
 	inter_symbol **kinds_in_declaration_order = NULL;
-	int no_kinds = 0;
 	@<Make a list of kinds in source order@>;
 
 	inter_symbol **instances_in_declaration_order = NULL;
-	int no_instances = 0;
 	@<Make a list of instances in declaration order@>;
 
 	if (properties_found) @<Write Value Property Holder objects for each kind of value instance@>;
@@ -283,29 +312,28 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 }
 
 @<Make a list of properties in source order@> =
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == PROPERTY_IST) {
-			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-				total_no_properties++;
-			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-				no_properties++;
-		}
+	for (int i=0; i<no_property_frames; i++) {
+		inter_frame P = property_frames[i];
+		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
+			total_no_properties++;
+		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
+			no_properties++;
+	}
 	if (no_properties > 0) properties_found = TRUE;
 
 	if (total_no_properties > 0) {
 		all_props_in_source_order = (inter_symbol **)
 			(Memory::I7_calloc(total_no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int c = 0;
-		LOOP_THROUGH_FRAMES(P, I)
-			if (P.data[ID_IFLD] == PROPERTY_IST) {
-				inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-				if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-					all_props_in_source_order[c++] = prop_name;
-				else
-					CodeGen::IP::property(I, prop_name, gen);
-			}
+		for (int i=0; i<no_property_frames; i++) {
+			inter_frame P = property_frames[i];
+			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
+				all_props_in_source_order[c++] = prop_name;
+			else
+				CodeGen::IP::property(I, prop_name, gen);
+		}
 		qsort(all_props_in_source_order, (size_t) total_no_properties, sizeof(inter_symbol *),
 			CodeGen::IP::compare_kind_symbols);
 		for (int p=0; p<total_no_properties; p++) {
@@ -318,69 +346,57 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 		props_in_source_order = (inter_symbol **)
 			(Memory::I7_calloc(no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int c = 0;
-		LOOP_THROUGH_FRAMES(P, I)
-			if (P.data[ID_IFLD] == PROPERTY_IST) {
-				inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-				if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-					props_in_source_order[c++] = prop_name;
-			}
+		for (int i=0; i<no_property_frames; i++) {
+			inter_frame P = property_frames[i];
+			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
+				props_in_source_order[c++] = prop_name;
+		}
 
-		LOOP_THROUGH_FRAMES(P, I)
-			if (P.data[ID_IFLD] == PROPERTY_IST) {
-				inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-				if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
-					(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
-					CodeGen::Targets::declare_property(gen, prop_name, TRUE);
-				}
+		for (int i=0; i<no_property_frames; i++) {
+			inter_frame P = property_frames[i];
+			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
+				(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
+				CodeGen::Targets::declare_property(gen, prop_name, TRUE);
 			}
+		}
 	}
 
 @<Make a list of kinds in source order@> =
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == KIND_IST)
-			no_kinds++;
-	if (no_kinds == 0) return;
+	if (no_kind_frames == 0) return;
 
 	kinds_in_source_order = (inter_symbol **)
-		(Memory::I7_calloc(no_kinds, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-	int c = 0;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == KIND_IST) {
-			inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-			kinds_in_source_order[c++] = kind_name;
-		}
-	qsort(kinds_in_source_order, (size_t) no_kinds, sizeof(inter_symbol *),
+		(Memory::I7_calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+	for (int i=0; i<no_kind_frames; i++) {
+		inter_frame P = kind_frames[i];
+		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+		kinds_in_source_order[i] = kind_name;
+	}
+	qsort(kinds_in_source_order, (size_t) no_kind_frames, sizeof(inter_symbol *),
 		CodeGen::IP::compare_kind_symbols);
 
 @<Make a list of kinds in declaration order@> =
-	inter_frame P;
 	kinds_in_declaration_order = (inter_symbol **)
-		(Memory::I7_calloc(no_kinds, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-	int c = 0;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == KIND_IST) {
-			inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-			kinds_in_declaration_order[c++] = kind_name;
-		}
-	qsort(kinds_in_declaration_order, (size_t) no_kinds, sizeof(inter_symbol *),
+		(Memory::I7_calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+	for (int i=0; i<no_kind_frames; i++) {
+		inter_frame P = kind_frames[i];
+		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+		kinds_in_declaration_order[i] = kind_name;
+	}
+	qsort(kinds_in_declaration_order, (size_t) no_kind_frames, sizeof(inter_symbol *),
 		CodeGen::IP::compare_kind_symbols_decl);
 
 @<Make a list of instances in declaration order@> =
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == INSTANCE_IST)
-			no_instances++;
-	if (no_instances > 0) {
+	if (no_instance_frames > 0) {
 		instances_in_declaration_order = (inter_symbol **)
-			(Memory::I7_calloc(no_instances, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int c = 0;
-		LOOP_THROUGH_FRAMES(P, I)
-			if (P.data[ID_IFLD] == INSTANCE_IST) {
-				inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-				instances_in_declaration_order[c++] = inst_name;
-			}
-		qsort(instances_in_declaration_order, (size_t) no_instances, sizeof(inter_symbol *),
+			(Memory::I7_calloc(no_instance_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		for (int i=0; i<no_instance_frames; i++) {
+			inter_frame P = instance_frames[i];
+			inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+			instances_in_declaration_order[i] = inst_name;
+		}
+		qsort(instances_in_declaration_order, (size_t) no_instance_frames, sizeof(inter_symbol *),
 			CodeGen::IP::compare_kind_symbols_decl);
 	}
 
@@ -414,7 +430,7 @@ bother to force them.)
 
 @<Annotate kinds of object with a sequence counter@> =
 	inter_t c = 1;
-	for (int i=0; i<no_kinds; i++) {
+	for (int i=0; i<no_kind_frames; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
 		if (CodeGen::IP::is_kind_of_object(kind_name))
 			Inter::Symbols::annotate_i(I, kind_name, OBJECT_KIND_COUNTER_IANN,  c++);
@@ -433,14 +449,14 @@ property usage is legal.
 
 @<Write the KindHierarchy array@> =
 	int no_kos = 0;
-	for (int i=0; i<no_kinds; i++) {
+	for (int i=0; i<no_kind_frames; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
 		if (CodeGen::IP::is_kind_of_object(kind_name)) no_kos++;
 	}
 
 	if (no_kos > 0) {
 		WRITE("Array KindHierarchy --> K0_kind (0)");
-		for (int i=0; i<no_kinds; i++) {
+		for (int i=0; i<no_kind_frames; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (CodeGen::IP::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
@@ -483,7 +499,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 		@<Decide who gets a VPH@>;
 		@<Write the VPH lookup array@>;
 		for (int w=1; w<M; w++) {
-			for (int i=0; i<no_kinds; i++) {
+			for (int i=0; i<no_kind_frames; i++) {
 				inter_symbol *kind_name = kinds_in_source_order[i];
 				if (CodeGen::IP::weak_id(kind_name) == w) {
 					if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
@@ -497,7 +513,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 						inter_frame_list *FL =
 							Inter::find_frame_list(I, Inter::Kind::permissions_list(kind_name));
 						@<Work through this frame list of permissions@>;
-						for (int in=0; in<no_instances; in++) {
+						for (int in=0; in<no_instance_frames; in++) {
 							inter_symbol *inst_name = instances_in_declaration_order[in];
 							if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 								inter_frame_list *FL =
@@ -525,7 +541,7 @@ words, the number of instances of this kind.
 	WRITE("Class VPH_Class;\n");
 
 @<Decide who gets a VPH@> =
-	for (int i=0; i<no_kinds; i++) {
+	for (int i=0; i<no_kind_frames; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
 		if (CodeGen::IP::is_kind_of_object(kind_name)) continue;
 		if (kind_name == object_kind_symbol) continue;
@@ -534,7 +550,7 @@ words, the number of instances of this kind.
 		inter_frame_list *FL =
 			Inter::find_frame_list(I, Inter::Kind::permissions_list(kind_name));
 		if (FL->first_in_ifl) vph_me = TRUE;
-		else for (int in=0; in<no_instances; in++) {
+		else for (int in=0; in<no_instance_frames; in++) {
 			inter_symbol *inst_name = instances_in_declaration_order[in];
 			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 				inter_frame_list *FL =
@@ -555,7 +571,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 	int vph = 0;
 	for (int w=1; w<M; w++) {
 		int written = FALSE;
-		for (int i=0; i<no_kinds; i++) {
+		for (int i=0; i<no_kind_frames; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (CodeGen::IP::weak_id(kind_name) == w) {
 				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
@@ -617,7 +633,7 @@ because I6 doesn't allow function calls in a constant context.
 	WRITE_TO(ident, "KOVP_%d_P%d", w, CodeGen::IP::pnum(prop_name));
 	WRITE("%S", ident);
 	WRITE_TO(sticks, "Array %S table 0 0", ident);
-	for (int j=0; j<no_instances; j++) {
+	for (int j=0; j<no_instance_frames; j++) {
 		inter_symbol *inst_name = instances_in_declaration_order[j];
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 			int found = 0;
@@ -652,7 +668,7 @@ because I6 doesn't allow function calls in a constant context.
 	}
 
 @<Write an I6 Class definition for each kind of object@> =
-	for (int i=0; i<no_kinds; i++) {
+	for (int i=0; i<no_kind_frames; i++) {
 		inter_symbol *kind_name = kinds_in_declaration_order[i];
 		if ((kind_name == object_kind_symbol) ||
 			(CodeGen::IP::is_kind_of_object(kind_name))) {
@@ -668,7 +684,7 @@ because I6 doesn't allow function calls in a constant context.
 	}
 
 @<Write an I6 Object definition for each object instance@> =
-	for (int i=0; i<no_instances; i++) {
+	for (int i=0; i<no_instance_frames; i++) {
 		inter_symbol *inst_name = instances_in_declaration_order[i];
 		CodeGen::IP::object_instance(gen, Inter::Symbols::defining_frame(inst_name));
 	}
@@ -762,7 +778,7 @@ linearly with the size of the source text, even though $N$ does.
 	}
 
 @<List any O with an explicit permission@> =
-	for (int k=0; k<no_kinds; k++) {
+	for (int k=0; k<no_kind_frames; k++) {
 		inter_symbol *kind_name = kinds_in_source_order[k];
 		if (CodeGen::IP::is_kind_of_object(kind_name)) {
 			inter_frame X;
@@ -775,7 +791,7 @@ linearly with the size of the source text, even though $N$ does.
 			}
 		}
 	}
-	for (int in=0; in<no_instances; in++) {
+	for (int in=0; in<no_instance_frames; in++) {
 		inter_symbol *inst_name = instances_in_declaration_order[in];
 		if (CodeGen::IP::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
 			inter_frame X;
@@ -795,7 +811,7 @@ linearly with the size of the source text, even though $N$ does.
 		LOOP_THROUGH_INTER_FRAME_LIST(X, EVL) {
 			inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
-				for (int k=0; k<no_kinds; k++) {
+				for (int k=0; k<no_kind_frames; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
 						WRITE("%S ", CodeGen::CL::name(kind_name));

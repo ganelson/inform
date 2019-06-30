@@ -28,28 +28,21 @@
         <span class="identifier">temporary_generation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::iterate</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
-        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) {</span>
-            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-            <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
-                <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">outer</span><span class="plain"> = </span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">codelike_package</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-                    <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> =</span>
-                        <span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::general_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">));</span>
-                    <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">]) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_IST</span><span class="plain">:</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PRAGMA_IST</span><span class="plain">:</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INSTANCE_IST</span><span class="plain">:</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTYVALUE_IST</span><span class="plain">:</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARIABLE_IST</span><span class="plain">:</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SPLAT_IST</span><span class="plain">:</span>
-                            <span class="functiontext">CodeGen::FC::frame</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-                            <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
-                <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::iterate</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">outer</span><span class="plain"> = </span><span class="identifier">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outer</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">outer</span><span class="plain">-&gt;</span><span class="identifier">codelike_package</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+            <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> =</span>
+                <span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::general_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">));</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">]) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_IST</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INSTANCE_IST</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTYVALUE_IST</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARIABLE_IST</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SPLAT_IST</span><span class="plain">:</span>
+                    <span class="functiontext">CodeGen::FC::frame</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -96,23 +89,11 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VAL_IST</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REF_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::FC::val</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAB_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::FC::lab</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PRAGMA_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::FC::pragma</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTYVALUE_IST</span><span class="plain">: </span><span class="functiontext">CodeGen::IP::write_properties</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOP_IST</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">:</span>
                 <span class="identifier">Inter::Defn::write_construct_text</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::FC::pragma</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">target_symbol</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">TARGET_PRAGMA_IFLD</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad pragma"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">target_symbol</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"target_I6"</span><span class="plain">)) {</span>
-            <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">TEXT_PRAGMA_IFLD</span><span class="plain">];</span>
-            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">repo_segment</span><span class="plain">-&gt;</span><span class="identifier">owning_repo</span><span class="plain">, </span><span class="identifier">ID</span><span class="plain">);</span>
-            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"!%% %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -123,9 +104,7 @@
 
 <p class="endnote">The function CodeGen::FC::iterate is used in 4/cg (<a href="4-cg.html#SP8_2">&#167;8.2</a>).</p>
 
-<p class="endnote">The function CodeGen::FC::frame is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, 4/cal (<a href="4-cal.html#SP3">&#167;3</a>), 5/gi6 (<a href="5-gi6.html#SP2_1">&#167;2.1</a>, <a href="5-gi6.html#SP2_9">&#167;2.9</a>).</p>
-
-<p class="endnote">The function CodeGen::FC::pragma appears nowhere else.</p>
+<p class="endnote">The function CodeGen::FC::frame is used in <a href="#SP3">&#167;3</a>, <a href="#SP4">&#167;4</a>, 4/cal (<a href="4-cal.html#SP4">&#167;4</a>), 5/gi6 (<a href="5-gi6.html#SP2_1">&#167;2.1</a>, <a href="5-gi6.html#SP2_9">&#167;2.9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 

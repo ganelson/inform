@@ -141,19 +141,6 @@ inter_frame_list *Inter::Package::code_list(inter_symbol *package_name) {
 	return Inter::find_frame_list(D.repo_segment->owning_repo, D.data[CODE_PACKAGE_IFLD]);
 }
 
-inter_frame_list *Inter::Package::actual_code_list(inter_symbol *package_name) {
-	if (package_name == NULL) return NULL;
-	inter_frame D = Inter::Symbols::defining_frame(package_name);
-	if (Inter::Frame::valid(&D) == FALSE) return NULL;
-	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	inter_frame_list *ifl = Inter::find_frame_list(D.repo_segment->owning_repo, D.data[CODE_PACKAGE_IFLD]);
-	inter_frame F;
-	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-		if (F.data[ID_IFLD] == LABEL_IST)
-			return Inter::find_frame_list(F.repo_segment->owning_repo, F.data[CODE_LABEL_IFLD]);
-	return ifl;
-}
-
 inter_frame_list *Inter::Package::list_of_children(inter_frame P) {
 	if (Inter::Frame::valid(&P) == FALSE) return NULL;
 	if (P.data[ID_IFLD] != PACKAGE_IST) return NULL;

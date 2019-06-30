@@ -156,6 +156,55 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::from_PID</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="functiontext">Inter::Frame::get_package_p</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
     <span class="plain">}</span>
 
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::restring</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="functiontext">Inter::Packages::destring</span><span class="plain">(</span><span class="functiontext">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
+            <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pack</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;codelike_package</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+                <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">);</span>
+                <span class="functiontext">Inter::Package::accept_child</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::destring</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;codelike_package</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="functiontext">Inter::Package::code_list</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">);</span>
+            <span class="identifier">ifl</span><span class="plain">-</span><span class="element">&gt;first_in_ifl</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">ifl</span><span class="plain">-</span><span class="element">&gt;last_in_ifl</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;child_package</span><span class="plain">; </span><span class="identifier">P</span><span class="plain">; </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next_package</span><span class="plain">)</span>
+            <span class="functiontext">Inter::Packages::destring</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::traverse_global</span><span class="plain">(</span><span class="identifier">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="identifier">code_generation</span><span class="plain"> *, </span><span class="reserved">inter_frame</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="identifier">from</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] != </span><span class="constant">PACKAGE_IST</span><span class="plain">) {</span>
+                <span class="plain">(*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::traverse</span><span class="plain">(</span><span class="identifier">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="identifier">code_generation</span><span class="plain"> *, </span><span class="reserved">inter_frame</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="functiontext">Inter::Packages::traverse_inner</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">Inter::Packages::contents</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="identifier">just_this_package</span><span class="plain">), </span><span class="identifier">visitor</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::traverse_inner</span><span class="plain">(</span><span class="identifier">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="identifier">code_generation</span><span class="plain"> *, </span><span class="reserved">inter_frame</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifl</span><span class="plain">) {</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+            <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] == </span><span class="constant">PACKAGE_IST</span><span class="plain">) {</span>
+                    <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="functiontext">Inter::Package::list_of_children</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifl</span><span class="plain">) </span><span class="functiontext">Inter::Packages::traverse_inner</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">, </span><span class="identifier">visitor</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="plain">(*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
     <span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_scope</span><span class="plain">;</span>
@@ -177,6 +226,11 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Defn::get_level</span><span class="plain">(</span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">));</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::contents</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Package::code_list</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -212,6 +266,16 @@
 
 <p class="endnote">The function Inter::Packages::container_p is used in 2/frm (<a href="2-frm.html#SP2">&#167;2</a>).</p>
 
+<p class="endnote">The function Inter::Packages::restring appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Packages::destring appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Packages::traverse_global appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Packages::traverse appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Packages::traverse_inner appears nowhere else.</p>
+
 <p class="endnote">The function Inter::Packages::scope is used in 2/st (<a href="2-st.html#SP4">&#167;4</a>, <a href="2-st.html#SP5">&#167;5</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP10">&#167;10</a>, <a href="2-st.html#SP11">&#167;11</a>, <a href="2-st.html#SP12">&#167;12</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>), 2/iibf (<a href="2-iibf.html#SP1_5_3">&#167;1.5.3</a>).</p>
 
 <p class="endnote">The function Inter::Packages::scope_of is used in 2/st (<a href="2-st.html#SP8">&#167;8</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>).</p>
@@ -219,6 +283,8 @@
 <p class="endnote">The function Inter::Packages::type is used in 3/smm (<a href="3-smm.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Inter::Packages::baseline is used in 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Packages::contents appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-st.html">Back to 'Symbols Tables'</a></li><li><a href="2-sym.html">Continue with 'Symbols'</a></li></ul><hr class="tocbar">

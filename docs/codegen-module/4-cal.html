@@ -33,10 +33,20 @@
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::responses</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
-        <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NR</span><span class="plain"> = 0;</span>
-        &lt;<span class="cwebmacro">Define constants for the responses</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NR</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Define an array of the responses</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
+        <span class="identifier">Inter::Packages::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::response_visitor</span><span class="plain">, &amp;</span><span class="identifier">NR</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NR</span><span class="plain"> &gt; 0) {</span>
+            <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
+            <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_RESPONSES"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">NR</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_RESPONSES"</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
+            <span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::default_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Array ResponseTexts --&gt; "</span><span class="plain">);</span>
+            <span class="identifier">Inter::Packages::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::response_revisitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"0 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
+        <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
@@ -44,60 +54,39 @@
 
 <p class="endnote">The function CodeGen::CL::responses is used in 4/cg (<a href="4-cg.html#SP8_3">&#167;8.3</a>).</p>
 
-<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Define constants for the responses</span> <span class="cwebmacronumber">2.1</span>&gt; =
-</code></p>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 
-<pre class="displaydefn">
-        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
-                <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::general_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">));</span>
-                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">resp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_RESPONSE_IFLD</span><span class="plain">);</span>
-                <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
-                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, ++</span><span class="identifier">NR</span><span class="plain">);</span>
-                <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">));</span>
-                <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
-            <span class="plain">}</span>
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::response_visitor</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">NR</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
+            <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::general_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">));</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">resp_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_RESPONSE_IFLD</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+            <span class="plain">*</span><span class="identifier">NR</span><span class="plain"> = *</span><span class="identifier">NR</span><span class="plain"> + 1;</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, *</span><span class="identifier">NR</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">resp_name</span><span class="plain">));</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
         <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::response_revisitor</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
+            <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">+1], </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">" "</span><span class="plain">);</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">The function CodeGen::CL::response_visitor is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Define an array of the responses</span> <span class="cwebmacronumber">2.2</span>&gt; =
-</code></p>
+<p class="endnote">The function CodeGen::CL::response_revisitor is used in <a href="#SP2">&#167;2</a>.</p>
 
-
-<pre class="displaydefn">
-        <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
-        <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_RESPONSES"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">NR</span><span class="plain">);</span>
-        <span class="functiontext">CodeGen::Targets::end_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NO_RESPONSES"</span><span class="plain">);</span>
-        <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
-        <span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::default_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Array ResponseTexts --&gt; "</span><span class="plain">);</span>
-            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-            <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">RESPONSE_IST</span><span class="plain">) {</span>
-                    <span class="identifier">NR</span><span class="plain">++;</span>
-                    <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">], </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">VAL1_RESPONSE_IFLD</span><span class="plain">+1], </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">" "</span><span class="plain">);</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"0 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
 an array written in the form
 </p>
 
@@ -435,9 +424,9 @@ is 20. We instead compile this as
 
 <p class="endnote">The function CodeGen::CL::exit_print_mode is used in 4/fc (<a href="4-fc.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The function CodeGen::CL::literal is used in <a href="#SP2_2">&#167;2.2</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>), 4/iap (<a href="4-iap.html#SP5_8_4_1_1">&#167;5.8.4.1.1</a>, <a href="4-iap.html#SP8">&#167;8</a>), 5/gi6 (<a href="5-gi6.html#SP6">&#167;6</a>).</p>
+<p class="endnote">The function CodeGen::CL::literal is used in <a href="#SP3">&#167;3</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>), 4/iap (<a href="4-iap.html#SP5_8_4_1_1">&#167;5.8.4.1.1</a>, <a href="4-iap.html#SP8">&#167;8</a>), 5/gi6 (<a href="5-gi6.html#SP6">&#167;6</a>).</p>
 
-<p class="endnote">The function CodeGen::CL::name is used in <a href="#SP2_1">&#167;2.1</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>, <a href="4-fc.html#SP4">&#167;4</a>), 4/iap (<a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5_5">&#167;5.5</a>, <a href="4-iap.html#SP5_7">&#167;5.7</a>, <a href="4-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="4-iap.html#SP5_9">&#167;5.9</a>, <a href="4-iap.html#SP5_11">&#167;5.11</a>, <a href="4-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="4-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="4-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="4-iap.html#SP6">&#167;6</a>, <a href="4-iap.html#SP8">&#167;8</a>), 5/gi6 (<a href="5-gi6.html#SP5">&#167;5</a>, <a href="5-gi6.html#SP6">&#167;6</a>).</p>
+<p class="endnote">The function CodeGen::CL::name is used in <a href="#SP3">&#167;3</a>, 4/fc (<a href="4-fc.html#SP3">&#167;3</a>, <a href="4-fc.html#SP4">&#167;4</a>), 4/iap (<a href="4-iap.html#SP4_5">&#167;4.5</a>, <a href="4-iap.html#SP4_6">&#167;4.6</a>, <a href="4-iap.html#SP5_5">&#167;5.5</a>, <a href="4-iap.html#SP5_7">&#167;5.7</a>, <a href="4-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="4-iap.html#SP5_9">&#167;5.9</a>, <a href="4-iap.html#SP5_11">&#167;5.11</a>, <a href="4-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="4-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="4-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="4-iap.html#SP6">&#167;6</a>, <a href="4-iap.html#SP8">&#167;8</a>), 5/gi6 (<a href="5-gi6.html#SP5">&#167;5</a>, <a href="5-gi6.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The structure text_literal_holder is private to this section.</p>
 

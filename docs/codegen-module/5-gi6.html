@@ -35,6 +35,7 @@
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">DECLARE_LOCAL_VARIABLE_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::declare_local_variable</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">BEGIN_CONSTANT_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::begin_constant</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">END_CONSTANT_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::end_constant</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">, </span><span class="constant">OFFER_PRAGMA_MTID</span><span class="plain">, </span><span class="functiontext">CodeGen::I6::offer_pragma</span><span class="plain">)</span>
         <span class="identifier">inform6_target</span><span class="plain"> = </span><span class="identifier">cgt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -100,8 +101,6 @@
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RESPONSE_IST</span><span class="plain">:</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">early_matter_I7CGS</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PRAGMA_IST</span><span class="plain">:</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="constant">pragmatic_matter_I7CGS</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::default_segment</span><span class="plain">(</span><span class="identifier">cgt</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -117,6 +116,16 @@
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::tl_segment</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">text_literals_code_I7CGS</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::offer_pragma</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">,</span>
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">content</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"target_I6"</span><span class="plain">)) {</span>
+            <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="constant">pragmatic_matter_I7CGS</span><span class="plain">);</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"!%% %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">content</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
+        <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::compile_primitive</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">,</span>
@@ -284,6 +293,8 @@
 <p class="endnote">The function CodeGen::I6::property_segment is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function CodeGen::I6::tl_segment is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function CodeGen::I6::offer_pragma is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function CodeGen::I6::compile_primitive is used in <a href="#SP1">&#167;1</a>.</p>
 

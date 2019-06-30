@@ -16,28 +16,21 @@ void CodeGen::FC::prepare(code_generation *gen) {
 	temporary_generation = NULL;
 }
 
-void CodeGen::FC::iterate(code_generation *gen) {
-	inter_repository *I = gen->from;
-	if (I) {
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, I) {
-			inter_package *outer = Inter::Packages::container(P);
-			if ((outer == NULL) || (outer->codelike_package == FALSE)) {
-				generated_segment *saved =
-					CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
-				switch (P.data[ID_IFLD]) {
-					case CONSTANT_IST:
-					case PRAGMA_IST:
-					case INSTANCE_IST:
-					case PROPERTYVALUE_IST:
-					case VARIABLE_IST:
-					case SPLAT_IST:
-						CodeGen::FC::frame(gen, P);
-						break;
-				}
-				CodeGen::deselect(gen, saved);
-			}
+void CodeGen::FC::iterate(code_generation *gen, inter_frame P, void *state) {
+	inter_package *outer = Inter::Packages::container(P);
+	if ((outer == NULL) || (outer->codelike_package == FALSE)) {
+		generated_segment *saved =
+			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+		switch (P.data[ID_IFLD]) {
+			case CONSTANT_IST:
+			case INSTANCE_IST:
+			case PROPERTYVALUE_IST:
+			case VARIABLE_IST:
+			case SPLAT_IST:
+				CodeGen::FC::frame(gen, P);
+				break;
 		}
+		CodeGen::deselect(gen, saved);
 	}
 }
 
@@ -84,23 +77,11 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 		case VAL_IST:
 		case REF_IST: CodeGen::FC::val(gen, P); break;
 		case LAB_IST: CodeGen::FC::lab(gen, P); break;
-		case PRAGMA_IST: CodeGen::FC::pragma(gen, P); break;
 		case PROPERTYVALUE_IST: CodeGen::IP::write_properties(gen); break;
 		case NOP_IST: break;
 		default:
 			Inter::Defn::write_construct_text(DL, P);
 			internal_error("unimplemented\n");
-	}
-}
-
-void CodeGen::FC::pragma(code_generation *gen, inter_frame P) {
-	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
-	if (target_symbol == NULL) internal_error("bad pragma");
-	if (Str::eq(target_symbol->symbol_name, I"target_I6")) {
-		inter_t ID = P.data[TEXT_PRAGMA_IFLD];
-		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE("!%% %S\n", S);
 	}
 }
 

@@ -17,44 +17,45 @@ void CodeGen::CL::prepare(code_generation *gen) {
 
 =
 void CodeGen::CL::responses(code_generation *gen) {
-	inter_repository *I = gen->from;
 	int NR = 0;
-	@<Define constants for the responses@>;
-	if (NR > 0) @<Define an array of the responses@>;
+	Inter::Packages::traverse(gen, CodeGen::CL::response_visitor, &NR);
+	if (NR > 0) {
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
+		CodeGen::Targets::begin_constant(gen, I"NO_RESPONSES", TRUE);
+		WRITE_TO(CodeGen::current(gen), "%d", NR);
+		CodeGen::Targets::end_constant(gen, I"NO_RESPONSES");
+		CodeGen::deselect(gen, saved);
+		saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+		WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
+		Inter::Packages::traverse(gen, CodeGen::CL::response_revisitor, NULL);
+		WRITE_TO(CodeGen::current(gen), "0 0;\n");
+		CodeGen::deselect(gen, saved);
+	}
 }
 
-@<Define constants for the responses@> =
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I) {
-		if (P.data[ID_IFLD] == RESPONSE_IST) {
-			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
-			inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(resp_name), TRUE);
-			text_stream *OUT = CodeGen::current(gen);
-			WRITE("%d", ++NR);
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(resp_name));
-			CodeGen::deselect(gen, saved);
-		}
-	}
+@
 
-@<Define an array of the responses@> =
-	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-	CodeGen::Targets::begin_constant(gen, I"NO_RESPONSES", TRUE);
-	WRITE_TO(CodeGen::current(gen), "%d", NR);
-	CodeGen::Targets::end_constant(gen, I"NO_RESPONSES");
-	CodeGen::deselect(gen, saved);
-	saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
-	WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, I) {
-			if (P.data[ID_IFLD] == RESPONSE_IST) {
-				NR++;
-				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
-				WRITE_TO(CodeGen::current(gen), " ");
-			}
-		}
-	WRITE_TO(CodeGen::current(gen), "0 0;\n");
-	CodeGen::deselect(gen, saved);
+=
+void CodeGen::CL::response_visitor(code_generation *gen, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == RESPONSE_IST) {
+		int *NR = (int *) state;
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+		inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
+		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(resp_name), TRUE);
+		text_stream *OUT = CodeGen::current(gen);
+		*NR = *NR + 1;
+		WRITE("%d", *NR);
+		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(resp_name));
+		CodeGen::deselect(gen, saved);
+	}
+}
+
+void CodeGen::CL::response_revisitor(code_generation *gen, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == RESPONSE_IST) {
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
+		WRITE_TO(CodeGen::current(gen), " ");
+	}
+}
 
 @
 
