@@ -106,22 +106,18 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 
 	if (Str::eq(con_name->symbol_name, I"thedark")) {
 		the_quartet_found = TRUE;
-//		WRITE("Object thedark \"(darkness object)\";\n");
 		return;
 	}
 	if (Str::eq(con_name->symbol_name, I"InformLibrary")) {
 		the_quartet_found = TRUE;
-//		WRITE("Object InformLibrary \"(Inform Library)\" has proper;\n");
 		return;
 	}
 	if (Str::eq(con_name->symbol_name, I"InformParser")) {
 		the_quartet_found = TRUE;
-//		WRITE("Object InformParser \"(Inform Parser)\" has proper;\n");
 		return;
 	}
 	if (Str::eq(con_name->symbol_name, I"Compass")) {
 		the_quartet_found = TRUE;
-//		WRITE("Object Compass \"compass\" has concealed;\n");
 		return;
 	}
 	

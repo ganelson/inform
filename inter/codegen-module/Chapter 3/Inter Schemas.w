@@ -2352,7 +2352,6 @@ int InterSchemas::treat_constructs(inter_schema_node *par, inter_schema_node *is
 			}
 			if (cw != 3) internal_error("malformed for prototype");
 			for (int i=0; i<3; i++) {
-// LOG("For clause %d is :", i); InterSchemas::log_ist(from[i]); LOG(" to "); InterSchemas::log_ist(to[i]); LOG("\n");
 				inter_schema_node *eval_isn = InterSchemas::new_node(isn->parent_schema, EVAL_ISNT);
 				if (i == 0) isn->child_node = eval_isn;
 				if (i == 1) isn->child_node->next_node = eval_isn;

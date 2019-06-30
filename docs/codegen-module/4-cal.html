@@ -142,22 +142,18 @@ is 20. We instead compile this as
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"thedark"</span><span class="plain">)) {</span>
             <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-    <span class="comment">WRITE("Object thedark \"(darkness object)\";\n");</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformLibrary"</span><span class="plain">)) {</span>
             <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-    <span class="comment">WRITE("Object InformLibrary \"(Inform Library)\" has proper;\n");</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformParser"</span><span class="plain">)) {</span>
             <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-    <span class="comment">WRITE("Object InformParser \"(Inform Parser)\" has proper;\n");</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Compass"</span><span class="plain">)) {</span>
             <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-    <span class="comment">WRITE("Object Compass \"compass\" has concealed;\n");</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 

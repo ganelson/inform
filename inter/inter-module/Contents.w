@@ -24,7 +24,6 @@ Chapter 2: Interoperability
 Chapter 3: Language Definition
 	Canonical Annotations
 	Definition
-	Summariser
 
 Chapter 4: Void Constructs
 	The Nop Construct

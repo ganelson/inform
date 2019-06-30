@@ -39,5 +39,4 @@ Chapter 5: Final Code
 	Final Textual Inter
 	Final Binary Inter
 	Final Inventory
-	Final Summarised Inter
 	Final Inform 6

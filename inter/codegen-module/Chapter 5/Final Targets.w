@@ -30,7 +30,6 @@ void CodeGen::Targets::make_targets(void) {
 		CodeGen::Textual::create_target();
 		CodeGen::Binary::create_target();
 		CodeGen::Inventory::create_target();
-		CodeGen::Summarised::create_target();
 		CodeGen::I6::create_target();
 	}
 }

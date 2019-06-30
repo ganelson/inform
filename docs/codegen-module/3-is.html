@@ -696,7 +696,7 @@ we go to some trouble here.
 
 <p class="endnote">The function InterSchemas::log_just appears nowhere else.</p>
 
-<p class="endnote">The function InterSchemas::log_ist is used in <a href="#SP27">&#167;27</a>.</p>
+<p class="endnote">The function InterSchemas::log_ist appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17. Lint. </b>As can be seen, the <code class="display"><span class="extract">inter_schema</span></code> structure is quite complicated, and there
 are numerous invariants it has to satisfy. As a precaution, then, we check that
@@ -2878,7 +2878,6 @@ these out at the start of each iteration.
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cw</span><span class="plain"> != 3) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"malformed for prototype"</span><span class="plain">);</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;3; </span><span class="identifier">i</span><span class="plain">++) {</span>
-    <span class="comment">LOG("For clause %d is :", i); InterSchemas::log_ist(from[i]); LOG(" to "); InterSchemas::log_ist(to[i]); LOG("\n");</span>
                     <span class="reserved">inter_schema_node</span><span class="plain"> *</span><span class="identifier">eval_isn</span><span class="plain"> = </span><span class="functiontext">InterSchemas::new_node</span><span class="plain">(</span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;parent_schema</span><span class="plain">, </span><span class="constant">EVAL_ISNT</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == 0) </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain"> = </span><span class="identifier">eval_isn</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == 1) </span><span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;child_node</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">eval_isn</span><span class="plain">;</span>
