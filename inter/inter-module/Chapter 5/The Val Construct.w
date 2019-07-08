@@ -19,7 +19,7 @@ void Inter::Val::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Val::show_dependencies,
+		NULL,
 		I"val", I"vals");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
@@ -91,20 +91,4 @@ inter_error_message *Inter::Val::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Types::write(OUT, P.repo_segment->owning_repo, val_kind, P.data[VAL1_VAL_IFLD], P.data[VAL2_VAL_IFLD], locals, FALSE);
 	} else return Inter::Frame::error(&P, I"cannot write val", NULL);
 	return NULL;
-}
-
-void Inter::Val::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *val_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
-	if ((routine) && (val_kind)) {
-		(*callback)(routine, val_kind, state);
-		inter_t v1 = P.data[VAL1_VAL_IFLD], v2 = P.data[VAL2_VAL_IFLD];
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(v1, v2, P);
-		if (S) (*callback)(routine, S, state);
-		if (v1 == GLOB_IVAL) {
-			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, v2);
-			Inter::Splat::show_dependencies_from(routine, P, S, callback, state);
-		}
-	}
 }

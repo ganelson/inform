@@ -16,12 +16,14 @@ void Inter::Package::define(void) {
 		&Inter::Package::verify,
 		&Inter::Package::write,
 		NULL,
-		&Inter::Package::list_of_children,
-		&Inter::Package::accept_child,
-		&Inter::Package::no_more_children,
+		NULL,
+		NULL,
+		NULL,
 		NULL,
 		I"package", I"packages");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE;
+	IC->children_field = CODE_PACKAGE_IFLD;
+	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Package::verify_children);
 }
 
 @
@@ -141,22 +143,16 @@ inter_frame_list *Inter::Package::code_list(inter_symbol *package_name) {
 	return Inter::find_frame_list(D.repo_segment->owning_repo, D.data[CODE_PACKAGE_IFLD]);
 }
 
-inter_frame_list *Inter::Package::list_of_children(inter_frame P) {
-	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	if (P.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_PACKAGE_IFLD]);
-}
-
-inter_error_message *Inter::Package::accept_child(inter_frame P, inter_frame C) {
+void Inter::Package::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
 	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
 	if (ptype_name == code_packagetype) {
-		if ((C.data[0] != LABEL_IST) && (C.data[0] != LOCAL_IST) && (C.data[0] != SYMBOL_IST))
-			return Inter::Frame::error(&C, I"only a local or a symbol can be at the top level", NULL);
+		inter_frame_list *ifl = Inter::Defn::list_of_children(P);
+		inter_frame C;
+		LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+			if ((C.data[0] != LABEL_IST) && (C.data[0] != LOCAL_IST) && (C.data[0] != SYMBOL_IST)) {
+				*E = Inter::Frame::error(&C, I"only a local or a symbol can be at the top level", NULL);
+				return;
+			}
+		}
 	}
-	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_PACKAGE_IFLD]), C, NULL);
-	return NULL;
-}
-
-inter_error_message *Inter::Package::no_more_children(inter_frame P) {
-	return NULL;
 }

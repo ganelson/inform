@@ -15,11 +15,11 @@ void Inter::Local::define(void) {
 		NULL,
 		&Inter::Local::verify,
 		&Inter::Local::write,
-		&Inter::Local::report_level,
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Local::show_dependencies,
+		NULL,
+		NULL,
 		I"local", I"locals");
 	IC->min_level = 0;
 	IC->max_level = 0;
@@ -84,17 +84,6 @@ inter_error_message *Inter::Local::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, var_name);
 	} else return Inter::Frame::error(&P, I"cannot write local", NULL);
 	return NULL;
-}
-
-void Inter::Local::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *var_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_LOCAL_IFLD);
-	if ((routine) && (var_kind)) (*callback)(routine, var_kind, state);
-}
-
-int Inter::Local::report_level(inter_frame P) {
-	return 1;
 }
 
 inter_symbol *Inter::Local::kind_of(inter_symbol *con_symbol) {

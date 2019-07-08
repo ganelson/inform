@@ -19,7 +19,7 @@ void Inter::Property::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Property::show_dependencies,
+		NULL,
 		I"property", I"properties");
 }
 
@@ -77,12 +77,6 @@ inter_error_message *Inter::Property::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, prop_name);
 	} else return Inter::Frame::error(&P, I"cannot write property", NULL);
 	return NULL;
-}
-
-void Inter::Property::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-	inter_symbol *prop_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_PROP_IFLD);
-	if ((prop_name) && (prop_kind)) (*callback)(prop_name, prop_kind, state);
 }
 
 inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {

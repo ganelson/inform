@@ -19,7 +19,7 @@ void Inter::Permission::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Permission::show_dependencies,
+		NULL,
 		I"permission", I"permissions");
 }
 
@@ -170,16 +170,4 @@ inter_error_message *Inter::Permission::write(OUTPUT_STREAM, inter_frame P) {
 		}
 	} else return Inter::Frame::error(&P, I"cannot write permission", NULL);
 	return NULL;
-}
-
-void Inter::Permission::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PERM_IFLD);
-	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PERM_IFLD);
-	if ((prop_name) && (owner_name)) {
-		(*callback)(prop_name, owner_name, state);
-		if (P.data[STORAGE_PERM_IFLD]) {
-			inter_symbol *store = Inter::SymbolsTables::symbol_from_frame_data(P, STORAGE_PERM_IFLD);
-			if (store) (*callback)(prop_name, store, state);
-		}
-	}
 }

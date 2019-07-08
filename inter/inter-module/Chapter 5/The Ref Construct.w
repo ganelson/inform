@@ -19,7 +19,7 @@ void Inter::Ref::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Ref::show_dependencies,
+		NULL,
 		I"ref", I"refs");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
@@ -86,16 +86,4 @@ inter_error_message *Inter::Ref::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Types::write(OUT, P.repo_segment->owning_repo, ref_kind, P.data[VAL1_REF_IFLD], P.data[VAL2_REF_IFLD], locals, FALSE);
 	} else return Inter::Frame::error(&P, I"cannot write ref", NULL);
 	return NULL;
-}
-
-void Inter::Ref::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_REF_IFLD);
-	if ((routine) && (ref_kind)) {
-		(*callback)(routine, ref_kind, state);
-		inter_t v1 = P.data[VAL1_REF_IFLD], v2 = P.data[VAL2_REF_IFLD];
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(v1, v2, P);
-		if (S) (*callback)(routine, S, state);
-	}
 }

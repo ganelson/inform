@@ -19,7 +19,7 @@ void Inter::Constant::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Constant::show_dependencies,
+		NULL,
 		I"constant", I"constants");
 }
 
@@ -418,43 +418,6 @@ inter_error_message *Inter::Constant::write(OUTPUT_STREAM, inter_frame P) {
 	return NULL;
 }
 
-void Inter::Constant::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-	if (con_name) {
-		inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_CONST_IFLD);
-		if (con_kind) (*callback)(con_name, con_kind, state);
-		switch (P.data[FORMAT_CONST_IFLD]) {
-			case CONSTANT_DIRECT: {
-				inter_t v1 = P.data[DATA_CONST_IFLD], v2 = P.data[DATA_CONST_IFLD+1];
-				@<Callback on symbol if one is observed in this value@>;
-				break;
-			}
-			case CONSTANT_SUM_LIST:
-			case CONSTANT_PRODUCT_LIST:
-			case CONSTANT_DIFFERENCE_LIST:
-			case CONSTANT_QUOTIENT_LIST:
-			case CONSTANT_INDIRECT_LIST:
-			case CONSTANT_STRUCT: {
-				for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
-					inter_t v1 = P.data[i], v2 = P.data[i+1];
-					@<Callback on symbol if one is observed in this value@>;
-				}
-				break;
-			}
-			case CONSTANT_ROUTINE: {
-				inter_symbol *block = Inter::SymbolsTables::symbol_from_frame_data(P, DATA_CONST_IFLD);
-				if (block) (*callback)(con_name, block, state);
-				break;
-			}
-		}
-	}
-}
-
-@<Callback on symbol if one is observed in this value@> =
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(v1, v2, P);
-	if (S) (*callback)(con_name, S, state);
-
-@ =
 inter_symbol *Inter::Constant::kind_of(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
 	inter_frame D = Inter::Symbols::defining_frame(con_symbol);

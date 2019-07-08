@@ -19,42 +19,47 @@ int CodeGen::RCC::run_pipeline_stage(pipeline_step *step) {
 @d MAX_CC_STACK_SIZE 32
 
 =
-void CodeGen::RCC::resolve(inter_repository *I) {
-	dictionary *I6_level_symbols = Dictionaries::new(1024, TRUE);
-
+typedef struct rcc_state {
+	struct dictionary *I6_level_symbols;
 	int cc_stack[MAX_CC_STACK_SIZE];
-	int cc_sp = 0;
-	inter_frame P; int frame_count = 0;
-	LOOP_THROUGH_FRAMES(P, I) {
-		frame_count++;
-		int allow = TRUE;
-		for (int i=0; i<cc_sp; i++) if (cc_stack[i] == FALSE) allow = FALSE;
-		inter_package *outer = Inter::Packages::container(P);
-		if ((outer == NULL) || (outer->codelike_package == FALSE)) {
-			if (P.data[ID_IFLD] == SPLAT_IST) {
-				text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]);
-				switch (P.data[PLM_SPLAT_IFLD]) {
-					case CONSTANT_PLM:
-					case GLOBAL_PLM:
-					case ARRAY_PLM:
-					case ROUTINE_PLM:
-					case DEFAULT_PLM:
-					case STUB_PLM:
-						if (allow) @<Symbol definition@>;
-						break;
-					case IFDEF_PLM: @<Deal with an IFDEF@>; break;
-					case IFNDEF_PLM: @<Deal with an IFNDEF@>; break;
-					case IFTRUE_PLM: @<Deal with an IFTRUE@>; break;
-					case IFNOT_PLM: @<Deal with an IFNOT@>; break;
-					case ENDIF_PLM: @<Deal with an ENDIF@>; break;
-				}
+	int cc_sp;
+} rcc_state;
+
+void CodeGen::RCC::resolve(inter_repository *I) {
+	rcc_state state;
+	state.I6_level_symbols = Dictionaries::new(1024, TRUE);
+	state.cc_sp = 0;
+	Inter::Packages::traverse_repository(I, CodeGen::RCC::visitor, &state);
+	if (state.cc_sp != 0)
+		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
+}
+
+void CodeGen::RCC::visitor(inter_repository *I, inter_frame P, void *v_state) {
+	rcc_state *state = (rcc_state *) v_state;
+	int allow = TRUE;
+	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) allow = FALSE;
+	inter_package *outer = Inter::Packages::container(P);
+	if ((outer == NULL) || (outer->codelike_package == FALSE)) {
+		if (P.data[ID_IFLD] == SPLAT_IST) {
+			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]);
+			switch (P.data[PLM_SPLAT_IFLD]) {
+				case CONSTANT_PLM:
+				case GLOBAL_PLM:
+				case ARRAY_PLM:
+				case ROUTINE_PLM:
+				case DEFAULT_PLM:
+				case STUB_PLM:
+					if (allow) @<Symbol definition@>;
+					break;
+				case IFDEF_PLM: @<Deal with an IFDEF@>; break;
+				case IFNDEF_PLM: @<Deal with an IFNDEF@>; break;
+				case IFTRUE_PLM: @<Deal with an IFTRUE@>; break;
+				case IFNOT_PLM: @<Deal with an IFNOT@>; break;
+				case ENDIF_PLM: @<Deal with an ENDIF@>; break;
 			}
 		}
-		if (allow == FALSE) Inter::Nop::nop_out(I, P);
 	}
-
-	if (cc_sp != 0)
-		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
+	if (allow == FALSE) Inter::Nop::nop_out(I, P);
 }
 
 @<Extract second token into ident@> =
@@ -88,7 +93,7 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	TEMPORARY_TEXT(ident);
 	@<Extract second token into ident@>;
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "I6 defines %S here\n", ident);
-	Dictionaries::create(I6_level_symbols, ident);
+	Dictionaries::create(state->I6_level_symbols, ident);
 	DISCARD_TEXT(ident);
 
 @<Deal with an IFDEF@> =
@@ -117,7 +122,7 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	if (symbol) {
 		result = TRUE;
 		if (Inter::Symbols::is_extern(symbol)) result = FALSE;
-	} else if (Dictionaries::find(I6_level_symbols, symbol_name)) result = TRUE;
+	} else if (Dictionaries::find(state->I6_level_symbols, symbol_name)) result = TRUE;
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "Must decide if %S defined: %s\n", symbol_name, (result)?"yes":"no");
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_INDENT;
 
@@ -154,21 +159,21 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	DISCARD_TEXT(ident);
 
 @<Stack up the result@> =
-	if (cc_sp >= MAX_CC_STACK_SIZE) {
-		cc_sp = MAX_CC_STACK_SIZE; TemplateReader::error("conditional compilation is wrongly structured in the template: too many nested #ifdef or #iftrue", NULL);
+	if (state->cc_sp >= MAX_CC_STACK_SIZE) {
+		state->cc_sp = MAX_CC_STACK_SIZE; TemplateReader::error("conditional compilation is wrongly structured in the template: too many nested #ifdef or #iftrue", NULL);
 	} else {
-		cc_stack[cc_sp++] = result;
+		state->cc_stack[state->cc_sp++] = result;
 	}
 
 @<Deal with an IFNOT@> =
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "ifnot\n");
-	if (cc_sp == 0) TemplateReader::error("conditional compilation is wrongly structured in the template: #ifnot at top level", NULL);
-	else cc_stack[cc_sp-1] = (cc_stack[cc_sp-1])?FALSE:TRUE;
+	if (state->cc_sp == 0) TemplateReader::error("conditional compilation is wrongly structured in the template: #ifnot at top level", NULL);
+	else state->cc_stack[state->cc_sp-1] = (state->cc_stack[state->cc_sp-1])?FALSE:TRUE;
 	allow = FALSE;
 
 @<Deal with an ENDIF@> =
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_OUTDENT;
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "endif\n");
-	cc_sp--;
-	if (cc_sp < 0) { cc_sp = 0; TemplateReader::error("conditional compilation is wrongly structured in the template: too many #endif", NULL); }
+	state->cc_sp--;
+	if (state->cc_sp < 0) { state->cc_sp = 0; TemplateReader::error("conditional compilation is wrongly structured in the template: too many #endif", NULL); }
 	allow = FALSE;

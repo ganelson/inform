@@ -64,42 +64,42 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 		return;
 	}
 	CodeGen::Eliminate::require(Main_package, NULL);
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I) {
-		if (P.data[ID_IFLD] == PACKAGE_IST) {
-			inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
-			inter_package *which = Inter::Package::which(package_name);
-			if (which) {
-				inter_symbol *ptype = Inter::Packages::type(which);
-				if ((ptype) && (Str::eq(ptype->symbol_name, I"_action"))) {
-					CodeGen::Eliminate::require(which, NULL);
-				}
-				if ((ptype) && (Str::eq(ptype->symbol_name, I"_command"))) {
-					CodeGen::Eliminate::require(which, NULL);
-				}
-				if (Str::eq(package_name->symbol_name, I"SL_Score_Moves_B"))
-					CodeGen::Eliminate::require(which, NULL);
-			}
-		}
+	CodeGen::Eliminate::require_these_too(Inter::Packages::main(I));
+	CodeGen::Eliminate::eliminate_unused(Inter::Packages::main(I));
+	Inter::Packages::traverse_repository(I, CodeGen::Eliminate::variable_visitor, NULL);
+}
+
+void CodeGen::Eliminate::require_these_too(inter_package *pack) {
+	inter_symbol *ptype = Inter::Packages::type(pack);
+	if ((ptype) && (Str::eq(ptype->symbol_name, I"_action"))) {
+		CodeGen::Eliminate::require(pack, NULL);
 	}
-	LOOP_THROUGH_FRAMES(P, I) {
-		if (P.data[ID_IFLD] == PACKAGE_IST) {
-			inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
-			inter_package *which = Inter::Package::which(package_name);
-			if ((which) && ((which->package_flags & USED_PACKAGE_FLAG) == 0)) {
-				LOG("Not used: $3\n", package_name);
-				CodeGen::Eliminate::remove_package(which);
-			}
-		}
-		if (P.data[ID_IFLD] == VARIABLE_IST) {
-			inter_package *outer = Inter::Packages::container(P);
-			if ((outer) && (CodeGen::Eliminate::gone(outer->package_name))) {
-				inter_symbol *var_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
-				LOG("Striking variable $3\n", var_name);
-				Inter::Symbols::strike_definition(var_name);
-				Inter::Symbols::remove_from_table(var_name);
-				continue;
-			}
+	if ((ptype) && (Str::eq(ptype->symbol_name, I"_command"))) {
+		CodeGen::Eliminate::require(pack, NULL);
+	}
+	if (Str::eq(pack->package_name->symbol_name, I"SL_Score_Moves_B"))
+		CodeGen::Eliminate::require(pack, NULL);
+	for (inter_package *P = pack->child_package; P; P = P->next_package)
+		CodeGen::Eliminate::require_these_too(P);
+}
+
+void CodeGen::Eliminate::eliminate_unused(inter_package *pack) {
+	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
+		LOG("Not used: $3\n", pack->package_name);
+		CodeGen::Eliminate::remove_package(pack);
+	}
+	for (inter_package *P = pack->child_package; P; P = P->next_package)
+		CodeGen::Eliminate::eliminate_unused(P);
+}
+
+void CodeGen::Eliminate::variable_visitor(inter_repository *I, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == VARIABLE_IST) {
+		inter_package *outer = Inter::Packages::container(P);
+		if ((outer) && (CodeGen::Eliminate::gone(outer->package_name))) {
+			inter_symbol *var_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
+			LOG("Striking variable $3\n", var_name);
+			Inter::Symbols::strike_definition(var_name);
+			Inter::Symbols::remove_from_table(var_name);
 		}
 	}
 }

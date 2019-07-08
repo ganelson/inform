@@ -28,7 +28,8 @@ typedef struct inter_repository {
 	int capacity;
 	struct inter_resource_holder *stored_resources;
 	struct filename *origin_file;
-	struct inter_frame_list sequence;
+	struct inter_frame_list global_material;
+	struct inter_frame_list residue;
 	struct inter_repository *main_repo;
 	struct inter_package *main_package;
 	MEMORY_MANAGEMENT
@@ -75,9 +76,12 @@ inter_repository *Inter::create(int ref, int capacity) {
 	I->stored_resources = NULL;
 	I->origin_file = NULL;
 	Inter::create_symbols_table(I);
-	I->sequence.spare_storage = NULL;
-	I->sequence.storage_used = 0;
-	I->sequence.storage_capacity = 0;
+	I->global_material.spare_storage = NULL;
+	I->global_material.storage_used = 0;
+	I->global_material.storage_capacity = 0;
+	I->residue.spare_storage = NULL;
+	I->residue.storage_used = 0;
+	I->residue.storage_capacity = 0;
 	I->main_repo = NULL;
 	I->main_package = NULL;
 	return I;
@@ -331,13 +335,15 @@ void Inter::add_to_frame_list(inter_frame_list *FL, inter_frame F, inter_reading
 		FL->last_in_ifl = entry;
 		if (FL->first_in_ifl == NULL) FL->first_in_ifl = entry;
 	} else {
-		/* the new one can't be the first or the last */
+		/* the new one can't be the first */
 		inter_frame_list_entry *after = at->pos->next_in_ifl;
-		if (after == NULL) internal_error("dll mismanaged");
 		at->pos->next_in_ifl = entry;
 		entry->prev_in_ifl = at->pos;
 		entry->next_in_ifl = after;
-		after->prev_in_ifl = entry;
+		if (after == NULL)
+			FL->last_in_ifl = entry;
+		else
+			after->prev_in_ifl = entry;
 	}
 
 	if (at) at->pos = entry;

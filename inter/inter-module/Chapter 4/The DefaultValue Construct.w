@@ -19,7 +19,7 @@ void Inter::DefaultValue::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::DefaultValue::show_dependencies,
+		NULL,
 		I"defaultvalue", I"defaultvalues");
 }
 
@@ -72,13 +72,4 @@ inter_error_message *Inter::DefaultValue::write(OUTPUT_STREAM, inter_frame P) {
 		return Inter::Frame::error(&P, I"defaultvalue can't be written", NULL);
 	}
 	return NULL;
-}
-
-void Inter::DefaultValue::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_DEF_IFLD);
-	if (con_kind) {
-		inter_t v1 = P.data[VAL1_DEF_IFLD], v2 = P.data[VAL1_DEF_IFLD+1];
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(v1, v2, P);
-		if (S) (*callback)(con_kind, S, state);
-	}
 }

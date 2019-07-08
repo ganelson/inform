@@ -19,7 +19,7 @@ void Inter::Variable::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Variable::show_dependencies,
+		NULL,
 		I"variable", I"variables");
 }
 
@@ -77,17 +77,6 @@ inter_error_message *Inter::Variable::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, var_name);
 	} else return Inter::Frame::error(&P, I"cannot write variable", NULL);
 	return NULL;
-}
-
-void Inter::Variable::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *var_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
-	inter_symbol *var_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAR_IFLD);
-	if ((var_name) && (var_kind)) {
-		(*callback)(var_name, var_kind, state);
-		inter_t v1 = P.data[VAL1_VAR_IFLD], v2 = P.data[VAL2_VAR_IFLD];
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(v1, v2, P);
-		if (S) (*callback)(var_name, S, state);
-	}
 }
 
 inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {

@@ -146,7 +146,7 @@ very early on, the enclosure is always an enclosing package.)
 
 =
 void Packaging::initialise_state(inter_repository *I) {
-	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS(I));
+	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS_global(I));
 	current_state.saved_enclosure = NULL;
 }
 
@@ -271,6 +271,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 			Packaging::set_state(save_IRS, E);
 		} else {
 			inter_reading_state package_bubble = Packaging::bubble();
+			package_bubble = Packaging::bubble();
 			inter_reading_state *save_IRS = Packaging::at();
 			Packaging::set_state(&package_bubble, E);
 			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));

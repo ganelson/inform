@@ -188,9 +188,6 @@ int Inter::Frame::extend(inter_frame *F, inter_t by) {
 
 @
 
-@d LOOP_THROUGH_FRAMES(P, I)
-	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(I->sequence)))
-
 =
 int trace_inter_insertion = FALSE;
 
@@ -198,7 +195,38 @@ void Inter::Frame::insert(inter_frame F, inter_reading_state *at) {
 	inter_repository *I = F.repo_segment->owning_repo;
 	LOGIF(INTER_FRAMES, "I%d: Insert frame %F\n", I->allocation_id, F);
 	if (trace_inter_insertion) Inter::Defn::write_construct_text(DL, F);
-	Inter::add_to_frame_list(&(I->sequence), F, at);
+	inter_package *con = Inter::Packages::container(F);
+	if (con == NULL) {
+		if ((at) && (at->in_frame_list != &(I->global_material))) {
+			at->in_frame_list = &(I->global_material);
+			at->pos = at->in_frame_list->last_in_ifl;
+			at->pinned_to_end = TRUE;
+		}
+		Inter::add_to_frame_list(&(I->global_material), F, at);
+	} else {
+		if ((at) && (at->in_frame_list != &(I->residue))) {
+			at->in_frame_list = &(I->residue);
+			at->pos = at->in_frame_list->last_in_ifl;
+			at->pinned_to_end = TRUE;
+		}
+/*		inter_frame D = Inter::Symbols::defining_frame(con->package_name);
+		int parental_level = Inter::Defn::get_level(F) - 1;
+		if ((parental_level < 0) || (parental_level < Inter::Defn::get_level(D)))
+			internal_error("levels out");
+		if (parental_level == Inter::Defn::get_level(D)) {
+			Inter::Defn::accept_child(D, F, FALSE);
+		} else {
+			if ((at == NULL) || (at->pos == NULL)) internal_error("defective bookmark");
+			inter_frame_list_entry *prev = at->pos->prev_in_ifl;
+			while (((prev) && (Inter::Defn::get_level(prev->listed_frame) != parental_level)))
+				prev = prev->prev_in_ifl;
+			if (prev == NULL) internal_error("no parent can be found");
+			Inter::Defn::accept_child(prev->listed_frame, F, FALSE);
+		}
+*/
+//		Inter::Defn::accept_child(D, F, FALSE);
+		Inter::add_to_frame_list(&(I->residue), F, at);
+	}
 }
 
 inter_symbols_table *Inter::Frame::global_symbols(inter_frame F) {

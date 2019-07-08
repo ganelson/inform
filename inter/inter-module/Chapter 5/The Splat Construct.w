@@ -19,7 +19,7 @@ void Inter::Splat::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Splat::show_dependencies,
+		NULL,
 		I"splat", I"splats");
 	IC->min_level = 0;
 	IC->max_level = 100000000;
@@ -145,48 +145,4 @@ inter_error_message *Inter::Splat::write(OUTPUT_STREAM, inter_frame P) {
 	Inter::Constant::write_text(OUT, Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
 	return NULL;
-}
-
-void Inter::Splat::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	if (pack) {
-		inter_symbol *routine = pack->package_name;
-		if (routine) {
-			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]);
-			Inter::Splat::show_dependencies_from(routine, P, S, callback, state);
-		}
-	}
-}
-
-void Inter::Splat::show_dependencies_from(inter_symbol *symbol, inter_frame P, text_stream *S, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	TEMPORARY_TEXT(sym);
-	int dquoted = FALSE, quoted = FALSE, commented = FALSE, hash_count = 0;
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		if (commented) {
-			if (c == '\n') commented = FALSE;
-		} else if (quoted) {
-			if (c == '\'') quoted = FALSE;
-		} else if (dquoted) {
-			if (c == '\"') dquoted = FALSE;
-		} else {
-			if (c == '#') { hash_count++; continue; }
-			if (c == '!') commented = TRUE;
-			else if (c == '\'') quoted = TRUE;
-			else if (c == '\"') dquoted = TRUE;
-			else {
-				if ((Characters::isalnum(c)) || (c == '_')) {
-					if (hash_count == 2) { WRITE_TO(sym, "##"); hash_count = 0; }
-					PUT_TO(sym, c);
-				} else {
-					if (Str::len(sym) > 0) {
-						inter_symbol *IS = Inter::SymbolsTables::search_for_named_symbol_recursively(P.repo_segment->owning_repo, Inter::Packages::container(P), sym);
-						if (IS) (*callback)(symbol, IS, state);
-						Str::clear(sym);
-					}
-				}
-			}
-			hash_count = 0;
-		}
-	}
 }

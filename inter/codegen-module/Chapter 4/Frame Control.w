@@ -177,7 +177,7 @@ void CodeGen::FC::reference(code_generation *gen, inter_frame P) {
 }
 
 void CodeGen::FC::cast(code_generation *gen, inter_frame P) {
-	inter_frame_list *ifl = Inter::Cast::children_of_frame(P);
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	if (ifl == NULL) internal_error("cast without code list");
 	CodeGen::FC::frame(gen, Inter::top_of_frame_list(ifl));
 }
@@ -272,8 +272,8 @@ void CodeGen::FC::val(code_generation *gen, inter_frame P) {
 void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
-	inter_frame_list *ifl = Inter::Inv::children_of_frame(P);
-	if (ifl == NULL) internal_error("cast without code list");
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
+	if (ifl == NULL) internal_error("inv without code list");
 
 	switch (P.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE: {

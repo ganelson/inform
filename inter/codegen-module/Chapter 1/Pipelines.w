@@ -155,6 +155,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, inter_repository *
 	int active = TRUE;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
+			CodeGen::Pipeline::lint(I);
+		
 			CodeGen::Pipeline::clean_step(step);
 			step->the_N = N;
 			step->the_PP = PP;
@@ -267,4 +269,12 @@ void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
 	verb_directive_creature_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_CREATURE");
 	verb_directive_topic_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_TOPIC");
 	verb_directive_multiexcept_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_MULTIEXCEPT");
+}
+
+void CodeGen::Pipeline::lint(inter_repository *I) {
+	Inter::Packages::traverse_repository(I, CodeGen::Pipeline::visitor, NULL);
+}
+
+void CodeGen::Pipeline::visitor(inter_repository *I, inter_frame P, void *state) {
+	CodeGen::Link::guard(Inter::Defn::verify_children_inner(P));
 }

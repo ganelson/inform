@@ -14,6 +14,7 @@ int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
 	IRS.current_package = Inter::Packages::main(step->repository);
 	IRS.cp_indent = 1;
 	CodeGen::Link::link(&IRS, step->step_argument, step->the_N, step->the_PP, NULL);
+	Inter::Packages::restring(step->repository);
 	return TRUE;
 }
 
@@ -23,16 +24,7 @@ int link_search_list_len = 0;
 void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IRS == NULL) internal_error("no inter to link with");
 	inter_repository *I = IRS->read_into;
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == LINK_IST) {
-			text_stream *S1 = Inter::get_text(P.repo_segment->owning_repo, P.data[SEGMENT_LINK_IFLD]);
-			text_stream *S2 = Inter::get_text(P.repo_segment->owning_repo, P.data[PART_LINK_IFLD]);
-			text_stream *S3 = Inter::get_text(P.repo_segment->owning_repo, P.data[TO_RAW_LINK_IFLD]);
-			text_stream *S4 = Inter::get_text(P.repo_segment->owning_repo, P.data[TO_SEGMENT_LINK_IFLD]);
-			void *ref = Inter::get_ref(P.repo_segment->owning_repo, P.data[REF_LINK_IFLD]);
-			TemplateReader::new_intervention((int) P.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
-		}
+	Inter::Packages::traverse_repository(I, CodeGen::Link::visitor, NULL);
 
 	inter_symbol *TP = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
 	if (TP == NULL) internal_error("unable to find template");
@@ -54,6 +46,17 @@ void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, i
 	CodeGen::Link::receive_raw(T, &kit);
 	DISCARD_TEXT(T);
 	TemplateReader::extract(template_file, &kit);
+}
+
+void CodeGen::Link::visitor(inter_repository *I, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == LINK_IST) {
+		text_stream *S1 = Inter::get_text(P.repo_segment->owning_repo, P.data[SEGMENT_LINK_IFLD]);
+		text_stream *S2 = Inter::get_text(P.repo_segment->owning_repo, P.data[PART_LINK_IFLD]);
+		text_stream *S3 = Inter::get_text(P.repo_segment->owning_repo, P.data[TO_RAW_LINK_IFLD]);
+		text_stream *S4 = Inter::get_text(P.repo_segment->owning_repo, P.data[TO_SEGMENT_LINK_IFLD]);
+		void *ref = Inter::get_ref(P.repo_segment->owning_repo, P.data[REF_LINK_IFLD]);
+		TemplateReader::new_intervention((int) P.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
+	}
 }
 
 dictionary *linkable_namespace = NULL;

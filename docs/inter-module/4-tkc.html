@@ -31,7 +31,7 @@
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
-            <span class="plain">&amp;</span><span class="functiontext">Inter::Kind::show_dependencies</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="string">"kind"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kinds"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -350,54 +350,6 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Kind::show_dependencies</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">DEFN_KIND_IFLD</span><span class="plain">);</span>
-        <span class="reserved">inter_data_type</span><span class="plain"> *</span><span class="identifier">idt</span><span class="plain"> = </span><span class="functiontext">Inter::Types::find_by_ID</span><span class="plain">(</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">DATA_TYPE_KIND_IFLD</span><span class="plain">]);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">symb</span><span class="plain">) &amp;&amp; (</span><span class="identifier">idt</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">SUPER_KIND_IFLD</span><span class="plain">]) {</span>
-                <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">SUPER_KIND_IFLD</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">super</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">super</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">CONSTRUCTOR_KIND_IFLD</span><span class="plain">]) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">RULEBOOK_ICON</span><span class="plain">:</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ICON</span><span class="plain">:</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">COLUMN_ICON</span><span class="plain">:</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">DESCRIPTION_ICON</span><span class="plain">: {</span>
-                        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">conts_kind</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">OPERANDS_KIND_IFLD</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">conts_kind</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">conts_kind</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                        <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELATION_ICON</span><span class="plain">: {</span>
-                        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">X_kind</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">OPERANDS_KIND_IFLD</span><span class="plain">);</span>
-                        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">Y_kind</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">OPERANDS_KIND_IFLD</span><span class="plain">+1);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X_kind</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">X_kind</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y_kind</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">Y_kind</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                        <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUNCTION_ICON</span><span class="plain">:</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">RULE_ICON</span><span class="plain">: {</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.extent</span><span class="plain"> - </span><span class="constant">MIN_EXTENT_KIND_IFR</span><span class="plain">;</span>
-                        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">OPERANDS_KIND_IFLD</span><span class="plain"> + </span><span class="identifier">i</span><span class="plain">] != 0) {</span>
-                                <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">OPERANDS_KIND_IFLD</span><span class="plain"> + </span><span class="identifier">i</span><span class="plain">);</span>
-                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                            <span class="plain">}</span>
-                        <span class="plain">}</span>
-                        <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRUCT_ICON</span><span class="plain">: {</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.extent</span><span class="plain"> - </span><span class="constant">MIN_EXTENT_KIND_IFR</span><span class="plain">;</span>
-                        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-                            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">OPERANDS_KIND_IFLD</span><span class="plain"> + </span><span class="identifier">i</span><span class="plain">);</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                        <span class="plain">}</span>
-                        <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Kind::new_instance</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_symbol</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">inst_name</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kind_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">kind_symbol</span><span class="plain">);</span>
@@ -491,8 +443,6 @@
 <p class="endnote">The function Inter::Kind::properties_list is used in 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Kind::write is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Kind::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Kind::new_instance is used in 4/tic (<a href="4-tic.html#SP2">&#167;2</a>).</p>
 

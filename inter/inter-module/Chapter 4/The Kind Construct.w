@@ -19,7 +19,7 @@ void Inter::Kind::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Kind::show_dependencies,
+		NULL,
 		I"kind", I"kinds");
 }
 
@@ -331,54 +331,6 @@ inter_error_message *Inter::Kind::write(OUTPUT_STREAM, inter_frame P) {
 	} else return Inter::Frame::error(&P, I"cannot write kind", NULL);
 	Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, symb);
 	return NULL;
-}
-
-void Inter::Kind::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-	inter_data_type *idt = Inter::Types::find_by_ID(P.data[DATA_TYPE_KIND_IFLD]);
-	if ((symb) && (idt)) {
-		if (P.data[SUPER_KIND_IFLD]) {
-			inter_symbol *super = Inter::SymbolsTables::symbol_from_frame_data(P, SUPER_KIND_IFLD);
-			if (super) (*callback)(symb, super, state);
-		} else {
-			switch (P.data[CONSTRUCTOR_KIND_IFLD]) {
-				case RULEBOOK_ICON:
-				case LIST_ICON:
-				case COLUMN_ICON:
-				case DESCRIPTION_ICON: {
-					inter_symbol *conts_kind = Inter::SymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD);
-					if (conts_kind) (*callback)(symb, conts_kind, state);
-					break;
-				}
-				case RELATION_ICON: {
-					inter_symbol *X_kind = Inter::SymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD);
-					inter_symbol *Y_kind = Inter::SymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD+1);
-					if (X_kind) (*callback)(symb, X_kind, state);
-					if (Y_kind) (*callback)(symb, Y_kind, state);
-					break;
-				}
-				case FUNCTION_ICON:
-				case RULE_ICON: {
-					int arity = P.extent - MIN_EXTENT_KIND_IFR;
-					for (int i=0; i<arity; i++) {
-						if (P.data[OPERANDS_KIND_IFLD + i] != 0) {
-							inter_symbol *K = Inter::SymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD + i);
-							if (K) (*callback)(symb, K, state);
-						}
-					}
-					break;
-				}
-				case STRUCT_ICON: {
-					int arity = P.extent - MIN_EXTENT_KIND_IFR;
-					for (int i=0; i<arity; i++) {
-						inter_symbol *K = Inter::SymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD + i);
-						if (K) (*callback)(symb, K, state);
-					}
-					break;
-				}
-			}
-		}
-	}
 }
 
 void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_name) {

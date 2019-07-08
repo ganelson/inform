@@ -223,7 +223,7 @@ very early on, the enclosure is always an enclosing package.)
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::new_IRS_global</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="identifier">current_state</span><span class="element">.saved_enclosure</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -382,6 +382,7 @@ specification.
                 <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">save_IRS</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+                <span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
                 <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
                 <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;</span><span class="identifier">package_bubble</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="functiontext">Emit::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain">));</span>

@@ -20,7 +20,19 @@ inter_reading_state Inter::Bookmarks::new_IRS(inter_repository *I) {
 	IRS.current_package = NULL;
 	IRS.cp_indent = 0;
 	IRS.latest_indent = 0;
-	IRS.in_frame_list = &(I->sequence);
+	IRS.in_frame_list = &(I->residue);
+	IRS.pos = IRS.in_frame_list->last_in_ifl;
+	IRS.pinned_to_end = TRUE;
+	return IRS;
+}
+
+inter_reading_state Inter::Bookmarks::new_IRS_global(inter_repository *I) {
+	inter_reading_state IRS;
+	IRS.read_into = I;
+	IRS.current_package = NULL;
+	IRS.cp_indent = 0;
+	IRS.latest_indent = 0;
+	IRS.in_frame_list = &(I->global_material);
 	IRS.pos = IRS.in_frame_list->last_in_ifl;
 	IRS.pinned_to_end = TRUE;
 	return IRS;

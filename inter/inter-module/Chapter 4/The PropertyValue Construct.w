@@ -19,7 +19,7 @@ void Inter::PropertyValue::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::PropertyValue::show_dependencies,
+		NULL,
 		I"propertyvalue", I"propertyvalues");
 }
 
@@ -155,15 +155,4 @@ inter_error_message *Inter::PropertyValue::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Types::write(OUT, P.repo_segment->owning_repo, val_kind, P.data[DVAL1_PVAL_IFLD], P.data[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
 	} else return Inter::Frame::error(&P, I"cannot write propertyvalue", NULL);
 	return NULL;
-}
-
-void Inter::PropertyValue::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD);
-	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PVAL_IFLD);
-	if ((prop_name) && (owner_name)) {
-		(*callback)(owner_name, prop_name, state);
-		inter_t v1 = P.data[DVAL1_PVAL_IFLD], v2 = P.data[DVAL2_PVAL_IFLD];
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(v1, v2, P);
-		if (S) (*callback)(owner_name, S, state);
-	}
 }

@@ -19,22 +19,29 @@ int CodeGen::ReconcileVerbs::run_pipeline_stage(pipeline_step *step) {
 =
 void CodeGen::ReconcileVerbs::reconcile(inter_repository *I) {
 	dictionary *observed_verbs = Dictionaries::new(1024, TRUE);
+	Inter::Packages::traverse_repository(I, CodeGen::ReconcileVerbs::visitor1, observed_verbs);
+	Inter::Packages::traverse_repository(I, CodeGen::ReconcileVerbs::visitor2, observed_verbs);
+}
 
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == CONSTANT_IST) {
-			inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-			if ((Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) &&
-				(Inter::Symbols::read_annotation(con_name, METAVERB_IANN) != 1))
-				@<Attend to the verb@>;
-		}
-	LOOP_THROUGH_FRAMES(P, I)
-		if (P.data[ID_IFLD] == CONSTANT_IST) {
-			inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-			if ((Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) &&
-				(Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1))
-				@<Attend to the verb@>;
-		}
+void CodeGen::ReconcileVerbs::visitor1(inter_repository *I, inter_frame P, void *v_state) {
+	dictionary *observed_verbs = (dictionary *) v_state;
+	if (P.data[ID_IFLD] == CONSTANT_IST) {
+		inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		if ((Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) &&
+			(Inter::Symbols::read_annotation(con_name, METAVERB_IANN) != 1))
+			@<Attend to the verb@>;
+	}
+}
+
+
+void CodeGen::ReconcileVerbs::visitor2(inter_repository *I, inter_frame P, void *v_state) {
+	dictionary *observed_verbs = (dictionary *) v_state;
+	if (P.data[ID_IFLD] == CONSTANT_IST) {
+		inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		if ((Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) &&
+			(Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1))
+			@<Attend to the verb@>;
+	}
 }
 
 @<Attend to the verb@> =

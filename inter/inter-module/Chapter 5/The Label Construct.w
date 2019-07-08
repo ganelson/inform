@@ -16,14 +16,16 @@ void Inter::Label::define(void) {
 		&Inter::Label::verify,
 		&Inter::Label::write,
 		NULL,
-		&Inter::Label::list_of_children,
-		&Inter::Label::accept_child,
-		&Inter::Label::no_more_children,
+		NULL,
+		NULL,
+		NULL,
 		NULL,
 		I"label", I"labels");
 	IC->min_level = 0;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	IC->children_field = CODE_LABEL_IFLD;
+	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Label::verify_children);
 }
 
 @
@@ -82,24 +84,17 @@ inter_error_message *Inter::Label::write(OUTPUT_STREAM, inter_frame P) {
 	return NULL;
 }
 
-inter_frame_list *Inter::Label::list_of_children(inter_frame P) {
-	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	if (P.data[ID_IFLD] != LABEL_IST) return NULL;
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_LABEL_IFLD]);
-}
-
-inter_error_message *Inter::Label::accept_child(inter_frame P, inter_frame C) {
-	if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != VAL_IST)) {
-		inter_package *pack = Inter::Packages::container(P);
-		inter_symbol *routine = pack->package_name;
-		inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
-		LOG("C is: "); Inter::Defn::write_construct_text(DL, C);
-		return Inter::Frame::error(&C, I"only an inv, a val, a splat, a concatenate or another label can be below a label", lab_name->symbol_name);
+void Inter::Label::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
+	inter_frame C;
+	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+		if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != VAL_IST) && (C.data[0] != COMMENT_IST)) {
+			inter_package *pack = Inter::Packages::container(P);
+			inter_symbol *routine = pack->package_name;
+			inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
+			LOG("C is: "); Inter::Defn::write_construct_text(DL, C);
+			*E = Inter::Frame::error(&C, I"only an inv, a val, a splat, a concatenate or another label can be below a label", lab_name->symbol_name);
+			return;
+		}
 	}
-	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_LABEL_IFLD]), C, NULL);
-	return NULL;
-}
-
-inter_error_message *Inter::Label::no_more_children(inter_frame P) {
-	return NULL;
 }

@@ -12,18 +12,20 @@ void Inter::Inv::define(void) {
 		INV_IST,
 		L"inv (%C+)",
 		&Inter::Inv::read,
-		&Inter::Inv::pass2,
+		NULL,
 		&Inter::Inv::verify,
 		&Inter::Inv::write,
 		NULL,
-		&Inter::Inv::list_of_children,
-		&Inter::Inv::accept_child,
-		&Inter::Inv::no_more_children,
-		&Inter::Inv::show_dependencies,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
 		I"inv", I"invs");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	IC->children_field = OPERANDS_INV_IFLD;
+	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Inv::verify_children);
 }
 
 @
@@ -111,14 +113,6 @@ inter_error_message *Inter::Inv::verify(inter_frame P) {
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::pass2(inter_frame P) {
-	if (P.data[METHOD_INV_IFLD] == INVOKED_ROUTINE) {
-		inter_error_message *E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
-		if (E) return E;
-	}
-	return NULL;
-}
-
 inter_error_message *Inter::Inv::write(OUTPUT_STREAM, inter_frame P) {
 	if (P.data[METHOD_INV_IFLD] == INVOKED_OPCODE) {
 		WRITE("inv %S", Inter::get_text(P.repo_segment->owning_repo, P.data[INVOKEE_INV_IFLD]));
@@ -131,41 +125,17 @@ inter_error_message *Inter::Inv::write(OUTPUT_STREAM, inter_frame P) {
 	return NULL;
 }
 
-void Inter::Inv::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	if (P.data[METHOD_INV_IFLD] == INVOKED_ROUTINE) {
-		inter_symbol *invokee = Inter::Inv::invokee(P);
-		(*callback)(routine, invokee, state);
-	}
-}
-
-inter_frame_list *Inter::Inv::list_of_children(inter_frame P) {
-	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	if (P.data[ID_IFLD] != INV_IST) return NULL;
-	return Inter::Inv::children_of_frame(P);
-}
-
-inter_frame_list *Inter::Inv::children_of_frame(inter_frame P) {
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_INV_IFLD]);
-}
-
-inter_error_message *Inter::Inv::accept_child(inter_frame P, inter_frame C) {
-	if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != LAB_IST) &&
-		(C.data[0] != CODE_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) &&
-		(C.data[0] != REFERENCE_IST) && (C.data[0] != CAST_IST) && (C.data[0] != SPLAT_IST))
-		return Inter::Frame::error(&P, I"only inv, ref, cast, splat, lab, code, concatenate and val can be under an inv", NULL);
-	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_INV_IFLD]), C, NULL);
-	return NULL;
-}
-
 inter_symbol *Inter::Inv::invokee(inter_frame P) {
 	if (P.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
 		return Inter::SymbolsTables::global_symbol_from_frame_data(P, INVOKEE_INV_IFLD);
  	return Inter::SymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
- }
+}
 
-inter_error_message *Inter::Inv::no_more_children(inter_frame P) {
+void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
+//	if (P.data[METHOD_INV_IFLD] == INVOKED_ROUTINE) {
+//		*E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
+//		if (*E) return;
+//	}
 	inter_repository *I = P.repo_segment->owning_repo;
 	inter_frame_list *ifl = Inter::find_frame_list(I, P.data[OPERANDS_INV_IFLD]);
 	int arity_as_invoked = Inter::size_of_frame_list(ifl);
@@ -188,13 +158,20 @@ inter_error_message *Inter::Inv::no_more_children(inter_frame P) {
 		text_stream *err = Str::new();
 		WRITE_TO(err, "this inv of %S should have %d argument(s), but has %d",
 			(invokee)?(invokee->symbol_name):I"<unknown>", Inter::Inv::arity(P), arity_as_invoked);
-		return Inter::Frame::error(&P, err, NULL);
+		*E = Inter::Frame::error(&P, err, NULL);
+		return;
 	}
 	int i=0;
 	inter_frame C;
 	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
 		i++;
 		if (C.data[0] == SPLAT_IST) continue;
+		if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != LAB_IST) &&
+			(C.data[0] != CODE_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) &&
+			(C.data[0] != REFERENCE_IST) && (C.data[0] != CAST_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != COMMENT_IST)) {
+			*E = Inter::Frame::error(&P, I"only inv, ref, cast, splat, lab, code, concatenate and val can be under an inv", NULL);
+			return;
+		}
 		inter_t cat_as_invoked = Inter::Inv::evaluated_category(C);
 		inter_t cat_needed = Inter::Inv::operand_category(P, i-1);
 		if ((cat_as_invoked != cat_needed) && (P.data[METHOD_INV_IFLD] != INVOKED_OPCODE)) {
@@ -203,10 +180,10 @@ inter_error_message *Inter::Inv::no_more_children(inter_frame P) {
 			WRITE_TO(err, "operand %d of inv '%S' should be %s, but this is %s",
 				i, (invokee)?(invokee->symbol_name):I"<unknown>",
 				Inter::Inv::cat_name(cat_needed), Inter::Inv::cat_name(cat_as_invoked));
-			return Inter::Frame::error(&C, err, NULL);
+			*E = Inter::Frame::error(&C, err, NULL);
+			return;
 		}
 	}
-	return NULL;
 }
 
 char *Inter::Inv::cat_name(inter_t cat) {

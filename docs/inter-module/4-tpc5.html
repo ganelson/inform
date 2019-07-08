@@ -31,7 +31,7 @@
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
-            <span class="plain">&amp;</span><span class="functiontext">Inter::PropertyValue::show_dependencies</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="string">"propertyvalue"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"propertyvalues"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -175,17 +175,6 @@
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Frame::error</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cannot write propertyvalue"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::PropertyValue::show_dependencies</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">PROP_PVAL_IFLD</span><span class="plain">);</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">owner_name</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">OWNER_PVAL_IFLD</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prop_name</span><span class="plain">) &amp;&amp; (</span><span class="identifier">owner_name</span><span class="plain">)) {</span>
-            <span class="plain">(*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">owner_name</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">DVAL1_PVAL_IFLD</span><span class="plain">], </span><span class="identifier">v2</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">DVAL2_PVAL_IFLD</span><span class="plain">];</span>
-            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_data_pair_and_frame</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">owner_name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -199,8 +188,6 @@
 <p class="endnote">The function Inter::PropertyValue::verify is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::PropertyValue::write is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::PropertyValue::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-tpc4.html">Back to 'The Property Construct'</a></li><li><a href="4-tpc6.html">Continue with 'The Permission Construct'</a></li></ul><hr class="tocbar">

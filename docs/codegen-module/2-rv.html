@@ -39,28 +39,39 @@
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::ReconcileVerbs::reconcile</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">observed_verbs</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(1024, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">Inter::Packages::traverse_repository</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">CodeGen::ReconcileVerbs::visitor1</span><span class="plain">, </span><span class="identifier">observed_verbs</span><span class="plain">);</span>
+        <span class="identifier">Inter::Packages::traverse_repository</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">CodeGen::ReconcileVerbs::visitor2</span><span class="plain">, </span><span class="identifier">observed_verbs</span><span class="plain">);</span>
+    <span class="plain">}</span>
 
-        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">CONSTANT_IST</span><span class="plain">) {</span>
-                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">VERBARRAY_IANN</span><span class="plain">) == 1) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">METAVERB_IANN</span><span class="plain">) != 1))</span>
-                    &lt;<span class="cwebmacro">Attend to the verb</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-            <span class="plain">}</span>
-        <span class="identifier">LOOP_THROUGH_FRAMES</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">CONSTANT_IST</span><span class="plain">) {</span>
-                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">VERBARRAY_IANN</span><span class="plain">) == 1) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">METAVERB_IANN</span><span class="plain">) == 1))</span>
-                    &lt;<span class="cwebmacro">Attend to the verb</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-            <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::ReconcileVerbs::visitor1</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">v_state</span><span class="plain">) {</span>
+        <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">observed_verbs</span><span class="plain"> = (</span><span class="identifier">dictionary</span><span class="plain"> *) </span><span class="identifier">v_state</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">CONSTANT_IST</span><span class="plain">) {</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">VERBARRAY_IANN</span><span class="plain">) == 1) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">METAVERB_IANN</span><span class="plain">) != 1))</span>
+                &lt;<span class="cwebmacro">Attend to the verb</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::ReconcileVerbs::visitor2</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">v_state</span><span class="plain">) {</span>
+        <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">observed_verbs</span><span class="plain"> = (</span><span class="identifier">dictionary</span><span class="plain"> *) </span><span class="identifier">v_state</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">CONSTANT_IST</span><span class="plain">) {</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">VERBARRAY_IANN</span><span class="plain">) == 1) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">METAVERB_IANN</span><span class="plain">) == 1))</span>
+                &lt;<span class="cwebmacro">Attend to the verb</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::ReconcileVerbs::reconcile is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function CodeGen::ReconcileVerbs::visitor1 appears nowhere else.</p>
+
+<p class="endnote">The function CodeGen::ReconcileVerbs::visitor2 appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Attend to the verb</span> <span class="cwebmacronumber">2.1</span>&gt; =

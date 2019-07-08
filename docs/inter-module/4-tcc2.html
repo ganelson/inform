@@ -31,7 +31,7 @@
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
-            <span class="plain">&amp;</span><span class="functiontext">Inter::Constant::show_dependencies</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="string">"constant"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"constants"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -437,79 +437,6 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Constant::show_dependencies</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">DEFN_CONST_IFLD</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con_name</span><span class="plain">) {</span>
-            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_kind</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">KIND_CONST_IFLD</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con_kind</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">con_kind</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">FORMAT_CONST_IFLD</span><span class="plain">]) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_DIRECT</span><span class="plain">: {</span>
-                    <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">DATA_CONST_IFLD</span><span class="plain">], </span><span class="identifier">v2</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">DATA_CONST_IFLD</span><span class="plain">+1];</span>
-                    &lt;<span class="cwebmacro">Callback on symbol if one is observed in this value</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-                    <span class="reserved">break</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_SUM_LIST</span><span class="plain">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_PRODUCT_LIST</span><span class="plain">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_DIFFERENCE_LIST</span><span class="plain">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_QUOTIENT_LIST</span><span class="plain">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_INDIRECT_LIST</span><span class="plain">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_STRUCT</span><span class="plain">: {</span>
-                    <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="constant">DATA_CONST_IFLD</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">P</span><span class="element">.extent</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+2) {</span>
-                        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">v2</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1];</span>
-                        &lt;<span class="cwebmacro">Callback on symbol if one is observed in this value</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="reserved">break</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_ROUTINE</span><span class="plain">: {</span>
-                    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">block</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">DATA_CONST_IFLD</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">block</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                    <span class="reserved">break</span><span class="plain">;</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function Inter::Constant::read is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Constant::parse_text is used in 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Inter::Constant::write_text is used in 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Inter::Constant::new_numerical appears nowhere else.</p>
-
-<p class="endnote">The function Inter::Constant::new_textual appears nowhere else.</p>
-
-<p class="endnote">The function Inter::Constant::new_function appears nowhere else.</p>
-
-<p class="endnote">The function Inter::Constant::append appears nowhere else.</p>
-
-<p class="endnote">The function Inter::Constant::verify is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Constant::write is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Constant::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Callback on symbol if one is observed in this value</span> <span class="cwebmacronumber">2.1</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_data_pair_and_frame</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a> (twice).</p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
-
-<pre class="display">
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Constant::kind_of</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_symbol</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">con_symbol</span><span class="plain">);</span>
@@ -550,7 +477,25 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Constant::kind_of is used in <a href="#SP2">&#167;2</a>, 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inter::Constant::read is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function Inter::Constant::parse_text is used in 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Constant::write_text is used in 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Constant::new_numerical appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Constant::new_textual appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Constant::new_function appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Constant::append appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Constant::verify is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function Inter::Constant::write is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="endnote">The function Inter::Constant::kind_of is used in 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Inter::Constant::code_block appears nowhere else.</p>
 
@@ -558,7 +503,7 @@
 
 <p class="endnote">The function Inter::Constant::local_symbols appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Constant::char_acceptable is used in <a href="#SP2">&#167;2</a>, 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Constant::char_acceptable is used in 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-tvc2.html">Back to 'The Variable Construct'</a></li><li><a href="4-trc.html">Continue with 'The Response Construct'</a></li></ul><hr class="tocbar">

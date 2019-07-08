@@ -19,7 +19,7 @@ void Inter::Append::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Append::show_dependencies,
+		NULL,
 		I"append", I"appends");
 }
 
@@ -78,11 +78,4 @@ inter_error_message *Inter::Append::write(OUTPUT_STREAM, inter_frame P) {
 	Inter::Constant::write_text(OUT, S);
 	WRITE("\"");
 	return NULL;
-}
-
-void Inter::Append::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
-	inter_t ID = P.data[TEXT_APPEND_IFLD];
-	text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
-	if (symbol) Inter::Splat::show_dependencies_from(symbol, P, S, callback, state);
 }

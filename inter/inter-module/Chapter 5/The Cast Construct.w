@@ -16,14 +16,16 @@ void Inter::Cast::define(void) {
 		&Inter::Cast::verify,
 		&Inter::Cast::write,
 		NULL,
-		&Inter::Cast::list_of_children,
-		&Inter::Cast::accept_child,
-		&Inter::Cast::no_more_children,
-		&Inter::Cast::show_dependencies,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
 		I"cast", I"casts");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	IC->children_field = OPERANDS_CAST_IFLD;
+	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Cast::verify_children);
 }
 
 @
@@ -78,38 +80,18 @@ inter_error_message *Inter::Cast::write(OUTPUT_STREAM, inter_frame P) {
 	return NULL;
 }
 
-void Inter::Cast::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *from_kind = Inter::SymbolsTables::symbol_from_frame_data(P, FROM_KIND_CAST_IFLD);
-	inter_symbol *to_kind = Inter::SymbolsTables::symbol_from_frame_data(P, TO_KIND_CAST_IFLD);
-	if ((routine) && (from_kind) && (to_kind)) {
-		(*callback)(routine, from_kind, state);
-		(*callback)(routine, to_kind, state);
-	}
-}
-
-inter_frame_list *Inter::Cast::list_of_children(inter_frame P) {
-	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	if (P.data[ID_IFLD] != CAST_IST) return NULL;
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_CAST_IFLD]);
-}
-
-inter_error_message *Inter::Cast::accept_child(inter_frame P, inter_frame C) {
-	if ((C.data[0] != INV_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != CAST_IST))
-		return Inter::Frame::error(&P, I"only inv, cast, concatenate and val can be under a cast", NULL);
-	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_CAST_IFLD]), C, NULL);
-	return NULL;
-}
-
-inter_frame_list *Inter::Cast::children_of_frame(inter_frame P) {
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_CAST_IFLD]);
-}
-
-inter_error_message *Inter::Cast::no_more_children(inter_frame P) {
-	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[OPERANDS_CAST_IFLD]);
+void Inter::Cast::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	int arity_as_invoked = Inter::size_of_frame_list(ifl);
-	if (arity_as_invoked != 1)
-		return Inter::Frame::error(&P, I"a cast should have exactly one child", NULL);
-	return NULL;
+	if (arity_as_invoked != 1) {
+		*E = Inter::Frame::error(&P, I"a cast should have exactly one child", NULL);
+		return;
+	}
+	inter_frame C;
+	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+		if ((C.data[0] != INV_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != CAST_IST)) {
+			*E = Inter::Frame::error(&P, I"only inv, cast, concatenate and val can be under a cast", NULL);
+			return;
+		}
+	}
 }

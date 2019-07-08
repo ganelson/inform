@@ -15,6 +15,12 @@ void Inter::Textual::read(inter_repository *I, filename *F) {
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IRS);
 	Inter::SymbolsTables::resolve_forward_references(I, &eloc);
 	Inter::Defn::pass2(I, TRUE, NULL, FALSE, 0);
+	Inter::Packages::traverse_repository(I, Inter::Textual::lint_visitor, NULL);
+}
+
+void Inter::Textual::lint_visitor(inter_repository *I, inter_frame P, void *state) {
+	inter_error_message *E = Inter::Defn::verify_children_inner(P);
+	if (E) Inter::Errors::issue(E);
 }
 
 inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
@@ -99,12 +105,24 @@ void Inter::Textual::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	Inter::Textual::write(OUT, I, NULL, 1);
 }
 
+typedef struct textual_write_state {
+	struct text_stream *to;
+	int (*filter)(inter_frame, int);
+	int pass;
+} textual_write_state;
+
 void Inter::Textual::write(OUTPUT_STREAM, inter_repository *I, int (*filter)(inter_frame, int), int pass) {
 	if (I == NULL) { WRITE("<no-inter>\n"); return; }
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I) {
-		if ((filter) && ((*filter)(P, pass) == FALSE)) continue;
-		inter_error_message *E = Inter::Defn::write_construct_text(OUT, P);
-		if (E) Inter::Errors::issue(E);
-	}
+	textual_write_state tws;
+	tws.to = OUT;
+	tws.filter = filter;
+	tws.pass = pass;
+	Inter::Packages::traverse_repository_global_inc(I, Inter::Textual::visitor, &tws);
+	Inter::Packages::traverse_repository_inc(I, Inter::Textual::visitor, &tws);
+}
+void Inter::Textual::visitor(inter_repository *I, inter_frame P, void *state) {
+	textual_write_state *tws = (textual_write_state *) state;
+	if ((tws->filter) && ((*(tws->filter))(P, tws->pass) == FALSE)) return;
+	inter_error_message *E = Inter::Defn::write_construct_text(tws->to, P);
+	if (E) Inter::Errors::issue(E);
 }

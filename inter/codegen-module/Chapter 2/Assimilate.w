@@ -46,75 +46,78 @@ int assim_verb_count = 0;
 inter_reading_state assimilated_actions_b;
 inter_reading_state *assimilated_actions;
 
+void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *state, inter_frame_list_entry *P_entry) {
+	inter_reading_state *IRS = (inter_reading_state *) state;
+	inter_package *outer = Inter::Packages::container(P);
+	inter_symbols_table *into_scope = Inter::Packages::scope(outer);
+	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
+		IRS->current_package = outer;
+		IRS->cp_indent = Inter::Packages::baseline(outer);
+		inter_t baseline = (inter_t) IRS->cp_indent + 1;
+		if (outer == NULL) baseline = 0;
+		switch (P.data[PLM_SPLAT_IFLD]) {
+			case PROPERTY_PLM:
+				if (unchecked_kind_symbol) @<Assimilate definition@>;
+				break;
+			case ATTRIBUTE_PLM:
+				if (truth_state_kind_symbol) @<Assimilate definition@>;
+				break;
+			case ROUTINE_PLM:
+			case STUB_PLM:
+				if ((unchecked_kind_symbol) && (unchecked_function_symbol)) @<Assimilate routine@>;
+				break;
+		}
+	}
+}
 
+void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *state, inter_frame_list_entry *P_entry) {
+	inter_reading_state *IRS = (inter_reading_state *) state;
+	inter_package *outer = Inter::Packages::container(P);
+	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
+		IRS->current_package = outer;
+		inter_symbols_table *into_scope = Inter::Packages::scope(outer);
+		IRS->cp_indent = Inter::Packages::baseline(outer);
+		inter_t baseline = (inter_t) IRS->cp_indent + 1;
+		if (outer == NULL) baseline = 0;
+		switch (P.data[PLM_SPLAT_IFLD]) {
+			case DEFAULT_PLM:
+			case CONSTANT_PLM:
+			case FAKEACTION_PLM:
+			case OBJECT_PLM:
+			case VERB_PLM:
+				if (unchecked_kind_symbol) @<Assimilate definition@>;
+				break;
+			case ARRAY_PLM:
+				if (list_of_unchecked_kind_symbol) @<Assimilate definition@>;
+				break;
+		}
+	}
+}
+
+void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *state, inter_frame_list_entry *P_entry) {
+	inter_reading_state *IRS = (inter_reading_state *) state;
+	inter_package *outer = Inter::Packages::container(P);
+	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
+		IRS->current_package = outer;
+		IRS->cp_indent = Inter::Packages::baseline(outer);
+		inter_symbols_table *into_scope = Inter::Packages::scope(outer);
+		inter_t baseline = (inter_t) IRS->cp_indent + 1;
+		if (outer == NULL) baseline = 0;
+		switch (P.data[PLM_SPLAT_IFLD]) {
+			case GLOBAL_PLM:
+				if (unchecked_kind_symbol) @<Assimilate definition@>;
+				break;
+		}
+	}
+}
 
 void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	inter_repository *I = IRS->read_into;
 	assimilated_actions = IRS;
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I) {
-		inter_package *outer = Inter::Packages::container(P);
-		inter_symbols_table *into_scope = Inter::Packages::scope(outer);
-		if (((outer == NULL) || (outer->codelike_package == FALSE)) &&
-			(P.data[ID_IFLD] == SPLAT_IST)) {
-			IRS->current_package = outer;
-			IRS->cp_indent = Inter::Packages::baseline(outer);
-			inter_t baseline = (inter_t) IRS->cp_indent + 1;
-			if (outer == NULL) baseline = 0;
-			switch (P.data[PLM_SPLAT_IFLD]) {
-				case PROPERTY_PLM:
-					if (unchecked_kind_symbol) @<Assimilate definition@>;
-					break;
-				case ATTRIBUTE_PLM:
-					if (truth_state_kind_symbol) @<Assimilate definition@>;
-					break;
-				case ROUTINE_PLM:
-				case STUB_PLM:
-					if ((unchecked_kind_symbol) && (unchecked_function_symbol)) @<Assimilate routine@>;
-					break;
-			}
-		}
-	}
-	LOOP_THROUGH_FRAMES(P, I) {
-		inter_package *outer = Inter::Packages::container(P);
-		if (((outer == NULL) || (outer->codelike_package == FALSE)) &&
-			(P.data[ID_IFLD] == SPLAT_IST)) {
-			IRS->current_package = outer;
-			inter_symbols_table *into_scope = Inter::Packages::scope(outer);
-			IRS->cp_indent = Inter::Packages::baseline(outer);
-			inter_t baseline = (inter_t) IRS->cp_indent + 1;
-			if (outer == NULL) baseline = 0;
-			switch (P.data[PLM_SPLAT_IFLD]) {
-				case DEFAULT_PLM:
-				case CONSTANT_PLM:
-				case FAKEACTION_PLM:
-				case OBJECT_PLM:
-				case VERB_PLM:
-					if (unchecked_kind_symbol) @<Assimilate definition@>;
-					break;
-				case ARRAY_PLM:
-					if (list_of_unchecked_kind_symbol) @<Assimilate definition@>;
-					break;
-			}
-		}
-	}
+	Inter::Packages::traverse_repository_e(I, CodeGen::Assimilate::visitor1, IRS);
+	Inter::Packages::traverse_repository_e(I, CodeGen::Assimilate::visitor2, IRS);
 	CodeGen::Assimilate::routine_bodies();
-	LOOP_THROUGH_FRAMES(P, I) {
-		inter_package *outer = Inter::Packages::container(P);
-		if (((outer == NULL) || (outer->codelike_package == FALSE)) &&
-			(P.data[ID_IFLD] == SPLAT_IST)) {
-			IRS->current_package = outer;
-			IRS->cp_indent = Inter::Packages::baseline(outer);
-			inter_symbols_table *into_scope = Inter::Packages::scope(outer);
-			inter_t baseline = (inter_t) IRS->cp_indent + 1;
-			if (outer == NULL) baseline = 0;
-			switch (P.data[PLM_SPLAT_IFLD]) {
-				case GLOBAL_PLM:
-					if (unchecked_kind_symbol) @<Assimilate definition@>;
-					break;
-			}
-		}
-	}
+	Inter::Packages::traverse_repository_e(I, CodeGen::Assimilate::visitor3, IRS);
 }
 
 @
@@ -150,7 +153,6 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	}
 
 	inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
-	ib.in_frame_list = &(I->sequence);
 	ib.pos = P_entry;
 	inter_package *housing_package = NULL;
 	inter_symbols_table *save_into_scope = NULL;
@@ -390,7 +392,6 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		DISCARD_TEXT(bname);
 
 		inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
-		ib.in_frame_list = &(I->sequence);
 		ib.pos = P_entry;
 
 		inter_package *IP = NULL;

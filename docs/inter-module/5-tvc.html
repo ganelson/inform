@@ -31,7 +31,7 @@
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
-            <span class="plain">&amp;</span><span class="functiontext">Inter::Val::show_dependencies</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="string">"val"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"vals"</span><span class="plain">);</span>
         <span class="identifier">IC</span><span class="plain">-</span><span class="element">&gt;min_level</span><span class="plain"> = 1;</span>
         <span class="identifier">IC</span><span class="plain">-</span><span class="element">&gt;max_level</span><span class="plain"> = 100000000;</span>
@@ -111,22 +111,6 @@
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Frame::error</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cannot write val"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Val::show_dependencies</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">routine</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">;</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">val_kind</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">KIND_VAL_IFLD</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">routine</span><span class="plain">) &amp;&amp; (</span><span class="identifier">val_kind</span><span class="plain">)) {</span>
-            <span class="plain">(*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">val_kind</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">VAL1_VAL_IFLD</span><span class="plain">], </span><span class="identifier">v2</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">VAL2_VAL_IFLD</span><span class="plain">];</span>
-            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_data_pair_and_frame</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v1</span><span class="plain"> == </span><span class="constant">GLOB_IVAL</span><span class="plain">) {</span>
-                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::get_text</span><span class="plain">(</span><span class="identifier">P</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
-                <span class="functiontext">Inter::Splat::show_dependencies_from</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">callback</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -138,8 +122,6 @@
 <p class="endnote">The function Inter::Val::verify is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Val::write is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Val::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-trc.html">Back to 'The Ref Construct'</a></li><li><a href="5-tlc3.html">Continue with 'The Lab Construct'</a></li></ul><hr class="tocbar">

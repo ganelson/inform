@@ -42,7 +42,8 @@
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">capacity</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_resource_holder</span><span class="plain"> *</span><span class="identifier">stored_resources</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">origin_file</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_frame_list</span><span class="plain"> </span><span class="identifier">sequence</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_frame_list</span><span class="plain"> </span><span class="identifier">global_material</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_frame_list</span><span class="plain"> </span><span class="identifier">residue</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">main_repo</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">main_package</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -86,11 +87,11 @@
 
 <p class="endnote">The structure inter_resource_holder is accessed in 2/iibf and here.</p>
 
-<p class="endnote">The structure inter_frame_list is accessed in 2/pck, 2/bkm, 3/dfn and here.</p>
+<p class="endnote">The structure inter_frame_list is accessed in 2/pck, 2/frm, 2/bkm, 3/dfn and here.</p>
 
-<p class="endnote">The structure inter_frame_list_entry is accessed in 2/bkm and here.</p>
+<p class="endnote">The structure inter_frame_list_entry is accessed in 2/frm, 2/bkm and here.</p>
 
-<p class="endnote">The structure inter_repository_segment is accessed in 2/st, 2/pck, 2/sym, 2/frm, 2/bkm, 2/iibf, 2/vi, 3/dfn, 4/tmc, 4/tpc, 4/tlc, 4/tac, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</p>
+<p class="endnote">The structure inter_repository_segment is accessed in 2/st, 2/pck, 2/sym, 2/frm, 2/bkm, 2/iibf, 2/vi, 3/dfn, 4/tmc, 4/tpc, 4/tlc, 4/tac, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tec, 5/trc2, 5/tsc and here.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -105,9 +106,12 @@
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;origin_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="functiontext">Inter::create_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;sequence.spare_storage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;sequence.storage_used</span><span class="plain"> = 0;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;sequence.storage_capacity</span><span class="plain"> = 0;</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material.spare_storage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material.storage_used</span><span class="plain"> = 0;</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material.storage_capacity</span><span class="plain"> = 0;</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;residue.spare_storage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;residue.storage_used</span><span class="plain"> = 0;</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;residue.storage_capacity</span><span class="plain"> = 0;</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_repo</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
@@ -311,7 +315,7 @@
 
 <p class="endnote">The function Inter::create_text is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>, <a href="3-dfn.html#SP4">&#167;4</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::get_text is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>, <a href="3-dfn.html#SP4">&#167;4</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::get_text is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>, <a href="3-dfn.html#SP4">&#167;4</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::create_ref appears nowhere else.</p>
 
@@ -404,13 +408,15 @@
             <span class="identifier">FL</span><span class="plain">-</span><span class="element">&gt;last_in_ifl</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FL</span><span class="plain">-</span><span class="element">&gt;first_in_ifl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">FL</span><span class="plain">-</span><span class="element">&gt;first_in_ifl</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="comment">the new one can't be the first or the last</span>
+            <span class="comment">the new one can't be the first</span>
             <span class="reserved">inter_frame_list_entry</span><span class="plain"> *</span><span class="identifier">after</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain">-</span><span class="element">&gt;next_in_ifl</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">after</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"dll mismanaged"</span><span class="plain">);</span>
             <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain">-</span><span class="element">&gt;next_in_ifl</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
             <span class="identifier">entry</span><span class="plain">-</span><span class="element">&gt;prev_in_ifl</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain">;</span>
             <span class="identifier">entry</span><span class="plain">-</span><span class="element">&gt;next_in_ifl</span><span class="plain"> = </span><span class="identifier">after</span><span class="plain">;</span>
-            <span class="identifier">after</span><span class="plain">-</span><span class="element">&gt;prev_in_ifl</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">after</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                <span class="identifier">FL</span><span class="plain">-</span><span class="element">&gt;last_in_ifl</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
+            <span class="reserved">else</span>
+                <span class="identifier">after</span><span class="plain">-</span><span class="element">&gt;prev_in_ifl</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">) </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain"> = </span><span class="identifier">entry</span><span class="plain">;</span>
@@ -463,7 +469,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::find_frame_list is used in 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::find_frame_list is used in 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::top_of_frame_list appears nowhere else.</p>
 
@@ -477,7 +483,7 @@
 
 <p class="endnote">The function Inter::sixth_in_frame_list appears nowhere else.</p>
 
-<p class="endnote">The function Inter::add_to_frame_list is used in 2/frm (<a href="2-frm.html#SP5">&#167;5</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::add_to_frame_list is used in 2/frm (<a href="2-frm.html#SP5">&#167;5</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::size_of_frame_list is used in 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>).</p>
 

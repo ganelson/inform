@@ -19,7 +19,7 @@ void Inter::Lab::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Lab::show_dependencies,
+		NULL,
 		I"lab", I"labs");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
@@ -84,7 +84,4 @@ inter_symbol *Inter::Lab::label_symbol(inter_frame P) {
 	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	return lab;
-}
-
-void Inter::Lab::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
 }

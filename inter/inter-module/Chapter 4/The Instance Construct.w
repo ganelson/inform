@@ -19,7 +19,7 @@ void Inter::Instance::define(void) {
 		NULL,
 		NULL,
 		NULL,
-		&Inter::Instance::show_dependencies,
+		NULL,
 		I"instance", I"instances");
 }
 
@@ -112,12 +112,6 @@ inter_error_message *Inter::Instance::write(OUTPUT_STREAM, inter_frame P) {
 	} else return Inter::Frame::error(&P, I"bad instance", NULL);
 	Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, inst_name);
 	return NULL;
-}
-
-void Inter::Instance::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
-	if ((inst_name) && (inst_kind)) (*callback)(inst_name, inst_kind, state);
 }
 
 inter_t Inter::Instance::properties_list(inter_symbol *inst_name) {

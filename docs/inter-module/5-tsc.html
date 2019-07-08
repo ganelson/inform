@@ -31,7 +31,7 @@
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">,</span>
-            <span class="plain">&amp;</span><span class="functiontext">Inter::Splat::show_dependencies</span><span class="plain">,</span>
+            <span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="string">"splat"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"splats"</span><span class="plain">);</span>
         <span class="identifier">IC</span><span class="plain">-</span><span class="element">&gt;min_level</span><span class="plain"> = 0;</span>
         <span class="identifier">IC</span><span class="plain">-</span><span class="element">&gt;max_level</span><span class="plain"> = 100000000;</span>
@@ -164,50 +164,6 @@
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Splat::show_dependencies</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain">) {</span>
-            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">routine</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">routine</span><span class="plain">) {</span>
-                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::get_text</span><span class="plain">(</span><span class="identifier">P</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">MATTER_SPLAT_IFLD</span><span class="plain">]);</span>
-                <span class="functiontext">Inter::Splat::show_dependencies_from</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">callback</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Splat::show_dependencies_from</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">, </span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">sym</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dquoted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">quoted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">commented</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">hash_count</span><span class="plain"> = 0;</span>
-        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">) {</span>
-            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">commented</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) </span><span class="identifier">commented</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quoted</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">'</span><span class="character">'</span><span class="plain">) </span><span class="identifier">quoted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dquoted</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">) </span><span class="identifier">dquoted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'#'</span><span class="plain">) { </span><span class="identifier">hash_count</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">; }</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'!'</span><span class="plain">) </span><span class="identifier">commented</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">'</span><span class="character">'</span><span class="plain">) </span><span class="identifier">quoted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">) </span><span class="identifier">dquoted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Characters::isalnum</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">)) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'_'</span><span class="plain">)) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hash_count</span><span class="plain"> == 2) { </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sym</span><span class="plain">, </span><span class="string">"##"</span><span class="plain">); </span><span class="identifier">hash_count</span><span class="plain"> = 0; }</span>
-                        <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">sym</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sym</span><span class="plain">) &gt; 0) {</span>
-                            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">IS</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::search_for_named_symbol_recursively</span><span class="plain">(</span><span class="identifier">P</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">sym</span><span class="plain">);</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IS</span><span class="plain">) (*</span><span class="identifier">callback</span><span class="plain">)(</span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">IS</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
-                            <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">sym</span><span class="plain">);</span>
-                        <span class="plain">}</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-                <span class="identifier">hash_count</span><span class="plain"> = 0;</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -223,10 +179,6 @@
 <p class="endnote">The function Inter::Splat::verify is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Splat::write is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Splat::show_dependencies is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Splat::show_dependencies_from is used in 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-tcc2.html">Back to 'The Cast Construct'</a></li><li><i>(This section ends Chapter 5: Code Constructs.)</i></li></ul><hr class="tocbar">

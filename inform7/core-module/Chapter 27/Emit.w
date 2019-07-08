@@ -194,6 +194,7 @@ inter_symbol *Emit::new_symbol(inter_symbols_table *T, text_stream *name) {
 inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) {
+LOG("Holding %S\n", name);
 		symb = Emit::new_symbol(T, name);
 		Emit::guard(Inter::Constant::new_numerical(&holdings_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(&holdings_bookmark, symb), Inter::SymbolsTables::id_from_IRS_and_symbol(&holdings_bookmark, int_interk), LITERAL_IVAL, 0, Emit::baseline(&holdings_bookmark), NULL));
 		Emit::annotate_symbol_i(symb, HOLDING_IANN, 1);
@@ -765,7 +766,7 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 	locals_bookmark = current_inter_reading_state;
 	Emit::place_label(Emit::reserve_label(I".begin"), FALSE);
 	begin_bookmark = Emit::bookmark();
-	Emit::early_comment(I"body:");
+//	Emit::early_comment(I"body:");
 	code_bookmark = Emit::bookmark();
 	Emit::place_label(Emit::reserve_label(I".end"), FALSE);
 	code_insertion_point cip = Emit::new_cip(&code_bookmark);

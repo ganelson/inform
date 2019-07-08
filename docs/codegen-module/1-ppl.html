@@ -191,6 +191,8 @@ logging:
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">active</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">, </span><span class="reserved">pipeline_step</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">active</span><span class="plain">) {</span>
+                <span class="functiontext">CodeGen::Pipeline::lint</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+
                 <span class="functiontext">CodeGen::Pipeline::clean_step</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">);</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_N</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain"> = </span><span class="identifier">PP</span><span class="plain">;</span>
@@ -318,11 +320,23 @@ logging:
         <span class="identifier">verb_directive_topic_symbol</span><span class="plain"> = </span><span class="identifier">Inter::Packages::search_resources_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"VERB_DIRECTIVE_TOPIC"</span><span class="plain">);</span>
         <span class="identifier">verb_directive_multiexcept_symbol</span><span class="plain"> = </span><span class="identifier">Inter::Packages::search_resources_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"VERB_DIRECTIVE_MULTIEXCEPT"</span><span class="plain">);</span>
     <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::lint</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="identifier">Inter::Packages::traverse_repository</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">CodeGen::Pipeline::visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::visitor</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Defn::verify_children_inner</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Pipeline::prepare_to_run is used in <a href="#SP4">&#167;4</a>.</p>
+
+<p class="endnote">The function CodeGen::Pipeline::lint is used in <a href="#SP4">&#167;4</a>.</p>
+
+<p class="endnote">The function CodeGen::Pipeline::visitor appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-stg.html">Back to 'Stages'</a></li><li><i>(This section ends Chapter 1: Setting Up.)</i></li></ul><hr class="tocbar">

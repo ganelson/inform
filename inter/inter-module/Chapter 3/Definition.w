@@ -39,17 +39,13 @@ typedef struct inter_construct {
 	struct inter_error_message *(*construct_reader)(struct inter_reading_state *, struct inter_line_parse *, struct inter_error_location *);
 	struct inter_error_message *(*construct_verifier)(struct inter_frame);
 	struct inter_error_message *(*construct_writer)(struct text_stream *, struct inter_frame);
-	struct inter_error_message *(*construct_pass2)(struct inter_frame);
-	struct inter_frame_list *(*list_of_children)(inter_frame);
-	struct inter_error_message *(*accept_child)(inter_frame, inter_frame);
-	struct inter_error_message *(*no_more_children)(inter_frame);
-	void (*dependencies)(struct inter_frame, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *);
-	int (*report_level)(inter_frame);
 	int min_level;
 	int max_level;
 	int usage_permissions;
+	int children_field;
 	struct text_stream *singular_name;
 	struct text_stream *plural_name;
+	METHOD_CALLS
 	MEMORY_MANAGEMENT
 } inter_construct;
 
@@ -68,20 +64,16 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	text_stream *sing,
 	text_stream *plur) {
 	inter_construct *IC = CREATE(inter_construct);
+	ENABLE_METHOD_CALLS(IC);
 	IC->construct_ID = ID;
 	IC->construct_syntax = syntax;
 	if (ID >= MAX_INTER_CONSTRUCTS) internal_error("too many constructs");
 	IC->construct_reader = R;
 	IC->construct_verifier = V;
-	IC->construct_pass2 = C;
 	IC->construct_writer = W;
-	IC->report_level = REP;
-	IC->accept_child = BP;
-	IC->list_of_children = LP;
-	IC->no_more_children = EP;
-	IC->dependencies = DEP;
 	IC->min_level = 0;
 	IC->max_level = 0;
+	IC->children_field = -1;
 	IC_lookup[ID] = IC;
 	IC->usage_permissions = INSIDE_PLAIN_PACKAGE;
 	IC->singular_name = Str::duplicate(sing);
@@ -237,73 +229,47 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_repository *I, inter_ann
 
 inter_error_message *Inter::Defn::pass2(inter_repository *I, int issue, inter_reading_state *just_this, int stop_at_top, int baseline) {
 	inter_error_message *E = NULL;
-	if (just_this == NULL) {
-		inter_frame P;
-		LOOP_THROUGH_FRAMES(P, I)
-			E = Inter::Errors::gather_first(E, Inter::Defn::pass2_on_frame(P, issue));
-	} else {
-		inter_frame P; int F = 0;
-		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->sequence)), just_this->pos) {
-			F++;
-			if ((stop_at_top) && (F > 1) && (Inter::Defn::get_level(P) == baseline)) break;
-
-			E = Inter::Errors::gather_first(E, Inter::Defn::pass2_on_frame(P, issue));
-		}
-	}
-	return Inter::Defn::scan_levels(I, E, issue, just_this, stop_at_top, baseline);
-}
-
-inter_error_message *Inter::Defn::scan_levels(inter_repository *I, inter_error_message *E, int issue, inter_reading_state *just_this, int stop_at_top, int baseline) {
 	inter_frame frame_stack[100];
 	int frame_sp = 0;
 	inter_frame PREV = Inter::Frame::around(NULL, -1);
+	if (Inter::Packages::main(I))
+		PREV = Inter::Symbols::defining_frame(Inter::Packages::main(I)->package_name);
 
 	inter_frame_list_entry *first_entry;
-	if (just_this == NULL) first_entry = (&(I->sequence))->first_in_ifl;
+	if (just_this == NULL) first_entry = (&(I->residue))->first_in_ifl;
 	else first_entry = just_this->pos;
 
 	inter_frame P; int F = 0, err_at = -1;
-	LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->sequence)), first_entry) {
+	LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->residue)), first_entry) {
 		if ((E) && (err_at < 0)) err_at = F;
 		F++;
 		int L = Inter::Defn::get_level(P) - baseline;
 		if ((stop_at_top) && (L <= 0) && (F > 1)) break;
 		if (P.data[ID_IFLD] == COMMENT_IST) continue;
 		if (P.data[ID_IFLD] == NOP_IST) continue;
-		if (frame_sp == L) {
-			if (Inter::Frame::valid(&PREV))
-				E = Inter::Errors::gather_first(E, Inter::Defn::no_more_children(PREV, issue));
-		} else if (frame_sp > L) {
-			while (frame_sp > L) {
-				E = Inter::Errors::gather_first(E, Inter::Defn::no_more_children(PREV, issue));
-				E = Inter::Errors::gather_first(E, Inter::Defn::no_more_children(frame_stack[--frame_sp], issue));
-			}
+		if (frame_sp >= L) {
+			frame_sp = L;
+		} else if (frame_sp == L-1) {
+			frame_stack[frame_sp++] = PREV;
 		} else {
-			if (frame_sp == L-1) {
-				frame_stack[frame_sp++] = PREV;
-			} else if (frame_sp < L-1) {
-				E = Inter::Errors::gather_first(E, Inter::Frame::error(&P, I"overly indented line", NULL));
-			}
+			E = Inter::Errors::gather_first(E, Inter::Frame::error(&P, I"overly indented line", NULL));
 		}
 		if (frame_sp > 0)
 			E = Inter::Errors::gather_first(E, Inter::Defn::accept_child(frame_stack[frame_sp-1], P, issue));
 		PREV = P;
 	}
-	while (frame_sp > 0) {
-		E = Inter::Errors::gather_first(E, Inter::Defn::no_more_children(PREV, issue));
-		E = Inter::Errors::gather_first(E, Inter::Defn::no_more_children(frame_stack[--frame_sp], issue));
-	}
+
 	if (E) {
 		LOG("Error occurred here:\n");
 		int F = 0;
-		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->sequence)), first_entry) {
+		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->residue)), first_entry) {
 			F++; if ((err_at >= 0) && (F >= err_at)) { err_at = -1; LOG("*%02d* ", Inter::Defn::get_level(P)); }
 			else { LOG("(%02d) ", Inter::Defn::get_level(P)); }
 			Inter::Defn::write_construct_text(DL, P);
 		}
 		LOG("Or in binary:\n");
 		F = 0;
-		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->sequence)), first_entry) {
+		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->residue)), first_entry) {
 			F++; if ((err_at >= 0) && (F >= err_at)) { err_at = -1; LOG("**** "); }
 			else { LOG("(%02d) ", Inter::Defn::get_level(P)); }
 			LOG("%F\n", &P);
@@ -345,6 +311,7 @@ inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
 
 inter_error_message *Inter::Defn::get_construct(inter_frame P, inter_construct **to) {
 	if (Inter::Frame::valid(&P) == FALSE) {
+internal_error("zob");
 		return Inter::Frame::error(&P, I"invalid frame", NULL);
 	}
 	if ((P.data[ID_IFLD] == INVALID_IST) || (P.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
@@ -476,26 +443,13 @@ int Inter::Defn::get_level(inter_frame P) {
 	return (int) P.data[LEVEL_IFLD];
 }
 
-inter_error_message *Inter::Defn::pass2_on_frame(inter_frame P, int issue) {
-	inter_error_message *E = Inter::Defn::pass2_on_frame_inner(P);
-	if ((E) && (issue)) Inter::Errors::issue(E);
-	return E;
-}
-
-inter_error_message *Inter::Defn::pass2_on_frame_inner(inter_frame P) {
-	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
-	if (E) return E;
-	if (IC->construct_pass2 == NULL) return NULL;
-	return (*(IC->construct_pass2))(P);
-}
-
 inter_frame_list *Inter::Defn::list_of_children(inter_frame P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return NULL;
-	if (IC->list_of_children == NULL) return NULL;
-	return (*(IC->list_of_children))(P);
+	if (IC->children_field == -1) return NULL;
+	if (Inter::Frame::valid(&P) == FALSE) return NULL;
+	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[IC->children_field]);
 }
 
 inter_error_message *Inter::Defn::accept_child(inter_frame P, inter_frame C, int issue) {
@@ -508,33 +462,26 @@ inter_error_message *Inter::Defn::accept_child_inner(inter_frame P, inter_frame 
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	if (IC->accept_child == NULL) {
+	if (IC->children_field == -1) {
 		WRITE_TO(STDERR, "P: "); Inter::Defn::write_construct_text(STDERR, P);
 		WRITE_TO(STDERR, "C: "); Inter::Defn::write_construct_text(STDERR, C);
 		return Inter::Frame::error(&C, I"this is placed under a construct which can't have anything underneath", NULL);
 	}
-	return (*(IC->accept_child))(P, C);
-}
-
-inter_error_message *Inter::Defn::no_more_children(inter_frame P, int issue) {
-	inter_error_message *E = Inter::Defn::no_more_children_inner(P);
-	if ((E) && (issue)) Inter::Errors::issue(E);
-	return E;
-}
-
-inter_error_message *Inter::Defn::no_more_children_inner(inter_frame P) {
-	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
-	if (E) return E;
-	if (IC->no_more_children == NULL) return NULL;
-	return (*(IC->no_more_children))(P);
-}
-
-inter_error_message *Inter::Defn::callback_dependencies(inter_frame P,
-	void (*callback)(inter_symbol *, inter_symbol *, void *), void *state) {
-	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
-	if (E) return E;
-	if (IC->dependencies) (*(IC->dependencies))(P, callback, state);
+	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[IC->children_field]), C, NULL);
 	return NULL;
+}
+
+@
+
+@e VERIFY_INTER_CHILDREN_MTID
+
+=
+VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
+
+inter_error_message *Inter::Defn::verify_children_inner(inter_frame P) {
+	inter_construct *IC = NULL;
+	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	if (E) return E;
+	VMETHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
+	return E;
 }

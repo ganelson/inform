@@ -16,14 +16,16 @@ void Inter::Evaluation::define(void) {
 		&Inter::Evaluation::verify,
 		&Inter::Evaluation::write,
 		NULL,
-		&Inter::Evaluation::list_of_children,
-		&Inter::Evaluation::accept_child,
-		&Inter::Evaluation::no_more_children,
-		&Inter::Evaluation::show_dependencies,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
 		I"evaluation", I"evaluations");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	IC->children_field = CODE_EVAL_IFLD;
+	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Evaluation::verify_children);
 }
 
 @
@@ -64,24 +66,15 @@ inter_error_message *Inter::Evaluation::write(OUTPUT_STREAM, inter_frame P) {
 	return NULL;
 }
 
-void Inter::Evaluation::show_dependencies(inter_frame P, void (*callback)(struct inter_symbol *, struct inter_symbol *, void *), void *state) {
-}
-
-inter_frame_list *Inter::Evaluation::list_of_children(inter_frame P) {
-	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	if (P.data[ID_IFLD] != EVALUATION_IST) return NULL;
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_EVAL_IFLD]);
-}
-
-inter_error_message *Inter::Evaluation::accept_child(inter_frame P, inter_frame C) {
-	if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != VAL_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != EVALUATION_IST))
-		return Inter::Frame::error(&C, I"only an inv, a splat, a val, or a label can be below an evaluation", NULL);
-	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_EVAL_IFLD]), C, NULL);
-	return NULL;
-}
-
-inter_error_message *Inter::Evaluation::no_more_children(inter_frame P) {
-	return NULL;
+void Inter::Evaluation::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
+	inter_frame C;
+	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+		if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != VAL_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != EVALUATION_IST)) {
+			*E = Inter::Frame::error(&C, I"only an inv, a splat, a val, or a label can be below an evaluation", NULL);
+			return;
+		}
+	}
 }
 
 inter_frame_list *Inter::Evaluation::concatenate_list(inter_symbol *label_name) {

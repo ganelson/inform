@@ -342,21 +342,24 @@ enough that the slot exists for the eventual list to be stored in.
 		inter_error_message *E = Inter::Defn::verify_construct(P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 		Inter::Frame::insert(P, NULL);
-		LOGIF(INTER_BINARY, "Read %F\n", &P);
 	}
 	Inter::check_segments(I);
 	Inter::Defn::pass2(I, TRUE, NULL, FALSE, 0);
 
 @<Write the bytecode@> =
-	inter_frame P;
-	LOOP_THROUGH_FRAMES(P, I) {
-		BinaryFiles::write_int32(fh, (unsigned int) (P.extent + 1));
-		BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)));
-		for (int i=0; i<P.extent; i++)
-			BinaryFiles::write_int32(fh, (unsigned int) (P.data[i]));
-		BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_comment(P)));
-		LOGIF(INTER_BINARY, "Wrote %F\n", &P);
-	}
+	Inter::Packages::traverse_repository_global_inc(I, Inter::Binary::visitor, fh);
+	Inter::Packages::traverse_repository_inc(I, Inter::Binary::visitor, fh);
+
+@ =
+void Inter::Binary::visitor(inter_repository *I, inter_frame P, void *state) {
+	FILE *fh = (FILE *) state;
+	BinaryFiles::write_int32(fh, (unsigned int) (P.extent + 1));
+	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)));
+	for (int i=0; i<P.extent; i++)
+		BinaryFiles::write_int32(fh, (unsigned int) (P.data[i]));
+	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_comment(P)));
+	LOGIF(INTER_BINARY, "Wrote %F\n", &P);
+}
 
 @ Errors in reading binary inter are not recoverable:
 
