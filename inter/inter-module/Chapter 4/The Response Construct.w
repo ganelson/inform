@@ -8,19 +8,13 @@ Defining the response construct.
 
 =
 void Inter::Response::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		RESPONSE_IST,
 		L"response (%i+) (%i+) (%d+) = (%c+)",
-		&Inter::Response::read,
-		NULL,
-		&Inter::Response::verify,
-		&Inter::Response::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"response", I"responses");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Response::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Response::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Response::write);
 }
 
 @
@@ -34,27 +28,27 @@ void Inter::Response::define(void) {
 @d EXTENT_RESPONSE_IFR 7
 
 =
-inter_error_message *Inter::Response::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, RESPONSE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Response::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, RESPONSE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	inter_symbol *resp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
-	inter_symbol *rule_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], CONSTANT_IST, &E);
-	if (E) return E;
+	inter_symbol *resp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
+	inter_symbol *rule_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], CONSTANT_IST, E);
+	if (*E) return;
 
 	inter_t n1 = UNDEF_IVAL, n2 = 0;
-	E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, NULL, ilp->mr.exp[2], &n1, &n2, Inter::Bookmarks::scope(IRS));
-	if (E) return E;
+	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, NULL, ilp->mr.exp[2], &n1, &n2, Inter::Bookmarks::scope(IRS));
+	if (*E) return;
 	if ((n1 != LITERAL_IVAL) || (n2 >= 26))
-		return Inter::Errors::plain(I"response marker out of range", eloc);
+		{ *E = Inter::Errors::plain(I"response marker out of range", eloc); return; }
 
-	inter_symbol *val_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[3], CONSTANT_IST, &E);
-	if (E) return E;
+	inter_symbol *val_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[3], CONSTANT_IST, E);
+	if (*E) return;
 
 	inter_t v1 = 0, v2 = 0;
 	Inter::Symbols::to_data(IRS->read_into, IRS->current_package, val_name, &v1, &v2);
-	return Inter::Response::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, rule_name), n2, v1, v2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Response::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, rule_name), n2, v1, v2, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Response::new(inter_reading_state *IRS, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
@@ -64,14 +58,13 @@ inter_error_message *Inter::Response::new(inter_reading_state *IRS, inter_t SID,
 	return NULL;
 }
 
-inter_error_message *Inter::Response::verify(inter_frame P) {
-	if (P.extent != EXTENT_RESPONSE_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	inter_error_message *E = Inter::Verify::defn(P, DEFN_RESPONSE_IFLD); if (E) return E;
-	if (P.data[MARKER_RESPONSE_IFLD] >= 26) return Inter::Errors::plain(I"response marker out of range", NULL);
-	return NULL;
+void Inter::Response::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_RESPONSE_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(P, DEFN_RESPONSE_IFLD); if (*E) return;
+	if (P.data[MARKER_RESPONSE_IFLD] >= 26) { *E = Inter::Errors::plain(I"response marker out of range", NULL); return; }
 }
 
-inter_error_message *Inter::Response::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Response::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
 	inter_symbol *rule_name = Inter::SymbolsTables::symbol_from_frame_data(P, RULE_RESPONSE_IFLD);
 	if ((resp_name) && (rule_name)) {
@@ -79,7 +72,6 @@ inter_error_message *Inter::Response::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Types::write(OUT, P.repo_segment->owning_repo, NULL,
 			P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
-		return Inter::Frame::error(&P, I"response can't be written", NULL);
+		*E = Inter::Frame::error(&P, I"response can't be written", NULL);
 	}
-	return NULL;
 }

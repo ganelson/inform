@@ -12,29 +12,23 @@ Defining the marker construct.
 
 =
 void Inter::Marker::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		MARKER_IST,
 		L"marker (%i+)",
-		&Inter::Marker::read,
-		NULL,
-		&Inter::Marker::verify,
-		&Inter::Marker::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"marker", I"markers");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Marker::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Marker::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Marker::write);
 }
 
-inter_error_message *Inter::Marker::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, MARKER_IST, ilp->indent_level, eloc);
-	if (E) return E;
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Marker::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, MARKER_IST, ilp->indent_level, eloc);
+	if (*E) return;
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *mark_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
-	return Inter::Marker::new(IRS, mark_name, (inter_t) ilp->indent_level, eloc);
+	inter_symbol *mark_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
+	*E = Inter::Marker::new(IRS, mark_name, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Marker::new(inter_reading_state *IRS, inter_symbol *mark, inter_t level, inter_error_location *eloc) {
@@ -45,15 +39,13 @@ inter_error_message *Inter::Marker::new(inter_reading_state *IRS, inter_symbol *
 	return NULL;
 }
 
-inter_error_message *Inter::Marker::verify(inter_frame P) {
-	inter_error_message *E = Inter::Verify::defn(P, MARK_MARKER_IFLD); if (E) return E;
-	return NULL;
+void Inter::Marker::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	*E = Inter::Verify::defn(P, MARK_MARKER_IFLD);
 }
 
-inter_error_message *Inter::Marker::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Marker::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *mark = Inter::SymbolsTables::symbol_from_frame_data(P, MARK_MARKER_IFLD);
 	if (mark) {
 		WRITE("marker %S", mark->symbol_name);
-	} else return Inter::Frame::error(&P, I"cannot write marker", NULL);
-	return NULL;
+	} else { *E = Inter::Frame::error(&P, I"cannot write marker", NULL); return; }
 }

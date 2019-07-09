@@ -8,19 +8,13 @@ Defining the variable construct.
 
 =
 void Inter::Variable::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		VARIABLE_IST,
 		L"variable (%i+) (%i+) = (%c+)",
-		&Inter::Variable::read,
-		NULL,
-		&Inter::Variable::verify,
-		&Inter::Variable::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"variable", I"variables");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Variable::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Variable::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Variable::write);
 }
 
 @
@@ -33,24 +27,24 @@ void Inter::Variable::define(void) {
 @d EXTENT_VAR_IFR 6
 
 =
-inter_error_message *Inter::Variable::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, VARIABLE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Variable::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, VARIABLE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
-	inter_symbol *var_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, &E);
-	if (E) return E;
+	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
+	inter_symbol *var_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
 		Inter::Symbols::annotate(IRS->read_into, var_name, ilp->annotations[i]);
 
 	inter_t var_val1 = 0;
 	inter_t var_val2 = 0;
-	E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IRS));
-	if (E) return E;
+	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IRS));
+	if (*E) return;
 
-	return Inter::Variable::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_kind), var_val1, var_val2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Variable::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_kind), var_val1, var_val2, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Variable::new(inter_reading_state *IRS, inter_t VID, inter_t KID, inter_t var_val1, inter_t var_val2, inter_t level, inter_error_location *eloc) {
@@ -61,22 +55,20 @@ inter_error_message *Inter::Variable::new(inter_reading_state *IRS, inter_t VID,
 	return NULL;
 }
 
-inter_error_message *Inter::Variable::verify(inter_frame P) {
-	if (P.extent != EXTENT_VAR_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	inter_error_message *E = Inter::Verify::defn(P, DEFN_VAR_IFLD); if (E) return E;
-	E = Inter::Verify::symbol(P, P.data[KIND_VAR_IFLD], KIND_IST); if (E) return E;
-	return NULL;
+void Inter::Variable::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_VAR_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(P, DEFN_VAR_IFLD); if (*E) return;
+	*E = Inter::Verify::symbol(P, P.data[KIND_VAR_IFLD], KIND_IST);
 }
 
-inter_error_message *Inter::Variable::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *var_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
 	inter_symbol *var_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAR_IFLD);
 	if ((var_name) && (var_kind)) {
 		WRITE("variable %S %S = ", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Types::write(OUT, P.repo_segment->owning_repo, var_kind, P.data[VAL1_VAR_IFLD], P.data[VAL2_VAR_IFLD], Inter::Packages::scope_of(P), FALSE);
 		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, var_name);
-	} else return Inter::Frame::error(&P, I"cannot write variable", NULL);
-	return NULL;
+	} else { *E = Inter::Frame::error(&P, I"cannot write variable", NULL); return; }
 }
 
 inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {

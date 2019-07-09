@@ -36,9 +36,6 @@ typedef struct inter_line_parse {
 typedef struct inter_construct {
 	inter_t construct_ID;
 	wchar_t *construct_syntax;
-	struct inter_error_message *(*construct_reader)(struct inter_reading_state *, struct inter_line_parse *, struct inter_error_location *);
-	struct inter_error_message *(*construct_verifier)(struct inter_frame);
-	struct inter_error_message *(*construct_writer)(struct text_stream *, struct inter_frame);
 	int min_level;
 	int max_level;
 	int usage_permissions;
@@ -52,15 +49,6 @@ typedef struct inter_construct {
 inter_construct *IC_lookup[MAX_INTER_CONSTRUCTS];
 
 inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
-	inter_error_message *(*R)(struct inter_reading_state *, struct inter_line_parse *, struct inter_error_location *),
-	inter_error_message *(*C)(inter_frame),
-	inter_error_message *(*V)(inter_frame),
-	inter_error_message *(*W)(text_stream *, inter_frame),
-	int (*REP)(inter_frame),
-	inter_frame_list *(*LP)(inter_frame),
-	inter_error_message *(*BP)(inter_frame, inter_frame),
-	inter_error_message *(*EP)(inter_frame),
-	void (*DEP)(inter_frame, void (*callback)(inter_symbol *, inter_symbol *, void *), void *),
 	text_stream *sing,
 	text_stream *plur) {
 	inter_construct *IC = CREATE(inter_construct);
@@ -68,9 +56,6 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	IC->construct_ID = ID;
 	IC->construct_syntax = syntax;
 	if (ID >= MAX_INTER_CONSTRUCTS) internal_error("too many constructs");
-	IC->construct_reader = R;
-	IC->construct_verifier = V;
-	IC->construct_writer = W;
 	IC->min_level = 0;
 	IC->max_level = 0;
 	IC->children_field = -1;
@@ -86,6 +71,17 @@ inter_symbol *code_packagetype = NULL;
 
 @
 
+@e CONSTRUCT_READ_MTID
+@e CONSTRUCT_VERIFY_MTID
+@e CONSTRUCT_WRITE_MTID
+
+=
+VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_reading_state *, inter_line_parse *, inter_error_location *, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_frame P, inter_error_message **E)
+
+@
+
 @e INVALID_IST from 0
 
 @d ID_IFLD 0
@@ -96,7 +92,7 @@ inter_symbol *code_packagetype = NULL;
 void Inter::Defn::create_language(void) {
 	for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) IC_lookup[i] = NULL;
 
-	Inter::Defn::create_construct(INVALID_IST, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, I"nothing", I"nothings");
+	Inter::Defn::create_construct(INVALID_IST, NULL, I"nothing", I"nothings");
 	Inter::Canon::declare();
 
 	Inter::Nop::define();
@@ -305,8 +301,9 @@ inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
 		}
 		return Inter::Frame::error(&P, M, NULL);
 	}
-	if (IC->construct_verifier == NULL) return NULL;
-	return (*(IC->construct_verifier))(P);
+	E = NULL;
+	VMETHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, &E);
+	return E;
 }
 
 inter_error_message *Inter::Defn::get_construct(inter_frame P, inter_construct **to) {
@@ -327,9 +324,8 @@ inter_error_message *Inter::Defn::write_construct_text(OUTPUT_STREAM, inter_fram
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	if (IC->construct_writer == NULL) return Inter::Frame::error(&P, I"no way to write construct", NULL);
 	for (inter_t L=0; L<P.data[LEVEL_IFLD]; L++) WRITE("\t");
-	E = (*(IC->construct_writer))(OUT, P);
+	VMETHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
 	inter_t ID = Inter::Frame::get_comment(P);
 	if (ID != 0) {
 		if (P.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
@@ -397,9 +393,11 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 	}
 	inter_construct *IC;
 	LOOP_OVER(IC, inter_construct)
-		if ((IC->construct_reader) && (IC->construct_syntax))
+		if (IC->construct_syntax)
 			if (Regexp::match(&ilp.mr, ilp.line, IC->construct_syntax)) {
-				return (*(IC->construct_reader))(IRS, &ilp, eloc);
+				inter_error_message *E = NULL;
+				VMETHOD_CALL(IC, CONSTRUCT_READ_MTID, IRS, &ilp, eloc, &E);
+				return E;
 			}
 	return Inter::Errors::plain(I"bad inter line", eloc);
 }

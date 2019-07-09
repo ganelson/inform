@@ -11,20 +11,14 @@ void Inter::Code::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		CODE_IST,
 		L"code",
-		&Inter::Code::read,
-		NULL,
-		&Inter::Code::verify,
-		&Inter::Code::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"code", I"codes");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	IC->children_field = CODE_CODE_IFLD;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Code::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Code::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Code::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Code::verify_children);
 }
 
@@ -36,16 +30,16 @@ void Inter::Code::define(void) {
 @d EXTENT_CODE_IFR 4
 
 =
-inter_error_message *Inter::Code::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Code::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_error_message *E = Inter::Defn::vet_level(IRS, CODE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+	*E = Inter::Defn::vet_level(IRS, CODE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
-	if (routine == NULL) return Inter::Errors::plain(I"'code' used outside function", eloc);
+	if (routine == NULL) { *E = Inter::Errors::plain(I"'code' used outside function", eloc); return; }
 
-	return Inter::Code::new(IRS, routine, ilp->indent_level, eloc);
+	*E = Inter::Code::new(IRS, routine, ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Code::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
@@ -55,14 +49,12 @@ inter_error_message *Inter::Code::new(inter_reading_state *IRS, inter_symbol *ro
 	return NULL;
 }
 
-inter_error_message *Inter::Code::verify(inter_frame P) {
-	if (P.extent != EXTENT_CODE_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	return NULL;
+void Inter::Code::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_CODE_IFR) *E = Inter::Frame::error(&P, I"extent wrong", NULL);
 }
 
-inter_error_message *Inter::Code::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Code::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	WRITE("code");
-	return NULL;
 }
 
 void Inter::Code::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {

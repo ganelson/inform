@@ -8,19 +8,13 @@ Defining the link construct.
 
 =
 void Inter::Link::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		LINK_IST,
 		L"link (%i+) \"(%c*)\" \"(%c*)\" \"(%c*)\" \"(%c*)\"",
-		&Inter::Link::read,
-		NULL,
-		&Inter::Link::verify,
-		&Inter::Link::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"link", I"links");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Link::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Link::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Link::write);
 }
 
 @
@@ -40,11 +34,11 @@ void Inter::Link::define(void) {
 @d AFTER_LINK_STAGE 4
 
 =
-inter_error_message *Inter::Link::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, LINK_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Link::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, LINK_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_t stage = 0;
 	text_stream *stage_text = ilp->mr.exp[0];
@@ -52,17 +46,17 @@ inter_error_message *Inter::Link::read(inter_reading_state *IRS, inter_line_pars
 	else if (Str::eq(stage_text, I"before")) stage = BEFORE_LINK_STAGE;
 	else if (Str::eq(stage_text, I"instead")) stage = INSTEAD_LINK_STAGE;
 	else if (Str::eq(stage_text, I"after")) stage = AFTER_LINK_STAGE;
-	else return Inter::Errors::plain(I"no such stage name is supported", eloc);
+	else { *E = Inter::Errors::plain(I"no such stage name is supported", eloc); return; }
 
 	inter_t SIDS[5];
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
 		SIDS[i] = Inter::create_text(IRS->read_into);
-		E = Inter::Constant::parse_text(Inter::get_text(IRS->read_into, SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
-		if (E) return E;
+		*E = Inter::Constant::parse_text(Inter::get_text(IRS->read_into, SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
+		if (*E) return;
 	}
 
-	return Inter::Link::new(IRS, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], 0, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Link::new(IRS, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], 0, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Link::new(inter_reading_state *IRS,
@@ -74,23 +68,21 @@ inter_error_message *Inter::Link::new(inter_reading_state *IRS,
 	return NULL;
 }
 
-inter_error_message *Inter::Link::verify(inter_frame P) {
-	if (P.extent != EXTENT_LINK_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
+void Inter::Link::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_LINK_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 
 	if ((P.data[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&
 		(P.data[STAGE_LINK_IFLD] != BEFORE_LINK_STAGE) &&
 		(P.data[STAGE_LINK_IFLD] != INSTEAD_LINK_STAGE) &&
 		(P.data[STAGE_LINK_IFLD] != AFTER_LINK_STAGE))
-		return Inter::Frame::error(&P, I"bad stage marker on link", NULL);
-	if (P.data[SEGMENT_LINK_IFLD] == 0) return Inter::Frame::error(&P, I"no segment text", NULL);
-	if (P.data[PART_LINK_IFLD] == 0) return Inter::Frame::error(&P, I"no part text", NULL);
-	if (P.data[TO_RAW_LINK_IFLD] == 0) return Inter::Frame::error(&P, I"no to-raw text", NULL);
-	if (P.data[TO_SEGMENT_LINK_IFLD] == 0) return Inter::Frame::error(&P, I"no to-segment text", NULL);
-
-	return NULL;
+		{ *E = Inter::Frame::error(&P, I"bad stage marker on link", NULL); return; }
+	if (P.data[SEGMENT_LINK_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no segment text", NULL); return; }
+	if (P.data[PART_LINK_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no part text", NULL); return; }
+	if (P.data[TO_RAW_LINK_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no to-raw text", NULL); return; }
+	if (P.data[TO_SEGMENT_LINK_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no to-segment text", NULL); return; }
 }
 
-inter_error_message *Inter::Link::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	WRITE("link ");
 	switch (P.data[STAGE_LINK_IFLD]) {
 		case EARLY_LINK_STAGE: WRITE("early"); break;
@@ -104,5 +96,4 @@ inter_error_message *Inter::Link::write(OUTPUT_STREAM, inter_frame P) {
 		Inter::Constant::write_text(OUT, S);
 		WRITE("\"");
 	}
-	return NULL;
 }

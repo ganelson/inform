@@ -11,20 +11,14 @@ void Inter::Reference::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		REFERENCE_IST,
 		L"reference",
-		&Inter::Reference::read,
-		NULL,
-		&Inter::Reference::verify,
-		&Inter::Reference::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"reference", I"references");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	IC->children_field = CODE_RCE_IFLD;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Reference::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Reference::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Reference::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Reference::verify_children);
 }
 
@@ -36,16 +30,16 @@ void Inter::Reference::define(void) {
 @d EXTENT_RCE_IFR 4
 
 =
-inter_error_message *Inter::Reference::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Reference::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_error_message *E = Inter::Defn::vet_level(IRS, REFERENCE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+	*E = Inter::Defn::vet_level(IRS, REFERENCE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
-	if (routine == NULL) return Inter::Errors::plain(I"'reference' used outside function", eloc);
+	if (routine == NULL) { *E = Inter::Errors::plain(I"'reference' used outside function", eloc); return; }
 
-	return Inter::Reference::new(IRS, routine, ilp->indent_level, eloc);
+	*E = Inter::Reference::new(IRS, routine, ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Reference::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
@@ -56,14 +50,12 @@ inter_error_message *Inter::Reference::new(inter_reading_state *IRS, inter_symbo
 	return NULL;
 }
 
-inter_error_message *Inter::Reference::verify(inter_frame P) {
-	if (P.extent != EXTENT_RCE_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	return NULL;
+void Inter::Reference::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_RCE_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 }
 
-inter_error_message *Inter::Reference::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	WRITE("reference");
-	return NULL;
 }
 
 void Inter::Reference::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {

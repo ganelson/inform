@@ -11,17 +11,11 @@ void Inter::Primitive::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		PRIMITIVE_IST,
 		L"primitive (!%i+) (%c+) -> (%C+)",
-		&Inter::Primitive::read,
-		NULL,
-		&Inter::Primitive::verify,
-		&Inter::Primitive::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"primitive", I"primitives");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Primitive::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Primitive::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Primitive::write);
 }
 
 @
@@ -37,36 +31,35 @@ void Inter::Primitive::define(void) {
 @d CODE_PRIM_CAT 4
 
 =
-inter_error_message *Inter::Primitive::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, PRIMITIVE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Primitive::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, PRIMITIVE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
+	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
 
 	inter_frame F = Inter::Frame::fill_1(IRS, PRIMITIVE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, prim_name), eloc, (inter_t) ilp->indent_level);
 
 	text_stream *in = ilp->mr.exp[1];
 	match_results mr2 = Regexp::create_mr();
 	while (Regexp::match(&mr2, in, L" *(%i+) *(%c*)")) {
-		inter_t lcat = Inter::Primitive::category(eloc, mr2.exp[0], &E);
-		if (E) return E;
+		inter_t lcat = Inter::Primitive::category(eloc, mr2.exp[0], E);
+		if (*E) return;
 		if (lcat == 0) break;
 		if (Inter::Frame::extend(&F, (inter_t) 1) == FALSE) internal_error("can't extend");
 		F.data[F.extent - 1] = lcat;
 		Str::copy(in, mr2.exp[1]);
 	}
 
-	inter_t rcat = Inter::Primitive::category(eloc, ilp->mr.exp[2], &E);
-	if (E) return E;
+	inter_t rcat = Inter::Primitive::category(eloc, ilp->mr.exp[2], E);
+	if (*E) return;
 	if (Inter::Frame::extend(&F, (inter_t) 1) == FALSE) internal_error("can't extend");
 	F.data[F.extent - 1] = rcat;
 
-	E = Inter::Defn::verify_construct(F); if (E) return E;
+	*E = Inter::Defn::verify_construct(F); if (*E) return;
 	Inter::Frame::insert(F, IRS);
-	return NULL;
 }
 
 inter_t Inter::Primitive::category(inter_error_location *eloc, text_stream *T, inter_error_message **E) {
@@ -91,23 +84,22 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_t cat) {
 	}
 }
 
-inter_error_message *Inter::Primitive::verify(inter_frame P) {
-	if (P.extent < MIN_EXTENT_PRIM_IFR) return Inter::Frame::error(&P, I"p extent wrong", NULL);
-	inter_error_message *E = Inter::Verify::defn(P, DEFN_PRIM_IFLD); if (E) return E;
+void Inter::Primitive::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent < MIN_EXTENT_PRIM_IFR) { *E = Inter::Frame::error(&P, I"p extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(P, DEFN_PRIM_IFLD); if (*E) return;
 	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
 	if ((prim_name == NULL) || (Str::get_first_char(prim_name->symbol_name) != '!'))
-		return Inter::Frame::error(&P, I"primitive not beginning with '!'", NULL);
+		{ *E = Inter::Frame::error(&P, I"primitive not beginning with '!'", NULL); return; }
 	int voids = 0, args = 0;
 	for (int i=CAT_PRIM_IFLD; i<P.extent-1; i++) {
 		if (P.data[i] == 0) voids++;
 		args++;
 	}
 	if ((voids > 1) || ((voids == 1) && (args > 1)))
-		return Inter::Frame::error(&P, I"if used on the left, 'void' must be the only argument", NULL);
-	return NULL;
+		{ *E = Inter::Frame::error(&P, I"if used on the left, 'void' must be the only argument", NULL); return; }
 }
 
-inter_error_message *Inter::Primitive::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Primitive::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
 	if (prim_name) {
 		WRITE("primitive %S", prim_name->symbol_name);
@@ -120,8 +112,7 @@ inter_error_message *Inter::Primitive::write(OUTPUT_STREAM, inter_frame P) {
 		if (cats == 0) WRITE(" void");
 		WRITE(" -> ");
 		Inter::Primitive::write_category(OUT, P.data[P.extent-1]);
-	} else return Inter::Frame::error(&P, I"cannot write primitive", NULL);
-	return NULL;
+	} else { *E = Inter::Frame::error(&P, I"cannot write primitive", NULL); return; }
 }
 
 int Inter::Primitive::arity(inter_symbol *prim) {

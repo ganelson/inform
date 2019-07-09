@@ -11,20 +11,14 @@ void Inter::Inv::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		INV_IST,
 		L"inv (%C+)",
-		&Inter::Inv::read,
-		NULL,
-		&Inter::Inv::verify,
-		&Inter::Inv::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"inv", I"invs");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	IC->children_field = OPERANDS_INV_IFLD;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Inv::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Inv::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Inv::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Inv::verify_children);
 }
 
@@ -42,30 +36,35 @@ void Inter::Inv::define(void) {
 @d INVOKED_OPCODE 3
 
 =
-inter_error_message *Inter::Inv::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
-	inter_error_message *E = Inter::Defn::vet_level(IRS, INV_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Inv::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	*E = Inter::Defn::vet_level(IRS, INV_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
-	if (routine == NULL) return Inter::Errors::plain(I"'inv' used outside function", eloc);
+	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(IRS->read_into), ilp->mr.exp[0]);
 	if (invoked_name == NULL) invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IRS), ilp->mr.exp[0]);
-	if (invoked_name == NULL) return Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc);
+	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
 	if ((Inter::Symbols::is_extern(invoked_name)) ||
-		(Inter::Symbols::is_predeclared(invoked_name)))
-		return Inter::Inv::new_call(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+		(Inter::Symbols::is_predeclared(invoked_name))) {
+		*E = Inter::Inv::new_call(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+		return;
+	}
 	switch (Inter::Symbols::defining_frame(invoked_name).data[ID_IFLD]) {
 		case PRIMITIVE_IST:
-			return Inter::Inv::new_primitive(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+			*E = Inter::Inv::new_primitive(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+			return;
 		case CONSTANT_IST:
-			if (Inter::Constant::is_routine(invoked_name))
-				return Inter::Inv::new_call(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+			if (Inter::Constant::is_routine(invoked_name)) {
+				*E = Inter::Inv::new_call(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+				return;
+			}
 			break;
 	}
-	return Inter::Errors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
+	*E = Inter::Errors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
@@ -93,36 +92,33 @@ inter_error_message *Inter::Inv::new_assembly(inter_reading_state *IRS, inter_sy
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::verify(inter_frame P) {
-	if (P.extent != EXTENT_INV_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
+void Inter::Inv::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_INV_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope_of(P);
-	if (locals == NULL) return Inter::Frame::error(&P, I"function has no symbols table", NULL);
+	if (locals == NULL) { *E = Inter::Frame::error(&P, I"function has no symbols table", NULL); return; }
 
 	switch (P.data[METHOD_INV_IFLD]) {
-		case INVOKED_PRIMITIVE: {
-			inter_error_message *E = Inter::Verify::global_symbol(P, P.data[INVOKEE_INV_IFLD], PRIMITIVE_IST); if (E) return E;
+		case INVOKED_PRIMITIVE:
+			*E = Inter::Verify::global_symbol(P, P.data[INVOKEE_INV_IFLD], PRIMITIVE_IST); if (*E) return;
 			break;
-		}
 		case INVOKED_OPCODE:
 		case INVOKED_ROUTINE:
 			break;
 		default:
-			return Inter::Frame::error(&P, I"bad invocation method", NULL);
+			*E = Inter::Frame::error(&P, I"bad invocation method", NULL);
+			break;
 	}
-
-	return NULL;
 }
 
-inter_error_message *Inter::Inv::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	if (P.data[METHOD_INV_IFLD] == INVOKED_OPCODE) {
 		WRITE("inv %S", Inter::get_text(P.repo_segment->owning_repo, P.data[INVOKEE_INV_IFLD]));
 	} else {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (invokee) {
 			WRITE("inv %S", invokee->symbol_name);
-		} else return Inter::Frame::error(&P, I"cannot write inv", NULL);
+		} else { *E = Inter::Frame::error(&P, I"cannot write inv", NULL); return; }
 	}
-	return NULL;
 }
 
 inter_symbol *Inter::Inv::invokee(inter_frame P) {

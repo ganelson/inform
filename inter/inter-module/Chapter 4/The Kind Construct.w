@@ -8,19 +8,13 @@ Defining the kind construct.
 
 =
 void Inter::Kind::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		KIND_IST,
 		L"kind (%i+) (%c+)",
-		&Inter::Kind::read,
-		NULL,
-		&Inter::Kind::verify,
-		&Inter::Kind::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"kind", I"kinds");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Kind::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Kind::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Kind::write);
 }
 
 @
@@ -50,12 +44,12 @@ void Inter::Kind::define(void) {
 @d MAX_ICON_OPERANDS 128
 
 =
-inter_error_message *Inter::Kind::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, KIND_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, KIND_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	inter_symbol *symb = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
+	inter_symbol *symb = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
 
 	match_results mr2 = Regexp::create_mr();
 	inter_data_type *idt = NULL;
@@ -65,100 +59,100 @@ inter_error_message *Inter::Kind::read(inter_reading_state *IRS, inter_line_pars
 	inter_symbol *super_kind = NULL;
 	for (int i=0; i<MAX_ICON_OPERANDS; i++) operands[i] = 0;
 	if (Regexp::match(&mr2, ilp->mr.exp[1], L"<= (%i+)")) {
-		super_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, &E);
-		if (E) return E;
+		super_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		if (*E) return;
 		idt = Inter::Kind::data_type(super_kind);
 		if (Inter::Types::is_enumerated(idt) == FALSE)
-			return Inter::Errors::quoted(I"not a kind which can have subkinds", mr2.exp[0], eloc);
+			{ *E = Inter::Errors::quoted(I"not a kind which can have subkinds", mr2.exp[0], eloc); return; }
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"rulebook of (%i+)")) {
-		idt = Inter::Textual::data_type(eloc, I"list", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"list", E);
+		if (*E) return;
 		constructor = RULEBOOK_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, &E);
-		if (E) return E;
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		if (*E) return;
 		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"list of (%i+)")) {
-		idt = Inter::Textual::data_type(eloc, I"list", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"list", E);
+		if (*E) return;
 		constructor = LIST_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, &E);
-		if (E) return E;
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		if (*E) return;
 		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"relation of (%i+) to (%i+)")) {
-		idt = Inter::Textual::data_type(eloc, I"relation", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"relation", E);
+		if (*E) return;
 		constructor = RELATION_ICON;
-		inter_symbol *X_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, &E);
-		if (E) return E;
-		inter_symbol *Y_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[1], KIND_IST, &E);
-		if (E) return E;
+		inter_symbol *X_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		if (*E) return;
+		inter_symbol *Y_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[1], KIND_IST, E);
+		if (*E) return;
 		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, X_kind);
 		operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, Y_kind);
 		arity = 2;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"column of (%i+)")) {
-		idt = Inter::Textual::data_type(eloc, I"column", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"column", E);
+		if (*E) return;
 		constructor = COLUMN_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, &E);
-		if (E) return E;
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		if (*E) return;
 		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"description of (%i+)")) {
-		idt = Inter::Textual::data_type(eloc, I"description", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"description", E);
+		if (*E) return;
 		constructor = DESCRIPTION_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, &E);
-		if (E) return E;
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		if (*E) return;
 		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
 	} else if ((Regexp::match(&mr2, ilp->mr.exp[1], L"(function) (%c+) -> (%i+)")) ||
 			(Regexp::match(&mr2, ilp->mr.exp[1], L"(rule) (%c+) -> (%i+)"))) {
-		idt = Inter::Textual::data_type(eloc, I"routine", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"routine", E);
+		if (*E) return;
 		if (Str::eq(mr2.exp[0], I"function")) constructor = FUNCTION_ICON;
 		else constructor = RULE_ICON;
 		text_stream *from = mr2.exp[1];
 		text_stream *to = mr2.exp[2];
 		if (Str::eq(from, I"void")) {
-			if (arity >= MAX_ICON_OPERANDS) return Inter::Errors::plain(I"too many args", eloc);
+			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = 0;
 		} else {
 			match_results mr3 = Regexp::create_mr();
 			while (Regexp::match(&mr3, from, L" *(%i+) *(%c*)")) {
-				inter_symbol *arg_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr3.exp[0], KIND_IST, &E);
-				if (E) return E;
+				inter_symbol *arg_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr3.exp[0], KIND_IST, E);
+				if (*E) return;
 				Str::copy(from, mr3.exp[1]);
-				if (arity >= MAX_ICON_OPERANDS) return Inter::Errors::plain(I"too many args", eloc);
+				if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 				operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, arg_kind);
 			}
 		}
 		if (Str::eq(to, I"void")) {
-			if (arity >= MAX_ICON_OPERANDS) return Inter::Errors::plain(I"too many args", eloc);
+			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = 0;
 		} else {
-			inter_symbol *res_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), to, KIND_IST, &E);
-			if (E) return E;
-			if (arity >= MAX_ICON_OPERANDS) return Inter::Errors::plain(I"too many args", eloc);
+			inter_symbol *res_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), to, KIND_IST, E);
+			if (*E) return;
+			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, res_kind);
 		}
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"struct (%c+)")) {
-		idt = Inter::Textual::data_type(eloc, I"struct", &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, I"struct", E);
+		if (*E) return;
 		constructor = STRUCT_ICON;
 		text_stream *elements = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, elements, L" *(%i+) *(%c*)")) {
-			inter_symbol *arg_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr3.exp[0], KIND_IST, &E);
-			if (E) return E;
+			inter_symbol *arg_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr3.exp[0], KIND_IST, E);
+			if (*E) return;
 			Str::copy(elements, mr3.exp[1]);
-			if (arity >= MAX_ICON_OPERANDS) return Inter::Errors::plain(I"too many args", eloc);
+			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, arg_kind);
 		}
 	} else {
-		idt = Inter::Textual::data_type(eloc, ilp->mr.exp[1], &E);
-		if (E) return E;
+		idt = Inter::Textual::data_type(eloc, ilp->mr.exp[1], E);
+		if (*E) return;
 	}
 	if (idt == NULL) internal_error("null IDT");
 
-	return Inter::Kind::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, symb), idt->type_ID,
+	*E = Inter::Kind::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, symb), idt->type_ID,
 		(super_kind)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, super_kind)):0,
 		constructor, arity, operands, (inter_t) ilp->indent_level, eloc);
 }
@@ -179,70 +173,68 @@ inter_error_message *Inter::Kind::new(inter_reading_state *IRS, inter_t SID, int
 	return NULL;
 }
 
-inter_error_message *Inter::Kind::verify(inter_frame P) {
-	if (P.extent < MIN_EXTENT_KIND_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	inter_error_message *E = Inter::Verify::defn(P, DEFN_KIND_IFLD); if (E) return E;
-	E = Inter::Verify::data_type(P, DATA_TYPE_KIND_IFLD); if (E) return E;
+void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent < MIN_EXTENT_KIND_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(P, DEFN_KIND_IFLD); if (*E) return;
+	*E = Inter::Verify::data_type(P, DATA_TYPE_KIND_IFLD); if (*E) return;
 	if (P.data[ENUM_RANGE_KIND_IFLD] != 0) {
 		inter_symbol *the_kind = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
 		if ((the_kind == NULL) ||
 			(Inter::Types::is_enumerated(Inter::Types::find_by_ID(P.data[DATA_TYPE_KIND_IFLD])) == FALSE))
-			return Inter::Frame::error(&P, I"spurious extent in non-enumeration", NULL);
+			{ *E = Inter::Frame::error(&P, I"spurious extent in non-enumeration", NULL); return; }
 	}
 	if (P.data[SUPER_KIND_IFLD] != 0) {
-		E = Inter::Verify::symbol(P, P.data[SUPER_KIND_IFLD], KIND_IST); if (E) return E;
+		*E = Inter::Verify::symbol(P, P.data[SUPER_KIND_IFLD], KIND_IST); if (*E) return;
 		inter_symbol *super_kind = Inter::SymbolsTables::symbol_from_frame_data(P, SUPER_KIND_IFLD);
 		if (Inter::Types::is_enumerated(Inter::Kind::data_type(super_kind)) == FALSE)
-			return Inter::Frame::error(&P, I"subkind of nonenumerated kind", NULL);
+			{ *E = Inter::Frame::error(&P, I"subkind of nonenumerated kind", NULL); return; }
 	}
 	int arity = P.extent - MIN_EXTENT_KIND_IFR;
 	switch (P.data[CONSTRUCTOR_KIND_IFLD]) {
-		case BASE_ICON: if (arity != 0) return Inter::Frame::error(&P, I"spurious kc operand", NULL);
+		case BASE_ICON: if (arity != 0) { *E = Inter::Frame::error(&P, I"spurious kc operand", NULL); return; }
 			break;
 		case LIST_ICON:
 		case RULEBOOK_ICON:
-			if (arity != 1) return Inter::Frame::error(&P, I"wrong list arity", NULL);
-			if (P.data[OPERANDS_KIND_IFLD] == 0) return Inter::Frame::error(&P, I"no listed kind", NULL);
-			E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (E) return E;
+			if (arity != 1) { *E = Inter::Frame::error(&P, I"wrong list arity", NULL); return; }
+			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
-		case COLUMN_ICON: if (arity != 1) return Inter::Frame::error(&P, I"wrong col arity", NULL);
-			if (P.data[OPERANDS_KIND_IFLD] == 0) return Inter::Frame::error(&P, I"no listed kind", NULL);
-			E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (E) return E;
+		case COLUMN_ICON: if (arity != 1) { *E = Inter::Frame::error(&P, I"wrong col arity", NULL); return; }
+			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
-		case DESCRIPTION_ICON: if (arity != 1) return Inter::Frame::error(&P, I"wrong desc arity", NULL);
-			if (P.data[OPERANDS_KIND_IFLD] == 0) return Inter::Frame::error(&P, I"no listed kind", NULL);
-			E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (E) return E;
+		case DESCRIPTION_ICON: if (arity != 1) { *E = Inter::Frame::error(&P, I"wrong desc arity", NULL); return; }
+			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
-		case RELATION_ICON: if (arity != 2) return Inter::Frame::error(&P, I"wrong relation arity", NULL);
-			if (P.data[OPERANDS_KIND_IFLD] == 0) return Inter::Frame::error(&P, I"no listed kind", NULL);
-			E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (E) return E;
-			if (P.data[OPERANDS_KIND_IFLD+1] == 0) return Inter::Frame::error(&P, I"no listed kind", NULL);
-			E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD+1], KIND_IST); if (E) return E;
+		case RELATION_ICON: if (arity != 2) { *E = Inter::Frame::error(&P, I"wrong relation arity", NULL); return; }
+			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			if (P.data[OPERANDS_KIND_IFLD+1] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD+1], KIND_IST); if (*E) return;
 			break;
 		case FUNCTION_ICON:
 		case RULE_ICON:
-			if (arity < 2) return Inter::Frame::error(&P, I"function arity too low", NULL);
+			if (arity < 2) { *E = Inter::Frame::error(&P, I"function arity too low", NULL); return; }
 			for (int i=0; i<arity; i++) {
 				if (P.data[OPERANDS_KIND_IFLD + i] == 0) {
 					if (!(((i == 0) && (arity == 2)) || (i == arity - 1)))
-						return Inter::Frame::error(&P, I"no listed kind", NULL);
+						{ *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
 				} else {
-					E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
-					if (E) return E;
+					*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
+					if (*E) return;
 				}
 			}
 			break;
 		case STRUCT_ICON:
-			if (arity == 0) return Inter::Frame::error(&P, I"struct arity too low", NULL);
+			if (arity == 0) { *E = Inter::Frame::error(&P, I"struct arity too low", NULL); return; }
 			for (int i=0; i<arity; i++) {
-				E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
-				if (E) return E;
+				*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
+				if (*E) return;
 			}
 			break;
-		default: return Inter::Frame::error(&P, I"unknown constructor", NULL);
+		default: { *E = Inter::Frame::error(&P, I"unknown constructor", NULL); return; }
 	}
-
-	return NULL;
 }
 
 inter_t Inter::Kind::permissions_list(inter_symbol *kind_symbol) {
@@ -259,7 +251,7 @@ inter_t Inter::Kind::properties_list(inter_symbol *inst_name) {
 	return D.data[PLIST_KIND_IFLD];
 }
 
-inter_error_message *Inter::Kind::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
 	inter_data_type *idt = Inter::Types::find_by_ID(P.data[DATA_TYPE_KIND_IFLD]);
 	if ((symb) && (idt)) {
@@ -324,13 +316,12 @@ inter_error_message *Inter::Kind::write(OUTPUT_STREAM, inter_frame P) {
 					}
 					break;
 				}
-				default: return Inter::Frame::error(&P, I"cannot write kind", NULL);
+				default: { *E = Inter::Frame::error(&P, I"cannot write kind", NULL); return; }
 					break;
 			}
 		}
-	} else return Inter::Frame::error(&P, I"cannot write kind", NULL);
+	} else { *E = Inter::Frame::error(&P, I"cannot write kind", NULL); return; }
 	Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, symb);
-	return NULL;
 }
 
 void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_name) {

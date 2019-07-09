@@ -11,18 +11,12 @@ void Inter::Package::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		PACKAGE_IST,
 		L"package (%i+) (%i+)",
-		&Inter::Package::read,
-		NULL,
-		&Inter::Package::verify,
-		&Inter::Package::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"package", I"packages");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE;
 	IC->children_field = CODE_PACKAGE_IFLD;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Package::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Package::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Package::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Package::verify_children);
 }
 
@@ -35,22 +29,21 @@ void Inter::Package::define(void) {
 @d PID_PACKAGE_IFLD 6
 
 =
-inter_error_message *Inter::Package::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, PACKAGE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Package::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, PACKAGE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
+	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::get_global_symbols(IRS->read_into), ilp->mr.exp[1], PACKAGETYPE_IST, &E);
-	if (E) return E;
+	inter_symbol *ptype_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::get_global_symbols(IRS->read_into), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	if (*E) return;
 
 	inter_package *pack = NULL;
-	E = Inter::Package::new_package(IRS, package_name, ptype_name, (inter_t) ilp->indent_level, eloc, &pack);
-	if (E) return E;
+	*E = Inter::Package::new_package(IRS, package_name, ptype_name, (inter_t) ilp->indent_level, eloc, &pack);
+	if (*E) return;
 
 	Inter::Defn::set_current_package(IRS, pack);
-	return NULL;
 }
 
 inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
@@ -74,23 +67,21 @@ inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter
 	return NULL;
 }
 
-inter_error_message *Inter::Package::verify(inter_frame P) {
-	inter_error_message *E = Inter::Verify::defn(P, DEFN_PACKAGE_IFLD); if (E) return E;
+void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	*E = Inter::Verify::defn(P, DEFN_PACKAGE_IFLD); if (*E) return;
 	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
 	Inter::Defn::set_latest_package_symbol(package_name);
-	return NULL;
 }
 
-inter_error_message *Inter::Package::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Package::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
 	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
 	if ((package_name) && (ptype_name)) {
 		WRITE("package %S %S", package_name->symbol_name, ptype_name->symbol_name);
 	} else {
-		if (package_name == NULL) return Inter::Frame::error(&P, I"package can't be written - no name", NULL);
-		return Inter::Frame::error(&P, I"package can't be written - no type", NULL);
+		if (package_name == NULL) { *E = Inter::Frame::error(&P, I"package can't be written - no name", NULL); return; }
+		*E = Inter::Frame::error(&P, I"package can't be written - no type", NULL); return;
 	}
-	return NULL;
 }
 
 inter_error_message *Inter::Package::write_symbols(OUTPUT_STREAM, inter_frame P) {

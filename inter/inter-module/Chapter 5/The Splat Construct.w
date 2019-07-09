@@ -11,19 +11,13 @@ void Inter::Splat::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		SPLAT_IST,
 		L"splat (%C*) *&\"(%c*)\"",
-		&Inter::Splat::read,
-		NULL,
-		&Inter::Splat::verify,
-		&Inter::Splat::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"splat", I"splats");
 	IC->min_level = 0;
 	IC->max_level = 100000000;
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Splat::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Splat::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Splat::write);
 }
 
 @
@@ -53,27 +47,27 @@ void Inter::Splat::define(void) {
 @e MYSTERY_PLM
 
 =
-inter_error_message *Inter::Splat::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Splat::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_error_message *E = Inter::Defn::vet_level(IRS, SPLAT_IST, ilp->indent_level, eloc);
-	if (E) return E;
+	*E = Inter::Defn::vet_level(IRS, SPLAT_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = NULL;
 	if (ilp->indent_level > 0) {
 		routine = Inter::Defn::get_latest_block_symbol();
-		if (routine == NULL) return Inter::Errors::plain(I"indented 'splat' used outside function", eloc);
+		if (routine == NULL) { *E = Inter::Errors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 
 	inter_t plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
-	if (plm == 1000000) return Inter::Errors::plain(I"unknown PLM code before text matter", eloc);
+	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
 
 	inter_t SID = Inter::create_text(IRS->read_into);
 	text_stream *glob_storage = Inter::get_text(IRS->read_into, SID);
-	E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
-	if (E) return E;
+	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	if (*E) return;
 
-	return Inter::Splat::new(IRS, routine, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
+	*E = Inter::Splat::new(IRS, routine, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
 }
 
 inter_t Inter::Splat::parse_plm(text_stream *S) {
@@ -131,18 +125,16 @@ inter_error_message *Inter::Splat::new(inter_reading_state *IRS, inter_symbol *r
 	return NULL;
 }
 
-inter_error_message *Inter::Splat::verify(inter_frame P) {
-	if (P.extent != EXTENT_SPLAT_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	if (P.data[MATTER_SPLAT_IFLD] == 0) return Inter::Frame::error(&P, I"no matter text", NULL);
-	if (P.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) return Inter::Frame::error(&P, I"plm out of range", NULL);
-	return NULL;
+void Inter::Splat::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_SPLAT_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	if (P.data[MATTER_SPLAT_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no matter text", NULL); return; }
+	if (P.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) { *E = Inter::Frame::error(&P, I"plm out of range", NULL); return; }
 }
 
-inter_error_message *Inter::Splat::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	WRITE("splat ");
 	Inter::Splat::write_plm(OUT, P.data[PLM_SPLAT_IFLD]);
 	WRITE("&\"");
 	Inter::Constant::write_text(OUT, Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
-	return NULL;
 }

@@ -11,20 +11,14 @@ void Inter::Cast::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		CAST_IST,
 		L"cast (%i+) <- (%i+)",
-		&Inter::Cast::read,
-		NULL,
-		&Inter::Cast::verify,
-		&Inter::Cast::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"cast", I"casts");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	IC->children_field = OPERANDS_CAST_IFLD;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Cast::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Cast::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Cast::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Cast::verify_children);
 }
 
@@ -38,21 +32,21 @@ void Inter::Cast::define(void) {
 @d EXTENT_CAST_IFR 6
 
 =
-inter_error_message *Inter::Cast::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Cast::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_error_message *E = Inter::Defn::vet_level(IRS, CAST_IST, ilp->indent_level, eloc);
-	if (E) return E;
+	*E = Inter::Defn::vet_level(IRS, CAST_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
-	if (routine == NULL) return Inter::Errors::plain(I"'val' used outside function", eloc);
+	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
-	inter_symbol *from_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, &E);
-	if (E) return E;
-	inter_symbol *to_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], KIND_IST, &E);
-	if (E) return E;
+	inter_symbol *from_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	if (*E) return;
+	inter_symbol *to_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], KIND_IST, E);
+	if (*E) return;
 
-	return Inter::Cast::new(IRS, routine, from_kind, to_kind, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Cast::new(IRS, routine, from_kind, to_kind, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Cast::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
@@ -62,22 +56,20 @@ inter_error_message *Inter::Cast::new(inter_reading_state *IRS, inter_symbol *ro
 	return NULL;
 }
 
-inter_error_message *Inter::Cast::verify(inter_frame P) {
-	if (P.extent != EXTENT_CAST_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	inter_error_message *E = Inter::Verify::symbol(P, P.data[TO_KIND_CAST_IFLD], KIND_IST); if (E) return E;
-	E = Inter::Verify::symbol(P, P.data[FROM_KIND_CAST_IFLD], KIND_IST); if (E) return E;
-	return NULL;
+void Inter::Cast::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_CAST_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::symbol(P, P.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(P, P.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
 }
 
-inter_error_message *Inter::Cast::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbols_table *locals = Inter::Packages::scope_of(P);
-	if (locals == NULL) return Inter::Frame::error(&P, I"function has no symbols table", NULL);
+	if (locals == NULL) { *E = Inter::Frame::error(&P, I"function has no symbols table", NULL); return; }
 	inter_symbol *from_kind = Inter::SymbolsTables::symbol_from_frame_data(P, FROM_KIND_CAST_IFLD);
 	inter_symbol *to_kind = Inter::SymbolsTables::symbol_from_frame_data(P, TO_KIND_CAST_IFLD);
 	if ((from_kind) && (to_kind)) {
 		WRITE("cast %S <- %S", to_kind->symbol_name, from_kind->symbol_name);
-	} else return Inter::Frame::error(&P, I"cannot write cast", NULL);
-	return NULL;
+	} else { *E = Inter::Frame::error(&P, I"cannot write cast", NULL); return; }
 }
 
 void Inter::Cast::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {

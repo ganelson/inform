@@ -8,19 +8,13 @@ Defining the instance construct.
 
 =
 void Inter::Instance::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		INSTANCE_IST,
 		L"instance (%i+) (%c+)",
-		&Inter::Instance::read,
-		NULL,
-		&Inter::Instance::verify,
-		&Inter::Instance::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"instance", I"instances");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Instance::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Instance::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Instance::write);
 }
 
 @
@@ -35,32 +29,32 @@ void Inter::Instance::define(void) {
 @d EXTENT_INST_IFR 8
 
 =
-inter_error_message *Inter::Instance::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, INSTANCE_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Instance::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, INSTANCE_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	text_stream *ktext = ilp->mr.exp[1], *vtext = NULL;
 
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, ktext, L"(%i+) = (%c+)")) { ktext = mr2.exp[0]; vtext = mr2.exp[1]; }
 
-	inter_symbol *inst_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], &E);
-	if (E) return E;
-	inter_symbol *inst_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ktext, KIND_IST, &E);
-	if (E) return E;
+	inter_symbol *inst_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	if (*E) return;
+	inter_symbol *inst_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ktext, KIND_IST, E);
+	if (*E) return;
 
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 	if (Inter::Types::is_enumerated(idt) == FALSE)
-		return Inter::Errors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc);
+		{ *E = Inter::Errors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc); return; }
 
 	inter_t v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
-		E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IRS));
-		if (E) return E;
+		*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IRS));
+		if (*E) return;
 	}
-	return Inter::Instance::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, inst_kind), v1, v2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Instance::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, inst_kind), v1, v2, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Instance::new(inter_reading_state *IRS, inter_t SID, inter_t KID, inter_t V1, inter_t V2, inter_t level, inter_error_location *eloc) {
@@ -71,11 +65,11 @@ inter_error_message *Inter::Instance::new(inter_reading_state *IRS, inter_t SID,
 	return NULL;
 }
 
-inter_error_message *Inter::Instance::verify(inter_frame P) {
-	if (P.extent != EXTENT_INST_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	inter_error_message *E = Inter::Verify::defn(P, DEFN_INST_IFLD); if (E) return E;
+void Inter::Instance::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_INST_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(P, DEFN_INST_IFLD); if (*E) return;
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	E = Inter::Verify::symbol(P, P.data[KIND_INST_IFLD], KIND_IST); if (E) return E;
+	*E = Inter::Verify::symbol(P, P.data[KIND_INST_IFLD], KIND_IST); if (*E) return;
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 	if (Inter::Types::is_enumerated(idt)) {
@@ -83,13 +77,11 @@ inter_error_message *Inter::Instance::verify(inter_frame P) {
 			P.data[VAL1_INST_IFLD] = LITERAL_IVAL;
 			P.data[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
-	} else return Inter::Frame::error(&P, I"not a kind which has instances", NULL);
-	E = Inter::Verify::value(P, VAL1_INST_IFLD, inst_kind); if (E) return E;
+	} else { *E = Inter::Frame::error(&P, I"not a kind which has instances", NULL); return; }
+	*E = Inter::Verify::value(P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
 	if (vcount == 0) Inter::Kind::new_instance(inst_kind, inst_name);
-
-	return NULL;
 }
 
 inter_t Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
@@ -99,7 +91,7 @@ inter_t Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
 	return D.data[PERM_LIST_INST_IFLD];
 }
 
-inter_error_message *Inter::Instance::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
@@ -108,10 +100,9 @@ inter_error_message *Inter::Instance::write(OUTPUT_STREAM, inter_frame P) {
 			WRITE("instance %S %S = ", inst_name->symbol_name, inst_kind->symbol_name);
 			Inter::Types::write(OUT, P.repo_segment->owning_repo, NULL,
 				P.data[VAL1_INST_IFLD], P.data[VAL2_INST_IFLD], Inter::Packages::scope_of(P), FALSE);
-		} else return Inter::Frame::error(&P, I"instance with bad data type", NULL);
-	} else return Inter::Frame::error(&P, I"bad instance", NULL);
+		} else { *E = Inter::Frame::error(&P, I"instance with bad data type", NULL); return; }
+	} else { *E = Inter::Frame::error(&P, I"bad instance", NULL); return; }
 	Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, inst_name);
-	return NULL;
 }
 
 inter_t Inter::Instance::properties_list(inter_symbol *inst_name) {

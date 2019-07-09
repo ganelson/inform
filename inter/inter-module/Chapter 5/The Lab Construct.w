@@ -11,19 +11,13 @@ void Inter::Lab::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		LAB_IST,
 		L"lab (%C+)",
-		&Inter::Lab::read,
-		NULL,
-		&Inter::Lab::verify,
-		&Inter::Lab::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"lab", I"labs");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Lab::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Lab::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Lab::write);
 }
 
 @
@@ -34,21 +28,21 @@ void Inter::Lab::define(void) {
 @d EXTENT_LAB_IFR 4
 
 =
-inter_error_message *Inter::Lab::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Lab::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_error_message *E = Inter::Defn::vet_level(IRS, LAB_IST, ilp->indent_level, eloc);
-	if (E) return E;
+	*E = Inter::Defn::vet_level(IRS, LAB_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
-	if (routine == NULL) return Inter::Errors::plain(I"'lab' used outside function", eloc);
+	if (routine == NULL) { *E = Inter::Errors::plain(I"'lab' used outside function", eloc); return; }
 	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
-	if (locals == NULL) return Inter::Errors::plain(I"function has no symbols table", eloc);
+	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *label = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);
-	if (Inter::Symbols::is_label(label) == FALSE) return Inter::Errors::plain(I"not a label", eloc);
+	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
-	return Inter::Lab::new(IRS, routine, label, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Lab::new(IRS, routine, label, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Lab::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *label, inter_t level, inter_error_location *eloc) {
@@ -58,23 +52,21 @@ inter_error_message *Inter::Lab::new(inter_reading_state *IRS, inter_symbol *rou
 	return NULL;
 }
 
-inter_error_message *Inter::Lab::verify(inter_frame P) {
-	if (P.extent != EXTENT_LAB_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
+void Inter::Lab::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_LAB_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
-	if (Inter::Symbols::is_label(label) == FALSE) return Inter::Frame::error(&P, I"no such label", NULL);
-	return NULL;
+	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Frame::error(&P, I"no such label", NULL); return; }
 }
 
-inter_error_message *Inter::Lab::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (label) {
 		WRITE("lab %S", label->symbol_name);
-	} else return Inter::Frame::error(&P, I"cannot write lab", NULL);
-	return NULL;
+	} else { *E = Inter::Frame::error(&P, I"cannot write lab", NULL); return; }
 }
 
 inter_symbol *Inter::Lab::label_symbol(inter_frame P) {

@@ -11,20 +11,14 @@ void Inter::Evaluation::define(void) {
 	inter_construct *IC = Inter::Defn::create_construct(
 		EVALUATION_IST,
 		L"evaluation",
-		&Inter::Evaluation::read,
-		NULL,
-		&Inter::Evaluation::verify,
-		&Inter::Evaluation::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"evaluation", I"evaluations");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	IC->children_field = CODE_EVAL_IFLD;
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Evaluation::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Evaluation::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Evaluation::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Evaluation::verify_children);
 }
 
@@ -36,16 +30,16 @@ void Inter::Evaluation::define(void) {
 @d EXTENT_EVAL_IFR 4
 
 =
-inter_error_message *Inter::Evaluation::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+void Inter::Evaluation::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_error_message *E = Inter::Defn::vet_level(IRS, EVALUATION_IST, ilp->indent_level, eloc);
-	if (E) return E;
+	*E = Inter::Defn::vet_level(IRS, EVALUATION_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
-	if (routine == NULL) return Inter::Errors::plain(I"'evaluation' used outside function", eloc);
+	if (routine == NULL) { *E = Inter::Errors::plain(I"'evaluation' used outside function", eloc); return; }
 
-	return Inter::Evaluation::new(IRS, routine, ilp->indent_level, eloc);
+	*E = Inter::Evaluation::new(IRS, routine, ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Evaluation::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
@@ -56,14 +50,12 @@ inter_error_message *Inter::Evaluation::new(inter_reading_state *IRS, inter_symb
 	return NULL;
 }
 
-inter_error_message *Inter::Evaluation::verify(inter_frame P) {
-	if (P.extent != EXTENT_EVAL_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
-	return NULL;
+void Inter::Evaluation::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+	if (P.extent != EXTENT_EVAL_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 }
 
-inter_error_message *Inter::Evaluation::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Evaluation::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	WRITE("evaluation");
-	return NULL;
 }
 
 void Inter::Evaluation::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {

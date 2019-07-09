@@ -8,19 +8,13 @@ Defining the append construct.
 
 =
 void Inter::Append::define(void) {
-	Inter::Defn::create_construct(
+	inter_construct *IC = Inter::Defn::create_construct(
 		APPEND_IST,
 		L"append (%i+) \"(%c+)\"",
-		&Inter::Append::read,
-		NULL,
-		&Inter::Append::verify,
-		&Inter::Append::write,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
 		I"append", I"appends");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Append::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Append::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Append::write);
 }
 
 @
@@ -31,20 +25,26 @@ void Inter::Append::define(void) {
 @d EXTENT_APPEND_IFR 4
 
 =
-inter_error_message *Inter::Append::read(inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc) {
-	inter_error_message *E = Inter::Defn::vet_level(IRS, APPEND_IST, ilp->indent_level, eloc);
-	if (E) return E;
+void Inter::Append::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IRS, APPEND_IST, ilp->indent_level, eloc);
+	if (*E) return;
 
-	if (ilp->no_annotations > 0) return Inter::Errors::plain(I"__annotations are not allowed", eloc);
+	if (ilp->no_annotations > 0) {
+		*E = Inter::Errors::plain(I"__annotations are not allowed", eloc);
+		return;
+	}
 
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IRS), ilp->mr.exp[0]);
-	if (symbol == NULL) return Inter::Errors::plain(I"no such symbol", eloc);
+	if (symbol == NULL) {
+		*E = Inter::Errors::plain(I"no such symbol", eloc);
+		return;
+	}
 
 	inter_t ID = Inter::create_text(IRS->read_into);
-	E = Inter::Constant::parse_text(Inter::get_text(IRS->read_into, ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
-	if (E) return E;
+	*E = Inter::Constant::parse_text(Inter::get_text(IRS->read_into, ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	if (*E) return;
 
-	return Inter::Append::new(IRS, symbol, ID, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Append::new(IRS, symbol, ID, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Append::new(inter_reading_state *IRS, inter_symbol *symbol, inter_t append_text, inter_t level, struct inter_error_location *eloc) {
@@ -54,28 +54,26 @@ inter_error_message *Inter::Append::new(inter_reading_state *IRS, inter_symbol *
 	return NULL;
 }
 
-inter_error_message *Inter::Append::verify(inter_frame P) {
+void Inter::Append::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
 
-	if (P.extent != EXTENT_APPEND_IFR) return Inter::Frame::error(&P, I"extent wrong", NULL);
+	if (P.extent != EXTENT_APPEND_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
-	if (symbol == NULL) return Inter::Frame::error(&P, I"no target name", NULL);
-	if (P.data[TEXT_APPEND_IFLD] == 0) return Inter::Frame::error(&P, I"no translation text", NULL);
+	if (symbol == NULL) { *E = Inter::Frame::error(&P, I"no target name", NULL); return; }
+	if (P.data[TEXT_APPEND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no translation text", NULL); return; }
 
 	if (vcount == 0) {
 		inter_t ID = P.data[TEXT_APPEND_IFLD];
 		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
 		Inter::Symbols::set_append(symbol, S);
 	}
-	return NULL;
 }
 
-inter_error_message *Inter::Append::write(OUTPUT_STREAM, inter_frame P) {
+void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
 	inter_t ID = P.data[TEXT_APPEND_IFLD];
 	text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
 	WRITE("append %S \"", symbol->symbol_name);
 	Inter::Constant::write_text(OUT, S);
 	WRITE("\"");
-	return NULL;
 }
