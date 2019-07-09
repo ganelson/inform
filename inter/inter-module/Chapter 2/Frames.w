@@ -284,3 +284,16 @@ void Inter::Frame::attach_package(inter_frame F, inter_t ID) {
 		F.repo_segment->bytecode[F.index + PREFRAME_PACKAGE] = ID;
 	}
 }
+
+inter_t Inter::Frame::get_list(inter_frame F) {
+	if (F.repo_segment) {
+		return F.repo_segment->bytecode[F.index + PREFRAME_LIST];
+	}
+	return 0;
+}
+
+void Inter::Frame::set_list(inter_frame F, inter_t V) {
+	if (F.repo_segment) {
+		F.repo_segment->bytecode[F.index + PREFRAME_LIST] = V;
+	}
+}

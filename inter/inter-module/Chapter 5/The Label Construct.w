@@ -14,8 +14,7 @@ void Inter::Label::define(void) {
 		I"label", I"labels");
 	IC->min_level = 0;
 	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
-	IC->children_field = CODE_LABEL_IFLD;
+	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Label::verify_children);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Label::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Label::verify);
@@ -26,9 +25,8 @@ void Inter::Label::define(void) {
 
 @d BLOCK_LABEL_IFLD 2
 @d DEFN_LABEL_IFLD 3
-@d CODE_LABEL_IFLD 4
 
-@d EXTENT_LABEL_IFR 5
+@d EXTENT_LABEL_IFR 4
 
 =
 void Inter::Label::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
@@ -47,7 +45,7 @@ void Inter::Label::read(inter_construct *IC, inter_reading_state *IRS, inter_lin
 }
 
 inter_error_message *Inter::Label::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, lab_name), Inter::create_frame_list(IRS->read_into), eloc, level);
+	inter_frame P = Inter::Frame::fill_2(IRS, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, lab_name), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;

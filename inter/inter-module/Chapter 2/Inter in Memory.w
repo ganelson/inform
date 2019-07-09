@@ -18,7 +18,12 @@ To store bytecode-like intermediate code in memory.
 @d PREFRAME_ORIGIN 2
 @d PREFRAME_COMMENT 3
 @d PREFRAME_PACKAGE 4
-@d PREFRAME_SIZE 5
+@d PREFRAME_PARENT 5
+@d PREFRAME_CHILD 6
+@d PREFRAME_PREVIOUS 7
+@d PREFRAME_NEXT 8
+@d PREFRAME_LIST 9
+@d PREFRAME_SIZE 10
 
 =
 typedef struct inter_repository {
@@ -152,6 +157,11 @@ inter_frame Inter::find_room_in_segment(inter_repository_segment *IS, int n) {
 	IS->bytecode[at + PREFRAME_ORIGIN] = 0;
 	IS->bytecode[at + PREFRAME_COMMENT] = 0;
 	IS->bytecode[at + PREFRAME_PACKAGE] = 0;
+	IS->bytecode[at + PREFRAME_PARENT] = 0;
+	IS->bytecode[at + PREFRAME_CHILD] = 0;
+	IS->bytecode[at + PREFRAME_PREVIOUS] = 0;
+	IS->bytecode[at + PREFRAME_NEXT] = 0;
+	IS->bytecode[at + PREFRAME_LIST] = 0;
 	for (int i=0; i<n; i++) IS->bytecode[at + PREFRAME_SIZE + i] = 0;
 	IS->size += n + PREFRAME_SIZE;
 	inter_frame F = Inter::Frame::around(IS, at);

@@ -14,8 +14,7 @@ void Inter::Inv::define(void) {
 		I"inv", I"invs");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
-	IC->children_field = OPERANDS_INV_IFLD;
+	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Inv::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Inv::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Inv::write);
@@ -27,9 +26,8 @@ void Inter::Inv::define(void) {
 @d BLOCK_INV_IFLD 2
 @d METHOD_INV_IFLD 3
 @d INVOKEE_INV_IFLD 4
-@d OPERANDS_INV_IFLD 5
 
-@d EXTENT_INV_IFR 6
+@d EXTENT_INV_IFR 5
 
 @d INVOKED_PRIMITIVE 1
 @d INVOKED_ROUTINE 2
@@ -68,8 +66,8 @@ void Inter::Inv::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, invoked_name),
-		Inter::create_frame_list(IRS->read_into), eloc, (inter_t) level);
+	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, invoked_name),
+		eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
@@ -77,7 +75,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_reading_state *IRS, inter_s
 }
 
 inter_error_message *Inter::Inv::new_call(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, invoked_name), Inter::create_frame_list(IRS->read_into), eloc, (inter_t) level);
+	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, invoked_name), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
@@ -85,7 +83,7 @@ inter_error_message *Inter::Inv::new_call(inter_reading_state *IRS, inter_symbol
 }
 
 inter_error_message *Inter::Inv::new_assembly(inter_reading_state *IRS, inter_symbol *routine, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, INV_IST, 0, INVOKED_OPCODE, opcode_storage, Inter::create_frame_list(IRS->read_into), eloc, (inter_t) level);
+	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
@@ -132,10 +130,10 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error
 //		*E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
 //		if (*E) return;
 //	}
-	inter_repository *I = P.repo_segment->owning_repo;
-	inter_frame_list *ifl = Inter::find_frame_list(I, P.data[OPERANDS_INV_IFLD]);
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	int arity_as_invoked = Inter::size_of_frame_list(ifl);
 	#ifdef CORE_MODULE
+	inter_repository *I = P.repo_segment->owning_repo;
 	if ((Inter::Inv::arity(P) != -1) &&
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);

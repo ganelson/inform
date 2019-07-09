@@ -14,8 +14,7 @@ void Inter::Cast::define(void) {
 		I"cast", I"casts");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
-	IC->children_field = OPERANDS_CAST_IFLD;
+	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Cast::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Cast::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Cast::write);
@@ -27,9 +26,8 @@ void Inter::Cast::define(void) {
 @d BLOCK_CAST_IFLD 2
 @d TO_KIND_CAST_IFLD 3
 @d FROM_KIND_CAST_IFLD 4
-@d OPERANDS_CAST_IFLD 5
 
-@d EXTENT_CAST_IFR 6
+@d EXTENT_CAST_IFR 5
 
 =
 void Inter::Cast::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
@@ -50,7 +48,7 @@ void Inter::Cast::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 }
 
 inter_error_message *Inter::Cast::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, from_kind), Inter::create_frame_list(IRS->read_into), eloc, (inter_t) level);
+	inter_frame P = Inter::Frame::fill_3(IRS, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, from_kind), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;

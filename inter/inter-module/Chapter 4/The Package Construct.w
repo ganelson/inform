@@ -12,8 +12,7 @@ void Inter::Package::define(void) {
 		PACKAGE_IST,
 		L"package (%i+) (%i+)",
 		I"package", I"packages");
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE;
-	IC->children_field = CODE_PACKAGE_IFLD;
+	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Package::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Package::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Package::write);
@@ -24,9 +23,8 @@ void Inter::Package::define(void) {
 
 @d DEFN_PACKAGE_IFLD 2
 @d PTYPE_PACKAGE_IFLD 3
-@d CODE_PACKAGE_IFLD 4
-@d SYMBOLS_PACKAGE_IFLD 5
-@d PID_PACKAGE_IFLD 6
+@d SYMBOLS_PACKAGE_IFLD 4
+@d PID_PACKAGE_IFLD 5
 
 =
 void Inter::Package::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
@@ -49,8 +47,8 @@ void Inter::Package::read(inter_construct *IC, inter_reading_state *IRS, inter_l
 inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
 	inter_t STID = Inter::create_symbols_table(IRS->read_into);
 	LOGIF(INTER_SYMBOLS, "Package $3 at IRS $5\n", package_name, IRS);
-	inter_frame P = Inter::Frame::fill_5(IRS,
-		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, package_name), Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, ptype_name), Inter::create_frame_list(IRS->read_into), STID, 0, eloc, level);
+	inter_frame P = Inter::Frame::fill_4(IRS,
+		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, package_name), Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, ptype_name), STID, 0, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
@@ -131,7 +129,7 @@ inter_frame_list *Inter::Package::code_list(inter_symbol *package_name) {
 	inter_frame D = Inter::Symbols::defining_frame(package_name);
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::find_frame_list(D.repo_segment->owning_repo, D.data[CODE_PACKAGE_IFLD]);
+	return Inter::Defn::list_of_children(D);
 }
 
 void Inter::Package::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {

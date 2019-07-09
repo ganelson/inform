@@ -126,7 +126,7 @@ void CodeGen::FC::label(code_generation *gen, inter_frame P) {
 	if (Str::eq(lab_name->symbol_name, I".begin")) { WRITE(";\n"); INDENT; }
 	else if (Str::eq(lab_name->symbol_name, I".end")) { OUTDENT; WRITE("];\n"); }
 	else WRITE("%S;\n", lab_name->symbol_name);
-	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_LABEL_IFLD]);
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	if (ifl == NULL) internal_error("block without code list");
 	inter_frame F;
 	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
@@ -145,7 +145,7 @@ void CodeGen::FC::block(code_generation *gen, inter_frame P) {
 void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
-	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_CODE_IFLD]);
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
@@ -156,7 +156,7 @@ void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
-	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_EVAL_IFLD]);
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
@@ -167,7 +167,7 @@ void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
 
 void CodeGen::FC::reference(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
-	inter_frame_list *ifl = Inter::find_frame_list(P.repo_segment->owning_repo, P.data[CODE_RCE_IFLD]);
+	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	if (ifl) {
 		inter_frame F;
 		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)

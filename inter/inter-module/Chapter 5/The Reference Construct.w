@@ -14,8 +14,7 @@ void Inter::Reference::define(void) {
 		I"reference", I"references");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
-	IC->children_field = CODE_RCE_IFLD;
+	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Reference::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Reference::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Reference::write);
@@ -25,9 +24,8 @@ void Inter::Reference::define(void) {
 @
 
 @d BLOCK_RCE_IFLD 2
-@d CODE_RCE_IFLD 3
 
-@d EXTENT_RCE_IFR 4
+@d EXTENT_RCE_IFR 3
 
 =
 void Inter::Reference::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
@@ -43,8 +41,7 @@ void Inter::Reference::read(inter_construct *IC, inter_reading_state *IRS, inter
 }
 
 inter_error_message *Inter::Reference::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IRS, REFERENCE_IST, 0,
-		Inter::create_frame_list(IRS->read_into), eloc, (inter_t) level);
+	inter_frame P = Inter::Frame::fill_1(IRS, REFERENCE_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
@@ -74,5 +71,5 @@ inter_frame_list *Inter::Reference::reference_list(inter_symbol *label_name) {
 	inter_frame D = Inter::Symbols::defining_frame(label_name);
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != REFERENCE_IST) return NULL;
-	return Inter::find_frame_list(D.repo_segment->owning_repo, D.data[CODE_RCE_IFLD]);
+	return Inter::Defn::list_of_children(D);
 }

@@ -14,8 +14,7 @@ void Inter::Evaluation::define(void) {
 		I"evaluation", I"evaluations");
 	IC->min_level = 1;
 	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
-	IC->children_field = CODE_EVAL_IFLD;
+	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Evaluation::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Evaluation::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Evaluation::write);
@@ -25,9 +24,8 @@ void Inter::Evaluation::define(void) {
 @
 
 @d BLOCK_EVAL_IFLD 2
-@d CODE_EVAL_IFLD 3
 
-@d EXTENT_EVAL_IFR 4
+@d EXTENT_EVAL_IFR 3
 
 =
 void Inter::Evaluation::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
@@ -43,8 +41,7 @@ void Inter::Evaluation::read(inter_construct *IC, inter_reading_state *IRS, inte
 }
 
 inter_error_message *Inter::Evaluation::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IRS, EVALUATION_IST, 0,
-		Inter::create_frame_list(IRS->read_into), eloc, (inter_t) level);
+	inter_frame P = Inter::Frame::fill_1(IRS, EVALUATION_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
@@ -74,5 +71,5 @@ inter_frame_list *Inter::Evaluation::concatenate_list(inter_symbol *label_name) 
 	inter_frame D = Inter::Symbols::defining_frame(label_name);
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != EVALUATION_IST) return NULL;
-	return Inter::find_frame_list(D.repo_segment->owning_repo, D.data[CODE_EVAL_IFLD]);
+	return Inter::Defn::list_of_children(D);
 }

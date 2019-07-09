@@ -39,7 +39,6 @@ typedef struct inter_construct {
 	int min_level;
 	int max_level;
 	int usage_permissions;
-	int children_field;
 	struct text_stream *singular_name;
 	struct text_stream *plural_name;
 	METHOD_CALLS
@@ -58,7 +57,6 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	if (ID >= MAX_INTER_CONSTRUCTS) internal_error("too many constructs");
 	IC->min_level = 0;
 	IC->max_level = 0;
-	IC->children_field = -1;
 	IC_lookup[ID] = IC;
 	IC->usage_permissions = INSIDE_PLAIN_PACKAGE;
 	IC->singular_name = Str::duplicate(sing);
@@ -74,11 +72,13 @@ inter_symbol *code_packagetype = NULL;
 @e CONSTRUCT_READ_MTID
 @e CONSTRUCT_VERIFY_MTID
 @e CONSTRUCT_WRITE_MTID
+@e VERIFY_INTER_CHILDREN_MTID
 
 =
 VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_reading_state *, inter_line_parse *, inter_error_location *, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_frame P, inter_error_message **E)
+VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
 
 @
 
@@ -279,6 +279,7 @@ inter_error_message *Inter::Defn::pass2(inter_repository *I, int issue, inter_re
 @d OUTSIDE_OF_PACKAGES 1
 @d INSIDE_PLAIN_PACKAGE 2
 @d INSIDE_CODE_PACKAGE 4
+@d CAN_HAVE_CHILDREN 8
 
 =
 inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
@@ -445,9 +446,16 @@ inter_frame_list *Inter::Defn::list_of_children(inter_frame P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return NULL;
-	if (IC->children_field == -1) return NULL;
+	if ((IC->usage_permissions & CAN_HAVE_CHILDREN) == 0) return NULL;
 	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	return Inter::find_frame_list(P.repo_segment->owning_repo, P.data[IC->children_field]);
+	
+	inter_t L = Inter::Frame::get_list(P);
+	if (L == 0) {
+		L = Inter::create_frame_list(P.repo_segment->owning_repo);
+		Inter::Frame::set_list(P, L);
+	}
+	
+	return Inter::find_frame_list(P.repo_segment->owning_repo, L);
 }
 
 inter_error_message *Inter::Defn::accept_child(inter_frame P, inter_frame C, int issue) {
@@ -460,21 +468,14 @@ inter_error_message *Inter::Defn::accept_child_inner(inter_frame P, inter_frame 
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	if (IC->children_field == -1) {
+	if ((IC->usage_permissions & CAN_HAVE_CHILDREN) == 0) {
 		WRITE_TO(STDERR, "P: "); Inter::Defn::write_construct_text(STDERR, P);
 		WRITE_TO(STDERR, "C: "); Inter::Defn::write_construct_text(STDERR, C);
 		return Inter::Frame::error(&C, I"this is placed under a construct which can't have anything underneath", NULL);
 	}
-	Inter::add_to_frame_list(Inter::find_frame_list(P.repo_segment->owning_repo, P.data[IC->children_field]), C, NULL);
+	Inter::add_to_frame_list(Inter::Defn::list_of_children(P), C, NULL);
 	return NULL;
 }
-
-@
-
-@e VERIFY_INTER_CHILDREN_MTID
-
-=
-VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
 
 inter_error_message *Inter::Defn::verify_children_inner(inter_frame P) {
 	inter_construct *IC = NULL;
