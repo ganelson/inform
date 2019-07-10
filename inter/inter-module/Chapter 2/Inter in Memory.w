@@ -267,7 +267,7 @@ inter_t Inter::create_frame_list(inter_repository *I) {
 @
 
 @d LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-	for (inter_frame_list_entry *F##_entry = ifl->first_in_ifl; F##_entry; F##_entry = F##_entry->next_in_ifl)
+	for (inter_frame_list_entry *F##_entry = (ifl)?(ifl->first_in_ifl):NULL; F##_entry; F##_entry = F##_entry->next_in_ifl)
 		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
 			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
 
@@ -275,6 +275,9 @@ inter_t Inter::create_frame_list(inter_repository *I) {
 	for (inter_frame_list_entry *F##_entry = entry; F##_entry; F##_entry = F##_entry->next_in_ifl)
 		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
 			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
+
+@d LOOP_THROUGH_INTER_CHILDREN(F, P)
+	LOOP_THROUGH_INTER_FRAME_LIST(F, Inter::Defn::list_of_children(P))
 
 =
 inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {
@@ -284,32 +287,38 @@ inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {
 	return &(I->stored_resources[n].stored_frame_list);
 }
 
-inter_frame Inter::top_of_frame_list(inter_frame_list *FL) {
+inter_frame Inter::first_child(inter_frame P) {
+	inter_frame_list *FL = Inter::Defn::list_of_children(P);
 	if ((FL == NULL) || (FL->first_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
 	return FL->first_in_ifl->listed_frame;
 }
 
-inter_frame Inter::second_in_frame_list(inter_frame_list *FL) {
+inter_frame Inter::second_child(inter_frame P) {
+	inter_frame_list *FL = Inter::Defn::list_of_children(P);
 	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
 	return FL->first_in_ifl->next_in_ifl->listed_frame;
 }
 
-inter_frame Inter::third_in_frame_list(inter_frame_list *FL) {
+inter_frame Inter::third_child(inter_frame P) {
+	inter_frame_list *FL = Inter::Defn::list_of_children(P);
 	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
 	return FL->first_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
 }
 
-inter_frame Inter::fourth_in_frame_list(inter_frame_list *FL) {
+inter_frame Inter::fourth_child(inter_frame P) {
+	inter_frame_list *FL = Inter::Defn::list_of_children(P);
 	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
 	return FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
 }
 
-inter_frame Inter::fifth_in_frame_list(inter_frame_list *FL) {
+inter_frame Inter::fifth_child(inter_frame P) {
+	inter_frame_list *FL = Inter::Defn::list_of_children(P);
 	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
 	return FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
 }
 
-inter_frame Inter::sixth_in_frame_list(inter_frame_list *FL) {
+inter_frame Inter::sixth_child(inter_frame P) {
+	inter_frame_list *FL = Inter::Defn::list_of_children(P);
 	if ((FL == NULL) ||
 		(FL->first_in_ifl == NULL) ||
 		(FL->first_in_ifl->next_in_ifl == NULL) ||
@@ -357,13 +366,6 @@ void Inter::add_to_frame_list(inter_frame_list *FL, inter_frame F, inter_reading
 	}
 
 	if (at) at->pos = entry;
-}
-
-int Inter::size_of_frame_list(inter_frame_list *ifl) {
-	int c = 0;
-	inter_frame F;
-	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) c++;
-	return c;
 }
 
 inter_t Inter::store_origin(inter_repository *I, inter_error_location *eloc) {

@@ -56,20 +56,11 @@ void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, 
 }
 
 void Inter::Reference::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	inter_frame C;
-	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != VAL_IST) && (C.data[0] != LABEL_IST)) {
 			*E = Inter::Frame::error(&C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);
 			return;
 		}
 	}
-}
-
-inter_frame_list *Inter::Reference::reference_list(inter_symbol *label_name) {
-	if (label_name == NULL) return NULL;
-	inter_frame D = Inter::Symbols::defining_frame(label_name);
-	if (Inter::Frame::valid(&D) == FALSE) return NULL;
-	if (D.data[ID_IFLD] != REFERENCE_IST) return NULL;
-	return Inter::Defn::list_of_children(D);
 }

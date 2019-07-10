@@ -55,7 +55,8 @@ except the special begin/end ones.
 		}
 
 @<Look through the function for mentions of labels, marking those as used@> =
-	CodeGen::Labels::traverse_code_tree(Inter::Package::code_list(pack->package_name));
+	inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+	CodeGen::Labels::traverse_code_tree(D);
 
 @ Anything not marked used must be unused, so we can get rid of it. We do this
 by striking its definition; the definition of a label symbol is the line
@@ -77,13 +78,11 @@ anywhere) we may as well remove it.
 it would be written out in a listing.
 
 =
-void CodeGen::Labels::traverse_code_tree(inter_frame_list *ifl) {
-	if (ifl) {
-		inter_frame F;
-		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
-			@<Examine a line of code in the function@>;
-			CodeGen::Labels::traverse_code_tree(Inter::Defn::list_of_children(F));
-		}
+void CodeGen::Labels::traverse_code_tree(inter_frame P) {
+	inter_frame F;
+	LOOP_THROUGH_INTER_CHILDREN(F, P) {
+		@<Examine a line of code in the function@>;
+		CodeGen::Labels::traverse_code_tree(F);
 	}
 }
 

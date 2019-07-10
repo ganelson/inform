@@ -107,7 +107,7 @@ void CodeGen::I6::offer_pragma(code_generation_target *cgt, code_generation *gen
 }
 
 int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation *gen,
-	inter_symbol *prim_name, inter_frame_list *ifl) {
+	inter_symbol *prim_name, inter_frame P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 	inter_repository *I = gen->from;
@@ -259,7 +259,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 
 @<Generate primitive for return@> =
 	int rboolean = NOT_APPLICABLE;
-	inter_frame V = Inter::top_of_frame_list(ifl);
+	inter_frame V = Inter::first_child(P);
 	if (V.data[ID_IFLD] == VAL_IST) {
 		inter_t val1 = V.data[VAL1_VAL_IFLD];
 		inter_t val2 = V.data[VAL2_VAL_IFLD];
@@ -344,11 +344,11 @@ then the result.
 
 @<Generate primitive for for@> =
 	WRITE("for (");
-	inter_frame INIT = Inter::top_of_frame_list(ifl);
+	inter_frame INIT = Inter::first_child(P);
 	if (!((INIT.data[ID_IFLD] == VAL_IST) && (INIT.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT.data[VAL2_VAL_IFLD] == 1))) INV_A1;
 	WRITE(":"); INV_A2;
 	WRITE(":");
-	inter_frame U = Inter::third_in_frame_list(ifl);
+	inter_frame U = Inter::third_child(P);
 	if (U.data[ID_IFLD] != VAL_IST)
 	CodeGen::FC::frame(gen, U);
 	WRITE(") {\n"); INDENT; INV_A4;
@@ -357,7 +357,7 @@ then the result.
 
 @<Generate primitive for objectloop@> =
 	int in_flag = FALSE;
-	inter_frame U = Inter::third_in_frame_list(ifl);
+	inter_frame U = Inter::third_child(P);
 	if ((U.data[ID_IFLD] == INV_IST) && (U.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
 		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;

@@ -148,8 +148,9 @@
     <span class="comment">*E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);</span>
     <span class="comment">if (*E) return;</span>
     <span class="comment">}</span>
-        <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::list_of_children</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity_as_invoked</span><span class="plain"> = </span><span class="functiontext">Inter::size_of_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity_as_invoked</span><span class="plain">=0;</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
+        <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">) </span><span class="identifier">arity_as_invoked</span><span class="plain">++;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">P</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Inter::Inv::arity</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) != -1) &amp;&amp;</span>
@@ -174,8 +175,7 @@
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0;</span>
-        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
-        <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">) {</span>
             <span class="identifier">i</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] == </span><span class="constant">SPLAT_IST</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">INV_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">REF_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">LAB_IST</span><span class="plain">) &amp;&amp;</span>

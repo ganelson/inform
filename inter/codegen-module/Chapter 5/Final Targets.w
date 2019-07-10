@@ -96,10 +96,10 @@ int CodeGen::Targets::tl_segment(code_generation *gen) {
 @e COMPILE_PRIMITIVE_MTID
 
 =
-IMETHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prim_name, inter_frame_list *ifl)
-int CodeGen::Targets::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_frame_list *ifl) {
+IMETHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prim_name, inter_frame P)
+int CodeGen::Targets::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_frame P) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, gen->target, COMPILE_PRIMITIVE_MTID, gen, prim_name, ifl);
+	IMETHOD_CALL(rv, gen->target, COMPILE_PRIMITIVE_MTID, gen, prim_name, P);
 	return rv;
 }
 

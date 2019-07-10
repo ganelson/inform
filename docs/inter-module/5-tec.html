@@ -75,22 +75,13 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Evaluation::verify_children</span><span class="plain">(</span><span class="reserved">inter_construct</span><span class="plain"> *</span><span class="identifier">IC</span><span class="plain">, </span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">inter_error_message</span><span class="plain"> **</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::list_of_children</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
-        <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">INV_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">SPLAT_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">VAL_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">LABEL_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">EVALUATION_IST</span><span class="plain">)) {</span>
                 <span class="plain">*</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::error</span><span class="plain">(&amp;</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"only an inv, a splat, a val, or a label can be below an evaluation"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="functiontext">Inter::Evaluation::concatenate_list</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">label_name</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">label_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">label_name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">D</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] != </span><span class="constant">EVALUATION_IST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Defn::list_of_children</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -105,8 +96,6 @@
 <p class="endnote">The function Inter::Evaluation::write is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function Inter::Evaluation::verify_children is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function Inter::Evaluation::concatenate_list appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-tcc.html">Back to 'The Code Construct'</a></li><li><a href="5-trc2.html">Continue with 'The Reference Construct'</a></li></ul><hr class="tocbar">

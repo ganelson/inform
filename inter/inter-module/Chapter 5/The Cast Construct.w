@@ -71,17 +71,17 @@ void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter
 }
 
 void Inter::Cast::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	int arity_as_invoked = Inter::size_of_frame_list(ifl);
-	if (arity_as_invoked != 1) {
-		*E = Inter::Frame::error(&P, I"a cast should have exactly one child", NULL);
-		return;
-	}
+	int arity_as_invoked = 0;
 	inter_frame C;
-	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		arity_as_invoked++;
 		if ((C.data[0] != INV_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != CAST_IST)) {
 			*E = Inter::Frame::error(&P, I"only inv, cast, concatenate and val can be under a cast", NULL);
 			return;
 		}
+	}
+	if (arity_as_invoked != 1) {
+		*E = Inter::Frame::error(&P, I"a cast should have exactly one child", NULL);
+		return;
 	}
 }

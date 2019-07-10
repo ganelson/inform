@@ -148,7 +148,8 @@ void Inter::Packages::restring(inter_repository *I) {
 
 void Inter::Packages::destring(inter_package *pack) {
 	if (pack->codelike_package == FALSE) {
-		inter_frame_list *ifl = Inter::Package::code_list(pack->package_name);
+		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+		inter_frame_list *ifl = Inter::Defn::list_of_children(D);
 		ifl->first_in_ifl = NULL;
 		ifl->last_in_ifl = NULL;
 	}
@@ -193,81 +194,62 @@ void Inter::Packages::traverse_repository_global_inc(inter_repository *from, voi
 }
 
 void Inter::Packages::traverse(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
-	Inter::Packages::traverse_inner(gen, Inter::Packages::contents(gen->just_this_package), visitor, state);
+	inter_frame D = Inter::Symbols::defining_frame(gen->just_this_package->package_name);
+	Inter::Packages::traverse_inner(gen, D, visitor, state);
 }
-void Inter::Packages::traverse_inner(code_generation *gen, inter_frame_list *ifl, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
-	if (ifl) {
-		inter_frame P;
-		LOOP_THROUGH_INTER_FRAME_LIST(P, ifl) {
-			if (P.data[ID_IFLD] != PACKAGE_IST)
-				(*visitor)(gen, P, state);
-			inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-			if (ifl) Inter::Packages::traverse_inner(gen, ifl, visitor, state);
-//			if (P.data[ID_IFLD] == PACKAGE_IST) {
-//				inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-//				if (ifl) Inter::Packages::traverse_inner(gen, ifl, visitor, state);
-//			} else {
-//				(*visitor)(gen, P, state);
-//			}
-		}
+void Inter::Packages::traverse_inner(code_generation *gen, inter_frame P, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		if (C.data[ID_IFLD] != PACKAGE_IST)
+			(*visitor)(gen, C, state);
+		Inter::Packages::traverse_inner(gen, C, visitor, state);
 	}
 }
 
 void Inter::Packages::traverse_repository(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
-	Inter::Packages::traverse_repository_inner(from, Inter::Packages::contents(Inter::Packages::main(from)), visitor, state);
+	inter_package *mp = Inter::Packages::main(from);
+	if (mp) {
+		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
+		Inter::Packages::traverse_repository_inner(from, D, visitor, state);
+	}
 }
-void Inter::Packages::traverse_repository_inner(inter_repository *from, inter_frame_list *ifl, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
-	if (ifl) {
-		inter_frame P;
-		LOOP_THROUGH_INTER_FRAME_LIST(P, ifl) {
-			if (P.data[ID_IFLD] != PACKAGE_IST)
-				(*visitor)(from, P, state);
-			inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-			if (ifl) Inter::Packages::traverse_repository_inner(from, ifl, visitor, state);
-//			if (P.data[ID_IFLD] == PACKAGE_IST) {
-//				inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-//				if (ifl) Inter::Packages::traverse_repository_inner(from, ifl, visitor, state);
-//			} else {
-//				(*visitor)(from, P, state);
-//			}
-		}
+void Inter::Packages::traverse_repository_inner(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		if (C.data[ID_IFLD] != PACKAGE_IST)
+			(*visitor)(from, C, state);
+		Inter::Packages::traverse_repository_inner(from, C, visitor, state);
 	}
 }
 
 void Inter::Packages::traverse_repository_inc(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
-	Inter::Packages::traverse_repository_inc_inner(from, Inter::Packages::contents(Inter::Packages::main(from)), visitor, state);
+	inter_package *mp = Inter::Packages::main(from);
+	if (mp) {
+		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
+		Inter::Packages::traverse_repository_inc_inner(from, D, visitor, state);
+	}
 }
-void Inter::Packages::traverse_repository_inc_inner(inter_repository *from, inter_frame_list *ifl, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
-	if (ifl) {
-		inter_frame P;
-		LOOP_THROUGH_INTER_FRAME_LIST(P, ifl) {
-			(*visitor)(from, P, state);
-//			if (P.data[ID_IFLD] == PACKAGE_IST) {
-				inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-				if (ifl) Inter::Packages::traverse_repository_inc_inner(from, ifl, visitor, state);
-//			}
-		}
+void Inter::Packages::traverse_repository_inc_inner(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		(*visitor)(from, C, state);
+		Inter::Packages::traverse_repository_inc_inner(from, C, visitor, state);
 	}
 }
 
 void Inter::Packages::traverse_repository_e(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *, inter_frame_list_entry *), void *state) {
-	Inter::Packages::traverse_repository_inner_e(from, Inter::Packages::contents(Inter::Packages::main(from)), visitor, state);
+	inter_package *mp = Inter::Packages::main(from);
+	if (mp) {
+		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
+		Inter::Packages::traverse_repository_inner_e(from, D, visitor, state);
+	}
 }
-void Inter::Packages::traverse_repository_inner_e(inter_repository *from, inter_frame_list *ifl, void (*visitor)(inter_repository *, inter_frame, void *, inter_frame_list_entry *), void *state) {
-	if (ifl) {
-		inter_frame P;
-		LOOP_THROUGH_INTER_FRAME_LIST(P, ifl) {
-			if (P.data[ID_IFLD] != PACKAGE_IST)
-				(*visitor)(from, P, state, P_entry);
-			inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-			if (ifl) Inter::Packages::traverse_repository_inner_e(from, ifl, visitor, state);
-//			if (P.data[ID_IFLD] == PACKAGE_IST) {
-//				inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-//				if (ifl) Inter::Packages::traverse_repository_inner_e(from, ifl, visitor, state);
-//			} else {
-//				(*visitor)(from, P, state, P_entry);
-//			}
-		}
+void Inter::Packages::traverse_repository_inner_e(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *, inter_frame_list_entry *), void *state) {
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		if (C.data[ID_IFLD] != PACKAGE_IST)
+			(*visitor)(from, C, state, C_entry);
+		Inter::Packages::traverse_repository_inner_e(from, C, visitor, state);
 	}
 }
 
@@ -292,9 +274,4 @@ int Inter::Packages::baseline(inter_package *P) {
 	if (P == NULL) return 0;
 	if (P->package_name == NULL) return 0;
 	return Inter::Defn::get_level(Inter::Symbols::defining_frame(P->package_name));
-}
-
-inter_frame_list *Inter::Packages::contents(inter_package *P) {
-	if (P == NULL) return NULL;
-	return Inter::Package::code_list(P->package_name);
 }

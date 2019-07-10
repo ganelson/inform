@@ -124,20 +124,11 @@ inter_symbols_table *Inter::Package::local_symbols(inter_symbol *package_name) {
 	return Inter::get_symbols_table(D.repo_segment->owning_repo, D.data[SYMBOLS_PACKAGE_IFLD]);
 }
 
-inter_frame_list *Inter::Package::code_list(inter_symbol *package_name) {
-	if (package_name == NULL) return NULL;
-	inter_frame D = Inter::Symbols::defining_frame(package_name);
-	if (Inter::Frame::valid(&D) == FALSE) return NULL;
-	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::Defn::list_of_children(D);
-}
-
 void Inter::Package::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
 	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
 	if (ptype_name == code_packagetype) {
-		inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 		inter_frame C;
-		LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+		LOOP_THROUGH_INTER_CHILDREN(C, P) {
 			if ((C.data[0] != LABEL_IST) && (C.data[0] != LOCAL_IST) && (C.data[0] != SYMBOL_IST)) {
 				*E = Inter::Frame::error(&C, I"only a local or a symbol can be at the top level", NULL);
 				return;

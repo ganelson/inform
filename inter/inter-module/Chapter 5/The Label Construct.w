@@ -76,9 +76,8 @@ void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inte
 }
 
 void Inter::Label::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
 	inter_frame C;
-	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((C.data[0] != INV_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != VAL_IST) && (C.data[0] != COMMENT_IST)) {
 			inter_package *pack = Inter::Packages::container(P);
 			inter_symbol *routine = pack->package_name;

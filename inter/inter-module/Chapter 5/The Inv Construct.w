@@ -130,8 +130,9 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error
 //		*E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
 //		if (*E) return;
 //	}
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	int arity_as_invoked = Inter::size_of_frame_list(ifl);
+	int arity_as_invoked=0;
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
 	#ifdef CORE_MODULE
 	inter_repository *I = P.repo_segment->owning_repo;
 	if ((Inter::Inv::arity(P) != -1) &&
@@ -156,8 +157,7 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error
 		return;
 	}
 	int i=0;
-	inter_frame C;
-	LOOP_THROUGH_INTER_FRAME_LIST(C, ifl) {
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		i++;
 		if (C.data[0] == SPLAT_IST) continue;
 		if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != LAB_IST) &&

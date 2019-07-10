@@ -4,7 +4,7 @@ To manage the final-code process, at the frame level.
 
 @
 
-@ =
+=
 int query_labels_mode = FALSE, negate_label_mode = FALSE;
 int void_level = 3;
 code_generation *temporary_generation = NULL;
@@ -126,60 +126,47 @@ void CodeGen::FC::label(code_generation *gen, inter_frame P) {
 	if (Str::eq(lab_name->symbol_name, I".begin")) { WRITE(";\n"); INDENT; }
 	else if (Str::eq(lab_name->symbol_name, I".end")) { OUTDENT; WRITE("];\n"); }
 	else WRITE("%S;\n", lab_name->symbol_name);
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	if (ifl == NULL) internal_error("block without code list");
 	inter_frame F;
-	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 }
 
 void CodeGen::FC::block(code_generation *gen, inter_frame P) {
-	inter_symbol *block = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
-	inter_frame_list *ifl = Inter::Package::code_list(block);
-	if (ifl == NULL) internal_error("block without code list");
 	inter_frame F;
-	LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 }
 
 void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	if (ifl) {
-		inter_frame F;
-		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-			CodeGen::FC::frame(gen, F);
-	}
+	inter_frame F;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
 }
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	if (ifl) {
-		inter_frame F;
-		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-			CodeGen::FC::frame(gen, F);
-	}
+	inter_frame F;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
 }
 
 void CodeGen::FC::reference(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	if (ifl) {
-		inter_frame F;
-		LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
-			CodeGen::FC::frame(gen, F);
-	}
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P)
+		CodeGen::FC::frame(gen, C);
 	void_level = old_level;
 }
 
 void CodeGen::FC::cast(code_generation *gen, inter_frame P) {
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	if (ifl == NULL) internal_error("cast without code list");
-	CodeGen::FC::frame(gen, Inter::top_of_frame_list(ifl));
+	inter_frame C;
+	LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		CodeGen::FC::frame(gen, C);
+	}
 }
 
 void CodeGen::FC::lab(code_generation *gen, inter_frame P) {
@@ -259,36 +246,34 @@ void CodeGen::FC::val(code_generation *gen, inter_frame P) {
 
 @
 
-@d INV_A1 CodeGen::FC::frame(gen, Inter::top_of_frame_list(ifl))
+@d INV_A1 CodeGen::FC::frame(gen, Inter::first_child(P))
 @d INV_A1_PRINTMODE CodeGen::CL::enter_print_mode(); INV_A1; CodeGen::CL::exit_print_mode();
 @d INV_A1_BOXMODE CodeGen::CL::enter_box_mode(); INV_A1; CodeGen::CL::exit_box_mode();
-@d INV_A2 CodeGen::FC::frame(gen, Inter::second_in_frame_list(ifl))
-@d INV_A3 CodeGen::FC::frame(gen, Inter::third_in_frame_list(ifl))
-@d INV_A4 CodeGen::FC::frame(gen, Inter::fourth_in_frame_list(ifl))
-@d INV_A5 CodeGen::FC::frame(gen, Inter::fifth_in_frame_list(ifl))
-@d INV_A6 CodeGen::FC::frame(gen, Inter::sixth_in_frame_list(ifl))
+@d INV_A2 CodeGen::FC::frame(gen, Inter::second_child(P))
+@d INV_A3 CodeGen::FC::frame(gen, Inter::third_child(P))
+@d INV_A4 CodeGen::FC::frame(gen, Inter::fourth_child(P))
+@d INV_A5 CodeGen::FC::frame(gen, Inter::fifth_child(P))
+@d INV_A6 CodeGen::FC::frame(gen, Inter::sixth_child(P))
 
 =
 void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
-	inter_frame_list *ifl = Inter::Defn::list_of_children(P);
-	if (ifl == NULL) internal_error("inv without code list");
 
 	switch (P.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE: {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			if (prim == NULL) internal_error("bad prim");
-			suppress_terminal_semicolon = CodeGen::Targets::compile_primitive(gen, prim, ifl);
+			suppress_terminal_semicolon = CodeGen::Targets::compile_primitive(gen, prim, P);
 			break;
 		}
 		case INVOKED_ROUTINE: {
 			inter_symbol *routine = Inter::SymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
 			if (routine == NULL) internal_error("bad routine");
 			WRITE("%S(", CodeGen::CL::name(routine));
-			inter_frame F;
 			int argc = 0;
-			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
+			inter_frame F;
+			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				if (argc++ > 0) WRITE(", ");
 				CodeGen::FC::frame(gen, F);
 			}
@@ -299,8 +284,9 @@ void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 			inter_t ID = P.data[INVOKEE_INV_IFLD];
 			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
 			WRITE("%S", S);
-			inter_frame F; negate_label_mode = FALSE;
-			LOOP_THROUGH_INTER_FRAME_LIST(F, ifl) {
+			negate_label_mode = FALSE;
+			inter_frame F;
+			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				query_labels_mode = TRUE;
 				if (F.data[ID_IFLD] == VAL_IST) {
 					inter_t val1 = F.data[VAL1_VAL_IFLD];

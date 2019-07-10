@@ -58,7 +58,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::make_targets is used in 1/ppl (<a href="1-ppl.html#SP3">&#167;3</a>), 4/fc (<a href="4-fc.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::Targets::make_targets is used in 1/ppl (<a href="1-ppl.html#SP3">&#167;3</a>), 4/fc (<a href="4-fc.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -131,7 +131,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::general_segment is used in 4/fc (<a href="4-fc.html#SP2">&#167;2</a>), 4/cal (<a href="4-cal.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::Targets::general_segment is used in 4/fc (<a href="4-fc.html#SP1">&#167;1</a>), 4/cal (<a href="4-cal.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function CodeGen::Targets::default_segment is used in 4/cal (<a href="4-cal.html#SP2">&#167;2</a>), 4/iap (<a href="4-iap.html#SP1">&#167;1</a>).</p>
 
@@ -149,17 +149,17 @@
 </pre>
 
 <pre class="display">
-    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">COMPILE_PRIMITIVE_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain">)</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::compile_primitive</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain">) {</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">COMPILE_PRIMITIVE_MTID</span><span class="plain">, </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">)</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Targets::compile_primitive</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">COMPILE_PRIMITIVE_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">);</span>
+        <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">, </span><span class="constant">COMPILE_PRIMITIVE_MTID</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prim_name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Targets::compile_primitive is used in 4/fc (<a href="4-fc.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function CodeGen::Targets::compile_primitive is used in 4/fc (<a href="4-fc.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
@@ -249,7 +249,7 @@
 
 <p class="endnote">The function CodeGen::Targets::declare_variable is used in 4/vrb (<a href="4-vrb.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function CodeGen::Targets::declare_local_variable is used in 4/fc (<a href="4-fc.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function CodeGen::Targets::declare_local_variable is used in 4/fc (<a href="4-fc.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 

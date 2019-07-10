@@ -90,18 +90,18 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Cast::verify_children</span><span class="plain">(</span><span class="reserved">inter_construct</span><span class="plain"> *</span><span class="identifier">IC</span><span class="plain">, </span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">inter_error_message</span><span class="plain"> **</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::list_of_children</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity_as_invoked</span><span class="plain"> = </span><span class="functiontext">Inter::size_of_frame_list</span><span class="plain">(</span><span class="identifier">ifl</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity_as_invoked</span><span class="plain"> != 1) {</span>
-            <span class="plain">*</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::error</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"a cast should have exactly one child"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">}</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity_as_invoked</span><span class="plain"> = 0;</span>
         <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
-        <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">) {</span>
+            <span class="identifier">arity_as_invoked</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">INV_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">VAL_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">EVALUATION_IST</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="element">.data</span><span class="plain">[0] != </span><span class="constant">CAST_IST</span><span class="plain">)) {</span>
                 <span class="plain">*</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::error</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"only inv, cast, concatenate and val can be under a cast"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity_as_invoked</span><span class="plain"> != 1) {</span>
+            <span class="plain">*</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::error</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"a cast should have exactly one child"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

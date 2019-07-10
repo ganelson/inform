@@ -105,7 +105,8 @@ except the special begin/end ones.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">Inter::Package::code_list</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">));</span>
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -146,13 +147,11 @@ it would be written out in a listing.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">inter_frame_list</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifl</span><span class="plain">) {</span>
-            <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
-            <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">ifl</span><span class="plain">) {</span>
-                &lt;<span class="cwebmacro">Examine a line of code in the function</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-                <span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">Inter::Defn::list_of_children</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">));</span>
-            <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">) {</span>
+            &lt;<span class="cwebmacro">Examine a line of code in the function</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+            <span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
