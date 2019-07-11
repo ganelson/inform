@@ -811,6 +811,7 @@ insert them into the Inter stream close to the top.
         <span class="identifier">begin_bookmark</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark</span><span class="plain">();</span>
         <span class="identifier">locals_bookmark</span><span class="plain"> = </span><span class="identifier">begin_bookmark</span><span class="plain">;</span>
         <span class="identifier">locals_bookmark</span><span class="plain">.</span><span class="identifier">placement_wrt_R</span><span class="plain"> = </span><span class="identifier">BEFORE_ICPLACEMENT</span><span class="plain">;</span>
+        <span class="identifier">begin_bookmark</span><span class="plain">.</span><span class="identifier">placement_wrt_R</span><span class="plain"> = </span><span class="identifier">IMMEDIATELY_AFTER_ICPLACEMENT</span><span class="plain">;</span>
     <span class="comment">Emit::early_comment(I"body:");</span>
         <span class="identifier">code_bookmark</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark</span><span class="plain">();</span>
         <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">I</span><span class="string">".end"</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>

@@ -207,12 +207,14 @@ void Inter::Frame::insert(inter_frame F, inter_reading_state *at) {
 	inter_t F_level = F.data[LEVEL_IFLD];
 	if (F_level == 0) {
 		Inter::add_to_frame_list(&(I->global_material), F);
-		if (at->placement_wrt_R == AFTER_ICPLACEMENT)
+		if ((at->placement_wrt_R == AFTER_ICPLACEMENT) ||
+			(at->placement_wrt_R == IMMEDIATELY_AFTER_ICPLACEMENT))
 			at->R = F;
 	} else {
 		if (at->placement_wrt_R == NOWHERE_ICPLACEMENT) internal_error("bad wrt");
 		if (Inter::Frame::valid(&(at->R)) == FALSE) internal_error("bad R");
-		if (at->placement_wrt_R == AFTER_ICPLACEMENT) {
+		if ((at->placement_wrt_R == AFTER_ICPLACEMENT) ||
+			(at->placement_wrt_R == IMMEDIATELY_AFTER_ICPLACEMENT)) {
 			while (F_level < at->R.data[LEVEL_IFLD]) {
 				inter_t PR_index = Inter::Frame::get_parent_index(at->R);
 				if (PR_index == 0) internal_error("bubbled up out of tree");
@@ -220,7 +222,12 @@ void Inter::Frame::insert(inter_frame F, inter_reading_state *at) {
 			}
 			if (F_level > at->R.data[LEVEL_IFLD] + 1) internal_error("bubbled down off of tree");
 			if (F_level == at->R.data[LEVEL_IFLD] + 1) {
-				Inter::Frame::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, at->R);
+				if (at->placement_wrt_R == IMMEDIATELY_AFTER_ICPLACEMENT) {
+					Inter::Frame::place(F, AS_FIRST_CHILD_OF_ICPLACEMENT, at->R);
+					at->placement_wrt_R = AFTER_ICPLACEMENT;
+				} else {
+					Inter::Frame::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, at->R);
+				}
 			} else {
 				Inter::Frame::place(F, AFTER_ICPLACEMENT, at->R);
 			}
@@ -379,6 +386,8 @@ void Inter::Frame::set_previous_index(inter_frame F, inter_t V) {
 
 @e BEFORE_ICPLACEMENT from 0
 @e AFTER_ICPLACEMENT
+@e IMMEDIATELY_AFTER_ICPLACEMENT
+@e AS_FIRST_CHILD_OF_ICPLACEMENT
 @e AS_LAST_CHILD_OF_ICPLACEMENT
 @e NOWHERE_ICPLACEMENT
 
@@ -390,10 +399,14 @@ void Inter::Frame::place(inter_frame C, int how, inter_frame R) {
 	switch (how) {
 		case NOWHERE_ICPLACEMENT:
 			return;
+		case AS_FIRST_CHILD_OF_ICPLACEMENT:
+			@<Make C the first child of R@>;
+			break;
 		case AS_LAST_CHILD_OF_ICPLACEMENT:
 			@<Make C the last child of R@>;
 			break;
 		case AFTER_ICPLACEMENT:
+		case IMMEDIATELY_AFTER_ICPLACEMENT:
 			@<Insert C after R@>;
 			break;
 		case BEFORE_ICPLACEMENT:
@@ -426,6 +439,20 @@ void Inter::Frame::place(inter_frame C, int how, inter_frame R) {
 	Inter::Frame::set_parent_index(C, 0);
 	Inter::Frame::set_previous_index(C, 0);
 	Inter::Frame::set_next_index(C, 0);
+
+@<Make C the first child of R@> =
+	inter_t R_index = Inter::Frame::to_index(&R);
+	Inter::Frame::set_parent_index(C, R_index);
+	inter_t D_index = Inter::Frame::get_first_child_index(R);
+	if (D_index == 0) {
+		Inter::Frame::set_last_child_index(R, C_index);
+		Inter::Frame::set_next_index(C, 0);
+	} else {
+		inter_frame D = Inter::Frame::from_index(I, D_index);
+		Inter::Frame::set_previous_index(D, C_index);
+		Inter::Frame::set_next_index(C, D_index);
+	}
+	Inter::Frame::set_first_child_index(R, C_index);
 
 @<Make C the last child of R@> =
 	inter_t R_index = Inter::Frame::to_index(&R);

@@ -769,6 +769,7 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 	begin_bookmark = Emit::bookmark();
 	locals_bookmark = begin_bookmark;
 	locals_bookmark.placement_wrt_R = BEFORE_ICPLACEMENT;
+	begin_bookmark.placement_wrt_R = IMMEDIATELY_AFTER_ICPLACEMENT;
 //	Emit::early_comment(I"body:");
 	code_bookmark = Emit::bookmark();
 	Emit::place_label(Emit::reserve_label(I".end"), FALSE);
