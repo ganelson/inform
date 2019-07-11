@@ -127,7 +127,6 @@ inter_symbols_table *Inter::Package::local_symbols(inter_symbol *package_name) {
 void Inter::Package::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
 	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
 	if (ptype_name == code_packagetype) {
-		inter_frame C;
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
 			if ((C.data[0] != LABEL_IST) && (C.data[0] != LOCAL_IST) && (C.data[0] != SYMBOL_IST)) {
 				*E = Inter::Frame::error(&C, I"only a local or a symbol can be at the top level", NULL);

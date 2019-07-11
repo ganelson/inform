@@ -14,7 +14,6 @@ void Inter::Textual::read(inter_repository *I, filename *F) {
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IRS);
 	Inter::SymbolsTables::resolve_forward_references(I, &eloc);
-	Inter::Defn::pass2(I, TRUE, NULL, FALSE, 0);
 	Inter::Packages::traverse_repository(I, Inter::Textual::lint_visitor, NULL);
 }
 

@@ -14,6 +14,7 @@ void Inter::Binary::read(inter_repository *I, filename *F) {
 	FILE *fh = BinaryFiles::open_for_reading(F);
 
 	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
+	inter_reading_state at = Inter::Bookmarks::new_IRS(I);
 
 	unsigned int X = 0;
 
@@ -341,10 +342,9 @@ enough that the slot exists for the eventual list to be stored in.
 
 		inter_error_message *E = Inter::Defn::verify_construct(P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
-		Inter::Frame::insert(P, NULL);
+		Inter::Frame::insert(P, &at);
 	}
 	Inter::check_segments(I);
-	Inter::Defn::pass2(I, TRUE, NULL, FALSE, 0);
 
 @<Write the bytecode@> =
 	Inter::Packages::traverse_repository_global_inc(I, Inter::Binary::visitor, fh);

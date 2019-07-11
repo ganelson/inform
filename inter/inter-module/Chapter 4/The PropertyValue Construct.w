@@ -137,7 +137,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_erro
 			if (X.data[OWNER_PVAL_IFLD] != P.data[OWNER_PVAL_IFLD]) { *E = Inter::Frame::error(&P, I"instance property list malformed", NULL); return; }
 		}
 
-		Inter::add_to_frame_list(FL, P, NULL);
+		Inter::add_to_frame_list(FL, P);
 	}
 }
 

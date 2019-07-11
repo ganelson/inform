@@ -19,11 +19,12 @@ To store bytecode-like intermediate code in memory.
 @d PREFRAME_COMMENT 3
 @d PREFRAME_PACKAGE 4
 @d PREFRAME_PARENT 5
-@d PREFRAME_CHILD 6
-@d PREFRAME_PREVIOUS 7
-@d PREFRAME_NEXT 8
-@d PREFRAME_LIST 9
-@d PREFRAME_SIZE 10
+@d PREFRAME_FIRST_CHILD 6
+@d PREFRAME_LAST_CHILD 7
+@d PREFRAME_PREVIOUS 8
+@d PREFRAME_NEXT 9
+@d PREFRAME_LIST 10
+@d PREFRAME_SIZE 11
 
 =
 typedef struct inter_repository {
@@ -34,7 +35,6 @@ typedef struct inter_repository {
 	struct inter_resource_holder *stored_resources;
 	struct filename *origin_file;
 	struct inter_frame_list global_material;
-	struct inter_frame_list residue;
 	struct inter_repository *main_repo;
 	struct inter_package *main_package;
 	MEMORY_MANAGEMENT
@@ -64,6 +64,7 @@ typedef struct inter_frame_list_entry {
 
 typedef struct inter_repository_segment {
 	struct inter_repository *owning_repo;
+	inter_t index_offset;
 	int size;
 	int capacity;
 	inter_t *bytecode;
@@ -75,7 +76,7 @@ typedef struct inter_repository_segment {
 inter_repository *Inter::create(int ref, int capacity) {
 	inter_repository *I = CREATE(inter_repository);
 	I->ref = ref;
-	I->first_repo_segment = Inter::create_segment(capacity, I);
+	I->first_repo_segment = Inter::create_segment(capacity, I, NULL);
 	I->size = 1;
 	I->capacity = 0;
 	I->stored_resources = NULL;
@@ -84,16 +85,14 @@ inter_repository *Inter::create(int ref, int capacity) {
 	I->global_material.spare_storage = NULL;
 	I->global_material.storage_used = 0;
 	I->global_material.storage_capacity = 0;
-	I->residue.spare_storage = NULL;
-	I->residue.storage_used = 0;
-	I->residue.storage_capacity = 0;
 	I->main_repo = NULL;
 	I->main_package = NULL;
 	return I;
 }
 
-inter_repository_segment *Inter::create_segment(int capacity, inter_repository *owner) {
+inter_repository_segment *Inter::create_segment(int capacity, inter_repository *owner, inter_repository_segment *prec) {
 	inter_repository_segment *IS = CREATE(inter_repository_segment);
+	IS->index_offset = (prec)?(prec->index_offset + (inter_t) prec->capacity):0;
 	IS->owning_repo = owner;
 	IS->size = 0;
 	IS->capacity = capacity;
@@ -146,7 +145,7 @@ inter_frame Inter::find_room_in_segment(inter_repository_segment *IS, int n) {
 	if (IS->size + n + PREFRAME_SIZE > IS->capacity) {
 		int next_size = Inter::enlarge_size(IS->capacity, n + PREFRAME_SIZE);
 		IS->capacity = IS->size;
-		IS->next_repo_segment = Inter::create_segment(next_size, IS->owning_repo);
+		IS->next_repo_segment = Inter::create_segment(next_size, IS->owning_repo, IS);
 		IS = IS->next_repo_segment;
 		Inter::check_segments(IS->owning_repo);
 	}
@@ -158,7 +157,8 @@ inter_frame Inter::find_room_in_segment(inter_repository_segment *IS, int n) {
 	IS->bytecode[at + PREFRAME_COMMENT] = 0;
 	IS->bytecode[at + PREFRAME_PACKAGE] = 0;
 	IS->bytecode[at + PREFRAME_PARENT] = 0;
-	IS->bytecode[at + PREFRAME_CHILD] = 0;
+	IS->bytecode[at + PREFRAME_FIRST_CHILD] = 0;
+	IS->bytecode[at + PREFRAME_LAST_CHILD] = 0;
 	IS->bytecode[at + PREFRAME_PREVIOUS] = 0;
 	IS->bytecode[at + PREFRAME_NEXT] = 0;
 	IS->bytecode[at + PREFRAME_LIST] = 0;
@@ -276,9 +276,6 @@ inter_t Inter::create_frame_list(inter_repository *I) {
 		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
 			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
 
-@d LOOP_THROUGH_INTER_CHILDREN(F, P)
-	LOOP_THROUGH_INTER_FRAME_LIST(F, Inter::Defn::list_of_children(P))
-
 =
 inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {
 	if (I == NULL) return NULL;
@@ -288,49 +285,52 @@ inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {
 }
 
 inter_frame Inter::first_child(inter_frame P) {
-	inter_frame_list *FL = Inter::Defn::list_of_children(P);
-	if ((FL == NULL) || (FL->first_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
-	return FL->first_in_ifl->listed_frame;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		return F;
+	return Inter::Frame::around(NULL, -1);
 }
 
 inter_frame Inter::second_child(inter_frame P) {
-	inter_frame_list *FL = Inter::Defn::list_of_children(P);
-	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
-	return FL->first_in_ifl->next_in_ifl->listed_frame;
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		if (++c == 2)
+			return F;
+	return Inter::Frame::around(NULL, -1);
 }
 
 inter_frame Inter::third_child(inter_frame P) {
-	inter_frame_list *FL = Inter::Defn::list_of_children(P);
-	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
-	return FL->first_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		if (++c == 3)
+			return F;
+	return Inter::Frame::around(NULL, -1);
 }
 
 inter_frame Inter::fourth_child(inter_frame P) {
-	inter_frame_list *FL = Inter::Defn::list_of_children(P);
-	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
-	return FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		if (++c == 4)
+			return F;
+	return Inter::Frame::around(NULL, -1);
 }
 
 inter_frame Inter::fifth_child(inter_frame P) {
-	inter_frame_list *FL = Inter::Defn::list_of_children(P);
-	if ((FL == NULL) || (FL->first_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL) || (FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
-	return FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		if (++c == 5)
+			return F;
+	return Inter::Frame::around(NULL, -1);
 }
 
 inter_frame Inter::sixth_child(inter_frame P) {
-	inter_frame_list *FL = Inter::Defn::list_of_children(P);
-	if ((FL == NULL) ||
-		(FL->first_in_ifl == NULL) ||
-		(FL->first_in_ifl->next_in_ifl == NULL) ||
-		(FL->first_in_ifl->next_in_ifl->next_in_ifl == NULL) ||
-		(FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL) ||
-		(FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL) ||
-		(FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl == NULL)) return Inter::Frame::around(NULL, -1);
-	return FL->first_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->next_in_ifl->listed_frame;
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		if (++c == 6)
+			return F;
+	return Inter::Frame::around(NULL, -1);
 }
 
-void Inter::add_to_frame_list(inter_frame_list *FL, inter_frame F, inter_reading_state *at) {
-	if ((at) && (at->in_frame_list != FL)) internal_error("bookmark mismatched to list");
+void Inter::add_to_frame_list(inter_frame_list *FL, inter_frame F) {
 	if (Inter::Frame::valid(&F) == FALSE) internal_error("linked imvalid frame");
 	if (FL == NULL) internal_error("bad frame list");
 	if (FL->storage_used >= FL->storage_capacity) {
@@ -346,26 +346,10 @@ void Inter::add_to_frame_list(inter_frame_list *FL, inter_frame F, inter_reading
 	inter_frame_list_entry *entry = &(FL->spare_storage[FL->storage_used ++]);
 	entry->listed_frame = F;
 	entry->next_in_ifl = NULL;
-	entry->prev_in_ifl = NULL;
-
-	if ((at == NULL) || (at->pos == NULL) || (at->pos == FL->last_in_ifl) || (at->pinned_to_end)) {
-		entry->prev_in_ifl = FL->last_in_ifl;
-		if (FL->last_in_ifl) FL->last_in_ifl->next_in_ifl = entry;
-		FL->last_in_ifl = entry;
-		if (FL->first_in_ifl == NULL) FL->first_in_ifl = entry;
-	} else {
-		/* the new one can't be the first */
-		inter_frame_list_entry *after = at->pos->next_in_ifl;
-		at->pos->next_in_ifl = entry;
-		entry->prev_in_ifl = at->pos;
-		entry->next_in_ifl = after;
-		if (after == NULL)
-			FL->last_in_ifl = entry;
-		else
-			after->prev_in_ifl = entry;
-	}
-
-	if (at) at->pos = entry;
+	entry->prev_in_ifl = FL->last_in_ifl;
+	if (FL->last_in_ifl) FL->last_in_ifl->next_in_ifl = entry;
+	FL->last_in_ifl = entry;
+	if (FL->first_in_ifl == NULL) FL->first_in_ifl = entry;
 }
 
 inter_t Inter::store_origin(inter_repository *I, inter_error_location *eloc) {

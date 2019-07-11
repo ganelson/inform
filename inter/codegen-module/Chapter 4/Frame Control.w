@@ -126,13 +126,11 @@ void CodeGen::FC::label(code_generation *gen, inter_frame P) {
 	if (Str::eq(lab_name->symbol_name, I".begin")) { WRITE(";\n"); INDENT; }
 	else if (Str::eq(lab_name->symbol_name, I".end")) { OUTDENT; WRITE("];\n"); }
 	else WRITE("%S;\n", lab_name->symbol_name);
-	inter_frame F;
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 }
 
 void CodeGen::FC::block(code_generation *gen, inter_frame P) {
-	inter_frame F;
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 }
@@ -140,7 +138,6 @@ void CodeGen::FC::block(code_generation *gen, inter_frame P) {
 void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
-	inter_frame F;
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
@@ -148,7 +145,6 @@ void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
-	inter_frame F;
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
@@ -156,14 +152,12 @@ void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
 
 void CodeGen::FC::reference(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P)
 		CodeGen::FC::frame(gen, C);
 	void_level = old_level;
 }
 
 void CodeGen::FC::cast(code_generation *gen, inter_frame P) {
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		CodeGen::FC::frame(gen, C);
 	}
@@ -272,7 +266,6 @@ void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 			if (routine == NULL) internal_error("bad routine");
 			WRITE("%S(", CodeGen::CL::name(routine));
 			int argc = 0;
-			inter_frame F;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				if (argc++ > 0) WRITE(", ");
 				CodeGen::FC::frame(gen, F);
@@ -285,7 +278,6 @@ void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
 			WRITE("%S", S);
 			negate_label_mode = FALSE;
-			inter_frame F;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				query_labels_mode = TRUE;
 				if (F.data[ID_IFLD] == VAL_IST) {

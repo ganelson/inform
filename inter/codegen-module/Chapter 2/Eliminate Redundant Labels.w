@@ -79,7 +79,6 @@ it would be written out in a listing.
 
 =
 void CodeGen::Labels::traverse_code_tree(inter_frame P) {
-	inter_frame F;
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		@<Examine a line of code in the function@>;
 		CodeGen::Labels::traverse_code_tree(F);

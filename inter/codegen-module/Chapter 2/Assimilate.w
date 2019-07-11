@@ -46,7 +46,7 @@ int assim_verb_count = 0;
 inter_reading_state assimilated_actions_b;
 inter_reading_state *assimilated_actions;
 
-void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *state, inter_frame_list_entry *P_entry) {
+void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *state) {
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	inter_symbols_table *into_scope = Inter::Packages::scope(outer);
@@ -70,7 +70,7 @@ void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *sta
 	}
 }
 
-void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *state, inter_frame_list_entry *P_entry) {
+void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *state) {
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
@@ -94,7 +94,7 @@ void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *sta
 	}
 }
 
-void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *state, inter_frame_list_entry *P_entry) {
+void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *state) {
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
@@ -114,10 +114,10 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	inter_repository *I = IRS->read_into;
 	assimilated_actions = IRS;
-	Inter::Packages::traverse_repository_e(I, CodeGen::Assimilate::visitor1, IRS);
-	Inter::Packages::traverse_repository_e(I, CodeGen::Assimilate::visitor2, IRS);
+	Inter::Packages::traverse_repository(I, CodeGen::Assimilate::visitor1, IRS);
+	Inter::Packages::traverse_repository(I, CodeGen::Assimilate::visitor2, IRS);
 	CodeGen::Assimilate::routine_bodies();
-	Inter::Packages::traverse_repository_e(I, CodeGen::Assimilate::visitor3, IRS);
+	Inter::Packages::traverse_repository(I, CodeGen::Assimilate::visitor3, IRS);
 }
 
 @
@@ -153,7 +153,9 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	}
 
 	inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
-	ib.pos = P_entry;
+	ib.R = P;
+	ib.placement_wrt_R = AFTER_ICPLACEMENT;
+
 	inter_package *housing_package = NULL;
 	inter_symbols_table *save_into_scope = NULL;
 		
@@ -392,7 +394,8 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		DISCARD_TEXT(bname);
 
 		inter_reading_state ib = Inter::Bookmarks::snapshot(IRS);
-		ib.pos = P_entry;
+		ib.R = P;
+		ib.placement_wrt_R = AFTER_ICPLACEMENT;
 
 		inter_package *IP = NULL;
 		CodeGen::Link::guard(Inter::Package::new_package(&ib, block_name,
@@ -424,18 +427,15 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		Inter::Symbols::label(end_name);
 
 		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, begin_name, baseline+1, NULL));
-		int veto = FALSE;
 		if (Str::len(body) > 0) {
 			int L = Str::len(body) - 1;
 			while ((L>0) && (Str::get_at(body, L) != ']')) L--;
 			while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 			Str::truncate(body, L);
-			veto = CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body, block_bookmark);
+			CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body, block_bookmark);
 		}
 
 		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, end_name, baseline+1, NULL));
-
-		if (!veto) CodeGen::Link::guard(Inter::Defn::pass2(I, FALSE, &block_bookmark, TRUE, (int) baseline));
 
 		Inter::Defn::unset_current_package(&ib, IP, 0);
 
@@ -823,8 +823,6 @@ void CodeGen::Assimilate::routine_bodies(void) {
 		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
 		Emit::pop_code_position();
 		current_inter_routine = NULL;
-
-		CodeGen::Link::guard(Inter::Defn::pass2(req->block_bookmark.read_into, FALSE, &(req->block_bookmark), TRUE, req->pass2_offset));
 		#endif
 	}
 }

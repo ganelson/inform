@@ -131,7 +131,6 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error
 //		if (*E) return;
 //	}
 	int arity_as_invoked=0;
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
 	#ifdef CORE_MODULE
 	inter_repository *I = P.repo_segment->owning_repo;

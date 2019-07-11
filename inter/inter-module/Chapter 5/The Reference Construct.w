@@ -56,7 +56,6 @@ void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, 
 }
 
 void Inter::Reference::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != VAL_IST) && (C.data[0] != LABEL_IST)) {
 			*E = Inter::Frame::error(&C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);

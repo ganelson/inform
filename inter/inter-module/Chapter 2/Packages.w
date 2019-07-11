@@ -134,29 +134,6 @@ inter_package *Inter::Packages::container_p(inter_frame *P) {
 	return Inter::Packages::from_PID(P->repo_segment->owning_repo, Inter::Frame::get_package_p(P));
 }
 
-void Inter::Packages::restring(inter_repository *I) {
-	Inter::Packages::destring(Inter::Packages::main(I));
-	inter_frame P;
-	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(I->residue))) {
-		inter_package *pack = Inter::Packages::container(P);
-		if ((pack) && (pack->codelike_package == FALSE)) {
-			inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
-			Inter::Defn::accept_child(D, P, FALSE);
-		}
-	}
-}
-
-void Inter::Packages::destring(inter_package *pack) {
-	if (pack->codelike_package == FALSE) {
-		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
-		inter_frame_list *ifl = Inter::Defn::list_of_children(D);
-		ifl->first_in_ifl = NULL;
-		ifl->last_in_ifl = NULL;
-	}
-	for (inter_package *P = pack->child_package; P; P = P->next_package)
-		Inter::Packages::destring(P);
-}
-
 void Inter::Packages::traverse_global(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
 	inter_frame P;
 	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(gen->from->global_material))) {
@@ -198,7 +175,6 @@ void Inter::Packages::traverse(code_generation *gen, void (*visitor)(code_genera
 	Inter::Packages::traverse_inner(gen, D, visitor, state);
 }
 void Inter::Packages::traverse_inner(code_generation *gen, inter_frame P, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if (C.data[ID_IFLD] != PACKAGE_IST)
 			(*visitor)(gen, C, state);
@@ -214,7 +190,6 @@ void Inter::Packages::traverse_repository(inter_repository *from, void (*visitor
 	}
 }
 void Inter::Packages::traverse_repository_inner(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if (C.data[ID_IFLD] != PACKAGE_IST)
 			(*visitor)(from, C, state);
@@ -230,26 +205,9 @@ void Inter::Packages::traverse_repository_inc(inter_repository *from, void (*vis
 	}
 }
 void Inter::Packages::traverse_repository_inc_inner(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		(*visitor)(from, C, state);
 		Inter::Packages::traverse_repository_inc_inner(from, C, visitor, state);
-	}
-}
-
-void Inter::Packages::traverse_repository_e(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *, inter_frame_list_entry *), void *state) {
-	inter_package *mp = Inter::Packages::main(from);
-	if (mp) {
-		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
-		Inter::Packages::traverse_repository_inner_e(from, D, visitor, state);
-	}
-}
-void Inter::Packages::traverse_repository_inner_e(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *, inter_frame_list_entry *), void *state) {
-	inter_frame C;
-	LOOP_THROUGH_INTER_CHILDREN(C, P) {
-		if (C.data[ID_IFLD] != PACKAGE_IST)
-			(*visitor)(from, C, state, C_entry);
-		Inter::Packages::traverse_repository_inner_e(from, C, visitor, state);
 	}
 }
 

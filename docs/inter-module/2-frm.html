@@ -70,7 +70,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Frame::around is used in 2/ie (<a href="2-ie.html#SP1">&#167;1</a>), 2/iim (<a href="2-iim.html#SP3">&#167;3</a>, <a href="2-iim.html#SP4">&#167;4</a>), 2/sym (<a href="2-sym.html#SP2">&#167;2</a>, <a href="2-sym.html#SP4">&#167;4</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inter::Frame::around is used in <a href="#SP4">&#167;4</a>, 2/ie (<a href="2-ie.html#SP1">&#167;1</a>), 2/iim (<a href="2-iim.html#SP3">&#167;3</a>, <a href="2-iim.html#SP4">&#167;4</a>), 2/sym (<a href="2-sym.html#SP2">&#167;2</a>, <a href="2-sym.html#SP4">&#167;4</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Frame::valid is used in <a href="#SP5">&#167;5</a>, 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
 
@@ -219,7 +219,7 @@
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_size</span><span class="plain"> = </span><span class="functiontext">Inter::enlarge_size</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;extent</span><span class="plain"> + </span><span class="constant">PREFRAME_SIZE</span><span class="plain"> + (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">by</span><span class="plain">);</span>
 
-        <span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;next_repo_segment</span><span class="plain"> = </span><span class="functiontext">Inter::create_segment</span><span class="plain">(</span><span class="identifier">next_size</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">);</span>
+        <span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;next_repo_segment</span><span class="plain"> = </span><span class="functiontext">Inter::create_segment</span><span class="plain">(</span><span class="identifier">next_size</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">);</span>
 
         <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">XF</span><span class="plain"> = </span><span class="functiontext">Inter::find_room_in_segment</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;next_repo_segment</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;extent</span><span class="plain"> + (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">by</span><span class="plain">);</span>
 
@@ -243,11 +243,31 @@
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::to_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;index</span><span class="plain"> &lt; 0)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no index for null frame"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;index_offset</span><span class="plain">) + (</span><span class="constant">inter_t</span><span class="plain">) (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;index</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_frame</span><span class="plain"> </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">index</span><span class="plain">) {</span>
+        <span class="reserved">inter_repository_segment</span><span class="plain"> *</span><span class="identifier">seg</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;first_repo_segment</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">seg</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">seg</span><span class="plain">-</span><span class="element">&gt;index_offset</span><span class="plain"> + (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="identifier">seg</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain"> &gt; </span><span class="identifier">index</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Frame::around</span><span class="plain">(</span><span class="identifier">seg</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">index</span><span class="plain"> - </span><span class="identifier">seg</span><span class="plain">-</span><span class="element">&gt;index_offset</span><span class="plain">));</span>
+            <span class="identifier">seg</span><span class="plain"> = </span><span class="identifier">seg</span><span class="plain">-</span><span class="element">&gt;next_repo_segment</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"index not found in repository"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Frame::around</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, -1);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Inter::Frame::extend is used in 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Frame::to_index is used in <a href="#SP6">&#167;6</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::from_index is used in <a href="#SP5">&#167;5</a>, <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
@@ -259,37 +279,30 @@
         <span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">;</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">INTER_FRAMES</span><span class="plain">, </span><span class="string">"I%d: Insert frame %F\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_inter_insertion</span><span class="plain">) </span><span class="functiontext">Inter::Defn::write_construct_text</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::container</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">at</span><span class="plain">) &amp;&amp; (</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;in_frame_list</span><span class="plain"> != &amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material</span><span class="plain">))) {</span>
-                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;in_frame_list</span><span class="plain"> = &amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material</span><span class="plain">);</span>
-                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;in_frame_list</span><span class="plain">-</span><span class="element">&gt;last_in_ifl</span><span class="plain">;</span>
-                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pinned_to_end</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="functiontext">Inter::add_to_frame_list</span><span class="plain">(&amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material</span><span class="plain">), </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">);</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">F_level</span><span class="plain"> = </span><span class="identifier">F</span><span class="element">.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">];</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> == 0) {</span>
+            <span class="functiontext">Inter::add_to_frame_list</span><span class="plain">(&amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material</span><span class="plain">), </span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;placement_wrt_R</span><span class="plain"> == </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">)</span>
+                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">at</span><span class="plain">) &amp;&amp; (</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;in_frame_list</span><span class="plain"> != &amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;residue</span><span class="plain">))) {</span>
-                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;in_frame_list</span><span class="plain"> = &amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;residue</span><span class="plain">);</span>
-                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;in_frame_list</span><span class="plain">-</span><span class="element">&gt;last_in_ifl</span><span class="plain">;</span>
-                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pinned_to_end</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;placement_wrt_R</span><span class="plain"> == </span><span class="constant">NOWHERE_ICPLACEMENT</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad wrt"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;(</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad R"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;placement_wrt_R</span><span class="plain"> == </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">) {</span>
+                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> &lt; </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">]) {</span>
+                    <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">PR_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PR_index</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bubbled up out of tree"</span><span class="plain">);</span>
+                    <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">PR_index</span><span class="plain">);</span>
+                <span class="plain">}</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> &gt; </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">] + 1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bubbled down off of tree"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> == </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">] + 1) {</span>
+                    <span class="functiontext">Inter::Frame::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">AS_LAST_CHILD_OF_ICPLACEMENT</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain">);</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="functiontext">Inter::Frame::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain">);</span>
+                <span class="plain">}</span>
+                <span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">parental_level</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::get_level</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) - 1;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">parental_level</span><span class="plain"> &lt; 0) || (</span><span class="identifier">parental_level</span><span class="plain"> &lt; </span><span class="functiontext">Inter::Defn::get_level</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">)))</span>
-                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"levels out"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parental_level</span><span class="plain"> == </span><span class="functiontext">Inter::Defn::get_level</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">)) {</span>
-                <span class="functiontext">Inter::Defn::accept_child</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">at</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"defective bookmark"</span><span class="plain">);</span>
-                <span class="reserved">inter_frame_list_entry</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain">-</span><span class="element">&gt;prev_in_ifl</span><span class="plain">;</span>
-                <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">prev</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Inter::Defn::get_level</span><span class="plain">(</span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;listed_frame</span><span class="plain">) != </span><span class="identifier">parental_level</span><span class="plain">)))</span>
-                    <span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;prev_in_ifl</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no parent can be found"</span><span class="plain">);</span>
-                <span class="functiontext">Inter::Defn::accept_child</span><span class="plain">(</span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;listed_frame</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="plain">}</span>
-    <span class="plain">*/</span>
-    <span class="comment">Inter::Defn::accept_child(D, F, FALSE);</span>
-            <span class="functiontext">Inter::add_to_frame_list</span><span class="plain">(&amp;(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;residue</span><span class="plain">), </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;placement_wrt_R</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-</span><span class="element">&gt;R</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -361,6 +374,77 @@
             <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_LIST</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_first_child_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_FIRST_CHILD</span><span class="plain">];</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> 0;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::set_first_child_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_FIRST_CHILD</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_last_child_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_LAST_CHILD</span><span class="plain">];</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> 0;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::set_last_child_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_LAST_CHILD</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PARENT</span><span class="plain">];</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> 0;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::set_parent_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PARENT</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_next_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_NEXT</span><span class="plain">];</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> 0;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_NEXT</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_previous_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PREVIOUS</span><span class="plain">];</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> 0;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
+            <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PREVIOUS</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="definitionkeyword">define</span> <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">##</span><span class="identifier">_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_first_child_index</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="identifier">F</span><span class="plain">##</span><span class="identifier">_index</span><span class="plain"> != 0;</span>
+            <span class="identifier">F</span><span class="plain">##</span><span class="identifier">_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_next_index</span><span class="plain">(</span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">P</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">##</span><span class="identifier">_index</span><span class="plain">)))</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">P</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">##</span><span class="identifier">_index</span><span class="plain">); </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">; </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -371,7 +455,7 @@
 
 <p class="endnote">The function Inter::Frame::retrieve_origin appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Frame::error is used in 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>, <a href="3-dfn.html#SP5">&#167;5</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tmc2 (<a href="4-tmc2.html#SP1">&#167;1</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Frame::error is used in 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tmc2 (<a href="4-tmc2.html#SP1">&#167;1</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Frame::get_comment is used in 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
@@ -386,6 +470,176 @@
 <p class="endnote">The function Inter::Frame::get_list is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Inter::Frame::set_list is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
+
+<p class="endnote">The function Inter::Frame::get_first_child_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::set_first_child_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::get_last_child_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>.</p>
+
+<p class="endnote">The function Inter::Frame::set_last_child_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>.</p>
+
+<p class="endnote">The function Inter::Frame::get_parent_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_3">&#167;6.3</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::set_parent_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::get_next_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_3">&#167;6.3</a>.</p>
+
+<p class="endnote">The function Inter::Frame::set_next_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::get_previous_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="endnote">The function Inter::Frame::set_previous_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_3">&#167;6.3</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">BEFORE_ICPLACEMENT</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">AFTER_ICPLACEMENT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">AS_LAST_CHILD_OF_ICPLACEMENT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">NOWHERE_ICPLACEMENT</span>
+</pre>
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::place</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how</span><span class="plain">, </span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">C_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::to_index</span><span class="plain">(&amp;</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">C</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">;</span>
+        &lt;<span class="cwebmacro">Extricate C from its current tree position</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">how</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOWHERE_ICPLACEMENT</span><span class="plain">:</span>
+                <span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">AS_LAST_CHILD_OF_ICPLACEMENT</span><span class="plain">:</span>
+                &lt;<span class="cwebmacro">Make C the last child of R</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">:</span>
+                &lt;<span class="cwebmacro">Insert C after R</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BEFORE_ICPLACEMENT</span><span class="plain">:</span>
+                &lt;<span class="cwebmacro">Insert C before R</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">;</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">default</span><span class="plain">:</span>
+                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented"</span><span class="plain">);</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Inter::Frame::place is used in <a href="#SP5">&#167;5</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Extricate C from its current tree position</span> <span class="cwebmacronumber">6.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">OP_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OP_index</span><span class="plain"> != 0) {</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">OP</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">OP_index</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::get_first_child_index</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">) == </span><span class="identifier">C_index</span><span class="plain">)</span>
+                <span class="functiontext">Inter::Frame::set_first_child_index</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">, </span><span class="functiontext">Inter::Frame::get_next_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::get_last_child_index</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">) == </span><span class="identifier">C_index</span><span class="plain">)</span>
+                <span class="functiontext">Inter::Frame::set_last_child_index</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">, </span><span class="functiontext">Inter::Frame::get_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
+        <span class="plain">}</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">OB_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">OD_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_next_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OB_index</span><span class="plain"> != 0) {</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">OB</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">OB_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">OB</span><span class="plain">, </span><span class="identifier">OD_index</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OD_index</span><span class="plain"> != 0) {</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">OD</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">OD_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">OD</span><span class="plain">, </span><span class="identifier">OB_index</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Inter::Frame::set_parent_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, 0);</span>
+        <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, 0);</span>
+        <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, 0);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6_2"></a><b>&#167;6.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Make C the last child of R</span> <span class="cwebmacronumber">6.2</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">R_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::to_index</span><span class="plain">(&amp;</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Frame::set_parent_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R_index</span><span class="plain">);</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">B_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_last_child_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B_index</span><span class="plain"> == 0) {</span>
+            <span class="functiontext">Inter::Frame::set_first_child_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, 0);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">B_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">B_index</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Inter::Frame::set_last_child_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6_3"></a><b>&#167;6.3.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Insert C after R</span> <span class="cwebmacronumber">6.3</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">P_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">R_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::to_index</span><span class="plain">(&amp;</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P_index</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't move C after R when R is nowhere"</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Frame::set_parent_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P_index</span><span class="plain">);</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">P_index</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::get_last_child_index</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">R_index</span><span class="plain">)</span>
+            <span class="functiontext">Inter::Frame::set_last_child_index</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> {</span>
+            <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">D_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_next_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D_index</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inter tree broken"</span><span class="plain">);</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">D_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">D_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R_index</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6_4"></a><b>&#167;6.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Insert C before R</span> <span class="cwebmacronumber">6.4</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">P_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">R_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::to_index</span><span class="plain">(&amp;</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P_index</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't move C before R when R is nowhere"</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Frame::set_parent_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P_index</span><span class="plain">);</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">P_index</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::get_first_child_index</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">R_index</span><span class="plain">)</span>
+            <span class="functiontext">Inter::Frame::set_first_child_index</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> {</span>
+            <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">B_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_previous_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B_index</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inter tree broken"</span><span class="plain">);</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">B_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">B_index</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Inter::Frame::set_next_index</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R_index</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Frame::set_previous_index</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C_index</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-sym.html">Back to 'Symbols'</a></li><li><a href="2-bkm.html">Continue with 'Bookmarks'</a></li></ul><hr class="tocbar">

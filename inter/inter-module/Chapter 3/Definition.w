@@ -223,57 +223,6 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_repository *I, inter_ann
 	}
 }
 
-inter_error_message *Inter::Defn::pass2(inter_repository *I, int issue, inter_reading_state *just_this, int stop_at_top, int baseline) {
-	inter_error_message *E = NULL;
-	inter_frame frame_stack[100];
-	int frame_sp = 0;
-	inter_frame PREV = Inter::Frame::around(NULL, -1);
-	if (Inter::Packages::main(I))
-		PREV = Inter::Symbols::defining_frame(Inter::Packages::main(I)->package_name);
-
-	inter_frame_list_entry *first_entry;
-	if (just_this == NULL) first_entry = (&(I->residue))->first_in_ifl;
-	else first_entry = just_this->pos;
-
-	inter_frame P; int F = 0, err_at = -1;
-	LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->residue)), first_entry) {
-		if ((E) && (err_at < 0)) err_at = F;
-		F++;
-		int L = Inter::Defn::get_level(P) - baseline;
-		if ((stop_at_top) && (L <= 0) && (F > 1)) break;
-		if (P.data[ID_IFLD] == COMMENT_IST) continue;
-		if (P.data[ID_IFLD] == NOP_IST) continue;
-		if (frame_sp >= L) {
-			frame_sp = L;
-		} else if (frame_sp == L-1) {
-			frame_stack[frame_sp++] = PREV;
-		} else {
-			E = Inter::Errors::gather_first(E, Inter::Frame::error(&P, I"overly indented line", NULL));
-		}
-		if (frame_sp > 0)
-			E = Inter::Errors::gather_first(E, Inter::Defn::accept_child(frame_stack[frame_sp-1], P, issue));
-		PREV = P;
-	}
-
-	if (E) {
-		LOG("Error occurred here:\n");
-		int F = 0;
-		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->residue)), first_entry) {
-			F++; if ((err_at >= 0) && (F >= err_at)) { err_at = -1; LOG("*%02d* ", Inter::Defn::get_level(P)); }
-			else { LOG("(%02d) ", Inter::Defn::get_level(P)); }
-			Inter::Defn::write_construct_text(DL, P);
-		}
-		LOG("Or in binary:\n");
-		F = 0;
-		LOOP_THROUGH_INTER_FRAME_LIST_FROM(P, (&(I->residue)), first_entry) {
-			F++; if ((err_at >= 0) && (F >= err_at)) { err_at = -1; LOG("**** "); }
-			else { LOG("(%02d) ", Inter::Defn::get_level(P)); }
-			LOG("%F\n", &P);
-		}
-	}
-	return E;
-}
-
 @
 
 @d OUTSIDE_OF_PACKAGES 1
@@ -456,25 +405,6 @@ inter_frame_list *Inter::Defn::list_of_children(inter_frame P) {
 	}
 	
 	return Inter::find_frame_list(P.repo_segment->owning_repo, L);
-}
-
-inter_error_message *Inter::Defn::accept_child(inter_frame P, inter_frame C, int issue) {
-	inter_error_message *E = Inter::Defn::accept_child_inner(P, C);
-	if ((E) && (issue)) Inter::Errors::issue(E);
-	return E;
-}
-
-inter_error_message *Inter::Defn::accept_child_inner(inter_frame P, inter_frame C) {
-	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
-	if (E) return E;
-	if ((IC->usage_permissions & CAN_HAVE_CHILDREN) == 0) {
-		WRITE_TO(STDERR, "P: "); Inter::Defn::write_construct_text(STDERR, P);
-		WRITE_TO(STDERR, "C: "); Inter::Defn::write_construct_text(STDERR, C);
-		return Inter::Frame::error(&C, I"this is placed under a construct which can't have anything underneath", NULL);
-	}
-	Inter::add_to_frame_list(Inter::Defn::list_of_children(P), C, NULL);
-	return NULL;
 }
 
 inter_error_message *Inter::Defn::verify_children_inner(inter_frame P) {

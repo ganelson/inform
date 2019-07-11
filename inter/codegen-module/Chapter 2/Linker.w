@@ -14,7 +14,6 @@ int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
 	IRS.current_package = Inter::Packages::main(step->repository);
 	IRS.cp_indent = 1;
 	CodeGen::Link::link(&IRS, step->step_argument, step->the_N, step->the_PP, NULL);
-	Inter::Packages::restring(step->repository);
 	return TRUE;
 }
 

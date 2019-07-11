@@ -161,7 +161,7 @@ int Inter::Frame::extend(inter_frame *F, inter_t by) {
 
 	int next_size = Inter::enlarge_size(F->repo_segment->capacity, F->extent + PREFRAME_SIZE + (int) by);
 
-	F->repo_segment->next_repo_segment = Inter::create_segment(next_size, F->repo_segment->owning_repo);
+	F->repo_segment->next_repo_segment = Inter::create_segment(next_size, F->repo_segment->owning_repo, F->repo_segment);
 
 	inter_frame XF = Inter::find_room_in_segment(F->repo_segment->next_repo_segment, F->extent + (int) by);
 
@@ -186,6 +186,22 @@ int Inter::Frame::extend(inter_frame *F, inter_t by) {
 	return TRUE;
 }
 
+inter_t Inter::Frame::to_index(inter_frame *F) {
+	if ((F->repo_segment == NULL) || (F->index < 0)) internal_error("no index for null frame");
+	return (F->repo_segment->index_offset) + (inter_t) (F->index);
+}
+
+inter_frame Inter::Frame::from_index(inter_repository *I, inter_t index) {
+	inter_repository_segment *seg = I->first_repo_segment;
+	while (seg) {
+		if (seg->index_offset + (inter_t) seg->capacity > index)
+			return Inter::Frame::around(seg, (int) (index - seg->index_offset));
+		seg = seg->next_repo_segment;
+	}
+	internal_error("index not found in repository");
+	return Inter::Frame::around(NULL, -1);
+}
+
 @
 
 =
@@ -195,37 +211,30 @@ void Inter::Frame::insert(inter_frame F, inter_reading_state *at) {
 	inter_repository *I = F.repo_segment->owning_repo;
 	LOGIF(INTER_FRAMES, "I%d: Insert frame %F\n", I->allocation_id, F);
 	if (trace_inter_insertion) Inter::Defn::write_construct_text(DL, F);
-	inter_package *con = Inter::Packages::container(F);
-	if (con == NULL) {
-		if ((at) && (at->in_frame_list != &(I->global_material))) {
-			at->in_frame_list = &(I->global_material);
-			at->pos = at->in_frame_list->last_in_ifl;
-			at->pinned_to_end = TRUE;
-		}
-		Inter::add_to_frame_list(&(I->global_material), F, at);
+	inter_t F_level = F.data[LEVEL_IFLD];
+	if (F_level == 0) {
+		Inter::add_to_frame_list(&(I->global_material), F);
+		if (at->placement_wrt_R == AFTER_ICPLACEMENT)
+			at->R = F;
 	} else {
-		if ((at) && (at->in_frame_list != &(I->residue))) {
-			at->in_frame_list = &(I->residue);
-			at->pos = at->in_frame_list->last_in_ifl;
-			at->pinned_to_end = TRUE;
+		if (at->placement_wrt_R == NOWHERE_ICPLACEMENT) internal_error("bad wrt");
+		if (Inter::Frame::valid(&(at->R)) == FALSE) internal_error("bad R");
+		if (at->placement_wrt_R == AFTER_ICPLACEMENT) {
+			while (F_level < at->R.data[LEVEL_IFLD]) {
+				inter_t PR_index = Inter::Frame::get_parent_index(at->R);
+				if (PR_index == 0) internal_error("bubbled up out of tree");
+				at->R = Inter::Frame::from_index(I, PR_index);
+			}
+			if (F_level > at->R.data[LEVEL_IFLD] + 1) internal_error("bubbled down off of tree");
+			if (F_level == at->R.data[LEVEL_IFLD] + 1) {
+				Inter::Frame::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, at->R);
+			} else {
+				Inter::Frame::place(F, AFTER_ICPLACEMENT, at->R);
+			}
+			at->R = F;
+			return;
 		}
-/*		inter_frame D = Inter::Symbols::defining_frame(con->package_name);
-		int parental_level = Inter::Defn::get_level(F) - 1;
-		if ((parental_level < 0) || (parental_level < Inter::Defn::get_level(D)))
-			internal_error("levels out");
-		if (parental_level == Inter::Defn::get_level(D)) {
-			Inter::Defn::accept_child(D, F, FALSE);
-		} else {
-			if ((at == NULL) || (at->pos == NULL)) internal_error("defective bookmark");
-			inter_frame_list_entry *prev = at->pos->prev_in_ifl;
-			while (((prev) && (Inter::Defn::get_level(prev->listed_frame) != parental_level)))
-				prev = prev->prev_in_ifl;
-			if (prev == NULL) internal_error("no parent can be found");
-			Inter::Defn::accept_child(prev->listed_frame, F, FALSE);
-		}
-*/
-//		Inter::Defn::accept_child(D, F, FALSE);
-		Inter::add_to_frame_list(&(I->residue), F, at);
+		Inter::Frame::place(F, at->placement_wrt_R, at->R);
 	}
 }
 
@@ -297,3 +306,176 @@ void Inter::Frame::set_list(inter_frame F, inter_t V) {
 		F.repo_segment->bytecode[F.index + PREFRAME_LIST] = V;
 	}
 }
+
+inter_t Inter::Frame::get_first_child_index(inter_frame F) {
+	if (F.repo_segment) {
+		return F.repo_segment->bytecode[F.index + PREFRAME_FIRST_CHILD];
+	}
+	return 0;
+}
+
+void Inter::Frame::set_first_child_index(inter_frame F, inter_t V) {
+	if (F.repo_segment) {
+		F.repo_segment->bytecode[F.index + PREFRAME_FIRST_CHILD] = V;
+	}
+}
+
+inter_t Inter::Frame::get_last_child_index(inter_frame F) {
+	if (F.repo_segment) {
+		return F.repo_segment->bytecode[F.index + PREFRAME_LAST_CHILD];
+	}
+	return 0;
+}
+
+void Inter::Frame::set_last_child_index(inter_frame F, inter_t V) {
+	if (F.repo_segment) {
+		F.repo_segment->bytecode[F.index + PREFRAME_LAST_CHILD] = V;
+	}
+}
+
+inter_t Inter::Frame::get_parent_index(inter_frame F) {
+	if (F.repo_segment) {
+		return F.repo_segment->bytecode[F.index + PREFRAME_PARENT];
+	}
+	return 0;
+}
+
+void Inter::Frame::set_parent_index(inter_frame F, inter_t V) {
+	if (F.repo_segment) {
+		F.repo_segment->bytecode[F.index + PREFRAME_PARENT] = V;
+	}
+}
+
+inter_t Inter::Frame::get_next_index(inter_frame F) {
+	if (F.repo_segment) {
+		return F.repo_segment->bytecode[F.index + PREFRAME_NEXT];
+	}
+	return 0;
+}
+
+void Inter::Frame::set_next_index(inter_frame F, inter_t V) {
+	if (F.repo_segment) {
+		F.repo_segment->bytecode[F.index + PREFRAME_NEXT] = V;
+	}
+}
+
+inter_t Inter::Frame::get_previous_index(inter_frame F) {
+	if (F.repo_segment) {
+		return F.repo_segment->bytecode[F.index + PREFRAME_PREVIOUS];
+	}
+	return 0;
+}
+
+void Inter::Frame::set_previous_index(inter_frame F, inter_t V) {
+	if (F.repo_segment) {
+		F.repo_segment->bytecode[F.index + PREFRAME_PREVIOUS] = V;
+	}
+}
+
+@d LOOP_THROUGH_INTER_CHILDREN(F, P)
+	for (inter_t F##_index = Inter::Frame::get_first_child_index(P);
+		F##_index != 0;
+		F##_index = Inter::Frame::get_next_index(Inter::Frame::from_index(P.repo_segment->owning_repo, F##_index)))
+		for (inter_frame F = Inter::Frame::from_index(P.repo_segment->owning_repo, F##_index); F.repo_segment; F.repo_segment = NULL)
+
+@
+
+@e BEFORE_ICPLACEMENT from 0
+@e AFTER_ICPLACEMENT
+@e AS_LAST_CHILD_OF_ICPLACEMENT
+@e NOWHERE_ICPLACEMENT
+
+=
+void Inter::Frame::place(inter_frame C, int how, inter_frame R) {
+	inter_t C_index = Inter::Frame::to_index(&C);
+	inter_repository *I = C.repo_segment->owning_repo;
+	@<Extricate C from its current tree position@>;
+	switch (how) {
+		case NOWHERE_ICPLACEMENT:
+			return;
+		case AS_LAST_CHILD_OF_ICPLACEMENT:
+			@<Make C the last child of R@>;
+			break;
+		case AFTER_ICPLACEMENT:
+			@<Insert C after R@>;
+			break;
+		case BEFORE_ICPLACEMENT:
+			@<Insert C before R@>;
+			break;
+		default:
+			internal_error("unimplemented");
+	}
+}
+
+@<Extricate C from its current tree position@> =
+	inter_t OP_index = Inter::Frame::get_parent_index(C);
+	if (OP_index != 0) {
+		inter_frame OP = Inter::Frame::from_index(I, OP_index);
+		if (Inter::Frame::get_first_child_index(OP) == C_index)
+			Inter::Frame::set_first_child_index(OP, Inter::Frame::get_next_index(C));
+		if (Inter::Frame::get_last_child_index(OP) == C_index)
+			Inter::Frame::set_last_child_index(OP, Inter::Frame::get_previous_index(C));
+	}
+	inter_t OB_index = Inter::Frame::get_previous_index(C);
+	inter_t OD_index = Inter::Frame::get_next_index(C);
+	if (OB_index != 0) {
+		inter_frame OB = Inter::Frame::from_index(I, OB_index);
+		Inter::Frame::set_next_index(OB, OD_index);
+	}
+	if (OD_index != 0) {
+		inter_frame OD = Inter::Frame::from_index(I, OD_index);
+		Inter::Frame::set_previous_index(OD, OB_index);
+	}
+	Inter::Frame::set_parent_index(C, 0);
+	Inter::Frame::set_previous_index(C, 0);
+	Inter::Frame::set_next_index(C, 0);
+
+@<Make C the last child of R@> =
+	inter_t R_index = Inter::Frame::to_index(&R);
+	Inter::Frame::set_parent_index(C, R_index);
+	inter_t B_index = Inter::Frame::get_last_child_index(R);
+	if (B_index == 0) {
+		Inter::Frame::set_first_child_index(R, C_index);
+		Inter::Frame::set_previous_index(C, 0);
+	} else {
+		inter_frame B = Inter::Frame::from_index(I, B_index);
+		Inter::Frame::set_next_index(B, C_index);
+		Inter::Frame::set_previous_index(C, B_index);
+	}
+	Inter::Frame::set_last_child_index(R, C_index);
+
+@<Insert C after R@> =
+	inter_t P_index = Inter::Frame::get_parent_index(R);
+	inter_t R_index = Inter::Frame::to_index(&R);
+	if (P_index == 0) internal_error("can't move C after R when R is nowhere");
+	Inter::Frame::set_parent_index(C, P_index);
+	inter_frame P = Inter::Frame::from_index(I, P_index);
+	if (Inter::Frame::get_last_child_index(P) == R_index)
+		Inter::Frame::set_last_child_index(P, C_index);
+	else {
+		inter_t D_index = Inter::Frame::get_next_index(R);
+		if (D_index == 0) internal_error("inter tree broken");
+		inter_frame D = Inter::Frame::from_index(I, D_index);
+		Inter::Frame::set_next_index(C, D_index);
+		Inter::Frame::set_previous_index(D, C_index);
+	}
+	Inter::Frame::set_next_index(R, C_index);
+	Inter::Frame::set_previous_index(C, R_index);
+
+@<Insert C before R@> =
+	inter_t P_index = Inter::Frame::get_parent_index(R);
+	inter_t R_index = Inter::Frame::to_index(&R);
+	if (P_index == 0) internal_error("can't move C before R when R is nowhere");
+	Inter::Frame::set_parent_index(C, P_index);
+	inter_frame P = Inter::Frame::from_index(I, P_index);
+	if (Inter::Frame::get_first_child_index(P) == R_index)
+		Inter::Frame::set_first_child_index(P, C_index);
+	else {
+		inter_t B_index = Inter::Frame::get_previous_index(R);
+		if (B_index == 0) internal_error("inter tree broken");
+		inter_frame B = Inter::Frame::from_index(I, B_index);
+		Inter::Frame::set_previous_index(C, B_index);
+		Inter::Frame::set_next_index(B, C_index);
+	}
+	Inter::Frame::set_next_index(C, R_index);
+	Inter::Frame::set_previous_index(R, C_index);

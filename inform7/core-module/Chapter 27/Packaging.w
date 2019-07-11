@@ -146,7 +146,7 @@ very early on, the enclosure is always an enclosing package.)
 
 =
 void Packaging::initialise_state(inter_repository *I) {
-	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS_global(I));
+	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS(I));
 	current_state.saved_enclosure = NULL;
 }
 

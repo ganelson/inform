@@ -717,15 +717,17 @@ inter_reading_state begin_bookmark;
 inter_reading_state code_bookmark;
 
 void Emit::early_comment(text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::repository());
+/*	inter_t ID = Inter::create_text(Emit::repository());
 	Str::copy(Inter::get_text(Emit::repository(), ID), text);
 	Emit::guard(Inter::Comment::new(Packaging::at(), Emit::baseline(Packaging::at()) + 1, NULL, ID));
+*/
 }
 
 void Emit::code_comment(text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::repository());
+/*	inter_t ID = Inter::create_text(Emit::repository());
 	Str::copy(Inter::get_text(Emit::repository(), ID), text);
 	Emit::guard(Inter::Comment::new(Emit::at(), (inter_t) Emit::level(), NULL, ID));
+*/
 }
 
 inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_package **P) {
@@ -763,9 +765,10 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 
 	current_inter_routine = rsymb;
 	current_inter_reading_state = Emit::bookmark();
-	locals_bookmark = current_inter_reading_state;
 	Emit::place_label(Emit::reserve_label(I".begin"), FALSE);
 	begin_bookmark = Emit::bookmark();
+	locals_bookmark = begin_bookmark;
+	locals_bookmark.placement_wrt_R = BEFORE_ICPLACEMENT;
 //	Emit::early_comment(I"body:");
 	code_bookmark = Emit::bookmark();
 	Emit::place_label(Emit::reserve_label(I".end"), FALSE);
@@ -1115,7 +1118,6 @@ void Emit::cast(kind *F, kind *T) {
 void Emit::end_block(inter_symbol *rsymb) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
 	if (current_inter_routine != rsymb) internal_error("wrong inter routine ended");
-	Emit::guard(Inter::Defn::pass2(Emit::repository(), FALSE, &current_inter_reading_state, TRUE, (int) Emit::baseline(&current_inter_reading_state)));
 	current_inter_routine = NULL;
 	Emit::pop_code_position();
 	inter_reading_state *IRS = Packaging::at();

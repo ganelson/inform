@@ -143,12 +143,12 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_error_m
 			}
 		}
 
-		Inter::add_to_frame_list(FL, P, NULL);
+		Inter::add_to_frame_list(FL, P);
 
 		FL = Inter::find_frame_list(
 				P.repo_segment->owning_repo,
 				Inter::Property::permissions_list(prop_name));
-		Inter::add_to_frame_list(FL, P, NULL);
+		Inter::add_to_frame_list(FL, P);
 	}
 }
 

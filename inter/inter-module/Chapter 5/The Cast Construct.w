@@ -72,7 +72,6 @@ void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter
 
 void Inter::Cast::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
 	int arity_as_invoked = 0;
-	inter_frame C;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		arity_as_invoked++;
 		if ((C.data[0] != INV_IST) && (C.data[0] != VAL_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != CAST_IST)) {

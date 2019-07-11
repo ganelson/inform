@@ -162,7 +162,6 @@ void CodeGen::generate(code_generation *gen) {
 }
 
 @<Phase one - preparation@> =
-//	Inter::Packages::restring(gen->from);
 	Inter::Symbols::clear_transient_flags();
 	CodeGen::FC::prepare(gen);
 	CodeGen::CL::prepare(gen);
