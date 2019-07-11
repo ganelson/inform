@@ -21,8 +21,7 @@ typedef struct inter_package {
 
 @
 
-@d EXCLUDE_PACKAGE_FLAG 1
-@d USED_PACKAGE_FLAG 2
+@d USED_PACKAGE_FLAG 1
 
 @ =
 inter_package *Inter::Packages::new(inter_package *par, inter_repository *I, inter_t n) {
@@ -127,11 +126,6 @@ inter_package *Inter::Packages::from_PID(inter_repository *I, inter_t PID) {
 inter_package *Inter::Packages::container(inter_frame P) {
 	if (P.repo_segment == NULL) return NULL;
 	return Inter::Packages::from_PID(P.repo_segment->owning_repo, Inter::Frame::get_package(P));
-}
-
-inter_package *Inter::Packages::container_p(inter_frame *P) {
-	if (P->repo_segment == NULL) return NULL;
-	return Inter::Packages::from_PID(P->repo_segment->owning_repo, Inter::Frame::get_package_p(P));
 }
 
 void Inter::Packages::traverse_global(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {

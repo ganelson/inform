@@ -23,8 +23,7 @@ To store bytecode-like intermediate code in memory.
 @d PREFRAME_LAST_CHILD 7
 @d PREFRAME_PREVIOUS 8
 @d PREFRAME_NEXT 9
-@d PREFRAME_LIST 10
-@d PREFRAME_SIZE 11
+@d PREFRAME_SIZE 10
 
 =
 typedef struct inter_repository {
@@ -161,7 +160,6 @@ inter_frame Inter::find_room_in_segment(inter_repository_segment *IS, int n) {
 	IS->bytecode[at + PREFRAME_LAST_CHILD] = 0;
 	IS->bytecode[at + PREFRAME_PREVIOUS] = 0;
 	IS->bytecode[at + PREFRAME_NEXT] = 0;
-	IS->bytecode[at + PREFRAME_LIST] = 0;
 	for (int i=0; i<n; i++) IS->bytecode[at + PREFRAME_SIZE + i] = 0;
 	IS->size += n + PREFRAME_SIZE;
 	inter_frame F = Inter::Frame::around(IS, at);
@@ -268,13 +266,7 @@ inter_t Inter::create_frame_list(inter_repository *I) {
 
 @d LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
 	for (inter_frame_list_entry *F##_entry = (ifl)?(ifl->first_in_ifl):NULL; F##_entry; F##_entry = F##_entry->next_in_ifl)
-		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
-			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
-
-@d LOOP_THROUGH_INTER_FRAME_LIST_FROM(F, ifl, entry)
-	for (inter_frame_list_entry *F##_entry = entry; F##_entry; F##_entry = F##_entry->next_in_ifl)
-		if ((Inter::Frame::valid(((F = F##_entry->listed_frame), &F))) &&
-			(Inter::Frame::included(((F = F##_entry->listed_frame), &F))))
+		if (Inter::Frame::valid(((F = F##_entry->listed_frame), &F)))
 
 =
 inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {

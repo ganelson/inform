@@ -50,13 +50,6 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Frame::included</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::container_p</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pack</span><span class="plain">) &amp;&amp; (((</span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_flags</span><span class="plain">) &amp; (</span><span class="constant">EXCLUDE_PACKAGE_FLAG</span><span class="plain">)))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Frame::eq</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> *</span><span class="identifier">F1</span><span class="plain">, </span><span class="reserved">inter_frame</span><span class="plain"> *</span><span class="identifier">F2</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">F1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">F2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F1</span><span class="plain"> == </span><span class="identifier">F2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -73,8 +66,6 @@
 <p class="endnote">The function Inter::Frame::around is used in <a href="#SP4">&#167;4</a>, 2/ie (<a href="2-ie.html#SP1">&#167;1</a>), 2/iim (<a href="2-iim.html#SP3">&#167;3</a>, <a href="2-iim.html#SP4">&#167;4</a>), 2/sym (<a href="2-sym.html#SP2">&#167;2</a>, <a href="2-sym.html#SP4">&#167;4</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Frame::valid is used in <a href="#SP5">&#167;5</a>, 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Inter::Frame::included is used in 2/iim (<a href="2-iim.html#SP4">&#167;4</a>).</p>
 
 <p class="endnote">The function Inter::Frame::eq is used in 2/vi (<a href="2-vi.html#SP1">&#167;1</a>).</p>
 
@@ -343,15 +334,32 @@
     <span class="plain">}</span>
 
     <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_package</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_package_classic</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
+    <span class="comment">inter_t a = Inter::Frame::get_package_alt(F);</span>
+    <span class="comment">if (c != a) {</span>
+    <span class="comment">WRITE_TO(STDOUT, "c = %d, a = %d\n", c, a);</span>
+    <span class="comment">internal_error("zap");</span>
+    <span class="comment">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_package_classic</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PACKAGE</span><span class="plain">];</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
 
-    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_package_p</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">) {</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;index</span><span class="plain"> + </span><span class="constant">PREFRAME_PACKAGE</span><span class="plain">];</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_package_alt</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
+            <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">P_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P_index</span><span class="plain"> == 0) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">P_index</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] == </span><span class="constant">PACKAGE_IST</span><span class="plain">) {</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.data</span><span class="plain">[</span><span class="constant">PID_PACKAGE_IFLD</span><span class="plain">];</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
@@ -359,19 +367,6 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::attach_package</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ID</span><span class="plain">) &amp;&amp; (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">)) {</span>
             <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PACKAGE</span><span class="plain">] = </span><span class="identifier">ID</span><span class="plain">;</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
-    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Frame::get_list</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_LIST</span><span class="plain">];</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::set_list</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">) {</span>
-            <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_LIST</span><span class="plain">] = </span><span class="identifier">V</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -461,15 +456,13 @@
 
 <p class="endnote">The function Inter::Frame::attach_comment is used in 2/iibf (<a href="2-iibf.html#SP1_7">&#167;1.7</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Frame::get_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Inter::Frame::get_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Frame::get_package_p is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inter::Frame::get_package_classic appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Frame::get_package_alt appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Frame::attach_package is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>).</p>
-
-<p class="endnote">The function Inter::Frame::get_list is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
-
-<p class="endnote">The function Inter::Frame::set_list is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Inter::Frame::get_first_child_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_4">&#167;6.4</a>.</p>
 

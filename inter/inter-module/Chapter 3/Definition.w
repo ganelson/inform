@@ -235,23 +235,6 @@ inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	inter_package *pack = Inter::Packages::container(P);
-	int need = INSIDE_PLAIN_PACKAGE;
-	if (pack == NULL) need = OUTSIDE_OF_PACKAGES;
-	else if (pack->codelike_package) need = INSIDE_CODE_PACKAGE;
-	if ((IC->usage_permissions & need) != need) {
-		text_stream *M = Str::new();
-		WRITE_TO(M, "construct (%d, %08x) '", P.data[LEVEL_IFLD], Inter::Frame::get_package(P));
-		Inter::Defn::write_construct_text(M, P);
-		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
-		switch (need) {
-			case OUTSIDE_OF_PACKAGES: WRITE_TO(M, "outside packages"); break;
-			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
-			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
-		}
-		return Inter::Frame::error(&P, M, NULL);
-	}
-	E = NULL;
 	VMETHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, &E);
 	return E;
 }
@@ -391,26 +374,27 @@ int Inter::Defn::get_level(inter_frame P) {
 	return (int) P.data[LEVEL_IFLD];
 }
 
-inter_frame_list *Inter::Defn::list_of_children(inter_frame P) {
-	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
-	if (E) return NULL;
-	if ((IC->usage_permissions & CAN_HAVE_CHILDREN) == 0) return NULL;
-	if (Inter::Frame::valid(&P) == FALSE) return NULL;
-	
-	inter_t L = Inter::Frame::get_list(P);
-	if (L == 0) {
-		L = Inter::create_frame_list(P.repo_segment->owning_repo);
-		Inter::Frame::set_list(P, L);
-	}
-	
-	return Inter::find_frame_list(P.repo_segment->owning_repo, L);
-}
-
 inter_error_message *Inter::Defn::verify_children_inner(inter_frame P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
+	inter_package *pack = Inter::Packages::container(P);
+	int need = INSIDE_PLAIN_PACKAGE;
+	if (pack == NULL) need = OUTSIDE_OF_PACKAGES;
+	else if (pack->codelike_package) need = INSIDE_CODE_PACKAGE;
+	if ((IC->usage_permissions & need) != need) {
+		text_stream *M = Str::new();
+		WRITE_TO(M, "construct (%d) '", P.data[LEVEL_IFLD]);
+		Inter::Defn::write_construct_text(M, P);
+		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
+		switch (need) {
+			case OUTSIDE_OF_PACKAGES: WRITE_TO(M, "outside packages"); break;
+			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
+			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
+		}
+		return Inter::Frame::error(&P, M, NULL);
+	}
+	E = NULL;
 	VMETHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
 	return E;
 }

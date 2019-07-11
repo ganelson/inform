@@ -30,13 +30,6 @@ int Inter::Frame::valid(inter_frame *F) {
 	return TRUE;
 }
 
-int Inter::Frame::included(inter_frame *F) {
-	if (F == NULL) return FALSE;
-	inter_package *pack = Inter::Packages::container_p(F);
-	if ((pack) && (((pack->package_flags) & (EXCLUDE_PACKAGE_FLAG)))) return FALSE;
-	return TRUE;
-}
-
 int Inter::Frame::eq(inter_frame *F1, inter_frame *F2) {
 	if ((F1 == NULL) || (F2 == NULL)) {
 		if (F1 == F2) return TRUE;
@@ -275,15 +268,32 @@ void Inter::Frame::attach_comment(inter_frame F, inter_t ID) {
 }
 
 inter_t Inter::Frame::get_package(inter_frame F) {
+	inter_t c = Inter::Frame::get_package_classic(F);
+//	inter_t a = Inter::Frame::get_package_alt(F);
+//	if (c != a) {
+//		WRITE_TO(STDOUT, "c = %d, a = %d\n", c, a);
+//		internal_error("zap");
+//	}
+	return c;
+}
+
+
+inter_t Inter::Frame::get_package_classic(inter_frame F) {
 	if (F.repo_segment) {
 		return F.repo_segment->bytecode[F.index + PREFRAME_PACKAGE];
 	}
 	return 0;
 }
 
-inter_t Inter::Frame::get_package_p(inter_frame *F) {
-	if (F->repo_segment) {
-		return F->repo_segment->bytecode[F->index + PREFRAME_PACKAGE];
+
+inter_t Inter::Frame::get_package_alt(inter_frame F) {
+	while (TRUE) {
+		inter_t P_index = Inter::Frame::get_parent_index(F);
+		if (P_index == 0) break;
+		F = Inter::Frame::from_index(F.repo_segment->owning_repo, P_index);
+		if (F.data[ID_IFLD] == PACKAGE_IST) {
+			return F.data[PID_PACKAGE_IFLD];
+		}
 	}
 	return 0;
 }
@@ -291,19 +301,6 @@ inter_t Inter::Frame::get_package_p(inter_frame *F) {
 void Inter::Frame::attach_package(inter_frame F, inter_t ID) {
 	if ((ID) && (F.repo_segment)) {
 		F.repo_segment->bytecode[F.index + PREFRAME_PACKAGE] = ID;
-	}
-}
-
-inter_t Inter::Frame::get_list(inter_frame F) {
-	if (F.repo_segment) {
-		return F.repo_segment->bytecode[F.index + PREFRAME_LIST];
-	}
-	return 0;
-}
-
-void Inter::Frame::set_list(inter_frame F, inter_t V) {
-	if (F.repo_segment) {
-		F.repo_segment->bytecode[F.index + PREFRAME_LIST] = V;
 	}
 }
 
