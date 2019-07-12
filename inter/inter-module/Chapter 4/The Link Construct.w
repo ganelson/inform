@@ -63,12 +63,12 @@ inter_error_message *Inter::Link::new(inter_reading_state *IRS,
 	inter_t stage, inter_t text1, inter_t text2, inter_t text3, inter_t text4, inter_t ref, inter_t level,
 	struct inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_6(IRS, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Link::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Link::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_LINK_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 
 	if ((P.data[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&

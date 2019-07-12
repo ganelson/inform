@@ -49,16 +49,16 @@ void Inter::Variable::read(inter_construct *IC, inter_reading_state *IRS, inter_
 
 inter_error_message *Inter::Variable::new(inter_reading_state *IRS, inter_t VID, inter_t KID, inter_t var_val1, inter_t var_val2, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_4(IRS, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Variable::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Variable::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_VAR_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_VAR_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(P, P.data[KIND_VAR_IFLD], KIND_IST);
+	*E = Inter__Verify__defn(owner, P, DEFN_VAR_IFLD); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[KIND_VAR_IFLD], KIND_IST);
 }
 
 void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

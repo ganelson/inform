@@ -63,12 +63,12 @@ void Inter::Pragma::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 
 inter_error_message *Inter::Pragma::new(inter_reading_state *IRS, inter_symbol *target_name, inter_t pragma_text, inter_t level, struct inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_2(IRS, PRAGMA_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, target_name), pragma_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Pragma::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Pragma::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_PRAGMA_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 	inter_symbol *target_name = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_name == NULL) { *E = Inter::Frame::error(&P, I"no target name", NULL); return; }

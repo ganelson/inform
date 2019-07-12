@@ -131,7 +131,6 @@ inter_package *Inter::Packages::container(inter_frame P) {
 void Inter::Packages::traverse_global(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
 	inter_frame P;
 	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(gen->from->global_material))) {
-		if (Inter::Packages::container(P)) return;
 		if (P.data[ID_IFLD] != PACKAGE_IST) {
 			(*visitor)(gen, P, state);
 		}
@@ -141,7 +140,6 @@ void Inter::Packages::traverse_global(code_generation *gen, void (*visitor)(code
 void Inter::Packages::traverse_global_inc(code_generation *gen, void (*visitor)(code_generation *, inter_frame, void *), void *state) {
 	inter_frame P;
 	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(gen->from->global_material))) {
-		if (Inter::Packages::container(P)) return;
 		(*visitor)(gen, P, state);
 	}
 }
@@ -149,7 +147,6 @@ void Inter::Packages::traverse_global_inc(code_generation *gen, void (*visitor)(
 void Inter::Packages::traverse_repository_global(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
 	inter_frame P;
 	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(from->global_material))) {
-		if (Inter::Packages::container(P)) return;
 		if (P.data[ID_IFLD] != PACKAGE_IST) {
 			(*visitor)(from, P, state);
 		}
@@ -159,7 +156,6 @@ void Inter::Packages::traverse_repository_global(inter_repository *from, void (*
 void Inter::Packages::traverse_repository_global_inc(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
 	inter_frame P;
 	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(from->global_material))) {
-		if (Inter::Packages::container(P)) return;
 		(*visitor)(from, P, state);
 	}
 }

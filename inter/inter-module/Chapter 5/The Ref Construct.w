@@ -54,17 +54,17 @@ void Inter::Ref::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 
 inter_error_message *Inter::Ref::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *ref_kind, int level, inter_t val1, inter_t val2, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_4(IRS, REF_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, ref_kind), val1, val2, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Ref::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Ref::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_REF_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = Inter::Packages::scope_of(P);
+	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inter::Frame::error(&P, I"no symbols table in function", NULL); return; }
-	*E = Inter::Verify::symbol(P, P.data[KIND_REF_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_REF_IFLD);
+	*E = Inter::Verify::symbol(owner, P, P.data[KIND_REF_IFLD], KIND_IST); if (*E) return;
+	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[KIND_REF_IFLD]);;
 	*E = Inter::Verify::local_value(P, VAL1_REF_IFLD, ref_kind, locals); if (*E) return;
 }
 

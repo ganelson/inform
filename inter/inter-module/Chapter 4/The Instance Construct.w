@@ -59,18 +59,18 @@ void Inter::Instance::read(inter_construct *IC, inter_reading_state *IRS, inter_
 
 inter_error_message *Inter::Instance::new(inter_reading_state *IRS, inter_t SID, inter_t KID, inter_t V1, inter_t V2, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_6(IRS, INSTANCE_IST, SID, KID, V1, V2, Inter::create_frame_list(IRS->read_into), Inter::create_frame_list(IRS->read_into), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Instance::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Instance::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_INST_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_INST_IFLD); if (*E) return;
-	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	*E = Inter::Verify::symbol(P, P.data[KIND_INST_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
+	*E = Inter__Verify__defn(owner, P, DEFN_INST_IFLD); if (*E) return;
+	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[DEFN_INST_IFLD]);
+	*E = Inter::Verify::symbol(owner, P, P.data[KIND_INST_IFLD], KIND_IST); if (*E) return;
+	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[KIND_INST_IFLD]);
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 	if (Inter::Types::is_enumerated(idt)) {
 		if (P.data[VAL1_INST_IFLD] == UNDEF_IVAL) {
@@ -78,10 +78,12 @@ void Inter::Instance::verify(inter_construct *IC, inter_frame P, inter_error_mes
 			P.data[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
 	} else { *E = Inter::Frame::error(&P, I"not a kind which has instances", NULL); return; }
-	*E = Inter::Verify::value(P, VAL1_INST_IFLD, inst_kind); if (*E) return;
+	*E = Inter::Verify::value(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
-	if (vcount == 0) Inter::Kind::new_instance(inst_kind, inst_name);
+	if (vcount == 0) {
+		Inter::Kind::new_instance(inst_kind, inst_name);
+	}
 }
 
 inter_t Inter::Instance::permissions_list(inter_symbol *kind_symbol) {

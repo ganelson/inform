@@ -661,7 +661,7 @@ void Emit::array_end(packaging_state save) {
 		array_in_progress.data[pos++] = current_A->entry_data1[i];
 		array_in_progress.data[pos++] = current_A->entry_data2[i];
 	}
-	Emit::guard(Inter::Defn::verify_construct(array_in_progress));
+	Emit::guard(Inter::Defn::verify_construct(IRS->current_package, array_in_progress));
 	Inter::Frame::insert(array_in_progress, Packaging::at());
 	Emit::pull_array();
 	Packaging::exit(save);

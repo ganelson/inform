@@ -43,14 +43,14 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_reading_state *IRS, in
 
 inter_error_message *Inter::DefaultValue::new(inter_reading_state *IRS, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::DefaultValue::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::DefaultValue::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_DEF_IFR) *E = Inter::Frame::error(&P, I"extent wrong", NULL);
-	else *E = Inter::Verify::symbol(P, P.data[KIND_DEF_IFLD], KIND_IST);
+	else *E = Inter::Verify::symbol(owner, P, P.data[KIND_DEF_IFLD], KIND_IST);
 }
 
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

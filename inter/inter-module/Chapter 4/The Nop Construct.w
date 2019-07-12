@@ -16,7 +16,7 @@ void Inter::Nop::define(void) {
 
 inter_error_message *Inter::Nop::new(inter_reading_state *IRS, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_0(IRS, NOP_IST, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;

@@ -42,12 +42,12 @@ void Inter::Reference::read(inter_construct *IC, inter_reading_state *IRS, inter
 
 inter_error_message *Inter::Reference::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_1(IRS, REFERENCE_IST, 0, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Reference::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Reference::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_RCE_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 }
 

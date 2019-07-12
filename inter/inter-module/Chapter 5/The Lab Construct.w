@@ -47,15 +47,14 @@ void Inter::Lab::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 
 inter_error_message *Inter::Lab::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *label, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_2(IRS, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, label), eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Lab::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Lab::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_LAB_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
+	inter_symbol *routine = owner->package_name;
 	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Frame::error(&P, I"no such label", NULL); return; }
 }

@@ -30,7 +30,7 @@ void Inter::Comment::read(inter_construct *IC, inter_reading_state *IRS, inter_l
 inter_error_message *Inter::Comment::new(inter_reading_state *IRS, inter_t level, inter_error_location *eloc, inter_t comment_ID) {
 	inter_frame P = Inter::Frame::fill_0(IRS, COMMENT_IST, eloc, level);
 	Inter::Frame::attach_comment(P, comment_ID);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }

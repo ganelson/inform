@@ -274,5 +274,14 @@ void CodeGen::Pipeline::lint(inter_repository *I) {
 }
 
 void CodeGen::Pipeline::visitor(inter_repository *I, inter_frame P, void *state) {
+	inter_t c = Inter::Frame::get_package(P);
+	inter_t a = Inter::Frame::get_package_alt(P);
+	if (c != a) {
+		LOG("Frame gives package as $3, but its location is in package $3\n",
+			Inter::Packages::from_PID(I, c)->package_name,
+			Inter::Packages::from_PID(I, a)->package_name);
+		internal_error("zap");
+	}
+
 	CodeGen::Link::guard(Inter::Defn::verify_children_inner(P));
 }

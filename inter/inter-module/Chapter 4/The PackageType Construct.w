@@ -42,15 +42,15 @@ inter_error_message *Inter::PackageType::new_packagetype(inter_reading_state *IR
 	else if (code_packagetype == NULL) code_packagetype = ptype;
 
 	inter_frame P = Inter::Frame::fill_1(IRS, PACKAGETYPE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, ptype), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::PackageType::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::PackageType::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent < EXTENT_PTYPE_IFR) { *E = Inter::Frame::error(&P, I"p extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_PTYPE_IFLD);
+	*E = Inter__Verify__defn(owner, P, DEFN_PTYPE_IFLD);
 }
 
 void Inter::PackageType::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

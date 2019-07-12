@@ -76,7 +76,7 @@ inter_symbol *code_packagetype = NULL;
 
 =
 VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_reading_state *, inter_line_parse *, inter_error_location *, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_frame P, inter_error_message **E)
 VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
 
@@ -231,11 +231,11 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_repository *I, inter_ann
 @d CAN_HAVE_CHILDREN 8
 
 =
-inter_error_message *Inter::Defn::verify_construct(inter_frame P) {
+inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_frame P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	VMETHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, &E);
+	VMETHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
 	return E;
 }
 
@@ -338,6 +338,10 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 void Inter::Defn::set_current_package(inter_reading_state *IRS, inter_package *P) {
 	IRS->current_package = P;
 	IRS->cp_indent = IRS->latest_indent + 1;
+	if (P) {
+		IRS->R = Inter::Symbols::defining_frame(P->package_name);
+		IRS->placement_wrt_R = AFTER_ICPLACEMENT;
+	}
 }
 
 void Inter::Defn::unset_current_package(inter_reading_state *IRS, inter_package *P, int L) {

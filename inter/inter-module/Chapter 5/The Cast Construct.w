@@ -49,15 +49,15 @@ void Inter::Cast::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 
 inter_error_message *Inter::Cast::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, from_kind), eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Cast::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Cast::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_CAST_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(P, P.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
-	*E = Inter::Verify::symbol(P, P.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
 }
 
 void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

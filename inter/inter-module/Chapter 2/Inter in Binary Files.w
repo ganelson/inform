@@ -340,7 +340,7 @@ enough that the slot exists for the eventual list to be stored in.
 			if (comment != 0) Inter::Frame::attach_comment(P, (inter_t) comment);
 		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 
-		inter_error_message *E = Inter::Defn::verify_construct(P);
+		inter_error_message *E = Inter::Defn::verify_construct(owner, P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 		Inter::Frame::insert(P, &at);
 	}

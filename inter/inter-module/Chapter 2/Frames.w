@@ -275,23 +275,11 @@ void Inter::Frame::attach_comment(inter_frame F, inter_t ID) {
 }
 
 inter_t Inter::Frame::get_package(inter_frame F) {
-	inter_t c = Inter::Frame::get_package_classic(F);
-//	inter_t a = Inter::Frame::get_package_alt(F);
-//	if (c != a) {
-//		WRITE_TO(STDOUT, "c = %d, a = %d\n", c, a);
-//		internal_error("zap");
-//	}
-	return c;
-}
-
-
-inter_t Inter::Frame::get_package_classic(inter_frame F) {
 	if (F.repo_segment) {
 		return F.repo_segment->bytecode[F.index + PREFRAME_PACKAGE];
 	}
 	return 0;
 }
-
 
 inter_t Inter::Frame::get_package_alt(inter_frame F) {
 	while (TRUE) {

@@ -168,24 +168,24 @@ inter_error_message *Inter::Kind::new(inter_reading_state *IRS, inter_t SID, int
 		for (int i=0; i<arity; i++) P.data[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
 	Inter::check_segments(IRS->read_into);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent < MIN_EXTENT_KIND_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_KIND_IFLD); if (*E) return;
+	*E = Inter__Verify__defn(owner, P, DEFN_KIND_IFLD); if (*E) return;
 	*E = Inter::Verify::data_type(P, DATA_TYPE_KIND_IFLD); if (*E) return;
 	if (P.data[ENUM_RANGE_KIND_IFLD] != 0) {
-		inter_symbol *the_kind = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+		inter_symbol *the_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[DEFN_KIND_IFLD]);
 		if ((the_kind == NULL) ||
 			(Inter::Types::is_enumerated(Inter::Types::find_by_ID(P.data[DATA_TYPE_KIND_IFLD])) == FALSE))
 			{ *E = Inter::Frame::error(&P, I"spurious extent in non-enumeration", NULL); return; }
 	}
 	if (P.data[SUPER_KIND_IFLD] != 0) {
-		*E = Inter::Verify::symbol(P, P.data[SUPER_KIND_IFLD], KIND_IST); if (*E) return;
-		inter_symbol *super_kind = Inter::SymbolsTables::symbol_from_frame_data(P, SUPER_KIND_IFLD);
+		*E = Inter::Verify::symbol(owner, P, P.data[SUPER_KIND_IFLD], KIND_IST); if (*E) return;
+		inter_symbol *super_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[SUPER_KIND_IFLD]);
 		if (Inter::Types::is_enumerated(Inter::Kind::data_type(super_kind)) == FALSE)
 			{ *E = Inter::Frame::error(&P, I"subkind of nonenumerated kind", NULL); return; }
 	}
@@ -197,21 +197,21 @@ void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_error_message
 		case RULEBOOK_ICON:
 			if (arity != 1) { *E = Inter::Frame::error(&P, I"wrong list arity", NULL); return; }
 			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
 		case COLUMN_ICON: if (arity != 1) { *E = Inter::Frame::error(&P, I"wrong col arity", NULL); return; }
 			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
 		case DESCRIPTION_ICON: if (arity != 1) { *E = Inter::Frame::error(&P, I"wrong desc arity", NULL); return; }
 			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
 		case RELATION_ICON: if (arity != 2) { *E = Inter::Frame::error(&P, I"wrong relation arity", NULL); return; }
 			if (P.data[OPERANDS_KIND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			if (P.data[OPERANDS_KIND_IFLD+1] == 0) { *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD+1], KIND_IST); if (*E) return;
+			*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD+1], KIND_IST); if (*E) return;
 			break;
 		case FUNCTION_ICON:
 		case RULE_ICON:
@@ -221,7 +221,7 @@ void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_error_message
 					if (!(((i == 0) && (arity == 2)) || (i == arity - 1)))
 						{ *E = Inter::Frame::error(&P, I"no listed kind", NULL); return; }
 				} else {
-					*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
+					*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
 					if (*E) return;
 				}
 			}
@@ -229,7 +229,7 @@ void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_error_message
 		case STRUCT_ICON:
 			if (arity == 0) { *E = Inter::Frame::error(&P, I"struct arity too low", NULL); return; }
 			for (int i=0; i<arity; i++) {
-				*E = Inter::Verify::symbol(P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
+				*E = Inter::Verify::symbol(owner, P, P.data[OPERANDS_KIND_IFLD + i], KIND_IST);
 				if (*E) return;
 			}
 			break;
@@ -360,7 +360,8 @@ inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (i >= D.extent - MIN_EXTENT_KIND_IFR) return NULL;
 	inter_t CID = D.data[OPERANDS_KIND_IFLD + i];
-	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(D), CID);
+	inter_symbols_table *T = Inter::Packages::scope_of(D);
+	return Inter::SymbolsTables::symbol_from_id(T, CID);
 }
 
 inter_data_type *Inter::Kind::data_type(inter_symbol *kind_symbol) {

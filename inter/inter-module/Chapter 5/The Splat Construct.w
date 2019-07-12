@@ -120,12 +120,12 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
 inter_error_message *Inter::Splat::new(inter_reading_state *IRS, inter_symbol *routine, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inter::Frame::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Splat::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Splat::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_SPLAT_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 	if (P.data[MATTER_SPLAT_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no matter text", NULL); return; }
 	if (P.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) { *E = Inter::Frame::error(&P, I"plm out of range", NULL); return; }

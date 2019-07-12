@@ -68,7 +68,7 @@ void Inter::Inv::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 inter_error_message *Inter::Inv::new_primitive(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, invoked_name),
 		eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
@@ -76,7 +76,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_reading_state *IRS, inter_s
 
 inter_error_message *Inter::Inv::new_call(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, invoked_name), eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
@@ -84,16 +84,14 @@ inter_error_message *Inter::Inv::new_call(inter_reading_state *IRS, inter_symbol
 
 inter_error_message *Inter::Inv::new_assembly(inter_reading_state *IRS, inter_symbol *routine, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Inv::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Inv::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_INV_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = Inter::Packages::scope_of(P);
-	if (locals == NULL) { *E = Inter::Frame::error(&P, I"function has no symbols table", NULL); return; }
 
 	switch (P.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE:
@@ -127,7 +125,7 @@ inter_symbol *Inter::Inv::invokee(inter_frame P) {
 
 void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
 //	if (P.data[METHOD_INV_IFLD] == INVOKED_ROUTINE) {
-//		*E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
+//		*E = Inter::Verify::symbol(owner, P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
 //		if (*E) return;
 //	}
 	int arity_as_invoked=0;

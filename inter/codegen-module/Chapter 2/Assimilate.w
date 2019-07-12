@@ -171,6 +171,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 		outer = housing_package;
 		save_into_scope = into_scope;
 		into_scope = Inter::Packages::scope(outer);
+		baseline++;
 	}
 
 	if ((identifier) && (unchecked_kind_symbol)) {
@@ -327,7 +328,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 						array_in_progress.data[pos++] = v1_pile[i];
 						array_in_progress.data[pos++] = v2_pile[i];
 					}
-					CodeGen::Link::guard(Inter::Defn::verify_construct(array_in_progress));
+					CodeGen::Link::guard(Inter::Defn::verify_construct(ib.current_package, array_in_progress));
 					Inter::Frame::insert(array_in_progress, &ib);
 					break;
 				}
@@ -739,7 +740,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_reposi
 		internal_error("can't extend frame");
 	array_in_progress.data[pos] = LITERAL_IVAL; array_in_progress.data[pos+1] = 0;
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress.data[pos+2]), &(array_in_progress.data[pos+3]));
-	CodeGen::Link::guard(Inter::Defn::verify_construct(array_in_progress));
+	CodeGen::Link::guard(Inter::Defn::verify_construct(IRS->current_package, array_in_progress));
 	Inter::Frame::insert(array_in_progress, IRS);
 	return mcc_name;
 }
@@ -753,7 +754,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op,
 		internal_error("can't extend frame");
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress.data[pos]), &(array_in_progress.data[pos+1]));
 	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress.data[pos+2]), &(array_in_progress.data[pos+3]));
-	CodeGen::Link::guard(Inter::Defn::verify_construct(array_in_progress));
+	CodeGen::Link::guard(Inter::Defn::verify_construct(IRS->current_package, array_in_progress));
 	Inter::Frame::insert(array_in_progress, IRS);
 	return mcc_name;
 }

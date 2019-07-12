@@ -49,7 +49,7 @@ inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter
 	LOGIF(INTER_SYMBOLS, "Package $3 at IRS $5\n", package_name, IRS);
 	inter_frame P = Inter::Frame::fill_4(IRS,
 		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, package_name), Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, ptype_name), STID, 0, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 
@@ -65,9 +65,11 @@ inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter
 	return NULL;
 }
 
-void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	*E = Inter::Verify::defn(P, DEFN_PACKAGE_IFLD); if (*E) return;
-	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
+void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
+	*E = Inter__Verify__defn(owner, P, DEFN_PACKAGE_IFLD); if (*E) return;
+	inter_symbols_table *T = Inter::Packages::scope(owner);
+	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_id(T, P.data[DEFN_PACKAGE_IFLD]);
 	Inter::Defn::set_latest_package_symbol(package_name);
 }
 

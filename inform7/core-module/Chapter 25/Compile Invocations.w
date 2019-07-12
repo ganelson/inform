@@ -162,12 +162,6 @@ will be expressions being evaluated.
 	int void_mode = FALSE;
 	if (ph->type_data.manner_of_return == DECIDES_NOTHING_MOR) void_mode = TRUE;
 
-	TEMPORARY_TEXT(C);
-	WRITE_TO(C, "Resolution of run-time phrase ambiguity%s",
-		(void_mode)?" (to phrase)":" (deciding a value)");
-	Emit::comment(C);
-	DISCARD_TEXT(C);
-
 	@<Compile the resolution@>;
 
 @ Our basic idea is best explained in void mode, where it's much simpler to

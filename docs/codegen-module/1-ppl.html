@@ -324,6 +324,15 @@ logging:
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::visitor</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Inter::Frame::get_package</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> = </span><span class="identifier">Inter::Frame::get_package_alt</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> != </span><span class="identifier">a</span><span class="plain">) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Frame gives package as $3, but its location is in package $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                <span class="identifier">Inter::Packages::from_PID</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">)-&gt;</span><span class="identifier">package_name</span><span class="plain">,</span>
+                <span class="identifier">Inter::Packages::from_PID</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">a</span><span class="plain">)-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"zap"</span><span class="plain">);</span>
+        <span class="plain">}</span>
+
         <span class="functiontext">CodeGen::Link::guard</span><span class="plain">(</span><span class="identifier">Inter::Defn::verify_children_inner</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>

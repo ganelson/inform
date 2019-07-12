@@ -53,14 +53,14 @@ void Inter::Response::read(inter_construct *IC, inter_reading_state *IRS, inter_
 
 inter_error_message *Inter::Response::new(inter_reading_state *IRS, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_5(IRS, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Response::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Response::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_RESPONSE_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_RESPONSE_IFLD); if (*E) return;
+	*E = Inter__Verify__defn(owner, P, DEFN_RESPONSE_IFLD); if (*E) return;
 	if (P.data[MARKER_RESPONSE_IFLD] >= 26) { *E = Inter::Errors::plain(I"response marker out of range", NULL); return; }
 }
 

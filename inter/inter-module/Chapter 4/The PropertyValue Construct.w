@@ -99,23 +99,23 @@ inter_error_message *Inter::PropertyValue::new(inter_reading_state *IRS, inter_t
 	inter_t con_val1, inter_t con_val2, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_4(IRS, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
 
 	if (P.extent != EXTENT_PVAL_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(P, P.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(P, P.data[OWNER_PVAL_IFLD]); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P.data[OWNER_PVAL_IFLD]); if (*E) return;
 
 	if (vcount == 0) {
-		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD);
-		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PVAL_IFLD);
+		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PVAL_IFLD]);;
+		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PVAL_IFLD]);;
 
-		if (Inter::PropertyValue::permitted(P.repo_segment->owning_repo, Inter::Packages::container(P), owner_name, prop_name) == FALSE) {
+		if (Inter::PropertyValue::permitted(P.repo_segment->owning_repo, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
 			WRITE_TO(err, "no permission for '%S' have this property", owner_name->symbol_name);
 			*E = Inter::Frame::error(&P, err, prop_name->symbol_name); return;

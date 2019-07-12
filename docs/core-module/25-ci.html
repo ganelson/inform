@@ -240,12 +240,6 @@ will be expressions being evaluated.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">void_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_NOTHING_MOR</span><span class="plain">) </span><span class="identifier">void_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Resolution of run-time phrase ambiguity%s"</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">void_mode</span><span class="plain">)?</span><span class="string">" (to phrase)"</span><span class="plain">:</span><span class="string">" (deciding a value)"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-
         &lt;<span class="cwebmacro">Compile the resolution</span> <span class="cwebmacronumber">3.2.3</span>&gt;<span class="plain">;</span>
 </pre>
 

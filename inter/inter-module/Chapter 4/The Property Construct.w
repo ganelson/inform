@@ -43,16 +43,16 @@ void Inter::Property::read(inter_construct *IC, inter_reading_state *IRS, inter_
 
 inter_error_message *Inter::Property::new(inter_reading_state *IRS, inter_t PID, inter_t KID, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, PROPERTY_IST, PID, KID, Inter::create_frame_list(IRS->read_into), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Property::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Property::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_PROP_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_PROP_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(P, P.data[KIND_PROP_IFLD], KIND_IST);
+	*E = Inter__Verify__defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[KIND_PROP_IFLD], KIND_IST);
 }
 
 inter_t Inter::Property::permissions_list(inter_symbol *prop_name) {

@@ -54,17 +54,17 @@ void Inter::Local::read(inter_construct *IC, inter_reading_state *IRS, inter_lin
 inter_error_message *Inter::Local::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *var_name, inter_symbol *var_kind, inter_t ID, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_kind)):0, eloc, level);
 	Inter::Frame::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Local::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Local::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_LOCAL_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = Inter::Packages::scope_of(P);
+	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inter::Frame::error(&P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LOCAL_IFLD, locals); if (*E) return;
-	*E = Inter::Verify::symbol(P, P.data[KIND_LOCAL_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[KIND_LOCAL_IFLD], KIND_IST); if (*E) return;
 }
 
 void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

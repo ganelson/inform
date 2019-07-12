@@ -36,12 +36,12 @@ void Inter::Version::read(inter_construct *IC, inter_reading_state *IRS, inter_l
 
 inter_error_message *Inter::Version::new(inter_reading_state *IRS, int V, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_1(IRS, VERSION_IST, (inter_t) V, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Version::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Version::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_VERSION_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 	if (P.data[NUMBER_VERSION_IFLD] < 1) { *E = Inter::Frame::error(&P, I"version out of range", NULL); return; }
 }

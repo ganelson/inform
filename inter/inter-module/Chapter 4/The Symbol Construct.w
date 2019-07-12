@@ -79,7 +79,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 	}
 }
 
-void Inter::Symbol::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Symbol::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	internal_error("SYMBOL_IST structures cannot exist");
 }
 

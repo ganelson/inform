@@ -33,14 +33,14 @@ void Inter::Marker::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 
 inter_error_message *Inter::Marker::new(inter_reading_state *IRS, inter_symbol *mark, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_1(IRS, MARKER_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mark), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	mark->following_symbol = Inter::Bookmarks::snapshot(IRS);
 	return NULL;
 }
 
-void Inter::Marker::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	*E = Inter::Verify::defn(P, MARK_MARKER_IFLD);
+void Inter::Marker::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
+	*E = Inter__Verify__defn(owner, P, MARK_MARKER_IFLD);
 }
 
 void Inter::Marker::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

@@ -49,16 +49,16 @@ void Inter::Append::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 
 inter_error_message *Inter::Append::new(inter_reading_state *IRS, inter_symbol *symbol, inter_t append_text, inter_t level, struct inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_2(IRS, APPEND_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, symbol), append_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Append::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Append::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
 
 	if (P.extent != EXTENT_APPEND_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
+	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[SYMBOL_APPEND_IFLD]);;
 	if (symbol == NULL) { *E = Inter::Frame::error(&P, I"no target name", NULL); return; }
 	if (P.data[TEXT_APPEND_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no translation text", NULL); return; }
 

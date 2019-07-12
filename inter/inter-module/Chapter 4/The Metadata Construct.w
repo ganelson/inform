@@ -53,14 +53,14 @@ void Inter::Metadata::read(inter_construct *IC, inter_reading_state *IRS, inter_
 inter_error_message *Inter::Metadata::new(inter_reading_state *IRS, inter_t SID, inter_t TID, inter_t level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_3(IRS,
 		METADATA_IST, SID, LITERAL_TEXT_IVAL, TID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
+	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
 	Inter::Frame::insert(P, IRS);
 	return NULL;
 }
 
-void Inter::Metadata::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Metadata::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_MD_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_MD_IFLD);
+	*E = Inter__Verify__defn(owner, P, DEFN_MD_IFLD);
 }
 
 void Inter::Metadata::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
