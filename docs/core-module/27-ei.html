@@ -310,11 +310,6 @@ insert them into the Inter stream close to the top.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">var_name</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::marker</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">mark</span><span class="plain">) {</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">mark_name</span><span class="plain"> = </span><span class="functiontext">Emit::new_symbol</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">));</span>
-        <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Marker::new</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="identifier">mark_name</span><span class="plain">, </span><span class="functiontext">Emit::baseline</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()), </span><span class="identifier">NULL</span><span class="plain">));</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::property</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter_home_of</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="functiontext">Emit::define_symbol</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
@@ -999,8 +994,6 @@ insert them into the Inter stream close to the top.
 <p class="endnote">The function Emit::kind_inner is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="endnote">The function Emit::variable is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 27/hr (<a href="27-hr.html#SP4">&#167;4</a>).</p>
-
-<p class="endnote">The function Emit::marker appears nowhere else.</p>
 
 <p class="endnote">The function Emit::property is used in 15/pr (<a href="15-pr.html#SP27">&#167;27</a>).</p>
 

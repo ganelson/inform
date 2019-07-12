@@ -29,7 +29,6 @@ Chapter 4: Void Constructs
 	The Nop Construct
 	The Comment Construct
 	The Metadata Construct
-	The Marker Construct
 	The Symbol Construct
 	The Version Construct
 	The Pragma Construct

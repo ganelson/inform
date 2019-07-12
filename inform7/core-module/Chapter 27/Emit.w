@@ -268,11 +268,6 @@ inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, 
 	return var_name;
 }
 
-void Emit::marker(text_stream *mark) {
-	inter_symbol *mark_name = Emit::new_symbol(Emit::main_scope(), Str::duplicate(mark));
-	Emit::guard(Inter::Marker::new(Packaging::at(), mark_name, Emit::baseline(Packaging::at()), NULL));
-}
-
 void Emit::property(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *prop_name = Emit::define_symbol(name);

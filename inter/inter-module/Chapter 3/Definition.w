@@ -97,7 +97,6 @@ void Inter::Defn::create_language(void) {
 
 	Inter::Nop::define();
 	Inter::Comment::define();
-	Inter::Marker::define();
 	Inter::Symbol::define();
 	Inter::Version::define();
 	Inter::Pragma::define();
