@@ -253,6 +253,10 @@ internal_error("zob");
 
 inter_error_message *Inter::Defn::write_construct_text(OUTPUT_STREAM, inter_frame P) {
 	if (P.data[ID_IFLD] == NOP_IST) return NULL;
+	return Inter::Defn::write_construct_text_allowing_nop(OUT, P);
+}
+
+inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREAM, inter_frame P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
@@ -399,5 +403,6 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_frame P) {
 	}
 	E = NULL;
 	VMETHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
+	if (E) Inter::Frame::backtrace(STDERR, P);
 	return E;
 }

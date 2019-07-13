@@ -109,6 +109,12 @@ inter_package *Inter::Package::which(inter_symbol *package_name) {
 	return Inter::get_package(D.repo_segment->owning_repo, D.data[PID_PACKAGE_IFLD]);
 }
 
+inter_package *Inter::Package::defined_by_frame(inter_frame D) {
+	if (Inter::Frame::valid(&D) == FALSE) return NULL;
+	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
+	return Inter::get_package(D.repo_segment->owning_repo, D.data[PID_PACKAGE_IFLD]);
+}
+
 inter_symbol *Inter::Package::type(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
 	inter_frame D = Inter::Symbols::defining_frame(package_name);

@@ -1,0 +1,47 @@
+packagetype _plain
+packagetype _code
+
+primitive !return val -> void
+primitive !modulo val val -> val
+primitive !plus val val -> val
+primitive !minus val val -> val
+primitive !jump lab -> void
+
+package main _plain
+	symbol public misc resources
+	package resources _plain
+		symbol public misc K_number
+		symbol public misc K_phrase_number____nothing
+		symbol public misc MyRoutine_B
+		symbol public misc MyRoutine
+		kind K_number int32
+		kind K_phrase_number____nothing function K_number -> void
+		package MyRoutine_B _code
+			symbol private misc x
+			symbol private misc y
+			symbol private label .begin
+			symbol private label .end
+			symbol private label .useful
+			symbol external misc K_number
+			local x K_number
+			local y K_number
+			.begin
+				inv !return
+					val K_number x
+				inv !return
+					inv !plus
+						val K_number x
+						val K_number y
+				inv !return
+					inv !minus
+						val K_number x
+						val K_number y
+				inv !jump
+					lab .useful
+				.useful
+				inv !return
+					inv !modulo
+						val K_number x
+						val K_number y
+			.end
+		constant MyRoutine K_phrase_number____nothing = MyRoutine_B

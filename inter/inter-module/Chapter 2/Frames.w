@@ -293,6 +293,37 @@ inter_t Inter::Frame::get_package_alt(inter_frame F) {
 	return 0;
 }
 
+void Inter::Frame::backtrace(OUTPUT_STREAM, inter_frame F) {
+	inter_frame X = F;
+	int n = 0;
+	while (TRUE) {
+		inter_t X_index = Inter::Frame::get_parent_index(X);
+		if (X_index == 0) break;
+		X = Inter::Frame::from_index(X.repo_segment->owning_repo, X_index);
+		n++;
+	}
+	for (int i = n; i >= 0; i--) {
+		inter_frame X = F;
+		int m = 0;
+		while (TRUE) {
+			inter_t X_index = Inter::Frame::get_parent_index(X);
+			if (X_index == 0) break;
+			if (m == i) {
+				WRITE("%2d. ", (n-i));
+				if (i == 0) WRITE("** "); else WRITE("   ");
+				Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+				break;
+			}
+			X = Inter::Frame::from_index(X.repo_segment->owning_repo, X_index);
+			m++;
+		}
+	}
+	LOOP_THROUGH_INTER_CHILDREN(C, F) {
+		WRITE("%2d.    ", (n+1));
+		Inter::Defn::write_construct_text_allowing_nop(OUT, C);
+	}
+}		
+
 void Inter::Frame::attach_package(inter_frame F, inter_t ID) {
 	if ((ID) && (F.repo_segment)) {
 		F.repo_segment->bytecode[F.index + PREFRAME_PACKAGE] = ID;

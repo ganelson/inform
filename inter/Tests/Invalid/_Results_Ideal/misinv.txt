@@ -6,8 +6,63 @@ inter: inter/Tests/Invalid/misinv.intert, line 27: bad digit for this number bas
 >--> ref K_stuff S_stuff
 inter: inter/Tests/Invalid/misinv.intert, line 32: local has kind K_colour which is not a K_number: 'x'
 >--> ref K_number x
+ 1.    	package R_101_B _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc K_colour == /main/K_colour
+		symbol external misc K_number == /main/K_number
+		symbol external misc K_stuff == /main/K_stuff
+		symbol external misc R_101 == /main/R_101
+		symbol external misc R_102 == /main/R_102
+ 2.    		.begin
+ 3. ** 			inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 24: this inv of !increment should have 1 argument(s), but has 0
+ 1.    	package R_101_B _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc K_colour == /main/K_colour
+		symbol external misc K_number == /main/K_number
+		symbol external misc K_stuff == /main/K_stuff
+		symbol external misc R_101 == /main/R_101
+		symbol external misc R_102 == /main/R_102
+ 2.    		.begin
+ 3. ** 			inv !increment
+ 4.    				val K_number 2
 inter: inter/Tests/Invalid/misinv.intert, line 29: operand 1 of inv '!increment' should be ref, but this is val
+ 1.    	package R_101_B _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc K_colour == /main/K_colour
+		symbol external misc K_number == /main/K_number
+		symbol external misc K_stuff == /main/K_stuff
+		symbol external misc R_101 == /main/R_101
+		symbol external misc R_102 == /main/R_102
+ 2.    		.begin
+ 3. ** 			inv R_101
+ 4.    				inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 31: operand 1 of inv 'R_101' should be val, but this is void
+ 1.    	package R_101_B _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc K_colour == /main/K_colour
+		symbol external misc K_number == /main/K_number
+		symbol external misc K_stuff == /main/K_stuff
+		symbol external misc R_101 == /main/R_101
+		symbol external misc R_102 == /main/R_102
+ 2.    		.begin
+ 3.    			inv R_101
+ 4. ** 				inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 31: this inv of !increment should have 1 argument(s), but has 0
+ 1.    	package R_101_A _code
+		symbol private misc x
+		symbol private label .begin
+		symbol private label .end
+		symbol external misc R_101 == /main/R_101
+		symbol external misc K_colour == /main/K_colour
+ 2.    		.begin
+ 3. ** 			inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 43: this inv of !increment should have 1 argument(s), but has 0

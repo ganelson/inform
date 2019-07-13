@@ -87,7 +87,6 @@ package main _plain
 	link after "" "" "gamma" ""
 	constant cornelius K_number = dw'frogs'
 	constant gaius K_number = dw'toads'
-	marker mark_my_words
 	splat &"Sing a song of \"six splats\"...\nand don't wait up"
 	kind K_colour enum
 	instance I_green K_colour = 1
@@ -97,7 +96,6 @@ package main _plain
 	constant C_primes K_list_of_number = { 2, 3, 5, 7, 11, 13, 17, 19 }
 	constant C_concealed K_list_of_number = C_primes
 	variable V_watch_list K_list_of_number = C_concealed
-	marker 718_varieties
 	kind K_text text
 	constant C_complaint K_text = "This is already quite a long test case."
 	constant C_raw K_number = &"SOME_I6_DRIVEL"

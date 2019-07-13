@@ -12,6 +12,7 @@ void Inter::Nop::define(void) {
 		NOP_IST, NULL,
 		I"nop", I"nops");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Nop::write);
 }
 
 inter_error_message *Inter::Nop::new(inter_reading_state *IRS, inter_t level, inter_error_location *eloc) {
@@ -25,4 +26,8 @@ inter_error_message *Inter::Nop::new(inter_reading_state *IRS, inter_t level, in
 inter_error_message *Inter::Nop::nop_out(inter_repository *I, inter_frame P) {
 	P.data[ID_IFLD] = NOP_IST;
 	return NULL;
+}
+
+void Inter::Nop::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+	WRITE("nop");
 }

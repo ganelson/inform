@@ -5,6 +5,7 @@
 -cases [PLM] 'inter/Tests/PLM'
 -cases [Assimilate] 'inter/Tests/Assimilate'
 -cases [Units] 'inter/Tests/Units'
+-cases [ERL] 'inter/Tests/ERL'
 
 -recipe [Valid]
 
@@ -103,6 +104,27 @@
 	mkdir: $PATH/_Console
 
 	step: inter/Tangled/inter $O -inter 'parse-linked-matter, generate: text ->$A' >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [ERL]
+
+	set: $O = $PATH/$CASE.intert
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	mkdir: $PATH/_Console
+
+	step: inter/Tangled/inter $O -inter 'eliminate-redundant-labels, generate: text ->$A' >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A

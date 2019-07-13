@@ -17,13 +17,13 @@ void CodeGen::Labels::create_pipeline_stage(void) {
 }
 
 int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
-	CodeGen::Labels::traverse_package_tree(Inter::Packages::main(step->repository));
+	Inter::Packages::traverse_repository_inc(step->repository, CodeGen::Labels::visitor, NULL);
 	return TRUE;
 }
 
-void CodeGen::Labels::traverse_package_tree(inter_package *in) {
-	for (inter_package *pack = in; pack; pack = pack->next_package) {
-		if (pack->child_package) CodeGen::Labels::traverse_package_tree(pack->child_package);
+void CodeGen::Labels::visitor(inter_repository *I, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (pack->codelike_package) @<Perform peephole optimisation on this block@>;
 	}
 }

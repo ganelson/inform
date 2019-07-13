@@ -153,21 +153,6 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_rep
 	return symbol;
 }
 
-@ This is intentionally used very little. We don't want the inter specification
-to include implied identities through package-hierarchy context, because that
-makes it harder to link packages together. If you can avoid calling this, do.
-
-=
-inter_symbol *Inter::SymbolsTables::search_for_named_symbol_recursively(inter_repository *I, inter_package *P, text_stream *S) {
-	while (P) {
-		inter_symbol *ST = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
-		if (ST) return ST;
-		P = P->parent_package;
-	}
-	if (I) return Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(I), S);
-	return NULL;
-}
-
 @h Creation by unique name.
 
 =
