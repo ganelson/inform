@@ -215,10 +215,10 @@ inter_symbols_table *Inter::get_symbols_table(inter_repository *I, inter_t n) {
 	return I->stored_resources[n].stored_symbols_table;
 }
 
-inter_t Inter::create_package(inter_repository *I, inter_package *par) {
+inter_t Inter::create_package(inter_repository *I) {
 	inter_t n = Inter::create_resource(I);
 	if (I->stored_resources[n].stored_package == NULL) {
-		I->stored_resources[n].stored_package = Inter::Packages::new(par, I, n);
+		I->stored_resources[n].stored_package = Inter::Packages::new(I, n);
 	}
 	return n;
 }

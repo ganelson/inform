@@ -348,7 +348,7 @@ void Inter::Defn::set_current_package(inter_reading_state *IRS, inter_package *P
 }
 
 void Inter::Defn::unset_current_package(inter_reading_state *IRS, inter_package *P, int L) {
-	IRS->current_package = P->parent_package;
+	IRS->current_package = Inter::Packages::parent(P);
 	IRS->cp_indent = L;
 }
 
@@ -388,7 +388,7 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	int need = INSIDE_PLAIN_PACKAGE;
 	if (pack == NULL) need = OUTSIDE_OF_PACKAGES;
-	else if (pack->codelike_package) need = INSIDE_CODE_PACKAGE;
+	else if (Inter::Packages::is_codelike(pack)) need = INSIDE_CODE_PACKAGE;
 	if ((IC->usage_permissions & need) != need) {
 		text_stream *M = Str::new();
 		WRITE_TO(M, "construct (%d) '", P.data[LEVEL_IFLD]);

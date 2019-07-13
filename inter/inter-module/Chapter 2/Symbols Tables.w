@@ -379,7 +379,7 @@ void Inter::SymbolsTables::symbol_to_url_name(OUTPUT_STREAM, inter_symbol *S) {
 	while (P) {
 		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH) internal_error("package nesting too deep");
 		chain[chain_length++] = P;
-		P = P->parent_package;
+		P = Inter::Packages::parent(P);
 	}
 	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", chain[i]->package_name->symbol_name);
 	WRITE("/%S", S->symbol_name);

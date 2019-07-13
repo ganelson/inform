@@ -39,7 +39,7 @@ void CodeGen::RCC::visitor(inter_repository *I, inter_frame P, void *v_state) {
 	int allow = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) allow = FALSE;
 	inter_package *outer = Inter::Packages::container(P);
-	if ((outer == NULL) || (outer->codelike_package == FALSE)) {
+	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		if (P.data[ID_IFLD] == SPLAT_IST) {
 			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]);
 			switch (P.data[PLM_SPLAT_IFLD]) {

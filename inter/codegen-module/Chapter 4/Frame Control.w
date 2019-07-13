@@ -18,7 +18,7 @@ void CodeGen::FC::prepare(code_generation *gen) {
 
 void CodeGen::FC::iterate(code_generation *gen, inter_frame P, void *state) {
 	inter_package *outer = Inter::Packages::container(P);
-	if ((outer == NULL) || (outer->codelike_package == FALSE)) {
+	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		generated_segment *saved =
 			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
 		switch (P.data[ID_IFLD]) {

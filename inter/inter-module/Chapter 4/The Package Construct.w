@@ -53,10 +53,10 @@ inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter
 	if (E) return E;
 	Inter::Frame::insert(P, IRS);
 
-	inter_t PID = Inter::create_package(IRS->read_into, IRS->current_package);
+	inter_t PID = Inter::create_package(IRS->read_into);
 	inter_package *pack = Inter::Packages::from_PID(IRS->read_into, PID);
 	Inter::Packages::set_name(pack, package_name);
-	if (ptype_name == code_packagetype) pack->codelike_package = TRUE;
+	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
 	Inter::Packages::set_scope(pack, Inter::Package::local_symbols(package_name));
 	P.data[PID_PACKAGE_IFLD] = PID;
 

@@ -243,7 +243,7 @@ that's the end of the list and therefore the block.
 		if (parent == NULL) Inter::Binary::read_error(&eloc, ftell(fh), I"packages not well founded");
 	}
 	if (res->stored_package == NULL) {
-		res->stored_package = Inter::Packages::new(parent, I, n);
+		res->stored_package = Inter::Packages::new(I, n);
 	}
 	if (sc != 0) Inter::Packages::set_scope(res->stored_package, Inter::get_symbols_table(I, sc));
 	if (nid != 0) {
@@ -256,15 +256,15 @@ that's the end of the list and therefore the block.
 			Inter::Packages::set_name(res->stored_package, pack_name);
 		}
 	}
-	res->stored_package->codelike_package = (int) cl;
+	if (cl) Inter::Packages::make_codelike(res->stored_package);
 
 @<Write a package resource@> =
 	inter_package *P = res->stored_package;
 	if (P) {
-		inter_package *par = P->parent_package;
+		inter_package *par = Inter::Packages::parent(P);
 		if (par == NULL) BinaryFiles::write_int32(fh, 0);
 		else BinaryFiles::write_int32(fh, (unsigned int) par->index_n);
-		BinaryFiles::write_int32(fh, (unsigned int) P->codelike_package);
+		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_codelike(P));
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_name->symbol_ID);
 	}

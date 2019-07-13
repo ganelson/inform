@@ -9,9 +9,7 @@ typedef struct inter_package {
 	struct inter_repository *stored_in;
 	inter_t index_n;
 	struct inter_symbol *package_name;
-	struct inter_package *parent_package;
 	struct inter_symbols_table *package_scope;
-	int codelike_package;
 	inter_t I7_baseline;
 	int package_flags;
 	MEMORY_MANAGEMENT
@@ -19,20 +17,41 @@ typedef struct inter_package {
 
 @
 
-@d USED_PACKAGE_FLAG 1
+@d CODELIKE_PACKAGE_FLAG 1
+@d USED_PACKAGE_FLAG 2
 
 @ =
-inter_package *Inter::Packages::new(inter_package *par, inter_repository *I, inter_t n) {
+inter_package *Inter::Packages::new(inter_repository *I, inter_t n) {
 	inter_package *pack = CREATE(inter_package);
 	pack->stored_in = I;
 	pack->package_scope = NULL;
 	pack->package_name = NULL;
 	pack->package_flags = 0;
-	pack->parent_package = par;
 	pack->index_n = n;
-	pack->codelike_package = FALSE;
 	pack->I7_baseline = 0;
 	return pack;
+}
+
+int Inter::Packages::is_codelike(inter_package *pack) {
+	if ((pack) && (pack->package_flags & CODELIKE_PACKAGE_FLAG)) return TRUE;
+	return FALSE;
+}
+
+void Inter::Packages::make_codelike(inter_package *pack) {
+	if (pack) {
+		pack->package_flags |= CODELIKE_PACKAGE_FLAG;
+	}
+}
+
+inter_package *Inter::Packages::parent(inter_package *pack) {
+	if (pack) {
+		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+		inter_t P_index = Inter::Frame::get_parent_index(D);
+		if (P_index == 0) return NULL;
+		inter_frame P = Inter::Frame::from_index(pack->stored_in, P_index);
+		return Inter::Package::defined_by_frame(P);
+	}
+	return NULL;
 }
 
 void Inter::Packages::unmark_all(void) {

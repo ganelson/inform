@@ -50,7 +50,7 @@ void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *sta
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	inter_symbols_table *into_scope = Inter::Packages::scope(outer);
-	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
+	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
 		IRS->current_package = outer;
 		IRS->cp_indent = Inter::Packages::baseline(outer);
 		inter_t baseline = (inter_t) IRS->cp_indent + 1;
@@ -73,7 +73,7 @@ void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *sta
 void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *state) {
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
-	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
+	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
 		IRS->current_package = outer;
 		inter_symbols_table *into_scope = Inter::Packages::scope(outer);
 		IRS->cp_indent = Inter::Packages::baseline(outer);
@@ -97,7 +97,7 @@ void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *sta
 void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *state) {
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
-	if (((outer == NULL) || (outer->codelike_package == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
+	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
 		IRS->current_package = outer;
 		IRS->cp_indent = Inter::Packages::baseline(outer);
 		inter_symbols_table *into_scope = Inter::Packages::scope(outer);

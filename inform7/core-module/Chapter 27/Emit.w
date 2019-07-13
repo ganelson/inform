@@ -17,7 +17,8 @@ inter_repository *Emit::repository(void) {
 inter_t Emit::baseline(inter_reading_state *IRS) {
 	if (IRS == NULL) return 0;
 	if (IRS->current_package == NULL) return 0;
-	if (IRS->current_package->codelike_package) return IRS->current_package->parent_package->I7_baseline;
+	if (Inter::Packages::is_codelike(IRS->current_package))
+		return Inter::Packages::parent(IRS->current_package)->I7_baseline;
 	return IRS->current_package->I7_baseline;
 }
 
@@ -1117,7 +1118,7 @@ void Emit::end_block(inter_symbol *rsymb) {
 	current_inter_routine = NULL;
 	Emit::pop_code_position();
 	inter_reading_state *IRS = Packaging::at();
-	IRS->current_package = IRS->current_package->parent_package;
+	IRS->current_package = Inter::Packages::parent(IRS->current_package);
 }
 
 int Emit::emitting_routine(void) {
