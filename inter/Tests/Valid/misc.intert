@@ -137,8 +137,6 @@ package main _plain
 	constant RB_after K_rulebook = { R_after1, R_after2 }
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
-		symbol private label .begin
-		symbol private label .end
 		symbol private misc x
 		symbol external misc K_colour == /main/K_colour
 		symbol external misc R_102 == /main/R_102
@@ -146,7 +144,7 @@ package main _plain
 		symbol external misc K_number == /main/K_number
 		symbol external misc K_truth_state == /main/K_truth_state
 		local x K_colour __call_parameter
-		.begin
+		code
 			inv R_102
 				val K_colour I_green
 			inv !return
@@ -156,19 +154,15 @@ package main _plain
 							val K_colour x
 						val K_number 1
 					val K_truth_state &"a b"
-		.end
 	constant R_101 K_colour____colour = R_101_B
 	package R_102_B _code
-		symbol private label .begin
-		symbol private label .end
 		symbol private misc x
 		symbol external misc K_colour == /main/K_colour
 		symbol external misc I_red == /main/I_red
 		local x K_colour __call_parameter
-		.begin
+		code
 			inv !return
 				val K_colour I_red
-		.end
 	constant R_102 K_colour____colour = R_102_B
 	constant amount K_number = sum{ 2, C_taxes }
 	response R_101_A R_101 0 = C_taxes

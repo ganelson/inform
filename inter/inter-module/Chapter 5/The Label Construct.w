@@ -14,8 +14,7 @@ void Inter::Label::define(void) {
 		I"label", I"labels");
 	IC->min_level = 0;
 	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
-	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Label::verify_children);
+	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Label::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Label::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Label::write);
@@ -72,17 +71,4 @@ void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inte
 	if (lab_name) {
 		WRITE("%S", lab_name->symbol_name);
 	} else { *E = Inter::Frame::error(&P, I"cannot write label", NULL); return; }
-}
-
-void Inter::Label::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	LOOP_THROUGH_INTER_CHILDREN(C, P) {
-		if ((C.data[0] != INV_IST) && (C.data[0] != NOP_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != EVALUATION_IST) && (C.data[0] != LABEL_IST) && (C.data[0] != VAL_IST) && (C.data[0] != COMMENT_IST)) {
-			inter_package *pack = Inter::Packages::container(P);
-			inter_symbol *routine = pack->package_name;
-			inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
-			LOG("C is: (%d) ", C.data[0]); Inter::Defn::write_construct_text(DL, C);
-			*E = Inter::Frame::error(&C, I"only an inv, a val, a splat, a concatenate or another label can be below a label", lab_name->symbol_name);
-			return;
-		}
-	}
 }

@@ -41,18 +41,12 @@ it does.
 	@<Remove the label declarations for any that are still marked unused@>;
 
 @ The symbol flag |USED_MARK_BIT| is free for us to use, but its value for
-any given symbol is undefined when we begin. We'll clear it for all labels
-except the special begin/end ones.
+any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @<Mark all the labels for this function as being unused@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, local_symbols)
-		if (Inter::Symbols::is_label(S)) {
-			if ((Str::eq(S->symbol_name, I".begin")) ||
-				(Str::eq(S->symbol_name, I".end")))
-				Inter::Symbols::set_flag(S, USED_MARK_BIT);
-			else
-				Inter::Symbols::clear_flag(S, USED_MARK_BIT);
-		}
+		if (Inter::Symbols::is_label(S))
+			Inter::Symbols::clear_flag(S, USED_MARK_BIT);
 
 @<Look through the function for mentions of labels, marking those as used@> =
 	inter_frame D = Inter::Symbols::defining_frame(pack->package_name);

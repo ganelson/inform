@@ -12,7 +12,7 @@ void Inter::Code::define(void) {
 		CODE_IST,
 		L"code",
 		I"code", I"codes");
-	IC->min_level = 1;
+	IC->min_level = 0;
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Code::read);

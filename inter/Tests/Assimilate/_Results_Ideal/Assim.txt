@@ -48,23 +48,17 @@ package main _plain
 		constant DEBUG K_unchecked = 0 __assimilated=1
 		constant Badger K_unchecked = 12 __assimilated=1
 		package Falsity_B _code
-			symbol private label .begin
-			symbol private label .end
-			.begin
+			code
 				splat &"return false;"
-			.end
 		constant Falsity_1 K_unchecked_function = Falsity_B __assimilated=1
 		package Demo_B _code
 			symbol private misc x
 			symbol external misc K_unchecked == /main/resources/K_unchecked
 			symbol private misc y
-			symbol private label .begin
-			symbol private label .end
 			local x K_unchecked
 			local y K_unchecked
-			.begin
+			code
 				splat &"return x+y;"
-			.end
 		constant Demo K_unchecked_function = Demo_B __assimilated=1
 		constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
 		constant Computed_Constant_Value_0 K_unchecked = 71
@@ -84,20 +78,14 @@ package main _plain
 			symbol private misc x1
 			symbol external misc K_unchecked == /main/resources/K_unchecked
 			symbol private misc x2
-			symbol private label .begin
-			symbol private label .end
 			local x1 K_unchecked
 			local x2 K_unchecked
-			.begin
+			code
 				splat &"rfalse;"
-			.end
 		constant Banana K_unchecked_function = Banana_B __assimilated=1
 		package Peach_B _code
-			symbol private label .begin
-			symbol private label .end
-			.begin
+			code
 				splat &"rfalse;"
-			.end
 		constant Peach K_unchecked_function = Peach_B __assimilated=1
 		property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
 		property density K_unchecked __assimilated=1

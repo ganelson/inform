@@ -123,11 +123,7 @@ void CodeGen::FC::label(code_generation *gen, inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
-	if (Str::eq(lab_name->symbol_name, I".begin")) { WRITE(";\n"); INDENT; }
-	else if (Str::eq(lab_name->symbol_name, I".end")) { OUTDENT; WRITE("];\n"); }
-	else WRITE("%S;\n", lab_name->symbol_name);
-	LOOP_THROUGH_INTER_CHILDREN(F, P)
-		CodeGen::FC::frame(gen, F);
+	WRITE("%S;\n", lab_name->symbol_name);
 }
 
 void CodeGen::FC::block(code_generation *gen, inter_frame P) {
@@ -138,9 +134,17 @@ void CodeGen::FC::block(code_generation *gen, inter_frame P) {
 void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
+	int function_code_block = FALSE;
+	inter_t PAR_index = Inter::Frame::get_parent_index(P);
+	if (PAR_index == 0) internal_error("misplaced code node");
+	inter_frame PAR = Inter::Frame::from_index(P.repo_segment->owning_repo, PAR_index);
+	if (PAR.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
+	text_stream *OUT = CodeGen::current(gen);
+	if (function_code_block) { WRITE(";\n"); INDENT; }
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
+	if (function_code_block) { OUTDENT; WRITE("];\n"); }
 }
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {

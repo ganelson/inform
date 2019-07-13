@@ -74,8 +74,7 @@ it does.
 <p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>The symbol flag <code class="display"><span class="extract">USED_MARK_BIT</span></code> is free for us to use, but its value for
-any given symbol is undefined when we begin. We'll clear it for all labels
-except the special begin/end ones.
+any given symbol is undefined when we begin. We'll clear it for all labels.
 </p>
 
 
@@ -86,13 +85,8 @@ except the special begin/end ones.
 
 <pre class="displaydefn">
         <span class="identifier">LOOP_OVER_SYMBOLS_TABLE</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">local_symbols</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::is_label</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">".begin"</span><span class="plain">)) ||</span>
-                    <span class="plain">(</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">".end"</span><span class="plain">)))</span>
-                    <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">USED_MARK_BIT</span><span class="plain">);</span>
-                <span class="reserved">else</span>
-                    <span class="identifier">Inter::Symbols::clear_flag</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">USED_MARK_BIT</span><span class="plain">);</span>
-            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::is_label</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">))</span>
+                <span class="identifier">Inter::Symbols::clear_flag</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">USED_MARK_BIT</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

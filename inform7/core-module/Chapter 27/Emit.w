@@ -761,14 +761,13 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 
 	current_inter_routine = rsymb;
 	current_inter_reading_state = Emit::bookmark();
-	Emit::place_label(Emit::reserve_label(I".begin"), FALSE);
+	Emit::guard(Inter::Code::new(Packaging::at(), current_inter_routine,
+		(int) Emit::baseline(Packaging::at()) + 1, NULL));
 	begin_bookmark = Emit::bookmark();
 	locals_bookmark = begin_bookmark;
 	locals_bookmark.placement_wrt_R = BEFORE_ICPLACEMENT;
 	begin_bookmark.placement_wrt_R = IMMEDIATELY_AFTER_ICPLACEMENT;
-//	Emit::early_comment(I"body:");
 	code_bookmark = Emit::bookmark();
-	Emit::place_label(Emit::reserve_label(I".end"), FALSE);
 	code_insertion_point cip = Emit::new_cip(&code_bookmark);
 	Emit::push_code_position(cip);
 	return rsymb;

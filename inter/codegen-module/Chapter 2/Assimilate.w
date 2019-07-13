@@ -422,12 +422,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			}
 		}
 
-		inter_symbol *begin_name = Inter::SymbolsTables::create_with_unique_name(Inter::Package::local_symbols(block_name), I".begin");
-		inter_symbol *end_name = Inter::SymbolsTables::create_with_unique_name(Inter::Package::local_symbols(block_name), I".end");
-		Inter::Symbols::label(begin_name);
-		Inter::Symbols::label(end_name);
-
-		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, begin_name, baseline+1, NULL));
+		CodeGen::Link::guard(Inter::Code::new(&ib, block_name, (int) baseline+1, NULL));
 		if (Str::len(body) > 0) {
 			int L = Str::len(body) - 1;
 			while ((L>0) && (Str::get_at(body, L) != ']')) L--;
@@ -435,8 +430,6 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			Str::truncate(body, L);
 			CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body, block_bookmark);
 		}
-
-		CodeGen::Link::guard(Inter::Label::new(&ib, block_name, end_name, baseline+1, NULL));
 
 		Inter::Defn::unset_current_package(&ib, IP, 0);
 
