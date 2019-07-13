@@ -205,7 +205,7 @@
             <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">D</span><span class="plain">)) {</span>
                 <span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">D</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">;</span>
-                <span class="functiontext">Inter::Nop::nop_out</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+                <span class="functiontext">Inter::Frame::remove_from_tree</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="functiontext">Inter::Symbols::undefine</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -343,7 +343,7 @@
 
 <p class="endnote">The function Inter::Symbols::define is used in 2/vi (<a href="2-vi.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Inter::Symbols::defining_frame is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Symbols::defining_frame is used in 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Symbols::is_defined is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
 

@@ -23,7 +23,7 @@ int link_search_list_len = 0;
 void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IRS == NULL) internal_error("no inter to link with");
 	inter_repository *I = IRS->read_into;
-	Inter::Packages::traverse_repository(I, CodeGen::Link::visitor, NULL);
+	Inter::traverse_tree(I, CodeGen::Link::visitor, NULL, NULL, 0);
 
 	inter_symbol *TP = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
 	if (TP == NULL) internal_error("unable to find template");

@@ -23,7 +23,7 @@
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Uniqueness::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(</span><span class="identifier">INITIAL_INTER_SYMBOLS_ID_RANGE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Inter::Packages::traverse_repository_inc</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Uniqueness::visitor</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+        <span class="identifier">Inter::traverse_tree</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Uniqueness::visitor</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 

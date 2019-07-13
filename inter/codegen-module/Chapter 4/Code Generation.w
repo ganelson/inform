@@ -169,8 +169,8 @@ void CodeGen::generate(code_generation *gen) {
 	CodeGen::IP::prepare(gen);
 
 @<Phase two - traverse@> =
-	Inter::Packages::traverse_global(gen, CodeGen::pragma, NULL);
-	Inter::Packages::traverse(gen, CodeGen::FC::iterate, NULL);
+	Inter::traverse_global_list(gen->from, CodeGen::pragma, gen, PRAGMA_IST);
+	Inter::traverse_tree(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
 
 @<Phase three - consolidation@> =
 	CodeGen::CL::responses(gen);
@@ -180,14 +180,13 @@ void CodeGen::generate(code_generation *gen) {
 @
 
 =
-void CodeGen::pragma(code_generation *gen, inter_frame P, void *state) {
-	if (P.data[ID_IFLD] == PRAGMA_IST) {
-		inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
-		if (target_symbol == NULL) internal_error("bad pragma");
-		inter_t ID = P.data[TEXT_PRAGMA_IFLD];
-		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
-		CodeGen::Targets::offer_pragma(gen, P, target_symbol->symbol_name, S);
-	}
+void CodeGen::pragma(inter_repository *I, inter_frame P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+	if (target_symbol == NULL) internal_error("bad pragma");
+	inter_t ID = P.data[TEXT_PRAGMA_IFLD];
+	text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+	CodeGen::Targets::offer_pragma(gen, P, target_symbol->symbol_name, S);
 }
 
 @h Marking.

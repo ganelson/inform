@@ -114,10 +114,10 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 	inter_repository *I = IRS->read_into;
 	assimilated_actions = IRS;
-	Inter::Packages::traverse_repository(I, CodeGen::Assimilate::visitor1, IRS);
-	Inter::Packages::traverse_repository(I, CodeGen::Assimilate::visitor2, IRS);
+	Inter::traverse_tree(I, CodeGen::Assimilate::visitor1, IRS, NULL, 0);
+	Inter::traverse_tree(I, CodeGen::Assimilate::visitor2, IRS, NULL, 0);
 	CodeGen::Assimilate::routine_bodies();
-	Inter::Packages::traverse_repository(I, CodeGen::Assimilate::visitor3, IRS);
+	Inter::traverse_tree(I, CodeGen::Assimilate::visitor3, IRS, NULL, 0);
 }
 
 @
@@ -450,7 +450,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 			if (rsymb->definition_status == DEFINED_ISYMD) {
 				inter_frame Q = Inter::Symbols::defining_frame(rsymb);
 				Inter::Symbols::undefine(rsymb);
-				Inter::Nop::nop_out(I, Q);
+				Inter::Frame::remove_from_tree(I, Q);
 				if (rsymb->owning_table != into_scope) {
 					inter_symbol *nsymb = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
 					Inter::SymbolsTables::equate(rsymb, nsymb);
@@ -468,7 +468,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 				inter_frame Q = Inter::Symbols::defining_frame(rsymb);
 				if (Inter::Frame::valid(&Q)) {
 					Inter::Symbols::undefine(rsymb);
-					Inter::Nop::nop_out(I, Q);
+					Inter::Frame::remove_from_tree(I, Q);
 				}
 				inter_symbol *nsymb = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
 				Inter::SymbolsTables::equate(rsymb, nsymb);

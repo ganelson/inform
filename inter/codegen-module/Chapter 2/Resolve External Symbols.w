@@ -14,7 +14,7 @@ int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
 	inter_package *P = Inter::Packages::main(step->repository);
 	if (P) {
 		resolution_failed = FALSE;
-		Inter::Packages::traverse_repository_inc(step->repository, CodeGen::Externals::visitor, NULL);
+		Inter::traverse_tree(step->repository, CodeGen::Externals::visitor, NULL, NULL, 0);
 		LOG("\n\n");
 		inter_symbols_table *ST = Inter::Packages::scope(P);
 		for (int i=0; i<ST->size; i++) {

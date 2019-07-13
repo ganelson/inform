@@ -10,7 +10,7 @@ void CodeGen::PLM::create_pipeline_stage(void) {
 }
 
 int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
-	Inter::Packages::traverse_repository(step->repository, CodeGen::PLM::visitor, NULL);
+	Inter::traverse_tree(step->repository, CodeGen::PLM::visitor, NULL, NULL, 0);
 	return TRUE;
 }
 

@@ -17,7 +17,7 @@ a code package is a single executable function.
 The statement |local NAME KIND| gives the code package a local variable;
 the |NAME| must be a private |misc| symbol in the package's symbols table.
 Local variable definitions should be made after the symbols table and before
-the |.begin| label (see below). When the function is called at run-time, its
+the |code| statement. When the function is called at run-time, its
 earliest-defined locals will hold any arguments from the function call.
 So for example, if:
 
@@ -32,19 +32,13 @@ Like labels in any assembly language, these are named reference points in the
 code; they are written |NAME|, where |NAME| must be a private |label| symbol
 in the package's symbols table, and must begin with a full stop |.|.
 
-All code packages must begin with the special label |.begin|, and close with
-the special label |.end|; intervening code is indented. Thus:
+All code packages must contain a "code" node at the top level, which is the
+final statement in the package, and contains the actual body code.
 
 	|package HelloWorld _code|
-	|    symbol private label .begin|
-	|    symbol private label .end|
-	|    .begin|
+	|    code|
 	|        inv !print|
 	|            val K_text "Hello World!\n"|
-	|    .end|
-
-The use of other labels does not change indentation in this way; |.begin|
-and |.end| are special.
 
 @h Primitive invocations.
 Other than labels and locals, code is a series of "invocations". An invocation
@@ -111,11 +105,10 @@ is called "void" context; but the |val| statement occurs in value context,
 because it appears where the |!print| invocation expects to find a text value.
 It is an error to use a statement in the wrong context. For example, this:
 
-	|    .begin|
+	|    code|
 	|        inv !plus|
 	|            val K_number 2|
 	|            val K_number 2|
-	|    .end|
 
 is an error, because it makes no sense to evaluate |!plus| in a void context:
 the sum would just be thrown away unused. The context in which an |inv|
@@ -139,15 +132,12 @@ done as follows. Suppose:
 	|kind K_number_to_number K_number -> K_number|
 	|package Double_B _code|
 	|    symbol private misc x|
-	|    symbol private label .begin|
-	|    symbol private label .end|
 	|    local x K_number|
-	|    .begin|
+	|    code|
 	|        inv !return|
 	|            inv !plus|
 	|                val K_number x|
 	|                val K_number x|
-	|    .end|
 	|constant Double K_number_to_number = Double_B|
 
 The value |Double| now evaluates to this function, and that's what we

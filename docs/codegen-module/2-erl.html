@@ -30,7 +30,7 @@ on the Inter functions in a repository.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Labels::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
-        <span class="identifier">Inter::Packages::traverse_repository_inc</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Labels::visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="identifier">Inter::traverse_tree</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Labels::visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 

@@ -185,7 +185,7 @@ inter_symbol *Emit::new_symbol(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if ((symb) && (Inter::Symbols::read_annotation(symb, HOLDING_IANN) == 1)) {
 		Emit::annotate_symbol_i(symb, DELENDA_EST_IANN, 1);
-		Inter::Nop::nop_out(Emit::repository(), Inter::Symbols::defining_frame(symb));
+		Inter::Frame::remove_from_tree(Emit::repository(), Inter::Symbols::defining_frame(symb));
 		Inter::Symbols::undefine(symb);
 		return symb;
 	}
@@ -195,7 +195,6 @@ inter_symbol *Emit::new_symbol(inter_symbols_table *T, text_stream *name) {
 inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) {
-LOG("Holding %S\n", name);
 		symb = Emit::new_symbol(T, name);
 		Emit::guard(Inter::Constant::new_numerical(&holdings_bookmark, Inter::SymbolsTables::id_from_IRS_and_symbol(&holdings_bookmark, symb), Inter::SymbolsTables::id_from_IRS_and_symbol(&holdings_bookmark, int_interk), LITERAL_IVAL, 0, Emit::baseline(&holdings_bookmark), NULL));
 		Emit::annotate_symbol_i(symb, HOLDING_IANN, 1);

@@ -163,7 +163,7 @@ void Inter::Symbols::strike_definition(inter_symbol *S) {
 		inter_frame D = Inter::Symbols::defining_frame(S);
 		if (Inter::Frame::valid(&D)) {
 			inter_repository *I = D.repo_segment->owning_repo;
-			Inter::Nop::nop_out(I, D);
+			Inter::Frame::remove_from_tree(I, D);
 		}
 		Inter::Symbols::undefine(S);
 	}

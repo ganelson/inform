@@ -270,7 +270,7 @@ void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
 }
 
 void CodeGen::Pipeline::lint(inter_repository *I) {
-	Inter::Packages::traverse_repository(I, CodeGen::Pipeline::visitor, NULL);
+	Inter::traverse_tree(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
 void CodeGen::Pipeline::visitor(inter_repository *I, inter_frame P, void *state) {

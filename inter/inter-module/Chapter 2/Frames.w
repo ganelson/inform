@@ -401,6 +401,12 @@ void Inter::Frame::set_previous_index(inter_frame F, inter_t V) {
 		F##_index = Inter::Frame::get_next_index(Inter::Frame::from_index(P.repo_segment->owning_repo, F##_index)))
 		for (inter_frame F = Inter::Frame::from_index(P.repo_segment->owning_repo, F##_index); F.repo_segment; F.repo_segment = NULL)
 
+@d PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
+	for (inter_t F##_index = Inter::Frame::get_first_child_index(P), F##_next_index = (F##_index)?(Inter::Frame::get_next_index(Inter::Frame::from_index(P.repo_segment->owning_repo, F##_index))):0;
+		F##_index != 0;
+		F##_index = F##_next_index, F##_next_index = (F##_next_index)?(Inter::Frame::get_next_index(Inter::Frame::from_index(P.repo_segment->owning_repo, F##_next_index))):0)
+		for (inter_frame F = Inter::Frame::from_index(P.repo_segment->owning_repo, F##_index); F.repo_segment; F.repo_segment = NULL)
+
 @
 
 @e BEFORE_ICPLACEMENT from 0
@@ -411,6 +417,10 @@ void Inter::Frame::set_previous_index(inter_frame F, inter_t V) {
 @e NOWHERE_ICPLACEMENT
 
 =
+void Inter::Frame::remove_from_tree(inter_frame P) {
+	Inter::Frame::place(P, NOWHERE_ICPLACEMENT, Inter::Frame::around(NULL, -1));
+}
+
 void Inter::Frame::place(inter_frame C, int how, inter_frame R) {
 	inter_t C_index = Inter::Frame::to_index(&C);
 	inter_repository *I = C.repo_segment->owning_repo;

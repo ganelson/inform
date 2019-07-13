@@ -16,7 +16,8 @@ void CodeGen::FC::prepare(code_generation *gen) {
 	temporary_generation = NULL;
 }
 
-void CodeGen::FC::iterate(code_generation *gen, inter_frame P, void *state) {
+void CodeGen::FC::iterate(inter_repository *I, inter_frame P, void *state) {
+	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		generated_segment *saved =

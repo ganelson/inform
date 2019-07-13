@@ -78,7 +78,7 @@ void CodeGen::Eliminate::go(inter_repository *I) {
 	CodeGen::Eliminate::require(Main_package, NULL);
 	CodeGen::Eliminate::require_these_too(Inter::Packages::main(I));
 	CodeGen::Eliminate::eliminate_unused(Inter::Packages::main(I));
-	Inter::Packages::traverse_repository(I, CodeGen::Eliminate::variable_visitor, NULL);
+	Inter::traverse_tree(I, CodeGen::Eliminate::variable_visitor, NULL, NULL, 0);
 }
 
 void CodeGen::Eliminate::require_these_too(inter_package *pack) {

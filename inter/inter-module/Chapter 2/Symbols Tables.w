@@ -320,22 +320,20 @@ void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *nam
 }
 
 void Inter::SymbolsTables::resolve_forward_references(inter_repository *I, inter_error_location *eloc) {
-	Inter::Packages::traverse_repository_inc(I, Inter::SymbolsTables::rfr_visitor, eloc);
+	Inter::traverse_tree(I, Inter::SymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
 
 void Inter::SymbolsTables::rfr_visitor(inter_repository *I, inter_frame P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
-	if (P.data[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		inter_symbols_table *T = Inter::Packages::scope(pack);
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
-			if ((symb) && (symb->equated_name)) {
-				inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(pack->stored_in, T, symb->equated_name);
-				if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
-				else Inter::SymbolsTables::equate(symb, S_to);
-				symb->equated_name = NULL;
-			}
+	inter_package *pack = Inter::Package::defined_by_frame(P);
+	inter_symbols_table *T = Inter::Packages::scope(pack);
+	for (int i=0; i<T->size; i++) {
+		inter_symbol *symb = T->symbol_array[i];
+		if ((symb) && (symb->equated_name)) {
+			inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(pack->stored_in, T, symb->equated_name);
+			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
+			else Inter::SymbolsTables::equate(symb, S_to);
+			symb->equated_name = NULL;
 		}
 	}
 }

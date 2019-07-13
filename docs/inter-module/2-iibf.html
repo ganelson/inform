@@ -559,8 +559,8 @@ enough that the slot exists for the eventual list to be stored in.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Inter::Packages::traverse_repository_global_inc</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">Inter::Binary::visitor</span><span class="plain">, </span><span class="identifier">fh</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Packages::traverse_repository_inc</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">Inter::Binary::visitor</span><span class="plain">, </span><span class="identifier">fh</span><span class="plain">);</span>
+        <span class="functiontext">Inter::traverse_global_list</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">Inter::Binary::visitor</span><span class="plain">, </span><span class="identifier">fh</span><span class="plain">, -</span><span class="constant">PACKAGE_IST</span><span class="plain">);</span>
+        <span class="functiontext">Inter::traverse_tree</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">Inter::Binary::visitor</span><span class="plain">, </span><span class="identifier">fh</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

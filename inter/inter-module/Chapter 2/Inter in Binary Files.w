@@ -347,8 +347,8 @@ enough that the slot exists for the eventual list to be stored in.
 	Inter::check_segments(I);
 
 @<Write the bytecode@> =
-	Inter::Packages::traverse_repository_global_inc(I, Inter::Binary::visitor, fh);
-	Inter::Packages::traverse_repository_inc(I, Inter::Binary::visitor, fh);
+	Inter::traverse_global_list(I, Inter::Binary::visitor, fh, -PACKAGE_IST);
+	Inter::traverse_tree(I, Inter::Binary::visitor, fh, NULL, 0);
 
 @ =
 void Inter::Binary::visitor(inter_repository *I, inter_frame P, void *state) {

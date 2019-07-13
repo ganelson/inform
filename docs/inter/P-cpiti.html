@@ -28,7 +28,7 @@ a code package is a single executable function.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Local variables. </b>The statement <code class="display"><span class="extract">local NAME KIND</span></code> gives the code package a local variable;
 the <code class="display"><span class="extract">NAME</span></code> must be a private <code class="display"><span class="extract">misc</span></code> symbol in the package's symbols table.
 Local variable definitions should be made after the symbols table and before
-the <code class="display"><span class="extract">.begin</span></code> label (see below). When the function is called at run-time, its
+the <code class="display"><span class="extract">code</span></code> statement. When the function is called at run-time, its
 earliest-defined locals will hold any arguments from the function call.
 So for example, if:
 </p>
@@ -50,8 +50,8 @@ code; they are written <code class="display"><span class="extract">NAME</span></
 in the package's symbols table, and must begin with a full stop <code class="display"><span class="extract">.</span></code>.
 </p>
 
-<p class="inwebparagraph">All code packages must begin with the special label <code class="display"><span class="extract">.begin</span></code>, and close with
-the special label <code class="display"><span class="extract">.end</span></code>; intervening code is indented. Thus:
+<p class="inwebparagraph">All code packages must contain a "code" node at the top level, which is the
+final statement in the package, and contains the actual body code.
 </p>
 
 <p class="inwebparagraph"></p>
@@ -59,17 +59,12 @@ the special label <code class="display"><span class="extract">.end</span></code>
 
 <pre class="display">
         <span class="plain">package HelloWorld _code</span>
-        <span class="plain">    symbol private label .begin</span>
-        <span class="plain">    symbol private label .end</span>
-        <span class="plain">    .begin</span>
+        <span class="plain">    code</span>
         <span class="plain">        inv !print</span>
         <span class="plain">            val K_text "Hello World!\n"</span>
-        <span class="plain">    .end</span>
 </pre>
 
-<p class="inwebparagraph">The use of other labels does not change indentation in this way; <code class="display"><span class="extract">.begin</span></code>
-and <code class="display"><span class="extract">.end</span></code> are special.
-</p>
+<p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Primitive invocations. </b>Other than labels and locals, code is a series of "invocations". An invocation
 is a use of either another function, or of a primitive.
@@ -181,11 +176,10 @@ It is an error to use a statement in the wrong context. For example, this:
 
 
 <pre class="display">
-        <span class="plain">    .begin</span>
+        <span class="plain">    code</span>
         <span class="plain">        inv !plus</span>
         <span class="plain">            val K_number 2</span>
         <span class="plain">            val K_number 2</span>
-        <span class="plain">    .end</span>
 </pre>
 
 <p class="inwebparagraph">is an error, because it makes no sense to evaluate <code class="display"><span class="extract">!plus</span></code> in a void context:
@@ -222,15 +216,12 @@ done as follows. Suppose:
         <span class="plain">kind K_number_to_number K_number -&gt; K_number</span>
         <span class="plain">package Double_B _code</span>
         <span class="plain">    symbol private misc x</span>
-        <span class="plain">    symbol private label .begin</span>
-        <span class="plain">    symbol private label .end</span>
         <span class="plain">    local x K_number</span>
-        <span class="plain">    .begin</span>
+        <span class="plain">    code</span>
         <span class="plain">        inv !return</span>
         <span class="plain">            inv !plus</span>
         <span class="plain">                val K_number x</span>
         <span class="plain">                val K_number x</span>
-        <span class="plain">    .end</span>
         <span class="plain">constant Double K_number_to_number = Double_B</span>
 </pre>
 

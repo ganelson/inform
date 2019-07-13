@@ -19,8 +19,8 @@ int CodeGen::ReconcileVerbs::run_pipeline_stage(pipeline_step *step) {
 =
 void CodeGen::ReconcileVerbs::reconcile(inter_repository *I) {
 	dictionary *observed_verbs = Dictionaries::new(1024, TRUE);
-	Inter::Packages::traverse_repository(I, CodeGen::ReconcileVerbs::visitor1, observed_verbs);
-	Inter::Packages::traverse_repository(I, CodeGen::ReconcileVerbs::visitor2, observed_verbs);
+	Inter::traverse_tree(I, CodeGen::ReconcileVerbs::visitor1, observed_verbs, NULL, 0);
+	Inter::traverse_tree(I, CodeGen::ReconcileVerbs::visitor2, observed_verbs, NULL, 0);
 }
 
 void CodeGen::ReconcileVerbs::visitor1(inter_repository *I, inter_frame P, void *v_state) {

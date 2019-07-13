@@ -23,11 +23,10 @@ inter_error_message *Inter::Nop::new(inter_reading_state *IRS, inter_t level, in
 	return NULL;
 }
 
-inter_error_message *Inter::Nop::nop_out(inter_repository *I, inter_frame P) {
-	P.data[ID_IFLD] = NOP_IST;
-	return NULL;
-}
+@ This in fact prints only in a stack backtrace, not in regular textual output,
+where any nop statements are simply ignored.
 
+=
 void Inter::Nop::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	WRITE("nop");
 }

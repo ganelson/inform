@@ -29,7 +29,7 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	rcc_state state;
 	state.I6_level_symbols = Dictionaries::new(1024, TRUE);
 	state.cc_sp = 0;
-	Inter::Packages::traverse_repository(I, CodeGen::RCC::visitor, &state);
+	Inter::traverse_tree(I, CodeGen::RCC::visitor, &state, NULL, 0);
 	if (state.cc_sp != 0)
 		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
 }
