@@ -86,7 +86,6 @@ void Emit::begin(void) {
 	NewVerbs::ConjugateVerbDefinitions();
 	
 	Hierarchy::find(INFORMLIBRARY_HL);
-//	Hierarchy::find(INDIV_PROP_START_HL);
 }
 
 void Emit::version(int N) {
@@ -185,7 +184,7 @@ inter_symbol *Emit::new_symbol(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if ((symb) && (Inter::Symbols::read_annotation(symb, HOLDING_IANN) == 1)) {
 		Emit::annotate_symbol_i(symb, DELENDA_EST_IANN, 1);
-		Inter::Frame::remove_from_tree(Emit::repository(), Inter::Symbols::defining_frame(symb));
+		Inter::Frame::remove_from_tree(Inter::Symbols::defining_frame(symb));
 		Inter::Symbols::undefine(symb);
 		return symb;
 	}
@@ -1116,7 +1115,7 @@ void Emit::end_block(inter_symbol *rsymb) {
 	current_inter_routine = NULL;
 	Emit::pop_code_position();
 	inter_reading_state *IRS = Packaging::at();
-	IRS->current_package = Inter::Packages::parent(IRS->current_package);
+	Inter::Bookmarks::set_package(IRS, Inter::Packages::parent(IRS->current_package));
 }
 
 int Emit::emitting_routine(void) {

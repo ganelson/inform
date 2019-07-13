@@ -59,7 +59,7 @@ void CodeGen::RCC::visitor(inter_repository *I, inter_frame P, void *v_state) {
 			}
 		}
 	}
-	if (allow == FALSE) Inter::Nop::nop_out(I, P);
+	if (allow == FALSE) Inter::Frame::remove_from_tree(P);
 }
 
 @<Extract second token into ident@> =

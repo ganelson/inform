@@ -49,7 +49,7 @@ void CodeGen::PLM::visitor(inter_repository *I, inter_frame P, void *state) {
 			LOOP_THROUGH_TEXT(pos, S)
 				if (Characters::is_whitespace(Str::get(pos)) == FALSE)
 					keep = TRUE;
-			if (keep == FALSE) Inter::Nop::nop_out(I, P);
+			if (keep == FALSE) Inter::Frame::remove_from_tree(P);
 		}
 	}
 }

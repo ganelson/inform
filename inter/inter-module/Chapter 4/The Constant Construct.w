@@ -170,7 +170,7 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 			}
 			DISCARD_TEXT(parsed_text);
 			if (*E) return;
-			*E = Inter::Constant::new_textual(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), ID, (inter_t) IRS->latest_indent, eloc);
+			*E = Inter::Constant::new_textual(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), ID, (inter_t) ilp->indent_level, eloc);
 			return;
 		}
 	}
@@ -178,7 +178,7 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 	if ((idt) && (idt->type_ID == ROUTINE_IDT)) {
 		inter_symbol *block_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), S, PACKAGE_IST, E);
 		if (*E) return;
-		*E = Inter::Constant::new_function(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, block_name), (inter_t) IRS->latest_indent, eloc);
+		*E = Inter::Constant::new_function(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, block_name), (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -191,7 +191,7 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 		if (*E) return;
 	}
 
-	*E = Inter::Constant::new_numerical(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), con_val1, con_val2, (inter_t) IRS->latest_indent, eloc);
+	*E = Inter::Constant::new_numerical(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Constant::parse_text(text_stream *parsed_text, text_stream *S, int from, int to, inter_error_location *eloc) {

@@ -161,10 +161,7 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
 		inter_frame D = Inter::Symbols::defining_frame(S);
-		if (Inter::Frame::valid(&D)) {
-			inter_repository *I = D.repo_segment->owning_repo;
-			Inter::Frame::remove_from_tree(I, D);
-		}
+		if (Inter::Frame::valid(&D)) Inter::Frame::remove_from_tree(D);
 		Inter::Symbols::undefine(S);
 	}
 }

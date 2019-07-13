@@ -2626,15 +2626,10 @@ these out at the start of each iteration.
                             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">next_isn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">) &amp;&amp;</span>
                                 <span class="plain">(</span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">RESERVED_ISTT</span><span class="plain">) &amp;&amp;</span>
                                 <span class="plain">(</span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;reserved_word</span><span class="plain"> == </span><span class="constant">UNTIL_I6RW</span><span class="plain">)) {</span>
-        <span class="comment">operand2_node = next_isn-&gt;child_node;</span>
                                 <span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">;</span>
                                 <span class="reserved">inter_schema_token</span><span class="plain"> *</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
                                 <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">WHITE_SPACE_ISTT</span><span class="plain">)) </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
                                 <span class="identifier">operand1</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
-    <span class="comment">while (n) {</span>
-    <span class="comment">n-&gt;owner = operand2_node;</span>
-    <span class="comment">n = n-&gt;next;</span>
-    <span class="comment">}</span>
                             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"do without until"</span><span class="plain">);</span>
                             <span class="plain">}</span>

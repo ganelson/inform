@@ -172,7 +172,7 @@ inter_symbol *Veneer::make(inter_package *veneer_package, inter_reading_state *I
 			Inter::SymbolsTables::id_from_symbol(IRS->read_into, veneer_package, *slot),
 			Inter::SymbolsTables::id_from_symbol(IRS->read_into, veneer_package, unchecked_kind_symbol),
 			LITERAL_IVAL, 0,
-			(inter_t) IRS->cp_indent + 1, NULL));
+			(inter_t) Inter::Bookmarks::baseline(IRS) + 1, NULL));
 	}
 	return *slot;
 }

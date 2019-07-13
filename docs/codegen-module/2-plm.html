@@ -69,7 +69,7 @@
                 <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                         <span class="identifier">keep</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">keep</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">Inter::Nop::nop_out</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">keep</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">Inter::Frame::remove_from_tree</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

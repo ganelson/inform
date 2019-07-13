@@ -203,10 +203,7 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::strike_definition</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) {</span>
             <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">D</span><span class="plain">)) {</span>
-                <span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">D</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">;</span>
-                <span class="functiontext">Inter::Frame::remove_from_tree</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
-            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">D</span><span class="plain">)) </span><span class="functiontext">Inter::Frame::remove_from_tree</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">);</span>
             <span class="functiontext">Inter::Symbols::undefine</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

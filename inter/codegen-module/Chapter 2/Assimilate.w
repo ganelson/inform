@@ -39,6 +39,10 @@ void CodeGen::Assimilate::divert(int cause, inter_reading_state IBS) {
 }
 
 inter_reading_state *CodeGen::Assimilate::diversion(int cause) {
+	#ifdef CORE_MODULE
+	Hierarchy::ensure_actions_diversion();
+	Inter::Defn::set_current_package(assim_bookmark_pointers[cause], Packaging::incarnate(Hierarchy::template()));
+	#endif
 	return assim_bookmark_pointers[cause];
 }
 
@@ -51,9 +55,8 @@ void CodeGen::Assimilate::visitor1(inter_repository *I, inter_frame P, void *sta
 	inter_package *outer = Inter::Packages::container(P);
 	inter_symbols_table *into_scope = Inter::Packages::scope(outer);
 	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
-		IRS->current_package = outer;
-		IRS->cp_indent = Inter::Packages::baseline(outer);
-		inter_t baseline = (inter_t) IRS->cp_indent + 1;
+		Inter::Bookmarks::set_package(IRS, outer);
+		inter_t baseline = (inter_t) Inter::Bookmarks::baseline(IRS) + 1;
 		if (outer == NULL) baseline = 0;
 		switch (P.data[PLM_SPLAT_IFLD]) {
 			case PROPERTY_PLM:
@@ -74,10 +77,9 @@ void CodeGen::Assimilate::visitor2(inter_repository *I, inter_frame P, void *sta
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
-		IRS->current_package = outer;
+		Inter::Bookmarks::set_package(IRS, outer);
 		inter_symbols_table *into_scope = Inter::Packages::scope(outer);
-		IRS->cp_indent = Inter::Packages::baseline(outer);
-		inter_t baseline = (inter_t) IRS->cp_indent + 1;
+		inter_t baseline = (inter_t) Inter::Bookmarks::baseline(IRS) + 1;
 		if (outer == NULL) baseline = 0;
 		switch (P.data[PLM_SPLAT_IFLD]) {
 			case DEFAULT_PLM:
@@ -98,10 +100,9 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 	inter_reading_state *IRS = (inter_reading_state *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
-		IRS->current_package = outer;
-		IRS->cp_indent = Inter::Packages::baseline(outer);
+		Inter::Bookmarks::set_package(IRS, outer);
 		inter_symbols_table *into_scope = Inter::Packages::scope(outer);
-		inter_t baseline = (inter_t) IRS->cp_indent + 1;
+		inter_t baseline = (inter_t) Inter::Bookmarks::baseline(IRS) + 1;
 		if (outer == NULL) baseline = 0;
 		switch (P.data[PLM_SPLAT_IFLD]) {
 			case GLOBAL_PLM:
@@ -334,10 +335,10 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 				}
 			}
 		}
-		Inter::Nop::nop_out(I, P);
+		Inter::Frame::remove_from_tree(P);
 	}
 	if (outer_housing) {
-		Inter::Defn::unset_current_package(&ib, housing_package, 0);
+		Inter::Defn::unset_current_package(&ib, housing_package);
 		into_scope = save_into_scope;
 	}
 
@@ -431,7 +432,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			CodeGen::Assimilate::routine_body(&ib, block_name, baseline+2, body, block_bookmark);
 		}
 
-		Inter::Defn::unset_current_package(&ib, IP, 0);
+		Inter::Defn::unset_current_package(&ib, IP);
 
 		inter_symbol *rsymb = CodeGen::Assimilate::maybe_extern(I, identifier, into_scope);
 		Inter::Symbols::annotate_i(I, rsymb, ASSIMILATED_IANN, 1);
@@ -439,7 +440,7 @@ void CodeGen::Assimilate::assimilate(inter_reading_state *IRS) {
 			Inter::SymbolsTables::id_from_symbol(I, outer, rsymb), Inter::SymbolsTables::id_from_symbol(I, outer, unchecked_function_symbol),
 			Inter::SymbolsTables::id_from_symbol(I, outer, block_name), baseline, NULL));
 
-		Inter::Nop::nop_out(I, P);
+		Inter::Frame::remove_from_tree(P);
 	}
 
 @ =
@@ -450,7 +451,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 			if (rsymb->definition_status == DEFINED_ISYMD) {
 				inter_frame Q = Inter::Symbols::defining_frame(rsymb);
 				Inter::Symbols::undefine(rsymb);
-				Inter::Frame::remove_from_tree(I, Q);
+				Inter::Frame::remove_from_tree(Q);
 				if (rsymb->owning_table != into_scope) {
 					inter_symbol *nsymb = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
 					Inter::SymbolsTables::equate(rsymb, nsymb);
@@ -468,7 +469,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 				inter_frame Q = Inter::Symbols::defining_frame(rsymb);
 				if (Inter::Frame::valid(&Q)) {
 					Inter::Symbols::undefine(rsymb);
-					Inter::Frame::remove_from_tree(I, Q);
+					Inter::Frame::remove_from_tree(Q);
 				}
 				inter_symbol *nsymb = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
 				Inter::SymbolsTables::equate(rsymb, nsymb);
@@ -489,8 +490,9 @@ int no_assimilated_actions = 0;
 void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state *IRS, text_stream *value) {
 	if (CodeGen::Link::find_name(I, value, TRUE) == NULL) {
 		assimilated_actions = CodeGen::Assimilate::diversion(ACTION_ASSIM_BM);
-
-		assimilated_actions->cp_indent = 1;
+		if (assimilated_actions == NULL) internal_error("no action diversion");
+		if (assimilated_actions->current_package == NULL)
+			internal_error("packageless action diversion");
 		inter_symbols_table *scope = Inter::Packages::scope(assimilated_actions->current_package);
 		TEMPORARY_TEXT(an);
 		WRITE_TO(an, "assim_action%d", no_assimilated_actions++);
@@ -502,7 +504,7 @@ void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state
 		ptype = PackageTypes::get(I"_action");
 		#endif
 		CodeGen::Link::guard(Inter::Package::new_package(assimilated_actions, housing_symbol,
-			ptype, (inter_t) assimilated_actions->cp_indent + 2, NULL, &housing_package));
+			ptype, (inter_t) Inter::Bookmarks::baseline(assimilated_actions), NULL, &housing_package));
 		Inter::Defn::set_current_package(assimilated_actions, housing_package);
 		inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, Inter::Packages::scope(housing_package));
 		TEMPORARY_TEXT(unsharped);
@@ -516,9 +518,9 @@ void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_reading_state
 		CodeGen::Link::guard(Inter::Constant::new_numerical(assimilated_actions,
 			Inter::SymbolsTables::id_from_symbol(I, assimilated_actions->current_package, asymb),
 			Inter::SymbolsTables::id_from_symbol(I, assimilated_actions->current_package, action_kind_symbol),
-			LITERAL_IVAL, 10000, (inter_t) assimilated_actions->cp_indent + 3, NULL));
+			LITERAL_IVAL, 10000, (inter_t) Inter::Bookmarks::baseline(assimilated_actions) + 1, NULL));
 		Inter::Symbols::annotate_i(I, asymb, ACTION_IANN, 1);
-		Inter::Defn::unset_current_package(assimilated_actions, housing_package, 0);
+		Inter::Defn::unset_current_package(assimilated_actions, housing_package);
 		CodeGen::Link::build_r(housing_package);
 	}
 }
@@ -660,7 +662,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_repository *I, inter_p
 	CodeGen::Link::guard(Inter::Constant::new_numerical(IRS,
 		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
 		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
-		(inter_t) IRS->cp_indent + 1, NULL));
+		(inter_t) Inter::Bookmarks::baseline(IRS) + 1, NULL));
 
 	return mcc_name;
 }
@@ -718,7 +720,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_repository *I, in
 	CodeGen::Link::guard(Inter::Constant::new_numerical(IRS,
 		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
 		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
-		(inter_t) IRS->cp_indent + 1, NULL));
+		(inter_t) Inter::Bookmarks::baseline(IRS) + 1, NULL));
 	return mcc_name;
 }
 
@@ -727,7 +729,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_reposi
 	if (i1 == NULL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_frame array_in_progress =
-		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) IRS->cp_indent + 1);
+		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IRS) + 1);
 	int pos = array_in_progress.extent;
 	if (Inter::Frame::extend(&array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -741,7 +743,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_reposi
 inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op, inter_repository *I, inter_package *pack, inter_reading_state *IRS, inter_symbol *i1, inter_symbol *i2) {
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_frame array_in_progress =
-		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) IRS->cp_indent + 1);
+		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) Inter::Bookmarks::baseline(IRS) + 1);
 	int pos = array_in_progress.extent;
 	if (Inter::Frame::extend(&array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");

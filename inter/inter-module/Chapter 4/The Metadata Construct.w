@@ -44,7 +44,7 @@ void Inter::Metadata::read(inter_construct *IC, inter_reading_state *IRS, inter_
 		}
 		DISCARD_TEXT(parsed_text);
 		if (*E) return;
-		*E = Inter::Metadata::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, key_name), ID, (inter_t) IRS->latest_indent, eloc);
+		*E = Inter::Metadata::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, key_name), ID, (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 	*E = Inter::Errors::quoted(I"metadata value must be string", S, eloc);

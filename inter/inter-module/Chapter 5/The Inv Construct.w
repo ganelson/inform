@@ -124,10 +124,6 @@ inter_symbol *Inter::Inv::invokee(inter_frame P) {
 }
 
 void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-//	if (P.data[METHOD_INV_IFLD] == INVOKED_ROUTINE) {
-//		*E = Inter::Verify::symbol(owner, P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
-//		if (*E) return;
-//	}
 	int arity_as_invoked=0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
 	#ifdef CORE_MODULE

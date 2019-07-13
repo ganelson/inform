@@ -11,8 +11,7 @@ void CodeGen::Link::create_pipeline_stage(void) {
 
 int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
 	inter_reading_state IRS = Inter::Bookmarks::new_IRS(step->repository);
-	IRS.current_package = Inter::Packages::main(step->repository);
-	IRS.cp_indent = 1;
+	Inter::Bookmarks::set_package(&IRS, Inter::Packages::main(step->repository));
 	CodeGen::Link::link(&IRS, step->step_argument, step->the_N, step->the_PP, NULL);
 	return TRUE;
 }
@@ -202,7 +201,7 @@ void CodeGen::Link::receive_raw(text_stream *S, I6T_kit *kit) {
 void CodeGen::Link::chunked_raw(text_stream *S, I6T_kit *kit) {
 	if (Str::len(S) == 0) return;
 	PUT_TO(S, '\n');
-	CodeGen::Link::entire_splat(kit->IRS, I"template", S, (inter_t) (kit->IRS->cp_indent + 1), kit->IRS->current_package->package_name);
+	CodeGen::Link::entire_splat(kit->IRS, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IRS) + 1), kit->IRS->current_package->package_name);
 	Str::clear(S);
 }
 

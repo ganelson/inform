@@ -313,10 +313,9 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 
 	if (ilp.indent_level == 0) latest_block_symbol = NULL;
 
-	if (ilp.indent_level < IRS->cp_indent) {
-		Inter::Defn::unset_current_package(IRS, IRS->current_package, ilp.indent_level);
+	while ((IRS->current_package) && (ilp.indent_level <= Inter::Bookmarks::baseline(IRS))) {
+		Inter::Defn::unset_current_package(IRS, IRS->current_package);
 	}
-	IRS->latest_indent = ilp.indent_level;
 
 	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
 		Str::copy(ilp.line, ilp.mr.exp[0]);
@@ -339,17 +338,15 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 }
 
 void Inter::Defn::set_current_package(inter_reading_state *IRS, inter_package *P) {
-	IRS->current_package = P;
-	IRS->cp_indent = IRS->latest_indent + 1;
+	Inter::Bookmarks::set_package(IRS, P);
 	if (P) {
 		IRS->R = Inter::Symbols::defining_frame(P->package_name);
 		IRS->placement_wrt_R = AFTER_ICPLACEMENT;
 	}
 }
 
-void Inter::Defn::unset_current_package(inter_reading_state *IRS, inter_package *P, int L) {
-	IRS->current_package = Inter::Packages::parent(P);
-	IRS->cp_indent = L;
+void Inter::Defn::unset_current_package(inter_reading_state *IRS, inter_package *P) {
+	Inter::Bookmarks::set_package(IRS, Inter::Packages::parent(P));
 }
 
 void Inter::Defn::set_latest_package_symbol(inter_symbol *F) {
@@ -361,12 +358,18 @@ inter_symbol *Inter::Defn::get_latest_block_symbol(void) {
 }
 
 inter_error_message *Inter::Defn::vet_level(inter_reading_state *IRS, inter_t cons, int level, inter_error_location *eloc) {
-	int actual = level - IRS->cp_indent;
+	int actual = level;
+	if (IRS->current_package) actual = level - Inter::Bookmarks::baseline(IRS) - 1;
 	inter_construct *proposed = NULL;
 	LOOP_OVER(proposed, inter_construct)
 		if (proposed->construct_ID == cons) {
+//WRITE_TO(STDERR, "So %S, %d alt vs %d classic, level %d, actual %d, min %d, max %d\n",
+//	(IRS->current_package)?((IRS->current_package->package_name->symbol_name)):(I"NONE"),
+//	Inter::Bookmarks::baseline(IRS), Inter::Bookmarks::cpi(IRS), level, actual,
+//		proposed->min_level, proposed->max_level);
 			if (actual < 0) return Inter::Errors::plain(I"impossible level", eloc);
 			if ((actual < proposed->min_level) || (actual > proposed->max_level)) {
+//internal_error("yikes");
 				return Inter::Errors::plain(I"indentation error", eloc);
 			}
 			return NULL;
