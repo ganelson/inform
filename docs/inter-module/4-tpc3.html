@@ -129,6 +129,12 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::get_package</span><span class="plain">(</span><span class="identifier">D</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">D</span><span class="element">.data</span><span class="plain">[</span><span class="constant">PID_PACKAGE_IFLD</span><span class="plain">]);</span>
     <span class="plain">}</span>
 
+    <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Package::defined_by_frame</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">D</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] != </span><span class="constant">PACKAGE_IST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::get_package</span><span class="plain">(</span><span class="identifier">D</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">D</span><span class="element">.data</span><span class="plain">[</span><span class="constant">PID_PACKAGE_IFLD</span><span class="plain">]);</span>
+    <span class="plain">}</span>
+
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Package::type</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">package_name</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">package_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">);</span>
@@ -173,11 +179,13 @@
 
 <p class="endnote">The function Inter::Package::is is used in 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Package::which is used in 2/st (<a href="2-st.html#SP12">&#167;12</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inter::Package::which is used in 2/st (<a href="2-st.html#SP11">&#167;11</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
+
+<p class="endnote">The function Inter::Package::defined_by_frame is used in 2/st (<a href="2-st.html#SP10">&#167;10</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Inter::Package::type is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Inter::Package::local_symbols is used in 2/st (<a href="2-st.html#SP8">&#167;8</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Package::local_symbols is used in 2/st (<a href="2-st.html#SP7">&#167;7</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Package::verify_children is used in <a href="#SP1">&#167;1</a>.</p>
 

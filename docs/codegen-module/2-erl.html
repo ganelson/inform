@@ -30,13 +30,13 @@ on the Inter functions in a repository.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Labels::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
-        <span class="functiontext">CodeGen::Labels::traverse_package_tree</span><span class="plain">(</span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">));</span>
+        <span class="identifier">Inter::Packages::traverse_repository_inc</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Labels::visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Labels::traverse_package_tree</span><span class="plain">(</span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">in</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">in</span><span class="plain">; </span><span class="identifier">pack</span><span class="plain">; </span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">next_package</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">child_package</span><span class="plain">) </span><span class="functiontext">CodeGen::Labels::traverse_package_tree</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">child_package</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Labels::visitor</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">PACKAGE_IST</span><span class="plain">) {</span>
+            <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">Inter::Package::defined_by_frame</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">codelike_package</span><span class="plain">) </span>&lt;<span class="cwebmacro">Perform peephole optimisation on this block</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -48,7 +48,7 @@ on the Inter functions in a repository.
 
 <p class="endnote">The function CodeGen::Labels::run_pipeline_stage appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Labels::traverse_package_tree appears nowhere else.</p>
+<p class="endnote">The function CodeGen::Labels::visitor appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1. Peephole optimisation. </b>We can now forget about the larger package structure, and just look through
 the peephole at a single function in Inter. It has its own symbols table, for

@@ -10,30 +10,20 @@ void CodeGen::Uniqueness::create_pipeline_stage(void) {
 }
 
 int CodeGen::Uniqueness::run_pipeline_stage(pipeline_step *step) {
-	CodeGen::Uniqueness::ensure(step->repository);
+	dictionary *D = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
+	Inter::Packages::traverse_repository_inc(step->repository, CodeGen::Uniqueness::visitor, D);
 	return TRUE;
 }
 
-@h The whole shebang.
-
-=
-void CodeGen::Uniqueness::ensure(inter_repository *I) {
-	inter_package *P = Inter::Packages::main(I);
-	if (P) {
-		dictionary *D = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
-		CodeGen::Uniqueness::ensure_r(P, D);
-	}
-}
-
-@ =
 typedef struct uniqueness_count {
 	int count;
 	MEMORY_MANAGEMENT
 } uniqueness_count;
 
-@ =
-void CodeGen::Uniqueness::ensure_r(inter_package *P, dictionary *D) {
-	for (inter_package *Q = P; Q; Q = Q->next_package) {
+void CodeGen::Uniqueness::visitor(inter_repository *I, inter_frame P, void *state) {
+	dictionary *D = (dictionary *) state;
+	if (P.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *Q = Inter::Package::defined_by_frame(P);
 		inter_symbols_table *ST = Inter::Packages::scope(Q);
 		for (int i=0; i<ST->size; i++) {
 			inter_symbol *S = ST->symbol_array[i];
@@ -56,6 +46,5 @@ void CodeGen::Uniqueness::ensure_r(inter_package *P, dictionary *D) {
 				Inter::Symbols::clear_flag(S, MAKE_NAME_UNIQUE);
 			}
 		}
-		if (Q->child_package) CodeGen::Uniqueness::ensure_r(Q->child_package, D);
 	}
 }

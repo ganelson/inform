@@ -9,20 +9,12 @@ void CodeGen::Externals::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"resolve-external-symbols", CodeGen::Externals::run_pipeline_stage, NO_STAGE_ARG);
 }
 
-int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
-	CodeGen::Externals::resolve(step->repository);
-	return TRUE;
-}
-
-@h The whole shebang.
-
-=
 int resolution_failed = FALSE;
-void CodeGen::Externals::resolve(inter_repository *I) {
-	inter_package *P = Inter::Packages::main(I);
+int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
+	inter_package *P = Inter::Packages::main(step->repository);
 	if (P) {
 		resolution_failed = FALSE;
-		CodeGen::Externals::resolve_r(P->child_package);
+		Inter::Packages::traverse_repository_inc(step->repository, CodeGen::Externals::visitor, NULL);
 		LOG("\n\n");
 		inter_symbols_table *ST = Inter::Packages::scope(P);
 		for (int i=0; i<ST->size; i++) {
@@ -37,11 +29,16 @@ void CodeGen::Externals::resolve(inter_repository *I) {
 		}
 		if (resolution_failed) internal_error("undefined external link(s)");
 	}
+	return TRUE;
 }
 
-@ =
-void CodeGen::Externals::resolve_r(inter_package *P) {
-	for (inter_package *Q = P; Q; Q = Q->next_package) {
+@h The whole shebang.
+
+=
+void CodeGen::Externals::visitor(inter_repository *I, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *Q = Inter::Package::defined_by_frame(P);
+		if (Inter::Packages::main(I) == Q) return;
 		inter_symbols_table *ST = Inter::Packages::scope(Q);
 		for (int i=0; i<ST->size; i++) {
 			inter_symbol *S = ST->symbol_array[i];
@@ -57,6 +54,5 @@ void CodeGen::Externals::resolve_r(inter_package *P) {
 				}
 			}
 		}
-		if (Q->child_package) CodeGen::Externals::resolve_r(Q->child_package);
 	}
 }

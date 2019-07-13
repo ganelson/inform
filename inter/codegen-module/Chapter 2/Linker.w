@@ -65,9 +65,18 @@ inter_symbol *CodeGen::Link::find_in_namespace(inter_repository *I, text_stream 
 	if (linkable_namespace_created == FALSE) {
 		linkable_namespace_created = TRUE;
 		linkable_namespace = Dictionaries::new(512, FALSE);
-		for (inter_package *P = Inter::Packages::main(I)->child_package; P; P = P->next_package)
-			if (Str::ne(P->package_name->symbol_name, I"template"))
-				CodeGen::Link::build_r(P);
+		inter_package *main_package = Inter::Packages::main(I);
+		if (main_package) {
+			inter_frame D = Inter::Symbols::defining_frame(main_package->package_name);
+			LOOP_THROUGH_INTER_CHILDREN(C, D) {
+				if (C.data[ID_IFLD] == PACKAGE_IST) {
+					inter_package *P = Inter::Package::defined_by_frame(C);
+					if (Str::ne(P->package_name->symbol_name, I"template"))
+						CodeGen::Link::build_r(P);
+				}
+			}
+			
+		}
 	}
 	if (Dictionaries::find(linkable_namespace, name))
 		return (inter_symbol *) Dictionaries::read_value(linkable_namespace, name);
@@ -88,7 +97,13 @@ void CodeGen::Link::build_r(inter_package *P) {
 			}
 		}
 	}
-	for (P = P->child_package; P; P = P->next_package) CodeGen::Link::build_r(P);
+	inter_frame D = Inter::Symbols::defining_frame(P->package_name);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *Q = Inter::Package::defined_by_frame(C);
+			CodeGen::Link::build_r(Q);
+		}
+	}
 }
 
 inter_symbol *CodeGen::Link::find_name(inter_repository *I, text_stream *S, int deeply) {

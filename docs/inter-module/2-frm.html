@@ -359,6 +359,37 @@
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::backtrace</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
+            <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">X_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X_index</span><span class="plain"> == 0) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">X</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">X_index</span><span class="plain">);</span>
+            <span class="identifier">n</span><span class="plain">++;</span>
+        <span class="plain">}</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> &gt;= 0; </span><span class="identifier">i</span><span class="plain">--) {</span>
+            <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = 0;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
+                <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">X_index</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::get_parent_index</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X_index</span><span class="plain"> == 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == </span><span class="identifier">i</span><span class="plain">) {</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%2d. "</span><span class="plain">, (</span><span class="identifier">n</span><span class="plain">-</span><span class="identifier">i</span><span class="plain">));</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"** "</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"   "</span><span class="plain">);</span>
+                    <span class="functiontext">Inter::Defn::write_construct_text_allowing_nop</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">}</span>
+                <span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::from_index</span><span class="plain">(</span><span class="identifier">X</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;owning_repo</span><span class="plain">, </span><span class="identifier">X_index</span><span class="plain">);</span>
+                <span class="identifier">m</span><span class="plain">++;</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="identifier">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%2d.    "</span><span class="plain">, (</span><span class="identifier">n</span><span class="plain">+1));</span>
+            <span class="functiontext">Inter::Defn::write_construct_text_allowing_nop</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Frame::attach_package</span><span class="plain">(</span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ID</span><span class="plain">) &amp;&amp; (</span><span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">)) {</span>
             <span class="identifier">F</span><span class="element">.repo_segment</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain">[</span><span class="identifier">F</span><span class="element">.index</span><span class="plain"> + </span><span class="constant">PREFRAME_PACKAGE</span><span class="plain">] = </span><span class="identifier">ID</span><span class="plain">;</span>
@@ -454,6 +485,8 @@
 <p class="endnote">The function Inter::Frame::get_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Frame::get_package_alt appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Frame::backtrace is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Inter::Frame::attach_package is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>).</p>
 

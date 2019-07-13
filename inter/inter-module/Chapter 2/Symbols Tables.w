@@ -320,11 +320,13 @@ void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *nam
 }
 
 void Inter::SymbolsTables::resolve_forward_references(inter_repository *I, inter_error_location *eloc) {
-	Inter::SymbolsTables::resolve_forward_references_r(I->main_package, eloc);
+	Inter::Packages::traverse_repository_inc(I, Inter::SymbolsTables::rfr_visitor, eloc);
 }
 
-void Inter::SymbolsTables::resolve_forward_references_r(inter_package *pack, inter_error_location *eloc) {
-	for (; pack; pack = pack->next_package) {
+void Inter::SymbolsTables::rfr_visitor(inter_repository *I, inter_frame P, void *state) {
+	inter_error_location *eloc = (inter_error_location *) state;
+	if (P.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
 		inter_symbols_table *T = Inter::Packages::scope(pack);
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
@@ -335,7 +337,6 @@ void Inter::SymbolsTables::resolve_forward_references_r(inter_package *pack, int
 				symb->equated_name = NULL;
 			}
 		}
-		Inter::SymbolsTables::resolve_forward_references_r(pack->child_package, eloc);
 	}
 }
 

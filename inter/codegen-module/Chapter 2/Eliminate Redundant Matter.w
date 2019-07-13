@@ -36,18 +36,30 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_symbol *witness) {
 	}
 	inter_symbol *ptype = Inter::Packages::type(pack);
 	if ((ptype) && (Str::eq(ptype->symbol_name, I"_function"))) {
-		for (inter_package *P = pack->child_package; P; P = P->next_package) {
-			CodeGen::Eliminate::require(P, NULL);
+		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *P = Inter::Package::defined_by_frame(C);
+				CodeGen::Eliminate::require(P, NULL);
+			}
 		}
 	}
 	if ((ptype) && (Str::eq(ptype->symbol_name, I"_action"))) {
-		for (inter_package *P = pack->child_package; P; P = P->next_package) {
-			CodeGen::Eliminate::require(P, NULL);
+		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *P = Inter::Package::defined_by_frame(C);
+				CodeGen::Eliminate::require(P, NULL);
+			}
 		}
 	}
 	if ((ptype) && (Str::eq(ptype->symbol_name, I"_to_phrase"))) {
-		for (inter_package *P = pack->child_package; P; P = P->next_package) {
-			CodeGen::Eliminate::require(P, NULL);
+		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *P = Inter::Package::defined_by_frame(C);
+				CodeGen::Eliminate::require(P, NULL);
+			}
 		}
 	}
 }
@@ -79,8 +91,13 @@ void CodeGen::Eliminate::require_these_too(inter_package *pack) {
 	}
 	if (Str::eq(pack->package_name->symbol_name, I"SL_Score_Moves_B"))
 		CodeGen::Eliminate::require(pack, NULL);
-	for (inter_package *P = pack->child_package; P; P = P->next_package)
-		CodeGen::Eliminate::require_these_too(P);
+	inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *P = Inter::Package::defined_by_frame(C);
+			CodeGen::Eliminate::require_these_too(P);
+		}
+	}
 }
 
 void CodeGen::Eliminate::eliminate_unused(inter_package *pack) {
@@ -88,8 +105,13 @@ void CodeGen::Eliminate::eliminate_unused(inter_package *pack) {
 		LOG("Not used: $3\n", pack->package_name);
 		CodeGen::Eliminate::remove_package(pack);
 	}
-	for (inter_package *P = pack->child_package; P; P = P->next_package)
-		CodeGen::Eliminate::eliminate_unused(P);
+	inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *P = Inter::Package::defined_by_frame(C);
+			CodeGen::Eliminate::eliminate_unused(P);
+		}
+	}
 }
 
 void CodeGen::Eliminate::variable_visitor(inter_repository *I, inter_frame P, void *state) {
@@ -105,9 +127,15 @@ void CodeGen::Eliminate::variable_visitor(inter_repository *I, inter_frame P, vo
 }
 
 void CodeGen::Eliminate::remove_package(inter_package *pack) {
-	for (inter_package *P = pack->child_package; P; P = P->next_package) {
-		if ((P) && ((P->package_flags & USED_PACKAGE_FLAG) != 0)) {
-			LOG("Warning: eliminating necessary $6\n", P);
+	if (pack) {
+		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *P = Inter::Package::defined_by_frame(C);
+				if ((P) && ((P->package_flags & USED_PACKAGE_FLAG) != 0)) {
+					LOG("Warning: eliminating necessary $6\n", P);
+				}
+			}
 		}
 	}
 }

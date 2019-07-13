@@ -10,8 +10,6 @@ typedef struct inter_package {
 	inter_t index_n;
 	struct inter_symbol *package_name;
 	struct inter_package *parent_package;
-	struct inter_package *child_package;
-	struct inter_package *next_package;
 	struct inter_symbols_table *package_scope;
 	int codelike_package;
 	inter_t I7_baseline;
@@ -31,18 +29,16 @@ inter_package *Inter::Packages::new(inter_package *par, inter_repository *I, int
 	pack->package_name = NULL;
 	pack->package_flags = 0;
 	pack->parent_package = par;
-	if (par) {
-		if (par->child_package == NULL) par->child_package = pack;
-		else {
-			inter_package *sib = par->child_package;
-			while ((sib) && (sib->next_package)) sib = sib->next_package;
-			sib->next_package = pack;
-		}
-	}
 	pack->index_n = n;
 	pack->codelike_package = FALSE;
 	pack->I7_baseline = 0;
 	return pack;
+}
+
+void Inter::Packages::unmark_all(void) {
+	inter_package *pack;
+	LOOP_OVER(pack, inter_package)
+		CodeGen::unmark(pack->package_name);
 }
 
 void Inter::Packages::set_scope(inter_package *P, inter_symbols_table *T) {
@@ -94,9 +90,13 @@ inter_package *Inter::Packages::template(inter_repository *I) {
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 	if (found) return found;
-	for (P = P->child_package; P; P = P->next_package) {
-		found = Inter::Packages::search_exhaustively(P, S);
-		if (found) return found;
+	inter_frame D = Inter::Symbols::defining_frame(P->package_name);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *Q = Inter::Package::defined_by_frame(C);
+			found = Inter::Packages::search_exhaustively(Q, S);
+			if (found) return found;
+		}
 	}
 	return NULL;
 }
@@ -106,9 +106,16 @@ inter_symbol *Inter::Packages::search_main_exhaustively(inter_repository *I, tex
 }
 
 inter_symbol *Inter::Packages::search_resources_exhaustively(inter_repository *I, text_stream *S) {
-	for (inter_package *P = Inter::Packages::main(I)->child_package; P; P = P->next_package) {
-		inter_symbol *found = Inter::Packages::search_exhaustively(P, S);
-		if (found) return found;
+	inter_package *main_package = Inter::Packages::main(I);
+	if (main_package) {
+		inter_frame D = Inter::Symbols::defining_frame(main_package->package_name);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *Q = Inter::Package::defined_by_frame(C);
+				inter_symbol *found = Inter::Packages::search_exhaustively(Q, S);
+				if (found) return found;
+			}
+		}
 	}
 	return NULL;
 }
@@ -194,6 +201,13 @@ void Inter::Packages::traverse_repository_inc(inter_repository *from, void (*vis
 		Inter::Packages::traverse_repository_inc_inner(from, D, visitor, state);
 	}
 }
+void Inter::Packages::traverse_repository_inc_from(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state, inter_package *mp) {
+	if (mp) {
+		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
+		(*visitor)(from, D, state);
+		Inter::Packages::traverse_repository_inc_inner(from, D, visitor, state);
+	}
+}
 void Inter::Packages::traverse_repository_inc_inner(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		(*visitor)(from, C, state);
@@ -222,4 +236,15 @@ int Inter::Packages::baseline(inter_package *P) {
 	if (P == NULL) return 0;
 	if (P->package_name == NULL) return 0;
 	return Inter::Defn::get_level(Inter::Symbols::defining_frame(P->package_name));
+}
+
+text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) {
+	if (P == NULL) return NULL;
+	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), key);
+	if ((found) && (Inter::Symbols::is_defined(found))) {
+		inter_frame F = Inter::Symbols::defining_frame(found);
+		inter_t val2 = F.data[VAL1_MD_IFLD + 1];
+		return Inter::get_text(P->stored_in, val2);
+	}
+	return NULL;
 }
