@@ -363,15 +363,9 @@ inter_error_message *Inter::Defn::vet_level(inter_reading_state *IRS, inter_t co
 	inter_construct *proposed = NULL;
 	LOOP_OVER(proposed, inter_construct)
 		if (proposed->construct_ID == cons) {
-//WRITE_TO(STDERR, "So %S, %d alt vs %d classic, level %d, actual %d, min %d, max %d\n",
-//	(IRS->current_package)?((IRS->current_package->package_name->symbol_name)):(I"NONE"),
-//	Inter::Bookmarks::baseline(IRS), Inter::Bookmarks::cpi(IRS), level, actual,
-//		proposed->min_level, proposed->max_level);
 			if (actual < 0) return Inter::Errors::plain(I"impossible level", eloc);
-			if ((actual < proposed->min_level) || (actual > proposed->max_level)) {
-//internal_error("yikes");
+			if ((actual < proposed->min_level) || (actual > proposed->max_level))
 				return Inter::Errors::plain(I"indentation error", eloc);
-			}
 			return NULL;
 		}
 	return Inter::Errors::plain(I"no such construct", eloc);

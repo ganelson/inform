@@ -10,7 +10,6 @@ typedef struct inter_package {
 	inter_t index_n;
 	struct inter_symbol *package_name;
 	struct inter_symbols_table *package_scope;
-	inter_t I7_baseline;
 	int package_flags;
 	MEMORY_MANAGEMENT
 } inter_package;
@@ -28,7 +27,6 @@ inter_package *Inter::Packages::new(inter_repository *I, inter_t n) {
 	pack->package_name = NULL;
 	pack->package_flags = 0;
 	pack->index_n = n;
-	pack->I7_baseline = 0;
 	return pack;
 }
 

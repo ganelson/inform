@@ -18,8 +18,8 @@ inter_t Emit::baseline(inter_reading_state *IRS) {
 	if (IRS == NULL) return 0;
 	if (IRS->current_package == NULL) return 0;
 	if (Inter::Packages::is_codelike(IRS->current_package))
-		return Inter::Packages::parent(IRS->current_package)->I7_baseline;
-	return IRS->current_package->I7_baseline;
+		return (inter_t) Inter::Packages::baseline(Inter::Packages::parent(IRS->current_package)) + 1;
+	return (inter_t) Inter::Packages::baseline(IRS->current_package) + 1;
 }
 
 inter_reading_state Emit::bookmark(void) {
@@ -731,7 +731,6 @@ inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_packag
 	inter_package *IP = NULL;
 	Emit::guard(Inter::Package::new_package(Packaging::at(), rsymb, ptype, B, NULL, &IP));
 	if (IP) {
-		IP->I7_baseline = B+1;
 		Inter::Defn::set_current_package(Packaging::at(), IP);
 		if (P) *P = IP;
 	}
