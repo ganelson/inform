@@ -39,7 +39,7 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_frame P, 
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
-	if (S == NULL) { internal_error("IO"); return Inter::Frame::error(&P, I"3no symbol for ID", NULL); }
+	if (S == NULL) return Inter::Frame::error(&P, I"no symbol for ID (case 3)", NULL);
 	inter_frame D = Inter::Symbols::defining_frame(S);
 	if (Inter::Symbols::is_extern(S)) return NULL;
 	if (Inter::Symbols::is_predeclared(S)) return NULL;

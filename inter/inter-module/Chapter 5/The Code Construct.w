@@ -37,10 +37,10 @@ void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'code' used outside function", eloc); return; }
 
-	*E = Inter::Code::new(IBM, routine, ilp->indent_level, eloc);
+	*E = Inter::Code::new(IBM, ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Code::new(inter_bookmark *IBM, inter_symbol *routine, int level, inter_error_location *eloc) {
+inter_error_message *Inter::Code::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
 	inter_frame P = Inter::Frame::fill_1(IBM, CODE_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);

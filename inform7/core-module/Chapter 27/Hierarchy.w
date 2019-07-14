@@ -1605,8 +1605,7 @@ void Hierarchy::ensure_actions_diversion(void) {
 		submodule_identity *actions = Packaging::register_submodule(I"actions");
 		package_request *template_actions = Packaging::template_submodule(actions);
 		packaging_state save = Packaging::enter(template_actions);
-		inter_bookmark bubble = Packaging::bubble();
-		CodeGen::Assimilate::divert(ACTION_ASSIM_BM, bubble);
+		CodeGen::Assimilate::divert(ACTION_ASSIM_BM, Packaging::bubble());
 		Packaging::exit(save);
 	}
 }

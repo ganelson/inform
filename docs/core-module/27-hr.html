@@ -1930,8 +1930,7 @@
             <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">actions</span><span class="plain"> = </span><span class="functiontext">Packaging::register_submodule</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"actions"</span><span class="plain">);</span>
             <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">template_actions</span><span class="plain"> = </span><span class="functiontext">Packaging::template_submodule</span><span class="plain">(</span><span class="identifier">actions</span><span class="plain">);</span>
             <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">template_actions</span><span class="plain">);</span>
-            <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
-            <span class="identifier">CodeGen::Assimilate::divert</span><span class="plain">(</span><span class="identifier">ACTION_ASSIM_BM</span><span class="plain">, </span><span class="identifier">bubble</span><span class="plain">);</span>
+            <span class="identifier">CodeGen::Assimilate::divert</span><span class="plain">(</span><span class="identifier">ACTION_ASSIM_BM</span><span class="plain">, </span><span class="functiontext">Packaging::bubble</span><span class="plain">());</span>
             <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

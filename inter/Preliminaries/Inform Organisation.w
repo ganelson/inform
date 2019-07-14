@@ -57,6 +57,7 @@ range of possible subpackages is:
 	|/main/M/conjugations|
 	|/main/M/equations|
 	|/main/M/extensions|
+	|/main/M/functions|
 	|/main/M/grammar|
 	|/main/M/instances|
 	|/main/M/kinds|
@@ -80,9 +81,14 @@ what is invoked. For example:
 
 invokes the function defined by the package:
 
-	|inv /main/kinds/kind_6/gpr_fn|
+	|/main/kinds/kind_6/gpr_fn|
 
 (Inform conventionally uses names ending in |_fn| for function packages.)
+Functions assimilated from template files are almost exactly similar,
+except that rather than |call| the call symbol has the name of the original
+template function. For example, |RELATION_TY_Distinguish| is assimilated as:
+
+	|/template/functions/RELATION_TY_Distinguish_fn/RELATION_TY_Distinguish|
 
 It is possible for function packages to avoid defining any actual code, by
 defining |call| as an alias for a routine which we'll simply have to assume

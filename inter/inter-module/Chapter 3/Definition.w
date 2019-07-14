@@ -240,7 +240,6 @@ inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_f
 
 inter_error_message *Inter::Defn::get_construct(inter_frame P, inter_construct **to) {
 	if (Inter::Frame::valid(&P) == FALSE) {
-internal_error("zob");
 		return Inter::Frame::error(&P, I"invalid frame", NULL);
 	}
 	if ((P.data[ID_IFLD] == INVALID_IST) || (P.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))

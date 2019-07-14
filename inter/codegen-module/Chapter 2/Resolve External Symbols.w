@@ -15,7 +15,7 @@ int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
 	if (P) {
 		resolution_failed = FALSE;
 		Inter::traverse_tree(step->repository, CodeGen::Externals::visitor, NULL, NULL, 0);
-		LOG("\n\n");
+		LOGIF(EXTERNAL_SYMBOL_RESOLUTION, "\n\n");
 		inter_symbols_table *ST = Inter::Packages::scope(P);
 		for (int i=0; i<ST->size; i++) {
 			inter_symbol *S = ST->symbol_array[i];
@@ -27,7 +27,7 @@ int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
 				ST->symbol_array[i] = NULL;
 			}
 		}
-		if (resolution_failed) internal_error("undefined external link(s)");
+//		if (resolution_failed) internal_error("undefined external link(s)");
 	}
 	return TRUE;
 }
@@ -48,6 +48,7 @@ void CodeGen::Externals::visitor(inter_repository *I, inter_frame P, void *state
 				S->equated_to = D;
 				Inter::Symbols::set_flag(D, EXTERN_TARGET_BIT);
 				if (!Inter::Symbols::is_defined(D)) {
+					LOG("In package $3:\n", Q->package_name);
 					LOG("$3 == $3 which is undefined\n", S, D);
 					WRITE_TO(STDERR, "Failed to resolve symbol: %S\n", D->symbol_name);
 					resolution_failed = TRUE;

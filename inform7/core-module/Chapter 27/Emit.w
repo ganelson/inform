@@ -758,7 +758,7 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 
 	current_inter_routine = rsymb;
 	current_inter_bookmark = Emit::bookmark();
-	Emit::guard(Inter::Code::new(Packaging::at(), current_inter_routine,
+	Emit::guard(Inter::Code::new(Packaging::at(),
 		(int) Emit::baseline(Packaging::at()) + 1, NULL));
 
 	begin_bookmark = Emit::bookmark();
@@ -1018,7 +1018,7 @@ void Emit::pop_code_position(void) {
 
 void Emit::code(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Code::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
+	Emit::guard(Inter::Code::new(Emit::at(), Emit::level(), NULL));
 }
 
 void Emit::evaluation(void) {

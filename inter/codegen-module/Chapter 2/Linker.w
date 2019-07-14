@@ -85,6 +85,17 @@ inter_symbol *CodeGen::Link::find_in_namespace(inter_repository *I, text_stream 
 }
 
 void CodeGen::Link::build_r(inter_package *P) {
+	CodeGen::Link::build_only(P);
+	inter_frame D = Inter::Symbols::defining_frame(P->package_name);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *Q = Inter::Package::defined_by_frame(C);
+			CodeGen::Link::build_r(Q);
+		}
+	}
+}
+
+void CodeGen::Link::build_only(inter_package *P) {
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T) {
 		for (int i=0; i<T->size; i++) {
@@ -96,13 +107,6 @@ void CodeGen::Link::build_r(inter_package *P) {
 				Dictionaries::create(linkable_namespace, name);
 				Dictionaries::write_value(linkable_namespace, name, (void *) S);
 			}
-		}
-	}
-	inter_frame D = Inter::Symbols::defining_frame(P->package_name);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *Q = Inter::Package::defined_by_frame(C);
-			CodeGen::Link::build_r(Q);
 		}
 	}
 }

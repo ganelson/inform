@@ -77,6 +77,7 @@ range of possible subpackages is:
         <span class="plain">/main/M/conjugations</span>
         <span class="plain">/main/M/equations</span>
         <span class="plain">/main/M/extensions</span>
+        <span class="plain">/main/M/functions</span>
         <span class="plain">/main/M/grammar</span>
         <span class="plain">/main/M/instances</span>
         <span class="plain">/main/M/kinds</span>
@@ -113,11 +114,21 @@ what is invoked. For example:
 
 
 <pre class="display">
-        <span class="plain">inv /main/kinds/kind_6/gpr_fn</span>
+        <span class="plain">/main/kinds/kind_6/gpr_fn</span>
 </pre>
 
 <p class="inwebparagraph">(Inform conventionally uses names ending in <code class="display"><span class="extract">_fn</span></code> for function packages.)
+Functions assimilated from template files are almost exactly similar,
+except that rather than <code class="display"><span class="extract">call</span></code> the call symbol has the name of the original
+template function. For example, <code class="display"><span class="extract">RELATION_TY_Distinguish</span></code> is assimilated as:
 </p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">/template/functions/RELATION_TY_Distinguish_fn/RELATION_TY_Distinguish</span>
+</pre>
 
 <p class="inwebparagraph">It is possible for function packages to avoid defining any actual code, by
 defining <code class="display"><span class="extract">call</span></code> as an alias for a routine which we'll simply have to assume

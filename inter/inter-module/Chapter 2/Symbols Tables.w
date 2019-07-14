@@ -146,6 +146,12 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template(inter_repositor
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template_creating(inter_repository *I, text_stream *S) {
+	inter_package *P = Inter::Packages::template(I);
+	if (P == NULL) return NULL;
+	return Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(P), S);
+}
+
 inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_repository *I, text_stream *S) {
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_basics(I, S);
 	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_veneer(I, S);
