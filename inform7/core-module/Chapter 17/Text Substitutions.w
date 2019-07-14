@@ -262,7 +262,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 	int makes_local_references =
 		LocalVariables::local_parsed_recently(Frames::current_stack_frame());
 	if (makes_local_references) {
-		Emit::push_code_position(Emit::begin_position());
+		Emit::push_code_position(Emit::begin_position(), Inter::Bookmarks::snapshot(Packaging::at()));
 		LocalVariables::compile_retrieval(phsf);
 		Emit::pop_code_position();
 	}

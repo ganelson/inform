@@ -26,19 +26,19 @@ void Inter::Pragma::define(void) {
 @d EXTENT_PRAGMA_IFR 4
 
 =
-void Inter::Pragma::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, PRAGMA_IST, ilp->indent_level, eloc);
+void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, PRAGMA_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *target_name = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IRS), ilp->mr.exp[0]);
+	inter_symbol *target_name = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
 	if (target_name == NULL)
-		target_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+		target_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];
-	inter_t ID = Inter::create_text(IRS->read_into);
+	inter_t ID = Inter::create_text(IBM->read_into);
 	int literal_mode = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		int c = (int) Str::get(pos);
@@ -54,17 +54,17 @@ void Inter::Pragma::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 			}
 		}
 		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = Inter::Errors::quoted(I"bad character in text", S, eloc); return; }
-		PUT_TO(Inter::get_text(IRS->read_into, ID), c);
+		PUT_TO(Inter::get_text(IBM->read_into, ID), c);
 		literal_mode = FALSE;
 	}
 
-	*E = Inter::Pragma::new(IRS, target_name, ID, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Pragma::new(IBM, target_name, ID, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Pragma::new(inter_reading_state *IRS, inter_symbol *target_name, inter_t pragma_text, inter_t level, struct inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IRS, PRAGMA_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, target_name), pragma_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_t pragma_text, inter_t level, struct inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_2(IBM, PRAGMA_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, target_name), pragma_text, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

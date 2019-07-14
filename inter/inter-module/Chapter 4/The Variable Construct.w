@@ -27,31 +27,31 @@ void Inter::Variable::define(void) {
 @d EXTENT_VAR_IFR 6
 
 =
-void Inter::Variable::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, VARIABLE_IST, ilp->indent_level, eloc);
+void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, VARIABLE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *var_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IRS->read_into, var_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(IBM->read_into, var_name, ilp->annotations[i]);
 
 	inter_t var_val1 = 0;
 	inter_t var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IRS));
+	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::Variable::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_kind), var_val1, var_val2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Variable::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind), var_val1, var_val2, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Variable::new(inter_reading_state *IRS, inter_t VID, inter_t KID, inter_t var_val1, inter_t var_val2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
+inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_t VID, inter_t KID, inter_t var_val1, inter_t var_val2, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

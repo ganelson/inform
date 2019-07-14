@@ -26,26 +26,26 @@ void Inter::Property::define(void) {
 @d EXTENT_PROP_IFR 5
 
 =
-void Inter::Property::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, PROPERTY_IST, ilp->indent_level, eloc);
+void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, PROPERTY_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *prop_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *prop_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IRS->read_into, prop_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(IBM->read_into, prop_name, ilp->annotations[i]);
 
-	*E = Inter::Property::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, prop_kind), (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Property::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_kind), (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Property::new(inter_reading_state *IRS, inter_t PID, inter_t KID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, PROPERTY_IST, PID, KID, Inter::create_frame_list(IRS->read_into), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
+inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inter_t KID, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, Inter::create_frame_list(IBM->read_into), eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

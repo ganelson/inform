@@ -28,22 +28,22 @@ void Inter::Code::define(void) {
 @d EXTENT_CODE_IFR 3
 
 =
-void Inter::Code::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IRS, CODE_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, CODE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'code' used outside function", eloc); return; }
 
-	*E = Inter::Code::new(IRS, routine, ilp->indent_level, eloc);
+	*E = Inter::Code::new(IBM, routine, ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Code::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_1(IRS, CODE_IST, 0, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Code::new(inter_bookmark *IBM, inter_symbol *routine, int level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_1(IBM, CODE_IST, 0, eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

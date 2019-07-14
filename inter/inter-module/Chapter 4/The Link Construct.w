@@ -34,8 +34,8 @@ void Inter::Link::define(void) {
 @d AFTER_LINK_STAGE 4
 
 =
-void Inter::Link::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, LINK_IST, ilp->indent_level, eloc);
+void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, LINK_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
@@ -51,20 +51,20 @@ void Inter::Link::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 	inter_t SIDS[5];
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
-		SIDS[i] = Inter::create_text(IRS->read_into);
-		*E = Inter::Constant::parse_text(Inter::get_text(IRS->read_into, SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
+		SIDS[i] = Inter::create_text(IBM->read_into);
+		*E = Inter::Constant::parse_text(Inter::get_text(IBM->read_into, SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
 		if (*E) return;
 	}
 
-	*E = Inter::Link::new(IRS, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], 0, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Link::new(IBM, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], 0, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Link::new(inter_reading_state *IRS,
+inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_t stage, inter_t text1, inter_t text2, inter_t text3, inter_t text4, inter_t ref, inter_t level,
 	struct inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_6(IRS, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_frame P = Inter::Frame::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

@@ -25,19 +25,19 @@ void Inter::Version::define(void) {
 @d EXTENT_VERSION_IFR 3
 
 =
-void Inter::Version::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, VERSION_IST, ilp->indent_level, eloc);
+void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, VERSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Version::new(IRS, Str::atoi(ilp->mr.exp[0], 0), (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Version::new(IBM, Str::atoi(ilp->mr.exp[0], 0), (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Version::new(inter_reading_state *IRS, int V, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_1(IRS, VERSION_IST, (inter_t) V, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Version::new(inter_bookmark *IBM, int V, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_1(IBM, VERSION_IST, (inter_t) V, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

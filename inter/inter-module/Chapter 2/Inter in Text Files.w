@@ -10,9 +10,9 @@ int no_blank_lines_stacked = 0;
 void Inter::Textual::read(inter_repository *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading textual inter file %f)\n", F);
 	no_blank_lines_stacked = 0;
-	inter_reading_state IRS = Inter::Bookmarks::new_IRS(I);
+	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
-	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IRS);
+	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
 	Inter::SymbolsTables::resolve_forward_references(I, &eloc);
 	Inter::traverse_tree(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 }
@@ -50,7 +50,7 @@ inter_symbol *Inter::Textual::find_symbol(inter_repository *I, inter_error_locat
 	return symb;
 }
 
-inter_symbol *Inter::Textual::find_undefined_symbol(inter_reading_state *IRS, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
@@ -83,16 +83,16 @@ inter_data_type *Inter::Textual::data_type(inter_error_location *eloc, text_stre
 }
 
 void Inter::Textual::read_line(text_stream *line, text_file_position *tfp, void *state) {
-	inter_reading_state *IRS = (inter_reading_state *) state;
+	inter_bookmark *IBM = (inter_bookmark *) state;
 	inter_error_location eloc = Inter::Errors::file_location(line, tfp);
 	if (Str::len(line) == 0) { no_blank_lines_stacked++; return; }
 	for (int i=0; i<no_blank_lines_stacked; i++) {
 		inter_error_location b_eloc = Inter::Errors::file_location(I"", tfp);
-		inter_error_message *E = Inter::Defn::read_construct_text(I"", &b_eloc, IRS);
+		inter_error_message *E = Inter::Defn::read_construct_text(I"", &b_eloc, IBM);
 		if (E) Inter::Errors::issue(E);
 	}
 	no_blank_lines_stacked = 0;
-	inter_error_message *E = Inter::Defn::read_construct_text(line, &eloc, IRS);
+	inter_error_message *E = Inter::Defn::read_construct_text(line, &eloc, IBM);
 	if (E) Inter::Errors::issue(E);
 }
 

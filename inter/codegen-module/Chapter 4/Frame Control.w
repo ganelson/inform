@@ -183,10 +183,10 @@ void CodeGen::FC::lab(code_generation *gen, inter_frame P) {
 			PUT(Str::get(pos));
 }
 
-void CodeGen::FC::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1, inter_t val2) {
+void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_t val1, inter_t val2) {
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(
-			val1, val2, Inter::Bookmarks::scope(IRS));
+			val1, val2, Inter::Bookmarks::scope(IBM));
 		if (symb == NULL) internal_error("bad symbol");
 		WRITE("%S", CodeGen::CL::name(symb));
 		return;
@@ -203,7 +203,7 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1
 			if (temporary_generation == NULL) {
 				CodeGen::Targets::make_targets();
 				temporary_generation =
-					CodeGen::new_generation(NULL, IRS->read_into, NULL, CodeGen::I6::target());
+					CodeGen::new_generation(NULL, IBM->read_into, NULL, CodeGen::I6::target());
 			}
 			CodeGen::select_temporary(temporary_generation, OUT);
 			CodeGen::CL::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);

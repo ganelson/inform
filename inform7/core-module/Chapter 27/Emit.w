@@ -14,21 +14,21 @@ inter_repository *Emit::repository(void) {
 	return Packaging::at()->read_into;
 }
 
-inter_t Emit::baseline(inter_reading_state *IRS) {
-	if (IRS == NULL) return 0;
-	if (IRS->current_package == NULL) return 0;
-	if (Inter::Packages::is_codelike(IRS->current_package))
-		return (inter_t) Inter::Packages::baseline(Inter::Packages::parent(IRS->current_package)) + 1;
-	return (inter_t) Inter::Packages::baseline(IRS->current_package) + 1;
+inter_t Emit::baseline(inter_bookmark *IBM) {
+	if (IBM == NULL) return 0;
+	if (Inter::Bookmarks::package(IBM) == NULL) return 0;
+	if (Inter::Packages::is_codelike(Inter::Bookmarks::package(IBM)))
+		return (inter_t) Inter::Packages::baseline(Inter::Packages::parent(Inter::Bookmarks::package(IBM))) + 1;
+	return (inter_t) Inter::Packages::baseline(Inter::Bookmarks::package(IBM)) + 1;
 }
 
-inter_reading_state Emit::bookmark(void) {
-	inter_reading_state b = Inter::Bookmarks::snapshot(Packaging::at());
+inter_bookmark Emit::bookmark(void) {
+	inter_bookmark b = Inter::Bookmarks::snapshot(Packaging::at());
 	return b;
 }
 
-inter_reading_state Emit::bookmark_at(inter_reading_state *IRS) {
-	inter_reading_state b = Inter::Bookmarks::snapshot(IRS);
+inter_bookmark Emit::bookmark_at(inter_bookmark *IBM) {
+	inter_bookmark b = Inter::Bookmarks::snapshot(IBM);
 	return b;
 }
 
@@ -36,8 +36,8 @@ void Emit::nop(void) {
 	Emit::guard(Inter::Nop::new(Packaging::at(), Emit::baseline(Packaging::at()), NULL));
 }
 
-void Emit::nop_at(inter_reading_state *IRS) {
-	Emit::guard(Inter::Nop::new(IRS, Emit::baseline(IRS) + 2, NULL));
+void Emit::nop_at(inter_bookmark *IBM) {
+	Emit::guard(Inter::Nop::new(IBM, Emit::baseline(IBM) + 2, NULL));
 }
 
 dictionary *extern_symbols = NULL;
@@ -128,7 +128,7 @@ inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name 
 	inter_symbol *rsymb = InterNames::to_symbol(Rules::iname(R));
 	inter_symbol *vsymb = InterNames::to_symbol(val_iname);
 	inter_t val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Packaging::at()->read_into, Packaging::at()->current_package, vsymb, &val1, &val2);
+	Inter::Symbols::to_data(Packaging::at()->read_into, Inter::Bookmarks::package(Packaging::at()), vsymb, &val1, &val2);
 	Emit::guard(Inter::Response::new(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), symb), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), rsymb), (inter_t) marker, val1, val2, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 	return symb;
@@ -294,7 +294,7 @@ void Emit::instance_permission(property *prn, inter_name *inst_iname) {
 }
 
 int ppi7_counter = 0;
-void Emit::basic_permission(inter_reading_state *at, inter_name *name, inter_symbol *owner_name, inter_symbol *store) {
+void Emit::basic_permission(inter_bookmark *at, inter_name *name, inter_symbol *owner_name, inter_symbol *store) {
 	inter_symbol *prop_name = Emit::define_symbol(name);
 	inter_error_message *E = NULL;
 	TEMPORARY_TEXT(ident);
@@ -562,8 +562,8 @@ void Emit::array_iname_entry(inter_name *iname) {
 	if (iname == NULL) alias = Hierarchy::veneer_symbol(NOTHING_VSYMB);
 	else alias = InterNames::to_symbol(iname);
 	inter_t val1 = 0, val2 = 0;
-	inter_reading_state *IRS = Emit::array_IRS();
-	Inter::Symbols::to_data(IRS->read_into, IRS->current_package, alias, &val1, &val2);
+	inter_bookmark *IBM = Emit::array_IRS();
+	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), alias, &val1, &val2);
 	Emit::add_entry(val1, val2);
 }
 
@@ -585,8 +585,8 @@ void Emit::array_action_entry(action_name *an) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_t v1 = 0, v2 = 0;
 	inter_symbol *symb = InterNames::to_symbol(PL::Actions::iname(an));
-	inter_reading_state *IRS = Emit::array_IRS();
-	Inter::Symbols::to_data(IRS->read_into, IRS->current_package, symb, &v1, &v2);
+	inter_bookmark *IBM = Emit::array_IRS();
+	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), symb, &v1, &v2);
 	Emit::add_entry(v1, v2);
 }
 #endif
@@ -624,16 +624,16 @@ void Emit::array_divider(text_stream *divider_text) {
 	Emit::add_entry(DIVIDER_IVAL, S);
 }
 
-inter_reading_state *Emit::array_IRS(void) {
+inter_bookmark *Emit::array_IRS(void) {
 	if (current_A == NULL) internal_error("inter array not opened");
-	inter_reading_state *IRS = Packaging::at();
-	return IRS;
+	inter_bookmark *IBM = Packaging::at();
+	return IBM;
 }
 
 void Emit::array_end(packaging_state save) {
 	if (current_A == NULL) internal_error("inter array not opened");
 	inter_symbol *con_name = current_A->array_name_symbol;
-	inter_reading_state *IRS = Packaging::at();
+	inter_bookmark *IBM = Packaging::at();
 	kind *K = current_A->entry_kind;
 	inter_t CID = 0;
 	if (K) {
@@ -642,12 +642,12 @@ void Emit::array_end(packaging_state save) {
 			con_kind = Emit::kind_to_symbol(Kinds::unary_construction(CON_list_of, K));
 		else
 			con_kind = Emit::kind_to_symbol(K);
-		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind);
+		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind);
 	} else {
-		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, unchecked_interk);
+		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
 	}
 	inter_frame array_in_progress =
-		Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), CID, current_A->array_form, NULL, Emit::baseline(IRS));
+		Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Emit::baseline(IBM));
 	int pos = array_in_progress.extent;
 	if (Inter::Frame::extend(&array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
 		internal_error("can't extend frame");
@@ -655,7 +655,7 @@ void Emit::array_end(packaging_state save) {
 		array_in_progress.data[pos++] = current_A->entry_data1[i];
 		array_in_progress.data[pos++] = current_A->entry_data2[i];
 	}
-	Emit::guard(Inter::Defn::verify_construct(IRS->current_package, array_in_progress));
+	Emit::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Frame::insert(array_in_progress, Packaging::at());
 	Emit::pull_array();
 	Packaging::exit(save);
@@ -671,7 +671,7 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 		else internal_error("can't handle a null alias");
 	}
 	inter_t val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Packaging::at()->read_into, Packaging::at()->current_package, alias, &val1, &val2);
+	Inter::Symbols::to_data(Packaging::at()->read_into, Inter::Bookmarks::package(Packaging::at()), alias, &val1, &val2);
 	Emit::guard(Inter::Constant::new_numerical(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), val_kind), val1, val2, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 	return name;
@@ -705,10 +705,10 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 }
 
 inter_symbol *current_inter_routine = NULL;
-inter_reading_state current_inter_reading_state;
-inter_reading_state locals_bookmark;
-inter_reading_state begin_bookmark;
-inter_reading_state code_bookmark;
+inter_bookmark current_inter_bookmark;
+inter_bookmark locals_bookmark;
+inter_bookmark begin_bookmark;
+inter_bookmark code_bookmark;
 
 void Emit::early_comment(text_stream *text) {
 /*	inter_t ID = Inter::create_text(Emit::repository());
@@ -731,7 +731,7 @@ inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_packag
 	inter_package *IP = NULL;
 	Emit::guard(Inter::Package::new_package(Packaging::at(), rsymb, ptype, B, NULL, &IP));
 	if (IP) {
-		Inter::Defn::set_current_package(Packaging::at(), IP);
+		Inter::Bookmarks::set_current_package(Packaging::at(), IP);
 		if (P) *P = IP;
 	}
 	return rsymb;
@@ -740,7 +740,6 @@ inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_packag
 inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 	if (current_inter_routine) internal_error("nested routines");
 	if (Packaging::at() == NULL) internal_error("no inter repository");
-
 	if (save) {
 		*save = Packaging::enter_home_of(iname);
 		package_request *R = InterNames::location(iname);
@@ -754,19 +753,23 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 	if (Packaging::housed_in_function(iname))
 		block_iname = Hierarchy::make_block_iname(InterNames::location(iname));
 	else internal_error("routine outside function package");
+	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at());
 	inter_symbol *rsymb = Emit::package(block_iname, code_packagetype, NULL);
 
 	current_inter_routine = rsymb;
-	current_inter_reading_state = Emit::bookmark();
+	current_inter_bookmark = Emit::bookmark();
 	Emit::guard(Inter::Code::new(Packaging::at(), current_inter_routine,
 		(int) Emit::baseline(Packaging::at()) + 1, NULL));
+
 	begin_bookmark = Emit::bookmark();
+	Inter::Bookmarks::set_placement(&begin_bookmark, IMMEDIATELY_AFTER_ICPLACEMENT);
+
 	locals_bookmark = begin_bookmark;
-	locals_bookmark.placement_wrt_R = BEFORE_ICPLACEMENT;
-	begin_bookmark.placement_wrt_R = IMMEDIATELY_AFTER_ICPLACEMENT;
+	Inter::Bookmarks::set_placement(&locals_bookmark, BEFORE_ICPLACEMENT);
+
 	code_bookmark = Emit::bookmark();
 	code_insertion_point cip = Emit::new_cip(&code_bookmark);
-	Emit::push_code_position(cip);
+	Emit::push_code_position(cip, save_ib);
 	return rsymb;
 }
 
@@ -924,18 +927,20 @@ typedef struct code_insertion_point {
 	int noted_levels[MAX_NESTED_NOTEWORTHY_LEVELS];
 	int noted_sp;
 	int error_flag;
-	inter_reading_state *insertion_bm;
+	inter_bookmark *insertion_bm;
+	inter_bookmark saved_bm;
 } code_insertion_point;
 
 code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
 int cip_sp = 0;
 
-code_insertion_point Emit::new_cip(inter_reading_state *IRS) {
+code_insertion_point Emit::new_cip(inter_bookmark *IBM) {
 	code_insertion_point cip;
-	cip.inter_level = (int) (Emit::baseline(IRS) + 2);
+	cip.inter_level = (int) (Emit::baseline(IBM) + 2);
 	cip.noted_sp = 2;
 	cip.error_flag = FALSE;
-	cip.insertion_bm = IRS;
+	cip.insertion_bm = IBM;
+	cip.saved_bm = Inter::Bookmarks::snapshot(Packaging::at());
 	return cip;
 }
 
@@ -944,8 +949,9 @@ code_insertion_point Emit::begin_position(void) {
 	return cip;
 }
 
-void Emit::push_code_position(code_insertion_point cip) {
+void Emit::push_code_position(code_insertion_point cip, inter_bookmark save_ib) {
 	if (cip_sp >= MAX_CIP_STACK_SIZE) internal_error("CIP overflow");
+	cip.saved_bm = save_ib;
 	cip_stack[cip_sp++] = cip;
 }
 
@@ -986,7 +992,7 @@ void Emit::to_last_level(int delta) {
 	}
 }
 
-inter_reading_state *Emit::at(void) {
+inter_bookmark *Emit::at(void) {
 	if (cip_sp <= 0) internal_error("CIP level accessed outside routine");
 	return cip_stack[cip_sp-1].insertion_bm;
 }
@@ -1006,6 +1012,7 @@ void Emit::pop_code_position(void) {
 	if (cip_stack[cip_sp-1].error_flag) {
 		internal_error("bad inter hierarchy");
 	}
+	*(Packaging::at()) = cip_stack[cip_sp-1].saved_bm;
 	cip_sp--;
 }
 
@@ -1058,8 +1065,8 @@ void Emit::val_iname(kind *K, inter_name *iname) {
 
 void Emit::val_symbol(kind *K, inter_symbol *s) {
 	inter_t val1 = 0, val2 = 0;
-	inter_reading_state *IRS = Packaging::at();
-	Inter::Symbols::to_data(IRS->read_into, IRS->current_package, s, &val1, &val2);
+	inter_bookmark *IBM = Packaging::at();
+	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Emit::val(K, val1, val2);
 }
 
@@ -1097,8 +1104,8 @@ void Emit::ref_iname(kind *K, inter_name *iname) {
 
 void Emit::ref_symbol(kind *K, inter_symbol *s) {
 	inter_t val1 = 0, val2 = 0;
-	inter_reading_state *IRS = Packaging::at();
-	Inter::Symbols::to_data(IRS->read_into, IRS->current_package, s, &val1, &val2);
+	inter_bookmark *IBM = Packaging::at();
+	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Emit::ref(K, val1, val2);
 }
 
@@ -1113,8 +1120,6 @@ void Emit::end_block(inter_symbol *rsymb) {
 	if (current_inter_routine != rsymb) internal_error("wrong inter routine ended");
 	current_inter_routine = NULL;
 	Emit::pop_code_position();
-	inter_reading_state *IRS = Packaging::at();
-	Inter::Bookmarks::set_package(IRS, Inter::Packages::parent(IRS->current_package));
 }
 
 int Emit::emitting_routine(void) {
@@ -1323,15 +1328,15 @@ void Emit::holster(value_holster *VH, inter_name *iname) {
 }
 
 void Emit::symbol_to_ival(inter_t *val1, inter_t *val2, inter_symbol *S) {
-	inter_reading_state *IRS = Packaging::at();
-	if (S) { Inter::Symbols::to_data(IRS->read_into, IRS->current_package, S, val1, val2); return; }
+	inter_bookmark *IBM = Packaging::at();
+	if (S) { Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 
 void Emit::to_ival(inter_t *val1, inter_t *val2, inter_name *iname) {
-	inter_reading_state *IRS = Packaging::at();
+	inter_bookmark *IBM = Packaging::at();
 	inter_symbol *S = InterNames::to_symbol(iname);
-	if (S) { Inter::Symbols::to_data(IRS->read_into, IRS->current_package, S, val1, val2); return; }
+	if (S) { Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 

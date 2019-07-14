@@ -41,23 +41,23 @@ int Inter::Frame::eq(inter_frame *F1, inter_frame *F2) {
 }
 
 @ =
-inter_frame Inter::Frame::fill_0(inter_reading_state *IRS, int S, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 2, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_0(inter_bookmark *IBM, int S, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 2, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	return P;
 }
 
-inter_frame Inter::Frame::fill_1(inter_reading_state *IRS, int S, inter_t V, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 3, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_1(inter_bookmark *IBM, int S, inter_t V, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 3, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V;
 	return P;
 }
 
-inter_frame Inter::Frame::fill_2(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 4, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_2(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 4, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -65,8 +65,8 @@ inter_frame Inter::Frame::fill_2(inter_reading_state *IRS, int S, inter_t V1, in
 	return P;
 }
 
-inter_frame Inter::Frame::fill_3(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_t V3, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 5, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_3(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 5, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -75,8 +75,8 @@ inter_frame Inter::Frame::fill_3(inter_reading_state *IRS, int S, inter_t V1, in
 	return P;
 }
 
-inter_frame Inter::Frame::fill_4(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 6, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_4(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 6, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -86,8 +86,8 @@ inter_frame Inter::Frame::fill_4(inter_reading_state *IRS, int S, inter_t V1, in
 	return P;
 }
 
-inter_frame Inter::Frame::fill_5(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 7, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_5(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 7, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -98,8 +98,8 @@ inter_frame Inter::Frame::fill_5(inter_reading_state *IRS, int S, inter_t V1, in
 	return P;
 }
 
-inter_frame Inter::Frame::fill_6(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 8, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_6(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 8, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -111,8 +111,8 @@ inter_frame Inter::Frame::fill_6(inter_reading_state *IRS, int S, inter_t V1, in
 	return P;
 }
 
-inter_frame Inter::Frame::fill_7(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_t V7, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 9, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_7(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_t V7, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 9, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -125,8 +125,8 @@ inter_frame Inter::Frame::fill_7(inter_reading_state *IRS, int S, inter_t V1, in
 	return P;
 }
 
-inter_frame Inter::Frame::fill_8(inter_reading_state *IRS, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_t V7, inter_t V8, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::find_room(IRS->read_into, 10, eloc, IRS->current_package);
+inter_frame Inter::Frame::fill_8(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_t V7, inter_t V8, inter_error_location *eloc, inter_t level) {
+	inter_frame P = Inter::find_room(IBM->read_into, 10, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -200,41 +200,40 @@ inter_frame Inter::Frame::from_index(inter_repository *I, inter_t index) {
 =
 int trace_inter_insertion = FALSE;
 
-void Inter::Frame::insert(inter_frame F, inter_reading_state *at) {
+void Inter::Frame::insert(inter_frame F, inter_bookmark *at) {
 	inter_repository *I = F.repo_segment->owning_repo;
 	LOGIF(INTER_FRAMES, "I%d: Insert frame %F\n", I->allocation_id, F);
 	if (trace_inter_insertion) Inter::Defn::write_construct_text(DL, F);
 	inter_t F_level = F.data[LEVEL_IFLD];
 	if (F_level == 0) {
 		Inter::add_to_frame_list(&(I->global_material), F);
-		if ((at->placement_wrt_R == AFTER_ICPLACEMENT) ||
-			(at->placement_wrt_R == IMMEDIATELY_AFTER_ICPLACEMENT))
-			at->R = F;
+		if ((Inter::Bookmarks::get_placement(at) == AFTER_ICPLACEMENT) ||
+			(Inter::Bookmarks::get_placement(at) == IMMEDIATELY_AFTER_ICPLACEMENT))
+			Inter::Bookmarks::set_ref(at, F);
 	} else {
-		if (at->placement_wrt_R == NOWHERE_ICPLACEMENT) internal_error("bad wrt");
-		if (Inter::Frame::valid(&(at->R)) == FALSE) internal_error("bad R");
-		if ((at->placement_wrt_R == AFTER_ICPLACEMENT) ||
-			(at->placement_wrt_R == IMMEDIATELY_AFTER_ICPLACEMENT)) {
-			while (F_level < at->R.data[LEVEL_IFLD]) {
-				inter_t PR_index = Inter::Frame::get_parent_index(at->R);
+		if (Inter::Bookmarks::get_placement(at) == NOWHERE_ICPLACEMENT) internal_error("bad wrt");
+		if ((Inter::Bookmarks::get_placement(at) == AFTER_ICPLACEMENT) ||
+			(Inter::Bookmarks::get_placement(at) == IMMEDIATELY_AFTER_ICPLACEMENT)) {
+			while (F_level < Inter::Bookmarks::get_ref(at).data[LEVEL_IFLD]) {
+				inter_t PR_index = Inter::Frame::get_parent_index(Inter::Bookmarks::get_ref(at));
 				if (PR_index == 0) internal_error("bubbled up out of tree");
-				at->R = Inter::Frame::from_index(I, PR_index);
+				Inter::Bookmarks::set_ref(at, Inter::Frame::from_index(I, PR_index));
 			}
-			if (F_level > at->R.data[LEVEL_IFLD] + 1) internal_error("bubbled down off of tree");
-			if (F_level == at->R.data[LEVEL_IFLD] + 1) {
-				if (at->placement_wrt_R == IMMEDIATELY_AFTER_ICPLACEMENT) {
-					Inter::Frame::place(F, AS_FIRST_CHILD_OF_ICPLACEMENT, at->R);
-					at->placement_wrt_R = AFTER_ICPLACEMENT;
+			if (F_level > Inter::Bookmarks::get_ref(at).data[LEVEL_IFLD] + 1) internal_error("bubbled down off of tree");
+			if (F_level == Inter::Bookmarks::get_ref(at).data[LEVEL_IFLD] + 1) {
+				if (Inter::Bookmarks::get_placement(at) == IMMEDIATELY_AFTER_ICPLACEMENT) {
+					Inter::Frame::place(F, AS_FIRST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(at));
+					Inter::Bookmarks::set_placement(at, AFTER_ICPLACEMENT);
 				} else {
-					Inter::Frame::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, at->R);
+					Inter::Frame::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(at));
 				}
 			} else {
-				Inter::Frame::place(F, AFTER_ICPLACEMENT, at->R);
+				Inter::Frame::place(F, AFTER_ICPLACEMENT, Inter::Bookmarks::get_ref(at));
 			}
-			at->R = F;
+			Inter::Bookmarks::set_ref(at, F);
 			return;
 		}
-		Inter::Frame::place(F, at->placement_wrt_R, at->R);
+		Inter::Frame::place(F, Inter::Bookmarks::get_placement(at), Inter::Bookmarks::get_ref(at));
 	}
 }
 

@@ -29,8 +29,8 @@ void Inter::Instance::define(void) {
 @d EXTENT_INST_IFR 8
 
 =
-void Inter::Instance::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, INSTANCE_IST, ilp->indent_level, eloc);
+void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, INSTANCE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
@@ -40,9 +40,9 @@ void Inter::Instance::read(inter_construct *IC, inter_reading_state *IRS, inter_
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, ktext, L"(%i+) = (%c+)")) { ktext = mr2.exp[0]; vtext = mr2.exp[1]; }
 
-	inter_symbol *inst_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *inst_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *inst_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ktext, KIND_IST, E);
+	inter_symbol *inst_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ktext, KIND_IST, E);
 	if (*E) return;
 
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
@@ -51,17 +51,17 @@ void Inter::Instance::read(inter_construct *IC, inter_reading_state *IRS, inter_
 
 	inter_t v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
-		*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IRS));
+		*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IBM));
 		if (*E) return;
 	}
-	*E = Inter::Instance::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, inst_kind), v1, v2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Instance::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_kind), v1, v2, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Instance::new(inter_reading_state *IRS, inter_t SID, inter_t KID, inter_t V1, inter_t V2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_6(IRS, INSTANCE_IST, SID, KID, V1, V2, Inter::create_frame_list(IRS->read_into), Inter::create_frame_list(IRS->read_into), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
+inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t V1, inter_t V2, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, Inter::create_frame_list(IBM->read_into), Inter::create_frame_list(IBM->read_into), eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

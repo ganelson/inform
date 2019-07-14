@@ -30,7 +30,7 @@ called "incarnation".
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">eventual_type</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">actual_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">parent_request</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">write_position</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">write_position</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">iname_generators</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">inter_name_generator</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">package_request</span><span class="plain">;</span>
@@ -50,7 +50,7 @@ called "incarnation".
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain"> = </span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
+        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::at_start_of_this_repository</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;iname_generators</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -123,7 +123,7 @@ is summarised by the following state:
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">packaging_state</span><span class="plain"> {</span>
-        <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">saved_IRS</span><span class="plain">;</span>
+        <span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">saved_IRS</span><span class="plain">;</span>
         <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">saved_enclosure</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">packaging_state</span><span class="plain">;</span>
 </pre>
@@ -159,7 +159,7 @@ in an uninitialised state &mdash; though in fact they will not).
 <pre class="display">
     <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">current_state</span><span class="plain">;</span>
 
-    <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="functiontext">Packaging::at</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="functiontext">Packaging::at</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -170,14 +170,14 @@ in an uninitialised state &mdash; though in fact they will not).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Packaging::at is used in <a href="#SP11">&#167;11</a>, <a href="#SP13">&#167;13</a>, 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Packaging::at is used in <a href="#SP11">&#167;11</a>, <a href="#SP13">&#167;13</a>, 17/ts (<a href="17-ts.html#SP11">&#167;11</a>), 26/iti (<a href="26-iti.html#SP9">&#167;9</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>, <a href="27-ei.html#SP3">&#167;3</a>, <a href="27-ei.html#SP4">&#167;4</a>, <a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Packaging::enclosure is used in <a href="#SP12">&#167;12</a>, <a href="#SP13">&#167;13</a>, 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>States are intentionally very lightweight, and in particular they contain
-pointers to the IRS structures rather than containing a copy thereof. But
+pointers to the IBM structures rather than containing a copy thereof. But
 those pointers have to point somewhere, and this is where: to a stack of
-IRS structures.
+IBM structures.
 </p>
 
 <p class="inwebparagraph">The maximum here is beyond plenty: it's not the maximum hierarchical depth
@@ -192,12 +192,12 @@ itself during compilation.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">packaging_entry_sp</span><span class="plain"> = 0;</span>
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">packaging_entry_stack</span><span class="plain">[</span><span class="constant">MAX_PACKAGING_ENTRY_DEPTH</span><span class="plain">];</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">packaging_entry_stack</span><span class="plain">[</span><span class="constant">MAX_PACKAGING_ENTRY_DEPTH</span><span class="plain">];</span>
 
-    <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">IRS</span><span class="plain">) {</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">IBM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">packaging_entry_sp</span><span class="plain"> &gt;= </span><span class="constant">MAX_PACKAGING_ENTRY_DEPTH</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"packaging entry too deep"</span><span class="plain">);</span>
-        <span class="identifier">packaging_entry_stack</span><span class="plain">[</span><span class="identifier">packaging_entry_sp</span><span class="plain">] = </span><span class="identifier">IRS</span><span class="plain">;</span>
+        <span class="identifier">packaging_entry_stack</span><span class="plain">[</span><span class="identifier">packaging_entry_sp</span><span class="plain">] = </span><span class="identifier">IBM</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">packaging_entry_stack</span><span class="plain">[</span><span class="identifier">packaging_entry_sp</span><span class="plain">++]);</span>
     <span class="plain">}</span>
 
@@ -213,8 +213,8 @@ itself during compilation.
 
 <p class="endnote">The function Packaging::pop_IRS is used in <a href="#SP12">&#167;12</a>.</p>
 
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>The current state has the following invariant: the IRS part always points to
-a validly initialised <code class="display"><span class="extract">inter_reading_state</span></code>, and the enclosure part is always
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>The current state has the following invariant: the IBM part always points to
+a validly initialised <code class="display"><span class="extract">inter_bookmark</span></code>, and the enclosure part is always
 either <code class="display"><span class="extract">NULL</span></code> or a package request which has an enclosing package type. (In
 fact, it is null only fleetingly: as soon as the <code class="display"><span class="extract">main</span></code> package is created,
 very early on, the enclosure is always an enclosing package.)
@@ -223,11 +223,11 @@ very early on, the enclosure is always an enclosing package.)
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::at_start_of_this_repository</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="identifier">current_state</span><span class="element">.saved_enclosure</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain">) {</span>
         <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">PR</span><span class="plain">) &amp;&amp; (</span><span class="identifier">PR</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">PR</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, </span><span class="identifier">ENCLOSING_IANN</span><span class="plain">) != 1))</span>
@@ -257,17 +257,17 @@ material will be placed between them.
 
 
 <pre class="display">
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="functiontext">Packaging::bubble</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="functiontext">Packaging::bubble</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Emit::nop</span><span class="plain">();</span>
-        <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark</span><span class="plain">();</span>
+        <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark</span><span class="plain">();</span>
         <span class="functiontext">Emit::nop</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="functiontext">Packaging::bubble_at</span><span class="plain">(</span><span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">IRS</span><span class="plain">) {</span>
-        <span class="functiontext">Emit::nop_at</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
-        <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_at</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
-        <span class="functiontext">Emit::nop_at</span><span class="plain">(</span><span class="identifier">IRS</span><span class="plain">);</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="functiontext">Packaging::bubble_at</span><span class="plain">(</span><span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">IBM</span><span class="plain">) {</span>
+        <span class="functiontext">Emit::nop_at</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">);</span>
+        <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> = </span><span class="functiontext">Emit::bookmark_at</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">);</span>
+        <span class="functiontext">Emit::nop_at</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -285,9 +285,9 @@ room to insert those resources, then incarnate <code class="display"><span class
 
 
 <pre class="display">
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">pragmas_bookmark</span><span class="plain">;</span>
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_types_bookmark</span><span class="plain">;</span>
-    <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">holdings_bookmark</span><span class="plain">;</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">pragmas_bookmark</span><span class="plain">;</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">package_types_bookmark</span><span class="plain">;</span>
+    <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">holdings_bookmark</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::outside_all_packages</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Emit::version</span><span class="plain">(1);</span>
@@ -336,7 +336,7 @@ is never followed by an exit.)
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">current_state</span><span class="plain">;</span>
         <span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">), </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
-        <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="functiontext">Packaging::bubble</span><span class="plain">());</span>
+        <span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="functiontext">Packaging::bubble</span><span class="plain">());</span>
         <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">bubble</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PACKAGING</span><span class="plain">, </span><span class="string">"[%d] Current enclosure is $X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">packaging_entry_sp</span><span class="plain">, </span><span class="functiontext">Packaging::enclosure</span><span class="plain">());</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">save</span><span class="plain">;</span>
@@ -373,17 +373,17 @@ specification.
             <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Packaging::enclosure</span><span class="plain">(); </span>    <span class="comment">This will not change</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">) {</span>
                 <span class="functiontext">Packaging::incarnate</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">);</span>
-                <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
+                <span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
                 <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain">), </span><span class="identifier">E</span><span class="plain">);</span>
-                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+                <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
                 <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;</span><span class="identifier">package_bubble</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="functiontext">Emit::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain">));</span>
                 <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
                 <span class="functiontext">Packaging::set_state</span><span class="plain">(</span><span class="identifier">save_IRS</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">inter_reading_state</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
+                <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
                 <span class="identifier">package_bubble</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
-                <span class="identifier">inter_reading_state</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
+                <span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">save_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::at</span><span class="plain">();</span>
                 <span class="functiontext">Packaging::set_state</span><span class="plain">(&amp;</span><span class="identifier">package_bubble</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="functiontext">Emit::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_name</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain">, &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain">));</span>
                 <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>

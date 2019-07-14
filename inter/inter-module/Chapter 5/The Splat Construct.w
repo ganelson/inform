@@ -47,10 +47,10 @@ void Inter::Splat::define(void) {
 @e MYSTERY_PLM
 
 =
-void Inter::Splat::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IRS, SPLAT_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, SPLAT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = NULL;
@@ -62,12 +62,12 @@ void Inter::Splat::read(inter_construct *IC, inter_reading_state *IRS, inter_lin
 	inter_t plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
 	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
 
-	inter_t SID = Inter::create_text(IRS->read_into);
-	text_stream *glob_storage = Inter::get_text(IRS->read_into, SID);
+	inter_t SID = Inter::create_text(IBM->read_into);
+	text_stream *glob_storage = Inter::get_text(IBM->read_into, SID);
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
-	*E = Inter::Splat::new(IRS, routine, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
+	*E = Inter::Splat::new(IBM, routine, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
 }
 
 inter_t Inter::Splat::parse_plm(text_stream *S) {
@@ -117,11 +117,11 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
 	}
 }
 
-inter_error_message *Inter::Splat::new(inter_reading_state *IRS, inter_symbol *routine, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, SPLAT_IST, 0, SID, plm, eloc, level);
+inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_symbol *routine, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inter::Frame::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

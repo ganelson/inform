@@ -7,8 +7,8 @@ Scaffolding code to run unit tests not otherwise represented as inter stages.
 =
 void UnitTests::run(filename *F) {
 	inter_repository *dummy = Inter::create(1, 4096);
-	inter_reading_state bookmark = Inter::Bookmarks::new_IRS(dummy);
-	Primitives::emit(dummy, &bookmark);
+	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(dummy);
+	Primitives::emit(dummy, &IBM);
 	Streams::enable_debugging(STDOUT);
 	text_stream *FORMER_DL = DL;
 	DL = STDOUT;

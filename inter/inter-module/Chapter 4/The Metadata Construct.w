@@ -26,11 +26,11 @@ void Inter::Metadata::define(void) {
 @d EXTENT_MD_IFR 5
 
 =
-void Inter::Metadata::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, METADATA_IST, ilp->indent_level, eloc);
+void Inter::Metadata::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, METADATA_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *key_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *key_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];
@@ -39,22 +39,22 @@ void Inter::Metadata::read(inter_construct *IC, inter_reading_state *IRS, inter_
 		*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
 		inter_t ID = 0;
 		if (*E == NULL) {
-			ID = Inter::create_text(IRS->read_into);
-			Str::copy(Inter::get_text(IRS->read_into, ID), parsed_text);
+			ID = Inter::create_text(IBM->read_into);
+			Str::copy(Inter::get_text(IBM->read_into, ID), parsed_text);
 		}
 		DISCARD_TEXT(parsed_text);
 		if (*E) return;
-		*E = Inter::Metadata::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, key_name), ID, (inter_t) ilp->indent_level, eloc);
+		*E = Inter::Metadata::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, key_name), ID, (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 	*E = Inter::Errors::quoted(I"metadata value must be string", S, eloc);
 }
 
-inter_error_message *Inter::Metadata::new(inter_reading_state *IRS, inter_t SID, inter_t TID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS,
+inter_error_message *Inter::Metadata::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM,
 		METADATA_IST, SID, LITERAL_TEXT_IVAL, TID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

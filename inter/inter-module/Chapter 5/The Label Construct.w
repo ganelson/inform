@@ -28,9 +28,9 @@ void Inter::Label::define(void) {
 @d EXTENT_LABEL_IFR 4
 
 =
-void Inter::Label::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
-	*E = Inter::Defn::vet_level(IRS, LABEL_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, LABEL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'label' used outside function", eloc); return; }
@@ -40,13 +40,13 @@ void Inter::Label::read(inter_construct *IC, inter_reading_state *IRS, inter_lin
 	inter_symbol *lab_name = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);
 	if (Inter::Symbols::is_label(lab_name) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
-	*E = Inter::Label::new(IRS, routine, lab_name, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Label::new(IBM, routine, lab_name, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Label::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IRS, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, lab_name), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_2(IBM, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, lab_name), eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

@@ -10,7 +10,7 @@ active.
 
 @ =
 typedef struct I6T_kit {
-	struct inter_reading_state *IRS;
+	struct inter_bookmark *IBM;
 	int no_i6t_file_areas;
 	struct pathname *i6t_files[16];
 	void (*raw_callback)(struct text_stream *, struct I6T_kit *);
@@ -154,11 +154,11 @@ above:
 
 =
 
-I6T_kit TemplateReader::kit_out(inter_reading_state *IRS, void (*A)(struct text_stream *, struct I6T_kit *),
+I6T_kit TemplateReader::kit_out(inter_bookmark *IBM, void (*A)(struct text_stream *, struct I6T_kit *),
 	void (*B)(struct text_stream *, struct text_stream *, struct text_stream *, struct I6T_kit *),
 	void *C) {
 	I6T_kit kit;
-	kit.IRS = IRS;
+	kit.IBM = IBM;
 	kit.raw_callback = A;
 	kit.command_callback = B;
 	kit.I6T_state = C;

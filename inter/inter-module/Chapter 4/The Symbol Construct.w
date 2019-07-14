@@ -19,8 +19,8 @@ void Inter::Symbol::define(void) {
 	IC->max_level = 1;
 }
 
-void Inter::Symbol::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, SYMBOL_IST, ilp->indent_level, eloc);
+void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, SYMBOL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
@@ -52,7 +52,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 		if (*E) return;
 		level = (inter_t) ilp->indent_level;
 	} else {
-		name_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), symbol_name, E);
+		name_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), symbol_name, E);
 		if (*E) return;
 	}
 
@@ -69,7 +69,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 
 	if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
 	if (equate_name) {
-		inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(IRS->read_into, Inter::Bookmarks::scope(IRS), equate_name);
+		inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(IBM->read_into, Inter::Bookmarks::scope(IBM), equate_name);
 		if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
 		else Inter::SymbolsTables::equate(name_name, eq);
 	}

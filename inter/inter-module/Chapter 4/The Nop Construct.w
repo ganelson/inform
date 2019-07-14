@@ -15,11 +15,11 @@ void Inter::Nop::define(void) {
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Nop::write);
 }
 
-inter_error_message *Inter::Nop::new(inter_reading_state *IRS, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_0(IRS, NOP_IST, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P);
+inter_error_message *Inter::Nop::new(inter_bookmark *IBM, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_0(IBM, NOP_IST, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

@@ -75,7 +75,7 @@ inter_symbol *code_packagetype = NULL;
 @e VERIFY_INTER_CHILDREN_MTID
 
 =
-VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_reading_state *, inter_line_parse *, inter_error_location *, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_frame P, inter_error_message **E)
 VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
@@ -274,7 +274,7 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 
 inter_symbol *latest_block_symbol = NULL;
 
-inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_error_location *eloc, inter_reading_state *IRS) {
+inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
 	inter_line_parse ilp;
 	ilp.line = line;
 	ilp.mr = Regexp::create_mr();
@@ -299,11 +299,11 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		literal = FALSE;
 		if (c == '\\') literal = TRUE;
 		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
-			ilp.terminal_comment = Inter::create_text(IRS->read_into);
+			ilp.terminal_comment = Inter::create_text(IBM->read_into);
 			int at = Str::index(P);
 			P = Str::forward(P);
 			while (Str::get(P) == ' ') P = Str::forward(P);
-			Str::substr(Inter::get_text(IRS->read_into, ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::substr(Inter::get_text(IBM->read_into, ilp.terminal_comment), P, Str::end(ilp.line));
 			Str::truncate(ilp.line, at);
 			break;
 		}
@@ -313,14 +313,14 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 
 	if (ilp.indent_level == 0) latest_block_symbol = NULL;
 
-	while ((IRS->current_package) && (ilp.indent_level <= Inter::Bookmarks::baseline(IRS))) {
-		Inter::Defn::unset_current_package(IRS, IRS->current_package);
+	while ((Inter::Bookmarks::package(IBM)) && (ilp.indent_level <= Inter::Bookmarks::baseline(IBM))) {
+		Inter::Bookmarks::set_current_package(IBM, Inter::Packages::parent(Inter::Bookmarks::package(IBM)));
 	}
 
 	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
 		Str::copy(ilp.line, ilp.mr.exp[0]);
 		inter_error_message *E = NULL;
-		inter_annotation IA = Inter::Defn::read_annotation(IRS->read_into, ilp.mr.exp[1], eloc, &E);
+		inter_annotation IA = Inter::Defn::read_annotation(IBM->read_into, ilp.mr.exp[1], eloc, &E);
 		if (E) return E;
 		if (ilp.no_annotations >= MAX_INTER_ANNOTATIONS_PER_SYMBOL)
 			return Inter::Errors::quoted(I"too many annotations", ilp.mr.exp[1], eloc);
@@ -331,22 +331,10 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		if (IC->construct_syntax)
 			if (Regexp::match(&ilp.mr, ilp.line, IC->construct_syntax)) {
 				inter_error_message *E = NULL;
-				VMETHOD_CALL(IC, CONSTRUCT_READ_MTID, IRS, &ilp, eloc, &E);
+				VMETHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, &ilp, eloc, &E);
 				return E;
 			}
 	return Inter::Errors::plain(I"bad inter line", eloc);
-}
-
-void Inter::Defn::set_current_package(inter_reading_state *IRS, inter_package *P) {
-	Inter::Bookmarks::set_package(IRS, P);
-	if (P) {
-		IRS->R = Inter::Symbols::defining_frame(P->package_name);
-		IRS->placement_wrt_R = AFTER_ICPLACEMENT;
-	}
-}
-
-void Inter::Defn::unset_current_package(inter_reading_state *IRS, inter_package *P) {
-	Inter::Bookmarks::set_package(IRS, Inter::Packages::parent(P));
 }
 
 void Inter::Defn::set_latest_package_symbol(inter_symbol *F) {
@@ -357,9 +345,9 @@ inter_symbol *Inter::Defn::get_latest_block_symbol(void) {
 	return latest_block_symbol;
 }
 
-inter_error_message *Inter::Defn::vet_level(inter_reading_state *IRS, inter_t cons, int level, inter_error_location *eloc) {
+inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_t cons, int level, inter_error_location *eloc) {
 	int actual = level;
-	if (IRS->current_package) actual = level - Inter::Bookmarks::baseline(IRS) - 1;
+	if (Inter::Bookmarks::package(IBM)) actual = level - Inter::Bookmarks::baseline(IBM) - 1;
 	inter_construct *proposed = NULL;
 	LOOP_OVER(proposed, inter_construct)
 		if (proposed->construct_ID == cons) {

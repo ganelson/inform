@@ -44,11 +44,11 @@ void Inter::Kind::define(void) {
 @d MAX_ICON_OPERANDS 128
 
 =
-void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, KIND_IST, ilp->indent_level, eloc);
+void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, KIND_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *symb = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *symb = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	match_results mr2 = Regexp::create_mr();
@@ -59,7 +59,7 @@ void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 	inter_symbol *super_kind = NULL;
 	for (int i=0; i<MAX_ICON_OPERANDS; i++) operands[i] = 0;
 	if (Regexp::match(&mr2, ilp->mr.exp[1], L"<= (%i+)")) {
-		super_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		super_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		idt = Inter::Kind::data_type(super_kind);
 		if (Inter::Types::is_enumerated(idt) == FALSE)
@@ -68,41 +68,41 @@ void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 		idt = Inter::Textual::data_type(eloc, I"list", E);
 		if (*E) return;
 		constructor = RULEBOOK_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[0], KIND_IST, E);
 		if (*E) return;
-		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
+		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"list of (%i+)")) {
 		idt = Inter::Textual::data_type(eloc, I"list", E);
 		if (*E) return;
 		constructor = LIST_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[0], KIND_IST, E);
 		if (*E) return;
-		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
+		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"relation of (%i+) to (%i+)")) {
 		idt = Inter::Textual::data_type(eloc, I"relation", E);
 		if (*E) return;
 		constructor = RELATION_ICON;
-		inter_symbol *X_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		inter_symbol *X_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[0], KIND_IST, E);
 		if (*E) return;
-		inter_symbol *Y_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[1], KIND_IST, E);
+		inter_symbol *Y_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[1], KIND_IST, E);
 		if (*E) return;
-		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, X_kind);
-		operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, Y_kind);
+		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, X_kind);
+		operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, Y_kind);
 		arity = 2;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"column of (%i+)")) {
 		idt = Inter::Textual::data_type(eloc, I"column", E);
 		if (*E) return;
 		constructor = COLUMN_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[0], KIND_IST, E);
 		if (*E) return;
-		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
+		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"description of (%i+)")) {
 		idt = Inter::Textual::data_type(eloc, I"description", E);
 		if (*E) return;
 		constructor = DESCRIPTION_ICON;
-		inter_symbol *conts_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr2.exp[0], KIND_IST, E);
 		if (*E) return;
-		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, conts_kind); arity = 1;
+		operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, conts_kind); arity = 1;
 	} else if ((Regexp::match(&mr2, ilp->mr.exp[1], L"(function) (%c+) -> (%i+)")) ||
 			(Regexp::match(&mr2, ilp->mr.exp[1], L"(rule) (%c+) -> (%i+)"))) {
 		idt = Inter::Textual::data_type(eloc, I"routine", E);
@@ -117,21 +117,21 @@ void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 		} else {
 			match_results mr3 = Regexp::create_mr();
 			while (Regexp::match(&mr3, from, L" *(%i+) *(%c*)")) {
-				inter_symbol *arg_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr3.exp[0], KIND_IST, E);
+				inter_symbol *arg_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr3.exp[0], KIND_IST, E);
 				if (*E) return;
 				Str::copy(from, mr3.exp[1]);
 				if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
-				operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, arg_kind);
+				operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, arg_kind);
 			}
 		}
 		if (Str::eq(to, I"void")) {
 			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = 0;
 		} else {
-			inter_symbol *res_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), to, KIND_IST, E);
+			inter_symbol *res_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), to, KIND_IST, E);
 			if (*E) return;
 			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
-			operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, res_kind);
+			operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, res_kind);
 		}
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"struct (%c+)")) {
 		idt = Inter::Textual::data_type(eloc, I"struct", E);
@@ -140,11 +140,11 @@ void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 		text_stream *elements = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, elements, L" *(%i+) *(%c*)")) {
-			inter_symbol *arg_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), mr3.exp[0], KIND_IST, E);
+			inter_symbol *arg_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), mr3.exp[0], KIND_IST, E);
 			if (*E) return;
 			Str::copy(elements, mr3.exp[1]);
 			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
-			operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, arg_kind);
+			operands[arity++] = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, arg_kind);
 		}
 	} else {
 		idt = Inter::Textual::data_type(eloc, ilp->mr.exp[1], E);
@@ -152,24 +152,24 @@ void Inter::Kind::read(inter_construct *IC, inter_reading_state *IRS, inter_line
 	}
 	if (idt == NULL) internal_error("null IDT");
 
-	*E = Inter::Kind::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, symb), idt->type_ID,
-		(super_kind)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, super_kind)):0,
+	*E = Inter::Kind::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, symb), idt->type_ID,
+		(super_kind)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, super_kind)):0,
 		constructor, arity, operands, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Kind::new(inter_reading_state *IRS, inter_t SID, inter_t TID, inter_t SUP,
+inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t SUP,
 	int constructor, int arity, inter_t *operands, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_8(IRS,
-		KIND_IST, SID, TID, 0, 0, SUP, Inter::create_frame_list(IRS->read_into), Inter::create_frame_list(IRS->read_into),
+	inter_frame P = Inter::Frame::fill_8(IBM,
+		KIND_IST, SID, TID, 0, 0, SUP, Inter::create_frame_list(IBM->read_into), Inter::create_frame_list(IBM->read_into),
 		(inter_t) constructor, eloc, level);
 	if (arity > 0) {
 		if (Inter::Frame::extend(&P, (inter_t) arity) == FALSE)
 			return Inter::Errors::plain(I"can't extend", eloc);
 		for (int i=0; i<arity; i++) P.data[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
-	Inter::check_segments(IRS->read_into);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::check_segments(IBM->read_into);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

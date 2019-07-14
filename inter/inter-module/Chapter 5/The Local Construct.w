@@ -29,33 +29,33 @@ void Inter::Local::define(void) {
 @d EXTENT_LOCAL_IFR 5
 
 =
-void Inter::Local::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, LOCAL_IST, ilp->indent_level, eloc);
+void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, LOCAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
 	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IRS, eloc, locals, ilp->mr.exp[0], E);
+	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
 	if (*E) return;
 	if ((var_name->symbol_scope != PRIVATE_ISYMS) ||
 		(var_name->symbol_type != MISC_ISYMT)) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
 
-	inter_symbol *var_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IRS->read_into, var_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(IBM->read_into, var_name, ilp->annotations[i]);
 
-	*E = Inter::Local::new(IRS, routine, var_name, var_kind, ilp->terminal_comment, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Local::new(IBM, routine, var_name, var_kind, ilp->terminal_comment, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Local::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *var_name, inter_symbol *var_kind, inter_t ID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, var_kind)):0, eloc, level);
+inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *var_name, inter_symbol *var_kind, inter_t ID, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
 	Inter::Frame::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

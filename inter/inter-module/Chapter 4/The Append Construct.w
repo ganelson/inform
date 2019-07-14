@@ -25,8 +25,8 @@ void Inter::Append::define(void) {
 @d EXTENT_APPEND_IFR 4
 
 =
-void Inter::Append::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, APPEND_IST, ilp->indent_level, eloc);
+void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, APPEND_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) {
@@ -34,23 +34,23 @@ void Inter::Append::read(inter_construct *IC, inter_reading_state *IRS, inter_li
 		return;
 	}
 
-	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IRS), ilp->mr.exp[0]);
+	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
 	if (symbol == NULL) {
 		*E = Inter::Errors::plain(I"no such symbol", eloc);
 		return;
 	}
 
-	inter_t ID = Inter::create_text(IRS->read_into);
-	*E = Inter::Constant::parse_text(Inter::get_text(IRS->read_into, ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	inter_t ID = Inter::create_text(IBM->read_into);
+	*E = Inter::Constant::parse_text(Inter::get_text(IBM->read_into, ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
-	*E = Inter::Append::new(IRS, symbol, ID, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Append::new(IBM, symbol, ID, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Append::new(inter_reading_state *IRS, inter_symbol *symbol, inter_t append_text, inter_t level, struct inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IRS, APPEND_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, symbol), append_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbol, inter_t append_text, inter_t level, struct inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_2(IBM, APPEND_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

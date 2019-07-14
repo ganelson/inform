@@ -240,8 +240,8 @@ inter_t Inter::SymbolsTables::id_from_symbol_not_creating(inter_repository *I, i
 	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(I, P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_reading_state *IRS, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(IRS->read_into, IRS->current_package, S);
+inter_t Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
+	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(IBM->read_into, Inter::Bookmarks::package(IBM), S);
 }
 
 @ However, things become more interesting if we want an ID for a symbol in
@@ -290,8 +290,8 @@ inter_t Inter::SymbolsTables::id_from_symbol(inter_repository *I, inter_package 
 	return Inter::SymbolsTables::id_from_symbol_inner(I, P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_reading_state *IRS, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(IRS->read_into, IRS->current_package, S);
+inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
+	return Inter::SymbolsTables::id_from_symbol_inner(IBM->read_into, Inter::Bookmarks::package(IBM), S);
 }
 
 @h Equations.

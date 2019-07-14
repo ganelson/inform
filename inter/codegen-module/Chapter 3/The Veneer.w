@@ -146,33 +146,33 @@ void Veneer::index(int ix, text_stream *S, text_stream *T) {
 	veneer_symbol_translations[ix] = Str::duplicate(T);
 }
 
-inter_symbol *Veneer::find_by_index(inter_package *veneer_package, inter_reading_state *IRS, int ix, inter_symbol *unchecked_kind_symbol) {
+inter_symbol *Veneer::find_by_index(inter_package *veneer_package, inter_bookmark *IBM, int ix, inter_symbol *unchecked_kind_symbol) {
 	if (veneer_indexes_created == FALSE) Veneer::create_indexes();
 	inter_symbol **slot = &(veneer_symbols[ix]);
-	return Veneer::make(veneer_package, IRS, slot, veneer_symbol_names[ix], veneer_symbol_translations[ix], unchecked_kind_symbol);
+	return Veneer::make(veneer_package, IBM, slot, veneer_symbol_names[ix], veneer_symbol_translations[ix], unchecked_kind_symbol);
 }
 
-inter_symbol *Veneer::find(inter_package *veneer_package, inter_reading_state *IRS, text_stream *S, inter_symbol *unchecked_kind_symbol) {
+inter_symbol *Veneer::find(inter_package *veneer_package, inter_bookmark *IBM, text_stream *S, inter_symbol *unchecked_kind_symbol) {
 	if (veneer_indexes_created == FALSE) Veneer::create_indexes();
 	if (Dictionaries::find(veneer_symbols_indexed_by_name, S)) {
 		inter_symbol **slot = (inter_symbol **) Dictionaries::read_value(veneer_symbols_indexed_by_name, S);
 		if (slot == NULL) internal_error("accident with veneer dictionary");
-		return Veneer::make(veneer_package, IRS, slot, S, NULL, unchecked_kind_symbol);
+		return Veneer::make(veneer_package, IBM, slot, S, NULL, unchecked_kind_symbol);
 	}
 	return NULL;
 }
 
-inter_symbol *Veneer::make(inter_package *veneer_package, inter_reading_state *IRS, inter_symbol **slot, text_stream *S, text_stream *T, inter_symbol *unchecked_kind_symbol) {
+inter_symbol *Veneer::make(inter_package *veneer_package, inter_bookmark *IBM, inter_symbol **slot, text_stream *S, text_stream *T, inter_symbol *unchecked_kind_symbol) {
 	if (*slot == NULL) {
 		inter_symbols_table *tab = Inter::Packages::scope(veneer_package);
 		*slot = Inter::SymbolsTables::symbol_from_name_creating(tab, S);
 		if (Str::len(T) > 0) Inter::Symbols::set_translate(*slot, T);
-		Inter::Symbols::annotate_i(IRS->read_into, *slot, VENEER_IANN, 1);
-		CodeGen::Link::guard(Inter::Constant::new_numerical(IRS,
-			Inter::SymbolsTables::id_from_symbol(IRS->read_into, veneer_package, *slot),
-			Inter::SymbolsTables::id_from_symbol(IRS->read_into, veneer_package, unchecked_kind_symbol),
+		Inter::Symbols::annotate_i(IBM->read_into, *slot, VENEER_IANN, 1);
+		CodeGen::Link::guard(Inter::Constant::new_numerical(IBM,
+			Inter::SymbolsTables::id_from_symbol(IBM->read_into, veneer_package, *slot),
+			Inter::SymbolsTables::id_from_symbol(IBM->read_into, veneer_package, unchecked_kind_symbol),
 			LITERAL_IVAL, 0,
-			(inter_t) Inter::Bookmarks::baseline(IRS) + 1, NULL));
+			(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	}
 	return *slot;
 }

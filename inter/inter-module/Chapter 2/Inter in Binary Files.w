@@ -14,7 +14,7 @@ void Inter::Binary::read(inter_repository *I, filename *F) {
 	FILE *fh = BinaryFiles::open_for_reading(F);
 
 	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
-	inter_reading_state at = Inter::Bookmarks::new_IRS(I);
+	inter_bookmark at = Inter::Bookmarks::at_start_of_this_repository(I);
 
 	unsigned int X = 0;
 

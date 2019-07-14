@@ -10,18 +10,20 @@ void CodeGen::Link::create_pipeline_stage(void) {
 }
 
 int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
-	inter_reading_state IRS = Inter::Bookmarks::new_IRS(step->repository);
-	Inter::Bookmarks::set_package(&IRS, Inter::Packages::main(step->repository));
-	CodeGen::Link::link(&IRS, step->step_argument, step->the_N, step->the_PP, NULL);
+	inter_package *main_package = Inter::Packages::main(step->repository);
+	inter_bookmark IBM;
+	if (main_package) IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
+	else IBM = Inter::Bookmarks::at_start_of_this_repository(step->repository);
+	CodeGen::Link::link(&IBM, step->step_argument, step->the_N, step->the_PP, NULL);
 	return TRUE;
 }
 
 inter_symbols_table *link_search_list[10];
 int link_search_list_len = 0;
 
-void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
-	if (IRS == NULL) internal_error("no inter to link with");
-	inter_repository *I = IRS->read_into;
+void CodeGen::Link::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
+	if (IBM == NULL) internal_error("no inter to link with");
+	inter_repository *I = IBM->read_into;
 	Inter::traverse_tree(I, CodeGen::Link::visitor, NULL, NULL, 0);
 
 	inter_symbol *TP = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
@@ -34,7 +36,7 @@ void CodeGen::Link::link(inter_reading_state *IRS, text_stream *template_file, i
 	link_search_list[0] = Inter::Packages::scope(Inter::Package::which(package_name));
 	link_search_list_len = 2;
 
-	inter_reading_state link_bookmark = Inter::Bookmarks::from_package(Inter::Package::which(package_name));
+	inter_bookmark link_bookmark = Inter::Bookmarks::at_end_of_this_package(Inter::Package::which(package_name));
 
 	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::Link::receive_raw),  &(CodeGen::Link::receive_command), NULL);
 	kit.no_i6t_file_areas = N;
@@ -129,11 +131,11 @@ void CodeGen::Link::guard(inter_error_message *ERR) {
 	if (ERR) { Inter::Errors::issue(ERR); internal_error("inter error"); }
 }
 
-void CodeGen::Link::entire_splat(inter_reading_state *IRS, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
-	inter_t SID = Inter::create_text(IRS->read_into);
-	text_stream *glob_storage = Inter::get_text(IRS->read_into, SID);
+void CodeGen::Link::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
+	inter_t SID = Inter::create_text(IBM->read_into);
+	text_stream *glob_storage = Inter::get_text(IBM->read_into, SID);
 	Str::copy(glob_storage, content);
-	CodeGen::Link::guard(Inter::Splat::new(IRS, code_block, SID, 0, level, 0, NULL));
+	CodeGen::Link::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));
 }
 
 @
@@ -201,7 +203,7 @@ void CodeGen::Link::receive_raw(text_stream *S, I6T_kit *kit) {
 void CodeGen::Link::chunked_raw(text_stream *S, I6T_kit *kit) {
 	if (Str::len(S) == 0) return;
 	PUT_TO(S, '\n');
-	CodeGen::Link::entire_splat(kit->IRS, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IRS) + 1), kit->IRS->current_package->package_name);
+	CodeGen::Link::entire_splat(kit->IBM, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IBM) + 1), Inter::Bookmarks::package(kit->IBM)->package_name);
 	Str::clear(S);
 }
 

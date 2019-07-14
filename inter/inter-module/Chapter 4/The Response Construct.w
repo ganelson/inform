@@ -28,33 +28,33 @@ void Inter::Response::define(void) {
 @d EXTENT_RESPONSE_IFR 7
 
 =
-void Inter::Response::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, RESPONSE_IST, ilp->indent_level, eloc);
+void Inter::Response::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, RESPONSE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *resp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *resp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *rule_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], CONSTANT_IST, E);
+	inter_symbol *rule_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], CONSTANT_IST, E);
 	if (*E) return;
 
 	inter_t n1 = UNDEF_IVAL, n2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, NULL, ilp->mr.exp[2], &n1, &n2, Inter::Bookmarks::scope(IRS));
+	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), NULL, ilp->mr.exp[2], &n1, &n2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 	if ((n1 != LITERAL_IVAL) || (n2 >= 26))
 		{ *E = Inter::Errors::plain(I"response marker out of range", eloc); return; }
 
-	inter_symbol *val_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[3], CONSTANT_IST, E);
+	inter_symbol *val_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[3], CONSTANT_IST, E);
 	if (*E) return;
 
 	inter_t v1 = 0, v2 = 0;
-	Inter::Symbols::to_data(IRS->read_into, IRS->current_package, val_name, &v1, &v2);
-	*E = Inter::Response::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, rule_name), n2, v1, v2, (inter_t) ilp->indent_level, eloc);
+	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), val_name, &v1, &v2);
+	*E = Inter::Response::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, rule_name), n2, v1, v2, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Response::new(inter_reading_state *IRS, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_5(IRS, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Response::new(inter_bookmark *IBM, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_5(IBM, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

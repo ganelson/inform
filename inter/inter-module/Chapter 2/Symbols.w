@@ -27,7 +27,7 @@ typedef struct inter_symbol {
 	int definition_status;
 	struct inter_frame definition;
 	struct inter_frame importation_frame;
-	struct inter_reading_state following_symbol;
+	struct inter_bookmark following_symbol;
 	struct inter_symbol *equated_to;
 	struct text_stream *equated_name;
 	int transient_flags;

@@ -30,10 +30,10 @@ void Inter::Ref::define(void) {
 @d EXTENT_REF_IFR 6
 
 =
-void Inter::Ref::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IRS, REF_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, REF_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
@@ -41,21 +41,21 @@ void Inter::Ref::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *ref_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *ref_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_t var_val1 = 0;
 	inter_t var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
+	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
 	if (*E) return;
 
-	*E = Inter::Ref::new(IRS, routine, ref_kind, ilp->indent_level, var_val1, var_val2, eloc);
+	*E = Inter::Ref::new(IBM, routine, ref_kind, ilp->indent_level, var_val1, var_val2, eloc);
 }
 
-inter_error_message *Inter::Ref::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *ref_kind, int level, inter_t val1, inter_t val2, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, REF_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, ref_kind), val1, val2, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *ref_kind, int level, inter_t val1, inter_t val2, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_4(IBM, REF_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ref_kind), val1, val2, eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 

@@ -17,8 +17,8 @@
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UnitTests::run</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">inter_repository</span><span class="plain"> *</span><span class="identifier">dummy</span><span class="plain"> = </span><span class="functiontext">Inter::create</span><span class="plain">(1, 4096);</span>
-        <span class="reserved">inter_reading_state</span><span class="plain"> </span><span class="identifier">bookmark</span><span class="plain"> = </span><span class="functiontext">Inter::Bookmarks::new_IRS</span><span class="plain">(</span><span class="identifier">dummy</span><span class="plain">);</span>
-        <span class="functiontext">Primitives::emit</span><span class="plain">(</span><span class="identifier">dummy</span><span class="plain">, &amp;</span><span class="identifier">bookmark</span><span class="plain">);</span>
+        <span class="reserved">inter_bookmark</span><span class="plain"> </span><span class="identifier">IBM</span><span class="plain"> = </span><span class="functiontext">Inter::Bookmarks::at_start_of_this_repository</span><span class="plain">(</span><span class="identifier">dummy</span><span class="plain">);</span>
+        <span class="functiontext">Primitives::emit</span><span class="plain">(</span><span class="identifier">dummy</span><span class="plain">, &amp;</span><span class="identifier">IBM</span><span class="plain">);</span>
         <span class="functiontext">Streams::enable_debugging</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">FORMER_DL</span><span class="plain"> = </span><span class="identifier">DL</span><span class="plain">;</span>
         <span class="identifier">DL</span><span class="plain"> = </span><span class="constant">STDOUT</span><span class="plain">;</span>

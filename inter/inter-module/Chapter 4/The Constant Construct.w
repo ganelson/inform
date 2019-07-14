@@ -35,17 +35,17 @@ void Inter::Constant::define(void) {
 @d CONSTANT_STRUCT 8
 
 =
-void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, CONSTANT_IST, ilp->indent_level, eloc);
+void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, CONSTANT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IRS->read_into, con_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(IBM->read_into, con_name, ilp->annotations[i]);
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *con_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 	text_stream *S = ilp->mr.exp[2];
 
@@ -58,21 +58,21 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONSTANT_QUOTIENT_LIST;
 	if (op != 0) {
 		inter_frame P =
-			Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), op, eloc, (inter_t) ilp->indent_level);
-		*E = Inter::Defn::verify_construct(IRS->current_package, P);
+			Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_t) ilp->indent_level);
+		*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (Inter::Constant::append(ilp->line, eloc, IRS, con_kind, &P, mr3.exp[0], E) == FALSE)
+			if (Inter::Constant::append(ilp->line, eloc, IBM, con_kind, &P, mr3.exp[0], E) == FALSE)
 				return;
 			Str::copy(conts, mr3.exp[1]);
 		}
 		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (Inter::Constant::append(ilp->line, eloc, IRS, con_kind, &P, mr3.exp[0], E) == FALSE)
+			if (Inter::Constant::append(ilp->line, eloc, IBM, con_kind, &P, mr3.exp[0], E) == FALSE)
 				return;
 		}
-		Inter::Frame::insert(P, IRS);
+		Inter::Frame::insert(P, IBM);
 		return;
 	}
 
@@ -88,21 +88,21 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 			else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) form = CONSTANT_QUOTIENT_LIST;
 			if (form != 0) {
 				inter_frame P =
-					Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), form, eloc, (inter_t) ilp->indent_level);
-				*E = Inter::Defn::verify_construct(IRS->current_package, P);
+					Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_t) ilp->indent_level);
+				*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 				if (*E) return;
 				text_stream *conts = mr2.exp[0];
 				match_results mr3 = Regexp::create_mr();
 				while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-					if (Inter::Constant::append(ilp->line, eloc, IRS, conts_kind, &P, mr3.exp[0], E) == FALSE)
+					if (Inter::Constant::append(ilp->line, eloc, IBM, conts_kind, &P, mr3.exp[0], E) == FALSE)
 						return;
 					Str::copy(conts, mr3.exp[1]);
 				}
 				if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-					if (Inter::Constant::append(ilp->line, eloc, IRS, conts_kind, &P, mr3.exp[0], E) == FALSE)
+					if (Inter::Constant::append(ilp->line, eloc, IBM, conts_kind, &P, mr3.exp[0], E) == FALSE)
 						return;
 				}
-				Inter::Frame::insert(P, IRS);
+				Inter::Frame::insert(P, IBM);
 				return;
 			}
 		}
@@ -112,26 +112,26 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_frame P =
-				 Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), CONSTANT_STRUCT, eloc, (inter_t) ilp->indent_level);
+				 Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_t) ilp->indent_level);
 			int arity = Inter::Kind::arity(con_kind);
 			int counter = 0;
 			text_stream *conts = mr2.exp[0];
 			match_results mr3 = Regexp::create_mr();
 			while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
 				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-				if (Inter::Constant::append(ilp->line, eloc, IRS, conts_kind, &P, mr3.exp[0], E) == FALSE)
+				if (Inter::Constant::append(ilp->line, eloc, IBM, conts_kind, &P, mr3.exp[0], E) == FALSE)
 					return;
 				Str::copy(conts, mr3.exp[1]);
 			}
 			if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
 				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-				if (Inter::Constant::append(ilp->line, eloc, IRS, conts_kind, &P, mr3.exp[0], E) == FALSE)
+				if (Inter::Constant::append(ilp->line, eloc, IBM, conts_kind, &P, mr3.exp[0], E) == FALSE)
 					return;
 			}
 			if (counter != arity)
 				{ *E = Inter::Errors::quoted(I"wrong size", S, eloc); return; }
-			*E = Inter::Defn::verify_construct(IRS->current_package, P); if (*E) return;
-			Inter::Frame::insert(P, IRS);
+			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (*E) return;
+			Inter::Frame::insert(P, IBM);
 			return;
 		}
 	}
@@ -140,21 +140,21 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_frame P =
-				Inter::Frame::fill_3(IRS, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_t) ilp->indent_level);
-			*E = Inter::Defn::verify_construct(IRS->current_package, P);
+				Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_t) ilp->indent_level);
+			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 			if (*E) return;
 			text_stream *conts = mr2.exp[0];
 			match_results mr3 = Regexp::create_mr();
 			while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-				if (Inter::Constant::append(ilp->line, eloc, IRS, NULL, &P, mr3.exp[0], E) == FALSE)
+				if (Inter::Constant::append(ilp->line, eloc, IBM, NULL, &P, mr3.exp[0], E) == FALSE)
 					return;
 				Str::copy(conts, mr3.exp[1]);
 			}
 			if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-				if (Inter::Constant::append(ilp->line, eloc, IRS, NULL, &P, mr3.exp[0], E) == FALSE)
+				if (Inter::Constant::append(ilp->line, eloc, IBM, NULL, &P, mr3.exp[0], E) == FALSE)
 					return;
 			}
-			Inter::Frame::insert(P, IRS);
+			Inter::Frame::insert(P, IBM);
 			return;
 		}
 	}
@@ -165,20 +165,20 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 			*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
 			inter_t ID = 0;
 			if (*E == NULL) {
-				ID = Inter::create_text(IRS->read_into);
-				Str::copy(Inter::get_text(IRS->read_into, ID), parsed_text);
+				ID = Inter::create_text(IBM->read_into);
+				Str::copy(Inter::get_text(IBM->read_into, ID), parsed_text);
 			}
 			DISCARD_TEXT(parsed_text);
 			if (*E) return;
-			*E = Inter::Constant::new_textual(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), ID, (inter_t) ilp->indent_level, eloc);
+			*E = Inter::Constant::new_textual(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), ID, (inter_t) ilp->indent_level, eloc);
 			return;
 		}
 	}
 
 	if ((idt) && (idt->type_ID == ROUTINE_IDT)) {
-		inter_symbol *block_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), S, PACKAGE_IST, E);
+		inter_symbol *block_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), S, PACKAGE_IST, E);
 		if (*E) return;
-		*E = Inter::Constant::new_function(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, block_name), (inter_t) ilp->indent_level, eloc);
+		*E = Inter::Constant::new_function(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, block_name), (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -187,11 +187,11 @@ void Inter::Constant::read(inter_construct *IC, inter_reading_state *IRS, inter_
 
 	if (Str::eq(S, I"0")) { con_val1 = LITERAL_IVAL; con_val2 = 0; }
 	else {
-		*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, con_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IRS));
+		*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), con_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 		if (*E) return;
 	}
 
-	*E = Inter::Constant::new_numerical(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Constant::new_numerical(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Constant::parse_text(text_stream *parsed_text, text_stream *S, int from, int to, inter_error_location *eloc) {
@@ -230,45 +230,45 @@ void Inter::Constant::write_text(OUTPUT_STREAM, text_stream *S) {
 	}
 }
 
-inter_error_message *Inter::Constant::new_numerical(inter_reading_state *IRS, inter_t SID, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_5(IRS,
+inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_5(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, val1, val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Constant::new_textual(inter_reading_state *IRS, inter_t SID, inter_t KID, inter_t TID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS,
+inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t TID, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_TEXT, TID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Constant::new_function(inter_reading_state *IRS, inter_t SID, inter_t KID, inter_t BID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS,
+inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t BID, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(IRS->current_package, P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter_reading_state *IRS, inter_symbol *conts_kind, inter_frame *P, text_stream *S, inter_error_message **E) {
+int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_symbol *conts_kind, inter_frame *P, text_stream *S, inter_error_message **E) {
 	*E = NULL;
 	inter_t con_val1 = 0;
 	inter_t con_val2 = 0;
 	if (conts_kind == NULL) {
-		inter_symbol *tc = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), S, CONSTANT_IST, E);
+		inter_symbol *tc = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), S, CONSTANT_IST, E);
 		if (*E) return FALSE;
 		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
-			Inter::Symbols::to_data(IRS->read_into, IRS->current_package, tc, &con_val1, &con_val2);
+			Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), tc, &con_val1, &con_val2);
 		} else {
 			*E = Inter::Errors::quoted(I"not a table column constant", S, eloc);
 			return FALSE;
 		}
 	} else {
-		*E = Inter::Types::read(line, eloc, IRS->read_into, IRS->current_package, conts_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IRS));
+		*E = Inter::Types::read(line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), conts_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 		if (*E) return FALSE;
 	}
 	if (Inter::Frame::extend(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }
