@@ -206,6 +206,8 @@ is 20. We instead compile this as
                 <span class="identifier">void_level</span><span class="plain"> = </span><span class="identifier">Inter::Defn::get_level</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) + 2;</span>
                 <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::defining_frame</span><span class="plain">(</span><span class="identifier">code_block</span><span class="plain">);</span>
                 <span class="functiontext">CodeGen::FC::frame</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Out goes $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">code_block</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>

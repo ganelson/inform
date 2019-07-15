@@ -168,6 +168,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 			void_level = Inter::Defn::get_level(P) + 2;
 			inter_frame D = Inter::Symbols::defining_frame(code_block);
 			CodeGen::FC::frame(gen, D);
+		} else {
+			LOG("Out goes $3\n", code_block);
 		}
 		return;
 	}
