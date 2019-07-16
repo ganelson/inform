@@ -243,7 +243,22 @@ inter_symbol *verb_directive_creature_symbol = NULL;
 inter_symbol *verb_directive_topic_symbol = NULL;
 inter_symbol *verb_directive_multiexcept_symbol = NULL;
 
+inter_symbol *function_ptype_symbol = NULL;
+inter_symbol *action_ptype_symbol = NULL;
+inter_symbol *command_ptype_symbol = NULL;
+inter_symbol *to_phrase_ptype_symbol = NULL;
+
+inter_symbol *template_symbol = NULL;
+
 void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
+
+	function_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
+	action_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_action");
+	command_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_command");
+	to_phrase_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
+
+	template_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
+
 	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");
 	typeless_int_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_typeless_int");

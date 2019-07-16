@@ -564,6 +564,7 @@
             <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">T_IBM</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::after_this_frame</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">alias_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::scope</span><span class="plain">(&amp;</span><span class="identifier">T_IBM</span><span class="plain">), </span><span class="identifier">identifier</span><span class="plain">);</span>
             <span class="identifier">Inter::SymbolsTables::equate</span><span class="plain">(</span><span class="identifier">alias_name</span><span class="plain">, </span><span class="identifier">rsymb</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">alias_name</span><span class="plain">, </span><span class="identifier">ALIAS_ONLY_BIT</span><span class="plain">);</span>
 
             <span class="identifier">Inter::Frame::remove_from_tree</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
     </pre>

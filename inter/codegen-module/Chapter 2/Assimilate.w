@@ -466,6 +466,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 	inter_bookmark T_IBM = Inter::Bookmarks::after_this_frame(P);
 	inter_symbol *alias_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&T_IBM), identifier);
 	Inter::SymbolsTables::equate(alias_name, rsymb);
+	Inter::Symbols::set_flag(alias_name, ALIAS_ONLY_BIT);
 
 	Inter::Frame::remove_from_tree(P);
 

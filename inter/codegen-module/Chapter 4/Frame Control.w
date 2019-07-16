@@ -39,13 +39,8 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 	switch (P.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
 		case CONSTANT_IST: {
-			inter_package *outer = Inter::Packages::container(P);
 			inter_symbol *con_name =
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-			if ((outer) && (CodeGen::Eliminate::gone(outer->package_name)) && (Inter::Constant::code_block(con_name) == NULL)) {
-				LOG("Yeah, so reject $3\n", outer->package_name);
-				return;
-			}
 			if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 			inter_repository *I = gen->from;
 			if (Inter::Packages::container(P) == Inter::Packages::main(I)) {

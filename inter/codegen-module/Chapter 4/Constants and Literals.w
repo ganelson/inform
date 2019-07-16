@@ -163,14 +163,10 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 
 	if (Inter::Constant::is_routine(con_name)) {
 		inter_symbol *code_block = Inter::Constant::code_block(con_name);
-		if (CodeGen::Eliminate::gone(code_block) == FALSE) {
-			WRITE("[ %S", CodeGen::CL::name(con_name));
-			void_level = Inter::Defn::get_level(P) + 2;
-			inter_frame D = Inter::Symbols::defining_frame(code_block);
-			CodeGen::FC::frame(gen, D);
-		} else {
-			LOG("Out goes $3\n", code_block);
-		}
+		WRITE("[ %S", CodeGen::CL::name(con_name));
+		void_level = Inter::Defn::get_level(P) + 2;
+		inter_frame D = Inter::Symbols::defining_frame(code_block);
+		CodeGen::FC::frame(gen, D);
 		return;
 	}
 	switch (P.data[FORMAT_CONST_IFLD]) {
