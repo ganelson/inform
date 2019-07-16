@@ -668,18 +668,6 @@ Property grammar; ! not used by I7, but an interesting hook in the parser
 Property inside_description; ! not used by I7, but an interesting hook in the locale code
 Property short_name_indef 0; ! not used by I7, but an interesting hook in the listmaker
 
-@p Loss of Life.
-The loss of |life| is so appalling that I6 will not even compile a story
-file which doesn't define the property number |life| (well, strictly
-speaking, it checks the presence of constants suggesting the I6 library
-first, but the template layer does define constants like that). We define
-it as a null constant to be sure of avoiding any valid property number; I6
-being typeless, that enables the veneer to compile again. (The relevant
-code is in |CA__Pr|, defined in the |veneer.c| section of I6.)
-
-@c
-Constant life = NULL;
-
 @p Action Count.
 The number of valid I7 actions in existence.
 

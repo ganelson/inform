@@ -33,22 +33,30 @@
     <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">link_search_list</span><span class="plain">[10];</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">link_search_list_len</span><span class="plain"> = 0;</span>
 
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Link::ensure_search_list</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link_search_list_len</span><span class="plain"> == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_package</span><span class="plain">) {</span>
+                <span class="identifier">link_search_list</span><span class="plain">[1] = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+                <span class="identifier">link_search_list</span><span class="plain">[0] = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">template_package</span><span class="plain">);</span>
+                <span class="identifier">link_search_list_len</span><span class="plain"> = 2;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">link_search_list</span><span class="plain">[0] = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+                <span class="identifier">link_search_list_len</span><span class="plain"> = 1;</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Link::link</span><span class="plain">(</span><span class="identifier">inter_bookmark</span><span class="plain"> *</span><span class="identifier">IBM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">template_file</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">PP</span><span class="plain">, </span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IBM</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no inter to link with"</span><span class="plain">);</span>
         <span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">IBM</span><span class="plain">-&gt;</span><span class="identifier">read_into</span><span class="plain">;</span>
         <span class="identifier">Inter::traverse_tree</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">CodeGen::Link::visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
 
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">TP</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::url_name_to_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/main/template"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TP</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to find template"</span><span class="plain">);</span>
-        <span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">TP</span><span class="plain">-&gt;</span><span class="identifier">definition</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Frame::valid</span><span class="plain">(&amp;</span><span class="identifier">D</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"template definition broken"</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">package_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">DEFN_PACKAGE_IFLD</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to find template"</span><span class="plain">);</span>
 
-        <span class="identifier">link_search_list</span><span class="plain">[1] = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Inter::Packages::main</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
-        <span class="identifier">link_search_list</span><span class="plain">[0] = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Inter::Package::which</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">));</span>
-        <span class="identifier">link_search_list_len</span><span class="plain"> = 2;</span>
+        <span class="functiontext">CodeGen::Link::ensure_search_list</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
 
-        <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">link_bookmark</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::at_end_of_this_package</span><span class="plain">(</span><span class="identifier">Inter::Package::which</span><span class="plain">(</span><span class="identifier">package_name</span><span class="plain">));</span>
+        <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">link_bookmark</span><span class="plain"> =</span>
+            <span class="identifier">Inter::Bookmarks::at_end_of_this_package</span><span class="plain">(</span><span class="identifier">template_package</span><span class="plain">);</span>
 
         <span class="reserved">I6T_kit</span><span class="plain"> </span><span class="identifier">kit</span><span class="plain"> = </span><span class="functiontext">TemplateReader::kit_out</span><span class="plain">(&amp;</span><span class="identifier">link_bookmark</span><span class="plain">, &amp;(</span><span class="functiontext">CodeGen::Link::receive_raw</span><span class="plain">),  &amp;(</span><span class="functiontext">CodeGen::Link::receive_command</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">kit</span><span class="element">.no_i6t_file_areas</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
@@ -161,23 +169,25 @@
 
 <p class="endnote">The function CodeGen::Link::run_pipeline_stage appears nowhere else.</p>
 
+<p class="endnote">The function CodeGen::Link::ensure_search_list is used in 2/alm (<a href="2-alm.html#SP1">&#167;1</a>).</p>
+
 <p class="endnote">The function CodeGen::Link::link appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Link::visitor appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Link::find_in_namespace appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Link::build_r is used in 2/alm (<a href="2-alm.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function CodeGen::Link::build_r is used in 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function CodeGen::Link::build_only appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Link::find_name is used in 2/alm (<a href="2-alm.html#SP2_1">&#167;2.1</a>, <a href="2-alm.html#SP3">&#167;3</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function CodeGen::Link::find_name is used in 2/alm (<a href="2-alm.html#SP2_1_2">&#167;2.1.2</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>, <a href="2-alm.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The function CodeGen::Link::log_search_path appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::Link::guard is used in 1/ppl (<a href="1-ppl.html#SP5">&#167;5</a>), 2/alm (<a href="2-alm.html#SP2">&#167;2</a>, <a href="2-alm.html#SP2_1">&#167;2.1</a>, <a href="2-alm.html#SP2_2_2">&#167;2.2.2</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>), 3/ip (<a href="3-ip.html#SP2">&#167;2</a>), 3/tv (<a href="3-tv.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::Link::guard is used in 1/ppl (<a href="1-ppl.html#SP5">&#167;5</a>), 2/alm (<a href="2-alm.html#SP2_1_2">&#167;2.1.2</a>, <a href="2-alm.html#SP2_2_2">&#167;2.2.2</a>, <a href="2-alm.html#SP3">&#167;3</a>, <a href="2-alm.html#SP5">&#167;5</a>, <a href="2-alm.html#SP6">&#167;6</a>), 3/ip (<a href="3-ip.html#SP2">&#167;2</a>), 3/tv (<a href="3-tv.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function CodeGen::Link::entire_splat is used in <a href="#SP2">&#167;2</a>, 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function CodeGen::Link::entire_splat is used in <a href="#SP2">&#167;2</a>, 2/alm (<a href="2-alm.html#SP6">&#167;6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 

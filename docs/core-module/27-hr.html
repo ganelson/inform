@@ -1923,18 +1923,6 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">template_pr</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ead_done</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hierarchy::ensure_actions_diversion</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ead_done</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">ead_done</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">submodule_identity</span><span class="plain"> *</span><span class="identifier">actions</span><span class="plain"> = </span><span class="functiontext">Packaging::register_submodule</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"actions"</span><span class="plain">);</span>
-            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">template_actions</span><span class="plain"> = </span><span class="functiontext">Packaging::template_submodule</span><span class="plain">(</span><span class="identifier">actions</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="identifier">template_actions</span><span class="plain">);</span>
-            <span class="identifier">CodeGen::Assimilate::divert</span><span class="plain">(</span><span class="identifier">ACTION_ASSIM_BM</span><span class="plain">, </span><span class="functiontext">Packaging::bubble</span><span class="plain">());</span>
-            <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">veneer_pr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">veneer_bm</span><span class="plain">;</span>
     <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">Hierarchy::veneer</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -2046,8 +2034,6 @@
 <p class="endnote">The function Hierarchy::main is used in 27/pc (<a href="27-pc.html#SP11">&#167;11</a>, <a href="27-pc.html#SP14">&#167;14</a>), 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Hierarchy::template is used in <a href="#SP1_52">&#167;1.52</a>, 15/ep (<a href="15-ep.html#SP4">&#167;4</a>), 27/hl (<a href="27-hl.html#SP3">&#167;3</a>, <a href="27-hl.html#SP5">&#167;5</a>), 27/in (<a href="27-in.html#SP5">&#167;5</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Hierarchy::ensure_actions_diversion appears nowhere else.</p>
 
 <p class="endnote">The function Hierarchy::veneer is used in <a href="#SP1_2">&#167;1.2</a>, 27/eis (<a href="27-eis.html#SP4">&#167;4</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 

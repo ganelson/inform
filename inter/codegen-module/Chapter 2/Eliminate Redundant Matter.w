@@ -28,7 +28,8 @@ int CodeGen::Eliminate::run_pipeline_stage(pipeline_step *step) {
 We operate on a presumption of guilt: any package which we cannot prove is
 needed will be deleted. |Main_fn| is clearly needed, since it is where
 execution will begin. A handful of other functions, not called yet but
-needed in the final compilation stage, must also be included. Command
+needed in the final compilation stage (and which replace stubs which would
+otherwise be provided by the veneer), must also be included. Command
 packages contain grammar for command verbs typed at run-time: these affect
 an essential data structure (i.e., the parser grammar) implicitly, and so
 we can't detect the dependency here. So we require all command packages to
@@ -43,10 +44,6 @@ void CodeGen::Eliminate::package_preserver(inter_repository *I, inter_frame P, v
 	else if (ptype == function_ptype_symbol) {
 		if (Str::eq(pack->package_name->symbol_name, I"Main_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's Main");
-		else if (Str::eq(pack->package_name->symbol_name, I"SL_Score_Moves_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's the score/moves exception");
-		else if (Str::eq(pack->package_name->symbol_name, I"SL_Location_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's the score/moves exception");
 		else if (Str::eq(pack->package_name->symbol_name, I"DefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
 		else if (Str::eq(pack->package_name->symbol_name, I"CDefArt_fn"))

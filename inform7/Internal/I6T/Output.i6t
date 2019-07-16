@@ -13,14 +13,6 @@ top of the file, lines beginning |!%| are read as ICL commands: as soon as
 any line (including a blank line) doesn't have this signature, I6 exits
 ICL mode.
 
-@p Other Configuration.
-Setting the |Grammar__Version| constant is a rather creaky old way to tell
-the I6 compiler to use more detailed grammar tables: GV1 has not in fact
-been used since about 1994.
-
-@c
-Constant Grammar__Version 2;
-
 @p Identification.
 Both of the compiler and template layer, and of the story file to be produced.
 
@@ -145,9 +137,6 @@ appearance of text in particular scenes to be. (Cf. Adam Cadre's I6 patch
 (14) These pixel dimensions are used both for the Glulx and v6 Z-machines,
 but not for the more commonly used versions 5 or 8, whose screen model is
 based on character cells.
-
-(15) For debugging. |debug_flag| is traditionally called so, but is actually
-now a bitmap of flags for tracing actions, calls to object routines, and so on.
 
 @c
 ! [1]
@@ -276,7 +265,7 @@ Global scope_token; ! for "scope=Routine" grammar tokens
 Global scope_error;
 Global scope_stage; ! 1, 2 then 3
 Global advance_warning; ! what a later-named thing will be
-Global reason_code = NULL; ! for the I6 veneer
+! Global reason_code = NULL; ! for the I6 veneer
 
 Global ats_flag = 0; ! for AddToScope routines
 Global ats_hls;
@@ -329,7 +318,7 @@ Global statuswin_cursize = 0;
 Global statuswin_size = 1;
 
 ! [16]
-Global debug_flag = 0;
+! Global debug_flag = 0;
 Global debug_rules = 0;
 Global debug_scenes = 0;
 Global debug_rule_nesting;

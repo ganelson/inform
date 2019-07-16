@@ -1,9 +1,15 @@
 packagetype _plain
 packagetype _code
+packagetype _function
+packagetype _module
+packagetype _submodule
+packagetype _command
+packagetype _action
 
 package main _plain
-	symbol public misc resources
-	package resources _plain
+	symbol public misc other
+	symbol public misc template
+	package other _module
 		symbol public misc K_unchecked
 		symbol public misc K_unchecked_function
 		symbol public misc K_typeless_int
@@ -11,33 +17,6 @@ package main _plain
 		symbol public misc K_truth_state
 		symbol public misc VERB_DIRECTIVE_DIVIDER
 		symbol public misc VERB_DIRECTIVE_RESULT
-		symbol external misc Falsity
-		symbol public misc Falsity_fn
-		symbol external misc Falsity_1 == /main/resources/Falsity_fn/Falsity
-		symbol public misc Demo_fn
-		symbol external misc Demo == /main/resources/Demo_fn/Demo
-		symbol public misc Banana_fn
-		symbol external misc Banana == /main/resources/Banana_fn/Banana
-		symbol public misc Peach_fn
-		symbol external misc Peach == /main/resources/Peach_fn/Peach
-		symbol public misc marmorial -> marmorial
-		symbol public misc density
-		symbol public misc DEBUG
-		symbol public misc Badger
-		symbol public misc XA
-		symbol public misc XB
-		symbol public misc Computed_Constant_Value_0
-		symbol public misc Computed_Constant_Value_1
-		symbol public misc Computed_Constant_Value_2
-		symbol public misc XC
-		symbol public misc XD
-		symbol public misc XE
-		symbol public misc XF
-		symbol public misc Bodger
-		symbol public misc Budger
-		symbol public misc Bodger_1
-		symbol public misc Bydger
-		symbol public misc nitwit
 		kind K_unchecked unchecked
 		kind K_unchecked_function function K_unchecked -> K_unchecked
 		kind K_typeless_int int32
@@ -45,63 +24,137 @@ package main _plain
 		kind K_truth_state int2
 		constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
 		constant VERB_DIRECTIVE_RESULT K_unchecked = 2
-		constant DEBUG K_unchecked = 0 __assimilated=1
-		constant Badger K_unchecked = 12 __assimilated=1
-		package Falsity_fn _plain
-			symbol public misc Falsity_B
-			symbol public misc Falsity
-			symbol external misc K_unchecked_function == /main/resources/K_unchecked_function
-			package Falsity_B _code
-				code
-				splat &"return false;"
-			constant Falsity K_unchecked_function = Falsity_B __assimilated=1
-		package Demo_fn _plain
-			symbol public misc Demo_B
-			symbol public misc Demo
-			symbol external misc K_unchecked_function == /main/resources/K_unchecked_function
-			package Demo_B _code
-				symbol private misc x
-				symbol external misc K_unchecked == /main/resources/K_unchecked
-				symbol private misc y
-				local x K_unchecked
-				local y K_unchecked
-				code
-				splat &"return x+y;"
-			constant Demo K_unchecked_function = Demo_B __assimilated=1
-		constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
-		constant Computed_Constant_Value_0 K_unchecked = 71
-		constant Computed_Constant_Value_1 K_unchecked = 3
-		constant Computed_Constant_Value_2 K_unchecked = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
-		constant XB K_list_of_values = { Computed_Constant_Value_2 } __assimilated=1
-		constant XC K_list_of_values = { 17, 91 } __assimilated=1 __byte_array=1
-		constant XD K_list_of_values = { 8, 6 } __assimilated=1 __byte_array=1
-		constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __table_array=1
-		constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __buffer_array=1
-		constant Bodger K_unchecked = 157 __assimilated=1
-		constant Budger K_unchecked = 32738 __assimilated=1
-		variable nitwit K_unchecked = 2 __assimilated=1
-		constant Bodger_1 K_unchecked = 77 __assimilated=1
-		constant Bydger K_unchecked = 777 __assimilated=1
-		package Banana_fn _plain
-			symbol public misc Banana_B
-			symbol public misc Banana
-			symbol external misc K_unchecked_function == /main/resources/K_unchecked_function
-			package Banana_B _code
-				symbol private misc x1
-				symbol external misc K_unchecked == /main/resources/K_unchecked
-				symbol private misc x2
-				local x1 K_unchecked
-				local x2 K_unchecked
-				code
-				splat &"rfalse;"
-			constant Banana K_unchecked_function = Banana_B __assimilated=1
-		package Peach_fn _plain
-			symbol public misc Peach_B
-			symbol public misc Peach
-			symbol external misc K_unchecked_function == /main/resources/K_unchecked_function
-			package Peach_B _code
-				code
-				splat &"rfalse;"
-			constant Peach K_unchecked_function = Peach_B __assimilated=1
-		property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
-		property density K_unchecked __assimilated=1
+	package template _module
+		symbol public misc functions
+		symbol public misc properties
+		symbol public misc constants
+		symbol public misc arrays
+		symbol public misc variables
+		package constants _submodule
+			symbol public misc DEBUG_con
+			symbol public misc Badger_con
+			symbol public misc Bodger_con
+			symbol public misc Budger_con
+			symbol public misc Bydger_con
+			package DEBUG_con _plain
+				symbol public misc DEBUG
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				constant DEBUG K_unchecked = 0 __assimilated=1
+			package Badger_con _plain
+				symbol public misc Badger
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				constant Badger K_unchecked = 12 __assimilated=1
+			package Bodger_con _plain
+				symbol public misc Bodger
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				constant Bodger K_unchecked = 157 __assimilated=1
+			package Budger_con _plain
+				symbol public misc Budger
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				constant Budger K_unchecked = 32738 __assimilated=1
+			package Bydger_con _plain
+				symbol public misc Bydger
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				constant Bydger K_unchecked = 777 __assimilated=1
+		package functions _submodule
+			symbol public misc Falsity_fn
+			symbol public misc Demo_fn
+			symbol public misc Banana_fn
+			symbol public misc Peach_fn
+			package Falsity_fn _function
+				symbol public misc Falsity_B
+				symbol public misc Falsity
+				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
+				package Falsity_B _code
+					code
+					splat &"return false;"
+				constant Falsity K_unchecked_function = Falsity_B __assimilated=1
+			package Demo_fn _function
+				symbol public misc Demo_B
+				symbol public misc Demo
+				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
+				package Demo_B _code
+					symbol private misc x
+					symbol external misc K_unchecked == /main/other/K_unchecked
+					symbol private misc y
+					local x K_unchecked
+					local y K_unchecked
+					code
+					splat &"return x+y;"
+				constant Demo K_unchecked_function = Demo_B __assimilated=1
+			package Banana_fn _function
+				symbol public misc Banana_B
+				symbol public misc Banana
+				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
+				package Banana_B _code
+					symbol private misc x1
+					symbol external misc K_unchecked == /main/other/K_unchecked
+					symbol private misc x2
+					local x1 K_unchecked
+					local x2 K_unchecked
+					code
+					splat &"rfalse;"
+				constant Banana K_unchecked_function = Banana_B __assimilated=1
+			package Peach_fn _function
+				symbol public misc Peach_B
+				symbol public misc Peach
+				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
+				package Peach_B _code
+					code
+					splat &"rfalse;"
+				constant Peach K_unchecked_function = Peach_B __assimilated=1
+		package arrays _submodule
+			symbol public misc XA_arr
+			symbol public misc XB_arr
+			symbol public misc XC_arr
+			symbol public misc XD_arr
+			symbol public misc XE_arr
+			symbol public misc XF_arr
+			package XA_arr _plain
+				symbol public misc XA
+				symbol external misc K_list_of_values == /main/other/K_list_of_values
+				constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
+			package XB_arr _plain
+				symbol public misc XB
+				symbol public misc Computed_Constant_Value_0
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				symbol public misc Computed_Constant_Value_1
+				symbol public misc Computed_Constant_Value_2
+				symbol external misc K_list_of_values == /main/other/K_list_of_values
+				constant Computed_Constant_Value_0 K_unchecked = 71
+				constant Computed_Constant_Value_1 K_unchecked = 3
+				constant Computed_Constant_Value_2 K_unchecked = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
+				constant XB K_list_of_values = { Computed_Constant_Value_2 } __assimilated=1
+			package XC_arr _plain
+				symbol public misc XC
+				symbol external misc K_list_of_values == /main/other/K_list_of_values
+				constant XC K_list_of_values = { 17, 91 } __assimilated=1 __byte_array=1
+			package XD_arr _plain
+				symbol public misc XD
+				symbol external misc K_list_of_values == /main/other/K_list_of_values
+				constant XD K_list_of_values = { 8, 6 } __assimilated=1 __byte_array=1
+			package XE_arr _plain
+				symbol public misc XE
+				symbol external misc K_list_of_values == /main/other/K_list_of_values
+				constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __table_array=1
+			package XF_arr _plain
+				symbol public misc XF
+				symbol external misc K_list_of_values == /main/other/K_list_of_values
+				constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __buffer_array=1
+		package variables _submodule
+			symbol public misc nitwit_var
+			package nitwit_var _plain
+				symbol public misc nitwit
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				variable nitwit K_unchecked = 2 __assimilated=1
+		package properties _submodule
+			symbol public misc marmorial_prop
+			symbol public misc density_prop
+			package marmorial_prop _plain
+				symbol public misc marmorial -> marmorial
+				symbol external misc K_truth_state == /main/other/K_truth_state
+				property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
+			package density_prop _plain
+				symbol public misc density
+				symbol external misc K_unchecked == /main/other/K_unchecked
+				property density K_unchecked __assimilated=1

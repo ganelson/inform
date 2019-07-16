@@ -21,22 +21,30 @@ int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
 inter_symbols_table *link_search_list[10];
 int link_search_list_len = 0;
 
+void CodeGen::Link::ensure_search_list(inter_repository *I) {
+	if (link_search_list_len == 0) {
+		if (template_package) {
+			link_search_list[1] = Inter::Packages::scope(Inter::Packages::main(I));
+			link_search_list[0] = Inter::Packages::scope(template_package);
+			link_search_list_len = 2;
+		} else {
+			link_search_list[0] = Inter::Packages::scope(Inter::Packages::main(I));
+			link_search_list_len = 1;
+		}
+	}
+}
+
 void CodeGen::Link::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_repository *I = IBM->read_into;
 	Inter::traverse_tree(I, CodeGen::Link::visitor, NULL, NULL, 0);
 
-	inter_symbol *TP = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
-	if (TP == NULL) internal_error("unable to find template");
-	inter_frame D = TP->definition;
-	if (Inter::Frame::valid(&D) == FALSE) internal_error("template definition broken");
-	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(D, DEFN_PACKAGE_IFLD);
+	if (template_package == NULL) internal_error("unable to find template");
 
-	link_search_list[1] = Inter::Packages::scope(Inter::Packages::main(I));
-	link_search_list[0] = Inter::Packages::scope(Inter::Package::which(package_name));
-	link_search_list_len = 2;
+	CodeGen::Link::ensure_search_list(I);
 
-	inter_bookmark link_bookmark = Inter::Bookmarks::at_end_of_this_package(Inter::Package::which(package_name));
+	inter_bookmark link_bookmark =
+		Inter::Bookmarks::at_end_of_this_package(template_package);
 
 	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::Link::receive_raw),  &(CodeGen::Link::receive_command), NULL);
 	kit.no_i6t_file_areas = N;

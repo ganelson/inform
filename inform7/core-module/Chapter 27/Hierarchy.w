@@ -1598,18 +1598,6 @@ package_request *Hierarchy::template(void) {
 	return template_pr;
 }
 
-int ead_done = FALSE;
-void Hierarchy::ensure_actions_diversion(void) {
-	if (ead_done == FALSE) {
-		ead_done = TRUE;
-		submodule_identity *actions = Packaging::register_submodule(I"actions");
-		package_request *template_actions = Packaging::template_submodule(actions);
-		packaging_state save = Packaging::enter(template_actions);
-		CodeGen::Assimilate::divert(ACTION_ASSIM_BM, Packaging::bubble());
-		Packaging::exit(save);
-	}
-}
-
 package_request *veneer_pr = NULL;
 inter_bookmark veneer_bm;
 package_request *Hierarchy::veneer(void) {

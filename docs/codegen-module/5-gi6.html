@@ -50,11 +50,23 @@
 
 <p class="endnote">The function CodeGen::I6::target is used in 4/fc (<a href="4-fc.html#SP2">&#167;2</a>).</p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Segmentation. </b></p>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Segmentation. </b>The loss of <code class="display"><span class="extract">life</span></code> is so appalling that I6 will not even compile a story
+file which doesn't define the property number <code class="display"><span class="extract">life</span></code> (well, strictly
+speaking, it checks the presence of constants suggesting the I6 library
+first, but the template layer does define constants like that). We define
+it as a null constant to be sure of avoiding any valid property number; I6
+being typeless, that enables the veneer to compile again. (The relevant
+code is in <code class="display"><span class="extract">CA__Pr</span></code>, defined in the <code class="display"><span class="extract">veneer.c</span></code> section of I6.)
+</p>
+
+<p class="inwebparagraph"><code class="display"><span class="extract">debug_flag</span></code> is traditionally called so, but is actually
+now a bitmap of flags for tracing actions, calls to object routines, and so on.
+</p>
 
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">pragmatic_matter_I7CGS</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">compiler_versioning_matter_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">attributes_at_eof_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">early_matter_I7CGS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">text_literals_code_I7CGS</span>
@@ -68,18 +80,28 @@
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::begin_generation</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">cg</span><span class="plain">) {</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">pragmatic_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">attributes_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">early_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">text_literals_code_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">summations_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">arrays_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">globals_array_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">main_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">routines_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">code_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
-        <span class="identifier">cg</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">verbs_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::I6::begin_generation</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">pragmatic_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">compiler_versioning_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">attributes_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">early_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">text_literals_code_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">summations_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">arrays_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">globals_array_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">main_matter_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">routines_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">code_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;segments</span><span class="plain">[</span><span class="constant">verbs_at_eof_I7CGS</span><span class="plain">] = </span><span class="functiontext">CodeGen::new_segment</span><span class="plain">();</span>
+
+        <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="constant">compiler_versioning_matter_I7CGS</span><span class="plain">);</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Constant Grammar__Version 2;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Global debug_flag;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Global reason_code = NULL;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Constant life = NULL;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
+
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 

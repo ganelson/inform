@@ -27,7 +27,17 @@ int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
 				ST->symbol_array[i] = NULL;
 			}
 		}
-//		if (resolution_failed) internal_error("undefined external link(s)");
+		if (template_package) {
+			inter_symbols_table *ST = Inter::Packages::scope(template_package);
+			for (int i=0; i<ST->size; i++) {
+				inter_symbol *S = ST->symbol_array[i];
+				if ((S) && (S->equated_to) && (Inter::Symbols::get_flag(S, ALIAS_ONLY_BIT))) {
+					LOGIF(EXTERNAL_SYMBOL_RESOLUTION, "Removing $3 as a template alias\n", S);
+					ST->symbol_array[i] = NULL;
+				}
+			}
+		}
+		if (resolution_failed) internal_error("undefined external link(s)");
 	}
 	return TRUE;
 }
