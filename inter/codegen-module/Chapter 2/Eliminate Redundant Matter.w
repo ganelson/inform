@@ -41,6 +41,8 @@ void CodeGen::Eliminate::package_preserver(inter_repository *I, inter_frame P, v
 	inter_symbol *ptype = Inter::Packages::type(pack);
 	if (ptype == command_ptype_symbol)
 		CodeGen::Eliminate::require(pack, NULL, I"it's a _command package");
+	else if (ptype == property_ptype_symbol)
+		CodeGen::Eliminate::require(pack, NULL, I"it's a _property package");
 	else if (ptype == function_ptype_symbol) {
 		if (Str::eq(pack->package_name->symbol_name, I"Main_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's Main");
