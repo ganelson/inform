@@ -359,6 +359,9 @@ void Vocabulary::write_hash_table(OUTPUT_STREAM) {
 @ And that leaves only one routine: for finding the unique vocabulary
 entry pointer associated with the material in |text|. We search the
 hash table to see if we have the word already, and if not, we add it.
+Either way, we return a valid pointer. (Compare Isaiah 55:11, "So shall
+my word be that goeth forth out of my mouth: it shall not return unto
+me void.")
 
 It is in order to set the initial values of the flags for the new
 word (if it does turn out to be new) that we mandated special hash
