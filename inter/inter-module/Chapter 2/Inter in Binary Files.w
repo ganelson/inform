@@ -14,7 +14,7 @@ void Inter::Binary::read(inter_repository *I, filename *F) {
 	FILE *fh = BinaryFiles::open_for_reading(F);
 
 	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
-	inter_reading_state at = Inter::Bookmarks::new_IRS(I);
+	inter_bookmark at = Inter::Bookmarks::at_start_of_this_repository(I);
 
 	unsigned int X = 0;
 
@@ -243,7 +243,7 @@ that's the end of the list and therefore the block.
 		if (parent == NULL) Inter::Binary::read_error(&eloc, ftell(fh), I"packages not well founded");
 	}
 	if (res->stored_package == NULL) {
-		res->stored_package = Inter::Packages::new(parent, I, n);
+		res->stored_package = Inter::Packages::new(I, n);
 	}
 	if (sc != 0) Inter::Packages::set_scope(res->stored_package, Inter::get_symbols_table(I, sc));
 	if (nid != 0) {
@@ -256,15 +256,15 @@ that's the end of the list and therefore the block.
 			Inter::Packages::set_name(res->stored_package, pack_name);
 		}
 	}
-	res->stored_package->codelike_package = (int) cl;
+	if (cl) Inter::Packages::make_codelike(res->stored_package);
 
 @<Write a package resource@> =
 	inter_package *P = res->stored_package;
 	if (P) {
-		inter_package *par = P->parent_package;
+		inter_package *par = Inter::Packages::parent(P);
 		if (par == NULL) BinaryFiles::write_int32(fh, 0);
 		else BinaryFiles::write_int32(fh, (unsigned int) par->index_n);
-		BinaryFiles::write_int32(fh, (unsigned int) P->codelike_package);
+		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_codelike(P));
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_name->symbol_ID);
 	}
@@ -340,15 +340,15 @@ enough that the slot exists for the eventual list to be stored in.
 			if (comment != 0) Inter::Frame::attach_comment(P, (inter_t) comment);
 		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 
-		inter_error_message *E = Inter::Defn::verify_construct(P);
+		inter_error_message *E = Inter::Defn::verify_construct(owner, P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 		Inter::Frame::insert(P, &at);
 	}
 	Inter::check_segments(I);
 
 @<Write the bytecode@> =
-	Inter::Packages::traverse_repository_global_inc(I, Inter::Binary::visitor, fh);
-	Inter::Packages::traverse_repository_inc(I, Inter::Binary::visitor, fh);
+	Inter::traverse_global_list(I, Inter::Binary::visitor, fh, -PACKAGE_IST);
+	Inter::traverse_tree(I, Inter::Binary::visitor, fh, NULL, 0);
 
 @ =
 void Inter::Binary::visitor(inter_repository *I, inter_frame P, void *state) {

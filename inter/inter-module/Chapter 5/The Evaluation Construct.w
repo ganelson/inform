@@ -28,26 +28,26 @@ void Inter::Evaluation::define(void) {
 @d EXTENT_EVAL_IFR 3
 
 =
-void Inter::Evaluation::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Evaluation::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IRS, EVALUATION_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, EVALUATION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'evaluation' used outside function", eloc); return; }
 
-	*E = Inter::Evaluation::new(IRS, routine, ilp->indent_level, eloc);
+	*E = Inter::Evaluation::new(IBM, routine, ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Evaluation::new(inter_reading_state *IRS, inter_symbol *routine, int level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_1(IRS, EVALUATION_IST, 0, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Evaluation::new(inter_bookmark *IBM, inter_symbol *routine, int level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_1(IBM, EVALUATION_IST, 0, eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Evaluation::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Evaluation::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_EVAL_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 }
 

@@ -29,7 +29,7 @@ void CodeGen::RCC::resolve(inter_repository *I) {
 	rcc_state state;
 	state.I6_level_symbols = Dictionaries::new(1024, TRUE);
 	state.cc_sp = 0;
-	Inter::Packages::traverse_repository(I, CodeGen::RCC::visitor, &state);
+	Inter::traverse_tree(I, CodeGen::RCC::visitor, &state, NULL, 0);
 	if (state.cc_sp != 0)
 		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
 }
@@ -39,7 +39,7 @@ void CodeGen::RCC::visitor(inter_repository *I, inter_frame P, void *v_state) {
 	int allow = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) allow = FALSE;
 	inter_package *outer = Inter::Packages::container(P);
-	if ((outer == NULL) || (outer->codelike_package == FALSE)) {
+	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		if (P.data[ID_IFLD] == SPLAT_IST) {
 			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]);
 			switch (P.data[PLM_SPLAT_IFLD]) {
@@ -59,7 +59,7 @@ void CodeGen::RCC::visitor(inter_repository *I, inter_frame P, void *v_state) {
 			}
 		}
 	}
-	if (allow == FALSE) Inter::Nop::nop_out(I, P);
+	if (allow == FALSE) Inter::Frame::remove_from_tree(P);
 }
 
 @<Extract second token into ident@> =

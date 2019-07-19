@@ -16,18 +16,25 @@ void CodeGen::CL::prepare(code_generation *gen) {
 @
 
 =
+typedef struct response_traverse_state {
+	int NR;
+	struct code_generation *gen;
+} response_traverse_state;
+
 void CodeGen::CL::responses(code_generation *gen) {
-	int NR = 0;
-	Inter::Packages::traverse(gen, CodeGen::CL::response_visitor, &NR);
-	if (NR > 0) {
+	response_traverse_state rts;
+	rts.NR = 0;
+	rts.gen = gen;
+	Inter::traverse_tree(gen->from, CodeGen::CL::response_visitor, &rts, NULL, RESPONSE_IST);
+	if (rts.NR > 0) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 		CodeGen::Targets::begin_constant(gen, I"NO_RESPONSES", TRUE);
-		WRITE_TO(CodeGen::current(gen), "%d", NR);
+		WRITE_TO(CodeGen::current(gen), "%d", rts.NR);
 		CodeGen::Targets::end_constant(gen, I"NO_RESPONSES");
 		CodeGen::deselect(gen, saved);
 		saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
 		WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
-		Inter::Packages::traverse(gen, CodeGen::CL::response_revisitor, NULL);
+		Inter::traverse_tree(gen->from, CodeGen::CL::response_revisitor, gen, NULL, RESPONSE_IST);
 		WRITE_TO(CodeGen::current(gen), "0 0;\n");
 		CodeGen::deselect(gen, saved);
 	}
@@ -36,25 +43,22 @@ void CodeGen::CL::responses(code_generation *gen) {
 @
 
 =
-void CodeGen::CL::response_visitor(code_generation *gen, inter_frame P, void *state) {
-	if (P.data[ID_IFLD] == RESPONSE_IST) {
-		int *NR = (int *) state;
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
-		inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(resp_name), TRUE);
-		text_stream *OUT = CodeGen::current(gen);
-		*NR = *NR + 1;
-		WRITE("%d", *NR);
-		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(resp_name));
-		CodeGen::deselect(gen, saved);
-	}
+void CodeGen::CL::response_visitor(inter_repository *I, inter_frame P, void *state) {
+	response_traverse_state *rts = (response_traverse_state *) state;
+	generated_segment *saved = CodeGen::select(rts->gen, CodeGen::Targets::general_segment(rts->gen, P));
+	inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
+	CodeGen::Targets::begin_constant(rts->gen, CodeGen::CL::name(resp_name), TRUE);
+	text_stream *OUT = CodeGen::current(rts->gen);
+	rts->NR = rts->NR + 1;
+	WRITE("%d", rts->NR);
+	CodeGen::Targets::end_constant(rts->gen, CodeGen::CL::name(resp_name));
+	CodeGen::deselect(rts->gen, saved);
 }
 
-void CodeGen::CL::response_revisitor(code_generation *gen, inter_frame P, void *state) {
-	if (P.data[ID_IFLD] == RESPONSE_IST) {
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
-		WRITE_TO(CodeGen::current(gen), " ");
-	}
+void CodeGen::CL::response_revisitor(inter_repository *I, inter_frame P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
+	WRITE_TO(CodeGen::current(gen), " ");
 }
 
 @
@@ -159,12 +163,10 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 
 	if (Inter::Constant::is_routine(con_name)) {
 		inter_symbol *code_block = Inter::Constant::code_block(con_name);
-		if (CodeGen::Eliminate::gone(code_block) == FALSE) {
-			WRITE("[ %S", CodeGen::CL::name(con_name));
-			void_level = Inter::Defn::get_level(P) + 2;
-			inter_frame D = Inter::Symbols::defining_frame(code_block);
-			CodeGen::FC::frame(gen, D);
-		}
+		WRITE("[ %S", CodeGen::CL::name(con_name));
+		void_level = Inter::Defn::get_level(P) + 2;
+		inter_frame D = Inter::Symbols::defining_frame(code_block);
+		CodeGen::FC::frame(gen, D);
 		return;
 	}
 	switch (P.data[FORMAT_CONST_IFLD]) {

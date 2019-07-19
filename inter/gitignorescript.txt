@@ -16,6 +16,8 @@ Tests/PLM/_Results_Actual/
 Tests/PLM/_Console/
 Tests/RCC/_Results_Actual/
 Tests/RCC/_Console/
+Tests/ERL/_Results_Actual/
+Tests/ERL/_Console/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/

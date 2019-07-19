@@ -624,7 +624,7 @@ These simply wrap the relevant opcodes.
 @c
 [ RESTORE_THE_GAME_R;
 	if (actor ~= player) rfalse;
-	restore Rmaybe;
+	restore RMaybe;
 	RESTORE_THE_GAME_RM('A'); new_line;
 	rtrue;
 	.RMaybe; RESTORE_THE_GAME_RM('B'); new_line;

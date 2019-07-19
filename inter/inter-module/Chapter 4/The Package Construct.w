@@ -27,36 +27,36 @@ void Inter::Package::define(void) {
 @d PID_PACKAGE_IFLD 5
 
 =
-void Inter::Package::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, PACKAGE_IST, ilp->indent_level, eloc);
+void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::get_global_symbols(IRS->read_into), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::get_global_symbols(IBM->read_into), ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;
-	*E = Inter::Package::new_package(IRS, package_name, ptype_name, (inter_t) ilp->indent_level, eloc, &pack);
+	*E = Inter::Package::new_package(IBM, package_name, ptype_name, (inter_t) ilp->indent_level, eloc, &pack);
 	if (*E) return;
 
-	Inter::Defn::set_current_package(IRS, pack);
+	Inter::Bookmarks::set_current_package(IBM, pack);
 }
 
-inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
-	inter_t STID = Inter::create_symbols_table(IRS->read_into);
-	LOGIF(INTER_SYMBOLS, "Package $3 at IRS $5\n", package_name, IRS);
-	inter_frame P = Inter::Frame::fill_4(IRS,
-		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, package_name), Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, ptype_name), STID, 0, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
+	inter_t STID = Inter::create_symbols_table(IBM->read_into);
+	LOGIF(INTER_SYMBOLS, "Package $3 at IBM $5\n", package_name, IBM);
+	inter_frame P = Inter::Frame::fill_4(IBM,
+		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(IBM->read_into, NULL, ptype_name), STID, 0, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 
-	inter_t PID = Inter::create_package(IRS->read_into, IRS->current_package);
-	inter_package *pack = Inter::Packages::from_PID(IRS->read_into, PID);
+	inter_t PID = Inter::create_package(IBM->read_into);
+	inter_package *pack = Inter::Packages::from_PID(IBM->read_into, PID);
 	Inter::Packages::set_name(pack, package_name);
-	if (ptype_name == code_packagetype) pack->codelike_package = TRUE;
+	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
 	Inter::Packages::set_scope(pack, Inter::Package::local_symbols(package_name));
 	P.data[PID_PACKAGE_IFLD] = PID;
 
@@ -65,9 +65,11 @@ inter_error_message *Inter::Package::new_package(inter_reading_state *IRS, inter
 	return NULL;
 }
 
-void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
-	*E = Inter::Verify::defn(P, DEFN_PACKAGE_IFLD); if (*E) return;
-	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PACKAGE_IFLD);
+void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
+	*E = Inter__Verify__defn(owner, P, DEFN_PACKAGE_IFLD); if (*E) return;
+	inter_symbols_table *T = Inter::Packages::scope(owner);
+	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_id(T, P.data[DEFN_PACKAGE_IFLD]);
 	Inter::Defn::set_latest_package_symbol(package_name);
 }
 
@@ -102,6 +104,12 @@ int Inter::Package::is(inter_symbol *package_name) {
 inter_package *Inter::Package::which(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
 	inter_frame D = Inter::Symbols::defining_frame(package_name);
+	if (Inter::Frame::valid(&D) == FALSE) return NULL;
+	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
+	return Inter::get_package(D.repo_segment->owning_repo, D.data[PID_PACKAGE_IFLD]);
+}
+
+inter_package *Inter::Package::defined_by_frame(inter_frame D) {
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
 	return Inter::get_package(D.repo_segment->owning_repo, D.data[PID_PACKAGE_IFLD]);

@@ -111,7 +111,7 @@ only when assembling other material, and not for the final output.
 
 <p class="endnote">The function CodeGen::new_generation is used in <a href="#SP1">&#167;1</a>, 4/fc (<a href="4-fc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The structure code_generation is accessed in 4/fc, 4/cal, 4/iap, 5/ft, 5/fti, 5/fbi, 5/fi, 5/gi6 and here.</p>
+<p class="endnote">The structure code_generation is accessed in 4/fc, 4/cal, 4/iap, 4/vrb, 5/ft, 5/fti, 5/fbi, 5/fi, 5/gi6 and here.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>At present, at least, a "segment" is nothing more than a wrapper for a text.
 But we abstract it in case it's ever useful for it to be more.
@@ -264,8 +264,8 @@ we also have to direct it to a given text.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Inter::Packages::traverse_global</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::pragma</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">Inter::Packages::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::FC::iterate</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="identifier">Inter::traverse_global_list</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::pragma</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">PRAGMA_IST</span><span class="plain">);</span>
+        <span class="identifier">Inter::traverse_tree</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::FC::iterate</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -</span><span class="identifier">PACKAGE_IST</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -291,14 +291,13 @@ we also have to direct it to a given text.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::pragma</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] == </span><span class="identifier">PRAGMA_IST</span><span class="plain">) {</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">target_symbol</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">TARGET_PRAGMA_IFLD</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad pragma"</span><span class="plain">);</span>
-            <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">TEXT_PRAGMA_IFLD</span><span class="plain">];</span>
-            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">repo_segment</span><span class="plain">-&gt;</span><span class="identifier">owning_repo</span><span class="plain">, </span><span class="identifier">ID</span><span class="plain">);</span>
-            <span class="functiontext">CodeGen::Targets::offer_pragma</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">target_symbol</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::pragma</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain"> = (</span><span class="reserved">code_generation</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">target_symbol</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">TARGET_PRAGMA_IFLD</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad pragma"</span><span class="plain">);</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">TEXT_PRAGMA_IFLD</span><span class="plain">];</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::get_text</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">repo_segment</span><span class="plain">-&gt;</span><span class="identifier">owning_repo</span><span class="plain">, </span><span class="identifier">ID</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Targets::offer_pragma</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">target_symbol</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -330,7 +329,7 @@ we also have to direct it to a given text.
 
 <p class="endnote">The function CodeGen::mark is used in 4/iap (<a href="4-iap.html#SP5_8_4">&#167;5.8.4</a>), 5/fi (<a href="5-fi.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function CodeGen::unmark is used in 4/iap (<a href="4-iap.html#SP5_8">&#167;5.8</a>), 5/fi (<a href="5-fi.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::unmark is used in 4/iap (<a href="4-iap.html#SP5_8">&#167;5.8</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 4: Inter to Final Code.)</i></li><li><a href="4-fc.html">Continue with 'Frame Control'</a></li></ul><hr class="tocbar">

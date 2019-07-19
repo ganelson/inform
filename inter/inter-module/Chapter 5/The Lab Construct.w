@@ -28,10 +28,10 @@ void Inter::Lab::define(void) {
 @d EXTENT_LAB_IFR 4
 
 =
-void Inter::Lab::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IRS, LAB_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, LAB_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
@@ -42,20 +42,19 @@ void Inter::Lab::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 	inter_symbol *label = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);
 	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
-	*E = Inter::Lab::new(IRS, routine, label, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Lab::new(IBM, routine, label, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Lab::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *label, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IRS, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, label), eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *label, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Lab::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Lab::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_LAB_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
+	inter_symbol *routine = owner->package_name;
 	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
 	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Frame::error(&P, I"no such label", NULL); return; }
 }

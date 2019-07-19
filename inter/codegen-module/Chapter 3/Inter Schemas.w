@@ -2108,15 +2108,10 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						if ((next_isn) && (next_isn->expression_tokens) &&
 							(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
 							(next_isn->expression_tokens->reserved_word == UNTIL_I6RW)) {
-	//						operand2_node = next_isn->child_node;
 							isn->next_node = next_isn->next_node;
 							inter_schema_token *n = next_isn->expression_tokens->next;
 							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 							operand1 = n;
-//							while (n) {
-//								n->owner = operand2_node;
-//								n = n->next;
-//							}
 						} else {
 							internal_error("do without until");
 						}

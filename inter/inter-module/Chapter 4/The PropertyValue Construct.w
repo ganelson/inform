@@ -27,18 +27,18 @@ void Inter::PropertyValue::define(void) {
 @d EXTENT_PVAL_IFR 6
 
 =
-void Inter::PropertyValue::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, PROPERTYVALUE_IST, ilp->indent_level, eloc);
+void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, PROPERTYVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
-	if (Inter::PropertyValue::permitted(IRS->read_into, IRS->current_package, owner_name, prop_name) == FALSE) {
+	if (Inter::PropertyValue::permitted(IBM->read_into, Inter::Bookmarks::package(IBM), owner_name, prop_name) == FALSE) {
 		*E = Inter::Errors::quoted(I"no permission to have this property", ilp->mr.exp[1], eloc);
 		return;
 	}
@@ -46,7 +46,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_reading_state *IRS, i
 	inter_t plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
-	inter_frame_list *FL = Inter::find_frame_list(IRS->read_into, plist_ID);
+	inter_frame_list *FL = Inter::find_frame_list(IBM->read_into, plist_ID);
 	if (FL == NULL) internal_error("no properties list");
 
 	inter_frame X;
@@ -59,10 +59,10 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_reading_state *IRS, i
 	inter_symbol *val_kind = Inter::Property::kind_of(prop_name);
 	inter_t con_val1 = 0;
 	inter_t con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, val_kind, ilp->mr.exp[2], &con_val1, &con_val2, Inter::Bookmarks::scope(IRS));
+	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::PropertyValue::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, owner_name),
+	*E = Inter::PropertyValue::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),
 		con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
 }
 
@@ -95,27 +95,27 @@ int Inter::PropertyValue::permitted(inter_repository *I, inter_package *pack, in
 	return FALSE;
 }
 
-inter_error_message *Inter::PropertyValue::new(inter_reading_state *IRS, inter_t PID, inter_t OID,
+inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_t PID, inter_t OID,
 	inter_t con_val1, inter_t con_val2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, PROPERTYVALUE_IST,
+	inter_frame P = Inter::Frame::fill_4(IBM, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
 
 	if (P.extent != EXTENT_PVAL_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(P, P.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(P, P.data[OWNER_PVAL_IFLD]); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P.data[OWNER_PVAL_IFLD]); if (*E) return;
 
 	if (vcount == 0) {
-		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD);
-		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PVAL_IFLD);
+		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PVAL_IFLD]);;
+		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PVAL_IFLD]);;
 
-		if (Inter::PropertyValue::permitted(P.repo_segment->owning_repo, Inter::Packages::container(P), owner_name, prop_name) == FALSE) {
+		if (Inter::PropertyValue::permitted(P.repo_segment->owning_repo, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
 			WRITE_TO(err, "no permission for '%S' have this property", owner_name->symbol_name);
 			*E = Inter::Frame::error(&P, err, prop_name->symbol_name); return;

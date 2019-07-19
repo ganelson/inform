@@ -20,7 +20,7 @@ void CodeGen::IP::prepare(code_generation *gen) {
 	properties_found = FALSE;
 	attribute_slots_used = 0;
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
-	Inter::Packages::traverse(gen, CodeGen::IP::count, NULL);
+	Inter::traverse_tree(gen->from, CodeGen::IP::count, NULL, NULL, 0);
 	if (no_property_frames > 0)
 		property_frames = (inter_frame *)
 			(Memory::I7_calloc(no_property_frames, sizeof(inter_frame), CODE_GENERATION_MREASON));
@@ -31,16 +31,16 @@ void CodeGen::IP::prepare(code_generation *gen) {
 		kind_frames = (inter_frame *)
 			(Memory::I7_calloc(no_kind_frames, sizeof(inter_frame), CODE_GENERATION_MREASON));
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
-	Inter::Packages::traverse(gen, CodeGen::IP::store, NULL);
+	Inter::traverse_tree(gen->from, CodeGen::IP::store, NULL, NULL, 0);
 }
 
-void CodeGen::IP::count(code_generation *gen, inter_frame P, void *state) {
+void CodeGen::IP::count(inter_repository *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == PROPERTY_IST) no_property_frames++;
 	if (P.data[ID_IFLD] == INSTANCE_IST) no_instance_frames++;
 	if (P.data[ID_IFLD] == KIND_IST) no_kind_frames++;
 }
 
-void CodeGen::IP::store(code_generation *gen, inter_frame P, void *state) {
+void CodeGen::IP::store(inter_repository *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == PROPERTY_IST) property_frames[no_property_frames++] = P;
 	if (P.data[ID_IFLD] == INSTANCE_IST) instance_frames[no_instance_frames++] = P;
 	if (P.data[ID_IFLD] == KIND_IST) kind_frames[no_kind_frames++] = P;

@@ -32,8 +32,19 @@ code_generation_target *CodeGen::I6::target(void) {
 }
 
 @h Segmentation.
+The loss of |life| is so appalling that I6 will not even compile a story
+file which doesn't define the property number |life| (well, strictly
+speaking, it checks the presence of constants suggesting the I6 library
+first, but the template layer does define constants like that). We define
+it as a null constant to be sure of avoiding any valid property number; I6
+being typeless, that enables the veneer to compile again. (The relevant
+code is in |CA__Pr|, defined in the |veneer.c| section of I6.)
+
+|debug_flag| is traditionally called so, but is actually
+now a bitmap of flags for tracing actions, calls to object routines, and so on.
 
 @e pragmatic_matter_I7CGS from 0
+@e compiler_versioning_matter_I7CGS
 @e attributes_at_eof_I7CGS
 @e early_matter_I7CGS
 @e text_literals_code_I7CGS
@@ -46,18 +57,28 @@ code_generation_target *CodeGen::I6::target(void) {
 @e verbs_at_eof_I7CGS
 
 =
-int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *cg) {
-	cg->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
-	cg->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
-	cg->segments[early_matter_I7CGS] = CodeGen::new_segment();
-	cg->segments[text_literals_code_I7CGS] = CodeGen::new_segment();
-	cg->segments[summations_at_eof_I7CGS] = CodeGen::new_segment();
-	cg->segments[arrays_at_eof_I7CGS] = CodeGen::new_segment();
-	cg->segments[globals_array_I7CGS] = CodeGen::new_segment();
-	cg->segments[main_matter_I7CGS] = CodeGen::new_segment();
-	cg->segments[routines_at_eof_I7CGS] = CodeGen::new_segment();
-	cg->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
-	cg->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
+int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
+	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
+	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
+	gen->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[early_matter_I7CGS] = CodeGen::new_segment();
+	gen->segments[text_literals_code_I7CGS] = CodeGen::new_segment();
+	gen->segments[summations_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[arrays_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[globals_array_I7CGS] = CodeGen::new_segment();
+	gen->segments[main_matter_I7CGS] = CodeGen::new_segment();
+	gen->segments[routines_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
+
+	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Constant Grammar__Version 2;\n");
+	WRITE("Global debug_flag;\n");
+	WRITE("Global reason_code = NULL;\n");
+	WRITE("Constant life = NULL;\n");
+	CodeGen::deselect(gen, saved);
+
 	return FALSE;
 }
 

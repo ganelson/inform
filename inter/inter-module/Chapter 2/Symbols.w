@@ -27,7 +27,7 @@ typedef struct inter_symbol {
 	int definition_status;
 	struct inter_frame definition;
 	struct inter_frame importation_frame;
-	struct inter_reading_state following_symbol;
+	struct inter_bookmark following_symbol;
 	struct inter_symbol *equated_to;
 	struct text_stream *equated_name;
 	int transient_flags;
@@ -161,10 +161,7 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
 		inter_frame D = Inter::Symbols::defining_frame(S);
-		if (Inter::Frame::valid(&D)) {
-			inter_repository *I = D.repo_segment->owning_repo;
-			Inter::Nop::nop_out(I, D);
-		}
+		if (Inter::Frame::valid(&D)) Inter::Frame::remove_from_tree(D);
 		Inter::Symbols::undefine(S);
 	}
 }

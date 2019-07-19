@@ -285,11 +285,6 @@ Here |KEY| must be a (public) symbol whose name begins with a backtick, and
 
 	|metadata `name: "blue book"|
 
-@h Import and Export.
-These are experimental constructs used at one time for an earlier try at
-caching Standard Rules inter. They are not likely to survive into the final
-design, or not in this form.
-
 @h Append and Link.
 Two rather ugly constructs are currently needed in order to implement very
 low-level features of Inform 7, at points in I7's design where the normally
@@ -312,17 +307,12 @@ to make an alteration to the Inform 6 code inside the I6T template file
 
 	|link after "Output.i6t" "I6 Inclusions" "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n" ""|
 
-@h Marker and Nop.
-Two final inter statements do not affect the meaning of a program, but are
-simply conveniences for editing it (that is, for programs editing tree
-structures of inter in memory).
-
-|marker NAME| bookmarks a position in the code, giving it a name. |NAME|
-does not become a value, and can't be referred to by anything else in the
-program.
-
-The other, "nop", has no textual representation. It does nothing, and exists
-only as a convenience for code which has to edit inter in memory (because it's
-sometimes easier to "nop out" a statement, i.e., cnnvert it to a nop, than to
-delete it entirely). Nop cannot be parsed from text, and when memory inter is
-written out textually, any nop statements are simply ignored.
+@h Nop.
+The "nop" statement has no textual representation. It does nothing, and exists
+only as a convenience used by Inform when it needs to write simultaneously to
+multiple positions within the same node's child list -- the idea being that
+a nop statement acts as a divider. For example, by placing the A write
+position just before a nop N, and the B write position just after, Inform
+will generate A1, A2, A3, ..., N, B1, B2, ..., rather than (say) A1, B1, A2,
+A3, B2, ... The extra N is simply ignored in code generation, so it causes
+no problems to have it.

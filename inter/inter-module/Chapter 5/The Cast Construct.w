@@ -30,34 +30,34 @@ void Inter::Cast::define(void) {
 @d EXTENT_CAST_IFR 5
 
 =
-void Inter::Cast::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IRS, CAST_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, CAST_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
-	inter_symbol *from_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *from_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
-	inter_symbol *to_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *to_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
-	*E = Inter::Cast::new(IRS, routine, from_kind, to_kind, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Cast::new(IBM, routine, from_kind, to_kind, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Cast::new(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, from_kind), eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, from_kind), eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Cast::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Cast::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_CAST_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(P, P.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
-	*E = Inter::Verify::symbol(P, P.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
 }
 
 void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

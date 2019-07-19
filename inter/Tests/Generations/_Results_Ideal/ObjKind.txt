@@ -1,3 +1,7 @@
+Constant Grammar__Version 2;
+Global debug_flag;
+Global reason_code = NULL;
+Constant life = NULL;
 Array KindHierarchy --> K0_kind (0) K_fruit (0) K_citrus_fruit (1) K_stone (0) K_feldspar (3) K_mica (3);
 Class K_object
 ;

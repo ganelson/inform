@@ -17,7 +17,7 @@ typedef struct package_request {
 	struct inter_symbol *eventual_type;
 	struct inter_package *actual_package;
 	struct package_request *parent_request;
-	struct inter_reading_state write_position;
+	struct inter_bookmark write_position;
 	struct linked_list *iname_generators; /* of |inter_name_generator| */
 	MEMORY_MANAGEMENT
 } package_request;
@@ -29,7 +29,7 @@ package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
 	R->eventual_type = pt;
 	R->actual_package = NULL;
 	R->parent_request = InterNames::location(name);
-	R->write_position = Inter::Bookmarks::new_IRS(Emit::repository());
+	R->write_position = Inter::Bookmarks::at_start_of_this_repository(Emit::repository());
 	R->iname_generators = NULL;
 	return R;
 }
@@ -81,7 +81,7 @@ is summarised by the following state:
 
 =
 typedef struct packaging_state {
-	inter_reading_state *saved_IRS;
+	inter_bookmark *saved_IRS;
 	package_request *saved_enclosure;
 } packaging_state;
 
@@ -103,7 +103,7 @@ packaging_state Packaging::stateless(void) {
 =
 packaging_state current_state;
 
-inter_reading_state *Packaging::at(void) {
+inter_bookmark *Packaging::at(void) {
 	return current_state.saved_IRS;
 }
 
@@ -112,9 +112,9 @@ package_request *Packaging::enclosure(void) {
 }
 
 @ States are intentionally very lightweight, and in particular they contain
-pointers to the IRS structures rather than containing a copy thereof. But
+pointers to the IBM structures rather than containing a copy thereof. But
 those pointers have to point somewhere, and this is where: to a stack of
-IRS structures.
+IBM structures.
 
 The maximum here is beyond plenty: it's not the maximum hierarchical depth
 of the Inter output, it's the maximum number of times that Inform interrupts
@@ -124,12 +124,12 @@ itself during compilation.
 
 =
 int packaging_entry_sp = 0;
-inter_reading_state packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
+inter_bookmark packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
 
-inter_reading_state *Packaging::push_IRS(inter_reading_state IRS) {
+inter_bookmark *Packaging::push_IRS(inter_bookmark IBM) {
 	if (packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH)
 		internal_error("packaging entry too deep");
-	packaging_entry_stack[packaging_entry_sp] = IRS;
+	packaging_entry_stack[packaging_entry_sp] = IBM;
 	return &(packaging_entry_stack[packaging_entry_sp++]);
 }
 
@@ -138,19 +138,19 @@ void Packaging::pop_IRS(void) {
 	packaging_entry_sp--;
 }
 
-@ The current state has the following invariant: the IRS part always points to
-a validly initialised |inter_reading_state|, and the enclosure part is always
+@ The current state has the following invariant: the IBM part always points to
+a validly initialised |inter_bookmark|, and the enclosure part is always
 either |NULL| or a package request which has an enclosing package type. (In
 fact, it is null only fleetingly: as soon as the |main| package is created,
 very early on, the enclosure is always an enclosing package.)
 
 =
 void Packaging::initialise_state(inter_repository *I) {
-	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::new_IRS(I));
+	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::at_start_of_this_repository(I));
 	current_state.saved_enclosure = NULL;
 }
 
-void Packaging::set_state(inter_reading_state *to, package_request *PR) {
+void Packaging::set_state(inter_bookmark *to, package_request *PR) {
 	current_state.saved_IRS = to;
 	while ((PR) && (PR->parent_request) &&
 		(Inter::Symbols::read_annotation(PR->eventual_type, ENCLOSING_IANN) != 1))
@@ -171,17 +171,17 @@ A bubble is simply a pair of nops (no operations); any later inserted
 material will be placed between them.
 
 =
-inter_reading_state Packaging::bubble(void) {
+inter_bookmark Packaging::bubble(void) {
 	Emit::nop();
-	inter_reading_state b = Emit::bookmark();
+	inter_bookmark b = Emit::bookmark();
 	Emit::nop();
 	return b;
 }
 
-inter_reading_state Packaging::bubble_at(inter_reading_state *IRS) {
-	Emit::nop_at(IRS);
-	inter_reading_state b = Emit::bookmark_at(IRS);
-	Emit::nop_at(IRS);
+inter_bookmark Packaging::bubble_at(inter_bookmark *IBM) {
+	Emit::nop_at(IBM);
+	inter_bookmark b = Emit::bookmark_at(IBM);
+	Emit::nop_at(IBM);
 	return b;
 }
 
@@ -191,9 +191,9 @@ at the top level, outside even the |main| package. Using bubbles, we leave
 room to insert those resources, then incarnate |main| and enter it.
 
 =
-inter_reading_state pragmas_bookmark;
-inter_reading_state package_types_bookmark;
-inter_reading_state holdings_bookmark;
+inter_bookmark pragmas_bookmark;
+inter_bookmark package_types_bookmark;
+inter_bookmark holdings_bookmark;
 
 void Packaging::outside_all_packages(void) {
 	Emit::version(1);
@@ -235,7 +235,7 @@ packaging_state Packaging::enter(package_request *R) {
 	packaging_state save = current_state;
 	Packaging::incarnate(R);
 	Packaging::set_state(&(R->write_position), Packaging::enclosure());
-	inter_reading_state *bubble = Packaging::push_IRS(Packaging::bubble());
+	inter_bookmark *bubble = Packaging::push_IRS(Packaging::bubble());
 	Packaging::set_state(bubble, R);
 	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", packaging_entry_sp, Packaging::enclosure());
 	return save;
@@ -262,17 +262,17 @@ inter_package *Packaging::incarnate(package_request *R) {
 		package_request *E = Packaging::enclosure(); // This will not change
 		if (R->parent_request) {
 			Packaging::incarnate(R->parent_request);
-			inter_reading_state *save_IRS = Packaging::at();
+			inter_bookmark *save_IRS = Packaging::at();
 			Packaging::set_state(&(R->parent_request->write_position), E);
-			inter_reading_state package_bubble = Packaging::bubble();
+			inter_bookmark package_bubble = Packaging::bubble();
 			Packaging::set_state(&package_bubble, E);
 			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
 			R->write_position = Packaging::bubble();
 			Packaging::set_state(save_IRS, E);
 		} else {
-			inter_reading_state package_bubble = Packaging::bubble();
+			inter_bookmark package_bubble = Packaging::bubble();
 			package_bubble = Packaging::bubble();
-			inter_reading_state *save_IRS = Packaging::at();
+			inter_bookmark *save_IRS = Packaging::at();
 			Packaging::set_state(&package_bubble, E);
 			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
 			R->write_position = Packaging::bubble();

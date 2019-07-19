@@ -16,5 +16,5 @@ Problem__ PM_MasksRelation
     means for something to be 'less than' something else, so this phrase
     definition would look too much like testing whether 'X is less than Y'.
     ('The verb to be less than means the numerically-less-than relation' (the
-    Standard Rules, line 460).)
-Inform 7 has finished: 54 centiseconds used.
+    Standard Rules, line 461).)
+Inform 7 has finished: 55 centiseconds used.

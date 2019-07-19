@@ -1,2 +1,6 @@
+Constant Grammar__Version 2;
+Global debug_flag;
+Global reason_code = NULL;
+Constant life = NULL;
 Constant I_green = 1;
 Constant I_red = 17;

@@ -215,10 +215,10 @@ inter_symbols_table *Inter::get_symbols_table(inter_repository *I, inter_t n) {
 	return I->stored_resources[n].stored_symbols_table;
 }
 
-inter_t Inter::create_package(inter_repository *I, inter_package *par) {
+inter_t Inter::create_package(inter_repository *I) {
 	inter_t n = Inter::create_resource(I);
 	if (I->stored_resources[n].stored_package == NULL) {
-		I->stored_resources[n].stored_package = Inter::Packages::new(par, I, n);
+		I->stored_resources[n].stored_package = Inter::Packages::new(I, n);
 	}
 	return n;
 }
@@ -379,4 +379,35 @@ inter_error_location *Inter::retrieve_origin(inter_repository *I, inter_t C) {
 		return &(stash->stashed_eloc);
 	}
 	return NULL;
+}
+
+void Inter::traverse_global_list(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state, int filter) {
+	inter_frame P;
+	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(from->global_material))) {
+		if ((filter == 0) ||
+			((filter > 0) && (P.data[ID_IFLD] == (inter_t) filter)) ||
+			((filter < 0) && (P.data[ID_IFLD] != (inter_t) -filter)))
+			(*visitor)(from, P, state);
+	}
+}
+
+void Inter::traverse_tree(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state, inter_package *mp, int filter) {
+	if (mp == NULL) mp = Inter::Packages::main(from);
+	if (mp) {
+		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
+		if ((filter == 0) ||
+			((filter > 0) && (D.data[ID_IFLD] == (inter_t) filter)) ||
+			((filter < 0) && (D.data[ID_IFLD] != (inter_t) -filter)))
+			(*visitor)(from, D, state);
+		Inter::traverse_tree_r(from, D, visitor, state, filter);
+	}
+}
+void Inter::traverse_tree_r(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state, int filter) {
+	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(C, P) {
+		if ((filter == 0) ||
+			((filter > 0) && (C.data[ID_IFLD] == (inter_t) filter)) ||
+			((filter < 0) && (C.data[ID_IFLD] != (inter_t) -filter)))
+			(*visitor)(from, C, state);
+		Inter::traverse_tree_r(from, C, visitor, state, filter);
+	}
 }

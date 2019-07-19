@@ -367,7 +367,7 @@ compiling it.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">makes_local_references</span><span class="plain"> =</span>
             <span class="functiontext">LocalVariables::local_parsed_recently</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">());</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">makes_local_references</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::push_code_position</span><span class="plain">(</span><span class="functiontext">Emit::begin_position</span><span class="plain">());</span>
+            <span class="functiontext">Emit::push_code_position</span><span class="plain">(</span><span class="functiontext">Emit::begin_position</span><span class="plain">(), </span><span class="identifier">Inter::Bookmarks::snapshot</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">()));</span>
             <span class="functiontext">LocalVariables::compile_retrieval</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
             <span class="functiontext">Emit::pop_code_position</span><span class="plain">();</span>
         <span class="plain">}</span>

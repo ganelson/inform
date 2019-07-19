@@ -146,26 +146,17 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template(inter_repositor
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template_creating(inter_repository *I, text_stream *S) {
+	inter_package *P = Inter::Packages::template(I);
+	if (P == NULL) return NULL;
+	return Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(P), S);
+}
+
 inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_repository *I, text_stream *S) {
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_basics(I, S);
 	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_veneer(I, S);
 	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_main(I, S);
 	return symbol;
-}
-
-@ This is intentionally used very little. We don't want the inter specification
-to include implied identities through package-hierarchy context, because that
-makes it harder to link packages together. If you can avoid calling this, do.
-
-=
-inter_symbol *Inter::SymbolsTables::search_for_named_symbol_recursively(inter_repository *I, inter_package *P, text_stream *S) {
-	while (P) {
-		inter_symbol *ST = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
-		if (ST) return ST;
-		P = P->parent_package;
-	}
-	if (I) return Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(I), S);
-	return NULL;
 }
 
 @h Creation by unique name.
@@ -255,8 +246,8 @@ inter_t Inter::SymbolsTables::id_from_symbol_not_creating(inter_repository *I, i
 	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(I, P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_reading_state *IRS, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(IRS->read_into, IRS->current_package, S);
+inter_t Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
+	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(IBM->read_into, Inter::Bookmarks::package(IBM), S);
 }
 
 @ However, things become more interesting if we want an ID for a symbol in
@@ -305,8 +296,8 @@ inter_t Inter::SymbolsTables::id_from_symbol(inter_repository *I, inter_package 
 	return Inter::SymbolsTables::id_from_symbol_inner(I, P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_reading_state *IRS, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(IRS->read_into, IRS->current_package, S);
+inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
+	return Inter::SymbolsTables::id_from_symbol_inner(IBM->read_into, Inter::Bookmarks::package(IBM), S);
 }
 
 @h Equations.
@@ -335,22 +326,21 @@ void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *nam
 }
 
 void Inter::SymbolsTables::resolve_forward_references(inter_repository *I, inter_error_location *eloc) {
-	Inter::SymbolsTables::resolve_forward_references_r(I->main_package, eloc);
+	Inter::traverse_tree(I, Inter::SymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
 
-void Inter::SymbolsTables::resolve_forward_references_r(inter_package *pack, inter_error_location *eloc) {
-	for (; pack; pack = pack->next_package) {
-		inter_symbols_table *T = Inter::Packages::scope(pack);
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
-			if ((symb) && (symb->equated_name)) {
-				inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(pack->stored_in, T, symb->equated_name);
-				if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
-				else Inter::SymbolsTables::equate(symb, S_to);
-				symb->equated_name = NULL;
-			}
+void Inter::SymbolsTables::rfr_visitor(inter_repository *I, inter_frame P, void *state) {
+	inter_error_location *eloc = (inter_error_location *) state;
+	inter_package *pack = Inter::Package::defined_by_frame(P);
+	inter_symbols_table *T = Inter::Packages::scope(pack);
+	for (int i=0; i<T->size; i++) {
+		inter_symbol *symb = T->symbol_array[i];
+		if ((symb) && (symb->equated_name)) {
+			inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(pack->stored_in, T, symb->equated_name);
+			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
+			else Inter::SymbolsTables::equate(symb, S_to);
+			symb->equated_name = NULL;
 		}
-		Inter::SymbolsTables::resolve_forward_references_r(pack->child_package, eloc);
 	}
 }
 
@@ -393,7 +383,7 @@ void Inter::SymbolsTables::symbol_to_url_name(OUTPUT_STREAM, inter_symbol *S) {
 	while (P) {
 		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH) internal_error("package nesting too deep");
 		chain[chain_length++] = P;
-		P = P->parent_package;
+		P = Inter::Packages::parent(P);
 	}
 	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", chain[i]->package_name->symbol_name);
 	WRITE("/%S", S->symbol_name);

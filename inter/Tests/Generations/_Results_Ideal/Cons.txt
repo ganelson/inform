@@ -1,3 +1,7 @@
+Constant Grammar__Version 2;
+Global debug_flag;
+Global reason_code = NULL;
+Constant life = NULL;
 Constant Bidger = 20;
 Constant Badger = 12;
 Constant Bodger = 157;

@@ -28,15 +28,15 @@ void Inter::Permission::define(void) {
 
 =
 int pp_counter = 1;
-void Inter::Permission::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, PERMISSION_IST, ilp->indent_level, eloc);
+void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, PERMISSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
 	if (Inter::Kind::is(owner_name)) {
@@ -45,7 +45,7 @@ void Inter::Permission::read(inter_construct *IC, inter_reading_state *IRS, inte
 
 		inter_frame_list *FL =
 			Inter::find_frame_list(
-				IRS->read_into,
+				IBM->read_into,
 				Inter::Kind::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
@@ -58,7 +58,7 @@ void Inter::Permission::read(inter_construct *IC, inter_reading_state *IRS, inte
 	} else {
 		inter_frame_list *FL =
 			Inter::find_frame_list(
-				IRS->read_into,
+				IBM->read_into,
 				Inter::Instance::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
@@ -72,41 +72,41 @@ void Inter::Permission::read(inter_construct *IC, inter_reading_state *IRS, inte
 
 	TEMPORARY_TEXT(ident);
 	WRITE_TO(ident, "pp_auto_%d", pp_counter++);
-	inter_symbol *pp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ident, E);
+	inter_symbol *pp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ident, E);
 	DISCARD_TEXT(ident);
 	if (*E) return;
 
 	inter_symbol *store = NULL;
 	if (Str::len(ilp->mr.exp[2]) > 0) {
-		store = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[2], CONSTANT_IST, E);
+		store = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[2], CONSTANT_IST, E);
 		if (*E) return;
 	}
 
-	*E = Inter::Permission::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, owner_name),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, pp_name), (store)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, store)):0, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Permission::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),
+		Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, pp_name), (store)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, store)):0, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Permission::new(inter_reading_state *IRS, inter_t PID, inter_t KID,
+inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_t PID, inter_t KID,
 	inter_t PPID, inter_t SID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IRS, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	inter_frame P = Inter::Frame::fill_4(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
 
 	if (P.extent != EXTENT_PERM_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 
-	*E = Inter::Verify::defn(P, DEFN_PERM_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(P, P.data[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(P, P.data[OWNER_PERM_IFLD]); if (*E) return;
+	*E = Inter__Verify__defn(owner, P, DEFN_PERM_IFLD); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P.data[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P.data[OWNER_PERM_IFLD]); if (*E) return;
 	if (P.data[STORAGE_PERM_IFLD]) {
-		*E = Inter::Verify::symbol(P, P.data[STORAGE_PERM_IFLD], CONSTANT_IST); if (*E) return;
+		*E = Inter::Verify::symbol(owner, P, P.data[STORAGE_PERM_IFLD], CONSTANT_IST); if (*E) return;
 	}
-	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PERM_IFLD);
-	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PERM_IFLD);
+	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PERM_IFLD]);;
+	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
 
 	if (vcount == 0) {
 		inter_frame_list *FL = NULL;
@@ -121,10 +121,10 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_error_m
 			inter_frame X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 				inter_symbol *prop_X = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
-				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PERM_IFLD);
+				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PERM_IFLD]);;
 				if (prop_X == prop_P) { *E = Inter::Frame::error(&P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PERM_IFLD);
+				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
 				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed A", owner_name->symbol_name); return; }
 			}
 		} else {
@@ -135,10 +135,10 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_error_m
 			inter_frame X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 				inter_symbol *prop_X = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
-				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PERM_IFLD);
+				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PERM_IFLD]);;
 				if (prop_X == prop_P) { *E = Inter::Frame::error(&P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PERM_IFLD);
+				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
 				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed A", owner_name->symbol_name); return; }
 			}
 		}

@@ -1594,18 +1594,12 @@ package_request *Hierarchy::template(void) {
 	if (template_pr == NULL) {
 		module_package *T = Packaging::get_module(I"template");
 		template_pr = T->the_package;
-		submodule_identity *actions = Packaging::register_submodule(I"actions");
-		package_request *template_actions = Packaging::template_submodule(actions);
-		packaging_state save = Packaging::enter(template_actions);
-		inter_reading_state bubble = Packaging::bubble();
-		CodeGen::Assimilate::divert(ACTION_ASSIM_BM, bubble);
-		Packaging::exit(save);
 	}
 	return template_pr;
 }
 
 package_request *veneer_pr = NULL;
-inter_reading_state veneer_bm;
+inter_bookmark veneer_bm;
 package_request *Hierarchy::veneer(void) {
 	if (veneer_pr == NULL) {
 		module_package *T = Packaging::get_module(I"veneer");
@@ -1616,7 +1610,7 @@ package_request *Hierarchy::veneer(void) {
 	}
 	return veneer_pr;
 }
-inter_reading_state *Hierarchy::veneer_booknark(void) {
+inter_bookmark *Hierarchy::veneer_booknark(void) {
 	Hierarchy::veneer();
 	return &veneer_bm;
 }

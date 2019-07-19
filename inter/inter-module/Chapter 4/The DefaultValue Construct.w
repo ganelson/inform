@@ -26,31 +26,31 @@ void Inter::DefaultValue::define(void) {
 @d EXTENT_DEF_IFR 5
 
 =
-void Inter::DefaultValue::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, DEFAULTVALUE_IST, ilp->indent_level, eloc);
+void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(IRS->read_into, eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *con_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_t con_val1 = 0;
 	inter_t con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IRS->read_into, IRS->current_package, con_kind, ilp->mr.exp[1], &con_val1, &con_val2, Inter::Bookmarks::scope(IRS));
+	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::DefaultValue::new(IRS, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, con_kind), con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::DefaultValue::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::DefaultValue::new(inter_reading_state *IRS, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(P); if (E) return E;
-	Inter::Frame::insert(P, IRS);
+inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::DefaultValue::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::DefaultValue::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_DEF_IFR) *E = Inter::Frame::error(&P, I"extent wrong", NULL);
-	else *E = Inter::Verify::symbol(P, P.data[KIND_DEF_IFLD], KIND_IST);
+	else *E = Inter::Verify::symbol(owner, P, P.data[KIND_DEF_IFLD], KIND_IST);
 }
 
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {

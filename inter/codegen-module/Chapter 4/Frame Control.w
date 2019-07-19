@@ -16,9 +16,10 @@ void CodeGen::FC::prepare(code_generation *gen) {
 	temporary_generation = NULL;
 }
 
-void CodeGen::FC::iterate(code_generation *gen, inter_frame P, void *state) {
+void CodeGen::FC::iterate(inter_repository *I, inter_frame P, void *state) {
+	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
-	if ((outer == NULL) || (outer->codelike_package == FALSE)) {
+	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		generated_segment *saved =
 			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
 		switch (P.data[ID_IFLD]) {
@@ -38,13 +39,8 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 	switch (P.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
 		case CONSTANT_IST: {
-			inter_package *outer = Inter::Packages::container(P);
 			inter_symbol *con_name =
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-			if ((outer) && (CodeGen::Eliminate::gone(outer->package_name)) && (Inter::Constant::code_block(con_name) == NULL)) {
-				LOG("Yeah, so reject $3\n", outer->package_name);
-				return;
-			}
 			if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 			inter_repository *I = gen->from;
 			if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
@@ -123,11 +119,7 @@ void CodeGen::FC::label(code_generation *gen, inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
-	if (Str::eq(lab_name->symbol_name, I".begin")) { WRITE(";\n"); INDENT; }
-	else if (Str::eq(lab_name->symbol_name, I".end")) { OUTDENT; WRITE("];\n"); }
-	else WRITE("%S;\n", lab_name->symbol_name);
-	LOOP_THROUGH_INTER_CHILDREN(F, P)
-		CodeGen::FC::frame(gen, F);
+	WRITE("%S;\n", lab_name->symbol_name);
 }
 
 void CodeGen::FC::block(code_generation *gen, inter_frame P) {
@@ -138,9 +130,17 @@ void CodeGen::FC::block(code_generation *gen, inter_frame P) {
 void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
+	int function_code_block = FALSE;
+	inter_t PAR_index = Inter::Frame::get_parent_index(P);
+	if (PAR_index == 0) internal_error("misplaced code node");
+	inter_frame PAR = Inter::Frame::from_index(P.repo_segment->owning_repo, PAR_index);
+	if (PAR.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
+	text_stream *OUT = CodeGen::current(gen);
+	if (function_code_block) { WRITE(";\n"); INDENT; }
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
+	if (function_code_block) { OUTDENT; WRITE("];\n"); }
 }
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
@@ -178,10 +178,10 @@ void CodeGen::FC::lab(code_generation *gen, inter_frame P) {
 			PUT(Str::get(pos));
 }
 
-void CodeGen::FC::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1, inter_t val2) {
+void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_t val1, inter_t val2) {
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(
-			val1, val2, Inter::Bookmarks::scope(IRS));
+			val1, val2, Inter::Bookmarks::scope(IBM));
 		if (symb == NULL) internal_error("bad symbol");
 		WRITE("%S", CodeGen::CL::name(symb));
 		return;
@@ -198,7 +198,7 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_reading_state *IRS, inter_t val1
 			if (temporary_generation == NULL) {
 				CodeGen::Targets::make_targets();
 				temporary_generation =
-					CodeGen::new_generation(NULL, IRS->read_into, NULL, CodeGen::I6::target());
+					CodeGen::new_generation(NULL, IBM->read_into, NULL, CodeGen::I6::target());
 			}
 			CodeGen::select_temporary(temporary_generation, OUT);
 			CodeGen::CL::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);

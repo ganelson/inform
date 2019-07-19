@@ -31,16 +31,16 @@ void Inter::Primitive::define(void) {
 @d CODE_PRIM_CAT 4
 
 =
-void Inter::Primitive::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IRS, PRIMITIVE_IST, ilp->indent_level, eloc);
+void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	*E = Inter::Defn::vet_level(IBM, PRIMITIVE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IRS), ilp->mr.exp[0], E);
+	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_frame F = Inter::Frame::fill_1(IRS, PRIMITIVE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, prim_name), eloc, (inter_t) ilp->indent_level);
+	inter_frame F = Inter::Frame::fill_1(IBM, PRIMITIVE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_t) ilp->indent_level);
 
 	text_stream *in = ilp->mr.exp[1];
 	match_results mr2 = Regexp::create_mr();
@@ -58,8 +58,8 @@ void Inter::Primitive::read(inter_construct *IC, inter_reading_state *IRS, inter
 	if (Inter::Frame::extend(&F, (inter_t) 1) == FALSE) internal_error("can't extend");
 	F.data[F.extent - 1] = rcat;
 
-	*E = Inter::Defn::verify_construct(F); if (*E) return;
-	Inter::Frame::insert(F, IRS);
+	*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), F); if (*E) return;
+	Inter::Frame::insert(F, IBM);
 }
 
 inter_t Inter::Primitive::category(inter_error_location *eloc, text_stream *T, inter_error_message **E) {
@@ -84,10 +84,10 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_t cat) {
 	}
 }
 
-void Inter::Primitive::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Primitive::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent < MIN_EXTENT_PRIM_IFR) { *E = Inter::Frame::error(&P, I"p extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(P, DEFN_PRIM_IFLD); if (*E) return;
-	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
+	*E = Inter__Verify__defn(owner, P, DEFN_PRIM_IFLD); if (*E) return;
+	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_id(Inter::get_global_symbols(P.repo_segment->owning_repo), P.data[DEFN_PRIM_IFLD]);
 	if ((prim_name == NULL) || (Str::get_first_char(prim_name->symbol_name) != '!'))
 		{ *E = Inter::Frame::error(&P, I"primitive not beginning with '!'", NULL); return; }
 	int voids = 0, args = 0;

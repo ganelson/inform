@@ -17,14 +17,14 @@ void CodeGen::Labels::create_pipeline_stage(void) {
 }
 
 int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
-	CodeGen::Labels::traverse_package_tree(Inter::Packages::main(step->repository));
+	Inter::traverse_tree(step->repository, CodeGen::Labels::visitor, NULL, NULL, 0);
 	return TRUE;
 }
 
-void CodeGen::Labels::traverse_package_tree(inter_package *in) {
-	for (inter_package *pack = in; pack; pack = pack->next_package) {
-		if (pack->child_package) CodeGen::Labels::traverse_package_tree(pack->child_package);
-		if (pack->codelike_package) @<Perform peephole optimisation on this block@>;
+void CodeGen::Labels::visitor(inter_repository *I, inter_frame P, void *state) {
+	if (P.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
+		if (Inter::Packages::is_codelike(pack)) @<Perform peephole optimisation on this block@>;
 	}
 }
 
@@ -41,18 +41,12 @@ it does.
 	@<Remove the label declarations for any that are still marked unused@>;
 
 @ The symbol flag |USED_MARK_BIT| is free for us to use, but its value for
-any given symbol is undefined when we begin. We'll clear it for all labels
-except the special begin/end ones.
+any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @<Mark all the labels for this function as being unused@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, local_symbols)
-		if (Inter::Symbols::is_label(S)) {
-			if ((Str::eq(S->symbol_name, I".begin")) ||
-				(Str::eq(S->symbol_name, I".end")))
-				Inter::Symbols::set_flag(S, USED_MARK_BIT);
-			else
-				Inter::Symbols::clear_flag(S, USED_MARK_BIT);
-		}
+		if (Inter::Symbols::is_label(S))
+			Inter::Symbols::clear_flag(S, USED_MARK_BIT);
 
 @<Look through the function for mentions of labels, marking those as used@> =
 	inter_frame D = Inter::Symbols::defining_frame(pack->package_name);

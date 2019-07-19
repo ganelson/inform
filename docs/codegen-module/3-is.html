@@ -690,7 +690,7 @@ we go to some trouble here.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterSchemas::log is used in 1/cm (<a href="1-cm.html#SP4_6">&#167;4.6</a>), 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function InterSchemas::log is used in 1/cm (<a href="1-cm.html#SP4_6">&#167;4.6</a>), 2/alm (<a href="2-alm.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The function InterSchemas::log_depth appears nowhere else.</p>
 
@@ -943,7 +943,7 @@ for instance, we could simply have defined:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterSchemas::from_text is used in <a href="#SP18">&#167;18</a>, <a href="#SP19">&#167;19</a>, 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function InterSchemas::from_text is used in <a href="#SP18">&#167;18</a>, <a href="#SP19">&#167;19</a>, 2/alm (<a href="2-alm.html#SP6">&#167;6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP20_1"></a><b>&#167;20.1. Stage 1. </b>Our method is to tokenise the source code as if it were Inform 6, but to look
 out for the two extra syntaxes allowed, <code class="display"><span class="extract">{-bracing}</span></code> and <code class="display"><span class="extract">(+ Inform 7 interpolation +)</span></code>.
@@ -2626,15 +2626,10 @@ these out at the start of each iteration.
                             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">next_isn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">) &amp;&amp;</span>
                                 <span class="plain">(</span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">RESERVED_ISTT</span><span class="plain">) &amp;&amp;</span>
                                 <span class="plain">(</span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;reserved_word</span><span class="plain"> == </span><span class="constant">UNTIL_I6RW</span><span class="plain">)) {</span>
-        <span class="comment">operand2_node = next_isn-&gt;child_node;</span>
                                 <span class="identifier">isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain"> = </span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;next_node</span><span class="plain">;</span>
                                 <span class="reserved">inter_schema_token</span><span class="plain"> *</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">next_isn</span><span class="plain">-</span><span class="element">&gt;expression_tokens</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
                                 <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;ist_type</span><span class="plain"> == </span><span class="constant">WHITE_SPACE_ISTT</span><span class="plain">)) </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
                                 <span class="identifier">operand1</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
-    <span class="comment">while (n) {</span>
-    <span class="comment">n-&gt;owner = operand2_node;</span>
-    <span class="comment">n = n-&gt;next;</span>
-    <span class="comment">}</span>
                             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"do without until"</span><span class="plain">);</span>
                             <span class="plain">}</span>

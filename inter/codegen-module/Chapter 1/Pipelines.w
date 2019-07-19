@@ -243,7 +243,28 @@ inter_symbol *verb_directive_creature_symbol = NULL;
 inter_symbol *verb_directive_topic_symbol = NULL;
 inter_symbol *verb_directive_multiexcept_symbol = NULL;
 
+inter_symbol *submodule_ptype_symbol = NULL;
+inter_symbol *function_ptype_symbol = NULL;
+inter_symbol *action_ptype_symbol = NULL;
+inter_symbol *command_ptype_symbol = NULL;
+inter_symbol *property_ptype_symbol = NULL;
+inter_symbol *to_phrase_ptype_symbol = NULL;
+
+inter_symbol *template_symbol = NULL;
+inter_package *template_package = NULL;
+
 void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
+
+	submodule_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule");
+	function_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
+	action_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_action");
+	command_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_command");
+	property_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_property");
+	to_phrase_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
+
+	template_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
+	if (template_symbol) template_package = Inter::Package::which(template_symbol);
+
 	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");
 	typeless_int_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_typeless_int");
@@ -270,9 +291,18 @@ void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
 }
 
 void CodeGen::Pipeline::lint(inter_repository *I) {
-	Inter::Packages::traverse_repository(I, CodeGen::Pipeline::visitor, NULL);
+	Inter::traverse_tree(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
 void CodeGen::Pipeline::visitor(inter_repository *I, inter_frame P, void *state) {
+	inter_t c = Inter::Frame::get_package(P);
+	inter_t a = Inter::Frame::get_package_alt(P);
+	if (c != a) {
+		LOG("Frame gives package as $3, but its location is in package $3\n",
+			Inter::Packages::from_PID(I, c)->package_name,
+			Inter::Packages::from_PID(I, a)->package_name);
+		internal_error("zap");
+	}
+
 	CodeGen::Link::guard(Inter::Defn::verify_children_inner(P));
 }

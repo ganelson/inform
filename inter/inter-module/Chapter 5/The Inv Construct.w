@@ -34,30 +34,30 @@ void Inter::Inv::define(void) {
 @d INVOKED_OPCODE 3
 
 =
-void Inter::Inv::read(inter_construct *IC, inter_reading_state *IRS, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
-	*E = Inter::Defn::vet_level(IRS, INV_IST, ilp->indent_level, eloc);
+	*E = Inter::Defn::vet_level(IBM, INV_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
-	inter_symbol *invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(IRS->read_into), ilp->mr.exp[0]);
-	if (invoked_name == NULL) invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IRS), ilp->mr.exp[0]);
+	inter_symbol *invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(IBM->read_into), ilp->mr.exp[0]);
+	if (invoked_name == NULL) invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
 	if ((Inter::Symbols::is_extern(invoked_name)) ||
 		(Inter::Symbols::is_predeclared(invoked_name))) {
-		*E = Inter::Inv::new_call(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+		*E = Inter::Inv::new_call(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 	switch (Inter::Symbols::defining_frame(invoked_name).data[ID_IFLD]) {
 		case PRIMITIVE_IST:
-			*E = Inter::Inv::new_primitive(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+			*E = Inter::Inv::new_primitive(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
 			return;
 		case CONSTANT_IST:
 			if (Inter::Constant::is_routine(invoked_name)) {
-				*E = Inter::Inv::new_call(IRS, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+				*E = Inter::Inv::new_call(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
 				return;
 			}
 			break;
@@ -65,35 +65,33 @@ void Inter::Inv::read(inter_construct *IC, inter_reading_state *IRS, inter_line_
 	*E = Inter::Errors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
 }
 
-inter_error_message *Inter::Inv::new_primitive(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(IRS->read_into, NULL, invoked_name),
+inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(IBM->read_into, NULL, invoked_name),
 		eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::new_call(inter_reading_state *IRS, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IRS, invoked_name), eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::new_assembly(inter_reading_state *IRS, inter_symbol *routine, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IRS, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
-	inter_error_message *E = Inter::Defn::verify_construct(P);
+inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_symbol *routine, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
+	inter_frame P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IRS);
+	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Inv::verify(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Inv::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent != EXTENT_INV_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = Inter::Packages::scope_of(P);
-	if (locals == NULL) { *E = Inter::Frame::error(&P, I"function has no symbols table", NULL); return; }
 
 	switch (P.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE:
@@ -126,10 +124,6 @@ inter_symbol *Inter::Inv::invokee(inter_frame P) {
 }
 
 void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
-//	if (P.data[METHOD_INV_IFLD] == INVOKED_ROUTINE) {
-//		*E = Inter::Verify::symbol(P, P.data[INVOKEE_INV_IFLD], CONSTANT_IST);
-//		if (*E) return;
-//	}
 	int arity_as_invoked=0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
 	#ifdef CORE_MODULE
