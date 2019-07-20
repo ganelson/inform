@@ -13,7 +13,7 @@ on the Inter functions in a repository.
 
 =
 void CodeGen::Labels::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"eliminate-redundant-labels", CodeGen::Labels::run_pipeline_stage, NO_STAGE_ARG);
+	CodeGen::Stage::new(I"eliminate-redundant-labels", CodeGen::Labels::run_pipeline_stage, NO_STAGE_ARG, FALSE);
 }
 
 int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {

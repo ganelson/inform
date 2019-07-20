@@ -11,7 +11,7 @@ Chapter 1: Setting Up
 	Pipelines
 
 Chapter 2: Miscellaneous Pipeline Stages
-	Linker
+	Merge Template
 	Template Reader
 	Parse Linked Matter
 	Resolving Conditional Compilation

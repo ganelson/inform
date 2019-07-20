@@ -21,6 +21,7 @@ write output to; others are not.
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">NO_STAGE_ARG</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">GENERAL_STAGE_ARG</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FILE_STAGE_ARG</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEXT_OUT_STAGE_ARG</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXT_FILE_STAGE_ARG</span>
@@ -33,14 +34,16 @@ write output to; others are not.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">stage_name</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> (*</span><span class="identifier">execute</span><span class="plain">)(</span><span class="reserved">void</span><span class="plain"> *);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage_arg</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_ARG</span></code> values above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">takes_repository</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">pipeline_stage</span><span class="plain">;</span>
 
-    <span class="reserved">pipeline_stage</span><span class="plain"> *</span><span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> (*</span><span class="identifier">X</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pipeline_step</span><span class="plain"> *), </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">arg</span><span class="plain">) {</span>
+    <span class="reserved">pipeline_stage</span><span class="plain"> *</span><span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> (*</span><span class="identifier">X</span><span class="plain">)(</span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pipeline_step</span><span class="plain"> *), </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tr</span><span class="plain">) {</span>
         <span class="reserved">pipeline_stage</span><span class="plain"> *</span><span class="identifier">stage</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">pipeline_stage</span><span class="plain">);</span>
         <span class="identifier">stage</span><span class="plain">-</span><span class="element">&gt;stage_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">stage</span><span class="plain">-</span><span class="element">&gt;execute</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain"> (*)(</span><span class="reserved">void</span><span class="plain"> *)) </span><span class="identifier">X</span><span class="plain">;</span>
         <span class="identifier">stage</span><span class="plain">-</span><span class="element">&gt;stage_arg</span><span class="plain"> = </span><span class="identifier">arg</span><span class="plain">;</span>
+        <span class="identifier">stage</span><span class="plain">-</span><span class="element">&gt;takes_repository</span><span class="plain"> = </span><span class="identifier">tr</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -62,15 +65,17 @@ to the routine below.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::make_stages</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stages_made</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">stages_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"stop"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_stop_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">);</span>
-            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"read"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_read_stage</span><span class="plain">, </span><span class="constant">FILE_STAGE_ARG</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"stop"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_stop_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+
+            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"read"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_read_stage</span><span class="plain">, </span><span class="constant">FILE_STAGE_ARG</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"extract"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_extract_stage</span><span class="plain">, </span><span class="constant">GENERAL_STAGE_ARG</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 
             <span class="functiontext">CodeGen::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Assimilate::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Eliminate::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Externals::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Labels::create_pipeline_stage</span><span class="plain">();</span>
-            <span class="functiontext">CodeGen::Link::create_pipeline_stage</span><span class="plain">();</span>
+            <span class="functiontext">CodeGen::MergeTemplate::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::PLM::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::RCC::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::ReconcileVerbs::create_pipeline_stage</span><span class="plain">();</span>
@@ -94,11 +99,14 @@ the pipeline:
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_read_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Binary::test_file</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">))</span>
-            <span class="identifier">Inter::Binary::read</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">else</span>
-            <span class="identifier">Inter::Textual::read</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;parsed_filename</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Binary::test_file</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">)) </span><span class="identifier">Inter::Binary::read</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Inter::Textual::read</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_extract_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Arg is %S.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -108,6 +116,8 @@ the pipeline:
 <p class="endnote">The function CodeGen::Stage::run_stop_stage is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="endnote">The function CodeGen::Stage::run_read_stage is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="endnote">The function CodeGen::Stage::run_extract_stage is used in <a href="#SP2">&#167;2</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-cm.html">Back to 'Codegen Module'</a></li><li><a href="1-ppl.html">Continue with 'Pipelines'</a></li></ul><hr class="tocbar">

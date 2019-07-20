@@ -27,10 +27,7 @@ each line, and the comma is not needed:
 	|xyzzy|
 	|plover|
 
-@ A pipeline can work on up to 10 different repositories, called |0| to |9|,
-which are initially empty (but see below).
-
-A pipeline description can make use of "variables". These hold only text,
+@ A pipeline description can make use of "variables". These hold only text,
 and generally represent filenames. Variable names begin with a star |*|.
 The pipeline cannot create variables: instead, the user of the pipeline has
 to make them before use. For example,
@@ -40,11 +37,11 @@ to make them before use. For example,
 creates the variable |*X| with the textual contents |ex/why| before running
 the given pipeline. Inside the pipeline, a line such as:
 
-	|generate: inform6 -> *X|
+	|generate inform6 -> *X|
 
 would then be read as:
 
-	|generate: inform6 -> ex/why|
+	|generate inform6 -> ex/why|
 
 After variable substitution like this, filenames inside the pipeline
 description are interpreted as follows:
@@ -60,7 +57,7 @@ A command to write a text file to |*log| is interpreted instead to mean
 "spool the output you would otherwise write to the debugging log instead".
 For example,
 
-	|generate: inventory -> *log|
+	|generate inventory -> *log|
 
 Template filenames are a little different: those are searched for inside
 a path of possible directories. By default there's no such path, but using
@@ -76,9 +73,9 @@ which Inform has generated on the current run, and |*out| is set to the
 filename to which final I6 code needs to be written. The practical
 effect is that any useful pipeline for Inform will begin and end thus:
 
-	|read: 0 <- *in|
+	|read <- *in|
 	|...|
-	|generate: inform6 -> *out|
+	|generate inform6 -> *out|
 
 In addition, the "domain" is set to the directory containing the |*out|
 file, and the template search path is set to the one used in Inform, that is,
@@ -116,6 +113,38 @@ Exactly as with Inter, Inform 7 also responds to |-pipeline-file|:
 
 	|$ inform7/Tangled/inform7 ... -pipeline-file FILE|
 
+@h Stage descriptions.
+There are three sorts of stage description: those involving material coming
+in, denoted by a left arrow, those involving some external file being written
+out, denoted by a right arrow, and those which just process what we have.
+These take the following forms:
+
+	|STAGENAME [LOCATION] <- SOURCE|
+	|STAGENAME [LOCATION] FORMAT -> DESTINATION|
+	|STAGENAME [LOCATION]|
+
+In each case the |LOCATION| is optional. For example:
+
+	|read 2 <- *in|
+	|generate binary -> *out|
+	|eliminate-redundant-labels /main/template|
+
+In the first line the location is |2|. Pipeline descriptios allow us to manage
+up to 10 different repositories, and these are called |0| to |9|. These are
+all initially empty. Any stage which doesn't specify a repository is considered
+to apply to |0|; plenty of pipelines never mention the digits |0| to |9| at
+all because they do everything inside |0|.
+
+In the second line, there's no location given, so the location is presumed
+to be |0|.
+
+The third line demonstrates that a location can be more specific than just
+a repository: it can be a specific package in a repository. Here, it's
+|/main/template| in repository |0|, but we could also write |7:/main/template|
+to mean |/main/template| in |7|, for example. Not all stages allow the
+location to be narrowed down to a single package (which by definition
+includes all its subpackages): see below.
+
 @h Reading and generating.
 The |read| stage reads Inter from a file into a repository in memory.
 (Its previous contents, if any, are discarded.) This then becomes the
@@ -123,16 +152,20 @@ repository to which subsequent stages apply. The format is:
 
 	|read REPOSITORY <- FILE|
 
-where |REPOSITORY| is |0| to |9|. Conventionally, we use |0| most of the time.
+where |REPOSITORY| is |0| to |9|, and is |0| if not supplied. Note that
+this fills an entire repository: it's not meaningful to specify a
+named package as the location.
+
 The |FILE| can contain either binary or textual Inter, and this is
 automatically detected.
 
-	|generate: FORMAT -> FILE|
+	|generate FORMAT -> FILE|
 
-writes the contents of the current repository out into the given |FILE|.
-There are several possible formats: |binary| and |text| mean a binary or
-textual Inter file, |inventory| means a textual summary of the contents,
-and |inform6| means an Inform 6 program.
+writes the repository out into the given |FILE|. There are several possible
+formats: |binary| and |text| mean a binary or textual Inter file, |inventory|
+means a textual summary of the contents, and |inform6| means an Inform 6
+program. At present, only |inventory| can be generated on specific
+packages in a repository.
 
 The |generate| stage leaves the repository unchanged, so it's possible
 to generate multiple representations of the same repository into different
@@ -151,12 +184,12 @@ turn this merged repository into Inform 6 code. (Routines in the template,
 therefore, are converted out of Inform 6 and then back into it again. This
 sounds inefficient but is surprisingly fast, and enables many optimisations.)
 
-@ |link:T| reads in the I6T template file T, converts it to inter in a very
-basic way (creating many splats), and merges it with the repository. Splats
-are the unhappiest of inter statements, simply including verbatim snippets
-of Inform 6 code.
+@ |merge-template <- T| reads in the I6T template file |T|, converts it to
+inter in a very basic way (creating many splats), and merges it with the
+repository. Splats are the unhappiest of inter statements, simply including
+verbatim snippets of Inform 6 code.
 
-@ |parse-linked-matter| examines the splats produced by linking and annotates
+@ |parse-linked-matter| examines the splats produced by merging and annotates
 them by what they seem to want to do. For example,
 
 	|splat &"Global nitwit = 2;\n"|

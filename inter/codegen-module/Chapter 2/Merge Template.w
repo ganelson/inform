@@ -1,27 +1,27 @@
-[CodeGen::Link::] Linker.
+[CodeGen::MergeTemplate::] Linker.
 
 To link inter from I7 with template code.
 
 @h Link.
 
 =
-void CodeGen::Link::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"link", CodeGen::Link::run_pipeline_stage, TEMPLATE_FILE_STAGE_ARG);	
+void CodeGen::MergeTemplate::create_pipeline_stage(void) {
+	CodeGen::Stage::new(I"merge-template", CodeGen::MergeTemplate::run_pipeline_stage, TEMPLATE_FILE_STAGE_ARG, TRUE);	
 }
 
-int CodeGen::Link::run_pipeline_stage(pipeline_step *step) {
+int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
 	inter_package *main_package = Inter::Packages::main(step->repository);
 	inter_bookmark IBM;
 	if (main_package) IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 	else IBM = Inter::Bookmarks::at_start_of_this_repository(step->repository);
-	CodeGen::Link::link(&IBM, step->step_argument, step->the_N, step->the_PP, NULL);
+	CodeGen::MergeTemplate::link(&IBM, step->step_argument, step->the_N, step->the_PP, NULL);
 	return TRUE;
 }
 
 inter_symbols_table *link_search_list[10];
 int link_search_list_len = 0;
 
-void CodeGen::Link::ensure_search_list(inter_repository *I) {
+void CodeGen::MergeTemplate::ensure_search_list(inter_repository *I) {
 	if (link_search_list_len == 0) {
 		if (template_package) {
 			link_search_list[1] = Inter::Packages::scope(Inter::Packages::main(I));
@@ -34,29 +34,29 @@ void CodeGen::Link::ensure_search_list(inter_repository *I) {
 	}
 }
 
-void CodeGen::Link::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
+void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_repository *I = IBM->read_into;
-	Inter::traverse_tree(I, CodeGen::Link::visitor, NULL, NULL, 0);
+	Inter::traverse_tree(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
 	if (template_package == NULL) internal_error("unable to find template");
 
-	CodeGen::Link::ensure_search_list(I);
+	CodeGen::MergeTemplate::ensure_search_list(I);
 
 	inter_bookmark link_bookmark =
 		Inter::Bookmarks::at_end_of_this_package(template_package);
 
-	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::Link::receive_raw),  &(CodeGen::Link::receive_command), NULL);
+	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::MergeTemplate::receive_raw),  &(CodeGen::MergeTemplate::receive_command), NULL);
 	kit.no_i6t_file_areas = N;
 	for (int i=0; i<N; i++) kit.i6t_files[i] = PP[i];
 	TEMPORARY_TEXT(T);
 	TemplateReader::I6T_file_intervene(T, EARLY_LINK_STAGE, NULL, NULL, &kit);
-	CodeGen::Link::receive_raw(T, &kit);
+	CodeGen::MergeTemplate::receive_raw(T, &kit);
 	DISCARD_TEXT(T);
 	TemplateReader::extract(template_file, &kit);
 }
 
-void CodeGen::Link::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::MergeTemplate::visitor(inter_repository *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == LINK_IST) {
 		text_stream *S1 = Inter::get_text(P.repo_segment->owning_repo, P.data[SEGMENT_LINK_IFLD]);
 		text_stream *S2 = Inter::get_text(P.repo_segment->owning_repo, P.data[PART_LINK_IFLD]);
@@ -70,7 +70,7 @@ void CodeGen::Link::visitor(inter_repository *I, inter_frame P, void *state) {
 dictionary *linkable_namespace = NULL;
 int linkable_namespace_created = FALSE;
 
-inter_symbol *CodeGen::Link::find_in_namespace(inter_repository *I, text_stream *name) {
+inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_repository *I, text_stream *name) {
 	if (linkable_namespace_created == FALSE) {
 		linkable_namespace_created = TRUE;
 		linkable_namespace = Dictionaries::new(512, FALSE);
@@ -81,7 +81,7 @@ inter_symbol *CodeGen::Link::find_in_namespace(inter_repository *I, text_stream 
 				if (C.data[ID_IFLD] == PACKAGE_IST) {
 					inter_package *P = Inter::Package::defined_by_frame(C);
 					if (Str::ne(P->package_name->symbol_name, I"template"))
-						CodeGen::Link::build_r(P);
+						CodeGen::MergeTemplate::build_r(P);
 				}
 			}
 			
@@ -92,18 +92,18 @@ inter_symbol *CodeGen::Link::find_in_namespace(inter_repository *I, text_stream 
 	return NULL;
 }
 
-void CodeGen::Link::build_r(inter_package *P) {
-	CodeGen::Link::build_only(P);
+void CodeGen::MergeTemplate::build_r(inter_package *P) {
+	CodeGen::MergeTemplate::build_only(P);
 	inter_frame D = Inter::Symbols::defining_frame(P->package_name);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
 		if (C.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *Q = Inter::Package::defined_by_frame(C);
-			CodeGen::Link::build_r(Q);
+			CodeGen::MergeTemplate::build_r(Q);
 		}
 	}
 }
 
-void CodeGen::Link::build_only(inter_package *P) {
+void CodeGen::MergeTemplate::build_only(inter_package *P) {
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T) {
 		for (int i=0; i<T->size; i++) {
@@ -119,19 +119,19 @@ void CodeGen::Link::build_only(inter_package *P) {
 	}
 }
 
-inter_symbol *CodeGen::Link::find_name(inter_repository *I, text_stream *S, int deeply) {
+inter_symbol *CodeGen::MergeTemplate::find_name(inter_repository *I, text_stream *S, int deeply) {
 	for (int i=0; i<link_search_list_len; i++) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
 		if (symb) return symb;
 	}
 	if (deeply) {
-		inter_symbol *symb = CodeGen::Link::find_in_namespace(I, S);
+		inter_symbol *symb = CodeGen::MergeTemplate::find_in_namespace(I, S);
 		if (symb) return symb;
 	}
 	return NULL;
 }
 
-void CodeGen::Link::log_search_path(void) {
+void CodeGen::MergeTemplate::log_search_path(void) {
 	for (int i=0; i<link_search_list_len; i++) {
 		LOG("Search %d: $4\n", i, link_search_list[i]);
 	}
@@ -139,15 +139,15 @@ void CodeGen::Link::log_search_path(void) {
 
 int link_pie_count = 0;
 
-void CodeGen::Link::guard(inter_error_message *ERR) {
+void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
 	if (ERR) { Inter::Errors::issue(ERR); internal_error("inter error"); }
 }
 
-void CodeGen::Link::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
+void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
 	inter_t SID = Inter::create_text(IBM->read_into);
 	text_stream *glob_storage = Inter::get_text(IBM->read_into, SID);
 	Str::copy(glob_storage, content);
-	CodeGen::Link::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));
+	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));
 }
 
 @
@@ -162,7 +162,7 @@ void CodeGen::Link::entire_splat(inter_bookmark *IBM, text_stream *origin, text_
 @d SUBORDINATE_FILTER_BITS (COMMENTED_FILTER_BIT + SQUOTED_FILTER_BIT + DQUOTED_FILTER_BIT + ROUTINED_FILTER_BIT)
 
 =
-void CodeGen::Link::receive_raw(text_stream *S, I6T_kit *kit) {
+void CodeGen::MergeTemplate::receive_raw(text_stream *S, I6T_kit *kit) {
 	text_stream *R = Str::new();
 	int mode = IGNORE_WS_FILTER_BIT;
 	LOOP_THROUGH_TEXT(pos, S) {
@@ -204,22 +204,22 @@ void CodeGen::Link::receive_raw(text_stream *S, I6T_kit *kit) {
 		}
 		PUT_TO(R, c);
 		if ((c == ';') && (!(mode & SUBORDINATE_FILTER_BITS))) {
-			CodeGen::Link::chunked_raw(R, kit);
+			CodeGen::MergeTemplate::chunked_raw(R, kit);
 			mode = IGNORE_WS_FILTER_BIT;
 		}
 	}
-	CodeGen::Link::chunked_raw(R, kit);
+	CodeGen::MergeTemplate::chunked_raw(R, kit);
 	Str::clear(S);
 }
 
-void CodeGen::Link::chunked_raw(text_stream *S, I6T_kit *kit) {
+void CodeGen::MergeTemplate::chunked_raw(text_stream *S, I6T_kit *kit) {
 	if (Str::len(S) == 0) return;
 	PUT_TO(S, '\n');
-	CodeGen::Link::entire_splat(kit->IBM, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IBM) + 1), Inter::Bookmarks::package(kit->IBM)->package_name);
+	CodeGen::MergeTemplate::entire_splat(kit->IBM, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IBM) + 1), Inter::Bookmarks::package(kit->IBM)->package_name);
 	Str::clear(S);
 }
 
-void CodeGen::Link::receive_command(OUTPUT_STREAM, text_stream *command, text_stream *argument, I6T_kit *kit) {
+void CodeGen::MergeTemplate::receive_command(OUTPUT_STREAM, text_stream *command, text_stream *argument, I6T_kit *kit) {
 	if ((Str::eq_wide_string(command, L"plugin")) ||
 		(Str::eq_wide_string(command, L"type")) ||
 		(Str::eq_wide_string(command, L"open-file")) ||

@@ -1,5 +1,5 @@
-read: 0 <- *in
+read <- *in
 parse-linked-matter
 resolve-conditional-compilation
 assimilate
-generate: inform6 -> *out
+generate inform6 -> *out

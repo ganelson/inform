@@ -30,7 +30,7 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 	step->step_stage = NULL;
 	step->step_argument = NULL;
 	step->package_argument = NULL;
-	step->repository_argument = -1;
+	step->repository_argument = 0;
 	CodeGen::Pipeline::clean_step(step);
 	return step;
 }
@@ -55,11 +55,10 @@ logging:
 void CodeGen::Pipeline::write_step(OUTPUT_STREAM, pipeline_step *step) {
 	WRITE("%S", step->step_stage->stage_name);
 	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
-		if (step->package_argument) WRITE(" %S", step->package_argument);
-		WRITE(":");
-		if (step->repository_argument >= 0) WRITE(" %d <-", step->repository_argument);
-		if (step->target_argument) WRITE(" %S ->", step->target_argument->target_name);
-		WRITE(" %S", step->step_argument);
+		WRITE(" %d", step->repository_argument);
+		if (Str::len(step->package_argument) > 0) WRITE(":%S", step->package_argument);
+		if (step->step_stage->takes_repository >= 0) WRITE(" <- %S", step->step_argument);
+		if (step->target_argument) WRITE(" %S -> %S", step->target_argument->target_name, step->step_argument);
 	}
 }
 
@@ -68,11 +67,12 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
 	CodeGen::Targets::make_targets();
 	pipeline_step *ST = CodeGen::Pipeline::new_step();
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, step, L"(%c+?) *: *(%d) *<- *(%c*)")) {
-		ST->repository_argument = Str::atoi(mr.exp[1], 0);
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D);
+	int left_arrow_used = FALSE;
+	if (Regexp::match(&mr, step, L"(%c+?) *<- *(%c*)")) {
+		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D);
 		Str::copy(step, mr.exp[0]);
-	} else if (Regexp::match(&mr, step, L"(%c+?) *: *(%C*) *-> *(%c*)")) {
+		left_arrow_used = TRUE;
+	} else if (Regexp::match(&mr, step, L"(%c+?) *(%C*) *-> *(%c*)")) {
 		code_generation_target *cgt;
 		LOOP_OVER(cgt, code_generation_target)
 			if (Str::eq(mr.exp[1], cgt->target_name))
@@ -83,11 +83,15 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
 		}
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D);
 		Str::copy(step, mr.exp[0]);
-	} else if (Regexp::match(&mr, step, L"(%c+?) *: *(%c*)")) {
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D);
-		Str::copy(step, mr.exp[0]);
 	}
-	if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
+	if (Regexp::match(&mr, step, L"(%C+?) (%d)")) {
+		ST->repository_argument = Str::atoi(mr.exp[1], 0);
+		Str::copy(step, mr.exp[0]);
+	} else if (Regexp::match(&mr, step, L"(%C+?) (%d):(%c*)")) {
+		ST->repository_argument = Str::atoi(mr.exp[1], 0);
+		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D);
+		Str::copy(step, mr.exp[0]);
+	} else if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
 		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D);
 		Str::copy(step, mr.exp[0]);
 	}
@@ -100,6 +104,14 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
 		WRITE_TO(STDERR, "No such step as '%S'\n", step);
 		internal_error("no such step code");
 	}
+	if (ST->step_stage->takes_repository) {
+		if (left_arrow_used == FALSE)
+			internal_error("should use a left arrow");
+	} else {
+		if (left_arrow_used)
+			internal_error("should not use a left arrow");
+	}
+	
 	Regexp::dispose_of(&mr);
 	return ST;
 }
@@ -189,20 +201,22 @@ void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_repository *I)
 
 void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **PP) {
 	if (S == NULL) return;
-	if (S->repositories[0] == NULL) S->repositories[0] = Inter::create(1, 32);
 	clock_t start = clock();
 
 	int step_count = 0, step_total = 0;
 	pipeline_step *step;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps) step_total++;
 
-	int active = TRUE, current_repo = 0;
-	CodeGen::Pipeline::prepare_to_run(S->repositories[current_repo]);
+	int active = TRUE;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
-			inter_repository *I = S->repositories[current_repo];
+			if (S->repositories[step->repository_argument] == NULL)
+				S->repositories[step->repository_argument] = Inter::create(1, 32);
+			inter_repository *I = S->repositories[step->repository_argument];
+			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::lint(I);
-		
+			CodeGen::Pipeline::prepare_to_run(I);
+
 			CodeGen::Pipeline::clean_step(step);
 			step->the_N = N;
 			step->the_PP = PP;
@@ -215,6 +229,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 			Log::new_stage(STAGE_NAME);
 			DISCARD_TEXT(STAGE_NAME);
 
+			int skip_step = FALSE;
+
 			if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
 				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
@@ -222,9 +238,9 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 				if (Str::eq(step->step_argument, I"*log")) {
 					step->to_debugging_log = TRUE;
 				} else if (Str::eq(step->step_argument, I"*memory")) {
-					step->from_memory = TRUE;
+					S->repositories[step->repository_argument] = S->memory_repository;
+					skip_step = TRUE;
 				} else {
-					step->parsed_filename = Filenames::from_text(step->step_argument);
 					int slashes = FALSE;
 					LOOP_THROUGH_TEXT(pos, step->step_argument)
 						if (Str::get(pos) == '/')
@@ -253,20 +269,13 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 				step->text_out_file = T;
 			}
 
-			if ((step->from_memory) && (step->repository_argument >= 0))
-				S->repositories[step->repository_argument] = S->memory_repository;
-			else
+			if (skip_step == FALSE)
 				active = (*(step->step_stage->execute))(step);
 
 			if (((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) &&
 				(step->to_debugging_log == FALSE)) {
 				STREAM_CLOSE(T);
-			}
-			
-			if (step->repository_argument >= 0) {
-				current_repo = step->repository_argument;
-				CodeGen::Pipeline::prepare_to_run(S->repositories[current_repo]);
 			}
 		}
 }
@@ -359,5 +368,5 @@ void CodeGen::Pipeline::visitor(inter_repository *I, inter_frame P, void *state)
 		internal_error("zap");
 	}
 
-	CodeGen::Link::guard(Inter::Defn::verify_children_inner(P));
+	CodeGen::MergeTemplate::guard(Inter::Defn::verify_children_inner(P));
 }

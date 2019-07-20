@@ -230,10 +230,10 @@ void Primitives::emit_one(inter_repository *I, inter_bookmark *IBM, text_stream 
 	if (to == NULL) internal_error("no symbol");
 	TEMPORARY_TEXT(prim_command);
 	WRITE_TO(prim_command, "primitive %S %S", prim, category);
-	CodeGen::Link::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
+	CodeGen::MergeTemplate::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
 	inter_error_message *E = NULL;
 	*to = Inter::Textual::find_symbol(I, NULL, Inter::get_global_symbols(I), prim, PRIMITIVE_IST, &E);
-	CodeGen::Link::guard(E);
+	CodeGen::MergeTemplate::guard(E);
 	DISCARD_TEXT(prim_command);
 }
 

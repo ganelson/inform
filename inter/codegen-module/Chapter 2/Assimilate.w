@@ -6,7 +6,7 @@ To assimilate the material in parsed non-code splats.
 
 =
 void CodeGen::Assimilate::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"assimilate", CodeGen::Assimilate::run_pipeline_stage, NO_STAGE_ARG);
+	CodeGen::Stage::new(I"assimilate", CodeGen::Assimilate::run_pipeline_stage, NO_STAGE_ARG, FALSE);
 }
 
 int no_assimilated_actions = 0;
@@ -20,7 +20,7 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	no_assimilated_actions = 0;
 	no_assimilated_commands = 0;
 	no_assimilated_arrays = 0;
-	CodeGen::Link::ensure_search_list(I);
+	CodeGen::MergeTemplate::ensure_search_list(I);
 	Inter::traverse_tree(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
 	Inter::traverse_tree(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
 	CodeGen::Assimilate::function_bodies();
@@ -100,7 +100,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 	@<Parse text of splat for identifier and value@>;
 	if ((proceed) && (unchecked_kind_symbol)) {
 		if (plm == DEFAULT_PLM) {
-			inter_symbol *symbol = CodeGen::Link::find_name(I, identifier, TRUE);
+			inter_symbol *symbol = CodeGen::MergeTemplate::find_name(I, identifier, TRUE);
 			if (symbol == NULL) plm = CONSTANT_PLM;
 		}
 		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
@@ -197,7 +197,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 		case FAKEACTION_PLM:
 		case OBJECT_PLM: {
 			@<Assimilate a value@>;
-			CodeGen::Link::guard(Inter::Constant::new_numerical(IBM,
+			CodeGen::MergeTemplate::guard(Inter::Constant::new_numerical(IBM,
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
@@ -206,7 +206,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 		}
 		case GLOBAL_PLM:
 			@<Assimilate a value@>;
-			CodeGen::Link::guard(Inter::Variable::new(IBM,
+			CodeGen::MergeTemplate::guard(Inter::Variable::new(IBM,
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
@@ -219,7 +219,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 			
 			if ((attr_symbol == NULL) || (!Inter::Symbols::is_defined(attr_symbol))) {
 				if (attr_symbol == NULL) attr_symbol = con_name;
-				CodeGen::Link::guard(Inter::Property::new(IBM,
+				CodeGen::MergeTemplate::guard(Inter::Property::new(IBM,
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), truth_state_kind_symbol),
 					(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
@@ -245,7 +245,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 			break;
 		}
 		case PROPERTY_PLM: {
-			CodeGen::Link::guard(Inter::Property::new(IBM,
+			CodeGen::MergeTemplate::guard(Inter::Property::new(IBM,
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
@@ -324,7 +324,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 				array_in_progress.data[pos++] = v1_pile[i];
 				array_in_progress.data[pos++] = v2_pile[i];
 			}
-			CodeGen::Link::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
+			CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 			Inter::Frame::insert(array_in_progress, IBM);
 			
 			if (plm == ARRAY_PLM) {
@@ -421,12 +421,12 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 			if (Str::len(value) == 0) break;
 			inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Package::local_symbols(block_name), value);
 			Inter::Symbols::local(loc_name);
-			CodeGen::Link::guard(Inter::Local::new(IBM, block_name, loc_name, unchecked_kind_symbol, 0, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+			CodeGen::MergeTemplate::guard(Inter::Local::new(IBM, block_name, loc_name, unchecked_kind_symbol, 0, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			DISCARD_TEXT(value);
 		}
 	}
 
-	CodeGen::Link::guard(Inter::Code::new(IBM, (int) (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	CodeGen::MergeTemplate::guard(Inter::Code::new(IBM, (int) (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	if (Str::len(body) > 0) {
 		int L = Str::len(body) - 1;
 		while ((L>0) && (Str::get_at(body, L) != ']')) L--;
@@ -439,7 +439,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 
 	inter_symbol *rsymb = CodeGen::Assimilate::maybe_extern(I, identifier, Inter::Bookmarks::scope(IBM));
 	Inter::Symbols::annotate_i(I, rsymb, ASSIMILATED_IANN, 1);
-	CodeGen::Link::guard(Inter::Constant::new_function(IBM,
+	CodeGen::MergeTemplate::guard(Inter::Constant::new_function(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, FP, rsymb),
 		Inter::SymbolsTables::id_from_symbol(I, FP, unchecked_function_symbol),
 		Inter::SymbolsTables::id_from_symbol(I, FP, block_name),
@@ -457,7 +457,7 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 @ =
 inter_package *CodeGen::Assimilate::new_package(inter_bookmark *IBM, inter_symbol *pname, inter_symbol *ptype) {
 	inter_package *P = NULL;
-	CodeGen::Link::guard(Inter::Package::new_package(IBM, pname,
+	CodeGen::MergeTemplate::guard(Inter::Package::new_package(IBM, pname,
 		ptype, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
@@ -516,7 +516,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_repository *I, text_stream
 
 @ =
 void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_frame P, text_stream *value) {
-	if (CodeGen::Link::find_name(I, value, TRUE) == NULL) {
+	if (CodeGen::MergeTemplate::find_name(I, value, TRUE) == NULL) {
 		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
 		TEMPORARY_TEXT(an);
@@ -531,16 +531,16 @@ void CodeGen::Assimilate::ensure_action(inter_repository *I, inter_frame P, text
 		WRITE_TO(unsharped, "%SSub", value);
 		Str::delete_first_character(unsharped);
 		Str::delete_first_character(unsharped);
-		inter_symbol *txsymb = CodeGen::Link::find_name(I, unsharped, TRUE);
+		inter_symbol *txsymb = CodeGen::MergeTemplate::find_name(I, unsharped, TRUE);
 		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
 		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
 		DISCARD_TEXT(unsharped);
-		CodeGen::Link::guard(Inter::Constant::new_numerical(IBM,
+		CodeGen::MergeTemplate::guard(Inter::Constant::new_numerical(IBM,
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
 			LITERAL_IVAL, 10000, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::annotate_i(I, asymb, ACTION_IANN, 1);
-		CodeGen::Link::build_r(Inter::Bookmarks::package(IBM));
+		CodeGen::MergeTemplate::build_r(Inter::Bookmarks::package(IBM));
 	}
 }
 
@@ -636,7 +636,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, inter_
 		}
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L"scope=(%i+)")) {
-			inter_symbol *symb = CodeGen::Link::find_name(I, mr.exp[0], TRUE);
+			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0], TRUE);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
@@ -645,7 +645,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, inter_
 			}
 		}
 		if (Regexp::match(&mr, S, L"noun=(%i+)")) {
-			inter_symbol *symb = CodeGen::Link::find_name(I, mr.exp[0], TRUE);
+			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0], TRUE);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
@@ -655,7 +655,7 @@ void CodeGen::Assimilate::value(inter_repository *I, inter_package *pack, inter_
 		}
 	}
 
-	inter_symbol *symb = CodeGen::Link::find_name(I, S, TRUE);
+	inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, S, TRUE);
 	if (symb) {
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
@@ -680,7 +680,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_repository *I, inter_p
 	Str::copy(glob_storage, sch->converted_from);
 
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
-	CodeGen::Link::guard(Inter::Constant::new_numerical(IBM,
+	CodeGen::MergeTemplate::guard(Inter::Constant::new_numerical(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
 		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
 		(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
@@ -723,7 +723,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_repository *I, in
 	inter_t v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT: {
-			inter_symbol *symb = CodeGen::Link::find_name(I, t->material, TRUE);
+			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, t->material, TRUE);
 			if (symb) return symb;
 			LOG("Failed to identify %S\n", t->material);
 			break;
@@ -738,7 +738,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_repository *I, in
 	}
 	if (v1 == UNDEF_IVAL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
-	CodeGen::Link::guard(Inter::Constant::new_numerical(IBM,
+	CodeGen::MergeTemplate::guard(Inter::Constant::new_numerical(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
 		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
 		(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
@@ -756,7 +756,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_reposi
 		internal_error("can't extend frame");
 	array_in_progress.data[pos] = LITERAL_IVAL; array_in_progress.data[pos+1] = 0;
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress.data[pos+2]), &(array_in_progress.data[pos+3]));
-	CodeGen::Link::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
+	CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Frame::insert(array_in_progress, IBM);
 	return mcc_name;
 }
@@ -770,7 +770,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op,
 		internal_error("can't extend frame");
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress.data[pos]), &(array_in_progress.data[pos+1]));
 	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress.data[pos+2]), &(array_in_progress.data[pos+3]));
-	CodeGen::Link::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
+	CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Frame::insert(array_in_progress, IBM);
 	return mcc_name;
 }
@@ -810,7 +810,7 @@ int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_symbol *block_n
 	return TRUE;
 	#endif
 	#ifndef CORE_MODULE
-	CodeGen::Link::entire_splat(IBM, NULL, body, offset, block_name);
+	CodeGen::MergeTemplate::entire_splat(IBM, NULL, body, offset, block_name);
 	LOG("Splat %d\n", rb_splat_count++);
 	return FALSE;
 	#endif

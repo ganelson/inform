@@ -8,6 +8,7 @@ following. Some stages are invoked with an argument, often the filename to
 write output to; others are not.
 
 @e NO_STAGE_ARG from 1
+@e GENERAL_STAGE_ARG
 @e FILE_STAGE_ARG
 @e TEXT_OUT_STAGE_ARG
 @e EXT_FILE_STAGE_ARG
@@ -19,14 +20,16 @@ typedef struct pipeline_stage {
 	struct text_stream *stage_name;
 	int (*execute)(void *);
 	int stage_arg; /* one of the |*_ARG| values above */
+	int takes_repository;
 	MEMORY_MANAGEMENT
 } pipeline_stage;
 
-pipeline_stage *CodeGen::Stage::new(text_stream *name, int (*X)(struct pipeline_step *), int arg) {
+pipeline_stage *CodeGen::Stage::new(text_stream *name, int (*X)(struct pipeline_step *), int arg, int tr) {
 	pipeline_stage *stage = CREATE(pipeline_stage);
 	stage->stage_name = Str::duplicate(name);
 	stage->execute = (int (*)(void *)) X;
 	stage->stage_arg = arg;
+	stage->takes_repository = tr;
 	return stage;
 }
 
@@ -40,15 +43,17 @@ int stages_made = FALSE;
 void CodeGen::Stage::make_stages(void) {
 	if (stages_made == FALSE) {
 		stages_made = TRUE;
-		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG);
-		CodeGen::Stage::new(I"read", CodeGen::Stage::run_read_stage, FILE_STAGE_ARG);
+		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG, FALSE);
+
+		CodeGen::Stage::new(I"read", CodeGen::Stage::run_read_stage, FILE_STAGE_ARG, TRUE);
+		CodeGen::Stage::new(I"extract", CodeGen::Stage::run_extract_stage, GENERAL_STAGE_ARG, TRUE);
 
 		CodeGen::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();
 		CodeGen::Externals::create_pipeline_stage();
 		CodeGen::Labels::create_pipeline_stage();
-		CodeGen::Link::create_pipeline_stage();
+		CodeGen::MergeTemplate::create_pipeline_stage();
 		CodeGen::PLM::create_pipeline_stage();
 		CodeGen::RCC::create_pipeline_stage();
 		CodeGen::ReconcileVerbs::create_pipeline_stage();
@@ -65,10 +70,13 @@ int CodeGen::Stage::run_stop_stage(pipeline_step *step) {
 }
 
 int CodeGen::Stage::run_read_stage(pipeline_step *step) {
-	filename *F = Filenames::from_text(step->step_argument);
-	if (Inter::Binary::test_file(F))
-		Inter::Binary::read(step->repository, F);
-	else
-		Inter::Textual::read(step->repository, F);
+	filename *F = step->parsed_filename;
+	if (Inter::Binary::test_file(F)) Inter::Binary::read(step->repository, F);
+	else Inter::Textual::read(step->repository, F);
+	return TRUE;
+}
+
+int CodeGen::Stage::run_extract_stage(pipeline_step *step) {
+	LOG("Arg is %S.\n", step->step_argument);
 	return TRUE;
 }

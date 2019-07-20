@@ -6,7 +6,7 @@ To generate the initial state of storage for variables.
 
 =
 void CodeGen::RCC::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"resolve-conditional-compilation", CodeGen::RCC::run_pipeline_stage, NO_STAGE_ARG);
+	CodeGen::Stage::new(I"resolve-conditional-compilation", CodeGen::RCC::run_pipeline_stage, NO_STAGE_ARG, FALSE);
 }
 
 int CodeGen::RCC::run_pipeline_stage(pipeline_step *step) {

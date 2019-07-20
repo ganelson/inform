@@ -6,7 +6,7 @@ To make sure certain symbol names translate into globally unique target symbols.
 
 =
 void CodeGen::Externals::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"resolve-external-symbols", CodeGen::Externals::run_pipeline_stage, NO_STAGE_ARG);
+	CodeGen::Stage::new(I"resolve-external-symbols", CodeGen::Externals::run_pipeline_stage, NO_STAGE_ARG, FALSE);
 }
 
 int resolution_failed = FALSE;

@@ -1,4 +1,4 @@
-read: 0 <- *in
+read <- *in
 parse-linked-matter
 resolve-conditional-compilation
-generate: text -> *out
+generate text -> *out

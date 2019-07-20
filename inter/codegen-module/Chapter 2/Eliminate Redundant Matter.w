@@ -14,7 +14,7 @@ isn't used.
 =
 void CodeGen::Eliminate::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"eliminate-redundant-code",
-		CodeGen::Eliminate::run_pipeline_stage, NO_STAGE_ARG);
+		CodeGen::Eliminate::run_pipeline_stage, NO_STAGE_ARG, FALSE);
 }
 
 int CodeGen::Eliminate::run_pipeline_stage(pipeline_step *step) {

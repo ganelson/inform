@@ -49,7 +49,7 @@ converts |my.intert| (a textual inter file) to its binary equivalent
 a pipeline of processing stages. The pipeline, which must contain at least
 one stage, can be quite elaborate (see later), but for example:
 
-	|read: 0 <- myfile.inter, resolve-conditional-compilation, generate: inform6 -> myfile.i6|
+	|read <- myfile.inter, resolve-conditional-compilation, generate inform6 -> myfile.i6|
 
 is a valid three-stage pipeline. The command to do this is then:
 

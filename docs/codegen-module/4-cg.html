@@ -18,7 +18,7 @@
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::create_pipeline_stage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"generate"</span><span class="plain">, </span><span class="functiontext">CodeGen::run_pipeline_stage</span><span class="plain">, </span><span class="constant">TEXT_OUT_STAGE_ARG</span><span class="plain">);</span>
+        <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"generate"</span><span class="plain">, </span><span class="functiontext">CodeGen::run_pipeline_stage</span><span class="plain">, </span><span class="constant">TEXT_OUT_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
